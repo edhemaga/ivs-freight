@@ -29,6 +29,7 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
 import { formatCurrency } from './formatCurrency.pipe';
 import { setFutureYear } from './setFutureYear.pipe';
 import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.pipe';
+import { HideAccountPipe } from './driver-hide-account.pipe';
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     formatCurrency,
     setFutureYear,
     LogoSliderPipe,
+    HideAccountPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -83,6 +85,7 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     ReviewsSortPipe,
     SumArraysPipe,
     HidePasswordPipe,
+    HideAccountPipe,
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
     BlockedContentPipe,
@@ -92,7 +95,7 @@ import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.p
     UserDataPipe,
     formatCurrency,
     setFutureYear,
-    LogoSliderPipe,
+    LogoSliderPipe
   ],
   providers: [
     DatePipe,

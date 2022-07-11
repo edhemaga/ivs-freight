@@ -1,9 +1,17 @@
 import { SharedService } from 'src/app/core/services/shared/shared.service';
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import * as AppConst from 'src/app/const';
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {Subject} from 'rxjs';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
 import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
 
@@ -16,14 +24,12 @@ import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
   animations: [
     trigger('shadowAnimation', [
       transition(':enter', [
-        style({opacity: 0}),
-        animate('100ms', style({opacity: '*'})),
+        style({ opacity: 0 }),
+        animate('100ms', style({ opacity: '*' })),
       ]),
-      transition(':leave', [
-        animate('100ms', style({opacity: 0})),
-      ]),
-    ])
-  ]
+      transition(':leave', [animate('100ms', style({ opacity: 0 }))]),
+    ]),
+  ],
 })
 export class TaStatusSwitchComponent implements OnInit, OnChanges {
   @Input() statusId: number;
@@ -47,17 +53,21 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
   changedStatusLoadCount: any;
   statusMainSignal = 0;
   hoverItem = -1;
-  statusAgo: string = "";
+  statusAgo: string = '';
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private statusPipe: StatusPipePipe, private sharedService: SharedService) {
-  }
+  constructor(
+    private statusPipe: StatusPipePipe,
+    private sharedService: SharedService
+  ) {}
 
   ngOnInit(): void {
     let mytimezoneOffset = moment(new Date()).utcOffset();
-    let status_time = moment(new Date(this.statusDate).getTime()).format('YYYY-MM-DD HH:mm');
+    let status_time = moment(new Date(this.statusDate).getTime()).format(
+      'YYYY-MM-DD HH:mm'
+    );
     //.add(mytimezoneOffset, "minutes") -- ADDING TIMEZONE
-    console.log(status_time);
+
     this.statusAgo = this.timeSince(new Date(status_time));
     this.changeIndex = this.statusId;
     this.changedStatusLoadCount = this.statusLoadCount;
@@ -65,7 +75,7 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
 
     this.sharedService.emitStatusUpdate
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         if (res.id == this.dataItems.id) {
           setTimeout(() => {
             this.updateStatusFilter();
@@ -75,7 +85,7 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
 
     this.sharedService.emitSortStatusUpdate
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         setTimeout(() => {
           this.updateStatusFilter();
         });
@@ -106,8 +116,17 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
   }
 
   public updateStatusFilter() {
-    this.items = this.statusPipe.transform((this.statusTypes == 'dispatch' ? this.dispatchStatuses : this.loadStatuses), this.statusId, this.statusTypes, this.dataItems);
-    this.statusMainSignal = this.items.findIndex(item => item.id == this.statusId);
+    this.items = this.statusPipe.transform(
+      this.statusTypes == 'dispatch'
+        ? this.dispatchStatuses
+        : this.loadStatuses,
+      this.statusId,
+      this.statusTypes,
+      this.dataItems
+    );
+    this.statusMainSignal = this.items.findIndex(
+      (item) => item.id == this.statusId
+    );
   }
 
   // @HostListener('document:keypress', ['$event'])
@@ -153,31 +172,29 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
   timeSince(date: any) {
     var new_date: any = new Date();
 
-    console.log(new_date - date);
     var seconds = Math.floor((new_date - date) / 1000);
 
     var interval = seconds / 31536000;
 
     if (interval > 1) {
-      return Math.floor(interval) + "y. ago";
+      return Math.floor(interval) + 'y. ago';
     }
     interval = seconds / 2592000;
     if (interval > 1) {
-      return Math.floor(interval) + "m. ago";
+      return Math.floor(interval) + 'm. ago';
     }
     interval = seconds / 86400;
     if (interval > 1) {
-      return Math.floor(interval) + "d. ago";
+      return Math.floor(interval) + 'd. ago';
     }
     interval = seconds / 3600;
     if (interval > 1) {
-      return Math.floor(interval) + "h. ago";
+      return Math.floor(interval) + 'h. ago';
     }
     interval = seconds / 60;
     if (interval > 1) {
-      return Math.floor(interval) + "m. ago";
+      return Math.floor(interval) + 'm. ago';
     }
-    return Math.floor(seconds) + "s. ago";
+    return Math.floor(seconds) + 's. ago';
   }
-
 }

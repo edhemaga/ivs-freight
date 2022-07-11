@@ -32,28 +32,31 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
-  @Input() public dateChecked:string='';
+  @Input() public dateChecked: string = '';
   public inputFormControl: FormControl = new FormControl();
 
   public selectedDropdown: boolean = false;
 
   constructor() {}
 
-  ngOnInit(): void {
-    // console.log(this.options);
-  }
-  public onAction(action: string) {
+  ngOnInit(): void {}
 
+  public onAction(action: string) {
     this.changeEvent.emit(action);
   }
 
   public onPickItem(): void {
+    if(this.options.length>1){
     this.selectedDropdown = true;
+    }
   }
 
-  public onSelecItem(value: any): void {    
-    this.selectedDropdown = !this.selectedDropdown;
-    this.selectValue.emit(value);
+  public onSelecItem(value: any): void {
+    if(this.options.length>1){
+
+      this.selectedDropdown = !this.selectedDropdown;
+      this.selectValue.emit(value);
+    }
   }
 
   public dropAct(action: any) {

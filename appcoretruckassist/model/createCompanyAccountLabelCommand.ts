@@ -13,6 +13,6 @@
 
 export interface CreateCompanyAccountLabelCommand { 
     name?: string | null;
-    color?: string | null;
+    colorId?: number;
 }
 

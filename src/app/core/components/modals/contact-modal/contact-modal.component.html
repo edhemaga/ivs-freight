@@ -31,10 +31,13 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            isDropdownLabel: true,
+            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
+            isDropdownLabel: true,
+            dropdownLabelSelected: selectedContactColor,
+            dropdownWidthClass: 'w-col-dropdown-label',
+            textTransform: 'capitalize',
             blackInput: true,
-            dropdownLabelSelected: selectedContactLabel,
             commands: {
               active: true,
               type: 'confirm-cancel',
@@ -54,12 +57,14 @@
                 name: 'cancel',
                 svg: 'assets/svg/ic_x.svg'
               }
-            },
-            dropdownWidthClass: 'w-col-dropdown-label'
+            }
           }"
+          [colors]="colors"
           [options]="contactLabels"
+          [selectedAccountLabel]="selectedContactLabel"
+          (pickExistLabel)="onPickExistLabel($event)"
           (selectedColorLabel)="onSelectColorLabel($event)"
-          (labelEvent)="onSaveLabel($event)"
+          (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
       </div>
@@ -121,7 +126,6 @@
       <div
         class="checkbox-card-header"
         [ngClass]="{ pointer: contactForm.get('shared').value }"
-        (click)="openCloseCheckboxCard($event)"
       >
         <app-ta-checkbox
           formControlName="shared"

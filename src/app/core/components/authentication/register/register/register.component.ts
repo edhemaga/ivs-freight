@@ -52,7 +52,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       companyName: [null, Validators.required],
-      taxNumber: [null, [Validators.required, einNumberRegex]],
+      ein: [null, [Validators.required, einNumberRegex]],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],

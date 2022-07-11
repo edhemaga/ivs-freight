@@ -13,15 +13,15 @@ import { DriverRights } from '../../state/model/driver-rights.model';
 export class Step9Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
 
+  public applicant: Applicant | undefined;
+
   public driverRightsForm: FormGroup;
   public driverRightsInfo: DriverRights | undefined;
-
-  public applicant: Applicant | undefined;
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -30,7 +30,7 @@ export class Step9Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public createForm(): void {
     this.driverRightsForm = this.formBuilder.group({
       understandYourRights: [false, Validators.requiredTrue],
     });

@@ -36,6 +36,7 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
+model/accountColorResponse.ts
 model/addressEntity.ts
 model/apiCategory.ts
 model/bankAccountResponse.ts
@@ -85,6 +86,7 @@ model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
+model/contactColorResponse.ts
 model/countryType.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts

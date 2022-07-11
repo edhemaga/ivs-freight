@@ -14,6 +14,6 @@
 export interface UpdateCompanyAccountLabelCommand { 
     id?: number;
     name?: string | null;
-    color?: string | null;
+    colorId?: number;
 }
 

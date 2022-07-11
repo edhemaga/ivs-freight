@@ -4,13 +4,14 @@
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
+        [ngClass]="{'single-data':options.length==1}"
         (click)="onPickItem()"
         ngbTooltip
-        [mainTooltip]="searchInputName"
+        [mainTooltip]="options.length>1 ? searchInputName :''"
         position="top"
-        tooltipBackground="#6C6C6C"
+        [tooltipBackground]="options.length>1?  '#6C6C6C':'#eeeeee'"
       >
-        <p class="current-active-name">
+        <p class="current-active-name" >
           {{ (options | detailActiveItem).name }}
         </p>
         <span
@@ -28,7 +29,7 @@
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown
-        *ngIf="selectedDropdown"
+        *ngIf="selectedDropdown && options.length>1"
         class="dropInput"
         [formControl]="inputFormControl"
         [inputConfig]="{
@@ -40,7 +41,7 @@
               ? 'w-col-details-template-small'
               : 'w-col-details-template-big',
           textTransform: 'capitalize',
-          customClass: 'input-big input-big-font-20 details-pages'
+          customClass: 'input-32 input-32-font-20 details-pages'
         }"
         [options]="options"
         [template]="'details-template'"
@@ -49,7 +50,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div *ngIf="!hasArrow" class="arrows">
+    <div *ngIf="!hasArrow && options.length>1" class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"

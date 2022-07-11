@@ -11,14 +11,14 @@ let i = 0;
 const fileHtml = new Promise((resolve, reject) => {
   getDirectories(assetsPath, function (err, res) {
     if (err) {
-      console.log('Error', err);
+
     } else {
-      console.log(res);
+
       res = res.map(item => {
         return item.replace("src/", "");
       });
       fs.writeFile(path + "image-list.json", JSON.stringify(res), "utf8", function (err) {
-        if (err) return console.log(err);
+
       });
     }
 
@@ -29,6 +29,5 @@ const fileHtml = new Promise((resolve, reject) => {
 Promise.all([fileHtml]).then(
   ([html]) => {},
   (error) => {
-    console.log(error);
   }
 );

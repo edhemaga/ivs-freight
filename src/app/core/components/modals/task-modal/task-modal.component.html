@@ -102,11 +102,8 @@
     <app-ta-custom-card
       [hasCounter]="comments.length ? comments.length : '0'"
       [cardName]="'Comment'"
-      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [isCardOpen]="comments.length"
-      [hasBodyData]="comments.length"
-      [hasScrollBody]="comments.length > 6"
-      [isCommentData]="true"
+      [isCardOpen]="false"
+      [disabledCard]="true"
       (onActionEvent)="createComment($event)"
     >
       <div class="no-review-broker" *ngIf="!comments.length">

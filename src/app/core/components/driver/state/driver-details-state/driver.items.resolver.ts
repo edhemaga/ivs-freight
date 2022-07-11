@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   Resolve,
+  Router,
   RouterStateSnapshot,
 } from '@angular/router';
 import { DriverResponse } from '../../../../../../../appcoretruckassist';
@@ -17,19 +18,24 @@ import { DriversDetailsQuery } from './driver-details.query';
   providedIn: 'root',
 })
 export class DriverItemResolver implements Resolve<DriverResponse[]> {
+  pageIndex:number=1;
+  pageSize:number=25;
   constructor(
     private driverService: DriverTService,
     private driverItemStore: DriversItemStore,
-    private driverItemQuery: DriversDetailsQuery
+    private driverItemQuery: DriversDetailsQuery,
+    private router:Router
   ) {}
   resolve(
-    route: ActivatedRouteSnapshot
+    route: ActivatedRouteSnapshot,
+   
   ): Observable<DriverResponse[]> | Observable<any> {
     const driver_id = route.paramMap.get('id');
     let id = parseInt(driver_id);
       return this.driverService.getDriverById(id).pipe(
         catchError((error) => {
-          return of('No drivers data for...' + driver_id);
+          this.router.navigate(['/driver'])
+          return of('No drivers data for...' + driver_id) ;
         }),
         tap((driverResponse: DriverResponse) => {
           this.driverItemStore.set([driverResponse]);

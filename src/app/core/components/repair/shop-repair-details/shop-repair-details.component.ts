@@ -54,22 +54,25 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.shopDetailsQuery.selectEntity(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
-          next: (res: RepairShopResponse) => {
-            this.shopConf(res);
-            if (this.router.url.includes('shop-details')) {
-              this.router.navigate([`/repair/${res.id}/shop-details`]);
-            }
-            this.notificationService.success(
-              'Shop successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Shop can't be loaded", 'Error:');
-          },
-        });
+        this.shopService
+          .getRepairById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: RepairShopResponse) => {
+              this.shopConf(res);
+              if (this.router.url.includes('shop-details')) {
+                this.router.navigate([`/repair/${res.id}/shop-details`]);
+              }
+              this.notificationService.success(
+                'Shop successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error("Shop can't be loaded", 'Error:');
+            },
+          });
       });
   }
 
@@ -91,7 +94,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Repair',
         template: 'repair',
         icon: true,
-        length: data.repairs.length,
+        length: data?.repairs?.length ? data.repairs.length : 0,
         customText: 'Date',
         icons: [
           {
@@ -125,7 +128,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 2,
         nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        length: data.repairsByUnit.length,
+        length: data?.repairsByUnit?.length ? data.repairsByUnit.length : 0,
         hide: true,
         customText: 'Repairs',
         data: data,
@@ -134,7 +137,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         id: 3,
         nameDefault: 'Review',
         template: 'review',
-        length: data.reviews.length,
+        length: data?.reviews?.length ? data.reviews.length : 0,
         customText: 'Date',
         hide: false,
         data: data,

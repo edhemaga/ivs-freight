@@ -1,3 +1,4 @@
+export * from './accountColorResponse';
 export * from './addressEntity';
 export * from './apiCategory';
 export * from './bankAccountResponse';
@@ -47,6 +48,7 @@ export * from './companyUserModalResponse';
 export * from './companyUserResponse';
 export * from './companyUserResponsePagination';
 export * from './companyUserShortResponse';
+export * from './contactColorResponse';
 export * from './countryType';
 export * from './createBankCommand';
 export * from './createBrokerCommand';

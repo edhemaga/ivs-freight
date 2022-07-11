@@ -17,8 +17,8 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
+  public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
-  public drugAndAlcoholInfo: DrugAndAlcohol | undefined;
 
   public selectedAddress: Address = null;
   public selectedSapAddress: Address = null;
@@ -30,14 +30,14 @@ export class Step8Component implements OnInit, OnDestroy {
     answerChoices: [
       {
         id: 1,
-        label: 'Yes',
+        label: 'YES',
         value: 'drugTestYes',
         name: 'drugTestYes',
         checked: true,
       },
       {
         id: 2,
-        label: 'No',
+        label: 'NO',
         value: 'drugTestNo',
         name: 'drugTestNo',
         checked: false,
@@ -45,10 +45,12 @@ export class Step8Component implements OnInit, OnDestroy {
     ],
   };
 
+  public drugAndAlcoholInfo: DrugAndAlcohol | undefined;
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -57,9 +59,12 @@ export class Step8Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
-    this.drugAlcoholStatementForm = this.formBuilder.group({
+  public createForm(): void {
+    this.drugTestForm = this.formBuilder.group({
       drugTest: [true, Validators.required],
+    });
+
+    this.drugAlcoholStatementForm = this.formBuilder.group({
       motorCarrier: [null, Validators.required],
       phone: [null, Validators.required],
       address: [null, Validators.required],
@@ -85,14 +90,10 @@ export class Step8Component implements OnInit, OnDestroy {
 
         const selectedFormControlName = this.question.formControlName;
 
-        if (selectedCheckbox.label === 'Yes') {
-          this.drugAlcoholStatementForm
-            .get(selectedFormControlName)
-            .patchValue(true);
+        if (selectedCheckbox.label === 'YES') {
+          this.drugTestForm.get(selectedFormControlName).patchValue(true);
         } else {
-          this.drugAlcoholStatementForm
-            .get(selectedFormControlName)
-            .patchValue(false);
+          this.drugTestForm.get(selectedFormControlName).patchValue(false);
         }
 
         break;

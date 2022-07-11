@@ -4,7 +4,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 @Component({
   selector: 'app-settings-repair-shop',
   templateUrl: './settings-repair-shop.component.html',
-  styleUrls: ['./settings-repair-shop.component.scss']
+  styleUrls: ['./settings-repair-shop.component.scss'],
 })
 export class SettingsRepairShopComponent implements OnInit {
   public repairShopData = [
@@ -14,8 +14,7 @@ export class SettingsRepairShopComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       services: [
         {
           id: 1,
@@ -76,8 +75,7 @@ export class SettingsRepairShopComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       services: [
         {
           id: 1,
@@ -136,9 +134,9 @@ export class SettingsRepairShopComponent implements OnInit {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
-  
-  public onAction(data: { type: boolean; modalName: string; action: string }) {
-    this.settingsStoreService.onModalAction(data);
+
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

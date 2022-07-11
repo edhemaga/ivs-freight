@@ -3,10 +3,9 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-broker-card',
   templateUrl: './broker-card.component.html',
-  styleUrls: ['./broker-card.component.scss']
+  styleUrls: ['./broker-card.component.scss'],
 })
 export class BrokerCardComponent implements OnInit {
-
   brokerCard: any[] = [
     {
       title: 'IVS FREIGHT INC',
@@ -14,8 +13,8 @@ export class BrokerCardComponent implements OnInit {
       boxFirst: 16,
       boxSecond: 4,
       invoice: 'Invoice Ageing',
-      price: 32946.00,
-      checked: true
+      price: 32946.0,
+      checked: true,
     },
     {
       title: 'COMAX TRADE',
@@ -47,7 +46,7 @@ export class BrokerCardComponent implements OnInit {
       boxFirst: 45,
       boxSecond: 8,
       invoice: 'Invoice Ageing',
-      price: 512614.00,
+      price: 512614.0,
     },
     {
       title: 'EVERYONE ON TIME HAVE',
@@ -57,7 +56,7 @@ export class BrokerCardComponent implements OnInit {
       invoice: 'Invoice Ageing',
       price: 0,
       inactive: true,
-      iban: true
+      iban: true,
     },
     {
       title: 'IVS FREIGHT INC',
@@ -65,7 +64,7 @@ export class BrokerCardComponent implements OnInit {
       boxFirst: 16,
       boxSecond: 4,
       invoice: 'Invoice Ageing',
-      price: 32946.00,
+      price: 32946.0,
     },
     {
       title: 'COMAX TRADE',
@@ -97,19 +96,16 @@ export class BrokerCardComponent implements OnInit {
       boxFirst: 45,
       boxSecond: 8,
       invoice: 'Invoice Ageing',
-      price: 512614.00,
-      ban: true
-    }
-  ]
+      price: 512614.0,
+      ban: true,
+    },
+  ];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   changeChatBox(e, indx) {
-    console.log(e.target.checked);
     this.brokerCard[indx].checked = e.target.checked;
   }
-
 }

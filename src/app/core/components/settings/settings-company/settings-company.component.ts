@@ -17,6 +17,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
+import { companySettingsResolver } from '../state/company-state/company-settings.resolver';
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',
@@ -24,23 +25,33 @@ import { CompanyQuery } from '../state/company-state/company-settings.query';
   encapsulation: ViewEncapsulation.None,
   providers: [DetailsPageService],
 })
-export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
-  public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
+export class SettingsCompanyComponent implements OnInit, OnDestroy {
+  public isModalOpen$: boolean;
+  // public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
   public data: any;
   public dataDivison: any;
   public optionsCmp: any;
   public dataCompany: any;
+
   constructor(
     private settingsStoreService: SettingsStoreService,
     private activated: ActivatedRoute,
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private settingCompanyQuery: CompanyQuery
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-  }
+
   ngOnInit(): void {
     this.getData(this.activated.snapshot.data.company);
+    this.settingCompanyQuery.getAll().map((item) => {
+      this.dataCompany = item.divisions;
+      if (item.companyPayrolls.length) {
+        this.isModalOpen$ = false;
+      } else {
+        this.isModalOpen$ = true;
+      }
+    });
     this.getCompanyDivision();
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
@@ -66,39 +77,30 @@ export class SettingsCompanyComponent implements OnInit, OnChanges, OnDestroy {
             },
           });
       });
-    if (this.activated.snapshot.data.company) {
-      this.isModalOpen$ = false;
-    } else {
-      this.isModalOpen$ = true;
-    }
   }
 
   public getData(data: CompanyResponse) {
     this.data = data;
   }
   public getCompanyDivision() {
-    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
-      (item) => {
-        return {
-          ...item,
-          id: item.id,
-          name: item.companyName,
-          active: !item.isDivision,
-        };
-      }
-    );
+    this.optionsCmp = this.dataCompany.map((item) => {
+      return {
+        ...item,
+        id: item.id,
+        name: item.companyName,
+        active: !item.isDivision,
+      };
+    });
   }
   public selectCompany(event: any) {
-    this.optionsCmp = this.activated.snapshot.data.company.divisions.map(
-      (item) => {
-        return {
-          ...item,
-          id: item.id,
-          name: item.companyName,
-          active: item.id === event.id,
-        };
-      }
-    );
+    this.optionsCmp = this.dataCompany.map((item) => {
+      return {
+        ...item,
+        id: item.id,
+        name: item.companyName,
+        active: item.id === event.id,
+      };
+    });
     this.detailsPageSer.getDataDetailId(event.id);
   }
   ngOnDestroy(): void {}

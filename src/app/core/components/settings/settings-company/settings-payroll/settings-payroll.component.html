@@ -1,7 +1,7 @@
 <div class="settings-payroll">
   <div class="settings-header">
     <div class="settings-name">
-      <p>PAYROLL</p>
+      <p>Payroll</p>
     </div>
 
     <div class="settings-header-button">
@@ -9,181 +9,155 @@
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'basic', action: 'payroll-tab' })
-        "
+        (click)="onAction({ modalName: 'basic', type: 'payroll-tab' })"
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <!-- Driver & Owner -->
-    <div class="cards-custom-payroll">
+    <div *ngIf="payrollData.length" class="cards-custom-payroll">
       <app-ta-custom-card
-        [cardName]="'Driver & Owner'"
+        *ngFor="let payroll of payrollData; let i = index; trackBy: identity"
+        [cardName]="payroll?.department?.name"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
-        [hasDivider]="false"
+        [hasDivider]="i > 0 ? true : false"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
-        [hasWeeklyStatus]="'Weekly'"
+        [hasWeeklyStatus]="payroll?.payPeriod?.name"
       >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.driverOwner"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <!-- Driver & Owner -->
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Owner'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Solo Empty Mile</span>
+            <span class="payroll-value">${{ payroll?.soloEmptyMile }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Solo Loaded Mile</span>
+            <span class="payroll-value">${{ payroll?.soloLoadedMile }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Solo Per Stop</span>
+            <span class="payroll-value">${{ payroll?.soloPerStop }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Team Empty Mile</span>
+            <span class="payroll-value">${{ payroll?.teamEmptyMile }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Team Loaded Mile</span>
+            <span class="payroll-value">${{ payroll?.teamLoadedMile }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Team Per Stop</span>
+            <span class="payroll-value">${{ payroll?.teamPerStop }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Solo Commision</span>
+            <span class="payroll-value"
+              >{{ payroll?.defaultSoloDriverCommission }}%</span
+            >
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Team Commision</span>
+            <span class="payroll-value"
+              >{{ payroll?.defaultTeamDriverCommission }}%</span
+            >
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Owner Commision</span>
+            <span class="payroll-value"
+              >{{ payroll?.defaultOwnerCommission }}%</span
+            >
           </div>
         </div>
-      </app-ta-custom-card>
-      <app-ta-custom-card
-        [cardName]="'Accounting'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'By-Weekly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.accounting"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <!-- Accouting -->
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Accounting'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
 
-      <app-ta-custom-card
-        [cardName]="'Company Owner'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.companyOwner"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Recruiting'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
 
-      <app-ta-custom-card
-        [cardName]="'Dispatch'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.dispatch"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Safety'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
-      <app-ta-custom-card
-        [cardName]="'Manager'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.manager"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
-          </div>
-        </div>
-      </app-ta-custom-card>
 
-      <app-ta-custom-card
-        [cardName]="'Recruting'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Semi-Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.recruiting"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Repair'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
 
-      <app-ta-custom-card
-        [cardName]="'Repair'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Semi-Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.repair"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Other'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
 
-      <app-ta-custom-card
-        [cardName]="'Safety'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Semi-Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.safety"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'CoOwner'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Salary</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
           </div>
         </div>
-      </app-ta-custom-card>
-
-      <app-ta-custom-card
-        [cardName]="'Other'"
-        [bodyTemplate]="'card'"
-        [isCardOpen]="true"
-        [hasWeeklyStatus]="'Semi-Monthly'"
-        [animationsDisabled]="false"
-        [textBottomPossiton]="'-2px'"
-      >
-        <div class="payroll-template-data">
-          <div
-            *ngFor="let payroll of payrollData.other"
-            class="payroll-template-item"
-          >
-            <p class="payroll-name">{{ payroll.name }}</p>
-            <p class="payroll-value">{{ payroll.value }}</p>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Dispatcher'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Base</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Load Commison</span>
+            <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
+          </div>
+        </div>
+        <div
+          class="payroll-template-data"
+          *ngIf="payroll?.department?.name === 'Manager'"
+        >
+          <div class="payroll-template-item">
+            <span class="payroll-name">Base</span>
+            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+          </div>
+          <div class="payroll-template-item">
+            <span class="payroll-name">Revenue Commison</span>
+            <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
           </div>
         </div>
       </app-ta-custom-card>

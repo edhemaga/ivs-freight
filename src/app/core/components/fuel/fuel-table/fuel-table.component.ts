@@ -194,13 +194,12 @@ export class FuelTableComponent implements OnInit {
   }
 
   public onTableBodyActions(event: any) {
-    console.log(event)
     if (event.type === 'edit') {
       this.modalService.openModal(
         FuelPurchaseModalComponent,
         { size: 'small' },
         {
-          ...event
+          ...event,
         }
       );
     }

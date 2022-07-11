@@ -1,6 +1,14 @@
+import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -17,22 +25,21 @@ import { Clipboard } from '@angular/cdk/clipboard';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsCardComponent implements OnInit,OnChanges {
-  @ViewChild('revenueChart', {static: false}) public revenueChart: any;
+export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
   public truckDropDowns: any[] = [];
   public dataEdit: any;
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
-  public truck_list: any[] = this.trucksQuery.getAll();
-  public copiedPhone:boolean;
-  public copiedEmail:boolean;
-  public copiedVin:boolean;
+  public truck_list: any[] = this.truckMinimalListQuery.getAll();
+  public copiedPhone: boolean;
+  public copiedEmail: boolean;
+  public copiedVin: boolean;
 
   public barChartLegend: any[] = [
     {
@@ -40,15 +47,15 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       value: '0.00',
       image: 'assets/svg/common/round_yellow.svg',
       sufix: 'mi',
-      elementId: 1
+      elementId: 1,
     },
     {
       title: 'Revenue',
       value: '0.00',
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      elementId: 0
-    }
+      elementId: 0,
+    },
   ];
 
   public barChartLegend2: any[] = [
@@ -57,15 +64,15 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       value: '150,257.7',
       image: 'assets/svg/common/round_blue_light.svg',
       sufix: 'mi',
-      elementId: 1
+      elementId: 1,
     },
     {
       title: 'Revenue',
       value: '190,568.85',
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      elementId: 0
-    }
+      elementId: 0,
+    },
   ];
 
   public mixedBarChartLegend: any[] = [
@@ -74,22 +81,22 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       value: 2.37,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      elementId: 0
+      elementId: 0,
     },
     {
       title: 'Highest Rate',
       value: 2.86,
       image: 'assets/svg/common/round_green.svg',
       prefix: '$',
-      elementId: [1, 0]
+      elementId: [1, 0],
     },
     {
       title: 'Lowest Rate',
       value: 1.29,
       image: 'assets/svg/common/round_yellow.svg',
       prefix: '$',
-      elementId: [1, 1]
-    }
+      elementId: [1, 1],
+    },
   ];
 
   public paymentChartLegend: any[] = [
@@ -100,14 +107,14 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       sufix: 'days',
       elementId: 0,
       titleReplace: 'Pay Period',
-      imageReplace: 'assets/svg/common/round_blue.svg'
+      imageReplace: 'assets/svg/common/round_blue.svg',
     },
     {
       title: 'Pay Term',
       value: 32,
       image: 'assets/svg/common/dash_line.svg',
-      sufix: 'days'
-    }
+      sufix: 'days',
+    },
   ];
 
   public barAxes: object = {
@@ -116,20 +123,20 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       minValue: 0,
       maxValue: 60,
       stepSize: 15,
-      showGridLines: true
+      showGridLines: true,
     },
     verticalRightAxes: {
       visible: true,
       minValue: 0,
       maxValue: 24000,
       stepSize: 6000,
-      showGridLines: false
+      showGridLines: false,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   public barAxes2: object = {
@@ -138,20 +145,20 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       minValue: 0,
       maxValue: 60,
       stepSize: 15,
-      showGridLines: true
+      showGridLines: true,
     },
     verticalRightAxes: {
       visible: true,
       minValue: 0,
       maxValue: 24000,
       stepSize: 6000,
-      showGridLines: false
+      showGridLines: false,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   public mixedBarAxes: object = {
@@ -161,13 +168,13 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       maxValue: 3,
       stepSize: 0.5,
       showGridLines: true,
-      decimal: true
+      decimal: true,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   public paymentAxes: object = {
@@ -176,13 +183,13 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       minValue: 0,
       maxValue: 52,
       stepSize: 13,
-      showGridLines: true
+      showGridLines: true,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   constructor(
@@ -191,16 +198,17 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
     private trucksQuery: TruckQuery,
     private detailsPageDriverSer: DetailsPageService,
     private clipboar: Clipboard,
+    private truckMinimalListQuery: TrucksMinimalListQuery
   ) {}
-  
-  ngOnChanges(changes: SimpleChanges): void {
-    if(!changes?.truck.firstChange && changes?.truck){
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (!changes?.truck.firstChange && changes?.truck) {
       this.noteControl.patchValue(changes.truck.currentValue.note);
+      this.getTruckDropdown();
     }
   }
   ngOnInit(): void {
-    this.noteControl.patchValue(this.truck.note)
+    this.noteControl.patchValue(this.truck.note);
     this.getTruckDropdown();
     this.buttonSwitcher();
     this.initTableOptions();
@@ -320,20 +328,13 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       export: true,
     };
   }
-  public changeTabPerfomance(ev: any) {
-    console.log(ev.id);
-  }
-  public changeTabFuel(ev: any) {
-    console.log(ev.id);
-  }
-  public changeTabRevenue(ev: any) {
-    console.log(ev.id);
-  }
+  public changeTabPerfomance(ev: any) {}
+  public changeTabFuel(ev: any) {}
+  public changeTabRevenue(ev: any) {}
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
-    console.log(this.toggler);
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
   public optionsEvent(any: any, action: string) {
@@ -377,7 +378,7 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
     return index;
   }
   public getTruckDropdown() {
-    this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+    this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.truckNumber,
@@ -387,21 +388,20 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
   }
   public onSelectedTruck(event: any) {
     if (event.id !== this.truck.id) {
-      this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+      this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.truckNumber,
-          svg: item.truckType.logoName,
           active: item.id === event.id,
-          folder: 'common/trucks/',
         };
       });
       this.detailsPageDriverSer.getDataDetailId(event.id);
     }
   }
   public onChangeTruck(action: string) {
-    let currentIndex = this.truck_list
-      .findIndex((truck)=>truck.id===this.truck.id)
+    let currentIndex = this.truck_list.findIndex(
+      (truck) => truck.id === this.truck.id
+    );
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -429,20 +429,19 @@ export class TruckDetailsCardComponent implements OnInit,OnChanges {
       }
     }
   }
-    /* To copy any Text */
-    public copyText(val: any, copyVal: string) {
-      switch (copyVal) {
-        case 'phone':
-          this.copiedPhone = true;
-          break;
-        case 'email':
-          this.copiedEmail = true;
-          break;
-          case 'vin':
-          this.copiedVin = true;
-          break;
-       
-      }
-      this.clipboar.copy(val);
+  /* To copy any Text */
+  public copyText(val: any, copyVal: string) {
+    switch (copyVal) {
+      case 'phone':
+        this.copiedPhone = true;
+        break;
+      case 'email':
+        this.copiedEmail = true;
+        break;
+      case 'vin':
+        this.copiedVin = true;
+        break;
     }
+    this.clipboar.copy(val);
+  }
 }

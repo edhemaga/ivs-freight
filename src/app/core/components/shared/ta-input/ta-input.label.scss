@@ -81,11 +81,19 @@
   }
 
   //------------------------- Custom class -------------------------
-  &.input-big {
+  &.input-32 {
     top: 7px;
 
     &.up-label {
       top: -19px;
+    }
+  }
+
+  &.input-30 {
+    top: 6px;
+
+    &.up-label {
+      top: -17px;
     }
   }
 

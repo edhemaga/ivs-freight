@@ -28,10 +28,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
   resizer: any;
   newColumnWidth: number;
 
-  constructor(
-    private renderer: Renderer2,
-    private el: ElementRef
-  ) {
+  constructor(private renderer: Renderer2, private el: ElementRef) {
     this.column = this.el.nativeElement;
   }
 
@@ -96,9 +93,6 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
       /* TODO: ukloni kada se doda na sve tabele i kolone minWidth */
       if (!this.tableColumn.minWidth) {
-        console.log(
-          'Ne postoji min sirina na ovoj tabeli ili koloni, resize se radi normalno bez limita'
-        );
         this.resizeing.emit({
           isResizeing: true,
           width: this.newColumnWidth,
@@ -130,7 +124,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         });
 
         this.pressed = false;
-       /*  this.renderer.removeStyle(document.body, 'cursor');
+        /*  this.renderer.removeStyle(document.body, 'cursor');
         this.renderer.removeStyle(document.body, 'height'); */
         window.getSelection().removeAllRanges();
       }

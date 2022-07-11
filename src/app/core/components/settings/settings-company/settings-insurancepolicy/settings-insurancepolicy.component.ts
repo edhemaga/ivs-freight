@@ -1,15 +1,12 @@
 import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CompanyResponse } from 'appcoretruckassist';
-import { CompanyQuery } from '../../state/company-state/company-settings.query';
 import { SettingsStoreService } from '../../state/settings.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
-export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
+export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
   public insuranceData = {
     phone: '(123) 456-7890',
     email: 'peraperic@gmail.com',
@@ -127,19 +124,28 @@ export class SettingsInsurancepolicyComponent implements OnInit,OnChanges {
     },
   };
  @Input() public insurancePolicyData: any;
+ public copyPolicyName:boolean[]=[];
   constructor(
     private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard,
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
   }
   ngOnInit(): void {  
   }
-  public onAction(modal: { type: boolean; modalName: string; action: string }) {
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {
     return item.id;
+  }
+
+   /* To copy any Text */
+  public copyText(val: any, index:number) {
+  
+   this.copyPolicyName[index]=true
+    this.clipboar.copy(val);
   }
   public onShowDetails() {}
 }

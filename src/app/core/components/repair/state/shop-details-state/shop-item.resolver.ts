@@ -27,23 +27,16 @@ export class ShopRepairItemResolver implements Resolve<ShopState> {
   ): Observable<ShopState> | Observable<any> {
     const shop_id = route.paramMap.get('id');
     let id=parseInt(shop_id);
-    if(this.shopDetailQuery.hasEntity(id)){
-      this.shopDetailQuery.selectEntity(id).pipe(
-        catchError((err)=>{
-          return of('error')
-        }),
-        take(1)
-      )
-    }else{
+  
       return this.shopService.getRepairShopById(id).pipe(
         catchError(() => {
           return of('No shop data for...' + id);
         }),
         tap((shopRespon: RepairShopResponse) => {
-          this.shopDetailStore.add(shopRespon);
+          this.shopDetailStore.set({ids:shopRespon});
         })
       );
     }
   
-  }
+  
 }

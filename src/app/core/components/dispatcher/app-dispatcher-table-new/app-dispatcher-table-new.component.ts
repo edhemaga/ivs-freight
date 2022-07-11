@@ -337,7 +337,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
 
           if (el.statusId > 0 && el.route) {
             const routesInfo = this.findRoutesCounts(el);
-            console.log(routesInfo);
+
             Object.assign(el, routesInfo);
           }
           // el.color = this.returnRandomColor();
@@ -538,7 +538,6 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
       svg_placeholder_image.classList.add('hidden');
     }
 
-    console.log(rowIndx);
     if (rowIndx) this.gridData[rowIndx].trailerNumber = event.trailerNumber;
     if (id === null) {
       this.addDispatchItem(event, 'trailer', isTrue, dispatchId);
@@ -864,10 +863,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     });
   }
 
-  public blurDriver(e) {
-    console.log(e);
-    console.log('bluric');
-  }
+  public blurDriver(e) {}
 
   addStatusWithLocation(location: any) {
     if (this.statusAfterAddingLocation) {
@@ -1413,7 +1409,6 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
   }
 
   returnInitials(fullName: string) {
-    console.log('INITIAL NAME');
     if (fullName !== null && fullName !== undefined) {
       const initials = fullName
         .split(' ')

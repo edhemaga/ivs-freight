@@ -239,6 +239,19 @@
       }
     }
 
+    &.disabled {
+      .header-text {
+        color: #b7b7b7 !important;
+      }
+      .header-arrow {
+        display: none !important;
+      }
+
+      .ta-counter-number {
+        color: #b7b7b7 !important;
+      }
+    }
+
     &.cursor {
       cursor: pointer;
     }
@@ -328,5 +341,18 @@
   .add-custom-card {
     display: flex;
     align-items: center;
+  }
+}
+.header-svg-bank{
+  margin-left: 12px !important;
+  svg{
+    path{
+      fill: #cccccc;
+    }
+    &:hover{
+      path{
+        fill: #cccccc !important;
+      }
+    }
   }
 }

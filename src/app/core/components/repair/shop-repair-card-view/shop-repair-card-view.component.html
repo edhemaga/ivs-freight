@@ -45,7 +45,7 @@
         [cardName]="'Working Hours'"
         [isCardOpen]="true"
       >
-        <div class="working-hours-container" *ngIf="shopResponse.openHours">
+        <div class="working-hours-container" *ngIf="shopResponse?.openHours">
           <div class="open-now-wrapper">
             <div class="open-now-icon-text">
               <div class="open-header">Open Now</div>
@@ -105,7 +105,7 @@
             <div class="service-item">
               <svg-icon
                 [ngClass]="{ disabled: !service.active }"
-                src="assets/svg/common/repair-services/{{ service.logoName }}"
+                src="assets/svg/truckassist-table/repair/{{ service.logoName }}"
               ></svg-icon>
 
               <span

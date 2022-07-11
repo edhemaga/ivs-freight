@@ -3,18 +3,27 @@ import { CreateResponse } from './../../../../../../appcoretruckassist/model/cre
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import {
+  CompanyAccountLabelService,
+  CompanyContactLabelService,
   CompanyContactModalResponse,
   CompanyContactResponse,
   CompanyContactService,
+  ContactColorResponse,
   CreateCompanyContactCommand,
+  CreateCompanyContactLabelCommand,
+  GetCompanyContactLabelListResponse,
 } from 'appcoretruckassist';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ContactModalService {
-  constructor(private companyContactService: CompanyContactService) {}
+  constructor(
+    private companyContactService: CompanyContactService,
+    private companyLabelService: CompanyContactLabelService
+  ) {}
 
+  // -------------------- COMPANY -------------------
   public addCompanyContact(
     data: CreateCompanyContactCommand
   ): Observable<CreateResponse> {
@@ -37,5 +46,19 @@ export class ContactModalService {
 
   public companyContactLabelsAndDeparments(): Observable<CompanyContactModalResponse> {
     return this.companyContactService.apiCompanycontactModalGet();
+  }
+
+  // ------------------ COMPANY labels ------------------
+
+  public addCompanyContactLabel(
+    data: CreateCompanyContactLabelCommand
+  ): Observable<CreateResponse> {
+    return this.companyLabelService.apiCompanycontactlabelPost(data);
+  }
+
+  public companyContactLabelsColorList(): Observable<
+    Array<ContactColorResponse>
+  > {
+    return this.companyLabelService.apiCompanycontactlabelColorListGet();
   }
 }

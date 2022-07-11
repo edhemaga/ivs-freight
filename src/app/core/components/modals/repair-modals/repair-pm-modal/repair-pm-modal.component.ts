@@ -190,8 +190,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           break;
         }
       }
-      console.log('BEFORE DELETE');
-      console.log(this.newPMs.at(id).value);
+
       this.newPMs.removeAt(id);
     }
   }

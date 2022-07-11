@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { DisclosureRelease } from '../../state/model/disclosure-release.model';
@@ -20,6 +21,7 @@ export class Step10Component implements OnInit, OnDestroy {
   public applicant: Applicant | undefined;
 
   public disclosureReleaseForm: FormGroup;
+
   public disclosureReleaseInfo: DisclosureRelease | undefined;
 
   public reviewFeedback: any[] = getDisclosureReleaseReviewFeedbackData();
@@ -31,7 +33,7 @@ export class Step10Component implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -40,7 +42,7 @@ export class Step10Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public createForm(): void {
     this.disclosureReleaseForm = this.formBuilder.group({
       isFirstDisclosure: [false, Validators.requiredTrue],
       isSecondDisclosure: [false, Validators.requiredTrue],
@@ -49,6 +51,55 @@ export class Step10Component implements OnInit, OnDestroy {
       isFifthDisclosure: [false, Validators.requiredTrue],
       isSixthDisclosure: [false, Validators.requiredTrue],
     });
+  }
+
+  public handleCheckboxParagraphClick(type: string) {
+    switch (type) {
+      case InputSwitchActions.FIRST_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isFirstDisclosure:
+            !this.disclosureReleaseForm.get('isFirstDisclosure').value,
+        });
+
+        break;
+      case InputSwitchActions.SECOND_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isSecondDisclosure:
+            !this.disclosureReleaseForm.get('isSecondDisclosure').value,
+        });
+
+        break;
+      case InputSwitchActions.THIRD_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isThirdDisclosure:
+            !this.disclosureReleaseForm.get('isThirdDisclosure').value,
+        });
+
+        break;
+      case InputSwitchActions.FOURTH_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isFourthDisclosure:
+            !this.disclosureReleaseForm.get('isFourthDisclosure').value,
+        });
+
+        break;
+      case InputSwitchActions.FIFTH_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isFifthDisclosure:
+            !this.disclosureReleaseForm.get('isFifthDisclosure').value,
+        });
+
+        break;
+      case InputSwitchActions.SIXTH_DISCLOSURE:
+        this.disclosureReleaseForm.patchValue({
+          isSixthDisclosure:
+            !this.disclosureReleaseForm.get('isSixthDisclosure').value,
+        });
+
+        break;
+      default:
+        break;
+    }
   }
 
   private formFilling(): void {

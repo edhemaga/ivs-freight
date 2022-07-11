@@ -65,7 +65,7 @@
   <div class="table-actions">
     <div class="actions-container">
       <!-- Activation -->
-      <div *ngIf="tableRowsSelected.length">
+      <div *ngIf="tableRowsSelected.length" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/activation-icon.svg'"
@@ -73,7 +73,7 @@
       </div>
 
       <!-- Delete -->
-      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()">
+      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/trash-icon.svg'"
@@ -81,7 +81,7 @@
       </div>
 
       <!-- Print -->
-      <div *ngIf="tableRowsSelected.length">
+      <div *ngIf="tableRowsSelected.length" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/print-icon.svg'"
@@ -96,10 +96,11 @@
         [ngbPopover]="optionsPopover"
         [placement]="'bottom-right'"
         [autoClose]="'outside'"
-        popoverClass="options-popover"
+        popoverClass="toolbar-options-popover"
         [ngClass]="{ 'active-options': optionsPopupOpen }"
         triggers="manual"
         (hidden)="optionsPopupOpen = false"
+        class="action-div"
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"

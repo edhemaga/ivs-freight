@@ -181,13 +181,17 @@
   }
 
   //------------------------- Custom class -------------------------
-  &.input-big {
+  &.input-32 {
     height: 32px;
   }
 
-  &.input-big-font-20 {
+  &.input-32-font-20 {
     font-weight: 700;
     font-size: 20px;
+  }
+
+  &.input-30 {
+    height: 30px;
   }
 
   &.details-pages {
