@@ -11,9 +11,9 @@ import {
   UpdateBrokerCommand,
   UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import { Observable, tap, of } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriversQuery } from '../../../driver/state/driver.query';
+import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
 
 @Injectable({
@@ -25,7 +25,7 @@ export class BrokerTService {
     private brokerStore: BrokerStore,
     private ratingReviewService: RatingReviewService,
     private tableService: TruckassistTableService,
-    private brokerQuery: DriversQuery
+    private brokerQuery: BrokerQuery
   ) {}
 
   // Add Broker
@@ -96,26 +96,24 @@ export class BrokerTService {
 
   // Delete Broker List
   public deleteBrokerList(brokersToDelete: any[]): Observable<any> {
-    console.log('Brokers To Delete');
-    console.log(brokersToDelete);
-
     let deleteOnBack = brokersToDelete.map((broker: any) => {
       return broker.id;
     });
 
-    return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
-      tap(() => {
-        let storeBrokers = this.brokerQuery.getAll();
+    // return this.brokerService.apiBrokerListDelete({ ids: deleteOnBack }).pipe(
+    //   tap(() => {
+    //     let storeBrokers = this.brokerQuery.getAll();
 
-        storeBrokers.map((broker: any) => {
-          deleteOnBack.map((d) => {
-            if (d === broker.id) {
-              this.brokerStore.remove(({ id }) => id === broker.id);
-            }
-          });
-        });
-      })
-    );
+    //     storeBrokers.map((broker: any) => {
+    //       deleteOnBack.map((d) => {
+    //         if (d === broker.id) {
+    //           this.brokerStore.remove(({ id }) => id === broker.id);
+    //         }
+    //       });
+    //     });
+    //   })
+    // );
+    return of(null);
   }
 
   // Delete Broker By Id

@@ -1,0 +1,95 @@
+.ta-input-commands {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  position: absolute;
+  right: 4px;
+
+  .ta-input-command-first {
+    border-radius: 1px;
+    display: block;
+    transition: all 0.3s ease-in-out;
+    z-index: 20;
+    cursor: pointer;
+
+    .ta-input-command-svg-first {
+      svg {
+        width: 18px !important;
+        height: 18px !important;
+        overflow: visible;
+        path {
+          fill: #6c6c6c;
+        }
+        rect {
+          transition: transform 0.3s;
+          transform: scale(1);
+          transform-origin: center;
+          fill: #b7b7b7;
+        }
+      }
+
+      &:hover {
+        svg {
+          overflow: visible;
+          rect {
+            transform: scale(1.2);
+            transform-origin: center;
+            transition: transform 0.3s;
+            fill: #eeeeee;
+          }
+        }
+      }
+    }
+  }
+
+  .ta-input-command-second {
+    border-radius: 1px;
+    display: block;
+    transition: all 0.3s ease-in-out;
+    z-index: 20;
+    cursor: pointer;
+
+    .ta-input-command-svg-second {
+      svg {
+        width: 18px !important;
+        height: 18px !important;
+        overflow: visible;
+        path {
+          fill: #6c6c6c;
+        }
+        rect {
+          transition: transform 0.3s;
+          transform: scale(1);
+          transform-origin: center;
+          fill: #b7b7b7;
+        }
+      }
+
+      &:hover {
+        svg {
+          overflow: visible;
+          rect {
+            transform: scale(1.2);
+            transform-origin: center;
+            transition: transform 0.3s;
+            fill: #eeeeee;
+          }
+        }
+      }
+    }
+  }
+}
+
+// --------------------------- Dropdown Label Name ----------------------------
+.ta-input-label-selected-item {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  color: #ffffff;
+  left: 37px;
+  top: 1px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  pointer-events: none !important
+}

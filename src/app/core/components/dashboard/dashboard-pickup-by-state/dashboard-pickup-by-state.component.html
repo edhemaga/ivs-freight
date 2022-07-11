@@ -1,0 +1,105 @@
+<div class="dashboard-pickup-holder">
+    <div class="dashboard-pickup-header-holder">
+        <div class="dashboard-pickup-title-holder">
+            <div class="dashboard-pickup-title">{{pickupTitle}} by State</div>
+            <div class="dashboard-pickup-arrow-down"
+            #t3="ngbPopover"
+            [ngbPopover]="topTenPopover"
+            [placement]="['bottom']"
+            [popoverClass]="'toptenpopovermain pickuppopovermain'"
+            autoClose="outside"
+            [container]="'body'"
+            [ngClass]="{ 'active-options': t3?.isOpen() }"
+            >
+                <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="dashboard-pickup-toolbar-holder">
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-left">
+                    <app-ta-tab-switch
+                    [tabs]="stateSwitchTabsType1"
+                    (switchClicked)="changeStateSwitchTabs($event)" 
+                    ></app-ta-tab-switch>
+                </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
+                <div class="dashboard-pickup-toolbar-icons-holder">
+                    <svg-icon src="assets/svg/truckassist-search/new-search-icon.svg"></svg-icon>
+                </div>
+                <div class="dashboard-pickup-toolbar-border"></div>
+                <div class="dashboard-pickup-toolbar-filter-selected">Clear Selection</div>
+            </div>
+            <div class="dashboard-pickup-toolbar-items-holder">
+                <div class="dashboard-pickup-toolbar-switch-right">
+                    <app-ta-tab-switch
+                    [tabs]="pickupSwitch"
+                    (switchClicked)="changeStateSwitchTabs($event)" 
+                    ></app-ta-tab-switch>    
+                </div>
+                <div class="dashboard-pickup-toolbar-border margin-right"></div>
+                <div class="dashboard-pickup-toolbar-dropdown"
+                #t2="ngbPopover"
+                [ngbPopover]="periodPopover"
+                [placement]="['bottom-right']"
+                [popoverClass]="'periodpopovermain'"
+                autoClose="outside"
+                [container]="'body'" 
+                [ngClass]="{ 'active-options': t2?.isOpen() }"           
+                >
+                    <div class="dashboard-pickup-toolbar-dropdown-text">{{periodTitle}}</div>
+                    <div class="dashboard-pickup-toolbar-dropdown-arrow">
+                        <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dashboard-pickup-body-holder">
+        <div class="row">
+            <div class="col-3">
+                <div class="dashboard-pickup-body-state-list-holder">
+                    <div *ngFor="let item of pickupStateList; let indx=index" class="dashboard-pickup-body-state-list-items-holder">
+                        <div class="dashboard-pickup-body-state-list-items">
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div class="dashboard-pickup-body-state-list-id">{{item.id}}</div>
+                                <div class="dashboard-pickup-body-state-list-circle" [ngStyle]="{'background-color': pickupCircleColor[indx]}"></div>
+                                <div class="dashboard-pickup-body-state-list-name">{{item.name}}</div>
+                            </div>
+                            <div class="dashboard-pickup-body-state-list-frame">
+                                <div class="dashboard-pickup-body-state-list-price">{{item.price}}</div>
+                                <div class="dashboard-pickup-body-state-list-percent">{{item.percent}}</div>
+                            </div>
+                        </div>
+                        <div class="dashboard-pickup-body-state-list-border"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #topTenPopover let-data="data">
+    <div class="top-ten-popover-holder">
+        <div *ngFor="let item of popoverState; let indx=index" class="top-ten-popover-items-holder" [ngClass]="{'active': item.active}" (click)="changeState(item)">{{item.name.toUpperCase()}}
+            <div class="popover-icon-holder">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #periodPopover let-data="data">
+    <div class="period-popover-holder">
+        <div 
+        *ngFor="let item of periodSwitchItems; let indx=index" 
+        class="period-popover-items-holder"
+        [ngClass]="{'active': item.active}"
+        (click)="changePeriod(item)"
+        >
+            {{item.name}}
+            <div class="period-popover-icon-holder">
+                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            </div>
+        </div>
+    </div>
+</ng-template>

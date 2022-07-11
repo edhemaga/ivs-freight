@@ -14,5 +14,7 @@
 export interface CompanyShortResponse { 
     id?: number;
     companyName?: string | null;
+    logo?: string | null;
+    isDivision?: boolean;
 }
 

@@ -44,6 +44,7 @@ $border-radius: 3px;
         &:hover {
           background: #f3f3f3;
           border-radius: 2px;
+          cursor: pointer;
         }
       }
       .arrow-left {
@@ -214,9 +215,7 @@ $border-radius: 3px;
     svg {
       width: 22px;
       height: 22px;
-      circle{
-        fill: red;
-      }
+      display: flex;
       path {
         fill: #6d82c7;
        
@@ -252,5 +251,22 @@ $border-radius: 3px;
   .table-dropdown-container-vertical{
      right: 0 !important;
      left: 43px;
+  }
+}
+
+.single-data{
+  color: #6c6c6c;
+  background-color: transparent;
+  cursor: default;
+  .current-active-name{
+    color: #6c6c6c !important;
+    &:hover{
+      color: #6c6c6c !important;
+      cursor: default;
+    }
+  }
+  &:hover{
+    
+    background-color: transparent !important;
   }
 }

@@ -21,7 +21,6 @@ import { CompanyAccountModalResponse } from '../model/models';
 import { CompanyAccountResponse } from '../model/models';
 import { CreateCompanyAccountCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
-import { DeleteMultipleCompanyAccountsCommand } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { UpdateCompanyAccountCommand } from '../model/models';
 
@@ -106,8 +105,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -159,8 +158,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -197,20 +196,28 @@ export class CompanyAccountService {
     }
 
     /**
-     * @param deleteMultipleCompanyAccountsCommand 
+     * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanyaccountListDelete(deleteMultipleCompanyAccountsCommand?: DeleteMultipleCompanyAccountsCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiCompanyaccountListDelete(deleteMultipleCompanyAccountsCommand?: DeleteMultipleCompanyAccountsCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiCompanyaccountListDelete(deleteMultipleCompanyAccountsCommand?: DeleteMultipleCompanyAccountsCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiCompanyaccountListDelete(deleteMultipleCompanyAccountsCommand?: DeleteMultipleCompanyAccountsCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiCompanyaccountListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiCompanyaccountListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiCompanyaccountListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiCompanyaccountListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (ids) {
+            ids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'Ids');
+            })
+        }
 
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -230,17 +237,6 @@ export class CompanyAccountService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -248,6 +244,7 @@ export class CompanyAccountService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/companyaccount/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -311,8 +308,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -361,8 +358,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -411,8 +408,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -473,8 +470,8 @@ export class CompanyAccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }

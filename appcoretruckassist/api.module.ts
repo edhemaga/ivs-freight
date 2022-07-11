@@ -7,6 +7,7 @@ import { BankService } from './api/bank.service';
 import { BrokerService } from './api/broker.service';
 import { CdlService } from './api/cdl.service';
 import { CommentService } from './api/comment.service';
+import { CompanyService } from './api/company.service';
 import { CompanyAccountService } from './api/companyAccount.service';
 import { CompanyAccountLabelService } from './api/companyAccountLabel.service';
 import { CompanyContactService } from './api/companyContact.service';
@@ -22,6 +23,7 @@ import { OwnerService } from './api/owner.service';
 import { OwnerHistoryService } from './api/ownerHistory.service';
 import { RatingReviewService } from './api/ratingReview.service';
 import { RegistrationService } from './api/registration.service';
+import { RepairService } from './api/repair.service';
 import { RepairShopService } from './api/repairShop.service';
 import { ShipperService } from './api/shipper.service';
 import { TestService } from './api/test.service';
@@ -29,7 +31,7 @@ import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
-import { UserService } from './api/user.service';
+import { VinDecodeService } from './api/vinDecode.service';
 
 @NgModule({
   imports:      [],

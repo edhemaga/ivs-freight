@@ -14,6 +14,6 @@
 export interface UpdateCompanyContactLabelCommand { 
     id?: number;
     name?: string | null;
-    color?: string | null;
+    colorId?: number;
 }
 

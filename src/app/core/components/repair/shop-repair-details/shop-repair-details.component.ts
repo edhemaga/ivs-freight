@@ -1,87 +1,150 @@
-import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  OnDestroy,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { RepairShopResponse } from 'appcoretruckassist';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { RepairTService } from '../state/repair.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
-  styleUrls: ['./shop-repair-details.component.scss']
+  styleUrls: ['./shop-repair-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [DetailsPageService],
 })
-export class ShopRepairDetailsComponent implements OnInit {
-  public data:any;
-  public shopRepairConfig:any[]=[]
-  
+export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
+  public shopRepairConfig: any[] = [];
+
   constructor(
-    private _act_route:ActivatedRoute
-  ) { }
+    private act_route: ActivatedRoute,
+    private detailsPageDriverService: DetailsPageService,
+    private shopService: RepairTService,
+    private router: Router,
+    private tableService: TruckassistTableService,
+    private notificationService: NotificationService,
+    private cdRef: ChangeDetectorRef,
+    private shopDetailsQuery: ShopDetailsQuery
+  ) {}
 
   ngOnInit(): void {
-    this.data=this._act_route.snapshot.data;
-    this.shopConf();    
+    this.shopConf(this.act_route.snapshot.data.shop);
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.shopConf(res.data);
+          this.cdRef.detectChanges();
+        }
+      });
+
+    this.detailsPageDriverService.pageDetailChangeId$
+      .pipe(untilDestroyed(this))
+      .subscribe((id) => {
+        let query;
+        if (!this.shopDetailsQuery.hasEntity(id)) {
+          query = this.shopService.getRepairById(id);
+        } else {
+          query = this.shopDetailsQuery.selectEntity(id);
+        }
+        this.shopService
+          .getRepairById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: RepairShopResponse) => {
+              this.shopConf(res);
+              if (this.router.url.includes('shop-details')) {
+                this.router.navigate([`/repair/${res.id}/shop-details`]);
+              }
+              this.notificationService.success(
+                'Shop successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error("Shop can't be loaded", 'Error:');
+            },
+          });
+      });
   }
- 
+
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
   }
   /**Function for header names and array of icons */
-  shopConf(){
+  shopConf(data: RepairShopResponse | any) {
     this.shopRepairConfig = [
       {
         id: 0,
-        name: 'Repair Shop Details',
+        nameDefault: 'Repair Shop Details',
         template: 'general',
+        data: data,
       },
       {
         id: 1,
-        name: 'Repair',
+        nameDefault: 'Repair',
         template: 'repair',
-        icon:true,
-        data:25,
-        customText:'Date',
-        icons:[
+        icon: true,
+        length: data?.repairs?.length ? data.repairs.length : 0,
+        customText: 'Date',
+        icons: [
           {
-          id:Math.random() * 1000,
-          icon:'assets/svg/common/ic_clock.svg'
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_clock.svg',
           },
           {
-            id:Math.random() * 1000,
-            icon:'assets/svg/common/ic_rubber.svg'
-            },
-            {
-              id:Math.random() * 1000,
-              icon:'assets/svg/common/ic_documents.svg'
-              },
-              {
-                id:Math.random() * 1000,
-                icon:'assets/svg/common/ic_sraf.svg'
-                },
-                {
-                  id:Math.random() * 1000,
-                  icon:'assets/svg/common/ic_funnel.svg'
-                  },
-                  {
-                    id:Math.random() * 1000,
-                    icon:'assets/svg/common/ic_dollar.svg'
-                    },
-                
-      ]
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_rubber.svg',
+          },
+          {
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_documents.svg',
+          },
+          {
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_sraf.svg',
+          },
+          {
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_funnel.svg',
+          },
+          {
+            id: Math.random() * 1000,
+            icon: 'assets/svg/common/ic_dollar.svg',
+          },
+        ],
+        data: data,
       },
       {
         id: 2,
-        name: 'Repaired Vehicle',
+        nameDefault: 'Repaired Vehicle',
         template: 'repaired-vehicle',
-        data:18,
-        hide:true,
-        customText:'Repairs'
+        length: data?.repairsByUnit?.length ? data.repairsByUnit.length : 0,
+        hide: true,
+        customText: 'Repairs',
+        data: data,
       },
       {
         id: 3,
-        name: 'Review',
+        nameDefault: 'Review',
         template: 'review',
-        data:9,
-        customText:'Date'
+        length: data?.reviews?.length ? data.reviews.length : 0,
+        customText: 'Date',
+        hide: false,
+        data: data,
       },
     ];
   }
-
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

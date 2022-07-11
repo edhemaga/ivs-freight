@@ -29,14 +29,14 @@
     z-index: 99999999999;
 
     .drop-zone-title {
-        position: absolute;
-        z-index: 9999;
-        top: 15px;
-        left: 12px;
-        color: #6c6c6c;
-        font-size: 18px;
-        font-weight: 800;
-        margin: 0;
+      position: absolute;
+      z-index: 9999;
+      top: 15px;
+      left: 12px;
+      color: #6c6c6c;
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0;
     }
 
     .ta-modal-dropzone {
@@ -49,17 +49,49 @@
       .ta-modal-dropzone {
         position: absolute;
         top: 0;
-        border: 4px dashed #FFFFFF;
-        background-color: #EEEEEE;
+        border: 4px dashed #ffffff;
+        background-color: #eeeeee;
 
         .ta-modal-dropzone-label {
-          background-color: #EEEEEE;
+          background-color: #eeeeee;
         }
 
         .ta-modal-dropzone-text {
-          color: #6C6C6C;
+          color: #6c6c6c;
         }
       }
+    }
+
+    // Upload Part Override
+    .ta-modal-dropzone-area {
+      transform: scale(2);
+    }
+
+    .ta-modal-dropzone-text {
+      position: absolute !important;
+      top: 84% !important;
+      text-align: center;
+      left: 40%;
+      left: 50% !important;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &.modal-container-load {
+    width: 1726px;
+    display: flex;
+    align-items: center;
+
+    .divider {
+      width: 841px;
+    }
+
+    .load-modal-content {
+      width: 866px;
+    }
+
+    .load-modal-map {
+      width: 860px;
     }
   }
 
@@ -72,6 +104,14 @@
   }
 
   &.modal-container-L {
+    width: 710px;
+
+    .divider {
+      width: 686px;
+    }
+  }
+
+  &.modal-container-XL {
     width: 860px;
 
     .divider {

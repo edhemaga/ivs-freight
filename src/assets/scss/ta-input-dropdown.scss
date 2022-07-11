@@ -16,7 +16,7 @@
       border-radius: 2px;
       box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
       padding: 2px;
-      overflow: none;
+      overflow: hidden;
 
       &.scroll {
         transition: all 0.3s ease-in-out;
@@ -56,7 +56,14 @@
         &.dropdown-option-hovered {
           background-color: #f3f3f3;
           color: #3c3c3c;
-          transition: all 0.2s ease-out;
+
+          .svg-template-logo,
+          .svg-template-grayscale {
+            svg {
+              -webkit-filter: grayscale(0);
+              filter: grayscale(0);
+            }
+          }
         }
 
         &:hover {
@@ -64,7 +71,6 @@
           color: #3c3c3c;
           border-radius: 2px;
           cursor: pointer;
-          // transition: all 0.2s ease-in-out;
 
           .svg-template-logo,
           .svg-template-grayscale {
@@ -299,8 +305,12 @@
         width: 163px;
       }
 
+      &.w-col-banks-driver {
+        width: 184px;
+      }
+
       &.w-col-paytype {
-        width: 151px;
+        width: 422px;
       }
 
       &.w-col-trailerColor {
@@ -323,7 +333,9 @@
       &.w-col-details-template-big {
         width: 366px;
       }
-
+      &.w-col-details-template-big-company {
+        width: 512px;
+      }
       &.w-col-details-template-small {
         width: 332px;
       }
@@ -338,6 +350,53 @@
 
       &.w-col-accident-trailer-unit {
         width: 100px;
+      }
+
+      &.w-col-repair-m-unit-bill {
+        width: 129px;
+      }
+
+      &.w-col-repair-m-unit-order {
+        width: 291px;
+      }
+
+      &.w-col-repair-m-shop {
+        width: 686px;
+      }
+
+      &.w-col-dropdown-label,
+      &.w-col-load-req {
+        width: 164px;
+        max-height: 304px;
+      }
+
+      &.w-col-load-selectTemplate,
+      &.w-col-load-dispatcher {
+        width: 220px;
+      }
+
+      &.w-col-load-commodity {
+        width: 178px;
+      }
+
+      &.w-col-load-broker {
+        width: 439px;
+      }
+
+      &.w-col-load-door-type {
+        width: 107px;
+      }
+
+      &.w-col-load-suspension {
+        width: 117px;
+      }
+
+      &.w-col-load-length {
+        width: 88px;
+      }
+
+      &.w-col-load-year {
+        width: 66px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
@@ -460,6 +519,95 @@
                 }
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+// PM Repair Modal popover
+.ta-dropdown-popover {
+  z-index: 999999;
+  .arrow {
+    display: none !important;
+  }
+
+  .popover-body {
+    z-index: 99999999;
+    .options {
+      position: relative;
+      top: 3px;
+      z-index: 1000;
+      max-height: 198px;
+      width: 100%;
+      background-color: #ffffff;
+      border-radius: 2px;
+      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      padding: 2px;
+      overflow: hidden;
+
+      &.scroll {
+        transition: all 0.3s ease-in-out;
+        overflow-y: scroll !important;
+        scrollbar-width: none !important; /* Firefox */
+
+        &::-webkit-scrollbar {
+          width: 3px;
+        }
+        &::-webkit-scrollbar-thumb {
+          background-color: transparent;
+          border: 6px solid #e5e5e5;
+          border-radius: 1px;
+        }
+        &::-webkit-scrollbar-track {
+          padding: 0;
+          position: relative;
+          right: 0;
+          top: 0;
+          background: transparent;
+        }
+      }
+
+      .option {
+        position: relative;
+        margin-bottom: 2px;
+        padding: 3px 4px;
+        height: 26px;
+        font-size: 14px;
+        font-weight: 400;
+        border-radius: 2px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        background-color: #ffffff;
+        color: #6c6c6c;
+        display: flex;
+        gap: 4px;
+
+        &:nth-last-child(1) {
+          margin-bottom: 0px;
+        }
+
+        &:hover {
+          background-color: #f3f3f3;
+          color: #3c3c3c;
+          border-radius: 2px;
+          cursor: pointer;
+        }
+
+        &.add-option {
+          color: #536bc2;
+          font-weight: 600;
+
+          &::before {
+            content: "";
+            height: 2px;
+            width: 162px;
+            background-color: #f3f3f3;
+            border-radius: 1px;
+            position: absolute;
+            bottom: 26px;
+            left: 0px;
           }
         }
       }

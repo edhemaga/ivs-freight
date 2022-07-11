@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-mvr' ? 'Add MVR' : 'Edit MVR'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="mvrForm.valid"
+  [isModalValid]="editData ? mvrForm.valid && isDirty : mvrForm.valid"
   [specificCaseModalName]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -30,7 +30,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

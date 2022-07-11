@@ -7,136 +7,231 @@
     <div class="settings-header-button">
       <div class="border-left"></div>
       <svg-icon
-        src="assets/svg/common/ic_pen.svg"
-        class="settings-edit-button"
-        (click)="
-          onAction({ type: true, modalName: 'insurance-policy', action: 'new' })
-        "
+        src="assets/svg/common/ic_plus.svg"
+        class="settings-plus-button"
+        (click)="onAction({ modalName: 'basic', type: 'new' })"
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
-    <div class="settings-insuarnce">
+    <div
+      class="settings-insuarnce"
+      *ngFor="let insurance of insurancePolicyData; trackBy: identity"
+    >
       <app-ta-re-card
-        [cardNameCommon]="'KNIGHTBROOK INS CO.'"
+        [cardNameCommon]="insurance.producerName"
         [haveHeaderText]="true"
         [cardDocumentCounter]="1"
       >
         <div class="settings-body-items">
-          <div *ngIf="insuranceData.phone !== ''" class="single-item">
+          <div *ngIf="insurance?.phone" class="single-item">
             <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <span>{{ insuranceData.phone }}</span>
+            <span>{{ insurance?.phone | formatPhoneP }}</span>
           </div>
-          <div *ngIf="insuranceData.email !== ''" class="single-item">
+          <div *ngIf="insurance.email" class="single-item">
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <span>{{ insuranceData.email }}</span>
+            <span>{{ insurance?.email }}</span>
           </div>
-          <div *ngIf="insuranceData.address !== ''" class="single-item">
+          <div *ngIf="insurance.address" class="single-item">
             <svg-icon
               src="assets/svg/truckassist-table/location-icon.svg"
             ></svg-icon>
-            <span class="single-item-address">{{ insuranceData.address }}</span>
+            <span class="single-item-address">{{
+              insurance?.address?.address
+            }}</span>
           </div>
         </div>
-        <app-ta-custom-card
-          [cardName]="'Commercial General Liabillty'"
-          [bodyTemplate]="'card'"
-          [isCardOpen]="true"
-          [hasDivider]="true"
-          [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
+        <div
+          *ngFor="
+            let insuranceAdditional of insurance.insurancePolicyAddons;
+            let i = index;
+            trackBy: identity
+          "
         >
-          <div class="insuarance-card-top-container">
-            <div class="name-div-wrapper">
-              <span class="insurer-name">{{
-                insuranceData.generalLiability.insurerName
-              }}</span>
-              <div class="rating">
-                <div class="rating-value">
-                  {{ insuranceData.generalLiability.rating }}
+          <app-ta-custom-card
+            [cardName]="insuranceAdditional.insurancePolicyAddonType.name"
+            [bodyTemplate]="'card'"
+            [isCardOpen]="true"
+            [hasDivider]="true"
+            [animationsDisabled]="false"
+          >
+            <div class="insuarance-card-top-container">
+              <div class="name-div-wrapper">
+                <span class="insurer-name">{{
+                  insuranceAdditional.insurerName
+                }}</span>
+                <div class="rating">
+                  <div *ngIf="insuranceAdditional.rating" class="rating-value">
+                    {{ insuranceAdditional.rating.name }}
+                  </div>
                 </div>
               </div>
+              <div
+                class="policy-company-wrapper"
+                [ngClass]="{ copied: copyPolicyName[i] }"
+              >
+                <div class="number-of-policy">
+                  {{ insuranceAdditional.policy }}
+                </div>
+                <span
+                  [tooltipBackground]="
+                    copyPolicyName[i] ? '#536BC2' : '#6c6c6c'
+                  "
+                  ngbTooltip
+                  [mainTooltip]="copyPolicyName[i] ? 'Copied' : 'Copy'"
+                  position="top"
+                  [autoClose]="false"
+                >
+                  <svg-icon
+                    (mouseleave)="copyPolicyName[i] = false"
+                    class="insurance-copy"
+                    (click)="copyText(insuranceAdditional.policy, i)"
+                    src="assets/svg/common/ic_copy.svg"
+                  ></svg-icon>
+                </span>
+              </div>
             </div>
-            <div class="number-of-policy">
-              {{ insuranceData.generalLiability.numberOfPolicy }}
-            </div>
-          </div>
-          <div class="payroll-template-data">
             <div
-              *ngFor="let insur of insuranceData.generalLiability.fields"
-              class="payroll-template-item"
+              *ngIf="
+                insuranceAdditional.insurancePolicyAddonType.name ===
+                'Commercial General Liabillity'
+              "
+              class="payroll-template-data"
             >
-              <p class="payroll-name">{{ insur.name }}</p>
-              <p class="payroll-value">{{ insur.value }}</p>
-            </div>
-          </div>
-        </app-ta-custom-card>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Each Occurrence</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.eachOccurrence }}
+                </p>
+              </div>
 
-        <app-ta-custom-card
-          [cardName]="'Automobile Liabillty'"
-          [bodyTemplate]="'card'"
-          [isCardOpen]="true"
-          [hasDivider]="true"
-          [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
-        >
-          <div class="insuarance-card-top-container">
-            <div class="name-div-wrapper">
-              <span class="insurer-name">{{
-                insuranceData.automobileLiability.insurerName
-              }}</span>
-              <div *ngIf="insuranceData.automobileLiability.rating " class="rating">
-                <div class="rating-value">
-                  {{ insuranceData.automobileLiability.rating }}
-                </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Dmg. to Rented Pr.</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.damageToRentedPremises }}
+                </p>
+              </div>
+
+              <div class="payroll-template-item">
+                <p class="payroll-name">Medical Expanses</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.medicalExpanses }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Pers. and Adv. Injury</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.personalAndAdvertisingInjury }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">General Aggregate</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.generalAggregate }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Products - Comp / OP</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.productsCompOperAggregate }}
+                </p>
               </div>
             </div>
-            <div class="number-of-policy">
-              {{ insuranceData.automobileLiability.numberOfPolicy }}
-            </div>
-          </div>
-          <div class="payroll-template-data">
+
             <div
-              *ngFor="let insur of insuranceData.automobileLiability.fields"
-              class="payroll-template-item"
+              *ngIf="
+                insuranceAdditional.insurancePolicyAddonType.name ===
+                'Autmobile Liabillity'
+              "
+              class="payroll-template-data"
             >
-              <p class="payroll-name">{{ insur.name }}</p>
-              <p class="payroll-value">{{ insur.value }}</p>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Combined Single</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.combinedSingleLimit }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Property Damage</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.propertyDamage }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Boldly Injury(Person)</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.bodilyInjuryPerson }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Boldly Injury(Accident)</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.bodilyInjuryAccident }}
+                </p>
+              </div>
             </div>
-          </div>
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Motor Truck Cargo / Reefer Breakdown'"
-          [bodyTemplate]="'card'"
-         
-          [hasDivider]="true"
-          [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
-        >
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Psysical Damage'"
-          [bodyTemplate]="'card'"
-        
-          [hasDivider]="true"
-          [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
-        >
-        </app-ta-custom-card>
-        <app-ta-custom-card
-          [cardName]="'Traller Interchange'"
-          [bodyTemplate]="'card'"
-        
-          [hasDivider]="true"
-          [animationsDisabled]="false"
-          [textBottomPossiton]="'-2px'"
-        >
-        </app-ta-custom-card>
+
+            <div
+              *ngIf="
+                insuranceAdditional.insurancePolicyAddonType.name ===
+                'Motor Truck Cargo / Reefer Breakdown'
+              "
+              class="payroll-template-data"
+            >
+              <div class="payroll-template-item">
+                <p class="payroll-name">Single Conveyance</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.singleConveyance }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Deductable</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.deductable }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              *ngIf="
+                insuranceAdditional.insurancePolicyAddonType.name ===
+                'Physical Damage'
+              "
+              class="payroll-template-data"
+            >
+              <div class="payroll-template-item">
+                <p class="payroll-name">Comprehen. & Collision</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.comprehensiveAndCollision }}
+                </p>
+              </div>
+              <div class="payroll-template-item">
+                <p class="payroll-name">Deductable</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional.deductable }}
+                </p>
+              </div>
+            </div>
+
+            <div
+              *ngIf="
+                insuranceAdditional.insurancePolicyAddonType.name ===
+                'Trailer Interchange'
+              "
+              class="payroll-template-data"
+            >
+              <div class="payroll-template-item">
+                <p class="payroll-name">Value</p>
+                <p class="payroll-value">${{ insuranceAdditional.value }}</p>
+              </div>
+            </div>
+          </app-ta-custom-card>
+        </div>
         <div class="divider"></div>
         <div class="settings-progress-container">
           <app-truckassist-progress-expiration
-            [expireDate]="'03/25/2023'"
-            [startDate]="'03/12/2023'"
+            [expireDate]="insurance.issued | formatDateP"
+            [startDate]="insurance.expires | formatDateP"
             [expiresSettings]="'settings-parking'"
           ></app-truckassist-progress-expiration>
         </div>

@@ -6,7 +6,9 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="factoringForm.valid"
+  [isModalValid]="
+    editData ? factoringForm.valid && isDirty : factoringForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="factoringForm" class="form-container">
@@ -20,7 +22,7 @@
             label: 'Company Name',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: true
+            autoFocus: editData?.type === 'edit' ? false : true
           }"
         ></app-ta-input>
       </div>

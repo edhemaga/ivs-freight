@@ -724,6 +724,8 @@ export class CalendarComponent implements OnInit {
       plugins: [ dayGridPlugin, timeGridPlugin ], 
       initialView: type,
       dayHeaderFormat: headerInfo,
+      height: "calc(100vh - 36px)",
+      expandRows: true,
       headerToolbar: {
         left: '',
         center: '',

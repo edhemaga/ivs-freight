@@ -16,7 +16,7 @@ export interface SignUpCompanyCommand {
     firstName?: string | null;
     lastName?: string | null;
     companyName?: string | null;
-    taxNumber?: string | null;
+    ein?: string | null;
     address?: AddressEntity;
     phone?: string | null;
     email?: string | null;

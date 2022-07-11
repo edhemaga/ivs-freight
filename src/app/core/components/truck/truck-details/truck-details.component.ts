@@ -17,11 +17,13 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
+import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
   styleUrls: ['./truck-details.component.scss'],
-  providers:[DetailsPageService]
+  providers: [DetailsPageService],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
   // @Input() data:any=null;
@@ -40,47 +42,54 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private router: Router,
     private cdRef: ChangeDetectorRef,
+    private truckDetailQuery: TruckDetailsQuery,
     private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.tableService.currentActionAnimation
-    .pipe(untilDestroyed(this))
-    .subscribe((res: any) => {
-      if (res.animation) {
-        this.truckConf(res.data);
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.truckConf(res.data);
 
-        this.cdRef.detectChanges();
-      }
-    });
+          this.cdRef.detectChanges();
+        }
+      });
     // this.data = this.activated_route.snapshot.data.truck;
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.truckTService
-          .getTruckById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: TruckResponse) => {
-              this.truckConf(res);
+        let query;
+        if (this.truckDetailQuery.hasEntity(id)) {
+          query = this.truckDetailQuery.selectEntity(id);
+        } else {
+          query = this.truckTService.getTruckById(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: TruckResponse) => {
+            this.truckConf(res);
+            if (this.router.url.includes('details')) {
               this.router.navigate([`/truck/${res.id}/details`]);
-              this.notificationService.success(
-                'Truck successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Truck can't be loaded", 'Error:');
-            },
-          });
+            }
+
+            this.notificationService.success(
+              'Truck successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Truck can't be loaded", 'Error:');
+          },
+        });
       });
     this.truckConf(this.activated_route.snapshot.data.truck);
   }
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -97,24 +106,24 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        {
-          title: 'Send Message',
-          name: 'dm',
-          class: 'regular-text',
-          contentType: 'dm',
-        },
-        {
-          title: 'Print',
-          name: 'print',
-          class: 'regular-text',
-          contentType: 'print',
-        },
-        {
-          title: 'Deactivate',
-          name: 'deactivate',
-          class: 'regular-text',
-          contentType: 'deactivate',
-        },
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
         {
           title: 'Edit',
           name: 'edit',
@@ -125,8 +134,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Delete',
           name: 'delete-item',
-          type: 'driver',
-          text: 'Are you sure you want to delete driver(s)?',
+          type: 'truck',
+          text: 'Are you sure you want to delete truck(s)?',
           class: 'delete-text',
           contentType: 'delete',
         },
@@ -141,7 +150,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
-          { id:this.truckId, type: 'add-registration', modal: 'truck' }
+          { id: this.truckId, type: 'add-registration', modal: 'truck' }
         );
         break;
       }
@@ -165,27 +174,27 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         id: 0,
         name: 'Truck Details',
         template: 'general',
-        data:data
+        data: data,
       },
       {
         id: 1,
         name: 'Registration',
         template: 'registration',
-        length: data.registrations.length,
+        length: data?.registrations?.length ? data.registrations.length : 0,
         data: data,
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
-        length: data.inspections.length,
+        length: data?.inspections?.length ? data.inspections.length : 0,
         data: data,
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
-        length: data.titles.length,
+        length: data?.titles?.length ? data.titles.length : 0,
         data: data,
       },
       {
@@ -196,7 +205,49 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       },
     ];
 
-    this.truckId = data.id;
+    this.truckId = data?.id ? data.id : null;
+  }
+
+  public onTrackActions(event: any) {
+    switch (event.type) {
+      case 'edit': {
+        this.modalService.openModal(
+          TruckModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true,
+            id: this.truckId,
+          }
+        );
+        break;
+      }
+
+      case 'delete-item': {
+        this.truckTService
+          .deleteTruckById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Truck successfully deleted',
+                'Success:'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                `Truck with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   ngOnDestroy(): void {}

@@ -1,4 +1,4 @@
-<div class="toolbar-container">
+<div class="toolbar-container" [ngStyle]="{'width': toolbarWidth}">
   <!-- LIST NAME -->
   <div
     class="list-name"
@@ -55,14 +55,10 @@
     </div>
   </div>
 
-  <!-- PM AND REGULAR SWITCH -->
-  <!-- <app-truckassist-table-toolbar-switch
-    [switchOptions]="options.pmSwitch"
-    *ngIf="options.toolbarActions.showPmSwitch"
-  ></app-truckassist-table-toolbar-switch> -->
-
   <!-- SEARCH -->
-  <app-truckassist-search></app-truckassist-search>
+  <app-truckassist-search
+    [selectedTabData]="activeTableData"
+  ></app-truckassist-search>
 
   <!-- LOCATION FILTER -->
   <div
@@ -79,7 +75,7 @@
   <div class="table-actions">
     <div class="actions-container">
       <!-- Activation -->
-      <div *ngIf="tableRowsSelected.length">
+      <div *ngIf="tableRowsSelected.length" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/activation-icon.svg'"
@@ -87,7 +83,7 @@
       </div>
 
       <!-- Delete -->
-      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()">
+      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/trash-icon.svg'"
@@ -95,7 +91,7 @@
       </div>
 
       <!-- Print -->
-      <div *ngIf="tableRowsSelected.length">
+      <div *ngIf="tableRowsSelected.length" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/print-icon.svg'"
@@ -110,9 +106,11 @@
         [ngbPopover]="optionsPopover"
         [placement]="'bottom-right'"
         [autoClose]="'outside'"
-        popoverClass="options-popover"
-        [ngClass]="{ 'active-options': optionsPopup?.isOpen() }"
+        popoverClass="toolbar-options-popover"
+        [ngClass]="{ 'active-options': optionsPopupOpen }"
         triggers="manual"
+        (hidden)="optionsPopupOpen = false"
+        class="action-div"
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
@@ -130,7 +128,7 @@
   >
     <svg-icon
       [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-      [src]="'assets/svg/common/repair-pm/ic_default_pm.svg'"
+      [src]="'assets/svg/common/repair-pm/ic_custom_pm.svg'"
     ></svg-icon>
   </div>
 

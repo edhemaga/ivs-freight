@@ -11,14 +11,19 @@ import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { TestTService } from '../../../state/test.service';
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
   templateUrl: './driver-drugAlcohol-modal.component.html',
   styleUrls: ['./driver-drugAlcohol-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -37,13 +42,16 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public selectedTestType: any = null;
   public selectedReasonType: any = null;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private driverService: DriverTService,
     private testService: TestTService,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +71,14 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       testingDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.drugForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -113,8 +129,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: GetTestModalResponse) => {
           this.testTypes = res.testTypes;
-          this.alcoholTests = res.alcoholTestReasons
-          this.drugTests = res.drugTestReasons
+          this.alcoholTests = res.alcoholTestReasons;
+          this.drugTests = res.drugTestReasons;
         },
         error: () => {
           this.notificationService.error(
@@ -167,7 +183,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event.files;
   }
 
   public updateTest() {

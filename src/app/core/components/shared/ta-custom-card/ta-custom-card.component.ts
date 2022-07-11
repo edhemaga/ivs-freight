@@ -14,16 +14,15 @@ import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
   templateUrl: './ta-custom-card.component.html',
   styleUrls: ['./ta-custom-card.component.scss'],
   animations: [card_modal_animation('showHideCardBody')],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardComponent {
-  @Input()
-  public animationsDisabled = true;
-
+  @Input() animationsDisabled = true;
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
   @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;
+  @Input() headerSvgEnabled: boolean = false;
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
   @Input() isCardOpen: boolean = false; // if has data, set on true
@@ -34,11 +33,13 @@ export class TaCustomCardComponent {
   @Input() isCommentData: boolean = false;
   @Input() hasCheckbox: boolean = false;
   @Input() tooltipName: string = '';
-  @Input() hasPlusHeader:boolean=false;
-  @Input() textBottomPossiton:string;
-  @Input() hasWeeklyStatus:string=null;
-  @Input() controlName:FormControl;
-  @Input() stayOpen : boolean = false;
+  @Input() hasPlusHeader: boolean = false;
+  @Input() textBottomPossiton: string;
+  @Input() hasWeeklyStatus: string = null;
+  @Input() controlName: FormControl;
+  @Input() stayOpen: boolean = false;
+  @Input() disabledCard: boolean = false;
+  @Input() customClassHeaderSvg:boolean=false;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
@@ -47,20 +48,22 @@ export class TaCustomCardComponent {
     false
   );
 
-  public isHeaderHover: boolean = false;
   public zoneTriger: boolean = false;
+  public isHeaderHover: boolean = false;
 
   constructor(private uploadFileService: TaUploadFileService) {}
 
   public isCardOpenEvent(event: any) {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.hasBodyData) {
-      this.isCardOpen = !this.isCardOpen;
+    if (!this.disabledCard) {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.hasBodyData) {
+        this.isCardOpen = !this.isCardOpen;
+      }
+      this.zoneTriger = !this.zoneTriger;
+      this.uploadFileService.visibilityDropZone(this.zoneTriger);
+      this.onOpenCard.emit(this.isCardOpen);
     }
-    this.zoneTriger = !this.zoneTriger;
-    this.uploadFileService.visibilityDropZone(this.zoneTriger);
-    this.onOpenCard.emit(this.isCardOpen);
   }
 
   public onAdd(event: any): void {

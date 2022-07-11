@@ -1,0 +1,46 @@
+<app-ta-input-dropdown
+  *ngIf="selectedAccountLabel?.id !== 7655"
+  [formControl]="getSuperControl"
+  [inputConfig]="dropdownConfig"
+  [options]="options"
+  [canAddNew]="true"
+  [isOpenSomethingElse]="true"
+  [activeItem]="selectedAccountLabel"
+  (selectedItem)="onSelectDropdown($event, 'account-label')"
+></app-ta-input-dropdown>
+
+<div *ngIf="selectedAccountLabel?.id === 7655">
+  <app-ta-input
+    [formControl]="newLabel"
+    [inputConfig]="inputConfig"
+    (commandEvent)="onLabelNameEvent($event)"
+    #t2="ngbPopover"
+    [ngbPopover]="taInputDropdownPopover"
+    [placement]="['bottom-left']"
+    popoverClass="ta-input-dropdown-label"
+    [container]="'body'"
+  ></app-ta-input>
+
+  <ng-template #taInputDropdownPopover>
+    <div class="ta-label-options" [ngClass]="{ scroll: colors.length > 5 }">
+      <div
+        class="ta-label-option"
+        *ngFor="let label of colors; trackBy: identity"
+        (click)="onSelectColorLabel($event, label)"
+      >
+        <svg-icon
+          class="ta-label-option-svg"
+          src="assets/svg/common/ic_dynamic_label.svg"
+          [svgStyle]="{ fill: label?.color ? label?.color : '#b7b7b7' }"
+        ></svg-icon>
+        <div class="ta-label-vertical-divider"></div>
+        <div class="d-flex justify-content-between flex-fill">
+          <p class="ta-label-option-name">{{ label.name }}</p>
+          <div class="ta-label-option-count">
+            {{ label.count }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

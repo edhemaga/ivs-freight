@@ -1,21 +1,26 @@
 import { DispatcherQuery } from './../state/dispatcher.query';
-import {takeUntil} from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 /// <reference types="@types/googlemaps" />
-import {Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation,} from '@angular/core';
-import {Subject} from 'rxjs';
+import {
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Subject } from 'rxjs';
 //import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
 import * as AppConst from 'src/app/const';
-import {ToastrService} from 'ngx-toastr';
-import {HttpClient} from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
+import { HttpClient } from '@angular/common/http';
 // import { AppSignalRService } from './../../../core/services/app-signalr.service';
-import {environment} from 'src/environments/environment.prod';
+import { environment } from 'src/environments/environment.prod';
 import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
 import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
 import { AppLoadService } from 'src/app/core/services/load/app-load.service';
 import { getDataFromGpsResponse } from 'src/assets/utils/methods-global';
 import { Enums } from 'src/app/core/model/enums';
 import { AppIdleService } from 'src/app/core/services/dispatchboard/app-idle.service';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { DispatchSortService } from 'src/app/core/services/dispatchboard/dispatchsort.service';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
@@ -28,13 +33,12 @@ declare var google: any;
 @Component({
   selector: 'app-dispatcher-table',
   templateUrl: './dispatcher-table.component.html',
-  styleUrls: ["../dispatcher.global.scss", './dispatcher-table.component.scss'],
+  styleUrls: ['../dispatcher.global.scss', './dispatcher-table.component.scss'],
   encapsulation: ViewEncapsulation.None,
   providers: [AppIdleService],
-  
 })
 export class DispatcherTableComponent implements OnInit, OnDestroy {
-  @ViewChild(AppDispatcherTableNewComponent, {static: false})
+  @ViewChild(AppDispatcherTableNewComponent, { static: false })
   dispatcherTableNew: AppDispatcherTableNewComponent;
   @ViewChild('accordion') public accordion: any;
   dispatcherItems: any[];
@@ -42,7 +46,9 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   panelOpenState = false;
   truckList = AppConst.TRUCK_LIST.filter(
     (x) =>
-      x.class != 'personalvehicle-icon' && x.class != 'motorcycle-icon' && x.class != 'bus-icon'
+      x.class != 'personalvehicle-icon' &&
+      x.class != 'motorcycle-icon' &&
+      x.class != 'bus-icon'
   );
   trailerList = AppConst.TRAILER_LIST;
   legendActive = false;
@@ -95,7 +101,6 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
 
   constructor(
     private loadService: AppLoadService,
-    private customModalService: CustomModalService,
     private idleService: AppIdleService,
     private toastr: ToastrService,
     private sortService: DispatchSortService,
@@ -105,11 +110,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     private gpsDataService: AppDispatchSignalrService,
     private dispatcherQuery: DispatcherQuery,
     public dispatcherStoreService: DispatcherStoreService
-  ) {
-  }
+  ) {}
 
-  openParking(){
-    this.dispatcherStoreService.parkingOpened = !this.dispatcherStoreService.parkingOpened;
+  openParking() {
+    this.dispatcherStoreService.parkingOpened =
+      !this.dispatcherStoreService.parkingOpened;
   }
 
   loteEnter(): void {
@@ -133,18 +138,22 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.setUserInactivityListener();
 
     this.dispatcherQuery.dispatchersList$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(result => {
-      this.getDispatcherData(result);
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        this.getDispatcherData(result);
+      });
 
-    this.loadService.editDispatchBoard.pipe(takeUntil(this.destroy$)).subscribe(() => {
-      // this.getDispatcherData();
-    });
+    this.loadService.editDispatchBoard
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        // this.getDispatcherData();
+      });
 
-    this.shared.emitAllNoteOpened.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-      this.openAllNoteses = res;
-    });
+    this.shared.emitAllNoteOpened
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.openAllNoteses = res;
+      });
 
     // this.signalrService.signalReceived
     // .pipe(takeUntil(this.destroy$))
@@ -152,22 +161,30 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     //   this.handleSignalMessage(resp);
     // });
 
-    this.loadService.load.pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
-      // this.signalrService.sendMessage({type: "loadAdded", data: [res.dispatchBoardId]});
-      this.getDispatcherData();
-    });
+    this.loadService.load
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // this.signalrService.sendMessage({type: "loadAdded", data: [res.dispatchBoardId]});
+        this.getDispatcherData();
+      });
 
-    this.shared.emitCloseNote.pipe(takeUntil(this.destroy$)).subscribe((res) => {
-      ($('#collapseOne') as any).collapse('hide');
-      ($('#collapseTwo') as any).collapse('hide');
-      this.truckTab = false;
-      this.trailerTab = false;
-    });
+    this.shared.emitCloseNote
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        ($('#collapseOne') as any).collapse('hide');
+        ($('#collapseTwo') as any).collapse('hide');
+        this.truckTab = false;
+        this.trailerTab = false;
+      });
 
     if (this.sliderValue.length === 0) {
       const d = new Date();
       this.sliderValue = [
-        {minValue: 0, maxValue: d.getHours() * 60 + d.getMinutes(), type: 'inactive'},
+        {
+          minValue: 0,
+          maxValue: d.getHours() * 60 + d.getMinutes(),
+          type: 'inactive',
+        },
       ];
     }
   }
@@ -177,32 +194,33 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.signalrService.addTransferGpsDataListener();
     this.startHttpRequest();
 
-    this.signalrService.currentGpsData.pipe(takeUntil(this.destroy$)).subscribe((gpsData: any) => {
-      if (this.trucksPositionOnMap.length) {
-        console.log('Desila se promena');
-        for (let i = 0; i < gpsData.length; i++) {
-          if (
-            gpsData[i].latitude !== this.trucksPositionOnMap[i]?.lat ||
-            gpsData[i].longitude !== this.trucksPositionOnMap[i]?.long ||
-            (gpsData[i].motion !== this.trucksPositionOnMap[i].motion && this.trucksPositionOnMap)
-          ) {
-            this.trucksPositionOnMap[i] = getDataFromGpsResponse(gpsData, i);
-            this.gpsDataService.sendGpsDataSingleItem(this.trucksPositionOnMap[i]);
+    this.signalrService.currentGpsData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((gpsData: any) => {
+        if (this.trucksPositionOnMap.length) {
+          for (let i = 0; i < gpsData.length; i++) {
+            if (
+              gpsData[i].latitude !== this.trucksPositionOnMap[i]?.lat ||
+              gpsData[i].longitude !== this.trucksPositionOnMap[i]?.long ||
+              (gpsData[i].motion !== this.trucksPositionOnMap[i].motion &&
+                this.trucksPositionOnMap)
+            ) {
+              this.trucksPositionOnMap[i] = getDataFromGpsResponse(gpsData, i);
+              this.gpsDataService.sendGpsDataSingleItem(
+                this.trucksPositionOnMap[i]
+              );
+            }
           }
         }
-      }
 
-      if (!this.trucksPositionOnMap.length) {
-        console.log('Prvi podaci');
-        for (let i = 0; i < gpsData.length; i++) {
-          this.trucksPositionOnMap.push(getDataFromGpsResponse(gpsData, i));
+        if (!this.trucksPositionOnMap.length) {
+          for (let i = 0; i < gpsData.length; i++) {
+            this.trucksPositionOnMap.push(getDataFromGpsResponse(gpsData, i));
+          }
+
+          this.gpsDataService.sendGpsData(this.trucksPositionOnMap);
         }
-
-        console.log('Salju se podaci');
-        console.log(this.trucksPositionOnMap);
-        this.gpsDataService.sendGpsData(this.trucksPositionOnMap);
-      }
-    });
+      });
   }
 
   lockUnlockBoardAndStartTimer() {
@@ -221,7 +239,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       // if( this.dispatcher == -1 ) this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
     } else {
       if (this.idleSubscription) {
-        this.sortService.sortItem = [{field: 'status'}];
+        this.sortService.sortItem = [{ field: 'status' }];
         this.idleSubscription.unsubscribe();
         this.idleSubscription = undefined;
       }
@@ -280,52 +298,55 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   getDispatcherData(result?) {
-        this.dispatcherItems = [...result];
-        const user = JSON.parse(localStorage.getItem('currentUser'));
-        this.dispatcherItems.unshift({
-          id: -1,
-          dispatcherFirstName: 'Team',
-          dispatcherLastName: 'Board',
-        });
-        this.dispatcherItems.unshift({
-          id: 0,
-          dispatcherFirstName: 'All',
-          dispatcherLastName: 'Boards',
-        });
+    this.dispatcherItems = [...result];
+    const user = JSON.parse(localStorage.getItem('currentUser'));
+    this.dispatcherItems.unshift({
+      id: -1,
+      dispatcherFirstName: 'Team',
+      dispatcherLastName: 'Board',
+    });
+    this.dispatcherItems.unshift({
+      id: 0,
+      dispatcherFirstName: 'All',
+      dispatcherLastName: 'Boards',
+    });
 
-        const previous_selected = localStorage.getItem('dispatchUserSelect');
-        if (!previous_selected) {
-          const itemIndex = this.dispatcherItems.findIndex((item) => item.id === this.user.id);
-          if (itemIndex > -1) {
-            this.dispatcher = this.dispatcherItems[itemIndex].id;
-            this.selectedDispatcher = JSON.parse(JSON.stringify(this.dispatcherItems[itemIndex]));
-          }
-        } else {
-          this.selectedDispatcher = JSON.parse(
-            JSON.stringify(this.dispatcherItems.find((item) => item.id == previous_selected))
-          );
-          this.dispatcher = parseInt(previous_selected);
-          this.signalrService.startConnection();
-          if (this.dispatcher == -1) {
-            // if( !this.isBoardLocked ){
-            //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
-            // }
-          }
-        }
+    const previous_selected = localStorage.getItem('dispatchUserSelect');
+    if (!previous_selected) {
+      const itemIndex = this.dispatcherItems.findIndex(
+        (item) => item.id === this.user.id
+      );
+      if (itemIndex > -1) {
+        this.dispatcher = this.dispatcherItems[itemIndex].id;
+        this.selectedDispatcher = JSON.parse(
+          JSON.stringify(this.dispatcherItems[itemIndex])
+        );
+      }
+    } else {
+      this.selectedDispatcher = JSON.parse(
+        JSON.stringify(
+          this.dispatcherItems.find((item) => item.id == previous_selected)
+        )
+      );
+      this.dispatcher = parseInt(previous_selected);
+      this.signalrService.startConnection();
+      if (this.dispatcher == -1) {
+        // if( !this.isBoardLocked ){
+        //   this.signalrService.sendMessage({"type": "unclock", "user_id": this.user.id});
+        // }
+      }
+    }
 
-        this.refreshDispatchBoard(null);
+    this.refreshDispatchBoard(null);
   }
 
-  openAddLoad(id: any) {
-    this.customModalService.openModal(AppAddLoadTableComponent, {id}, null);
-  }
+  openAddLoad(id: any) {}
 
   addLoad() {
     const data = {
       type: 'new',
       id: null,
     };
-    //this.customModalService.openModal(ManageLoadComponent, {data}, null, {size: 'xxl'});
   }
 
   innactiveLock(status: boolean) {
@@ -419,17 +440,20 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
           // TODO: Remove when filed dynamically
           this.gridData.forEach((el) => {
             if (el.statusId > 0 && el.route) {
-              const routesInfo = el.route ? el.route.reduce(
-                (routesNumb, item) => {
-                  if (item.PointType == 'pickup') {
-                    routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
-                  } else {
-                    routesNumb.deliveryNumber = routesNumb.deliveryNumber + 1;
-                  }
-                  return routesNumb;
-                },
-                {pickupNumber: 0, deliveryNumber: 0}
-              ) : {pickupNumber: 0, deliveryNumber: 0};
+              const routesInfo = el.route
+                ? el.route.reduce(
+                    (routesNumb, item) => {
+                      if (item.PointType == 'pickup') {
+                        routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
+                      } else {
+                        routesNumb.deliveryNumber =
+                          routesNumb.deliveryNumber + 1;
+                      }
+                      return routesNumb;
+                    },
+                    { pickupNumber: 0, deliveryNumber: 0 }
+                  )
+                : { pickupNumber: 0, deliveryNumber: 0 };
               Object.assign(el, routesInfo);
             }
             // el.color = this.returnRandomColor();
@@ -437,8 +461,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
           this.getDispatcherItemsData();
           this.formatGridData(this.gridData);
         },
-        (error) => {
-        }
+        (error) => {}
       );
   }
 
@@ -481,7 +504,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       );
     } else {
       this.selectedDispatchers = this.dispatcherItems
-        .filter((item) => item.id != 0) 
+        .filter((item) => item.id != 0)
         .sort((a, b) => {
           return a['id'] < b['id'] ? 1 : -1;
         });
@@ -513,12 +536,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   public hoverPhoneEmail() {
-    this.phoneEmailToggle = this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
+    this.phoneEmailToggle =
+      this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
   }
 
-  openDispatchHistory() {
-    this.customModalService.openModal(DispatcherHistoryComponent, {dispatchersList: this.dispatcherItems}, null);
-  }
+  openDispatchHistory() {}
 
   private startHttpRequest = () => {
     this.http

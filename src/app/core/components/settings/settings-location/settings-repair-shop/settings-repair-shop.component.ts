@@ -4,7 +4,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 @Component({
   selector: 'app-settings-repair-shop',
   templateUrl: './settings-repair-shop.component.html',
-  styleUrls: ['./settings-repair-shop.component.scss']
+  styleUrls: ['./settings-repair-shop.component.scss'],
 })
 export class SettingsRepairShopComponent implements OnInit {
   public repairShopData = [
@@ -14,56 +14,55 @@ export class SettingsRepairShopComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       services: [
         {
           id: 1,
           name: 'Truck',
-          svg: 'assets/svg/common/ic_truck.svg',
+          svg: 'assets/svg/truckassist-table/repair/Truck.svg',
           isUsefulService: true,
         },
         {
           id: 2,
           name: 'Trailer',
-          svg: 'assets/svg/common/ic_trailer.svg',
-          isUsefulService: false,
+          svg: 'assets/svg/truckassist-table/repair/ic_repair-trailer.svg',
+          isUsefulService: true,
         },
         {
           id: 3,
           name: 'Mobile',
-          svg: 'assets/svg/common/ic_mobile.svg',
+          svg: 'assets/svg/truckassist-table/repair/ic_mobile-repair.svg',
           isUsefulService: false,
         },
         {
           id: 4,
           name: 'Shop',
-          svg: 'assets/svg/common/ic_shop.svg',
-          isUsefulService: false,
+          svg: 'assets/svg/truckassist-table/repair/Shop.svg',
+          isUsefulService: true,
         },
         {
           id: 5,
           name: 'Towing',
-          svg: 'assets/svg/common/ic_towing.svg',
+          svg: 'assets/svg/truckassist-table/repair/Towing.svg',
           isUsefulService: true,
         },
         {
           id: 6,
           name: 'Parts',
-          svg: 'assets/svg/common/ic_parts.svg',
-          isUsefulService: false,
+          svg: 'assets/svg/truckassist-table/repair/Parts.svg',
+          isUsefulService: true,
         },
         {
           id: 7,
           name: 'Tire',
-          svg: 'assets/svg/common/ic_tire.svg',
+          svg: 'assets/svg/truckassist-table/repair/Tire.svg',
           isUsefulService: true,
         },
         {
           id: 9,
           name: 'Dealer',
-          svg: 'assets/svg/common/ic_dealer.svg',
-          isUsefulService: true,
+          svg: 'assets/svg/truckassist-table/repair/ic_dealer-repair.svg',
+          isUsefulService: false,
         },
       ],
       rent: '',
@@ -76,55 +75,54 @@ export class SettingsRepairShopComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       services: [
         {
           id: 1,
           name: 'Truck',
-          svg: 'assets/svg/common/ic_truck.svg',
+          svg: 'assets/svg/truckassist-table/repair/Truck.svg',
           isUsefulService: true,
         },
         {
           id: 2,
           name: 'Trailer',
-          svg: 'assets/svg/common/ic_trailer.svg',
+          svg: 'assets/svg/truckassist-table/repair/ic_repair-trailer.svg',
           isUsefulService: true,
         },
         {
           id: 3,
           name: 'Mobile',
-          svg: 'assets/svg/common/ic_mobile.svg',
+          svg: 'assets/svg/truckassist-table/repair/ic_mobile-repair.svg',
           isUsefulService: false,
         },
         {
           id: 4,
           name: 'Shop',
-          svg: 'assets/svg/common/ic_shop.svg',
+          svg: 'assets/svg/truckassist-table/repair/Shop.svg',
           isUsefulService: true,
         },
         {
           id: 5,
           name: 'Towing',
-          svg: 'assets/svg/common/ic_towing.svg',
+          svg: 'assets/svg/truckassist-table/repair/Towing.svg',
           isUsefulService: true,
         },
         {
           id: 6,
           name: 'Parts',
-          svg: 'assets/svg/common/ic_parts.svg',
+          svg: 'assets/svg/truckassist-table/repair/Parts.svg',
           isUsefulService: true,
         },
         {
           id: 7,
           name: 'Tire',
-          svg: 'assets/svg/common/ic_tire.svg',
+          svg: 'assets/svg/truckassist-table/repair/Tire.svg',
           isUsefulService: true,
         },
         {
           id: 9,
           name: 'Dealer',
-          svg: 'assets/svg/common/ic_dealer.svg',
+          svg: 'assets/svg/truckassist-table/repair/ic_dealer-repair.svg',
           isUsefulService: false,
         },
       ],
@@ -136,9 +134,9 @@ export class SettingsRepairShopComponent implements OnInit {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
-  
-  public onAction(data: { type: boolean; modalName: string; action: string }) {
-    this.settingsStoreService.onModalAction(data);
+
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

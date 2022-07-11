@@ -17,7 +17,7 @@ import { TaUploadFileService } from './ta-upload-file.service';
   selector: 'app-ta-modal-upload',
   templateUrl: './ta-modal-upload.component.html',
   styleUrls: ['./ta-modal-upload.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TaModalUploadComponent implements OnInit, OnDestroy {
   @ViewChild(TaUploadFilesCarouselComponent)
@@ -32,15 +32,13 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
 
   public currentSlide: number = 0;
 
-  constructor(
-    private uploadFileService: TaUploadFileService
-  ) {}
+  constructor(private uploadFileService: TaUploadFileService) {}
 
   ngOnInit() {
     this.uploadFileService.uploadedFiles$
       .pipe(untilDestroyed(this))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
-        if(data) {
+        if (data) {
           this.onUploadFiles(data);
         }
       });
@@ -69,6 +67,10 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
           this.modalCarousel.translateXMultipleSlides = 0;
           this.modalCarousel.multipleCurrentSlide = 0;
         }
+
+        if (!this.files.length) {
+          this.currentSlide = 0;
+        }
         break;
       }
       default: {
@@ -81,6 +83,7 @@ export class TaModalUploadComponent implements OnInit, OnDestroy {
     switch (data.action) {
       case 'add': {
         this.files = [...this.files, ...data.files];
+        this.onFileEvent.emit({ files: this.files, action: 'add' });
         break;
       }
     }

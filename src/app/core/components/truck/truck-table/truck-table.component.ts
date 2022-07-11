@@ -81,7 +81,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
 
             return truck;
           });
-          
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
@@ -89,7 +89,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
           }, 1000);
         } else if (res.animation === 'update-status') {
           let truckIndex: number;
-          
+
           this.viewData = this.viewData.map((truck: any, index: number) => {
             if (truck.id === res.id) {
               truck.actionAnimation = 'update';
@@ -259,9 +259,6 @@ export class TruckTableComponent implements OnInit, OnDestroy {
     this.viewData = this.viewData.map((data) => {
       return this.mapTruckData(data);
     });
-
-    console.log('setTruckData');
-    console.log(this.viewData);
   }
 
   mapTruckData(data: any) {
@@ -313,8 +310,6 @@ export class TruckTableComponent implements OnInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    console.log('onTableBodyActions truck');
-    console.log(event);
     switch (event.type) {
       case 'edit-truck': {
         this.modalService.openModal(

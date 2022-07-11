@@ -10,11 +10,13 @@
   -ms-user-select: none;
   user-select: none;
 
-  svg {
-    width: 100%;
-    height: 100%;
-    path {
-      fill: #b7b7b7;
+  &.default-svg-color {
+    svg {
+      width: 100%;
+      height: 100%;
+      path {
+        fill: #b7b7b7;
+      }
     }
   }
 
@@ -120,14 +122,34 @@
   }
 
   //------------------------- Custom class -------------------------
-  &.input-big {
+  &.input-32 {
     top: 2.7px;
+  }
+
+  &.input-30 {
+    top: 2px;
   }
 
   &.repair-shop-oh {
     svg {
       path {
         fill: #b7b7b7 !important;
+      }
+    }
+  }
+
+  &.load-adjusted-rate {
+    svg {
+      path {
+        fill: #ffa726 !important;
+      }
+    }
+  }
+
+  &.load-advance-rate {
+    svg {
+      path {
+        fill: #26a690 !important;
       }
     }
   }

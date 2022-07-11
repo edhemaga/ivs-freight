@@ -3,8 +3,6 @@
     [tooltipNext]="'Next Driver'"
     [tooltipPrevious]="'Previous Driver'"
     [searchName]="'Driver is Owner'"
-    [hasSvgHeader]="'assets/svg/common/ic_driver-owner.svg'"
-    [cardDetailsName]="driver.currentDriverName"
     [cardDetailsDate]="driver.hired | formatDateP"
     [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
     [statusInactive]="driver.status"
@@ -19,9 +17,9 @@
       <div class="driver-personal">
         <div class="driver-avatar">
           <app-profile-images
-          [indx]="0"
-          [size]="'large'"
-          [type]="'driver'"
+            [indx]="0"
+            [size]="'large'"
+            [type]="'driver'"
           ></app-profile-images>
         </div>
         <div class="driver-information">
@@ -33,24 +31,26 @@
             <p class="information-value ssn">
               {{ driver.ssn | formatSsnP }}
             </p>
-         
+
             <span
               [tooltipBackground]="copiedSSN ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
               [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
               (click)="copyText(driver.ssn, 'ssn')"
             >
               <svg-icon
                 class="card-icon"
+                id="card-icon"
                 src="assets/svg/common/ic_copy.svg"
-                (click)="copyText(driver.ssn, 'ssn')"
+                (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
-            <div *ngIf="driver.status==0" class="inactive-wrapper">
+            <div *ngIf="driver.status === 0" class="inactive-wrapper">
               Inactive
-           </div>
+            </div>
           </div>
           <div
             class="information-item"
@@ -68,12 +68,13 @@
               ngbTooltip
               [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
               position="top"
+              [autoClose]="false"
               class="tooltip-copy"
               (click)="copyText(driver.phone, 'driver-phone')"
             >
               <svg-icon
-                (click)="copyText(driver.phone, 'driver-phone')"
                 class="card-icon"
+                (mouseleave)="copiedDriverPhone = false"
                 src="assets/svg/common/ic_copy.svg"
               >
               </svg-icon>
@@ -96,12 +97,13 @@
               [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
               position="top"
               class="tooltip-copy"
+              [autoClose]="false"
               (click)="copyText(driver.email, 'driver-email')"
             >
               <svg-icon
-                (click)="copyText(driver.email, 'driver-email')"
                 class="card-icon"
                 src="assets/svg/common/ic_copy.svg"
+                (mouseleave)="copiedDriverEmail = false"
               ></svg-icon>
             </span>
           </div>
@@ -109,7 +111,10 @@
       </div>
     </div>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards" [ngClass]="{ 'bind-heigth': !templateCard }">
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-heigth': !templateCard }"
+  >
     <div class="details-cards">
       <!-- assignedTo -->
       <app-ta-custom-card
@@ -140,7 +145,7 @@
                 >
                 </svg-icon>
               </span>
-              <p class="assignTo-value">36545</p>
+              <span class="assignTo-value">36545</span>
             </div>
 
             <span
@@ -170,9 +175,7 @@
                   src="assets/svg/common/trailers/ic_trailer_container.svg"
                 ></svg-icon>
               </span>
-              <p class="assignTo-value" style="margin-left: 6px !important">
-                R4578
-              </p>
+              <span class="assignTo-value container-value"> R4578 </span>
             </div>
             <span
               style="margin-left: 33px"
@@ -238,7 +241,10 @@
         [animationsDisabled]="false"
         class="item-cards"
       >
-        <div *ngIf="driver.offDutyLocations == ''" class="no-data">
+        <div
+          *ngIf="driver.offDutyLocations === ''"
+          class="no-data-driver-details"
+        >
           No Added Location
         </div>
         <div
@@ -249,10 +255,7 @@
             <div class="addres-name">{{ offDuty?.nickname }}</div>
             <div class="addres-value-icon">
               <div class="addres-value">
-                {{ offDuty?.address.addressUnit }}
-                {{ offDuty?.address.address }}, {{ offDuty?.address.city }},
-                {{ offDuty.address.stateShortName }}
-                {{ offDuty?.address.zipCode }}, {{ offDuty?.address.country }}
+                {{ offDuty?.address?.address ? offDuty.address.address : "" }}
               </div>
               <span
                 tooltipBackground="#6c6c6c"
@@ -298,9 +301,8 @@
                     <p class="emp-duration">
                       {{ tooltipFormatStartDate }} -
                       <span>{{
-                        tooltipData.endDate ?  tooltipFormatEndDate : 'Today'
+                        tooltipData.endDate ? tooltipFormatEndDate : "Today"
                       }}</span>
-
                     </p>
                     <div class="emp-text-icon">
                       <p>
@@ -319,19 +321,18 @@
                     </div>
                   </div>
                   <p class="year-working">
-                    {{ tooltipData.duration.Years }} {{ tooltipData.duration.Years > 1 ? "years" : "year" }}
-                    {{ tooltipData.duration.Days }} {{ tooltipData.duration.Days > 1 ? "days" : "day" }}
-                    </p>
+                    {{ tooltipData.duration.Years }}
+                    {{ tooltipData.duration.Years > 1 ? "years" : "year" }}
+                    {{ tooltipData.duration.Days }}
+                    {{ tooltipData.duration.Days > 1 ? "days" : "day" }}
+                  </p>
                 </div>
               </div>
               <div class="progress-driver">
                 <div
                   (mouseover)="mouseEnter(dat)"
                   (mouseleave)="showTooltip = false"
-                  *ngFor="
-                    let dat of dataProggress;
-                    trackBy: identity
-                  "
+                  *ngFor="let dat of dataProggress; trackBy: identity"
                   [ngStyle]="{
                     'background-color':
                       dat.isDeactivate === true ? '#d4dff4' : '#6d82c8',
@@ -344,9 +345,8 @@
                 ></div>
               </div>
               <div *ngIf="!showMoreEmployment" class="year-employer">
-                <p>{{ firstDate }} </p>
-                <p >{{!lastDate=='Invalid Date'? lastDate : 'Today'}}</p>
-              
+                <p>{{ firstDate }}</p>
+                <p>{{ !lastDate == "Invalid Date" ? lastDate : "Today" }}</p>
               </div>
             </div>
 
@@ -368,10 +368,7 @@
               <div class="divider"></div>
               <div class="status-items">
                 <div
-                  *ngFor="
-                    let empH of dataProggress;
-                    trackBy: identity
-                  "
+                  *ngFor="let empH of dataProggress; trackBy: identity"
                   class="item-wrapper"
                 >
                   <div class="svg-text">
@@ -458,12 +455,14 @@
               <span
                 [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
                 ngbTooltip
+                [autoClose]="false"
                 [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
                 position="top"
               >
                 <svg-icon
                   (click)="copyText(driver.owner.ssnEin, 'ein')"
                   class="card-icon"
+                  (mouseleave)="copiedEin = false"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
               </span>
@@ -477,49 +476,61 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        [cardName]="driver.commissionSolo? 'Commission Pay' : 'Mileage Pay'"
+        [cardName]="driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
         <div *ngIf="driver.commissionSolo" class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
-            <div class="purchase-template-item-value">
+            <div class="purchase-template-item-value commsion-solo">
               {{ driver.commissionSolo }}%
             </div>
           </div>
-          
+
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Team</div>
-            <div class="purchase-template-item-value">
+            <div class="purchase-template-item-value commsion-solo">
               {{ driver.commissionTeam }}%
             </div>
           </div>
         </div>
         <div *ngIf="!driver.commissionSolo" class="mileage-template">
           <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Empty (Solo)</div>
-          <div class="mileage-template-item-value">${{driver.solo.emptyMile}}</div>
-        </div>
-        <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Loaded (Solo)</div>
-          <div class="mileage-template-item-value">${{driver.solo.loadedMile}}</div>
-        </div>
-        <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Per Stop (Solo)</div>
-          <div class="mileage-template-item-value">${{driver.solo.perStop}}</div>
-        </div>
-        <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Empty (Team)</div>
-          <div class="mileage-template-item-value">${{driver.team.emptyMile}}</div>
-        </div>
-        <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Loaded (Team)</div>
-          <div class="mileage-template-item-value">${{driver.team.loadedMile}}</div>
-        </div>
-        <div class="mileage-template-item">
-          <div class="mileage-template-item-name">Per Stop (Team)</div>
-          <div class="mileage-template-item-value">${{driver.team.perStop}}</div>
-        </div>
+            <div class="mileage-template-item-name">Empty (Solo)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.solo.emptyMile }}
+            </div>
+          </div>
+          <div class="mileage-template-item">
+            <div class="mileage-template-item-name">Loaded (Solo)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.solo.loadedMile }}
+            </div>
+          </div>
+          <div class="mileage-template-item">
+            <div class="mileage-template-item-name">Per Stop (Solo)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.solo.perStop }}
+            </div>
+          </div>
+          <div class="mileage-template-item">
+            <div class="mileage-template-item-name">Empty (Team)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.team.emptyMile }}
+            </div>
+          </div>
+          <div class="mileage-template-item">
+            <div class="mileage-template-item-name">Loaded (Team)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.team.loadedMile }}
+            </div>
+          </div>
+          <div class="mileage-template-item">
+            <div class="mileage-template-item-name">Per Stop (Team)</div>
+            <div class="mileage-template-item-value">
+              ${{ driver.team.perStop }}
+            </div>
+          </div>
         </div>
       </app-ta-custom-card>
 
@@ -534,53 +545,41 @@
         [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
       >
         <div class="charts-template perfomance">
-
           <app-ta-tab-switch
-          [tabs]="tabsDriver"
-          (switchClicked)="changeTab($event)" 
-          [type]="'driver-details-popup'"
-          >
-          </app-ta-tab-switch>  
-        
-          <!-- <app-tab-switcher
             [tabs]="tabsDriver"
-            (switchClicked)="changeTab($event)" 
-            [customClass]="'chart-tabs'"
+            (switchClicked)="changeTab($event)"
+            [type]="'type2-modal-popup'"
           >
-          </app-tab-switcher> -->
-          
+          </app-ta-tab-switch>
+
           <div id="chart">
             <app-ta-chart
               [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '46,755.2 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Salary',
-                    value: '$36.854.27',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
                 dataProperties: [
                   {
                     defaultConfig: {
                       type: 'line',
-                      data: [1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000, 1150, 1300, 1700],
+                      data: [
+                        1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000,
+                        1150, 1300, 1700
+                      ],
                       label: 'Salary',
                       yAxisID: 'y-axis-1',
                       borderColor: '#6D82C7',
                       pointBackgroundColor: '#FFFFFF',
                       pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
+                      pointHoverBorderColor: '#FFFFFF',
+                      pointHoverRadius: 3,
+                      pointBorderWidth: 2
                     }
                   },
                   {
                     defaultConfig: {
                       type: 'bar',
-                      data: [2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500, 1400, 2200, 2800],
+                      data: [
+                        2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500,
+                        1400, 2200, 2800
+                      ],
                       label: 'Miles',
                       yAxisID: 'y-axis-0',
                       borderColor: '#FFCC80',
@@ -590,156 +589,31 @@
                   }
                 ],
                 showLegend: false,
-                chartValues: [46,755,000, 36.854],
+                chartValues: [46, 755, 000, 36.854],
+                onHoverAnnotation: true,
                 defaultType: 'bar',
                 chartWidth: '417',
                 chartHeight: '130',
-                dataLabels: ['', 'NOV', '', '2021', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP'],
+                dataLabels: [
+                  '',
+                  'NOV',
+                  '',
+                  '2021',
+                  '',
+                  'MAR',
+                  '',
+                  'MAY',
+                  '',
+                  'JUL',
+                  '',
+                  'SEP'
+                ],
                 noChartImage: 'assets/svg/common/yellow_no_data.svg'
               }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 4000,
-                  stepSize: 1000,
-                  showGridLines: true
-                },
-                verticalRightAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 2800,
-                  stepSize: 700,
-                  showGridLines: false
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
+              [axesProperties]="barAxes"
+              [legendAttributes]="barChartLegend"
             >
             </app-ta-chart>
-           <!--<app-ta-chart
-              [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '46,755.2 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Salary',
-                    value: '$36.854.27',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [12, 21, 27, 37, 28, 25, 21, 10, 15, 45, 27, 46, 41, 28, 24],
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF',
-                      fill: true,
-                      hasGradiendBackground: true,
-                      colors: ['rgba(189, 202, 235, 1)', 'rgba(255, 255, 255, 1)']
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [2, 2],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                annotation: 28,
-                dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
-                noChartImage: 'assets/svg/common/no_data_pay.svg'
-              }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 0,
-                  maxValue: 52,
-                  stepSize: 13,
-                  showGridLines: true
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
-            >
-            </app-ta-chart>-->
-            <!--<app-ta-chart
-              [chartConfig]="{
-                legendAttributes: [
-                  {
-                    title: 'Miles',
-                    value: '46,755.2 mi',
-                    image: 'assets/svg/common/round_yellow.svg'
-                  },
-                  {
-                    title: 'Salary',
-                    value: '$36.854.27',
-                    image: 'assets/svg/common/round_blue.svg'
-                  }
-                ],
-                dataProperties: [
-                  {
-                    defaultConfig: {
-                      type: 'line',
-                      data: [2.3, 2.5, 2.3, 1.6, 2.3, 2.4],
-                      label: 'Salary',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#6D82C7',
-                      pointBackgroundColor: '#FFFFFF',
-                      pointHoverBackgroundColor: '#6D82C7',
-                      pointHoverBorderColor: '#FFFFFF'
-                    }
-                  },
-                  {
-                    defaultConfig: {
-                      type: 'bar',
-                      data: [2.7, 2.8, 2.7, 2.1, 2.7, 2.6],
-                      label: 'Miles',
-                      yAxisID: 'y-axis-0',
-                      borderColor: '#FFCC80',
-                      backgroundColor: '#FFCC80',
-                      hoverBackgroundColor: '#FFA726',
-                      hasGradiendBackground: true,
-                      colors: ['rgba(128, 203, 186, 1)', 'rgba(255, 204, 128, 1)']
-                    }
-                  }
-                ],
-                showLegend: false,
-                chartValues: [46,755,000, 36.854],
-                defaultType: 'bar',
-                chartWidth: '417',
-                chartHeight: '130',
-                dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
-                noChartImage: 'assets/svg/common/yellow_no_data.svg'
-              }"
-              [axesProperties]="{
-                verticalLeftAxes: {
-                  visible: true,
-                  minValue: 1,
-                  maxValue: 3,
-                  stepSize: 0.5,
-                  showGridLines: true
-                },
-                horizontalAxes: {
-                  visible: true,
-                  position: 'bottom',
-                  showGridLines: false
-                }
-              }"
-            >
-            </app-ta-chart>-->
           </div>
         </div>
       </app-ta-custom-card>
@@ -751,6 +625,7 @@
         [cardName]="'Bank Info'"
         [isCardOpen]="false"
         class="item-cards"
+        [customClassHeaderSvg]="true"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
       >
@@ -770,10 +645,11 @@
                 [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver?.routing, 'bankRouting')"
               >
                 <svg-icon
-                  (click)="copyText(driver?.routing, 'bankRouting')"
+                  (mouseleave)="copiedBankRouting = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -788,34 +664,26 @@
             >
               <div class="purchase-template-item-value">
                 {{
-                  accountText
-                    ? accountText
-                    : hiddenPassword(
-                        driver.account ? driver.account : "No account",
-                        4
-                      )
+                  driver.account | hideAccount: "account":isAccountVisibleDriver
                 }}
               </div>
               <span
                 *ngIf="driver.account !== null"
                 tooltipBackground="#6c6c6c"
                 ngbTooltip
+                [autoClose]="false"
                 [mainTooltip]="
-                  isAccountVisible
+                  isAccountVisibleDriver
                     ? 'Hide Account Number'
                     : 'Show Account Number'
                 "
                 position="top"
+                (click)="isAccountVisibleDriver = !isAccountVisibleDriver"
               >
                 <svg-icon
                   class="hidden-svg-eye"
-                  (click)="
-                    showHideValue(
-                      driver.account ? driver.account : 'No account'
-                    )
-                  "
                   src="{{
-                    isAccountVisible
+                    isAccountVisibleDriver
                       ? 'assets/svg/common/ic_eye-visible.svg'
                       : 'assets/svg/common/ic_eye-hidden.svg'
                   }}"
@@ -828,16 +696,11 @@
                 [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
                 position="top"
                 class="tooltip-ein"
+                [autoClose]="false"
                 (click)="copyText(driver.account, 'bankAcc')"
               >
                 <svg-icon
-                  *ngIf="driver?.account !== null"
-                  (click)="
-                    copyText(
-                      driver.account ? driver.account : 'No account',
-                      'bankAcc'
-                    )
-                  "
+                  (mouseleave)="copiedBankAccount = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -860,7 +723,7 @@
             !driver.emergencyContactName ||
             !driver.emergencyContactPhone
           "
-          class="no-driver"
+          class="no-data-driver-details"
         >
           No Contact
         </div>
@@ -891,10 +754,11 @@
                 ngbTooltip
                 [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
                 position="top"
+                [autoClose]="false"
                 (click)="copyText(driver.emergencyContactPhone, 'phone')"
               >
                 <svg-icon
-                  (click)="copyText(driver.emergencyContactPhone, 'phone')"
+                  (mouseleave)="copiedPhone = false"
                   class="card-icon"
                   src="assets/svg/common/ic_copy.svg"
                 ></svg-icon>
@@ -931,14 +795,13 @@
           [hasCounter]="driver.cdls.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('CDL')"
         >
-          <div
-            *ngFor="let cdl of driver.cdls; let i = index; trackBy: identity"
-          >
+          <div *ngFor="let cdl of dataCDl; let i = index; trackBy: identity">
             <app-ta-re-card
               [options]="dataTest"
               [cardDocumentCounter]="6"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i, 'cdl')"
               [cardNameCommon]="cdl?.cdlNumber"
               [expDateClose]="cdl?.expDate | formatDateP"
               [hasCopyIcon]="true"
@@ -948,14 +811,14 @@
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
               (dropActions)="optionsEvent($event, 'edit-licence')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
-                   [ngClass]="{'card-row-issued':cdl.dateDeactivated}"
+                    [ngClass]="{ 'card-row-issued': cdl.dateDeactivated }"
                     class="card-restriction-endorsment card-restriction-class"
                   >
-                   
                     <div class="card-restriction">
                       <div class="restriction-name">Class</div>
                       <div class="restriction-item-value">
@@ -976,7 +839,9 @@
                     </div>
                   </div>
                   <div
-                    [ngClass]="{ 'card-restriction-endorsment': !toggler[i] }"
+                    [ngClass]="{
+                      'card-restriction-endorsment': !toggler[i + 'cdl']
+                    }"
                   >
                     <div class="card-restriction">
                       <p class="restriction-name">Restriction</p>
@@ -989,7 +854,7 @@
                           "
                         >
                           <span class="value-name">{{ rest?.code }}</span>
-                          <span class="desc" *ngIf="toggler[i]"
+                          <span class="desc" *ngIf="toggler[i + 'cdl']"
                             >- {{ rest?.description }}
                           </span>
                         </p>
@@ -1018,7 +883,7 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'cdl'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -1029,9 +894,25 @@
                       >
                       </app-truckassist-progress-expiration>
                     </div>
+                    <div
+                      *ngIf="cdl.dateDeactivated && cdl.showButton"
+                      class="activate-button"
+                      [ngClass]="{ 'activate-button-card': templateCard }"
+                    >
+                      Activate
+                    </div>
+                    <div
+                      *ngIf="!cdl.showButton"
+                      [ngClass]="{ 'activate-button-card': templateCard }"
+                      class="activate-button"
+                    >
+                      Renew
+                    </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
 
                   <div class="details-document-container">
@@ -1054,7 +935,7 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <!-- <app-ta-files
                       [files]="[
                         {
                           fileName: 'truckassist0',
@@ -1080,7 +961,7 @@
                       [fileType]="'multiple-pdf'"
                       [customClassName]="'driver-details-multiple-pdf'"
                     >
-                    </app-ta-files>
+                    </app-ta-files> -->
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1113,6 +994,7 @@
           [hasCounter]="driver.tests.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('DrugAlcohol')"
         >
           <div
             *ngFor="let test of driver.tests; let i = index; trackBy: identity"
@@ -1120,17 +1002,22 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardNameCommon]="test?.testingDate | formatDateP"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i, 'tests')"
               [optionsId]="test.id"
               [weeklyWidth]="'18'"
               [cardSecondName]="test?.testReason.name"
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
               (dropActions)="optionsEvent($event, 'edit-drug')"
+              [setPositionDrop]="true"
             >
-              <div [ngClass]="{ 'second-progress': toggler[i] }"></div>
+              <div
+                [ngClass]="{ 'second-progress': toggler[i + 'tests'] }"
+              ></div>
               <div class="cards-container">
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'tests'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">
@@ -1210,6 +1097,7 @@
           [hasCounter]="driver.medicals.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('Medical')"
         >
           <div
             *ngFor="
@@ -1223,14 +1111,15 @@
               [cardNameCommon]="med?.issueDate | formatDateP"
               [expDateClose]="med?.expDate | formatDateP"
               [optionsId]="med.id"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i, 'medicals')"
               (dropActions)="optionsEvent($event, 'edit-medical')"
+              [setPositionDrop]="true"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'medicals'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -1242,7 +1131,11 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="
+                    toggler[i + 'medicals'] ? 'true' : 'false'
+                  "
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">
@@ -1323,6 +1216,7 @@
           [hasCounter]="driver.mvrs.length"
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
+          (onActionEvent)="onModalAction('MVR')"
         >
           <div
             *ngFor="let mvr of driver.mvrs; let i = index; trackBy: identity"
@@ -1330,17 +1224,18 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardDocumentCounter]="6"
-              (resizePage)="toggleResizePage(i)"
+              (resizePage)="toggleResizePage(i, 'mvrs')"
               [cardNameCommon]="mvr?.issueDate | formatDateP"
               [expDateClose]="mvr?.issueDate | formatDateP"
               [optionsId]="mvr.id"
+              [setPositionDrop]="true"
               (dropActions)="optionsEvent($event, 'edit-mvr')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'mvrs'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -1352,7 +1247,9 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'mvrs'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">

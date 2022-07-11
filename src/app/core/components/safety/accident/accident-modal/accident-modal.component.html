@@ -2,23 +2,17 @@
   [modalTitle]="editData ? 'Edit Accident' : 'Add Accident'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="accidentForm.valid"
-  [customClass]="'modal-container-L'"
+  [isModalValid]="editData ? accidentForm.valid && isDirty : accidentForm.valid"
+  [customClass]="'modal-container-XL'"
   [disableDelete]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
-  >
-  </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher> -->
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="accidentForm"
@@ -488,9 +482,10 @@
           [isCardOpen]="documents.length"
         >
           <app-ta-modal-upload
-            [files]="[]"
+            [files]="documents"
             [modalSize]="'modal-large'"
-            (onFileEvent)="onFilesEvent($event, 'documents')"
+            [dropZoneConfig]="dropZoneConfigFile"
+            (onFileEvent)="onFilesEvent($event)"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
 
@@ -500,9 +495,10 @@
           [isCardOpen]="media.length"
         >
           <app-ta-modal-upload
-            [files]="[]"
+            [files]="media"
             [modalSize]="'modal-large'"
-            (onFileEvent)="onFilesEvent($event, 'media')"
+            [dropZoneConfig]="dropZoneConfigMedia"
+            (onFileEvent)="onFilesEvent($event)"
           ></app-ta-modal-upload>
         </app-ta-custom-card>
 

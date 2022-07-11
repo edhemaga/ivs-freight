@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
   [editName]="editData?.id"
-  [isModalValid]="taskForm.valid"
+  [isModalValid]="editData ? taskForm.valid && isDirty : taskForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="taskForm" class="form-container">
@@ -15,7 +15,7 @@
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: true
+            autoFocus: editData?.type === 'edit' ? false : true
           }"
         ></app-ta-input>
       </div>
@@ -102,11 +102,8 @@
     <app-ta-custom-card
       [hasCounter]="comments.length ? comments.length : '0'"
       [cardName]="'Comment'"
-      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [isCardOpen]="comments.length"
-      [hasBodyData]="comments.length"
-      [hasScrollBody]="comments.length > 6"
-      [isCommentData]="true"
+      [isCardOpen]="false"
+      [disabledCard]="true"
       (onActionEvent)="createComment($event)"
     >
       <div class="no-review-broker" *ngIf="!comments.length">

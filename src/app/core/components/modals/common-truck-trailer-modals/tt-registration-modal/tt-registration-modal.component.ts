@@ -13,12 +13,17 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
   styleUrls: ['./tt-registration-modal.component.scss'],
+  providers: [ModalService, FormService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -27,17 +32,20 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private commonTruckTrailerService: CommonTruckTrailerService,
     private notificationService: NotificationService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    
+
     if (this.editData.type === 'edit-registration') {
       this.getRegistrationById();
     }
@@ -50,6 +58,14 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       licensePlate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.registrationForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -164,7 +180,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event.files;
   }
 
   ngOnDestroy(): void {}

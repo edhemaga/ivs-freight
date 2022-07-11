@@ -20,6 +20,7 @@ import { tab_modal_animation } from '../../shared/animations/tabs-modal.animatio
 import { distinctUntilChanged } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -27,6 +28,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService, FormService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -53,16 +55,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public typeOfEmploye = [
     {
       id: 998,
-      label: 'User',
+      label: 'employe',
       value: 'user',
-      name: 'employe',
+      name: 'User',
       checked: true,
     },
     {
       id: 999,
-      label: 'Admin',
+      label: 'employe',
       value: 'admin',
-      name: 'employe',
+      name: 'Admin',
       checked: false,
     },
   ];
@@ -70,16 +72,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public typeOfPayroll = [
     {
       id: 300,
-      label: '1099',
+      label: 'payroll',
       value: '1099',
-      name: 'payroll',
+      name: '1099',
       checked: true,
     },
     {
       id: 301,
-      label: 'W-2',
-      value: 'w-2',
-      name: 'payroll',
+      label: 'payroll',
+      value: 'W-2',
+      name: 'W-2',
       checked: false,
     },
   ];
@@ -96,10 +98,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   public isBankSelected: boolean = false;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -139,6 +144,14 @@ export class UserModalComponent implements OnInit, OnDestroy {
       accountNumber: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.userForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

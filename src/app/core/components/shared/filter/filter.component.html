@@ -17,13 +17,13 @@ autoClose="outside"
         <div class="filter-header">
             <div class="user-filter-box">4</div>
             <div class="user-title-text">User Filter</div>
-            <div class="close">
+            <div class="close" (click)="t2.close()">
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
         </div>
         <div class="border-filter"></div>
         <div class="search-holder">
-            <input class="search-user-holder" type="text" placeholder="Search User"/>
+            <input (keyup)="filterUser($event)" class="search-user-holder" type="text" placeholder="Search User"/>
             <div class="search-icons">
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
             </div>
@@ -47,17 +47,20 @@ autoClose="outside"
         </div>
         <div *ngIf="selectedUser.length > 0" class="border-filter"></div>
         <div class="user-holder">
-            <div *ngFor="let item of unselectedUser; let indx=index" (click)="addToSelectedUser(item, indx)" class="user-frame">{{item.name}}</div>
+            <div *ngFor="let item of unselectedUser; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-frame">{{item.name}}</div>
+            </div>
+            
         </div>
         <div class="border-filter"></div>
         <div class="buttons-holder">
             <div (click)="clearAll()" class="button-clear">Clear All</div>
-            <div class="button-set">Set</div>
+            <div class="button-set" [class.active]="selectedUser.length > 0">Set</div>
         </div>
     </div>
     <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
         <div class="time-header">Time Filter
-            <div class="close">
+            <div class="close" (click)="t2.close()">
                 <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
         </div>

@@ -76,12 +76,36 @@
     color: #6c6c6c;
   }
 
+  &.hidden-label {
+    display: none !important;
+  }
+
   //------------------------- Custom class -------------------------
-  &.input-big {
+  &.input-32 {
     top: 7px;
 
     &.up-label {
       top: -19px;
     }
+  }
+
+  &.input-30 {
+    top: 6px;
+
+    &.up-label {
+      top: -17px;
+    }
+  }
+
+  &.regular {
+    font-weight: 400;
+  }
+
+  &.load-adjusted-rate {
+    color: #ffa726 !important;
+  }
+
+  &.load-advance-rate {
+    color: #26a690 !important;
   }
 }

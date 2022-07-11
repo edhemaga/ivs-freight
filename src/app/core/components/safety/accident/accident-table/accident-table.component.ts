@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -197,9 +196,8 @@ export class AccidentTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(AccidentModalComponent, { size: 'large' });
-    } 
-    else if (event.action === 'tab-selected') {
+      this.modalService.openModal(AccidentModalComponent, { size: 'large-xl' });
+    } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccidentData(event.tabData);
     }
@@ -210,7 +208,7 @@ export class AccidentTableComponent implements OnInit {
       case 'edit-accident': {
         this.modalService.openModal(
           AccidentModalComponent,
-          { size: 'large' },
+          { size: 'large-xl' },
           { id: 21, type: 'edit' }
         );
       }

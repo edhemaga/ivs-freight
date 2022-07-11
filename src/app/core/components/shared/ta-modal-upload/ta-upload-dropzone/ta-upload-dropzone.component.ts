@@ -13,7 +13,12 @@ export interface DropZoneConfig {
   dropZoneSvg: string;
   dropZoneAvailableFiles: string;
   multiple: boolean;
+  globalDropZone?: boolean;
 }
+
+// FILES: assets/svg/common/ic_modal_upload_dropzone.svg
+// IMAGE: image/gif, image/jpeg, image/jpg, image/png
+// MEDIA: video/mp4,video/x-m4v,video/*
 
 @Component({
   selector: 'app-ta-upload-dropzone',
@@ -25,10 +30,11 @@ export class TaUploadDropzoneComponent {
   private files: UploadFile[] = [];
 
   @Input() dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'files', // files | logo
-    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
+    globalDropZone: false,
   };
 
   @Input() disableUnsupportedPreview: boolean = false; // only for modals upload
@@ -41,6 +47,8 @@ export class TaUploadDropzoneComponent {
     value: boolean;
   }>();
 
+  public textChangeOverModal: boolean = false;
+
   public unSupporetedType: boolean = false;
   public supportedExtensions: string[] = [];
 
@@ -48,6 +56,7 @@ export class TaUploadDropzoneComponent {
     evt.preventDefault();
     evt.stopPropagation();
     this.onDropBackground.emit({ action: 'dragover', value: true });
+    this.textChangeOverModal = true;
   }
 
   @HostListener('dragleave', ['$event'])
@@ -55,6 +64,7 @@ export class TaUploadDropzoneComponent {
     evt.preventDefault();
     evt.stopPropagation();
     this.onDropBackground.emit({ action: 'dragleave', value: false });
+    this.textChangeOverModal = false;
   }
 
   @HostListener('drop', ['$event'])
@@ -64,6 +74,7 @@ export class TaUploadDropzoneComponent {
     this.onDropBackground.emit({ action: 'drop', value: false });
 
     await this.onFileUpload(evt.dataTransfer.files);
+    this.textChangeOverModal = false;
   }
 
   public async onFileUpload(files: FileList) {

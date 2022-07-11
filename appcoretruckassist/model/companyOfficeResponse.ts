@@ -25,5 +25,7 @@ export interface CompanyOfficeResponse {
     rent?: number | null;
     monthlyDay?: EnumValue;
     departmentContacts?: Array<CompanyOfficeDepartmentContactResponse> | null;
+    createdAt?: string;
+    updatedAt?: string;
 }
 

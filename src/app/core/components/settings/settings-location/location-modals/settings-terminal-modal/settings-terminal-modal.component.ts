@@ -11,12 +11,14 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 import { debounceTime } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-settings-terminal-modal',
   templateUrl: './settings-terminal-modal.component.html',
   styleUrls: ['./settings-terminal-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService, FormService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -94,11 +96,14 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isWarehousePhoneExtExist: boolean = false;
   public isFuelStationPhoneExtExist: boolean = false;
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -146,6 +151,14 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       payPeriod: [null],
       day: [null],
     });
+
+    this.formService.checkFormChange(this.terminalForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -410,6 +423,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.terminalForm.get('fullParkingSlot')
         );
       });
+  }
+
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'pay-period': {
+        this.selectedPayPeriod = event;
+        break;
+      }
+      case 'day': {
+        this.selectedDay = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 
   private updateTerminal(id: number) {}

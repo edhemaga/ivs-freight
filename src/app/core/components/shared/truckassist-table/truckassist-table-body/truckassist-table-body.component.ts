@@ -11,7 +11,6 @@ import {
   OnInit,
   Output,
   SimpleChanges,
-  ViewEncapsulation,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -21,7 +20,6 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
   styleUrls: ['./truckassist-table-body.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
@@ -29,9 +27,10 @@ export class TruckassistTableBodyComponent
 {
   @Input() viewData: any[];
   @Input() columns: any[];
-  @Input() options: any[];
+  @Input() options: any;
   @Input() tableData: any[];
   @Input() selectedTab: string;
+  @Input() tableContainerWidth: number;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
@@ -40,6 +39,15 @@ export class TruckassistTableBodyComponent
   decryptedPassword: any[] = [];
   actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
+  hoverActive: number = -1;
+  activeTableData: any = {};
+  notPinedMaxWidth: number = 0;
+  /* Dropdown */
+  dropContent: any[] = [];
+  tooltip: any;
+  dropDownActive: number = -1;
+  /* Progress */
+  progressData: any[] = [];
 
   constructor(
     private router: Router,
@@ -48,6 +56,12 @@ export class TruckassistTableBodyComponent
   ) {}
 
   ngOnInit(): void {
+    // Get Selected Tab Data
+    this.getSelectedTabTableData();
+
+    // Set Dropdown Content
+    this.setDropContent();
+
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
       .pipe(untilDestroyed(this))
@@ -69,25 +83,6 @@ export class TruckassistTableBodyComponent
           this.tableService.sendRowsSelected(this.mySelection);
 
           this.changeDetectorRef.detectChanges();
-        }
-      });
-
-    // Rezaize
-    this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.event?.width) {
-          this.columns = this.columns.map((c) => {
-            if (c.title === response.columns[response.event.index].title) {
-              c.width = response.event.width;
-            }
-
-            return c;
-          });
-
-          this.changeDetectorRef.detectChanges();
-
-          this.checkForScroll();
         }
       });
 
@@ -144,8 +139,15 @@ export class TruckassistTableBodyComponent
       this.viewData = changes.viewData.currentValue;
     }
 
-    if (!changes?.tableData?.firstChange && changes?.tableData) {
-      this.tableData = changes.tableData.currentValue;
+    if (!changes?.viewData?.firstChange && changes?.viewData) {
+      this.viewData = changes.viewData.currentValue;
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      this.getNotPinedMaxWidth(true);
     }
 
     if (
@@ -155,11 +157,7 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
-      this.changeDetectorRef.detectChanges();
-
-      setTimeout(() => {
-        this.checkForScroll();
-      }, 10);
+      this.getNotPinedMaxWidth(true);
     }
 
     if (
@@ -169,10 +167,14 @@ export class TruckassistTableBodyComponent
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
+
+      this.getSelectedTabTableData();
     }
   }
 
   ngAfterViewInit(): void {
+    this.getNotPinedMaxWidth();
+
     setTimeout(() => {
       this.checkForScroll();
     }, 10);
@@ -185,13 +187,39 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  getNotPinedMaxWidth(checkScroll?: boolean) {
+    if (this.viewData.length) {
+      const tableContainer = document.querySelector('.table-container');
+      const pinedColumns = document.querySelector('.pined-tr');
+      const actionColumns = document.querySelector('.actions');
+
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth -
+        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        6;
+
+      if (checkScroll) {
+        const div = document.getElementById('scroll-container');
+        if (div) {
+          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+        }
+      }
+    }
+  }
+
+  getSelectedTabTableData() {
+    if (this.tableData?.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
+    }
+  }
+
   checkForScroll() {
     const div = document.getElementById('scroll-container');
 
     if (div) {
       this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-      this.tableService.sendShowingScroll(this.showScrollSectionBorder);
 
       this.changeDetectorRef.detectChanges();
     }
@@ -209,10 +237,6 @@ export class TruckassistTableBodyComponent
 
   saveNote(note: string, row: any) {
     alert('Treba da se odradi servis za slanje note-a');
-  }
-
-  onDropAction(event: any) {
-    this.bodyActions.emit(event);
   }
 
   public onSelectItem(event: any, index: number): void {
@@ -243,6 +267,39 @@ export class TruckassistTableBodyComponent
     this.loadingPassword = index;
   }
 
+  // --------------------------------DROPDOWN---------------------------------
+  /* Set Dropdown Content */
+  setDropContent() {
+    if (this.options.actions.length) {
+      for (let i = 0; i < this.options.actions.length; i++) {
+        this.dropContent.push(this.options.actions[i]);
+      }
+    }
+  }
+
+  /* Toggle Dropdown */
+  toggleDropdown(tooltip: any, id: number) {
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.dropContent });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? id : -1;
+  }
+
+  /* Dropdown Actions */
+  onDropAction(action: any) {
+    this.bodyActions.emit({
+      id: this.dropDownActive,
+      type: action.name,
+    });
+
+    this.tooltip.close();
+  }
+
+  // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendRowsSelected([]);
   }

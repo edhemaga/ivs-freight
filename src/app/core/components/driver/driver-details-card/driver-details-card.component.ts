@@ -1,12 +1,12 @@
 import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
 import {
+  ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
@@ -21,9 +21,12 @@ import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DriversQuery } from '../state/driver.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -36,7 +39,7 @@ export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @Input() driver: any;
-
+  @Input() templateCard: boolean;
   public note: FormControl = new FormControl();
   public copiedPhone: boolean = false;
   public copiedBankRouting: boolean = false;
@@ -45,7 +48,7 @@ export class DriverDetailsCardComponent
   public copiedSSN: boolean = false;
   public copiedDriverPhone: boolean = false;
   public copiedDriverEmail: boolean = false;
-  public isAccountVisible: boolean = true;
+  public isAccountVisibleDriver: boolean = false;
   public accountText: string = null;
   public toggler: boolean[] = [];
   public dataTest: any;
@@ -64,35 +67,95 @@ export class DriverDetailsCardComponent
   public cdlNote1: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public dropData: any;
-  public dataProggress:any;
-  @Input() templateCard: boolean;
+  public dataProggress: any;
+
   public hideArrow: boolean;
+  public expDateCard: boolean;
   // Driver Dropdown
   public driversDropdowns: any[] = [];
-  // public driver_active_id: number = +this.activated_route.snapshot.params['id'];
-  public driversList: any[] = this.driversQuery.getAll();
+  public driversList: any[] = this.driverMinimalQuery.getAll();
+  public dataCDl: any;
+
+  public driverOwner:boolean;
+  public barChartLegend: any[] = [
+    {
+      title: 'Miles',
+      value: '46,755.2',
+      image: 'assets/svg/common/round_yellow.svg',
+      sufix: 'mi',
+      elementId: 1,
+    },
+    {
+      title: 'Salary',
+      value: '36.854.27',
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 0,
+    },
+  ];
+
+  public barAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 4000,
+      stepSize: 1000,
+      showGridLines: true,
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 2800,
+      stepSize: 700,
+      showGridLines: false,
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false,
+    },
+  };
 
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversQuery: DriversActiveQuery,
     private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private clipboar: Clipboard,
+    private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService,
+    private driverMinimalQuery:DriversMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges) {
-    this.getYearsAndDays(changes.driver.currentValue);
+    if (!changes?.driver?.firstChange && changes?.driver) {
+      this.note.patchValue(changes.driver.currentValue.note);
+      this.getExpireDate(changes.driver.currentValue);
+      this.getYearsAndDays(changes.driver.currentValue);
       this.widthOfProgress();
-    this.templateCard;
-    if (this.templateCard == true) {
-      this.hideArrow = true;
-    } else {
-      this.hideArrow = false;
+      this.getDriversDropdown()
+    }
+    if (changes?.driver?.firstChange) {
+      if (this.templateCard == true) {
+        this.hideArrow = true;
+      } else {
+        this.hideArrow = false;
+      }
     }
   }
-  
-  ngOnInit(): void {
 
+  ngOnInit(): void { 
+    this.note.patchValue(this.driver.note)
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.driver = res.data;
+          this.getExpireDate(res.data);
+          this.cdRef.detectChanges();
+        }
+      });
     if (this.templateCard == true) {
       this.hideArrow = true;
     } else {
@@ -103,7 +166,7 @@ export class DriverDetailsCardComponent
     this.getDriversDropdown();
     this.tabsButton();
     this.getYearsAndDays(this.driver);
-    this.widthOfProgress()
+    this.widthOfProgress();
   }
 
   /**Function return user image if have in DB or default image */
@@ -116,7 +179,7 @@ export class DriverDetailsCardComponent
     }
     return this.sanitazer.bypassSecurityTrustResourceUrl(img);
   }
-  public tabsButton(){
+  public tabsButton() {
     this.tabsDriver = [
       {
         id: 223,
@@ -149,8 +212,8 @@ export class DriverDetailsCardComponent
     ];
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number) {
-    this.toggler[value] = !this.toggler[value];
+  public toggleResizePage(value: number, indexName:string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   public changeTab(ev: any) {
     this.selectedTab = ev.id;
@@ -213,94 +276,41 @@ export class DriverDetailsCardComponent
   }
 
   /* To copy any Text */
-  public copyText(val: any, copVal: string) {
-    switch (copVal) {
+  public copyText(val: any, copyVal: string) {
+    switch (copyVal) {
       case 'phone':
         this.copiedPhone = true;
-        setTimeout(() => {
-          this.copiedPhone = false;
-        }, 2100);
         break;
 
       case 'bankAcc':
         this.copiedBankAccount = true;
-        setTimeout(() => {
-          this.copiedBankAccount = false;
-        }, 2100);
         break;
 
       case 'bankRouting':
         this.copiedBankRouting = true;
-        setTimeout(() => {
-          this.copiedBankRouting = false;
-        }, 2100);
         break;
 
       case 'ein':
         this.copiedEin = true;
-        setTimeout(() => {
-          this.copiedEin = false;
-        }, 2100);
         break;
 
       case 'ssn':
         this.copiedSSN = true;
-        setTimeout(() => {
-          this.copiedSSN = false;
-        }, 2100);
         break;
 
       case 'driver-phone':
         this.copiedDriverPhone = true;
-        setTimeout(() => {
-          this.copiedDriverPhone = false;
-        }, 2100);
         break;
       case 'driver-email':
         this.copiedDriverEmail = true;
-        setTimeout(() => {
-          this.copiedDriverEmail = false;
-        }, 2100);
         break;
     }
-
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    // selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
-  }
-
-  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
-    const lastFourCharaters = value.substring(
-      value.length - numberOfCharacterToHide
-    );
-    let hiddenCharacter = '';
-
-    for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
-    }
-    return hiddenCharacter + lastFourCharaters;
-  }
-
-  public showHideValue(value: string) {
-    this.isAccountVisible = !this.isAccountVisible;
-    if (!this.isAccountVisible) {
-      this.accountText = this.hiddenPassword(value, 4);
-      return;
-    }
-    this.accountText = value;
+    this.clipboar.copy(val);
   }
 
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   /**Function for dots in cards */
@@ -391,6 +401,64 @@ export class DriverDetailsCardComponent
     };
   }
 
+  public getExpireDate(data: DriverResponse) {
+    this.dataCDl = data.cdls.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment())) {
+        this.expDateCard = false;
+      } else {
+        this.expDateCard = true;
+      }
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
+    });
+  }
+
+  public onModalAction(action: string): void {
+    if (action.includes('Drug')) {
+      action = 'DrugAlcohol';
+    }
+    switch (action) {
+      case 'CDL': {
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-licence' }
+        );
+        break;
+      }
+      case 'DrugAlcohol': {
+        this.modalService.openModal(
+          DriverDrugAlcoholModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-drug' }
+        );
+
+        break;
+      }
+      case 'Medical': {
+        this.modalService.openModal(
+          DriverMedicalModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-medical' }
+        );
+        break;
+      }
+      case 'MVR': {
+        this.modalService.openModal(
+          DriverMvrModalComponent,
+          { size: 'small' },
+          { id: this.driver.id, type: 'new-mvr' }
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public widthOfProgress() {
     let arrMinDate = [];
     let arrMaxDate = [];
@@ -404,30 +472,25 @@ export class DriverDetailsCardComponent
           };
         })
       );
-      console.log(sum);
-      this.dataProggress = this.driver.employmentHistories.map(
-        (element) => {
-          let res = element.duration.Years * 365.25 + element.duration.Days;
-          this.activePercentage = (res / sum) * 100;
-          let dates = moment(element.startDate)
-            .min(element.startDate)
-            .format('MM/DD/YY');
-          let endDate = moment(element.endDate)
-            .max(element.endDate)
-            .format('MM/DD/YY');
-          arrMinDate.push(new Date(dates));
-          arrMaxDate.push(new Date(endDate));
-          let deactivate = element.isDeactivate;
-          dateDeactivate.push(deactivate);
-          return {
-            ...element,
-            activePercentage: this.activePercentage.toFixed(1),
-          };
-        }
-      
-        
-      );
-      
+      this.dataProggress = this.driver.employmentHistories.map((element) => {
+        let res = element.duration.Years * 365.25 + element.duration.Days;
+        this.activePercentage = (res / sum) * 100;
+        let dates = moment(element.startDate)
+          .min(element.startDate)
+          .format('MM/DD/YY');
+        let endDate = moment(element.endDate)
+          .max(element.endDate)
+          .format('MM/DD/YY');
+        arrMinDate.push(new Date(dates));
+        arrMaxDate.push(new Date(endDate));
+        let deactivate = element.isDeactivate;
+        dateDeactivate.push(deactivate);
+        return {
+          ...element,
+          activePercentage: this.activePercentage.toFixed(1),
+        };
+      });
+
       let dateRes = moment(new Date(Math.min.apply(null, arrMinDate))).format(
         'MM/DD/YY'
       );
@@ -448,7 +511,7 @@ export class DriverDetailsCardComponent
     }
   }
 
-  public getYearsAndDays(data:any) {
+  public getYearsAndDays(data: any) {
     let sum = 0;
     let sum2 = 0;
     if (data.employmentHistories) {
@@ -474,24 +537,27 @@ export class DriverDetailsCardComponent
     this.showTooltip = true;
   }
   public getDriversDropdown() {
-    this.driversDropdowns = this.driversQuery.getAll().map((item) => {
-      return {
-        id: item.id,
-        name: item.fullName,
-        status: item.status,
-        svg: item.owner ? 'driver-owner' : null,
-        folder: 'common',
-        active: item.id === this.driver.id,
-      };
-    });
+      this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
+        
+        let fullname=item.firstName + ' ' + item.lastName        
+        return {
+          id: item.id,
+          name: fullname ,
+          status: item.status,
+          svg:item.owner ? 'driver-owner' : null,
+          folder: 'common',
+          active: item.id === this.driver.id,
+        };
+      });   
   }
 
   public onSelectedDriver(event: any) {
     if (event.id !== this.driver.id) {
-      this.driversDropdowns = this.driversQuery.getAll().map((item) => {
+      this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
+        let fullname=item.firstName + ' ' + item.lastName
         return {
           id: item.id,
-          name: item.fullName,
+          name:fullname,
           status: item.status,
           svg: item.owner ? 'driver-owner' : null,
           folder: 'common',
@@ -503,16 +569,14 @@ export class DriverDetailsCardComponent
   }
 
   public onChangeDriver(action: string) {
- 
-    let currentIndex = this.driversList
-      .map((driver) => driver.id)
-      .indexOf(this.driver.id);
+    let currentIndex = this.driversList.findIndex(
+      (driver) => driver.id === this.driver.id
+    );
+
     switch (action) {
       case 'previous': {
-
         currentIndex = --currentIndex;
         if (currentIndex != -1) {
-      
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );
@@ -521,11 +585,8 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'next': {
-      
-
         currentIndex = ++currentIndex;
         if (currentIndex !== -1 && this.driversList.length > currentIndex) {
-         
           this.detailsPageDriverSer.getDataDetailId(
             this.driversList[currentIndex].id
           );
@@ -539,5 +600,7 @@ export class DriverDetailsCardComponent
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

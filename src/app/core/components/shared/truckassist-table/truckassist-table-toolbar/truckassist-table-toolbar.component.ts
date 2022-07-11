@@ -2,13 +2,12 @@ import {
   Component,
   Input,
   OnInit,
-  ViewEncapsulation,
   OnChanges,
   SimpleChanges,
   Output,
   EventEmitter,
   OnDestroy,
-  ChangeDetectionStrategy,
+  AfterViewInit,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -16,20 +15,21 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 @Component({
   selector: 'app-truckassist-table-toolbar',
   templateUrl: './truckassist-table-toolbar.component.html',
-  styleUrls: ['./truckassist-table-toolbar.component.scss'],
-  encapsulation: ViewEncapsulation.None,
+  styleUrls: ['./truckassist-table-toolbar.component.scss']
 })
 export class TruckassistTableToolbarComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
   @Input() options: any;
   @Input() selectedTab: string;
   @Input() columns: any[];
+  @Input() tableContainerWidth: number;
   listName: string = '';
   optionsPopup: any;
   optionsPopupOpen: boolean = false;
+  tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
       text: 'Unlock table',
@@ -69,10 +69,14 @@ export class TruckassistTableToolbarComponent
     },
   ];
   tableRowsSelected: any[] = [];
+  activeTableData: any = {};
+  toolbarWidth: string = '';
 
   constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
+    this.getSelectedTabTableData();
+
     // Columns Reorder
     this.tableService.currentColumnsOrder
       .pipe(untilDestroyed(this))
@@ -96,11 +100,6 @@ export class TruckassistTableToolbarComponent
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.tableRowsSelected = response;
-
-        console.log('Tabke Row Selected In Toolbar');
-        console.log(this.tableRowsSelected);
-
-        /* this.changeDetectorRef.detectChanges(); */
       });
   }
 
@@ -109,12 +108,25 @@ export class TruckassistTableToolbarComponent
       this.options = changes.options.currentValue;
     }
 
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      setTimeout(() => {
+        this.getToolbarWidth();
+      }, 10);
+    }
+
     if (!changes?.tableData?.firstChange && changes?.tableData) {
       this.tableData = changes.tableData.currentValue;
+
+      this.getSelectedTabTableData();
     }
 
     if (!changes?.columns?.firstChange && changes?.columns) {
       this.columns = changes.columns.currentValue;
+
+      this.getToolbarWidth();
     }
 
     if (changes?.selectedTab) {
@@ -123,6 +135,34 @@ export class TruckassistTableToolbarComponent
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
       this.listName = td.gridNameTitle;
+    }
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.getToolbarWidth();
+    }, 10);
+  }
+
+  getToolbarWidth() {
+    const pinedColumns = document.querySelector('.pined-tr');
+    const notPinedColumns = document.querySelector('.not-pined-tr');
+    const actionColumns = document.querySelector('.actions');
+
+    const border = document.querySelector('.table-select-border');
+
+    if (
+      pinedColumns?.clientWidth &&
+      notPinedColumns?.clientWidth &&
+      actionColumns?.clientWidth
+    ) {
+      let borderWidth = border ? 6 : 0;
+      this.toolbarWidth =
+        pinedColumns.clientWidth +
+        notPinedColumns.clientWidth +
+        actionColumns.clientWidth +
+        borderWidth +
+        'px';
     }
   }
 
@@ -146,8 +186,16 @@ export class TruckassistTableToolbarComponent
     });
   }
 
-  deleteSelectedRows(){
+  deleteSelectedRows() {
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
+  }
+
+  getSelectedTabTableData() {
+    if (this.tableData.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
+    }
   }
 
   onShowOptions(optionsPopup: any) {
@@ -164,7 +212,17 @@ export class TruckassistTableToolbarComponent
   }
 
   onOptions(action: any) {
-    if (action.text === 'Unlock table') {
+    if (action.text === 'Unlock table' || action.text === 'Lock table') {
+      this.tableLocked = !this.tableLocked;
+
+      this.optionsPopupContent[0].text = this.tableLocked
+        ? 'Unlock table'
+        : 'Lock table';
+
+      this.optionsPopupContent[0].svgPath = this.tableLocked
+        ? 'assets/svg/truckassist-table/lock.svg'
+        : 'assets/svg/truckassist-table/unlocked-table.svg';
+
       this.tableService.sendUnlockTable({
         toaggleUnlockTable: true,
       });

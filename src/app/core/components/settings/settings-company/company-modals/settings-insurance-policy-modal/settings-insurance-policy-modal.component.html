@@ -4,7 +4,9 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="insurancePolicyForm.valid"
+  [isModalValid]="
+    editData ? insurancePolicyForm.valid && isDirty : insurancePolicyForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="insurancePolicyForm" class="form-container">
@@ -18,7 +20,7 @@
             label: 'Producer Name',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: true
+            autoFocus: editData?.type === 'edit' ? false : true
           }"
         ></app-ta-input>
       </div>
@@ -171,7 +173,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'commercial')"
+                [activeItem]="selectedCommericalRating"
+                (selectedItem)="onSelectDropdown($event, 'commercial')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -328,7 +331,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'automobile')"
+                [activeItem]="selectedAutomobileRating"
+                (selectedItem)="onSelectDropdown($event, 'automobile')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -466,7 +470,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'motor')"
+                [activeItem]="selectedMotorRating"
+                (selectedItem)="onSelectDropdown($event, 'motor')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -568,7 +573,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'physical damage')"
+                [activeItem]="selectedPhysicalDamageRating"
+                (selectedItem)="onSelectDropdown($event, 'physical damage')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -670,7 +676,8 @@
                   dropdownWidthClass: 'w-col-3'
                 }"
                 [options]="[]"
-                (selectedItem)="onSelectRating($event, 'trailer interchange')"
+                [activeItem]="selectedTrailerRating"
+                (selectedItem)="onSelectDropdown($event, 'trailer interchange')"
               ></app-ta-input-dropdown>
             </div>
           </div>
@@ -699,7 +706,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

@@ -9,61 +9,67 @@ import { TrailerTService } from '../state/trailer.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
+import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
   styleUrls: ['./trailer-details.component.scss'],
-  providers:[DetailsPageService]
+  providers: [DetailsPageService],
 })
-export class TrailerDetailsComponent implements OnInit,OnDestroy {
+export class TrailerDetailsComponent implements OnInit, OnDestroy {
   public trailerDetailsConfig: any[] = [];
-  
+  public trailerId: number = null;
+  public dataHeaderDropDown: any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
-    private trailerService:TrailerTService,
+    private trailerService: TrailerTService,
     private cdRef: ChangeDetectorRef,
-    private router:Router,
+    private router: Router,
     private notificationService: NotificationService,
     private detailsPageDriverSer: DetailsPageService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private trailerDetailsQuery: TrailerDetailsQuery
   ) {}
 
   ngOnInit(): void {
+    this.initTableOptions();
     this.tableService.currentActionAnimation
-    .pipe(untilDestroyed(this))
-    .subscribe((res: any) => {
-      if (res.animation) {
-        this.trailerConf(res.data);
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.trailerConf(res.data);
 
-        this.cdRef.detectChanges();
-      }
-    });
+          this.cdRef.detectChanges();
+        }
+      });
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.trailerService
-          .getTrailerById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: TrailerResponse) => {
-              this.trailerConf(res);
-              this.router.navigate([`/trailer/${res.id}/details`]);
-              this.notificationService.success(
-                'Trailer successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error("Trailer can't be loaded", 'Error:');
-            },
-          });
+        let query;
+        if (this.trailerDetailsQuery.hasEntity(id)) {
+          query = this.trailerDetailsQuery.selectEntity(id);
+        } else {
+          query = this.trailerService.getTrailerById(id);
+        }
+        query.pipe(untilDestroyed(this)).subscribe({
+          next: (res: TrailerResponse) => {
+            this.trailerConf(res);
+            this.router.navigate([`/trailer/${res.id}/details`]);
+            this.notificationService.success(
+              'Trailer successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Trailer can't be loaded", 'Error:');
+          },
+        });
       });
     this.trailerConf(this.activated_route.snapshot.data.trailer);
   }
-
-
 
   trailerConf(data: TrailerResponse) {
     this.trailerDetailsConfig = [
@@ -78,33 +84,124 @@ export class TrailerDetailsComponent implements OnInit,OnDestroy {
         name: 'Registration',
         template: 'registration',
         data: data,
-        length: data.registrations.length,
+        length: data?.registrations?.length ? data.registrations.length : 0,
       },
       {
         id: 2,
         name: 'FHWA Inspection',
         template: 'fhwa-insepction',
         data: data,
-        length: data.inspections.length,
+        length: data?.inspections?.length ? data.inspections.length : 0,
       },
       {
         id: 3,
         name: 'Title',
         template: 'title',
         data: data,
-        length: data.titles.length,
+        length: data?.titles?.length ? data.titles.length : 0,
       },
       {
         id: 4,
         name: 'Lease / Purchase',
         template: 'lease-purchase',
-        length:1,
+        length: 1,
         data: data,
       },
     ];
+    this.trailerId = data?.id ? data.id : null;
   }
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.dataHeaderDropDown = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
+        {
+          title: 'Edit',
+          name: 'edit',
+          class: 'regular-text',
+          contentType: 'edit',
+        },
 
-
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'truck',
+          text: 'Are you sure you want to delete trailer(s)?',
+          class: 'delete-text',
+          contentType: 'delete',
+        },
+      ],
+      export: true,
+    };
+  }
+  public onTrailerActions(event: any) {
+    switch (event.type) {
+      case 'edit': {
+        this.modalService.openModal(
+          TrailerModalComponent,
+          { size: 'small' },
+          {
+            ...event,
+            type: 'edit',
+            disableButton: true,
+            id: this.trailerId,
+          }
+        );
+        break;
+      }
+      case 'delete': {
+        this.trailerService
+          .deleteTrailerById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Trailer successfully deleted',
+                'Success:'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                `Trailer with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
   public onModalAction(action: string): void {
     const truck_id = this.activated_route.snapshot.paramMap.get('id');
     switch (action.toLowerCase()) {
@@ -133,5 +230,5 @@ export class TrailerDetailsComponent implements OnInit,OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy():void{}
+  ngOnDestroy(): void {}
 }

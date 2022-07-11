@@ -4,8 +4,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 @Component({
   selector: 'app-settings-parking',
   templateUrl: './settings-parking.component.html',
-  styleUrls: ['./settings-parking.component.scss']
-  
+  styleUrls: ['./settings-parking.component.scss'],
 })
 export class SettingsParkingComponent implements OnInit {
   public parkingData = [
@@ -32,8 +31,7 @@ export class SettingsParkingComponent implements OnInit {
       address: '5462 N East River Rd apt 611, Chicago, IL 60656,USA',
       parking_slot: 12,
       parking_slot_full: 47,
-      companyOwned:
-        'assets/svg/common/ic_company.svg',
+      companyOwned: 'assets/svg/common/ic_company.svg',
       gate: true,
       security_camera: true,
       rent: '',
@@ -61,8 +59,8 @@ export class SettingsParkingComponent implements OnInit {
 
   ngOnInit() {}
 
-  public onAction(data: { type: boolean; modalName: string; action: string }) {
-    this.settingsStoreService.onModalAction(data);
+  public onAction(modal: { modalName: string; type: string; company?: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

@@ -10,14 +10,19 @@ import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
 @Component({
   selector: 'app-driver-medical-modal',
   templateUrl: './driver-medical-modal.component.html',
   styleUrls: ['./driver-medical-modal.component.scss'],
+  providers: [ModalService],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -28,13 +33,16 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private driverService: DriverTService,
     private inputService: TaInputService,
     private medicalService: MedicalTService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +59,14 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       expDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.medicalForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   private getDriverById(id: number) {
@@ -96,7 +112,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event.files;
   }
 
   private updateMedical(id: number) {

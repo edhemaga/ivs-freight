@@ -2,21 +2,15 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add User' : 'Edit User'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="userForm.valid"
+  [isModalValid]="editData ? userForm.valid && isDirty : userForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
-  >
-  </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher> -->
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form [formGroup]="userForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -32,7 +26,7 @@
                 label: 'First Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -83,8 +77,9 @@
                 name: 'Phone',
                 type: 'text',
                 label: 'Phone',
+                isRequired: true,
                 placeholderIcon: 'phone',
-                thousandSeparator: true
+                mask: '(000) 000-0000'
               }"
             ></app-ta-input>
           </div>
@@ -115,6 +110,7 @@
                   dropdownWidthClass: 'w-col-4-department-user'
                 }"
                 [options]="departments"
+                [activeItem]="selectedDepartment"
                 (selectedItem)="onSelectDropdown($event, 'department')"
               ></app-ta-input-dropdown>
             </div>
@@ -129,14 +125,17 @@
                   dropdownWidthClass: 'w-col-5'
                 }"
                 [options]="offices"
+                [activeItem]="selectedOffice"
                 (selectedItem)="onSelectDropdown($event, 'office')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-3 no-p-left">
-              <app-ta-input-radiobuttons
-                [buttons]="typeOfEmploye"
-                (changedValue)="onTypeOfEmploye($event)"
-              ></app-ta-input-radiobuttons>
+              <app-ta-tab-switch
+                [tabs]="typeOfEmploye"
+                (switchClicked)="onTypeOfEmploye($event)"
+                [type]="'type2-modal-popup'"
+              >
+              </app-ta-tab-switch>
             </div>
           </div>
           <div
@@ -151,8 +150,9 @@
                     name: 'Phone',
                     type: 'text',
                     label: 'Phone',
+                    isRequired: true,
                     placeholderIcon: 'phone',
-                    thousandSeparator: true
+                    mask: '(000) 000-0000'
                   }"
                 ></app-ta-input>
               </div>
@@ -245,10 +245,12 @@
                 ></app-ta-input>
               </div>
               <div class="col-3 no-p-left">
-                <app-ta-input-radiobuttons
-                  [buttons]="typeOfPayroll"
-                  (changedValue)="onTypeOfPayroll($event)"
-                ></app-ta-input-radiobuttons>
+                <app-ta-tab-switch
+                  [tabs]="typeOfPayroll"
+                  (switchClicked)="onTypeOfPayroll($event)"
+                  [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
               </div>
             </div>
             <div
@@ -270,6 +272,7 @@
                   }"
                   [canAddNew]="true"
                   [options]="labelsBank"
+                  [activeItem]="selectedBank"
                   (selectedItem)="onSelectDropdown($event, 'bank')"
                 ></app-ta-input-dropdown>
               </div>

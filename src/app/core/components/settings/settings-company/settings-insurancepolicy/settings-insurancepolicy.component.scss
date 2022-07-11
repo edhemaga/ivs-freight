@@ -1,5 +1,20 @@
 @import "../../settings.global.scss";
-
+@keyframes change {
+  from {
+    color: #6c6c6c;
+  }
+  to {
+    color: #3551b7;
+  }
+}
+@keyframes changeSVG {
+  from {
+    fill: #6c6c6c;
+  }
+  to {
+    fill: #3551b7;
+  }
+}
 .settings-insurancepolicy {
   width: 100%;
   display: grid;
@@ -12,9 +27,10 @@
   }
 }
 .single-item-address{
-    width: 256px;
+    max-width: 310px;
+    white-space: pre-wrap;
     position: relative;
-    top: 12px; 
+    // top: 12px; 
 }
 .insuarance-card-top-container{
   padding: 0 10px;
@@ -69,6 +85,47 @@
           color:  $settings-gray-dark;
           background: rgb(145, 145, 145, 0.2);
       }
+      }
+    }
+  }
+}
+
+.policy-company-wrapper{
+  display: flex;
+  align-items: center;
+  .insurance-copy{
+    cursor: pointer;
+   
+    margin-left: 6px;
+    display: none;
+    svg{
+      &:hover{
+        path{
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+  &:hover{
+    .insurance-copy{
+      display: flex;
+    }
+  }
+}
+.copied{
+  .number-of-policy{
+    animation-duration: 1500ms;
+    animation-name: change;
+  }
+  .insurance-copy{
+    svg {
+      path {
+        animation-duration: 1500ms;
+        animation-name: changeSVG;
+        &:hover {
+          animation-duration: 1500ms;
+          animation-name: changeSVG;
+        }
       }
     }
   }

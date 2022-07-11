@@ -7,8 +7,10 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
+import moment from 'moment';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { distinctUntilChanged } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
@@ -25,6 +27,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
+  providers: [ModalService, FormService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -38,57 +41,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   public labelsBank: any[] = [];
   public selectedBank: any = null;
 
-  public services: any[] = [
-    {
-      id: 1,
-      serviceType: 'Truck',
-      svg: 'assets/svg/common/repair-services/ic_truck.svg',
-      active: false,
-    },
-    {
-      id: 2,
-      serviceType: 'Trailer',
-      svg: 'assets/svg/common/repair-services/ic_trailer.svg',
-      active: false,
-    },
-    {
-      id: 3,
-      serviceType: 'Mobile',
-      svg: 'assets/svg/common/repair-services/ic_mobile.svg',
-      active: false,
-    },
-    {
-      id: 4,
-      serviceType: 'Shop',
-      svg: 'assets/svg/common/repair-services/ic_shop.svg',
-      active: false,
-    },
-    {
-      id: 5,
-      serviceType: 'Towing',
-      svg: 'assets/svg/common/repair-services/ic_towing.svg',
-      active: false,
-    },
-    {
-      id: 6,
-      serviceType: 'Parts',
-      svg: 'assets/svg/common/repair-services/ic_parts.svg',
-      active: false,
-    },
-    {
-      id: 7,
-      serviceType: 'Tire',
-      svg: 'assets/svg/common/repair-services/ic_tire.svg',
-      active: false,
-    },
-    {
-      id: 8,
-      serviceType: 'Dealer',
-      svg: 'assets/svg/common/repair-services/ic_dealer.svg',
-      active: false,
-    },
-  ];
-
+  public services: any[] = [];
   public openHoursDays = [
     'Sunday',
     'Monday',
@@ -99,28 +52,33 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     'Saturday',
   ];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private shopService: RepairTService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.getRepairShopModalDropdowns();
-    
+
     if (this.editData) {
       this.editData = {
         ...this.editData,
-        id: 2,
+        id: 1,
       };
       this.editRepairShopById(this.editData.id);
     }
 
-    for (let i = 0; i < this.openHoursDays.length; i++) {
-      this.addOpenHours(this.openHoursDays[i], i !== 0, i);
+    if (!this.editData) {
+      for (let i = 0; i < this.openHoursDays.length; i++) {
+        this.addOpenHours(this.openHoursDays[i], i !== 0, i);
+      }
     }
   }
 
@@ -140,6 +98,14 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       account: [null],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.repairShopForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -182,19 +148,33 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private createOpenHour(
     day: string,
     isDay: boolean,
-    dayOfWeek: number
+    dayOfWeek: number,
+    startTime: any = moment('8:00:00 AM', 'HH:mm:SS A').toDate(),
+    endTime: any = moment('5:00:00 PM', 'HH:mm:SS A').toDate()
   ): FormGroup {
     return this.formBuilder.group({
       isDay: [isDay],
       dayOfWeek: [dayOfWeek],
       dayLabel: [day],
-      startTime: ['08:00'],
-      endTime: ['05:00'],
+      startTime: [startTime],
+      endTime: [endTime],
     });
   }
 
-  public addOpenHours(day: string, isDay: boolean = false, dayOfWeek: number) {
-    this.openHours.push(this.createOpenHour(day, isDay, dayOfWeek));
+  public addOpenHours(
+    day: string,
+    isDay: boolean = false,
+    dayOfWeek: number,
+    startTime?: any,
+    endTime?: any
+  ) {
+    if (!isDay) {
+      this.openHours.push(this.createOpenHour(day, isDay, dayOfWeek));
+    } else {
+      this.openHours.push(
+        this.createOpenHour(day, isDay, dayOfWeek, startTime, endTime)
+      );
+    }
   }
 
   public removeOpenHour(id: number) {
@@ -304,30 +284,30 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             account: res.account,
             note: res.note,
           });
+
           this.selectedAddress = res.address;
           this.selectedBank = res.bank;
           this.isPhoneExtExist = res.phoneExt ? true : false;
           this.isRepairShopFavourite = res.pinned;
+
           this.services = res.serviceTypes.map((item) => {
             return {
               id: item.serviceType.id,
               serviceType: item.serviceType.name,
-              svg: 'assets/svg/common/ic_dealer.svg',
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
               active: item.active,
             };
           });
 
-          res.openHours.forEach((el, index) => {
-            this.openHours.at(index).patchValue({
-              isDay: el.startTime && el.endTime,
-              dayOfWeek: this.openHoursDays.indexOf(el.dayOfWeek),
-              dayLabel: el.dayOfWeek,
-              startTime: el.startTime,
-              endTime: el.endTime,
-            });
+          res.openHours.forEach((el) => {
+            this.addOpenHours(
+              el.dayOfWeek,
+              !!(el.startTime && el.endTime),
+              this.openHoursDays.indexOf(el.dayOfWeek),
+              moment(el.startTime, 'HH:mm:SS A').toDate(),
+              moment(el.endTime, 'HH:mm:SS A').toDate()
+            );
           });
-
-          console.log(this.openHours.value);
         },
         error: () => {
           this.notificationService.error(
@@ -339,7 +319,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private addRepairShop() {
-    let { address, addressUnit, openHours, ...form } =
+    let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
 
     openHours = openHours.map((item) => {
@@ -368,6 +348,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       openHours: openHours,
       serviceTypes: this.services,
     };
@@ -378,6 +359,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success('Repair shop added', 'Success: ');
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -389,7 +371,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private updateRepairShop(id: number) {
-    let { address, addressUnit, openHours, ...form } =
+    let { address, addressUnit, openHours, bankId, ...form } =
       this.repairShopForm.value;
 
     openHours = openHours.map((item) => {
@@ -418,6 +400,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
+      bankId: this.selectedBank ? this.selectedBank.id : null,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
       serviceTypes: this.services,
@@ -432,6 +415,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully updated',
             'Success: '
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -443,7 +427,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteRepairShopById(id: number) {
-    console.log(id);
     this.shopService
       .deleteRepairById(id)
       .pipe(untilDestroyed(this))
@@ -453,6 +436,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             'Repair shop successfully deleted',
             'Success: '
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -469,14 +456,29 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          // this.labelsBank = 
+          this.labelsBank = res.banks.map((item) => {
+            return {
+              ...item,
+              folder: 'common',
+              subFolder: 'banks',
+            };
+          });
+
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
+              active: false,
+            };
+          });
         },
         error: () => {
           this.notificationService.error(
             "Repair shop can't get dropdowns",
             'Error: '
           );
-        }
+        },
       });
   }
 

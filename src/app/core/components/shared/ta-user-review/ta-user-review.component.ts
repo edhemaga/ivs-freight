@@ -10,6 +10,7 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
+import { TitleCasePipe } from '@angular/common';
 
 export interface ReviewCommentModal {
   sortData: any[];
@@ -21,6 +22,7 @@ export interface ReviewCommentModal {
   selector: 'app-ta-user-review',
   templateUrl: './ta-user-review.component.html',
   styleUrls: ['./ta-user-review.component.scss'],
+  providers: [TitleCasePipe],
 })
 export class TaUserReviewComponent implements OnInit, OnChanges {
   @ViewChildren('reviewMessage') reviewMessageRef: QueryList<ElementRef>;
@@ -34,7 +36,10 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
   @Output() changeReviewsEvent: EventEmitter<ReviewCommentModal> =
     new EventEmitter<ReviewCommentModal>();
 
-  constructor(private reviewSortPipe: ReviewsSortPipe) {}
+  constructor(
+    private reviewSortPipe: ReviewsSortPipe,
+    private titlecasePipe: TitleCasePipe
+  ) {}
 
   ngOnChanges(): void {
     if (this.isNewReview) {
@@ -73,7 +78,7 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
           (item) => item.id !== review.id
         );
         this.reviewSortPipe.transform(this.reviewData);
-        console.log('REVIEW ', review.id);
+
         this.changeReviewsEvent.emit({
           sortData: this.reviewData,
           data: review.id,
@@ -131,6 +136,15 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
       input.focus();
       clearTimeout(timeout);
     }, 150);
+  }
+
+  public transformText(event: any, ind: number) {
+    this.reviewMessageRef.toArray()[ind].nativeElement.value =
+      this.titleCaseInput(event);
+  }
+
+  public titleCaseInput(value: string) {
+    return this.titlecasePipe.transform(value);
   }
 
   public identity(index: number, item: any): number {

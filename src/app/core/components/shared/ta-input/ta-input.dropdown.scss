@@ -52,10 +52,10 @@
       }
     }
 
-    &.datetimeclass{
+    &.datetimeclass {
       z-index: 1;
-      svg{
-        path{
+      svg {
+        path {
           fill: #dadada !important;
         }
       }
@@ -169,8 +169,12 @@
     }
   }
 
-  &.input-big {
+  &.input-32 {
     top: 6px;
+  }
+
+  &.input-30 {
+    top: 5px;
   }
 
   &.details-pages {
@@ -186,35 +190,62 @@
       }
     }
   }
+
+  &.dropdown-label-active {
+    right: 327px;
+  }
 }
 
 //-------------------- Input Dropdwon confirmation ----------
 .input-dropdown-confirm {
   position: absolute;
   right: 26px;
-  top: 4px;
-  width: 18px;
-  height: 18px;
+  top: 0px;
   border-radius: 1px;
-  background-color: #bdcaeb;
-  display: inline-block;
   transition: all 0.3s ease-in-out;
+  z-index: 10;
+  cursor: pointer;
 
   .input-dropdow-confirm-svg {
-    position: relative;
-    bottom: 4px;
-    left: 2px;
     svg {
+      width: 18px !important;
+      height: 18px !important;
+      overflow: visible;
+
       path {
         fill: #536bc2;
       }
+      rect {
+        transition: transform 0.3s;
+        transform: scale(1);
+        transform-origin: center;
+        fill: #bdcaeb !important;
+      }
+    }
+
+    &:hover {
+      svg {
+        overflow: visible;
+        rect {
+          transform: scale(1.2);
+          transform-origin: center;
+          transition: transform 0.3s;
+          fill: #f5fafc !important;
+        }
+      }
     }
   }
+}
 
-  &:hover {
-    transform: scale(1.2);
-    background-color: #f5fafc;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-  }
+// -------------------- Input Dropdown Label ------------------
+.ta-input-label-vertical-divider {
+  content: "";
+  display: block;
+  height: 16px;
+  width: 1px;
+  border-radius: 3px;
+  background: #e5e5e5;
+  position: absolute;
+  left: 135px;
+  top: 5px;
 }

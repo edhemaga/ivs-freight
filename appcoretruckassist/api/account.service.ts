@@ -59,8 +59,6 @@ export class AccountService {
             this.configuration.basePath = basePath;
         }
         this.encoder = this.configuration.encoder || new CustomHttpParameterCodec();
-        console.log("FROM BACKEND SERVICE")
-        console.log(configuration)
     }
 
 
@@ -113,8 +111,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -175,8 +173,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -237,8 +235,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -299,8 +297,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -361,8 +359,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -423,8 +421,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -485,13 +483,12 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
-        console.log("FROM BACKEND SERVICE")
-        console.log(credential)
+
         let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
         if (httpHeaderAcceptSelected === undefined) {
             // to determine the Accept header
@@ -548,8 +545,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -610,8 +607,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -672,8 +669,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -734,8 +731,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -796,8 +793,8 @@ export class AccountService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }

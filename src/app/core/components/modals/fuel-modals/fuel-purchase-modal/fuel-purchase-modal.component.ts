@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -16,6 +17,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
   styleUrls: ['./fuel-purchase-modal.component.scss'],
+  providers: [ModalService, FormService],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -40,12 +42,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   public hoverRowTable: boolean[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -71,6 +76,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       storeId: [null],
       fuelItems: this.formBuilder.array([]),
     });
+
+    this.formService.checkFormChange(this.fuelForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public get fuelItems(): FormArray {

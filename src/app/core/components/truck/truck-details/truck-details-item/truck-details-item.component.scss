@@ -1,5 +1,5 @@
 @import "../truck-details.component.scss";
-
+app-truck-details-item{
 .truck-toolbar-plus {
   svg {
     rect {
@@ -130,7 +130,6 @@
 .note-wrapper{
   padding-left: 5px;
   padding-right: 9px;
-  height: 40px;
   .note-body{
     padding-left: 4px !important;
     margin-top: 8px;
@@ -164,4 +163,5 @@
       }
     }
   }
+}
 }

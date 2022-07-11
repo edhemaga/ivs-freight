@@ -14,15 +14,16 @@ import {
   selector: '[resizeColumn]',
 })
 export class ResizeColumnDirective implements OnInit, OnChanges {
+  @Output() resizeing: EventEmitter<any> = new EventEmitter();
   @Input('resizeColumn') canDoResize: boolean;
   @Input() index: number;
   @Input() tableSection: string;
-  @Output() resizeing: EventEmitter<any> = new EventEmitter();
+  @Input() tableColumn: any;
 
   private startX: number;
   private startWidth: number;
   private column: HTMLElement;
-  private table: HTMLElement;
+  private table: any;
   private pressed: boolean;
   resizer: any;
   newColumnWidth: number;
@@ -31,7 +32,9 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
     this.column = this.el.nativeElement;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.table = document.querySelector('.table-container');
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.canDoResize?.currentValue !== undefined) {
@@ -44,18 +47,18 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
         this.removeResizer();
       }
     }
+
+    if (!changes?.tableColumn?.firstChange && changes?.tableColumn) {
+      this.tableColumn = changes.tableColumn.currentValue;
+    }
   }
 
   addResizer() {
-    const row = this.renderer.parentNode(this.column);
-    const thead = this.renderer.parentNode(row);
-    this.table = this.renderer.parentNode(thead);
-
     this.resizer = this.renderer.createElement('div');
     this.renderer.addClass(this.resizer, 'resise-btn');
     this.renderer.appendChild(this.column, this.resizer);
     this.renderer.listen(this.resizer, 'mousedown', this.onMouseDown);
-    this.renderer.listen(this.table, 'mousemove', this.onMouseMove);
+    this.renderer.listen('document', 'mousemove', this.onMouseMove);
     this.renderer.listen('document', 'mouseup', this.onMouseUp);
   }
 
@@ -66,9 +69,13 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
   onMouseDown = (event: MouseEvent) => {
     if (!this.pressed) {
+      /* this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
+      this.renderer.setStyle(document.body, 'height', '10000px'); */
+      /* this.renderer.setStyle(this.table, 'cursor', 'ew-resize'); */
+
       this.resizeing.emit({
         isResizeing: true,
-        section: this.tableSection
+        section: this.tableSection,
       });
 
       this.pressed = true;
@@ -82,27 +89,61 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
       // Calculate width of column
       this.newColumnWidth = this.startWidth + (event.pageX - this.startX);
 
-      // Set table header width
-      this.renderer.setStyle(this.column, 'width', `${this.newColumnWidth}px`);
+      const maxWidth = this.tableColumn.minWidth * 2;
 
-      // Send Resizeing Data
-      this.resizeing.emit({
-        isResizeing: true,
-        width: this.newColumnWidth,
-        index: this.index,
-        section: this.tableSection
-      });
+      /* TODO: ukloni kada se doda na sve tabele i kolone minWidth */
+      if (!this.tableColumn.minWidth) {
+        this.resizeing.emit({
+          isResizeing: true,
+          width: this.newColumnWidth,
+          index: this.index,
+          section: this.tableSection,
+        });
+        return;
+      }
+
+      // Send Resizeing Data If Width Is Between Min And Max Width
+      if (
+        this.newColumnWidth > this.tableColumn.minWidth &&
+        this.newColumnWidth < maxWidth
+      ) {
+        this.resizeing.emit({
+          isResizeing: true,
+          width: this.newColumnWidth,
+          index: this.index,
+          section: this.tableSection,
+        });
+      }
+      // If It Has Reached Min Or Max Width, Show Notification
+      else {
+        this.resizeing.emit({
+          beyondTheLimits: true,
+          index: this.index,
+          isResizeing: false,
+          isPined: this.tableColumn.isPined,
+        });
+
+        this.pressed = false;
+        /*  this.renderer.removeStyle(document.body, 'cursor');
+        this.renderer.removeStyle(document.body, 'height'); */
+        window.getSelection().removeAllRanges();
+      }
     }
   };
 
   onMouseUp = () => {
     if (this.pressed) {
+      /* this.renderer.removeStyle(document.body, 'cursor');
+      this.renderer.removeStyle(document.body, 'height'); */
+
       this.pressed = false;
 
       this.resizeing.emit({
         isResizeing: false,
-        section: this.tableSection
+        section: this.tableSection,
       });
+
+      window.getSelection().removeAllRanges();
     }
   };
 }

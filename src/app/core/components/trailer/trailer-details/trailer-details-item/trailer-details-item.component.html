@@ -1,27 +1,31 @@
 <div class="details-component">
-  <div [ngSwitch]="trailer.template">
-    <!---------------------- GENERAL TEMPLATE ------------------>
-    <div *ngSwitchCase="'general'">
-      <app-trailer-details-card [trailer]="trailer.data">
-      </app-trailer-details-card>
-    </div>
-    <!---------------------------- Registration TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'registration'">
-      <div
-        *ngFor="
-          let reg of trailer.data.registrations;
-          let i = index;
-          trackBy: identity;
-        "
-      >
+  <div *ngFor="let trailers of trailer">
+    <div [ngSwitch]="trailers.template">
+      <!---------------------- GENERAL TEMPLATE ------------------>
+      <div *ngSwitchCase="'general'">
+        <app-trailer-details-card [trailer]="trailers.data">
+        </app-trailer-details-card>
+      </div>
+      <!---------------------------- Registration TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'registration'">
         <app-ta-re-card
+          *ngFor="
+            let reg of trailers?.data?.registrations;
+            let i = index;
+            trackBy: identity
+          "
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'registration')"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="true"
           [options]="dataTest"
           [expDateClose]="reg.expDate | formatDateP"
           [optionsId]="reg.id"
+          [noteIcons]="
+            reg.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           (dropActions)="optionsEvent($event, 'edit-registration')"
         >
           <div class="cards-container">
@@ -40,7 +44,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -52,7 +56,11 @@
                 </div>
               </div>
             </div>
-            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+            <div
+              [@showHideCardBody]="
+                toggler[i + 'registration'] ? 'true' : 'false'
+              "
+            >
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
@@ -70,33 +78,36 @@
           </div>
         </app-ta-re-card>
       </div>
-    </div>
-    <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'fhwa-insepction'">
-      <div
-        *ngFor="
-          let fhwa of trailer.data.inspections;
-          let i = index;
-          trackBy: identity;
-        "
-      >
+      <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
         <app-ta-re-card
+          *ngFor="
+            let fhwa of trailers?.data?.inspections;
+            let i = index;
+            trackBy: identity
+          "
           [options]="dataTest"
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           [optionsId]="fhwa.id"
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'fhwa')"
+          [noteIcons]="
+            fhwa.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          [expDateClose]="fhwa.issueDate | setFutureYear"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'fhwa'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="'04/04/25'"
+                    [expireDate]="fhwa.issueDate | setFutureYear"
                     [startDate]="fhwa.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -104,7 +115,7 @@
                 </div>
               </div>
             </div>
-            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[i + 'fhwa'] ? 'true' : 'false'">
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
@@ -122,23 +133,25 @@
           </div>
         </app-ta-re-card>
       </div>
-    </div>
 
-    <!---------------------------- Title TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'title'">
-      <div
-        *ngFor="
-          let title of trailer.data.titles;
-          let i = index;
-          trackBy: identity;
-        "
-      >
+      <!---------------------------- Title TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'title'">
         <app-ta-re-card
+          *ngFor="
+            let title of trailers?.data?.titles;
+            let i = index;
+            trackBy: identity
+          "
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'title')"
           [cardNameCommon]="title.number"
           [options]="dataTest"
           [optionsId]="title.id"
+          [noteIcons]="
+            title.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
           <div class="cards-container">
@@ -157,11 +170,11 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'title'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
-                    [expireDate]="'04/04/27'"
+                    [expireDate]="title.issueDate | formatDateP"
                     [startDate]="title.issueDate | formatDateP"
                     [expiresSettings]="'details'"
                   >
@@ -169,7 +182,7 @@
                 </div>
               </div>
             </div>
-            <div [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[i + 'title'] ? 'true' : 'false'">
               <div class="divider"></div>
 
               <div class="card-note">
@@ -188,10 +201,13 @@
           </div>
         </app-ta-re-card>
       </div>
-    </div>
-    <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-    <div *ngSwitchCase="'lease-purchase'">
-      <div class="test" style="background-color: #ffffff; height: 200px"></div>
+      <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
+      <div class="card-width" *ngSwitchCase="'lease-purchase'">
+        <div
+          class="test"
+          style="background-color: #ffffff; height: 200px"
+        ></div>
+      </div>
     </div>
   </div>
 </div>

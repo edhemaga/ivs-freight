@@ -32,6 +32,9 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() statusInactive:boolean=true;
   @Input() danger:boolean=false;
   @Input() isInactive:boolean=false;
+  @Output() public dropActions = new EventEmitter<any>();
+  @Input() public optionsId: number;
+  @Input() hasDateNav:boolean=true;
   public up:boolean=false;
   public down:boolean=false;
   constructor(private routes: ActivatedRoute) {}
@@ -40,13 +43,14 @@ export class TaCommonHeaderComponent implements OnInit {
 
  
   public openModal(val: any) {
-    console.log(val);
     this.openModalAction.emit(val);
   }
-  public makeRequestFun(req:any){
-    console.log(req);
-    
+  public makeRequestFun(req:any){    
     this.makeRequest.emit(req);
+  }
+  /**Function for drop acitons */
+  public dropAct(action: any) {    
+    this.dropActions.emit(action);
   }
  public changeDataArrowUpFun(val:any){
      this.up=true;

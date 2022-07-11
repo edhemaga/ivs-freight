@@ -1,23 +1,26 @@
 <table>
-  <thead>
+  <thead [ngClass]="{'set-cursor-resize': rezaizeing}">
     <!-- Pined -->
     <tr class="tr pined-columns-container">
       <th
         [resizeColumn]="column.resizable && !locked"
         [index]="i"
         [tableSection]="'pined'"
+        [tableColumn]="column"
         (resizeing)="onResize($event)"
         *ngFor="let column of pinedColumns; let i = index"
         cdkDragBoundary="tr"
         [cdkDragPreviewClass]="'cdk-drag-preview'"
         [ngStyle]="{
           width: column.width + 'px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
           'margin-left': column.moveRight ? 'auto' : 'unset',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"
         [ngClass]="{
           'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
-          'column-unlocket': !locked
+          'column-unlocket': !locked,
+          'resize-hit-limit': resizeHitLimit === i && resizeIsPined
         }"
       >
         <!-- Selected Row Count -->
@@ -45,6 +48,17 @@
           *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
           (click)="sortHeaderClick(column)"
           class="th-title"
+          (click)="sortHeaderClick(column)"
+          [ngStyle]="{
+            'width.px':
+              column.resizable && !locked
+                ? column.width - 55
+                : column.width - 20
+          }"
+          [ngClass]="{
+            'sort-active': column.sortDirection !== '' && column.sortDirection,
+            'th-title-locked-cursor': locked
+          }"
         >
           {{ column.name }}
         </div>
@@ -58,6 +72,30 @@
             }"
             [src]="
               column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+            "
+          ></svg-icon>
+        </div>
+
+        <!-- Sort -->
+        <div
+          class="sort-indicator-container"
+          *ngIf="
+            column.sortable &&
+            column.sortDirection !== '' &&
+            column.sortDirection &&
+            locked &&
+            viewData.length > 1
+          "
+        >
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 12,
+              'height.px': 12
+            }"
+            [src]="
+              column.sortDirection === 'asc'
+                ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                : 'assets/svg/truckassist-table/descending-sort.svg'
             "
           ></svg-icon>
         </div>
@@ -91,16 +129,16 @@
       </th>
     </tr>
 
-   
+    <!-- Border -->
+    <div class="not-pined-border"></div>
 
     <!-- Not Pined -->
-    <div class="not-pined-border" *ngIf="showBorder"></div>
-
     <tr
       cdkDropListOrientation="horizontal"
       cdkDropList
       (cdkDropListDropped)="onReorder($event)"
       class="tr not-pined-columns-container"
+      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
       id="scroll"
     >
       <div class="scroll-container">
@@ -109,6 +147,7 @@
             column.resizable && !locked && i !== notPinedColumns.length - 1
           "
           [index]="i"
+          [tableColumn]="column"
           [tableSection]="'not-pined'"
           (resizeing)="onResize($event)"
           *ngFor="let column of notPinedColumns; let i = index"
@@ -120,12 +159,14 @@
           [cdkDragPreviewClass]="'cdk-drag-preview'"
           [ngStyle]="{
             width: column.width + 'px',
+            'min-width.px': column?.minWidth ? column.minWidth : 'unset',
             'justify-content': column?.headAlign ? column?.headAlign : ''
           }"
           [ngClass]="{
             'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
             'column-unlocket': !locked,
-            'column-locked': locked
+            'column-locked': locked,
+            'resize-hit-limit': resizeHitLimit === i && !resizeIsPined
           }"
         >
           <!-- Title -->
@@ -133,6 +174,16 @@
             *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
             (click)="sortHeaderClick(column)"
             class="th-title"
+            (click)="sortHeaderClick(column)"
+            [ngStyle]="{
+              'width.px':
+                column.resizable && !locked
+                  ? column.width - 55
+                  : column.width - 20
+            }"
+            [ngClass]="{
+              'sort-active': column.sortDirection !== '' && column.sortDirection
+            }"
           >
             {{ column.name }}
           </div>
@@ -146,6 +197,30 @@
               }"
               [src]="
                 column.headIconStyle.imgPath ? column.headIconStyle.imgPath : ''
+              "
+            ></svg-icon>
+          </div>
+
+          <!-- Sort -->
+          <div
+            class="sort-indicator-container"
+            *ngIf="
+              column.sortable &&
+              column.sortDirection !== '' &&
+              column.sortDirection &&
+              locked &&
+              viewData.length > 1
+            "
+          >
+            <svg-icon
+              [svgStyle]="{
+                'width.px': 12,
+                'height.px': 12
+              }"
+              [src]="
+                column.sortDirection === 'asc'
+                  ? 'assets/svg/truckassist-table/ascending-sort.svg'
+                  : 'assets/svg/truckassist-table/descending-sort.svg'
               "
             ></svg-icon>
           </div>
@@ -186,12 +261,16 @@
       </div>
     </tr>
 
+    <!-- Border -->
+    <div class="not-pined-border"></div>
+
     <!-- Actions -->
     <tr class="tr actions-columns-container">
       <th
         *ngFor="let column of actionColumns; let i = index"
         [ngStyle]="{
           width: column.isAction ? column.width + 'px' : '0px',
+          'min-width.px': column?.minWidth ? column.minWidth : 'unset',
           display: column.isAction ? 'flex' : 'none',
           'justify-content': column?.headAlign ? column?.headAlign : ''
         }"

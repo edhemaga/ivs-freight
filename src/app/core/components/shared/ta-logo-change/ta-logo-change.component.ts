@@ -8,9 +8,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import * as Croppie from 'croppie';
@@ -19,35 +21,45 @@ import { Options } from '@angular-slider/ngx-slider';
 import { DomSanitizer } from '@angular/platform-browser';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
+import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
-  styleUrls: ['./ta-logo-change.component.scss']
+  styleUrls: ['./ta-logo-change.component.scss'],
 })
-export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
-  @Input() imageUrl: string;
-  @Input() customClass: string;
-  @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
-
-  // croppie
+export class TaLogoChangeComponent
+  implements AfterViewInit, OnInit, OnChanges, OnDestroy
+{
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
-  public croppieOptions: Croppie.CroppieOptions = {
+  @Input() croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,
     viewport: {
-      width: 228,
-      height: 144,
+      width: 162,
+      height: 194,
       type: 'square',
     },
     boundary: {
       width: 456,
-      height: 144,
+      height: 194,
     },
   };
-  public imageScale = 0.5;
 
-  // dropzone
+  @Input() customClass: string;
+  @Input() imageUrl: any | string = null;
+
+  @Input() dropZoneConfig: DropZoneConfig = {
+    dropZoneType: 'image',
+    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+    multiple: false,
+    globalDropZone: false,
+  };
+
+  @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
+
   public showUploadZone = true;
+  public imageScale = 0.5;
 
   // slider
   public ngxLogoOptions: Options = {
@@ -60,44 +72,54 @@ export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
   };
   public ngxSliderPosition = 0.5;
 
-  // upload file
-  public file: any;
-  public savedFile: any = null;
-
   constructor(
     private sanitizer: DomSanitizer,
     private uploadFileService: TaUploadFileService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    const timeout = setTimeout(() => {
+      this.imageUrl = changes.imageUrl.currentValue
+        ? this.sanitizer.bypassSecurityTrustUrl(
+            createBase64(changes.imageUrl.currentValue)
+          )
+        : null;
+
+      clearTimeout(timeout);
+    }, 150);
+  }
 
   ngOnInit(): void {
     this.uploadFileService.uploadedFiles$
       .pipe(untilDestroyed(this))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if (data) {
-          this.onSelect(data);
+          this.onUploadImage(data);
         }
       });
   }
 
-  public get ngxSliderClass() {
-    return `custom-slider-logo-change ${this.customClass}`;
-  }
-
   public ngAfterViewInit() {
-    if (this.imageUrl) {
-      this.croppieDirective.croppie.bind({
-        url: this.imageUrl,
-        points: [188, 101, 260, 191],
-        zoom: 0,
-      });
-      this.ngxSliderPosition = 0;
-      this.showUploadZone = false;
-    }
+    const timeout = setTimeout(() => {
+      if (this.imageUrl) {
+        this.croppieDirective.croppie.bind({
+          url: this.imageUrl.changingThisBreaksApplicationSecurity,
+          points: [188, 101, 260, 191],
+          zoom: 0,
+        });
+        this.ngxSliderPosition = 0;
+        this.showUploadZone = true;
+        clearTimeout(timeout);
+      }
+    }, 200);
   }
 
-  public onSelect(event: any) {
-    const url = event.files[0].url;
+  public onUploadImage(event: any) {
     this.showUploadZone = false;
+    this.imageUrl = null;
+
+    const url = event.files[0].url;
+
     const timeout = setTimeout(() => {
       this.croppieDirective.croppie.bind({
         url: url as string,
@@ -120,21 +142,20 @@ export class TaLogoChangeComponent implements AfterViewInit, OnInit, OnDestroy {
   public saveImage() {
     this.croppieDirective.croppie.result('base64').then((base64) => {
       this.base64ImageEvent.emit(getStringFromBase64(base64));
-      this.savedFile = this.sanitizer.bypassSecurityTrustUrl(
-        createBase64(getStringFromBase64(base64))
-      );
-      this.showUploadZone = false;
+      this.imageUrl = base64;
+      this.showUploadZone = true;
     });
   }
 
   public onDeleteSavedImage() {
     this.showUploadZone = true;
-    this.savedFile = null;
+    this.imageUrl = null;
     this.base64ImageEvent.emit(null);
   }
 
   public onCancel() {
     this.showUploadZone = true;
+    this.imageUrl = null;
   }
 
   ngOnDestroy(): void {}

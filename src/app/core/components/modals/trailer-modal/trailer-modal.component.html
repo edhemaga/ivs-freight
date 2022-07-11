@@ -2,21 +2,15 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="trailerForm.valid"
+  [isModalValid]="editData ? trailerForm.valid && isDirty : trailerForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
-  >
-  </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher> -->
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form [formGroup]="trailerForm" class="form-container">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -33,7 +27,7 @@
                 isRequired: true,
                 textTransform: 'capitalize',
                 maxLength: 8,
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -50,6 +44,7 @@
                 dropdownWidthClass: 'w-col-9'
               }"
               [options]="trailerType"
+              [activeItem]="selectedTrailerType"
               (selectedItem)="onSelectDropdown($event, 'trailer-type')"
             ></app-ta-input-dropdown>
           </div>
@@ -82,6 +77,7 @@
                 dropdownWidthClass: 'w-col-5'
               }"
               [options]="trailerMakeType"
+              [activeItem]="selectedTrailerMake"
               (selectedItem)="onSelectDropdown($event, 'trailer-make')"
             ></app-ta-input-dropdown>
           </div>
@@ -111,6 +107,7 @@
                 dropdownWidthClass: 'w-col-trailerColor'
               }"
               [options]="colorType"
+              [activeItem]="selectedColor"
               (selectedItem)="onSelectDropdown($event, 'color')"
             ></app-ta-input-dropdown>
           </div>
@@ -138,6 +135,7 @@
                 dropdownWidthClass: 'w-col-trailerLength'
               }"
               [options]="trailerLengthType"
+              [activeItem]="selectedTrailerLength"
               (selectedItem)="onSelectDropdown($event, 'trailer-length')"
             ></app-ta-input-dropdown>
           </div>
@@ -178,6 +176,7 @@
                       dropdownWidthClass: 'w-col-12'
                     }"
                     [options]="ownerType"
+                    [activeItem]="selectedOwner"
                     (selectedItem)="onSelectDropdown($event, 'owner')"
                   ></app-ta-input-dropdown>
                 </div>
@@ -208,6 +207,7 @@
                 dropdownWidthClass: 'w-col-4-reeferUnit'
               }"
               [options]="reeferUnitType"
+              [activeItem]="selectedReeferType"
               (selectedItem)="onSelectDropdown($event, 'reefer-unit')"
             ></app-ta-input-dropdown>
           </div>
@@ -242,6 +242,7 @@
                     : 'w-col-3-suspension'
               }"
               [options]="suspensionType"
+              [activeItem]="selectedSuspension"
               (selectedItem)="onSelectDropdown($event, 'suspension')"
             ></app-ta-input-dropdown>
           </div>
@@ -259,6 +260,7 @@
                 dropdownWidthClass: 'w-col-4'
               }"
               [options]="tireSize"
+              [activeItem]="selectedTireSize"
               (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
           </div>
@@ -276,6 +278,7 @@
                 dropdownWidthClass: 'w-col-3-doortype'
               }"
               [options]="doorType"
+              [activeItem]="selectedDoorType"
               (selectedItem)="onSelectDropdown($event, 'door-type')"
             ></app-ta-input-dropdown>
           </div>
@@ -296,6 +299,7 @@
                 dropdownWidthClass: 'w-col-4-tireSize'
               }"
               [options]="tireSize"
+              [activeItem]="selectedTireSize"
               (selectedItem)="onSelectTireSize($event)"
             ></app-ta-input-dropdown>
           </div>
@@ -317,6 +321,7 @@
                 dropdownWidthClass: 'w-col-4-doortype'
               }"
               [options]="doorType"
+              [activeItem]="selectedDoorType"
               (selectedItem)="onSelectDoorType($event)"
             ></app-ta-input-dropdown>
           </div>

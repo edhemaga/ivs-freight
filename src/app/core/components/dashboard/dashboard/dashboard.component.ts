@@ -1,6 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { takeUntil } from 'rxjs/operators';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
@@ -13,29 +19,29 @@ import { FormControl } from '@angular/forms';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss', '../dashboard.global.scss'],
+  styleUrls: ['./dashboard.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   public inputDate: FormControl = new FormControl();
   dashboardStats: Observable<DashboardStats[]>;
 
-  color: string = "#eee";
+  color: string = '#eee';
   dispatchStatuses: any = [
     {
       id: 40,
       name: 'OFF',
       status: 58,
       statusPercentage: 10.0,
-      color: '#202020'
+      color: '#202020',
     },
     {
       id: 40,
       status: 58,
       name: 'ACTIVE',
       statusPercentage: 15.0,
-      color: '#5AE99D'
+      color: '#5AE99D',
     },
     {
       id: 40,
@@ -49,29 +55,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
       status: 58,
       name: 'CHECKED IN',
       color: '#24C1A1',
-      statusPercentage: 98.0
+      statusPercentage: 98.0,
     },
     {
       id: 40,
       status: 58,
       name: 'LOADED',
       color: '#207E4C',
-      statusPercentage: 35.0
+      statusPercentage: 35.0,
     },
     {
       id: 40,
       status: 58,
       name: 'REPAIR',
       color: '#AE3232',
-      statusPercentage: 80.0
+      statusPercentage: 80.0,
     },
     {
       id: 40,
       status: 58,
       name: 'EMPTY',
       color: '#F99E00',
-      statusPercentage: 76.0
-    }
+      statusPercentage: 76.0,
+    },
   ];
   pendingStatuses: any = [
     {
@@ -79,14 +85,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       name: 'BOOKED',
       status: 58,
       statusPercentage: 25.0,
-      color: '#959595'
+      color: '#959595',
     },
     {
       id: 40,
       status: 58,
       name: 'ASSIGNED',
       statusPercentage: 10.0,
-      color: '#202020'
+      color: '#202020',
     },
     {
       id: 40,
@@ -100,8 +106,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       status: 58,
       name: 'LOADED',
       color: '#207E4C',
-      statusPercentage: 90.0
-    }
+      statusPercentage: 90.0,
+    },
   ];
   closedStatuses: any = [
     {
@@ -109,14 +115,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       name: 'CANCELED',
       status: 58,
       statusPercentage: 20.0,
-      color: '#AE3232'
+      color: '#AE3232',
     },
     {
       id: 40,
       status: 58,
       name: 'TONU',
       statusPercentage: 55.0,
-      color: '#FF5D5D'
+      color: '#FF5D5D',
     },
     {
       id: 40,
@@ -130,21 +136,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
       status: 58,
       name: 'In HOLD / REVISED',
       color: '#B7B7B7',
-      statusPercentage: 100.0
+      statusPercentage: 100.0,
     },
     {
       id: 40,
       name: 'PAID',
       status: 58,
       statusPercentage: 40.0,
-      color: '#9F9A7B'
+      color: '#9F9A7B',
     },
     {
       id: 40,
       status: 58,
       name: 'SHORT-PAID',
       statusPercentage: 70.0,
-      color: '#807B65'
+      color: '#807B65',
     },
     {
       id: 40,
@@ -158,40 +164,41 @@ export class DashboardComponent implements OnInit, OnDestroy {
       status: 58,
       name: 'CLAIM',
       color: '#514E40',
-      statusPercentage: 90.0
-    }
+      statusPercentage: 90.0,
+    },
   ];
+
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
-      private dashboardStoreService: DashboardStoreService, 
-      private dashboardQuery: DashboardQuery, 
-      private dashboardService: DashboardService, 
-      private sharedService: SharedService,
-      private route: ActivatedRoute,
-      private http: HttpClient
+    private dashboardStoreService: DashboardStoreService,
+    private dashboardQuery: DashboardQuery,
+    private dashboardService: DashboardService,
+    private sharedService: SharedService,
+    private route: ActivatedRoute,
+    private http: HttpClient
   ) {}
 
   ngOnInit() {
     //this.dashboardStoreService.addStats();
     this.dashboardStats = this.route.snapshot.data['dashboard'];
-    console.log(this.route.snapshot.data);
+
     // this.dashboardQuery.selectDashboardStatistic$
     // .pipe(takeUntil(this.destroy$))
     // .subscribe(result => {
     //   this.dashboardStats = result;
     // });
-    
+
     //this.getStats();
   }
 
   getStats() {
-    this.dashboardService.getDasboardMainTotals()
+    this.dashboardService
+      .getDasboardMainTotals()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (response: any) => {
           this.dashboardStats = response;
-          console.log('dashboardStats:', response);
         },
         (error: any) => {
           this.sharedService.handleServerError();
@@ -207,7 +214,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   parseNum(x) {
     return parseFloat(x);
   }
-
 
   dataTest = {
     disabledMutedStyle: null,

@@ -1,34 +1,66 @@
-<div class="charts-item-wrapper revenue">
-  <div class="charts-template-item" *ngFor="let item of legendProperties; let indx = index">
+<div class="charts-item-wrapper revenue" *ngIf="legendAttributes.length > 0" [class.row]="legendAttributes?.length > 2">
+  <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
     <div class="icon-name-item">
       <svg-icon src={{item.image}}></svg-icon>
       <div class="charts-template-item-name">{{ item.title }}</div>
     </div>
-    <div class="charts-template-item-value">{{ item.value }}</div>
+    <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
   </div>
 </div>
-<div class="main_chart_container">
+<div class="main_chart_container" [class.remove_chart_margin]="removeChartMargin">
   <div class="no_chart_data" *ngIf="noChartData">
     <svg-icon src={{noChartImage}}></svg-icon>
   </div>
   <div class="chart_text_holder" *ngIf="lineChartType == 'doughnut' && doughnutChartLegend">
     <div class="chart_inner">
-      <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '22px': '11px'}">
-        <div class="chart_label" [ngStyle]="{'color': item.color}" >{{ item.name }}</div>
-        <div class="chart_value_hold" [ngStyle]="{'background-color': item.color}">
-          <div class="chart_value">{{ item.value }}%</div>
-        </div>
+      <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '30px': '0px'}">
+        <div class="chart_label">{{ item.percent }}</div>
+        <div class="chart_value">{{ item.value }}</div>
+        <div class="chart_data_name">{{ item.name }}</div>
       </div>
     </div>
   </div>
-  <canvas *ngIf="!noChartData" baseChart id="myChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': chartWidth+'px', 'height': chartHeight+'px'}"
+  <div class="hover_data_holder" *ngIf="showHoverData && selectedDataRows?.length" [ngStyle]="{'left': hoverDataPosition+'px', 'width': selectedDataRows?.length > 6 ? '206px': 'auto'}">
+    <div class="hover_data_title" [ngStyle]="{'text-align': selectedDataRows?.length > 6 ? 'left': 'center'}">JANUARY, 2024</div>
+    <div class="hover_data_border_line"></div>
+    <div class="hover_data_innit" *ngIf="selectedDataRows.length > 6">
+      <div class="hover_data_info_holder hover_data_bigger_hold" #hoverDataHolder *ngFor="let item of selectedDataRows; let indx = index" [ngStyle]="{'margin-top': indx > 0  ? '12px': '0px'}">
+        <div class="hover_data_info_top_line">
+          <div class="hover_title_container">
+            <div class="hover_data_icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
+                  <rect width="10" height="10" rx="5.5" [attr.fill]="item.color" />
+              </svg>
+            </div>
+            <div class="hover_data_info_title">{{ item.name }}</div>
+          </div>
+          <div class="hover_data_price">{{ item.value }}</div>
+        </div>
+        <div class="hover_data_percent">{{ item.percent }}</div>
+      </div>
+    </div>
+    <div class="hover_data_innit" *ngIf="selectedDataRows.length <= 6">
+      <div class="hover_data_info_holder" #hoverDataHolder *ngFor="let item of selectedDataRows; let indx = index" [ngStyle]="{'margin-top': indx > 0  ? '12px': '0px'}">
+        <div class="hover_data_info_top_line">
+          <div class="hover_data_icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
+              <rect width="10" height="10" rx="5.5" [attr.fill]="item.color" />
+          </svg>
+          </div>
+          <div class="hover_data_info_title">{{ item.name }}</div>
+        </div>
+        <div class="hover_data_price">{{ item.value }}</div>
+        <div class="hover_data_percent">{{ item.percent }}</div>
+      </div>
+    </div>
+  </div>
+  <canvas *ngIf="!noChartData" baseChart id="baseChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': '100%', 'height': chartHeight+'px'}"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
     [colors]="lineChartColors"
     [legend]="lineChartLegend"
     [chartType]="lineChartType"
-    [plugins]="lineChartPlugins"
-    (chartHover)="chartHovered($event)">
+    [plugins]="lineChartPlugins">
   </canvas>
 </div>

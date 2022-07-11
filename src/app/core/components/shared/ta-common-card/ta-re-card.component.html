@@ -62,11 +62,13 @@
             ngbTooltip
             [mainTooltip]="copiedCommon ? 'Copied' : 'Copy'"
             position="top"
+            [autoClose]="false"
             (click)="copyText(cardNameCommon,$event)"
             [tooltipBackground]="copiedCommon ? '#536BC2' : '#6c6c6c'"
           >
             <svg-icon
               *ngIf="isCardOpen && hasCopyIcon"
+              (mouseleave)=" copiedCommon=false"
               class="card-icon-common"
               src="assets/svg/common/ic_copy.svg"
             ></svg-icon>
@@ -79,14 +81,16 @@
           </svg-icon>
         </div>
       </div>
+      <div class="dots-common-cards">
       <app-table-dropdown
         [options]="options.actions"
         [id]="optionsId"
-        [placement]="'bottom-left'"
+        [placement]="setPositionDrop? 'bottom-right' : 'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >
       </app-table-dropdown>
+    </div>
     </div>
   </div>
   <div
@@ -98,12 +102,12 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="card-footer-cmp" *ngIf="isCardOpen && hasFooter">
+  <div class="card-footer-cmp" [ngClass]="{'hide-padding':resPage}" *ngIf="isCardOpen && hasFooter">
     <div class="icon-counter">
       <svg-icon
         *ngIf="!resPage"
         class="note-icon"
-        src="assets/svg/truckassist-table/note/Note-hover.svg"
+        src="{{noteIcons}}"
       ></svg-icon>
       <svg-icon
         *ngIf="!resPage && cardDocumentCounter"
@@ -115,7 +119,7 @@
       </p>
     </div>
     <div
-      (click)="onAction('resize', '')"
+      (click)="resizePageFun($event)"
       [ngClass]="{ 'rotate-common': resPage }"
       class="resize-icon"
     >

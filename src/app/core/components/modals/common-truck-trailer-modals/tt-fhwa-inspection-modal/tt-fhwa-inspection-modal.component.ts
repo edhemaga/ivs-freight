@@ -12,12 +12,17 @@ import {
 } from 'appcoretruckassist';
 import moment from 'moment';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { convertDateFromBackend, convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
   styleUrls: ['./tt-fhwa-inspection-modal.component.scss'],
+  providers: [ModalService, FormService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -26,12 +31,15 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private notificationService: NotificationService,
     private commonTruckTrailerService: CommonTruckTrailerService,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -47,6 +55,14 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       note: [null],
     });
+
+    this.formService.checkFormChange(this.fhwaInspectionForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -153,7 +169,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event: any) {
-    console.log(event);
+    this.documents = event.files;
   }
 
   ngOnDestroy(): void {}

@@ -1,11 +1,11 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit'
-      ? 'Add new registration'
-      : 'Edit new registration'
+    editData?.type !== 'edit' ? 'Add new registration' : 'Edit new registration'
   "
   [editData]="editData"
-  [isModalValid]="registrationForm.valid"
+  [isModalValid]="
+    editData ? registrationForm.valid && isDirty : registrationForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="registrationForm" class="form-container">
@@ -57,7 +57,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

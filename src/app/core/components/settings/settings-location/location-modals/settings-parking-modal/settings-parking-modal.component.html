@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="parkingForm.valid"
+  [isModalValid]="editData ? parkingForm.valid && isDirty : parkingForm.valid"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -47,7 +47,7 @@
                       label: 'Parking Name',
                       isRequired: true,
                       textTransform: 'capitalize',
-                      autoFocus: true
+                      autoFocus: editData?.type === 'edit' ? false : true
                     }"
                   ></app-ta-input>
                 </div>
@@ -180,7 +180,7 @@
               <div class="gate-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="gateBtns"
-                  (changedValue)="onAction($event, 'gate')"
+                  (changedValue)="onSelectDropdown($event, 'gate')"
                 ></app-ta-input-radiobuttons>
               </div>
             </div>
@@ -189,7 +189,7 @@
               <div class="camera-radio">
                 <app-ta-input-radiobuttons
                   [buttons]="cameraBtns"
-                  (changedValue)="onAction($event, 'camera')"
+                  (changedValue)="onSelectDropdown($event, 'camera')"
                 ></app-ta-input-radiobuttons>
               </div>
             </div>
@@ -221,7 +221,8 @@
                   dropdownWidthClass: 'w-col-4'
                 }"
                 [options]="[]"
-                (selectedItem)="onAction($event, 'pay-period')"
+                [activeItem]="selectedPayPeriod"
+                (selectedItem)="onSelectDropdown($event, 'pay-period')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-4 no-p-left">
@@ -235,7 +236,8 @@
                   dropdownWidthClass: 'w-col-4'
                 }"
                 [options]="[]"
-                (selectedItem)="onAction($event, 'pay-period')"
+                [activeItem]="selectedDay"
+                (selectedItem)="onSelectDropdown($event, 'day')"
               ></app-ta-input-dropdown>
             </div>
           </div>

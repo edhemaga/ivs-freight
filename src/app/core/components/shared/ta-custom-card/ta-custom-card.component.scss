@@ -92,8 +92,9 @@
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 107px;
-          height: 26px;
+          text-align: center;
+          width: 82px;
+          height: 24px;
           background-color: #f3f3f3;
           border-radius: 2px;
           transition: all 0.3 ease-in-out;
@@ -103,7 +104,7 @@
 
           p {
             margin: 0;
-            font-size: 14px;
+            font-size: 11px;
             font-weight: 700;
             line-height: 18px;
             color: #536bc2;
@@ -238,6 +239,19 @@
       }
     }
 
+    &.disabled {
+      .header-text {
+        color: #b7b7b7 !important;
+      }
+      .header-arrow {
+        display: none !important;
+      }
+
+      .ta-counter-number {
+        color: #b7b7b7 !important;
+      }
+    }
+
     &.cursor {
       cursor: pointer;
     }
@@ -323,4 +337,22 @@
 .arrow-down-plus {
   display: flex;
   align-items: center;
+
+  .add-custom-card {
+    display: flex;
+    align-items: center;
+  }
+}
+.header-svg-bank{
+  margin-left: 12px !important;
+  svg{
+    path{
+      fill: #cccccc;
+    }
+    &:hover{
+      path{
+        fill: #cccccc !important;
+      }
+    }
+  }
 }

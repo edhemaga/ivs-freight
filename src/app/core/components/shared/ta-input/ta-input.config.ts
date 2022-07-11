@@ -14,22 +14,55 @@ export interface ITaInput {
   min?: number;
   max?: number;
   step?: any; // step for input type="number";
-  mask?: string;
+  mask?: string; // only for phone type of input
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
-  customClass?: string; // 'input-big' -> height: 32px
+  // Custom classes
+  // 'input-32' -> height: 32px,
+  // 'input-30' -> height: 30px,
+  // 'datetimeclass' -> date/time pickers
+  // 'dollar-placeholderIcon' -> when input has dollar icon
+  customClass?: string;
   autoFocus?: boolean; // focus first input in form,
   hideClear?: boolean;
+  hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
-  thousandSeparator?: boolean;
-  // Black input only
-  blackInput?: boolean; // has only black background && input clear, no validations
+  thousandSeparator?: boolean; // type of input must be string
+  commands?: {
+    active?: boolean;
+    type?: string; // 'increment-decrement', 'confirm-cancel'
+    firstCommand?: {
+      popup?: {
+        name?: string;
+        backgroundColor?: string;
+      };
+      name?: string;
+      svg?: string;
+    };
+    secondCommand?: {
+      popup?: {
+        name?: string;
+        backgroundColor?: string;
+      };
+      name?: string;
+      svg?: string;
+    };
+    setTimeout?: number; // if must keep focus on input
+  };
   // Dropdown
   isDropdown?: boolean;
-  dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class
+  dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
+  // Label dropdown
+  isDropdownLabel?: boolean;
+  specificDropdownLabel?: boolean;
+  dropdownLabelSelected?: any;
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;
-  // PM Modal
-  modalPM?: boolean;
+  // Black input only
+  blackInput?: boolean; // has only black background && input clear, no validations
+  // Blue Input Text
+  blueInputColor?: boolean; // some inputs has blue color on focus out
+  // Specific label input
+  placeholderInsteadOfLabel?: boolean;
 }

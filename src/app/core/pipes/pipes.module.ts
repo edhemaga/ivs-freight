@@ -26,6 +26,10 @@ import { DetailsActiveItemPipe } from './detailsActiveItem.pipe';
 import { TaThousandSeparatorPipe } from './taThousandSeparator.pipe';
 import { DynamicNavHeightPipe } from '../components/navigation/pipe/dynamic-nav-card.pipe';
 import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
+import { formatCurrency } from './formatCurrency.pipe';
+import { setFutureYear } from './setFutureYear.pipe';
+import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.pipe';
+import { HideAccountPipe } from './driver-hide-account.pipe';
 
 @NgModule({
   declarations: [
@@ -34,7 +38,6 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe,
-    // Pipes
     InputErrorPipe,
     SortPipe,
     StatusPipePipe,
@@ -56,6 +59,10 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     TaThousandSeparatorPipe,
     DynamicNavHeightPipe,
     UserDataPipe,
+    formatCurrency,
+    setFutureYear,
+    LogoSliderPipe,
+    HideAccountPipe
   ],
   imports: [CommonModule],
   exports: [
@@ -78,6 +85,7 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     ReviewsSortPipe,
     SumArraysPipe,
     HidePasswordPipe,
+    HideAccountPipe,
     InputTypePipe,
     FormatRestrictionEndorsmentPipe,
     BlockedContentPipe,
@@ -85,6 +93,9 @@ import { UserDataPipe } from '../components/navigation/pipe/user-data.pipe';
     TaThousandSeparatorPipe,
     DynamicNavHeightPipe,
     UserDataPipe,
+    formatCurrency,
+    setFutureYear,
+    LogoSliderPipe
   ],
   providers: [
     DatePipe,

@@ -37,8 +37,13 @@
       'valid-focus-in':
         activeAddress?.address === getSuperControl.value &&
         !invalidAddress &&
-        focusInput,
-      'invalid-focus-in': getSuperControl.value && invalidAddress && focusInput
+        focusInput &&
+        !inputConfig.blackInput,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        invalidAddress &&
+        focusInput &&
+        !inputConfig.blackInput
     }"
     ngbTooltip
     mainTooltip="Clear"
@@ -49,6 +54,39 @@
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
 
+  <!-- Input Commands -->
+  <div
+    *ngIf="inputConfig.commands?.active && isVisibleCommands"
+    class="ta-input-commands"
+  >
+    <div class="ta-input-command-first">
+      <svg-icon
+        class="ta-input-command-svg-first"
+        [src]="inputConfig.commands.firstCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.firstCommand.name
+          )
+        "
+      ></svg-icon>
+    </div>
+    <div class="ta-input-command-second">
+      <svg-icon
+        class="ta-input-command-svg-second"
+        [src]="inputConfig.commands.secondCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.secondCommand.name
+          )
+        "
+      ></svg-icon>
+    </div>
+  </div>
+
   <!-- Input Icon Placeholder -->
   <svg-icon
     class="input-icon {{ inputConfig.customClass }}"
@@ -57,13 +95,23 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
-        getSuperControl.value && !invalidAddress && focusInput,
+        getSuperControl.value &&
+        !invalidAddress &&
+        focusInput &&
+        !inputConfig.commands?.active,
       'valid-required-out':
         getSuperControl.value && !invalidAddress && !focusInput,
       'invalid-required-in':
-        getSuperControl.value && invalidAddress && focusInput,
+        getSuperControl.value &&
+        invalidAddress &&
+        focusInput &&
+        !inputConfig.commands?.active,
       'invalid-required-empty':
-        !getSuperControl.value && invalidAddress && !focusInput && touchedInput,
+        !getSuperControl.value &&
+        invalidAddress &&
+        !focusInput &&
+        touchedInput &&
+        !inputConfig.commands?.active,
       'invalid-required-filled-out':
         getSuperControl.value && invalidAddress && !focusInput
     }"
@@ -89,9 +137,16 @@
       'valid-focus-in':
         activeAddress &&
         activeAddress?.address === getSuperControl.value &&
-        focusInput,
-      'invalid-focus-in': getSuperControl.value && invalidAddress && focusInput,
-      'has-input-icon': inputConfig.placeholderIcon
+        focusInput &&
+        !isVisibleCommands &&
+        !inputConfig.blackInput,
+      'invalid-focus-in':
+        getSuperControl.value &&
+        invalidAddress &&
+        focusInput &&
+        !inputConfig.blackInput,
+      'has-input-icon': inputConfig.placeholderIcon,
+      'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keyup)="onBackspace($event)"
     (input)="onChange($event.target.value)"
@@ -125,7 +180,8 @@
     *ngIf="
       !(!getSuperControl.value && focusInput) &&
       (touchedInput || getSuperControl.value) &&
-      getSuperControl.invalid
+      getSuperControl.invalid &&
+      !inputConfig.commands?.active
     "
     class="input-error {{ inputConfig.customClass }}"
   >

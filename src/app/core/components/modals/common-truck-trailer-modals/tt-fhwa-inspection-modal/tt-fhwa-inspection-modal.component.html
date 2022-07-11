@@ -1,27 +1,32 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add new FHWA Inspection' : 'Edit new FHWA Inspection'"
+  [modalTitle]="
+    editData?.type !== 'edit'
+      ? 'Add new FHWA Inspection'
+      : 'Edit new FHWA Inspection'
+  "
   [editData]="editData"
-  [isModalValid]="fhwaInspectionForm.valid"
+  [isModalValid]="
+    editData ? fhwaInspectionForm.valid && isDirty : fhwaInspectionForm.valid
+  "
   (modalActionTypeEmitter)="onModalAction($event)"
 >
   <form [formGroup]="fhwaInspectionForm" class="form-container">
-  
     <div class="row last-row">
       <div class="col-12">
         <app-ta-input
-        formControlName="issueDate"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          label: 'Issue Date',
-          placeholderIcon: 'date',
-          isRequired: true,
-          isDropdown: true,
-          customClass: 'datetimeclass'
-        }"
-      ></app-ta-input>
+          formControlName="issueDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue Date',
+            placeholderIcon: 'date',
+            isRequired: true,
+            isDropdown: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
       </div>
-     </div>
+    </div>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
         [hasCounter]="documents.length ? documents.length : '0'"
@@ -29,7 +34,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

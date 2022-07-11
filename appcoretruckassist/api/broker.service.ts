@@ -21,8 +21,8 @@ import { BrokerModalResponse } from '../model/models';
 import { BrokerResponse } from '../model/models';
 import { CreateBrokerCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
-import { DeleteMultipleBrokerCommand } from '../model/models';
 import { GetBrokerListResponse } from '../model/models';
+import { MapMarkerListResponse } from '../model/models';
 import { MultipleChangeBanFlagCommand } from '../model/models';
 import { MultipleChangeDnuFlagCommand } from '../model/models';
 import { ProblemDetails } from '../model/models';
@@ -110,8 +110,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -161,8 +161,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -226,8 +226,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -277,8 +277,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -342,8 +342,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -395,8 +395,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -433,20 +433,28 @@ export class BrokerService {
     }
 
     /**
-     * @param deleteMultipleBrokerCommand 
+     * @param ids 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiBrokerListDelete(deleteMultipleBrokerCommand?: DeleteMultipleBrokerCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiBrokerListDelete(deleteMultipleBrokerCommand?: DeleteMultipleBrokerCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiBrokerListDelete(deleteMultipleBrokerCommand?: DeleteMultipleBrokerCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiBrokerListDelete(deleteMultipleBrokerCommand?: DeleteMultipleBrokerCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiBrokerListDelete(ids?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiBrokerListDelete(ids?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiBrokerListDelete(ids?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiBrokerListDelete(ids?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let queryParameters = new HttpParams({encoder: this.encoder});
+        if (ids) {
+            ids.forEach((element) => {
+                queryParameters = this.addToHttpParams(queryParameters,
+                  <any>element, 'Ids');
+            })
+        }
 
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -466,17 +474,6 @@ export class BrokerService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
@@ -484,6 +481,7 @@ export class BrokerService {
 
         return this.httpClient.delete<any>(`${this.configuration.basePath}/api/broker/list`,
             {
+                params: queryParameters,
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -552,8 +550,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -594,6 +592,55 @@ export class BrokerService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiBrokerMapGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MapMarkerListResponse>;
+    public apiBrokerMapGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MapMarkerListResponse>>;
+    public apiBrokerMapGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MapMarkerListResponse>>;
+    public apiBrokerMapGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MapMarkerListResponse>(`${this.configuration.basePath}/api/broker/map`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiBrokerModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<BrokerModalResponse>;
     public apiBrokerModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<BrokerModalResponse>>;
     public apiBrokerModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<BrokerModalResponse>>;
@@ -602,8 +649,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -652,8 +699,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -714,8 +761,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -779,8 +826,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -830,8 +877,8 @@ export class BrokerService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }

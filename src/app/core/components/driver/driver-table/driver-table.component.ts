@@ -1,40 +1,67 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
 import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
-import { DriversQuery } from '../state/driver.query';
+import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DriversState, DriversStore } from '../state/driver.store';
+import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
+import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
+import { DriverListResponse } from 'appcoretruckassist';
+import { Console } from 'console';
 
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
-  styleUrls: ['./driver-table.component.scss']
+  styleUrls: ['./driver-table.component.scss'],
 })
-export class DriverTableComponent implements OnInit, OnDestroy {
+export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
-  public drivers: DriversState[] = [];
+  public driversActive: DriversActiveState[] = [];
+  public driversInactive: DriversInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
+  backFilterQuery = {
+    active: 1,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
 
   constructor(
     private modalService: ModalService,
-    private driversQuery: DriversQuery,
+    private driversActiveQuery: DriversActiveQuery,
+    private driversInactiveQuery: DriversInactiveQuery,
     private tableService: TruckassistTableService,
     public datePipe: DatePipe,
     private driverTService: DriverTService,
@@ -42,8 +69,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getDriversData();
+    this.sendDriverData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -56,12 +82,27 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         }
       });
 
+      // Resize
+      this.tableService.currentColumnWidth
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
     // Add Driver
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        console.log('Driver currentActionAnimation');
-        if (res.animation === 'add') {
+        // On Add In Active Tab
+        if (res.animation === 'add' && this.selectedTab === 'active') {
           this.viewData.push(this.mapDriverData(res.data));
 
           this.viewData = this.viewData.map((driver: any) => {
@@ -72,15 +113,16 @@ export class DriverTableComponent implements OnInit, OnDestroy {
             return driver;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
         } else if (res.animation === 'update') {
-          console.log('Driver Data Befor Update');
-          console.log(this.viewData);
-
           const updatedDriver = this.mapDriverData(res.data);
 
           this.viewData = this.viewData.map((driver: any) => {
@@ -108,6 +150,28 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
             return driver;
           });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        } else if (res.animation === 'delete') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
 
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -137,6 +201,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
                 return driver;
               });
 
+              this.updateDataCount();
+
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
@@ -149,7 +215,44 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         }
       });
 
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendDriverData();
+            }
+          }
+        }
+      });
+
     this.loadingPage = false;
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -198,8 +301,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
           contentType: 'add',
         },
         {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
+          title: this.selectedTab === 'inactive' ? 'Deactivate' : 'Activate',
           name: 'activate-item',
           class: 'regular-text',
           contentType: 'activate',
@@ -217,17 +319,25 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getDriversData() {
-    this.sendDriverData();
-  }
-
   sendDriverData() {
+    this.initTableOptions();
+
+    const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
+    const applicantsData = this.getTabData(null);
+
+    const driverActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const driverInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
     this.tableData = [
       {
         title: 'Applicants',
         field: 'applicants',
-        length: 8,
-        data: this.getTabData(),
+        length: 0,
+        data: applicantsData,
         extended: true,
         gridNameTitle: 'Driver',
         stateName: 'applicants',
@@ -236,8 +346,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       {
         title: 'Active',
         field: 'active',
-        length: 5,
-        data: this.getTabData(),
+        length: driverCount.active,
+        data: driverActiveData,
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -246,8 +356,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       {
         title: 'Inactive',
         field: 'inactive',
-        length: 10,
-        data: this.getTabData(),
+        length: driverCount.inactive,
+        data: driverInactiveData,
         extended: false,
         gridNameTitle: 'Driver',
         stateName: 'drivers',
@@ -260,10 +370,18 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     this.setDriverData(td);
   }
 
-  getTabData() {
-    this.drivers = this.driversQuery.getAll();
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.driversActive = this.driversActiveQuery.getAll();
 
-    return this.drivers?.length ? this.drivers : [];
+      return this.driversActive?.length ? this.driversActive : [];
+    } else if (dataType === 'inactive') {
+      this.driversInactive = this.driversInactiveQuery.getAll();
+
+      return this.driversInactive?.length ? this.driversInactive : [];
+    } else {
+      return [];
+    }
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -288,9 +406,16 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     if (td.data.length) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data: DriversState) => {
+      this.viewData = this.viewData.map((data: any) => {
         return this.mapDriverData(data);
       });
+
+      // For Testing
+      /*  for(let i = 0; i < 500; i++){
+        this.viewData.push(this.viewData[0]);
+      } */
+    } else {
+      this.viewData = [];
     }
   }
 
@@ -342,25 +467,79 @@ export class DriverTableComponent implements OnInit, OnDestroy {
     };
   }
 
+  updateDataCount() {
+    const driverCount = JSON.parse(localStorage.getItem('driverTableCount'));
+
+    this.tableData[1].length = driverCount.active;
+    this.tableData[2].length = driverCount.inactive;
+  }
+
+  driverBackFilter(filter: {
+    active: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number | undefined;
+    sort: string | undefined;
+    searchOne: string | undefined;
+    searchTwo: string | undefined;
+    searchThree: string | undefined;
+  }) {
+    this.driverTService
+      .getDrivers(
+        filter.active,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe((drivers: DriverListResponse) => {
+        this.viewData = drivers.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return this.mapDriverData(data);
+        });
+      });
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(DriverModalComponent, {
-        size: 'small',
+        size: 'medium',
       });
-    } else if (event.action === 'tab-selected') {
+    } else if (
+      event.action === 'tab-selected' &&
+      event.tabData.field !== 'applicants'
+    ) {
       this.selectedTab = event.tabData.field;
-      this.setDriverData(event.tabData);
+
+      this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery);
+      } else {
+        this.sendDriverData();
+      }
+    }
+  }
+
   public onTableBodyActions(event: any) {
-    console.log(event);
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
-        { size: 'small' },
+        { size: 'medium' },
         {
           ...event,
           disableButton: true,
@@ -396,7 +575,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
       );
     } else if (event.type === 'activate-item') {
       this.driverTService
-        .changeDriverStatus(event.id)
+        .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
@@ -414,7 +593,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
         });
     } else if (event.type === 'delete-item') {
       this.driverTService
-        .deleteDriverById(event.id)
+        .deleteDriverById(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
@@ -430,6 +609,8 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
               return driver;
             });
+
+            this.updateDataCount();
 
             const inetval = setInterval(() => {
               this.viewData = closeAnimationAction(true, this.viewData);
@@ -449,5 +630,7 @@ export class DriverTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

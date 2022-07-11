@@ -104,6 +104,9 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { MapListComponent } from './map-list/map-list.component';
 import { MapListCardComponent } from './map-list-card/map-list-card.component';
 import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dropdown.component';
+import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
+import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
+import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +149,7 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
     TaUploadDropzoneComponent,
     FilterComponent,
     TaChartComponent,
+    TaInputArrowsComponent,
 
     // Modals Components
     TaModalComponent,
@@ -170,10 +174,12 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
-    TaTabSwitchComponent,
     MapListComponent,
     MapListCardComponent,
-    MapMarkerDropdownComponent
+    MapMarkerDropdownComponent,
+    TaInputDropdownLabelComponent,
+    TaTabSwitchComponent,
+    LoadModalComponent,
   ],
   imports: [
     CommonModule,
@@ -273,6 +279,7 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
+    TaInputArrowsComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -320,7 +327,9 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
     ViolationModalComponent,
     AccidentModalComponent,
     RepairPmModalComponent,
-    RepairOrderModalComponent
+    RepairOrderModalComponent,
+    TaInputDropdownLabelComponent,
+    LoadModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

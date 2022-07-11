@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="drugForm.valid"
+  [isModalValid]="editData ? drugForm.valid && isDirty : drugForm.valid"
   [specificCaseModalName]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -20,6 +20,7 @@
         }"
         [canAddNew]="true"
         [options]="testTypes"
+        [activeItem]="selectedTestType"
         (selectedItem)="onSelectDropdown($event, 'test')"
       ></app-ta-input-dropdown>
       <app-ta-input-dropdown
@@ -35,6 +36,7 @@
         }"
         [canAddNew]="true"
         [options]="reasonTypes"
+        [activeItem]="reasonTypes"
         (selectedItem)="onSelectDropdown($event, 'reason')"
       ></app-ta-input-dropdown>
       <app-ta-input
@@ -58,7 +60,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

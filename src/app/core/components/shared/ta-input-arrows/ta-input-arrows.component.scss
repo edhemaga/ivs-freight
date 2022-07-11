@@ -1,0 +1,60 @@
+@import 'src/theme/variables.scss';
+
+.ta-input-arrows-container {
+  width: 100%;
+
+  p {
+    font-size: 14px;
+    color: $bw6-2;
+    margin-right: 12px !important;
+    user-select: none !important;
+  }
+
+  .btn-container {
+    width: 42px;
+    height: 18px;
+    margin-right: 6px;
+
+    .minus-icon,
+    .plus-icon {
+      cursor: pointer;
+
+      svg {
+        transition: transform 0.2s ease-in-out;
+
+        rect {
+          transition: fill 0.2s ease-in-out;
+          fill: $bw-9;
+        }
+
+        path {
+          fill: $white;
+        }
+      }
+
+      &.minus-icon {
+        margin-right: 6px;
+      }
+
+      &:hover {
+        svg {
+          transform: scale(1.2);
+
+          rect {
+            fill: $bw4;
+          }
+        }
+      }
+    }
+  }
+
+  .input-container {
+    width: 32px;
+    height: 26px;
+    border-radius: 3px;
+    background-color: $ta-light-grey-4;
+    color: $bw6-2;
+    font-size: 14px;
+    user-select: none !important;
+  }
+}

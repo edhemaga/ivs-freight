@@ -2,22 +2,16 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="shipperForm.valid"
+  [isModalValid]="editData ? shipperForm.valid && isDirty : shipperForm.valid"
   [customClass]="'modal-container-M'"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
-
   <app-ta-tab-switch
-  [tabs]="tabs"
-  (switchClicked)="tabChange($event)" 
-  [type]="'modal-popup'"
-  >
-  </app-ta-tab-switch>  
-
-  <!-- <app-tab-switcher
-    (switchClicked)="tabChange($event)"
     [tabs]="tabs"
-  ></app-tab-switcher> -->
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="shipperForm"
@@ -40,7 +34,7 @@
                 label: 'Bussines Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: true
+                autoFocus: editData?.type === 'edit' ? false : true
               }"
             ></app-ta-input>
           </div>
@@ -301,6 +295,7 @@
                     dropdownWidthClass: 'w-col-shipper-department'
                   }"
                   [options]="labelsDepartments"
+                  [activeItem]="selectedContractDepartmentFormArray[ind]"
                   (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input

@@ -1,24 +1,46 @@
-import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
+import { RepairModalResponse } from './../../../../../../appcoretruckassist/model/repairModalResponse';
 
 import { Injectable } from '@angular/core';
+import { RepairService } from 'appcoretruckassist/api/repair.service';
+import { Observable } from 'rxjs';
 import {
-  CreateRepairShopCommand,
+  CreateRepairCommand,
   CreateResponse,
+  RepairResponse,
+  UpdateRepairCommand,
+  CreateRepairShopCommand,
   RepairShopListResponse,
   RepairShopModalResponse,
   RepairShopService,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
-import { ShopStore } from './shop-state/shop.store';
+import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RepairTService {
-  constructor(
-    private shopServices: RepairShopService /* private shopStore: ShopStore */
-  ) {}
+  constructor(private repairService: RepairService, private shopServices: RepairShopService) {}
+
+  public getRepairModalDropdowns(): Observable<RepairModalResponse> {
+    return this.repairService.apiRepairModalGet();
+  }
+
+  public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
+    return this.repairService.apiRepairPost(data);
+  }
+
+  public updateRepair(data: UpdateRepairCommand): Observable<object> {
+    return this.repairService.apiRepairPut(data);
+  }
+
+  public getRepairById(id: number): Observable<RepairResponse> {
+    return this.repairService.apiRepairIdGet(id);
+  }
+
+  public deleteRepairById(id: number): Observable<object> {
+    return this.repairService.apiRepairIdDelete(id);
+  }
 
   public addRepairShop(
     data: CreateRepairShopCommand
@@ -34,6 +56,7 @@ export class RepairTService {
   public getRepairsList(
     active?: number,
     pinned?: boolean,
+    companyOwned?: boolean,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -42,14 +65,20 @@ export class RepairTService {
     search1?: string,
     search2?: string
   ): Observable<RepairShopListResponse> {
-    return this.shopServices.apiRepairshopListGet(active, pinned, pageIndex, pageSize);
+    return this.shopServices.apiRepairshopListGet(
+      active,
+      pinned,
+      companyOwned,
+      pageIndex,
+      pageSize
+    );
   }
 
   public getRepairShopById(id: number): Observable<RepairShopResponse> {
     return this.shopServices.apiRepairshopIdGet(id);
   }
 
-  public deleteRepairById(id: number): Observable<any> {
+  public deleteRepairShopById(id: number): Observable<any> {
     return this.shopServices.apiRepairshopIdDelete(id);
   }
 

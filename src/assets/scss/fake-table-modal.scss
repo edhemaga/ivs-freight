@@ -342,7 +342,11 @@
     }
 
     .common-fake-table-card {
-      grid-template-columns: 110px 304px 1fr;
+      grid-template-columns: 110px 1fr 18px;
+
+      .common-fake-table-delete {
+        right: 7.5px;
+      }
     }
   }
 
@@ -548,6 +552,200 @@
       column-gap: 12px;
       align-items: center;
       padding-left: 6px;
+
+      .ta-checkbox-container.disabled .ta-checkbox-label {
+        color: #6c6c6c !important;
+      }
+      .ta-checkbox-container .ta-checkbox-svg {
+        svg {
+          path {
+            fill: #b7b7b7 !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Repair Bill Modal Items
+  &-repair-bill-item {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 36px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 216px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 20px;
+        }
+
+        &:nth-child(5) {
+          margin-left: 63px;
+        }
+
+        &:nth-child(6) {
+          margin-left: 74px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 18px 332px 90px 60px 100px;
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+      position: relative;
+      align-items: center;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #919191;
+
+        &:nth-child(1) {
+          padding-left: 5px;
+          text-align: center;
+        }
+
+        &::-moz-selection {
+          background-color: #919191 !important;
+        }
+
+        &::selection {
+          background-color: #919191 !important;
+        }
+      }
+
+      &.card-item-active {
+        p {
+          color: #536bc2 !important;
+          &::selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+          &::-moz-selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+        }
+      }
+
+      .item-subtotal {
+        text-align: end;
+      }
+
+      .desc-pm-container {
+        position: relative;
+
+        .pm-item {
+          position: absolute;
+          right: 6px;
+          top: 1px;
+        }
+
+        .pm-svg {
+          position: absolute;
+          top: 0px;
+          right: 4px;
+          cursor: pointer;
+
+          &.active {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Repair Order Modal Items
+  &-repair-order-item {
+    .common-fake-table-label {
+      p {
+        &:nth-child(2) {
+          margin-left: 36px;
+        }
+
+        &:nth-child(3) {
+          margin-left: 430px;
+        }
+
+        &:nth-child(4) {
+          margin-left: 20px;
+        }
+      }
+    }
+
+    .common-fake-table-card {
+      grid-template-columns: 18px 546px 60px;
+      column-gap: 12px;
+      align-items: center;
+      padding-left: 6px;
+      position: relative;
+      align-items: center;
+
+      p {
+        margin: 0;
+        padding: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #919191;
+
+        &:nth-child(1) {
+          padding-left: 8px;
+        }
+
+        &::-moz-selection {
+          background-color: rgb(145, 145, 145, 0.2) !important;
+        }
+
+        &::selection {
+          background-color: rgb(145, 145, 145, 0.2) !important;
+        }
+      }
+
+      &.card-item-active {
+        p {
+          color: #536bc2 !important;
+          &::selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+          &::-moz-selection {
+            background-color: rgb(83, 107, 194, 0.2) !important;
+          }
+        }
+      }
+
+      .desc-pm-container {
+        position: relative;
+
+        .pm-item {
+          position: absolute;
+          right: 6px;
+          top: 1px;
+        }
+
+        .pm-svg {
+          position: absolute;
+          top: 0px;
+          right: 4px;
+          cursor: pointer;
+
+          &.active {
+            svg {
+              path {
+                fill: #536bc2;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

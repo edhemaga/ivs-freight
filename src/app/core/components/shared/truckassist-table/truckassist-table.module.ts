@@ -16,7 +16,7 @@ import { TaNoteModule } from '../ta-note/ta-note.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
-import { TruckassistTableToolbarSwitchComponent } from '../truckassist-table-toolbar-switch/truckassist-table-toolbar-switch.component';
+import { PipesModule } from 'src/app/core/pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -26,7 +26,6 @@ import { TruckassistTableToolbarSwitchComponent } from '../truckassist-table-too
     GetExpireDataPipe,
     TableDropdownComponent,
     ResizeColumnDirective,
-    TruckassistTableToolbarSwitchComponent,
   ],
   imports: [
     CommonModule,
@@ -39,8 +38,8 @@ import { TruckassistTableToolbarSwitchComponent } from '../truckassist-table-too
     DragDropModule,
     DirectivesModule,
     AppNoteModule,
-    ProfileImagesModule
-    
+    ProfileImagesModule,
+    PipesModule
   ],
   exports: [
     TruckassistTableBodyComponent,
@@ -48,7 +47,6 @@ import { TruckassistTableToolbarSwitchComponent } from '../truckassist-table-too
     TruckassistTableToolbarComponent,
     GetExpireDataPipe,
     TableDropdownComponent,
-    TruckassistTableToolbarSwitchComponent
   ],
 })
 export class TruckassistTableModule {}

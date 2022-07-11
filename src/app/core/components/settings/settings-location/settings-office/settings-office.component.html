@@ -7,7 +7,6 @@
         [countBackground]="'#F3F3F3'"
         [countHeight]="'24px'"
         [countWidth]="'24px'"
-        [countTextBottomPosition]="'-2px'"
       ></app-ta-counter>
       <p>Office</p>
     </div>
@@ -17,7 +16,7 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ type: true, modalName: 'office', action: 'add' })"
+        (click)="onAction({ modalName: 'office', type: 'add' })"
       ></svg-icon>
     </div>
   </div>
@@ -28,7 +27,6 @@
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
-      
     >
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
@@ -53,7 +51,6 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
-        
       >
         <div class="office-template-data">
           <div class="office-template-item">
@@ -80,9 +77,8 @@
         </div>
       </app-ta-custom-card>
       <div *ngIf="item.rent" class="divider"></div>
-      <div   *ngIf="item.rent" class="settings-progress-container">
+      <div *ngIf="item.rent" class="settings-progress-container">
         <app-truckassist-progress-expiration
-        
           [expireDate]="'03/25/2023'"
           [startDate]="'03/12/2023'"
           [expiresSettings]="'settings-parking'"

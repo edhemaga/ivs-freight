@@ -26,7 +26,6 @@ import { card_component_animation } from '../../../shared/animations/card-compon
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
   styleUrls: ['./driver-details-item.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
@@ -34,37 +33,14 @@ export class DriverDetailsItemComponent
   implements OnInit, OnDestroy, OnChanges
 {
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
-  @Input() driver: DriverResponse | any = null;
+  @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
   public mvrNote: FormControl = new FormControl();
   public toggler: boolean[] = [];
   public showMoreEmployment: boolean = false;
-
   public dataTest: any;
   public expDateCard: any;
-
-  public documentsList: any = [
-    {
-      fileName: 'truckassist0',
-      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-      extension: 'pdf'
-    },
-    {
-      fileName: 'truckassist0',
-      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-      extension: 'pdf'
-    },
-    {
-      fileName: 'truckassist0',
-      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-      extension: 'pdf'
-    },
-    {
-      fileName: 'truckassist0',
-      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-      extension: 'pdf'
-    }
-  ];
+  public dataCDl: any;
 
   constructor(
     private activated_route: ActivatedRoute,
@@ -72,32 +48,30 @@ export class DriverDetailsItemComponent
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.getExpireDate();
-    if(!changes.driver.firstChange && changes.driver.currentValue){
-      this.driver = changes.driver.currentValue;
-      console.log('driver onChanges', this.driver);
-
+   
+    if (!changes.drivers.firstChange && changes.drivers.currentValue) {
+      this.drivers = changes.drivers.currentValue;
+      this.getExpireDate();
     }
+    
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.initTableOptions();
     this.getExpireDate();
-
-    console.log('driver onInit', this.driver);
   }
-
   public getExpireDate() {
-
-      // this.driver.data = this.driver.data.cdls.forEach((ele) => {
-      //   if (moment(ele.expDate).isBefore(moment())) {
-      //     this.expDateCard = false;
-      //   } else {
-      //     this.expDateCard = true;
-      //   }
-      //     console.log(this.expDateCard);
-          
-      // });
+    this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
+      if (moment(ele.expDate).isBefore(moment())) {
+        this.expDateCard = false;
+      } else {
+        this.expDateCard = true;
+      }
+      return {
+        ...ele,
+        showButton: this.expDateCard,
+      };
+    });
   
   }
 
@@ -150,7 +124,6 @@ export class DriverDetailsItemComponent
 
   public optionsEvent(any: any, action: string) {
     console.log('optionsEvent', any, action);
-    console.log('driver optionsEvent', this.driver);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -158,7 +131,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.data.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -170,7 +143,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.data.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -182,7 +155,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.data.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -194,7 +167,7 @@ export class DriverDetailsItemComponent
           { size: 'small' },
           {
             file_id: any.id,
-            id: this.driver.data.id,
+            id: this.drivers[0].data.id,
             type: action,
           }
         );
@@ -226,12 +199,12 @@ export class DriverDetailsItemComponent
   }
   /**Function retrun id */
   public identity(index: number, item: any): number {
-    return item.id;
+    return index;
   }
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number) {
-    this.toggler[value] = !this.toggler[value];
+  public toggleResizePage(value: number, indexName:string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   public onFileAction(action: string) {
     switch (action) {

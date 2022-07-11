@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="cdlForm.valid"
+  [isModalValid]="editData ? cdlForm.valid && isDirty : cdlForm.valid"
   [specificCaseModalName]="true"
   (modalActionTypeEmitter)="onModalAction($event)"
 >
@@ -16,7 +16,7 @@
           label: 'CDL #',
           isRequired: true,
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: editData?.type === 'edit' ? false : true
         }"
       ></app-ta-input>
       <app-ta-input
@@ -58,6 +58,7 @@
           }"
           [canAddNew]="true"
           [options]="classTypes"
+          [activeItem]="selectedClassType"
           (selectedItem)="onSelectDropdown($event, 'class')"
         ></app-ta-input-dropdown>
       </div>
@@ -73,6 +74,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="countryTypes"
+          [activeItem]="selectedCountryType"
           (selectedItem)="onSelectDropdown($event, 'country')"
         ></app-ta-input-dropdown>
       </div>
@@ -89,6 +91,7 @@
             dropdownWidthClass: 'w-col-4'
           }"
           [options]="stateTypes"
+          [activeItem]="selectedStateType"
           (selectedItem)="onSelectDropdown($event, 'state')"
         ></app-ta-input-dropdown>
       </div>
@@ -138,7 +141,7 @@
         [isCardOpen]="documents.length"
       >
         <app-ta-modal-upload
-          [files]="[]"
+          [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
         ></app-ta-modal-upload>
       </app-ta-custom-card>

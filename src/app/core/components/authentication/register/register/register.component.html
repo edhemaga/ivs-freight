@@ -29,7 +29,7 @@
           <!-- FIRST NAME, LAST NAME -->
 
           <div class="d-flex">
-            <div class="form-label-group first-name-group">
+            <div class="group first-name-group">
               <app-ta-input
                 formControlName="firstName"
                 [inputConfig]="{
@@ -42,7 +42,7 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="form-label-group last-name-group">
+            <div class="group last-name-group">
               <app-ta-input
                 formControlName="lastName"
                 [inputConfig]="{
@@ -59,7 +59,7 @@
           <!-- COMPANY NAME, EIN -->
 
           <div class="d-flex">
-            <div class="form-label-group company-name-group">
+            <div class="group company-name-group">
               <app-ta-input
                 formControlName="companyName"
                 [inputConfig]="{
@@ -71,14 +71,15 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="form-label-group ein-group">
+            <div class="group ein-group">
               <app-ta-input
-                formControlName="taxNumber"
+                formControlName="ein"
                 [inputConfig]="{
                   name: 'EIN',
                   type: 'text',
-                  label: 'EIN #',
-                  mask: '00-0000000'
+                  label: 'EIN',
+                  mask: '00-0000000',
+                  isRequired: true
                 }"
               ></app-ta-input>
             </div>
@@ -87,7 +88,7 @@
           <!-- ADDRESS -->
 
           <div class="d-flex">
-            <div class="form-label-group address-group">
+            <div class="group address-group">
               <app-ta-input-address
                 formControlName="address"
                 [inputConfig]="{
@@ -101,7 +102,7 @@
                 (selectedAddress)="handleAddressChange($event)"
               ></app-ta-input-address>
             </div>
-            <div class="form-label-group address-unit-group">
+            <div class="group address-unit-group">
               <app-ta-input
                 formControlName="addressUnit"
                 [inputConfig]="{
@@ -117,7 +118,7 @@
           <!-- PHONE, EMAIL -->
 
           <div class="d-flex">
-            <div class="form-label-group phone-group">
+            <div class="group phone-group">
               <app-ta-input
                 formControlName="phone"
                 [inputConfig]="{
@@ -130,7 +131,7 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="form-label-group email-group">
+            <div class="group email-group">
               <app-ta-input
                 formControlName="email"
                 [inputConfig]="{
@@ -148,7 +149,7 @@
           <!-- PASSWORD, CONFIRM PASSWORD -->
 
           <div class="d-flex">
-            <div class="form-label-group password-group">
+            <div class="group password-group">
               <app-ta-input
                 formControlName="password"
                 [inputConfig]="{
@@ -161,7 +162,7 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="form-label-group password-group">
+            <div class="group password-group">
               <app-ta-input
                 formControlName="confirmPassword"
                 [inputConfig]="{

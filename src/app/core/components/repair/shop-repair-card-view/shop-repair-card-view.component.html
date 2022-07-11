@@ -1,0 +1,244 @@
+<div class="cards-item-wrapper-1">
+  <app-ta-details-header-card
+    [cardDetailsDate]="shopResponse?.createdAt | formatDateP"
+    [tooltipNext]="'Next Repair'"
+    [tooltipPrevious]="'Previous Repair'"
+    [searchInputName]="'Search Repair'"
+    [searchName]="'Pinned Shop'"
+    [options]="shopsDropdowns"
+    (selectValue)="onSelectedShop($event)"
+    (changeEvent)="onChangeShop($event)"
+    [dateChecked]="'Today'"
+  >
+    <div class="repair-information-wrapper">
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_phone.svg"
+        ></svg-icon>
+        <p class="repair-value">
+          {{ shopResponse?.phone | formatPhoneP }}
+        </p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_email.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ shopResponse?.email }}</p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_address.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ shopResponse?.address?.address }}</p>
+      </div>
+    </div>
+  </app-ta-details-header-card>
+  <div class="wrapper-additional-cards">
+    <div class="repair-cards">
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="false"
+        [cardName]="'Working Hours'"
+        [isCardOpen]="true"
+      >
+        <div class="working-hours-container" *ngIf="shopResponse?.openHours">
+          <div class="open-now-wrapper">
+            <div class="open-now-icon-text">
+              <div class="open-header">Open Now</div>
+              <svg-icon
+                class="icon-pulse"
+                src="assets/svg/common/ic_pulse_circle.svg"
+              ></svg-icon>
+            </div>
+            <div *ngIf="shopResponse?.openHoursToday" class="open-time">
+              {{ shopResponse?.openHoursToday }}
+            </div>
+          </div>
+          <div class="open-hours-wrapper">
+            <div class="working-days">
+              <div class="open-header">Monday - Friday</div>
+              <div class="open-working-days-value">
+                {{ shopResponse.openHours[1].startTime }} AM -
+                {{ shopResponse.openHours[1].endTime }} PM
+              </div>
+            </div>
+            <div class="working-days">
+              <div class="open-header">Saturday</div>
+              <div class="open-working-days-value">
+                {{ shopResponse?.openHours[5].startTime }} AM -
+                {{ shopResponse.openHours[5].endTime }} PM
+              </div>
+            </div>
+          </div>
+          <div class="open-now-wrapper sunday">
+            <div class="open-header">Sunday</div>
+            <div class="open-working-days-value">
+              {{
+                shopResponse.openHours[0].startTime
+                  ? shopResponse.openHours[0].startTime
+                  : "Closed"
+              }}
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [cardName]="'Service'"
+        [hasCounter]="count"
+        [isCardOpen]="true"
+      >
+        <div class="service-container">
+          <div
+            *ngFor="
+              let service of shopResponse.serviceTypes;
+              let i = index;
+              trackBy: identity
+            "
+          >
+            <div class="service-item">
+              <svg-icon
+                [ngClass]="{ disabled: !service.active }"
+                src="assets/svg/truckassist-table/repair/{{ service.logoName }}"
+              ></svg-icon>
+
+              <span
+                [ngClass]="{ 'cross-out': !service.active }"
+                class="service-type"
+                >{{ service.serviceType.name }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [cardName]="'Repair Expenses'"
+        [isCardOpen]="true"
+        [tooltipName]="'View in Modal'"
+        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+      >
+        <div class="charts-template perfomance">
+          <app-ta-tab-switch [type]="'type2-modal-popup'" [tabs]="tabs">
+          </app-ta-tab-switch>
+
+          <!-- <div id="chart">
+            <app-ta-chart
+              [chartConfig]="{
+                legendAttributes: [
+                  {
+                    title: 'Miles',
+                    value: '46,755.2 mi',
+                    image: 'assets/svg/common/round_yellow.svg'
+                  },
+                  {
+                    title: 'Salary',
+                    value: '$36.854.27',
+                    image: 'assets/svg/common/round_blue.svg'
+                  }
+                ],
+                dataProperties: [
+                  {
+                    defaultConfig: {
+                      type: 'line',
+                      data: [
+                        1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000,
+                        1150, 1300, 1700
+                      ],
+                      label: 'Salary',
+                      yAxisID: 'y-axis-1',
+                      borderColor: '#6D82C7',
+                      pointBackgroundColor: '#FFFFFF',
+                      pointHoverBackgroundColor: '#6D82C7',
+                      pointHoverBorderColor: '#FFFFFF'
+                    }
+                  },
+                  {
+                    defaultConfig: {
+                      type: 'bar',
+                      data: [
+                        2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500,
+                        1400, 2200, 2800
+                      ],
+                      label: 'Miles',
+                      yAxisID: 'y-axis-0',
+                      borderColor: '#FFCC80',
+                      backgroundColor: '#FFCC80',
+                      hoverBackgroundColor: '#FFA726'
+                    }
+                  }
+                ],
+                showLegend: false,
+                chartValues: [46, 755, 000, 36.854],
+                defaultType: 'bar',
+                chartWidth: '417',
+                chartHeight: '130',
+                dataLabels: [
+                  '',
+                  'NOV',
+                  '',
+                  '2021',
+                  '',
+                  'MAR',
+                  '',
+                  'MAY',
+                  '',
+                  'JUL',
+                  '',
+                  'SEP'
+                ],
+                noChartImage: 'assets/svg/common/yellow_no_data.svg'
+              }"
+              [axesProperties]="{
+                verticalLeftAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 4000,
+                  stepSize: 1000,
+                  showGridLines: true
+                },
+                verticalRightAxes: {
+                  visible: true,
+                  minValue: 0,
+                  maxValue: 2800,
+                  stepSize: 700,
+                  showGridLines: false
+                },
+                horizontalAxes: {
+                  visible: true,
+                  position: 'bottom',
+                  showGridLines: false
+                }
+              }"
+            >
+            </app-ta-chart>
+          </div> -->
+        </div>
+      </app-ta-custom-card>
+
+      <!--------Note--------->
+      <div class="divider"></div>
+      <div class="note-cards">
+        <app-ta-input-note
+          [formControl]="noteControl"
+          [isVisibleSecondDivider]="false"
+          [isVisibleArrow]="true"
+          [minRows]="1"
+          [isVisibleDivider]="false"
+          [placeholder]="'Write something.'"
+          [customClass]="'note-small'"
+        ></app-ta-input-note>
+      </div>
+    </div>
+    <div *ngIf="templateCard">
+      <!-- dizajn za ovaj deo -->
+    </div>
+  </div>
+</div>

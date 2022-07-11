@@ -5,12 +5,15 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
   styleUrls: ['./violation-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [FormService, ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -96,11 +99,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -141,15 +147,17 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       trailerPlateNumber: [null],
       trailerState: [null],
       trailerVIN: [null],
-      violations: this.formBuilder.array([this.formBuilder.group({
-        code: ["392.2-SLLS3"],
-        categoryId: ["Vehicle Maintenance"],
-        unit: ["Trailer"],
-        sw: ["10+2"],
-        oos: [true],
-        sms: [false],
-        description: ["Allowing or requiring a driver to use i…"]
-      })]),
+      violations: this.formBuilder.array([
+        this.formBuilder.group({
+          code: ['392.2-SLLS3'],
+          categoryId: ['Vehicle Maintenance'],
+          unit: ['Trailer'],
+          sw: ['10+2'],
+          oos: [true],
+          sms: [false],
+          description: ['Allowing or requiring a driver to use i…'],
+        }),
+      ]),
       note: [null],
       policeDepartment: [null],
       policeOfficer: [null],
@@ -166,6 +174,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       bol: [null],
       cargo: [null],
     });
+
+    this.formService.checkFormChange(this.violationForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -179,7 +195,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   public onModalAction(data: { action: string; bool: boolean }): void {
     // Update
-    switch(data.action) {
+    switch (data.action) {
       case 'close': {
         this.violationForm.reset();
         break;
@@ -205,11 +221,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     return this.violationForm.get('violations') as FormArray;
   }
 
-  public onHandleAddress(event: {
-    address: AddressEntity | any;
-    valid: boolean;
-  }, action) {
-    switch(action) {
+  public onHandleAddress(
+    event: {
+      address: AddressEntity | any;
+      valid: boolean;
+    },
+    action
+  ) {
+    switch (action) {
       case 'address-authority': {
         this.selectedAuthorityAddress = event;
         break;
@@ -230,11 +249,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   }
 
   public onFilesEvent(event) {
-    console.log(event)
+    this.documents = event.files;
   }
 
   public pickedSpecialChecks() {
-    return this.specialChecks.filter(item => item.active).length;
+    return this.specialChecks.filter((item) => item.active).length;
   }
 
   public identity(index: number, item: any): number {

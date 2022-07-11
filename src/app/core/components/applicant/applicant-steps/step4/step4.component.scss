@@ -1,163 +1,189 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
+    height: 39px;
   }
 
   .top-section {
-    margin-top: 20px;
-    width: 680px;
+    margin-top: 22px;
+    width: 820px;
 
     p {
       color: $bw6-2;
       font-size: 14px;
+      line-height: 22px;
     }
   }
 
   .mid-section {
-    margin-bottom: 22px;
+    margin-top: 22px;
+    margin-bottom: 32px;
   }
 
   .form-section {
+    width: 616px;
+
     .accident-view-container {
-      margin-bottom: 10px;
+      width: 616px;
+      margin-bottom: 32px;
 
       .title-container {
-        margin-bottom: 2px;
+        width: 100%;
+        margin-bottom: 6px;
+        padding-left: 6px;
 
         .date-title-box,
         .state-title-box,
-        .fat-title-box,
-        .inj-title-box,
-        .hazmat-spill-title-box,
+        .fatalities-title-box,
+        .injuries-title-box,
+        .hazmat-title-box,
         .description-title-box {
-          margin-right: 12px;
+          p {
+            color: $bw5;
+            font-size: 12px;
+
+            span {
+              color: $progress-danger;
+            }
+          }
 
           &.date-title-box {
-            width: 73px;
-          }
-
-          &.state-title-box,
-          &.hazmat-spill-title-box {
             width: 43px;
+            margin-right: 51px;
           }
 
-          &.fat-title-box,
-          &.inj-title-box {
-            width: 40px;
+          &.state-title-box {
+            width: 48px;
+            margin-right: 18px;
+          }
+
+          &.fatalities-title-box {
+            width: 26px;
+            margin-right: 26px;
+          }
+
+          &.injuries-title-box {
+            width: 23px;
+            margin-right: 29px;
+          }
+
+          &.hazmat-title-box {
+            width: 60px;
+            margin-right: 18px;
           }
 
           &.description-title-box {
-            width: 157px;
-            margin-right: 0;
-          }
-
-          p {
-            color: $bw6-2;
-            font-size: 10px;
+            width: 96px;
           }
         }
       }
 
       .accident-info-container {
-        margin-bottom: 12px;
+        width: 100%;
+        height: 26px;
+        padding: 4px 6px;
+        background-color: $ta-light-grey-4;
+        border-radius: 2px;
+        margin-bottom: 2px;
+        color: $bw6-2;
+        font-size: 14px;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-        &:hover .edit-delete-box {
-          visibility: visible;
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
+        }
+
+        &:hover .btn-container {
+          opacity: 1;
+          visibility: visible !important;
         }
 
         .date-box,
         .state-box,
-        .fat-box,
-        .inj-box,
-        .hazmat-spill-box,
+        .fatalities-box,
+        .injuries-box,
+        .hazmat-box,
         .description-box {
-          background-color: $bw5;
-          color: $white;
-          border-radius: 3px;
-          height: 26px;
-          padding: 0;
-          margin-right: 12px;
-
           &.date-box {
-            width: 73px;
+            width: 71px;
+            margin-right: 18px;
           }
 
-          &.state-box,
-          &.hazmat-spill-box {
-            width: 43px;
+          &.state-box {
+            width: 41px;
+            margin-right: 24px;
+            padding-left: 6px;
+            text-transform: uppercase;
           }
 
-          &.fat-box,
-          &.inj-box {
-            width: 40px;
+          &.fatalities-box {
+            width: 28px;
+            margin-right: 24px;
+            padding-left: 6px;
+          }
+
+          &.injuries-box {
+            width: 28px;
+            margin-right: 24px;
+            padding-left: 6px;
+          }
+
+          &.hazmat-box {
+            width: 54px;
+            margin-right: 24px;
+            padding-left: 6px;
+            text-transform: capitalize;
           }
 
           &.description-box {
-            width: 157px;
-            margin-right: 0;
-          }
-
-          p {
-            font-size: 14px;
+            width: 207px;
+            margin-right: 19px;
+            padding-left: 6px;
           }
         }
 
-        .edit-delete-box {
-          visibility: hidden;
-          height: 26px;
-          width: 38px;
-          margin-left: 6px;
+        .btn-container {
+          width: 42px;
+          visibility: hidden !important;
+          opacity: 0;
+          transition: opacity 0.2s ease-in-out;
 
-          .edit-btn,
-          .delete-btn {
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            border: none;
-            outline: none;
-            opacity: 0.7;
+          .edit-icon,
+          .delete-icon {
+            cursor: pointer;
 
             &:hover {
-              opacity: 1;
-            }
-
-            &.edit-btn {
-              background-color: $bw6-2;
-              margin-right: 6px;
-
-              .edit-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $bw6-2;
                 }
               }
             }
 
-            &.delete-btn {
-              background-color: $progress-danger;
-
-              .delete-icon {
-                svg {
-                  path {
-                    fill: $white;
-                  }
-                }
+            svg {
+              path {
+                fill: $bw4;
               }
             }
+          }
+
+          .edit-icon {
+            margin-right: 6px;
           }
         }
       }
     }
 
-    .form-label-group {
+    .group {
       margin-bottom: 22px;
       margin-right: 12px;
-      width: 456px;
 
       &:last-child {
         margin-right: 0;
@@ -166,35 +192,50 @@
     }
 
     .location-group {
-      width: 320px;
+      width: 445px;
     }
 
     .date-group {
-      width: 122px;
+      width: 159px;
     }
 
-    .fatalities-group {
-      width: 128px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    .fatalities-injuries-group {
+      margin-bottom: 32px;
 
-    .injuries-group {
-      width: 117px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      .fatalities-group {
+        width: 178px;
+        margin-right: 12px;
+
+        p {
+          width: 77px;
+          font-size: 14px;
+          color: $bw6-2;
+          margin-right: 12px !important;
+        }
+      }
+
+      .injuries-group {
+        width: 157px;
+
+        p {
+          width: 65px;
+          font-size: 14px;
+          color: $bw6-2;
+          margin-right: 12px !important;
+        }
+      }
     }
 
     .hazmat-spill-group {
-      width: 187px;
+      width: 194px;
       height: 26px;
+      margin-bottom: 32px;
 
       .title-box {
         p {
           font-size: 14px;
           color: $bw6-2;
+          user-select: none !important;
 
           .required-star {
             color: $progress-danger;
@@ -203,7 +244,7 @@
       }
 
       .radios-box {
-        width: 80px;
+        width: 86px;
 
         .ta-input-radiobutons {
           width: 100%;
@@ -216,32 +257,118 @@
     }
 
     .truck-type-group {
-      width: 171px;
+      width: 231px;
       margin-bottom: 0;
     }
 
     .description-group {
-      width: 273px;
+      width: 373px;
       margin-bottom: 0;
     }
 
     .add-more-accident-container {
-      margin-top: 12px;
-      margin-bottom: 32px;
+      margin-top: 25px;
 
-      .add-accident-btn {
-        border: 0;
-        outline: 0;
+      .add-btn {
+        height: 26px;
+        padding: 4px 8px;
+        border: none;
+        outline: none;
         font-size: 14px;
-        height: 18px;
-        color: $light-blue;
-        background-color: transparent;
-        opacity: 0.7;
+        border-radius: 2px;
+        color: $ta-blue;
+        background: $ta-gray-01;
+        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
         &:hover {
-          opacity: 1;
+          color: $white;
+          background: $ta-blue;
+        }
+
+        &:hover .plus-icon {
+          svg {
+            path {
+              fill: $white;
+            }
+          }
+        }
+
+        &.disabled {
+          -webkit-user-select: none !important;
+          -moz-user-select: none !important;
+          -ms-user-select: none !important;
+          user-select: none !important;
+
+          cursor: auto;
+          background: $ta-light-grey-4;
+          color: $bw4;
+
+          .plus-icon {
+            svg {
+              path {
+                fill: $ta-light-grey-6;
+              }
+            }
+          }
+
+          &:hover {
+            background: $ta-light-grey-4 !important;
+            color: $bw4 !important;
+          }
+        }
+
+        .plus-icon {
+          margin-right: 6px;
+
+          svg {
+            path {
+              transition: fill 0.2s ease-in-out;
+              fill: $ta-light-blue;
+            }
+          }
+        }
+      }
+
+      .cancel-btn {
+        width: 150px;
+        height: 32px;
+        margin-right: 22px;
+        color: $bw5;
+        background: $ta-light-grey-4;
+        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+        &:hover {
+          background: $bw6-2;
+          color: $white;
+        }
+      }
+
+      .save-btn {
+        width: 150px;
+        height: 32px;
+        color: $white;
+        background: $ta-light-blue;
+
+        &:hover {
+          background-color: $ta-blue;
         }
       }
     }
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

@@ -35,6 +35,8 @@ import {
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
+import { debounceTime } from 'rxjs';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-broker-modal',
@@ -42,6 +44,7 @@ import { BrokerTService } from '../../customer/state/broker-state/broker.service
   styleUrls: ['./broker-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService, FormService, TaLikeDislikeService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -109,16 +112,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      label: 'Enable',
+      label: 'credit',
       value: 'enable',
-      name: 'credit',
+      name: 'Enable',
       checked: true,
     },
     {
       id: 300,
-      label: 'Disable',
+      label: 'credit',
       value: 'disable',
-      name: 'credit',
+      name: 'Disable',
       checked: false,
     },
   ];
@@ -145,6 +148,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public companyUser: SignInResponse = null;
   public hasCompanyUserReview: boolean = false;
 
+  public isDirty: boolean = false;
+
+  public disableOneMoreReview: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -152,7 +159,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     private brokerModalService: BrokerTService,
     private notificationService: NotificationService,
     private reviewRatingService: ReviewsRatingService,
-    private taLikeDislikeService: TaLikeDislikeService
+    private taLikeDislikeService: TaLikeDislikeService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -202,6 +210,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
+
+    if (this.editData) {
+      this.formService.checkFormChange(this.brokerForm);
+
+      this.formService.formValueChange$
+        .pipe(untilDestroyed(this))
+        .subscribe((isFormChange: boolean) => {
+          isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+        });
+    }
   }
 
   public get brokerContacts(): FormArray {
@@ -352,9 +370,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabPhysicalAddressChange(event: any): void {
-    this.selectedPhysicalAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedPhysicalAddressTab = event;
+
     if (
       this.selectedPhysicalAddressTab?.id.toLowerCase() === 'physicaladdress'
     ) {
@@ -383,9 +400,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public tabBillingAddressChange(event: any): void {
-    this.selectedBillingAddressTab = event.find(
-      (item) => item.checked === true
-    );
+    this.selectedBillingAddressTab = event;
 
     if (this.selectedBillingAddressTab?.id === 'billingaddress') {
       this.inputService.changeValidators(this.brokerForm.get('billingAddress'));
@@ -441,10 +456,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public isCredit(event: any) {
-    this.billingCredit = [...event];
     this.billingCredit.forEach((item) => {
-      if (item.checked) {
-        this.brokerForm.get('creditType').patchValue(item.label);
+      if (item.name === event.name) {
+        this.brokerForm.get('creditType').patchValue(item.name);
       }
     });
 
@@ -479,7 +493,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   }
 
   public createReview(event: any) {
-    if (this.reviews.some((item) => item.isNewReview)) {
+    if (
+      this.reviews.some((item) => item.isNewReview) ||
+      this.disableOneMoreReview
+    ) {
       return;
     }
     // ------------------------ PRODUCTION MODE -----------------------------
@@ -533,7 +550,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
+            next: (res: any) => {
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -570,6 +587,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             }
             return item;
           });
+
+          this.disableOneMoreReview = true;
           this.notificationService.success(
             'Review successfully created.',
             'Success:'
@@ -583,7 +602,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private deleteReview(reviews: ReviewCommentModal) {
     this.reviews = reviews.sortData;
-
+    this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
       .pipe(untilDestroyed(this))
@@ -912,20 +931,29 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...item,
             companyUser: {
               ...item.companyUser,
-              avatar: 'https://picsum.photos/id/237/200/300',
+              avatar: item.companyUser.avatar
+                ? item.companyUser.avatar
+                : 'assets/svg/common/ic_profile.svg',
             },
             commentContent: item.comment,
+            rating: item.ratingFromTheReviewer,
           }));
 
-          if (reasponse.creditType === 'Enable') {
-            this.billingCredit[0].checked = true;
-            this.billingCredit[1].checked = false;
-            this.isCredit(this.billingCredit);
-          } else {
-            this.billingCredit[0].checked = false;
-            this.billingCredit[1].checked = true;
-            this.isCredit(this.billingCredit);
+          const reviewIndex = this.reviews.findIndex(
+            (item) => item.companyUser.id === this.editData.id
+          );
+
+          if (reviewIndex !== -1) {
+            this.disableOneMoreReview = true;
           }
+
+          this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: reasponse.downRatingCount,
+            upRatingCount: reasponse.upRatingCount,
+            currentCompanyUserRating: reasponse.currentCompanyUserRating,
+          });
+
+          this.isCredit(reasponse.creditType);
         },
         error: () => {
           this.notificationService.error("Broker can't be loaded.", 'Error:');

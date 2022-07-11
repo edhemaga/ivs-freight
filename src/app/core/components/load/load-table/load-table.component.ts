@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { CustomModalService } from 'src/app/core/services/modals/custom-modal.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns';
+import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-load-table',
@@ -11,7 +12,7 @@ import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns'
 })
 export class LoadTableComponent implements OnInit {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -19,7 +20,10 @@ export class LoadTableComponent implements OnInit {
   public selectedTab = 'template';
   resetColumns: boolean;
 
-  constructor(private customModalService: CustomModalService,  private tableService: TruckassistTableService) {}
+  constructor(
+    private tableService: TruckassistTableService,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -238,7 +242,7 @@ export class LoadTableComponent implements OnInit {
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      alert('Treba da se doda load modal!');
+      this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setLoadData(event.tabData);

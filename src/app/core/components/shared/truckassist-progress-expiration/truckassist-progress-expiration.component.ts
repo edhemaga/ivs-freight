@@ -1,6 +1,11 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit, SimpleChanges} from '@angular/core';
+import {
+  ChangeDetectionStrategy, 
+  Component, 
+  Input, 
+  OnInit, 
+  SimpleChanges
+} from '@angular/core';
 import moment from 'moment';
-
 
 @Component({
   selector: 'app-truckassist-progress-expiration',
@@ -12,7 +17,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   @Input() expireDate: any;
   @Input() status: any;
   @Input() expiresSettings: string = null;
-  @Input() customText: string = "Expires";
+  @Input() customText: string = 'Expires';
   @Input() bigProgressBar: boolean = true;
   hasStartDate: boolean = false;
   _startDate: any= null;
@@ -37,8 +42,7 @@ export class TruckassistProgressExpirationComponent implements OnInit {
   progressBarLength: string;
   endingDate: any;
 
-  constructor() {
-  }
+  constructor() {}
 
   public returnIsEndBefore(start, end) {
     if (moment(end).isBefore(moment(start))) {

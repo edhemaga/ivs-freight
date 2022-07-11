@@ -8,7 +8,7 @@
     line-height: 18px;
     padding: 0 6px;
     margin-top: 6px;
-    margin-bottom: 4px;
+    margin-bottom: 3px;
     cursor: pointer;
 
     .note-label {
@@ -29,7 +29,7 @@
       user-select: none;
       position: relative;
       left: 1px;
-      list-style: 15px
+      list-style: 15px;
     }
     .rotate {
       transform: rotate(180deg);
@@ -57,7 +57,6 @@
       }
     }
   }
-  
 
   @keyframes growDown {
     0% {
@@ -70,13 +69,12 @@
     }
   }
 
-
   .note-body {
     overflow: hidden;
     padding: 0 6px;
     transition: height 0.3s ease-in-out;
 
-    &.unopened{
+    &.unopened {
       height: 0px;
       transition: height 0.3s ease-in-out;
     }

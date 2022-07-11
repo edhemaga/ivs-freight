@@ -1,0 +1,175 @@
+<div class="dashboard-top-driver-holder">
+  <div class="dashboard-top-driver-header-holder">
+    <div class="dashboard-top-driver-header-box-list">67</div>
+    <div class="dashboard-top-driver-header-title-holder">
+      <div class="dashboard-top-driver-header-title">Top {{ topTenTitle }}</div>
+      <div
+        class="dashboard-top-driver-header-arrow-down"
+        #t3="ngbPopover"
+        [ngbPopover]="topTenPopover"
+        [placement]="['bottom']"
+        [popoverClass]="'toptenpopovermain'"
+        autoClose="outside"
+        [container]="'body'"
+        [ngClass]="{ 'active-options': t3?.isOpen() }"
+      >
+        <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="dashboard-top-driver-header-toolbar-holder">
+      <div class="dashboard-top-driver-header-toolbar-items-holder">
+        <div class="dashboard-top-driver-header-toolbar-switch-left">
+          <app-ta-tab-switch
+            [tabs]="topTenSwitchTabstype1"
+            (switchClicked)="changeDriverSwitchTabs($event)"
+          >
+          </app-ta-tab-switch>
+        </div>
+        <div class="dashboard-top-driver-header-toolbar-border"></div>
+        <div class="dashboard-top-driver-header-toolbar-search-icon">
+          <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+        </div>
+      </div>
+      <div class="dashboard-top-driver-header-toolbar-items-holder">
+        <div class="dashboard-top-driver-header-toolbar-switch-right">
+          <app-ta-tab-switch
+            [tabs]="driverTopSwitch"
+            (switchClicked)="changeDriverSwitchTabs($event)"
+          >
+          </app-ta-tab-switch>
+        </div>
+        <div
+          class="dashboard-top-driver-header-toolbar-border different-margin"
+        ></div>
+        <div
+          class="dashboard-top-driver-header-toolbar-dropdown"
+          #t2="ngbPopover"
+          [ngbPopover]="periodPopover"
+          [placement]="['bottom-right']"
+          [popoverClass]="'periodpopovermain'"
+          autoClose="outside"
+          [container]="'body'"
+          [ngClass]="{ 'active-options': t2?.isOpen() }"
+        >
+          <div class="dashboard-top-driver-header-toolbar-dropdown-text">
+            {{ periodTitle }}
+          </div>
+          <div class="dashboard-top-driver-header-toolbar-dropdown-arrow">
+            <svg-icon
+              src="assets/svg/common/calendar/arrow-right.svg"
+            ></svg-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-top-driver-body-holder">
+    <div class="row">
+      <div class="col-4">
+        <div class="dashboard-top-driver-body-list-holder">
+          <div
+            *ngFor="let item of driverList; let indx = index"
+            class="dashboard-top-driver-body-list-items-holder"
+            (mouseenter)="hoverDoughnutChart(indx)"
+            (mouseleave)="removeDoughnutChart()"
+            (click)="selectCompare(item, indx)"
+          >
+            <div class="dashboard-top-driver-body-list-items top-compare-{{ compareColor[item.id] }}">
+              <div class="dashboard-top-driver-body-list-frame">
+                <div class="dashboard-top-driver-body-list-id">
+                  {{ item.id }}
+                </div>
+                <div
+                  class="dashboard-top-driver-body-list-circle top-ten-{{
+                    circleColor[indx]
+                  }}-color"
+                ></div>
+                <div class="dashboard-top-driver-body-list-name">
+                  {{ item.name }}
+                </div>
+              </div>
+              <div class="dashboard-top-driver-body-list-frame">
+                <div class="dashboard-top-driver-body-list-price">
+                  {{ item.price }}
+                </div>
+                <div class="dashboard-top-driver-body-list-percent">
+                  {{ item.percent }}
+                </div>
+              </div>
+            </div>
+            <div class="dashboard-top-driver-body-list-border"></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="doughnut_chart_holder">
+          <app-ta-chart
+            #doughnutChart
+            [chartConfig]="chartConfig"
+            [axesProperties]="chartAxes"
+            [legendAttributes]="{}"
+          >
+          </app-ta-chart>
+        </div>
+      </div>
+      <div class="col-5">
+        <div class="bar_chart_holder">
+          <div class="chart_top_line_holder">
+            <div class="chart_line_title">March, 2023 - March, 2025</div>
+            <div class="chart_legend_hold">
+              <div class="chart_legend_line line_sep">
+                <div class="chart_legend_dot round_dark_grey">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_legend_title">Top 10</div>
+              </div>
+              <div class="chart_legend_line">
+                <div class="chart_legend_dot round_light_grey">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_legend_title">All Others</div>
+              </div>
+            </div>
+          </div>
+          <app-ta-chart
+            [chartConfig]="barChartConfig"
+            [axesProperties]="barAxes"
+            [legendAttributes]="{}"
+          >
+          </app-ta-chart>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #topTenPopover let-data="data">
+  <div class="top-ten-popover-holder">
+    <div
+      *ngFor="let item of popoverTopTen; let indx = index"
+      class="top-ten-popover-items-holder"
+      [ngClass]="{ active: item.active }"
+      (click)="changeTopTen(item)"
+    >
+      {{ item.name.toUpperCase() }}
+      <div class="popover-icon-holder">
+        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #periodPopover let-data="data">
+  <div class="period-popover-holder">
+    <div
+      *ngFor="let item of periodSwitchItems; let indx = index"
+      class="period-popover-items-holder"
+      [ngClass]="{ active: item.active }"
+      (click)="changePeriod(item)"
+    >
+      {{ item.name }}
+      <div class="period-popover-icon-holder">
+        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+      </div>
+    </div>
+  </div>
+</ng-template>

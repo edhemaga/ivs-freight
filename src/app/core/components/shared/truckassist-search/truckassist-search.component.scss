@@ -1,49 +1,150 @@
-.search-container {
-  width: fit-content;
-  height: 32px;
-  border-radius: 3px;
-  background: #ffffff;
-  margin-right: 6px;
+.search-chips-container {
   display: flex;
-  transition: background 0.25s;
-  cursor: pointer;
 
-  .icon-container {
-    width: 32px;
+  .search-container {
+    width: fit-content;
     height: 32px;
+    border-radius: 3px;
+    background: #ffffff;
+    margin-right: 6px;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    transition: background 0.25s;
+
+    .icon-container {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      &:hover {
+        svg-icon {
+          svg {
+            path {
+              fill: #6c6c6c;
+              transition: 0.25s;
+            }
+          }
+        }
+      }
+
+      svg-icon {
+        display: flex;
+        svg {
+          rect,
+          path {
+            stroke-width: none !important;
+            stroke: none !important;
+          }
+        }
+      }
+    }
+
+    .search-input {
+      height: 32px;
+      width: 0;
+      transition: 0.25s;
+      input {
+        width: 100%;
+        height: 100%;
+        border: none;
+        background: transparent;
+        padding: 0;
+        outline: none;
+        color: #ffffff;
+        font-size: 14px;
+        font-weight: 400;
+      }
+
+      /* Chrome, Firefox, Opera, Safari 10.1+ */
+      input::placeholder {
+        color: #aaaaaa;
+      }
+    }
   }
 
-  .search-input {
+  .chips-container {
+    width: fit-content;
     height: 32px;
-    width: 0;
-    transition: 0.25s;
-    input {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: transparent;
-      padding: 0;
-      outline: none;
-      color: white;
-      font-size: 16px;
-      font-weight: 400;
+    display: flex;
+    gap: 4px;
+    margin-right: 6px;
+
+    .chip {
+      cursor: pointer;
+      min-width: 57px;
+      height: 32px;
+      border-radius: 3px;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 7px 8px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+
+      &:hover{
+        .delete-chip{
+          opacity: 1;
+          transition: 0.25s;
+        }
+      }
+
+      .delete-chip {
+        position: absolute;
+        right: -6px;
+        top: -6px;
+        width: 14px;
+        height: 14px;
+        background: #aaaaaa;
+        border: 2px solid #f1f1f1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: background 0.25s, opacity 0.25s;
+
+        &:hover{
+          background: #EF5350;
+          transition: 0.25s;
+        }
+        svg-icon{
+          display: flex;
+          svg{
+            path{
+              fill: #FFFFFF;
+            }
+          }
+        }
+      }
     }
   }
 }
 
 /* NG Class */
 .search-input-active {
-  background: #b7b7b7;
-  transition: 0.25s;
+  background: #6c6c6c !important;
+  transition: 0.25s !important;
+
   .icon-container {
+    &:hover {
+      svg-icon {
+        svg {
+          path {
+            fill: #eeeeee !important;
+            transition: 0.25s !important;
+          }
+        }
+      }
+    }
+
     svg-icon {
       svg {
         path {
-          fill: white;
-          transition: 0.25s;
+          fill: #b7b7b7 !important;
         }
       }
     }
@@ -52,5 +153,45 @@
   .search-input {
     width: 125px !important;
     transition: 0.25s;
+  }
+}
+
+.first-chip-animation {
+  animation: searchOneAnimation 0.2s ease-in-out;
+}
+
+.second-chip-animation {
+  animation: searchTwoAnimation 0.2s ease-in-out;
+}
+
+.third-chip-animation {
+  animation: searchThreeAnimation 0.2s ease-in-out;
+}
+
+@keyframes searchOneAnimation {
+  from {
+    left: -63px;
+  }
+  to {
+    left: 0px;
+  }
+}
+
+@keyframes searchTwoAnimation {
+  from {
+    left: -124px;
+  }
+  to {
+    left: 0px;
+  }
+}
+
+@keyframes searchThreeAnimation {
+  from {
+    /* -184px */
+    left: -140px;
+  }
+  to {
+    left: 0px;
   }
 }

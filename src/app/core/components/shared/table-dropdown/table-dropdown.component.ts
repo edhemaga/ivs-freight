@@ -25,6 +25,7 @@ export class TableDropdownComponent implements OnInit, OnChanges {
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;
+  dropDownActive: number = -1;
 
   constructor() {}
 
@@ -50,6 +51,8 @@ export class TableDropdownComponent implements OnInit, OnChanges {
     } else {
       tooltip.open({ data: this.dropContent });
     }
+
+    this.dropDownActive = tooltip.isOpen() ? this.id : -1;
   }
 
   setDropContent() {

@@ -9,12 +9,16 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { DropZoneConfig } from '../../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { FormService } from 'src/app/core/services/form/form.service';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 @Component({
   selector: 'app-accident-modal',
   templateUrl: './accident-modal.component.html',
   styleUrls: ['./accident-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
+  providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -55,11 +59,30 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   public addressOrigin: AddressEntity = null;
   public addressAuthority: AddressEntity = null;
 
+  public dropZoneConfigFile: DropZoneConfig = {
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+    globalDropZone: false,
+  };
+
+  public dropZoneConfigMedia: DropZoneConfig = {
+    dropZoneType: 'media',
+    dropZoneAvailableFiles: 'video/mp4,video/x-m4v,video/*',
+    dropZoneSvg: 'assets/svg/common/ic_media_dropzone.svg',
+    multiple: false,
+    globalDropZone: false,
+  };
+
+  public isDirty: boolean;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -130,6 +153,14 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       shippingBOL: [null],
       shippingCargo: [null],
     });
+
+    this.formService.checkFormChange(this.accidentForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public tabChange(event: any): void {
@@ -232,14 +263,14 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onFilesEvent(event: any, action: string) {
-    switch (action) {
+  public onFilesEvent(event: any) {
+    switch (event.type) {
       case 'documents': {
-        this.documents = event;
+        this.documents = event.files;
         break;
       }
       case 'media': {
-        this.media = event;
+        this.media = event.files;
         break;
       }
       default: {

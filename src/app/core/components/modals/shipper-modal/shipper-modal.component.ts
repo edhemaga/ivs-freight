@@ -32,6 +32,7 @@ import {
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -39,6 +40,7 @@ import { ShipperTService } from '../../customer/state/shipper-state/shipper.serv
   styleUrls: ['./shipper-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
+  providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
   @Input() editData: any = null;
@@ -81,6 +83,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public companyUser: SignInResponse = null;
 
+  public isDirty: boolean;
+
+  public disableOneMoreReview: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -88,7 +94,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private taLikeDislikeService: TaLikeDislikeService,
-    private reviewRatingService: ReviewsRatingService
+    private reviewRatingService: ReviewsRatingService,
+    private formService: FormService
   ) {}
 
   ngOnInit() {
@@ -127,6 +134,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       note: [null],
       shipperContacts: this.formBuilder.array([]),
     });
+
+    this.formService.checkFormChange(this.shipperForm);
+
+    this.formService.formValueChange$
+      .pipe(untilDestroyed(this))
+      .subscribe((isFormChange: boolean) => {
+        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+      });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -303,9 +318,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public createReview(event: any) {
-    if (this.reviews.some((item) => item.isNewReview)) {
+    if (
+      this.reviews.some((item) => item.isNewReview) ||
+      this.disableOneMoreReview
+    ) {
       return;
     }
+
     // ------------------------ PRODUCTION MODE -----------------------------
     // this.reviews.unshift({
     //   companyUser: {
@@ -341,13 +360,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         if (action.action === 'liked') {
           rating = {
-            entityTypeRatingId: 1,
+            entityTypeRatingId: 3,
             entityTypeId: this.editData.id,
             thumb: action.likeDislike,
           };
         } else {
           rating = {
-            entityTypeRatingId: 1,
+            entityTypeRatingId: 3,
             entityTypeId: this.editData.id,
             thumb: action.likeDislike,
           };
@@ -357,7 +376,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           .addRating(rating)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
+            next: (res: any) => {
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -394,6 +413,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             }
             return item;
           });
+          this.disableOneMoreReview = true;
           this.notificationService.success(
             'Review successfully created.',
             'Success:'
@@ -407,7 +427,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private deleteReview(reviews: ReviewCommentModal) {
     this.reviews = reviews.sortData;
-
+    this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
       .pipe(untilDestroyed(this))
@@ -636,13 +656,31 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.isAppointmentShipping = true;
           }
 
-          this.reviews = [...reasponse.reviews].map((item) => ({
+          this.reviews = reasponse.reviews.map((item: any) => ({
             ...item,
             companyUser: {
               ...item.companyUser,
-              image: 'https://picsum.photos/id/237/200/300',
+              avatar: item.companyUser.avatar
+                ? item.companyUser.avatar
+                : 'assets/svg/common/ic_profile.svg',
             },
+            commentContent: item.comment,
+            rating: item.ratingFromTheReviewer,
           }));
+
+          const reviewIndex = this.reviews.findIndex(
+            (item) => item.companyUser.id === this.editData.id
+          );
+
+          if (reviewIndex !== -1) {
+            this.disableOneMoreReview = true;
+          }
+
+          this.taLikeDislikeService.populateLikeDislikeEvent({
+            downRatingCount: reasponse.downRatingCount,
+            upRatingCount: reasponse.upRatingCount,
+            currentCompanyUserRating: reasponse.currentCompanyUserRating,
+          });
         },
         error: () => {
           this.notificationService.error("Shipper can't be loaded.", 'Error:');

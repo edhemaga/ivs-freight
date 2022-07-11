@@ -9,9 +9,7 @@
         <svg-icon
           src="assets/svg/common/ic_pen.svg"
           class="settings-edit-button"
-          (click)="
-            onAction({ type: true, modalName: 'factoring', action: 'edit' })
-          "
+          (click)="onAction({ modalName: 'factoring', type: 'edit' })"
         ></svg-icon>
       </div>
       <div class="settings-header-button">
@@ -25,47 +23,84 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-    [cardNameCommon]="'TRIUMPH BUSINESS CAPITAL'"
-    [haveHeaderText]="true"
-    [haveDots]="false"
-    [hasFooter]="false"
-  >
-    <div class="settings-body-items">
-      <div *ngIf="factoringData.phone !== ''" class="single-item">
-        <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-        <span>{{ factoringData.phone }}</span>
-      </div>
-      <div *ngIf="factoringData.email !== ''" class="single-item">
-        <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-        <span>{{ factoringData.email }}</span>
-      </div>
-      <div *ngIf="factoringData.address !== ''" class="single-item">
-        <svg-icon
-          src="assets/svg/truckassist-table/location-icon.svg"
-        ></svg-icon>
-        <span class="single-item-address">{{ factoringData.address }}</span>
-      </div>
-    </div>
-    <app-ta-custom-card
-      [cardName]="'Notice of Assigment'"
-      [bodyTemplate]="'card'"
-      [isCardOpen]="true"
-      [hasDivider]="true"
-      [animationsDisabled]="false"
-      [textBottomPossiton]="'-2px'"
-    > 
-      <div class="notice-template-data">
-        <div class="notice-template-item">
-          <div class="notice-item-value">{{factoringData.noticeAssigment.text}}</div>
+      [cardNameCommon]="factoringData.name"
+      [haveHeaderText]="true"
+      [haveDots]="false"
+      [hasFooter]="false"
+      *ngIf="factoringData.name"
+    >
+      <div class="settings-body-items">
+        <div *ngIf="factoringData.phone" class="single-item">
+          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <span>{{ factoringData.phone }}</span>
         </div>
-        <div class="notice-template-item">
-          <div class="notice-item-value">{{factoringData.noticeAssigment.param1}}</div>
+        <div *ngIf="factoringData.email" class="single-item">
+          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+          <span>{{ factoringData.email }}</span>
         </div>
-        <div class="notice-template-item">
-          <div class="notice-item-value">{{factoringData.noticeAssigment.param2}}</div>
+        <div *ngIf="factoringData.address" class="single-item">
+          <svg-icon
+            src="assets/svg/truckassist-table/location-icon.svg"
+          ></svg-icon>
+          <span class="single-item-address">{{
+            factoringData.address.address
+          }}</span>
         </div>
       </div>
-    </app-ta-custom-card>
-  </app-ta-re-card>
+      <app-ta-custom-card
+        [cardName]="'Notice of Assigment'"
+        [bodyTemplate]="'card'"
+        [isCardOpen]="true"
+        [hasDivider]="true"
+        [animationsDisabled]="false"
+        [textBottomPossiton]="'-2px'"
+      >
+        <div
+          class="notice-template-data-default"
+          [ngClass]="{ 'notice-template-data-change': changeDefaultNotice }"
+        >
+          <div class="notice-template-item">
+            <div class="notice-item-value">
+              {{ factoringData.noticeOfAssigment }}
+            </div>
+          </div>
+          <!-- <div class="notice-template-item">
+            <div class="notice-item-value">
+              {{
+                factoringData.noticeAssigment.param1 +
+                  factoringData.noticeAssigment.param3
+              }}
+            </div>
+          </div>
+          <div class="notice-template-item">
+            <div class="notice-item-value">
+              {{ factoringData.noticeAssigment.param2 }}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!changeDefaultNotice" class="notice-template-data-change">
+          <div class="notice-change-item">
+            <div class="notice-item-header">
+              {{ factoringData.noticeAssigment.text }}
+            </div>
+          </div>
+
+          <div class="notice-change-item">
+            <div class="notice-item-middle">
+              {{ factoringData.noticeAssigment.param1 }}
+
+            </div>
+            <div class="bottom-data-notice">{{
+              factoringData.noticeAssigment.param3
+            }}</div>
+          </div>
+          <div class="notice-change-item bottom-notice-item">
+            <div class="notice-item-bottom">
+              {{ factoringData.noticeAssigment.param2 }} <a href="tel:+{{factoringData.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
+            </div>
+          </div> -->
+        </div>
+      </app-ta-custom-card>
+    </app-ta-re-card>
   </div>
 </div>

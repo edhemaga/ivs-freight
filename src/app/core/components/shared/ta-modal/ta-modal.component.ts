@@ -12,10 +12,15 @@ import {
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { TaInputService } from '../ta-input/ta-input.service';
 import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
 
 @Component({
   selector: 'app-ta-modal',
@@ -24,15 +29,21 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   encapsulation: ViewEncapsulation.None,
   animations: [
     trigger('widthGrow', [
-        state('closed', style({
-            transform: 'scale(0)',
-        })),
-        state('open', style({
+      state(
+        'closed',
+        style({
+          transform: 'scale(0)',
+        })
+      ),
+      state(
+        'open',
+        style({
           transform: 'scale(1)',
-        })),
-        transition('closed => open', animate(250))
+        })
+      ),
+      transition('closed => open', animate(250)),
     ]),
-]
+  ],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
@@ -49,16 +60,21 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() specificCaseModalName: boolean = false;
 
   @Input() dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'files', // files | logo
-    dropZoneSvg: 'assets/svg/common/ic_modal_upload_dropzone.svg',
+    dropZoneType: 'files', // files | image | media
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
     dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
     multiple: true,
+    globalDropZone: true,
   };
+
+  @Input() tabChange: any;
 
   @Output() modalActionTypeEmitter: EventEmitter<{
     action: string;
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
+
+  @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
   private timeout = null;
 
@@ -74,15 +90,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
   constructor(
     private ngbActiveModal: NgbActiveModal,
     private modalService: ModalService,
-    private uploadFileService: TaUploadFileService,
-    private inputService: TaInputService
+    private uploadFileService: TaUploadFileService
   ) {}
 
   ngOnInit(): void {
     this.modalService.modalStatus$
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((data: { name: string; status: boolean }) => {
-        switch(data?.name) {
+        switch (data?.name) {
           case 'deactivate': {
             this.isDeactivated = data.status;
             break;
@@ -99,7 +114,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
             break;
           }
         }
-        
       });
 
     this.uploadFileService.visibilityDropZone$
@@ -138,6 +152,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     $(document).on('dragover', '.modal', (event) => {
       event.preventDefault();
       event.stopPropagation();
+
       if (this.dropZoneCounter < 1 && !this.isLeaveZone) {
         this.dropZoneCounter++;
       }
@@ -244,6 +259,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onTabChange(event): void {
+    this.onTabHeaderChange.emit(event);
   }
 
   ngOnDestroy(): void {

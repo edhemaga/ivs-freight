@@ -6,24 +6,27 @@ import {
   Output,
   OnChanges,
   SimpleChanges,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
 import moment from 'moment';
 import { card_component_animation } from '../animations/card-component.animations';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-ta-re-card',
   templateUrl: './ta-re-card.component.html',
   styleUrls: ['./ta-re-card.component.scss'],
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TaReCardComponent implements OnInit, OnChanges {
+export class TaReCardComponent implements OnInit {
   @Input() public cardNameCommon: string;
   @Input() public cardDocumentCounter: number;
   @Input() public isCardOpen: boolean = true;
   @Input() public hasSvg: string = '';
   @Input() public options: any = [];
   @Input() public hasCopyIcon: boolean = false;
-  @Input() public expDateClose: string = '';
+  @Input() public expDateClose: any;
   @Input() public hasFooter: boolean = true;
   @Input() public settingsIcon: boolean = false;
   @Input() public haveHeaderText: boolean = false;
@@ -38,17 +41,14 @@ export class TaReCardComponent implements OnInit, OnChanges {
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public weeklyWidth: string = '';
+  @Input() public setPositionDrop: boolean;
   @Input() isDeactivated: any;
+  @Input() noteIcons: string = '';
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
-  constructor() {}
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    console.log('changes from common');
-    
-    this.expDateClose;
-  }
+  constructor(private clipboard: Clipboard, private cdr: ChangeDetectorRef) {}
+
   ngOnInit(): void {
     this.CloseCard();
     console.log('dataTest', this.options);
@@ -69,13 +69,10 @@ export class TaReCardComponent implements OnInit, OnChanges {
       this.isCardOpen = !this.isCardOpen;
     }
   }
-  public onAction(val: string, res: any) {
-    switch (val) {
-      case 'resize':
-        this.resPage = !this.resPage;
-        this.resizePage.emit(this.resPage);
-        break;
-    }
+
+  public resizePageFun(val: any) {
+    this.resPage = !this.resPage;
+    this.resizePage.emit(this.resPage);
   }
   /**Function for drop acitons */
   public dropAct(action: any) {
@@ -86,20 +83,6 @@ export class TaReCardComponent implements OnInit, OnChanges {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-    const timeoutCommon = setInterval(() => {
-      this.copiedCommon = false;
-      clearInterval(timeoutCommon);
-    }, 300);
-    let selBox = document.createElement('textarea');
-    selBox.style.position = 'fixed';
-    selBox.style.left = '0';
-    selBox.style.top = '0';
-    selBox.style.opacity = '0';
-    selBox.value = val;
-    document.body.appendChild(selBox);
-    // selBox.focus();
-    selBox.select();
-    document.execCommand('copy');
-    document.body.removeChild(selBox);
+    this.clipboard.copy(val);
   }
 }

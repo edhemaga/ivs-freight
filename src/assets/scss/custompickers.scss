@@ -138,15 +138,16 @@
       position: relative;
       width: 48px;
 
-      background-color: #eeeeee;
+      background-color: #F9F9F9;
 
       .calendar_border {
         position: absolute;
         top: 50%;
         width: 100%;
-        height: 22px;
+        height: 24px;
+        transform: translateY(-50%);
 
-        background-color: rgba(255, 255, 255, 0.7);
+        background-color: #fff;
       }
 
       .month-year-item {
@@ -168,8 +169,11 @@
         }
 
         &:hover {
-          color: #5673aa;
+          color: #6C6C6C;
           cursor: pointer;
+
+          background-color: #F1F1F1;
+          border-radius: 2px;
         }
       }
 
@@ -184,14 +188,14 @@
       }
 
       .cdk-virtual-scroll-content-wrapper {
-        padding-top: 129px;
+        padding: 133px 2px 0 2px;
       }
     }
 
     .full-calendars-list {
       flex: 1;
-      max-height: 258px;
-      min-width: 235px;
+      max-height: 290px;
+      min-width: 264px;
       overflow: hidden;
 
       .full_list {
@@ -406,8 +410,8 @@
 }
 
 .calendar_view {
-  width: 232px;
-  padding: 12px 0;
+  width: 260px;
+  padding-top: 12px;
   background-color: #fff;
 
   .calendar_view_head {
@@ -434,13 +438,17 @@
       font-weight: 700;
       color: #5673aab3;
       cursor: pointer;
+
+      &:hover{
+        color: #3551B7;
+      }
     }
   }
 
   .calendars_list_view {
     cdk-virtual-scroll-viewport {
-      height: 200px;
-      min-height: 200px;
+      height: 230px;
+      min-height: 230px;
 
       ::-webkit-scrollbar {
         display: none;
@@ -466,8 +474,12 @@
     .calendar_month_days {
       padding: 0 3px;
 
+      &.hideVisibility{
+        visibility: hidden;
+      }
+
       .cal_day {
-        width: 20px;
+        width: 24px;
         margin: 0 6px;
 
         font-size: 12px;
@@ -477,7 +489,7 @@
     }
 
     .calendar_days {
-      height: 114px;
+      height: 140px;
       display: flex;
       flex-wrap: wrap;
       padding: 0 3px;
@@ -486,13 +498,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        flex: 0 0 20px;
-        width: 20px;
-        height: 19px;
+        flex: 0 0 24px;
+        width: 24px;
+        height: 24px;
         margin: 0 6px;
 
         font-size: 14px;
         font-weight: 400;
+        color: #6C6C6C;
 
         &.current_day {
           color: #fff;
@@ -500,12 +513,19 @@
           border-radius: 2px;
         }
 
-        &:not(.empty_day):hover {
-          background-color: #eeeeee;
+        &.selected_day{
+          background-color: #919191;
+          color: #fff;
+          border-radius: 2px;
+        }
+
+
+        &:not(.empty_day):not(.selected_day):hover {
+          background-color: #F7F7F7;
           border-radius: 2px;
 
           cursor: pointer;
-          color: #6c6c6c;
+          color: #3C3C3C;
         }
       }
     }
@@ -514,28 +534,31 @@
   .month_list {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-around;
+    height: 140px;
 
     .month_list_item {
-      flex: 0 0 43px;
-      height: 38px;
-      margin: 0 6px;
+      flex: 0 0 50px;
+      height: 24px;
+      margin: 0px 10px;
       display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 3px;
-
       font-size: 12px;
-      color: #919191;
+      color: #6C6C6C;
       font-weight: 400;
 
-      &:hover {
-        background-color: #eeeeee;
-        color: #6c6c6c;
+      &:hover:not(.current_month) {
+        background-color: #F7F7F7;
+        color: #3C3C3C;
+        border-radius: 2px;
+        cursor: pointer;
       }
 
       &.current_month {
-        color: #5673aab3;
-        background-color: #5673aa1a;
+        color: #3C3C3C;
+        background-color: #F7F7F7;
         border-radius: 2px;
       }
     }

@@ -1,26 +1,30 @@
+import { Observable } from 'rxjs';
 import { SettingsTerminalModalComponent } from './../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { SettingsRepairshopModalComponent } from './../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsOfficeModalComponent } from './../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from './../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-import { HttpClient } from '@angular/common/http';
 import { SettingsStore } from './settings.store';
 import { SettingsBasicModalComponent } from '../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
 import { SettingsInsurancePolicyModalComponent } from '../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
 import { SettingsFactoringModalComponent } from '../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import {
+  CompanyModalResponse,
+  CompanyResponse,
+  CompanyService,
+  CreateDivisionCompanyCommand,
+  CreateResponse,
+  UpdateCompanyCommand,
+} from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsStoreService {
-  public isModalActive$: BehaviorSubject<boolean> =
-    new BehaviorSubject<boolean>(false);
-
   constructor(
     private settingsStore: SettingsStore,
     private modalService: ModalService,
-    private http: HttpClient
+    private settingCompanyService: CompanyService
   ) {}
 
   /**
@@ -29,7 +33,11 @@ export class SettingsStoreService {
    * @param modalName - modal name
    * @param action - type of tab-switcher to be active
    */
-  public onModalAction(data: { modalName: string; action?: string }) {
+  public onModalAction(data: {
+    modalName: string;
+    type?: string;
+    company?: any;
+  }) {
     switch (data.modalName) {
       case 'basic': {
         this.modalService.openModal(
@@ -38,7 +46,8 @@ export class SettingsStoreService {
             size: 'medium',
           },
           {
-            type: data.action,
+            type: data.type,
+            company: data.company,
           }
         );
         break;
@@ -82,6 +91,33 @@ export class SettingsStoreService {
       default:
         break;
     }
-    this.isModalActive$.next(true);
+  }
+
+  // Main Company
+  public updateCompany(data: UpdateCompanyCommand): Observable<object> {
+    return this.settingCompanyService.apiCompanyPut(data);
+  }
+
+  public getCompany(): Observable<CompanyResponse> {
+    return this.settingCompanyService.apiCompanyGet();
+  }
+
+  public getCompanyModal(): Observable<CompanyModalResponse> {
+    return this.settingCompanyService.apiCompanyModalGet();
+  }
+
+  // Division Company
+  public addCompanyDivision(
+    data: CreateDivisionCompanyCommand
+  ): Observable<CreateResponse> {
+    return this.settingCompanyService.apiCompanyDivisionPost(data);
+  }
+
+  public getCompanyDivisionById(id: number): Observable<CompanyResponse> {
+    return this.settingCompanyService.apiCompanyDivisionIdGet(id);
+  }
+
+  public deleteCompanyDivisionById(id: number): Observable<any> {
+    return this.settingCompanyService.apiCompanyDivisionIdDelete(id);
   }
 }

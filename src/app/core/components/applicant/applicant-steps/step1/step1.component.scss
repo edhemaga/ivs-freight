@@ -1,8 +1,9 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    margin: 22px auto 0 auto;
     color: $ta-blue;
     font-size: 32px;
     height: 39px;
@@ -29,7 +30,10 @@
   }
 
   .bottom-section {
+    margin: 0 auto;
+
     p {
+      width: 820px;
       margin: 0;
       margin-top: 12px;
       font-size: 14px;
@@ -38,26 +42,22 @@
 
       &:nth-child(1) {
         margin-top: 0;
-        color: $ta-blue-2;
       }
     }
   }
 
   .form-section {
-    /*  margin: 22px auto 0 auto; */
-    margin-top: 22px;
-    /* width: 478px; */
-    /*  width: 456px; */
+    margin-top: 32px;
 
     .form-input-container {
-      margin-bottom: 22px;
-      width: 456px;
-      /*   margin-right: 22px; */
-      margin-left: 22px;
+      margin-bottom: 32px;
+      width: 616px;
+
       position: relative;
 
+      &:nth-child(3),
       &:nth-child(5) {
-        margin-bottom: 12px;
+        margin-bottom: 22px;
       }
 
       .review-feedback {
@@ -65,76 +65,359 @@
         position: absolute;
         right: -6px;
         top: 0;
-        /*  width: 54px; */
       }
 
-      .form-label-group {
+      .group {
         margin-bottom: 0;
+        margin-right: 12px;
+
+        &:last-child {
+          margin-right: 0;
+        }
       }
 
       .first-name-group {
-        width: 167px;
-        margin-right: 12px;
+        width: 227px;
       }
 
       .last-name-group {
-        width: 167px;
-        margin-right: 12px;
+        width: 227px;
       }
 
       .date-group {
-        width: 98px;
+        width: 138px;
       }
 
       .phone-group {
-        width: 169px;
-        margin-right: 12px;
+        width: 229px;
       }
 
       .email-group {
-        width: 275px;
+        width: 375px;
       }
 
       .address-group {
-        width: 380px;
-        margin-right: 12px;
+        width: 480px;
       }
 
       .address-unit-group {
-        width: 64px;
+        width: 124px;
       }
 
       .ssn-group {
-        width: 127px;
-        margin-right: 12px;
+        margin-top: 26px;
+        width: 187px;
       }
 
       .bank-group {
-        width: 316px;
+        margin-top: 26px;
+        width: 416px;
       }
 
       .account-number-group {
-        width: 280px;
-        margin-right: 12px;
+        width: 380px;
       }
 
       .routing-number-group {
-        width: 164px;
+        width: 224px;
+      }
+    }
+
+    .previous-addresses {
+      .dets-container {
+        width: 616px;
+
+        &:hover
+          .right-container
+          .info-container
+          .address-container
+          .address-icon {
+          svg {
+            path {
+              fill: $ta-light-blue;
+            }
+          }
+        }
+
+        &:hover .right-container .info-container .address-container,
+        &:hover .right-container .info-container .address-unit-container {
+          p {
+            color: $ta-light-grey-3;
+          }
+        }
+
+        &:hover .right-container .btn-container {
+          opacity: 1;
+          visibility: visible !important;
+        }
+
+        .title-container {
+          .address-title-container {
+            width: 174px;
+            margin-left: 36px;
+            margin-bottom: 6px;
+            margin-right: 288px;
+
+            p {
+              text-transform: uppercase;
+              height: 15px;
+              font-size: 12px;
+              color: $bw5;
+
+              span {
+                color: $progress-danger;
+              }
+            }
+          }
+
+          .address-unit-title-container {
+            width: 43px;
+
+            p {
+              text-transform: uppercase;
+              height: 15px;
+              font-size: 12px;
+              color: $bw5;
+            }
+          }
+        }
+
+        .right-container {
+          width: 616px;
+          height: 26px;
+          border-radius: 2px;
+
+          .info-container {
+            .address-container {
+              width: 480px;
+              margin-right: 12px;
+
+              .address-icon {
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $ta-blue-3;
+                  }
+                }
+              }
+
+              .pipe {
+                width: 1px;
+                height: 14px;
+                margin: 2px 6px;
+                background-color: $ta-gray-02;
+              }
+
+              p {
+                text-transform: uppercase;
+                font-size: 14px;
+                color: $bw6-2;
+                transition: color 0.2s ease-in-out;
+              }
+            }
+
+            .address-unit-container {
+              width: 52px;
+              margin-right: 18px;
+
+              p {
+                text-transform: uppercase;
+                font-size: 14px;
+                color: $bw6-2;
+                transition: color 0.2s ease-in-out;
+              }
+            }
+          }
+
+          .btn-container {
+            width: 42px;
+            visibility: hidden !important;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+
+            .edit-icon,
+            .delete-icon {
+              cursor: pointer;
+
+              &:hover {
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw6-2;
+                  }
+                }
+              }
+
+              svg {
+                path {
+                  fill: $bw4;
+                }
+              }
+            }
+
+            .edit-icon {
+              margin-right: 6px;
+            }
+          }
+
+          .input-container {
+            .address-container {
+              margin-right: 12px;
+            }
+
+            .address-unit-container {
+              width: 124px;
+              margin-right: 12px;
+            }
+
+            .confirm-cancel-btn-container {
+              width: 56px;
+              height: 26px;
+
+              .confirm-icon,
+              .cancel-icon {
+                cursor: pointer;
+
+                svg {
+                  rect {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $ta-light-grey-4;
+                  }
+
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw4;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    rect {
+                      fill: $bw6-2;
+                    }
+
+                    path {
+                      fill: $white;
+                    }
+                  }
+                }
+
+                &.confirm-icon {
+                  margin-right: 8px;
+                }
+              }
+            }
+
+            .delete-btn-container {
+              width: 26px;
+              height: 26px;
+              border-radius: 3px;
+              background: $ta-light-grey-5;
+              transition: background 0.2s ease-in-out;
+              cursor: pointer;
+
+              &:hover {
+                background: $bw2;
+              }
+
+              &:hover .delete-icon {
+                svg {
+                  path {
+                    fill: $bw6-2;
+                  }
+                }
+              }
+
+              .delete-icon {
+                cursor: pointer;
+
+                svg {
+                  path {
+                    transition: fill 0.2s ease-in-out;
+                    fill: $bw4;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .previous-address-btn-container {
+        width: 616px;
+
+        .previous-address-title {
+          color: $bw6-2;
+          font-size: 14px;
+          height: 18px;
+          margin-right: 12px !important;
+        }
+
+        .add-btn {
+          width: 134px;
+          height: 26px;
+          padding: 4px 8px;
+          border: none;
+          outline: none;
+          font-size: 14px;
+          border-radius: 2px;
+          color: $ta-blue;
+          background: $ta-gray-01;
+          transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+
+          &:hover {
+            color: $white;
+            background: $ta-blue;
+          }
+
+          &:hover .plus-icon {
+            svg {
+              path {
+                fill: $white;
+              }
+            }
+          }
+
+          &.disabled {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            cursor: auto;
+            background: $ta-light-grey-4;
+            color: $bw4;
+
+            .plus-icon {
+              svg {
+                path {
+                  fill: $ta-light-grey-6;
+                }
+              }
+            }
+          }
+
+          .plus-icon {
+            margin-right: 6px;
+
+            svg {
+              path {
+                transition: fill 0.2s ease-in-out;
+                fill: $ta-light-blue;
+              }
+            }
+          }
+        }
       }
     }
   }
 
   .questions-section {
-    /* max-width: 566px; */
-    margin-bottom: 12px;
-
-    /*  margin-right: 22px;
-         */
-    margin-left: 22px;
+    margin-bottom: 97px;
+    width: 616px;
 
     .question-container {
-      margin-bottom: 3px;
-      /*    margin-right: 12px; */
+      margin-bottom: 12px;
       position: relative;
 
       &:last-child {
@@ -148,13 +431,8 @@
         top: 0;
       }
 
-      .question-title-box {
-        width: 376px;
-      }
-
       .question-title {
         color: $bw6-2;
-        opacity: 0.7;
         font-size: 14px;
         line-height: 18px;
       }
@@ -164,7 +442,7 @@
       }
 
       .question-radios-box {
-        width: 80px;
+        width: 86px;
 
         .ta-input-radiobutons {
           width: 100%;
@@ -173,95 +451,8 @@
     }
 
     .explain-container {
-      width: 455px;
-      margin-top: 7px;
-    }
-  }
-
-  .previous-addresses-section {
-    /*    margin-left: 22px; */
-    max-width: 522px;
-
-    .previous-address-title {
-      color: $bw6-2;
-      font-size: 14px;
-      margin-bottom: 22px;
-      line-height: 22px;
-    }
-
-    .previous-address-container {
-      margin-bottom: 12px;
-      margin-left: 22px;
-
-      &:hover .delete-container {
-        visibility: visible !important;
-      }
-
-      .badge-container {
-        width: 26px;
-        height: 26px;
-        margin-right: 6px;
-        border-radius: 3px;
-        color: $white;
-        background-color: $light-blue;
-        opacity: 0.7;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .badge {
-          font-size: 14px;
-        }
-      }
-
-      .address-container {
-        width: 349px;
-        margin-right: 12px;
-      }
-
-      .unit-container {
-        width: 63px;
-      }
-
-      .delete-container {
-        visibility: hidden !important;
-        margin-left: 6px;
-
-        .delete-btn {
-          width: 16px;
-          height: 16px;
-          padding: 3.5px 4px;
-          border-radius: 50%;
-          background-color: $progress-danger;
-          opacity: 0.7;
-          cursor: pointer;
-
-          &:hover {
-            opacity: 1;
-          }
-
-          .trash-icon {
-            svg {
-              path {
-                fill: $white;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .add-btn {
-      border: none;
-      outline: none;
-      font-size: 12px;
-      color: $light-blue;
-      opacity: 0.7;
-      background-color: transparent;
-
-      &:hover {
-        opacity: 1;
-      }
+      width: 616px;
+      margin-top: 12px;
     }
   }
 
@@ -270,4 +461,20 @@
     color: $progress-danger;
     line-height: 3px;
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

@@ -24,8 +24,8 @@ import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purcha
 import { FuelStopModalComponent } from '../../modals/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
 import { AccidentModalComponent } from '../../safety/accident/accident-modal/accident-modal.component';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
-import { RepairPmModalComponent } from '../../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 
 @Component({
   selector: 'app-navigation-modals',
@@ -70,9 +70,15 @@ export class NavigationModalsComponent {
 
   private openModal(navItem: NavigationModal) {
     switch (navItem.path) {
+      case 'load': {
+        this.modalService.openModal(LoadModalComponent, {
+          size: 'load',
+        });
+        break;
+      }
       case 'driver': {
         this.modalService.openModal(DriverModalComponent, {
-          size: 'small',
+          size: 'medium',
         });
         break;
       }
@@ -124,7 +130,7 @@ export class NavigationModalsComponent {
       }
       case 'repair-order': {
         this.modalService.openModal(RepairOrderModalComponent, {
-          size: 'small',
+          size: 'large',
         });
         break;
       }
@@ -152,15 +158,9 @@ export class NavigationModalsComponent {
         });
         break;
       }
-      case 'ltl': {
-        this.modalService.openModal(RepairPmModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
       case 'accident': {
         this.modalService.openModal(AccidentModalComponent, {
-          size: 'large',
+          size: 'large-xl',
         });
         break;
       }

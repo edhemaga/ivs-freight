@@ -19,6 +19,7 @@ import { Observable }                                        from 'rxjs';
 
 import { CreateRepairShopCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
+import { MapMarkerListResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { RepairShopListResponse } from '../model/models';
 import { RepairShopModalResponse } from '../model/models';
@@ -106,8 +107,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -159,8 +160,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -199,6 +200,7 @@ export class RepairShopService {
     /**
      * @param active 
      * @param pinned 
+     * @param companyOwned 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -209,10 +211,10 @@ export class RepairShopService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairshopListGet(active?: number, pinned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairShopListResponse>;
-    public apiRepairshopListGet(active?: number, pinned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairShopListResponse>>;
-    public apiRepairshopListGet(active?: number, pinned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairShopListResponse>>;
-    public apiRepairshopListGet(active?: number, pinned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiRepairshopListGet(active?: number, pinned?: boolean, companyOwned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairShopListResponse>;
+    public apiRepairshopListGet(active?: number, pinned?: boolean, companyOwned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairShopListResponse>>;
+    public apiRepairshopListGet(active?: number, pinned?: boolean, companyOwned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairShopListResponse>>;
+    public apiRepairshopListGet(active?: number, pinned?: boolean, companyOwned?: boolean, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
@@ -222,6 +224,10 @@ export class RepairShopService {
         if (pinned !== undefined && pinned !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>pinned, 'Pinned');
+        }
+        if (companyOwned !== undefined && companyOwned !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyOwned, 'CompanyOwned');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -255,8 +261,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -297,6 +303,55 @@ export class RepairShopService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public apiRepairshopMapGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<MapMarkerListResponse>;
+    public apiRepairshopMapGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<MapMarkerListResponse>>;
+    public apiRepairshopMapGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<MapMarkerListResponse>>;
+    public apiRepairshopMapGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.get<MapMarkerListResponse>(`${this.configuration.basePath}/api/repairshop/map`,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public apiRepairshopModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RepairShopModalResponse>;
     public apiRepairshopModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RepairShopModalResponse>>;
     public apiRepairshopModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RepairShopModalResponse>>;
@@ -305,8 +360,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -355,8 +410,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -417,8 +472,8 @@ export class RepairShopService {
         let headers = this.defaultHeaders;
 
         let credential: string | undefined;
-        // authentication (Bearer) required
-        credential = this.configuration.lookupCredential('Bearer');
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
         if (credential) {
             headers = headers.set('Authorization', 'Bearer ' + credential);
         }
@@ -456,6 +511,60 @@ export class RepairShopService {
 
         return this.httpClient.put<object>(`${this.configuration.basePath}/api/repairshop`,
             updateRepairShopCommand,
+            {
+                responseType: <any>responseType,
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiRepairshopStatusIdPut(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiRepairshopStatusIdPut(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiRepairshopStatusIdPut(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiRepairshopStatusIdPut(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiRepairshopStatusIdPut.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        let credential: string | undefined;
+        // authentication (bearer) required
+        credential = this.configuration.lookupCredential('bearer');
+        if (credential) {
+            headers = headers.set('Authorization', 'Bearer ' + credential);
+        }
+
+        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (httpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (httpHeaderAcceptSelected !== undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+
+        let responseType: 'text' | 'json' = 'json';
+        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
+            responseType = 'text';
+        }
+
+        return this.httpClient.put<any>(`${this.configuration.basePath}/api/repairshop/status/${encodeURIComponent(String(id))}`,
+            null,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

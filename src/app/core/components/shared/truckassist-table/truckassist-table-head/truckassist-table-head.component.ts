@@ -1,9 +1,8 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
   Component,
   Input,
   OnInit,
-  ViewEncapsulation,
   OnChanges,
   SimpleChanges,
   Output,
@@ -26,7 +25,6 @@ const rotate: { [key: string]: any } = {
   selector: 'app-truckassist-table-head',
   templateUrl: './truckassist-table-head.component.html',
   styleUrls: ['./truckassist-table-head.component.scss'],
-  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
@@ -36,6 +34,7 @@ export class TruckassistTableHeadComponent
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
+  @Input() tableContainerWidth: number;
   @Output() headActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   locked: boolean = true;
@@ -46,7 +45,9 @@ export class TruckassistTableHeadComponent
   pinedColumns: any[] = [];
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
-  showBorder: boolean = false;
+  resizeHitLimit: number = -1;
+  resizeIsPined: boolean;
+  notPinedMaxWidth: number = 0;
 
   constructor(
     private tableService: TruckassistTableService,
@@ -101,12 +102,9 @@ export class TruckassistTableHeadComponent
         }
       });
 
-    // Showing Scroll
-    this.tableService.currentShowingScroll
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response: boolean) => {
-        this.showBorder = response;
-      });
+    setTimeout(() => {
+      this.getNotPinedMaxWidth();
+    }, 10);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -114,6 +112,13 @@ export class TruckassistTableHeadComponent
       this.columns = changes.columns.currentValue;
 
       this.setVisibleColumns();
+    }
+
+    if (
+      !changes?.tableContainerWidth?.firstChange &&
+      changes?.tableContainerWidth
+    ) {
+      this.getNotPinedMaxWidth();
     }
 
     if (!changes?.options?.firstChange && changes?.options) {
@@ -169,6 +174,21 @@ export class TruckassistTableHeadComponent
     this.changeDetectorRef.detectChanges();
   }
 
+  getNotPinedMaxWidth() {
+    if (this.viewData.length) {
+      const tableContainer = document.querySelector('.table-container');
+      const pinedColumns = document.querySelector('.pined-tr');
+      const actionColumns = document.querySelector('.actions');
+
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth -
+        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        6;
+
+      this.changeDetectorRef.detectChanges();
+    }
+  }
+
   // Sort
   sortHeaderClick(column: any): void {
     if (
@@ -190,13 +210,15 @@ export class TruckassistTableHeadComponent
 
       column.sortDirection = this.options.config.sortDirection;
 
+      this.setVisibleColumns();
+
       const directionSort = column.sortDirection
         ? column.sortName +
           (column.sortDirection[0]?.toUpperCase() +
             column.sortDirection?.substr(1).toLowerCase())
         : '';
 
-      /* this.headActions.emit({ action: 'sort', direction: directionSort }); */
+      this.headActions.emit({ action: 'sort', direction: directionSort });
 
       this.changeDetectorRef.detectChanges();
     }
@@ -237,7 +259,8 @@ export class TruckassistTableHeadComponent
   // Rezaize
   onResize(event: any) {
     this.rezaizeing = event.isResizeing;
-    if (this.rezaizeing) {
+
+    if (this.rezaizeing && !event.beyondTheLimits) {
       this.tableService.sendColumnWidth({
         event: event,
         columns:
@@ -245,6 +268,17 @@ export class TruckassistTableHeadComponent
             ? this.notPinedColumns
             : this.pinedColumns,
       });
+
+      this.getNotPinedMaxWidth();
+    }
+
+    if (event.beyondTheLimits) {
+      this.resizeHitLimit = event.index;
+      this.resizeIsPined = event.isPined;
+
+      setTimeout(() => {
+        this.resizeHitLimit = -1;
+      }, 1000);
     }
   }
 
