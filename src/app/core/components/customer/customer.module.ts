@@ -10,9 +10,12 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ShipperDetailsComponent } from './shipper-details/shipper-details.component';
 import { ShipperDetailsSingleComponent } from './shipper-details/shipper-details-single/shipper-details-single.component';
 import { ShipperCardViewComponent } from './shipper-card-view/shipper-card-view.component';
+import { BrokerDetailsComponent } from './broker-details/broker-details.component';
+import { BrokerCardViewComponent } from './broker-card-view/broker-card-view.component';
+import { BrokerDetailsSingleComponent } from './broker-details/broker-details-single/broker-details-single.component';
 
 @NgModule({
-  declarations: [CustomerTableComponent, BrokerCardComponent],
+  declarations: [CustomerTableComponent, BrokerCardComponent, BrokerDetailsComponent, BrokerCardViewComponent, BrokerDetailsSingleComponent],
   imports: [
     CommonModule,
     TruckassistTableModule,
