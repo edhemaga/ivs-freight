@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
-import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -18,6 +18,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TruckDetailsCardComponent implements OnInit,OnChanges {
+  @ViewChild('revenueChart', {static: false}) public revenueChart: any;
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;

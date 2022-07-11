@@ -77,7 +77,7 @@ export class DashboardTopDriverComponent implements OnInit {
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: true
+      showGridLines: false
     }
   };
 

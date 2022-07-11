@@ -65,7 +65,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: true
+      showGridLines: false
     }
   };  
 

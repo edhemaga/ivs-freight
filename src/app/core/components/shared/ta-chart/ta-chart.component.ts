@@ -48,6 +48,7 @@ export class TaChartComponent implements OnInit {
   selectedDataRows: any = [];
   selectedDrivers: any = [];
   dataMaxRows: number = 6;
+  hoverTimeDisplay: boolean = false;
 
   constructor(private ref: ChangeDetectorRef) { }
 
@@ -97,7 +98,7 @@ export class TaChartComponent implements OnInit {
           }
         }
         else{
-          if ( this.chartConfig['hasHoverData'] ) { this.hoveringStatus = false;  this.ref.detectChanges(); }
+          this.hoveringStatus = false;  this.ref.detectChanges();
           this.showHoverData = false;
           this.lastHoveredIndex = -1;
           this.animationDuration = 1000;
@@ -158,12 +159,13 @@ export class TaChartComponent implements OnInit {
             gridLines: {
               display: this.axesProperties['verticalLeftAxes'] ? this.axesProperties['verticalLeftAxes']['showGridLines'] : true,
               drawBorder: false,
-              borderDash: [3, 3],
+              borderDash: [2, 3],
               color: '#DADADA',
-              zeroLineBorderDash: [3, 3],
+              zeroLineBorderDash: [2, 3],
               zeroLineColor: '#DADADA'
             },
             ticks: {
+                display: false,
                 beginAtZero: true,
                 stepSize: this.axesProperties['verticalLeftAxes'] && this.axesProperties['verticalLeftAxes']['stepSize'] ? this.axesProperties['verticalLeftAxes']['stepSize'] : 1000,
                 max: this.axesProperties['verticalLeftAxes'] && this.axesProperties['verticalLeftAxes']['maxValue'] ? this.axesProperties['verticalLeftAxes']['maxValue'] : 4000,
@@ -203,6 +205,7 @@ export class TaChartComponent implements OnInit {
           },
           position: 'right',
           ticks: {
+              display: false,
               beginAtZero: true,
               stepSize: this.axesProperties['verticalRightAxes'] && this.axesProperties['verticalRightAxes']['stepSize'] ? this.axesProperties['verticalRightAxes']['stepSize'] : 700,
               max: this.axesProperties['verticalRightAxes'] && this.axesProperties['verticalRightAxes']['maxValue'] ? this.axesProperties['verticalRightAxes']['maxValue'] : 2800,
@@ -229,13 +232,14 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
-          offset: this.chartConfig['offset'] ? this.chartConfig['offset'] : false,
+          offset: true,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
-              display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['showGridLines'] : false,
-              borderDash: [3, 3],
-              zeroLineColor: 'rgba(0, 0, 0, 0)'
+              display: true,
+              borderDash: [2, 3],
+              zeroLineColor: 'rgba(0, 0, 0, 0)',
+              color: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['showGridLines'] ? '#DADADA' : 'rgba(0, 0, 0, 0)'
           },
           ticks: {
               fontColor: '#AAAAAA',
@@ -273,6 +277,7 @@ export class TaChartComponent implements OnInit {
       this.allowAnimation = this.chartConfig['allowAnimation'];
       this.driversList = this.chartConfig['driversList'];
       this.gridHoverBackground = this.chartConfig['gridHoverBackground'];
+      this.hoverTimeDisplay = this.chartConfig['hoverTimeDisplay'];
       if ( this.chartConfig['dataMaxRows'] ){
         this.dataMaxRows = this.chartConfig['dataMaxRows'];
       }

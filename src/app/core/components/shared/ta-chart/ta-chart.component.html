@@ -1,13 +1,19 @@
-<div class="charts-item-wrapper revenue" *ngIf="legendAttributes.length > 0" [class.row]="legendAttributes?.length > 2">
-  <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
-    <div class="icon-name-item">
-      <svg-icon src={{item.image}}></svg-icon>
-      <div class="charts-template-item-name">{{ item.title }}</div>
+<div class="charts-item-wrapper revenue" *ngIf="legendAttributes?.length > 0" [class.row]="legendAttributes?.length > 2" [class.hover]="hoveringStatus && hoverTimeDisplay">
+  <div class="hover_data_time" *ngIf="hoveringStatus && hoverTimeDisplay">
+    <div class="hover_time_title">DECEMBER, 2021</div>
+    <div class="hover_time_border"></div>
+  </div>
+  <div class="chart_all_inner_hold">
+    <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
+      <div class="icon-name-item">
+        <svg-icon src={{item.image}}></svg-icon>
+        <div class="charts-template-item-name">{{ item.title }}</div>
+      </div>
+      <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
     </div>
-    <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
   </div>
 </div>
-<div class="main_chart_container" [class.remove_chart_margin]="removeChartMargin">
+<div class="main_chart_container" [class.remove_chart_margin]="removeChartMargin" [class.add_inside]="hoveringStatus && hoverTimeDisplay">
   <div class="no_chart_data" *ngIf="noChartData">
     <svg-icon src={{noChartImage}}></svg-icon>
   </div>
