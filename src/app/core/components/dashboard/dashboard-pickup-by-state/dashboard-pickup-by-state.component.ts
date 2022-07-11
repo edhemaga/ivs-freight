@@ -47,6 +47,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     startGridBackgroundFromZero: true,
+    dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
     offset: true,
@@ -64,7 +65,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: true
+      showGridLines: false
     }
   };  
 
@@ -324,7 +325,7 @@ export class DashboardPickupByStateComponent implements OnInit {
   updateBarChart(selectedStates: any){
     let dataSend = [10, 12, 20, 5, 18];
     if ( this.statesBarChart ){
-      this.statesBarChart.updateMuiliBar(selectedStates, dataSend, this.chartColors);
+      this.statesBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareColor);
     }
   }
 

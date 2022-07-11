@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 $top_driver_hover_color: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
 $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
 
@@ -530,7 +532,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                                 font-size: 11px;
                                 font-weight: 500;
                                 line-height: 14px;
-                                color: #6C6C6C;
+                                color: $bw6-2;
                             }
 
                             .chart_legend_dot{

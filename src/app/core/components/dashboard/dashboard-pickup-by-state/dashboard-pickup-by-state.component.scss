@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2CEEC', 'C2CEEC', 'D7E1F4', 'D7E1F4';
 
 .dashboard-pickup-holder{
@@ -244,7 +246,7 @@ $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2
                                     font-size: 11px;
                                     font-weight: 500;
                                     line-height: 14px;
-                                    color: #6C6C6C;
+                                    color: $bw6-2;
                                 }
     
                                 .chart_legend_dot{
