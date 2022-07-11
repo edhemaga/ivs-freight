@@ -212,8 +212,8 @@ export class DriverDetailsCardComponent
     ];
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number) {
-    this.toggler[value] = !this.toggler[value];
+  public toggleResizePage(value: number, indexName:string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   public changeTab(ev: any) {
     this.selectedTab = ev.id;

@@ -18,7 +18,6 @@ import { Clipboard } from '@angular/cdk/clipboard';
   templateUrl: './ta-re-card.component.html',
   styleUrls: ['./ta-re-card.component.scss'],
   animations: [card_component_animation('showHideCardBody')],
-
 })
 export class TaReCardComponent implements OnInit {
   @Input() public cardNameCommon: string;
@@ -42,16 +41,13 @@ export class TaReCardComponent implements OnInit {
   @Input() public cardSecondName: string = '';
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public weeklyWidth: string = '';
-  @Input() public setPositionDrop:boolean;
+  @Input() public setPositionDrop: boolean;
   @Input() isDeactivated: any;
-  @Input() noteIcons:string='';
+  @Input() noteIcons: string = '';
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
-  constructor(private clipboard:Clipboard,private cdr: ChangeDetectorRef) {}
-  
-
- 
+  constructor(private clipboard: Clipboard, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.CloseCard();
@@ -61,7 +57,7 @@ export class TaReCardComponent implements OnInit {
     let currentDate = moment().format('MM/DD/YYYY');
     if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
       this.isCardOpen = false;
-    }    
+    }
   }
 
   public toggleCard(event: any) {
@@ -72,18 +68,10 @@ export class TaReCardComponent implements OnInit {
       this.isCardOpen = !this.isCardOpen;
     }
   }
-  public onAction(val: string, res: any) {
-    switch (val) {
-      case 'resize':
-        this.resPage = !this.resPage;
-        this.resizePage.emit(this.resPage);
-        break;
-    }
-  }
 
-  public resizePageFun(val:any){
-    this.resPage=!this.resPage
-   this.resizePage.emit(val)
+  public resizePageFun(val: any) {
+    this.resPage = !this.resPage;
+    this.resizePage.emit(this.resPage);
   }
   /**Function for drop acitons */
   public dropAct(action: any) {
@@ -94,6 +82,6 @@ export class TaReCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     this.copiedCommon = true;
-   this.clipboard.copy(val);
+    this.clipboard.copy(val);
   }
 }

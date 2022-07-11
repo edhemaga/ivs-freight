@@ -29,7 +29,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
   public truckDropDowns: any[] = [];
   public dataEdit: any;
   @Input() templateCard: boolean = false;
@@ -202,7 +202,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.truck.firstChange && changes?.truck) {
       this.noteControl.patchValue(changes.truck.currentValue.note);
-      this.getTruckDropdown()
+      this.getTruckDropdown();
     }
   }
   ngOnInit(): void {
@@ -331,8 +331,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public changeTabRevenue(ev: any) {}
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
   public optionsEvent(any: any, action: string) {

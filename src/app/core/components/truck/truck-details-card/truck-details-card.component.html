@@ -625,10 +625,10 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of truck?.registrations; trackBy: identity">
+          <div *ngFor="let reg of truck?.registrations; let i = index; trackBy: identity">
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage($event)"
+              (resizePage)="toggleResizePage(i,'registration')"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
@@ -650,7 +650,7 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -662,8 +662,8 @@
                     </div>
                   </div>
                 </div>
-                <div class="divider" *ngIf="toggler"></div>
-                <div *ngIf="toggler" class="note-wrapper">
+                <div class="divider" *ngIf="toggler[i + 'registration']"></div>
+                <div *ngIf="toggler[i + 'registration']" class="note-wrapper">
                   <app-ta-input-note
                     [formControl]="registrationNote"
                     [isVisibleDivider]="false"

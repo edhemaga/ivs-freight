@@ -48,7 +48,7 @@
                 (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
-            <div *ngIf="driver.status == 0" class="inactive-wrapper">
+            <div *ngIf="driver.status === 0" class="inactive-wrapper">
               Inactive
             </div>
           </div>
@@ -242,7 +242,7 @@
         class="item-cards"
       >
         <div
-          *ngIf="driver.offDutyLocations == ''"
+          *ngIf="driver.offDutyLocations === ''"
           class="no-data-driver-details"
         >
           No Added Location
@@ -663,7 +663,9 @@
               [ngClass]="{ copied: copiedBankAccount }"
             >
               <div class="purchase-template-item-value">
-                {{ driver.account | hideAccount: "account":isAccountVisibleDriver}}
+                {{
+                  driver.account | hideAccount: "account":isAccountVisibleDriver
+                }}
               </div>
               <span
                 *ngIf="driver.account !== null"
@@ -671,7 +673,7 @@
                 ngbTooltip
                 [autoClose]="false"
                 [mainTooltip]="
-                isAccountVisibleDriver
+                  isAccountVisibleDriver
                     ? 'Hide Account Number'
                     : 'Show Account Number'
                 "
@@ -680,7 +682,6 @@
               >
                 <svg-icon
                   class="hidden-svg-eye"
-                  
                   src="{{
                     isAccountVisibleDriver
                       ? 'assets/svg/common/ic_eye-visible.svg'
@@ -800,7 +801,7 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardDocumentCounter]="6"
-              (resizePage)="toggleResizePage(i + 20)"
+              (resizePage)="toggleResizePage(i, 'cdl')"
               [cardNameCommon]="cdl?.cdlNumber"
               [expDateClose]="cdl?.expDate | formatDateP"
               [hasCopyIcon]="true"
@@ -839,7 +840,7 @@
                   </div>
                   <div
                     [ngClass]="{
-                      'card-restriction-endorsment': !toggler[i + 20]
+                      'card-restriction-endorsment': !toggler[i + 'cdl']
                     }"
                   >
                     <div class="card-restriction">
@@ -853,7 +854,7 @@
                           "
                         >
                           <span class="value-name">{{ rest?.code }}</span>
-                          <span class="desc" *ngIf="toggler[i + 20]"
+                          <span class="desc" *ngIf="toggler[i + 'cdl']"
                             >- {{ rest?.description }}
                           </span>
                         </p>
@@ -882,7 +883,7 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 20] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'cdl'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -909,7 +910,9 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i + 20] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
 
                   <div class="details-document-container">
@@ -999,7 +1002,7 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardNameCommon]="test?.testingDate | formatDateP"
-              (resizePage)="toggleResizePage(i + 50)"
+              (resizePage)="toggleResizePage(i, 'tests')"
               [optionsId]="test.id"
               [weeklyWidth]="'18'"
               [cardSecondName]="test?.testReason.name"
@@ -1008,9 +1011,13 @@
               (dropActions)="optionsEvent($event, 'edit-drug')"
               [setPositionDrop]="true"
             >
-              <div [ngClass]="{ 'second-progress': toggler[i + 50] }"></div>
+              <div
+                [ngClass]="{ 'second-progress': toggler[i + 'tests'] }"
+              ></div>
               <div class="cards-container">
-                <div [@showHideCardBody]="toggler[i + 50] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'tests'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">
@@ -1104,7 +1111,7 @@
               [cardNameCommon]="med?.issueDate | formatDateP"
               [expDateClose]="med?.expDate | formatDateP"
               [optionsId]="med.id"
-              (resizePage)="toggleResizePage(i + 60)"
+              (resizePage)="toggleResizePage(i, 'medicals')"
               (dropActions)="optionsEvent($event, 'edit-medical')"
               [setPositionDrop]="true"
             >
@@ -1112,7 +1119,7 @@
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 60] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'medicals'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -1124,7 +1131,11 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i + 60] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="
+                    toggler[i + 'medicals'] ? 'true' : 'false'
+                  "
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">
@@ -1213,7 +1224,7 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardDocumentCounter]="6"
-              (resizePage)="toggleResizePage(i + 99)"
+              (resizePage)="toggleResizePage(i, 'mvrs')"
               [cardNameCommon]="mvr?.issueDate | formatDateP"
               [expDateClose]="mvr?.issueDate | formatDateP"
               [optionsId]="mvr.id"
@@ -1224,7 +1235,7 @@
                 <div class="card-body-cdl">
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 99] }"
+                    [ngClass]="{ 'second-progress': toggler[i + 'mvrs'] }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
@@ -1236,7 +1247,9 @@
                     </div>
                   </div>
                 </div>
-                <div [@showHideCardBody]="toggler[i + 99] ? 'true' : 'false'">
+                <div
+                  [@showHideCardBody]="toggler[i + 'mvrs'] ? 'true' : 'false'"
+                >
                   <div class="divider"></div>
                   <div class="details-document-container">
                     <div class="icon-counter-wrapper">

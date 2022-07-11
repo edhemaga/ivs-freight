@@ -8,69 +8,75 @@
       </div>
       <!---------------------------- Registration TEMPLATE ----------------------------->
       <div class="card-width" *ngSwitchCase="'registration'">
-        
-          <app-ta-re-card
-            *ngFor="
-              let reg of trailers?.data?.registrations;
-              let i = index;
-              trackBy: identity
-            "
-            [cardDocumentCounter]="1"
-            (resizePage)="toggleResizePage(i + 14)"
-            [cardNameCommon]="reg.licensePlate"
-            [hasCopyIcon]="true"
-            [options]="dataTest"
-            [expDateClose]="reg.expDate | formatDateP"
-            [optionsId]="reg.id"
-            [noteIcons]="reg.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            (dropActions)="optionsEvent($event, 'edit-registration')"
-          >
-            <div class="cards-container">
-              <div class="card-body-cdl">
-                <div class="card-row-endor">
-                  <div class="card-item">
-                    <div class="card-item-name">State</div>
-                    <div class="card-item-value">KV</div>
-                  </div>
-                  <div class="card-item">
-                    <div class="card-item-name">Issued</div>
-                    <div class="card-item-value">
-                      {{ reg.issueDate | formatDateP }}
-                    </div>
-                  </div>
+        <app-ta-re-card
+          *ngFor="
+            let reg of trailers?.data?.registrations;
+            let i = index;
+            trackBy: identity
+          "
+          [cardDocumentCounter]="1"
+          (resizePage)="toggleResizePage(i, 'registration')"
+          [cardNameCommon]="reg.licensePlate"
+          [hasCopyIcon]="true"
+          [options]="dataTest"
+          [expDateClose]="reg.expDate | formatDateP"
+          [optionsId]="reg.id"
+          [noteIcons]="
+            reg.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          (dropActions)="optionsEvent($event, 'edit-registration')"
+        >
+          <div class="cards-container">
+            <div class="card-body-cdl">
+              <div class="card-row-endor">
+                <div class="card-item">
+                  <div class="card-item-name">State</div>
+                  <div class="card-item-value">KV</div>
                 </div>
-                <div
-                  class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[i + 14] }"
-                >
-                  <div class="card-details-progress-container">
-                    <app-truckassist-progress-expiration
-                      [expireDate]="reg.expDate | formatDateP"
-                      [startDate]="reg.issueDate | formatDateP"
-                      [expiresSettings]="'details'"
-                    >
-                    </app-truckassist-progress-expiration>
+                <div class="card-item">
+                  <div class="card-item-name">Issued</div>
+                  <div class="card-item-value">
+                    {{ reg.issueDate | formatDateP }}
                   </div>
                 </div>
               </div>
-              <div [@showHideCardBody]="toggler[i + 14] ? 'true' : 'false'">
-                <div class="divider"></div>
-                <div class="card-note">
-                  <app-ta-input-note
-                    [formControl]="registrationNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleSecondDivider]="false"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [isVisibleNote]="true"
-                  ></app-ta-input-note>
+              <div
+                class="card-row-progress"
+                [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
+              >
+                <div class="card-details-progress-container">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="reg.expDate | formatDateP"
+                    [startDate]="reg.issueDate | formatDateP"
+                    [expiresSettings]="'details'"
+                  >
+                  </app-truckassist-progress-expiration>
                 </div>
               </div>
             </div>
-          </app-ta-re-card>
-       
+            <div
+              [@showHideCardBody]="
+                toggler[i + 'registration'] ? 'true' : 'false'
+              "
+            >
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="registrationNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleSecondDivider]="false"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
+            </div>
+          </div>
+        </app-ta-re-card>
       </div>
       <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
       <div class="card-width" *ngSwitchCase="'fhwa-insepction'">
@@ -84,8 +90,12 @@
           [cardNameCommon]="fhwa.issueDate | formatDateP"
           [optionsId]="fhwa.id"
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i + 45)"
-          [noteIcons]="fhwa.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
+          (resizePage)="toggleResizePage(i, 'fhwa')"
+          [noteIcons]="
+            fhwa.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           [expDateClose]="fhwa.issueDate | setFutureYear"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
@@ -93,7 +103,7 @@
             <div class="card-body-cdl">
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i + 45] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'fhwa'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -105,7 +115,7 @@
                 </div>
               </div>
             </div>
-            <div [@showHideCardBody]="toggler[i + 45] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[i + 'fhwa'] ? 'true' : 'false'">
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
@@ -133,11 +143,15 @@
             trackBy: identity
           "
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i + 55)"
+          (resizePage)="toggleResizePage(i, 'title')"
           [cardNameCommon]="title.number"
           [options]="dataTest"
           [optionsId]="title.id"
-          [noteIcons]="title.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
+          [noteIcons]="
+            title.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           (dropActions)="optionsEvent($event, 'edit-inspection')"
         >
           <div class="cards-container">
@@ -156,7 +170,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i + 55] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'title'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -168,7 +182,7 @@
                 </div>
               </div>
             </div>
-            <div [@showHideCardBody]="toggler[i + 55] ? 'true' : 'false'">
+            <div [@showHideCardBody]="toggler[i + 'title'] ? 'true' : 'false'">
               <div class="divider"></div>
 
               <div class="card-note">
