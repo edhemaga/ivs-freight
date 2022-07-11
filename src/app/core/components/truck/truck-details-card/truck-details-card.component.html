@@ -386,6 +386,8 @@
                 '',
                 'SEP'
               ],
+              onHoverAnnotation: true,
+              hoverTimeDisplay: true,
               noChartImage: 'assets/svg/common/yellow_no_data.svg'
             }"
             [axesProperties]="barAxes"
@@ -405,14 +407,17 @@
         class="item-cards"
         [isCardOpen]="true"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch
+        <div class="charts-template perfomance" [class.p-0]="revenueChart.hoveringStatus">
+          <div *ngIf="!revenueChart.hoveringStatus">
+            <app-ta-tab-switch
             [type]="'type2-modal-popup'"
             (switchClicked)="changeTabRevenue($event)"
             [tabs]="buttonsArrayRevenue"
           >
           </app-ta-tab-switch>
+          </div>
           <app-ta-chart
+            #revenueChart
             [chartConfig]="{
               dataProperties: [
                 {
@@ -463,6 +468,8 @@
                 '',
                 'SEP'
               ],
+              onHoverAnnotation: true,
+              hoverTimeDisplay: true,
               noChartImage: 'assets/svg/common/green_no_data.svg'
             }"
             [axesProperties]="barAxes2"
@@ -507,6 +514,8 @@
                 defaultType: 'bar',
                 chartWidth: '417',
                 chartHeight: '130',
+                onHoverAnnotation: true,
+                hoverTimeDisplay: true,
                 dataLabels: ['JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
                 noChartImage: 'assets/svg/common/mixed_no_data.svg'
               }"
@@ -541,6 +550,7 @@
                 chartHeight: '130',
                 annotation: 28,
                 onHoverAnnotation: true,
+                hoverTimeDisplay: true,
                 dataLabels: ['JUL', '', '', '', '', '', '', 'AUG', '', '', '', '', '', '', 'SEP'],
                 noChartImage: 'assets/svg/common/no_data_pay.svg'
               }"

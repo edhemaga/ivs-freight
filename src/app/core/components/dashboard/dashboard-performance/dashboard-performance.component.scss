@@ -121,6 +121,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 0px 8px;
 
         .dashboard-performance-body-left-holder{
             position: relative;
@@ -136,7 +137,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             padding: 12px;
             box-sizing: border-box;
             margin-bottom: 8px;
-            margin-right: 8px;
+            // margin-right: 8px;
             user-select: none;
 
             .dashboard-performance-left-close{
@@ -396,6 +397,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             //width: 175px;
             //height: 143px;
 
+
             background-color: #fff;
             border-radius: 3px;
             padding: 12px;
@@ -404,7 +406,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             justify-content: flex-start;
             align-items: flex-start;
             flex-direction: column;
-            margin-right: 8px;
+            ///margin-right: 8px;
             margin-bottom: 8px;
             user-select: none;
             transition: all 0.2s;

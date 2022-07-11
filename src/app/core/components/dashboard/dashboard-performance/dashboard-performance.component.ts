@@ -459,11 +459,14 @@ export class DashboardPerformanceComponent implements OnInit {
   setColor(type: string){
     // Provera da li se u objektu nalazi vec ovaj tip sa vrednoscu boje
     if( type in this.selectedColors ){
-      // Iz glavnog niza boja vratiti zauzetu boju na pocetak niza
-      this.backgroundCards.unshift(this.selectedColors[type]);
-      // Obrisati iz objekta tu vrednost
-      delete this.selectedColors[type];
-      this.topChart.insertNewChartData('remove', type);
+      if ( this.backgroundCards?.length < 9 ){
+         // Iz glavnog niza boja vratiti zauzetu boju na pocetak niza
+        this.backgroundCards.unshift(this.selectedColors[type]);
+        // Obrisati iz objekta tu vrednost
+        delete this.selectedColors[type];
+        this.topChart.insertNewChartData('remove', type);
+      }
+     
     }else{
       // Proveriti da li se u nizu nalazi bar jedna boja da bi mogli da dajemo novoj kocki sledecu boju
       if( this.backgroundCards.length > 0 ){
