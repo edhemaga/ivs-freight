@@ -392,9 +392,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         return {
           id: item.id,
           name: item.truckNumber,
-          svg: item.truckType.logoName,
           active: item.id === event.id,
-          folder: 'common/trucks/',
         };
       });
       this.detailsPageDriverSer.getDataDetailId(event.id);
