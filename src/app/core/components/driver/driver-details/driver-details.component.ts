@@ -57,10 +57,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private tableService: TruckassistTableService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-    
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
     this.initTableOptions();
