@@ -1,3 +1,4 @@
+import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -35,7 +36,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
-  public truck_list: any[] = this.trucksQuery.getAll();
+  public truck_list: any[] = this.truckMinimalListQuery.getAll();
   public copiedPhone: boolean;
   public copiedEmail: boolean;
   public copiedVin: boolean;
@@ -196,7 +197,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
     private detailsPageDriverSer: DetailsPageService,
-    private clipboar: Clipboard
+    private clipboar: Clipboard,
+    private truckMinimalListQuery: TrucksMinimalListQuery
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -376,7 +378,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     return index;
   }
   public getTruckDropdown() {
-    this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+    this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.truckNumber,
@@ -386,7 +388,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   }
   public onSelectedTruck(event: any) {
     if (event.id !== this.truck.id) {
-      this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+      this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.truckNumber,

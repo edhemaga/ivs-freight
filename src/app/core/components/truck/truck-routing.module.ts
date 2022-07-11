@@ -1,3 +1,4 @@
+import { TruckMinimalResolver } from './state/truck-details-minima-list-state/truck-details-minimal.resolver';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TruckItemResolver } from './state/truck-details-state/truck.items.resolver';
@@ -11,25 +12,26 @@ const routes: Routes = [
     data: { title: 'Truck' },
   },
   {
-    path:':id/details',
-    loadChildren:()=>
-    import('./truck-details/truck-details.module').then(
-      (m) => m.TruckDetailsModule
-    ),
-    resolve:{
-      truck:TruckItemResolver
+    path: ':id/details',
+    loadChildren: () =>
+      import('./truck-details/truck-details.module').then(
+        (m) => m.TruckDetailsModule
+      ),
+    resolve: {
+      truck: TruckItemResolver,
+      truckMinimal: TruckMinimalResolver,
     },
-    data:{title:'Truck details'}
+    data: { title: 'Truck details' },
   },
-   { path: 'card',
+  {
+    path: 'card',
     component: TruckCardComponent,
-    data: {title: 'Truck cards'},
-  }
+    data: { title: 'Truck cards' },
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-
-export class TruckRoutingModule { }
+export class TruckRoutingModule {}

@@ -1,3 +1,4 @@
+import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { TruckQuery } from './truck.query';
 import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -21,6 +22,15 @@ export class TruckTService {
     private truckQuery: TruckQuery,
     private tableService: TruckassistTableService
   ) {}
+
+  //Get Truck Minimal List
+  public getTrucksMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<TruckMinimalListResponse> {
+    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize, count);
+  }
 
   // Get Truck List
   public getTruckList(
