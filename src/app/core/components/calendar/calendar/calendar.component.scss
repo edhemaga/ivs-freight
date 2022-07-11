@@ -1800,6 +1800,17 @@
     border-radius: 0 3px 3px 0 !important;
 }
 
+tbody{
+    .fc-scroller{
+        -ms-overflow-style: none;
+        scrollbar-width: none; 
+    
+        &::-webkit-scrollbar{
+            display: none;
+        }        
+    }
+}
+
 .fc-timeGridWeek-view{
     .fc-timegrid-axis-cushion{
         max-width: none !important;
@@ -1817,7 +1828,10 @@
 
     .fc-scrollgrid-section table{
         background-color: #fff !important;
+
     }
+
+   
 
     .fc .fc-timegrid-slot-label-cushion{
         font-size: 14px;

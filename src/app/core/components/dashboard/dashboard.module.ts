@@ -8,13 +8,17 @@ import { DashboardPerformanceComponent } from './dashboard-performance/dashboard
 import { DashboardTopDriverComponent } from './dashboard-top-driver/dashboard-top-driver.component';
 import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/dashboard-pickup-by-state.component';
 import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
+import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
+import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
 @NgModule({
   declarations: [
     DashboardComponent,
     DashboardPerformanceComponent,
     DashboardTopDriverComponent,
     DashboardPickupByStateComponent,
-    DashboardMapComponent
+    DashboardMapComponent,
+    DashboardStateTrackingComponent,
+    DashboardStateUsaComponent
   ],
   imports: [
     CommonModule,
