@@ -69,10 +69,6 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
 
   onMouseDown = (event: MouseEvent) => {
     if (!this.pressed) {
-      /* this.renderer.setStyle(document.body, 'cursor', 'ew-resize');
-      this.renderer.setStyle(document.body, 'height', '10000px'); */
-      /* this.renderer.setStyle(this.table, 'cursor', 'ew-resize'); */
-
       this.resizeing.emit({
         isResizeing: true,
         section: this.tableSection,
@@ -114,7 +110,7 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           section: this.tableSection,
         });
       }
-      // If It Has Reached Min Or Max Width, Show Notification
+      // If It Has Reached Min Or Max Width, Show Animation
       else {
         this.resizeing.emit({
           beyondTheLimits: true,
@@ -122,20 +118,22 @@ export class ResizeColumnDirective implements OnInit, OnChanges {
           isResizeing: false,
           isPined: this.tableColumn.isPined,
         });
+        
+        /* this.resizeing.emit({
+          beyondTheLimits: true,
+          index: this.index,
+          isResizeing: false,
+          isPined: this.tableColumn.isPined,
+        }); */
 
-        this.pressed = false;
-        /*  this.renderer.removeStyle(document.body, 'cursor');
-        this.renderer.removeStyle(document.body, 'height'); */
-        window.getSelection().removeAllRanges();
+        /* this.pressed = false;
+        window.getSelection().removeAllRanges(); */
       }
     }
   };
 
   onMouseUp = () => {
     if (this.pressed) {
-      /* this.renderer.removeStyle(document.body, 'cursor');
-      this.renderer.removeStyle(document.body, 'height'); */
-
       this.pressed = false;
 
       this.resizeing.emit({

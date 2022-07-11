@@ -6,6 +6,7 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
+          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -20,9 +21,6 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{
-            'regular-columns-hover': hoverActive === i && !row.actionAnimation
-          }"
         >
           <td *ngFor="let column of columns">
             <!-- NO TEMPLATE -->
@@ -749,28 +747,20 @@
                 column.isPined
               "
             >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-progress-expiration
-                *ngIf="row[column.field] && row[column.field]['start']"
-                [startDate]="
-                  row[column.field]['start']
-                    ? (row[column.field]['start'] | date: 'shortDate')
-                    : undefined
-                "
-                [expireDate]="
-                  row[column.field]['end']
-                    ? (row[column.field]['end'] | date: 'shortDate')
-                    : (row[column.field]['start']
-                      | getExpireData
-                      | date: 'shortDate')
-                "
-                [startDate]="
-                  row[column.field]['start']
-                    ? (row[column.field]['start'] | date: 'shortDate')
-                    : undefined
-                "
-                [status]="row['status']"
-              ></app-truckassist-progress-expiration> -->
+              <!-- *ngIf="row[column.field] && row[column.field]['start']" -->
+              <div class="table-progress-cotnainer">
+                <!-- Progres Bar  -->
+                <div class="table-progress-bar-container">
+                  <div
+                    [ngClass]="{ 'bg-progress-orange': true }"
+                    [ngStyle]="{ width: 50 + '%' }"
+                    class="table-progress-bar"
+                  ></div>
+                </div>
+
+                <!-- Progres Text -->
+                <div class="table-progress-text">in 1,565 days</div>
+              </div>
             </div>
           </td>
         </div>
@@ -797,7 +787,7 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'border-inactive': !showScrollSectionBorder,
+          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -813,7 +803,7 @@
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
           [ngClass]="{
-            'regular-columns-hover': hoverActive === i && !row.actionAnimation
+            'border-inactive': !showScrollSectionBorder
           }"
         >
           <td *ngFor="let column of columns">
@@ -1478,25 +1468,6 @@
                 !column.isPined
               "
             >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-progress-expiration
-                *ngIf="row[column.field] && row[column.field]['start']"
-                [startDate]="
-                  row[column.field]['start']
-                    ? (row[column.field]['start'] | date: 'shortDate')
-                    : undefined
-                "
-                [expireDate]="
-                  row[column.field]['end']
-                    ? (row[column.field]['end'] | date: 'shortDate')
-                    : (row[column.field]['start']
-                      | getExpireData
-                      | date: 'shortDate')
-                "
-                [status]="row['status']"
-              ></app-truckassist-progress-expiration> -->
-
-
               <!-- 
               *ngIf="row[column.field] && row[column.field]['start']" -->
               <div class="table-progress-cotnainer">
@@ -1533,6 +1504,7 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
+          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
@@ -1547,9 +1519,6 @@
           class="columns-container"
           (mouseenter)="hoverActive = i"
           (mouseleave)="hoverActive = -1"
-          [ngClass]="{
-            'regular-columns-hover': hoverActive === i && !row.actionAnimation
-          }"
         >
           <td *ngFor="let column of columns">
             <!-- ATTACHMENTS COLUMN TEMPLATE -->

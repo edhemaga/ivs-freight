@@ -15,11 +15,11 @@ table {
     }
 
     .not-pined-border-left {
-      background-image: linear-gradient(to right, #eeeeee, #F7F7F700);
+      background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
     }
 
     .not-pined-border-right {
-      background-image: linear-gradient(to right, #F7F7F700, #eeeeee);
+      background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
     }
 
     .not-pined-tr {
@@ -33,7 +33,7 @@ table {
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: #CCCCCC;
+        background-color: #cccccc;
         border: 6px solid #eeeeee;
         border-radius: 1px;
       }
@@ -1045,7 +1045,14 @@ table {
 
 // NG CLASS
 .regular-columns-hover {
-  background: #f7f7f7 !important;
+  .border-inactive {
+    border-right: 4px solid #f7f7f7 !important;
+    border-left: 4px solid #f7f7f7 !important;
+  }
+
+  .columns-container {
+    background: #f7f7f7 !important;
+  }
 }
 
 .border-inactive {
