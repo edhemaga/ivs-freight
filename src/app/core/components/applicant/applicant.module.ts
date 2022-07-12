@@ -17,6 +17,9 @@ import { ApplicantNextStepComponent } from './applicant-next-step/applicant-next
 import { ApplicantConfirmAllReviewComponent } from './applicant-confirm-all-review/applicant-confirm-all-review.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applicant-signature-pad.component';
+import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
+import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
+
 import { Step1Component } from './applicant-steps/step1/step1.component';
 import { Step2Component } from './applicant-steps/step2/step2.component';
 import { Step3Component } from './applicant-steps/step3/step3.component';
@@ -30,9 +33,7 @@ import { Step10Component } from './applicant-steps/step10/step10.component';
 import { Step11Component } from './applicant-steps/step11/step11.component';
 
 import { SharedModule } from '../shared/shared.module';
-
-import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
-import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/appl
     AngularSvgIconModule,
 
     SharedModule,
+    AngularSignaturePadModule,
   ],
   providers: [ReviewFeedbackService],
 })

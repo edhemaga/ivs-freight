@@ -19,7 +19,6 @@ export class Step11Component implements OnInit, OnDestroy {
   public authorizationForm: FormGroup;
 
   public signature: any;
-  public signatureToSave: any;
 
   public authorizationInfo: Authorization | undefined;
 
@@ -85,10 +84,8 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSignatureAction(event: any): void {
-    this.signatureToSave = event.signature
-      ? event.signature.toDataURL()
-      : undefined;
-    this.signature = event.signature ? event.signature.toDataURL() : undefined;
+    console.log(event);
+    /* this.signature =  event.signature.toDataURL(); */
   }
 
   private formFilling(): void {

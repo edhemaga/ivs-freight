@@ -131,7 +131,11 @@
 
       <!-- SIGNATURE PAD -->
 
-      <div class="d-flex signature-pad-container">
+      <div class="d-flex flex-column signature-pad-container">
+        <app-applicant-signature-pad
+          (signatureEmitter)="onSignatureAction($event)"
+        ></app-applicant-signature-pad>
+
         <!-- <app-applicant-signature-pad
                     [actionOptions]="{
                         canToggleActions: true,
