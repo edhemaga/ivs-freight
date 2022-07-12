@@ -47,7 +47,9 @@
           (click)="
             onAction({
               modalName: 'basic',
-              action: 'edit-basic',
+              type: companyData?.divisions.length
+                ? 'edit-company'
+                : 'edit-division',
               company: companyData
             })
           "
@@ -61,7 +63,7 @@
           (click)="
             onAction({
               modalName: 'basic',
-              action: 'new-division',
+              type: 'new-division',
               company: null
             })
           "

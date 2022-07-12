@@ -44,7 +44,7 @@ table {
           font-size: 0px;
           background: #aaaaaa;
           border-radius: 2px;
-          transition: min-width 0.2s ease-in-out, height 0.2s ease-in-out;
+          transition: min-width 0.1s ease-in-out, height 0.1s ease-in-out;
 
           &:hover {
             background: #6c6c6c;
@@ -63,8 +63,8 @@ table {
           padding: 2px;
           font-size: 14px !important;
           font-weight: bold;
-          transition: min-width 0.2s ease-in-out, height 0.2s ease-in-out,
-            font-size 0.1s ease-in-out;
+          transition: min-width 0.1s ease-in-out, height 0.1s ease-in-out,
+            font-size 0.05s ease-in-out;
 
           &:hover {
             background: #536bc2 !important;

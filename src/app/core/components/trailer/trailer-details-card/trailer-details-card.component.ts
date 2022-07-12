@@ -1,3 +1,4 @@
+import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import {
   Component,
@@ -34,7 +35,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   public trailerDropDowns: any[] = [];
   public trailer_active_id: number =
     +this.activeted_route.snapshot.params['id'];
-  public trailer_list: any[] = this.trailerQuery.getAll();
+  public trailer_list: any[] = this.trailerMinimalQuery.getAll();
   public copiedPhone: boolean;
   public copiedEmail: boolean;
   public copiedVin: boolean;
@@ -43,7 +44,8 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
     private detailsPageDriverSer: DetailsPageService,
     private trailerQuery: TrailerQuery,
     private activeted_route: ActivatedRoute,
-    private clipboar: Clipboard
+    private clipboar: Clipboard,
+    private trailerMinimalQuery: TrailersMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.trailer?.firstChange && changes?.trailer) {
@@ -138,7 +140,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   }
 
   public getTrailerDropdown() {
-    this.trailerDropDowns = this.trailerQuery.getAll().map((item) => {
+    this.trailerDropDowns = this.trailerMinimalQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.trailerNumber,
@@ -148,13 +150,11 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   }
   public onSelectedTrailer(event: any) {
     if (event.id !== this.trailer.id) {
-      this.trailerDropDowns = this.trailerQuery.getAll().map((item) => {
+      this.trailerDropDowns = this.trailerMinimalQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.trailerNumber,
-          svg: item.trailerType.logoName,
           active: item.id === event.id,
-          folder: 'common/trucks/',
         };
       });
       this.detailsPageDriverSer.getDataDetailId(event.id);

@@ -7,7 +7,6 @@
         [countBackground]="'#F3F3F3'"
         [countHeight]="'24px'"
         [countWidth]="'24px'"
-       
       ></app-ta-counter>
       <p>Repair Shop</p>
     </div>
@@ -17,9 +16,7 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="
-          onAction({ type: true, modalName: 'repairshop', action: 'add' })
-        "
+        (click)="onAction({ modalName: 'repairshop', type: 'add' })"
       ></svg-icon>
     </div>
   </div>
@@ -30,7 +27,6 @@
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
-      
     >
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
@@ -55,14 +51,17 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
       >
-        <div class="repair-shop-template-data" [ngClass]="{'no-divider':!item.rent}">
+        <div
+          class="repair-shop-template-data"
+          [ngClass]="{ 'no-divider': !item.rent }"
+        >
           <div
             class="repair-shop-template-item"
             *ngFor="let ser of item.services; trackBy: identity"
           >
             <svg-icon
               class="repair-shop-template-svg"
-              [ngClass]="{ 'disabled': !ser.isUsefulService }"
+              [ngClass]="{ disabled: !ser.isUsefulService }"
               src="{{ ser.svg }}"
             ></svg-icon>
             <p

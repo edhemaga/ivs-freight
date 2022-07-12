@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
+import { SignInResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-navigation-user-profile',
@@ -23,10 +24,9 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   @Input() isUserPanelOpen: boolean = false;
 
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
-
   public currentUserStatus: string = 'online';
-
   public isItemHovered: boolean = false;
+  public loggedUser: SignInResponse = null;
 
   constructor(
     public router: Router,
@@ -34,7 +34,19 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     private navigationService: NavigationService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    // ----------------------- PRODUCSTION MODE ----------------------------
+    // if(this.authQuery.getEntity(1)) {
+    //   const currentUser: SignInResponse = this.authQuery.getEntity(1);
+
+    //   if (currentUser.token) {
+    //     return true;
+    //   }
+    // }
+
+    // ----------------------- DEVELOP MODE ----------------------------
+    this.loggedUser = JSON.parse(localStorage.getItem('user'));
+  }
 
   public onUserPanelClose() {
     this.navigationService.onDropdownActivation({

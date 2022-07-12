@@ -41,14 +41,18 @@
   </div>
 
   <div class="panel-user" (click)="onUserPanelClose()">
-    <svg-icon
+    <img
       class="panel-image"
-      src="assets/svg/common/ic_profile.svg"
-    ></svg-icon>
+      [src]="
+        loggedUser?.avatar
+          ? loggedUser.avatar
+          : 'assets/svg/common/ic_profile.svg'
+      "
+    />
     <div class="panel-name">
-      <p class="nav-footer-user-company">IVS FREIGHT INC</p>
+      <p class="nav-footer-user-company">{{ loggedUser.companyName }}</p>
       <p class="nav-footer-user-name">
-        Ivan Stoiljkovic
+        {{ loggedUser.firstName.concat(" ", loggedUser.lastName) }}
       </p>
     </div>
 

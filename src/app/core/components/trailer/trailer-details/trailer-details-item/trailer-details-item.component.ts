@@ -30,13 +30,12 @@ export class TrailerDetailsItemComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-  
     this.note.patchValue(this.trailer[0].data.note);
     this.initTableOptions();
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number) {
-    this.toggler[value] = !this.toggler[value];
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
   /**Function for dots in cards */

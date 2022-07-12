@@ -476,12 +476,4 @@ export const footerData: FooterData[] = [
     route: '/settings',
     isRouteActive: false,
   },
-  {
-    id: 34,
-    image: 'assets/svg/common/ic_profile.svg',
-    text: {
-      companyName: '',
-      userName: '',
-    },
-  },
 ];

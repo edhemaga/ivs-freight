@@ -6,6 +6,7 @@ import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
   TrailerListResponse,
+  TrailerMinimalListResponse,
   TrailerResponse,
   TrailerService,
   UpdateTrailerCommand,
@@ -42,6 +43,19 @@ export class TrailerTService {
           },
         });
       })
+    );
+  }
+
+  //Get Trailers Minimal list
+  public getTrailersMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<TrailerMinimalListResponse> {
+    return this.trailerService.apiTrailerListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
     );
   }
 

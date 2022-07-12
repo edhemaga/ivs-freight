@@ -18,14 +18,13 @@ import { AddressEntity } from './addressEntity';
 
 export interface UpdateCompanyCommand { 
     name?: string | null;
-    taxNumber?: string | null;
-    usdot?: string | null;
+    usDot?: string | null;
     ein?: string | null;
     mc?: string | null;
     phone?: string | null;
     email?: string | null;
     fax?: string | null;
-    webURL?: string | null;
+    webUrl?: string | null;
     address?: AddressEntity;
     irp?: string | null;
     ifta?: string | null;
@@ -44,6 +43,8 @@ export interface UpdateCompanyCommand {
     mvrMonths?: number | null;
     truckInspectionMonths?: number | null;
     trailerInspectionMonths?: number | null;
+    companyType?: number | null;
+    dateOfIncorporation?: string | null;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;
