@@ -1,14 +1,152 @@
 @import 'src/theme/variables.scss';
-
-.copyright {
-  height: 42px;
-  border-top: 0.1rem solid $ta-gray-02;
+.footer-container {
   margin-top: 60px;
 
-  p {
-    color: $ta-blue-2;
-    font-weight: 400;
-    font-size: 14px;
-    user-select: none;
+  .info-container {
+    padding: 0 42px;
+    height: 53px;
+    margin-bottom: 12px;
+    position: relative;
+
+    .info-box {
+      position: absolute;
+      top: -200px;
+      width: 350px;
+      padding: 12px 0;
+      margin-left: -10px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
+      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      visibility: hidden;
+      opacity: 0;
+
+      &.display-box {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .box-header {
+        margin-bottom: 12px;
+        padding: 0 12px;
+
+        h2 {
+          height: 24px;
+          font-size: 20px;
+          color: $bw6-2;
+        }
+
+        .close-icon {
+          cursor: pointer;
+
+          svg {
+            path {
+              fill: $bw4;
+            }
+          }
+        }
+      }
+
+      .box-dets {
+        margin-bottom: 12px;
+        padding: 0 12px;
+
+        &:last-child {
+          margin-bottom: 0 !important;
+        }
+
+        p {
+          font-size: 14px;
+          color: $bw6-2;
+          line-height: 20px;
+        }
+
+        .phone-icon,
+        .location-icon,
+        .document-icon {
+          margin-right: 6px;
+
+          svg {
+            path {
+              fill: $ta-light-grey-2;
+            }
+          }
+
+          &.location-icon {
+            margin-top: -2px;
+          }
+        }
+      }
+
+      .box-divider {
+        height: 2px;
+        margin: 0 8px 12px 8px;
+        border-radius: 1px;
+        background-color: $ta-light-grey-4;
+      }
+    }
+
+    .info-bar {
+      .info-icon {
+        cursor: pointer;
+        margin-right: 6px !important;
+        margin-top: 12px !important;
+
+        &:hover {
+          svg {
+            path {
+              fill: $bw5;
+            }
+          }
+        }
+
+        &:hover + p {
+          color: $ta-light-grey-3;
+        }
+
+        &.display-box {
+          svg {
+            path {
+              fill: $ta-blue;
+            }
+          }
+
+          &:hover + p {
+            color: $ta-blue;
+          }
+        }
+
+        svg {
+          path {
+            transition: fill 0.2s ease-in-out;
+            fill: $ta-light-grey-6;
+          }
+        }
+      }
+
+      p {
+        margin-top: 12px !important;
+        height: 18px;
+        font-size: 14px;
+        color: $bw6-2;
+        user-select: none;
+        transition: color 0.2s ease-in-out;
+
+        &.display-box {
+          color: $ta-blue;
+        }
+      }
+    }
+  }
+
+  .copyright-bar {
+    height: 42px;
+    border-top: 0.1rem solid $ta-gray-02;
+
+    p {
+      color: $ta-blue-2;
+      font-weight: 400;
+      font-size: 14px;
+      user-select: none;
+    }
   }
 }

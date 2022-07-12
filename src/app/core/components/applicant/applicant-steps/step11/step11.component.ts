@@ -84,8 +84,7 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public onSignatureAction(event: any): void {
-    console.log(event);
-    /* this.signature =  event.signature.toDataURL(); */
+    this.signature = event;
   }
 
   private formFilling(): void {
