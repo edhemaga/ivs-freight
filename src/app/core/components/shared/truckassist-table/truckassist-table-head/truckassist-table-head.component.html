@@ -1,5 +1,5 @@
 <table>
-  <thead [ngClass]="{'set-cursor-resize': rezaizeing}">
+  <thead [ngClass]="{ 'set-cursor-resize': rezaizeing }">
     <!-- Pined -->
     <tr class="tr pined-columns-container">
       <th
@@ -138,7 +138,7 @@
       cdkDropList
       (cdkDropListDropped)="onReorder($event)"
       class="tr not-pined-columns-container"
-      [ngStyle]="{'max-width.px': notPinedMaxWidth}"
+      [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
       id="scroll"
     >
       <div class="scroll-container">
