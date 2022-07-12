@@ -12,6 +12,7 @@ export class MapListComponent implements OnInit {
   @Input() columns: any;
   @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
   @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
+  @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
   public mapListExpanded: boolean = true;
   public searchForm!: FormGroup;
   public sortDirection: string = 'asc';
@@ -37,6 +38,11 @@ export class MapListComponent implements OnInit {
 
     this.searchForm = this.formBuilder.group({
       search: ''
+    });
+
+    this.searchForm.valueChanges.subscribe((changes) => {
+      console.log('valueChanges', changes);
+      this.searchData.emit(changes.search);
     });
 
     this.setVisibleColumns();

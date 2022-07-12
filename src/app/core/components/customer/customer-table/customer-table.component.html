@@ -30,6 +30,7 @@
         [columns]="columns" 
         (changeSortCategory)="changeSortCategory($event)" 
         (changeSortDirection)="changeSortDirection($event)"
+        (searchData)="searchShippers($event)"
       >
         <app-map-list-card
           *ngFor="let latlong of viewData; let i = index;"
@@ -42,7 +43,7 @@
           [rating]="{'up': latlong?.upRatingCount, 'down': latlong?.downRatingCount}"
           [type]="'Shipper'"
           [sortCategory]="activeSortType"
-          (clickedMarker)="clickedMarker(i)"
+          (clickedMarker)="clickedMarker(latlong.id)"
         >
           <div class="show-more" (click)="showMoreOptions($event)">
             <app-table-dropdown
@@ -70,7 +71,7 @@
           imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"> -->
             <agm-marker 
               *ngFor="let latlong of viewData; let i = index;" 
-              (markerClick)="clickedMarker(i, $event)" 
+              (markerClick)="clickedMarker(latlong.id, $event)" 
               [label]="!latlong?.isSelected ? latlong?.businessName : ''" 
               [latitude]="latlong.latitude" 
               [longitude]="latlong.longitude"
@@ -103,14 +104,14 @@
                     <svg-icon
                       class="marker-icon"
                       src="assets/svg/common/ic_marker.svg"
-                      (click)="clickedMarker(i)" 
+                      (click)="clickedMarker(latlong.id)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status != 2"
                     ></svg-icon>
                     <svg-icon
                       class="marker-icon permanently-closed-icon"
                       src="assets/svg/common/ic_marker_closed.svg"
-                      (click)="clickedMarker(i)" 
+                      (click)="clickedMarker(latlong.id)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status == 2"
                     ></svg-icon>

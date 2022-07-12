@@ -55,6 +55,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public mapLongitude: number = -87.660156;
   public sortBy: any;
   public searchValue: string = '';
+  public mapMarkers: any[] = [];
   private tooltip: any;
 
   constructor(
@@ -345,6 +346,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       console.log('event.mode', event.mode);
       if ( event.mode == 'Map' ) {
         this.sortShippers();
+        this.getMapMarkers();
       }
     }
   }
@@ -511,17 +513,30 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.agmMap = map;
   }
 
-  clickedMarker(i) {
-    console.log('clickedMarker i', i);
+  clickedMarker(id) {
+    console.log('clickedMarker id', id);
     this.viewData.map((data: any, index) => {
       if (data.isExpanded) {
         data.isExpanded = false;
       }
 
-      if (data.isSelected && index != i) {
+      if (data.isSelected && data.id != id) {
         data.isSelected = false;
       }
-      else if ( index == i ) {
+      else if ( data.id == id ) {
+        data.isSelected = !data.isSelected;
+      }
+    });
+
+    this.mapMarkers.map((data: any, index) => {
+      if (data.isExpanded) {
+        data.isExpanded = false;
+      }
+
+      if (data.isSelected && data.id != id) {
+        data.isSelected = false;
+      }
+      else if ( data.id == id ) {
         data.isSelected = !data.isSelected;
         console.log('clickedMarker isSelected', data.isSelected);
 
@@ -612,6 +627,32 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         this.viewData = res.pagination.data;
         
         this.ref.detectChanges();
+      },
+      error: () => {
+        this.notificationService.error(
+          "Shippers can't be sorted",
+          'Error:'
+        );
+      },
+    });
+  }
+
+  searchShippers(value) {
+    console.log('searchShippers searchValue', value);
+    this.searchValue = value;
+    //if ( this.searchValue.length > 3 ) {
+      this.sortShippers();
+    //}
+  }
+
+  getMapMarkers() {
+    this.shipperService
+    .getShipperMap()
+    .pipe(untilDestroyed(this))
+    .subscribe({
+      next: (res: any) => {
+        this.mapMarkers = res.mapMarkers;
+        console.log('getShipperMap', this.mapMarkers);
       },
       error: () => {
         this.notificationService.error(
