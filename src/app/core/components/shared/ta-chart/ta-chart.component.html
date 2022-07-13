@@ -7,7 +7,7 @@
     <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
       <div class="icon-name-item">
         <svg-icon src={{item.image}}></svg-icon>
-        <div class="charts-template-item-name">{{ item.title }}</div>
+        <div class="charts-template-item-name" [ngStyle]="{'margin-left': item.image ? '6px' : '0px'}">{{ item.title }}</div>
       </div>
       <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
     </div>

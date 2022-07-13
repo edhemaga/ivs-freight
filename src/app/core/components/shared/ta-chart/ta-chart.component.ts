@@ -154,6 +154,7 @@ export class TaChartComponent implements OnInit {
       },
       scales: {
         yAxes: [{
+            stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
             display: this.axesProperties['verticalLeftAxes'] ? this.axesProperties['verticalLeftAxes']['visible'] : false,
             position: 'left',
             gridLines: {
@@ -199,6 +200,7 @@ export class TaChartComponent implements OnInit {
               }
         },
         {
+          stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
           display: this.axesProperties['verticalRightAxes'] ? this.axesProperties['verticalRightAxes']['visible'] : false,
           gridLines: {
               display: this.axesProperties['verticalRightAxes'] ? this.axesProperties['verticalRightAxes']['showGridLines'] : false
@@ -232,6 +234,7 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
+          stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
           offset: true,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
@@ -411,9 +414,10 @@ export class TaChartComponent implements OnInit {
   }
 
   setChartLegendData(elements: any) {
+    let totalValue = 0;
     elements.map((item, i) => {
       const chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
-
+      totalValue = totalValue + chartValue;
       this.legendAttributes.map((item2, a) => {
           if ( item2['elementId'] == i ) {
             item2['value'] = chartValue;
@@ -421,6 +425,10 @@ export class TaChartComponent implements OnInit {
 
           if ( item2['elementId'] && item2['elementId'].length  && item2['elementId'].length > 0 && item2['elementId'][0] == i ) {
             item2['value'] = chartValue[item2['elementId'][1]];
+          }
+
+          if ( item2['elementId'] == 'total' ){
+            item2['value'] = totalValue;
           }
 
           if ( item2['titleReplace'] ) { item2['title'] = item2['titleReplace']; }

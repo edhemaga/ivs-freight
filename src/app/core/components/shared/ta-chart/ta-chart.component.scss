@@ -58,7 +58,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-top: 14px;
+  margin-top: 12px;
 
   &.remove_chart_margin{
     margin: 0;
@@ -66,6 +66,7 @@
 
   &.add_inside{
     padding: 0px 6px;
+    margin-top: 6px;
   }
 
   .no_chart_data{
