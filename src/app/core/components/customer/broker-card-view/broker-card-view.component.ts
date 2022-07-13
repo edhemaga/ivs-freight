@@ -40,7 +40,6 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     this.note.patchValue(this.broker.note);
     this.getBrokerDropdown();
     this.tabsButton();
-    console.log(this.brokerDetailsQuery.getAll());
   }
 
   public tabsButton() {
