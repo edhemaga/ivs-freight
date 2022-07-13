@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { CustomerTableComponent } from './customer-table/customer-table.component';
 import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
-import { BrokerSingleResolver } from './state/broker-details-state/broker-details.resolver';
+import { BrokerDetailsResolver } from './state/broker-details-state/broker-details.resolver';
 
 const routes: Routes = [
   {
@@ -30,7 +30,7 @@ const routes: Routes = [
         (m) => m.BrokerDetailsModule
       ),
     resolve: {
-      broker: BrokerSingleResolver,
+      broker: BrokerDetailsResolver,
     },
   },
   {

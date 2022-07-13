@@ -6,16 +6,16 @@ import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { BrokerTService } from '../broker-state/broker.service';
 import { BrokerDetailsQuery } from './broker-details.query';
-import { BrokerItemStore } from './broker-details.store';
+import { BrokerDetailsStore } from './broker-details.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class BrokerSingleResolver implements Resolve<BrokerResponse[]> {
+export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
   constructor(
     private brokerService: BrokerTService,
     private brokerDetailsQuery: BrokerDetailsQuery,
-    private brokerDetailsStore: BrokerItemStore
+    private brokerDetailsStore: BrokerDetailsStore
   ) {}
   resolve(
     route: ActivatedRouteSnapshot
@@ -27,6 +27,7 @@ export class BrokerSingleResolver implements Resolve<BrokerResponse[]> {
         catchError((error) => {
           return of('erorr');
         }),
+
         take(1)
       );
     } else {

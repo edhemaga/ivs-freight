@@ -24,7 +24,7 @@
     }
     .header {
         font-size: 12px;
-        font-weight: 700;
+        font-weight: 600;
         color: #6c6c6c;
         &::-moz-selection {
             color: $color-gray-dark;
@@ -39,7 +39,6 @@
         font-size: 12px;
         font-weight: 400;
         color: #6c6c6c;
-        line-height: 12px;
         &::-moz-selection {
             color: $color-gray-dark;
             background: rgb(183, 183, 183, 0.2);
@@ -51,7 +50,7 @@
     }
     .charts-value {
         font-size: 18px !important;
-        font-weight: 700 !important;
+        font-weight: 600 !important;
         line-height: 18px;
         &::-moz-selection {
             color: $color-gray-dark;
@@ -87,7 +86,7 @@
         flex-direction: column;
         .header-name {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             color: #6c6c6c;
             &::-moz-selection {
                 color: $color-gray-dark;
@@ -100,7 +99,7 @@
         }
         .value-ageing {
             font-size: 28px;
-            font-weight: 700;
+            font-weight: 600;
             color: #6c6c6c;
             line-height: 28px;
             &::-moz-selection {
@@ -155,7 +154,7 @@
         }
         .invoice-days {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             color: #aaaaaa;
             &::-moz-selection {
                 color: #aaaaaa;
@@ -180,7 +179,7 @@
         }
         .cost-total-ageing {
             font-size: 14px;
-            font-weight: 700;
+            font-weight: 600;
             color: #6c6c6c;
             &::-moz-selection {
                 color: $color-gray-dark;

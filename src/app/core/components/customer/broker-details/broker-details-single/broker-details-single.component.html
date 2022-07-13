@@ -9,13 +9,13 @@
         <div class="contact-wrapper">
           <app-ta-custom-card
             *ngFor="
-              let brokerContact of broker?.data?.brokerContacts;
+              let brokerContact of brokerContacts;
               let i = index;
               trackBy: identity
             "
             [bodyTemplate]="'card'"
             [animationsDisabled]="false"
-            [hasDivider]="i > 0? true:false"
+            [hasDivider]="i > 0 ? true : false"
             [cardName]="brokerContact.department.name"
             [isCardOpen]="true"
             class="shipper-contact-container"
@@ -96,11 +96,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="
-                  brokerData?.data?.upRatingCount
-                    ? brokerData.data.upRatingCount
-                    : 0
-                "
+                [count]="brokerLikes"
               >
               </app-ta-counter>
             </div>
@@ -111,11 +107,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="
-                  brokerData?.data?.downRatingCount
-                    ? brokerData.data.downRatingCount
-                    : 0
-                "
+                [count]="brokerDislike"
               >
               </app-ta-counter>
               <svg-icon
@@ -126,6 +118,7 @@
           </div>
         </div>
         <div class="review-container">
+          <div  *ngIf="!reviewsRepair.length" class="no-reviews-details">No review</div>
           <app-ta-user-review
             *ngIf="reviewsRepair.length"
             [reviewData]="reviewsRepair"

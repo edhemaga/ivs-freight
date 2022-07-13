@@ -614,3 +614,21 @@ $transition: all 0.3s ease-in-out;
         }
     }
 }
+.no-reviews-details {
+    padding: 0 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #919191;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 46px;
+    &::-moz-selection {
+        color: #919191;
+        background: rgb(145, 145, 145, 0.2);
+    }
+    &::selection {
+        color: #919191;
+        background: rgb(145, 145, 145, 0.2);
+    }
+}

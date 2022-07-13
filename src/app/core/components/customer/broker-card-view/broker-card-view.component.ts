@@ -1,3 +1,4 @@
+import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import {
   Component,
   Input,
@@ -25,6 +26,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   public tabsBroker: any;
   constructor(
     private brokerQuery: BrokerQuery,
+    private brokerDetailsQuery: BrokerDetailsQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
 
@@ -38,6 +40,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     this.note.patchValue(this.broker.note);
     this.getBrokerDropdown();
     this.tabsButton();
+    console.log(this.brokerDetailsQuery.getAll());
   }
 
   public tabsButton() {

@@ -38,7 +38,7 @@
       </div>
     </div>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards">
+  <div class="wrapper-additional-cards"  [ngClass]="{ 'bind-heigth': !templateCard }">
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"

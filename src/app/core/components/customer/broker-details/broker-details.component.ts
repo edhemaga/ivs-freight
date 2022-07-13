@@ -18,7 +18,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private activated_route: ActivatedRoute,
     private router: Router,
     private notificationService: NotificationService,
-    private cdRef: ChangeDetectorRef,
     private brokerQuery: BrokerDetailsQuery,
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService
@@ -42,7 +41,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
               'Broker successfully changed',
               'Success:'
             );
-            this.cdRef.detectChanges();
           },
           error: () => {
             this.notificationService.error("Broker can't be loaded", 'Error:');
