@@ -9,7 +9,7 @@
         <svg-icon src={{item.image}}></svg-icon>
         <div class="charts-template-item-name" [ngStyle]="{'margin-left': item.image ? '6px' : '0px'}">{{ item.title }}</div>
       </div>
-      <div class="charts-template-item-value">{{item.prefix}}{{ item.value }} {{item.sufix}}</div>
+      <div class="charts-template-item-value">{{item.prefix}}{{ item.value | nFormatter }} {{item.sufix}}</div>
     </div>
   </div>
 </div>
@@ -41,7 +41,7 @@
             <div class="hover_data_info_title">{{ item.name }}</div>
           </div>
           <div class="hover_data_values_hold">
-            <div class="hover_data_price" [class.increased_title]="selectedDrivers?.length > dataMaxRows">{{ item.value }}</div>
+            <div class="hover_data_price" [class.increased_title]="selectedDrivers?.length > dataMaxRows">{{ item.value | nFormatter }}</div>
             <div class="hover_data_percent">{{ item.percent }}</div>
           </div>
         </div>
@@ -57,7 +57,7 @@
           </div>
           <div class="hover_data_info_title">{{ item.name }}</div>
         </div>
-        <div class="hover_data_price">{{ item.value }}</div>
+        <div class="hover_data_price">{{ item.value | nFormatter }}</div>
         <div class="hover_data_percent">{{ item.percent }}</div>
       </div>
     </div>

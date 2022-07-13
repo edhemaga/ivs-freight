@@ -97,6 +97,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       'SEP'
     ],
     onHoverAnnotation: true,
+    offset: true,
     hoverTimeDisplay: true,
     noChartImage: 'assets/svg/common/yellow_no_data.svg'
   };
@@ -154,6 +155,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     ],
     onHoverAnnotation: true,
     hoverTimeDisplay: true,
+    offset: true,
     noChartImage: 'assets/svg/common/green_no_data.svg'
   };
 
@@ -208,6 +210,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     onHoverAnnotation: true,
    // hoverTimeDisplay: true,
     stacked: true,
+    offset: true,
     noChartImage: 'assets/svg/common/stacked_no_data.svg'
   };
 
@@ -251,7 +254,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       value: 68.56,
       image: 'assets/svg/common/round_yellow.svg',
       prefix: '$',
-      sufix: 'K',
       elementId: 0
     },
     {
@@ -259,14 +261,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       value: 37.56,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      sufix: 'K',
       elementId: 1
     },
     {
       title: 'Total Cost',
       value: 105.63,
       prefix: '$',
-      sufix: 'K',
       elementId: 'total'
     }
   ];

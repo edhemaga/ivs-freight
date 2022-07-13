@@ -235,7 +235,7 @@ export class TaChartComponent implements OnInit {
      ],
       xAxes: [{
           stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
-          offset: true,
+          offset: this.chartConfig['offset'] ? this.chartConfig['offset'] : false,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
@@ -585,7 +585,7 @@ export class TaChartComponent implements OnInit {
     this.chart.chart.config.data.datasets.map((item, i) => {
       let dataProp = {
         name: item['label'],
-        value: '$'+item['data'][value],
+        value: item['data'][value],
         percent: this.chartConfig['hasPercentage'] ? '35.45%' : null,
         color: item['borderColor']
       }
@@ -596,13 +596,13 @@ export class TaChartComponent implements OnInit {
       let dataPropMulti = [
         {
           name: 'Price per Gallon',
-          value: '$23',
+          value: 23,
           percent: null,
           color: '#919191'
         },
         {
           name: 'Load Rate per Mile',
-          value: '$23',
+          value: 23,
           percent: null,
           color: '#CCCCCC'
         }
