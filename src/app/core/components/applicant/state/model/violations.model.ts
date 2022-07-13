@@ -3,6 +3,7 @@ export interface ViolationModel {
   truckType: string;
   violationLocation: string;
   violationDescription: string;
+  isEditingViolation: boolean;
 }
 
 export class ViolationInfo {

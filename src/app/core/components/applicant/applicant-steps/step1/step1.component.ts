@@ -51,7 +51,7 @@ export class Step1Component implements OnInit, OnDestroy {
   public isLastInputDeleted: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
-  public helperIndex = 2;
+  public helperIndex: number = 2;
 
   public isEditingArray: {
     id: number;

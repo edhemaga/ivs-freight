@@ -181,6 +181,8 @@ export class Step6Component implements OnInit, OnDestroy {
   public isEditing: boolean = false;
   public isContactEdited: boolean = false;
 
+  public helperIndex: number = 2;
+
   //
 
   /*  public contactsFormArray: Contact[] | undefined = [];
@@ -248,10 +250,13 @@ export class Step6Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = 2;
+
     const contactForm = this.contactForm.value;
 
     const saveData: ContactModel = {
       ...contactForm,
+      isEditingContact: false,
     };
 
     this.contactsArray = [...this.contactsArray, saveData];
@@ -274,9 +279,12 @@ export class Step6Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = index;
+
     this.isContactEdited = false;
 
     this.isEditing = true;
+    this.contactsArray[index].isEditingContact = true;
 
     this.selectedContactIndex = index;
 
@@ -312,8 +320,11 @@ export class Step6Component implements OnInit, OnDestroy {
     this.contactsArray[this.selectedContactIndex] = this.contactForm.value;
 
     this.isEditing = false;
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
     this.isContactEdited = false;
+
+    this.helperIndex = 2;
 
     this.contactForm.reset();
 
@@ -324,8 +335,11 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public onCancelEditContact(): void {
     this.isEditing = false;
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
     this.isContactEdited = false;
+
+    this.helperIndex = 2;
 
     this.contactForm.reset();
 
@@ -408,6 +422,7 @@ export class Step6Component implements OnInit, OnDestroy {
     //         : undefined,
     // });
   }
+
   public onSubmitForm(): void {
     /*  this.shared.clearNotifications();
 

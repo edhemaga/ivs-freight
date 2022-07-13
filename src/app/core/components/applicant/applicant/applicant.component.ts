@@ -69,15 +69,15 @@ export class ApplicantComponent implements OnInit {
   storeArr = [
     { id: 1, isCompleted: false },
     { id: 2, isCompleted: false },
-    { id: 3, isCompleted: true },
+    { id: 3, isCompleted: false },
     { id: 4, isCompleted: false },
-    { id: 5, isCompleted: true },
+    { id: 5, isCompleted: false },
     { id: 6, isCompleted: false },
-    { id: 7, isCompleted: true },
+    { id: 7, isCompleted: false },
     { id: 8, isCompleted: false },
-    { id: 9, isCompleted: true },
+    { id: 9, isCompleted: false },
     { id: 10, isCompleted: false },
-    { id: 11, isCompleted: true },
+    { id: 11, isCompleted: false },
   ];
 
   constructor() {}
