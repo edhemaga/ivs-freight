@@ -29,7 +29,7 @@ import { CreateAuthorizationCommand } from '../model/models';
 import { CreateAuthorizationReviewCommand } from '../model/models';
 import { CreateCDLCardCommand } from '../model/models';
 import { CreateCDLCardReviewCommand } from '../model/models';
-import { CreateCDLCommand } from '../model/models';
+/* import { CreateCDLCommand } from '../model/models'; */
 import { CreateCDLReviewCommand } from '../model/models';
 import { CreateDisclosureReleaseCommand } from '../model/models';
 import { CreateDisclosureReleaseReviewCommand } from '../model/models';
@@ -735,10 +735,10 @@ export class ApplicantService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiApplicantCdlPost(createCDLCommand?: CreateCDLCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiApplicantCdlPost(createCDLCommand?: CreateCDLCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiApplicantCdlPost(createCDLCommand?: CreateCDLCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiApplicantCdlPost(createCDLCommand?: CreateCDLCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiApplicantCdlPost(createCDLCommand?: any, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiApplicantCdlPost(createCDLCommand?: any, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiApplicantCdlPost(createCDLCommand?: any, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiApplicantCdlPost(createCDLCommand?: any, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
