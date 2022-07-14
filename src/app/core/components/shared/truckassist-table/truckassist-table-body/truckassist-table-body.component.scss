@@ -951,11 +951,13 @@ table {
               }
 
               .table-progress-text {
-                display: flex;
-                margin-left: 4px;
                 font-size: 14px;
                 font-weight: 400;
+                margin-left: 4px;
                 color: #6c6c6c;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
 
                 &::selection {
                   color: #6c6c6c;
