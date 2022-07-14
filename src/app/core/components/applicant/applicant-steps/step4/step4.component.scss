@@ -179,91 +179,100 @@
           }
         }
       }
-    }
 
-    .group {
-      margin-bottom: 22px;
-      margin-right: 12px;
+      .accident-view-form {
+        margin: 32px auto 0 auto;
 
-      &:last-child {
-        margin-right: 0;
-        margin-bottom: 0;
-      }
-    }
+        .btn-container {
+          margin-top: 22px;
+          margin-bottom: 32px;
 
-    .location-group {
-      width: 445px;
-    }
+          .add-btn {
+            height: 26px;
+            padding: 4px 8px;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            border-radius: 2px;
+            color: $ta-blue;
+            background: $ta-gray-01;
+            transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-    .date-group {
-      width: 159px;
-    }
+            &:hover {
+              color: $white;
+              background: $ta-blue;
+            }
 
-    .fatalities-injuries-group {
-      margin-bottom: 32px;
+            &:hover .plus-icon {
+              svg {
+                path {
+                  fill: $white;
+                }
+              }
+            }
 
-      .fatalities-group {
-        width: 178px;
-        margin-right: 12px;
+            &.disabled {
+              -webkit-user-select: none !important;
+              -moz-user-select: none !important;
+              -ms-user-select: none !important;
+              user-select: none !important;
 
-        p {
-          width: 77px;
-          font-size: 14px;
-          color: $bw6-2;
-          margin-right: 12px !important;
-        }
-      }
+              cursor: auto;
+              background: $ta-light-grey-4;
+              color: $bw4;
 
-      .injuries-group {
-        width: 157px;
+              .plus-icon {
+                svg {
+                  path {
+                    fill: $ta-light-grey-6;
+                  }
+                }
+              }
 
-        p {
-          width: 65px;
-          font-size: 14px;
-          color: $bw6-2;
-          margin-right: 12px !important;
-        }
-      }
-    }
+              &:hover {
+                background: $ta-light-grey-4 !important;
+                color: $bw4 !important;
+              }
+            }
 
-    .hazmat-spill-group {
-      width: 194px;
-      height: 26px;
-      margin-bottom: 32px;
+            .plus-icon {
+              margin-right: 6px;
 
-      .title-box {
-        p {
-          font-size: 14px;
-          color: $bw6-2;
-          user-select: none !important;
+              svg {
+                path {
+                  transition: fill 0.2s ease-in-out;
+                  fill: $ta-light-blue;
+                }
+              }
+            }
+          }
 
-          .required-star {
-            color: $progress-danger;
+          .cancel-btn {
+            width: 150px;
+            height: 32px;
+            margin-right: 22px;
+            color: $bw5;
+            background: $ta-light-grey-4;
+            transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
+
+            &:hover {
+              background: $bw6-2;
+              color: $white;
+            }
+          }
+
+          .save-btn {
+            width: 150px;
+            height: 32px;
+            color: $white;
+            background: $ta-light-blue;
+
+            &:hover {
+              background-color: $ta-blue;
+            }
           }
         }
       }
-
-      .radios-box {
-        width: 86px;
-
-        .ta-input-radiobutons {
-          width: 100%;
-
-          .radio-button {
-            padding-left: 0;
-          }
-        }
-      }
-    }
-
-    .truck-type-group {
-      width: 231px;
-      margin-bottom: 0;
-    }
-
-    .description-group {
-      width: 373px;
-      margin-bottom: 0;
     }
 
     .add-more-accident-container {
@@ -326,31 +335,6 @@
               fill: $ta-light-blue;
             }
           }
-        }
-      }
-
-      .cancel-btn {
-        width: 150px;
-        height: 32px;
-        margin-right: 22px;
-        color: $bw5;
-        background: $ta-light-grey-4;
-        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-        &:hover {
-          background: $bw6-2;
-          color: $white;
-        }
-      }
-
-      .save-btn {
-        width: 150px;
-        height: 32px;
-        color: $white;
-        background: $ta-light-blue;
-
-        &:hover {
-          background-color: $ta-blue;
         }
       }
     }

@@ -1,0 +1,39 @@
+<div class="d-flex step-form" [formGroup]="form">
+  <div class="group name-group">
+    <app-ta-input
+      formControlName="contactName"
+      [inputConfig]="{
+        name: 'Name',
+        type: 'text',
+        label: 'Name',
+        isRequired: true,
+        textTransform: 'capitalize'
+      }"
+    ></app-ta-input>
+  </div>
+  <div class="group phone-group">
+    <app-ta-input
+      formControlName="contactPhone"
+      [inputConfig]="{
+        name: 'Phone',
+        type: 'text',
+        label: 'Phone',
+        isRequired: true,
+        placeholderIcon: 'phone',
+        mask: '(000) 000-0000'
+      }"
+    ></app-ta-input>
+  </div>
+  <div class="group relationship-group">
+    <app-ta-input
+      formControlName="contactRelationship"
+      [inputConfig]="{
+        name: 'Relationship',
+        type: 'text',
+        label: 'Relationship',
+        textTransform: 'capitalize',
+        isRequired: true
+      }"
+    ></app-ta-input>
+  </div>
+</div>
