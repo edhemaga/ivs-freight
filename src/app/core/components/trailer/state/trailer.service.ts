@@ -11,7 +11,7 @@ import {
   TrailerService,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse';
+/* import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse'; */
 import { TrailerQuery } from './trailer.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
@@ -24,9 +24,10 @@ export class TrailerTService {
     private tableService: TruckassistTableService
   ) {}
 
+  /* Observable<CreateTrailerResponse> */
   public addTrailer(
     data: CreateTrailerCommand
-  ): Observable<CreateTrailerResponse> {
+  ): Observable<any> {
     return this.trailerService.apiTrailerPost(data).pipe(
       tap((res: any) => {
         const subTrailer = this.getTrailerById(res.id).subscribe({
