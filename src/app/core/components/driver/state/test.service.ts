@@ -7,7 +7,7 @@ import {
   TestResponse,
   TestService,
 } from 'appcoretruckassist';
-import { CreateTestResponse } from 'appcoretruckassist/model/createTestResponse';
+/* import { CreateTestResponse } from 'appcoretruckassist/model/createTestResponse'; */
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
@@ -24,7 +24,8 @@ export class TestTService {
     private tableService: TruckassistTableService
   ) {}
 
-  public addTest(data: CreateTestCommand): Observable<CreateTestResponse> {
+  /* Observable<CreateTestResponse> */
+  public addTest(data: CreateTestCommand): Observable<any> {
     return this.drugService.apiTestPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService

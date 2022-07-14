@@ -195,9 +195,7 @@ export class TruckassistTableBodyComponent
         () => {
           this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-          console.log('Has Scroll: ' + this.showScrollSectionBorder);
-
-         /*  if (this.showScrollSectionBorder) {
+          /* if (this.showScrollSectionBorder) {
             this.shrinkColumnsForResponsive(div);
             this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
           } */
@@ -220,9 +218,6 @@ export class TruckassistTableBodyComponent
             column.width -= 1;
             breakPoint -= 1;
             shrinked = true;
-            console.log(
-              'Radi while petlju, smanjuje kolonu dok ne predje predje brake point'
-            );
           }
         }
 

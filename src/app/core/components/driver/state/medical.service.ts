@@ -6,7 +6,7 @@ import {
   MedicalResponse,
   MedicalService,
 } from 'appcoretruckassist';
-import { CreateMedicalResponse } from 'appcoretruckassist/model/createMedicalResponse';
+/* import { CreateMedicalResponse } from 'appcoretruckassist/model/createMedicalResponse'; */
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
@@ -31,9 +31,10 @@ export class MedicalTService {
     return this.medicalService.apiMedicalIdGet(id);
   }
 
+  /* Observable<CreateMedicalResponse> */
   public addMedical(
     data: CreateMedicalCommand
-  ): Observable<CreateMedicalResponse> {
+  ): Observable<any> {
     return this.medicalService.apiMedicalPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
