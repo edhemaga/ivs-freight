@@ -21,6 +21,7 @@ export interface CompanyContactResponse {
     email?: string | null;
     address?: AddressEntity;
     shared?: boolean;
+    avatar?: string | null;
     companyContactLabel?: CompanyContactLabelResponse;
     createdAt?: string;
     updatedAt?: string;

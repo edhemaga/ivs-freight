@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadStopShipperResponse } from './loadStopShipperResponse';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
@@ -42,5 +43,6 @@ export interface ShipperResponse {
     upRatingCount?: number;
     currentCompanyUserRating?: number | null;
     createdAt?: string;
+    loadStops?: Array<LoadStopShipperResponse> | null;
 }
 

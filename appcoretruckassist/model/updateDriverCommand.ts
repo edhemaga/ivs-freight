@@ -12,6 +12,7 @@
 import { OwnerType } from './ownerType';
 import { PerMileEntity } from './perMileEntity';
 import { UpdateOffDutyLocationCommand } from './updateOffDutyLocationCommand';
+import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
 
 
@@ -21,34 +22,34 @@ export interface UpdateDriverCommand {
     lastName?: string | null;
     phone?: string | null;
     email?: string | null;
-    ssn?: string | null;
-    note?: string | null;
-    avatar?: string | null;
+    address?: AddressEntity;
     dateOfBirth?: string;
-    offDutyLocations?: Array<UpdateOffDutyLocationCommand> | null;
+    ssn?: string | null;
+    mvrExpiration?: number;
+    bankId?: number | null;
+    account?: string | null;
+    routing?: string | null;
+    payType?: number;
+    useTruckAssistAch?: boolean;
+    solo: PerMileEntity;
+    team: PerMileEntity;
+    commissionSolo?: number | null;
+    commissionTeam?: number | null;
     ownerId?: number | null;
     isOwner?: boolean;
     ownerType?: OwnerType;
     ein?: string | null;
     bussinesName?: string | null;
-    address?: AddressEntity;
-    bankId?: number | null;
-    account?: string | null;
-    routing?: string | null;
-    payroll?: boolean;
-    payType?: number | null;
-    mailNotification?: boolean | null;
-    phoneCallNotification?: boolean | null;
-    smsNotification?: boolean | null;
-    solo: PerMileEntity;
-    team: PerMileEntity;
-    commissionSolo?: number | null;
-    commissionTeam?: number | null;
-    twic?: boolean;
-    twicExpDate?: string | null;
-    fuelCard?: string | null;
+    offDutyLocations?: Array<UpdateOffDutyLocationCommand> | null;
     emergencyContactName?: string | null;
     emergencyContactPhone?: string | null;
     emergencyContactRelationship?: string | null;
+    note?: string | null;
+    avatar?: string | null;
+    twic?: boolean;
+    twicExpDate?: string | null;
+    fuelCard?: string | null;
+    general?: NotificationEntity;
+    payroll?: NotificationEntity;
 }
 

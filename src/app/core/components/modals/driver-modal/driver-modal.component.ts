@@ -804,7 +804,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: DriverResponse) => {
-          this.driverForm.patchValue({
+          /* this.driverForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
             phone: res.phone,
@@ -857,7 +857,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             emergencyContactName: res.emergencyContactName,
             emergencyContactPhone: res.emergencyContactPhone,
             emergencyContactRelationship: res.emergencyContactRelationship,
-          });
+          }); */
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);

@@ -13,6 +13,7 @@ import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { OwnerResponse } from './ownerResponse';
 import { PerMileEntity } from './perMileEntity';
+import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
 
 
@@ -31,11 +32,8 @@ export interface DriverShortResponse {
     bank?: BankResponse;
     account?: string | null;
     routing?: string | null;
-    payroll?: boolean;
+    useTruckAssistAch?: boolean;
     payType?: EnumValue;
-    mailNotification?: boolean | null;
-    phoneCallNotification?: boolean | null;
-    smsNotification?: boolean | null;
     solo?: PerMileEntity;
     team?: PerMileEntity;
     commissionSolo?: number | null;
@@ -46,6 +44,8 @@ export interface DriverShortResponse {
     emergencyContactName?: string | null;
     emergencyContactPhone?: string | null;
     emergencyContactRelationship?: string | null;
+    general?: NotificationEntity;
+    payroll?: NotificationEntity;
     cdlNumber?: string | null;
     licenseStateShortName?: string | null;
     cdlExpiration?: string | null;
