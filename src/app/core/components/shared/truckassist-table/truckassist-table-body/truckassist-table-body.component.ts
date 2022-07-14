@@ -97,7 +97,8 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          this.checkForScroll();
+          console.log('Poziva se checkForScroll iz currentColumnsOrder')
+          this.checkForScroll(true);
         }
       });
 
@@ -130,6 +131,8 @@ export class TruckassistTableBodyComponent
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth
     ) {
+      console.log('Poizva se getNotPinedMaxWidth iz ngOnChanges tableContainerWidth')
+
       this.getNotPinedMaxWidth(true);
     }
 
@@ -139,6 +142,8 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
+
+      console.log('Poizva se getNotPinedMaxWidth iz ngOnChanges columns')
 
       this.getNotPinedMaxWidth(true);
     }
@@ -156,11 +161,8 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
+    console.log('Poizva se getNotPinedMaxWidth iz ngAfterViewInit')
     this.getNotPinedMaxWidth(true);
-
-    /* setTimeout(() => {
-      this.checkForScroll();
-    }, 10); */
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -183,10 +185,9 @@ export class TruckassistTableBodyComponent
 
       if (checkScroll) {
         setTimeout(() => {
-          const div = document.getElementById('scroll-container');
-          if (div) {
-            this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-          }
+          console.log('Poziva se checkForScroll iz getNotPinedMaxWidth')
+
+          this.checkForScroll();
         }, 10);
       }
     }
@@ -200,13 +201,18 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  checkForScroll() {
+  checkForScroll(doDetectChanges?: boolean) {
     const div = document.getElementById('scroll-container');
 
     if (div) {
       this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-      this.changeDetectorRef.detectChanges();
+      console.log('Has Scroll: ' + this.showScrollSectionBorder);
+
+      if (doDetectChanges) {
+        console.log('Radi detectChanges za checkForScroll')
+        this.changeDetectorRef.detectChanges();
+      }
     }
   }
 

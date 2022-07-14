@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
 import { DepartmentResponse } from './departmentResponse';
 
@@ -22,5 +23,6 @@ export interface CompanyModalResponse {
     ratings?: Array<EnumValue> | null;
     insurancePolicyAddonTypes?: Array<EnumValue> | null;
     companyTypes?: Array<EnumValue> | null;
+    banks?: Array<BankResponse> | null;
 }
 
