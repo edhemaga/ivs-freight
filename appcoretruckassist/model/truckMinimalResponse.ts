@@ -14,5 +14,6 @@
 export interface TruckMinimalResponse { 
     id?: number;
     truckNumber?: string | null;
+    status?: number;
 }
 

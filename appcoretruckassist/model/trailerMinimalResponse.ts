@@ -14,5 +14,6 @@
 export interface TrailerMinimalResponse { 
     id?: number;
     trailerNumber?: string | null;
+    status?: number;
 }
 

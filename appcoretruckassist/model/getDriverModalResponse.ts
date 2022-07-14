@@ -22,5 +22,6 @@ export interface GetDriverModalResponse {
     testReason?: Array<EnumValue> | null;
     testClass?: Array<EnumValue> | null;
     country?: Array<EnumValue> | null;
+    mvrExpiration?: number;
 }
 

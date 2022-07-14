@@ -9,5 +9,5 @@
     'border-radius': countBorderRadius
   }"
 >
-  <p class="ta-counter-number" [ngStyle]="{'bottom': countTextBottomPosition}">{{ count }}</p>
+  <p class="ta-counter-number" [ngStyle]="{'bottom': countTextBottomPosition}">{{ count > 0 ? (count | taThousandSeparator) : 0  }}</p>
 </div>

@@ -203,6 +203,7 @@
       }
       .ta-counter-number {
         color: #6c6c6c !important;
+        // padding: 0 4px !important;
       }
 
       &:hover {
@@ -343,14 +344,14 @@
     align-items: center;
   }
 }
-.header-svg-bank{
+.header-svg-bank {
   margin-left: 12px !important;
-  svg{
-    path{
+  svg {
+    path {
       fill: #cccccc;
     }
-    &:hover{
-      path{
+    &:hover {
+      path {
         fill: #cccccc !important;
       }
     }

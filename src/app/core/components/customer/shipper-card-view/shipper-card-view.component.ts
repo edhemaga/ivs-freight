@@ -29,7 +29,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.shipper?.firstChange && changes?.shipper) {
-      this.note.patchValue(this.shipper.note);
+      this.note.patchValue(changes?.shipper.currentValue.note);
       this.shipper = changes.shipper.currentValue;
       this.getShipperDropdown();
     }
@@ -65,7 +65,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
     let currentIndex = this.shipperList.findIndex(
       (shipper) => shipper.id === this.shipper.id
     );
- 
+
     switch (action) {
       case 'previous': {
         currentIndex = --currentIndex;
@@ -91,6 +91,5 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
         break;
       }
     }
-    
   }
 }
