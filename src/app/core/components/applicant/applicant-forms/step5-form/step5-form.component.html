@@ -1,0 +1,63 @@
+<div class="d-flex flex-column step-form" [formGroup]="form">
+  <div class="d-flex">
+    <div class="group date-group">
+      <app-ta-input
+        formControlName="violationDate"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          label: 'Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+    </div>
+    <div class="group truck-type-group">
+      <app-ta-input-dropdown
+        formControlName="truckType"
+        [template]="'svgtext-template'"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Vehicle type',
+          isRequired: true,
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-t-type'
+        }"
+        [options]="truckType"
+        (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+      ></app-ta-input-dropdown>
+    </div>
+    <div class="group location-group">
+      <app-ta-input-address
+        formControlName="violationLocation"
+        [inputConfig]="{
+          name: 'Address',
+          type: 'text',
+          label: 'Location',
+          isRequired: true,
+          placeholderIcon: 'address',
+          textTransform: 'capitalize',
+          autoFocus: true
+        }"
+        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+      ></app-ta-input-address>
+    </div>
+  </div>
+
+  <div class="d-flex">
+    <div class="description-group">
+      <app-ta-input
+        formControlName="violationDescription"
+        [inputConfig]="{
+          name: 'Description',
+          type: 'text',
+          label: 'Description of violation',
+          textTransform: 'capitalize',
+          isRequired: true
+        }"
+      ></app-ta-input>
+    </div>
+  </div>
+</div>
