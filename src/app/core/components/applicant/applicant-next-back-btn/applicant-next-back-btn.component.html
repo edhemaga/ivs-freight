@@ -6,6 +6,7 @@
     [ngStyle]="{
       width: lastPage ? '234px' : '100px'
     }"
+    (click)="onNextStep()"
   >
     <span
       class="ta-font-semi-bold step-text step-next-text"
@@ -31,6 +32,7 @@
     type="button"
     class="d-flex justify-content-center align-items-center step-btn"
     disabled="{{ disabledStep }}"
+    (click)="onBackStep()"
   >
     <svg-icon
       class="step-icon"

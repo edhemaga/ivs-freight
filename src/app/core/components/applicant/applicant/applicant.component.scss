@@ -4,12 +4,13 @@
   min-height: 100vh;
   position: relative;
   background: $white;
-  padding-right: 0 !important;
 
   .step-progress-bar {
+    width: 1432px;
+    margin: 0 auto;
+
     .step {
-      width: 134px;
-      cursor: pointer;
+      width: 130px;
 
       .bullet {
         position: relative;
@@ -17,6 +18,7 @@
         width: 42px;
         background: $bw-9;
         border-radius: 3px;
+        cursor: pointer;
         transition: background 0.3s ease-in-out;
 
         p {
@@ -27,6 +29,10 @@
           opacity: 1;
           transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
         }
+
+        &:hover {
+          background: $bw4;
+        }
       }
 
       .step-text {
@@ -34,10 +40,15 @@
         color: $bw5;
         font-size: 14px;
         line-height: 14px;
+        cursor: pointer;
         visibility: visible;
         opacity: 1;
         transition: color 0.3s ease-in-out, visibility 0.3s ease-in-out,
           opacity 0.3s ease-in-out;
+
+        &:hover {
+          color: $bw6-2;
+        }
       }
 
       .bullet-2 + .step-text,
@@ -90,16 +101,6 @@
         transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
       }
 
-      &:hover {
-        .bullet {
-          background: $bw4;
-        }
-
-        .step-text {
-          color: $bw6-2;
-        }
-      }
-
       &.step-active {
         pointer-events: none;
 
@@ -127,15 +128,8 @@
             visibility: hidden;
             opacity: 0;
           }
-        }
 
-        .step-text {
-          visibility: hidden;
-          opacity: 0;
-        }
-
-        &:hover {
-          .bullet {
+          &:hover {
             background: $ta-light-blue;
 
             &::before {
@@ -151,11 +145,16 @@
             }
           }
 
-          .step-text {
+          &:hover + .step-text {
             visibility: visible;
             opacity: 1;
             color: $ta-light-blue;
           }
+        }
+
+        .step-text {
+          visibility: hidden;
+          opacity: 0;
         }
       }
     }

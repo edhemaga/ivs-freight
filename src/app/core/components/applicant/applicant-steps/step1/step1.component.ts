@@ -489,6 +489,12 @@ export class Step1Component implements OnInit, OnDestroy {
     this.helperIndex = 2;
   }
 
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      console.log('next');
+    }
+  }
+
   /* private formFIlling(): void {
     // Redirect to next Step
     // if (this.personalInfo?.isCompleted) {
@@ -711,12 +717,6 @@ export class Step1Component implements OnInit, OnDestroy {
     //     }
     //   );
     // }
-  } */
-
-  /* public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
   } */
 
   /* public onSubmitReview(data: any): void {

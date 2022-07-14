@@ -527,6 +527,7 @@
               name: 'Input Dropdown',
               type: 'text',
               label: 'Bank Name',
+              isRequired: true,
               isDropdown: true,
               dropdownWidthClass: 'w-col-applicant-bank'
             }"
@@ -688,17 +689,10 @@
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
-</div>
-
-<!-- BACK BTN -->
-
-<div
-  class="d-flex justify-content-center align-items-center back-btn-container"
->
-  <app-applicant-next-back-btn [backStep]="true">
-    [disabled]="true"</app-applicant-next-back-btn
-  >
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->
