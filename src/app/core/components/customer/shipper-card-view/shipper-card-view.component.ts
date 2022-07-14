@@ -9,6 +9,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { ShipperResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 
 @Component({
@@ -21,11 +22,12 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
   @Input() shipper: any;
   @Input() templateCard: boolean;
   public shipperDropdowns: any[] = [];
-  public shipperList: any[] = this.shipperQuery.getAll();
+  public shipperList: any[] = this.shipperMinimalListQuery.getAll();
   public note: FormControl = new FormControl();
   constructor(
     private shipperQuery: ShipperQuery,
-    private detailsPageDriverSer: DetailsPageService
+    private detailsPageDriverSer: DetailsPageService,
+    private shipperMinimalListQuery: ShipperMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.shipper?.firstChange && changes?.shipper) {
@@ -39,18 +41,20 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
     this.note.patchValue(this.shipper.note);
   }
   public getShipperDropdown() {
-    this.shipperDropdowns = this.shipperQuery.getAll().map((item) => {
-      return {
-        id: item.id,
-        name: item.businessName,
-        active: item.id === this.shipper.id,
-      };
-    });
+    this.shipperDropdowns = this.shipperMinimalListQuery
+      .getAll()
+      .map((item) => {
+        return {
+          id: item.id,
+          name: item.businessName,
+          active: item.id === this.shipper.id,
+        };
+      });
   }
 
   public onSelectedShipper(event: any) {
     if (event.id !== this.shipper.id) {
-      this.shipperList = this.shipperQuery.getAll().map((item) => {
+      this.shipperList = this.shipperMinimalListQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.businessName,
