@@ -13,7 +13,7 @@
 
 export interface UpdateDepartmentContactCommand { 
     id?: number;
-    departmentId?: number | null;
+    departmentId?: number;
     phone?: string | null;
     email?: string | null;
     extensionPhone?: string | null;

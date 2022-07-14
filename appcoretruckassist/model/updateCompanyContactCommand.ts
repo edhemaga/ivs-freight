@@ -20,6 +20,7 @@ export interface UpdateCompanyContactCommand {
     address?: AddressEntity;
     note?: string | null;
     shared?: boolean;
+    avatar?: string | null;
     companyContactLabelId?: number | null;
 }
 

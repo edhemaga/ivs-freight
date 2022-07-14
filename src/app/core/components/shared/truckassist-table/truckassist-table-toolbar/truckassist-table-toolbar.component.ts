@@ -96,9 +96,7 @@ export class TruckassistTableToolbarComponent
             return c;
           });
 
-          if (!this.tableLocked) {
-            this.resetInactivityTimer();
-          }
+          this.getToolbarWidth();
         }
       });
 
@@ -249,7 +247,7 @@ export class TruckassistTableToolbarComponent
 
     if (action.text !== 'Columns') {
       this.optionsPopup.close();
-    }
+    }  
   }
 
   resetInactivityTimer() {
