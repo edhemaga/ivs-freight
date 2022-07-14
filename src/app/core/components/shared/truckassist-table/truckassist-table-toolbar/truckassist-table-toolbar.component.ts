@@ -96,9 +96,7 @@ export class TruckassistTableToolbarComponent
             return c;
           });
 
-          if (!this.tableLocked) {
-            this.resetInactivityTimer();
-          }
+          this.getToolbarWidth();
         }
       });
 

@@ -97,7 +97,6 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          console.log('Poziva se checkForScroll iz Columns Reorder')
           this.checkForScroll();
         }
       });
@@ -160,7 +159,6 @@ export class TruckassistTableBodyComponent
     this.getNotPinedMaxWidth(true);
 
     /* setTimeout(() => {
-      console.log('Poziva se checkForScroll iz ngAfterViewInit')
       this.checkForScroll();
     }, 10); */
   }
