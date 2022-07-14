@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  BrokerMinimalListResponse,
   BrokerModalResponse,
   BrokerResponse,
   BrokerService,
@@ -76,11 +77,17 @@ export class BrokerTService {
 
   //Get Broker Minimal List
 
-  // public getBrokerMinimalList(
-  //   pageIndex?: number,
-  //   pageSize?: number,
-  //   count?: number
-  // ): Observable<BrokerMinimalListResponse> {}
+  public getBrokerMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<BrokerMinimalListResponse> {
+    return this.brokerService.apiBrokerListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
+    );
+  }
 
   // Get Broker List
   public getBrokerList(
