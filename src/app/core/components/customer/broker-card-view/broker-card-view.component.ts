@@ -122,6 +122,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
         }
         break;
       }
+
       default: {
         break;
       }
