@@ -74,6 +74,14 @@ export class BrokerTService {
     );
   }
 
+  //Get Broker Minimal List
+
+  // public getBrokerMinimalList(
+  //   pageIndex?: number,
+  //   pageSize?: number,
+  //   count?: number
+  // ): Observable<BrokerMinimalListResponse> {}
+
   // Get Broker List
   public getBrokerList(
     ban?: number,
