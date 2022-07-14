@@ -12,7 +12,7 @@ export class ApplicantNextBackBtnComponent implements OnInit {
   @Input() lastStep: boolean;
   @Input() lastPage: boolean;
 
-  @Output() stepEvent: EventEmitter<any> = new EventEmitter();
+  @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 
   public filledCorrectly: boolean = false;
 
