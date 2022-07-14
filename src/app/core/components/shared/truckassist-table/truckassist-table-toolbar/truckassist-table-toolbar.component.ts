@@ -249,7 +249,7 @@ export class TruckassistTableToolbarComponent
 
     if (action.text !== 'Columns') {
       this.optionsPopup.close();
-    }
+    }  
   }
 
   resetInactivityTimer() {

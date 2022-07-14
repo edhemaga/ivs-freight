@@ -42,10 +42,12 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
+
   /* Dropdown */
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
+
   /* Progress */
   progressData: any[] = [];
 
@@ -95,25 +97,7 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          this.checkForScroll();
-        }
-      });
-
-    // Toaggle Columns
-    this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.column) {
-          this.columns = this.columns.map((c) => {
-            if (c.field === response.column.field) {
-              c.hidden = response.column.hidden;
-            }
-
-            return c;
-          });
-
-          this.changeDetectorRef.detectChanges();
-
+          console.log('Poziva se checkForScroll iz Columns Reorder')
           this.checkForScroll();
         }
       });
@@ -173,11 +157,12 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
-    this.getNotPinedMaxWidth();
+    this.getNotPinedMaxWidth(true);
 
-    setTimeout(() => {
+    /* setTimeout(() => {
+      console.log('Poziva se checkForScroll iz ngAfterViewInit')
       this.checkForScroll();
-    }, 10);
+    }, 10); */
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -196,13 +181,15 @@ export class TruckassistTableBodyComponent
       this.notPinedMaxWidth =
         tableContainer.clientWidth -
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
-        6;
+        8;
 
       if (checkScroll) {
-        const div = document.getElementById('scroll-container');
-        if (div) {
-          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-        }
+        setTimeout(() => {
+          const div = document.getElementById('scroll-container');
+          if (div) {
+            this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+          }
+        }, 10);
       }
     }
   }
