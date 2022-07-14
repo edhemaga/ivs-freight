@@ -6,6 +6,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
+import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
 
 @Component({
   selector: 'app-broker-details-single',
@@ -56,20 +57,23 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
       };
     });
   }
-  public changeReviewsEvent(reviews: BrokerResponse) {
-    // this.reviewsRepair = this.brokerData[0].data.reviews.map((item) => {
-    //   return {
-    //     ...item,
-    //     companyUser: {
-    //       ...item.companyUser,
-    //       avatar: item.companyUser.avatar
-    //         ? item.companyUser.avatar
-    //         : 'assets/svg/common/ic_profile.svg',
-    //     },
-    //     commentContent: item.comment,
-    //     rating: item.ratingFromTheReviewer,
-    //   };
-    // });
-    //TODO: add edit and update
+  public changeReviewsEvent(reviews: ReviewCommentModal) {
+    // switch (reviews.action) {
+    //   case 'delete': {
+    //     this.deleteReview(reviews);
+    //     break;
+    //   }
+    //   case 'add': {
+    //     this.addReview(reviews);
+    //     break;
+    //   }
+    //   case 'update': {
+    //     this.updateReview(reviews);
+    //     break;
+    //   }
+    //   default: {
+    //     break;
+    //   }
+    // }
   }
 }
