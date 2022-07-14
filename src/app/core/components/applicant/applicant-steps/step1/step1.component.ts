@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { Observable } from 'rxjs';
@@ -226,10 +226,6 @@ export class Step1Component implements OnInit, OnDestroy {
     this.getBanksDropdownList();
 
     this.isBankUnselected();
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
   }
 
   public get previousAddresses(): FormArray {
