@@ -1,0 +1,20 @@
+@import "../../../../../assets/scss/repair-details-items.scss";
+.note-cards {
+    padding: 0 7px;
+    .note-body {
+        padding: 0 4px !important;
+        // margin-bottom: 7px !important;
+        .note-textarea {
+            color: #6c6c6c !important;
+            font-weight: 400 !important;
+            &::-moz-selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: $color-gray-dark;
+                background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+}

@@ -1,169 +1,54 @@
 @import "../shipper-details.component.scss";
-app-shipper-details-single{
-
-.note-cards {
-  padding: 0 7px;
-  .note-body {
-    padding: 0 4px !important;
-    // margin-bottom: 7px !important;
-    .note-textarea {
-      color: #6c6c6c !important;
-      font-weight: 400 !important;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-    }
-  }
-}
-.contact-wrapper {
-  background-color: $color-white;
-  border-radius: 3px;
-  padding: 8px 6px;
-  width: 340px;
-  height: fit-content;
-
-}
-// Parking Template
-.parking-template-data {
-  display: grid;
-  grid-template-columns: 150px 146px;
-  row-gap: 6px;
-  padding: 6px 10px;
-  margin-top: -6px;
-  grid-column-gap: 30px;
-  column-gap: 12px;
-  border-radius: 2px;
-  .parking-template-item {
-    display: flex;
-    align-items: center;
-    .parking-template-name {
-      font-size: 14px;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-      margin-bottom: -6px;
-    }
-    .parking-template-number {
-      font-size: 17px;
-      font-weight: $font-semibold;
-      color: $color-gray-dark;
-      user-select: none;
-    }
-
-    .parking-template-text {
-      color: $color-gray-dark;
-      margin-left: 6px;
-      &::-moz-selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-      &::selection {
-        color: $color-gray-dark;
-        background: rgb(108, 108, 108, 0.2);
-      }
-
-      &.cross-out {
-        text-decoration: line-through;
-        color: $color-white-dark;
+app-shipper-details-single {
+  .note-cards {
+    padding: 0 7px;
+    .note-body {
+      padding: 0 4px !important;
+      // margin-bottom: 7px !important;
+      .note-textarea {
+        color: #6c6c6c !important;
+        font-weight: 400 !important;
         &::-moz-selection {
-          color: $color-white-dark !important;
-          background: rgb(183, 183, 183, 0.2) !important;
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
         }
         &::selection {
-          color: $color-white-dark !important;
-          background: rgb(183, 183, 183, 0.2) !important;
-        }
-      }
-    }
-
-    .parking-template-svg {
-      user-select: none;
-      &.disabled {
-        svg {
-          path {
-            fill: #aaaaaa;
-          }
+          color: $color-gray-dark;
+          background: rgb(108, 108, 108, 0.2);
         }
       }
     }
   }
-  .parking-template-email {
-    grid-column: 1 / -1;
+  .contact-wrapper {
+    background-color: $color-white;
+    border-radius: 3px;
+    padding: 8px 6px;
+    width: 340px;
+    height: fit-content;
   }
-  .parking-name {
-    display: flex;
-    justify-content: space-between;
-  }
-  &:hover {
-    background-color: #f3f3f3;
-    transition: all 0.3ms ease-in-out;
-    .svg-wrapper {
-      display: flex;
-    }
-  }
-}
-.second {
-  margin-top: 12px !important;
-}
-.svg-wrapper {
-  display: flex;
-  align-items: center;
-  display: none;
-  height: 14px;
-  .svg-icon-edit{
 
-    cursor: pointer;
-    svg {
-      width: 18px;
-      height: 18px;
-      display: flex;
-      &:hover{
-        path{
-          fill: #6c6c6c;
-        }
-      }
-    }
+  .second {
+    margin-top: 12px !important;
   }
-  .svg-icon-trash {
-    cursor: pointer;
-    svg {
-      margin-left: 8px;
-      width: 18px;
-      height: 18px;
-      display: flex;
-      path {
-        fill: #aaaaaa;
-      }
-      &:hover{
-        path{
-          fill: #EF5350;
-        }
-      }
-    }
+
+  .repair-header {
+    grid-template-columns: 80px 107px 62px 86px 69px 83px !important;
+    column-gap: 29px !important;
+    grid-auto-flow: column;
   }
-}
-.repair-header {
-  grid-template-columns: 80px 107px 62px 86px 69px 83px !important;
-  column-gap: 29px !important;
-  grid-auto-flow: column;
-}
 
-.no-contant {
-  font-size: 14px;
-  font-weight: 700;
-  color: #919191;
-  padding-left: 6px;
-}
+  .no-contant {
+    font-size: 14px;
+    font-weight: 700;
+    color: #919191;
+    padding-left: 6px;
+  }
 
-.shipper-contact-container{
-  &:last-child {
-    .divider {
+  .shipper-contact-container {
+    &:last-child {
+      .divider {
         display: none;
+      }
     }
-}
-}
+  }
 }
