@@ -1,7 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { Observable } from 'rxjs';
+
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -13,6 +15,7 @@ import {
   IApplicantAddress,
   PersonalInfo,
 } from '../../state/model/applicant.model';
+import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
   phoneRegex,
@@ -24,6 +27,7 @@ import {
 
 import { getPersonalInfoReviewFeedbackData } from '../../state/utils/review-feedback-data/step1';
 
+import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
 @Component({
@@ -32,19 +36,13 @@ import { ReviewFeedbackService } from '../../state/services/review-feedback.serv
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public applicant: Applicant | undefined;
-
-  public personalInfoForm!: FormGroup;
-
   public selectedMode: string = SelectedMode.APPLICANT;
+
+  public personalInfoForm: FormGroup;
+
   public selectedBank: any = null;
 
-  public bankData: any[] = [
-    {
-      svg: null,
-      name: 'Test Bank',
-    },
-  ];
+  public banksDropdownList: BankResponse[] = [];
 
   public isBankSelected: boolean = false;
   public isLastAddedPreviousAddressValid: boolean = false;
@@ -205,12 +203,6 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
-  public get previousAddresses(): FormArray {
-    return this.personalInfoForm.get('previousAddresses') as FormArray;
-  }
-
-  /* C */
-
   /*  public loadingApplicant$: Observable<boolean>;
   public loadingBankData$: Observable<boolean>;
   public loadingPersonalInfo$: Observable<boolean>;
@@ -221,7 +213,8 @@ export class Step1Component implements OnInit, OnDestroy {
   private countOfReview: number = 0; */
 
   constructor(
-    private formBuilder: FormBuilder /* 
+    private formBuilder: FormBuilder,
+    private applicantListsService: ApplicantListsService /* 
     private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 
@@ -230,11 +223,17 @@ export class Step1Component implements OnInit, OnDestroy {
 
     this.createFirstAddress();
 
-    const applicantUser = localStorage.getItem('applicant_user');
+    this.getBanksDropdownList();
 
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
+    this.isBankUnselected();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes);
+  }
+
+  public get previousAddresses(): FormArray {
+    return this.personalInfoForm.get('previousAddresses') as FormArray;
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -274,7 +273,11 @@ export class Step1Component implements OnInit, OnDestroy {
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
       case InputSwitchActions.BANK:
-        this.selectedBank = event;
+        if (event) {
+          this.selectedBank = event;
+
+          this.isBankSelected = true;
+        }
 
         break;
       case InputSwitchActions.ANSWER_CHOICE:
@@ -316,7 +319,38 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  private onCreateNewAddress(): FormGroup {
+  public isBankUnselected(): void {
+    this.personalInfoForm
+      .get('bankId')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.isBankSelected = false;
+
+          this.personalInfoForm.patchValue({
+            accountNumber: null,
+            routingNumber: null,
+          });
+        }
+      });
+  }
+
+  public getBanksDropdownList(): void {
+    this.applicantListsService
+      .getBanksDropdownList()
+      .pipe(untilDestroyed(this))
+      .subscribe((data) => {
+        this.banksDropdownList = data.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'banks',
+          };
+        });
+      });
+  }
+
+  private createNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],
       addressUnit: [null],
@@ -324,7 +358,7 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   private createFirstAddress(): void {
-    this.previousAddresses.push(this.onCreateNewAddress());
+    this.previousAddresses.push(this.createNewAddress());
 
     this.isEditingId++;
 
@@ -354,7 +388,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
     this.isLastInputDeleted = false;
 
-    this.previousAddresses.push(this.onCreateNewAddress());
+    this.previousAddresses.push(this.createNewAddress());
 
     this.isEditingId++;
 

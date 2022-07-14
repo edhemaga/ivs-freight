@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 import moment from 'moment';
 
@@ -25,10 +26,14 @@ export class ApplicantWelcomeScreenComponent implements OnInit {
     },
   };
 
-  constructor() {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.currentDate = moment().format('MM/DD/YY');
     this.copyrightYear = moment().format('YYYY');
+
+    this.route.queryParams.subscribe((params) => {
+      console.log(params);
+    });
   }
 }

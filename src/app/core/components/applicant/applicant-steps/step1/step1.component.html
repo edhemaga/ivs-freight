@@ -522,17 +522,15 @@
         <div class="group bank-group">
           <app-ta-input-dropdown
             formControlName="bankId"
-            [template]="'banks'"
+            [template]="'svg-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
               label: 'Bank Name',
-              isRequired: true,
               isDropdown: true,
               dropdownWidthClass: 'w-col-applicant-bank'
             }"
-            [canAddNew]="true"
-            [options]="bankData"
+            [options]="banksDropdownList"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
         </div>
