@@ -31,7 +31,6 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
       this.repairShopDislike =
         changes.shopData.currentValue[0].data.downRatingCount;
       this.getReviews(changes.shopData.currentValue[0].data);
-      console.log(changes);
     }
   }
   ngOnInit(): void {

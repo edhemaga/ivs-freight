@@ -25,7 +25,7 @@ export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
 
     return this.shipperService.getShipperById(ids).pipe(
       catchError(() => {
-        return of('No shop data for...' + ids);
+        return of('No shipper data for...' + ids);
       }),
       tap((shipperRespon: ShipperResponse) => {
         this.shipperDetailsStore.set({ 0: shipperRespon });
