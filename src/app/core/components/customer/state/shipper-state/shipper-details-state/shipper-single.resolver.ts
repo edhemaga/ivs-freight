@@ -22,22 +22,14 @@ export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
   ): Observable<ShipperResponse[]> | Observable<any> {
     const shipper_id = route.paramMap.get('id');
     let ids = parseInt(shipper_id);
-    if (this.shipperDetailsQuery.hasEntity(ids)) {
-      return this.shipperDetailsQuery.selectEntity(ids).pipe(
-        catchError((error)=>{
-          return of('erorr')
-        }),
-        take(1)
-      )
-    } else {
-      return this.shipperService.getShipperById(ids).pipe(
-        catchError(() => {
-          return of('No shop data for...' + ids);
-        }),
-        tap((shipperRespon: ShipperResponse) => {
-          this.shipperDetailsStore.add(shipperRespon);
-        })
-      );
-    }
+
+    return this.shipperService.getShipperById(ids).pipe(
+      catchError(() => {
+        return of('No shop data for...' + ids);
+      }),
+      tap((shipperRespon: ShipperResponse) => {
+        this.shipperDetailsStore.set({ 0: shipperRespon });
+      })
+    );
   }
 }

@@ -6,6 +6,7 @@ import { CustomerTableComponent } from './customer-table/customer-table.componen
 import { ShipperSingleResolver } from './state/shipper-state/shipper-details-state/shipper-single.resolver';
 import { BrokerDetailsResolver } from './state/broker-details-state/broker-details.resolver';
 import { BrokerMinimalListResolver } from './state/broker-details-state/broker-minimal-list-state/broker-minimal.resolver';
+import { ShipperMinimalListResolver } from './state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.resolver';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       ),
     resolve: {
       shipper: ShipperSingleResolver,
+      shipperMinimalList: ShipperMinimalListResolver,
     },
     data: { title: 'Shipper details' },
   },
