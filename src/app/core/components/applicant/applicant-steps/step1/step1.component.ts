@@ -28,6 +28,7 @@ import {
 import { getPersonalInfoReviewFeedbackData } from '../../state/utils/review-feedback-data/step1';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
 @Component({
@@ -214,7 +215,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService /* 
+    private applicantListsService: ApplicantListsService,
+    private inputService: TaInputService /* 
     private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 

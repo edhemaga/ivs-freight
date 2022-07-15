@@ -32,13 +32,14 @@ import { Step9Component } from './applicant-steps/step9/step9.component';
 import { Step10Component } from './applicant-steps/step10/step10.component';
 import { Step11Component } from './applicant-steps/step11/step11.component';
 
-import { SharedModule } from '../shared/shared.module';
-import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 import { Step6FormComponent } from './applicant-forms/step6-form/step6-form.component';
 import { Step5FormComponent } from './applicant-forms/step5-form/step5-form.component';
 import { Step4FormComponent } from './applicant-forms/step4-form/step4-form.component';
 import { Step3FormComponent } from './applicant-forms/step3-form/step3-form.component';
 import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.component';
+
+import { SharedModule } from '../shared/shared.module';
+import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 
 @NgModule({
   declarations: [
@@ -63,12 +64,13 @@ import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.comp
     Step10Component,
     Step11Component,
 
+    Step6FormComponent,
+    Step5FormComponent,
+    Step4FormComponent,
+    Step3FormComponent,
+    Step2FormComponent,
+
     SelectionColorDirective,
-      Step6FormComponent,
-      Step5FormComponent,
-      Step4FormComponent,
-      Step3FormComponent,
-      Step2FormComponent,
   ],
   imports: [
     CommonModule,

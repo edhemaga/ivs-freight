@@ -19,7 +19,9 @@
         <div
           class="d-flex justify-content-center flex-column align-items-center w-100 mid-header"
         >
-          <div class="d-flex justify-content-center company-container">
+          <div
+            class="d-flex align-items-center justify-content-center company-container"
+          >
             <div class="d-flex align-items-center company-name">
               <span class="ta-font-black" appSelectionColor>{{
                 company?.name
@@ -101,6 +103,7 @@
           <button
             type="button"
             class="d-flex justify-content-center align-items-center welcome-btn"
+            (click)="onStartApplication()"
           >
             Start Application
           </button>
