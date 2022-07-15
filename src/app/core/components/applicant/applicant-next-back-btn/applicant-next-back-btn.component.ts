@@ -20,11 +20,7 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onBackStep() {
-    this.stepEvent.emit({ action: 'back-step' });
-  }
-
-  onNextStep() {
-    this.stepEvent.emit({ action: 'next-step' });
+  onStepAction(action: string) {
+    this.stepEvent.emit({ action });
   }
 }

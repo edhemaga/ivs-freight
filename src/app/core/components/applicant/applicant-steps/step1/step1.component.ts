@@ -521,7 +521,9 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
-      console.log('next');
+    }
+
+    if (event.action === 'back-step') {
     }
   }
 

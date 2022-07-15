@@ -32,8 +32,6 @@ export class ApplicantWelcomeScreenComponent implements OnInit {
     this.currentDate = moment().format('MM/DD/YY');
     this.copyrightYear = moment().format('YYYY');
 
-    this.route.queryParams.subscribe((params) => {
-      console.log(params);
-    });
+    this.route.queryParams.subscribe((params) => {});
   }
 }
