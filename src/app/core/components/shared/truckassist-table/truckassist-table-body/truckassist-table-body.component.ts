@@ -127,19 +127,15 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-      console.log('Poziva se ngOnChanges TABLE-CONTAINER-WIDTH');
-      console.log(changes.tableContainerWidth.currentValue);
 
       if (
         changes?.tableContainerWidth?.currentValue <
         changes?.tableContainerWidth?.previousValue
       ) {
-        console.log('Prozor se smanjuje');
       } else if (
         changes?.tableContainerWidth?.currentValue >
         changes?.tableContainerWidth?.previousValue
       ) {
-        console.log('Prozor se povecava');
       }
 
       this.getNotPinedMaxWidth(true, 100);
@@ -151,8 +147,6 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
-
-      console.log('Poziva se ngOnChanges COLUMNS');
 
       this.getNotPinedMaxWidth(true);
     }
@@ -170,7 +164,6 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
-    console.log('Poziva se ngAfterViewInit');
     this.getNotPinedMaxWidth(true);
   }
 
@@ -215,35 +208,9 @@ export class TruckassistTableBodyComponent
       this.checkForScrollTimeout = setTimeout(() => {
         this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-        /* if (this.showScrollSectionBorder) {
-            this.shrinkColumnsForResponsive(div);
-            this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-          } */
-
         this.changeDetectorRef.detectChanges();
       }, 100);
     }
-  }
-
-  shrinkColumnsForResponsive(container: HTMLElement) {
-    let breakPoint = container.scrollWidth - container.clientWidth,
-      shrinked = false;
-
-    if (breakPoint > 0) {
-      this.columns = this.columns.map((column: any) => {
-        if (column.resizable && !column.isPined) {
-          while (column.minWidth <= column.width && breakPoint > 0) {
-            column.width -= 1;
-            breakPoint -= 1;
-            shrinked = true;
-          }
-        }
-
-        return column;
-      });
-    }
-
-    return shrinked;
   }
 
   trackByFn(index) {
