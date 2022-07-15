@@ -29,6 +29,16 @@
       margin: 0;
       line-height: 22px;
 
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
       &:nth-child(2) {
         margin-top: 19px;
       }
@@ -49,6 +59,16 @@
       font-size: 14px;
       color: $bw6-2;
       line-height: 18px;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
 
       &:nth-child(1) {
         margin-top: 0;
@@ -361,6 +381,16 @@
           font-size: 14px;
           height: 18px;
           margin-right: 12px !important;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .add-btn {
@@ -444,10 +474,30 @@
         color: $bw6-2;
         font-size: 14px;
         line-height: 18px;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       .required-star {
         color: $progress-danger;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       .question-radios-box {

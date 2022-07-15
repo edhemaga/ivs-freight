@@ -34,6 +34,16 @@
           font-size: 20px;
           color: $bw6-2;
           text-transform: uppercase !important;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .close-icon {
@@ -73,6 +83,16 @@
           font-size: 14px;
           color: $bw6-2;
           line-height: 20px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .phone-icon,

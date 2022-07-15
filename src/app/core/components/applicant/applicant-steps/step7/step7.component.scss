@@ -8,6 +8,16 @@
     font-size: 32px;
     height: 39px;
     margin-bottom: 22px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .instructions-container {
@@ -17,6 +27,16 @@
       font-size: 14px;
       color: $bw6-2;
       line-height: 22px;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
 
       &:nth-child(2) {
         margin-top: 22px !important;
@@ -35,6 +55,18 @@
           height: 18px;
           margin-bottom: 6px;
 
+          p {
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
+
           .day-box {
             p {
               font-size: 14px;
@@ -47,6 +79,18 @@
           width: 616px;
           height: 18px;
           margin-bottom: 14px;
+
+          p {
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
 
           .date-box {
             width: 53px;
@@ -69,8 +113,28 @@
               color: $bw6-2;
               font-size: 14px;
 
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
               span {
                 color: $progress-danger;
+
+                &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
               }
             }
           }
@@ -92,6 +156,16 @@
           p {
             color: $ta-light-blue;
             font-size: 14px;
+
+            &::-moz-selection {
+              color: $ta-light-blue;
+              background: rgb(109, 130, 199, 0.2);
+            }
+
+            &::selection {
+              color: $ta-light-blue;
+              background: rgb(109, 130, 199, 0.2);
+            }
           }
         }
       }
@@ -104,6 +178,7 @@
       p {
         font-size: 12px;
         margin-top: -5px !important;
+        user-select: none;
         cursor: pointer;
       }
     }
@@ -113,6 +188,16 @@
       color: $bw6-2;
       font-size: 14px;
       margin-bottom: 32px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
     .group {
@@ -146,6 +231,16 @@
         font-size: 14px;
         color: $bw6-2;
         line-height: 22px;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
 
@@ -163,8 +258,28 @@
             font-size: 14px;
             line-height: 18px;
 
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
             .required-star {
               color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
             }
           }
         }
@@ -190,6 +305,7 @@
       p {
         font-size: 12px;
         margin-top: -5px !important;
+        user-select: none;
         cursor: pointer;
 
         &:last-of-type {

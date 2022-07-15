@@ -25,6 +25,7 @@
           font-size: 27px;
           color: $white;
           display: inline-flex;
+          user-select: none;
           visibility: visible;
           opacity: 1;
           transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
@@ -46,8 +47,28 @@
         transition: color 0.3s ease-in-out, visibility 0.3s ease-in-out,
           opacity 0.3s ease-in-out;
 
+        &::-moz-selection {
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
+        }
+
+        &::selection {
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
+        }
+
         &:hover {
           color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
       }
 
@@ -92,6 +113,7 @@
         content: '';
         display: none;
         visibility: hidden;
+        user-select: none;
         opacity: 1;
         vertical-align: middle;
         width: 20px;

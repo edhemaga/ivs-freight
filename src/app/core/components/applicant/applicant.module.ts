@@ -6,8 +6,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { ApplicantRoutingModule } from './applicant-routing.module';
 
-import { SelectionColorDirective } from './state/directives/selection-color.directive';
-
 import { ReviewFeedbackService } from './state/services/review-feedback.service';
 
 import { ApplicantComponent } from './applicant/applicant.component';
@@ -69,8 +67,6 @@ import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
     Step4FormComponent,
     Step3FormComponent,
     Step2FormComponent,
-
-    SelectionColorDirective,
   ],
   imports: [
     CommonModule,
