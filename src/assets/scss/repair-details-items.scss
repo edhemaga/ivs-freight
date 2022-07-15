@@ -490,7 +490,10 @@ $transition: all 0.3s ease-in-out;
     height: fit-content;
     min-height: 50px;
     margin-top: 12px;
-    padding: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 6px;
+    padding-bottom: 2px;
 }
 // Parking Template
 .parking-template-data {
