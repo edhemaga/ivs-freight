@@ -15,14 +15,16 @@ import { ShipperCardViewComponent } from './shipper-card-view/shipper-card-view.
 import { BrokerDetailsComponent } from './broker-details/broker-details.component';
 import { BrokerCardViewComponent } from './broker-card-view/broker-card-view.component';
 import { BrokerDetailsSingleComponent } from './broker-details/broker-details-single/broker-details-single.component';
+import { BrokerDetailsModule } from './broker-details/broker-details.module';
 
 @NgModule({
-  declarations: [CustomerTableComponent, BrokerCardComponent, BrokerDetailsComponent, BrokerCardViewComponent, BrokerDetailsSingleComponent],
+  declarations: [CustomerTableComponent, BrokerCardComponent],
   imports: [
     CommonModule, 
     TruckassistTableModule, 
     CustomerRoutingModule, 
     ShipperDetailsModule,
+    BrokerDetailsModule,
     AngularSvgIconModule, 
     SharedModule,
     AgmCoreModule, 

@@ -13,25 +13,22 @@ import { UpdateCompanyPayrollCommand } from './updateCompanyPayrollCommand';
 import { UpdateBankCardCommand } from './updateBankCardCommand';
 import { UpdateDepartmentContactCommand } from './updateDepartmentContactCommand';
 import { UpdateBankAccountCommand } from './updateBankAccountCommand';
-import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateCompanyCommand { 
-    name?: string | null;
     usDot?: string | null;
-    ein?: string | null;
     mc?: string | null;
     phone?: string | null;
-    email?: string | null;
     fax?: string | null;
     webUrl?: string | null;
-    address?: AddressEntity;
     irp?: string | null;
     ifta?: string | null;
     toll?: string | null;
     scac?: string | null;
-    timeZone?: number | null;
-    currency?: number | null;
+    timeZone?: number;
+    currency?: number;
+    companyType?: number | null;
+    dateOfIncorporation?: string | null;
     prefix?: string | null;
     starting?: string | null;
     sufix?: string | null;
@@ -40,11 +37,9 @@ export interface UpdateCompanyCommand {
     factorByDefault?: boolean | null;
     customerPayTerm?: string | null;
     customerCredit?: string | null;
-    mvrMonths?: number | null;
-    truckInspectionMonths?: number | null;
-    trailerInspectionMonths?: number | null;
-    companyType?: number | null;
-    dateOfIncorporation?: string | null;
+    mvrMonths?: number;
+    truckInspectionMonths?: number;
+    trailerInspectionMonths?: number;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;

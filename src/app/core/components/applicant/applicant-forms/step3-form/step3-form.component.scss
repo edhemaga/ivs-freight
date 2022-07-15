@@ -1,0 +1,40 @@
+.step-form {
+  .group {
+    margin-bottom: 32px;
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .license-group {
+    width: 370px;
+  }
+
+  .country-group {
+    width: 234px;
+  }
+
+  .state-group {
+    width: 246px;
+  }
+
+  .class-group {
+    width: 174px;
+  }
+
+  .exp-date-group {
+    width: 172px;
+  }
+
+  .restrictions-group {
+    width: 616px;
+    margin-bottom: 32px;
+  }
+
+  .endorsments-group {
+    width: 616px;
+  }
+}

@@ -7,7 +7,7 @@ import {
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse';
+/* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
@@ -24,7 +24,8 @@ export class CdlTService {
     private tableService: TruckassistTableService
   ) {}
 
-  public addCdl(data: CreateCdlCommand): Observable<CreateCdlResponse> {
+  /* Observable<CreateCdlResponse> */
+  public addCdl(data: CreateCdlCommand): Observable<any> {
     return this.cdlService.apiCdlPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService

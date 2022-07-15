@@ -5,7 +5,7 @@
         <app-shipper-card-view [shipper]="shipperData?.data">
         </app-shipper-card-view>
       </div>
-      <div *ngSwitchCase="'load'">
+      <div *ngSwitchCase="'load'" class="load">
         <div class="repair-container">
           <div class="repair-header">
             <span class="repaier-headers">LOAD</span>
@@ -68,11 +68,11 @@
           </div>
         </div>
       </div>
-      <div *ngSwitchCase="'contact'">
-        <div class="contact-wrapper">
+      <div *ngSwitchCase="'contact'" class="contact">
+        <div *ngIf="shipperContacts.length" class="contact-wrapper">
           <app-ta-custom-card
             *ngFor="
-              let shipperContact of shipperData?.data?.shipperContacts;
+              let shipperContact of shipperContacts;
               trackBy: identity
             "
             [bodyTemplate]="'card'"
@@ -154,7 +154,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="shipperData?.data?.upRatingCount"
+                [count]="shipperLikes"
               >
               </app-ta-counter>
             </div>
@@ -165,7 +165,7 @@
                 [countColor]="'#919191'"
                 [countHeight]="'24px'"
                 [countWidth]="'24px'"
-                [count]="shipperData?.data?.downRatingCount"
+                [count]="shipperDislike"
               >
               </app-ta-counter>
               <svg-icon
@@ -176,6 +176,7 @@
           </div>
         </div>
         <div class="review-container">
+          <div  *ngIf="!reviewsRepair.length" class="no-reviews-details">No review</div>
           <app-ta-user-review
             *ngIf="reviewsRepair.length"
             [reviewData]="reviewsRepair"

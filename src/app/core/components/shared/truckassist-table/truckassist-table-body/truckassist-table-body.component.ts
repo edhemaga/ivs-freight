@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -23,7 +22,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, AfterViewInit, OnDestroy
+  implements OnInit, OnChanges, OnDestroy
 {
   @Input() viewData: any[];
   @Input() columns: any[];
@@ -42,12 +41,11 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  /* Dropdown */
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
-  /* Progress */
   progressData: any[] = [];
+  checkForScrollTimeout: any;
 
   constructor(
     private router: Router,
@@ -99,25 +97,6 @@ export class TruckassistTableBodyComponent
         }
       });
 
-    // Toaggle Columns
-    this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.column) {
-          this.columns = this.columns.map((c) => {
-            if (c.field === response.column.field) {
-              c.hidden = response.column.hidden;
-            }
-
-            return c;
-          });
-
-          this.changeDetectorRef.detectChanges();
-
-          this.checkForScroll();
-        }
-      });
-
     // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
       .pipe(untilDestroyed(this))
@@ -147,7 +126,7 @@ export class TruckassistTableBodyComponent
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth
     ) {
-      this.getNotPinedMaxWidth(true);
+      this.getNotPinedMaxWidth(true, 100);
     }
 
     if (
@@ -172,14 +151,6 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  ngAfterViewInit(): void {
-    this.getNotPinedMaxWidth();
-
-    setTimeout(() => {
-      this.checkForScroll();
-    }, 10);
-  }
-
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
     if (event.target.className === 'not-pined-tr') {
@@ -187,7 +158,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth(checkScroll?: boolean) {
+  getNotPinedMaxWidth(checkScroll?: boolean, ms?: number) {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
@@ -196,13 +167,12 @@ export class TruckassistTableBodyComponent
       this.notPinedMaxWidth =
         tableContainer.clientWidth -
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
-        6;
+        8;
 
       if (checkScroll) {
-        const div = document.getElementById('scroll-container');
-        if (div) {
-          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-        }
+        setTimeout(() => {
+          this.checkForScroll(ms);
+        }, 10);
       }
     }
   }
@@ -215,14 +185,47 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  checkForScroll() {
+  checkForScroll(delay?: number) {
+    clearTimeout(this.checkForScrollTimeout);
+
     const div = document.getElementById('scroll-container');
 
     if (div) {
-      this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+      this.checkForScrollTimeout = setTimeout(
+        () => {
+          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-      this.changeDetectorRef.detectChanges();
+          /* if (this.showScrollSectionBorder) {
+            this.shrinkColumnsForResponsive(div);
+            this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+          } */
+
+          this.changeDetectorRef.detectChanges();
+        },
+        delay ? delay : 10
+      );
     }
+  }
+
+  shrinkColumnsForResponsive(container: HTMLElement) {
+    let breakPoint = container.scrollWidth - container.clientWidth,
+      shrinked = false;
+
+    if (breakPoint > 0) {
+      this.columns = this.columns.map((column: any) => {
+        if (column.resizable && !column.isPined) {
+          while (column.minWidth <= column.width && breakPoint > 0) {
+            column.width -= 1;
+            breakPoint -= 1;
+            shrinked = true;
+          }
+        }
+
+        return column;
+      });
+    }
+
+    return shrinked;
   }
 
   trackByFn(index) {

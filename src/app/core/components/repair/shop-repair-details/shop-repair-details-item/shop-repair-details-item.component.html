@@ -93,7 +93,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="shopData.data.upRatingCount"
+              [count]="repairShopLikes"
             >
             </app-ta-counter>
           </div>
@@ -104,7 +104,7 @@
               [countColor]="'#919191'"
               [countHeight]="'24px'"
               [countWidth]="'24px'"
-              [count]="shopData.data.downRatingCount"
+              [count]="repairShopDislike"
             >
             </app-ta-counter>
             <svg-icon
@@ -115,6 +115,7 @@
         </div>
       </div>
       <div class="review-container">
+        <div  *ngIf="!reviewsRepair.length" class="no-reviews-details">No review</div>
         <app-ta-user-review
           *ngIf="reviewsRepair.length"
           [reviewData]="reviewsRepair"

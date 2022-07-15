@@ -14,7 +14,7 @@ import { BankAccountStatus } from './bankAccountStatus';
 
 export interface UpdateBankAccountCommand { 
     id?: number;
-    bankId?: number;
+    bankId?: number | null;
     routing?: string | null;
     account?: string | null;
     status?: BankAccountStatus;

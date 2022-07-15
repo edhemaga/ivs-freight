@@ -39,7 +39,7 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
         this.driversStore.set(driverPagination.pagination.data);
       })
     ); */
-    
+
     if (this.driversStore.getValue().ids?.length) {
       return of(true);
     } else {

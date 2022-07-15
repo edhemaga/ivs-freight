@@ -16,6 +16,7 @@ export interface SignInResponse {
     token?: string | null;
     companyName?: string | null;
     companyUserId?: number;
+    userId?: number;
     firstName?: string | null;
     lastName?: string | null;
     avatar?: string | null;

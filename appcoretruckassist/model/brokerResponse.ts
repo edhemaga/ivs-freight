@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LoadResponse } from './loadResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { EnumValue } from './enumValue';
 import { PoBoxEntity } from './poBoxEntity';
@@ -49,5 +50,6 @@ export interface BrokerResponse {
     currentCompanyUserRating?: number | null;
     createdAt?: string;
     updatedAt?: string;
+    loads?: Array<LoadResponse> | null;
 }
 

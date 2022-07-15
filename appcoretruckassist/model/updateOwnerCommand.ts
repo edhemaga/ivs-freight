@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { OwnerType } from './ownerType';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateOwnerCommand { 
     id?: number;
+    ownerType?: OwnerType;
     name?: string | null;
     ssnEin?: string | null;
     address?: AddressEntity;

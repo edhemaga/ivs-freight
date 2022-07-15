@@ -16,6 +16,6 @@ export interface UpdateBankCardCommand {
     nickname?: string | null;
     card?: string | null;
     cvc?: string | null;
-    expireDate?: string;
+    expireDate?: string | null;
 }
 

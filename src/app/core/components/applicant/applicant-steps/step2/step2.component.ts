@@ -43,7 +43,88 @@ export class Step2Component implements OnInit, OnDestroy {
   private subscription: Subscription;
 
   public workExperienceForm: FormGroup;
-  public workExperienceArray: WorkHistoryModel[] = [];
+  public workExperienceArray: WorkHistoryModel[] = [
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: 'Chicago, IL, USA',
+      employerAddressUnit: '1',
+      isDrivingPosition: false,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: null,
+      fmCSA: null,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: 'Chicago, IL, USA',
+      employerAddressUnit: '1',
+      isDrivingPosition: false,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: null,
+      fmCSA: null,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: 'Chicago, IL, USA',
+      employerAddressUnit: '1',
+      isDrivingPosition: false,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: null,
+      fmCSA: null,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: 'Chicago, IL, USA',
+      employerAddressUnit: '1',
+      isDrivingPosition: false,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: null,
+      fmCSA: null,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+  ];
 
   public selectedWorkExperienceIndex: number;
   public selectedAddress: Address = null;
@@ -106,6 +187,8 @@ export class Step2Component implements OnInit, OnDestroy {
       ],
     },
   ];
+
+  public helperIndex: number = 2;
 
   //
 
@@ -276,11 +359,14 @@ export class Step2Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = 2;
+
     const { noWorkExperience, ...workExperienceForm } =
       this.workExperienceForm.value;
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
+      isEditingWorkHistory: false,
       applicantId: this.applicantId,
     };
 
@@ -344,9 +430,12 @@ export class Step2Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = index;
+
     this.isWorkExperienceEdited = false;
 
     this.isEditing = true;
+    this.workExperienceArray[index].isEditingWorkHistory = true;
 
     this.selectedWorkExperienceIndex = index;
 
@@ -396,8 +485,13 @@ export class Step2Component implements OnInit, OnDestroy {
       this.workExperienceForm.value;
 
     this.isEditing = false;
+    this.workExperienceArray[
+      this.selectedWorkExperienceIndex
+    ].isEditingWorkHistory = false;
 
     this.isWorkExperienceEdited = false;
+
+    this.helperIndex = 2;
 
     this.workExperienceForm.reset();
 
@@ -410,8 +504,13 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public onCancelEditWorkExperience(): void {
     this.isEditing = false;
+    this.workExperienceArray[
+      this.selectedWorkExperienceIndex
+    ].isEditingWorkHistory = false;
 
     this.isWorkExperienceEdited = false;
+
+    this.helperIndex = 2;
 
     this.workExperienceForm.reset();
 
@@ -421,29 +520,6 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.subscription.unsubscribe();
   }
-
-  /* public onDeleteWorkExperience(index: number): void {
-      if (this.workExperienceArray?.length) {
-            if (!this.workExperienceArray[index].isCompleted) {
-                this.workExperienceArray?.splice(index, 1);
-            } else {
-                this.workExperienceArray[index].isDeleted = true;
-                this.apppEntityServices.workHistoryService
-                    .delete(this.workExperienceArray[index])
-                    .subscribe(
-                        response => {
-                            this.notification.success(
-                                'Work Experience has been deleted!',
-                                'Success'
-                            );
-                        },
-                        error => {
-                            this.shared.handleError(error);
-                        }
-                    );
-            }
-        }
-  } */
 
   /* private isNoExperience(): void {
     this.workExperienceForm
@@ -564,20 +640,6 @@ export class Step2Component implements OnInit, OnDestroy {
     } else {
       this.workExperienceForm.get('noWorkExperience').patchValue(true);
     }
-  } */
-
-  /* public onAddSecondOrLastEmployer(): void {
-    const workHistory = new WorkHistory(undefined);
-
-    workHistory.isExpanded = true;
-
-    this.workExperienceArray?.push(workHistory);
-
-    this.formFilling(
-      this.workExperienceArray?.length
-        ? this.workExperienceArray?.length - 1
-        : -1
-    );
   } */
 
   /*  public onSubmitForm(): void {

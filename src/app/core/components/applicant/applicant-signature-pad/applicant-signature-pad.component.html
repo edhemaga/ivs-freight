@@ -1,42 +1,40 @@
-<div class="pad" [style.width.px]="canvasWidth" [style.position]="'relative'">
-  <div *ngIf="!showSignature">
-    <canvas
-      [ngStyle]="{ 'background-color': this.canvasBackgroundColor }"
-    ></canvas>
-    <signature-pad
-      #signaturePad
-      [options]="signaturePadOptions"
-      (onBeginEvent)="drawSinatureStart()"
-      (onEndEvent)="drawSinatureComplete()"
-    ></signature-pad>
-  </div>
-  <div *ngIf="showSignature" class="pad_signature">
-    <img
-      [attr.src]="photoUrl()"
-      alt="image"
-      style="background-color: #6c6c6c"
-    />
-    <a
-      appTaTooltip="Edit"
+<signature-pad
+  #signature
+  [options]="signaturePadOptions"
+  (drawStart)="drawStart($event)"
+  (drawEnd)="drawComplete($event)"
+></signature-pad>
+
+<div class="d-flex align-items-center signature-pad-bottom-container">
+  <p class="m-0 ta-font-regular">PLEASE USE YOUR MOUSE TO SIGN ABOVE</p>
+
+  <div class="d-flex align-items-center btn-container">
+    <svg-icon
+      class="undo-icon"
+      src="assets/svg/applicant/reset.svg"
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+      appTooltip="Undo"
       tooltipColor="#FFFFFF"
-      tooltipBackground="#5673aa"
+      tooltipBackground="#6C6C6C"
       position="bottom-right"
-      class="pad_signature_edit"
-      (click)="showSignature = false"
-    >
-      <svg-icon src="../../assets/img/applicants/Pen.svg"></svg-icon>
-    </a>
-  </div>
-  <div class="signature">
-    <div class="signature_blok" *ngIf="!actionOptions?.hideActionsButtons">
-      <a class="signature_link signature_link_clear" (click)="clearSignature()"
-        >&#10006; Clear</a
-      >
-      <a class="signature_link signature_link_undo" (click)="undoSignature()"
-        >&#8634; Undo</a
-      >
-    </div>
-    <!-- <p class="signature_text">PLEASE USE YOUR MOUSE TO SIGN ABOVE</p> -->
-    <div class="signature_text">PLEASE USE YOUR MOUSE TO SIGN ABOVE</div>
+      borderRadius="2px"
+      fontSize="11px"
+      fontWeight="bold"
+      (click)="onUndoDrawing()"
+    ></svg-icon>
+
+    <svg-icon
+      class="clear-icon"
+      src="assets/svg/applicant/cancel.svg"
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+      appTooltip="Clear"
+      tooltipColor="#FFFFFF"
+      tooltipBackground="#6C6C6C"
+      position="bottom-right"
+      borderRadius="2px"
+      fontSize="11px"
+      fontWeight="bold"
+      (click)="onClearDrawing()"
+    ></svg-icon>
   </div>
 </div>

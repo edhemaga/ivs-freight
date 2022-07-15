@@ -16,9 +16,9 @@ import {
   UpdateRegistrationCommand,
   UpdateTitleCommand,
 } from 'appcoretruckassist';
-import { CreateInspectionResponse } from 'appcoretruckassist/model/createInspectionResponse';
+/* import { CreateInspectionResponse } from 'appcoretruckassist/model/createInspectionResponse';
 import { CreateRegistrationResponse } from 'appcoretruckassist/model/createRegistrationResponse';
-import { CreateTitleResponse } from 'appcoretruckassist/model/createTitleResponse';
+import { CreateTitleResponse } from 'appcoretruckassist/model/createTitleResponse'; */
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckQuery } from '../../truck/state/truck.query';
@@ -43,10 +43,11 @@ export class CommonTruckTrailerService {
     private trailerService: TrailerTService
   ) {}
 
+  /* Observable<CreateRegistrationResponse> */
   // Registration
   public addRegistration(
     data: CreateRegistrationCommand
-  ): Observable<CreateRegistrationResponse> {
+  ): Observable<any> {
     return this.registrationService.apiRegistrationPost(data).pipe(
       tap(() => {
         /* Truck Add Registration */
@@ -110,9 +111,10 @@ export class CommonTruckTrailerService {
     return this.inspectionService.apiInspectionIdGet(id);
   }
 
+  /* Observable<CreateInspectionResponse> */
   public addInspection(
     data: CreateInspectionCommand
-  ): Observable<CreateInspectionResponse> {
+  ): Observable<any> {
     return this.inspectionService.apiInspectionPost(data).pipe(
       tap(() => {
         /* Truck Add Inspection */
@@ -166,7 +168,8 @@ export class CommonTruckTrailerService {
     return this.titleService.apiTitleIdGet(id);
   }
 
-  public addTitle(data: CreateTitleCommand): Observable<CreateTitleResponse> {
+  /*  Observable<CreateTitleResponse> */
+  public addTitle(data: CreateTitleCommand): Observable<any> {
     return this.titleService.apiTitlePost(data);
   }
 
