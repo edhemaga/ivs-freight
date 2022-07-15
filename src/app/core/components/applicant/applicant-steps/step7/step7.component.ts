@@ -16,6 +16,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 })
 export class Step7Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
+
   public applicant: Applicant | undefined;
 
   public sevenDaysHosForm: FormGroup;
@@ -30,7 +31,7 @@ export class Step7Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 1,
-          label: 'Yes',
+          label: 'YES',
           value: 'anotherEmployerYes',
           name: 'anotherEmployerYes',
           checked: false,
@@ -38,7 +39,7 @@ export class Step7Component implements OnInit, OnDestroy {
         },
         {
           id: 2,
-          label: 'No',
+          label: 'NO',
           value: 'anotherEmployerNo',
           name: 'anotherEmployerNo',
           checked: false,
@@ -53,7 +54,7 @@ export class Step7Component implements OnInit, OnDestroy {
       answerChoices: [
         {
           id: 3,
-          label: 'Yes',
+          label: 'YES',
           value: 'intendToWorkAnotherEmployerYes',
           name: 'intendToWorkAnotherEmployerYes',
           checked: false,
@@ -61,7 +62,7 @@ export class Step7Component implements OnInit, OnDestroy {
         },
         {
           id: 4,
-          label: 'No',
+          label: 'NO',
           value: 'intendToWorkAnotherEmployerNo',
           name: 'intendToWorkAnotherEmployerNo',
           checked: false,
@@ -100,12 +101,10 @@ export class Step7Component implements OnInit, OnDestroy {
   public totalHours: { id: number; value: number }[] = [];
   public totalHoursCounter: number = 0;
 
-  public trackByIdentity = (index: number, item: any): number => index;
-
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.formInit();
+    this.createForm();
 
     const applicantUser = localStorage.getItem('applicant_user');
 
@@ -114,7 +113,9 @@ export class Step7Component implements OnInit, OnDestroy {
     }
   }
 
-  public formInit(): void {
+  public trackByIdentity = (index: number, item: any): number => index;
+
+  public createForm(): void {
     this.sevenDaysHosForm = this.formBuilder.group({
       isValidHos: [false, Validators.requiredTrue],
       startDate: [null, Validators.required],
@@ -129,6 +130,28 @@ export class Step7Component implements OnInit, OnDestroy {
     });
 
     this.createSevenDaysHos();
+  }
+
+  public handleCheckboxParagraphClick(type: string) {
+    switch (type) {
+      case InputSwitchActions.VALID_HOS:
+        this.sevenDaysHosForm.patchValue({
+          isValidHos: !this.sevenDaysHosForm.get('isValidHos').value,
+        });
+
+        break;
+      case InputSwitchActions.VALID_ANOTHER_EMPLOYER:
+        this.sevenDaysHosForm.patchValue({
+          isValidAnotherEmployer: !this.sevenDaysHosForm.get(
+            'isValidAnotherEmployer'
+          ).value,
+        });
+
+        break;
+
+      default:
+        break;
+    }
   }
 
   public handleInputSelect(event: any, action: string): void {

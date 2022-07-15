@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-import moment from 'moment';
-
-import { ICompany } from 'src/app/core/components/applicant/state/model/company.model';
 import { INavigation } from 'src/app/core/components/applicant/state/model/navigation.model';
 import { Applicant } from 'src/app/core/components/applicant/state/model/applicant.model';
 
@@ -12,21 +9,7 @@ import { Applicant } from 'src/app/core/components/applicant/state/model/applica
   styleUrls: ['./applicant-header.component.scss'],
 })
 export class ApplicantHeaderComponent implements OnInit {
-  public applicant!: Applicant;
-
-  public currentDate: string = moment().format('MM/DD/YY');
-
-  public company: ICompany = {
-    name: 'JD FREIGHT INC',
-    usdot: 245326,
-    phoneContact: '(621) 321-2232',
-    location: {
-      street: '4747 Research Forest Dr # 185',
-      city: 'The Woodlands',
-      postalCode: 'TX 77381',
-      country: 'USA 1',
-    },
-  };
+  public applicant: Applicant;
 
   public menuItems: INavigation[] = [
     {
@@ -71,8 +54,6 @@ export class ApplicantHeaderComponent implements OnInit {
     },
   ];
 
-  public trackByIdentity = (index: number, item: any): number => index;
-
   constructor() {}
 
   ngOnInit(): void {
@@ -82,4 +63,6 @@ export class ApplicantHeaderComponent implements OnInit {
       this.applicant = JSON.parse(applicant) as Applicant;
     }
   }
+
+  public trackByIdentity = (index: number, item: any): number => index;
 }

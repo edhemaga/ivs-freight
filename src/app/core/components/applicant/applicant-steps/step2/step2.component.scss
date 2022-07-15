@@ -138,160 +138,103 @@
         }
       }
     }
-  }
 
-  .form-section {
-    .group {
-      margin-bottom: 32px;
-      margin-right: 12px;
-      width: 616px;
+    .history-panel-form {
+      margin: 32px auto 0 auto;
 
-      &:last-child {
-        margin-right: 0;
-      }
-    }
+      .btn-container {
+        margin-top: 22px;
+        margin-bottom: 32px;
 
-    .job-description-group {
-      width: 316px;
-    }
+        .add-btn {
+          height: 26px;
+          padding: 4px 8px;
+          border: none;
+          outline: none;
+          font-size: 14px;
+          border-radius: 2px;
+          color: $ta-blue;
+          background: $ta-gray-01;
+          transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-    .date-group {
-      width: 138px;
-    }
-
-    .phone-group {
-      width: 169px;
-    }
-
-    .email-group {
-      width: 254px;
-    }
-
-    .fax-group {
-      width: 169px;
-    }
-
-    .address-group {
-      width: 481px;
-      margin-bottom: 22px !important;
-    }
-
-    .address-unit-group {
-      width: 123px;
-      margin-bottom: 22px !important;
-    }
-
-    .driving-position-group {
-      margin-bottom: 32px;
-    }
-
-    .vehicle-type-group {
-      width: 251px;
-      margin-bottom: 22px;
-    }
-
-    .trailer-type-group {
-      width: 211px;
-      margin-bottom: 22px;
-    }
-
-    .length-group {
-      width: 130px;
-      margin-bottom: 22px;
-    }
-
-    .another-class-group {
-      margin-bottom: 22px;
-
-      .add-btn {
-        height: 26px;
-        padding: 4px 8px;
-        border: none;
-        outline: none;
-        font-size: 14px;
-        border-radius: 2px;
-        color: $ta-blue;
-        background: $ta-gray-01;
-        transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-
-        &:hover {
-          color: $white;
-          background: $ta-blue;
-        }
-
-        &:hover .plus-icon {
-          svg {
-            path {
-              fill: $white;
-            }
+          &:hover {
+            color: $white;
+            background: $ta-blue;
           }
-        }
 
-        &.disabled {
-          -webkit-user-select: none !important;
-          -moz-user-select: none !important;
-          -ms-user-select: none !important;
-          user-select: none !important;
-
-          cursor: auto;
-          background: $ta-light-grey-4;
-          color: $bw4;
-
-          .plus-icon {
+          &:hover .plus-icon {
             svg {
               path {
-                fill: $ta-light-grey-6;
+                fill: $white;
+              }
+            }
+          }
+
+          &.disabled {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+
+            cursor: auto;
+            background: $ta-light-grey-4;
+            color: $bw4;
+
+            .plus-icon {
+              svg {
+                path {
+                  fill: $ta-light-grey-6;
+                }
+              }
+            }
+
+            &:hover {
+              background: $ta-light-grey-4 !important;
+              color: $bw4 !important;
+            }
+          }
+
+          .plus-icon {
+            margin-right: 6px;
+
+            svg {
+              path {
+                transition: fill 0.2s ease-in-out;
+                fill: $ta-light-blue;
               }
             }
           }
         }
 
-        .plus-icon {
-          margin-right: 6px;
+        .cancel-btn {
+          width: 150px;
+          height: 32px;
+          margin-right: 22px;
+          color: $bw6-2;
+          background: $ta-light-grey-4;
+          transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
 
-          svg {
-            path {
-              transition: fill 0.2s ease-in-out;
-              fill: $ta-light-blue;
-            }
+          &:hover {
+            background: $bw6-2;
+            color: $white;
+          }
+        }
+
+        .save-btn {
+          width: 150px;
+          height: 32px;
+          color: $white;
+          background: $ta-light-blue;
+
+          &:hover {
+            background-color: $ta-blue;
           }
         }
       }
     }
+  }
 
-    .questions-container {
-      margin-bottom: 18px;
-
-      .question-box {
-        margin-right: 22px;
-
-        .question-title-box {
-          margin-right: 12px;
-
-          p {
-            color: $bw6-2;
-            font-size: 14px;
-
-            span {
-              color: $progress-danger;
-            }
-          }
-        }
-
-        .question-radios-box {
-          width: 86px;
-
-          .ta-input-radiobutons {
-            width: 100%;
-          }
-        }
-      }
-    }
-
-    .reason-for-leaving-group {
-      width: 616px;
-    }
-
+  .form-section {
     .second-or-last-employer-group {
       margin-top: 22px;
 
@@ -352,31 +295,6 @@
               fill: $ta-light-blue;
             }
           }
-        }
-      }
-
-      .cancel-btn {
-        width: 150px;
-        height: 32px;
-        margin-right: 22px;
-        color: $bw6-2;
-        background: $ta-light-grey-4;
-        transition: background 0.3s ease-in-out, color 0.3s ease-in-out !important;
-
-        &:hover {
-          background: $bw6-2;
-          color: $white;
-        }
-      }
-
-      .save-btn {
-        width: 150px;
-        height: 32px;
-        color: $white;
-        background: $ta-light-blue;
-
-        &:hover {
-          background-color: $ta-blue;
         }
       }
     }

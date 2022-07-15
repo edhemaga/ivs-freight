@@ -17,6 +17,7 @@ export interface WorkHistoryModel {
   fmCSA?: boolean;
   reasonForLeaving: string;
   accountForPeriod: string;
+  isEditingWorkHistory: boolean;
 }
 
 export class WorkHistory {

@@ -7,6 +7,7 @@ export interface LicenseModel {
   expDate: string;
   endorsments?: string;
   restrictions?: string;
+  isEditingLicense: boolean;
 }
 
 export class CDLInformation {

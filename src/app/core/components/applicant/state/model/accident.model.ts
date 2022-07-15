@@ -8,6 +8,7 @@ export interface AccidentModel {
   hazmatSpill?: string;
   truckType: string;
   accidentDescription: string;
+  isEditingAccident: boolean;
 }
 
 export class Accident {

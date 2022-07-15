@@ -1,1 +1,244 @@
-<p>broker-details-single works!</p>
+<div class="repair-component">
+  <div *ngFor="let broker of brokerData; trackBy: identity">
+    <div [ngSwitch]="broker?.template">
+      <div *ngSwitchCase="'general'">
+        <app-broker-card-view [broker]="broker?.data"> </app-broker-card-view>
+      </div>
+      <div *ngSwitchCase="'load'" class="load">
+        <div class="broker-details-table-container">
+          <div class="t-headear-broker">
+            <div class="t-head-items">
+              <span class="name">LOAD</span>
+              <span class="name-bottom">REF #</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">TRUCK</span>
+              <span class="name-bottom">TRAILER</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">DISPATCHER</span>
+              <span class="name-bottom">DRIVER</span>
+            </div>
+            <div class="t-head-items single-status">
+              <span class="name">STATUS</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">PICKUP</span>
+              <span class="name-bottom">DELIVERY</span>
+            </div>
+            <div class="t-head-items">
+              <span class="name">REVENUE</span>
+              <span class="name-bottom miles-broker-name">MILES</span>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <div class="t-body-broker">
+            <div class="t-body-broker-items">
+              <div class="t-body-items">
+                <span class="load-name space-text">237</span>
+                <span class="default-name">356-1200</span>
+              </div>
+              <div class="t-body-items">
+                <span class="default-name space-text">3586</span>
+                <span class="default-name">R2513</span>
+              </div>
+              <div class="t-body-items">
+                <span class="default-name space-text">A. Djordjevic</span>
+                <span class="default-name">Kevin Malone</span>
+              </div>
+              <div class="status-wrapper-broker">
+                <span class="assigned">Assigned</span>
+                <span class="time">15 min ago</span>
+              </div>
+              <div class="pickup-wrapper">
+                <div class="pickup-item">
+                  <div class="counter-green">3</div>
+                  <div class="pickup-text">
+                    <span class="name">Carrollton, GA</span>
+                    <span class="date">06/12/22</span>
+                  </div>
+                </div>
+                <div class="pickup-item">
+                  <div class="counter-red">3</div>
+                  <div class="pickup-text">
+                    <span class="name">Carrollton, GA</span>
+                    <span class="date">06/12/22</span>
+                  </div>
+                </div>
+              </div>
+              <div class="t-body-items">
+                <span class="load-name space-text">$3,245.22</span>
+                <span class="default-name text-center">329 mi</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="t-body-broker-items">
+              <div class="t-body-items">
+                <span class="load-name space-text">237</span>
+                <span class="default-name">356-1200</span>
+              </div>
+              <div class="t-body-items">
+                <span class="default-name space-text">3586</span>
+                <span class="default-name">R2513</span>
+              </div>
+              <div class="t-body-items">
+                <span class="default-name space-text">A. Djordjevic</span>
+                <span class="default-name">Kevin Malone</span>
+              </div>
+              <div class="status-wrapper-broker">
+                <span class="assigned">Assigned</span>
+                <span class="time">15 min ago</span>
+              </div>
+              <div class="pickup-wrapper">
+                <div class="pickup-item">
+                  <div class="counter-green">3</div>
+                  <div class="pickup-text">
+                    <span class="name">Carrollton, GA</span>
+                    <span class="date">06/12/22</span>
+                  </div>
+                </div>
+                <div class="pickup-item">
+                  <div class="counter-red">3</div>
+                  <div class="pickup-text">
+                    <span class="name">Carrollton, GA</span>
+                    <span class="date">06/12/22</span>
+                  </div>
+                </div>
+              </div>
+              <div class="t-body-items">
+                <span class="load-name space-text">$3,245.22</span>
+                <span class="default-name text-center">329 mi</span>
+              </div>
+            </div>
+            <div class="divider"></div>
+          </div>
+        </div>
+      </div>
+      <div *ngSwitchCase="'contact'" class="contact">
+        
+        <div *ngIf="brokerContacts.length" class="contact-wrapper">
+          <app-ta-custom-card
+            *ngFor="
+              let brokerContact of brokerContacts;
+              let i = index;
+              trackBy: identity
+            "
+            [bodyTemplate]="'card'"
+            [animationsDisabled]="false"
+            [hasDivider]="i > 0 ? true : false"
+            [cardName]="brokerContact.department.name"
+            [isCardOpen]="true"
+            class="shipper-contact-container"
+          >
+            <div *ngIf="brokerContact" class="parking-template-data">
+              <div
+                class="parking-template-item parking-template-email parking-name"
+              >
+                <span class="parking-template-name">{{
+                  brokerContact.contactName
+                }}</span>
+                <div class="svg-wrapper">
+                  <span
+                    ngbTooltip
+                    mainTooltip="Edit"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_pen.svg"
+                      class="svg-icon-edit"
+                    ></svg-icon>
+                  </span>
+                  <span
+                    ngbTooltip
+                    mainTooltip="Delete"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                  >
+                    <svg-icon
+                      src="assets/svg/common/ic_trash.svg"
+                      class="svg-icon-trash"
+                    ></svg-icon>
+                  </span>
+                </div>
+              </div>
+              <div class="parking-template-item">
+                <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.phone | formatPhoneP
+                }}</span>
+              </div>
+              <div class="parking-template-item">
+                <div
+                  *ngIf="brokerContact.extensionPhone"
+                  class="parking-template-item"
+                >
+                  <svg-icon
+                    src="assets/svg/common/ic_phone-extension.svg"
+                  ></svg-icon>
+                  <span class="parking-template-text">{{
+                    brokerContact.extensionPhone
+                  }}</span>
+                </div>
+              </div>
+              <div class="parking-template-item parking-template-email">
+                <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+                <span class="parking-template-text">{{
+                  brokerContact.email
+                }}</span>
+              </div>
+            </div>
+            <!-- <div class="divider"></div> -->
+          </app-ta-custom-card>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'review'">
+        <div class="likes-count-container">
+          <div class="likes-item">
+            <div class="ic-counter">
+              <svg-icon
+                class="like"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="brokerLikes"
+              >
+              </app-ta-counter>
+            </div>
+            <div class="border-vertical"></div>
+            <div class="ic-counter">
+              <app-ta-counter
+                [countBackgroud]="'#F3F3F3'"
+                [countColor]="'#919191'"
+                [countHeight]="'24px'"
+                [countWidth]="'24px'"
+                [count]="brokerDislike"
+              >
+              </app-ta-counter>
+              <svg-icon
+                class="dislike"
+                src="assets/svg/common/ic_dislike.svg"
+              ></svg-icon>
+            </div>
+          </div>
+        </div>
+        <div class="review-container">
+          <div  *ngIf="!reviewsRepair.length" class="no-reviews-details">No review</div>
+          <app-ta-user-review
+            *ngIf="reviewsRepair.length"
+            [reviewData]="reviewsRepair"
+            [isNewReview]="reviewsRepair[0].isNewReview"
+            (changeReviewsEvent)="changeReviewsEvent($event)"
+          ></app-ta-user-review>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
