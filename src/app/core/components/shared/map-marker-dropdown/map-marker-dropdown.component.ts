@@ -13,6 +13,7 @@ export class MapMarkerDropdownComponent implements OnInit {
   @Input() item: any = {};
   @Input() type: string = '';
   @Input() sortCategory: any = {};
+  @Input() locationFilterOn: boolean = false;
 
   public copiedPhone: boolean = false;
   public copiedEmail: boolean = false;

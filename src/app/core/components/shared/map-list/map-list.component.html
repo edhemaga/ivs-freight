@@ -56,7 +56,7 @@
       <div class="sort-items-holder" 
           *ngFor="let item of sortTypes; let i = index;" 
           (click)="changeSortType(item)" 
-          [ngClass]="{ 'sort-item-active': item.id == activeSortType.id }">
+          [ngClass]="{ 'sort-item-active': item.id == activeSortType.id, 'hide-sort-item': item.isHidden }">
             <div class="sort-items">
               {{ item.name }}
               <svg-icon

@@ -19,9 +19,9 @@ import { ShipperTService } from '../state/shipper-state/shipper.service';
 import * as AppConst from 'src/app/const';
 import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { ShipperListResponse } from 'appcoretruckassist';
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { MapsAPILoader } from '@agm/core';
+
+declare var google: any;
 
 @Component({
   selector: 'app-customer-table',
@@ -47,6 +47,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   };
 
   public searchForm!: FormGroup;
+  public locationForm!: FormGroup;
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
@@ -56,7 +57,17 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public sortBy: any;
   public searchValue: string = '';
   public mapMarkers: any[] = [];
+  public mapCircle: any = {
+    lat: 41.860119,
+    lng: -87.660156,
+    radius: 160934.4 // 100 miles
+  };
+  public locationFilterOn: boolean = false;
   private tooltip: any;
+  public locationRange: any = 100;
+
+  public markerAnimations: any = {};
+  public showMarkerWindow: any = {};
 
   constructor(
     private modalService: ModalService,
@@ -68,12 +79,17 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
-    private shipperStore: ShipperStore
+    private shipperStore: ShipperStore,
+    private mapsAPILoader: MapsAPILoader
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.sendCustomerData();
+
+    this.mapsAPILoader.load().then(() => {
+      console.log('mapsAPILoader');
+    });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -160,14 +176,14 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
       this.sortTypes = [
         {name: 'Business Name', id: 1, sortName: 'name'},
-        {name: 'Location', id: 2, sortName: 'location'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
         {name: 'Rating', id: 3, sortName: 'rating'},
-        {name: 'Date Added', id: 4, sortName: 'dateAdded'},
-        {name: 'Last Used Date', id: 5, sortName: 'lastUsedDate'},
+        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
         {name: 'Pickups', id: 6, sortName: 'pickups'},
         {name: 'Deliveries', id: 7, sortName: 'deliveries'},
         {name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime'},
-        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveryTime'}
+        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveriesTime'}
       ];
 
       this.activeSortType = this.sortTypes[0];
@@ -180,6 +196,29 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   
       this.searchForm = this.formBuilder.group({
         search: ''
+      });
+
+      this.locationForm = this.formBuilder.group({
+        location: '',
+        range: 100
+      });
+
+      this.locationForm.valueChanges.subscribe((changes) => {
+        console.log('valueChanges', changes);
+        if ( changes.range ) {
+          this.changeLocationRange(changes.range);
+        }
+
+        if ( changes.location ) {
+          // var autocomplete = new google.maps.places.Autocomplete(changes.location);
+          // var place = autocomplete.getPlace();
+          // console.log('changeLocation', place);
+          // var placeLat = place.geometry.location.lat();
+          // var placeLng = place.geometry.location.lng();
+          
+          // console.log('changeLocation', placeLat);
+          // console.log('changeLocation', placeLng);
+        }
       });
   }
 
@@ -345,8 +384,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
       console.log('event.mode', event.mode);
       if ( event.mode == 'Map' ) {
-        this.sortShippers();
         this.getMapMarkers();
+        this.showHideMarkers();
+        this.sortShippers();
+        this.markersDropAnimation();
       }
     }
   }
@@ -436,12 +477,14 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       if (data.id === dataId) {
         data.actionAnimation = 'add';
       }
-
       return data;
     });
 
     const inetval = setInterval(() => {
       this.viewData = closeAnimationAction(false, this.viewData);
+
+      this.sortShippers();
+      this.markersDropAnimation();
 
       clearInterval(inetval);
     }, 1000);
@@ -603,8 +646,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   openPopover(t2) {
+    console.log('openPopover t2', t2);
     t2.open();
     this.tooltip = t2;
+  }
+  
+  closePopover() {
+    this.tooltip.close();
   }
 
   mapClick() {
@@ -618,23 +666,35 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   sortShippers() {
     console.log('sortShippers sortBy', this.sortBy);
 
-    this.shipperService
-    .getShippersList(null, null, 1, 25, null, this.sortBy, this.searchValue)
-    .pipe(untilDestroyed(this))
-    .subscribe({
-      next: (res: any) => {
-        console.log('sortShippers', res);
-        this.viewData = res.pagination.data;
-        
-        this.ref.detectChanges();
-      },
-      error: () => {
-        this.notificationService.error(
-          "Shippers can't be sorted",
-          'Error:'
-        );
-      },
-    });
+    if ( this.activeSortType.name == 'Location' ) {
+      if ( this.sortDirection == 'asc' ) {
+        this.viewData.sort((a,b) => a.distanceBetween - b.distanceBetween);
+      } else {
+        this.viewData.sort((a,b) => b.distanceBetween - a.distanceBetween);
+      }
+    } else {
+      this.shipperService
+      .getShippersList(null, null, 1, 25, null, this.sortBy, this.searchValue)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          console.log('sortShippers', res);
+          this.viewData = res.pagination.data;
+          
+          if ( this.locationFilterOn ) {
+            this.showHideMarkers();
+          }
+          
+          this.ref.detectChanges();
+        },
+        error: () => {
+          this.notificationService.error(
+            "Shippers can't be sorted",
+            'Error:'
+          );
+        },
+      });
+    }
   }
 
   searchShippers(value) {
@@ -661,5 +721,110 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         );
       },
     });
+  }
+
+  getMeters(miles) {
+    return miles*1609.344;
+  }
+
+  getMiles(meters) {
+    return meters*0.000621371192;
+  }
+
+  showHideMarkers(){
+    console.log('showHideMarkers called');
+    this.viewData.map((data: any) => {
+      var getDistance = this.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
+      data.isShown = getDistance[0];
+      data.distanceBetween = this.getMiles(getDistance[1]).toFixed(1);
+      console.log('showHideMarkers', data, data.isShown);
+    });
+  }
+
+  getDistanceBetween(lat1,long1,lat2,long2){
+    var from = new google.maps.LatLng(lat1,long1);
+    var to = new google.maps.LatLng(lat2,long2);
+
+    console.log('getDistanceBetween lat1', lat1);
+    console.log('getDistanceBetween long1', long1);
+    console.log('getDistanceBetween lat2', lat2);
+    console.log('getDistanceBetween long2', long2);
+    console.log('getDistanceBetween from', from);
+    console.log('getDistanceBetween to', to);
+
+    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(from,to);
+
+    if(distanceBetween <= this.mapCircle.radius){    
+      console.log('Radius',this.mapCircle.radius);
+      console.log('Distance Between',distanceBetween);
+      return [true, distanceBetween];
+    }else{
+      return [false, distanceBetween];
+    }
+  }
+
+  setLocationRange(value) {
+    this.mapCircle.radius = this.getMeters(value);
+    console.log('setLocationRange value', this.mapCircle.radius);
+    this.showHideMarkers();
+    this.locationFilterOn = true;
+
+    this.sortTypes[1].isHidden = false;
+    this.ref.detectChanges();
+  }
+
+  clearLocationRange() {
+    this.mapCircle.radius = this.getMeters(100);
+    this.showHideMarkers();
+    this.locationFilterOn = false;
+
+    this.sortTypes[1].isHidden = true;
+
+    if ( this.activeSortType.name == 'Location' ) {
+      this.activeSortType = this.sortTypes[0];
+    }
+
+    this.locationForm.reset();
+    
+    this.ref.detectChanges();
+  }
+
+  changeLocationRange(value) {
+    console.log('setLocationFilter', value);
+    this.locationRange = value;
+  }
+
+  setLocationFilter() {
+    this.setLocationRange(this.locationRange);
+    this.closePopover();
+  }
+
+  clearLocationFilter() {
+    this.locationRange = 100;
+    this.clearLocationRange();
+    this.closePopover();
+  }
+
+  onHandleAddress(event) {
+    console.log('onHandleAddress', event);
+  }
+
+  markersDropAnimation() {
+    var mainthis = this;
+    
+      this.viewData.map((data: any) => {
+        setTimeout(() => {
+          if ( !mainthis.markerAnimations[data.id] ) {
+            mainthis.markerAnimations[data.id] = true;
+            console.log('markerAnimations', mainthis.markerAnimations, data.id);
+          }
+          
+          setTimeout(() => {
+            if ( !mainthis.showMarkerWindow[data.id] ) {
+            mainthis.showMarkerWindow[data.id] = true;
+          }
+          }, 100);
+        }, 1000);
+      });
   }
 }

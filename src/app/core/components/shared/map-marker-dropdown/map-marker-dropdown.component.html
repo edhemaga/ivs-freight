@@ -17,8 +17,8 @@
       <div class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4" *ngIf="item.status == 2">
         Permanently Closed
       </div>
-      <div class="marker-distance-left" [ngClass]="{ 'mg-top-4': item.status == 2 }" *ngIf="sortCategory.name == 'Location'">
-        <span class="marker-title">123.4 mi </span>
+      <div class="marker-distance-left" [ngClass]="{ 'mg-top-4': item.status == 2 }" *ngIf="locationFilterOn && item.distanceBetween">
+        <span class="marker-title">{{ item.distanceBetween }} mi </span>
         <span class="marker-info-text">away </span>
         <span class="marker-time-left-text">
           <span class="marker-bold-text">- 1 hour 27 minutes</span> est.

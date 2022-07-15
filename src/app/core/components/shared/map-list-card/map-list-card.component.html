@@ -59,18 +59,18 @@
         <div *ngIf="sortCategory.name == 'Avg. Delivery Time'">
             <div class="marker-like-text marker-medium-text">Avg. Delivery<span class="marker-bold-text">37m 12s</span></div>
         </div>
-        <div *ngIf="sortCategory.name == 'Location'">
-            <div class="marker-like-text"><span class="marker-bold-text">456.5 mi</span> away</div>
+        <div *ngIf="sortCategory.name == 'Location' && item.distanceBetween">
+            <div class="marker-like-text"><span class="marker-bold-text">{{ item.distanceBetween }} mi</span> away</div>
         </div>
       </div>
       <div class="map-list-card-address mg-top-2" *ngIf="address">
-        <!-- <span class="marker-bold-text">127 mi - </span> -->
-        <div>
+        <span class="marker-bold-text" *ngIf="sortCategory.name != 'Location' && locationFilterOn">{{ item.distanceBetween }} mi - </span>
+        <span>
           {{ address.city }},
           {{ address.state }}
           {{ address.zipCode }},
           {{ address.country }}
-        </div>
+        </span>
       </div>
     </div>
   </div>

@@ -16,6 +16,7 @@ export class MapListCardComponent implements OnInit {
   @Input() index: any = {};
   @Input() type: string = '';
   @Input() sortCategory: any = {};
+  @Input() locationFilterOn: boolean = false;
   @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
 
   constructor() { }

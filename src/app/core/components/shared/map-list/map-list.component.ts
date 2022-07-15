@@ -10,13 +10,13 @@ export class MapListComponent implements OnInit {
 
   @Input() sortTypes: any[] = [];
   @Input() columns: any;
+  @Input() activeSortType: any = {};
   @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
   @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
   public mapListExpanded: boolean = true;
   public searchForm!: FormGroup;
   public sortDirection: string = 'asc';
-  public activeSortType: any = {};
   visibleColumns: any[] = [];
   pinedColumns: any[] = [];
   notPinedColumns: any[] = [];
@@ -33,8 +33,6 @@ export class MapListComponent implements OnInit {
 
     console.log('sortTypes', this.sortTypes);
     console.log('columns', this.columns);
-
-    this.activeSortType = this.sortTypes[0];
 
     this.searchForm = this.formBuilder.group({
       search: ''
@@ -76,7 +74,6 @@ export class MapListComponent implements OnInit {
     });
     
     item.isActive = true;
-    this.activeSortType = item;
     this.tooltip.close();
 
     console.log('changeSortType item', item);
