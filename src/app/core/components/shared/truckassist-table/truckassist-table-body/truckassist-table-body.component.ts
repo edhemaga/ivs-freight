@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -22,7 +23,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   @Input() viewData: any[];
   @Input() columns: any[];
@@ -52,7 +53,6 @@ export class TruckassistTableBodyComponent
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
-
   ngOnInit(): void {
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -124,8 +124,24 @@ export class TruckassistTableBodyComponent
 
     if (
       !changes?.tableContainerWidth?.firstChange &&
-      changes?.tableContainerWidth
+      changes?.tableContainerWidth &&
+      changes?.tableContainerWidth?.previousValue > 0
     ) {
+      console.log('Poziva se ngOnChanges TABLE-CONTAINER-WIDTH');
+      console.log(changes.tableContainerWidth.currentValue);
+
+      if (
+        changes?.tableContainerWidth?.currentValue <
+        changes?.tableContainerWidth?.previousValue
+      ) {
+        console.log('Prozor se smanjuje');
+      } else if (
+        changes?.tableContainerWidth?.currentValue >
+        changes?.tableContainerWidth?.previousValue
+      ) {
+        console.log('Prozor se povecava');
+      }
+
       this.getNotPinedMaxWidth(true, 100);
     }
 
@@ -135,6 +151,8 @@ export class TruckassistTableBodyComponent
       changes.columns.currentValue !== changes.columns.previousValue
     ) {
       this.columns = changes.columns.currentValue;
+
+      console.log('Poziva se ngOnChanges COLUMNS');
 
       this.getNotPinedMaxWidth(true);
     }
@@ -149,6 +167,11 @@ export class TruckassistTableBodyComponent
 
       this.getSelectedTabTableData();
     }
+  }
+
+  ngAfterViewInit(): void {
+    console.log('Poziva se ngAfterViewInit');
+    this.getNotPinedMaxWidth(true);
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -170,9 +193,7 @@ export class TruckassistTableBodyComponent
         8;
 
       if (checkScroll) {
-        setTimeout(() => {
-          this.checkForScroll(ms);
-        }, 10);
+        this.checkForScroll();
       }
     }
   }
@@ -185,25 +206,22 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  checkForScroll(delay?: number) {
+  checkForScroll() {
     clearTimeout(this.checkForScrollTimeout);
 
     const div = document.getElementById('scroll-container');
 
     if (div) {
-      this.checkForScrollTimeout = setTimeout(
-        () => {
-          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+      this.checkForScrollTimeout = setTimeout(() => {
+        this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-          /* if (this.showScrollSectionBorder) {
+        /* if (this.showScrollSectionBorder) {
             this.shrinkColumnsForResponsive(div);
             this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
           } */
 
-          this.changeDetectorRef.detectChanges();
-        },
-        delay ? delay : 10
-      );
+        this.changeDetectorRef.detectChanges();
+      }, 100);
     }
   }
 
