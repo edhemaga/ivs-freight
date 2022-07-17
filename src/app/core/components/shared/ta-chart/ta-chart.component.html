@@ -41,7 +41,7 @@
             <div class="hover_data_info_title">{{ item.name }}</div>
           </div>
           <div class="hover_data_values_hold">
-            <div class="hover_data_price" [class.increased_title]="selectedDrivers?.length > dataMaxRows">{{ item.value | nFormatter }}</div>
+            <div class="hover_data_price" [class.increased_title]="selectedDrivers?.length > dataMaxRows">${{ item.value | nFormatter }}</div>
             <div class="hover_data_percent">{{ item.percent }}</div>
           </div>
         </div>
@@ -57,7 +57,7 @@
           </div>
           <div class="hover_data_info_title">{{ item.name }}</div>
         </div>
-        <div class="hover_data_price">{{ item.value | nFormatter }}</div>
+        <div class="hover_data_price">${{ item.value | nFormatter }}</div>
         <div class="hover_data_percent">{{ item.percent }}</div>
       </div>
     </div>

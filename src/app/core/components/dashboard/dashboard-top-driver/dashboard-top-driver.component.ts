@@ -343,7 +343,7 @@ export class DashboardTopDriverComponent implements OnInit {
   }
 
   changeDriverSwitchTabs(ev){
-
+    this.topDriverBarChart.updateTime(ev)
   }
 
   removeDriverFromList(e: Event,indx, item){
