@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -22,7 +23,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, OnDestroy
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   @Input() viewData: any[];
   @Input() columns: any[];
@@ -52,7 +53,6 @@ export class TruckassistTableBodyComponent
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
-
   ngOnInit(): void {
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -124,8 +124,20 @@ export class TruckassistTableBodyComponent
 
     if (
       !changes?.tableContainerWidth?.firstChange &&
-      changes?.tableContainerWidth
+      changes?.tableContainerWidth &&
+      changes?.tableContainerWidth?.previousValue > 0
     ) {
+
+      if (
+        changes?.tableContainerWidth?.currentValue <
+        changes?.tableContainerWidth?.previousValue
+      ) {
+      } else if (
+        changes?.tableContainerWidth?.currentValue >
+        changes?.tableContainerWidth?.previousValue
+      ) {
+      }
+
       this.getNotPinedMaxWidth(true, 100);
     }
 
@@ -151,6 +163,10 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  ngAfterViewInit(): void {
+    this.getNotPinedMaxWidth(true);
+  }
+
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
     if (event.target.className === 'not-pined-tr') {
@@ -170,9 +186,7 @@ export class TruckassistTableBodyComponent
         8;
 
       if (checkScroll) {
-        setTimeout(() => {
-          this.checkForScroll(ms);
-        }, 10);
+        this.checkForScroll();
       }
     }
   }
@@ -185,52 +199,18 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  checkForScroll(delay?: number) {
+  checkForScroll() {
     clearTimeout(this.checkForScrollTimeout);
 
     const div = document.getElementById('scroll-container');
 
     if (div) {
-      this.checkForScrollTimeout = setTimeout(
-        () => {
-          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+      this.checkForScrollTimeout = setTimeout(() => {
+        this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-          console.log('Has Scroll: ' + this.showScrollSectionBorder);
-
-         /*  if (this.showScrollSectionBorder) {
-            this.shrinkColumnsForResponsive(div);
-            this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-          } */
-
-          this.changeDetectorRef.detectChanges();
-        },
-        delay ? delay : 10
-      );
+        this.changeDetectorRef.detectChanges();
+      }, 100);
     }
-  }
-
-  shrinkColumnsForResponsive(container: HTMLElement) {
-    let breakPoint = container.scrollWidth - container.clientWidth,
-      shrinked = false;
-
-    if (breakPoint > 0) {
-      this.columns = this.columns.map((column: any) => {
-        if (column.resizable && !column.isPined) {
-          while (column.minWidth <= column.width && breakPoint > 0) {
-            column.width -= 1;
-            breakPoint -= 1;
-            shrinked = true;
-            console.log(
-              'Radi while petlju, smanjuje kolonu dok ne predje predje brake point'
-            );
-          }
-        }
-
-        return column;
-      });
-    }
-
-    return shrinked;
   }
 
   trackByFn(index) {

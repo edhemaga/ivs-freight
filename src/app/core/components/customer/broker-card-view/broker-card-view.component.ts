@@ -1,3 +1,4 @@
+import { BrokerMinimalListQuery } from './../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import {
   Component,
@@ -21,12 +22,12 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   @Input() broker: any;
   @Input() templateCard: boolean;
   public brokerDropdowns: any[] = [];
-  public brokerList: any[] = this.brokerQuery.getAll();
+  public brokerList: any[] = this.brokerMinimalQuery.getAll();
   public note: FormControl = new FormControl();
   public tabsBroker: any;
   constructor(
     private brokerQuery: BrokerQuery,
-    private brokerDetailsQuery: BrokerDetailsQuery,
+    private brokerMinimalQuery: BrokerMinimalListQuery,
     private detailsPageDriverSer: DetailsPageService
   ) {}
 
@@ -79,6 +80,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
       return {
         id: item.id,
         name: item.businessName,
+        status: item.status,
         active: item.id === this.broker.id,
       };
     });
@@ -89,6 +91,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
         return {
           id: item.id,
           name: item.businessName,
+          status: item.status,
           active: item.id === event.id,
         };
       });

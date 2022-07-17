@@ -7,7 +7,7 @@ import {
   EditMvrCommand,
   MvrResponse,
 } from 'appcoretruckassist';
-import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse';
+/* import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse'; */
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -31,7 +31,8 @@ export class MvrTService {
     return this.mvrService.apiMvrIdGet(id);
   }
 
-  public addMvr(data: CreateMvrCommand): Observable<CreateMvrResponse> {
+  /* Observable<CreateMvrResponse> */
+  public addMvr(data: CreateMvrCommand): Observable<any> {
     return this.mvrService.apiMvrPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
