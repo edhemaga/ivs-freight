@@ -332,7 +332,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       ],
       export: true,
     };
-  }
+  }  
 
   sendDriverData() {
     this.initTableOptions();

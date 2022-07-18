@@ -127,7 +127,6 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-
       if (
         changes?.tableContainerWidth?.currentValue <
         changes?.tableContainerWidth?.previousValue
@@ -138,7 +137,7 @@ export class TruckassistTableBodyComponent
       ) {
       }
 
-      this.getNotPinedMaxWidth(true, 100);
+      this.getNotPinedMaxWidth();
     }
 
     if (
@@ -148,7 +147,7 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
-      this.getNotPinedMaxWidth(true);
+      this.getNotPinedMaxWidth();
     }
 
     if (
@@ -164,7 +163,7 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
-    this.getNotPinedMaxWidth(true);
+    this.getNotPinedMaxWidth();
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -174,7 +173,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth(checkScroll?: boolean, ms?: number) {
+  getNotPinedMaxWidth() {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
@@ -185,9 +184,7 @@ export class TruckassistTableBodyComponent
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
         8;
 
-      if (checkScroll) {
-        this.checkForScroll();
-      }
+      this.checkForScroll();
     }
   }
 
