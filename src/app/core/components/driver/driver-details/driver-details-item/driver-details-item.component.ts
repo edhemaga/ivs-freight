@@ -1,3 +1,4 @@
+import { DriverTService } from './../../state/driver.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -41,10 +42,10 @@ export class DriverDetailsItemComponent
   public dataTest: any;
   public expDateCard: any;
   public dataCDl: any;
-
+  public templateName: boolean;
   constructor(
-    private activated_route: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private driverService: DriverTService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -71,7 +72,30 @@ export class DriverDetailsItemComponent
       };
     });
   }
-
+  public activateDeactiveCdl(id: number) {
+    this.driverService.activateDeactiveCdl(id);
+  }
+  public getName(name: string) {
+    switch (name) {
+      case 'cdl':
+        this.templateName = false;
+        this.initTableOptions();
+        this.getExpireDate();
+        break;
+      case 'test':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+      case 'medical':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+      case 'mvr':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+    }
+  }
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
@@ -91,17 +115,19 @@ export class DriverDetailsItemComponent
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
         {
           title: 'Renew',
           name: 'renew',
           svg: 'assets/svg/common/ic_plus.svg',
+          show: !this.templateName ? true : false,
         },
         {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
+          title: 'Deactivate',
           name: 'activate-item',
           svg: 'assets/svg/common/ic_deactivate.svg',
+          show: !this.templateName ? true : false,
         },
         {
           title: 'Delete',
@@ -110,6 +136,7 @@ export class DriverDetailsItemComponent
           text: 'Are you sure you want to delete driver(s)?',
           svg: 'assets/svg/common/ic_trash.svg',
           danger: true,
+          show: true,
         },
       ],
       export: true,

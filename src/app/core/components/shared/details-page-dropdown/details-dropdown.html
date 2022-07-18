@@ -4,28 +4,34 @@
   [autoClose]="true"
   [ngbPopover]="dropdownPopover"
   [placement]="placement"
-  class="table-dropdown-container"
+  class="details-dropdown-container"
   [ngClass]="{ 'active-drop': dropDownActive === id }"
-  popoverClass="table-dropdown-popover"
+  popoverClass="details-dropdown-popover {{customClassDropDown}}"
   triggers="manual"
   (hidden)="dropDownActive = -1"
 >
-<!-- assets/svg/common/ic_horizontal_dots_details.svg -->
- <svg-icon class="dropdown-dots" src="{{ hasVericalDots? 'assets/svg/common/ic_horizontal_dots_details.svg' : 'assets/svg/common/ic_dots.svg'}}"></svg-icon>
+  <svg-icon
+    class="dropdown-dots"
+    src="{{ hasVericalDots? 'assets/svg/common/ic_horizontal_dots_details.svg' : 'assets/svg/common/ic_dots.svg'}}"
+  ></svg-icon>
 </div>
 
 <ng-template #dropdownPopover let-data="data">
-  <div class="table-dropdown">
+  <div class="details-dropdown">
     <div
       (click)="onAction(action)"
-      *ngFor="let action of data"
-      class="table-dropdown-content"
-      [class]="action.class"
+      *ngFor="let action of options"
+      class="details-dropdown-content "
+      [ngClass]="{'hide':!action.show}"
     >
-      <div class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
-        <svg-icon class="action-svg" src="{{action.svg}}"></svg-icon>
-      <div class="dropdown-content-text">{{ action.title }}</div>
-    </div>
+      <div  class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
+        <svg-icon
+          [ngClass]="{'activate-header':action.activate,'deactivate-header':action.deactivate}"
+          class="action-svg"
+          src="{{action.svg}}"
+        ></svg-icon>
+        <div  class="dropdown-content-text-details">{{ action.title }}</div>
+      </div>
     </div>
   </div>
 </ng-template>

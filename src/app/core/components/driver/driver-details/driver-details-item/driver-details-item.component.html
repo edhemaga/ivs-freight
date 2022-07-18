@@ -18,6 +18,9 @@
             [expDateClose]="cdl?.expDate | formatDateP"
             [hasCopyIcon]="true"
             [optionsId]="cdl.id"
+
+            (clickedCard)="getName($event)"
+            [cardNameCurrent]="'cdl'"
             [noteIcons]="cdl.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             [isDeactivated]="cdl.dateDeactivated"
             [weeklyWidth]="'28'"
@@ -119,6 +122,7 @@
                   </div>
                   <div
                     *ngIf="cdl.dateDeactivated && cdl.showButton"
+                    (click)="activateDeactiveCdl(cdl.id)"
                     class="activate-button"
                   >
                     Activate
@@ -206,8 +210,10 @@
             [cardNameCommon]="test?.testingDate | formatDateP"
             (resizePage)="toggleResizePage(i,'test')"
             [optionsId]="test.id"
+            (clickedCard)="getName($event)"
             [cardDocumentCounter]="6"
             [weeklyWidth]="'18'"
+            [cardNameCurrent]="'test'"
             [noteIcons]="test.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             [cardSecondName]="test?.testReason.name"
             [shortName]="test.testType.name[0]"
@@ -293,6 +299,8 @@
             [cardNameCommon]="med?.issueDate | formatDateP"
             [expDateClose]="med?.expDate | formatDateP"
             [optionsId]="med.id"
+            (clickedCard)="getName($event)"
+            [cardNameCurrent]="'medical'"
             [noteIcons]="med.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             (resizePage)="toggleResizePage(i,'medical')"
             (dropActions)="optionsEvent($event, 'edit-medical')"
@@ -391,6 +399,8 @@
               trackBy: identity
             "
             [options]="dataTest"
+            [cardNameCurrent]="'mvr'"
+            (clickedCard)="getName($event)"
             [cardDocumentCounter]="6"
             [noteIcons]="mvr.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
             (resizePage)="toggleResizePage(i,'mvr')"

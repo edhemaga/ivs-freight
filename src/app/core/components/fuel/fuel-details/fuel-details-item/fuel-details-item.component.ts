@@ -67,8 +67,8 @@ export class FuelDetailsItemComponent implements OnInit {
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
 
         {
@@ -76,8 +76,9 @@ export class FuelDetailsItemComponent implements OnInit {
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,
