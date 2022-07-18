@@ -198,7 +198,7 @@ const routes: Routes = [
     data: { title: 'End Screen' },
   },
   {
-    path: 'applicant/:id',
+    path: 'application/:id',
     loadChildren: () =>
       import('./core/components/applicant/applicant.module').then(
         (m) => m.ApplicantModule
