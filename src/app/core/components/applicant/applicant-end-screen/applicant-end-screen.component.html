@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
     <div
-      class="welcome-container container-fluid d-flex flex-column justify-content-between"
+      class="container-fluid d-flex flex-column justify-content-between end-container"
     >
       <div class="d-flex flex-column align-items-center">
         <!--TOP HEADER-->
@@ -77,33 +77,34 @@
 
         <svg-icon
           class="welcome-icon"
-          src="assets/svg/applicant/welcome.svg"
-          [svgStyle]="{ 'width.px': '484.3', 'height.px': '402.67' }"
+          src="assets/svg/applicant/end.svg"
+          [svgStyle]="{ 'width.px': '437.6', 'height.px': '402.34' }"
         ></svg-icon>
 
-        <!-- WELCOME -->
+        <!-- FINISHED -->
 
         <div
           class="d-flex flex-column justify-content-center align-items-center"
         >
-          <h2 class="m-0 ta-font-bold welcome-title">Welcome</h2>
+          <h2 class="m-0 ta-font-bold end-title">
+            Application has been successfully finished
+          </h2>
 
-          <p class="m-0 ta-font-regular welcome-text">
-            You have been invited to apply for a new job by:
+          <p class="m-0 ta-font-regular end-text">
+            You have been successfully completed your application process.<br />Your
+            account will be automatically created at
+            <a class="ta-font-bold" href="#">www.hireassist.io</a>
           </p>
-
-          <p class="m-0 ta-font-black welcome-company">{{ company?.name }}</p>
 
           <button
             type="button"
-            class="d-flex justify-content-center align-items-center ta-font-bold welcome-btn"
-            (click)="onStartApplication()"
+            class="d-flex justify-content-center align-items-center ta-font-bold end-btn"
           >
-            Start Application
+            Enter HireAssist
           </button>
 
-          <p class="m-0 ta-font-regular end-info">
-            Please click the button above, to start exploring hire assist.
+          <p class="m-0 ta-font-regular welcome-info">
+            Please click the button above, to start application process.
           </p>
         </div>
       </div>

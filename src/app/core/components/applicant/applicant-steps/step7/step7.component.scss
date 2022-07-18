@@ -41,6 +41,18 @@
       &:nth-child(2) {
         margin-top: 22px !important;
       }
+
+      span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
     }
   }
 
@@ -55,22 +67,20 @@
           height: 18px;
           margin-bottom: 6px;
 
-          p {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-          }
-
           .day-box {
             p {
               font-size: 14px;
-              color: $bw4;
+              color: $bw5;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
             }
           }
         }
@@ -80,23 +90,26 @@
           height: 18px;
           margin-bottom: 14px;
 
-          p {
-            &::-moz-selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-
-            &::selection {
-              color: $bw6-2;
-              background: rgb(108, 108, 108, 0.2);
-            }
-          }
-
           .date-box {
             width: 53px;
 
             p {
-              color: $bw4;
+              color: $bw5;
+              font-size: 12px;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+            }
+
+            .date-para0 {
+              font-size: 14px;
             }
           }
         }
@@ -240,6 +253,18 @@
         &::selection {
           color: $bw6-2;
           background: rgb(108, 108, 108, 0.2);
+        }
+
+        span {
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
       }
     }

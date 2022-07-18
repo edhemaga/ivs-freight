@@ -7,6 +7,7 @@ import { AuthGuard } from './core/guards/authentication.guard';
 import { SvgDefinitionsComponent } from './svg-definitions/svg-definitions.component';
 
 import { ApplicantWelcomeScreenComponent } from './core/components/applicant/applicant-welcome-screen/applicant-welcome-screen.component';
+import { ApplicantEndScreenComponent } from './core/components/applicant/applicant-end-screen/applicant-end-screen.component';
 import { DriverActiveResolver } from './core/components/driver/state/driver-active-state/driver-active.resolver';
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
@@ -192,11 +193,73 @@ const routes: Routes = [
     data: { title: 'Welcome Screen' },
   },
   {
+    path: 'applicant/end',
+    component: ApplicantEndScreenComponent,
+    data: { title: 'End Screen' },
+  },
+  {
     path: 'applicant/:id',
     loadChildren: () =>
       import('./core/components/applicant/applicant.module').then(
         (m) => m.ApplicantModule
       ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'medical-certificate/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/medical-certificate/medical-certificate.module'
+      ).then((m) => m.MedicalCertificateModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'mvr-authorization/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/mvr-authorization/mvr-authorization.module'
+      ).then((m) => m.MvrAuthorizationModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'psp-authorization/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/psp-authorization/psp-authorization.module'
+      ).then((m) => m.PspAuthorizationModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'sph/:id',
+    loadChildren: () =>
+      import('./core/components/applicant/applicant-tabs/sph/sph.module').then(
+        (m) => m.SphModule
+      ),
+
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'hos-rules/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/hos-rules/hos-rules.module'
+      ).then((m) => m.HosRulesModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'ssn-card/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/ssn-card/ssn-card.module'
+      ).then((m) => m.SsnCardModule),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'cdl-card/:id',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
+      ).then((m) => m.CdlCardModule),
     canActivate: [AuthGuard],
   },
   {

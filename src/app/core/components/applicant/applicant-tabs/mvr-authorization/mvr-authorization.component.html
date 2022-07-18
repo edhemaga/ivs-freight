@@ -1,0 +1,241 @@
+<div class="container-fluid">
+  <div class="row">
+    <div
+      class="container-fluid d-flex flex-column justify-content-between mvr-authorization-container"
+    >
+      <div class="d-flex flex-column align-items-center">
+        <app-applicant-header></app-applicant-header>
+
+        <h1 class="m-0 text-center title ta-font-bold">
+          Authorization to Obtain Motor Vehicle Record
+        </h1>
+
+        <h2 class="m-0 text-center subtitle ta-font-bold">
+          The undersigned does hereby acknowledge and certify as follows
+        </h2>
+
+        <form
+          class="d-flex flex-column justify-content-center align-items-center"
+          [formGroup]="mvrAuthorizationForm"
+        >
+          <!-- CHECKBOXES -->
+
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isConsentRelease"
+              [name]="'isConsentRelease'"
+              [label]="
+                '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
+              "
+              [customClass]="'disclosure-release'"
+            >
+            </app-ta-checkbox>
+
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color: mvrAuthorizationForm.get('isConsentRelease').value
+                  ? '#3c3c3c'
+                  : '#6c6c6c'
+              }"
+              (click)="handleCheckboxParagraphClick('isConsentRelease')"
+            >
+              in a position which involves the operation of a motor vehicle and
+              the undersigned gives his or her consent to the release of their
+              driving record (MVR) for review.
+            </p>
+          </div>
+
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isPeriodicallyObtained"
+              [name]="'isPeriodicallyObtained'"
+              [label]="
+                '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
+              "
+              [customClass]="'disclosure-release'"
+            >
+            </app-ta-checkbox>
+
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color: mvrAuthorizationForm.get('isPeriodicallyObtained').value
+                  ? '#3c3c3c'
+                  : '#6c6c6c'
+              }"
+              (click)="handleCheckboxParagraphClick('isPeriodicallyObtained')"
+            >
+              purpose of initial and continued employment.
+            </p>
+          </div>
+
+          <div
+            class="d-flex flex-column jusitfy-content-center align-items-center checkbox-container"
+          >
+            <app-ta-checkbox
+              formControlName="isInformationCorrect"
+              [name]="'isInformationCorrect'"
+              [label]="
+                '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
+              "
+              [customClass]="'disclosure-release'"
+            >
+            </app-ta-checkbox>
+
+            <p
+              class="m-0 text-center ta-font-regular"
+              [ngStyle]="{
+                color: mvrAuthorizationForm.get('isInformationCorrect').value
+                  ? '#3c3c3c'
+                  : '#6c6c6c'
+              }"
+              (click)="handleCheckboxParagraphClick('isInformationCorrect')"
+            >
+              affirmation under penalty of perjury and understands that
+              knowingly making a false statement or representation on this form
+              is a criminal violation.
+            </p>
+          </div>
+
+          <!-- LICENSE -->
+
+          <div
+            class="d-flex flex-column justify-content-center license-view-container"
+          >
+            <div class="d-flex align-items-center title-container">
+              <div class="d-flex align-items-center driver-title-box">
+                <p class="m-0 ta-font-bold">DRIVER NAME</p>
+              </div>
+              <div class="d-flex align-items-center license-title-box">
+                <p class="m-0 ta-font-bold">LICENSE #</p>
+              </div>
+              <div class="d-flex align-items-center state-title-box">
+                <p class="m-0 ta-font-bold">STATE</p>
+              </div>
+              <div class="d-flex align-items-center class-title-box">
+                <p class="m-0 ta-font-bold">CLASS</p>
+              </div>
+              <div class="d-flex align-items-center date-title-box">
+                <p class="m-0 ta-font-bold">EXP. DATE</p>
+              </div>
+            </div>
+
+            <div class="d-flex align-items-center license-info-container">
+              <div class="d-flex align-items-center driver-box">
+                <p class="m-0 ta-font-regular">
+                  <!--  {{ license.name }} -->
+                  aleksandar djordjevic
+                </p>
+              </div>
+              <div class="d-flex align-items-center license-box">
+                <p class="m-0 ta-font-regular">
+                  <!--  {{ license.license }} -->
+                  D263-540-92-166-0
+                </p>
+              </div>
+              <div class="d-flex align-items-center state-box">
+                <p class="m-0 ta-font-regular">
+                  <!--     {{ license.stateId }} -->
+                  al
+                </p>
+              </div>
+              <div class="d-flex align-items-center class-box">
+                <p class="m-0 ta-font-regular">
+                  <!-- {{ license.classType }} -->
+                  1234
+                </p>
+              </div>
+
+              <div class="d-flex align-items-center date-box">
+                <p class="m-0 ta-font-regular">
+                  <!--    {{ license.expDate }} -->
+                  01/19/20
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- DONT HAVE MVR CHECKBOX -->
+
+          <div
+            class="d-flex align-items-center justify-content-center"
+            [ngStyle]="{
+              'margin-bottom': !dontHaveMvrForm.get('dontHaveMvr').value
+                ? '22px'
+                : '12px'
+            }"
+            [formGroup]="dontHaveMvrForm"
+          >
+            <app-ta-checkbox
+              formControlName="dontHaveMvr"
+              [name]="'dontHaveMvr'"
+              [label]="
+                'Dont have MVR? Request a driving record from your prospective employer'
+              "
+              [customClass]="'bold-12'"
+            >
+            </app-ta-checkbox>
+          </div>
+
+          <!-- FILES CONTAINER -->
+
+          <div
+            class="d-flex files-container"
+            *ngIf="!dontHaveMvrForm.get('dontHaveMvr').value"
+          >
+            FILES
+          </div>
+
+          <!-- LICENSE CHECK CHECKBOX -->
+
+          <div
+            class="d-flex align-items-center justify-content-center license-check-container"
+            [ngStyle]="{
+              'margin-top': !dontHaveMvrForm.get('dontHaveMvr').value
+                ? '22px'
+                : '0'
+            }"
+          >
+            <app-ta-checkbox
+              formControlName="licenseCheck"
+              [name]="'licenseCheck'"
+              [label]="
+                'I further certify that the above license is the only one I hold.'
+              "
+              [customClass]="'bold-12'"
+            >
+            </app-ta-checkbox>
+          </div>
+
+          <!-- SIGNATURE PAD -->
+
+          <div class="d-flex flex-column signature-pad-container">
+            <app-applicant-signature-pad
+              (signatureEmitter)="onSignatureAction($event)"
+            ></app-applicant-signature-pad>
+          </div>
+        </form>
+      </div>
+
+      <!-- FOOTER -->
+
+      <app-applicant-footer></app-applicant-footer>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [lastStep]="true"
+  ></app-applicant-next-back-btn>
+</div>
