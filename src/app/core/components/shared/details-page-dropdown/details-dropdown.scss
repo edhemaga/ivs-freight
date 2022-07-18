@@ -1,0 +1,47 @@
+.dropdown-dots {
+  cursor: pointer;
+  svg {
+    &:hover {
+      path {
+        fill: #6c6c6c;
+      }
+    }
+  }
+}
+.svg-text-dropdown {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  .action-svg {
+    margin-right: 6px;
+    margin-left: 6px;
+    svg {
+      path {
+        fill: #aaaaaa;
+      }
+    }
+  }
+  .dropdown-content-text {
+    font-size: 14px;
+    font-weight: 400;
+    color: #6c6c6c;
+  }
+  &:hover {
+    background-color: #f7f7f7;
+    border-radius: 2px;
+    .dropdown-content-text {
+      color: #3c3c3c;
+    }
+  }
+}
+
+.danger {
+  svg {
+    path {
+      fill: #e57373 !important;
+    }
+  }
+  .dropdown-content-text {
+    color: #e57373 !important;
+  }
+}

@@ -9,7 +9,10 @@
   popoverClass="table-dropdown-popover"
   triggers="manual"
   (hidden)="dropDownActive = -1"
-></div>
+>
+<!-- assets/svg/common/ic_horizontal_dots_details.svg -->
+ <svg-icon class="dropdown-dots" src="{{ hasVericalDots? 'assets/svg/common/ic_horizontal_dots_details.svg' : 'assets/svg/common/ic_dots.svg'}}"></svg-icon>
+</div>
 
 <ng-template #dropdownPopover let-data="data">
   <div class="table-dropdown">
@@ -19,10 +22,10 @@
       class="table-dropdown-content"
       [class]="action.class"
     >
-      <div class="dropdown-content-icon">
-        <div [class]="action.contentType"></div>
-      </div>
+      <div class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
+        <svg-icon class="action-svg" src="{{action.svg}}"></svg-icon>
       <div class="dropdown-content-text">{{ action.title }}</div>
+    </div>
     </div>
   </div>
 </ng-template>

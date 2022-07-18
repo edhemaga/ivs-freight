@@ -38,13 +38,14 @@
       <div *ngIf="isInactive" class="inactive-status">
         INACTIVE
        </div>
-      <app-table-dropdown
+      <app-details-page-dropdown
         [customClassDropDown]="'table-dropdown-container-horizontal-details'"
         [options]="options.actions"
         [id]="optionsId"
+        [hasVericalDots]="true"
         (dropDownActions)="dropAct($event)"
       >
-      </app-table-dropdown>
+      </app-details-page-dropdown>
     </div>
   </div>
 
