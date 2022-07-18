@@ -708,43 +708,61 @@ export class TaChartComponent implements OnInit {
         removeIndex = 0,
         rangeIndicator = 20,
         periodFormat = 0,
-        periodIndex = 0;
+        periodIndex = 0,
+        period = '';
 
     switch (ev['name']){
       case 'All Time':
         range = 25;
         type = 'M';
-        format = 'MMM YYYY'
+        format = 'MMM YYYY';
         break;
       case 'WTD':
         range = moment().day();
         type = 'days';
         format = 'D ddd';
         indicator = moment().clone().startOf('isoWeek');
+
+        if ( period == '6 Hours' ){
+          range = moment().day() == 1 ? moment().hour() + 1 : (moment().day()-1 * 24) + moment().hour() + 1;
+          type = 'hours';
+          format = 'hh A';
+          indicator = moment().clone().startOf('isoWeek');
+          periodFormat = 6;
+        }
         break;
       case 'MTD':
         range = moment().date();
         type = 'days';
         format = 'D ddd';
         indicator = moment().clone().startOf('month');
+        periodFormat = period == 'Weekly' ? 7 : 0;
         break;
       case 'YTD':
         range = moment().month() + 1;
         type = 'M';
         format = 'MMM';
         indicator = moment().clone().startOf('year');
+        if ( period == 'Weekly' ){
+          range = moment().dayOfYear();
+          type = 'days';
+          format = 'D MMM';
+          indicator = moment().clone().startOf('year');
+          periodFormat = 7;
+        }
         break;
       case 'Today':
         range = moment().hour() + 1;
         type = 'hours';
-        format = 'HH A';
+        format = 'hh A';
         indicator = moment().clone().startOf('day');
         rangeIndicator = 10;
+        periodFormat = period == '3 Hours' ? 3 : period == '6 Hours' ? 6 : 0;
         break;
     }
 
     for ( let a = 0; a < range; a++ ){
-      if ( periodIndex == periodFormat ) { periodIndex = 0; value.push(moment(indicator).add(a, type).format(format).toUpperCase()); }
+      if ( periodIndex == periodFormat ) { periodIndex = 0; value.push(moment(indicator).add(a, type)); }
       if ( periodFormat != 0 ) { periodIndex++; }
     }
 
@@ -753,6 +771,7 @@ export class TaChartComponent implements OnInit {
     });
 
     value.map((item, i) => {
+      item = item.format(format).toUpperCase();
       let weekDaySep = item.split(' ');
       removeIndex++;
       if ( value.length > rangeIndicator && removeIndex == removeEvery ){
@@ -760,7 +779,7 @@ export class TaChartComponent implements OnInit {
         weekDaySep[0] = '';
         weekDaySep[1] = '';
       }
-      if ( ev['name'] == 'WTD' || ev['name'] == 'MTD' ){
+      if ( ev['name'] == 'WTD' || ev['name'] == 'MTD' || ( ev['name'] == 'YTD' && period == 'Weekly' ) ){
         this.chart.chart.config.data.labels.push([weekDaySep[0], weekDaySep[1]]);
       }
       else if ( ev['name'] == 'Today' ){
