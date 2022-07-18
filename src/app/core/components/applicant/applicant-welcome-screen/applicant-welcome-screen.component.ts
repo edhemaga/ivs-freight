@@ -5,8 +5,8 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import moment from 'moment';
 
-import { AcceptApplicationCommand } from 'appcoretruckassist';
-
+/* import { AcceptApplicationCommand } from 'appcoretruckassist';
+ */
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
 @Component({
@@ -18,8 +18,8 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   public currentDate: string;
   public copyrightYear: string;
 
-  private verifyData: AcceptApplicationCommand;
-
+  /*  private verifyData: AcceptApplicationCommand;
+   */
   private applicantId: number;
 
   public company: any = {
@@ -45,14 +45,14 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
     this.copyrightYear = moment().format('YYYY');
 
     this.route.queryParams.subscribe((params) => {
-      this.verifyData = {
+      /*  this.verifyData = {
         inviteCode: params['InviteCode'].split(' ').join('+'),
-      };
+      }; */
     });
   }
 
   public onStartApplication(): void {
-    this.applicantActionsService
+    /*  this.applicantActionsService
       .acceptApplicant(this.verifyData)
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -61,7 +61,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
         this.applicantId = res.personalInfo.applicantId;
 
         this.router.navigate([`/applicant/${this.applicantId}/1`]);
-      });
+      }); */
   }
 
   ngOnDestroy(): void {}

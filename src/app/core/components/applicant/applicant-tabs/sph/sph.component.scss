@@ -1,0 +1,183 @@
+@import 'src/theme/variables.scss';
+
+.sph-container {
+  min-height: 100vh;
+  background: $white;
+
+  .title {
+    color: $ta-blue;
+    font-size: 32px;
+    height: 39px;
+    margin-top: 4px !important;
+    margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+  }
+
+  .applicant-card-container {
+    width: 616px;
+    margin: 0 auto 22px auto;
+
+    .title-container {
+      width: 100%;
+      margin-bottom: 6px;
+      padding-left: 6px;
+
+      .name-title-box,
+      .ssn-title-box,
+      .dob-title-box {
+        p {
+          color: $bw5;
+          font-size: 12px;
+
+          &::-moz-selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+        }
+
+        &.name-title-box {
+          width: 115px;
+          margin-right: 183px;
+        }
+
+        &.ssn-title-box {
+          width: 25px;
+          margin-right: 140px;
+        }
+
+        &.dob-title-box {
+          width: 29px;
+        }
+      }
+    }
+
+    .applicant-card-info-container {
+      width: 100%;
+      height: 26px;
+      padding: 4px 6px;
+      background-color: $ta-light-grey-4;
+      border-radius: 2px;
+      text-transform: uppercase;
+      color: $bw6-2;
+      font-size: 14px;
+
+      p {
+        height: 18px;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+
+      .driver-box,
+      .ssn-box,
+      .date-box {
+        &.driver-box {
+          width: 195px;
+          margin-right: 97px;
+        }
+
+        &.ssn-box {
+          width: 153px;
+          margin-right: 12px;
+          padding-left: 6px;
+        }
+
+        &.date-box {
+          margin-right: 12px;
+          padding-left: 6px;
+        }
+      }
+    }
+  }
+
+  .checkbox-container {
+    width: 616px;
+    margin-bottom: 12px;
+
+    p {
+      font-size: 12px;
+      line-height: 18px;
+      cursor: pointer;
+      user-select: none;
+      margin-top: -3px !important;
+      margin-left: 9px !important;
+    }
+  }
+
+  .btn-container {
+    margin-bottom: 22px;
+
+    .review-btn {
+      border: none;
+      outline: none;
+      color: $ta-light-blue;
+      background: transparent;
+      font-size: 14px;
+      transition: color 0.2s ease-in-out;
+
+      &::-moz-selection {
+        color: $ta-light-blue;
+        background: rgb(109, 130, 199, 0.2);
+      }
+
+      &::selection {
+        color: $ta-light-blue;
+        background: rgb(109, 130, 199, 0.2);
+      }
+
+      &:hover {
+        color: $ta-blue;
+
+        &::-moz-selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
+
+        &::selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
+      }
+    }
+  }
+
+  .signature-pad-container {
+    margin: 0 auto;
+    width: 616px;
+    height: 215px;
+    border-radius: 3px;
+  }
+
+  .understood-checkbox-container {
+    margin-top: 22px;
+  }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
