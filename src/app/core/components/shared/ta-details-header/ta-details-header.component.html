@@ -9,7 +9,8 @@
         'Repair Shop Details',
         'Fuel Stop Details',
         'Shipper Details',
-        'Broker Details'
+        'Broker Details',
+        'Roadside Insp. Details'
       ].includes(headerText)
     "
   >
@@ -58,7 +59,8 @@
           'Repair Shop Details',
           'Fuel Stop Details',
           'Shipper Details',
-          'Broker Details'
+          'Broker Details',
+          'Roadside Insp. Details'
         ].includes(headerText)
       "
     >
@@ -88,9 +90,9 @@
         </div>
       </div>
       <div class="header-plus-button">
-        <div *ngIf="hasDateArrow" class="date-arrow-repair">
-          <p class="date-repair">{{ customText }}</p>
-          <div class="icons-repair">
+        <div  class="date-arrow-repair">
+          <p *ngIf="customText" class="date-repair">{{ customText }}</p>
+          <div class="icons-repair" *ngIf="hasDateArrow">
             <svg-icon
               [ngClass]="{ clicked: up }"
               (click)="changeDataArrowUpFun($event)"
@@ -104,6 +106,7 @@
               src="assets/svg/common/fill_arrow_down.svg"
             ></svg-icon>
           </div>
+          <div class="violation-counter" *ngIf="counterViolation">{{counterViolation}}</div>
         </div>
         <div class="hide-buttons" *ngIf="!statusInactive">
           <div (click)="makeRequestFun(headerText)" *ngIf="hasRequest " class="request-header-container">Request</div>

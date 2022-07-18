@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ViolationTableComponent } from './violation-table/violation-table.component';
@@ -8,6 +7,14 @@ const routes: Routes = [
     path: '',
     component: ViolationTableComponent,
     data: { title: 'Violation' },
+  },
+  {
+    path: ':id/details',
+    loadChildren: () =>
+      import('./violation-details-page/violation-details.module').then(
+        (m) => m.ViolationDetailsModule
+      ),
+    data: { title: 'Violation Details' },
   },
 ];
 
