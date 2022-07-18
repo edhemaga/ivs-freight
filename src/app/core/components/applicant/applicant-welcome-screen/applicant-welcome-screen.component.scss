@@ -14,6 +14,30 @@
       color: $white;
       font-size: 14px;
       height: 18px;
+
+      &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+      }
+
+      &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+      }
+
+      span {
+        margin-left: 12px !important;
+
+        &::-moz-selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+
+        &::selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+      }
     }
   }
 
@@ -31,6 +55,16 @@
           font-size: 22px;
           line-height: 22px;
           color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
       }
 
@@ -42,6 +76,16 @@
           font-size: 18px;
           line-height: 22px;
           color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         &.company-usdot {
@@ -61,31 +105,41 @@
         }
       }
     }
-  }
 
-  .company-address-container {
-    margin-top: 6px;
+    .company-address-container {
+      margin-top: 6px;
 
-    .company-street,
-    .company-city,
-    .company-postalcode,
-    .company-country {
-      height: 22px;
-      margin-right: 6px;
+      .company-street,
+      .company-city,
+      .company-postalcode,
+      .company-country {
+        height: 22px;
+        margin-right: 6px;
 
-      span {
-        font-size: 18px;
-        line-height: 22px;
-        color: $bw6-2;
-      }
+        span {
+          font-size: 18px;
+          line-height: 22px;
+          color: $bw6-2;
 
-      &.company-street {
-        .location-icon {
-          margin-right: 7.9px;
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
 
-          svg {
-            path {
-              fill: $bw6-2;
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
+
+        &.company-street {
+          .location-icon {
+            margin-right: 7.9px;
+
+            svg {
+              path {
+                fill: $bw6-2;
+              }
             }
           }
         }
@@ -102,6 +156,16 @@
     height: 39px;
     color: $ta-blue;
     margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .welcome-text,
@@ -111,6 +175,16 @@
     height: 18px;
     color: $bw6-2;
     text-align: center;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 
   .welcome-btn {
@@ -120,7 +194,6 @@
     border: none;
     outline: none;
     font-size: 14px;
-    font-weight: bold;
     border-radius: 3px;
     color: $white;
     background: $ta-light-blue;
@@ -136,10 +209,23 @@
     font-size: 14px;
     color: $bw5;
     text-align: center;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .logo-container {
+    margin: 60px 42px 12px 0;
   }
 
   .copyright {
-    margin-top: 60px;
     height: 42px;
     border-top: 0.1rem solid $ta-gray-02;
 
@@ -147,6 +233,16 @@
       color: $ta-blue-2;
       font-weight: 400;
       font-size: 14px;
+
+      &::-moz-selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
     }
   }
 }

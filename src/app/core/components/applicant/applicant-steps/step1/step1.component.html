@@ -9,9 +9,7 @@
       !(loadingPersonalInfo$ | async);
     else loading
   " -->
-  <h1 class="text-center step-title noselect ta-font-bold">
-    Driver Application
-  </h1>
+  <h1 class="text-center step-title ta-font-bold">Driver Application</h1>
 
   <!-- TOP SECTION -->
 
@@ -19,13 +17,13 @@
     class="d-flex flex-column text-center top-section"
     *ngIf="!personalInfoForm.get('isAgreement').value"
   >
-    <p class="noselect ta-font-regular">
+    <p class="ta-font-regular">
       In compliance with Federal and State equal opportunity laws, qualified
       applicants are considered for all positions<br />without regard to race,
       religion, sex national origin, age marital status, or non-job related
       disability.
     </p>
-    <p class="noselect ta-font-regular">
+    <p class="ta-font-regular">
       I understand that information I provide regarding current and/or previous
       employers may be used, and those<br />employer(s) will be contacted, for
       the purpose of investigation my safety performance history as required by
@@ -54,7 +52,7 @@
 
   <div class="d-flex flex-column text-center bottom-section">
     <p
-      class="noselect ta-font-regular"
+      class="ta-font-regular"
       [ngStyle]="{
         color: !personalInfoForm.get('isAgreement').value
           ? '#3551B7'
@@ -66,7 +64,7 @@
       employers to re-send the corrected
     </p>
 
-    <p class="noselect ta-font-regular">
+    <p class="ta-font-regular">
       Information to the prospective employer, and. Have a rebuttal statement
       attached to the alleged erroneous<br />
       information, if the previous employer(s) and I cannot agree on the
@@ -475,7 +473,7 @@
           }"
           *ngIf="previousAddresses.controls?.length < 5"
         >
-          <h5 class="m-0 noselect ta-font-bold previous-address-title">
+          <h5 class="m-0 ta-font-bold previous-address-title">
             Previous addresses for the past 3 years?
           </h5>
           <button
@@ -522,7 +520,7 @@
         <div class="group bank-group">
           <app-ta-input-dropdown
             formControlName="bankId"
-            [template]="'banks'"
+            [template]="'svg-template'"
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
@@ -530,8 +528,7 @@
               isDropdown: true,
               dropdownWidthClass: 'w-col-applicant-bank'
             }"
-            [canAddNew]="true"
-            [options]="bankData"
+            [options]="banksDropdownList"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
         </div>
@@ -604,10 +601,10 @@
           >
             <div class="d-flex align-items-center justify-content-between">
               <div class="question-title-box">
-                <p class="m-0 question-title noselect ta-font-regular">
+                <p class="m-0 question-title ta-font-regular">
                   {{ question.title }}
 
-                  <span class="required-star noselect">*</span>
+                  <span class="required-star">*</span>
                 </p>
               </div>
 
@@ -688,17 +685,10 @@
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
-</div>
-
-<!-- BACK BTN -->
-
-<div
-  class="d-flex justify-content-center align-items-center back-btn-container"
->
-  <app-applicant-next-back-btn [backStep]="true">
-    [disabled]="true"</app-applicant-next-back-btn
-  >
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- CONFIRM ALL REVIEW -->

@@ -29,4 +29,15 @@ export enum InputSwitchActions {
   SECOND_AUTHORIZATION = 'isSecondAuthorization',
   THIRD_AUTHORIZATION = 'isThirdAuthorization',
   FOURTH_AUTHORIZATION = 'isFourthAuthorization',
+
+  CONSENT_RELEASE = 'isConsentRelease',
+  PERIODICALLY_OBTAINED = 'isPeriodicallyObtained',
+  INFORMATION_CORRECT = 'isInformationCorrect',
+
+  IS_AUTHORIZE = 'isAuthorize',
+  IS_FURTHER_UNDERSTAND = 'isFurtherUnderstand',
+  IS_PSP_REPORT = 'isPspReport',
+  IS_DISCLOSURE_REGARDING_REPORT = 'isDisclosureRegardingReport',
+
+  IS_TESTED = 'isTested',
 }

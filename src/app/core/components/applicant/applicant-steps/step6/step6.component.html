@@ -1,7 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center noselect ta-font-bold">Education</h1>
+  <h1 class="m-0 step-title text-center ta-font-bold">Education</h1>
 
-  <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
+  <h3 class="m-0 step-subtitle text-center ta-font-bold">
     Please select the highest grade completed:
   </h3>
 
@@ -24,7 +24,7 @@
         trackBy: trackByIdentity
       "
     >
-      {{ grade }}
+      <p class="m-0">{{ grade }}</p>
     </div>
 
     <!-- REVIEW AND FEEDBACK -->
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <p class="m-0 noselect college-title">COLLEGE:</p>
+  <p class="m-0 college-title">COLLEGE:</p>
 
   <!-- SELECT COLLAGE GRADE -->
 
@@ -61,7 +61,7 @@
         trackBy: trackByIdentity
       "
     >
-      {{ grade }}
+      <p class="m-0">{{ grade }}</p>
     </div>
 
     <!-- REVIEW AND FEEDBACK -->
@@ -148,9 +148,7 @@
 
       <!-- GENERAL -->
 
-      <h3
-        class="m-0 text-center noselect ta-font-bold step-title general-title"
-      >
+      <h3 class="m-0 text-center ta-font-bold step-title general-title">
         General
       </h3>
 
@@ -298,7 +296,7 @@
 
     <form [formGroup]="contactForm" class="contact-form">
       <h3
-        class="contact-title noselect text-center ta-font-bold"
+        class="contact-title text-center ta-font-bold"
         [ngStyle]="{
           'margin-bottom': contactsArray.length ? '22px' : '32px'
         }"
