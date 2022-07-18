@@ -14,6 +14,16 @@
       color: $white;
       font-size: 14px;
       height: 18px;
+
+      &::-moz-selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+      }
+
+      &::selection {
+        color: $white;
+        background: rgb(255, 255, 255, 0.2);
+      }
     }
   }
 
@@ -31,6 +41,16 @@
           font-size: 22px;
           line-height: 22px;
           color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
       }
 
@@ -42,6 +62,16 @@
           font-size: 18px;
           line-height: 22px;
           color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         &.company-usdot {
@@ -77,6 +107,16 @@
         font-size: 18px;
         line-height: 22px;
         color: $bw6-2;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       &.company-street {
@@ -102,6 +142,16 @@
     height: 39px;
     color: $ta-blue;
     margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .welcome-text,
@@ -111,6 +161,16 @@
     height: 18px;
     color: $bw6-2;
     text-align: center;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 
   .welcome-btn {
@@ -136,10 +196,23 @@
     font-size: 14px;
     color: $bw5;
     text-align: center;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .logo-container {
+    margin: 60px 42px 12px 0;
   }
 
   .copyright {
-    margin-top: 60px;
     height: 42px;
     border-top: 0.1rem solid $ta-gray-02;
 
@@ -147,6 +220,16 @@
       color: $ta-blue-2;
       font-weight: 400;
       font-size: 14px;
+
+      &::-moz-selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
     }
   }
 }

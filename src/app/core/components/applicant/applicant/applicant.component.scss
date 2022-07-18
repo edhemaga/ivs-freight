@@ -4,12 +4,13 @@
   min-height: 100vh;
   position: relative;
   background: $white;
-  padding-right: 0 !important;
 
   .step-progress-bar {
+    width: 1432px;
+    margin: 0 auto;
+
     .step {
-      width: 134px;
-      cursor: pointer;
+      width: 130px;
 
       .bullet {
         position: relative;
@@ -17,15 +18,21 @@
         width: 42px;
         background: $bw-9;
         border-radius: 3px;
+        cursor: pointer;
         transition: background 0.3s ease-in-out;
 
         p {
           font-size: 27px;
           color: $white;
           display: inline-flex;
+          user-select: none;
           visibility: visible;
           opacity: 1;
           transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+
+        &:hover {
+          background: $bw4;
         }
       }
 
@@ -34,10 +41,35 @@
         color: $bw5;
         font-size: 14px;
         line-height: 14px;
+        cursor: pointer;
         visibility: visible;
         opacity: 1;
         transition: color 0.3s ease-in-out, visibility 0.3s ease-in-out,
           opacity 0.3s ease-in-out;
+
+        &::-moz-selection {
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
+        }
+
+        &::selection {
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
+        }
+
+        &:hover {
+          color: $bw6-2;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
       }
 
       .bullet-2 + .step-text,
@@ -60,8 +92,8 @@
         content: '';
         position: absolute;
         bottom: 19px;
-        right: -92px;
-        width: 68px;
+        right: -90px;
+        width: 67px;
         margin: 0 12px;
         height: 2px;
         background: $bw-9;
@@ -81,6 +113,7 @@
         content: '';
         display: none;
         visibility: hidden;
+        user-select: none;
         opacity: 1;
         vertical-align: middle;
         width: 20px;
@@ -88,16 +121,6 @@
         background: url(/assets/svg/applicant/check.svg);
         background-size: cover;
         transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      }
-
-      &:hover {
-        .bullet {
-          background: $bw4;
-        }
-
-        .step-text {
-          color: $bw6-2;
-        }
       }
 
       &.step-active {
@@ -127,15 +150,8 @@
             visibility: hidden;
             opacity: 0;
           }
-        }
 
-        .step-text {
-          visibility: hidden;
-          opacity: 0;
-        }
-
-        &:hover {
-          .bullet {
+          &:hover {
             background: $ta-light-blue;
 
             &::before {
@@ -151,11 +167,16 @@
             }
           }
 
-          .step-text {
+          &:hover + .step-text {
             visibility: visible;
             opacity: 1;
             color: $ta-light-blue;
           }
+        }
+
+        .step-text {
+          visibility: hidden;
+          opacity: 0;
         }
       }
     }

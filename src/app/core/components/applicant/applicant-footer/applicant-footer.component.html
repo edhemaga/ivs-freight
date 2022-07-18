@@ -9,18 +9,25 @@
       [ngClass]="{ 'display-box': displayInfoBox }"
     >
       <div class="d-flex align-items-center justify-content-between box-header">
-        <h2 class="m-0 ta-font-black">JD FREIGHT INC</h2>
+        <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
 
         <svg-icon
-          class="close-icon"
+          class="d-flex align-items-center justify-content-center close-icon"
           src="assets/svg/common/ic_x.svg"
           [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
           (click)="onHideInfoBox()"
+          appTooltip="Close"
+          tooltipColor="#FFFFFF"
+          tooltipBackground="#6C6C6C"
+          position="bottom-left"
+          borderRadius="2px"
+          fontSize="11px"
+          fontWeight="bold"
         ></svg-icon>
       </div>
 
       <div class="d-flex align-items-center box-dets">
-        <p class="m-0 ta-font-regular">USDOT # 245326</p>
+        <p class="m-0 ta-font-regular">USDOT # {{ companyInfo?.usDot }}</p>
       </div>
 
       <div class="d-flex align-items-center box-dets">
@@ -29,7 +36,7 @@
           src="assets/svg/common/ic_phone.svg"
           [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
         ></svg-icon>
-        <p class="m-0 ta-font-regular">(621) 324-4444</p>
+        <p class="m-0 ta-font-regular">{{ companyInfo?.phone }}</p>
       </div>
 
       <div class="d-flex align-items-start box-dets">
@@ -39,7 +46,11 @@
           [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
         ></svg-icon>
         <p class="m-0 ta-font-regular">
-          4747 Research Forest Dr #185 <br />The Woodlands, TX 77381, USA
+          {{ companyInfo?.address.address }} #
+          {{ companyInfo?.address.addressUnit }}<br />{{
+            companyInfo?.address.city
+          }}, {{ companyInfo?.address.stateShortName }}
+          {{ companyInfo?.address.zipCode }}, {{ companyInfo?.address.country }}
         </p>
       </div>
 
