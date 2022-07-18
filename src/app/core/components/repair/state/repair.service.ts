@@ -1,3 +1,4 @@
+import { RepairShopMinimalListResponse } from './../../../../../../appcoretruckassist/model/repairShopMinimalListResponse';
 import { RepairModalResponse } from './../../../../../../appcoretruckassist/model/repairModalResponse';
 
 import { Injectable } from '@angular/core';
@@ -20,11 +21,27 @@ import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/r
   providedIn: 'root',
 })
 export class RepairTService {
-  constructor(private repairService: RepairService, private shopServices: RepairShopService) {}
+  constructor(
+    private repairService: RepairService,
+    private shopServices: RepairShopService
+  ) {}
 
   public getRepairModalDropdowns(): Observable<RepairModalResponse> {
     return this.repairService.apiRepairModalGet();
   }
+
+  //Get Shipper Minimal List
+  // public getRepairShopMinimalList(
+  //   pageIndex?: number,
+  //   pageSize?: number,
+  //   count?: number
+  // ): Observable<RepairShopMinimalListResponse> {
+  //   return this.repairService.apiRepairListGet(
+  //     pageIndex,
+  //     pageSize,
+  //     count
+  //   );
+  // }
 
   public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
     return this.repairService.apiRepairPost(data);

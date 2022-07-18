@@ -85,23 +85,6 @@ export class TruckassistTableHeadComponent
         }
       });
 
-    // Toaggle Columns
-    this.tableService.currentToaggleColumn
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((response: any) => {
-        if (response) {
-          this.columns = this.columns.map((c) => {
-            if (c.field === response.column.field) {
-              c.hidden = response.column.hidden;
-            }
-
-            return c;
-          });
-
-          this.setVisibleColumns();
-        }
-      });
-
     setTimeout(() => {
       this.getNotPinedMaxWidth();
     }, 10);
@@ -111,7 +94,7 @@ export class TruckassistTableHeadComponent
     if (changes?.columns && !changes?.columns?.firstChange) {
       this.columns = changes.columns.currentValue;
 
-      this.setVisibleColumns();
+      this.setVisibleColumns(true);
     }
 
     if (
@@ -134,7 +117,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
-  setVisibleColumns() {
+  setVisibleColumns(getNotPinedMaxWidth?: boolean) {
     this.visibleColumns = [];
     this.pinedColumns = [];
     this.notPinedColumns = [];
@@ -172,6 +155,12 @@ export class TruckassistTableHeadComponent
     });
 
     this.changeDetectorRef.detectChanges();
+
+    if(getNotPinedMaxWidth){
+      setTimeout(() => {
+        this.getNotPinedMaxWidth();
+      }, 10);
+    }
   }
 
   getNotPinedMaxWidth() {
@@ -183,7 +172,7 @@ export class TruckassistTableHeadComponent
       this.notPinedMaxWidth =
         tableContainer.clientWidth -
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
-        6;
+        8;
 
       this.changeDetectorRef.detectChanges();
     }

@@ -2,6 +2,7 @@ export interface ContactModel {
   contactName: string;
   contactPhone: string;
   contactRelationship: string;
+  isEditingContact: boolean;
 }
 
 export class Contact {

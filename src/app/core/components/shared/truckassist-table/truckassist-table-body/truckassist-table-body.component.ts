@@ -42,19 +42,17 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  /* Dropdown */
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
-  /* Progress */
   progressData: any[] = [];
+  checkForScrollTimeout: any;
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef
   ) {}
-
   ngOnInit(): void {
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -99,25 +97,6 @@ export class TruckassistTableBodyComponent
         }
       });
 
-    // Toaggle Columns
-    this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
-      .subscribe((response: any) => {
-        if (response?.column) {
-          this.columns = this.columns.map((c) => {
-            if (c.field === response.column.field) {
-              c.hidden = response.column.hidden;
-            }
-
-            return c;
-          });
-
-          this.changeDetectorRef.detectChanges();
-
-          this.checkForScroll();
-        }
-      });
-
     // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
       .pipe(untilDestroyed(this))
@@ -145,9 +124,21 @@ export class TruckassistTableBodyComponent
 
     if (
       !changes?.tableContainerWidth?.firstChange &&
-      changes?.tableContainerWidth
+      changes?.tableContainerWidth &&
+      changes?.tableContainerWidth?.previousValue > 0
     ) {
-      this.getNotPinedMaxWidth(true);
+
+      if (
+        changes?.tableContainerWidth?.currentValue <
+        changes?.tableContainerWidth?.previousValue
+      ) {
+      } else if (
+        changes?.tableContainerWidth?.currentValue >
+        changes?.tableContainerWidth?.previousValue
+      ) {
+      }
+
+      this.getNotPinedMaxWidth(true, 100);
     }
 
     if (
@@ -173,11 +164,7 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
-    this.getNotPinedMaxWidth();
-
-    setTimeout(() => {
-      this.checkForScroll();
-    }, 10);
+    this.getNotPinedMaxWidth(true);
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -187,7 +174,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth(checkScroll?: boolean) {
+  getNotPinedMaxWidth(checkScroll?: boolean, ms?: number) {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
@@ -196,13 +183,10 @@ export class TruckassistTableBodyComponent
       this.notPinedMaxWidth =
         tableContainer.clientWidth -
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
-        6;
+        8;
 
       if (checkScroll) {
-        const div = document.getElementById('scroll-container');
-        if (div) {
-          this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-        }
+        this.checkForScroll();
       }
     }
   }
@@ -216,12 +200,16 @@ export class TruckassistTableBodyComponent
   }
 
   checkForScroll() {
+    clearTimeout(this.checkForScrollTimeout);
+
     const div = document.getElementById('scroll-container');
 
     if (div) {
-      this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+      this.checkForScrollTimeout = setTimeout(() => {
+        this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-      this.changeDetectorRef.detectChanges();
+        this.changeDetectorRef.detectChanges();
+      }, 100);
     }
   }
 

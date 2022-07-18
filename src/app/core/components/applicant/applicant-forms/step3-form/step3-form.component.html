@@ -1,0 +1,126 @@
+<div class="d-flex flex-column step-form" [formGroup]="form">
+  <div class="d-flex">
+    <div class="group license-group">
+      <app-ta-input
+        formControlName="license"
+        [inputConfig]="{
+          name: 'License',
+          type: 'text',
+          label: 'License #',
+          isRequired: true,
+          textTransform: 'capitalize',
+          autoFocus: true
+        }"
+      ></app-ta-input>
+    </div>
+    <div class="group country-group">
+      <app-ta-input-dropdown
+        formControlName="countryType"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Country',
+          isRequired: true,
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-country'
+        }"
+        [canAddNew]="true"
+        [options]="countryTypes"
+        (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
+      ></app-ta-input-dropdown>
+    </div>
+  </div>
+
+  <!-- STATE, CLASS, EXP. DATE -->
+
+  <div class="d-flex">
+    <div class="group state-group">
+      <app-ta-input-dropdown
+        formControlName="stateId"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'State',
+          isRequired: true,
+          isDisabled: !form.get('countryType').value,
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-state'
+        }"
+        [canAddNew]="true"
+        [options]="stateTypes"
+        (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
+      ></app-ta-input-dropdown>
+    </div>
+    <div class="group class-group">
+      <app-ta-input-dropdown
+        formControlName="classType"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Class',
+          isRequired: true,
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-class'
+        }"
+        [canAddNew]="true"
+        [options]="classTypes"
+        (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
+      ></app-ta-input-dropdown>
+    </div>
+    <div class="group exp-date-group">
+      <app-ta-input
+        formControlName="expDate"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          label: 'Exp. Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+    </div>
+  </div>
+
+  <!-- RESTRICTIONS -->
+
+  <div class="d-flex">
+    <div class="restrictions-group">
+      <app-ta-input-dropdown
+        formControlName="restrictions"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Restrictions',
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-12',
+          customClass: 'input-30'
+        }"
+        [canAddNew]="true"
+        [options]="restrictionsList"
+        (selectedItem)="handleInputSelect($event, 'RESTRICTIONS')"
+      ></app-ta-input-dropdown>
+    </div>
+  </div>
+
+  <!-- ENDORSMENTS -->
+
+  <div class="d-flex">
+    <div class="endorsments-group">
+      <app-ta-input-dropdown
+        formControlName="endorsments"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Endorsments',
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-endorsments',
+          customClass: 'input-30'
+        }"
+        [canAddNew]="true"
+        [options]="endorsmentsList"
+        (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
+      ></app-ta-input-dropdown>
+    </div>
+  </div>
+</div>

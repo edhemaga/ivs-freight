@@ -12,7 +12,7 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse';
+/* import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse'; */
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
@@ -75,10 +75,11 @@ export class DriverTService {
     );
   }
 
+  /* Observable<CreateDriverResponse> */
   // Create Driver
   public addDriver(
     data: CreateDriverCommand
-  ): Observable<CreateDriverResponse> {
+  ): Observable<any> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id).subscribe({

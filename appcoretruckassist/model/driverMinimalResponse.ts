@@ -17,5 +17,6 @@ export interface DriverMinimalResponse {
     lastName?: string | null;
     ownerId?: number | null;
     status?: number;
+    avatar?: string | null;
 }
 

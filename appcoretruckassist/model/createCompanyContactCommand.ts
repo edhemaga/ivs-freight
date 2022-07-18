@@ -19,6 +19,7 @@ export interface CreateCompanyContactCommand {
     address?: AddressEntity;
     note?: string | null;
     shared?: boolean;
+    avatar?: string | null;
     companyContactLabelId?: number | null;
 }
 

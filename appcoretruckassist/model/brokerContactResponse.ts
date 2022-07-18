@@ -14,6 +14,7 @@ import { DepartmentResponse } from './departmentResponse';
 
 export interface BrokerContactResponse { 
     id?: number;
+    brokerId?: number;
     email?: string | null;
     phone?: string | null;
     contactName?: string | null;

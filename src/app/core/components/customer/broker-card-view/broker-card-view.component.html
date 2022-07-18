@@ -1,0 +1,227 @@
+<div class="cards-item-wrapper-1">
+  <app-ta-details-header-card
+    [cardDetailsDate]="broker?.createdAt | formatDateP"
+    [tooltipNext]="'Next Broker'"
+    [tooltipPrevious]="'Previous Broker'"
+    [searchInputName]="'Search Broker'"
+    [dateChecked]="'5 days ago'"
+    [options]="brokerDropdowns"
+    (selectValue)="onSelectBroker($event)"
+    (changeEvent)="onChangeBroker($event)"
+  >
+    <div class="repair-information-wrapper">
+      <div class="repair-information-item">
+        <span class="header-bottom">{{ broker?.dbaName }}</span>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_phone.svg"
+        ></svg-icon>
+        <p class="repair-value">
+          {{ broker?.phone | formatPhoneP }}
+        </p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_email.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ broker?.email }}</p>
+      </div>
+      <div class="repair-information-item">
+        <svg-icon
+          class="repair-icon"
+          src="assets/svg/common/ic_address.svg"
+        ></svg-icon>
+        <p class="repair-value">{{ broker?.mainAddress?.address ? broker.mainAddress.address : broker.billingAddress.address }}</p>
+      </div>
+    </div>
+  </app-ta-details-header-card>
+  <div class="wrapper-additional-cards"  [ngClass]="{ 'bind-heigth': !templateCard }">
+    <div class="repair-cards">
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="false"
+        [cardName]="'Additional Info'"
+        [isCardOpen]="true"
+      >
+        <div class="additional-template-broker-data">
+          <div class="addition-template-item">
+            <span class="header">EIN</span>
+            <span class="value">{{ broker?.ein | formatEinP }}</span>
+          </div>
+          <div class="addition-template-item">
+            <span class="header">MC</span>
+            <span class="value">{{ broker?.mcNumber }}</span>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [hasCounter]="20"
+        [cardName]="'Paid Invoice'"
+        [isCardOpen]="true"
+      >
+        <div class="charts-template perfomance">
+          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
+          </app-ta-tab-switch>
+
+          <div class="additional-template-broker-data charts-broker-template">
+            <div class="addition-template-item">
+              <div class="header-svg-wrapper">
+                <svg-icon
+                  src="assets/svg/common/ic_broker_billing.svg"
+                ></svg-icon>
+                <span class="header">Count</span>
+              </div>
+              <span class="value charts-value">567</span>
+            </div>
+            <div class="addition-template-item">
+              <div class="header-svg-wrapper">
+                <svg-icon src="assets/svg/common/ic_broker_cost.svg"></svg-icon>
+                <span class="header">Revenue</span>
+              </div>
+              <span class="value charts-value">$315,234.64</span>
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Mileage Rate History'"
+        [isCardOpen]="false"
+        [tooltipName]="'View in Modal'"
+        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+      >
+        <div class="charts-template perfomance">
+          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
+          </app-ta-tab-switch>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [hasCounter]="37"
+        [cardName]="'Invoice Ageing'"
+        [isCardOpen]="true"
+      >
+        <div class="invoice-ageing-template">
+          <div class="invoice-ageing-template-item">
+            <span class="header-name">Total Debt</span>
+            <span class="value-ageing">$65,238.22</span>
+          </div>
+        </div>
+        <div class="progress-text-wrapper">
+          <div class="text-broker-wrapper">
+            <span class="days">0 - 20 days</span>
+            <span class="invoice-days">18 <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">$12,222.22</span>
+          </div>
+          <div class="custom-progress-light-blue">
+            <div class="inside-progress"></div>
+          </div>
+        </div>
+
+        <div class="progress-text-wrapper">
+          <div class="text-broker-wrapper">
+            <span class="days">21 - 40 days</span>
+            <span class="invoice-days">26 <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">$9,222.22</span>
+          </div>
+          <div class="custom-progress-mid-blue">
+            <div class="inside-progress"></div>
+          </div>
+        </div>
+
+        <div class="progress-text-wrapper">
+          <div class="text-broker-wrapper">
+            <span class="days">41 - 60 days</span>
+            <span class="invoice-days">37 <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">$10,222.22</span>
+          </div>
+          <div class="custom-progress-dark-blue">
+            <div class="inside-progress"></div>
+          </div>
+        </div>
+
+        <div class="progress-text-wrapper">
+          <div class="text-broker-wrapper">
+            <span class="days">60+ days</span>
+            <span class="invoice-days">13 <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">$22,222.22</span>
+          </div>
+          <div class="custom-progress-danger-broker">
+            <div class="inside-progress"></div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Terms and Credit'"
+        [isCardOpen]="true"
+      >
+        <div class="invoice-ageing-template">
+          <div class="invoice-ageing-template-item">
+            <span class="header-name">Available Credit</span>
+            <span *ngIf="broker.availableCredit" class="value-ageing">{{
+              broker?.availableCredit | formatCurrency
+            }}</span>
+          </div>
+        </div>
+        <div class="progress-container">
+          <div class="inside-fill"></div>
+        </div>
+
+        <div class="additional-template-broker-data">
+          <div class="addition-template-item">
+            <span class="header">Credit</span>
+            <span class="value charts-value">{{
+              broker?.creditLimit | formatCurrency
+            }}</span>
+          </div>
+          <div class="addition-template-item">
+            <span class="header">Pay Term</span>
+            <span class="value charts-value">{{ broker?.payTerm.name }}</span>
+          </div>
+        </div>
+      </app-ta-custom-card>
+
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Payment History'"
+        [isCardOpen]="false"
+        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+      >
+        <div class="charts-template perfomance">
+          <app-ta-tab-switch [tabs]="tabsBroker" [type]="'type2-modal-popup'">
+          </app-ta-tab-switch>
+        </div>
+      </app-ta-custom-card>
+
+      <div class="divider"></div>
+      <div class="note-cards">
+        <app-ta-input-note
+          [formControl]="note"
+          [isVisibleSecondDivider]="false"
+          [isVisibleArrow]="true"
+          [minRows]="1"
+          [isVisibleDivider]="false"
+          [placeholder]="'Write something.'"
+          [customClass]="'note-small'"
+        ></app-ta-input-note>
+      </div>
+    </div>
+  </div>
+</div>

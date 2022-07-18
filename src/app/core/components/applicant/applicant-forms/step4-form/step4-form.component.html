@@ -1,0 +1,103 @@
+<div class="d-flex flex-column step-form" [formGroup]="form">
+  <div class="d-flex">
+    <div class="group location-group">
+      <app-ta-input-address
+        formControlName="accidentLocation"
+        [inputConfig]="{
+          name: 'Address',
+          type: 'text',
+          label: 'Location',
+          isRequired: true,
+          placeholderIcon: 'address',
+          textTransform: 'capitalize',
+          autoFocus: true
+        }"
+        (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+      ></app-ta-input-address>
+    </div>
+    <div class="group date-group">
+      <app-ta-input
+        formControlName="accidentDate"
+        [inputConfig]="{
+          name: 'datepicker',
+          type: 'text',
+          label: 'Date',
+          placeholderIcon: 'date',
+          isRequired: true,
+          customClass: 'datetimeclass'
+        }"
+      ></app-ta-input>
+    </div>
+  </div>
+
+  <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
+
+  <div class="d-flex justify-content-between">
+    <div class="d-flex align-items-center fatalities-injuries-group">
+      <div class="d-flex align-items-center fatalities-group">
+        <app-ta-input-arrows
+          name="Fatalities #"
+          [counter]="fatalitiesCounter"
+          (counterEmmiter)="onIncrementDecrementCounter($event, 'fatalities')"
+        ></app-ta-input-arrows>
+      </div>
+
+      <div class="d-flex align-items-center injuries-group">
+        <app-ta-input-arrows
+          name="Injuries #"
+          [counter]="injuriesCounter"
+          (counterEmmiter)="onIncrementDecrementCounter($event, 'injuries')"
+        ></app-ta-input-arrows>
+      </div>
+    </div>
+
+    <div
+      class="d-flex align-items-center justify-content-between group hazmat-spill-group"
+    >
+      <div class="title-box">
+        <p class="m-0 ta-font-regular">
+          Hazmat spill <span class="required-star">*</span>
+        </p>
+      </div>
+      <div class="radios-box">
+        <app-ta-input-radiobuttons
+          [buttons]="answerChoices"
+          (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
+        ></app-ta-input-radiobuttons>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUCK TYPE, DESCRIPTION -->
+
+  <div class="d-flex">
+    <div class="group truck-type-group">
+      <app-ta-input-dropdown
+        formControlName="truckType"
+        [template]="'svgtext-template'"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Vehicle type',
+          isRequired: true,
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-applicant-t-type'
+        }"
+        [options]="truckType"
+        (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+      ></app-ta-input-dropdown>
+    </div>
+    <div class="group description-group">
+      <app-ta-input
+        formControlName="accidentDescription"
+        [inputConfig]="{
+          name: 'Description',
+          type: 'text',
+          label: 'Description',
+          textTransform: 'capitalize',
+          isRequired: true
+        }"
+      ></app-ta-input>
+    </div>
+  </div>
+</div>
