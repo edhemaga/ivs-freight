@@ -3,6 +3,7 @@ import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
 import { hexToRgbA } from 'src/assets/utils/methods-global';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-chart',
@@ -154,6 +155,7 @@ export class TaChartComponent implements OnInit {
       },
       scales: {
         yAxes: [{
+            stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
             display: this.axesProperties['verticalLeftAxes'] ? this.axesProperties['verticalLeftAxes']['visible'] : false,
             position: 'left',
             gridLines: {
@@ -199,6 +201,7 @@ export class TaChartComponent implements OnInit {
               }
         },
         {
+          stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
           display: this.axesProperties['verticalRightAxes'] ? this.axesProperties['verticalRightAxes']['visible'] : false,
           gridLines: {
               display: this.axesProperties['verticalRightAxes'] ? this.axesProperties['verticalRightAxes']['showGridLines'] : false
@@ -232,7 +235,16 @@ export class TaChartComponent implements OnInit {
        }
      ],
       xAxes: [{
-          offset: true,
+          type: 'category',
+          time: {
+            unit: 'month',
+            unitStepSize: 1,
+            displayFormats: {
+              month: 'MMM'
+            }
+          },
+          stacked: this.chartConfig['stacked'] ? this.chartConfig['stacked'] : false,
+          offset: this.chartConfig['offset'] ? this.chartConfig['offset'] : false,
           display: this.axesProperties['horizontalAxes'] ? this.axesProperties['horizontalAxes']['visible'] : false,
           position: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['position'] ? this.axesProperties['horizontalAxes']['position'] : 'bottom',
           gridLines: {
@@ -242,7 +254,7 @@ export class TaChartComponent implements OnInit {
               color: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['showGridLines'] ? '#DADADA' : 'rgba(0, 0, 0, 0)'
           },
           ticks: {
-              fontColor: '#AAAAAA',
+              fontColor: this.axesProperties['horizontalAxes'] && this.axesProperties['horizontalAxes']['removeColor'] ? 'rgba(0, 0, 0, 0)' : '#AAAAAA',
               fontSize: 11,
               autoSkip: false,
               maxRotation: 0,
@@ -372,7 +384,6 @@ export class TaChartComponent implements OnInit {
             }
           }
         }
-
         const gridWidth = xPoint1 - xPoint2;
         ctx.save();
         ctx.fillStyle = '#F3F3F3';
@@ -411,9 +422,10 @@ export class TaChartComponent implements OnInit {
   }
 
   setChartLegendData(elements: any) {
+    let totalValue = 0;
     elements.map((item, i) => {
       const chartValue = item['_chart']['config']['data']['datasets'][i]['data'][elements[i]['_index']];
-
+      totalValue = totalValue + chartValue;
       this.legendAttributes.map((item2, a) => {
           if ( item2['elementId'] == i ) {
             item2['value'] = chartValue;
@@ -421,6 +433,10 @@ export class TaChartComponent implements OnInit {
 
           if ( item2['elementId'] && item2['elementId'].length  && item2['elementId'].length > 0 && item2['elementId'][0] == i ) {
             item2['value'] = chartValue[item2['elementId'][1]];
+          }
+
+          if ( item2['elementId'] == 'total' ){
+            item2['value'] = totalValue;
           }
 
           if ( item2['titleReplace'] ) { item2['title'] = item2['titleReplace']; }
@@ -577,7 +593,7 @@ export class TaChartComponent implements OnInit {
     this.chart.chart.config.data.datasets.map((item, i) => {
       let dataProp = {
         name: item['label'],
-        value: '$'+item['data'][value],
+        value: item['data'][value],
         percent: this.chartConfig['hasPercentage'] ? '35.45%' : null,
         color: item['borderColor']
       }
@@ -588,13 +604,13 @@ export class TaChartComponent implements OnInit {
       let dataPropMulti = [
         {
           name: 'Price per Gallon',
-          value: '$23',
+          value: 23,
           percent: null,
           color: '#919191'
         },
         {
           name: 'Load Rate per Mile',
-          value: '$23',
+          value: 23,
           percent: null,
           color: '#CCCCCC'
         }
@@ -677,6 +693,82 @@ export class TaChartComponent implements OnInit {
         let color = item.backgroundColor;
         let colorProp = color+'33';
         item.backgroundColor = colorProp.slice(0,9);
+      }
+    });
+    this.setChartOptions();
+  }
+
+  updateTime(ev: any){
+    let range = 0,
+        type,
+        value = [],
+        indicator,
+        format,
+        removeEvery = 2,
+        removeIndex = 0,
+        rangeIndicator = 20,
+        periodFormat = 0,
+        periodIndex = 0;
+
+    switch (ev['name']){
+      case 'All Time':
+        range = 25;
+        type = 'M';
+        format = 'MMM YYYY'
+        break;
+      case 'WTD':
+        range = moment().day();
+        type = 'days';
+        format = 'D ddd';
+        indicator = moment().clone().startOf('isoWeek');
+        break;
+      case 'MTD':
+        range = moment().date();
+        type = 'days';
+        format = 'D ddd';
+        indicator = moment().clone().startOf('month');
+        break;
+      case 'YTD':
+        range = moment().month() + 1;
+        type = 'M';
+        format = 'MMM';
+        indicator = moment().clone().startOf('year');
+        break;
+      case 'Today':
+        range = moment().hour() + 1;
+        type = 'hours';
+        format = 'HH A';
+        indicator = moment().clone().startOf('day');
+        rangeIndicator = 10;
+        break;
+    }
+
+    for ( let a = 0; a < range; a++ ){
+      if ( periodIndex == periodFormat ) { periodIndex = 0; value.push(moment(indicator).add(a, type).format(format).toUpperCase()); }
+      if ( periodFormat != 0 ) { periodIndex++; }
+    }
+
+    this.chart.chart.config.data.labels.map((item, i) => {
+      this.chart.chart.config.data.labels.splice(i, this.chart.chart.config.data.labels.length)
+    });
+
+    value.map((item, i) => {
+      let weekDaySep = item.split(' ');
+      removeIndex++;
+      if ( value.length > rangeIndicator && removeIndex == removeEvery ){
+        removeIndex = 0;
+        weekDaySep[0] = '';
+        weekDaySep[1] = '';
+      }
+      if ( ev['name'] == 'WTD' || ev['name'] == 'MTD' ){
+        this.chart.chart.config.data.labels.push([weekDaySep[0], weekDaySep[1]]);
+      }
+      else if ( ev['name'] == 'Today' ){
+        this.chart.chart.config.data.labels.push(weekDaySep[0]+' '+weekDaySep[1]);
+      }
+      else{
+        let insertData = weekDaySep?.length > 1 && weekDaySep[0] == 'JAN' ? weekDaySep[1] : weekDaySep[0];
+        periodIndex = 0; this.chart.chart.config.data.labels.push(insertData);
       }
     });
     this.setChartOptions();
