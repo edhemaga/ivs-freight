@@ -57,6 +57,44 @@ export class FilterComponent implements OnInit {
 
    selectedUser: any[] = [];
 
+   unselectedDispatcher: any[] = [
+    {
+      name: 'Angelo Trotter'
+    },
+    {
+      name: 'Aleksandra Djordjevic'
+    },
+    {
+      name: 'Alex Midleman'
+    },
+    {
+      name: 'Ban Dover'
+    },
+    {
+      name: 'Carlos Huanito'
+    },
+    {
+      name: 'Chirs Griffin',
+    },
+    {
+      name: 'Eric Forman',
+    },
+    {
+      name: 'Glan Danzig'
+    },
+    {
+      name: 'Denis Rodman'
+    },
+    {
+      name: 'Michael Scott'
+    },
+    {
+      name: 'Marko Martinovic'
+    }
+   ];
+
+   selectedDispatcher: any[] = [];
+
    @Input() type: string = 'userFilter';
    @Input() icon: string = 'user';
 
@@ -89,6 +127,16 @@ export class FilterComponent implements OnInit {
       }
       return item;
     });
+  }
+
+  addToSelectedDispatcher(indx, item){
+    this.unselectedDispatcher.splice(indx, 1);
+    this.selectedDispatcher.push(item);
+  }
+
+  removeFromSelectedDispatcher(item, indx){
+    this.selectedDispatcher.splice(indx, 1);
+    this.unselectedDispatcher.push(item);
   }
 
 }

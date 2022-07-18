@@ -53,8 +53,18 @@
                 </div>
                 <div class="toolbar-icons-frame">
                     <div class="border-right"></div>
-                    <div class="plus-box">
-                        <svg-icon (click)="openModalTodo()" src="assets/svg/truckassist-table/dropdown/content/add.svg"></svg-icon>
+                    <div class="plus-box"
+                    ngbTooltip
+                    mainTooltip="Add New"
+                    position="bottom"
+                    tooltipBackground="#6C6C6C"
+                    >
+                    <app-filter
+                    [type]="'dispatcherFilter'"
+                    >
+                    <svg-icon (click)="openModalTodo()" src="assets/svg/truckassist-table/dropdown/content/add.svg"></svg-icon>
+                    </app-filter>
+
                     </div>
                 </div>
             </div>

@@ -99,4 +99,59 @@ autoClose="outside"
             <div class="time-items">Custom</div>
         </div>
     </div>
+    <div *ngIf="type == 'dispatcherFilter'" class="dispatcher-holder">
+        <div class="dispatcher-header">
+            <div class="dispatcher-filter-box">0</div>
+            <div class="dispatcher-title-text">Dispatcher Filter</div>
+            <div class="dispatcher-close" (click)="t2.close()">
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            </div>
+        </div>
+        <div class="dispatcher-border-filter"></div>
+        <div class="dispatcher-search-holder">
+            <div class="search-icons">
+                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            </div>
+            <div class="border-search"></div>
+            <input class="dispatcher-search-user-holder" type="text" placeholder="Search Dispatcher"/>
+        </div>
+        <div class="dispatcher-border-filter"></div>
+        <div class="dispatcher-selected-user-holder">
+            <div *ngFor="let item of selectedDispatcher; let indx=index" class="dispatcher-selected-user-frame">
+                <div class="dispatcher-initials">
+                    <app-profile-images
+                    [size]="'small'"
+                    [type]="'user'"
+                    ></app-profile-images>
+                </div>    
+                <div class="dispatcher-selected">{{item.name}}</div>
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                ngbTooltip
+                mainTooltip="Remove User"
+                position="top"
+                tooltipBackground="#6C6C6C"
+                (click)="removeFromSelectedDispatcher(item, indx)" 
+                class="icon-delete">
+                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            </div>
+            </div>
+        </div>
+        <div *ngIf="selectedDispatcher.length > 0" class="dispatcher-border-filter"></div>
+        <div class="dispatcher-user-holder">
+            <div *ngFor="let item of unselectedDispatcher; let indx=index" class="dispatcher-user-frame-holder">
+                <div *ngIf="!item.hidden" (click)="addToSelectedDispatcher(indx, item)" class="dispatcher-user-frame">
+                    <div class="dispatcher-initials">
+                        <app-profile-images
+                        [size]="'small'"
+                        [type]="'user'"
+                        ></app-profile-images>
+                    </div>
+                    <div class="unselecter-dispatcher">{{item.name}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
 </ng-template>

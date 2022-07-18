@@ -284,6 +284,9 @@ export class DashboardPickupByStateComponent implements OnInit {
     delete this.compareColor[item.id];
   }
 
+  clearSelected(){
+  }
+
   changeState(item){
     const newSwitchValue = [
       {
