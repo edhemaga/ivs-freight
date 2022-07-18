@@ -86,7 +86,9 @@
                 </div>
                 <div
                   class="dashboard-pickup-body-state-list-circle"
-                  [ngStyle]="{ 'background-color': ('#' + pickupCircleColor[indx]) }"
+                  [ngStyle]="{
+                    'background-color': '#' + pickupCircleColor[indx]
+                  }"
                 ></div>
                 <div class="dashboard-pickup-body-state-list-name">
                   {{ item.name }}
@@ -99,8 +101,11 @@
                 <div class="dashboard-pickup-body-state-list-percent">
                   {{ item.percent }}
                 </div>
-                <div class="dashboard-pickup-body-state-list-remove" (click)="removeFromStateList($event, indx, item)">
-                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                <div
+                  class="dashboard-pickup-body-state-list-remove"
+                  (click)="removeFromStateList($event, indx, item)"
+                >
+                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
                 </div>
               </div>
             </div>
@@ -108,35 +113,40 @@
           </div>
         </div>
       </div>
-      <div class="col-4"></div>
-        <div class="col-5">
-            <div class="bar_chart_holder">
-                <div class="chart_top_line_holder">
-                    <div class="chart_line_title">March, 2023 - March, 2025</div>
-                    <div class="chart_legend_hold" [ngStyle]="{'opacity': selectedStates?.length ? '0': '1'}">
-                      <div class="chart_legend_line line_sep">
-                          <div class="chart_legend_dot round_dark_grey">
-                          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                          </div>
-                          <div class="chart_legend_title">Top 10</div>
-                      </div>
-                      <div class="chart_legend_line">
-                          <div class="chart_legend_dot round_light_grey">
-                          <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
-                          </div>
-                          <div class="chart_legend_title">All Others</div>
-                      </div>
-                    </div>
+      <div class="col-4">
+        
+      </div>
+      <div class="col-5">
+        <div class="bar_chart_holder">
+          <div class="chart_top_line_holder">
+            <div class="chart_line_title">March, 2023 - March, 2025</div>
+            <div
+              class="chart_legend_hold"
+              [ngStyle]="{ opacity: selectedStates?.length ? '0' : '1' }"
+            >
+              <div class="chart_legend_line line_sep">
+                <div class="chart_legend_dot round_dark_grey">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
                 </div>
-                <app-ta-chart
-                    #statesBarChart
-                    [chartConfig]="barChartConfig"
-                    [axesProperties]="barAxes"
-                    [legendAttributes]="{}"
-                >
-                </app-ta-chart>
+                <div class="chart_legend_title">Top 10</div>
+              </div>
+              <div class="chart_legend_line">
+                <div class="chart_legend_dot round_light_grey">
+                  <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
+                </div>
+                <div class="chart_legend_title">All Others</div>
+              </div>
             </div>
+          </div>
+          <app-ta-chart
+            #statesBarChart
+            [chartConfig]="barChartConfig"
+            [axesProperties]="barAxes"
+            [legendAttributes]="{}"
+          >
+          </app-ta-chart>
         </div>
+      </div>
     </div>
   </div>
 </div>
