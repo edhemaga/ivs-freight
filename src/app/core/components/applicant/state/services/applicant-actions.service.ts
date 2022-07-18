@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
-import {
+/* import {
   AcceptApplicationCommand,
   ApplicantResponse,
 } from 'appcoretruckassist';
 
-import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service';
+import { ApplicantService } from './../../../../../../../appcoretruckassist/api/applicant.service'; */
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class ApplicantActionsService {
     null
   );
 
-  constructor(private applicantService: ApplicantService) {}
+  constructor(/* private applicantService: ApplicantService */) {}
 
   public getApplicantInfo(data: any) {
     this.applicantInfoSubject.next(data);
@@ -27,9 +27,9 @@ export class ApplicantActionsService {
     return this.applicantInfoSubject.asObservable();
   }
 
-  public acceptApplicant(
+  /*  public acceptApplicant(
     data: AcceptApplicationCommand
   ): Observable<ApplicantResponse> {
     return this.applicantService.apiApplicantAcceptPost(data);
-  }
+  } */
 }

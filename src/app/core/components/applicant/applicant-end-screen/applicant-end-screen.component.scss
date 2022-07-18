@@ -1,13 +1,13 @@
 @import 'src/theme/variables.scss';
 
-.welcome-container {
+.end-container {
   padding: 0 !important;
-  background-color: $white;
+  background: $white;
   min-height: 100vh;
 
   .top-header {
     height: 30px;
-    background-color: $ta-blue;
+    background: $ta-blue;
     padding: 6px;
 
     &-title {
@@ -151,7 +151,7 @@
     margin: 80px auto 40px auto;
   }
 
-  .welcome-title {
+  .end-title {
     font-size: 32px;
     height: 39px;
     color: $ta-blue;
@@ -168,13 +168,13 @@
     }
   }
 
-  .welcome-text,
-  .welcome-company {
+  .end-text {
     font-size: 14px;
     line-height: 22px;
-    height: 18px;
+    height: 40px;
     color: $bw6-2;
     text-align: center;
+    margin-bottom: 22px !important;
 
     &::-moz-selection {
       color: $bw6-2;
@@ -185,11 +185,26 @@
       color: $bw6-2;
       background: rgb(108, 108, 108, 0.2);
     }
+
+    a {
+      text-decoration: none;
+      color: $bw6-2;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
   }
 
-  .welcome-btn {
-    margin: 22px auto;
-    width: 168px;
+  .end-btn {
+    margin: 0 auto 22px auto;
+    width: 204px;
     height: 34px;
     border: none;
     outline: none;
