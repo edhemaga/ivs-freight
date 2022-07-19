@@ -1,0 +1,237 @@
+@import 'src/theme/variables.scss';
+
+.step-container {
+  padding-top: 22px;
+
+  .step-title {
+    color: $ta-blue;
+    font-size: 32px;
+    height: 39px;
+    margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+  }
+
+  .step-subtitle {
+    font-size: 14px;
+    height: 18px;
+    color: $bw6-2;
+    text-transform: uppercase;
+    margin-bottom: 22px !important;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .info-section {
+    width: 820px;
+    margin-bottom: 22px;
+
+    p {
+      color: $bw6-2;
+      font-size: 14px;
+      line-height: 22px;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
+
+  .checkbox-container {
+    width: 616px;
+    margin-bottom: 32px;
+
+    p {
+      font-size: 12px;
+      line-height: 22px;
+      cursor: pointer;
+      user-select: none;
+      margin-top: -3px !important;
+    }
+  }
+
+  .date-container {
+    margin-bottom: 22px;
+
+    p {
+      font-size: 14px;
+      color: $bw6-2;
+      margin-right: 22px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+
+    .date-group {
+      width: 215px;
+      margin-right: 12px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .questions-container {
+    width: 616px;
+    margin: 0 auto 10px auto;
+
+    .question-container {
+      margin-bottom: 22px;
+      width: 100%;
+
+      .title-box {
+        p {
+          color: $bw6-2;
+          font-size: 14px;
+          line-height: 18px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          .required-star {
+            color: $progress-danger;
+
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
+        }
+      }
+
+      .title-box2 {
+        width: 518px;
+      }
+
+      .radios-box {
+        width: 86px;
+
+        .ta-input-radiobutons {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .sap-phone-container {
+    margin-bottom: 32px;
+
+    .sap-group {
+      width: 375px;
+      margin-right: 12px;
+    }
+
+    .phone-group {
+      width: 229px;
+    }
+  }
+
+  .address-container {
+    margin-bottom: 22px;
+
+    .address-group {
+      width: 480px;
+      margin-right: 12px;
+    }
+
+    .address-unit-group {
+      width: 124px;
+    }
+  }
+
+  .sap-question-container {
+    width: 616px;
+
+    .title-box {
+      width: 517px;
+
+      p {
+        color: $bw6-2;
+        font-size: 14px;
+        line-height: 18px;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        .required-star {
+          color: $progress-danger;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
+      }
+    }
+
+    .radios-box {
+      width: 86px;
+
+      .ta-input-radiobutons {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}

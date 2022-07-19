@@ -18,6 +18,7 @@ import { BrokerResolver } from './core/components/customer/state/broker-state/br
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
+import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -237,6 +238,20 @@ const routes: Routes = [
       ),
 
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'sph-form',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
+      ).then((m) => m.SphFormModule),
+
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'sph-form-end',
+    component: SphFormThankYouComponent,
+    data: { title: 'End Screen' },
   },
   {
     path: 'hos-rules/:id',

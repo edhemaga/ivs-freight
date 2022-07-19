@@ -1,0 +1,240 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center ta-font-bold">Accident history</h1>
+
+  <h5 class="m-0 step-subtitle ta-font-bold">
+    To be completed by previous employer
+  </h5>
+
+  <!-- INFO SECTION -->
+
+  <div class="d-flex justify-content-center text-center info-section">
+    <p class="m-0 ta-font-regular">
+      Please take a moment and complete the information requested below. We
+      would appreciate your prompt response. As you are aware, after October 29,
+      2004, failures to respond within 30 days to investigative request for
+      safety performance history will result in a complaint notification being
+      filed with the Federal Motor Carrier Safety Administration using the
+      complaint process specified 386.12.
+    </p>
+  </div>
+
+  <!-- FORM SECTION -->
+
+  <div class="d-flex flex-column form-section">
+    <form [formGroup]="accidentHistoryForm">
+      <div class="d-flex flex-column questions-container">
+        <div
+          class="d-flex align-items-center question-container"
+          *ngFor="
+            let question of questions | slice: 0:2;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div class="d-flex flex-column align-items-center w-100">
+            <div
+              class="d-flex align-items-center justify-content-between w-100"
+            >
+              <div Class=" title-box">
+                <p class="m-0 ta-font-regular">
+                  {{ question.title }}
+                  <span class="required-star">*</span>
+                </p>
+              </div>
+
+              <div class="radios-box">
+                <app-ta-input-radiobuttons
+                  [buttons]="question.answerChoices"
+                  (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                ></app-ta-input-radiobuttons>
+              </div>
+            </div>
+
+            <!-- DATE EXPLAIN  -->
+
+            <div
+              class="d-flex"
+              *ngIf="i === 0"
+              [ngStyle]="{
+                margin:
+                  accidentHistoryForm.get('applicantWorkForCompany').value ===
+                  'YES'
+                    ? '22px auto 10px auto'
+                    : '0 auto'
+              }"
+            >
+              <div
+                class="d-flex"
+                *ngIf="
+                  accidentHistoryForm.get('applicantWorkForCompany').value ===
+                  'YES'
+                "
+              >
+                <div class="date-group">
+                  <app-ta-input
+                    formControlName="applicantWorkForCompanyBeforeExplain"
+                    [inputConfig]="{
+                      name: 'datepicker',
+                      type: 'text',
+                      label: 'From',
+                      placeholderIcon: 'date',
+                      isRequired: true,
+                      customClass: 'datetimeclass'
+                    }"
+                  ></app-ta-input>
+                </div>
+                <div class="date-group">
+                  <app-ta-input
+                    formControlName="applicantWorkForCompanyToExplain"
+                    [inputConfig]="{
+                      name: 'datepicker',
+                      type: 'text',
+                      label: 'To',
+                      placeholderIcon: 'date',
+                      isRequired: true,
+                      customClass: 'datetimeclass'
+                    }"
+                  ></app-ta-input>
+                </div>
+              </div>
+            </div>
+
+            <!-- VEHICLE EXPLAIN -->
+
+            <div
+              class="d-flex"
+              *ngIf="i === 1"
+              [ngStyle]="{
+                margin:
+                  accidentHistoryForm.get(question.formControlName).value ===
+                  'YES'
+                    ? '22px auto 10px auto'
+                    : '0 auto 32px auto'
+              }"
+            >
+              <div
+                class="d-flex"
+                *ngIf="
+                  accidentHistoryForm.get(question.formControlName).value ===
+                  'YES'
+                "
+              >
+                <div class="d-flex align-items-center explain-container">
+                  <!-- VEHICLE TYPE -->
+
+                  <div class="group">
+                    <app-ta-input-dropdown
+                      formControlName="truckType"
+                      [template]="'svgtext-template'"
+                      [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Vehicle type',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-applicant-t-type'
+                      }"
+                      [options]="truckType"
+                      (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+                    ></app-ta-input-dropdown>
+                  </div>
+
+                  <!-- TRAILER TYPE -->
+
+                  <div class="group">
+                    <app-ta-input-dropdown
+                      formControlName="trailerType"
+                      [template]="'svgtext-template'"
+                      [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Trailer type',
+                        isRequired: true,
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-applicant-t-type'
+                      }"
+                      [options]="trailerType"
+                      (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
+                    ></app-ta-input-dropdown>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REASON FOR LEAVING -->
+
+      <div class="reason-group">
+        <app-ta-input-dropdown
+          formControlName="reasonForLeaving"
+          [template]="'svgtext-template'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Reason for leaving',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-applicant-reason'
+          }"
+          [options]="reasonsForLeaving"
+          [activeItem]="selectedReasonForLeaving"
+          (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
+        ></app-ta-input-dropdown>
+      </div>
+
+      <!-- APPLICANT CONSIDERED QUESTION -->
+
+      <div
+        class="d-flex align-items-center justify-content-between consider-question-container"
+      >
+        <div Class=" title-box">
+          <p class="m-0 ta-font-regular">
+            {{ questions[2].title }}
+            <span class="required-star">*</span>
+          </p>
+        </div>
+
+        <div class="radios-box">
+          <app-ta-input-radiobuttons
+            [buttons]="questions[2].answerChoices"
+            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+          ></app-ta-input-radiobuttons>
+        </div>
+      </div>
+
+      <!-- NO SAFETY PERFORMANCE CHECKBOX -->
+
+      <div
+        class="d-flex justify-content-center align-items-center no-safety-checkbox-container"
+      >
+        <app-ta-checkbox
+          formControlName="noSafetyPerformance"
+          [name]="'noSafetyPerformance'"
+          [label]="
+            'Check here, if there is no safety performance history to report'
+          "
+          [customClass]="'bold-12'"
+        >
+        </app-ta-checkbox>
+      </div>
+    </form>
+
+    <!-- ACCIDENT FORM -->
+
+    <form *ngIf="!isEditing">
+      <app-sph-step2-form
+        (formValuesEmitter)="asd($event)"
+      ></app-sph-step2-form>
+    </form>
+  </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>

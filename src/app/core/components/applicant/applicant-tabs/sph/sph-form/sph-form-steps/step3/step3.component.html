@@ -1,0 +1,203 @@
+<div class="d-flex flex-column align-items-center step-container">
+  <h1 class="step-title text-center ta-font-bold">
+    Drug & alcohol testing history
+  </h1>
+
+  <h5 class="m-0 step-subtitle ta-font-bold">
+    To be completed by previous employer
+  </h5>
+
+  <!-- INFO SECTION -->
+
+  <div class="d-flex justify-content-center text-center info-section">
+    <p class="m-0 ta-font-regular">
+      Please take a moment and complete the information requested below. We
+      would appreciate your prompt response. As you are aware, after October 29,
+      2004, failures to respond within 30 days to investigative request for
+      safety performance history will result in a complaint notification being
+      filed with the Federal Motor Carrier Safety Administration using the
+      complaint process specified 386.12.
+    </p>
+  </div>
+
+  <!-- NOT SUBJECT CHECKBOX -->
+
+  <form [formGroup]="drugAndAlcoholTestingHistoryForm">
+    <div
+      class="d-flex flex-column align-items-center justify-content-center checkbox-container"
+    >
+      <app-ta-checkbox
+        formControlName="applicantNotSubject"
+        [name]="'applicantNotSubject'"
+        [label]="
+          'Please check here if applicant was not subject to Department of Transportation (DOT) testing'
+        "
+        [customClass]="'bold-12'"
+      >
+      </app-ta-checkbox>
+
+      <p
+        class="m-0 text-center ta-font-bold"
+        [ngStyle]="{
+          color: drugAndAlcoholTestingHistoryForm.get('applicantNotSubject')
+            .value
+            ? '#6c6c6c'
+            : '#919191'
+        }"
+        (click)="handleCheckboxParagraphClick()"
+      >
+        requirements while employed by you.
+      </p>
+    </div>
+
+    <!-- DATE OF EMPLOYMENT -->
+
+    <div class="d-flex align-items-center date-container">
+      <p class="m-0 ta-font-regular">Dates of employment</p>
+      <div class="date-group">
+        <app-ta-input
+          formControlName="employmentFromDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'From',
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="date-group">
+        <app-ta-input
+          formControlName="employmentToDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'To',
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+
+    <!-- QUESTIONS -->
+
+    <div class="d-flex flex-column align-items-center questions-container">
+      <div
+        class="d-flex align-items-center justify-content-between question-container"
+        *ngFor="
+          let question of questions | slice: 0:5;
+          let i = index;
+          trackBy: trackByIdentity
+        "
+      >
+        <div [ngClass]="['title-box' + i, 'title-box']">
+          <p class="m-0 ta-font-regular">
+            {{ question.title }}
+            <span class="required-star">*</span>
+          </p>
+        </div>
+
+        <div class="radios-box">
+          <app-ta-input-radiobuttons
+            [buttons]="question.answerChoices"
+            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+          ></app-ta-input-radiobuttons>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAME OF SAP, PHONE -->
+
+    <div class="d-flex align-items-center sap-phone-container">
+      <div class="sap-group">
+        <app-ta-input
+          formControlName="sapName"
+          [inputConfig]="{
+            name: 'Motor Carrier',
+            type: 'text',
+            label: 'Name of SAP',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="phone-group">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            isRequired: true,
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+
+    <!-- ADDRESS, ADDRESS UNIT -->
+
+    <div class="d-flex align-items-center address-container">
+      <div class="address-group">
+        <app-ta-input-address
+          formControlName="address"
+          [inputConfig]="{
+            name: 'Address',
+            type: 'text',
+            label: 'Address, City, State Zip',
+            isRequired: true,
+            placeholderIcon: 'address',
+            textTransform: 'capitalize'
+          }"
+          (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+        ></app-ta-input-address>
+      </div>
+      <div class="address-unit-group">
+        <app-ta-input
+          formControlName="addressUnit"
+          [inputConfig]="{
+            name: 'Address Unit',
+            type: 'text',
+            label: 'Unit #',
+            maxLength: 6
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+
+    <!-- SAP QUESTION -->
+
+    <div
+      class="d-flex align-items-center justify-content-between sap-question-container"
+    >
+      <div Class=" title-box">
+        <p class="m-0 ta-font-regular">
+          {{ questions[5].title }}
+          <span class="required-star">*</span>
+        </p>
+      </div>
+
+      <div class="radios-box">
+        <app-ta-input-radiobuttons
+          [buttons]="questions[5].answerChoices"
+          (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+        ></app-ta-input-radiobuttons>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [lastSphFormPage]="true"
+  ></app-applicant-next-back-btn>
+</div>

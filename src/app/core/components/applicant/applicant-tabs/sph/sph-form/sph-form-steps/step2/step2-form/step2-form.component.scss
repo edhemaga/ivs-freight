@@ -1,0 +1,84 @@
+@import 'src/theme/variables.scss';
+
+.step-form {
+  .group {
+    margin-bottom: 22px;
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .date-group {
+    width: 159px;
+    margin-bottom: 32px;
+  }
+
+  .location-group {
+    width: 445px;
+    margin-bottom: 32px;
+  }
+
+  .description-group {
+    width: 616px;
+    margin-bottom: 22px !important;
+  }
+
+  .hazmat-spill-group {
+    width: 187px;
+    height: 26px;
+
+    .title-box {
+      p {
+        font-size: 14px;
+        color: $bw6-2;
+        user-select: none !important;
+
+        .required-star {
+          color: $progress-danger;
+        }
+      }
+    }
+
+    .radios-box {
+      width: 86px;
+
+      .ta-input-radiobutons {
+        width: 100%;
+
+        .radio-button {
+          padding-left: 0;
+        }
+      }
+    }
+  }
+
+  .fatalities-injuries-group {
+    margin-bottom: 32px;
+
+    .fatalities-group {
+      width: 178px;
+      margin-right: 12px;
+
+      p {
+        width: 77px;
+        font-size: 14px;
+        color: $bw6-2;
+        margin-right: 12px !important;
+      }
+    }
+
+    .injuries-group {
+      width: 157px;
+
+      p {
+        width: 65px;
+        font-size: 14px;
+        color: $bw6-2;
+        margin-right: 12px !important;
+      }
+    }
+  }
+}
