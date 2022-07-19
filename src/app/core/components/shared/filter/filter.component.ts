@@ -139,4 +139,20 @@ export class FilterComponent implements OnInit {
     this.unselectedDispatcher.push(item);
   }
 
+  filterDispatcher(e: any){
+    const inputValue = e.target.value;
+    this.unselectedDispatcher.filter(item => {
+      item.hidden = true;
+      if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+        item.hidden = false;
+      }
+      return item;
+    });
+  }
+
+  clearAllDispatcher(){
+    this.unselectedDispatcher = [...this.unselectedDispatcher, ...this.selectedDispatcher];
+    this.selectedDispatcher = [];
+  }
+
 }

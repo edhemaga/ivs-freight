@@ -275,6 +275,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     }
 
                     .dashboard-performance-body-trend-price{
+                        display: flex;
                         font-size: 14px;
                         font-weight: 700;
                         color: #B7B7B7;
@@ -283,10 +284,11 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     }
 
                     .dashboard-performance-body-trend-percent{
+                        display: none;
                         font-size: 14px;
-                        font-weight: 600;
+                        font-weight: 700;
                         color: #B7B7B7;
-                        padding-left: 12px;
+                        padding-left: 6px;
                         box-sizing: border-box;
                     }
                 }
@@ -319,6 +321,12 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 }
 
                 .dashboard-performance-body-trend-price{
+                    display: none !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-trend-percent{
+                    display: flex !important;
                     color: #919191 !important;
                 }
 
@@ -518,6 +526,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     color: #B7B7B7;
                     padding-left: 8px;
                     box-sizing: border-box;
+                    transition: all 0.2s;
 
                     &.different-padding{
                         padding-left: 0px;
@@ -526,11 +535,13 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 }
 
                 .dashboard-performance-body-right-cards-trend-loss{
-                    font-size: 14px;
-                    font-weight: 600;
+                    display: none;
+                    font-size: 18px;
+                    font-weight: 700;
                     color: #B7B7B7;
                     padding-left: 8px;
                     box-sizing: border-box;
+                    transition: all 0.2s;
                 }
 
             }
@@ -621,12 +632,8 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 cursor: pointer;
                 box-shadow: 0 0 4px #00000026;
 
-                .dashboard-performance-body-right-cards-trend-holder{
-                    display: none !important;
-                }
-
                 .dashboard-performance-body-right-cards-trend-holder-hover{
-                    display: flex !important;
+                    display: none !important;
                 }
 
                 .dashboard-performance-body-right-cards-text-hover{
@@ -651,6 +658,12 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 }
 
                 .dashboard-performance-body-right-cards-trend-number{
+                    display: none !important;
+                    color: #919191 !important;
+                }
+
+                .dashboard-performance-body-right-cards-trend-loss{
+                    display: flex !important;
                     color: #919191 !important;
                 }
 

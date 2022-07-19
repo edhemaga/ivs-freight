@@ -33,6 +33,16 @@
                 font-size: 26px;
                 font-weight: 900;
                 color: #919191;
+
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+    
             }
 
             .selected-month{
@@ -41,6 +51,15 @@
                 color: #6C6C6C;
                 padding-right: 48px;
                 box-sizing: border-box;
+
+                &::-moz-selection {
+                    background: #6C6C6C33;
+                    color: #6C6C6C;
+                }
+                  &::selection {
+                    background: #6C6C6C33;
+                    color: #6C6C6C;
+                }
             }
 
 
@@ -844,6 +863,7 @@
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
+                user-select: none;
 
                 .date-holder{
                     font-size: 14px;
@@ -858,6 +878,7 @@
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-start;
+                user-select: none;
 
                 .type-holder{
                     width: 90px;
@@ -921,13 +942,15 @@
                     font-weight: 700;
                     color: #6C6C6C; 
                     line-height: 32px;  
-                    margin-bottom: 1px; 
+                    margin-bottom: 1px;   
+                    user-select: none;  
 
                     .left-inside-box{
                         width: 100%;
                         height: 100%;
                         padding-left: 4px;
                         box-sizing: border-box;
+    
                     }
 
                     .left-height{
@@ -956,6 +979,7 @@
                         align-items: flex-start;
                         flex-direction: column;
                         margin-left: 1px;  
+                        user-select: none;
     
                         &.duration-holder{
                             width: 151px;
@@ -987,6 +1011,7 @@
         
                                 &.company{
                                     color: #536BC2;
+                                    user-select: none;
                                 }
         
                                 &.personal{
@@ -998,7 +1023,7 @@
                                 }
         
                                 &.duration-text{
-                                    color: #6C6C6C;
+                                    color: #6C6C6C;                    
                                 }
 
                                 .right-inside-box{
@@ -1027,7 +1052,7 @@
             
                                         &.description-text{
                                             width: 360px;
-                                        }
+                                        }    
                                     }
     
                                 }
