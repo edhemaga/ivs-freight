@@ -7,6 +7,16 @@
     color: $ta-blue;
     font-size: 32px;
     height: 39px;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .step-subtitle {
@@ -16,6 +26,16 @@
     font-style: italic;
     text-transform: uppercase;
     margin-bottom: 12px;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 
   .form-section {
@@ -30,6 +50,7 @@
         font-size: 12px;
         margin-left: -80px !important;
         cursor: pointer;
+        user-select: none;
       }
     }
 
@@ -50,8 +71,28 @@
             color: $bw5;
             font-size: 12px;
 
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
             span {
               color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
             }
           }
 
@@ -91,6 +132,18 @@
         &:hover {
           background: $bw2;
           color: $ta-light-grey-3;
+        }
+
+        p {
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .license-box,
@@ -148,8 +201,28 @@
             color: $bw5;
             font-size: 12px;
 
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
             span {
               color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
             }
           }
 
@@ -201,6 +274,18 @@
         &:hover > .btn-container {
           visibility: visible !important;
           opacity: 1 !important;
+        }
+
+        p {
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .date-box,
@@ -436,6 +521,7 @@
       p {
         font-size: 12px;
         margin-left: -6px !important;
+        user-select: none;
         cursor: pointer;
       }
     }

@@ -33,7 +33,7 @@
       >
         <table>
           <tr>
-            <div class="d-flex day-container">
+            <div class="d-flex align-items-center day-container">
               <th
                 *ngFor="
                   let day of sevenDaysHosDaysData;
@@ -59,7 +59,7 @@
             </div>
           </tr>
           <tr>
-            <div class="d-flex date-container">
+            <div class="d-flex align-items-center date-container">
               <td
                 *ngFor="
                   let date of sevenDaysHosDateData;
@@ -78,7 +78,7 @@
                     'font-size': first ? '14px' : '12px'
                   }"
                 >
-                  <p class="m-0 ta-font-bold">
+                  <p [ngClass]="['date-para' + i, 'm-0 ta-font-bold']">
                     {{ date }}
                   </p>
                 </div>

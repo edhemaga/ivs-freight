@@ -53,7 +53,7 @@ export class Step10Component implements OnInit, OnDestroy {
     });
   }
 
-  public handleCheckboxParagraphClick(type: string) {
+  public handleCheckboxParagraphClick(type: string): void {
     switch (type) {
       case InputSwitchActions.FIRST_DISCLOSURE:
         this.disclosureReleaseForm.patchValue({

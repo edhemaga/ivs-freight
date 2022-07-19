@@ -6,14 +6,13 @@
       <div class="d-flex flex-column justify-content-center">
         <app-applicant-header></app-applicant-header>
 
-        <div class="d-flex justify-content-center noselect step-progress-bar">
+        <div class="d-flex justify-content-center step-progress-bar">
           <div
             *ngFor="
               let menuItem of menuItems;
               index as i;
               trackBy: trackByIdentity
             "
-            [routerLink]="menuItem.route"
             routerLinkActive="step-active"
             [ngClass]="{ 'completed-step': storeArr[i].isCompleted }"
             class="text-center step"
@@ -21,12 +20,16 @@
             <div
               class="d-inline-flex justify-content-center align-items-center bullet"
               [class]="menuItem.class"
+              [routerLink]="menuItem.route"
             >
               <p class="m-0 ta-font-semi-bold">
                 {{ menuItem.route }}
               </p>
             </div>
-            <p class="m-0 step-text ta-font-regular">
+            <p
+              class="m-0 step-text ta-font-regular"
+              [routerLink]="menuItem.route"
+            >
               {{ menuItem.title }}
             </p>
           </div>

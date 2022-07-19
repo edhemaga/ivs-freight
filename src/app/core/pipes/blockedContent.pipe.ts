@@ -29,6 +29,14 @@ export class BlockedContentPipe implements PipeTransform {
         'driver rights',
         'disclosure and release',
         'authorization',
+        'medical certificate',
+        'mvr authorization',
+        'psp authorization',
+        'sph',
+        'hos rules',
+        'ssn card',
+        'cdl card',
+        'end screen',
       ].includes(value?.toLowerCase())
     ) {
       return true;

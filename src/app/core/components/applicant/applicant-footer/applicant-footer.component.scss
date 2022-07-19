@@ -33,14 +33,39 @@
           height: 24px;
           font-size: 20px;
           color: $bw6-2;
+          text-transform: uppercase !important;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .close-icon {
           cursor: pointer;
+          transition: background 0.3s ease-in-out;
+          background: transparent;
+          border-radius: 2px;
 
           svg {
             path {
+              transition: fill 0.3s ease-in-out;
               fill: $bw4;
+            }
+          }
+
+          &:hover {
+            background: $bw5;
+
+            svg {
+              path {
+                fill: $white;
+              }
             }
           }
         }
@@ -58,6 +83,16 @@
           font-size: 14px;
           color: $bw6-2;
           line-height: 20px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .phone-icon,

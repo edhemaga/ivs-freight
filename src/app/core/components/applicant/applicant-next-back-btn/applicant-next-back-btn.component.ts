@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-applicant-next-back-btn',
@@ -12,9 +12,15 @@ export class ApplicantNextBackBtnComponent implements OnInit {
   @Input() lastStep: boolean;
   @Input() lastPage: boolean;
 
+  @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
+
   public filledCorrectly: boolean = false;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  onStepAction(action: string) {
+    this.stepEvent.emit({ action });
+  }
 }

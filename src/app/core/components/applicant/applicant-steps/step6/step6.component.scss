@@ -8,6 +8,16 @@
     font-size: 32px;
     height: 39px;
     margin-bottom: 22px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .step-subtitle {
@@ -15,6 +25,16 @@
     color: $bw6-2;
     font-size: 14px;
     margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 
   .grade-container,
@@ -35,6 +55,10 @@
       background: $bw2;
       color: $bw6-2;
       cursor: pointer;
+
+      p {
+        user-select: none;
+      }
 
       &:last-child {
         margin-right: 0;
@@ -66,6 +90,16 @@
     color: $bw6-2;
     height: 18px;
     margin-bottom: 12px !important;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
   }
 
   .form-section {
@@ -87,8 +121,28 @@
             font-size: 14px;
             line-height: 18px;
 
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
             .required-star {
               color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
             }
           }
         }
@@ -119,6 +173,16 @@
     .general-title {
       margin-top: 22px !important;
       margin-bottom: 22px !important;
+
+      &::-moz-selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
     }
 
     .date-group {
@@ -136,6 +200,16 @@
       .contact-title {
         font-size: 14px;
         color: $bw6-2;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       .contacts-view-container {

@@ -18,51 +18,51 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() tooltipHeaderName: string = '';
   @Input() route: string = '';
   @Input() options: any = [];
-  @Input() counterData: number=0;
+  @Input() counterData: number = 0;
   @Output() openModalAction = new EventEmitter<any>();
-  @Input() hasIcon:boolean=false;
-  @Input() hasDateArrow:boolean=false;
-  @Input() hidePlus:boolean=true;
-  @Input() customText:string='Date';
-  @Output() changeDataArrowUp=new EventEmitter<any>();
-  @Output() changeDataArrowDown=new EventEmitter<any>();
-  @Input() hasRequest:boolean;
-  @Output() makeRequest=new EventEmitter<any>();
-  @Input() arrayIcons:any[]=[];
-  @Input() statusInactive:boolean=true;
-  @Input() danger:boolean=false;
-  @Input() isInactive:boolean=false;
+  @Input() hasIcon: boolean = false;
+  @Input() hasDateArrow: boolean = false;
+  @Input() hidePlus: boolean = true;
+  @Input() customText: string = '';
+  @Output() changeDataArrowUp = new EventEmitter<any>();
+  @Output() changeDataArrowDown = new EventEmitter<any>();
+  @Input() hasRequest: boolean;
+  @Output() makeRequest = new EventEmitter<any>();
+  @Input() arrayIcons: any[] = [];
+  @Input() statusInactive: boolean = true;
+  @Input() danger: boolean = false;
+  @Input() isInactive: boolean = false;
   @Output() public dropActions = new EventEmitter<any>();
   @Input() public optionsId: number;
-  @Input() hasDateNav:boolean=true;
-  public up:boolean=false;
-  public down:boolean=false;
+  @Input() hasDateNav: boolean = true;
+  @Input() counterViolation: number;
+  public up: boolean = false;
+  public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}
 
   ngOnInit(): void {}
 
- 
   public openModal(val: any) {
     this.openModalAction.emit(val);
   }
-  public makeRequestFun(req:any){    
+  public makeRequestFun(req: any) {
     this.makeRequest.emit(req);
   }
   /**Function for drop acitons */
-  public dropAct(action: any) {    
+  public dropAct(action: any) {
     this.dropActions.emit(action);
   }
- public changeDataArrowUpFun(val:any){
-     this.up=true;
-     if(this.down==true){
-       this.down=false;
-     }
-     this.changeDataArrowUp.emit(val);
+  public changeDataArrowUpFun(val: any) {
+    this.up = true;
+    if (this.down == true) {
+      this.down = false;
+    }
+    this.changeDataArrowUp.emit(val);
   }
- public changeDataArrowDownFun(val:any){
-    this.down=true;
-    if(this.up==true){
-      this.up=false;
+  public changeDataArrowDownFun(val: any) {
+    this.down = true;
+    if (this.up == true) {
+      this.up = false;
     }
     this.changeDataArrowDown.emit(val);
   }
