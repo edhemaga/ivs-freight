@@ -29,6 +29,7 @@ import { Clipboard } from '@angular/cdk/clipboard';
 
 export class TruckDetailsCardComponent implements OnInit, OnChanges {
   @ViewChild('revenueChart', {static: false}) public revenueChart: any;
+  @ViewChild('stackedBarChart', {static: false}) public stackedBarChart: any;
   @ViewChild('payrollChart', {static: false}) public payrollChart: any;
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
@@ -208,7 +209,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       'SEP'
     ],
     onHoverAnnotation: true,
-   // hoverTimeDisplay: true,
+    hoverTimeDisplay: true,
     stacked: true,
     offset: true,
     noChartImage: 'assets/svg/common/stacked_no_data.svg'

@@ -292,31 +292,22 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
       >
-        <div class="charts-template perfomance">
-          <app-ta-tab-switch
+        <div class="charts-template perfomance" [class.p-0]="stackedBarChart.hoveringStatus">
+          <div *ngIf="!stackedBarChart.hoveringStatus">
+            <app-ta-tab-switch
             [type]="'type2-modal-popup'"
             (switchClicked)="changeTabPerfomance($event)"
             [tabs]="buttonsArrayPerfomance"
           >
           </app-ta-tab-switch>
-
-          <div class="charts-item-wrapper revenue">
-            <div class="charts-template-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/mileage.svg"></svg-icon>
-                <div class="charts-template-item-name">Mileage</div>
-              </div>
-              <div class="charts-template-item-value">300,456.3 mi</div>
-            </div>
-
-            <div class="charts-template-item fuel-item">
-              <div class="icon-name-item">
-                <svg-icon src="assets/svg/common/fuel.svg"></svg-icon>
-                <div class="charts-template-item-name">Fuel Cost</div>
-              </div>
-              <div class="charts-template-item-value">$190,221.48</div>
-            </div>
           </div>
+          <app-ta-chart
+            #stackedBarChart
+            [chartConfig]="stackedBarChartConfig"
+            [axesProperties]="stackedBarAxes"
+            [legendAttributes]="stackedBarChartLegend"
+          >
+          </app-ta-chart>
         </div>
       </app-ta-custom-card>
       <!--------Fuel Consumption--------->
@@ -373,12 +364,6 @@
             [legendAttributes]="barChartLegend2"
           >
           </app-ta-chart>
-          <!-- <app-ta-chart
-            [chartConfig]="stackedBarChartConfig"
-            [axesProperties]="stackedBarAxes"
-            [legendAttributes]="stackedBarChartLegend"
-          >
-          </app-ta-chart> -->
            <!-- <app-ta-chart
               [chartConfig]="{
                 dataProperties: [
