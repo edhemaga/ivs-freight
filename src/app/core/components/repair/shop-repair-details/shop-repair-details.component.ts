@@ -22,7 +22,7 @@ import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query
 })
 export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public shopRepairConfig: any[] = [];
-
+  public repairDrop: any;
   constructor(
     private act_route: ActivatedRoute,
     private detailsPageDriverService: DetailsPageService,
@@ -35,6 +35,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.initTableOptions();
     this.shopConf(this.act_route.snapshot.data.shop);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
@@ -74,6 +75,59 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
             },
           });
       });
+  }
+
+  public initTableOptions() {
+    this.repairDrop = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'truck',
+          text: 'Are you sure you want to delete truck(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
   }
 
   /**Function return id */

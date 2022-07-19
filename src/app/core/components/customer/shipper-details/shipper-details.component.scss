@@ -1,58 +1,75 @@
-@import '../../../../../assets/scss/repair-details-items.scss';
+@import "../../../../../assets/scss/repair-details-items.scss";
 
-app-shipper-details{.items-header{
-    grid-template-columns: 89px 117px 72px 93px 78px 82px !important ;
-    column-gap: 20px;
-}
-.arrow-le{
-    margin-right: 6px;
-    svg{
-        display: flex;
+app-shipper-details {
+    .items-header {
+        grid-template-columns: 89px 117px 72px 93px 78px 82px !important ;
+        column-gap: 20px;
     }
-}
-.icon-svg-repair{
-    display: flex;
-    align-items: center;
-    height: 14px;
-    .arrow-ri{
+    .arrow-le {
         margin-right: 6px;
-        svg{
+        svg {
             display: flex;
-            path{
-                fill: #E57373;
+        }
+    }
+    .icon-svg-repair {
+        display: flex;
+        align-items: center;
+        height: 14px;
+        .arrow-ri {
+            margin-right: 6px;
+            svg {
+                display: flex;
+                path {
+                    fill: #e57373;
+                }
             }
         }
     }
-}
-.time-date{
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    bottom: 4px;
-    .time{
-        font-size: 11px;
-        font-weight: 800;
-        color: #919191;
-        height: 3px;
+    .time-date {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        bottom: 4px;
+        .time {
+            font-size: 11px;
+            font-weight: 800;
+            color: #919191;
+            height: 3px;
+            &::-moz-selection {
+                color: #919191;
+                background: rgb(145, 145, 145, 0.2);
+            }
+            &::selection {
+                color: #919191;
+                background: rgb(145, 145, 145, 0.2);
+            }
+        }
     }
-}
-.wait-time{
-    white-space: nowrap;
-    font-size: 14px;
-    font-weight: 700;
-    color: $color-gray-dark;
-    height: 8px;
-    line-height: 1;
-}
-.date{
-    width: fit-content !important;
-    line-height: 12px !important;
-}
-.repair-items-wrapper{
- height: fit-content !important;
-min-height: fit-content !important;
-}
-.unit{
-    height: 18px;
-}
+    .wait-time {
+        white-space: nowrap;
+        font-size: 14px;
+        font-weight: 700;
+        color: $color-gray-dark;
+        height: 8px;
+        line-height: 1;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    .date {
+        width: fit-content !important;
+        line-height: 10px !important;
+    }
+    .repair-items-wrapper {
+        height: fit-content !important;
+        min-height: fit-content !important;
+    }
+    .unit {
+        height: 18px;
+    }
 }

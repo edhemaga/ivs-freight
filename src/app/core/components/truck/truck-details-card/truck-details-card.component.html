@@ -139,7 +139,7 @@
           <div *ngIf="truck?.mileage" class="common-template-item">
             <div class="common-template-item-name">Starting Mileage</div>
             <div class="common-template-item-value">
-              {{ truck?.mileage | taThousandSeparator  }} mi
+              {{ truck?.mileage | taThousandSeparator }} mi
             </div>
           </div>
           <div *ngIf="truck?.emptyWeight" class="common-template-item">
@@ -231,9 +231,9 @@
           </div>
           <div class="owner-items" [ngClass]="{ copied: copiedEmail }">
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <p class="information-value">
+            <span class="information-value">
               {{ truck.owner.email }}
-            </p>
+            </span>
             <span
               [tooltipBackground]="copiedEmail ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
@@ -288,7 +288,7 @@
       <app-ta-custom-card
         [animationsDisabled]="false"
         class="item-cards"
-        [cardName]="'Perfomance'"
+        [cardName]="'Expenses'"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
       >
@@ -574,11 +574,11 @@
               </div>
             </div>
             <div class="truck-card-line"></div>
-            <div class="status-items">
-              <div
-                class="item-wrapper"
-                *ngFor="let owHist of truck.ownerHistories; trackBy: identity"
-              >
+            <div
+              class="status-items"
+              *ngFor="let owHist of truck.ownerHistories; trackBy: identity"
+            >
+              <div class="item-wrapper">
                 <p class="employment">{{ owHist.name }}</p>
 
                 <p class="date-from-to">
@@ -592,6 +592,7 @@
                   {{ owHist.duration.Years }} y {{ owHist.duration.Days }} d
                 </p>
               </div>
+              <div class="truck-card-line"></div>
             </div>
           </div>
         </div>
@@ -625,10 +626,16 @@
           [animationsDisabled]="false"
           [hasPlusHeader]="true"
         >
-          <div *ngFor="let reg of truck?.registrations; let i = index; trackBy: identity">
+          <div
+            *ngFor="
+              let reg of truck?.registrations;
+              let i = index;
+              trackBy: identity
+            "
+          >
             <app-ta-re-card
               [cardDocumentCounter]="1"
-              (resizePage)="toggleResizePage(i,'registration')"
+              (resizePage)="toggleResizePage(i, 'registration')"
               [cardNameCommon]="reg.licensePlate"
               [hasCopyIcon]="true"
               [options]="dataEdit"
@@ -650,7 +657,9 @@
                   </div>
                   <div
                     class="card-row-progress"
-                    [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
+                    [ngClass]="{
+                      'second-progress': toggler[i + 'registration']
+                    }"
                   >
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration

@@ -137,22 +137,21 @@ p {
       height: 20px;
       display: flex;
       align-items: center;
-      &:hover{
-       path{
-        fill: #6c6c6c !important;
-      } 
-         
+      &:hover {
+        path {
+          fill: #6c6c6c !important;
+        }
       }
-      path{
-        fill: #aaaaaa; 
+      path {
+        fill: #aaaaaa;
       }
     }
   }
   .first {
-    .assignTo-vehicle{
-      svg{
-           display: flex; 
-           align-items: center;
+    .assignTo-vehicle {
+      svg {
+        display: flex;
+        align-items: center;
       }
     }
     &:hover {
@@ -174,13 +173,13 @@ p {
     }
   }
   .second {
-    .icon-text-wrapper-cmp{
+    .icon-text-wrapper-cmp {
       position: relative;
       top: 1px;
     }
-    .assignTo-vehicle{
-      svg{
-           display:flex;
+    .assignTo-vehicle {
+      svg {
+        display: flex;
       }
     }
     &:hover {
@@ -822,17 +821,17 @@ p {
   }
 }
 
-.mileage-template{
+.mileage-template {
   display: grid;
   grid-template-columns: 130px 130px 130px;
   row-gap: 10px;
   column-gap: 10px;
   padding: 0 10px;
-  .mileage-template-item{
-    display:flex;
+  .mileage-template-item {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
-    .mileage-template-item-name{
+    .mileage-template-item-name {
       color: $color-gray-dark;
       font-size: 11px;
       font-weight: 700;
@@ -845,7 +844,7 @@ p {
         background: rgb(108, 108, 108, 0.2);
       }
     }
-    .mileage-template-item-value{
+    .mileage-template-item-value {
       color: $color-gray-dark;
       font-size: 18px;
       font-weight: 500;
@@ -865,8 +864,6 @@ p {
   display: flex;
   align-items: center;
   height: 18px;
-  margin-top: 9px;
-  padding-top: 14px;
   .card-icon {
     display: none;
     cursor: pointer;
@@ -919,22 +916,25 @@ p {
 }
 .hide-show {
   font-size: $font-size14;
-  color: #536bc2;
+  color: #6d82c7;
   font-weight: $font-semibold;
   margin-left: 6px;
   cursor: pointer;
   &::-moz-selection {
-    color: #536bc2;
+    color: #6d82c7;
     background: rgb(83, 107, 194, 0.2);
   }
   &::selection {
-    color: #536bc2;
+    color: #6d82c7;
     background: rgb(83, 107, 194, 0.2);
+  }
+  &:hover {
+    color: #536bc2;
   }
 }
 .bind-height {
   max-height: fit-content !important;
 }
-.card-width{
+.card-width {
   width: 335px;
 }
