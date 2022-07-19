@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
   getRepairsShopColumnDefinition,
@@ -10,11 +10,17 @@ import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import * as AppConst from 'src/app/const';
+import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
+import { ShopQuery } from '../state/shop-state/shop.query';
+import { ShopState } from '../state/shop-state/shop.store';
 
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
-  styleUrls: ['./repair-table.component.scss'],
+  styleUrls: ['./repair-table.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: [input_dropdown_animation('showHideDrop')]
 })
 export class RepairTableComponent implements OnInit, OnDestroy {
   public tableOptions: any = {};
@@ -22,12 +28,44 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
+
+  public agmMap: any;
+  public styles = AppConst.GOOGLE_MAP_STYLES;
+  mapRestrictions = {
+    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+    strictBounds: true,
+  };
+
+  public sortTypes: any[] = [];
+  public sortDirection: string = 'asc';
+  public activeSortType: any = {};
+  public markerSelected: boolean = false;
+  public mapLatitude: number = 41.860119;
+  public mapLongitude: number = -87.660156;
+  public sortBy: any;
+  public searchValue: string = '';
+  public mapMarkers: any[] = [];
+  public mapCircle: any = {
+    lat: 41.860119,
+    lng: -87.660156,
+    radius: 160934.4 // 100 miles
+  };
+  public locationFilterOn: boolean = false;
+  private tooltip: any;
+  public locationRange: any = 100;
+
+  public markerAnimations: any = {};
+  public showMarkerWindow: any = {};
+  public repairShops: ShopState[] = [];
+
   resetColumns: boolean;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    public router: Router
+    public router: Router,
+    private ref: ChangeDetectorRef,
+    private shopQuery: ShopQuery,
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +93,26 @@ export class RepairTableComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+      this.sortTypes = [
+        {name: 'Business Name', id: 1, sortName: 'name'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
+        {name: 'Favorites', id: 8, sortName: 'favorites'},
+        {name: 'Available', id: 9, sortName: 'available'},
+        {name: 'Rating', id: 3, sortName: 'rating'},
+        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
+        {name: 'Orders', id: 6, sortName: 'orders'},
+        {name: 'Total Cost', id: 7, sortName: 'cost'}
+      ];
+
+      this.activeSortType = this.sortTypes[0];
+
+      this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
   }
 
   public initTableOptions(): void {
@@ -62,7 +120,9 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        hideViewMode: false,
+        showMapView: true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -98,6 +158,13 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   sendRepairData() {
+    this.repairShops = this.shopQuery.getAll().length
+        ? this.shopQuery.getAll()
+        : [];
+
+    console.log('repairShops', this.repairShops);
+    console.log('selectedTab', this.selectedTab);
+
     this.tableData = [
       {
         title: 'Truck',
@@ -125,7 +192,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         title: 'Shop',
         field: null,
         length: 25,
-        data: this.getDumyData(25, 'shop'),
+        data: this.repairShops,
         extended: false,
         checkPinned: true,
         gridNameTitle: 'Shop',
@@ -162,8 +229,17 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     this.columns = td.gridColumns;
 
     this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+      return {
+        ...data,
+        isSelected: false,
+        textDbaName: '',
+        textAddress: data?.address
+          ? data.address.city + ', ' + data.address.state
+          : '',
+        mcNumber: '',
+        loadCount: '',
+        total: '',
+      };
     });
   }
 
@@ -488,9 +564,11 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   onToolBarAction(event: any) {
+    console.log('onToolBarAction event', event);
     switch (event.action) {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
+        console.log('event.tabData', event.tabData);
         this.setRepairData(event.tabData);
         break;
       }
@@ -526,6 +604,15 @@ export class RepairTableComponent implements OnInit, OnDestroy {
             });
             break;
           }
+        }
+        break;
+      }
+      case 'view-mode': {
+        this.tableOptions.toolbarActions.viewModeActive = event.mode;
+        console.log('event.mode', event.mode);
+        if ( event.mode == 'Map' ) {
+          console.log('view-mode Map');
+          this.markersDropAnimation();
         }
         break;
       }
@@ -566,5 +653,109 @@ export class RepairTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendCurrentSwitchOptionSelected(null);
+  }
+
+  mapClick() {
+    console.log('mapClick viewData', this.viewData);
+    this.viewData.map((data: any, index) => {
+      if (data.isSelected) {
+        data.isSelected = false;
+      }
+    });
+  }
+
+  clickedMarker(id) {
+    console.log('clickedMarker id', id);
+    this.viewData.map((data: any, index) => {
+      if (data.isExpanded) {
+        data.isExpanded = false;
+      }
+
+      if (data.isSelected && data.id != id) {
+        data.isSelected = false;
+      }
+      else if ( data.id == id ) {
+        data.isSelected = !data.isSelected;
+
+        if ( data.isSelected ) {
+          this.markerSelected = true;
+          this.mapLatitude = data.latitude;
+          this.mapLongitude = data.longitude;
+        }
+        else {
+          this.markerSelected = false;
+        }
+
+        document.querySelectorAll('.si-float-wrapper').forEach(function(parentElement: HTMLElement) {
+          parentElement.style.zIndex = '998';
+  
+          setTimeout(function() { 
+            var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
+            if ( childElements.length ) parentElement.style.zIndex = '999';
+          }, 1);
+        });
+      }
+    });
+  }
+
+  markersDropAnimation() {
+    console.log('markersDropAnimation');
+    var mainthis = this;
+
+    setTimeout(() => {
+      this.viewData.map((data: any) => {
+        console.log('viewData data', data);
+        if ( !mainthis.markerAnimations[data.id] ) {
+          mainthis.markerAnimations[data.id] = true;
+          console.log('markerAnimations', mainthis.markerAnimations, data.id);
+        }
+      });
+        
+      setTimeout(() => {
+        this.viewData.map((data: any) => {
+          if ( !mainthis.showMarkerWindow[data.id] ) {
+            mainthis.showMarkerWindow[data.id] = true;
+          }
+        });
+      }, 100);
+    }, 1000);
+  }
+
+  changeSortDirection(direction) {
+    this.sortDirection = direction;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+  
+  changeSortCategory(item, column) {
+    console.log('changeSortCategory item', item);
+    this.activeSortType = item;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+
+  showMoreOptions(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  searchShops(value) {
+    console.log('searchShippers searchValue', value);
+    this.searchValue = value;
+    //if ( this.searchValue.length > 3 ) {
+      //this.sortShippers();
+    //}
   }
 }

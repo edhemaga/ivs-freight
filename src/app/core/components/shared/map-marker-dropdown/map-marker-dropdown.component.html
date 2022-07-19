@@ -43,6 +43,20 @@
         </span>
       </div>
     </div>
+    <div *ngIf="type == 'Repair'">
+      <div class="marker-divider"></div>
+      <div class="marker-info-container-all">
+        <div class="marker-repair-icons-container">
+          <svg-icon
+            *ngFor="let service of item?.serviceTypes; let i = index;"
+            class="marker-repair-svg"
+            src="assets/svg/common/repair-services/repair-serivces-details/{{service.logoName}}"
+            [ngClass]="{ 'active': service.active }"
+            [svgStyle]="{ 'width.px': 24, 'height.px': 24 }"
+          ></svg-icon>
+        </div>  
+      </div>
+    </div>
     <div class="marker-divider"></div>
     <div class="marker-info-container-all">
       <div class="marker-info-container" [ngClass]="{ copied: copiedPhone }">
@@ -131,7 +145,7 @@
     [class.unopened]="item?.isExpanded === undefined"
     [@showHideDrop]="item?.isExpanded">
       <div class="marker-divider"></div>
-      <div *ngIf="(item?.shippingFrom && item?.shippingTo) || (item?.receivingFrom && item?.receivingTo)">
+      <div *ngIf="type == 'Shipper' && (item?.shippingFrom && item?.shippingTo) || (item?.receivingFrom && item?.receivingTo)">
         <div class="marker-info-container-all">
           <div class="marker-title">Available Hours</div>
           <div class="marker-expanded-info-container">
@@ -147,9 +161,55 @@
         </div>
         <div class="marker-divider"></div>
       </div>
+      <div *ngIf="type == 'Repair' && item?.openHours">
+        <div class="marker-info-container-all">
+          <div class="marker-title">Working Hours</div>
+          <div class="marker-expanded-info-container">
+            <div class="marker-dual-info-container mg-bottom-8" *ngIf="!showAllDays">
+              <div class="marker-like-text marker-bold-text mg-bottom-4">{{ item?.openHoursToday == 'Closed' ? 'Today' : 'Open Now' }}</div>
+              <div class="marker-info-text">{{ item?.openHoursToday }}</div>
+            </div>
+            <div class="marker-dual-info-container mg-bottom-8" *ngIf="showAllDays">
+              <div class="marker-like-text marker-bold-text mg-bottom-4">Monday - Friday</div>
+              <div class="marker-info-text" *ngIf="item.openHours[1].startTime">{{ item.openHours[1].startTime }} - {{ item.openHours[1].endTime }}</div>
+              <div class="marker-info-text" *ngIf="!item.openHours[1].startTime">Closed</div>
+            </div>
+            <div class="marker-dual-info-container mg-bottom-8" *ngIf="showAllDays">
+              <div class="marker-like-text marker-bold-text mg-bottom-4">Saturday</div>
+              <div class="marker-info-text" *ngIf="item.openHours[6].startTime">{{ item.openHours[6].startTime }} - {{ item.openHours[6].endTime }}</div>
+              <div class="marker-info-text" *ngIf="!item.openHours[6].startTime">Closed</div>
+            </div>
+            <div class="marker-dual-info-container mg-bottom-8" *ngIf="showAllDays">
+              <div class="marker-like-text marker-bold-text mg-bottom-4">Sunday</div>
+              <div class="marker-info-text" *ngIf="item.openHours[0].startTime">{{ item.openHours[0].startTime }} - {{ item.openHours[0].endTime }}</div>
+              <div class="marker-info-text" *ngIf="!item.openHours[0].startTime">Closed</div>
+            </div>
+            <div class="marker-dual-info-container mg-bottom-8">
+              <div class="marker-like-text marker-bold-text mg-bottom-4"></div>
+              <div class="marker-date-holder" (click)="toggleWorkingHours()">
+                <svg-icon
+                  src="assets/svg/common/ic_date.svg"
+                  class="date-svg"
+                  [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                ></svg-icon>
+                <div class="marker-info-text">{{ showAllDays ? 'Show today' : 'Show all days' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="marker-divider"></div>
+      </div>
       <div class="marker-info-container-all">
-        <div class="marker-title"><span class="data-count">769</span>Load</div>
-        <div class="marker-expanded-info-container">
+        <div class="marker-title">
+          <div class="marker-dual-info-container p-0">
+            <span class="data-count">{{ type == 'Shipper' ? '769' : type == 'Repair' ? item.order : '' }}</span>
+            {{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : '' }}
+          </div>
+          <div class="marker-dual-info-container" *ngIf="type == 'Repair'">
+            <span class="marker-bold-text blue-text">${{ item.cost }}K </span><span class="font-weight-normal">Cost</span>
+          </div>
+        </div>
+        <div class="marker-expanded-info-container" *ngIf="type == 'Shipper'">
           <div class="marker-dual-info-container mg-bottom-8">
             <div class="marker-info-text mg-bottom-4"><span class="marker-bold-text">632</span> Picked Up</div>
             <div class="marker-like-text">Avg. Loading <span class="marker-bold-text">22m 37s</span></div>

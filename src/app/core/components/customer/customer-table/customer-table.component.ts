@@ -26,7 +26,7 @@ declare var google: any;
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
-  styleUrls: ['./customer-table.component.scss'],
+  styleUrls: ['./customer-table.component.scss', '../../../../../assets/scss/maps.scss'],
   encapsulation: ViewEncapsulation.None,
   animations: [input_dropdown_animation('showHideDrop')]
 })
@@ -610,11 +610,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  expandInfo(item) {
-    item.isExpanded = !item.isExpanded;
-    this.ref.detectChanges();
-  }
-
   showMoreOptions(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -643,12 +638,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       : '';
       
     this.sortShippers();
-  }
-
-  openPopover(t2) {
-    console.log('openPopover t2', t2);
-    t2.open();
-    this.tooltip = t2;
   }
   
   closePopover() {
@@ -811,20 +800,22 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   markersDropAnimation() {
     var mainthis = this;
-    
-      this.viewData.map((data: any) => {
-        setTimeout(() => {
+
+      setTimeout(() => {
+        this.viewData.map((data: any) => {
           if ( !mainthis.markerAnimations[data.id] ) {
             mainthis.markerAnimations[data.id] = true;
             console.log('markerAnimations', mainthis.markerAnimations, data.id);
           }
+        });
           
-          setTimeout(() => {
+        setTimeout(() => {
+          this.viewData.map((data: any) => {
             if ( !mainthis.showMarkerWindow[data.id] ) {
-            mainthis.showMarkerWindow[data.id] = true;
-          }
-          }, 100);
-        }, 1000);
-      });
+              mainthis.showMarkerWindow[data.id] = true;
+            }
+          });
+        }, 100);
+      }, 1000);
   }
 }

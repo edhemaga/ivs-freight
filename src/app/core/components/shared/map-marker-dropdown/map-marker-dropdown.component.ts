@@ -18,6 +18,7 @@ export class MapMarkerDropdownComponent implements OnInit {
   public copiedPhone: boolean = false;
   public copiedEmail: boolean = false;
   public copiedAddress: boolean = false;
+  public showAllDays: boolean = false;
   
   constructor(
     private ref: ChangeDetectorRef
@@ -68,4 +69,7 @@ export class MapMarkerDropdownComponent implements OnInit {
     document.body.removeChild(selBox);
   }
 
+  toggleWorkingHours() {
+    this.showAllDays = !this.showAllDays;
+  }
 }

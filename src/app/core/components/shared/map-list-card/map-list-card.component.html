@@ -20,10 +20,18 @@
           >
           </app-table-dropdown>
         </div> -->
-        <ng-content></ng-content>
+        <div class="d-flex">
+          <svg-icon
+            class="favorite-svg"
+            src="assets/svg/detail-cards/favorite.svg"
+            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            *ngIf="sortCategory.name == 'Favorites'"
+          ></svg-icon>
+          <ng-content></ng-content>
+        </div>
       </div>
       <div class="marker-rating-container mg-top-2">
-        <div *ngIf="sortCategory.name == 'Business Name' || sortCategory.name == 'Rating'">
+        <div *ngIf="sortCategory.name == 'Business Name' || sortCategory.name == 'Rating' || sortCategory.name == 'Favorites'">
           <span class="marker-rating">
             <svg-icon
                 class="marker-rating-svg"
@@ -61,6 +69,15 @@
         </div>
         <div *ngIf="sortCategory.name == 'Location' && item.distanceBetween">
             <div class="marker-like-text"><span class="marker-bold-text">{{ item.distanceBetween }} mi</span> away</div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Available'">
+            <div class="marker-like-text">Open Until <span class="marker-bold-text">8:00 PM</span></div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Orders'">
+            <div class="marker-like-text"><span class="marker-bold-text">{{ item.order }}</span> Orders</div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Total Cost'">
+            <div class="marker-like-text">Total Cost <span class="marker-bold-text">${{ item.cost }}K</span></div>
         </div>
       </div>
       <div class="map-list-card-address mg-top-2" *ngIf="address">

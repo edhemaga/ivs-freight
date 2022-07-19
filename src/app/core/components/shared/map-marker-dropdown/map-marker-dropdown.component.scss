@@ -175,3 +175,57 @@
       }
     }
   }
+
+  .blue-text {
+    color: #536BC2;
+  }
+
+  .font-weight-normal {
+    font-weight: 400;
+  }
+
+  .marker-date-holder {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+
+    .date-svg {
+      position: relative;
+      bottom: 2px;
+      margin-right: 6px;
+    }
+
+    &:hover {
+      .date-svg {
+        svg {
+          path {
+            fill: #6c6c6c;
+          }
+        }
+      }
+    }
+  }
+
+  .marker-repair-icons-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+
+    .marker-repair-svg {
+      svg {
+        path {
+          fill: #DADADA;
+        }
+      }
+  
+      &.active {
+        svg {
+          path {
+            fill: #919191;
+          }
+        }
+      }
+    }
+  }
