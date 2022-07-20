@@ -70,6 +70,7 @@
       [styles]="styles"
       [zoom]="1"
       [usePanning]="true"
+      [keyboardShortcuts]="false"
       (mapClick)="mapClick()">
       <agm-marker 
         *ngFor="let latlong of viewData; let i = index;" 

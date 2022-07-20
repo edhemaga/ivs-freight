@@ -170,6 +170,7 @@
     left: 50%;
     top: -37px;
     transform: translateX(-17px);
+    pointer-events: auto;
 
     display: flex;
     justify-content: space-between;
@@ -208,7 +209,6 @@
     overflow: hidden;
     opacity: 1;
     transition: 0.15s;
-    pointer-events: none;
 
     @supports (-webkit-line-clamp: 2) {
         overflow: hidden;
