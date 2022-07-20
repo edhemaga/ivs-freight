@@ -1,0 +1,8 @@
+<div class="custom-scrollbar-holder" #contentHolder [scrollTop]="300">
+    <ng-content></ng-content>
+    <div class="right-bar-scroll" *ngIf="showScrollbar">
+        <div class="right-bar"
+            [ngStyle]="{'transform': 'translateY(' + scrollTop + 'px)', height: (scrollHeight + 'px')}"
+            (mousedown)="isMouseDown = true" (mouseup)="isMouseDown = false"></div>
+    </div>
+</div>

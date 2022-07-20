@@ -27,6 +27,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { OverlayscrollbarsModule } from "overlayscrollbars-ngx";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
+    OverlayscrollbarsModule,
     ToastrModule.forRoot({
       preventDuplicates: true,
       enableHtml: true,

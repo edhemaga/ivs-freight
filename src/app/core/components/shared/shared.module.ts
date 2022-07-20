@@ -104,6 +104,7 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 
 @NgModule({
   declarations: [
@@ -137,7 +138,6 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
@@ -174,6 +174,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    CustomScrollbarComponent,
   ],
   imports: [
     CommonModule,
@@ -267,13 +268,13 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
+    CustomScrollbarComponent,
 
     TaReCardComponent,
     TaDetailsHeaderCardComponent,

@@ -1,4 +1,9 @@
-<app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
+<!-- <overlay-scrollbars></overlay-scrollbars> -->
+
+<app-custom-scrollbar
+
+>
+  <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
 <div style="display: none">
   <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <defs>
@@ -50,3 +55,5 @@
   <br />
   <h4>Minimum screen width requirement: 1280px.</h4>
 </div>
+  
+</app-custom-scrollbar>
