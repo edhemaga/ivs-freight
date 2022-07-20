@@ -389,7 +389,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (dataType === 'active') {
       this.driversActive = this.driversActiveQuery.getAll();
       const oldData = this.driversActive[0];
-      this.driversActive = new Array(200).fill(oldData);
+      this.driversActive = new Array(500).fill(oldData);
 
       return this.driversActive?.length ? this.driversActive : [];
     } else if (dataType === 'inactive') {
