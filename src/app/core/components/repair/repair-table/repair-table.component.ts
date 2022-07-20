@@ -1,6 +1,7 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 import {
   getRepairsShopColumnDefinition,
   getRepairTrailerColumnDefinition,
@@ -66,6 +67,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     public router: Router,
     private ref: ChangeDetectorRef,
     private shopQuery: ShopQuery,
+    private mapsService: MapsService
   ) {}
 
   ngOnInit(): void {

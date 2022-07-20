@@ -14,6 +14,50 @@
         </div> -->
         <ng-content></ng-content>
       </div>
+      <div class="marker-accident-container" *ngIf="type == 'Accident'">
+        <div class="accident-report-container">
+          <div class="accident-svg-container vehicles-number" [ngClass]="{ 'inactive': item?.vehicles == 0 }">
+            <svg-icon
+              class="accident-report-svg"
+              src="assets/svg/common/ic_crash_vehicle.svg"
+              [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <div class="marker-like-text"><span class="marker-bold-text">{{ item?.vehicles }}</span> Veh.</div>
+          </div>
+          <div class="accident-svg-container injury-number" [ngClass]="{ 'inactive': item?.injuries == 0 }">
+            <svg-icon
+              class="accident-report-svg"
+              src="assets/svg/common/ic_injury.svg"
+              [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <div class="marker-like-text"><span class="marker-bold-text">{{ item?.injuries }}</span> Inj.</div>
+          </div>
+          <div class="accident-svg-container fatality-number" [ngClass]="{ 'inactive': item?.fatality == 0 }">
+            <svg-icon
+              class="accident-report-svg"
+              src="assets/svg/common/ic_fatality.svg"
+              [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <div class="marker-like-text"><span class="marker-bold-text">{{ item?.fatality }}</span> Fat.</div>
+          </div>
+          <div class="accident-svg-container towing" [ngClass]="{ 'inactive': item?.towing == 'No' }">
+            <svg-icon
+              class="accident-report-svg"
+              src="assets/svg/common/ic_towing.svg"
+              [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <div class="marker-like-text">Tow.</div>
+          </div>
+          <div class="accident-svg-container hazard" [ngClass]="{ 'inactive': item?.hm == 'No' }">
+            <svg-icon
+              class="accident-report-svg"
+              src="assets/svg/common/ic_hazmat.svg"
+              [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+            ></svg-icon>
+            <div class="marker-like-text">HM</div>
+          </div>
+        </div>
+      </div>
       <div class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4" *ngIf="item.status == 2">
         Permanently Closed
       </div>
@@ -24,7 +68,7 @@
           <span class="marker-bold-text">- 1 hour 27 minutes</span> est.
         </span>
       </div>
-      <div class="marker-rating-container mg-top-4">
+      <div class="marker-rating-container mg-top-4" *ngIf="type != 'Accident'">
         <span class="marker-rating">
           <svg-icon
               class="marker-rating-svg"
@@ -59,7 +103,7 @@
     </div>
     <div class="marker-divider"></div>
     <div class="marker-info-container-all">
-      <div class="marker-info-container" [ngClass]="{ copied: copiedPhone }">
+      <div class="marker-info-container" *ngIf="item?.phone" [ngClass]="{ copied: copiedPhone }">
         <svg-icon
             class="marker-info-svg"
             src="assets/svg/common/ic_phone.svg"
@@ -102,6 +146,29 @@
             (click)="copyText(item?.email, 'email')"
           ></svg-icon>
         </span>
+      </div>
+      
+      <div class="marker-info-container" *ngIf="type == 'Accident'">
+        <div class="marker-dual-info-container p-0">
+          <div class="marker-date-holder accident-date">
+            <svg-icon
+              src="assets/svg/common/ic_date.svg"
+              class="date-svg"
+              [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            ></svg-icon>
+            <div class="marker-info-text">{{ item?.eventDate | formatDateP }}</div>
+          </div>
+        </div>
+        <div class="marker-dual-info-container" *ngIf="item.eventTime">
+          <div class="marker-date-holder accident-date">
+            <svg-icon
+              src="assets/svg/common/ic_time.svg"
+              class="date-svg"
+              [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+            ></svg-icon>
+            <div class="marker-info-text">{{ item?.eventTime }}</div>
+          </div>
+        </div>
       </div>
       <div class="marker-info-container" [ngClass]="{ copied: copiedAddress }">
         <div>
@@ -186,7 +253,7 @@
             </div>
             <div class="marker-dual-info-container mg-bottom-8">
               <div class="marker-like-text marker-bold-text mg-bottom-4"></div>
-              <div class="marker-date-holder" (click)="toggleWorkingHours()">
+              <div class="marker-date-holder pointer" (click)="toggleWorkingHours()">
                 <svg-icon
                   src="assets/svg/common/ic_date.svg"
                   class="date-svg"
@@ -202,26 +269,33 @@
       <div class="marker-info-container-all">
         <div class="marker-title">
           <div class="marker-dual-info-container p-0">
-            <span class="data-count">{{ type == 'Shipper' ? '769' : type == 'Repair' ? item.order : '' }}</span>
-            {{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : '' }}
+            <span class="data-count">{{ type == 'Shipper' ? '769' : type == 'Repair' ? item.order : type == 'Accident' ? '9' : '' }}</span>
+            {{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : type == 'Accident' ? 'Total Weight' : '' }}
           </div>
           <div class="marker-dual-info-container" *ngIf="type == 'Repair'">
             <span class="marker-bold-text blue-text">${{ item.cost }}K </span><span class="font-weight-normal">Cost</span>
           </div>
         </div>
         <div class="marker-expanded-info-container" *ngIf="type == 'Shipper'">
-          <div class="marker-dual-info-container mg-bottom-8">
+          <div class="marker-dual-info-container">
             <div class="marker-info-text mg-bottom-4"><span class="marker-bold-text">632</span> Picked Up</div>
             <div class="marker-like-text">Avg. Loading <span class="marker-bold-text">22m 37s</span></div>
           </div>
-          <div class="marker-dual-info-container mg-bottom-8">
+          <div class="marker-dual-info-container">
             <div class="marker-info-text mg-bottom-4"><span class="marker-bold-text">127</span> Delivered</div>
-            <div class="marker-like-text">Avg. Offloading <span class="marker-bold-text">19m 08s</span></div>
+          </div>
+        </div>
+        <div class="marker-expanded-info-container" *ngIf="type == 'Accident'">
+          <div class="marker-dual-info-container">
+            <div class="marker-info-text mg-bottom-8"><span class="marker-bold-text">3</span> Severity Weight</div>
+          </div>
+          <div class="marker-dual-info-container">
+            <div class="marker-info-text mg-bottom-8"><span class="marker-bold-text">3</span> Time Weight</div>
           </div>
         </div>
       </div>
       <div class="marker-divider"></div>
-      <div class="marker-info-container-all">
+      <div class="marker-info-container-all" *ngIf="type != 'Accident'">
         <div class="marker-expanded-info-container">
           <div class="marker-dual-info-container mg-bottom-4">
             <div class="marker-like-text marker-bold-text mg-bottom-4">Date Added</div>
@@ -230,6 +304,58 @@
           <div class="marker-dual-info-container mg-bottom-4">
             <div class="marker-like-text marker-bold-text mg-bottom-4">{{ item?.status == 2 ? 'Perm. Closed' : 'Last Used' }}</div>
             <div class="marker-info-text">137 days ago</div>
+          </div>
+        </div>
+      </div>
+      <div class="marker-info-container-all" *ngIf="type == 'Accident'">
+        <div class="marker-expanded-info-container">
+          <div class="marker-dual-info-container mg-bottom-4">
+            <div class="marker-like-text marker-bold-text mg-bottom-4">Driver</div>
+            <div class="marker-info-text driver-name-container">
+              <app-profile-images
+                [indx]="1"
+                [size]="item.coDriver ? 'medium' : 'small'"
+                [name]="item.driverFullName"
+                [type]="'driver'"
+              ></app-profile-images>
+              <span class="mg-left-6">{{ item?.firstName }} <br *ngIf="item.coDriver" /> {{ item.lastName }}</span>
+            </div>
+          </div>
+          <div class="marker-dual-info-container mg-bottom-4" *ngIf="item.coDriver">
+            <div class="marker-like-text marker-bold-text mg-bottom-4">Co-Driver</div>
+            <div class="marker-info-text driver-name-container">
+              <app-profile-images
+                [indx]="0"
+                [size]="'medium'"
+                [name]="item.driverFullName"
+                [type]="'driver'"
+              ></app-profile-images>
+              <span class="mg-left-6">{{ item?.firstName }} <br /> {{ item.lastName }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="marker-expanded-info-container">
+          <div class="marker-dual-info-container mg-bottom-4">
+            <div class="marker-like-text marker-bold-text mg-bottom-4">Truck</div>
+            <div class="marker-info-text driver-name-container">
+              <span>{{ item?.truckNumber }}</span>
+              <svg-icon
+                class="truck-svg mg-left-6"
+                src="assets/svg/common/ic_driver-truck.svg"
+                [svgStyle]="{ 'width.px': 55, 'height.px': 20 }"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="marker-dual-info-container mg-bottom-4">
+            <div class="marker-like-text marker-bold-text mg-bottom-4">Trailer</div>
+            <div class="marker-info-text driver-name-container">
+              <span>{{ item?.trailerNumber }}</span>
+              <svg-icon
+                class="truck-svg mg-left-6"
+                src="assets/svg/common/trailer.svg"
+                [svgStyle]="{ 'width.px': 55, 'height.px': 20 }"
+              ></svg-icon>
+            </div>
           </div>
         </div>
       </div>

@@ -188,11 +188,9 @@
     display: flex;
     justify-content: start;
     align-items: center;
-    cursor: pointer;
 
     .date-svg {
       position: relative;
-      bottom: 2px;
       margin-right: 6px;
     }
 
@@ -205,7 +203,16 @@
         }
       }
     }
+
+    &.accident-date {
+      svg {
+        path {
+          fill: #B7B7B7 !important;
+        }
+      }
+    }
   }
+  
 
   .marker-repair-icons-container {
     display: flex;
@@ -227,5 +234,13 @@
           }
         }
       }
+    }
+  }
+
+  .marker-accident-container {
+    width: 100%;
+    
+    .accident-svg-container {
+      margin-right: 22px;
     }
   }

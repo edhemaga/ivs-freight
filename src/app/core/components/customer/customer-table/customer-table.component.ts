@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } fr
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
@@ -80,7 +81,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private shipperStore: ShipperStore,
-    private mapsAPILoader: MapsAPILoader
+    private mapsAPILoader: MapsAPILoader,
+    private mapsService: MapsService
   ) {}
 
   ngOnInit(): void {
@@ -712,48 +714,18 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  getMeters(miles) {
-    return miles*1609.344;
-  }
-
-  getMiles(meters) {
-    return meters*0.000621371192;
-  }
-
   showHideMarkers(){
     console.log('showHideMarkers called');
     this.viewData.map((data: any) => {
-      var getDistance = this.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
+      var getDistance = this.mapsService.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
       data.isShown = getDistance[0];
-      data.distanceBetween = this.getMiles(getDistance[1]).toFixed(1);
+      data.distanceBetween = this.mapsService.getMiles(getDistance[1]).toFixed(1);
       console.log('showHideMarkers', data, data.isShown);
     });
   }
 
-  getDistanceBetween(lat1,long1,lat2,long2){
-    var from = new google.maps.LatLng(lat1,long1);
-    var to = new google.maps.LatLng(lat2,long2);
-
-    console.log('getDistanceBetween lat1', lat1);
-    console.log('getDistanceBetween long1', long1);
-    console.log('getDistanceBetween lat2', lat2);
-    console.log('getDistanceBetween long2', long2);
-    console.log('getDistanceBetween from', from);
-    console.log('getDistanceBetween to', to);
-
-    var distanceBetween = google.maps.geometry.spherical.computeDistanceBetween(from,to);
-
-    if(distanceBetween <= this.mapCircle.radius){    
-      console.log('Radius',this.mapCircle.radius);
-      console.log('Distance Between',distanceBetween);
-      return [true, distanceBetween];
-    }else{
-      return [false, distanceBetween];
-    }
-  }
-
   setLocationRange(value) {
-    this.mapCircle.radius = this.getMeters(value);
+    this.mapCircle.radius = this.mapsService.getMeters(value);
     console.log('setLocationRange value', this.mapCircle.radius);
     this.showHideMarkers();
     this.locationFilterOn = true;
@@ -763,7 +735,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   clearLocationRange() {
-    this.mapCircle.radius = this.getMeters(100);
+    this.mapCircle.radius = this.mapsService.getMeters(100);
     this.showHideMarkers();
     this.locationFilterOn = false;
 

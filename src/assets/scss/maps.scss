@@ -174,6 +174,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    &:hover {
+        .marker-tooltip {
+            color: #3C3C3C;
+
+            .orange-text {
+                color: #FF9800 !important;
+            }
+
+            .red-text {
+                color: #F44336 !important;
+            }
+        }
+    }
 }
 
 .marker-tooltip {
@@ -327,6 +341,14 @@
     margin-top: 4px;
 }
 
+.mg-left-4 {
+    margin-left: 4px;
+}
+
+.mg-left-6 {
+    margin-left: 6px;
+}
+
 .marker-icon {
     // position: absolute;
     // top: -40px;
@@ -365,6 +387,22 @@
                 //r: 3;
                 transform: translate(14px, 14px) scale(0.5);
                 transition: all 0.2s;
+            }
+        }
+    }
+
+    &.inactive {
+        svg {
+            #Ellipse_6005 {
+                fill: #919191;
+            }
+        }
+
+        &:hover {
+            svg {
+                #Ellipse_6005 {
+                    fill: #6C6C6C;
+                }
             }
         }
     }
@@ -449,5 +487,127 @@
     }
     100% {
       transform: scale(1);
+    }
+}
+
+.orange-text {
+    color: #FFA726 !important;
+}
+
+.red-text {
+    color: #EF5350 !important;
+}
+
+.lowercase {
+    text-transform: lowercase !important;
+}
+
+.accident-report-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+
+    .accident-svg-container {
+        display: flex;
+        align-items: center;
+        margin-right: 13px;
+
+        .accident-report-svg {
+            margin-right: 4px;
+        }
+
+        &.vehicles-number {
+            .marker-like-text {
+                color: #6C6C6C !important;
+            }
+
+            svg {
+                path {
+                    fill: #919191;
+                }
+            }
+        }
+
+        &.injury-number {
+            .marker-like-text {
+                color: #FFA726 !important;
+            }
+
+            svg {
+                path {
+                    fill: #FFB74D;
+                }
+            }
+        }
+
+        &.fatality-number {
+            .marker-like-text {
+                color: #EF5350 !important;
+            }
+
+            svg {
+                path {
+                    fill: #E57373;
+                }
+            }
+        }
+
+        &.towing {
+            .marker-like-text {
+                color: #536BC2 !important;
+            }
+
+            svg {
+                path {
+                    fill: #6D82C7;
+                }
+            }
+
+            &.inactive {
+                text-decoration: line-through;
+                text-decoration-color: #CCCCCC;
+            }
+        }
+
+        &.hazard {
+            .marker-like-text {
+                color: #536BC2 !important;
+            }
+
+            svg {
+                path {
+                    fill: #6D82C7;
+                }
+            }
+
+            &.inactive {
+                text-decoration: line-through;
+                text-decoration-color: #CCCCCC;
+            }
+        }
+
+        &.inactive {
+            .marker-like-text {
+                color: #CCCCCC !important;
+            }
+
+            svg {
+                path {
+                    fill: #DADADA;
+                }
+            }
+        }
+    }
+}
+
+.driver-name-container {
+    display: flex;
+    align-items: center;
+
+    .driver-svg {
+        display: flex;
+        height: 14px;
+        margin-right: 4px;
     }
 }

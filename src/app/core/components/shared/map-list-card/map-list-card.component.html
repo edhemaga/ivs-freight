@@ -79,6 +79,93 @@
         <div *ngIf="sortCategory.name == 'Total Cost'">
             <div class="marker-like-text">Total Cost <span class="marker-bold-text">${{ item.cost }}K</span></div>
         </div>
+        <div *ngIf="sortCategory.name == 'Date & Time'">
+            <div class="marker-like-text">Issued <span class="marker-bold-text">10/09/21  3:47 PM</span></div>
+        </div>
+        <div class="driver-name-container" *ngIf="sortCategory.name == 'Drivers Name'">
+          <app-profile-images
+            [indx]="0"
+            [size]="'small'"
+            [name]="item.driverFullName"
+            [type]="'driver'"
+          ></app-profile-images>
+          <div class="marker-like-text marker-bold-text mg-left-4">{{ item?.driverFullName }}</div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Inspection Weights'">
+            <div class="marker-like-text">
+              <span>Severity </span> <span class="marker-bold-text">2</span>
+              <span class="vertical-divider"></span>
+              <span>Time </span> <span class="marker-bold-text">3</span>
+              <span class="vertical-divider"></span>
+              <span>Total </span> <span class="marker-bold-text">6</span>
+            </div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Truck Unit'">
+            <div class="marker-like-text">Truck Unit <span class="marker-bold-text">{{ item?.truckNumber }}</span>
+              <span>
+                <svg-icon
+                  class="truck-svg"
+                  src="assets/svg/common/ic_driver-truck.svg"
+                  [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
+                ></svg-icon>
+              </span>
+            </div>
+        </div>
+        <div *ngIf="sortCategory.name == 'Trailer Unit'">
+            <div class="marker-like-text">Trailer Unit <span class="marker-bold-text">{{ item?.trailerNumber }}</span>
+              <span>
+                <svg-icon
+                  class="truck-svg"
+                  src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
+                  [svgStyle]="{ 'width.px': 33, 'height.px': 12 }"
+                ></svg-icon>
+              </span>
+            </div>
+        </div>
+        <div class="w-100" *ngIf="sortCategory.name == 'Report Number' || sortCategory.name == 'Inspection Results'">
+            <div class="accident-report-container">
+              <div class="accident-svg-container vehicles-number" [ngClass]="{ 'inactive': item?.vehicles == 0 }">
+                <svg-icon
+                  class="accident-report-svg"
+                  src="assets/svg/common/ic_crash_vehicle.svg"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <div class="marker-like-text"><span class="marker-bold-text">{{ item?.vehicles }}</span> Veh.</div>
+              </div>
+              <div class="accident-svg-container injury-number" [ngClass]="{ 'inactive': item?.injuries == 0 }">
+                <svg-icon
+                  class="accident-report-svg"
+                  src="assets/svg/common/ic_injury.svg"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <div class="marker-like-text"><span class="marker-bold-text">{{ item?.injuries }}</span> Inj.</div>
+              </div>
+              <div class="accident-svg-container fatality-number" [ngClass]="{ 'inactive': item?.fatality == 0 }">
+                <svg-icon
+                  class="accident-report-svg"
+                  src="assets/svg/common/ic_fatality.svg"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <div class="marker-like-text"><span class="marker-bold-text">{{ item?.fatality }}</span> Fat.</div>
+              </div>
+              <div class="accident-svg-container towing" [ngClass]="{ 'inactive': item?.towing == 'No' }">
+                <svg-icon
+                  class="accident-report-svg"
+                  src="assets/svg/common/ic_towing.svg"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <div class="marker-like-text">Tow.</div>
+              </div>
+              <div class="accident-svg-container hazard" [ngClass]="{ 'inactive': item?.hm == 'No' }">
+                <svg-icon
+                  class="accident-report-svg"
+                  src="assets/svg/common/ic_hazmat.svg"
+                  [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+                ></svg-icon>
+                <div class="marker-like-text">HM</div>
+              </div>
+            </div>
+        </div>
       </div>
       <div class="map-list-card-address mg-top-2" *ngIf="address">
         <span class="marker-bold-text" *ngIf="sortCategory.name != 'Location' && locationFilterOn">{{ item.distanceBetween }} mi - </span>
