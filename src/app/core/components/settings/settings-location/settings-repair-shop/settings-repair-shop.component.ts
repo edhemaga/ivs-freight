@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-repair-shop',
   templateUrl: './settings-repair-shop.component.html',
@@ -131,7 +131,12 @@ export class SettingsRepairShopComponent implements OnInit {
       day: '25th',
     },
   ];
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  public repairPhone: boolean[] = [];
+  public repairEmail: boolean[] = [];
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard
+  ) {}
 
   ngOnInit() {}
 
@@ -149,5 +154,19 @@ export class SettingsRepairShopComponent implements OnInit {
 
   public getActiveServices(services: any[]): any[] {
     return services.filter((item) => item.isUsefulService);
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, index: number, name: string) {
+    switch (name) {
+      case 'repair-phone':
+        this.repairPhone[index] = true;
+        break;
+      case 'repair-email':
+        this.repairEmail[index] = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
   }
 }

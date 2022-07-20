@@ -27,11 +27,47 @@
         <div class="settings-body-items">
           <div *ngIf="insurance?.phone" class="single-item">
             <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <span>{{ insurance?.phone | formatPhoneP }}</span>
+            <div class="value-copy-container" [ngClass]="{ copied: copyInsurancePhone }">
+              <span class="insurance-value">{{ insurance?.phone | formatPhoneP }}</span>
+              <span
+                [tooltipBackground]="copyInsurancePhone ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copyInsurancePhone ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyTextWhitoutIndex(insurance?.phone, 'phone')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="copyInsurancePhone = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
+          
           </div>
           <div *ngIf="insurance.email" class="single-item">
             <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <span>{{ insurance?.email }}</span>
+            <div class="value-copy-container" [ngClass]="{ copied: copyInsuranceEmail }">
+              <span class="insurance-value">{{ insurance?.email }}</span>
+              <span
+                [tooltipBackground]="copyInsuranceEmail ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copyInsuranceEmail ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyTextWhitoutIndex(insurance?.email, 'email')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="copyInsuranceEmail = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
+          
           </div>
           <div *ngIf="insurance.address" class="single-item">
             <svg-icon

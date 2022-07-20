@@ -22,7 +22,7 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of officeData; trackBy: identityOfficeData"
+      *ngFor="let item of officeData; let i=index; trackBy: identityOfficeData"
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
@@ -31,11 +31,46 @@
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
           <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <span>{{ item.phone }}</span>
+          <div class="value-copy-container" [ngClass]="{ copied: officePhone[i] }">
+            <span class="insurance-value">{{ item.phone }}</span>
+            <span
+              [tooltipBackground]="officePhone[i] ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="officePhone[i] ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(item.phone , i,'office-phone')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="officePhone[i] = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
         </div>
         <div *ngIf="item.email" class="single-item">
           <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-          <span>{{ item.email }}</span>
+  
+          <div class="value-copy-container" [ngClass]="{ copied: officeEmail[i] }">
+            <span class="insurance-value">{{ item.email }}</span>
+            <span
+              [tooltipBackground]="officeEmail[i] ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="officeEmail[i] ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(item.email , i,'office-email')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="officeEmail[i] = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
         </div>
         <div *ngIf="item.address" class="single-item">
           <svg-icon
@@ -45,7 +80,7 @@
         </div>
       </div>
       <app-ta-custom-card
-        *ngFor="let dep of item.departments; trackBy: identityOfficeData"
+        *ngFor="let dep of item.departments; let i=index; trackBy: identityOfficeData"
         [cardName]="dep.name"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
@@ -58,7 +93,24 @@
               class="office-template-svg"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <p class="office-template-value">{{ dep.phone }}</p>
+            <div class="value-copy-container" [ngClass]="{ copied: departmentPhone[i] }">
+              <span class="office-template-value">{{ dep.phone }}</span>
+              <span
+                [tooltipBackground]="departmentPhone[i] ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="departmentPhone[i] ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText(dep.phone , i,'department-phone')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="departmentPhone[i] = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
           </div>
           <div class="office-template-item">
             <svg-icon
@@ -72,7 +124,24 @@
               class="office-template-svg"
               src="assets/svg/common/ic_email.svg"
             ></svg-icon>
-            <p class="office-template-value">{{ dep.email }}</p>
+            <div class="value-copy-container" [ngClass]="{ copied: departmentEmail[i] }">
+              <span class="office-template-value">{{ dep.email }}</span>
+              <span
+                [tooltipBackground]="departmentEmail[i] ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="departmentEmail[i] ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText(dep.email , i,'department-email')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="departmentEmail[i] = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
           </div>
         </div>
       </app-ta-custom-card>
