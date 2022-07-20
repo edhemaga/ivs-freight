@@ -115,7 +115,7 @@ autoClose="outside"
             <div class="border-search"></div>
             <input (keyup)="filterDispatcher($event)" class="dispatcher-search-user-holder" type="text" placeholder="Search Dispatcher"/>
         </div>
-        <div class="dispatcher-border-filter"></div>
+        <div class="dispatcher-border-filter different-margin"></div>
         <div class="dispatcher-selected-user-holder">
             <div *ngFor="let item of selectedDispatcher; let indx=index" class="dispatcher-selected-user-frame">
                 <div class="dispatcher-initials">
@@ -141,7 +141,7 @@ autoClose="outside"
             </div>
             </div>
         </div>
-        <div *ngIf="selectedDispatcher.length > 0" class="dispatcher-border-filter"></div>
+        <div *ngIf="selectedDispatcher.length > 0" class="dispatcher-border-filter different-margin"></div>
         <div class="dispatcher-user-holder" [ngStyle]="{'padding': unselectedDispatcher.length > 7 ? '2px 0px 0px 12px' : '2px 12px 0px 12px'}">
             <div *ngFor="let item of unselectedDispatcher; let indx=index" class="dispatcher-user-frame-holder">
                 <div *ngIf="!item.hidden" (click)="addToSelectedDispatcher(indx, item)" class="dispatcher-user-frame">
