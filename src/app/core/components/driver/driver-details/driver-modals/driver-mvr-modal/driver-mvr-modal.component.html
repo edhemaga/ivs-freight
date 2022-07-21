@@ -4,7 +4,7 @@
   [editName]="modalName"
   [isModalValid]="editData ? mvrForm.valid && isDirty : mvrForm.valid"
   [specificCaseModalName]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="mvrForm" class="form-container">
     <div class="row first-row last-row">

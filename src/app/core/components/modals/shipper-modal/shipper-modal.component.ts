@@ -377,6 +377,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
+              this.editShipperById(this.editData.id);
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -677,8 +678,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           }
 
           this.taLikeDislikeService.populateLikeDislikeEvent({
-            downRatingCount: reasponse.downRatingCount,
-            upRatingCount: reasponse.upRatingCount,
+            downRatingCount: reasponse.downCount,
+            upRatingCount: reasponse.upCount,
             currentCompanyUserRating: reasponse.currentCompanyUserRating,
           });
         },

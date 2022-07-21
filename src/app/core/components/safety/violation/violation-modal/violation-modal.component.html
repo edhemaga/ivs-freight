@@ -7,7 +7,7 @@
   "
   [customClass]="'modal-container-XL'"
   [disableDelete]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-tab-switcher
     (switchClicked)="tabChange($event)"

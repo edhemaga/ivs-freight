@@ -8,7 +8,7 @@
   [isModalValid]="
     editData ? fhwaInspectionForm.valid && isDirty : fhwaInspectionForm.valid
   "
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="fhwaInspectionForm" class="form-container">
     <div class="row last-row">

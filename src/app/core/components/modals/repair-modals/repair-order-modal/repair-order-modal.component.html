@@ -10,7 +10,7 @@
   [tabChange]="headerTabs"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="repairOrderForm" class="form-container">
     <div

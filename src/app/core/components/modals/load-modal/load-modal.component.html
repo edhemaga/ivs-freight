@@ -6,7 +6,7 @@
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="loadForm" class="form-container">
     <div *ngIf="selectedTab === 1" class="m-tab">

@@ -3,7 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="editData ? trailerForm.valid && isDirty : trailerForm.valid"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"

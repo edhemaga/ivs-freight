@@ -5,7 +5,7 @@
   [isModalValid]="editData ? accidentForm.valid && isDirty : accidentForm.valid"
   [customClass]="'modal-container-XL'"
   [disableDelete]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"

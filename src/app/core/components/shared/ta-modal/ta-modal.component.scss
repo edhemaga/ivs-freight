@@ -152,7 +152,19 @@
     }
   }
 
-  .modal-footer > * {
-    margin: 0px !important;
+  .modal-footer {
+    & > * {
+      margin: 0px !important;
+    }
+
+    .right-side {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .modal-save-btn-add-new {
+        width: 182px !important;
+      }
+    }
   }
 }

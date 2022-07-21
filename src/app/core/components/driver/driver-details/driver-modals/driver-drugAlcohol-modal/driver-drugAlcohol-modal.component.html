@@ -4,7 +4,7 @@
   [editName]="modalName"
   [isModalValid]="editData ? drugForm.valid && isDirty : drugForm.valid"
   [specificCaseModalName]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="drugForm" class="form-container">
     <div class="drug-type-reason-date">

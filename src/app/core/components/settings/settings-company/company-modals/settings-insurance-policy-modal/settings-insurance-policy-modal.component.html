@@ -7,7 +7,7 @@
   [isModalValid]="
     editData ? insurancePolicyForm.valid && isDirty : insurancePolicyForm.valid
   "
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="insurancePolicyForm" class="form-container">
     <div class="row">

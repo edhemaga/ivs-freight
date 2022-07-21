@@ -4,7 +4,7 @@
   [editName]="modalName"
   [isModalValid]="editData ? cdlForm.valid && isDirty : cdlForm.valid"
   [specificCaseModalName]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="cdlForm" class="form-container">
     <div class="cdl-issue-exp-date">
