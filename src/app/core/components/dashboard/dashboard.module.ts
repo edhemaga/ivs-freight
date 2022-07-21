@@ -10,6 +10,7 @@ import { DashboardPickupByStateComponent } from './dashboard-pickup-by-state/das
 import { DashboardMapComponent } from './dashboard-map/dashboard-map.component';
 import { DashboardStateTrackingComponent } from './dashboard-state-tracking/dashboard-state-tracking.component';
 import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard-state-usa/dashboard-state-usa.component';
+import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -24,7 +25,8 @@ import { DashboardStateUsaComponent } from './dashboard-state-tracking/dashboard
     CommonModule,
     DashboardRoutingModule,
     ReactiveFormsModule,
-    SharedModule
+    SharedModule,
+    TaNoteModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
