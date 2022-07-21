@@ -31,6 +31,7 @@
       <ng-content></ng-content>
     </div>
     <div
+      *ngIf="!disableFooter"
       class="modal-footer"
       [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
     >

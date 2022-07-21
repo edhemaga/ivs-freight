@@ -119,6 +119,14 @@
     }
   }
 
+  &.modal-container-sph-applicant {
+    width: 940px;
+
+    .divider {
+      display: none;
+    }
+  }
+
   .divider {
     width: 455px;
     height: 2px;
