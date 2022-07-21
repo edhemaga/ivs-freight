@@ -43,13 +43,28 @@ export class Step5Component implements OnInit, OnDestroy {
       truckType: 'Cargo Van',
       violationLocation: 'Chicago, IL 25002',
       violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      isEditingViolation: false,
     },
     {
-      violationDate: '21/20/19',
+      violationDate: '02/20/20',
       truckType: 'Cargo Van',
       violationLocation: 'Chicago, IL 25002',
-      violationDescription:
-        'Lorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla Lorem ipsum dolor sit ametblablaLorem ipsum dolor sit ametblabla',
+      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      isEditingViolation: false,
+    },
+    {
+      violationDate: '03/20/21',
+      truckType: 'Cargo Van',
+      violationLocation: 'Chicago, IL 25002',
+      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      isEditingViolation: false,
+    },
+    {
+      violationDate: '04/20/21',
+      truckType: 'Cargo Van',
+      violationLocation: 'Chicago, IL 25002',
+      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      isEditingViolation: false,
     },
   ];
 
@@ -61,6 +76,8 @@ export class Step5Component implements OnInit, OnDestroy {
   public selectedViolationIndex: number;
   public selectedTruckType: any = null;
   public selectedAddress: Address = null;
+
+  public helperIndex: number = 2;
 
   //
 
@@ -154,6 +171,8 @@ export class Step5Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = 2;
+
     this.inputResetService.resetInputSubject.next(true);
 
     /*  const violationForm = this.violationsForm.value;
@@ -185,9 +204,12 @@ export class Step5Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = index;
+
     this.isViolationEdited = false;
 
     this.isEditing = true;
+    this.violationsArray[index].isEditingViolation = true;
 
     this.selectedViolationIndex = index;
 
@@ -225,8 +247,12 @@ export class Step5Component implements OnInit, OnDestroy {
       this.violationsForm.value;
 
     this.isEditing = false;
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
 
     this.isViolationEdited = false;
+
+    this.helperIndex = 2;
 
     this.violationsForm.reset();
 
@@ -237,8 +263,12 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public onCancelEditAccident(): void {
     this.isEditing = false;
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
 
     this.isViolationEdited = false;
+
+    this.helperIndex = 2;
 
     this.violationsForm.reset();
 

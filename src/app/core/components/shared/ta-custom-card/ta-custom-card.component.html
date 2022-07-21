@@ -37,7 +37,7 @@
         [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
         position="top"
       >
-        <svg-icon class="header-svg" src="{{ hasHeaderSvg }}"></svg-icon>
+        <svg-icon [ngClass]="{'header-svg-bank':customClassHeaderSvg}" class="header-svg" src="{{ hasHeaderSvg }}"></svg-icon>
       </div>
     </div>
     <div

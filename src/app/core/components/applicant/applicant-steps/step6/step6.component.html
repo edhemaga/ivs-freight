@@ -1,7 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="m-0 step-title text-center noselect ta-font-bold">Education</h1>
+  <h1 class="m-0 step-title text-center ta-font-bold">Education</h1>
 
-  <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
+  <h3 class="m-0 step-subtitle text-center ta-font-bold">
     Please select the highest grade completed:
   </h3>
 
@@ -24,7 +24,7 @@
         trackBy: trackByIdentity
       "
     >
-      {{ grade }}
+      <p class="m-0">{{ grade }}</p>
     </div>
 
     <!-- REVIEW AND FEEDBACK -->
@@ -38,7 +38,7 @@
     </div>
   </div>
 
-  <p class="m-0 noselect college-title">COLLEGE:</p>
+  <p class="m-0 college-title">COLLEGE:</p>
 
   <!-- SELECT COLLAGE GRADE -->
 
@@ -61,7 +61,7 @@
         trackBy: trackByIdentity
       "
     >
-      {{ grade }}
+      <p class="m-0">{{ grade }}</p>
     </div>
 
     <!-- REVIEW AND FEEDBACK -->
@@ -101,7 +101,7 @@
             <div class="radios-box">
               <app-ta-input-radiobuttons
                 [buttons]="question.answerChoices"
-                (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+                (changedValue)="handleInputSelect($event)"
               ></app-ta-input-radiobuttons>
             </div>
           </div>
@@ -148,9 +148,7 @@
 
       <!-- GENERAL -->
 
-      <h3
-        class="m-0 text-center noselect ta-font-bold step-title general-title"
-      >
+      <h3 class="m-0 text-center ta-font-bold step-title general-title">
         General
       </h3>
 
@@ -298,7 +296,7 @@
 
     <form [formGroup]="contactForm" class="contact-form">
       <h3
-        class="contact-title noselect text-center ta-font-bold"
+        class="contact-title text-center ta-font-bold"
         [ngStyle]="{
           'margin-bottom': contactsArray.length ? '22px' : '32px'
         }"
@@ -312,128 +310,123 @@
         class="d-flex flex-column justify-content-center contacts-view-container"
         *ngIf="contactsArray?.length"
       >
-        <div class="d-flex align-items-center title-container">
-          <div class="d-flex align-items-center name-title-box">
-            <p class="m-0 ta-font-bold">NAME <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center phone-title-box">
-            <p class="m-0 ta-font-bold">PHONE <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center relationship-title-box">
-            <p class="m-0 ta-font-bold">RELATIONSHIP <span>*</span></p>
-          </div>
-        </div>
-
         <div
-          class="d-flex align-items-center contact-info-container"
+          class="d-flex flex-column"
           *ngFor="
             let contact of contactsArray;
             let i = index;
             trackBy: trackByIdentity
           "
         >
-          <div class="d-flex align-items-center name-box">
-            <p class="m-0 ta-font-regular">
-              {{ contact.contactName }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center phone-box">
-            <p class="m-0 ta-font-regular">
-              {{ contact.contactPhone }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center relationship-box">
-            <p class="m-0 ta-font-regular">
-              {{ contact.contactRelationship }}
-            </p>
+          <div
+            class="d-flex align-items-center title-container"
+            *ngIf="
+              (contactsArray.length > 1 && helperIndex !== 0 && i === 0) ||
+              (helperIndex === 0 && i === 1) ||
+              (helperIndex !== 0 && i > helperIndex)
+            "
+          >
+            <div class="d-flex align-items-center name-title-box">
+              <p class="m-0 ta-font-bold">NAME <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center phone-title-box">
+              <p class="m-0 ta-font-bold">PHONE <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center relationship-title-box">
+              <p class="m-0 ta-font-bold">RELATIONSHIP <span>*</span></p>
+            </div>
           </div>
 
-          <div class="d-flex align-items-center btn-container">
-            <svg-icon
-              class="edit-icon"
-              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Edit"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#6C6C6C"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onEditContact(i)"
-            ></svg-icon>
+          <div
+            class="d-flex align-items-center contact-info-container"
+            *ngIf="!contact.isEditingContact"
+          >
+            <div class="d-flex align-items-center name-box">
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactName }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center phone-box">
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactPhone }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center relationship-box">
+              <p class="m-0 ta-font-regular">
+                {{ contact.contactRelationship }}
+              </p>
+            </div>
 
-            <svg-icon
-              class="delete-icon"
-              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Delete"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#EF5350"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onDeleteWorkExperience(i)"
-            ></svg-icon>
+            <div class="d-flex align-items-center btn-container">
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Edit"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onEditContact(i)"
+              ></svg-icon>
+
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Delete"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#EF5350"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onDeleteContact(i)"
+              ></svg-icon>
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-column contacts-view-form"
+            *ngIf="contact.isEditingContact"
+          >
+            <app-step6-form [form]="contactForm"></app-step6-form>
+
+            <div
+              class="d-flex align-items-center mx-auto justify-content-center btn-container"
+            >
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+                (click)="onCancelEditContact()"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+                [ngClass]="{
+                  disabled: !isContactEdited
+                }"
+                (click)="onSaveEditedContact()"
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="d-flex">
-        <div class="group name-group">
-          <app-ta-input
-            formControlName="contactName"
-            [inputConfig]="{
-              name: 'Name',
-              type: 'text',
-              label: 'Name',
-              isRequired: true,
-              textTransform: 'capitalize'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="group phone-group">
-          <app-ta-input
-            formControlName="contactPhone"
-            [inputConfig]="{
-              name: 'Phone',
-              type: 'text',
-              label: 'Phone',
-              isRequired: true,
-              placeholderIcon: 'phone',
-              mask: '(000) 000-0000'
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="group relationship-group">
-          <app-ta-input
-            formControlName="contactRelationship"
-            [inputConfig]="{
-              name: 'Relationship',
-              type: 'text',
-              label: 'Relationship',
-              textTransform: 'capitalize',
-              isRequired: true
-            }"
-          ></app-ta-input>
-        </div>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="5"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
+      <div class="d-flex" *ngIf="!isEditing">
+        <app-step6-form [form]="contactForm"></app-step6-form>
       </div>
 
       <!-- ADD SECOND CONTACT -->
@@ -462,29 +455,6 @@
 
           Add Second Emergency Contact
         </button>
-
-        <div
-          class="d-flex align-items-center mx-auto justify-content-center"
-          *ngIf="isEditing"
-        >
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-            (click)="onCancelEditContact()"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-            [ngClass]="{
-              disabled: !isContactEdited
-            }"
-            (click)="onSaveEditedContact()"
-          >
-            Save Changes
-          </button>
-        </div>
       </div>
     </form>
   </div>

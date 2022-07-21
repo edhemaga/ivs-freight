@@ -14,10 +14,15 @@
             trackBy: identity
           "
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'registration')"
           [cardNameCommon]="reg.licensePlate"
           [hasCopyIcon]="false"
           [options]="dataEdit"
+          [noteIcons]="
+            reg.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           [expDateClose]="reg.expDate | formatDateP"
           [optionsId]="reg.id"
           (dropActions)="optionsEvent($event, 'edit-registration')"
@@ -38,7 +43,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'registration'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -50,18 +55,24 @@
                 </div>
               </div>
             </div>
-            <div class="divider" *ngIf="toggler[i]"></div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="registrationNote"
-                [isVisibleDivider]="false"
-                [isVisibleSecondDivider]="false"
-                [placeholder]="'Write something.'"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
+            <div
+              [@showHideCardBody]="
+                toggler[i + 'registration'] ? 'true' : 'false'
+              "
+            >
+              <div class="divider"></div>
+              <div class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="registrationNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleSecondDivider]="false"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
             </div>
           </div>
         </app-ta-re-card>
@@ -76,8 +87,13 @@
           "
           [options]="dataEdit"
           [cardDocumentCounter]="1"
+          [noteIcons]="
+            fhwa.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           [cardNameCommon]="fhwa.issueDate | formatDateP"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'fhwa')"
           [expDateClose]="fhwa.issueDate | setFutureYear"
           [optionsId]="fhwa.id"
           (dropActions)="optionsEvent($event, 'edit-inspection')"
@@ -86,7 +102,7 @@
             <div class="card-body-cdl">
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'fhwa'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -98,16 +114,20 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="fhwaNote"
-                [placeholder]="'Write something.'"
-                [isVisibleSecondDivider]="false"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
+            <div [@showHideCardBody]="toggler[i + 'fhwa'] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="fhwaNote"
+                  [placeholder]="'Write something.'"
+                  [isVisibleDivider]="false"
+                  [isVisibleSecondDivider]="false"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
             </div>
           </div>
         </app-ta-re-card>
@@ -122,9 +142,14 @@
             trackBy: identity
           "
           [cardDocumentCounter]="1"
-          (resizePage)="toggleResizePage(i)"
+          (resizePage)="toggleResizePage(i, 'titles')"
           [cardNameCommon]="title.number"
           [options]="dataEdit"
+          [noteIcons]="
+            title.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
           [expDateClose]="'04/04/27' | formatDateP"
           [optionsId]="title.id"
           (dropActions)="optionsEvent($event, 'edit-title')"
@@ -145,7 +170,7 @@
               </div>
               <div
                 class="card-row-progress"
-                [ngClass]="{ 'second-progress': toggler[i] }"
+                [ngClass]="{ 'second-progress': toggler[i + 'titles'] }"
               >
                 <div class="card-details-progress-container">
                   <app-truckassist-progress-expiration
@@ -157,18 +182,20 @@
                 </div>
               </div>
             </div>
-            <div class="divider" *ngIf="toggler[i]"></div>
-            <div *ngIf="toggler[i]" class="note-wrapper">
-              <app-ta-input-note
-                [formControl]="titleNote"
-                [placeholder]="'Write something.'"
-                [isVisibleSecondDivider]="false"
-                [customClass]="'note-small'"
-                [isVisibleArrow]="false"
-                [minRows]="1"
-                [isVisibleDivider]="false"
-                [isVisibleNote]="true"
-              ></app-ta-input-note>
+            <div [@showHideCardBody]="toggler[i + 'titles'] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div class="note-wrapper">
+                <app-ta-input-note
+                  [formControl]="titleNote"
+                  [placeholder]="'Write something.'"
+                  [isVisibleSecondDivider]="false"
+                  [customClass]="'note-small'"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                ></app-ta-input-note>
+              </div>
             </div>
           </div>
         </app-ta-re-card>

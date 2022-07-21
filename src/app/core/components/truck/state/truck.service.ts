@@ -1,3 +1,4 @@
+import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { TruckQuery } from './truck.query';
 import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
@@ -10,7 +11,7 @@ import {
   TruckService,
   UpdateTruckCommand,
 } from 'appcoretruckassist';
-import { CreateTruckResponse } from 'appcoretruckassist/model/createTruckResponse';
+/* import { CreateTruckResponse } from 'appcoretruckassist/model/createTruckResponse'; */
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
@@ -21,6 +22,15 @@ export class TruckTService {
     private truckQuery: TruckQuery,
     private tableService: TruckassistTableService
   ) {}
+
+  //Get Truck Minimal List
+  public getTrucksMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<TruckMinimalListResponse> {
+    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize, count);
+  }
 
   // Get Truck List
   public getTruckList(
@@ -36,7 +46,9 @@ export class TruckTService {
     return this.truckService.apiTruckListGet(active, pageIndex, pageSize);
   }
 
-  public addTruck(data: CreateTruckCommand): Observable<CreateTruckResponse> {
+  /* Observable<CreateTruckResponse> */
+
+  public addTruck(data: CreateTruckCommand): Observable<any> {
     return this.truckService.apiTruckPost(data).pipe(
       tap((res: any) => {
         const subTruck = this.getTruckById(res.id).subscribe({

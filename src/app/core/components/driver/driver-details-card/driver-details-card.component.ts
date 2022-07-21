@@ -48,7 +48,7 @@ export class DriverDetailsCardComponent
   public copiedSSN: boolean = false;
   public copiedDriverPhone: boolean = false;
   public copiedDriverEmail: boolean = false;
-  public isAccountVisible: boolean = true;
+  public isAccountVisibleDriver: boolean = false;
   public accountText: string = null;
   public toggler: boolean[] = [];
   public dataTest: any;
@@ -76,7 +76,7 @@ export class DriverDetailsCardComponent
   public driversList: any[] = this.driverMinimalQuery.getAll();
   public dataCDl: any;
 
-  public driverOwner:boolean;
+  public driverOwner: boolean;
   public barChartLegend: any[] = [
     {
       title: 'Miles',
@@ -119,14 +119,12 @@ export class DriverDetailsCardComponent
   constructor(
     private sanitazer: DomSanitizer,
     private modalService: ModalService,
-    private driversQuery: DriversActiveQuery,
-    private activated_route: ActivatedRoute,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
-    private driverMinimalQuery:DriversMinimalListQuery
+    private driverMinimalQuery: DriversMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -134,7 +132,7 @@ export class DriverDetailsCardComponent
       this.getExpireDate(changes.driver.currentValue);
       this.getYearsAndDays(changes.driver.currentValue);
       this.widthOfProgress();
-      this.getDriversDropdown()
+      this.getDriversDropdown();
     }
     if (changes?.driver?.firstChange) {
       if (this.templateCard == true) {
@@ -145,8 +143,8 @@ export class DriverDetailsCardComponent
     }
   }
 
-  ngOnInit(): void { 
-    this.note.patchValue(this.driver.note)
+  ngOnInit(): void {
+    this.note.patchValue(this.driver.note);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -212,8 +210,8 @@ export class DriverDetailsCardComponent
     ];
   }
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number) {
-    this.toggler[value] = !this.toggler[value];
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   public changeTab(ev: any) {
     this.selectedTab = ev.id;
@@ -306,27 +304,6 @@ export class DriverDetailsCardComponent
         break;
     }
     this.clipboar.copy(val);
-  }
-
-  public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
-    const lastFourCharaters = value.substring(
-      value.length - numberOfCharacterToHide
-    );
-    let hiddenCharacter = '';
-
-    for (let i = 0; i < numberOfCharacterToHide; i++) {
-      hiddenCharacter += '*';
-    }
-    return hiddenCharacter + lastFourCharaters;
-  }
-
-  public showHideValue(value: string) {
-    this.isAccountVisible = !this.isAccountVisible;
-    if (!this.isAccountVisible) {
-      this.accountText = this.hiddenPassword(value, 4);
-      return;
-    }
-    this.accountText = value;
   }
 
   /**Function retrun id */
@@ -558,27 +535,26 @@ export class DriverDetailsCardComponent
     this.showTooltip = true;
   }
   public getDriversDropdown() {
-      this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
-        
-        let fullname=item.firstName + ' ' + item.lastName        
-        return {
-          id: item.id,
-          name: fullname ,
-          status: item.status,
-          svg:item.owner ? 'driver-owner' : null,
-          folder: 'common',
-          active: item.id === this.driver.id,
-        };
-      });   
+    this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
+      let fullname = item.firstName + ' ' + item.lastName;
+      return {
+        id: item.id,
+        name: fullname,
+        status: item.status,
+        svg: item.owner ? 'driver-owner' : null,
+        folder: 'common',
+        active: item.id === this.driver.id,
+      };
+    });
   }
 
   public onSelectedDriver(event: any) {
     if (event.id !== this.driver.id) {
       this.driversDropdowns = this.driverMinimalQuery.getAll().map((item) => {
-        let fullname=item.firstName + ' ' + item.lastName
+        let fullname = item.firstName + ' ' + item.lastName;
         return {
           id: item.id,
-          name:fullname,
+          name: fullname,
           status: item.status,
           svg: item.owner ? 'driver-owner' : null,
           folder: 'common',

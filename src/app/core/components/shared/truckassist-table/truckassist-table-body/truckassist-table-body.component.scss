@@ -15,11 +15,11 @@ table {
     }
 
     .not-pined-border-left {
-      background-image: linear-gradient(to right, #eeeeee, #F7F7F700);
+      background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
     }
 
     .not-pined-border-right {
-      background-image: linear-gradient(to right, #F7F7F700, #eeeeee);
+      background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
     }
 
     .not-pined-tr {
@@ -33,7 +33,7 @@ table {
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: #CCCCCC;
+        background-color: #cccccc;
         border: 6px solid #eeeeee;
         border-radius: 1px;
       }
@@ -760,35 +760,35 @@ table {
 
               /* Regular Type Icon */
               .truck {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Truck.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_truck.svg");
               }
 
               .trailer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Trailer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_trailer.svg");
               }
 
               .mobile {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Mobile.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_mobile.svg");
               }
 
               .shop {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Shop.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_shop.svg");
               }
 
               .towing {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Towing.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_towing.svg");
               }
 
               .parts {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Parts.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_parts.svg");
               }
 
               .tire {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Tire.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_tire.svg");
               }
 
               .dealer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/Dealer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_dealer.svg");
               }
 
               /* Active Type Icon */
@@ -951,11 +951,13 @@ table {
               }
 
               .table-progress-text {
-                display: flex;
-                margin-left: 4px;
                 font-size: 14px;
                 font-weight: 400;
+                margin-left: 4px;
                 color: #6c6c6c;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
 
                 &::selection {
                   color: #6c6c6c;
@@ -1045,7 +1047,14 @@ table {
 
 // NG CLASS
 .regular-columns-hover {
-  background: #f7f7f7 !important;
+  .border-inactive {
+    border-right: 4px solid #f7f7f7 !important;
+    border-left: 4px solid #f7f7f7 !important;
+  }
+
+  .columns-container {
+    background: #f7f7f7 !important;
+  }
 }
 
 .border-inactive {

@@ -82,14 +82,29 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-      // Resize
-      this.tableService.currentColumnWidth
+    // Resize
+    this.tableService.currentColumnWidth
       .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
             if (c.title === response.columns[response.event.index].title) {
               c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
             }
 
             return c;

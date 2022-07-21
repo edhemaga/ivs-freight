@@ -6,6 +6,7 @@ import {
   CreateShipperCommand,
   RatingReviewService,
   ShipperListResponse,
+  ShipperMinimalListResponse,
   ShipperModalResponse,
   ShipperResponse,
   UpdateReviewCommand,
@@ -71,6 +72,19 @@ export class ShipperTService {
           },
         });
       })
+    );
+  }
+
+  //Get Shipper Minimal List
+  public getShipperMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<ShipperMinimalListResponse> {
+    return this.shipperService.apiShipperListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
     );
   }
 

@@ -41,6 +41,7 @@ export class Step3Component implements OnInit, OnDestroy {
       expDate: '01/18/20',
       endorsments: 'Endorsment 1',
       restrictions: 'Restriction 1',
+      isEditingLicense: false,
     },
     {
       license: 'd263-540-92-166-0',
@@ -50,6 +51,27 @@ export class Step3Component implements OnInit, OnDestroy {
       expDate: '01/18/20',
       endorsments: 'Endorsment 2',
       restrictions: 'Restriction 2',
+      isEditingLicense: false,
+    },
+    {
+      license: 'd263-540-92-166-0',
+      countryType: 'USA',
+      stateId: 'AL',
+      classType: '1234',
+      expDate: '01/18/20',
+      endorsments: 'Endorsment 2',
+      restrictions: 'Restriction 2',
+      isEditingLicense: false,
+    },
+    {
+      license: 'd263-540-92-166-0',
+      countryType: 'USA',
+      stateId: 'AL',
+      classType: '1234',
+      expDate: '01/18/20',
+      endorsments: 'Endorsment 2',
+      restrictions: 'Restriction 2',
+      isEditingLicense: false,
     },
   ];
 
@@ -88,6 +110,8 @@ export class Step3Component implements OnInit, OnDestroy {
       checked: false,
     },
   ];
+
+  public helperIndex: number = 2;
 
   //
 
@@ -195,6 +219,8 @@ export class Step3Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = 2;
+
     this.inputResetService.resetInputSubject.next(true);
 
     /* const licenseForm = this.licenseForm.value;
@@ -237,9 +263,12 @@ export class Step3Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = index;
+
     this.isLicenseEdited = false;
 
     this.isEditing = true;
+    this.licenseArray[index].isEditingLicense = true;
 
     this.selectedLicenseIndex = index;
 
@@ -279,8 +308,11 @@ export class Step3Component implements OnInit, OnDestroy {
     this.licenseArray[this.selectedLicenseIndex] = this.licenseForm.value;
 
     this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
     this.isLicenseEdited = false;
+
+    this.helperIndex = 2;
 
     this.licenseForm.reset();
 
@@ -291,8 +323,11 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public onCancelEditLicense(): void {
     this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
     this.isLicenseEdited = false;
+
+    this.helperIndex = 2;
 
     this.licenseForm.reset();
 

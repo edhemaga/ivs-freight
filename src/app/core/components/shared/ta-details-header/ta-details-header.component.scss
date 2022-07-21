@@ -193,9 +193,9 @@ svg {
         path {
             fill: #6d82c7;
         }
-        &:hover{
+        &:hover {
             path {
-                fill: #536BC2 !important;
+                fill: #536bc2 !important;
             }
         }
     }
@@ -237,37 +237,52 @@ svg {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    &:hover{
-        background-color: #536BC2;
-      }
+    &:hover {
+        background-color: #536bc2;
+    }
 }
-.danger-svg{
+.danger-svg {
     margin-left: 3px;
     margin-right: 6px;
-    svg{
+    svg {
         width: 18px;
         height: 18px;
         display: flex;
-        path{
+        path {
             fill: #e57373;
         }
     }
 }
-.icon-right{
- display: flex;
- align-items: center;
-
-.inactive-status{
-    height: 22px;
-    width: 78px;
+.icon-right {
     display: flex;
     align-items: center;
-    justify-content: center;
-    background-color: #E57373;
-    color: #ffffff;
-    border-radius: 2px;
-    font-size: 11px;
-    font-weight: 700;
-    margin-right: 8px;
+
+    .inactive-status {
+        height: 22px;
+        width: 78px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e57373;
+        color: #ffffff;
+        border-radius: 2px;
+        font-size: 11px;
+        font-weight: 700;
+        margin-right: 8px;
+    }
 }
+.violation-counter {
+    font-size: 14px;
+    font-weight: 800;
+    color: #919191;
+    margin-right: 2px;
+    margin-left: 12px;
+    &::-moz-selection {
+        color: #919191;
+        background: rgb(145, 145, 145, 0.2);
+    }
+    &::selection {
+        color: #919191;
+        background: rgb(145, 145, 145, 0.2);
+    }
 }

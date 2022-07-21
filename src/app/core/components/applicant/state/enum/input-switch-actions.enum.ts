@@ -15,10 +15,29 @@ export enum InputSwitchActions {
   PERMIT = 'PERMIT',
   HAZMAT_SPILL = 'HAZMAT-SPILL',
 
+  VALID_HOS = 'isValidHos',
+  VALID_ANOTHER_EMPLOYER = 'isValidAnotherEmployer',
+
   FIRST_DISCLOSURE = 'isFirstDisclosure',
   SECOND_DISCLOSURE = 'isSecondDisclosure',
   THIRD_DISCLOSURE = 'isThirdDisclosure',
   FOURTH_DISCLOSURE = 'isFourthDisclosure',
   FIFTH_DISCLOSURE = 'isFifthDisclosure',
   SIXTH_DISCLOSURE = 'isSixthDisclosure',
+
+  FIRST_AUTHORIZATION = 'isFirstAuthorization',
+  SECOND_AUTHORIZATION = 'isSecondAuthorization',
+  THIRD_AUTHORIZATION = 'isThirdAuthorization',
+  FOURTH_AUTHORIZATION = 'isFourthAuthorization',
+
+  CONSENT_RELEASE = 'isConsentRelease',
+  PERIODICALLY_OBTAINED = 'isPeriodicallyObtained',
+  INFORMATION_CORRECT = 'isInformationCorrect',
+
+  IS_AUTHORIZE = 'isAuthorize',
+  IS_FURTHER_UNDERSTAND = 'isFurtherUnderstand',
+  IS_PSP_REPORT = 'isPspReport',
+  IS_DISCLOSURE_REGARDING_REPORT = 'isDisclosureRegardingReport',
+
+  IS_TESTED = 'isTested',
 }

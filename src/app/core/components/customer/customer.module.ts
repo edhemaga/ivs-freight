@@ -7,9 +7,7 @@ import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-
 import { CustomerRoutingModule } from './customer-routing.module';
 import { BrokerCardComponent } from './broker-card/broker-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { ShipperDetailsComponent } from './shipper-details/shipper-details.component';
-import { ShipperDetailsSingleComponent } from './shipper-details/shipper-details-single/shipper-details-single.component';
-import { ShipperCardViewComponent } from './shipper-card-view/shipper-card-view.component';
+import { BrokerDetailsModule } from './broker-details/broker-details.module';
 
 @NgModule({
   declarations: [CustomerTableComponent, BrokerCardComponent],
@@ -18,8 +16,9 @@ import { ShipperCardViewComponent } from './shipper-card-view/shipper-card-view.
     TruckassistTableModule,
     CustomerRoutingModule,
     ShipperDetailsModule,
+    BrokerDetailsModule,
     AngularSvgIconModule,
-    SharedModule
+    SharedModule,
   ],
 })
 export class CustomerModule {}

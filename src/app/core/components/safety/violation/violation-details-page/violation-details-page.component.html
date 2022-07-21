@@ -1,0 +1,23 @@
+<div class="violation-details-item">
+  <div *ngFor="let item of violationInitCongif; trackBy: identity">
+    <app-ta-details-header
+      [route]="'/safety/violation'"
+      [tooltipHeaderName]="'Back to Violation List'"
+      [headerText]="item.name"
+      [counterData]="item.length"
+      [hasIcon]="item.icon"
+      [hidePlus]="item.hide"
+      [customText]="item.customText"
+      [statusInactive]="item.hide"
+      [arrayIcons]="item.icons"
+      [hasDateArrow]="item.hasArrow"
+      [hasDateNav]="item.hasCost"
+      [counterViolation]="item.counterViolation"
+    >
+    </app-ta-details-header>
+  </div>
+    <app-violation-details-single [violationData]="violationInitCongif">
+
+    </app-violation-details-single>
+ 
+</div>

@@ -1,0 +1,28 @@
+.step-form {
+  .group {
+    margin-bottom: 32px;
+    margin-right: 12px;
+
+    &:last-child {
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  .date-group {
+    width: 145px;
+  }
+
+  .truck-type-group {
+    width: 192px;
+  }
+
+  .location-group {
+    width: 255px;
+  }
+
+  .description-group {
+    width: 616px;
+    margin-bottom: 22px;
+  }
+}

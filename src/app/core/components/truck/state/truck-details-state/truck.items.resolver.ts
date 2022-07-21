@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../../appcoretruckassist/model/truckResponse';
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap,take } from 'rxjs/operators';
 import { TruckTService } from '../truck.service';
@@ -17,6 +17,7 @@ export class TruckItemResolver implements Resolve<TruckState> {
     private truckService: TruckTService,
     private truckDetailsStore:TruckItemStore,
     private truckQuery: TruckDetailsQuery,
+    private router:Router
   ) {}
   resolve(
     route: ActivatedRouteSnapshot,
@@ -27,6 +28,7 @@ export class TruckItemResolver implements Resolve<TruckState> {
      if(this.truckQuery.hasEntity(id)){
       return this.truckQuery.selectEntity(id).pipe(
         catchError((error)=>{
+          this.router.navigate(['/truck'])
           return of('error')
         }),
         take(1)
@@ -34,10 +36,11 @@ export class TruckItemResolver implements Resolve<TruckState> {
      }else{
       return this.truckService.getTruckById(id).pipe(
         catchError((error)=>{
+          this.router.navigate(['/truck'])
             return of('No truck data for...' + id);
         }),
         tap((truckResponse:TruckResponse)=>{
-          this.truckDetailsStore.add(truckResponse)
+          this.truckDetailsStore.set({ids:truckResponse})
         })
     ); 
      }

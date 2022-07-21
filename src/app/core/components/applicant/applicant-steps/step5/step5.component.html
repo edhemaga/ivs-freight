@@ -1,9 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">
-    Traffic violations
-  </h1>
+  <h1 class="step-title text-center ta-font-bold">Traffic violations</h1>
 
-  <h3 class="step-subtitle noselect text-center ta-font-bold">
+  <h3 class="step-subtitle text-center ta-font-bold">
     If no violating during this 3 year period
   </h3>
 
@@ -127,172 +125,170 @@
 
       <div
         class="d-flex flex-column justify-content-center violations-view-container"
+        [ngStyle]="{
+          'margin-bottom': isEditing ? '0' : '32px'
+        }"
         *ngIf="violationsArray.length"
       >
-        <div class="d-flex align-items-center title-container">
-          <div class="d-flex align-items-center date-title-box">
-            <p class="m-0 ta-font-bold">DATE <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center vehicle-title-box">
-            <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center location-title-box">
-            <p class="m-0 ta-font-bold">LOCATION <span>*</span></p>
-          </div>
-          <div class="d-flex align-items-center description-title-box">
-            <p class="m-0 ta-font-bold">
-              DESCRIPTION OF VIOLATION <span>*</span>
-            </p>
-          </div>
-        </div>
-
         <div
-          class="d-flex align-items-center violation-info-container"
+          class="d-flex flex-column"
           *ngFor="
             let violation of violationsArray;
             let i = index;
             trackBy: trackByIdentity
           "
         >
-          <div class="d-flex align-items-center date-box">
-            <p class="m-0 ta-font-regular">
-              {{ violation.violationDate }}
-            </p>
+          <div
+            class="d-flex align-items-center title-container"
+            *ngIf="
+              (violationsArray.length > 1 && helperIndex !== 0 && i === 0) ||
+              (helperIndex === 0 && i === 1)
+            "
+          >
+            <div class="d-flex align-items-center date-title-box">
+              <p class="m-0 ta-font-bold">DATE <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center vehicle-title-box">
+              <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center location-title-box">
+              <p class="m-0 ta-font-bold">LOCATION <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center description-title-box">
+              <p class="m-0 ta-font-bold">
+                DESCRIPTION OF VIOLATION <span>*</span>
+              </p>
+            </div>
           </div>
 
-          <div class="d-flex align-items-center vehicle-box">
-            <p class="m-0 ta-font-regular">
-              {{ violation.truckType }}
-            </p>
+          <div
+            class="d-flex align-items-center violation-info-container"
+            *ngIf="!violation.isEditingViolation"
+          >
+            <div class="d-flex align-items-center date-box">
+              <p class="m-0 ta-font-regular">
+                {{ violation.violationDate }}
+              </p>
+            </div>
+
+            <div class="d-flex align-items-center vehicle-box">
+              <p class="m-0 ta-font-regular">
+                {{ violation.truckType }}
+              </p>
+            </div>
+
+            <div class="d-flex align-items-center location-box">
+              <p
+                class="m-0 ta-font-regular d-inline-block text-truncate"
+                style="max-width: 123px"
+                [appTooltip]="violation.violationLocation"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="bottom-right"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+              >
+                {{ violation.violationLocation }}
+              </p>
+            </div>
+
+            <div class="d-flex align-items-center description-box">
+              <p
+                class="m-0 ta-font-regular d-inline-block text-truncate"
+                style="max-width: 185px"
+                [appTooltip]="violation.violationDescription"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="bottom-right"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+              >
+                {{ violation.violationDescription }}
+              </p>
+            </div>
+
+            <div class="d-flex align-items-center btn-container">
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Edit"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onEditViolation(i)"
+              ></svg-icon>
+
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Delete"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#EF5350"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onDeleteViolation(i)"
+              ></svg-icon>
+            </div>
           </div>
 
-          <div class="d-flex align-items-center location-box">
-            <p
-              class="m-0 ta-font-regular d-inline-block text-truncate"
-              style="max-width: 123px"
+          <div
+            class="d-flex flex-column violations-view-form"
+            *ngIf="violation.isEditingViolation"
+          >
+            <app-step5-form
+              [form]="violationsForm"
+              [truckType]="truckType"
+              [handleInputSelect]="handleInputSelect"
+            ></app-step5-form>
+
+            <div
+              class="d-flex align-items-center mx-auto justify-content-center btn-container"
             >
-              {{ violation.violationLocation }}
-            </p>
-          </div>
-
-          <div class="d-flex align-items-center description-box">
-            <p
-              class="m-0 ta-font-regular d-inline-block text-truncate"
-              style="max-width: 185px"
-              [appTooltip]="violation.violationDescription"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#6C6C6C"
-              position="bottom-right"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-            >
-              {{ violation.violationDescription }}
-            </p>
-          </div>
-
-          <div class="d-flex align-items-center btn-container">
-            <svg-icon
-              class="edit-icon"
-              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Edit"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#6C6C6C"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onEditViolation(i)"
-            ></svg-icon>
-
-            <svg-icon
-              class="delete-icon"
-              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Delete"
-              tooltipColor="#FFFFFF"
-              tooltipBackground="#EF5350"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onDeleteViolation(i)"
-            ></svg-icon>
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+                (click)="onCancelEditAccident()"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+                [ngClass]="{
+                  disabled: !isViolationEdited
+                }"
+                (click)="onSaveEditedViolation()"
+              >
+                Save Changes
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- DATE, VEHICLE TYPE, LOCATION -->
 
-      <form [formGroup]="violationsForm">
-        <div class="d-flex">
-          <div class="group date-group">
-            <app-ta-input
-              formControlName="violationDate"
-              [inputConfig]="{
-                name: 'datepicker',
-                type: 'text',
-                label: 'Date',
-                placeholderIcon: 'date',
-                isRequired: true,
-                customClass: 'datetimeclass'
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="group truck-type-group">
-            <app-ta-input-dropdown
-              formControlName="truckType"
-              [template]="'svgtext-template'"
-              [inputConfig]="{
-                name: 'Input Dropdown',
-                type: 'text',
-                label: 'Vehicle type',
-                isRequired: true,
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-applicant-t-type'
-              }"
-              [options]="truckType"
-              (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-            ></app-ta-input-dropdown>
-          </div>
-          <div class="group location-group">
-            <app-ta-input-address
-              formControlName="violationLocation"
-              [inputConfig]="{
-                name: 'Address',
-                type: 'text',
-                label: 'Location',
-                isRequired: true,
-                placeholderIcon: 'address',
-                textTransform: 'capitalize',
-                autoFocus: true
-              }"
-              (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-            ></app-ta-input-address>
-          </div>
-        </div>
-
-        <div class="d-flex">
-          <div class="description-group">
-            <app-ta-input
-              formControlName="violationDescription"
-              [inputConfig]="{
-                name: 'Description',
-                type: 'text',
-                label: 'Description of violation',
-                textTransform: 'capitalize',
-                isRequired: true
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
+      <form *ngIf="!isEditing">
+        <app-step5-form
+          [form]="violationsForm"
+          [truckType]="truckType"
+          [handleInputSelect]="handleInputSelect"
+        ></app-step5-form>
       </form>
 
       <!-- REVIEW AND FEEDBACK -->
@@ -331,29 +327,6 @@
 
           Add Another Violation
         </button>
-
-        <div
-          class="d-flex align-items-center mx-auto justify-content-center"
-          *ngIf="isEditing"
-        >
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-            (click)="onCancelEditAccident()"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-            [ngClass]="{
-              disabled: !isViolationEdited
-            }"
-            (click)="onSaveEditedViolation()"
-          >
-            Save Changes
-          </button>
-        </div>
       </div>
 
       <!-- CERTIFY -->

@@ -6,6 +6,7 @@ import {
   Input,
   OnDestroy,
   ChangeDetectorRef,
+  ViewEncapsulation,
 } from '@angular/core';
 import { createBase64 } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';

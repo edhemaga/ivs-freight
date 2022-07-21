@@ -1,0 +1,86 @@
+<div class="container-fluid">
+  <div class="row">
+    <div
+      class="container-fluid d-flex flex-column justify-content-between cdl-card-container"
+    >
+      <div class="d-flex flex-column align-items-center">
+        <app-applicant-header></app-applicant-header>
+
+        <h1 class="m-0 text-center title ta-font-bold">Upload CDL</h1>
+
+        <h2 class="m-0 text-center subtitle ta-font-regular">
+          Your identification document will help us to validate your
+          identity.<br />
+          <span class="ta-font-bold">
+            To confirm you are you, please upload digital photo of the<br />front
+            & back side of your SSN.
+          </span>
+        </h2>
+
+        <!-- ISSUE DATE, EXP. DATE -->
+
+        <form [formGroup]="cdlCardForm">
+          <div class="d-flex">
+            <div class="date-group">
+              <app-ta-input
+                formControlName="fromDate"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'Issue date',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="date-group">
+              <app-ta-input
+                formControlName="toDate"
+                [inputConfig]="{
+                  name: 'datepicker',
+                  type: 'text',
+                  label: 'Exp. date',
+                  placeholderIcon: 'date',
+                  isRequired: true,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+          </div>
+        </form>
+
+        <!-- FILES CONTAINER -->
+
+        <div class="d-flex files-container">FILES</div>
+
+        <!-- PRIVACY INFO -->
+
+        <div
+          class="d-flex justify-content-center align-items-center privacy-container"
+        >
+          <p class="m-0 ta-font-regular text-center">
+            By continuing, you are agreeing to our
+            <a class="ta-font-bold" href="#">Terms of Service</a><br />
+            and <a class="ta-font-bold" href="#">Privacy Policy</a>
+          </p>
+        </div>
+      </div>
+
+      <!-- FOOTER -->
+
+      <app-applicant-footer></app-applicant-footer>
+    </div>
+  </div>
+</div>
+
+<!-- NEXT BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center next-btn-container"
+>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [lastPage]="true"
+  ></app-applicant-next-back-btn>
+</div>

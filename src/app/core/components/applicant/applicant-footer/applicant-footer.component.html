@@ -1,5 +1,106 @@
-<div class="row">
-  <div class="d-flex justify-content-center align-items-center copyright">
-    <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+<div class="d-flex flex-column footer-container">
+  <!-- INFO CONTAINER -->
+
+  <div class="d-flex justify-content-between align-items-end info-container">
+    <!-- INFO BOX -->
+
+    <div
+      class="d-flex flex-column info-box"
+      [ngClass]="{ 'display-box': displayInfoBox }"
+    >
+      <div class="d-flex align-items-center justify-content-between box-header">
+        <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
+
+        <svg-icon
+          class="d-flex align-items-center justify-content-center close-icon"
+          src="assets/svg/common/ic_x.svg"
+          [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
+          (click)="onHideInfoBox()"
+          appTooltip="Close"
+          tooltipColor="#FFFFFF"
+          tooltipBackground="#6C6C6C"
+          position="bottom-left"
+          borderRadius="2px"
+          fontSize="11px"
+          fontWeight="bold"
+        ></svg-icon>
+      </div>
+
+      <div class="d-flex align-items-center box-dets">
+        <p class="m-0 ta-font-regular">USDOT # {{ companyInfo?.usDot }}</p>
+      </div>
+
+      <div class="d-flex align-items-center box-dets">
+        <svg-icon
+          class="phone-icon"
+          src="assets/svg/common/ic_phone.svg"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+        ></svg-icon>
+        <p class="m-0 ta-font-regular">{{ companyInfo?.phone }}</p>
+      </div>
+
+      <div class="d-flex align-items-start box-dets">
+        <svg-icon
+          class="location-icon"
+          src="assets/svg/applicant/location.svg"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+        ></svg-icon>
+        <p class="m-0 ta-font-regular">
+          {{ companyInfo?.address.address }} #
+          {{ companyInfo?.address.addressUnit }}<br />{{
+            companyInfo?.address.city
+          }}, {{ companyInfo?.address.stateShortName }}
+          {{ companyInfo?.address.zipCode }}, {{ companyInfo?.address.country }}
+        </p>
+      </div>
+
+      <div class="d-flex box-divider"></div>
+
+      <div class="d-flex align-items-center box-dets">
+        <svg-icon
+          class="document-icon"
+          src="assets/svg/common/ic_document.svg"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+        ></svg-icon>
+        <p class="m-0 ta-font-regular">Date of application: 06/03/22</p>
+      </div>
+    </div>
+
+    <!-- INFO BAR -->
+
+    <div class="d-flex align-items-end info-bar">
+      <div class="d-flex align-items-center">
+        <svg-icon
+          class="info-icon"
+          [ngClass]="{ 'display-box': displayInfoBox }"
+          src="assets/svg/applicant/info.svg"
+          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+          (click)="onDisplayOrHideInfoBox()"
+        ></svg-icon>
+
+        <p
+          class="m-0 ta-font-medium"
+          [ngClass]="{ 'display-box': displayInfoBox }"
+        >
+          Company Info
+        </p>
+      </div>
+    </div>
+
+    <div class="d-flex align-items-center">
+      <svg-icon
+        class="logo-icon"
+        src="assets/svg/applicant/logo.svg"
+        [svgStyle]="{ 'width.px': 52, 'height.px': '53.2' }"
+      ></svg-icon>
+    </div>
+  </div>
+
+  <!-- COPYRIGHT BAR -->
+
+  <div class="row">
+    <div class="d-flex justify-content-center align-items-center copyright-bar">
+      <p class="m-0">Copyright © TruckAssist {{ copyrightYear }}.</p>
+    </div>
   </div>
 </div>

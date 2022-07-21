@@ -17,6 +17,7 @@ import { CompanyUserService } from './api/companyUser.service';
 import { DriverService } from './api/driver.service';
 import { EmploymentHistoryService } from './api/employmentHistory.service';
 import { InspectionService } from './api/inspection.service';
+import { LoadService } from './api/load.service';
 import { MedicalService } from './api/medical.service';
 import { MvrService } from './api/mvr.service';
 import { OwnerService } from './api/owner.service';
@@ -31,6 +32,7 @@ import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
+import { UserService } from './api/user.service';
 import { VinDecodeService } from './api/vinDecode.service';
 
 @NgModule({

@@ -205,6 +205,14 @@ $border-radius: 3px;
     line-height: 24px;
     color: #6c6c6c;
     cursor: pointer;
+    &::-moz-selection {
+      color: #6c6c6c;
+      background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+      color: #6c6c6c;
+      background: rgb(183, 183, 183, 0.2);
+    }
   }
 
   .current-active-owner {
@@ -218,7 +226,6 @@ $border-radius: 3px;
       display: flex;
       path {
         fill: #6d82c7;
-       
       }
     }
     cursor: pointer;
@@ -236,7 +243,6 @@ $border-radius: 3px;
       svg {
         path {
           fill: #536bc2;
-          
         }
       }
     }
@@ -246,10 +252,36 @@ $border-radius: 3px;
   display: flex;
   align-items: center;
 }
-.verical-dots-header{
+.verical-dots-header {
   margin-top: 7px;
-  .table-dropdown-container-vertical{
-     right: 0 !important;
-     left: 43px;
+  .table-dropdown-container-vertical {
+    right: 0 !important;
+    left: 43px;
+  }
+}
+
+.single-data {
+  color: #6c6c6c;
+  background-color: transparent;
+  cursor: default;
+  .current-active-name {
+    color: #6c6c6c !important;
+    &:hover {
+      color: #6c6c6c !important;
+      cursor: default;
+    }
+  }
+  &:hover {
+    background-color: transparent !important;
+  }
+}
+.vin-text {
+  &::-moz-selection {
+    color: #6c6c6c;
+    background: rgb(108, 108, 108, 0.2);
+  }
+  &::selection {
+    color: #6c6c6c;
+    background: rgb(108, 108, 108, 0.2);
   }
 }

@@ -35,24 +35,48 @@ export class Step4Component implements OnInit, OnDestroy {
   public accidentForm: FormGroup;
   public accidentArray: AccidentModel[] = [
     {
-      accidentDate: '01/09/2012',
+      accidentDate: '01/09/12',
       accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
-      hazmatSpill: 'yes',
+      hazmatSpill: 'YES',
       truckType: 'Truck',
       accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      isEditingAccident: false,
     },
     {
-      accidentDate: '21/09/2012',
+      accidentDate: '01/09/12',
       accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
-      hazmatSpill: 'yes',
+      hazmatSpill: 'YES',
       truckType: 'Truck',
       accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      isEditingAccident: false,
+    },
+    {
+      accidentDate: '01/09/12',
+      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentState: 'AL',
+      fatalities: 1,
+      injuries: 1,
+      hazmatSpill: 'YES',
+      truckType: 'Truck',
+      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      isEditingAccident: false,
+    },
+    {
+      accidentDate: '01/09/12',
+      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentState: 'AL',
+      fatalities: 1,
+      injuries: 1,
+      hazmatSpill: 'YES',
+      truckType: 'Truck',
+      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      isEditingAccident: false,
     },
   ];
 
@@ -87,6 +111,8 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public fatalitiesCounter: number = 0;
   public injuriesCounter: number = 0;
+
+  public helperIndex: number = 2;
 
   //
 
@@ -170,6 +196,8 @@ export class Step4Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = 2;
+
     this.inputResetService.resetInputSubject.next(true);
 
     /*  const accidentForm = this.accidentForm.value;
@@ -202,9 +230,12 @@ export class Step4Component implements OnInit, OnDestroy {
       return;
     }
 
+    this.helperIndex = index;
+
     this.isAccidentEdited = false;
 
     this.isEditing = true;
+    this.accidentArray[index].isEditingAccident = true;
 
     this.selectedAccidentIndex = index;
 
@@ -245,11 +276,14 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentArray[this.selectedAccidentIndex] = this.accidentForm.value;
 
     this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
 
     this.isAccidentEdited = false;
 
     this.fatalitiesCounter = 0;
     this.injuriesCounter = 0;
+
+    this.helperIndex = 2;
 
     this.accidentForm.reset();
 
@@ -260,11 +294,14 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public onCancelEditAccident(): void {
     this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
 
     this.isAccidentEdited = false;
 
     this.fatalitiesCounter = 0;
     this.injuriesCounter = 0;
+
+    this.helperIndex = 2;
 
     this.accidentForm.reset();
 

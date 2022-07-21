@@ -1,62 +1,115 @@
 @import 'src/theme/variables.scss';
 
 .step-container {
+  padding-top: 22px;
+
   .step-title {
-    color: $light-blue;
+    color: $ta-blue;
     font-size: 32px;
-    margin-top: 30px;
-    margin-bottom: 20px;
+    height: 39px;
+    margin-bottom: 22px !important;
+
+    &::-moz-selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
+
+    &::selection {
+      color: $ta-blue;
+      background: rgb(83, 107, 194, 0.2);
+    }
   }
 
   .instructions-container {
-    width: 680px;
+    width: 820px;
 
     p {
       font-size: 14px;
       color: $bw6-2;
+      line-height: 22px;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
 
       &:nth-child(2) {
-        margin-top: 12px !important;
+        margin-top: 22px !important;
+      }
+
+      span {
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
   }
 
-  .valid-hos-container {
-    margin-bottom: 20px;
-    width: 680px;
-  }
-
   .form-section {
-    width: 680px;
-
     .seven-days-hos-table-container {
       table {
-        width: 456px;
-        margin: 12px auto 14px auto;
+        width: 616px;
+        margin: 12px auto 12px auto;
 
         .day-container {
+          width: 616px;
           height: 18px;
           margin-bottom: 6px;
 
           .day-box {
-            width: 53px;
-
             p {
               font-size: 14px;
-              color: $bw4;
+              color: $bw5;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
             }
           }
         }
 
         .date-container {
+          width: 616px;
           height: 18px;
-          margin-bottom: 12px;
+          margin-bottom: 14px;
 
           .date-box {
             width: 53px;
 
             p {
-              color: $bw4;
+              color: $bw5;
+              font-size: 12px;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+            }
+
+            .date-para0 {
+              font-size: 14px;
             }
           }
         }
@@ -65,23 +118,43 @@
           margin-bottom: 6px;
 
           .hos-title-group {
-            width: 53px;
-            margin-right: 12px;
+            width: 43px;
+            margin-right: 5px;
 
             p {
               height: 18px;
               color: $bw6-2;
               font-size: 14px;
 
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
               span {
                 color: $progress-danger;
+
+                &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
               }
             }
           }
 
           .hos-input-group {
-            width: 53px;
-            margin-right: 12px !important;
+            width: 76px;
+            margin-right: 6px !important;
 
             &:last-child {
               margin-right: 0px;
@@ -91,12 +164,35 @@
 
         .total-container {
           height: 18px;
+          margin-left: 52px;
 
           p {
-            color: $light-blue;
+            color: $ta-light-blue;
             font-size: 14px;
+
+            &::-moz-selection {
+              color: $ta-light-blue;
+              background: rgb(109, 130, 199, 0.2);
+            }
+
+            &::selection {
+              color: $ta-light-blue;
+              background: rgb(109, 130, 199, 0.2);
+            }
           }
         }
+      }
+    }
+
+    .valid-hos-container {
+      width: 575px;
+      margin: 0 auto 22px auto;
+
+      p {
+        font-size: 12px;
+        margin-top: -5px !important;
+        user-select: none;
+        cursor: pointer;
       }
     }
 
@@ -104,11 +200,21 @@
       height: 18px;
       color: $bw6-2;
       font-size: 14px;
-      margin-bottom: 22px;
+      margin-bottom: 32px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
-    .form-label-group {
-      margin-bottom: 12px;
+    .group {
+      margin-bottom: 22px;
       margin-right: 12px;
 
       &:last-child {
@@ -117,20 +223,59 @@
       }
     }
 
-    .date-group {
-      width: 113px;
+    .date-location-container {
+      width: 616px;
+      margin: 0 auto;
+
+      .date-group {
+        width: 173px;
+      }
+
+      .location-group {
+        width: 431px;
+      }
     }
 
-    .location-group {
-      width: 331px;
+    .instructions-bottom-container {
+      width: 820px;
+      margin-bottom: 22px;
+
+      p {
+        font-size: 14px;
+        color: $bw6-2;
+        line-height: 22px;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        span {
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
+      }
     }
 
     .questions-container {
-      margin-top: 12px;
+      width: 616px;
+      margin: 0 auto;
 
       .question-container {
         margin-bottom: 12px;
-        width: 456px;
+        width: 100%;
 
         .title-box {
           p {
@@ -138,14 +283,38 @@
             font-size: 14px;
             line-height: 18px;
 
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
             .required-star {
               color: $progress-danger;
+
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
             }
           }
         }
 
+        .title-box1 {
+          width: 85%;
+        }
+
         .radios-box {
-          width: 80px;
+          width: 86px;
 
           .ta-input-radiobutons {
             width: 100%;
@@ -155,8 +324,35 @@
     }
 
     .valid-another-employer-container {
-      margin-bottom: 36px;
-      width: 680px;
+      width: 616px;
+      margin: 10px auto 0 auto;
+
+      p {
+        font-size: 12px;
+        margin-top: -5px !important;
+        user-select: none;
+        cursor: pointer;
+
+        &:last-of-type {
+          margin-top: -2px !important;
+        }
+      }
     }
   }
+}
+
+.next-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  right: 42px;
+}
+
+.back-btn-container {
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  transform: translate(0, -50%);
+  left: 42px;
 }

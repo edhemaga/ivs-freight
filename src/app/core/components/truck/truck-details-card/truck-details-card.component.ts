@@ -1,3 +1,4 @@
+import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute } from '@angular/router';
 import {
@@ -29,13 +30,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
   public buttonsArrayRevenue: any;
-  public toggler: boolean = false;
+  public toggler: boolean[] = [];
   public truckDropDowns: any[] = [];
   public dataEdit: any;
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
-  public truck_list: any[] = this.trucksQuery.getAll();
+  public truck_list: any[] = this.truckMinimalListQuery.getAll();
   public copiedPhone: boolean;
   public copiedEmail: boolean;
   public copiedVin: boolean;
@@ -196,12 +197,14 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     private modalService: ModalService,
     private trucksQuery: TruckQuery,
     private detailsPageDriverSer: DetailsPageService,
-    private clipboar: Clipboard
+    private clipboar: Clipboard,
+    private truckMinimalListQuery: TrucksMinimalListQuery
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.truck.firstChange && changes?.truck) {
       this.noteControl.patchValue(changes.truck.currentValue.note);
+      this.getTruckDropdown();
     }
   }
   ngOnInit(): void {
@@ -330,8 +333,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public changeTabRevenue(ev: any) {}
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: boolean) {
-    this.toggler = value;
+  public toggleResizePage(value: number, indexName: string) {
+    this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
   public optionsEvent(any: any, action: string) {
@@ -375,7 +378,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     return index;
   }
   public getTruckDropdown() {
-    this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+    this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.truckNumber,
@@ -385,13 +388,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   }
   public onSelectedTruck(event: any) {
     if (event.id !== this.truck.id) {
-      this.truckDropDowns = this.trucksQuery.getAll().map((item) => {
+      this.truckDropDowns = this.truckMinimalListQuery.getAll().map((item) => {
         return {
           id: item.id,
           name: item.truckNumber,
-          svg: item.truckType.logoName,
           active: item.id === event.id,
-          folder: 'common/trucks/',
         };
       });
       this.detailsPageDriverSer.getDataDetailId(event.id);

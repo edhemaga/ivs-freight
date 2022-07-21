@@ -33,6 +33,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Output() selectValue = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
   @Input() public dateChecked: string = '';
+  @Input() public lastEdit: string = '';
   public inputFormControl: FormControl = new FormControl();
 
   public selectedDropdown: boolean = false;
@@ -46,12 +47,16 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   }
 
   public onPickItem(): void {
-    this.selectedDropdown = true;
+    if (this.options.length > 1) {
+      this.selectedDropdown = true;
+    }
   }
 
   public onSelecItem(value: any): void {
-    this.selectedDropdown = !this.selectedDropdown;
-    this.selectValue.emit(value);
+    if (this.options.length > 1) {
+      this.selectedDropdown = !this.selectedDropdown;
+      this.selectValue.emit(value);
+    }
   }
 
   public dropAct(action: any) {
