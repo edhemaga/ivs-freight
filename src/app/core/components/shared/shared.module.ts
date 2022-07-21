@@ -31,7 +31,7 @@ import { StatusSwitcherComponent } from '../switchers/status-switcher/status-swi
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
+//import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
@@ -105,13 +105,15 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
+import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 
 @NgModule({
   declarations: [
     HistoryDataComponent,
     TabSwitcherComponent,
+    DetailsDropdownComponent,
     StatusSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -259,7 +261,7 @@ import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.compon
 
     // Components
     TabSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -276,7 +278,7 @@ import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.compon
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
-
+    DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,

@@ -39,6 +39,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   isExpanded = false;
   editorDoc: any;
   value = '';
+  noteIcon: string = 'Note - Empty.svg';
   selectedPaternColor = '#FFFFFFF';
   activeOptions: any = {
     bold: false,
@@ -51,12 +52,17 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   leaveThisOpened: boolean;
   selectionTaken: any;
   range: any;
+  isFocused: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
 
   constructor(private sharedService: SharedService) {
   }
 
   ngOnInit(): void {
+    console.log(this.note, 'notee');
+    if ( this.note && this.note != '' ) {
+      this.noteIcon = 'Note.svg';
+    }
     /* this.sharedService.emitCloseNote
     .pipe(takeUntil(this.destroy$))
     .subscribe((res) => {
@@ -98,6 +104,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   checkFocus(e) {
+    this.isFocused = true;
     if (!this.isExpanded) {
       this.openedAll = false;
       this.leaveThisOpened = true;
@@ -153,6 +160,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   prepareForTextRange() {
+    this.isFocused = false;
     this.selectionTaken = window.getSelection();
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);
@@ -195,6 +203,36 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.buttonsExpanded = false;
     if (this.t2) {
       this.t2.close();
+    }
+  }
+
+  maxLimitForContenteditableDiv(e: any, limit: number) {
+    let allowedKeys = false;
+
+    if (e.type === 'keydown') {
+        allowedKeys = (
+            e.which === 8 ||  /* BACKSPACE */
+            e.which === 35 || /* END */
+            e.which === 36 || /* HOME */
+            e.which === 37 || /* LEFT */
+            e.which === 38 || /* UP */
+            e.which === 39 || /* RIGHT*/
+            e.which === 40 || /* DOWN */
+            e.which === 46 || /* DEL*/
+            e.ctrlKey === true && e.which === 65 || /* CTRL + A */
+            e.ctrlKey === true && e.which === 88 || /* CTRL + X */
+            e.ctrlKey === true && e.which === 67 || /* CTRL + C */
+            e.ctrlKey === true && e.which === 86 || /* CTRL + V */
+            e.ctrlKey === true && e.which === 90    /* CTRL + Z */
+        )
+    }
+    if (e.ctrlKey === true && e.which === 86 ) {
+        setTimeout(function () {
+            $(e.target).text($(e.target).text().slice(0, limit));
+        });
+    }
+    if (!allowedKeys && $(e.target).text().length >= limit) {
+        e.preventDefault();
     }
   }
 
