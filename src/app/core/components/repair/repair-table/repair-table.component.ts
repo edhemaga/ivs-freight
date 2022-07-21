@@ -164,9 +164,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         ? this.shopQuery.getAll()
         : [];
 
-    console.log('repairShops', this.repairShops);
-    console.log('selectedTab', this.selectedTab);
-
     this.tableData = [
       {
         title: 'Truck',
@@ -566,11 +563,9 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   onToolBarAction(event: any) {
-    console.log('onToolBarAction event', event);
     switch (event.action) {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
-        console.log('event.tabData', event.tabData);
         this.setRepairData(event.tabData);
         break;
       }
@@ -611,9 +606,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       }
       case 'view-mode': {
         this.tableOptions.toolbarActions.viewModeActive = event.mode;
-        console.log('event.mode', event.mode);
         if ( event.mode == 'Map' ) {
-          console.log('view-mode Map');
           this.markersDropAnimation();
         }
         break;
@@ -658,7 +651,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   mapClick() {
-    console.log('mapClick viewData', this.viewData);
     this.viewData.map((data: any, index) => {
       if (data.isSelected) {
         data.isSelected = false;
@@ -667,7 +659,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   clickedMarker(id) {
-    console.log('clickedMarker id', id);
     this.viewData.map((data: any, index) => {
       if (data.isExpanded) {
         data.isExpanded = false;
@@ -701,15 +692,12 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   markersDropAnimation() {
-    console.log('markersDropAnimation');
     var mainthis = this;
 
     setTimeout(() => {
       this.viewData.map((data: any) => {
-        console.log('viewData data', data);
         if ( !mainthis.markerAnimations[data.id] ) {
           mainthis.markerAnimations[data.id] = true;
-          console.log('markerAnimations', mainthis.markerAnimations, data.id);
         }
       });
         
@@ -736,7 +724,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
   
   changeSortCategory(item, column) {
-    console.log('changeSortCategory item', item);
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
@@ -754,7 +741,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   searchShops(value) {
-    console.log('searchShippers searchValue', value);
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
       //this.sortShippers();

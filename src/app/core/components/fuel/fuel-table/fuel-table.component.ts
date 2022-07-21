@@ -171,8 +171,6 @@ export class FuelTableComponent implements OnInit {
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    console.log('viewData', this.viewData);
-
     this.viewData = this.viewData.map((data) => {
       data.isSelected = false;
       return data;
@@ -260,7 +258,6 @@ export class FuelTableComponent implements OnInit {
       this.setFuelData(event.tabData);
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      console.log('event.mode', event.mode);
       if ( event.mode == 'Map' ) {
         this.markersDropAnimation();
       }
@@ -292,7 +289,6 @@ export class FuelTableComponent implements OnInit {
   }
   
   changeSortCategory(item) {
-    console.log('changeSortCategory item', item);
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
@@ -305,7 +301,6 @@ export class FuelTableComponent implements OnInit {
   }
 
   searchStops(value) {
-    console.log('searchShippers searchValue', value);
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
       //this.sortShippers();
@@ -313,7 +308,6 @@ export class FuelTableComponent implements OnInit {
   }
 
   mapClick() {
-    console.log('mapClick viewData', this.viewData);
     this.viewData.map((data: any, index) => {
       if (data.isSelected) {
         data.isSelected = false;
@@ -322,7 +316,6 @@ export class FuelTableComponent implements OnInit {
   }
 
   clickedMarker(id) {
-    console.log('clickedMarker id', id);
     this.viewData.map((data: any, index) => {
       if (data.isExpanded) {
         data.isExpanded = false;
@@ -356,15 +349,12 @@ export class FuelTableComponent implements OnInit {
   }
 
   markersDropAnimation() {
-    console.log('markersDropAnimation');
     var mainthis = this;
 
     setTimeout(() => {
       this.viewData.map((data: any) => {
-        console.log('viewData data', data);
         if ( !mainthis.markerAnimations[data.id] ) {
           mainthis.markerAnimations[data.id] = true;
-          console.log('markerAnimations', mainthis.markerAnimations, data.id);
         }
       });
         

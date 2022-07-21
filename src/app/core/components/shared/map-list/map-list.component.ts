@@ -29,17 +29,11 @@ export class MapListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    console.log('map list ngOnInit');
-
-    console.log('sortTypes', this.sortTypes);
-    console.log('columns', this.columns);
-
     this.searchForm = this.formBuilder.group({
       search: ''
     });
 
     this.searchForm.valueChanges.subscribe((changes) => {
-      console.log('valueChanges', changes);
       this.searchData.emit(changes.search);
     });
 
@@ -50,7 +44,6 @@ export class MapListComponent implements OnInit {
     this.mapListExpanded = !this.mapListExpanded;
     
     var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
-    console.log('mapListElement', mapListElement.clientHeight);
 
     if ( this.mapListExpanded ) {
       mapListElement.style.height = '';
@@ -85,8 +78,6 @@ export class MapListComponent implements OnInit {
     
     item.isActive = true;
     this.tooltip.close();
-
-    console.log('changeSortType item', item);
 
     this.changeSortCategory.emit(item);
   }
@@ -127,11 +118,6 @@ export class MapListComponent implements OnInit {
         this.actionColumns.push(v);
       }
     });
-    
-    console.log('visibleColumns', this.visibleColumns);
-    console.log('pinedColumns', this.pinedColumns);
-    console.log('notPinedColumns', this.notPinedColumns);
-    console.log('actionColumns', this.actionColumns);
 
     this.ref.detectChanges();
   }

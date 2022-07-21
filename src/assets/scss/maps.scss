@@ -70,6 +70,15 @@
             color: $bw6-2;
             text-transform: uppercase;
             line-height: 22px;
+
+            &::-moz-selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+              }
+            &::selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
         }
         
         .marker-expanded-view {

@@ -22,19 +22,10 @@ export class MapListCardComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    console.log('item', this.item);
-    console.log('index', this.index);
-    console.log('type', this.type);
-    console.log('title', this.title);
-    console.log('isSelected', this.isSelected);
-    console.log('status', this.status);
-    console.log('address', this.address);
-    console.log('rating', this.rating);
-    console.log('sortCategory', this.sortCategory);
+    
   }
 
   selectCard() {
-    console.log('selectCard');
     this.clickedMarker.emit(this.index);
   }
 

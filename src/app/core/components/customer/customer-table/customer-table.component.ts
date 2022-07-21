@@ -174,8 +174,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         }
       });
 
-      console.log('viewData', this.viewData);
-
       this.sortTypes = [
         {name: 'Business Name', id: 1, sortName: 'name'},
         {name: 'Location', id: 2, sortName: 'location', isHidden: true},
@@ -206,7 +204,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       });
 
       this.locationForm.valueChanges.subscribe((changes) => {
-        console.log('valueChanges', changes);
         if ( changes.range ) {
           this.changeLocationRange(changes.range);
         }
@@ -320,7 +317,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   setCustomerData(td: any) {
     this.viewData = td.data;
-    console.log('viewData', this.viewData);
     this.columns = td.gridColumns;
     
     this.initTableOptions();
@@ -364,7 +360,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   // Toolbar Actions
   onToolBarAction(event: any) {
-    console.log('onToolbarAction event', event);
     // Add Call
     if (event.action === 'open-modal') {
       // Add Broker Call Modal
@@ -384,7 +379,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     }
     else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      console.log('event.mode', event.mode);
       if ( event.mode == 'Map' ) {
         this.getMapMarkers();
         this.showHideMarkers();
@@ -396,7 +390,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
-    console.log('onTableBodyActions event', event);
     // Edit Call
     if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
@@ -559,7 +552,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   clickedMarker(id) {
-    console.log('clickedMarker id', id);
     this.viewData.map((data: any, index) => {
       if (data.isExpanded) {
         data.isExpanded = false;
@@ -583,7 +575,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       }
       else if ( data.id == id ) {
         data.isSelected = !data.isSelected;
-        console.log('clickedMarker isSelected', data.isSelected);
 
         if ( data.isSelected ) {
           this.markerSelected = true;
@@ -630,7 +621,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
   
   changeSortCategory(item, column) {
-    console.log('changeSortCategory item', item);
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
@@ -655,8 +645,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   sortShippers() {
-    console.log('sortShippers sortBy', this.sortBy);
-
     if ( this.activeSortType.name == 'Location' ) {
       if ( this.sortDirection == 'asc' ) {
         this.viewData.sort((a,b) => a.distanceBetween - b.distanceBetween);
@@ -669,7 +657,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: any) => {
-          console.log('sortShippers', res);
           this.viewData = res.pagination.data;
           
           if ( this.locationFilterOn ) {
@@ -689,7 +676,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   searchShippers(value) {
-    console.log('searchShippers searchValue', value);
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
       this.sortShippers();
@@ -703,7 +689,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     .subscribe({
       next: (res: any) => {
         this.mapMarkers = res.mapMarkers;
-        console.log('getShipperMap', this.mapMarkers);
       },
       error: () => {
         this.notificationService.error(
@@ -715,18 +700,15 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   showHideMarkers(){
-    console.log('showHideMarkers called');
     this.viewData.map((data: any) => {
       var getDistance = this.mapsService.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
       data.isShown = getDistance[0];
       data.distanceBetween = this.mapsService.getMiles(getDistance[1]).toFixed(1);
-      console.log('showHideMarkers', data, data.isShown);
     });
   }
 
   setLocationRange(value) {
     this.mapCircle.radius = this.mapsService.getMeters(value);
-    console.log('setLocationRange value', this.mapCircle.radius);
     this.showHideMarkers();
     this.locationFilterOn = true;
 
@@ -751,7 +733,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   changeLocationRange(value) {
-    console.log('setLocationFilter', value);
     this.locationRange = value;
   }
 
@@ -777,7 +758,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         this.viewData.map((data: any) => {
           if ( !mainthis.markerAnimations[data.id] ) {
             mainthis.markerAnimations[data.id] = true;
-            console.log('markerAnimations', mainthis.markerAnimations, data.id);
           }
         });
           
