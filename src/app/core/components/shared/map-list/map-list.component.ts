@@ -48,6 +48,16 @@ export class MapListComponent implements OnInit {
 
   resizeMapList() {
     this.mapListExpanded = !this.mapListExpanded;
+    
+    var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+    console.log('mapListElement', mapListElement.clientHeight);
+
+    if ( this.mapListExpanded ) {
+      mapListElement.style.height = '';
+    } else {
+      var mapListHeight = mapListElement.clientHeight;
+      mapListElement.style.height = mapListHeight/2+'px';
+    }
   }
 
   openPopover(t2) {
