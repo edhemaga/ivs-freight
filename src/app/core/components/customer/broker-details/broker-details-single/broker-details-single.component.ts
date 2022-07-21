@@ -19,6 +19,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
   public brokerLikes: number;
   public brokerDislike: number;
   public reviewsRepair: any = [];
+  public dotsData: any;
   constructor() {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.brokerData?.firstChange && changes?.brokerData) {
@@ -35,6 +36,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     this.brokerDislike = this.brokerData[0].data.downRatingCount;
     this.brokerContacts = this.brokerData[0].data.brokerContacts;
     this.getReviews(this.brokerData[0].data);
+    this.initTableOptions();
   }
 
   /**Function return id */
@@ -56,6 +58,42 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
         rating: item.ratingFromTheReviewer,
       };
     });
+  }
+
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.dotsData = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
   }
   public changeReviewsEvent(reviews: ReviewCommentModal) {
     // switch (reviews.action) {

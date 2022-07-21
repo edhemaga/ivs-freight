@@ -1,0 +1,37 @@
+<div
+  #t2="ngbPopover"
+  (click)="toggleDropdown(t2)"
+  [autoClose]="true"
+  [ngbPopover]="dropdownPopover"
+  [placement]="placement"
+  class="details-dropdown-container"
+  [ngClass]="{ 'active-drop': dropDownActive === id }"
+  popoverClass="details-dropdown-popover {{customClassDropDown}}"
+  triggers="manual"
+  (hidden)="dropDownActive = -1"
+>
+  <svg-icon
+    class="dropdown-dots"
+    src="{{ hasVericalDots? 'assets/svg/common/ic_horizontal_dots_details.svg' : 'assets/svg/common/ic_dots.svg'}}"
+  ></svg-icon>
+</div>
+
+<ng-template #dropdownPopover let-data="data">
+  <div class="details-dropdown">
+    <div
+      (click)="onAction(action)"
+      *ngFor="let action of options"
+      class="details-dropdown-content "
+      [ngClass]="{'hide':!action.show}"
+    >
+      <div  class="svg-text-dropdown" [ngClass]="{'danger':action.danger}">
+        <svg-icon
+          [ngClass]="{'activate-header':action.activate,'deactivate-header':action.deactivate}"
+          class="action-svg"
+          src="{{action.svg}}"
+        ></svg-icon>
+        <div  class="dropdown-content-text-details">{{ action.title }}</div>
+      </div>
+    </div>
+  </div>
+</ng-template>

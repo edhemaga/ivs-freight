@@ -31,7 +31,7 @@ import { StatusSwitcherComponent } from '../switchers/status-switcher/status-swi
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
+//import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
@@ -81,10 +81,10 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
-import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaUploadFileComponent } from './ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
-import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from './ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
@@ -104,13 +104,16 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
+import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 
 @NgModule({
   declarations: [
     HistoryDataComponent,
     TabSwitcherComponent,
+    DetailsDropdownComponent,
     StatusSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -174,6 +177,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    TaUploadFilesComponent,
   ],
   imports: [
     CommonModule,
@@ -257,7 +261,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
 
     // Components
     TabSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -274,7 +278,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
-
+    DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,
@@ -321,6 +325,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     RepairOrderModalComponent,
     TaInputDropdownLabelComponent,
     LoadModalComponent,
+    TaUploadFilesComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

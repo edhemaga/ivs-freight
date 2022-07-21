@@ -10,7 +10,9 @@
  * Do not edit the class manually.
  */
 import { TruckMakeResponse } from './truckMakeResponse';
+import { EnumValue } from './enumValue';
 import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
+import { StateResponse } from './stateResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
 import { TireSizeResponse } from './tireSizeResponse';
@@ -26,5 +28,7 @@ export interface GetTruckModalResponse {
     owners?: Array<OwnerShortResponse> | null;
     truckGrossWeights?: Array<TruckGrossWeightResponse> | null;
     truckEngineTypes?: Array<TruckEngineTypeResponse> | null;
+    countryTypes?: Array<EnumValue> | null;
+    states?: Array<StateResponse> | null;
 }
 

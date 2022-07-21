@@ -1,3 +1,4 @@
+import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.service';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
 import { Observable, of, tap, filter } from 'rxjs';
@@ -30,26 +31,23 @@ export class DriverTService {
     private driverActiveStore: DriversActiveStore,
     private driversInactiveQuery: DriversInactiveQuery,
     private driverInactiveStore: DriversInactiveStore,
-    private driverStoreDetails:DriversItemStore,
-    private driverQueryDetails:DriversDetailsQuery,
+    private cdlService: CdlService,
     private ownerService: OwnerService,
     private tableService: TruckassistTableService
   ) {}
-  
 
   //Get Driver Minimal List
 
   public getDriversMinimalList(
-    pageIndex?:number,
-    pageSize?:number,
-    count?:number,
-
-  ):Observable<DriverMinimalListResponse>{
-     return this.driverService.apiDriverListMinimalGet(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<DriverMinimalListResponse> {
+    return this.driverService.apiDriverListMinimalGet(
       pageIndex,
       pageSize,
       count
-     )
+    );
   }
 
   // Get Driver List
@@ -77,9 +75,7 @@ export class DriverTService {
 
   /* Observable<CreateDriverResponse> */
   // Create Driver
-  public addDriver(
-    data: CreateDriverCommand
-  ): Observable<any> {
+  public addDriver(data: CreateDriverCommand): Observable<any> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.getDriverById(res.id).subscribe({
@@ -218,6 +214,10 @@ export class DriverTService {
 
   public getDriverById(driverId: number): Observable<DriverResponse> {
     return this.driverService.apiDriverIdGet(driverId);
+  }
+
+  public activateDeactiveCdl(cdlId: number): Observable<DriverResponse> {
+    return this.cdlService.apiCdlDeactivateIdPut(cdlId);
   }
 
   public getDriverDropdowns(): Observable<GetDriverModalResponse> {

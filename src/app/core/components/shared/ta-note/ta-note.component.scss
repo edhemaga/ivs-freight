@@ -13,10 +13,53 @@
   }
 }
 
-.note-btn {
-  width: 16px;
-  height: 18px;
-  cursor: pointer;
+.note_button_hold {
+  .note-btn {
+    width: 16px;
+    height: 18px;
+    cursor: pointer;
+  }
+
+  svg-icon{
+    svg{
+      display: flex;
+      path{
+        fill: #AAAAAA;
+      }
+    }
+  }
+
+  &.note-normal-icon, &.note-note-empty{
+    svg{
+      path{
+        fill: #AAAAAA;
+      }
+    }
+
+    &:hover {
+      svg{
+        path{
+          fill: #6C6C6C;
+        }
+      }
+    }
+  }
+
+  &.note-focused{
+    svg{
+      path{
+        fill: #6D82C7;
+      }
+    }
+
+    &:hover {
+      svg{
+        path{
+          fill: #536BC2;
+        }
+      }
+    }
+  }
 }
 
 .note-normal-icon,
@@ -212,9 +255,6 @@
 
     &.close_note {
       right: 2px;
-
-      &:hover {
-      }
     }
   }
 
@@ -227,13 +267,13 @@
     background-color: transparent;
 
     &.expanded {
-      box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
     }
 
     .editor {
       height: 32px;
       width: 250px;
-      border-radius: 3px 3px 0 0;
+      border-radius: 3px;
       background-color: rgba(255, 255, 255, 1);
       white-space: break-spaces;
       overflow: auto;
@@ -247,8 +287,8 @@
       &.not_expanded {
         height: 32px;
         background-color: rgba(255, 255, 255, 0.9);
-        border-radius: 3px 3px 3px 3px;
-        box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+        border-radius: 3px;
+        box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
         overflow: hidden;
         padding-top: 2px;
 
@@ -301,201 +341,13 @@
       // }
     }
 
-    .editor_menu {
-      border-radius: 0 0 3px 3px;
-      display: flex;
-      height: 26px;
-      padding-left: 2px;
-      align-items: center;
-      background-color: #eeeeee;
+    .container_separate{
+      padding: 0 4px;
+      .container_separate_inner{
+        height: 2px;
 
-      .editor_buttons {
-        position: relative;
-        width: 22px;
-        height: 22px;
-        font-family: "WebComponentsIcons", sans-serif;
-        font-size: 20px;
-        color: #91919170;
-        cursor: pointer;
-
-        svg-icon {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          height: 22px;
-
-          &:hover {
-            path {
-              fill: #919191;
-            }
-          }
-        }
-
-        &:hover,
-        &.active {
-          background-color: #dadada;
-          opacity: 1;
-          color: #919191;
-          border-radius: 2px;
-
-          &.text_color {
-            background-color: transparent;
-          }
-
-          &.bold_text {
-            border-bottom-left-radius: 3px;
-          }
-        }
-
-        &:before {
-          position: absolute;
-          height: 100%;
-          width: 100%;
-          text-align: center;
-          line-height: 1.6;
-          background-repeat: no-repeat;
-          background-position: center;
-          cursor: pointer;
-        }
-
-        // &.bold_text:before {
-        //   content: '';
-        //   background-image: url('../../img/svgs/note_b.svg');
-        // }
-        // &.italic_text:before {
-        //   content: '';
-        //   background-image: url('../../img/svgs/italic.svg');
-        // }
-        // &.underline_text:before {
-        //   content: '';
-        //   background-image: url('../../img/svgs/underline.svg');
-        // }
-        // &.text_color:before {
-        //   content: '';
-        //   background-image: url('../../img/svgs/note_a.svg');
-        //   background-position: left center;
-        // }
-
-        &.text_color {
-          position: relative;
-          width: 33px;
-          opacity: 0.5;
-          padding: 0 3px;
-          height: 22px;
-          border-radius: 3px;
-
-          //background-image: url('../../../../assets/img/svgs/right.svg');
-          background-repeat: no-repeat;
-          background-position: calc(100% - 3px) center;
-          background-size: 6px auto;
-
-          &.no_opacity {
-            opacity: 1;
-          }
-
-          &:hover {
-            opacity: 1;
-            background-color: #f7f7f7;
-          }
-
-          .circle_span {
-            top: 50%;
-            left: 3px;
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            background-color: #fff;
-            border-radius: 3px;
-            cursor: pointer;
-            transform: translateY(-50%);
-          }
-
-          .colors_patter {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 21px;
-            display: flex;
-            align-items: center;
-            padding: 2px 2px;
-            background-color: #f7f7f7;
-            border-radius: 3px;
-            // box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.15) !important;
-            z-index: 10;
-            // &:after {
-            //   @include triangletop;
-            //   content: '';
-            //   top: -4px;
-            //   left: 3px;
-            // }
-            div {
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 16px;
-              height: 16px;
-              border-radius: 3px;
-              margin: 0 1px;
-              cursor: pointer;
-
-              &:nth-child(1) {
-                background-color: #707070;
-              }
-
-              &:nth-child(2) {
-                background-color: #158740;
-              }
-
-              &:nth-child(3) {
-                background-color: #2b79c7;
-              }
-
-              &:nth-child(4) {
-                background-color: #9f48b9;
-              }
-
-              &:nth-child(5) {
-                background-color: #db2222;
-              }
-
-              &:hover:not(:first-child) {
-                transform: scale(1.1);
-                transform-origin: center;
-              }
-
-              svg-icon {
-                height: 100%;
-
-                svg {
-                  path {
-                    fill: #fff;
-                  }
-                }
-              }
-            }
-          }
-
-          span {
-            position: absolute;
-            top: 50%;
-            right: -2px;
-            height: 26px;
-            pointer-events: none;
-            transform: translateY(-50%);
-
-            &:not(.circle_span)::before {
-              content: "";
-              //background-image: url('../../../../assets/img/svgs/note_arrow.svg');
-              background-repeat: no-repeat;
-              background-position: center;
-              position: absolute;
-              top: 50%;
-              width: 10px;
-              height: 10px;
-              transform: translateY(-50%);
-            }
-          }
-        }
+        border-radius: 1px;
+        background-color: #F3F3F3;
       }
     }
   }

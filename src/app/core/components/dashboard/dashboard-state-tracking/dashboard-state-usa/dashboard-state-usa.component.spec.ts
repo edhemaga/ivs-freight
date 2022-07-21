@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableDropdownComponent } from './table-dropdown.component';
+import { DashboardStateUsaComponent } from './dashboard-state-usa.component';
 
-describe('TableDropdownComponent', () => {
-  let component: TableDropdownComponent;
-  let fixture: ComponentFixture<TableDropdownComponent>;
+describe('DashboardStateUsaComponent', () => {
+  let component: DashboardStateUsaComponent;
+  let fixture: ComponentFixture<DashboardStateUsaComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableDropdownComponent ]
+      declarations: [ DashboardStateUsaComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableDropdownComponent);
+    fixture = TestBed.createComponent(DashboardStateUsaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

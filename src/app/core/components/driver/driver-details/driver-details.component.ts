@@ -60,7 +60,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
-    this.initTableOptions();
+    this.initTableOptions(this.activated_route.snapshot.data.driver);
+
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
@@ -83,6 +84,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         }
         query.pipe(untilDestroyed(this)).subscribe({
           next: (res: DriverResponse) => {
+            this.initTableOptions(res);
             this.detailCongif(res);
             if (this.router.url.includes('details')) {
               this.router.navigate([`/driver/${res.id}/details`]);
@@ -210,7 +212,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   /**Function for dots in cards */
-  public initTableOptions(): void {
+  public initTableOptions(data: DriverResponse): void {
     this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -227,35 +229,38 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         {
           title: 'Send Message',
           name: 'dm',
-          class: 'regular-text',
-          contentType: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: data.status == 1 ? true : false,
         },
         {
           title: 'Print',
           name: 'print',
-          class: 'regular-text',
-          contentType: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
 
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: data.status == 1 ? true : false,
         },
         {
-          title: 'Deactivate',
+          title: data.status == 0 ? 'Activate' : 'Deactivate',
           name: 'deactivate',
-          class: 'regular-text',
-          contentType: 'deactivate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          activate: data.status == 0 ? true : false,
+          deactivate: data.status == 1 ? true : false,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
       ],
       export: true,

@@ -75,14 +75,14 @@
       </span>
     </div>
     <div *ngIf="hasArrow" class="verical-dots-header">
-      <app-table-dropdown
+      <app-details-page-dropdown
         [options]="optionsDrop.actions"
         [id]="optionsId"
         [placement]="'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >
-      </app-table-dropdown>
+      </app-details-page-dropdown>
     </div>
   </div>
   <!-- <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">

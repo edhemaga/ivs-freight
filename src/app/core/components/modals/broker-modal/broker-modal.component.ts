@@ -531,7 +531,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((action: LikeDislikeModel) => {
         let rating: CreateRatingCommand = null;
-
+        console.log('RATING CHANGES');
+        console.log(action);
         if (action.action === 'liked') {
           rating = {
             entityTypeRatingId: 1,
@@ -551,6 +552,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
+              this.editBrokerById(this.editData.id);
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'
@@ -837,6 +839,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
+          console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -875,10 +878,14 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               : null,
             creditType: reasponse.creditType,
             creditLimit:
-              reasponse.creditType === 'Enable' ? reasponse.creditLimit : null,
+              reasponse.creditType.name === 'Enable'
+                ? reasponse.creditLimit
+                : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
-              reasponse.creditType === 'Enable' ? reasponse.payTerm.name : null,
+              reasponse.creditType.name === 'Enable'
+                ? reasponse.payTerm.name
+                : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,
@@ -948,8 +955,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }
 
           this.taLikeDislikeService.populateLikeDislikeEvent({
-            downRatingCount: reasponse.downRatingCount,
-            upRatingCount: reasponse.upRatingCount,
+            downRatingCount: reasponse.downCount,
+            upRatingCount: reasponse.upCount,
             currentCompanyUserRating: reasponse.currentCompanyUserRating,
           });
 
