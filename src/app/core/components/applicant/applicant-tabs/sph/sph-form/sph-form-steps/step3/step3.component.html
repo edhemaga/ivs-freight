@@ -50,142 +50,147 @@
       </p>
     </div>
 
-    <!-- DATE OF EMPLOYMENT -->
+    <div
+      class="d-flex flex-column justify-content-center align-items-center"
+      *ngIf="!drugAndAlcoholTestingHistoryForm.get('applicantNotSubject').value"
+    >
+      <!-- DATE OF EMPLOYMENT -->
 
-    <div class="d-flex align-items-center date-container">
-      <p class="m-0 ta-font-regular">Dates of employment</p>
-      <div class="date-group">
-        <app-ta-input
-          formControlName="employmentFromDate"
-          [inputConfig]="{
-            name: 'datepicker',
-            type: 'text',
-            label: 'From',
-            placeholderIcon: 'date',
-            isRequired: true,
-            customClass: 'datetimeclass'
-          }"
-        ></app-ta-input>
+      <div class="d-flex align-items-center date-container">
+        <p class="m-0 ta-font-regular">Dates of employment</p>
+        <div class="date-group">
+          <app-ta-input
+            formControlName="employmentFromDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'From',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="date-group">
+          <app-ta-input
+            formControlName="employmentToDate"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'To',
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
       </div>
-      <div class="date-group">
-        <app-ta-input
-          formControlName="employmentToDate"
-          [inputConfig]="{
-            name: 'datepicker',
-            type: 'text',
-            label: 'To',
-            placeholderIcon: 'date',
-            isRequired: true,
-            customClass: 'datetimeclass'
-          }"
-        ></app-ta-input>
+
+      <!-- QUESTIONS -->
+
+      <div class="d-flex flex-column align-items-center questions-container">
+        <div
+          class="d-flex align-items-center justify-content-between question-container"
+          *ngFor="
+            let question of questions | slice: 0:5;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div [ngClass]="['title-box' + i, 'title-box']">
+            <p class="m-0 ta-font-regular">
+              {{ question.title }}
+              <span class="required-star">*</span>
+            </p>
+          </div>
+
+          <div class="radios-box">
+            <app-ta-input-radiobuttons
+              [buttons]="question.answerChoices"
+              (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
+            ></app-ta-input-radiobuttons>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- QUESTIONS -->
+      <!-- NAME OF SAP, PHONE -->
 
-    <div class="d-flex flex-column align-items-center questions-container">
+      <div class="d-flex align-items-center sap-phone-container">
+        <div class="sap-group">
+          <app-ta-input
+            formControlName="sapName"
+            [inputConfig]="{
+              name: 'Motor Carrier',
+              type: 'text',
+              label: 'Name of SAP',
+              isRequired: true,
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="phone-group">
+          <app-ta-input
+            formControlName="phone"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              isRequired: true,
+              placeholderIcon: 'phone',
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+        </div>
+      </div>
+
+      <!-- ADDRESS, ADDRESS UNIT -->
+
+      <div class="d-flex align-items-center address-container">
+        <div class="address-group">
+          <app-ta-input-address
+            formControlName="address"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Address, City, State Zip',
+              isRequired: true,
+              placeholderIcon: 'address',
+              textTransform: 'capitalize'
+            }"
+            (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+          ></app-ta-input-address>
+        </div>
+        <div class="address-unit-group">
+          <app-ta-input
+            formControlName="addressUnit"
+            [inputConfig]="{
+              name: 'Address Unit',
+              type: 'text',
+              label: 'Unit #',
+              maxLength: 6
+            }"
+          ></app-ta-input>
+        </div>
+      </div>
+
+      <!-- SAP QUESTION -->
+
       <div
-        class="d-flex align-items-center justify-content-between question-container"
-        *ngFor="
-          let question of questions | slice: 0:5;
-          let i = index;
-          trackBy: trackByIdentity
-        "
+        class="d-flex align-items-center justify-content-between sap-question-container"
       >
-        <div [ngClass]="['title-box' + i, 'title-box']">
+        <div Class=" title-box">
           <p class="m-0 ta-font-regular">
-            {{ question.title }}
+            {{ questions[5].title }}
             <span class="required-star">*</span>
           </p>
         </div>
 
         <div class="radios-box">
           <app-ta-input-radiobuttons
-            [buttons]="question.answerChoices"
+            [buttons]="questions[5].answerChoices"
             (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
           ></app-ta-input-radiobuttons>
         </div>
-      </div>
-    </div>
-
-    <!-- NAME OF SAP, PHONE -->
-
-    <div class="d-flex align-items-center sap-phone-container">
-      <div class="sap-group">
-        <app-ta-input
-          formControlName="sapName"
-          [inputConfig]="{
-            name: 'Motor Carrier',
-            type: 'text',
-            label: 'Name of SAP',
-            isRequired: true,
-            textTransform: 'capitalize'
-          }"
-        ></app-ta-input>
-      </div>
-      <div class="phone-group">
-        <app-ta-input
-          formControlName="phone"
-          [inputConfig]="{
-            name: 'Phone',
-            type: 'text',
-            label: 'Phone',
-            isRequired: true,
-            placeholderIcon: 'phone',
-            mask: '(000) 000-0000'
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-
-    <!-- ADDRESS, ADDRESS UNIT -->
-
-    <div class="d-flex align-items-center address-container">
-      <div class="address-group">
-        <app-ta-input-address
-          formControlName="address"
-          [inputConfig]="{
-            name: 'Address',
-            type: 'text',
-            label: 'Address, City, State Zip',
-            isRequired: true,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize'
-          }"
-          (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
-        ></app-ta-input-address>
-      </div>
-      <div class="address-unit-group">
-        <app-ta-input
-          formControlName="addressUnit"
-          [inputConfig]="{
-            name: 'Address Unit',
-            type: 'text',
-            label: 'Unit #',
-            maxLength: 6
-          }"
-        ></app-ta-input>
-      </div>
-    </div>
-
-    <!-- SAP QUESTION -->
-
-    <div
-      class="d-flex align-items-center justify-content-between sap-question-container"
-    >
-      <div Class=" title-box">
-        <p class="m-0 ta-font-regular">
-          {{ questions[5].title }}
-          <span class="required-star">*</span>
-        </p>
-      </div>
-
-      <div class="radios-box">
-        <app-ta-input-radiobuttons
-          [buttons]="questions[5].answerChoices"
-          (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-        ></app-ta-input-radiobuttons>
       </div>
     </div>
   </form>
@@ -200,4 +205,12 @@
     [nextStep]="true"
     [lastSphFormPage]="true"
   ></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>

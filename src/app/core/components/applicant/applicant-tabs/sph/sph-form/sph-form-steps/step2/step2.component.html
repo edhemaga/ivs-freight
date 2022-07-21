@@ -23,6 +23,71 @@
   <div class="d-flex flex-column form-section">
     <form [formGroup]="accidentHistoryForm">
       <div class="d-flex flex-column questions-container">
+        <!-- WARNING CONTAINER -->
+
+        <div
+          class="d-flex flex-column justify-content-center warning-container"
+          *ngIf="
+            accidentHistoryForm.get('applicantWorkForCompany').value === 'NO'
+          "
+        >
+          <div
+            class="d-flex align-items-center justify-content-between warning-header"
+          >
+            <div class="d-flex align-items-center">
+              <svg-icon
+                class="icon"
+                src="assets/svg/applicant/exclamation-mark.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+              ></svg-icon>
+
+              <p class="m-0 ta-font-extra-bold warning-title">Warning</p>
+            </div>
+
+            <svg-icon
+              class="close-icon"
+              src="assets/svg/truckassist-table/x.svg"
+              [svgStyle]="{
+                'width.px': 18,
+                'height.px': 18
+              }"
+              (click)="onCloseWarningBox()"
+            ></svg-icon>
+          </div>
+
+          <div class="d-flex flex-column justify-content-center warning-body">
+            <p class="m-0 ta-font-medium">
+              Are you sure that the applicant above didn't work for your company
+            </p>
+
+            <p class="m-0 ta-font-bold">Aleksandar Djordjevic</p>
+
+            <p class="m-0 ta-font-medium">SSN: 123-45-6789</p>
+          </div>
+
+          <div class="d-flex align-items-center warning-footer">
+            <button
+              type="button"
+              class="d-flex align-items-center justify-content-center ta-font-bold warning-btn no-btn"
+              (click)="onSelectNoWarningBox()"
+            >
+              No
+            </button>
+            <button
+              type="button"
+              class="d-flex align-items-center justify-content-center ta-font-bold warning-btn yes-btn"
+              (click)="onSelectYesWarningBox()"
+            >
+              Yes
+            </button>
+          </div>
+        </div>
+
+        <!-- QUESTION CONTAINER -->
+
         <div
           class="d-flex align-items-center question-container"
           *ngFor="
@@ -44,6 +109,7 @@
 
               <div class="radios-box">
                 <app-ta-input-radiobuttons
+                  #cmp
                   [buttons]="question.answerChoices"
                   (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
                 ></app-ta-input-radiobuttons>
@@ -208,6 +274,12 @@
 
       <div
         class="d-flex justify-content-center align-items-center no-safety-checkbox-container"
+        [ngStyle]="{
+          margin:
+            accidentArray.length === 1 && accidentArray[0].isEditingAccident
+              ? '0 auto'
+              : '0 auto 32px auto'
+        }"
       >
         <app-ta-checkbox
           formControlName="noSafetyPerformance"
@@ -223,11 +295,158 @@
 
     <!-- ACCIDENT FORM -->
 
-    <form *ngIf="!isEditing">
-      <app-sph-step2-form
-        (formValuesEmitter)="asd($event)"
-      ></app-sph-step2-form>
-    </form>
+    <div
+      class="d-flex flex-column justify-content.center"
+      *ngIf="!accidentHistoryForm.get('noSafetyPerformance').value"
+    >
+      <!-- CREATED ACCIDENT DATA -->
+
+      <div
+        class="d-flex flex-column justify-content-center accident-view-container"
+        *ngIf="accidentArray.length"
+      >
+        <div
+          class="d-flex flex-column"
+          *ngFor="
+            let accident of accidentArray;
+            let i = index;
+            trackBy: trackByIdentity
+          "
+        >
+          <div
+            class="d-flex align-items-center title-container"
+            *ngIf="
+              (accidentArray.length > 0 && helperIndex !== 0 && i === 0) ||
+              (helperIndex === 0 && i === 1) ||
+              (i === helperIndex + 1 && selectedAccidentIndex > -1)
+            "
+          >
+            <div class="d-flex align-items-center date-title-box">
+              <p class="m-0 ta-font-bold">DATE <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center state-title-box">
+              <p class="m-0 ta-font-bold">STATE <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center fatalities-title-box">
+              <p class="m-0 ta-font-bold">FAT.</p>
+            </div>
+            <div class="d-flex align-items-center injuries-title-box">
+              <p class="m-0 ta-font-bold">INJ.</p>
+            </div>
+            <div class="d-flex align-items-center hazmat-title-box">
+              <p class="m-0 ta-font-bold">H. SPILL <span>*</span></p>
+            </div>
+            <div class="d-flex align-items-center description-title-box">
+              <p class="m-0 ta-font-bold">DESCRIPTION <span>*</span></p>
+            </div>
+          </div>
+
+          <div
+            class="d-flex align-items-center accident-info-container"
+            *ngIf="!accident.isEditingAccident"
+          >
+            <div class="d-flex align-items-center date-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.accidentDate }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center state-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.accidentState }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center fatalities-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.fatalities }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center injuries-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.injuries }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center hazmat-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.hazmatSpill }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center description-box">
+              <p
+                class="m-0 ta-font-regular d-inline-block text-truncate"
+                style="max-width: 207px"
+                [appTooltip]="accident.accidentDescription"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="bottom-right"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+              >
+                {{ accident.accidentDescription }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center btn-container">
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Edit"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#6C6C6C"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onEditAccident(i)"
+              ></svg-icon>
+
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                appTooltip="Delete"
+                tooltipColor="#FFFFFF"
+                tooltipBackground="#EF5350"
+                position="top-middle"
+                borderRadius="2px"
+                fontSize="11px"
+                fontWeight="bold"
+                (click)="onDeleteAccident(i)"
+              ></svg-icon>
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-column accident-view-form"
+            *ngIf="accident.isEditingAccident"
+          >
+            <app-sph-step2-form
+              [isEditing]="isEditing"
+              [isAccidentEdited]="isAccidentEdited"
+              [formValuesToPatch]="formValuesToPatch"
+              (formValuesEmitter)="getAccidentFormValues($event)"
+              (cancelFormEditingEmitter)="cancelAccidentEditing($event)"
+              (saveFormEditingEmitter)="saveEditedAccident($event)"
+            ></app-sph-step2-form>
+          </div>
+        </div>
+      </div>
+
+      <!-- ACCIDENT FORM -->
+
+      <form *ngIf="!isEditing">
+        <app-sph-step2-form
+          [isEditing]="isEditing"
+          (formValuesEmitter)="getAccidentFormValues($event)"
+        ></app-sph-step2-form>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -237,4 +456,12 @@
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
   <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+</div>
+
+<!-- BACK BTN -->
+
+<div
+  class="d-flex justify-content-center align-items-center back-btn-container"
+>
+  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>

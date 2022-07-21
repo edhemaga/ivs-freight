@@ -13,8 +13,28 @@
       color: $ta-blue;
       margin-bottom: 32px !important;
 
+      &::-moz-selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
+
       span {
         color: $bw6-2;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
     }
 
@@ -25,6 +45,16 @@
       line-height: 22px;
       color: $bw6-2;
       margin-bottom: 32px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
   }
 

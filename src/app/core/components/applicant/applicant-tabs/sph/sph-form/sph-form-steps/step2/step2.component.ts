@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
 import { TrailerType } from 'src/app/core/components/applicant/state/model/trailer-type.model';
 import { TruckType } from 'src/app/core/components/applicant/state/model/truck-type.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
 import { ReasonForLeaving } from 'src/app/core/components/applicant/state/model/reason-for-leaving.model';
-import { Address } from 'src/app/core/components/applicant/state/model/address.model';
+import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
 
 @Component({
   selector: 'app-step2',
@@ -14,8 +15,10 @@ import { Address } from 'src/app/core/components/applicant/state/model/address.m
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit {
+  @ViewChildren('cmp') components: QueryList<any>;
+
   public accidentHistoryForm: FormGroup;
-  public accidentForm: FormGroup;
+  public accidentArray: SphFormAccidentModel[] = [];
 
   public truckType: TruckType[] = [];
   public trailerType: TrailerType[] = [];
@@ -23,9 +26,16 @@ export class Step2Component implements OnInit {
   public selectedTruckType: any = null;
   public selectedTrailerType: any = null;
   public selectedReasonForLeaving: any = null;
-  /*  public selectedAddress: Address = null; */
+  public selectedAccidentIndex: number;
 
   public isEditing: boolean = false;
+  public isAccidentEdited: boolean = false;
+
+  public helperIndex: number = 2;
+
+  public workForCompanyRadios: any;
+
+  public formValuesToPatch: any;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -98,27 +108,6 @@ export class Step2Component implements OnInit {
         },
       ],
     },
-    {
-      title: '',
-      formControlName: 'hazmatSpill',
-      formControlNameExplain: '',
-      answerChoices: [
-        {
-          id: 7,
-          label: 'YES',
-          value: 'hazmatYes',
-          name: 'hazmatYes',
-          checked: false,
-        },
-        {
-          id: 8,
-          label: 'NO',
-          value: 'hazmatNo',
-          name: 'hazmatNo',
-          checked: false,
-        },
-      ],
-    },
   ];
 
   public reasonsForLeaving: ReasonForLeaving[] = [
@@ -130,10 +119,16 @@ export class Step2Component implements OnInit {
     { id: 6, name: 'Other' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.createForm();
+  }
+
+  ngAfterViewInit(): void {
+    const radioButtonsArray = this.components.toArray();
+
+    this.workForCompanyRadios = radioButtonsArray[0].buttons;
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -178,6 +173,7 @@ export class Step2Component implements OnInit {
         this.accidentHistoryForm
           .get(selectedFormControlName)
           .patchValue(selectedCheckbox.label);
+
         break;
       case InputSwitchActions.REASON_FOR_LEAVING:
         this.selectedReasonForLeaving = event;
@@ -189,7 +185,70 @@ export class Step2Component implements OnInit {
     }
   }
 
-  public asd(event: any) {
-    console.log(event);
+  public onDeleteAccident(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.accidentArray.splice(index, 1);
+  }
+
+  public onEditAccident(index: number): void {
+    if (this.isEditing) {
+      return;
+    }
+
+    this.helperIndex = index;
+
+    this.isAccidentEdited = false;
+
+    this.isEditing = true;
+    this.accidentArray[index].isEditingAccident = true;
+
+    this.selectedAccidentIndex = index;
+
+    const selectedAccident = this.accidentArray[index];
+
+    this.formValuesToPatch = selectedAccident;
+  }
+
+  public onCloseWarningBox(): void {
+    this.accidentHistoryForm.get('applicantWorkForCompany').patchValue(null);
+
+    this.workForCompanyRadios[0].checked = false;
+    this.workForCompanyRadios[1].checked = false;
+  }
+
+  public onSelectNoWarningBox(): void {
+    this.accidentHistoryForm.get('applicantWorkForCompany').patchValue('YES');
+
+    this.workForCompanyRadios[0].checked = true;
+    this.workForCompanyRadios[1].checked = false;
+  }
+
+  public onSelectYesWarningBox(): void {
+    this.router.navigate(['/sph-form-end']);
+  }
+
+  public getAccidentFormValues(event: any): void {
+    this.accidentArray = [...this.accidentArray, event];
+
+    this.helperIndex = 2;
+  }
+
+  public cancelAccidentEditing(event: any): void {
+    this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+    this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
+  }
+
+  public saveEditedAccident(event: any): void {
+    this.accidentArray[this.selectedAccidentIndex] = event;
+
+    this.isEditing = false;
+
+    this.helperIndex = 2;
   }
 }

@@ -50,7 +50,7 @@
 
   <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
 
-  <div class="d-flex justify-content-between">
+  <div class="d-flex">
     <div
       class="d-flex align-items-center justify-content-between group hazmat-spill-group"
     >
@@ -61,29 +61,75 @@
       </div>
       <div class="radios-box">
         <app-ta-input-radiobuttons
+          #cmp
           [buttons]="hazmatAnswerChoices"
           (changedValue)="handleInputSelect($event, 'HAZMAT-SPILL')"
         ></app-ta-input-radiobuttons>
       </div>
     </div>
-    <!-- <div class="d-flex align-items-center fatalities-injuries-group">
-        <div class="d-flex align-items-center fatalities-group">
-          <app-ta-input-arrows
-            name="Fatalities #"
-            [counter]="fatalitiesCounter"
-            (counterEmmiter)="onIncrementDecrementCounter($event, 'fatalities')"
-          ></app-ta-input-arrows>
-        </div>
-  
-        <div class="d-flex align-items-center injuries-group">
-          <app-ta-input-arrows
-            name="Injuries #"
-            [counter]="injuriesCounter"
-            (counterEmmiter)="onIncrementDecrementCounter($event, 'injuries')"
-          ></app-ta-input-arrows>
-        </div>
-      </div> -->
+
+    <div class="d-flex align-items-center fatalities-injuries-group">
+      <div class="d-flex align-items-center injuries-group">
+        <app-ta-input-arrows
+          name="Injuries #"
+          [counter]="injuriesCounter"
+          (counterEmmiter)="onIncrementDecrementCounter($event, 'injuries')"
+        ></app-ta-input-arrows>
+      </div>
+      <div class="d-flex align-items-center fatalities-group">
+        <app-ta-input-arrows
+          name="Fatalities #"
+          [counter]="fatalitiesCounter"
+          (counterEmmiter)="onIncrementDecrementCounter($event, 'fatalities')"
+        ></app-ta-input-arrows>
+      </div>
+    </div>
   </div>
 
-  <button (click)="fromValuesEmitter()">CLICK</button>
+  <!-- BTN CONTAINER -->
+
+  <div class="d-flex justify-content-center align-items-center btn-container">
+    <button
+      type="button"
+      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+      (click)="onAddAnotherAccident()"
+      [ngClass]="{
+        disabled: accidentForm.invalid
+      }"
+      *ngIf="!isEditing"
+    >
+      <svg-icon
+        class="plus-icon"
+        src="assets/svg/common/ic_plus.svg
+      "
+        [svgStyle]="{
+          'width.px': 18,
+          'height.px': 18
+        }"
+      ></svg-icon>
+
+      Add Another Accident
+    </button>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container"
+      *ngIf="isEditing"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelEditAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        (click)="onSaveEditedAccident()"
+        [ngClass]="{ disabled: !isAccidentEdited }"
+      >
+        Save Changes
+      </button>
+    </div>
+  </div>
 </div>

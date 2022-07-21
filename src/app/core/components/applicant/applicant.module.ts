@@ -39,6 +39,7 @@ import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.comp
 import { SharedModule } from '../shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
+import { ProspectiveEmployerPdfComponent } from './state/pdf-export/sph-form/prospective-employer-pdf/prospective-employer-pdf.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
     Step3FormComponent,
     Step2FormComponent,
     ApplicantEndScreenComponent,
+    ProspectiveEmployerPdfComponent,
   ],
   imports: [
     CommonModule,
