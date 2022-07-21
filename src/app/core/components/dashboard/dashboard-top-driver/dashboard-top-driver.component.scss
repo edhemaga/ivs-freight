@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 $top_driver_hover_color: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
 $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
 
@@ -264,6 +266,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             color: #6C6C6C;
                             padding: 0px 16px 0px 0px;
                             box-sizing: border-box;
+                            user-select: none;
                         }
     
                         .dashboard-top-driver-body-list-circle{
@@ -287,20 +290,67 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                             color: #6C6C6C;
                             padding-left: 6px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
                         }
 
                         .dashboard-top-driver-body-list-price{
                             font-size: 14px;
                             font-weight: 400;
                             color: #6C6C6C;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+
                         }
 
                         .dashboard-top-driver-body-list-percent{
                             font-size: 14px;
-                            font-weight: 500;
+                            font-weight: 600;
                             color: #6C6C6C;
                             padding-left: 22px;
                             box-sizing: border-box;
+                            &::-moz-selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                            &::selection {
+                                background: #6C6C6C33;
+                                color: #6C6C6C;
+                            }
+                        }
+
+                        .dashboard-top-driver-body-list-remove{
+                            width: 18px;
+                            height: 18px;
+                            display: none;
+                            justify-content: center;
+                            align-items: center;
+                            margin-left: 12px;
+                            cursor: pointer;
+
+                            svg-icon{
+                                svg{
+                                    display: flex;
+                                    width: 12.38px;
+                                    height: 12.38px;
+
+                                    path{
+                                        fill: #fff;
+                                    }
+                                }
+                            }
                         }
                     }
 
@@ -358,18 +408,47 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
 
                             .dashboard-top-driver-body-list-name{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+    
                             }
 
                             .dashboard-top-driver-body-list-price{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
                             }
 
                             .dashboard-top-driver-body-list-percent{
                                 color: #fff !important;
+                                &::-moz-selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
+                                &::selection {
+                                    background: #ffffff33 !important;
+                                    color: #fff !important;
+                                }
                             }
 
                             &:hover{
                                 background-color: unquote('#' + $hover_color);
+
+                                .dashboard-top-driver-body-list-remove{
+                                    display: flex;
+                                }
                             }
                         }
                     }
@@ -453,7 +532,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                                 font-size: 11px;
                                 font-weight: 500;
                                 line-height: 14px;
-                                color: #6C6C6C;
+                                color: $bw6-2;
                             }
 
                             .chart_legend_dot{

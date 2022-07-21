@@ -171,13 +171,10 @@ $transition: all 0.3s ease-in-out;
             margin-top: 8px;
             margin-bottom: 8px;
             .dots-vertical {
-                width: 5px;
-                height: 18px !important;
+                height: 22px !important;
                 display: flex;
-                align-items: flex-start;
-                left: 5px;
-                position: relative;
-                margin-left: 12px;
+                justify-content: flex-end;
+                align-items: center;
             }
             &:hover {
                 background-color: #f3f3f3;
@@ -400,7 +397,6 @@ $transition: all 0.3s ease-in-out;
             font-weight: $font-semibold;
             color: $color-gray-dark;
             width: 220px;
-            height: 18px;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
