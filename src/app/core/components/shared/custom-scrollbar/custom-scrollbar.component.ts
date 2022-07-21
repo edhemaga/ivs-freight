@@ -10,6 +10,7 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
   scrollTop: number = 5;
   showScrollbar: boolean = false;
   scrollHeight: number = 0;
+  scrollRatio: number = 0;
 
   isMouseDown: boolean = false;
 
@@ -20,8 +21,9 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
     this.ngZone.runOutsideAngular(() => {
       document.addEventListener("mousemove", (e) => {
         if( this.isMouseDown ){
-          console.dir(document);
-          ///document.scrollingElement.scrollTop = e.clientY;
+          console.dir("startt");
+          //document.scrollingElement.scrollTop = e.clientY;
+          this.scrollTop = e.clientY;
         }
       });
 
@@ -53,10 +55,10 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
       return;
     }
 
-    const scrollRatio = visible_height / content_height;
-    this.scrollTop = elem.scrollTop * scrollRatio;
+    this.scrollRatio = visible_height / content_height;
+    this.scrollTop = elem.scrollTop * this.scrollRatio;
 
-    this.scrollHeight = scrollRatio * visible_height;
+    this.scrollHeight = this.scrollRatio * visible_height;
   }
 
 }
