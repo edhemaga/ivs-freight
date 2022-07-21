@@ -64,11 +64,11 @@
             </div>
           </div>
 
-          <app-ta-modal-upload
+          <app-ta-upload-files
             [files]="documents"
-            [modalSize]="'modal-large'"
+            [size]="'medium'"
             (onFileEvent)="onFilesAction($event)"
-          ></app-ta-modal-upload>
+          ></app-ta-upload-files>
         </div>
 
         <!-- PRIVACY INFO -->
