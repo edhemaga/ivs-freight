@@ -547,13 +547,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       }
     }
 
-    // this.tabSwitch.indexSwitch = this.ownerTabs.findIndex(
-    //   (item) => item.id === this.selectedOwnerTab.id
-    // );
     this.ownerTabs = this.ownerTabs.map((item) => {
       return { ...item, checked: item.id === this.selectedOwnerTab.id };
     });
-    console.log(this.ownerTabs);
   }
 
   private isCheckedOwner() {
