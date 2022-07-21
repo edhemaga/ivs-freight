@@ -28,7 +28,7 @@ import {
   perStopValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TaUploadFileService } from '../../shared/ta-modal-upload/ta-upload-file.service';
+import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { DriverTService } from '../../driver/state/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -42,7 +42,7 @@ import {
   getStringFromBase64,
 } from 'src/app/core/utils/base64.image';
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
-import { DropZoneConfig } from '../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
 @Component({

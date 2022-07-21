@@ -481,12 +481,12 @@
           [cardName]="'Documents'"
           [isCardOpen]="documents.length"
         >
-          <app-ta-modal-upload
+          <app-ta-upload-files
             [files]="documents"
-            [modalSize]="'modal-large'"
+            [size]="'large'"
             [dropZoneConfig]="dropZoneConfigFile"
             (onFileEvent)="onFilesEvent($event)"
-          ></app-ta-modal-upload>
+          ></app-ta-upload-files>
         </app-ta-custom-card>
 
         <app-ta-custom-card
@@ -494,12 +494,12 @@
           [cardName]="'Media'"
           [isCardOpen]="media.length"
         >
-          <app-ta-modal-upload
+          <app-ta-upload-files
             [files]="media"
-            [modalSize]="'modal-large'"
+            [size]="'large'"
             [dropZoneConfig]="dropZoneConfigMedia"
             (onFileEvent)="onFilesEvent($event)"
-          ></app-ta-modal-upload>
+          ></app-ta-upload-files>
         </app-ta-custom-card>
 
         <app-ta-input-note

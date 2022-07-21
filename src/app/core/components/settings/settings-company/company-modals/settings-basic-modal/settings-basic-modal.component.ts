@@ -29,7 +29,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
 import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { DropZoneConfig } from 'src/app/core/components/shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsStoreService } from '../../../state/settings.service';
 import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';

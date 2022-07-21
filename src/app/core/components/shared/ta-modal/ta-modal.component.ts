@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
+import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import {
   animate,
   state,
