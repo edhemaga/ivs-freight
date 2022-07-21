@@ -34,7 +34,7 @@ export interface CreateLoadTemplateCommand {
     baseRate?: number;
     adjustedRate?: number | null;
     advancePay?: number | null;
-    additionalBiilingRates?: Array<LoadBillingAdditionalCommand> | null;
+    additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     stops?: Array<LoadStopCommand> | null;
 }
 

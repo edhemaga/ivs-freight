@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/account.service.ts
@@ -166,6 +165,7 @@ model/hazardousMaterialResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyResponse.ts
+model/invoiceAgeingResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadItemUnit.ts
@@ -287,6 +287,7 @@ model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
 model/testResponse.ts
 model/testType.ts
+model/timeOnly.ts
 model/timeType.ts
 model/tireSizeResponse.ts
 model/titleResponse.ts

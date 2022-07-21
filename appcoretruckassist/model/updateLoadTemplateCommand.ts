@@ -33,7 +33,7 @@ export interface UpdateLoadTemplateCommand {
     adjustedRate?: number | null;
     revisedRate?: number | null;
     tonuRate?: number | null;
-    additionalBiilingRates?: Array<LoadBillingAdditionalCommand> | null;
+    additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     pays?: Array<LoadPaymentPayCommand> | null;
     stops?: Array<LoadStopCommand> | null;
 }

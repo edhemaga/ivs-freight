@@ -11,11 +11,11 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface TimeOnly { 
+    hour?: number;
+    minute?: number;
+    second?: number;
+    millisecond?: number;
+    ticks?: number;
 }
 
