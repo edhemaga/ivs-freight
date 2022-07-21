@@ -11,17 +11,18 @@ import {
 } from '@angular/core';
 
 @Component({
-  selector: 'app-table-dropdown',
-  templateUrl: './table-dropdown.component.html',
-  styleUrls: ['./table-dropdown.component.scss'],
-  encapsulation:ViewEncapsulation.None,
+  selector: 'app-details-page-dropdown',
+  templateUrl: './details-dropdown.html',
+  styleUrls: ['./details-dropdown.scss'],
+  encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableDropdownComponent implements OnInit, OnChanges {
+export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() options: any;
   @Input() id: number;
-  @Input() customClassDropDown:string;
-  @Input() public placement:string='bottom-right'
+  @Input() customClassDropDown: string;
+  @Input() hasVericalDots: boolean;
+  @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
   tooltip: any;
@@ -40,8 +41,7 @@ export class TableDropdownComponent implements OnInit, OnChanges {
     }
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   toggleDropdown(tooltip: any) {
     this.tooltip = tooltip;

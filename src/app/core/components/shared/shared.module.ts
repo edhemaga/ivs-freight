@@ -31,7 +31,7 @@ import { StatusSwitcherComponent } from '../switchers/status-switcher/status-swi
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
 import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
-import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
+//import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
@@ -107,13 +107,15 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 
 @NgModule({
   declarations: [
     HistoryDataComponent,
     TabSwitcherComponent,
+    DetailsDropdownComponent,
     StatusSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -263,7 +265,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
 
     // Components
     TabSwitcherComponent,
-    TaNoteContainerComponent,
+    //TaNoteContainerComponent,
     TaStatusSwitchComponent,
     TaStatusSelectComponent,
     DeleteDialogComponent,
@@ -280,7 +282,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
-
+    DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,

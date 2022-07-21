@@ -1,3 +1,4 @@
+import { DriverTService } from './../../state/driver.service';
 import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -41,22 +42,20 @@ export class DriverDetailsItemComponent
   public dataTest: any;
   public expDateCard: any;
   public dataCDl: any;
-
+  public templateName: boolean;
   constructor(
-    private activated_route: ActivatedRoute,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private driverService: DriverTService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-   
     if (!changes.drivers.firstChange && changes.drivers.currentValue) {
       this.drivers = changes.drivers.currentValue;
       this.getExpireDate();
     }
-    
   }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.initTableOptions();
     this.getExpireDate();
   }
@@ -72,9 +71,31 @@ export class DriverDetailsItemComponent
         showButton: this.expDateCard,
       };
     });
-  
   }
-
+  public activateDeactiveCdl(id: number) {
+    this.driverService.activateDeactiveCdl(id);
+  }
+  public getName(name: string) {
+    switch (name) {
+      case 'cdl':
+        this.templateName = false;
+        this.initTableOptions();
+        this.getExpireDate();
+        break;
+      case 'test':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+      case 'medical':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+      case 'mvr':
+        this.templateName = true;
+        this.initTableOptions();
+        break;
+    }
+  }
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.dataTest = {
@@ -93,29 +114,29 @@ export class DriverDetailsItemComponent
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
         {
           title: 'Renew',
           name: 'renew',
-          class: 'regular-text',
-          contentType: 'add',
+          svg: 'assets/svg/common/ic_plus.svg',
+          show: !this.templateName ? true : false,
         },
         {
-          title: 'Activate',
-          reverseTitle: 'Deactivate',
+          title: 'Deactivate',
           name: 'activate-item',
-          class: 'regular-text',
-          contentType: 'activate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          show: !this.templateName ? true : false,
         },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,
@@ -203,7 +224,7 @@ export class DriverDetailsItemComponent
   }
 
   /**Function for toggle page in cards */
-  public toggleResizePage(value: number, indexName:string) {
+  public toggleResizePage(value: number, indexName: string) {
     this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
   public onFileAction(action: string) {

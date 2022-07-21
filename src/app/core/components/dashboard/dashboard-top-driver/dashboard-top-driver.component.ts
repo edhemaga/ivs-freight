@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
+  @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
@@ -15,6 +16,8 @@ export class DashboardTopDriverComponent implements OnInit {
   topTenTitle: string = "Driver";
 
   periodSwitchItems: any[] = [];
+
+  selectedDrivers: any[] = [];
 
   public chartConfig: object = {};
 
@@ -29,7 +32,8 @@ export class DashboardTopDriverComponent implements OnInit {
           borderColor: '#919191',
           hoverBackgroundColor: '#6C6C6C',
           hoverBorderColor: '#707070',
-          label: 'Top 10'
+          label: 'Top 10',
+          id: 'top10'
         }
       },
       {
@@ -41,7 +45,8 @@ export class DashboardTopDriverComponent implements OnInit {
           borderColor: '#CCCCCC',
           hoverBackgroundColor: '#AAAAAA',
           hoverBorderColor: '#707070',
-          label: 'All Others'
+          label: 'All Others',
+          id: 'allOthers'
         }
       }
     ],
@@ -53,8 +58,10 @@ export class DashboardTopDriverComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     startGridBackgroundFromZero: true,
+    dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
+    offset: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
   };
@@ -70,7 +77,7 @@ export class DashboardTopDriverComponent implements OnInit {
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: true
+      showGridLines: false
     }
   };
 
@@ -149,9 +156,12 @@ export class DashboardTopDriverComponent implements OnInit {
   ];
 
   circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
-
+  hoverCircleColor: any[] = ['596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63'];
+  chartColors: any[] = [];
   compareColor: any = {};
+  compareHoverColor: any = {};
   savedColors: any[] = [];
+  savedHoverColors: any[] = [];
 
   popoverTopTen: any[] = [
     {
@@ -199,12 +209,12 @@ export class DashboardTopDriverComponent implements OnInit {
 
   constructor() { }
 
-  setChartData() {
+  setChartData(drivers, selectedDrivers?) {
     var dataValues = [];
     var dataColors = [];
     var topTenPercentage = 0;
 
-    this.driverList.map((item, i) => {
+    drivers.map((item, i) => {
       dataValues.push(parseFloat(item.percent));
       topTenPercentage = topTenPercentage + parseFloat(item.percent);
     });
@@ -213,12 +223,41 @@ export class DashboardTopDriverComponent implements OnInit {
     var otherPercent = 100 - topTenPercentage;
     otherPercent = parseFloat(otherPercent.toFixed(2));
 
-    dataValues.push(otherPercent);
+    if ( !selectedDrivers ) { dataValues.push(otherPercent); }
 
     this.circleColor.map((item, i) => {
       var color = '#'+item;
       dataColors.push(color);
     });
+
+    if ( this.circleColor?.length ) {
+      this.chartColors = this.circleColor;
+    }
+
+    let chartProp = [];
+
+    if ( selectedDrivers ){
+      chartProp = [
+        {
+          name: drivers.length+' SELECTED',
+          percent: '$773.08K'
+        }
+      ];
+    }
+    else{
+      chartProp = [
+        {
+          name: 'TOP '+drivers.length,
+          value: '$773.08K',
+          percent: topTenPercentage+'%'
+        },
+        {
+          name: 'ALL OTHERS',
+          value: '$623.56K',
+          percent: otherPercent+'%'
+        }
+      ];
+    }
 
     this.chartConfig = {
       dataProperties: [
@@ -233,18 +272,7 @@ export class DashboardTopDriverComponent implements OnInit {
           }
         }
       ],
-      chartInnitProperties: [
-        {
-          name: 'TOP '+this.driverList.length,
-          value: '$773.08K',
-          percent: topTenPercentage+'%'
-        },
-        {
-          name: 'ALL OTHERS',
-          value: '$623.56K',
-          percent: otherPercent+'%'
-        }
-      ],
+      chartInnitProperties: chartProp,
       showLegend: true,
       chartValues: [2, 2],
       defaultType: 'doughnut',
@@ -252,14 +280,19 @@ export class DashboardTopDriverComponent implements OnInit {
       chartHeight: '322',
       removeChartMargin: true,
       dataLabels: [],
-      driversList: this.driverList,
+      driversList: drivers,
       noChartImage: 'assets/svg/common/no_data_pay.svg'
     };
+
+    if ( this.doughnutChart ) {
+      this.doughnutChart.chartInnitProperties = chartProp;
+      this.doughnutChart.chartUpdated(dataValues);
+    }
   }
 
   ngOnInit(): void {
 
-    this.setChartData();
+    this.setChartData(this.driverList);
 
     this.topTenSwitchTabstype1 = [
       {
@@ -310,7 +343,31 @@ export class DashboardTopDriverComponent implements OnInit {
   }
 
   changeDriverSwitchTabs(ev){
+    this.topDriverBarChart.updateTime(ev)
+  }
 
+  removeDriverFromList(e: Event,indx, item){
+    e.stopPropagation()
+    this.driverList.splice(indx, 1);
+    let showDefault = false;
+    if ( this.selectedDrivers?.length == 1 ) {
+      showDefault = true;
+    }
+    this.topDriverBarChart.removeMultiBarData(this.selectedDrivers[indx], showDefault);
+    this.selectedDrivers.splice(indx, 1);
+    this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
+    if ( this.selectedDrivers?.length > 0 ) {
+      this.setChartData(this.selectedDrivers, true);
+    }
+    
+    this.driverList.push(item);
+    this.savedColors.unshift(this.compareColor[item.id]);
+    this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
+    if ( this.selectedDrivers?.length == 0 ) {
+      this.setChartData(this.driverList);
+    }
+    delete this.compareColor[item.id];
+    delete this.compareHoverColor[item.id];
   }
 
   changeTopTen(item){
@@ -350,23 +407,43 @@ export class DashboardTopDriverComponent implements OnInit {
       if( !this.savedColors.length ){
         this.savedColors = [...this.circleColor]; 
         this.circleColor = [];
+        this.savedHoverColors = [...this.hoverCircleColor]; 
+        this.hoverCircleColor = [];
       }
   
       const firstInArray = this.savedColors.shift();
+      const firstInArrayHover = this.savedHoverColors.shift();
       
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
+      this.compareHoverColor[item.id] = firstInArrayHover;
+      this.selectedDrivers.push(this.driverList[indx]);
+      this.doughnutChart.selectedDrivers = this.selectedDrivers;
+      this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
       this.driverList.splice(indx, 1);
+      this.setChartData(this.selectedDrivers, true);
+      this.updateBarChart(this.selectedDrivers);
       this.driverList.splice(objectSize, 0, item);
+
+      this.hoverDriver(indx);
     }
 
   }
 
-  hoverDoughnutChart(index){
+  hoverDriver(index: any){
     this.doughnutChart.hoverDoughnut(index, 'number');
+    this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
   }
 
-  removeDoughnutChart(){
+  removeDriverHover(){
     this.doughnutChart.hoverDoughnut(null);
+    this.topDriverBarChart.hoverBarChart(null);
+  }
+
+  updateBarChart(selectedStates: any){
+    let dataSend = [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000];
+    if ( this.topDriverBarChart ){
+      this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareHoverColor);
+    }
   }
 }

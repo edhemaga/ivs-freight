@@ -44,6 +44,8 @@ export class TaReCardComponent implements OnInit {
   @Input() public setPositionDrop: boolean;
   @Input() isDeactivated: any;
   @Input() noteIcons: string = '';
+  @Input() cardNameCurrent: string;
+  @Output() clickedCard = new EventEmitter<any>();
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
@@ -73,6 +75,10 @@ export class TaReCardComponent implements OnInit {
   public resizePageFun(val: any) {
     this.resPage = !this.resPage;
     this.resizePage.emit(this.resPage);
+  }
+
+  public clickedCardName(name: string) {
+    this.clickedCard.emit(name);
   }
   /**Function for drop acitons */
   public dropAct(action: any) {

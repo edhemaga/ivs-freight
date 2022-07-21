@@ -201,6 +201,7 @@
         color: #6C6C6C;
         padding: 0px 0px 8px 12px;
         box-sizing: border-box;
+        user-select: none;
     }
 
     .custom-popover-border{
@@ -241,9 +242,30 @@
             font-weight: 700;
             color: #AAAAAA;
             line-height: 32px;
+
+            &.active{
+                cursor: pointer;
+                color: #6C6C6C;
+
+                &:hover{
+                    background-color: #6C6C6C;
+                    color: #fff;
+                }
+            }
         }
 
         .custom-popover-button-set{
+
+            &.active{
+                cursor: pointer;
+                background-color: #6D82C7;
+                color: #fff;
+
+                &:hover{
+                    background-color: #536BC2;
+                    color: #fff;
+                }
+            }
 
         }
     }
