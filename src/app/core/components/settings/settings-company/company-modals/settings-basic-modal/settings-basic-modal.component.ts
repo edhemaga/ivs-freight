@@ -861,6 +861,93 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     console.log(newData);
   }
 
+  private editCompanyDivision() {
+    this.settingsService
+      .getCompanyDivisionById(this.editData.company.id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyResponse) => {
+          this.companyForm.patchValue({
+            // -------------------- Basic Tab
+            name: this.editData.company.name,
+            usDot: this.editData.company.usDot,
+            ein: this.editData.company.ein,
+            mc: this.editData.company.mc,
+            phone: this.editData.company.phone,
+            email: this.editData.company.email,
+            fax: this.editData.company.fax,
+            webUrl: this.editData.company.webUrl,
+            address: this.editData.company.address.address,
+            addressUnit: this.editData.company.address.addressUnit,
+            irp: this.editData.company.irp,
+            ifta: this.editData.company.ifta,
+            toll: this.editData.company.toll,
+            scac: this.editData.company.scac,
+            timeZone: this.editData.company.timeZone.name,
+            currency: this.editData.company.currency.name,
+            companyType: this.editData.company.companyType.name,
+            dateOfIncorporation: this.editData.company.dateOfIncorporation
+              ? convertDateFromBackend(
+                  this.editData.company.dateOfIncorporation
+                )
+              : null,
+            logo: this.editData.company.logo,
+          });
+
+          this.selectedAddress = this.editData.company.address;
+          this.selectedTimeZone = this.editData.company.timeZone;
+          this.selectedCompanyData = this.editData.company.companyType;
+          this.selectedCurrency = this.editData.company.currency;
+
+          if (this.editData.company.departmentContacts.length) {
+            for (const department of this.editData.company.departmentContacts) {
+              this.departments.push(
+                this.formBuilder.group({
+                  departmentId: department.id,
+                  phone: department.phone,
+                  extensionPhone: department.extensionPhone,
+                  email: department.email,
+                })
+              );
+            }
+          }
+
+          if (this.editData.company.bankAccounts.length) {
+            for (const bank of this.editData.company.bankAccounts) {
+              this.bankAccounts.push(
+                this.formBuilder.group({
+                  bankId: bank.id,
+                  routing: bank.routing,
+                  account: bank.account,
+                })
+              );
+            }
+          }
+
+          if (this.editData.company.bankCards.length) {
+            for (const card of this.editData.company.bankCards) {
+              this.bankCards.push(
+                this.formBuilder.group({
+                  nickname: card.nickname,
+                  cardNumber: card.cardType,
+                  cvc: card.cvc,
+                  exp: card.expireDate
+                    ? convertDateFromBackend(card.expireDate)
+                    : null,
+                })
+              );
+            }
+          }
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't Load Division Company",
+            'Error'
+          );
+        },
+      });
+  }
+
   public updateCompanyDivision(id: number) {}
 
   public deleteCompanyDivisionById(id: number) {
@@ -922,7 +1009,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     const driverPayroll = {
-      departmentId: 8,
+      departmentId: null,
       payPeriod: this.companyForm.get('driveOwnerPayPeriod').value,
       endingIn: this.companyForm.get('driverOwnerEndingIn').value,
       soloEmptyMile: this.companyForm.get('soloEmptyMile').value,
@@ -1237,93 +1324,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         }
       }
     }
-  }
-
-  private editCompanyDivision() {
-    this.settingsService
-      .getCompanyDivisionById(this.editData.company.id)
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: CompanyResponse) => {
-          this.companyForm.patchValue({
-            // -------------------- Basic Tab
-            name: this.editData.company.name,
-            usDot: this.editData.company.usDot,
-            ein: this.editData.company.ein,
-            mc: this.editData.company.mc,
-            phone: this.editData.company.phone,
-            email: this.editData.company.email,
-            fax: this.editData.company.fax,
-            webUrl: this.editData.company.webUrl,
-            address: this.editData.company.address.address,
-            addressUnit: this.editData.company.address.addressUnit,
-            irp: this.editData.company.irp,
-            ifta: this.editData.company.ifta,
-            toll: this.editData.company.toll,
-            scac: this.editData.company.scac,
-            timeZone: this.editData.company.timeZone.name,
-            currency: this.editData.company.currency.name,
-            companyType: this.editData.company.companyType.name,
-            dateOfIncorporation: this.editData.company.dateOfIncorporation
-              ? convertDateFromBackend(
-                  this.editData.company.dateOfIncorporation
-                )
-              : null,
-            logo: this.editData.company.logo,
-          });
-
-          this.selectedAddress = this.editData.company.address;
-          this.selectedTimeZone = this.editData.company.timeZone;
-          this.selectedCompanyData = this.editData.company.companyType;
-          this.selectedCurrency = this.editData.company.currency;
-
-          if (this.editData.company.departmentContacts.length) {
-            for (const department of this.editData.company.departmentContacts) {
-              this.departments.push(
-                this.formBuilder.group({
-                  departmentId: department.id,
-                  phone: department.phone,
-                  extensionPhone: department.extensionPhone,
-                  email: department.email,
-                })
-              );
-            }
-          }
-
-          if (this.editData.company.bankAccounts.length) {
-            for (const bank of this.editData.company.bankAccounts) {
-              this.bankAccounts.push(
-                this.formBuilder.group({
-                  bankId: bank.id,
-                  routing: bank.routing,
-                  account: bank.account,
-                })
-              );
-            }
-          }
-
-          if (this.editData.company.bankCards.length) {
-            for (const card of this.editData.company.bankCards) {
-              this.bankCards.push(
-                this.formBuilder.group({
-                  nickname: card.nickname,
-                  cardNumber: card.cardType,
-                  cvc: card.cvc,
-                  exp: card.expireDate
-                    ? convertDateFromBackend(card.expireDate)
-                    : null,
-                })
-              );
-            }
-          }
-        },
-        error: () => {
-          this.notificationService.error(
-            "Can't Load Division Company",
-            'Error'
-          );
-        },
-      });
   }
 
   ngOnDestroy(): void {}
