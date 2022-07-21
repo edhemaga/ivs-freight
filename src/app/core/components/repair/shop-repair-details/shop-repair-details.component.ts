@@ -13,12 +13,13 @@ import { RepairTService } from '../state/repair.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
   styleUrls: ['./shop-repair-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [DetailsPageService],
+  providers: [DetailsPageService, SumArraysPipe],
 })
 export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
   public shopRepairConfig: any[] = [];
@@ -31,7 +32,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
-    private shopDetailsQuery: ShopDetailsQuery
+    private shopDetailsQuery: ShopDetailsQuery,
+    private sumArr: SumArraysPipe
   ) {}
 
   ngOnInit(): void {
@@ -135,7 +137,19 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     return item.id;
   }
   /**Function for header names and array of icons */
-  shopConf(data: RepairShopResponse | any) {
+  shopConf(data: RepairShopResponse) {
+    let total;
+    if (data?.repairs?.length) {
+      total = this.sumArr.transform(
+        data.repairs.map((item) => {
+          return {
+            id: item.id,
+            value: item.total,
+          };
+        })
+      );
+    }
+
     this.shopRepairConfig = [
       {
         id: 0,
@@ -150,6 +164,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         icon: true,
         length: data?.repairs?.length ? data.repairs.length : 0,
         customText: 'Date',
+        total: total,
         icons: [
           {
             id: Math.random() * 1000,

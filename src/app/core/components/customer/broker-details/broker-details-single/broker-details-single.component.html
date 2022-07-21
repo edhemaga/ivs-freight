@@ -5,7 +5,7 @@
         <app-broker-card-view [broker]="broker?.data"> </app-broker-card-view>
       </div>
       <div *ngSwitchCase="'load'" class="load">
-        <div class="broker-details-table-container">
+        <div class="broker-details-table-container" *ngIf="broker.data.loads.length">
           <div class="t-headear-broker">
             <div class="t-head-items">
               <span class="name">LOAD</span>
@@ -33,91 +33,44 @@
           </div>
           <div class="divider"></div>
           <div class="t-body-wrapper">
-            <div class="t-body-broker">
+            <div class="t-body-broker" *ngFor="let loads of broker?.data.loads; trackBy:identity">
               <div class="t-body-broker-items">
                 <div class="t-body-items">
-                  <span class="load-name space-text">237</span>
-                  <span class="default-name">356-1200</span>
+                  <span class="load-name space-text">{{loads.id}}</span>
+                  <span class="default-name">{{loads.referenceNumber}}</span>
                 </div>
                 <div class="t-body-items">
-                  <span class="default-name space-text">3586</span>
-                  <span class="default-name">R2513</span>
+                  <span class="default-name space-text">{{loads.truck.truckNumber}}</span>
+                  <span class="default-name">{{loads.trailer.trailerNumber}}</span>
                 </div>
                 <div class="t-body-items">
-                  <span class="default-name space-text">A. Djordjevic</span>
-                  <span class="default-name">Kevin Malone</span>
+                  <span class="default-name space-text">{{loads.dispatcher.fullName}}</span>
+                  <span class="default-name">{{loads.driver.firstName.length>6?loads.driver.firstName[0] + '.' :loads.driver.firstNam}} {{loads.driver.lastName}}</span>
                 </div>
                 <div class="status-wrapper-broker">
-                  <span class="assigned">Assigned</span>
+                  <span class="assigned">{{loads.status.name}}</span>
                   <span class="time">15 min ago</span>
                 </div>
                 <div class="pickup-wrapper">
-                  <div class="pickup-item">
-                    <div class="counter-green">3</div>
+                  
+                  <div class="pickup-item" >
+                    <div class="counter-green">{{stopsDataPickup.stopOrder}}</div>
                     <div class="pickup-text">
                       <span class="name">Carrollton, GA</span>
-                      <span class="date">06/12/22</span>
+                      <span class="date">{{stopsDataPickup.date | formatDateP}}</span>
                     </div>
                   </div>
                   <div class="pickup-item">
-                    <div class="counter-red">3</div>
+                    <div class="counter-red">{{stopsDataDelivery.stopOrder}}</div>
                     <div class="pickup-text">
                       <span class="name">Carrollton, GA</span>
-                      <span class="date">06/12/22</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="t-body-items">
-                  <span class="load-name space-text">$3,245.22</span>
-                  <span class="default-name text-center">329 mi</span>
-                </div>
-                <div class="dots-vertical">
-                  <app-details-page-dropdown
-                    [options]="dotsData.actions"
-                    [customClassDropDown]="'drop-down-details-single'"
-                  >
-                  </app-details-page-dropdown>
-                </div>
-              </div>
-
-              <div class="divider"></div>
-
-              <div class="t-body-broker-items">
-                <div class="t-body-items">
-                  <span class="load-name space-text">237</span>
-                  <span class="default-name">356-1200</span>
-                </div>
-                <div class="t-body-items">
-                  <span class="default-name space-text">3586</span>
-                  <span class="default-name">R2513</span>
-                </div>
-                <div class="t-body-items">
-                  <span class="default-name space-text">A. Djordjevic</span>
-                  <span class="default-name">Kevin Malone</span>
-                </div>
-                <div class="status-wrapper-broker">
-                  <span class="assigned">Assigned</span>
-                  <span class="time">15 min ago</span>
-                </div>
-                <div class="pickup-wrapper">
-                  <div class="pickup-item">
-                    <div class="counter-green">3</div>
-                    <div class="pickup-text">
-                      <span class="name">Carrollton, GA</span>
-                      <span class="date">06/12/22</span>
-                    </div>
-                  </div>
-                  <div class="pickup-item">
-                    <div class="counter-red">3</div>
-                    <div class="pickup-text">
-                      <span class="name">Carrollton, GA</span>
-                      <span class="date">06/12/22</span>
+                      <span class="date">{{stopsDataDelivery.date | formatDateP}}</span>
                     </div>
                   </div>
                 </div>
                 <div class="t-body-items">
-                  <span class="load-name space-text">$3,245.22</span>
-                  <span class="default-name text-center">329 mi</span>
+                  <span class="load-name space-text">{{loads.totalRate | formatCurrency}}</span>
+                  <span class="default-name text-center">{{loads.totalMiles}} mi</span>
                 </div>
                 <div class="dots-vertical">
                   <app-details-page-dropdown

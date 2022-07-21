@@ -6,18 +6,18 @@
         </app-shipper-card-view>
       </div>
       <div *ngSwitchCase="'load'" class="load">
-        <div class="repair-container">
+        <div class="repair-container" *ngIf="shipperData.data.loadStops.length">
           <div class="repair-header">
             <span class="repaier-headers">LOAD</span>
+            <span class="repaier-headers">DRIVER</span>
             <span class="repaier-headers">TRUCK</span>
             <span class="repaier-headers">TRAILER</span>
-            <span class="repaier-headers">DRIVER</span>
             <span class="repaier-headers">ARRIVE</span>
             <span class="repaier-headers">DEPART</span>
             <span class="repaier-headers">WAIT</span>
           </div>
           <div class="divider"></div>
-          <div class="repair-items-wrapper">
+          <div class="repair-items-wrapper" *ngFor="let loads of shipperData?.data.loadStops; trackBy: identity ">
             <div class="repair-items">
               <div class="items-header">
                 <div class="icon-svg-repair">
@@ -25,11 +25,11 @@
                     class="arrow-ri"
                     src="assets/svg/common/ic_arrow-right-line.svg"
                   ></svg-icon>
-                  <span class="unit">5469</span>
+                  <span class="unit">{{loads.load.id}}</span>
                 </div>
-                <span class="date">A.Djordjevic</span>
-                <span class="date">3568</span>
-                <span class="date">V101</span>
+                <span class="date">{{loads.load.driver.firstName.length>6?loads.load.driver.firstName[0] + '.' :loads.load.driver.firstName}} {{loads.load.driver.lastName}}</span>
+                <span class="date">{{loads.load.truck.truckNumber}}</span>
+                <span class="date">{{loads.load.trailer.trailerNumber}}</span>
                 <div class="time-date">
                   <span class="date">20/12/20</span>
                   <span class="time"> 04:44 AM</span>
@@ -42,29 +42,6 @@
               </div>
             </div>
             <div class="divider"></div>
-            <div class="repair-items">
-              <div class="items-header">
-                <div class="icon-svg-repair">
-                  <svg-icon
-                    class="arrow-le"
-                    src="assets/svg/common/ic_arrow-line-left.svg"
-                  ></svg-icon>
-                  <span class="unit">5469</span>
-                </div>
-                <span class="date">A.Djordjevic</span>
-                <span class="date">3568</span>
-                <span class="date">V101</span>
-                <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
-                </div>
-                <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
-                </div>
-                <span class="wait-time">57 min</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>

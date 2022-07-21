@@ -20,6 +20,8 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
   public brokerDislike: number;
   public reviewsRepair: any = [];
   public dotsData: any;
+  public stopsDataPickup: any;
+  public stopsDataDelivery: any;
   constructor() {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.brokerData?.firstChange && changes?.brokerData) {
@@ -29,6 +31,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
       this.brokerDislike =
         changes.brokerData.currentValue[0].data.downRatingCount;
       this.getReviews(changes.brokerData.currentValue[0].data);
+      this.getStops(changes.brokerData.currentValue[0].data);
     }
   }
   ngOnInit(): void {
@@ -37,6 +40,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     this.brokerContacts = this.brokerData[0].data.brokerContacts;
     this.getReviews(this.brokerData[0].data);
     this.initTableOptions();
+    this.getStops(this.brokerData[0].data);
   }
 
   /**Function return id */
@@ -44,6 +48,27 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     return item.id;
   }
 
+  public getStops(data: BrokerResponse) {
+    let datas;
+    let dataStops = data.loads.map((item) => {
+      datas = item.stops.map((item) => {
+        if (item.stopType.name === 'Pickup') {
+          return {
+            date: item.date,
+            stopOrder: item.stopOrder,
+          };
+        }
+        if (item.stopType.name === 'Delivery') {
+          return {
+            date: item.date,
+            stopOrder: item.stopOrder,
+          };
+        }
+      });
+      this.stopsDataPickup = datas[0];
+      this.stopsDataDelivery = datas[1];
+    });
+  }
   public getReviews(reviewsData: BrokerResponse) {
     this.reviewsRepair = reviewsData.reviews.map((item) => {
       return {

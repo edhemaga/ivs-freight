@@ -52,7 +52,16 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     this.brokerInitConfig(this.activated_route.snapshot.data.broker);
   }
 
-  public brokerInitConfig(data: BrokerResponse | any) {
+  public brokerInitConfig(data: BrokerResponse) {
+    let totalCost;
+    if (data.loads.length) {
+      totalCost = data.loads.map((item) => {
+        return {
+          total: item.totalRate,
+        };
+      });
+    }
+
     this.brokerConfig = [
       {
         id: 0,
@@ -65,11 +74,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
-        length: 25,
+        length: data?.loads?.length ? data.loads.length : 0,
         hasCost: true,
         hide: false,
-        hasArrow: false,
+        hasArrow: true,
         customText: 'Revenue',
+        total: totalCost ? totalCost[0].total : 0,
         icons: [
           {
             id: Math.random() * 1000,
