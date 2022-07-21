@@ -29,22 +29,11 @@ export class NFormatterPipe implements PipeTransform {
 
     let total = (num / si[i].value).toFixed(digits).replace(rx, '$1');
     if (si[i].symbol) {
-      return '$' + total + si[i].symbol;
+      return total + si[i].symbol;
     } else {
-      if (total.includes('.')) {
-        const prefix = total.split('.')[0];
-        const sufix = total.split('.')[1];
-        total =
-          '<span>$' +
-          prefix +
-          '</span>' +
-          `<span class='total-sufix'>.` +
-          sufix +
-          '</span>';
-      } else {
-        total = '$' + total + `<span class='total-sufix'>.00</span>`;
+      if (!total.includes('.')) {
+        total = total + '.00';
       }
-
       return total;
     }
   }

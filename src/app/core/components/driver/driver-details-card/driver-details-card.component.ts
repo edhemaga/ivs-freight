@@ -80,14 +80,14 @@ export class DriverDetailsCardComponent
   public barChartLegend: any[] = [
     {
       title: 'Miles',
-      value: '46,755.2',
+      value: 46755,
       image: 'assets/svg/common/round_yellow.svg',
       sufix: 'mi',
       elementId: 1,
     },
     {
       title: 'Salary',
-      value: '36.854.27',
+      value: 36854,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
       elementId: 0,
