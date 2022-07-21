@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import moment from 'moment';
@@ -25,7 +26,11 @@ import { Clipboard } from '@angular/cdk/clipboard';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
+
 export class TruckDetailsCardComponent implements OnInit, OnChanges {
+  @ViewChild('revenueChart', {static: false}) public revenueChart: any;
+  @ViewChild('stackedBarChart', {static: false}) public stackedBarChart: any;
+  @ViewChild('payrollChart', {static: false}) public payrollChart: any;
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
@@ -41,17 +46,186 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public copiedEmail: boolean;
   public copiedVin: boolean;
 
+  payrollChartConfig: any = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [
+            9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000,
+            17000, 10000, 11000, 14000
+          ],
+          label: 'Salary',
+          yAxisID: 'y-axis-1',
+          borderColor: '#6D82C7',
+          pointBackgroundColor: '#FFFFFF',
+          pointHoverBackgroundColor: '#6D82C7',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [33, 25, 42, 12, 23, 33, 50, 57, 34, 19, 12, 42],
+          label: 'Miles',
+          yAxisID: 'y-axis-0',
+          borderColor: '#FFCC80',
+          backgroundColor: '#FFCC80',
+          hoverBackgroundColor: '#FFA726',
+          barThickness: 18
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [],
+    defaultType: 'bar',
+    chartWidth: '417',
+    chartHeight: '130',
+    dataLabels: [
+      '',
+      'NOV',
+      '',
+      '2021',
+      '',
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP'
+    ],
+    onHoverAnnotation: true,
+    offset: true,
+    hoverTimeDisplay: true,
+    noChartImage: 'assets/svg/common/yellow_no_data.svg'
+  };
+
+  revenueChartConfig: any = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [
+            10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000,
+            20000, 15000, 19000, 20000
+          ],
+          label: 'Salary',
+          yAxisID: 'y-axis-1',
+          borderColor: '#6D82C7',
+          pointBackgroundColor: '#FFFFFF',
+          pointHoverBackgroundColor: '#6D82C7',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [41, 27, 50, 33, 37, 37, 39, 39, 41, 37, 47, 50],
+          label: 'Miles',
+          yAxisID: 'y-axis-0',
+          borderColor: '#B2DFD1',
+          backgroundColor: '#B2DFD1',
+          hoverBackgroundColor: '#4DB6A2',
+          barThickness: 18
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [150, 257.7, 190, 568.85],
+    defaultType: 'bar',
+    chartWidth: '417',
+    chartHeight: '130',
+    dataLabels: [
+      '',
+      'NOV',
+      '',
+      '2021',
+      '',
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP'
+    ],
+    onHoverAnnotation: true,
+    hoverTimeDisplay: true,
+    offset: true,
+    noChartImage: 'assets/svg/common/green_no_data.svg'
+  };
+
+  stackedBarChartConfig: any = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [20, 17, 40, 23, 27, 27, 29, 29, 31, 37, 37, 40],
+          label: 'Miles',
+          yAxisID: 'y-axis-0',
+          borderColor: '#FFCC80',
+          backgroundColor: '#FFCC80',
+          hoverBackgroundColor: '#FFA726',
+          hoverBorderColor: '#FFA726',
+          barThickness: 18
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [20, 10, 18, 12, 15, 12, 14, 11, 13, 14, 15, 9],
+          label: 'Miles',
+          yAxisID: 'y-axis-0',
+          borderColor: '#97A8DC',
+          backgroundColor: '#97A8DC',
+          hoverBackgroundColor: '#536BC2',
+          hoverBorderColor: '#536BC2',
+          barThickness: 18
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [150, 257.7, 190, 568.85],
+    defaultType: 'bar',
+    chartWidth: '417',
+    chartHeight: '130',
+    dataLabels: [
+      '',
+      'NOV',
+      '',
+      '2021',
+      '',
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP'
+    ],
+    onHoverAnnotation: true,
+    hoverTimeDisplay: true,
+    stacked: true,
+    offset: true,
+    noChartImage: 'assets/svg/common/stacked_no_data.svg'
+  };
+
   public barChartLegend: any[] = [
     {
       title: 'Miles Per Gallon',
-      value: '0.00',
+      value: 0,
       image: 'assets/svg/common/round_yellow.svg',
       sufix: 'mi',
       elementId: 1,
     },
     {
       title: 'Revenue',
-      value: '0.00',
+      value: 0,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
       elementId: 0,
@@ -61,18 +235,41 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public barChartLegend2: any[] = [
     {
       title: 'Miles',
-      value: '150,257.7',
+      value: 150257,
       image: 'assets/svg/common/round_blue_light.svg',
       sufix: 'mi',
       elementId: 1,
     },
     {
       title: 'Revenue',
-      value: '190,568.85',
+      value: 190568,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
       elementId: 0,
     },
+  ];
+
+  public stackedBarChartLegend: any[] = [
+    {
+      title: 'Fuel Cost',
+      value: 68.56,
+      image: 'assets/svg/common/round_yellow.svg',
+      prefix: '$',
+      elementId: 0
+    },
+    {
+      title: 'Repair Cost',
+      value: 37.56,
+      image: 'assets/svg/common/round_blue.svg',
+      prefix: '$',
+      elementId: 1
+    },
+    {
+      title: 'Total Cost',
+      value: 105.63,
+      prefix: '$',
+      elementId: 'total'
+    }
   ];
 
   public mixedBarChartLegend: any[] = [
@@ -159,6 +356,28 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       position: 'bottom',
       showGridLines: false,
     },
+  };
+
+  public stackedBarAxes: object = {
+    verticalLeftAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 60,
+      stepSize: 15,
+      showGridLines: true
+    },
+    verticalRightAxes: {
+      visible: true,
+      minValue: 0,
+      maxValue: 24000,
+      stepSize: 6000,
+      showGridLines: false
+    },
+    horizontalAxes: {
+      visible: true,
+      position: 'bottom',
+      showGridLines: false
+    }
   };
 
   public mixedBarAxes: object = {

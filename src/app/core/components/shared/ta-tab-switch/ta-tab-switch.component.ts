@@ -67,6 +67,13 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
+  clearFields(){
+    this.date1.reset();
+    this.date1.updateValueAndValidity();
+    this.date2.reset();
+    this.date2.updateValueAndValidity();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.tabs) {
       setTimeout(() => {

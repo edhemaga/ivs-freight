@@ -325,6 +325,7 @@ export class DashboardPerformanceComponent implements OnInit {
     gridHoverBackground: true,
     allowAnimation: true,
     hasHoverData: true,
+    offset: true,
     multiHoverData: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
@@ -343,7 +344,8 @@ export class DashboardPerformanceComponent implements OnInit {
           backgroundColor: '#919191',
           borderColor: '#707070',
           hoverBackgroundColor: '#6C6C6C',
-          hoverBorderColor: '#707070'
+          hoverBorderColor: '#707070',
+          label: 'Price per Gallon'
         }
       },
       {
@@ -354,16 +356,20 @@ export class DashboardPerformanceComponent implements OnInit {
           backgroundColor: '#CCCCCC',
           borderColor: '#707070',
           hoverBackgroundColor: '#AAAAAA',
-          hoverBorderColor: '#707070'
+          hoverBorderColor: '#707070',
+          label: 'Load Rate per Mile'
         }
       }
     ],
     showLegend: false,
     chartValues: [2, 2],
     defaultType: 'bar',
+    offset: true,
     chartWidth: '1800',
     chartHeight: '40',
     removeChartMargin: true,
+    gridHoverBackground: true,
+    hasHoverData: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
@@ -395,9 +401,10 @@ export class DashboardPerformanceComponent implements OnInit {
       showGridLines: true
     },
     horizontalAxes: {
-      visible: false,
+      visible: true,
       position: 'bottom',
-      showGridLines: true
+      showGridLines: true,
+      removeColor: true
     }
   };
 
@@ -459,11 +466,14 @@ export class DashboardPerformanceComponent implements OnInit {
   setColor(type: string){
     // Provera da li se u objektu nalazi vec ovaj tip sa vrednoscu boje
     if( type in this.selectedColors ){
-      // Iz glavnog niza boja vratiti zauzetu boju na pocetak niza
-      this.backgroundCards.unshift(this.selectedColors[type]);
-      // Obrisati iz objekta tu vrednost
-      delete this.selectedColors[type];
-      this.topChart.insertNewChartData('remove', type);
+      if ( this.backgroundCards?.length < 9 ){
+         // Iz glavnog niza boja vratiti zauzetu boju na pocetak niza
+        this.backgroundCards.unshift(this.selectedColors[type]);
+        // Obrisati iz objekta tu vrednost
+        delete this.selectedColors[type];
+        this.topChart.insertNewChartData('remove', type);
+      }
+     
     }else{
       // Proveriti da li se u nizu nalazi bar jedna boja da bi mogli da dajemo novoj kocki sledecu boju
       if( this.backgroundCards.length > 0 ){

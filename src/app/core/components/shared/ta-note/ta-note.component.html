@@ -1,23 +1,34 @@
-<div
-  #t2="ngbPopover"
-  (click)="toggleNote(t2, note)"
-  [autoClose]="false"
+<div class="note_button_hold"
   [ngClass]="{
-    'note-normal-icon': note && !openedAll,
+    'note-normal-icon': !openedAll,
     'note-note-empty': !note && !openedAll,
-    'note-all-expanded': openedAll
+    'note-all-expanded': isExpanded,
+    'note-focused': isFocused
   }"
-  [ngbPopover]="notePopover"
-  [placement]="'left-top'"
-  class="note-btn"
-  popoverClass="my-note-popover"
-  triggers="manual"
-></div>
+  [tooltipBackground]="!note ? '' : '#6C6C6C'"
+  ngbTooltip
+  [mainTooltip]="note && isFocused ? 'Edit Note' : note && !openedAll ? 'View Note' : ''"
+  position="bottom"
+  >
+  <svg-icon
+    #t2="ngbPopover"
+    (click)="toggleNote(t2, note)"
+    [autoClose]="false"
+    class="note-btn"
+    [ngbPopover]="notePopover"
+    [container]="'body'"
+    [placement]="'left-top'"
+    popoverClass="my-note-popover"
+    triggers="manual"
+    src="assets/svg/truckassist-table/note/{{noteIcon}}"
+  >
+  </svg-icon>
+</div>
 
 <!-- Popover for Note -->
 <ng-template #notePopover let-data="data">
   <div class="kendo-editor-note-wrapper">
-    <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor custom_editor">
+    <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor">
       <div
         (blur)="prepareForTextRange()"
         (focus)="checkFocus($event)"
@@ -27,9 +38,13 @@
         [class.openedAll]="openedAll"
         [innerHTML]="note | safeHtml"
         class="editor"
+        (keydown)="maxLimitForContenteditableDiv($event, 250)"
         contenteditable="true"
         id="main_editor"
       ></div>
+      <div class="container_separate" *ngIf="isExpanded">
+        <div class="container_separate_inner"></div>
+      </div>
       <app-ta-note-container
         [isExpanded]="isExpanded"
         [range]="range"
@@ -37,7 +52,7 @@
         [value]="value"
       ></app-ta-note-container>
     </div>
-    <span
+    <!-- <span
       (click)="saveNote()"
       *ngIf="buttonsExpanded"
       appTooltip="Save"
@@ -55,6 +70,6 @@
       tooltipBackground="#707070"
     >
       <svg-icon [svgStyle]="{ 'width.px': '12', 'height.px': '12' }" name="note-close"> </svg-icon>
-    </span>
+    </span> -->
   </div>
 </ng-template>
