@@ -81,15 +81,15 @@
           </svg-icon>
         </div>
       </div>
-      <div class="dots-common-cards">
-      <app-table-dropdown
+      <div (click)="clickedCardName(cardNameCurrent)" class="dots-common-cards">
+      <app-details-page-dropdown
         [options]="options.actions"
         [id]="optionsId"
         [placement]="setPositionDrop? 'bottom-right' : 'bottom-left'"
         (dropDownActions)="dropAct($event)"
-        [customClassDropDown]="'table-dropdown-container-vertical'"
+        [customClassDropDown]="'drop-down-details-single'"
       >
-      </app-table-dropdown>
+      </app-details-page-dropdown>
     </div>
     </div>
   </div>
