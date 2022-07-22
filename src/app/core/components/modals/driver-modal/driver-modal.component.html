@@ -181,12 +181,11 @@
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Empty Mi',
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -195,14 +194,14 @@
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Loaded Mi',
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -210,9 +209,12 @@
                 [inputConfig]="{
                   name: 'Per Stop',
                   label: 'Per Stop',
+                  type: 'text',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  min: 0,
+                  max: 5000
                 }"
               ></app-ta-input>
             </div>
@@ -222,12 +224,11 @@
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Empty Mi',
                   placeholderIcon: 'dollar',
                   isRequired: true,
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -236,14 +237,14 @@
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Loaded Mi',
                   placeholderIcon: 'dollar',
                   isRequired: true,
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -251,9 +252,12 @@
                 [inputConfig]="{
                   name: 'Per Stop',
                   label: 'Per Stop',
+                  type: 'text',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  min: 0,
+                  max: 5000
                 }"
               ></app-ta-input>
             </div>

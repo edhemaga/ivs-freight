@@ -4,7 +4,9 @@ import {
   bankRoutingValidator,
   daysValidRegex,
   emailRegex,
+  mileValidation,
   monthsValidRegex,
+  perStopValidation,
   routingBankRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
@@ -288,13 +290,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       driveOwnerPayPeriod: ['Weekly', Validators.required],
       driverOwnerEndingIn: ['Monday', Validators.required],
 
-      soloEmptyMile: [null],
-      soloLoadedMile: [null],
-      soloPerStop: [null],
+      soloEmptyMile: [null, mileValidation],
+      soloLoadedMile: [null, mileValidation],
+      soloPerStop: [null, perStopValidation],
 
-      teamEmptyMile: [null],
-      teamLoadedMile: [null],
-      teamPerStop: [null],
+      teamEmptyMile: [null, mileValidation],
+      teamLoadedMile: [null, mileValidation],
+      teamPerStop: [null, perStopValidation],
 
       driverOwnerHasLoadedEmptyMiles: [false],
       driverSoloDefaultCommission: [25],

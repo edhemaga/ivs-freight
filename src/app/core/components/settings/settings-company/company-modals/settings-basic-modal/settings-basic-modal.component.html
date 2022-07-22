@@ -736,7 +736,6 @@
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -750,7 +749,6 @@
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -760,9 +758,12 @@
                 [inputConfig]="{
                   name: 'Per Stop',
                   label: 'Per Stop',
+                  type: 'text',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  min: 0,
+                  max: 5000
                 }"
               ></app-ta-input>
             </div>
@@ -776,7 +777,6 @@
                   label: 'Empty Mi',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -789,7 +789,6 @@
                   label: 'Loaded Mi',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
                   min: 0,
                   max: 10
                 }"
@@ -799,9 +798,12 @@
                 [inputConfig]="{
                   name: 'Per Stop',
                   label: 'Per Stop',
+                  type: 'text',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  min: 0,
+                  max: 5000
                 }"
               ></app-ta-input>
             </div>
