@@ -253,29 +253,47 @@ table {
 
             // AVATAR COLUMN
             .avatar-container {
-              width: 20px;
+              width: fit-content;
+              height: 20px;
               margin-right: 6px;
               display: flex;
               cursor: pointer;
 
               &:hover {
-                transform: scale(1.2);
+                transform: scale(1.4);
                 transition: 0.2s;
               }
 
-              .avatar {
-                user-select: none;
-                width: 20px;
-                height: 24px;
+              .avatar-img{
+                width: 18px;
+                height: 20px;
+                
+                img{
+                  display: flex;
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 2px;
+                }
+              }
+
+              .avatar-no-img {
+                width: 18px;
+                height: 20px;
                 border-radius: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 7px;
+                font-weight: 800;
               }
 
               .avatar-owner {
                 user-select: none;
-                width: 12px;
-                height: 12px;
-                margin-left: -8px;
-                margin-top: 15px;
+                display: flex;
+                width: 10px;
+                height: 10px;
+                margin-left: -6px;
+                margin-top: 12px;
               }
             }
 
@@ -398,8 +416,23 @@ table {
               }
             }
 
-            .table-text-state {
-              font-weight: bold;
+            // STATE COLUMN
+            .table-state {
+              width: 28px;
+              height: 18px;
+              border-radius: 2px;
+              background: #f3f3f3;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 11px;
+              font-weight: 800;
+              color: #6c6c6c;
+
+              &::selection {
+                color: #6c6c6c;
+                background: #6c6c6c20;
+              }
             }
 
             // SEMI BOLD TEXT COLUMN
@@ -929,7 +962,6 @@ table {
               align-items: center;
 
               .table-progress-bar-container {
-                background: #e5e5e5;
                 border-radius: 3px;
                 -webkit-user-select: none;
                 -moz-user-select: none;
@@ -974,7 +1006,6 @@ table {
 
 // SHOW MORE
 .show-more-container {
-  width: 100%;
   height: 18px;
   margin-top: -10px;
   display: flex;
@@ -984,26 +1015,34 @@ table {
   .show-more {
     width: fit-content;
     height: 100%;
-    font-size: 14px;
-    color: #919191;
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  .showing {
+    justify-self: flex-start;
+    font-size: 12px;
+    font-weight: 500;
+    color: #919191;
+
     &::selection {
       color: #919191;
       background: #91919120;
     }
   }
 
-  .showing {
-    justify-self: flex-start;
-    font-weight: 400;
-  }
-
   .show-more {
     justify-self: flex-end;
-    font-weight: bold;
     margin-left: auto;
+    font-size: 14px;
+    font-weight: bold;
+    color: #6c6c6c;
+
+    &::selection {
+      color: #6c6c6c;
+      background: #6c6c6c20;
+    }
   }
 }
 
@@ -1018,15 +1057,27 @@ table {
 }
 
 .bg-progress-sliver {
-  background: #919191;
+  background: #aaaaaa;
+}
+
+.bg-sliver-container {
+  background: #dadada;
 }
 
 .bg-progress-orange {
-  background: #ffbd4a;
+  background: #ffb74d;
+}
+
+.bg-orange-container {
+  background: #ffecd1;
 }
 
 .bg-progress-danger {
-  background: #f87566;
+  background: #e57373;
+}
+
+.bg-danger-container {
+  background: #ffe1e4;
 }
 
 // ACTION ANIMATION
