@@ -144,10 +144,6 @@ export class Step2Component implements OnInit {
       reasonForLeaving: [null, Validators.required],
       consideredForEmploymentAgain: [null, Validators.required],
       noSafetyPerformance: [false],
-      accidentDate: [null, Validators.required],
-      accidentLocation: [null, Validators.required],
-      accidentDescription: [null, Validators.required],
-      hazmatSpill: [null, Validators.required],
     });
   }
 

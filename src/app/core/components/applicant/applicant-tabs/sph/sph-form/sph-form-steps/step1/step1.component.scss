@@ -144,10 +144,13 @@
       &.phone-box,
       &.fax-box {
         width: 169px;
-        margin-right: 12px;
 
         h3 {
           margin-left: 36px !important;
+        }
+
+        &.phone-box {
+          margin-right: 12px;
         }
       }
 
