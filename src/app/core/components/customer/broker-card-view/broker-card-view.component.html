@@ -120,9 +120,9 @@
         </div>
         <div class="progress-text-wrapper">
           <div class="text-broker-wrapper">
-            <span class="days">0 - 20 days</span>          
-            <span class="invoice-days">18 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$12,222.22</span>
+            <span class="days">{{broker.invoiceAgeingGroupOne.periodOfDays}} days</span>          
+            <span class="invoice-days">{{broker.invoiceAgeingGroupOne.countInvoice}} <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">{{broker.invoiceAgeingGroupOne.totalSum | formatCurrency}} </span>
           </div>
           <div class="custom-progress-light-blue">
             <div class="inside-progress"></div>
@@ -131,9 +131,9 @@
 
         <div class="progress-text-wrapper">
           <div class="text-broker-wrapper">
-            <span class="days">21 - 40 days</span>
-            <span class="invoice-days">26 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$9,222.22</span>
+            <span class="days">{{broker.invoiceAgeingGroupTwo.periodOfDays}} days</span>
+            <span class="invoice-days">{{broker.invoiceAgeingGroupTwo.countInvoice}} <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">{{broker.invoiceAgeingGroupTwo.totalSum | formatCurrency}}</span>
           </div>
           <div class="custom-progress-mid-blue">
             <div class="inside-progress"></div>
@@ -142,9 +142,9 @@
 
         <div class="progress-text-wrapper">
           <div class="text-broker-wrapper">
-            <span class="days">41 - 60 days</span>
-            <span class="invoice-days">37 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$10,222.22</span>
+            <span class="days">{{broker.invoiceAgeingGroupThree.periodOfDays}} days</span>
+            <span class="invoice-days">{{broker.invoiceAgeingGroupThree.countInvoice}} <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">{{broker.invoiceAgeingGroupThree.totalSum | formatCurrency}}</span>
           </div>
           <div class="custom-progress-dark-blue">
             <div class="inside-progress"></div>
@@ -153,9 +153,9 @@
 
         <div class="progress-text-wrapper">
           <div class="text-broker-wrapper">
-            <span class="days">60+ days</span>
-            <span class="invoice-days">13 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$22,222.22</span>
+            <span class="days">{{broker.invoiceAgeingGroupFour.periodOfDays}} days</span>
+            <span class="invoice-days">{{broker.invoiceAgeingGroupFour.countInvoice}} <span class="inv">Inv.</span></span>
+            <span class="cost-total-ageing">{{broker.invoiceAgeingGroupFour.totalSum | formatCurrency}}</span>
           </div>
           <div class="custom-progress-danger-broker">
             <div class="inside-progress"></div>

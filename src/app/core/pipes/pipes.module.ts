@@ -30,11 +30,13 @@ import { formatCurrency } from './formatCurrency.pipe';
 import { setFutureYear } from './setFutureYear.pipe';
 import { LogoSliderPipe } from '../components/shared/ta-logo-change/logoSlider.pipe';
 import { HideAccountPipe } from './driver-hide-account.pipe';
+import { formatTimePipe } from './formatTime.pipe';
 
 @NgModule({
   declarations: [
     SafeHtmlPipe,
     formatDatePipe,
+    formatTimePipe,
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe,
@@ -62,12 +64,13 @@ import { HideAccountPipe } from './driver-hide-account.pipe';
     formatCurrency,
     setFutureYear,
     LogoSliderPipe,
-    HideAccountPipe
+    HideAccountPipe,
   ],
   imports: [CommonModule],
   exports: [
     SafeHtmlPipe,
     formatDatePipe,
+    formatTimePipe,
     formatPhonePipe,
     formatEinPipe,
     formatSsnPipe,
@@ -95,7 +98,7 @@ import { HideAccountPipe } from './driver-hide-account.pipe';
     UserDataPipe,
     formatCurrency,
     setFutureYear,
-    LogoSliderPipe
+    LogoSliderPipe,
   ],
   providers: [
     DatePipe,

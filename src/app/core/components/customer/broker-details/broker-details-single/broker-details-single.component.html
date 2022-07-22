@@ -5,7 +5,10 @@
         <app-broker-card-view [broker]="broker?.data"> </app-broker-card-view>
       </div>
       <div *ngSwitchCase="'load'" class="load">
-        <div class="broker-details-table-container" *ngIf="broker.data.loads.length">
+        <div
+          class="broker-details-table-container"
+          *ngIf="broker.data.loads.length"
+        >
           <div class="t-headear-broker">
             <div class="t-head-items">
               <span class="name">LOAD</span>
@@ -33,44 +36,95 @@
           </div>
           <div class="divider"></div>
           <div class="t-body-wrapper">
-            <div class="t-body-broker" *ngFor="let loads of broker?.data.loads; trackBy:identity">
+            <div
+              class="t-body-broker"
+              *ngFor="let loads of broker?.data.loads; trackBy: identity"
+            >
               <div class="t-body-broker-items">
                 <div class="t-body-items">
-                  <span class="load-name space-text">{{loads.id}}</span>
-                  <span class="default-name">{{loads.referenceNumber}}</span>
+                  <span class="load-name space-text">{{ loads.id }}</span>
+                  <span class="default-name">{{ loads.referenceNumber }}</span>
                 </div>
                 <div class="t-body-items">
-                  <span class="default-name space-text">{{loads.truck.truckNumber}}</span>
-                  <span class="default-name">{{loads.trailer.trailerNumber}}</span>
+                  <span class="default-name space-text">{{
+                    loads?.dispatch.truck?.truckNumber
+                  }}</span>
+                  <span class="default-name">{{
+                    loads?.dispatch.trailer?.trailerNumber
+                  }}</span>
                 </div>
                 <div class="t-body-items">
-                  <span class="default-name space-text">{{loads.dispatcher.fullName}}</span>
-                  <span class="default-name">{{loads.driver.firstName.length>6?loads.driver.firstName[0] + '.' :loads.driver.firstNam}} {{loads.driver.lastName}}</span>
+                  <span class="default-name space-text">{{
+                    loads?.dispatcher?.fullName
+                  }}</span>
+                  <span class="default-name"
+                    >{{
+                      loads?.dispatch.driver?.firstName.length > 6
+                        ? loads?.dispatch.driver?.firstName[0] + "."
+                        : loads?.dispatch.driver?.firstName
+                    }}
+                    {{ loads?.dispatch.driver?.lastName }}</span
+                  >
                 </div>
                 <div class="status-wrapper-broker">
-                  <span class="assigned">{{loads.status.name}}</span>
-                  <span class="time">15 min ago</span>
+                  <span class="assigned">{{ loads.status.name }}</span>
+                  <span class="time"
+                    ><span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.days > 0"
+                      >{{ loads?.lastStatusPassed?.days }} d</span
+                    >
+                    <span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.hours > 0"
+                    >
+                      {{ loads?.lastStatusPassed?.hours }} h
+                    </span>
+                    <span
+                      class="hours"
+                      *ngIf="loads?.lastStatusPassed?.days <= 0"
+                      >{{ loads?.lastStatusPassed?.minutes }} min</span
+                    >
+                    ago</span
+                  >
                 </div>
                 <div class="pickup-wrapper">
-                  
-                  <div class="pickup-item" >
-                    <div class="counter-green">{{stopsDataPickup.stopOrder}}</div>
+                  <div class="pickup-item">
+                    <div class="counter-green">
+                      {{ stopsDataPickup.stopOrder }}
+                    </div>
                     <div class="pickup-text">
-                      <span class="name">Carrollton, GA</span>
-                      <span class="date">{{stopsDataPickup.date | formatDateP}}</span>
+                      <span class="name"
+                        >{{ stopsDataPickup.addressCity }},
+                        {{ stopsDataPickup.addressShortState }}</span
+                      >
+                      <span class="date">{{
+                        stopsDataPickup.date | formatDateP
+                      }}</span>
                     </div>
                   </div>
                   <div class="pickup-item">
-                    <div class="counter-red">{{stopsDataDelivery.stopOrder}}</div>
+                    <div class="counter-red">
+                      {{ stopsDataDelivery.stopOrder }}
+                    </div>
                     <div class="pickup-text">
-                      <span class="name">Carrollton, GA</span>
-                      <span class="date">{{stopsDataDelivery.date | formatDateP}}</span>
+                      <span class="name"
+                        >{{ stopsDataDelivery.addressCity }},
+                        {{ stopsDataDelivery.addressShortState }}</span
+                      >
+                      <span class="date">{{
+                        stopsDataDelivery.date | formatDateP
+                      }}</span>
                     </div>
                   </div>
                 </div>
                 <div class="t-body-items">
-                  <span class="load-name space-text">{{loads.totalRate | formatCurrency}}</span>
-                  <span class="default-name text-center">{{loads.totalMiles}} mi</span>
+                  <span class="load-name space-text">{{
+                    loads.totalRate | formatCurrency
+                  }}</span>
+                  <span class="default-name text-center"
+                    >{{ loads.totalMiles }} mi</span
+                  >
                 </div>
                 <div class="dots-vertical">
                   <app-details-page-dropdown

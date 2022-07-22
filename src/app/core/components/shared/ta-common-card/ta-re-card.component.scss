@@ -78,11 +78,11 @@
         background-color: #ffffff;
         max-height: 0;
         overflow: hidden;
-        transition: all 0.4s ease-in-out;
-        // margin-top: -12px !important;
+        transition: all 0.3s ease-in-out;
+
         &.active {
             max-height: 1200px;
-            transition: all 0.4s ease-in-out;
+            transition: all 0.3s ease-in-out;
         }
         .dates {
             display: flex;

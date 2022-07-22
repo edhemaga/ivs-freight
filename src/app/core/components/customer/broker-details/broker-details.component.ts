@@ -6,11 +6,12 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BrokerTService } from '../state/broker-state/broker.service';
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 @Component({
   selector: 'app-broker-details',
   templateUrl: './broker-details.component.html',
   styleUrls: ['./broker-details.component.scss'],
-  providers: [DetailsPageService],
+  providers: [DetailsPageService, SumArraysPipe],
 })
 export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public brokerConfig: any[] = [];
@@ -21,7 +22,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private brokerQuery: BrokerDetailsQuery,
     private brokerService: BrokerTService,
-    private detailsPageService: DetailsPageService
+    private detailsPageService: DetailsPageService,
+    private sumArr: SumArraysPipe
   ) {}
 
   ngOnInit(): void {
@@ -55,11 +57,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public brokerInitConfig(data: BrokerResponse) {
     let totalCost;
     if (data.loads.length) {
-      totalCost = data.loads.map((item) => {
-        return {
-          total: item.totalRate,
-        };
-      });
+      totalCost = this.sumArr.transform(
+        data.loads.map((item) => {
+          return {
+            id: item.id,
+            value: item.totalRate,
+          };
+        })
+      );
     }
 
     this.brokerConfig = [
@@ -79,7 +84,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         hide: false,
         hasArrow: true,
         customText: 'Revenue',
-        total: totalCost ? totalCost[0].total : 0,
+        total: totalCost,
         icons: [
           {
             id: Math.random() * 1000,

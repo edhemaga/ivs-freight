@@ -51,17 +51,21 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
   public getStops(data: BrokerResponse) {
     let datas;
     let dataStops = data.loads.map((item) => {
-      datas = item.stops.map((item) => {
-        if (item.stopType.name === 'Pickup') {
+      datas = item.stops.map((itemStop) => {
+        if (itemStop.stopType.name === 'Pickup') {
           return {
-            date: item.date,
-            stopOrder: item.stopOrder,
+            date: itemStop.date,
+            stopOrder: itemStop.stopOrder,
+            addressCity: itemStop.shipper.address.city,
+            addressShortState: itemStop.shipper.address.stateShortName,
           };
         }
-        if (item.stopType.name === 'Delivery') {
+        if (itemStop.stopType.name === 'Delivery') {
           return {
-            date: item.date,
-            stopOrder: item.stopOrder,
+            date: itemStop.date,
+            stopOrder: itemStop.stopOrder,
+            addressCity: itemStop.shipper.address.city,
+            addressShortState: itemStop.shipper.address.stateShortName,
           };
         }
       });
