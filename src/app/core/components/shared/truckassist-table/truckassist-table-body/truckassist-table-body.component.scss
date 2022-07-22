@@ -253,36 +253,48 @@ table {
 
             // AVATAR COLUMN
             .avatar-container {
-              width: 20px;
+              width: fit-content;
+              height: 20px;
               margin-right: 6px;
               display: flex;
               cursor: pointer;
 
               &:hover {
-                transform: scale(1.2);
+                transform: scale(1.4);
                 transition: 0.2s;
               }
 
-              .avatar-no-img{
+              .avatar-img{
                 width: 18px;
                 height: 20px;
+                
+                img{
+                  display: flex;
+                  width: 100%;
+                  height: 100%;
+                  border-radius: 2px;
+                }
               }
 
-
-              /* .avatar {
-                user-select: none;
-                width: 20px;
-                height: 24px;
+              .avatar-no-img {
+                width: 18px;
+                height: 20px;
                 border-radius: 2px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 7px;
+                font-weight: 800;
               }
 
               .avatar-owner {
                 user-select: none;
-                width: 12px;
-                height: 12px;
-                margin-left: -8px;
-                margin-top: 15px;
-              } */
+                display: flex;
+                width: 10px;
+                height: 10px;
+                margin-left: -6px;
+                margin-top: 12px;
+              }
             }
 
             .table-avatar-name {
@@ -409,13 +421,13 @@ table {
               width: 28px;
               height: 18px;
               border-radius: 2px;
-              background: #F3F3F3;
+              background: #f3f3f3;
               display: flex;
               justify-content: center;
               align-items: center;
               font-size: 11px;
               font-weight: 800;
-              color: #6C6C6C;
+              color: #6c6c6c;
 
               &::selection {
                 color: #6c6c6c;
@@ -1025,11 +1037,11 @@ table {
     margin-left: auto;
     font-size: 14px;
     font-weight: bold;
-    color: #6C6C6C;
+    color: #6c6c6c;
 
     &::selection {
-      color: #6C6C6C;
-      background: #6C6C6C20;
+      color: #6c6c6c;
+      background: #6c6c6c20;
     }
   }
 }

@@ -110,22 +110,30 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <!-- Ovde je komponenta -->
-                <!-- <app-profile-images
-                  [indx]="i"
-                  [size]="'small'"
-                  [name]="row.fullName"
-                  [type]="'driver'"
-                >
-                </app-profile-images> -->
+                <div class="avatar-img" *ngIf="row.avatarImg">
+                  <img alt="avatar" [src]="row.avatarImg" />
+                </div>
 
-                <!-- NEW -->
-                <div class="avatar-no-img"></div>
+                <div
+                  class="avatar-no-img"
+                  *ngIf="!row.avatarImg"
+                  [ngStyle]="{
+                    'background-color': row.avatarColor?.background
+                      ? row.avatarColor.background
+                      : 'unset',
+                    color: row.avatarColor?.color
+                      ? row.avatarColor.color
+                      : 'unset'
+                  }"
+                >
+                  {{ row.textDriverShortName }}
+                </div>
+
                 <img
+                  class="avatar-owner"
                   alt="avatar"
                   *ngIf="row.isOwner"
-                  class="avatar-owner"
-                  src="assets/img/table-svgs/owner-badge-new.svg"
+                  src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
                 />
               </div>
               <span
@@ -854,19 +862,30 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <!-- Ovde je komponenta -->
-                <!--  <app-profile-images
-                  [indx]="i"
-                  [size]="'small'"
-                  [name]="row[column.field]"
-                  [type]="'driver'"
+                <div class="avatar-img" *ngIf="row.avatarImg">
+                  <img alt="avatar" [src]="row.avatarImg" />
+                </div>
+
+                <div
+                  class="avatar-no-img"
+                  *ngIf="!row.avatarImg"
+                  [ngStyle]="{
+                    'background-color': row.avatarColor?.background
+                      ? row.avatarColor.background
+                      : 'unset',
+                    color: row.avatarColor?.color
+                      ? row.avatarColor.color
+                      : 'unset'
+                  }"
                 >
-                </app-profile-images> -->
+                  {{ row.textDriverShortName }}
+                </div>
+
                 <img
+                  class="avatar-owner"
                   alt="avatar"
                   *ngIf="row.isOwner"
-                  class="avatar-owner"
-                  src="assets/img/table-svgs/owner-badge-new.svg"
+                  src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
                 />
               </div>
               <span
@@ -1619,12 +1638,15 @@
   </tbody>
 </table>
 
-<div class="show-more-container" *ngIf="viewData.length" [ngStyle]="{'width.px': showMoreContainerWidth}">
+<div
+  class="show-more-container"
+  *ngIf="viewData.length"
+  [ngStyle]="{ 'width.px': showMoreContainerWidth }"
+>
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
-  <!-- *ngIf="viewData.length < activeTableData.length" -->
-  <div class="show-more">
+  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
     SHOW MORE
   </div>
 </div>

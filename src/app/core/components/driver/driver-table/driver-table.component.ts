@@ -29,11 +29,13 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { Console } from 'console';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
+  providers: [NameInitialsPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
@@ -57,6 +59,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   };
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  mapingIndex: number = 0;
 
   constructor(
     private modalService: ModalService,
@@ -65,7 +68,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private tableService: TruckassistTableService,
     public datePipe: DatePipe,
     private driverTService: DriverTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private nameInitialsPipe: NameInitialsPipe
   ) {}
 
   ngOnInit(): void {
@@ -332,7 +336,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       ],
       export: true,
     };
-  }  
+  }
 
   sendDriverData() {
     this.initTableOptions();
@@ -421,26 +425,29 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (td.data.length) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data: any) => {
+      this.viewData = this.viewData.map((data: any, index: number) => {
         return this.mapDriverData(data);
       });
 
       // For Testing
-       for(let i = 0; i < 500; i++){
+      /* for (let i = 0; i < 500; i++) {
         this.viewData.push(this.viewData[0]);
-      }
+      } */
     } else {
       this.viewData = [];
     }
   }
 
   mapDriverData(data: any) {
-    console.log('Data');
-    console.log(data);
+    this.mapingIndex++;
+
     return {
       ...data,
       isSelected: false,
       textAddress: data.address.address ? data.address.address : '',
+      textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
+      avatarColor: this.getAvatarColors(),
+      avatarImg: '',
       textDOB: data.dateOfBirth
         ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
         : '',
@@ -451,7 +458,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdlNumber
         : data?.cdls?.length
         ? data.cdls[0].cdlNumber
-        : '',
+        : '587662410',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
@@ -481,6 +488,45 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         end: null,
       },
       tableDrugOrAlcoholTest: null,
+    };
+  }
+
+  getAvatarColors() {
+    let textColors: string[] = [
+      '#6D82C7',
+      '#4DB6A2',
+      '#E57373',
+      '#E3B00F',
+      '#BA68C8',
+      '#BEAB80',
+      '#81C784',
+      '#FF8A65',
+      '#64B5F6',
+      '#F26EC2',
+      '#A1887F',
+      '#919191',
+    ];
+
+    let backgroundColors: string[] = [
+      '#DAE0F1',
+      '#D2EDE8',
+      '#F9DCDC',
+      '#F8EBC2',
+      '#EED9F1',
+      '#EFEADF',
+      '#DFF1E0',
+      '#FFE2D8',
+      '#D8ECFD',
+      '#FCDAF0',
+      '#E7E1DF',
+      '#E3E3E3',
+    ];
+
+    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
+
+    return {
+      background: backgroundColors[this.mapingIndex],
+      color: textColors[this.mapingIndex],
     };
   }
 
