@@ -1,0 +1,356 @@
+{
+	"iconImageFiles": [
+		{
+			"iconName": "ic_bank_bbt.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_bbt.svg"
+		},
+    {
+			"iconName": "ic_bank_bmo_harris.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_bmo_harris.svg"
+		},
+    {
+			"iconName": "ic_bank_capital_one.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_capital_one.svg"
+		},
+    {
+			"iconName": "ic_bank_chase.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_chase.svg"
+		},
+    {
+			"iconName": "ic_bank_chime.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_chime.svg"
+		},
+    {
+			"iconName": "ic_bank_citi.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_citi.svg"
+		},
+    {
+			"iconName": "ic_bank_fifth_third.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_fifth_third.svg"
+		},
+    {
+			"iconName": "ic_bank_mb_financial.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_mb_financial.svg"
+		},
+    {
+			"iconName": "ic_bank_navi_federal.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_navi_federal.svg"
+		},
+    {
+			"iconName": "ic_bank_of_america.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_of_america.svg"
+		},
+    {
+			"iconName": "ic_bank_pnc.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_pnc.svg"
+		},
+    {
+			"iconName": "ic_bank_regions.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_regions.svg"
+		},
+    {
+			"iconName": "ic_bank_tcf.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_tcf.svg"
+		},
+    {
+			"iconName": "ic_bank_us.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_us.svg"
+		},
+    {
+			"iconName": "ic_bank_wells_fargo.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_wells_fargo.svg"
+		},
+    {
+			"iconName": "ic_color.svg",
+			"iconPath": "/assets/svg/common/colors/ic_color.svg"
+		},
+    {
+			"iconName": "ic_ac_compressor.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_ac_compressor.svg"
+		},
+    {
+			"iconName": "ic_air_compressor.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_air_compressor.svg"
+		},
+    {
+			"iconName": "ic_air_filter.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_air_filter.svg"
+		},
+    {
+			"iconName": "ic_alignment.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_alignment.svg"
+		},
+    {
+			"iconName": "ic_battery.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_battery.svg"
+		},
+    {
+			"iconName": "ic_belts.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_belts.svg"
+		},
+    {
+			"iconName": "ic_brake_chamber.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_brake_chamber.svg"
+		},
+    {
+			"iconName": "ic_custom_pm.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_custom_pm.svg"
+		},
+    {
+			"iconName": "ic_default_pm.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_default_pm.svg"
+		},
+    {
+			"iconName": "ic_engine_oil_filter.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_engine_oil_filter.svg"
+		},
+    {
+			"iconName": "ic_engine_tune_up.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_engine_tune_up.svg"
+		},
+    {
+			"iconName": "ic_fuel_pump.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_fuel_pump.svg"
+		},
+    {
+			"iconName": "ic_oil_pump.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_oil_pump.svg"
+		},
+    {
+			"iconName": "ic_radiator.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_radiator.svg"
+		},
+    {
+			"iconName": "ic_transmission_fluid.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_transmission_fluid.svg"
+		},
+    {
+			"iconName": "ic_turbo.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_turbo.svg"
+		},
+    {
+			"iconName": "ic_water_pump.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_water_pump.svg"
+		},
+    {
+			"iconName": "ic_dealer.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_dealer.svg"
+		},
+    {
+			"iconName": "ic_mobile.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_mobile.svg"
+		},
+    {
+			"iconName": "ic_parts.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_parts.svg"
+		},
+    {
+			"iconName": "ic_shop.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_shop.svg"
+		},
+    {
+			"iconName": "ic_tire.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_tire.svg"
+		},
+    {
+			"iconName": "ic_towing.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_towing.svg"
+		},
+    {
+			"iconName": "ic_trailer.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_trailer.svg"
+		},
+    {
+			"iconName": "ic_truck.svg",
+			"iconPath": "/assets/svg/common/repair-services/ic_truck.svg"
+		},
+    {
+			"iconName": "ic_trailer_dorsey.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_dorsey.svg"
+		},
+    {
+			"iconName": "ic_trailer_east.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_east.svg"
+		},
+    {
+			"iconName": "ic_trailer_fontaine.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_fontaine.svg"
+		},
+    {
+			"iconName": "ic_trailer_fruehauf.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_fruehauf.svg"
+		},
+    {
+			"iconName": "ic_trailer_great_dane.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_great_dane.svg"
+		},
+    {
+			"iconName": "ic_trailer_hudson.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_hudson.svg"
+		},
+    {
+			"iconName": "ic_trailer_hyndai.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_hyndai.svg"
+		},
+    {
+			"iconName": "ic_trailer_kaufman.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_kaufman.svg"
+		},
+    {
+			"iconName": "ic_trailer_manac.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_manac.svg"
+		},
+    {
+			"iconName": "ic_trailer_polar.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_polar.svg"
+		},
+    {
+			"iconName": "ic_trailer_ravens.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_ravens.svg"
+		},
+    {
+			"iconName": "ic_trailer_strick.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_strick.svg"
+		},
+    {
+			"iconName": "ic_trailer_utility.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_utility.svg"
+		},
+    {
+			"iconName": "ic_trailer_vanguard.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_vanguard.svg"
+		},
+    {
+			"iconName": "ic_trailer_wabash.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_wabash.svg"
+		},
+    {
+			"iconName": "ic_trailer_wilson.svg",
+			"iconPath": "/assets/svg/common/trailermake/ic_trailer_wilson.svg"
+		},
+    {
+			"iconName": "ic_trailer_carhauler.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_carhauler.svg"
+		},
+    {
+			"iconName": "ic_trailer_chassis.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_chassis.svg"
+		},
+    {
+			"iconName": "ic_trailer_conestoga.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_conestoga.svg"
+		},
+    {
+			"iconName": "ic_trailer_container.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_container.svg"
+		},
+    {
+			"iconName": "ic_trailer_dryvan.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_dryvan.svg"
+		},
+    {
+			"iconName": "ic_trailer_dumper.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_dumper.svg"
+		},
+    {
+			"iconName": "ic_trailer_flatbed.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_flatbed.svg"
+		},
+    {
+			"iconName": "ic_trailer_low-boy.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_low-boy.svg"
+		},
+    {
+			"iconName": "ic_trailer_reefer.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_reefer.svg"
+		},
+    {
+			"iconName": "ic_trailer_side-kit.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_side-kit.svg"
+		},
+    {
+			"iconName": "ic_trailer_step-deck.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_step-deck.svg"
+		},
+    {
+			"iconName": "ic_trailer_tanker.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer_tanker.svg"
+		},
+    {
+			"iconName": "ic_truck_box-truck.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_box-truck.svg"
+		},
+    {
+			"iconName": "ic_truck_car-hauler.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_car-hauler.svg"
+		},
+    {
+			"iconName": "ic_truck_cargo-van.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_cargo-van.svg"
+		},
+    {
+			"iconName": "ic_truck_semi-truck.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_semi-truck.svg"
+		},
+    {
+			"iconName": "ic_truck_semi-wSleeper.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
+		},
+    {
+			"iconName": "ic_truck_spotter.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_spotter.svg"
+		},
+    {
+			"iconName": "ic_truck_tow-truck.svg",
+			"iconPath": "/assets/svg/common/trucks/ic_truck_tow-truck.svg"
+		},
+    {
+			"iconName": "ic_truck_chevrolet.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_chevrolet.svg"
+		},
+    {
+			"iconName": "ic_truck_ford.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_ford.svg"
+		},
+    {
+			"iconName": "ic_truck_freightliner.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_freightliner.svg"
+		},
+    {
+			"iconName": "ic_truck_gmc.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_gmc.svg"
+		},
+    {
+			"iconName": "ic_truck_hino.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_hino.svg"
+		},
+    {
+			"iconName": "ic_truck_international.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_international.svg"
+		},
+    {
+			"iconName": "ic_truck_isuzu.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_isuzu.svg"
+		},
+    {
+			"iconName": "ic_truck_kenworth.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_kenworth.svg"
+		},
+    {
+			"iconName": "ic_truck_mack.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_mack.svg"
+		},
+    {
+			"iconName": "ic_truck_peterbilt.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_peterbilt.svg"
+		},
+    {
+			"iconName": "ic_truck_volvo.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_volvo.svg"
+		},
+    {
+			"iconName": "ic_truck_western_star.svg",
+			"iconPath": "/assets/svg/common/trucksmake/ic_truck_western_star.svg"
+		}
+	]
+}

@@ -30,7 +30,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 //import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
@@ -80,7 +79,6 @@ import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.com
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
-import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 import { TaUploadFileComponent } from './ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
@@ -162,7 +160,6 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaModalUploadComponent,
     TaUploadFileComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
@@ -189,12 +186,12 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     PipesModule,
     ProfileImagesModule,
     AngularSvgIconModule.forRoot(),
+    AngularSvgIconPreloaderModule.forRoot({
+      configUrl: '../../assets/preload-svg/preload-svg.json',
+    }),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
       libraries: ['geometry', 'places'],
-    }),
-    AngularSvgIconPreloaderModule.forRoot({
-      configUrl: '../../assets/imgPreloadJson/svgImages.json',
     }),
     NgxSliderModule,
     DatePickerModule,
@@ -313,7 +310,6 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaModalUploadComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
