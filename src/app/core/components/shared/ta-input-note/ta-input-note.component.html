@@ -15,17 +15,22 @@
     [@showHideNote]="_isVisibleNote"
     [class.unopened]="_isVisibleNote === null"
   >
-    <textarea
-      #note
-      [readOnly]="isReadOnly"
-      appTextareaAutosize
-      [rows]="minRows"
-      [minRows]="minRows"
-      [maxRows]="maxRows"
-      [placeholder]="placeholder"
+    <div
+      #main_editor
+      id="main_editor"
+      placeholder="Write a note..."
       class="note-textarea"
-      (input)="onChange($event.target.value)"
-    ></textarea>
+      contenteditable="true"
+      (input)="changeValue($event.target.innrHTML)"
+      (focus)="checkFocus($event)"
+      (blur)="prepareForTextRange()"
+    ></div>
+    <app-ta-note-container
+      [isExpanded]="_isVisibleNote"
+      [range]="range"
+      [selectionTaken]="selectionTaken"
+      [value]="value"
+      ></app-ta-note-container>
   </div>
   <div *ngIf="isVisibleSecondDivider" class="divider divider-second"></div>
 </div>

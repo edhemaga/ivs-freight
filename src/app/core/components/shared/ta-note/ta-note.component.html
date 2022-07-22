@@ -2,12 +2,11 @@
   [ngClass]="{
     'note-normal-icon': !openedAll,
     'note-note-empty': !note && !openedAll,
-    'note-all-expanded': isExpanded,
-    'note-focused': isFocused
+    'note-all-expanded': noteOpened
   }"
   [tooltipBackground]="!note ? '' : '#6C6C6C'"
   ngbTooltip
-  [mainTooltip]="note && isFocused ? 'Edit Note' : note && !openedAll ? 'View Note' : ''"
+  [mainTooltip]="note && noteOpened ? 'Edit Note' : note && !noteOpened ? 'View Note' : ''"
   position="bottom"
   >
   <svg-icon

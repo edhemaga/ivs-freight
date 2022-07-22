@@ -84,6 +84,7 @@ export class TaNoteContainerComponent implements OnInit {
   }
 
   executeEditor(action: string, color?: string, indx?: number) {
+    console.log(action, color, indx, 'testttt')
     if (indx) {
       this.selectedColorName = this.containerColors[indx];
     }
@@ -96,6 +97,7 @@ export class TaNoteContainerComponent implements OnInit {
     if (action !== 'foreColor') {
       this.showCollorPattern = false;
       this.activeOptions[action] = !this.activeOptions[action];
+      console.log(action, this.activeOptions[action], this.activeOptions)
       if (!this.activeOptions[action]) {
         if (this.value.replace('<br>', '') == '') {
           this.selectionTaken.removeAllRanges();
@@ -120,9 +122,12 @@ export class TaNoteContainerComponent implements OnInit {
   }
 
   focusElement(): void {
+    console.log('focusElement 111')
     if (this.selectedEditor) {
+      console.log('focusElement 222')
       this.selectedEditor.focus();
     } else {
+      console.log('focusElement 333')
       document.getElementById('main_editor').focus();
     }
   }
@@ -130,6 +135,7 @@ export class TaNoteContainerComponent implements OnInit {
   checkActiveItems() {
     for (const act in this.activeOptions) {
       this.activeOptions[act] = document.queryCommandState(act);
+      console.log(act, document.queryCommandState(act), this.activeOptions)
 
       clearTimeout(this.slowTimeout);
       this.slowTimeout = setTimeout(() => {

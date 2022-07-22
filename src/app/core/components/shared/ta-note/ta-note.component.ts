@@ -37,6 +37,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   showCollorPattern: boolean;
   buttonsExpanded = false;
   isExpanded = false;
+  noteOpened: boolean = false;
   editorDoc: any;
   value = '';
   noteIcon: string = 'Note - Empty.svg';
@@ -59,7 +60,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.note, 'notee');
     if ( this.note && this.note != '' ) {
       this.noteIcon = 'Note.svg';
     }
@@ -138,6 +138,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.buttonsExpanded = false;
         this.leaveThisOpened = false;
         tooltip.close();
+        this.noteOpened = false;
       }
       this.showCollorPattern = false;
       console.log('Note se zatvara');
@@ -149,6 +150,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
       tooltip.open({data});
+      this.noteOpened = true;
       console.log('Note se otvara');
     }
   }

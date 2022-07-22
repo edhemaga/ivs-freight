@@ -45,7 +45,7 @@
     }
   }
 
-  &.note-focused{
+  &.note-all-expanded{
     svg{
       path{
         fill: #6D82C7;
@@ -271,7 +271,8 @@
     }
 
     .editor {
-      height: 32px;
+      min-height: 32px;
+      max-height: 80px;
       width: 250px;
       border-radius: 3px;
       background-color: rgba(255, 255, 255, 1);

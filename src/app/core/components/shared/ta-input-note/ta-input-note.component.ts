@@ -8,6 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { input_note_animation } from './ta-input-note.animation';
 
 @Component({
@@ -18,6 +19,9 @@ import { input_note_animation } from './ta-input-note.animation';
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = null;
+  selectionTaken: any;
+  range: any;
+  value: any;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
 
@@ -32,12 +36,13 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
 
-  @ViewChild('note', { static: true }) noteRef: ElementRef;
+  @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
   @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
   constructor(
     @Self() public superControl: NgControl,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private sharedService: SharedService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -55,11 +60,41 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     this.onChange = fn;
   }
 
-  public onChange(event: any): void {}
+  public onChange(event: any): void {
+    this.value = event;
+  }
 
   public registerOnTouched(fn: any): void {}
 
   public openNote() {
     this._isVisibleNote = !this._isVisibleNote;
+    if ( this._isVisibleNote ) {
+      this.checkActiveItems();
+    }
+  }
+
+  checkFocus(e) {
+    if (!this._isVisibleNote) {
+      this.sharedService.emitAllNoteOpened.next(false);
+      setTimeout(() => {
+        this.checkActiveItems();
+      }, 150);
+    }
+  }
+
+  changeValue(event){
+    this.value = event;
+    this.checkActiveItems();
+  }
+
+  checkActiveItems() {
+    this.sharedService.emitUpdateNoteActiveList.next(null);
+  }
+
+  prepareForTextRange() {
+    this.selectionTaken = window.getSelection();
+    if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
+      this.range = this.selectionTaken.getRangeAt(0);
+    }
   }
 }
