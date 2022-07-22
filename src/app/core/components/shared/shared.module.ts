@@ -105,11 +105,13 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 import { TaNoteModule } from './ta-note/ta-note.module';
+import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 
 @NgModule({
   declarations: [
     HistoryDataComponent,
     TabSwitcherComponent,
+    DetailsDropdownComponent,
     StatusSwitcherComponent,
     //TaNoteContainerComponent,
     TaStatusSwitchComponent,
@@ -276,7 +278,7 @@ import { TaNoteModule } from './ta-note/ta-note.module';
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
-
+    DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,

@@ -36,7 +36,7 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
               })
             );
 
-            this.driversStore.set(driverPagination?.pagination?.data ? driverPagination.pagination.data : []);
+            this.driversStore.set(driverPagination.pagination.data);
           })
         );
     }
