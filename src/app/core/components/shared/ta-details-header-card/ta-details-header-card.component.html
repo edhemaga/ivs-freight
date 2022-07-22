@@ -75,14 +75,14 @@
       </span>
     </div>
     <div *ngIf="hasArrow" class="verical-dots-header">
-      <app-table-dropdown
+      <app-details-page-dropdown
         [options]="optionsDrop.actions"
         [id]="optionsId"
         [placement]="'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'table-dropdown-container-vertical'"
       >
-      </app-table-dropdown>
+      </app-details-page-dropdown>
     </div>
   </div>
   <!-- <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
@@ -205,6 +205,26 @@
           <p class="vin-text">{{ dateChecked }}</p>
         </div>
       </span>
+
+      <span
+      style="margin-left: 130px"
+      *ngIf="lastEdit"
+      tooltipBackground="#6C6C6C"
+      ngbTooltip
+      mainTooltip="Date Check"
+      position="top"
+    >
+      <div
+        *ngIf="lastEdit"
+        class="details-header-wrapper-data-item bottom"
+      >
+        <svg-icon
+          class="date-terminated"
+          src="assets/svg/common/ic_violation_last-edit.svg"
+        ></svg-icon>
+        <span class="vin-text">{{ lastEdit }}</span>
+      </div>
+    </span>
     </div>
   </div>
 </div>

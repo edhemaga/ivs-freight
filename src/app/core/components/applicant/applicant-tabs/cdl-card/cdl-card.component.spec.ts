@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableDropdownComponent } from './table-dropdown.component';
+import { CdlCardComponent } from './cdl-card.component';
 
-describe('TableDropdownComponent', () => {
-  let component: TableDropdownComponent;
-  let fixture: ComponentFixture<TableDropdownComponent>;
+describe('CdlCardComponent', () => {
+  let component: CdlCardComponent;
+  let fixture: ComponentFixture<CdlCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TableDropdownComponent ]
+      declarations: [ CdlCardComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TableDropdownComponent);
+    fixture = TestBed.createComponent(CdlCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -36,33 +36,25 @@ export class TaNoteContainerComponent implements OnInit {
   };
   containerColors: any[] = [
     {
-      color: "rgb(183, 183, 183)",
+      color: "#6C6C6C",
       name: "Gray"
     },
     {
-      color: "rgb(8, 134, 108)",
+      color: "#26A690",
       name: "Dark Green"
     },
     {
-      color: "rgb(86, 115, 170)",
-      name: "Blue"
-    },
-    {
-      color: "rgb(113, 76, 122)",
-      name: "Purple"
-    },
-    {
-      color: "rgb(255, 80, 80)",
+      color: "#EF5350",
       name: "Red"
     },
     {
-      color: "rgb(175, 134, 234)",
-      name: "Light Purple"
+      color: "#FFA726",
+      name: "Yellow"
     },
     {
-      color: "rgb(209, 196, 144)",
-      name: "Gold"
-    }
+      color: "#536BC2",
+      name: "Blue"
+    },
   ]
   selectedColorName: any = {
     color: "#B7B7B7",

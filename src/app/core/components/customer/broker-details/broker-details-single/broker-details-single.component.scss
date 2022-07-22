@@ -81,12 +81,14 @@
 
     .t-body-broker {
         padding: 0 2px;
+        height: calc(110vh - 68px);
         .t-body-broker-items {
             display: grid;
             grid-template-columns: 91px 89px 124px 126px 173px 90px;
             align-items: center;
             padding: 0 8px;
             margin: 2px 0;
+            grid-auto-flow: column;
             .t-body-items {
                 display: flex;
                 flex-direction: column;
@@ -258,4 +260,34 @@
 }
 .space-text {
     margin-bottom: 5px;
+}
+.t-body-wrapper {
+    overflow-y: scroll;
+    max-height: calc(112vh - 62px);
+    min-height: calc(24vh - 8px);
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+        border-radius: 1px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #aaaaaa;
+        border-radius: 1px;
+        height: 20px;
+    }
+    &::-webkit-scrollbar-track-piece:end {
+        margin-bottom: 4px;
+    }
+
+    &::-webkit-scrollbar-track-piece:start {
+        margin-top: 4px;
+    }
+}
+.dots-vertical {
+    height: 27px;
+    position: relative;
+    right: 10px;
 }

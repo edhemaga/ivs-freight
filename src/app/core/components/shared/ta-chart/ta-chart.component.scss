@@ -1,12 +1,72 @@
+@import 'src/theme/variables.scss';
+
+.charts-item-wrapper{
+  display: block;
+  height: auto;
+
+  .charts-template-item-value{
+    line-height: 22px;
+  }
+
+  .icon-name-item{
+    display: flex;
+    line-height: 15px;
+    align-items: center;
+    height: auto;
+    margin-bottom: 3px;
+    svg-icon{
+      svg{
+        display: flex;
+        width: 11px;
+        height: 11px;
+      }
+    }
+  }
+
+  &.hover{
+    border-radius: 2px;
+    padding: 6px;
+    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+  }
+
+  .hover_data_time{
+    .hover_time_title{
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 18px;
+      color: $bw6-2;
+    }
+
+    .hover_time_border{
+      height: 2px;
+      width: 100%;
+      margin: 6px 0;
+
+      background-color: #F3F3F3;
+      border-radius: 1px;
+    }
+  }
+
+  .chart_all_inner_hold{
+    display: flex;
+    align-items: center;
+  }
+}
+
 .main_chart_container{
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  margin-top: 14px;
+  margin-top: 12px;
 
   &.remove_chart_margin{
     margin: 0;
+  }
+
+  &.add_inside{
+    padding: 0px 6px;
+    margin-top: 6px;
   }
 
   .no_chart_data{
@@ -15,13 +75,14 @@
 
   .hover_data_holder{
     position: absolute;
-    top: 0;
+    top: 50%;
     left: 0;
     background-color: #fff;
     border-radius: 2px;
-    box-shadow: 0 0 4px #707070;
+    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
 
     padding: 6px 8px 8px 8px;
+    transform: translateY(-50%);
 
     z-index: 2;
 
@@ -30,7 +91,7 @@
       font-weight: 700;
       line-height: 14px;
       text-align: center;
-      color: #6C6C6C;
+      color: $bw6-2;
     }
 
     .hover_data_border_line{
@@ -62,8 +123,14 @@
           font-weight: 500;
           line-height: 14px;
           text-align: center;
-          color: #6C6C6C;
+          color: $bw6-2;
           padding-left: 4px;
+          
+        }
+
+        .hover_data_values_hold{
+          display: flex;
+          align-items: center;
         }
       }
 
@@ -71,14 +138,18 @@
         font-size: 14px;
         line-height: 18px;
         font-weight: 600;
-        color: #6C6C6C;
+        color: $bw6-2;
+
+        &.increased_title{
+          padding-right: 12px;
+        }
       }
 
       .hover_data_percent{
         font-size: 11px;
         line-height: 14px;
         font-weight: 700;
-        color: #B7B7B7;
+        color: $bw4;
       }
 
       &.hover_data_bigger_hold{
@@ -113,7 +184,7 @@
       .chart_label{
         font-size: 28px;
         font-weight: 700;
-        color: #6C6C6C;
+        color: $bw6-2;
         line-height: 34px;
       }
 
@@ -122,14 +193,14 @@
         font-size: 18px;
         line-height: 22px;
         font-weight: 600;
-        color: #6C6C6C;
+        color: $bw6-2;
       }
 
       .chart_data_name{
         font-size: 11px;
         line-height: 14px;
         font-weight: 700;
-        color: #B7B7B7;
+        color: $bw4;
       }
     }
   }
