@@ -19,14 +19,18 @@
       class="d-flex justify-content-between"
       [ngStyle]="{ padding: '0px 6px' }"
     >
-      <app-ta-ngx-slider
-        *ngIf="!showUploadZone"
-        [sliderTemplate]="'logo-change'"
-        [sliderOptions]="ngxLogoOptions"
-        [startedValue]="ngxSliderPosition"
-        [customClass]="customClass | logoSlider"
-        (onUserValueChange)="zooming($event)"
-      ></app-ta-ngx-slider>
+      <div class="d-flex align-items-center">
+        <app-ta-ngx-slider
+          *ngIf="!showUploadZone"
+          [sliderTemplate]="'logo-change'"
+          [sliderOptions]="ngxLogoOptions"
+          [startedValue]="ngxSliderPosition"
+          [customClass]="customClass | logoSlider"
+          (onUserValueChange)="zooming($event)"
+        ></app-ta-ngx-slider>
+
+        <p class="required-message">Required</p>
+      </div>
 
       <div class="d-flex buttons-container">
         <div

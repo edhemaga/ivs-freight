@@ -134,11 +134,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
 
   public dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'image',
-    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-    multiple: false,
-    globalDropZone: true,
+    dropZoneType: 'files',
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+    globalDropZone: false,
   };
 
   public isDirty: boolean;
@@ -522,12 +522,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
 
-    let dotAnimation = document.querySelector('.animation-three-tabs');
+    let dotAnimation = document.querySelector('.animation-two-tabs');
 
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
+
+    if (this.selectedTab === 1) {
+      this.dropZoneConfig = {
+        dropZoneType: 'files',
+        dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+        dropZoneAvailableFiles:
+          'application/pdf, application/png, application/jpg',
+        multiple: true,
+        globalDropZone: false,
+      };
+    } else {
+      this.dropZoneConfig = {
+        dropZoneType: 'image',
+        dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+        multiple: false,
+        globalDropZone: true,
+      };
+    }
   }
 
   public tabOwnerChange(event: any): void {
@@ -1096,6 +1115,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.driverForm.get('avatar').patchValue(event);
+  }
+
+  public onImageValidation(event: boolean) {
+    if (event) {
+      this.inputService.changeValidators(this.driverForm.get('avatar'));
+    } else {
+      this.inputService.changeValidators(this.driverForm.get('avatar'), false);
+    }
   }
 
   ngOnDestroy(): void {}

@@ -44,10 +44,11 @@ export class TaLogoChangeComponent
       height: 194,
     },
   };
-
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
-
+  @Input() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
   @Input() dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
@@ -71,6 +72,8 @@ export class TaLogoChangeComponent
     hideLimitLabels: true,
   };
   public ngxSliderPosition = 0.5;
+
+  public isImageValid: boolean = false;
 
   constructor(
     private sanitizer: DomSanitizer,
@@ -127,6 +130,8 @@ export class TaLogoChangeComponent
         zoom: this.imageScale,
       });
       clearTimeout(timeout);
+      this.isImageValid = true;
+      this.validationEvent.emit(this.isImageValid);
     }, 200);
   }
 
@@ -145,6 +150,8 @@ export class TaLogoChangeComponent
       this.imageUrl = base64;
       this.showUploadZone = true;
     });
+    this.isImageValid = false;
+    this.validationEvent.emit(this.isImageValid);
   }
 
   public onDeleteSavedImage() {
@@ -156,6 +163,8 @@ export class TaLogoChangeComponent
   public onCancel() {
     this.showUploadZone = true;
     this.imageUrl = null;
+    this.isImageValid = false;
+    this.validationEvent.emit(this.isImageValid);
   }
 
   ngOnDestroy(): void {}
