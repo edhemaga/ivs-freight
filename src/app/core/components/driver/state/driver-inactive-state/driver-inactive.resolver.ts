@@ -58,7 +58,7 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
               })
             );
 
-            this.driversStore.set(driverPagination?.pagination?.data ? driverPagination.pagination.data : []);
+            this.driversStore.set(driverPagination.pagination.data);
           })
         );
     }
