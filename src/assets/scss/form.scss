@@ -140,6 +140,16 @@
       font-weight: 600;
       color: #6c6c6c;
       margin-right: 10px;
+
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
     &-general {
