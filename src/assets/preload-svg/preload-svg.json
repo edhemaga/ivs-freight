@@ -352,6 +352,6 @@
 			"iconName": "ic_truck_western_star.svg",
 			"iconPath": "/assets/svg/common/trucksmake/ic_truck_western_star.svg"
 		}
-	]
-
+	],
+  "customIcons": []
 }
