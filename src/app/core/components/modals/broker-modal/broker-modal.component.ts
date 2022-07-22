@@ -37,6 +37,7 @@ import {
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { debounceTime } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -112,15 +113,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      label: 'credit',
-      value: 'enable',
       name: 'Enable',
       checked: true,
     },
     {
       id: 300,
-      label: 'credit',
-      value: 'disable',
       name: 'Disable',
       checked: false,
     },
@@ -152,6 +149,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public disableOneMoreReview: boolean = false;
 
+  public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -166,8 +165,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getBrokerDropdown();
+    this.isCredit({ id: 301, name: 'Enable', checked: true });
     this.followIsBillingAddressSame();
-    this.isCredit(this.billingCredit);
 
     if (this.editData) {
       this.editBrokerById(this.editData.id);
@@ -188,20 +187,20 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       mcNumber: [null, Validators.maxLength(8)],
       ein: [null, [einNumberRegex]],
       email: [null, [emailRegex]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, phoneRegex],
       // Physical Address
       physicalAddress: [null, Validators.required],
       physicalAddressUnit: [null],
       physicalPoBox: [null],
       physicalPoBoxCity: [null],
       // Billing Address
-      isCheckedBillingAddress: [false],
-      billingAddress: [null, Validators.required],
+      isCheckedBillingAddress: [true],
+      billingAddress: [null],
       billingAddressUnit: [null],
       billingPoBox: [null],
       billingPoBoxCity: [null],
       isCredit: [true],
-      creditType: [null], // Enable | Disable
+      creditType: ['Enable'], // Enable | Disable
       creditLimit: [null],
       availableCredit: [null],
       payTerm: [null],
@@ -231,7 +230,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       contactName: [null],
       departmentId: [null],
       phone: [null, phoneRegex],
-      extensionPhone: [null],
+      extensionPhone: [null, Validators.maxLength(3)],
       email: [null, emailRegex],
     });
   }
@@ -397,6 +396,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerForm.get('physicalPoBoxCity')
       );
     }
+
+    this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
+      return {
+        ...item,
+        checked: item.id === this.selectedPhysicalAddressTab?.id.toLowerCase(),
+      };
+    });
   }
 
   public tabBillingAddressChange(event: any): void {
@@ -423,6 +429,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerForm.get('billingPoBoxCity')
       );
     }
+
+    this.billingAddressTabs = this.billingAddressTabs.map((item) => {
+      return {
+        ...item,
+        checked: item.id === this.selectedBillingAddressTab?.id.toLowerCase(),
+      };
+    });
   }
   //taLikeDislikeService
   public onHandleAddress(
@@ -470,6 +483,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         false
       );
     }
+
+    this.billingCredit = this.billingCredit.map((item) => {
+      return { ...item, checked: item.id === event.id };
+    });
   }
 
   public changeReviewsEvent(reviews: ReviewCommentModal) {
@@ -531,8 +548,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((action: LikeDislikeModel) => {
         let rating: CreateRatingCommand = null;
-        console.log('RATING CHANGES');
-        console.log(action);
+
         if (action.action === 'liked') {
           rating = {
             entityTypeRatingId: 1,
@@ -691,7 +707,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       billingPoBoxCity,
       creditLimit,
       payTerm,
-      isCheckedBillingAddress,
       brokerContacts,
       mcNumber,
       availableCredit,
@@ -702,7 +717,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     let newData: CreateBrokerCommand = {
       ...form,
-      isCheckedBillingAddress: isCheckedBillingAddress,
       mainAddress: brAddresses.mainAddress,
       mainPoBox: brAddresses.mainPoBox,
       billingAddress: brAddresses.billingAddress,
@@ -755,7 +769,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       billingPoBox,
       billingPoBoxCity,
       isCredit,
-      isCheckedBillingAddress,
       brokerContacts,
       mcNumber,
       availableCredit,
@@ -768,8 +781,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     let newData: UpdateBrokerCommand = {
       id: id,
       ...form,
-
-      isCheckedBillingAddress: isCheckedBillingAddress,
       mainAddress: brAddresses.mainAddress,
       mainPoBox: brAddresses.mainPoBox,
       billingAddress: brAddresses.billingAddress,
@@ -839,7 +850,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
-          console.log(reasponse);
           this.brokerForm.patchValue({
             businessName: reasponse.businessName,
             dbaName: reasponse.dbaName,
@@ -879,7 +889,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             creditType: reasponse.creditType,
             creditLimit:
               reasponse.creditType.name === 'Enable'
-                ? reasponse.creditLimit
+                ? convertNumberInThousandSep(reasponse.creditLimit)
                 : null,
             availableCredit: reasponse.availableCredit,
             payTerm:
@@ -902,6 +912,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             name: 'bfb',
             status: reasponse.ban,
           });
+
           this.brokerBanStatus = reasponse.ban;
 
           this.selectedPhysicalAddress = reasponse.mainAddress
@@ -945,9 +956,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             commentContent: item.comment,
             rating: item.ratingFromTheReviewer,
           }));
-
+          console.log(this.reviews);
+          console.log(this.user);
           const reviewIndex = this.reviews.findIndex(
-            (item) => item.companyUser.id === this.editData.id
+            (item) => item.companyUser.id === this.user.companyUserId
           );
 
           if (reviewIndex !== -1) {
@@ -960,7 +972,44 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             currentCompanyUserRating: reasponse.currentCompanyUserRating,
           });
 
-          this.isCredit(reasponse.creditType);
+          this.isCredit(
+            this.billingCredit.find(
+              (item) => item.name === reasponse.creditType.name
+            )
+          );
+
+          this.tabPhysicalAddressChange(
+            this.selectedPhysicalAddress.address
+              ? {
+                  id: 'physicaladdress',
+                  name: 'Physical Address',
+                  inputName: 'a',
+                  checked: true,
+                }
+              : {
+                  id: 'poboxphysical',
+                  name: 'PO Box Physical',
+                  inputName: 'a',
+                  checked: false,
+                }
+          );
+
+          this.tabBillingAddressChange(
+            this.selectedBillingAddressTab.address ||
+              reasponse.mainAddress.address === reasponse.billingAddress.address
+              ? {
+                  id: 'billingaddress',
+                  name: 'Billing Address',
+                  inputName: 'n',
+                  checked: true,
+                }
+              : {
+                  id: 'poboxbilling',
+                  name: 'PO Box Billing',
+                  inputName: 'n',
+                  checked: false,
+                }
+          );
         },
         error: () => {
           this.notificationService.error("Broker can't be loaded.", 'Error:');

@@ -135,7 +135,7 @@
             *ngIf="option.logoName"
             class="svg-template-logo"
             [ngClass]="{ active: option.id === activeItem?.id }"
-            [src]="option.logoName | taSvg: option.folder:option?.subFolder"
+            [src]="option.logoName"
           ></svg-icon>
           <div
             [innerHtml]="
@@ -169,7 +169,7 @@
               option.name.trim().replace(' ', '').toLowerCase()
             }}"
             [ngClass]="{ active: option.id === activeItem?.id }"
-            [src]="option.logoName | taSvg: option.folder:option?.subFolder"
+            [src]="option.logoName"
           ></svg-icon>
           <div
             class="svgtext-template-text"

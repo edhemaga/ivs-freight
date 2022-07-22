@@ -68,6 +68,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public selectedOwnerTab: any = null;
   public selectedAddress: AddressEntity = null;
   public selectedBank: any = null;
+  public isBankSelected: boolean = false;
   public selectedPayType: any = null;
 
   public driverFullName: string = null;
@@ -350,9 +351,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.driverForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
+          this.isBankSelected = true;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
@@ -365,6 +367,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
+          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             false
@@ -373,7 +376,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm.get('account'),
             false
           );
-          this.selectedBank = null;
         }
       });
   }
@@ -634,13 +636,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (data: GetDriverModalResponse) => {
-          this.labelsBank = data.banks.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'banks',
-            };
-          });
+          this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
         },
         error: (err) => {

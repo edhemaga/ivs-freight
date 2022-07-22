@@ -40,6 +40,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   public labelsBank: any[] = [];
   public selectedBank: any = null;
+  public isBankSelected: boolean = false;
 
   public services: any[] = [];
   public openHoursDays = [
@@ -221,9 +222,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.repairShopForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (this.selectedBank) {
+        if (value) {
+          this.isBankSelected = true;
           this.inputService.changeValidators(
             this.repairShopForm.get('routing'),
             true,
@@ -236,6 +238,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
+          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.repairShopForm.get('routing'),
             false
@@ -456,13 +459,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          this.labelsBank = res.banks.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'banks',
-            };
-          });
+          this.labelsBank = res.banks;
 
           this.services = res.serviceTypes.map((item) => {
             return {

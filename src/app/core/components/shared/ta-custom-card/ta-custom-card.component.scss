@@ -175,6 +175,12 @@
           margin-right: 8px;
         }
       }
+
+      &.hidden-add-new-action {
+        .ta-like-dislike {
+          margin-right: -2px;
+        }
+      }
     }
 
     &:hover {
