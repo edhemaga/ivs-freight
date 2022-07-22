@@ -263,7 +263,13 @@ table {
                 transition: 0.2s;
               }
 
-              .avatar {
+              .avatar-no-img{
+                width: 18px;
+                height: 20px;
+              }
+
+
+              /* .avatar {
                 user-select: none;
                 width: 20px;
                 height: 24px;
@@ -276,7 +282,7 @@ table {
                 height: 12px;
                 margin-left: -8px;
                 margin-top: 15px;
-              }
+              } */
             }
 
             .table-avatar-name {
