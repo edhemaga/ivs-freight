@@ -1,4 +1,6 @@
-import { AfterContentInit, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-custom-scrollbar',
@@ -6,56 +8,84 @@ import { AfterContentInit, Component, ElementRef, HostListener, NgZone, OnInit, 
   styleUrls: ['./custom-scrollbar.component.scss']
 })
 export class CustomScrollbarComponent implements OnInit, AfterContentInit {
-  @ViewChild('contentHolder') private contentHolder: ElementRef;
+  @ViewChild('bar') private bar: ElementRef;
   scrollTop: number = 5;
   showScrollbar: boolean = false;
   scrollHeight: number = 0;
   scrollRatio: number = 0;
+  scrollRatioFull: number = 0;
 
   isMouseDown: boolean = false;
+  startingBarOffsetTop: number = 0;
+  barClickPosition: number = 0;
+  barClickRestHeight: number = 0;
 
-  constructor(private ngZone: NgZone, private elRef:ElementRef) { }
+  constructor(private ngZone: NgZone, private elRef: ElementRef, private router: Router) {
+    router.events.pipe(
+      filter(event => event instanceof NavigationEnd)  
+    ).subscribe((event: NavigationEnd) => {
+      console.log(event.url);
+      console.log("NAVIGATION HAS BEEN ENDED");
+      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
 
+    });
+  }
   ngOnInit(): void {
 
     this.ngZone.runOutsideAngular(() => {
+      document.addEventListener('mouseup', () => {
+        this.isMouseDown = false;
+      });
       document.addEventListener("mousemove", (e) => {
-        if( this.isMouseDown ){
-          console.dir("startt");
-          //document.scrollingElement.scrollTop = e.clientY;
-          this.scrollTop = e.clientY;
+        if (this.isMouseDown) {
+          const offsetBar = e.clientY - this.barClickPosition;
+          if (offsetBar > -1 && ((e.clientY + this.barClickRestHeight) < window.innerHeight)) {
+            this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
+          }
+          document.scrollingElement.scrollTop = (e.clientY - this.barClickPosition) * this.scrollRatioFull;
         }
       });
 
-      this.elRef.nativeElement.addEventListener("scroll", () => {
-        console.log("MAIN ELEMENT IS SCROLLING");
-      })
+      document.addEventListener("scroll", this.setScrollEvent.bind(this));
     });
   }
 
-  ngAfterContentInit(){
+  public setScrollEvent(e: any) {
+    if (!this.isMouseDown) this.calculateBarSizeAndPosition(e.target.scrollingElement);
+  }
+
+
+  setDraggingStart(e: MouseEvent) {
+    this.ngZone.runOutsideAngular(() => {
+      document.removeEventListener("scroll", this.setScrollEvent.bind(this));
+    });
+
+    const style = window.getComputedStyle(this.bar.nativeElement);
+    const matrix = new DOMMatrixReadOnly(style.transform);
+    this.barClickPosition = e.clientY - matrix.m42;
+    this.barClickRestHeight = this.scrollHeight - this.barClickPosition;
+    this.isMouseDown = true;
+  }
+
+  ngAfterContentInit() {
     setTimeout(() => {
       this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
     }, 500);
   }
 
-  @HostListener('window:scroll', ['$event']) // for window scroll events
-  onScroll(event) {
-    console.dir(event.target);
-    this.calculateBarSizeAndPosition(event.target.scrollingElement);
-  }
-
-  calculateBarSizeAndPosition(elem){
+  calculateBarSizeAndPosition(elem) {
     const content_height = elem.scrollHeight;
     const visible_height = window.innerHeight;
 
     this.showScrollbar = true;
+
     if (content_height < visible_height) {
       this.showScrollbar = false;
       return;
     }
 
     this.scrollRatio = visible_height / content_height;
+    this.scrollRatioFull = content_height / visible_height;
     this.scrollTop = elem.scrollTop * this.scrollRatio;
 
     this.scrollHeight = this.scrollRatio * visible_height;

@@ -48,6 +48,11 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+
+html{
+  scroll-behavior: auto !important;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 @import './assets/scss/modal';

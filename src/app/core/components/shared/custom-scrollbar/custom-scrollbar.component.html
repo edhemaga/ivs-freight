@@ -2,7 +2,8 @@
     <ng-content></ng-content>
     <div class="right-bar-scroll" *ngIf="showScrollbar">
         <div class="right-bar"
+            #bar
             [ngStyle]="{'transform': 'translateY(' + scrollTop + 'px)', height: (scrollHeight + 'px')}"
-            (mousedown)="isMouseDown = true" (mouseup)="isMouseDown = false"></div>
+            (mousedown)="setDraggingStart($event)" (mouseup)="isMouseDown = false"></div>
     </div>
 </div>
