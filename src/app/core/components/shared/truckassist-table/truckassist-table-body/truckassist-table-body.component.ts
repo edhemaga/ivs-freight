@@ -42,6 +42,7 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
+  showMoreContainerWidth: number = 0;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
@@ -93,7 +94,7 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          this.checkForScroll();
+          this.getNotPinedMaxWidth();
         }
       });
 
@@ -127,16 +128,6 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-      if (
-        changes?.tableContainerWidth?.currentValue <
-        changes?.tableContainerWidth?.previousValue
-      ) {
-      } else if (
-        changes?.tableContainerWidth?.currentValue >
-        changes?.tableContainerWidth?.previousValue
-      ) {
-      }
-
       this.getNotPinedMaxWidth();
     }
 
@@ -147,7 +138,9 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
-      this.getNotPinedMaxWidth();
+      setTimeout(() => {
+        this.getNotPinedMaxWidth();
+      }, 10);
     }
 
     if (
@@ -200,10 +193,20 @@ export class TruckassistTableBodyComponent
     clearTimeout(this.checkForScrollTimeout);
 
     const div = document.getElementById('scroll-container');
+    const pinedColumns = document.querySelector('.pined-tr');
+    const actionColumns = document.querySelector('.actions');
 
     if (div) {
       this.checkForScrollTimeout = setTimeout(() => {
         this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+
+        let notPinedWidth =
+          div.clientWidth <= this.notPinedMaxWidth
+            ? div.clientWidth
+            : this.notPinedMaxWidth;
+
+        this.showMoreContainerWidth +=
+          pinedColumns.clientWidth + actionColumns.clientWidth + notPinedWidth;
 
         this.changeDetectorRef.detectChanges();
       }, 100);

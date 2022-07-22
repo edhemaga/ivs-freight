@@ -435,6 +435,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapDriverData(data: any) {
+    console.log('Data');
+    console.log(data);
     return {
       ...data,
       isSelected: false,
@@ -450,7 +452,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         : data?.cdls?.length
         ? data.cdls[0].cdlNumber
         : '',
-      textState: data.address.state ? data.address.state : '',
+      textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',

@@ -727,11 +727,9 @@
               }"
               class="td-content"
             >
-              <span
-                *ngIf="row?.licenseData"
-                class="table-text table-text-state"
-                >{{ row[column.field] ? row[column.field] : "" }}</span
-              >
+              <div class="table-state">
+                {{ row[column.field] ? row[column.field] : "" }}
+              </div>
             </div>
 
             <!-- PROGRESS COLUMN TEMPLATE -->
@@ -750,9 +748,20 @@
               <!-- *ngIf="row[column.field] && row[column.field]['start']" -->
               <div class="table-progress-cotnainer">
                 <!-- Progres Bar  -->
-                <div class="table-progress-bar-container">
+                <div
+                  class="table-progress-bar-container"
+                  [ngClass]="{
+                    'bg-sliver-container': column.name === 'CDL Exp.',
+                    'bg-orange-container': column.name === 'Medical Exp.',
+                    'bg-danger-container': column.name === 'MVR Exp.'
+                  }"
+                >
                   <div
-                    [ngClass]="{ 'bg-progress-orange': true }"
+                    [ngClass]="{
+                      'bg-progress-sliver': column.name === 'CDL Exp.',
+                      'bg-progress-orange': column.name === 'Medical Exp.',
+                      'bg-progress-danger': column.name === 'MVR Exp.'
+                    }"
                     [ngStyle]="{ width: 50 + '%' }"
                     class="table-progress-bar"
                   ></div>
@@ -1457,9 +1466,9 @@
               }"
               class="td-content"
             >
-              <span class="table-text table-text-state">{{
-                row[column.field] ? row[column.field] : ""
-              }}</span>
+              <div class="table-state">
+                {{ row[column.field] ? row[column.field] : "" }}
+              </div>
             </div>
 
             <!-- PROGRESS COLUMN TEMPLATE -->
@@ -1479,9 +1488,20 @@
               *ngIf="row[column.field] && row[column.field]['start']" -->
               <div class="table-progress-cotnainer">
                 <!-- Progres Bar  -->
-                <div class="table-progress-bar-container">
+                <div
+                  class="table-progress-bar-container"
+                  [ngClass]="{
+                    'bg-sliver-container': column.name === 'CDL Exp.',
+                    'bg-orange-container': column.name === 'Medical Exp.',
+                    'bg-danger-container': column.name === 'MVR Exp.'
+                  }"
+                >
                   <div
-                    [ngClass]="{ 'bg-progress-orange': true }"
+                    [ngClass]="{
+                      'bg-progress-sliver': column.name === 'CDL Exp.',
+                      'bg-progress-orange': column.name === 'Medical Exp.',
+                      'bg-progress-danger': column.name === 'MVR Exp.'
+                    }"
                     [ngStyle]="{ width: 50 + '%' }"
                     class="table-progress-bar"
                   ></div>
@@ -1596,12 +1616,13 @@
   </tbody>
 </table>
 
-<div class="show-more-container" *ngIf="viewData.length">
+<div class="show-more-container" *ngIf="viewData.length" [ngStyle]="{'width.px': showMoreContainerWidth}">
   <div class="showing">
-    {{ viewData.length }} of {{ activeTableData.length }} Showing
+    {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
-  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
-    Show More
+  <!-- *ngIf="viewData.length < activeTableData.length" -->
+  <div class="show-more">
+    SHOW MORE
   </div>
 </div>
 
