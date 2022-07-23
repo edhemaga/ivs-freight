@@ -13,9 +13,6 @@ import {
   providedIn: 'root',
 })
 export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
-  pageIndex: number = 1;
-  pageSize: number = 25;
-
   constructor(
     private driverService: DriverTService,
     private driversStore: DriversInactiveStore
@@ -27,7 +24,7 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
       return of(true);
     } else {
       return this.driverService
-        .getDrivers(0, this.pageIndex, this.pageSize)
+        .getDrivers(0, 1, 25)
         .pipe(
           catchError(() => {
             return of('No drivers data...');

@@ -4,15 +4,13 @@ import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@a
 import { Observable, of } from 'rxjs';
 import { catchError, tap,take } from 'rxjs/operators';
 import { TruckTService } from '../truck.service';
-
-import { TruckState} from '../truck.store';
 import { TruckDetailsQuery } from './truck.details.query';
-import { TruckItemStore } from './truck.details.store';
+import { TruckItemState, TruckItemStore } from './truck.details.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TruckItemResolver implements Resolve<TruckState> {
+export class TruckItemResolver implements Resolve<TruckItemState> {
   constructor(
     private truckService: TruckTService,
     private truckDetailsStore:TruckItemStore,
@@ -22,7 +20,7 @@ export class TruckItemResolver implements Resolve<TruckState> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<TruckState> | Observable<any> {
+  ): Observable<TruckItemState> | Observable<any> {
      const truck_id=route.paramMap.get('id') 
      let id=parseInt(truck_id)
      if(this.truckQuery.hasEntity(id)){

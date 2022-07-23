@@ -21,9 +21,7 @@ import { CreateRegistrationResponse } from 'appcoretruckassist/model/createRegis
 import { CreateTitleResponse } from 'appcoretruckassist/model/createTitleResponse'; */
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TruckQuery } from '../../truck/state/truck.query';
 import { TruckTService } from '../../truck/state/truck.service';
-import { TruckStore } from '../../truck/state/truck.store';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TrailerStore } from '../../trailer/state/trailer.store';
 
@@ -35,9 +33,7 @@ export class CommonTruckTrailerService {
     private registrationService: RegistrationService,
     private inspectionService: InspectionService,
     private titleService: TitleService,
-    private truckStore: TruckStore,
     private truckService: TruckTService,
-    private truckQuery: TruckQuery,
     private tableService: TruckassistTableService,
     private trailerStore: TrailerStore,
     private trailerService: TrailerTService
@@ -54,9 +50,10 @@ export class CommonTruckTrailerService {
         if(data.truckId){
           const subTruck = this.truckService.getTruckById(data.truckId).subscribe({
             next: (truck: TruckResponse | any) => {
-              this.truckStore.remove(({ id }) => id === truck.id);
+              // TODO
+             /*  this.truckStore.remove(({ id }) => id === truck.id);
   
-              this.truckStore.add(truck);
+              this.truckStore.add(truck); */
   
               this.tableService.sendActionAnimation({
                 animation: 'update',
@@ -121,9 +118,10 @@ export class CommonTruckTrailerService {
         if(data.truckId){
           const subTruck = this.truckService.getTruckById(data.truckId).subscribe({
             next: (truck: TruckResponse | any) => {
-              this.truckStore.remove(({ id }) => id === truck.id);
+              // TODO
+             /*  this.truckStore.remove(({ id }) => id === truck.id);
   
-              this.truckStore.add(truck);
+              this.truckStore.add(truck); */
   
               this.tableService.sendActionAnimation({
                 animation: 'update',

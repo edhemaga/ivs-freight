@@ -6,8 +6,6 @@ import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-traile
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckQuery } from '../state/truck.query';
-import { TruckState } from '../state/truck.store';
 import { TruckTService } from '../state/truck.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
@@ -15,6 +13,10 @@ import {
   tableSearch,
 } from 'src/app/core/utils/methods.globals';
 import { TruckListResponse } from 'appcoretruckassist';
+import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
+import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
+import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
+import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
 
 @Component({
   selector: 'app-truck-table',
@@ -27,7 +29,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
-  public trucks: TruckState[] = [];
+  public trucksActive: TruckActiveState[] = [];
+  public trucksInactive: TruckInactiveState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
   tableContainerWidth: number = 0;
@@ -46,7 +49,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private truckQuery: TruckQuery,
+    private truckActiveQuery: TruckActiveQuery,
+    private truckInactiveQuery: TruckInactiveQuery,
     private truckService: TruckTService,
     private notificationService: NotificationService
   ) {}
@@ -110,11 +114,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return truck;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
         } else if (res.animation === 'update') {
           const updatedTruck = this.mapTruckData(res.data);
 
@@ -144,6 +152,28 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return truck;
           });
 
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(truckIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        }else if (res.animation === 'delete') {
+          let truckIndex: number;
+
+          this.viewData = this.viewData.map((truck: any, index: number) => {
+            if (truck.id === res.id) {
+              truck.actionAnimation = 'delete';
+              truckIndex = index;
+            }
+
+            return truck;
+          });
+
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
@@ -171,6 +201,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 return truck;
               });
+
+              this.updateDataCount();
 
               this.notificationService.success(
                 `${
@@ -236,7 +268,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        viewModeActive: 'List'
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -293,12 +325,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendTruckData() {
     this.initTableOptions();
 
+    const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
+
+    const truckActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const truckInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
     this.tableData = [
       {
         title: 'Active',
         field: 'active',
-        length: 15,
-        data: this.getTabData(),
+        length: truckCount.active,
+        data: truckActiveData,
         extended: false,
         gridNameTitle: 'Truck',
         stateName: 'trucks',
@@ -307,8 +347,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Inactive',
         field: 'inactive',
-        length: 8,
-        data: this.getTabData(),
+        length: truckCount.inactive,
+        data: truckInactiveData,
         extended: false,
         gridNameTitle: 'Truck',
         stateName: 'trucks',
@@ -374,10 +414,23 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
-  getTabData() {
-    this.trucks = this.truckQuery.getAll();
+  updateDataCount() {
+    const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
 
-    return this.trucks?.length ? this.trucks : [];
+    this.tableData[0].length = truckCount.active;
+    this.tableData[1].length = truckCount.inactive;
+  }
+
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.trucksActive = this.truckActiveQuery.getAll();
+
+      return this.trucksActive?.length ? this.trucksActive : [];
+    } else if (dataType === 'inactive') {
+      this.trucksInactive = this.truckInactiveQuery.getAll();
+
+      return this.trucksInactive?.length ? this.trucksInactive : [];
+    }
   }
 
   truckrBackFilter(filter: {
@@ -426,6 +479,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
+        console.log('Poziva se Sort')
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
@@ -510,6 +564,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 return truck;
               });
+
+              this.updateDataCount();
 
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);

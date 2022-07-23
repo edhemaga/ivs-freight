@@ -1,8 +1,6 @@
 import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { TruckQuery } from './truck.query';
 import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { TruckStore } from './truck.store';
 import {
   CreateTruckCommand,
   GetTruckModalResponse,
@@ -17,9 +15,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 @Injectable({ providedIn: 'root' })
 export class TruckTService {
   constructor(
-    private truckStore: TruckStore,
+    /* private truckStore: TruckStore, */
     private truckService: TruckService,
-    private truckQuery: TruckQuery,
+    /* private truckQuery: TruckQuery, */
     private tableService: TruckassistTableService
   ) {}
 
@@ -43,7 +41,16 @@ export class TruckTService {
     search1?: string,
     search2?: string
   ): Observable<TruckListResponse> {
-    return this.truckService.apiTruckListGet(active, pageIndex, pageSize);
+    return this.truckService.apiTruckListGet(
+      active,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   /* Observable<CreateTruckResponse> */
@@ -53,7 +60,8 @@ export class TruckTService {
       tap((res: any) => {
         const subTruck = this.getTruckById(res.id).subscribe({
           next: (truck: TruckResponse | any) => {
-            this.truckStore.add(truck);
+            // TODO
+            /* this.truckStore.add(truck); */
 
             this.tableService.sendActionAnimation({
               animation: 'add',
@@ -73,9 +81,10 @@ export class TruckTService {
       tap(() => {
         const subTruck = this.getTruckById(data.id).subscribe({
           next: (truck: TruckResponse | any) => {
-            this.truckStore.remove(({ id }) => id === data.id);
+            // TODO
+            /*  this.truckStore.remove(({ id }) => id === data.id);
 
-            this.truckStore.add(truck);
+            this.truckStore.add(truck); */
 
             this.tableService.sendActionAnimation({
               animation: 'update',
@@ -93,7 +102,8 @@ export class TruckTService {
   public deleteTruckById(id: number): Observable<any> {
     return this.truckService.apiTruckIdDelete(id).pipe(
       tap(() => {
-        this.truckStore.remove(({ id }) => id === id);
+        // TODO
+        /* this.truckStore.remove(({ id }) => id === id); */
       })
     );
   }
@@ -126,13 +136,14 @@ export class TruckTService {
   public changeTruckStatus(truckId: number): Observable<any> {
     return this.truckService.apiTruckStatusIdPut(truckId, 'response').pipe(
       tap(() => {
-        const truckToUpdate = this.truckQuery.getAll({
+        // TODO
+        /* const truckToUpdate = this.truckQuery.getAll({
           filterBy: ({ id }) => id === truckId,
         });
 
         this.truckStore.update(({ id }) => id === truckId, {
           status: truckToUpdate[0].status === 0 ? 1 : 0,
-        });
+        }); */
 
         this.tableService.sendActionAnimation({
           animation: 'update-status',
