@@ -18,7 +18,7 @@ export class DriverActiveResolver implements Resolve<DriversActiveState> {
     private driversStore: DriversActiveStore
   ) {}
   resolve(): Observable<DriversActiveState | boolean> {
-    return of(true);
+    /* return of(true); */
     
     if (this.driversStore.getValue().ids?.length) {
       return of(true);

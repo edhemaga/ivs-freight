@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
@@ -10,14 +10,18 @@ import { TruckQuery } from '../state/truck.query';
 import { TruckState } from '../state/truck.store';
 import { TruckTService } from '../state/truck.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
+import { TruckListResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-truck-table',
   templateUrl: './truck-table.component.html',
   styleUrls: ['./truck-table.component.scss'],
 })
-export class TruckTableComponent implements OnInit, OnDestroy {
+export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -26,6 +30,18 @@ export class TruckTableComponent implements OnInit, OnDestroy {
   public trucks: TruckState[] = [];
   resetColumns: boolean;
   loadingPage: boolean = true;
+  tableContainerWidth: number = 0;
+  backFilterQuery = {
+    active: 1,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
+  resizeObserver: ResizeObserver;
 
   constructor(
     private modalService: ModalService,
@@ -36,8 +52,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getTrucksData();
+    this.sendTruckData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -47,6 +62,36 @@ export class TruckTableComponent implements OnInit, OnDestroy {
           this.resetColumns = response;
 
           this.sendTruckData();
+        }
+      });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
         }
       });
 
@@ -146,7 +191,44 @@ export class TruckTableComponent implements OnInit, OnDestroy {
         }
       });
 
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.truckrBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendTruckData();
+            }
+          }
+        }
+      });
+
     this.loadingPage = false;
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -154,7 +236,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -208,11 +290,9 @@ export class TruckTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getTrucksData() {
-    this.sendTruckData();
-  }
-
   sendTruckData() {
+    this.initTableOptions();
+
     this.tableData = [
       {
         title: 'Active',
@@ -300,12 +380,59 @@ export class TruckTableComponent implements OnInit, OnDestroy {
     return this.trucks?.length ? this.trucks : [];
   }
 
+  truckrBackFilter(filter: {
+    active: number;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number | undefined;
+    sort: string | undefined;
+    searchOne: string | undefined;
+    searchTwo: string | undefined;
+    searchThree: string | undefined;
+  }) {
+    this.truckService
+      .getTruckList(
+        filter.active,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe((trucks: TruckListResponse) => {
+        this.viewData = trucks.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return this.mapTruckData(data);
+        });
+      });
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(TruckModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
       this.setTruckData(event.tabData);
+    } else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+    }
+  }
+
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+
+        this.truckrBackFilter(this.backFilterQuery);
+      } else {
+        this.sendTruckData();
+      }
     }
   }
 
@@ -407,5 +534,7 @@ export class TruckTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

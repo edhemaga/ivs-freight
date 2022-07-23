@@ -578,9 +578,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       event.tabData.field !== 'applicants'
     ) {
       this.selectedTab = event.tabData.field;
+      this.mapingIndex = 0;
 
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
+      this.mapingIndex = 0;
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }

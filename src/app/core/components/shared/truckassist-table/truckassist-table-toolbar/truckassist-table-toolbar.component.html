@@ -49,7 +49,7 @@
   </div>
 
   <!-- BORDER -->
-  <div class="border-container">
+  <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
     <div class="border"></div>
   </div>
 
@@ -59,7 +59,7 @@
   ></app-truckassist-search>
 
   <!-- BORDER -->
-  <div class="border-container">
+  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
     <div class="border"></div>
   </div>
 

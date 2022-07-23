@@ -762,16 +762,12 @@
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
-                    'bg-sliver-container': column.name === 'CDL Exp.',
-                    'bg-orange-container': column.name === 'Medical Exp.',
-                    'bg-danger-container': column.name === 'MVR Exp.'
+                    'bg-orange-container': true
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-sliver': column.name === 'CDL Exp.',
-                      'bg-progress-orange': column.name === 'Medical Exp.',
-                      'bg-progress-danger': column.name === 'MVR Exp.'
+                      'bg-progress-orange': true
                     }"
                     [ngStyle]="{ width: 50 + '%' }"
                     class="table-progress-bar"
@@ -1513,16 +1509,12 @@
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
-                    'bg-sliver-container': column.name === 'CDL Exp.',
-                    'bg-orange-container': column.name === 'Medical Exp.',
-                    'bg-danger-container': column.name === 'MVR Exp.'
+                    'bg-orange-container': true
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-sliver': column.name === 'CDL Exp.',
-                      'bg-progress-orange': column.name === 'Medical Exp.',
-                      'bg-progress-danger': column.name === 'MVR Exp.'
+                      'bg-progress-orange': true
                     }"
                     [ngStyle]="{ width: 50 + '%' }"
                     class="table-progress-bar"
