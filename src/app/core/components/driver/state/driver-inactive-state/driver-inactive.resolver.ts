@@ -21,24 +21,7 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
     private driversStore: DriversInactiveStore
   ) {}
   resolve(): Observable<DriversInactiveState | boolean> {
-    /* return this.driverService
-    .getDrivers(0, this.pageIndex, this.pageSize)
-    .pipe(
-      catchError(() => {
-        return of('No drivers data...');
-      }),
-      tap((driverPagination: DriverListResponse) => {
-        localStorage.setItem(
-          'driverTableCount',
-          JSON.stringify({
-            active: driverPagination.activeCount,
-            inactive: driverPagination.inactiveCount,
-          })
-        );
-
-        this.driversStore.set(driverPagination.pagination.data);
-      })
-    ); */
+    return of(true);
 
     if (this.driversStore.getValue().ids?.length) {
       return of(true);
