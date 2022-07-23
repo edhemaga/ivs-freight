@@ -138,7 +138,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     };
 
     this.commonTruckTrailerService
-      .addRegistration(newData)
+      .addRegistration(newData, this.editData.tabSelected)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

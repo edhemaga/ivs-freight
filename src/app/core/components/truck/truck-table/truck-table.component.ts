@@ -511,6 +511,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           {
             ...event,
             modal: 'truck',
+            tabSelected: this.selectedTab
           }
         );
         break;
@@ -522,13 +523,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           {
             ...event,
             modal: 'truck',
+            tabSelected: this.selectedTab
           }
         );
         break;
       }
       case 'activate-item': {
         this.truckService
-          .changeTruckStatus(event.id)
+          .changeTruckStatus(event.id, this.selectedTab)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: () => {
@@ -548,7 +550,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       case 'delete-item': {
         this.truckService
-          .deleteTruckById(event.id)
+          .deleteTruckById(event.id, this.selectedTab)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: () => {

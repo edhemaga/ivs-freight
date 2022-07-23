@@ -11,13 +11,19 @@ import {
 } from 'appcoretruckassist';
 /* import { CreateTruckResponse } from 'appcoretruckassist/model/createTruckResponse'; */
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
+import { TruckActiveStore } from './truck-active-state/truck-active.store';
+import { TruckInactiveQuery } from './truck-inactive-state/truck-inactive.query';
+import { TruckActiveQuery } from './truck-active-state/truck-active.query';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService {
   constructor(
-    /* private truckStore: TruckStore, */
+    private truckActiveStore: TruckActiveStore,
+    private truckInactiveStore: TruckInactiveStore,
     private truckService: TruckService,
-    /* private truckQuery: TruckQuery, */
+    private truckActiveQuery: TruckActiveQuery,
+    private truckInactiveQuery: TruckInactiveQuery,
     private tableService: TruckassistTableService
   ) {}
 
@@ -60,8 +66,21 @@ export class TruckTService {
       tap((res: any) => {
         const subTruck = this.getTruckById(res.id).subscribe({
           next: (truck: TruckResponse | any) => {
-            // TODO
-            /* this.truckStore.add(truck); */
+            this.truckActiveStore.add(truck);
+
+            const truckCount = JSON.parse(
+              localStorage.getItem('truckTableCount')
+            );
+
+            truckCount.active++;
+
+            localStorage.setItem(
+              'truckTableCount',
+              JSON.stringify({
+                active: truckCount.active,
+                inactive: truckCount.inactive,
+              })
+            );
 
             this.tableService.sendActionAnimation({
               animation: 'add',
@@ -81,10 +100,9 @@ export class TruckTService {
       tap(() => {
         const subTruck = this.getTruckById(data.id).subscribe({
           next: (truck: TruckResponse | any) => {
-            // TODO
-            /*  this.truckStore.remove(({ id }) => id === data.id);
+            this.truckActiveStore.remove(({ id }) => id === data.id);
 
-            this.truckStore.add(truck); */
+            this.truckActiveStore.add(truck);
 
             this.tableService.sendActionAnimation({
               animation: 'update',
@@ -99,18 +117,38 @@ export class TruckTService {
     );
   }
 
-  public deleteTruckById(id: number): Observable<any> {
-    return this.truckService.apiTruckIdDelete(id).pipe(
+  public deleteTruckById(
+    truckId: number,
+    tableSelectedTab?: string
+  ): Observable<any> {
+    return this.truckService.apiTruckIdDelete(truckId).pipe(
       tap(() => {
-        // TODO
-        /* this.truckStore.remove(({ id }) => id === id); */
+        const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
+
+        if (tableSelectedTab === 'active') {
+          this.truckActiveStore.remove(({ id }) => id === truckId);
+
+          truckCount.active--;
+        } else if (tableSelectedTab === 'inactive') {
+          this.truckInactiveStore.remove(({ id }) => id === truckId);
+
+          truckCount.inactive--;
+        }
+
+        localStorage.setItem(
+          'truckTableCount',
+          JSON.stringify({
+            active: truckCount.active,
+            inactive: truckCount.inactive,
+          })
+        );
       })
     );
   }
 
   public deleteTruckList(trucksToDelete: any[]): Observable<any> {
-    let deleteOnBack = trucksToDelete.map((driver: any) => {
-      return driver.id;
+    let deleteOnBack = trucksToDelete.map((truck: any) => {
+      return truck.id;
     });
 
     // return this.truckService.apiTruckListDelete({ ids: deleteOnBack }).pipe(
@@ -133,17 +171,60 @@ export class TruckTService {
     return this.truckService.apiTruckIdGet(id);
   }
 
-  public changeTruckStatus(truckId: number): Observable<any> {
+  public changeTruckStatus(
+    truckId: number,
+    tabSelected?: string
+  ): Observable<any> {
     return this.truckService.apiTruckStatusIdPut(truckId, 'response').pipe(
       tap(() => {
-        // TODO
-        /* const truckToUpdate = this.truckQuery.getAll({
-          filterBy: ({ id }) => id === truckId,
-        });
+        /* Get Table Tab Count */
+        const truckCount = JSON.parse(
+          localStorage.getItem('truckTableCount')
+        );
 
-        this.truckStore.update(({ id }) => id === truckId, {
-          status: truckToUpdate[0].status === 0 ? 1 : 0,
-        }); */
+        /* Get Data From Store To Update */
+        let truckToUpdate =
+          tabSelected === 'active'
+            ? this.truckActiveQuery.getAll({
+                filterBy: ({ id }) => id === truckId,
+              })
+            : this.truckInactiveQuery.getAll({
+                filterBy: ({ id }) => id === truckId,
+              });
+
+        /* Remove Data From Store */
+        tabSelected === 'active'
+          ? this.truckActiveStore.remove(({ id }) => id === truckId)
+          : this.truckInactiveStore.remove(({ id }) => id === truckId);
+
+        /* Add Data To New Store */
+        tabSelected === 'active'
+          ? this.truckInactiveStore.add({
+              ...truckToUpdate[0],
+              status: 0,
+            })
+          : this.truckActiveStore.add({
+              ...truckToUpdate[0],
+              status: 1,
+            });
+
+        /* Update Table Tab Count */
+        if (tabSelected === 'active') {
+          truckCount.active--;
+          truckCount.inactive++;
+        } else if (tabSelected === 'inactive') {
+          truckCount.active++;
+          truckCount.inactive--;
+        }
+
+        /* Send Table Tab Count To Local Storage */
+        localStorage.setItem(
+          'truckTableCount',
+          JSON.stringify({
+            active: truckCount.active,
+            inactive: truckCount.inactive,
+          })
+        );
 
         this.tableService.sendActionAnimation({
           animation: 'update-status',
