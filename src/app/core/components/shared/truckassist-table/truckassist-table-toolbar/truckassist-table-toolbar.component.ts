@@ -154,7 +154,8 @@ export class TruckassistTableToolbarComponent
   }
 
   setToolbarWidth() {
-    let columnsSumWidth = 0, hasMinWidth = false;
+    let columnsSumWidth = 0,
+      hasMinWidth = false;
 
     this.columns.map((c) => {
       if (!c.hidden) {
@@ -166,9 +167,7 @@ export class TruckassistTableToolbarComponent
       }
     });
 
-    this.toolbarWidth = hasMinWidth
-      ? columnsSumWidth + 12 + 'px'
-      : 100 + '%';
+    this.toolbarWidth = hasMinWidth ? columnsSumWidth + 12 + 'px' : 100 + '%';
   }
 
   onSelectTab(selectedTabData: any) {
@@ -247,7 +246,7 @@ export class TruckassistTableToolbarComponent
 
     if (action.text !== 'Columns') {
       this.optionsPopup.close();
-    }  
+    }
   }
 
   resetInactivityTimer() {
@@ -271,14 +270,16 @@ export class TruckassistTableToolbarComponent
   }
 
   onToaggleColumn(column: any, index: number) {
-    column.hidden = !column.hidden;
+    if (!column.isPined) {
+      column.hidden = !column.hidden;
 
-    this.resetInactivityTimer();
+      this.resetInactivityTimer();
 
-    this.tableService.sendToaggleColumn({
-      column: column,
-      index: index,
-    });
+      this.tableService.sendToaggleColumn({
+        column: column,
+        index: index,
+      });
+    }
   }
 
   ngOnDestroy(): void {

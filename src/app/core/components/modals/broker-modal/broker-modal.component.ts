@@ -948,8 +948,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }
 
           this.taLikeDislikeService.populateLikeDislikeEvent({
-            downRatingCount: reasponse.downRatingCount,
-            upRatingCount: reasponse.upRatingCount,
+            downRatingCount: reasponse.downCount,
+            upRatingCount: reasponse.upCount,
             currentCompanyUserRating: reasponse.currentCompanyUserRating,
           });
 

@@ -13,6 +13,7 @@ import { LoadStopShipperResponse } from './loadStopShipperResponse';
 import { ShipperContactResponse } from './shipperContactResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
+import { TimeOnly } from './timeOnly';
 
 
 export interface ShipperResponse { 
@@ -39,9 +40,14 @@ export interface ShipperResponse {
     shipperContacts?: Array<ShipperContactResponse> | null;
     reviews?: Array<ReviewResponse> | null;
     status?: number;
-    downRatingCount?: number;
-    upRatingCount?: number;
+    downCount?: number;
+    upCount?: number;
     currentCompanyUserRating?: number | null;
+    rating?: number;
+    pickups?: number;
+    deliveries?: number;
+    avgPickupTime?: TimeOnly;
+    avgDeliveryTime?: TimeOnly;
     createdAt?: string;
     loadStops?: Array<LoadStopShipperResponse> | null;
 }

@@ -9,9 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalResponse } from './truckMinimalResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { AddressEntity } from './addressEntity';
 
 
@@ -22,9 +20,7 @@ export interface SplitLoadResponse {
     splitDate?: string | null;
     splitTime?: string | null;
     splitLocation?: AddressEntity;
-    newTruck?: TruckMinimalResponse;
-    newTrailer?: TrailerMinimalResponse;
-    newDriver?: DriverMinimalResponse;
+    newDispatch?: DispatchShortResponse;
     rateFirstLoad?: number;
     rateSecondLoad?: number;
     firstLegMiles?: number | null;

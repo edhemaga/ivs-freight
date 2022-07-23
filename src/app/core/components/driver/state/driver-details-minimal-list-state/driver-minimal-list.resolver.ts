@@ -34,7 +34,7 @@ export class DriverMinimalResolver implements Resolve<DriverMinimalListResponse>
         }),
         tap((driverMinimalList: DriverMinimalListResponse) => {
           
-           this.driverMinimalList.set(driverMinimalList.pagination.data);
+           /* this.driverMinimalList.set(driverMinimalList.pagination.data); */
         })
       );
     
