@@ -13,6 +13,7 @@ import { LoadResponse } from './loadResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { EnumValue } from './enumValue';
 import { PoBoxEntity } from './poBoxEntity';
+import { InvoiceAgeingResponse } from './invoiceAgeingResponse';
 import { AddressEntity } from './addressEntity';
 import { ReviewResponse } from './reviewResponse';
 
@@ -36,6 +37,7 @@ export interface BrokerResponse {
     longitude?: number;
     upCount?: number;
     downCount?: number;
+    rating?: number;
     loadCount?: number;
     total?: number;
     dnu?: boolean;
@@ -45,9 +47,12 @@ export interface BrokerResponse {
     brokerContacts?: Array<BrokerContactResponse> | null;
     reviews?: Array<ReviewResponse> | null;
     status?: number;
-    downRatingCount?: number;
-    upRatingCount?: number;
     currentCompanyUserRating?: number | null;
+    totalDebt?: number | null;
+    invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+    invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+    invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+    invoiceAgeingGroupFour?: InvoiceAgeingResponse;
     createdAt?: string;
     updatedAt?: string;
     loads?: Array<LoadResponse> | null;

@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchBoardResponsePagination } from './dispatchBoardResponsePagination';
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface DispatchBoardListResponse { 
+    pagination?: DispatchBoardResponsePagination;
 }
 

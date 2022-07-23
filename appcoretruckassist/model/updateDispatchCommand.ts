@@ -9,17 +9,23 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CountryType } from './countryType';
+import { DispatchStatus } from './dispatchStatus';
+import { AddressEntity } from './addressEntity';
 
 
-export interface CreateRegistrationCommand { 
+export interface UpdateDispatchCommand { 
+    id?: number;
+    dispatcherId?: number | null;
+    status?: DispatchStatus;
+    order?: number;
+    phone?: string | null;
+    email?: string | null;
     truckId?: number | null;
     trailerId?: number | null;
-    licensePlate?: string | null;
-    countryType?: CountryType;
-    stateId?: number;
-    issueDate?: string;
-    expDate?: string | null;
+    driverId?: number | null;
+    location?: AddressEntity;
+    hourOfService?: number | null;
     note?: string | null;
+    loadIds?: Array<number> | null;
 }
 

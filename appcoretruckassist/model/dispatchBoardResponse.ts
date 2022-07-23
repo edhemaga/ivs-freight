@@ -9,13 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchResponse } from './dispatchResponse';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface CompanyShortResponse { 
+export interface DispatchBoardResponse { 
     id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+    dispatcher?: CompanyUserShortResponse;
+    dispatches?: Array<DispatchResponse> | null;
+    teamBoard?: boolean;
 }
 

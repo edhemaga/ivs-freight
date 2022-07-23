@@ -11,11 +11,9 @@
  */
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface InvoiceAgeingResponse { 
+    periodOfDays?: string | null;
+    totalSum?: number | null;
+    countInvoice?: number;
 }
 

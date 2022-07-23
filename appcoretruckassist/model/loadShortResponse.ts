@@ -9,13 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { BrokerShortResponse } from './brokerShortResponse';
+import { LoadStopShortResponse } from './loadStopShortResponse';
 
 
-export interface CompanyShortResponse { 
+export interface LoadShortResponse { 
     id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+    referenceNumber?: string | null;
+    broker?: BrokerShortResponse;
+    pickup?: LoadStopShortResponse;
+    delivery?: LoadStopShortResponse;
+    totalMiles?: number | null;
+    totalRate?: number | null;
 }
 

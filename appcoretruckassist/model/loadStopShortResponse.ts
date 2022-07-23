@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
+import { ShipperShortResponse } from './shipperShortResponse';
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface LoadStopShortResponse { 
+    stopType?: EnumValue;
+    stopOrder?: number;
+    shipper?: ShipperShortResponse;
 }
 

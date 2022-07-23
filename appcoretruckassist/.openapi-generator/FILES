@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/account.service.ts
@@ -15,6 +14,7 @@ api/companyContact.service.ts
 api/companyContactLabel.service.ts
 api/companyOffice.service.ts
 api/companyUser.service.ts
+api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
 api/inspection.service.ts
@@ -106,6 +106,7 @@ model/createCompanyContactCommand.ts
 model/createCompanyContactLabelCommand.ts
 model/createCompanyOfficeCommand.ts
 model/createCompanyUserCommand.ts
+model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
 model/createDriverCommand.ts
 model/createInspectionCommand.ts
@@ -132,6 +133,17 @@ model/createTruckCommand.ts
 model/creditType.ts
 model/departmentContactResponse.ts
 model/departmentResponse.ts
+model/dispatchBoardListResponse.ts
+model/dispatchBoardResponse.ts
+model/dispatchBoardResponsePagination.ts
+model/dispatchHistoryListResponse.ts
+model/dispatchHistoryModalResponse.ts
+model/dispatchHistoryResponse.ts
+model/dispatchHistoryResponsePagination.ts
+model/dispatchModalResponse.ts
+model/dispatchResponse.ts
+model/dispatchShortResponse.ts
+model/dispatchStatus.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
@@ -166,6 +178,7 @@ model/hazardousMaterialResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyResponse.ts
+model/invoiceAgeingResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadItemUnit.ts
@@ -177,6 +190,7 @@ model/loadRequirementsCommand.ts
 model/loadRequirementsResponse.ts
 model/loadResponse.ts
 model/loadResponsePagination.ts
+model/loadShortResponse.ts
 model/loadStatus.ts
 model/loadStatusHistoryResponse.ts
 model/loadStopCommand.ts
@@ -184,6 +198,7 @@ model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
 model/loadStopResponse.ts
 model/loadStopShipperResponse.ts
+model/loadStopShortResponse.ts
 model/loadStopType.ts
 model/loadTemplateListResponse.ts
 model/loadTemplateResponse.ts
@@ -287,6 +302,8 @@ model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
 model/testResponse.ts
 model/testType.ts
+model/timeOnly.ts
+model/timeSpan.ts
 model/timeType.ts
 model/tireSizeResponse.ts
 model/titleResponse.ts
@@ -331,6 +348,9 @@ model/updateCompanyOfficeCommand.ts
 model/updateCompanyPayrollCommand.ts
 model/updateCompanyUserCommand.ts
 model/updateDepartmentContactCommand.ts
+model/updateDispatchBoardCommand.ts
+model/updateDispatchCommand.ts
+model/updateDispatchStatusCommand.ts
 model/updateDivisionCompanyCommand.ts
 model/updateDriverCommand.ts
 model/updateEmploymentHistoryCommand.ts

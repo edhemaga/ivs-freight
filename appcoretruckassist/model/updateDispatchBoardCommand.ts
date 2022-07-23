@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UpdateDispatchCommand } from './updateDispatchCommand';
 
 
-export interface CompanyShortResponse { 
-    id?: number;
-    companyName?: string | null;
-    logo?: string | null;
-    isDivision?: boolean;
-    isActive?: boolean;
+export interface UpdateDispatchBoardCommand { 
+    dispatchBoardId?: number;
+    dispatches?: Array<UpdateDispatchCommand> | null;
 }
 
