@@ -479,7 +479,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        console.log('Poziva se Sort')
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
