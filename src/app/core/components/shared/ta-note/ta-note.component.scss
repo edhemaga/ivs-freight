@@ -264,7 +264,7 @@
     line-height: 1.5;
     height: auto;
     min-width: 250px;
-    background-color: transparent;
+    background-color: #ffffff;
 
     &.expanded {
       box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
@@ -298,9 +298,6 @@
         }
 
         &.openedAll {
-          background-color: #6c6c6c;
-          color: #fff;
-
           &:after {
             border-left: 5px solid #6c6c6c;
           }
@@ -352,4 +349,30 @@
       }
     }
   }
+
+  &.opened_all_hold{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    z-index: 1;
+
+    .custom_editor{
+      min-width: auto;
+
+      .editor{
+        width: auto;
+      }
+    }
+
+    .k-editor{
+      width: auto;
+    }
+  }
+}
+
+.note_inner_text{
+  font-size: 11px;
+  color: #6C6C6C;
 }

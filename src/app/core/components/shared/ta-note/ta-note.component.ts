@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
 import {Subject} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
@@ -33,6 +33,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
   @Input() openAllNotesText: any;
   @ViewChild('t2') t2: any;
+  @ViewChild('mainEditor', {static: false}) public mainEditor: any;
   tooltip: any;
   showCollorPattern: boolean;
   buttonsExpanded = false;
@@ -49,20 +50,27 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     underline: false
   };
   @Output() saveNoteValue = new EventEmitter();
-  openedAll: boolean;
+  @Input() openedAll: any;
   leaveThisOpened: boolean;
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private sharedService: SharedService) {
+  constructor(private sharedService: SharedService, private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     if ( this.note && this.note != '' ) {
       this.noteIcon = 'Note.svg';
     }
+
+    // setTimeout(() => {
+    //   if ( this.openedAll ) {
+    //     this.toggleNote(this.t2, this.note);
+    //   }
+    // });
+
     /* this.sharedService.emitCloseNote
     .pipe(takeUntil(this.destroy$))
     .subscribe((res) => {
@@ -104,9 +112,17 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   checkFocus(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var div = document.getElementById('main_editor');
+    console.log(div, 'divdivdiv')
+    setTimeout(function() {
+        div.focus();
+    });
+    
     this.isFocused = true;
-    if (!this.isExpanded) {
-      this.openedAll = false;
+    console.log('check focus')
+      //this.openedAll = false;
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
       this.isExpanded = true;
@@ -114,7 +130,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.buttonsExpanded = true;
         this.checkActiveItems();
       }, 150);
-    }
   }
 
   toggleNote(tooltip: any, data: any) {
@@ -126,7 +141,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (tooltip.isOpen()) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
-        this.openedAll = false;
+        //this.openedAll = false;
         this.sharedService.emitAllNoteOpened.next(false);
       } else if (!this.isExpanded) {
         this.leaveThisOpened = false;
@@ -236,6 +251,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (!allowedKeys && $(e.target).text().length >= limit) {
         e.preventDefault();
     }
+  }
+
+  expandAllNotes() {
+    this.isExpanded = true;
+    setTimeout(() => {
+      if ( this.openedAll ) {
+        this.toggleNote(this.t2, this.note);
+      }
+    });
   }
 
   public ngOnDestroy(): void {

@@ -1,4 +1,4 @@
-<div class="note_button_hold"
+<div class="note_button_hold" *ngIf="!openedAll"
   [ngClass]="{
     'note-normal-icon': !openedAll,
     'note-note-empty': !note && !openedAll,
@@ -24,9 +24,52 @@
   </svg-icon>
 </div>
 
+<div *ngIf="openedAll && !isExpanded"
+  [innerHTML]="note | safeHtml"
+  (click)="expandAllNotes()"
+  class="note_inner_text"
+>
+</div>
+
+<div *ngIf="openedAll && isExpanded"
+  #t2="ngbPopover"
+  [autoClose]="false"
+  class="note-btn"
+  [ngbPopover]="notePopover"
+>
+
+</div>
+
+<div class="kendo-editor-note-wrapper opened_all_hold" *ngIf="openedAll && isExpanded">
+  <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor">
+    <div
+      (blur)="prepareForTextRange()"
+      (focus)="checkFocus($event)"
+      (input)="valueChange($event.target.innerHTML)"
+      @noteLongAnimation
+      [class.not_expanded]="!isExpanded"
+      [innerHTML]="note | safeHtml"
+      class="editor"
+      (keydown)="maxLimitForContenteditableDiv($event, 250)"
+      contenteditable="true"
+      id="main_editor"
+    ></div>
+    <div class="container_separate" *ngIf="isExpanded">
+      <div class="container_separate_inner"></div>
+    </div>
+    <app-ta-note-container
+      [isExpanded]="isExpanded"
+      [range]="range"
+      [selectionTaken]="selectionTaken"
+      [value]="value"
+    ></app-ta-note-container>
+  </div>
+</div>
+
 <!-- Popover for Note -->
+
 <ng-template #notePopover let-data="data">
-  <div class="kendo-editor-note-wrapper">
+  <div class="kendo-editor-note-wrapper" *ngIf="!openedAll">
     <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor">
       <div
         (blur)="prepareForTextRange()"

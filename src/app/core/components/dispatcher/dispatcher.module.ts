@@ -16,6 +16,7 @@ import { PipesModule } from '../../pipes/pipes.module';
 import { DispatcherParkingComponent } from './dispatcher-parking/dispatcher-parking.component';
 import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboard-tables.component';
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
+import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 
 export function playerFactory() {
   return player;
@@ -41,6 +42,7 @@ export function playerFactory() {
     AgmSnazzyInfoWindowModule,
     LottieModule.forRoot({ player: playerFactory }),
     PipesModule,
+    TaNoteModule
   ],
   entryComponents: [],
   exports: [],
