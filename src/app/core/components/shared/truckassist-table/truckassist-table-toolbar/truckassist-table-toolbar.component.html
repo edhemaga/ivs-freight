@@ -1,4 +1,7 @@
-<div class="toolbar-container" [ngStyle]="{'width': toolbarWidth, 'max-width.px': maxToolbarWidth}">
+<div
+  class="toolbar-container"
+  [ngStyle]="{ width: toolbarWidth, 'max-width.px': maxToolbarWidth }"
+>
   <!-- LIST NAME -->
   <div
     class="list-name"
@@ -55,10 +58,20 @@
     </div>
   </div>
 
+  <!-- BORDER -->
+  <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
+    <div class="border"></div>
+  </div>
+
   <!-- SEARCH -->
   <app-truckassist-search
     [selectedTabData]="activeTableData"
   ></app-truckassist-search>
+
+  <!-- BORDER -->
+  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
+    <div class="border"></div>
+  </div>
 
   <!-- LOCATION FILTER -->
   <div
@@ -66,7 +79,7 @@
     *ngIf="!options.toolbarActions.hideLocationFilter"
   >
     <svg-icon
-      [svgStyle]="{ 'width.px': 17, 'height.px': 20 }"
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
       [src]="'assets/svg/truckassist-table/location-icon.svg'"
     ></svg-icon>
   </div>
@@ -82,12 +95,26 @@
         ></svg-icon>
       </div>
 
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
+      </div>
+
       <!-- Delete -->
-      <div *ngIf="tableRowsSelected.length" (click)="deleteSelectedRows()" class="action-div">
+      <div
+        *ngIf="tableRowsSelected.length"
+        (click)="deleteSelectedRows()"
+        class="action-div"
+      >
         <svg-icon
           [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
           [src]="'assets/svg/truckassist-table/trash-icon.svg'"
         ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
       </div>
 
       <!-- Print -->
@@ -96,6 +123,11 @@
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/print-icon.svg'"
         ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
       </div>
 
       <!-- Options -->
@@ -173,10 +205,9 @@
     </div>
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
-      <div class="column" *ngFor="let column of columns; let i = index">
+      <div (click)="onToaggleColumn(column, i)" class="column" *ngFor="let column of columns; let i = index">
         <div class="checkbox" *ngIf="!column.isPined && i > 1">
           <input
-            (click)="onToaggleColumn(column, i)"
             [checked]="!column.hidden"
             class="columns-options-checkbox"
             id="checkbox{{ i }}"
@@ -194,7 +225,8 @@
             [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
           ></svg-icon>
         </div>
-        <div class="column-text">
+
+        <div class="column-text" [ngClass]="{'selectable-text': !column.isPined}">
           {{ column.name !== "" ? column.name : column.title }}
         </div>
       </div>

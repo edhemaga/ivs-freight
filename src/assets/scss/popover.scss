@@ -1,5 +1,7 @@
 // Table Dropdown Popup
 .table-dropdown-popover {
+  user-select: none;
+
   .popover-body {
     z-index: 60;
     .table-dropdown {
@@ -362,6 +364,10 @@
             display: flex;
             justify-content: center;
             align-self: center;
+          }
+
+          .selectable-text{
+            cursor: pointer;
           }
 
           .column-text {

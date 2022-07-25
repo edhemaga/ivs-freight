@@ -17,12 +17,14 @@ export interface LoadStopShipperResponse {
     load?: LoadResponse;
     stopType?: EnumValue;
     stopOrder?: number;
-    date?: string;
+    dateFrom?: string;
+    dateTo?: string | null;
     timeType?: EnumValue;
     timeFrom?: string | null;
     timeTo?: string | null;
     arrive?: string | null;
     depart?: string | null;
+    wait?: { [key: string]: number; } | null;
     legMileage?: number | null;
     totalStopMiles?: number | null;
 }

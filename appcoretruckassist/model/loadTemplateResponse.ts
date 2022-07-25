@@ -9,16 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalResponse } from './truckMinimalResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { BrokerResponse } from './brokerResponse';
 import { CompanyShortResponse } from './companyShortResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { LoadStopResponse } from './loadStopResponse';
 import { EnumValue } from './enumValue';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { LoadBillingAdditionalResponse } from './loadBillingAdditionalResponse';
 
@@ -30,9 +28,7 @@ export interface LoadTemplateResponse {
     dispatcher?: CompanyUserShortResponse;
     company?: CompanyShortResponse;
     dateCreated?: string | null;
-    truck?: TruckMinimalResponse;
-    trailer?: TrailerMinimalResponse;
-    driver?: DriverMinimalResponse;
+    dispatch?: DispatchShortResponse;
     broker?: BrokerResponse;
     brokerContact?: BrokerContactResponse;
     referenceNumber?: string | null;

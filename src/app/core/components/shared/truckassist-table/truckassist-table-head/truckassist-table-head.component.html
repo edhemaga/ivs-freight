@@ -176,10 +176,11 @@
             class="th-title"
             (click)="sortHeaderClick(column)"
             [ngStyle]="{
-              'width.px':
-                column.resizable && !locked
+              'width.px': !column.headAlign
+                ? column.resizable && !locked
                   ? column.width - 55
                   : column.width - 20
+                : 'fit-content'
             }"
             [ngClass]="{
               'sort-active': column.sortDirection !== '' && column.sortDirection
