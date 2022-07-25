@@ -79,6 +79,11 @@
       [alt]="file?.name"
     />
 
+    <!-- Number of pages -->
+    <div *ngIf="hasNumberOfPages" class="ta-upload-file-number-of-pages">
+      <p>{{ numberOfFilePages }}</p>
+    </div>
+
     <!-- Tag Content -->
     <div
       *ngIf="hasTag"
@@ -109,7 +114,11 @@
   </div>
 
   <!-- File Footer Information -->
-  <div class="ta-upload-file-footer" [ngClass]="{'edit-mode': editFile}" (click)="onEditFile()">
+  <div
+    class="ta-upload-file-footer"
+    [ngClass]="{ 'edit-mode': editFile }"
+    (click)="onEditFile()"
+  >
     <!-- No edit mode -->
     <div
       *ngIf="!editFile"

@@ -408,6 +408,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Successfully add contact label.',
             'Success:'
           );
+          this.getContactLabelsAndDepartments();
         },
         error: () => {
           this.notificationService.error("Can't add contact label.", 'Error:');
