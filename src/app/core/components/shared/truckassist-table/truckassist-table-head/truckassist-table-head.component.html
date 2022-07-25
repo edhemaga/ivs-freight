@@ -14,11 +14,10 @@
         [ngStyle]="{
           width: column.width + 'px',
           'min-width.px': column?.minWidth ? column.minWidth : 'unset',
-          'margin-left': column.moveRight ? 'auto' : 'unset',
-          'justify-content': column?.headAlign ? column?.headAlign : ''
+          'margin-left': column.moveRight ? 'auto' : 'unset'
         }"
         [ngClass]="{
-          'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
+          'set-center': column.ngTemplate === 'checkbox',
           'column-unlocket': !locked,
           'resize-hit-limit': resizeHitLimit === i && resizeIsPined
         }"
@@ -158,11 +157,10 @@
           [cdkDragPreviewClass]="'cdk-drag-preview'"
           [ngStyle]="{
             width: column.width + 'px',
-            'min-width.px': column?.minWidth ? column.minWidth : 'unset',
-            'justify-content': column?.headAlign ? column?.headAlign : ''
+            'min-width.px': column?.minWidth ? column.minWidth : 'unset'
           }"
           [ngClass]="{
-            'set-center': column.ngTemplate === 'checkbox' || column.setCenter,
+            'set-center': column.ngTemplate === 'checkbox',
             'column-unlocket': !locked,
             'column-locked': locked,
             'resize-hit-limit': resizeHitLimit === i && !resizeIsPined
@@ -174,11 +172,10 @@
             class="th-title"
             (click)="sortHeaderClick(column)"
             [ngStyle]="{
-              'width.px': !column.headAlign
-                ? column.resizable && !locked
+              'width.px':
+                column.resizable && !locked
                   ? column.width - 55
                   : column.width - 20
-                : 'fit-content'
             }"
             [ngClass]="{
               'sort-active': column.sortDirection !== '' && column.sortDirection
@@ -270,11 +267,9 @@
         [ngStyle]="{
           width: column.isAction ? column.width + 'px' : '0px',
           'min-width.px': column?.minWidth ? column.minWidth : 'unset',
-          display: column.isAction ? 'flex' : 'none',
-          'justify-content': column?.headAlign ? column?.headAlign : ''
+          display: column.isAction ? 'flex' : 'none'
         }"
         [ngClass]="{
-          'set-center': column.setCenter,
           'column-unlocket': !locked
         }"
       >

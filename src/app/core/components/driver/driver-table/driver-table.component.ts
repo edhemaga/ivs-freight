@@ -1,6 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
@@ -28,7 +27,6 @@ import {
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
-import { Console } from 'console';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 
 @Component({
