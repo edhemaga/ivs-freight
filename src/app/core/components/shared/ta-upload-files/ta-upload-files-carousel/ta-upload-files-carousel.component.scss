@@ -90,6 +90,51 @@
       }
     }
   }
+
+  &.driver-details-pdf {
+    grid-template-rows: 343px;
+
+    .ta-upload-files-carousel {
+      grid-template-rows: 343px;
+    }
+
+    .ta-upload-carousel-control-bg {
+      top: 41%;
+
+      &.next {
+        left: 94%;
+        padding-left: 1px;
+      }
+
+      .ta-upload-files-control {
+        line-height: 24px;
+      }
+    }
+  }
+
+  // Carousel Button Tabs
+  .carousel-tabs-control {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-55%, 18px);
+
+    .carousel-tab {
+      width: 12px;
+      height: 6px;
+      background-color: #dadada;
+      border-radius: 3px;
+      margin-left: 4px;
+
+      &.active-tab {
+        transition: all 0.3s ease-in;
+        width: 20px;
+        background-color: #919191;
+      }
+    }
+  }
 }
 .ta-upload-files-carousel-right {
   svg {

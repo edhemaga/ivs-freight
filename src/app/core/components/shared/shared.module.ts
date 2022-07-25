@@ -43,8 +43,6 @@ import { TaCounterComponent } from './ta-counter/ta-counter.component';
 import { TaNgxSliderComponent } from './ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component';
 
-import { TaFilesComponent } from './ta-files/ta-files.component';
-import { TaFileComponent } from './ta-files/ta-file/ta-file.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
@@ -133,8 +131,6 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
-    TaFilesComponent,
-    TaFileComponent,
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
@@ -286,8 +282,6 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
-    TaFilesComponent,
-    TaFileComponent,
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,

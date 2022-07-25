@@ -320,7 +320,9 @@
 
   <!-- Input Label Counter -->
   <p
-    *ngIf="getSuperControl.value && !focusInput"
+    *ngIf="
+      inputConfig.dropdownLabelSelected && getSuperControl.value && !focusInput
+    "
     [style.top]="'5px'"
     [style.left]="37 + getSuperControl?.value.toString().length * 8 + 'px'"
     class="input-label-counter"

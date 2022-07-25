@@ -1,4 +1,4 @@
-<div class="ta-upload-file-container">
+<div class="ta-upload-file-container {{ customClassName }}">
   <!-- File Header Actions -->
   <div *ngIf="!isFileDelete" class="ta-upload-file-header">
     <div
@@ -56,10 +56,10 @@
   </div>
 
   <!-- File Content -->
-  <div class="ta-upload-file-content">
+  <div class="ta-upload-file-content  {{ customClassName }}">
     <!-- Pdf Content -->
     <pdf-viewer
-      *ngIf="file?.extension.toLowerCase() === 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() === 'pdf'"
       [src]="file?.url"
       [(page)]="activePage"
       [render-text]="false"
@@ -74,7 +74,7 @@
     <!-- Image Content -->
     <img
       class="ta-upload-file-image"
-      *ngIf="file?.extension.toLowerCase() !== 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() !== 'pdf'"
       [src]="file?.url"
       [alt]="file?.name"
     />
@@ -136,7 +136,7 @@
       [fontWeight]="'bold'"
       [fontSize]="'11px'"
       [customPosition]="13"
-      [tatooltipvisible]="file?.extension.toLowerCase() === 'pdf'"
+      [tatooltipvisible]="file?.extension?.toLowerCase() === 'pdf'"
     >
       {{ file?.extension | uppercase }}
     </div>
