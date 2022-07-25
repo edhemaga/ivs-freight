@@ -49,7 +49,10 @@ export interface BrokerResponse {
     status?: number;
     currentCompanyUserRating?: number | null;
     totalDebt?: number | null;
-    invoiceAgeing?: Array<InvoiceAgeingResponse> | null;
+    invoiceAgeingGroupOne?: InvoiceAgeingResponse;
+    invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
+    invoiceAgeingGroupThree?: InvoiceAgeingResponse;
+    invoiceAgeingGroupFour?: InvoiceAgeingResponse;
     createdAt?: string;
     updatedAt?: string;
     loads?: Array<LoadResponse> | null;

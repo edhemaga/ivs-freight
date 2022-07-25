@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchHistoryResponse } from './dispatchHistoryResponse';
 
 
-export interface InvoiceAgeingResponse { 
-    periodOfDays?: string | null;
-    totalSum?: number | null;
-    countInvoice?: number;
+export interface DispatchHistoryResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<DispatchHistoryResponse> | null;
 }
 

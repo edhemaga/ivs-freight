@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchStatus } from './dispatchStatus';
 
 
-export interface InvoiceAgeingResponse { 
-    periodOfDays?: string | null;
-    totalSum?: number | null;
-    countInvoice?: number;
+export interface UpdateDispatchStatusCommand { 
+    id?: number;
+    status?: DispatchStatus;
 }
 

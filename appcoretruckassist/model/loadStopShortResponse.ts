@@ -9,22 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStopItemResponse } from './loadStopItemResponse';
 import { EnumValue } from './enumValue';
 import { ShipperShortResponse } from './shipperShortResponse';
 
 
-export interface LoadStopResponse { 
+export interface LoadStopShortResponse { 
     stopType?: EnumValue;
     stopOrder?: number;
     shipper?: ShipperShortResponse;
-    dateFrom?: string;
-    dateTo?: string | null;
-    timeType?: EnumValue;
-    timeFrom?: string | null;
-    timeTo?: string | null;
-    items?: Array<LoadStopItemResponse> | null;
-    legMiles?: number | null;
-    totalLegMiles?: number | null;
 }
 

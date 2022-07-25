@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchBoardResponsePagination } from './dispatchBoardResponsePagination';
 
 
-export interface InvoiceAgeingResponse { 
-    periodOfDays?: string | null;
-    totalSum?: number | null;
-    countInvoice?: number;
+export interface DispatchBoardListResponse { 
+    pagination?: DispatchBoardResponsePagination;
 }
 

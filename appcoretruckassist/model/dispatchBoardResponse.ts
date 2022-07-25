@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DispatchResponse } from './dispatchResponse';
+import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
-export interface InvoiceAgeingResponse { 
-    periodOfDays?: string | null;
-    totalSum?: number | null;
-    countInvoice?: number;
+export interface DispatchBoardResponse { 
+    id?: number;
+    dispatcher?: CompanyUserShortResponse;
+    dispatches?: Array<DispatchResponse> | null;
+    teamBoard?: boolean;
 }
 

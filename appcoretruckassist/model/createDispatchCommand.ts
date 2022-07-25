@@ -12,16 +12,17 @@
 import { AddressEntity } from './addressEntity';
 
 
-export interface SplitLoadCommand { 
-    previousStopOrder?: number;
-    nextStopOrder?: number;
-    splitDate?: string | null;
-    splitTime?: string | null;
-    splitLocation?: AddressEntity;
-    newDispatchId?: number | null;
-    rateFirstLoad?: number;
-    rateSecondLoad?: number;
-    firstLegMiles?: number | null;
-    secondLegMiles?: number | null;
+export interface CreateDispatchCommand { 
+    dispatchBoardId?: number;
+    dispatcherId?: number | null;
+    truckId?: number;
+    trailerId?: number | null;
+    driverId?: number | null;
+    coDriverId?: number | null;
+    phone?: string | null;
+    email?: string | null;
+    location?: AddressEntity;
+    note?: string | null;
+    loadIds?: Array<number> | null;
 }
 
