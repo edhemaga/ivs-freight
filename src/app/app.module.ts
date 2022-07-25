@@ -41,7 +41,7 @@ import { OverlayscrollbarsModule } from "overlayscrollbars-ngx";
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent,
+    NavigationUserCompanyComponent
   ],
   imports: [
     BrowserModule,

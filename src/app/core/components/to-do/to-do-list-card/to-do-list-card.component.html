@@ -177,74 +177,93 @@
         </div>
     </div>
     <div class="card-main-to-do-holder">
-        <gridster [options]="options" style="height: 200px" #mainGridster>
-            <gridster-item *ngFor="let item of cardData; let indx = index" [item]="item">
-                <div class="list-holder">
-                    <div class="list-top-holder">
-                        <div class="list-items-frame">
-                            <div class="list-title">{{item.title}}</div>
-                            <div class="icons-frame">
-                                <div 
-                                    (mousedown)="toggleLinkShow($event, indx)"
-                                    ngbTooltip
-                                    mainTooltip="Hyperlink"
-                                    position="bottom"
-                                    tooltipBackground="#6C6C6C"
-                                    class="icon-box" 
-                                    [class.blue-icons]="item.linkActive">
-                                    <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
-                                </div> 
-                                <div 
-                                    class="icon-box" 
-                                    ngbTooltip
-                                    mainTooltip="Comments"
-                                    position="bottom"
-                                    tooltipBackground="#6C6C6C"
-                                    (mousedown)="toggleComment($event, indx)"
-                                    [class.blue-icons]="item.commentActive">
-                                    <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
-                                    <div class="number-comments">0</div>
+        <smooth-dnd-container 
+            [orientation]="'horizontal'" 
+        >
+            <smooth-dnd-draggable *ngFor="let column of scene.children; let i = index">
+                <div [ngClass]="column.props.className">
+                    <div class="card-column-header"></div>
+                    <smooth-dnd-container 
+                        [groupName]="'col'"
+                        (drop)="onCardDrop(column.id, $event)"
+                        [getChildPayload]="getCardPayload(column.id)"
+                        [dragClass]="'card-ghost'"
+                        [dropClass]="'card-ghost-drop'"
+                        (dragStart)="log('drag start', $event)"
+                        (dragEnd)="log('drag end', $event)"
+                        [dragBeginDelay]="0"
+                        [dropPlaceholder]="{ className: 'dropShadowClass, showOnTop: true'}"
+                    >
+                        <smooth-dnd-draggable *ngFor="let item of column.children; let j = index">
+                            <div class="list-holder">
+                                <div class="list-top-holder">
+                                    <div class="list-items-frame">
+                                        <div class="list-title">{{item.title}}</div>
+                                        <div class="icons-frame">
+                                            <div 
+                                                (mousedown)="toggleLinkShow($event, i, j)"
+                                                ngbTooltip
+                                                mainTooltip="Hyperlink"
+                                                position="bottom"
+                                                tooltipBackground="#6C6C6C"
+                                                class="icon-box" 
+                                                [class.blue-icons]="item.linkActive">
+                                                <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
+                                            </div> 
+                                            <div 
+                                                class="icon-box" 
+                                                ngbTooltip
+                                                mainTooltip="Comments"
+                                                position="bottom"
+                                                tooltipBackground="#6C6C6C"
+                                                (mousedown)="toggleComment($event, i, j)"
+                                                [class.blue-icons]="item.commentActive">
+                                                <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
+                                                <div class="number-comments">0</div>
+                                            </div>
+                                            <div 
+                                                class="icon-box"
+                                                ngbTooltip
+                                                mainTooltip="Documents"
+                                                position="bottom"
+                                                tooltipBackground="#6C6C6C"
+                                                >
+                                                <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
+                                            </div>
+                                            <div class="icon-box dots">
+                                                <svg-icon src="assets/svg/common/ic_horizontal-dots.svg"></svg-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="options-frame">
+                                        <div class="dispatch-box" *ngFor="let dep of item.departments">{{dep.name}}</div>
+                                    </div>
+                                    <div class="list-text">{{item.description}}</div>
+                                    <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
                                 </div>
-                                <div 
-                                    class="icon-box"
-                                    ngbTooltip
-                                    mainTooltip="Documents"
-                                    position="bottom"
-                                    tooltipBackground="#6C6C6C"
-                                    >
-                                    <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
+                                <div class="comment-holder" *ngIf="reviews.length && item.commentActive">
+                                    <app-ta-user-review
+                                        [reviewData]="reviews"
+                                        [isNewReview]="reviews[0].isNewReview"
+                                    ></app-ta-user-review>
                                 </div>
-                                <div class="icon-box dots">
-                                    <svg-icon src="assets/svg/common/ic_horizontal-dots.svg"></svg-icon>
+                                <div class="list-items-frame">
+                                    <div class="list-time">Deadline in 2 days</div>
+                                    <div class="icons-frame">
+                                        <div class="list-time time">12:00 AM</div>
+                                        <div class="list-time">07/31/21</div>
+                                    </div>
+                                </div>
+                                <div class="line-holder">
+                                    <div class="line-left orange-line"></div>
+                                    <div class="line-right dark-orange-line"></div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="options-frame">
-                            <div class="dispatch-box" *ngFor="let dep of item.departments">{{dep.name}}</div>
-                        </div>
-                        <div class="list-text">{{item.description}}</div>
-                        <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
-                    </div>
-                    <div class="comment-holder" *ngIf="reviews.length && item.commentActive">
-                        <app-ta-user-review
-                            [reviewData]="reviews"
-                            [isNewReview]="reviews[0].isNewReview"
-                        ></app-ta-user-review>
-                    </div>
-                    <div class="list-items-frame">
-                        <div class="list-time">Deadline in 2 days</div>
-                        <div class="icons-frame">
-                            <div class="list-time time">12:00 AM</div>
-                            <div class="list-time">07/31/21</div>
-                        </div>
-                    </div>
-                    <div class="line-holder">
-                        <div class="line-left orange-line"></div>
-                        <div class="line-right dark-orange-line"></div>
-                    </div>
+                        </smooth-dnd-draggable>
+                    </smooth-dnd-container>
                 </div>
-            </gridster-item>
-        </gridster>
+            </smooth-dnd-draggable>
+        </smooth-dnd-container>
     </div>
     <div class="widgets-holder">
         <div class="widgets-title-holder">

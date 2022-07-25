@@ -1,19 +1,12 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import {
-  CompactType,
-  DisplayGrid,
-  GridsterConfig,
-  GridsterItem,
-  GridsterItemComponent,
-  GridsterPush,
-  GridType,
-} from 'angular-gridster2';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
+import { DropResult } from 'ngx-smooth-dnd';
+import { applyDrag } from 'src/app/core/utils/methods.globals';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -22,19 +15,56 @@ import { TaskModalComponent } from '../../modals/task-modal/task-modal.component
   encapsulation: ViewEncapsulation.None,
 })
 export class ToDoListCardComponent implements OnInit {
-  @ViewChild('mainGridster') mainGridster: any;
-
-  options: GridsterConfig;
-
+  
   public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
-  cardData: Array<GridsterItem> = [];
+  cardData: Array<any> = [];
   private destroy$: Subject<void> = new Subject<void>();
-  dashboardItems: GridsterItemComponent[] = [];
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
+
+
+  scene = {
+    type: 'container',
+    props: {
+      orientation: 'horizontal'
+    },
+    children: [
+      {
+        id: `column1`,
+        type: 'container',
+        name: 'column1',
+        props: {
+          orientation: 'horizontal',
+          className: 'card-container'
+        },
+        children: []
+      },
+      {
+        id: `column2`,
+        type: 'container',
+        name: 'column2',
+        props: {
+          orientation: 'horizontal',
+          className: 'card-container'
+        },
+        children: []
+      },
+      {
+        id: `column3`,
+        type: 'container',
+        name: 'column3',
+        props: {
+          orientation: 'horizontal',
+          className: 'card-container'
+        },
+        children: []
+      }
+    ]
+  }
+
 
   reviews: any = [
     {
@@ -42,7 +72,7 @@ export class ToDoListCardComponent implements OnInit {
       companyUser: {
         id: 2,
         fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
+        avatar: 'https://picsum.photos/id/237/200/300',
         reaction: '',
       },
       comment: 'test test test test test',
@@ -55,27 +85,14 @@ export class ToDoListCardComponent implements OnInit {
       companyUser: {
         id: 4,
         fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
+        avatar: 'https://picsum.photos/id/237/200/300',
         reaction: '',
       },
       comment: 'new test new test new test',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: false,
-    },
-    {
-      id: 5,
-      companyUser: {
-        id: 6,
-        fullName: 'Angela Martin',
-        image: 'https://picsum.photos/id/237/200/300',
-        reaction: '',
-      },
-      comment: 'comment comment comment',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      isNewReview: false,
-    },
+    }
   ];
 
   worldClockHolder: any = [
@@ -116,36 +133,9 @@ export class ToDoListCardComponent implements OnInit {
   constructor(
     private todoTService: TodoTService,
     private modalService: ModalService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
-    this.options = {
-      gridType: GridType.VerticalFixed,
-      displayGrid: DisplayGrid.None,
-      compactType: CompactType.CompactUp,
-      pushItems: true,
-      pushDirections: { north: true, east: false, south: true, west: false },
-      maxCols: 3,
-      minCols: 3,
-      fixedRowHeight: 160,
-      itemChangeCallback: this.changedRow,
-      disableScrollVertical: true,
-      disableScrollHorizontal: true,
-      draggable: {
-        delayStart: 0,
-        enabled: true,
-        ignoreContentClass: 'gridster-item-content',
-        ignoreContent: false,
-        dragHandleClass: 'drag-handler',
-        start: this.dragStart,
-        stop: this.dragStoped,
-        dropOverItems: false,
-      },
-      resizable: {
-        enabled: false,
-      },
-    };
-
     this.getTodoList();
   }
 
@@ -157,20 +147,23 @@ export class ToDoListCardComponent implements OnInit {
     this.dragStarted = false;
   };
 
-  changedRow = (e) => {
+  changedRow(e) {
     if (!this.startChangingStatus) {
       let newStatus = TodoStatus.Todo;
       this.startChangingStatus = true;
 
       if (e.x === 0) {
         newStatus = TodoStatus.Todo;
-        e.status = TodoStatus.Todo;
+        e.status.name = TodoStatus.Todo;
+        e.status.id = 1;
       } else if (e.x === 1) {
         newStatus = TodoStatus.InProgres;
-        e.status = TodoStatus.InProgres;
+        e.status.name = TodoStatus.InProgres;
+        e.status.id = 2;
       } else {
         newStatus = TodoStatus.Done;
-        e.status = TodoStatus.Done;
+        e.status.name = TodoStatus.Done;
+        e.status.id = 3;
       }
 
       this.updatedStatusData = {
@@ -201,7 +194,7 @@ export class ToDoListCardComponent implements OnInit {
       .subscribe((resp: TodoListResponse) => {
         this.startChangingStatus = false;
         // this.notification.success('Task status updated successfully.', 'Success:');
-        //this.updateTodosList(resp.pagination.data);
+        this.updateTodosList(this.cardData, true);
       });
   }
 
@@ -209,16 +202,14 @@ export class ToDoListCardComponent implements OnInit {
     this.toDoTasks = resp.filter((x, indx) => {
       if (x.status.name === TodoStatus.Todo) {
         if (!noReplace) {
-          this.cardData.push({
+          const newObject = {
             ...x,
-            cols: 1,
-            rows: 1,
-            y: indx,
-            x: 0,
-            minItemRows: 1,
-            minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length),
-          });
+            type: 'draggable',
+          };
+
+          this.cardData.push(newObject);
+
+          this.scene.children[0].children.push(newObject);
         }
         return true;
       }
@@ -227,16 +218,14 @@ export class ToDoListCardComponent implements OnInit {
     this.inProgressTasks = resp.filter((x, indx) => {
       if (x.status.name === TodoStatus.InProgres) {
         if (!noReplace) {
-          this.cardData.push({
+          const newObject = {
             ...x,
-            cols: 1,
-            rows: 1,
-            y: indx,
-            x: 1,
-            minItemRows: 1,
-            minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length),
-          });
+            type: 'draggable',
+          };
+
+          this.cardData.push(newObject);
+
+          this.scene.children[1].children.push(newObject);
         }
         return true;
       }
@@ -245,61 +234,71 @@ export class ToDoListCardComponent implements OnInit {
     this.doneTasks = resp.filter((x, indx) => {
       if (x.status.name === TodoStatus.Done) {
         if (!noReplace) {
-          this.cardData.push({
+          const newObject = {
             ...x,
-            done: true,
-            cols: 1,
-            rows: 1,
-            y: indx,
-            x: 2,
-            minItemRows: 1,
-            minItemCols: 1,
-            initCallback: this.initItem.bind(this, this.cardData.length),
-          });
+            type: 'draggable',
+          };
+
+          this.cardData.push(newObject);
+
+          this.scene.children[2].children.push(newObject);
         }
         return true;
       }
     });
   }
 
-  toggleComment(e: Event, indx: number) {
+  toggleComment(e: Event, mainIndx: number, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-    this.cardData[indx]['commentActive'] =
-      !this.cardData[indx]['commentActive'];
 
-    this.toggleExpandControll(indx, this.cardData[indx]['commentActive']);
+    this.scene.children[mainIndx].children[indx]['commentActive'] = !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
 
-  toggleExpandControll(indx: number, isOpen: boolean) {
-    const push = new GridsterPush(this.dashboardItems[indx]);
+  toggleLinkShow(e: Event, mainIndx: number, indx: number) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.scene.children[mainIndx].children[indx]['linkActive'] = !this.scene.children[mainIndx].children[indx]['linkActive'];
+  }
 
-    if (isOpen) {
-      this.dashboardItems[indx].$item.rows += 1; // move/resize your item
-      push.pushItems(push.fromNorth);
+  //// NEW ANIMATION
 
-      push.checkPushBack(); // check for items can restore to original position
-      push.setPushedItems();
-      this.dashboardItems[indx].setSize();
-      this.dashboardItems[indx].updateItemSize();
-    } else {
-      this.dashboardItems[indx].$item.rows -= 1; // move/resize your item
-      push.restoreItems();
+  onDrop(dropResult: DropResult) {
+    // update item list according to the @dropResult
+    //this.items = applyDrag(this.items, dropResult);
+    console.log(dropResult);
+  }
+
+  onCardDrop(columnId, dropResult) {
+    if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
+      const scene = Object.assign({}, this.scene);
+      const column = scene.children.filter(p => p.id === columnId)[0];
+      const columnIndex = scene.children.indexOf(column);
+
+      const newColumn = Object.assign({}, column);
+      newColumn.children = applyDrag(newColumn.children, dropResult);
+      scene.children.splice(columnIndex, 1, newColumn);
+
+      if (dropResult.removedIndex === null && dropResult.addedIndex !== null) {
+
+        newColumn.children[dropResult.addedIndex].x = columnIndex;
+
+        this.changedRow(newColumn.children[dropResult.addedIndex]);
+      }
+
+      this.scene = scene;
     }
-    push.destroy();
   }
 
-  initItem(
-    ind: number,
-    item: GridsterItem,
-    itemComponent: GridsterItemComponent
-  ): void {
-    this.dashboardItems[ind] = itemComponent;
+
+  getCardPayload(columnId) {
+    return (index) => {
+      return this.scene.children.filter(p => p.id === columnId)[0].children[index];
+    }
   }
 
-  toggleLinkShow(e: Event, indx: number) {
-    e.preventDefault();
-    e.stopPropagation();
-    this.cardData[indx]['linkActive'] = !this.cardData[indx]['linkActive'];
+  log(...params) {
+    console.log(...params);
   }
+
 }

@@ -95,6 +95,7 @@
     "ngx-lottie": "^6.4.0",
     "ngx-mask": "^13.1.1",
     "ngx-owl-carousel-o": "^2.1.1",
+    "ngx-smooth-dnd": "^0.4.1",
     "ngx-take-until-destroy": "^5.4.0",
     "ngx-toastr": "^14.2.1",
     "ngx-virtual-scroller": "^4.0.3",
