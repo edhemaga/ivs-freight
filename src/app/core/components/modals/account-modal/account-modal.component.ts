@@ -42,7 +42,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public selectedAccountColor: any = {
     id: 1,
     name: 'No Color',
-    color: null,
+    code: null,
     count: 0,
   };
 

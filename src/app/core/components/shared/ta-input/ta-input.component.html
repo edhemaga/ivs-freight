@@ -1,7 +1,10 @@
 <div
   class="input-custom-group"
   [ngClass]="{
-    'hover-focus-out': !focusInput && !inputConfig.isDropdownLabel,
+    'hover-focus-out':
+      !focusInput &&
+      !inputConfig.isDropdownLabel &&
+      !inputConfig.dropdownLabelSelected,
     invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -235,7 +238,6 @@
   </div>
 
   <!-- Input Icon Placeholder -->
-
   <svg-icon
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
@@ -253,8 +255,8 @@
     [svgStyle]="{
       fill:
         inputConfig.isDropdownLabel || inputConfig.specificDropdownLabel
-          ? inputConfig.dropdownLabelSelected?.color
-            ? inputConfig.dropdownLabelSelected.color
+          ? inputConfig.dropdownLabelSelected?.code
+            ? inputConfig.dropdownLabelSelected.code
             : '#b7b7b7'
           : null
     }"

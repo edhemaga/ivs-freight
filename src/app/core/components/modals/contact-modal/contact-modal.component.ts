@@ -22,8 +22,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { createBase64 } from 'src/app/core/utils/base64.image';
-
 @Component({
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
@@ -46,7 +44,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public selectedContactColor: any = {
     id: 1,
     name: 'No Color',
-    color: null,
+    code: null,
     count: 0,
   };
 
@@ -91,8 +89,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.companyContactColorLabels();
     this.followSharedCheckbox();
 
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.uploadFileService.visibilityDropZone(true);
+      clearTimeout(timeout);
     }, 300);
 
     if (this.editData) {
@@ -188,6 +187,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           this.contactLabels = res.labels;
           this.sharedDepartments = res.departments;
           this.sharedDepartments = [];
+          console.log(res.labels);
         },
         error: () => {
           this.notificationService.error(
@@ -364,6 +364,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onPickExistLabel(event: any) {
     this.selectedContactLabel = event;
+    console.log(this.selectedContactLabel);
   }
 
   public onSelectColorLabel(event: any): void {
@@ -374,8 +375,10 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     if (data.action === 'cancel') {
       this.selectedContactLabel = {
         name: data.label,
-        color: this.selectedContactColor.name,
-        count: this.selectedContactLabel.count,
+        code: this.selectedContactColor.code,
+        count: this.selectedContactLabel.count
+          ? this.selectedContactLabel.count
+          : null,
         createdAt: null,
         updatedAt: null,
       };
@@ -384,7 +387,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.selectedContactLabel = {
       id: uuidv4(),
       name: data.label,
-      color: this.selectedContactColor.name,
+      code: this.selectedContactColor.code,
       count: this.selectedContactColor.count,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
