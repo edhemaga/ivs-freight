@@ -20,9 +20,7 @@ export interface UpdateLoadTemplateCommand {
     name?: string | null;
     dispatcherId?: number | null;
     dateCreated?: string | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
+    dispatchId?: number | null;
     brokerId?: number;
     brokerContactId?: number | null;
     referenceNumber?: string | null;
@@ -33,7 +31,7 @@ export interface UpdateLoadTemplateCommand {
     adjustedRate?: number | null;
     revisedRate?: number | null;
     tonuRate?: number | null;
-    additionalBiilingRates?: Array<LoadBillingAdditionalCommand> | null;
+    additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     pays?: Array<LoadPaymentPayCommand> | null;
     stops?: Array<LoadStopCommand> | null;
 }

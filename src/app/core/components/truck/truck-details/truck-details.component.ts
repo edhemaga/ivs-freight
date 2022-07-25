@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { TruckQuery } from './../state/truck.query';
+/* import { TruckQuery } from './../state/truck.query'; */
 import { Subject } from 'rxjs';
 import {
   Component,

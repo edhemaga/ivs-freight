@@ -9,13 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CountryType } from './countryType';
 
 
 export interface UpdateRegistrationCommand { 
     id?: number;
+    countryType?: CountryType;
+    stateId?: number;
+    licensePlate?: string | null;
     issueDate?: string;
     expDate?: string | null;
-    licensePlate?: string | null;
     note?: string | null;
 }
 

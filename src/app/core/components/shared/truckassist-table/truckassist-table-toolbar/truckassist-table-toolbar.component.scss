@@ -142,7 +142,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
-       /*  margin-right: 2px; */
+        /*  margin-right: 2px; */
       }
 
       .active-options {
@@ -172,31 +172,53 @@
   }
 
   // LOCATION FILTER AND OPEN MODAL BUTTON
-  .location-filter-container{
-    svg-icon{
-      display: flex;
+  .modal-open-container {
+    background: #6d82c7;
+
+    &:hover {
+      background: #536bc2;
+      transition: 0.25s;
+    }
+
+    svg-icon {
+      svg {
+        path {
+          fill: #ffffff;
+        }
+      }
     }
   }
-  
+
+  .general-pm-open-container {
+    margin-right: 6px;
+  }
+
   .location-filter-container,
   .modal-open-container,
   .general-pm-open-container {
     width: 32px;
     height: 32px;
-    background: #ffffff;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
   }
 
+  .location-filter-container,
+  .general-pm-open-container {
+    background: #ffffff;
+  }
+
+  .location-filter-container,
+  .modal-open-container {
+    svg-icon {
+      display: flex;
+    }
+  }
+
   .modal-open-container,
   .general-pm-open-container {
     border-radius: 3px;
-  }
-
-  .general-pm-open-container {
-    margin-right: 6px;
   }
 }
 
