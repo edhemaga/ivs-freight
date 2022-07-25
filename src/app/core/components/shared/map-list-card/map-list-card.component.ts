@@ -16,8 +16,10 @@ export class MapListCardComponent implements OnInit {
   @Input() index: any = {};
   @Input() type: string = '';
   @Input() sortCategory: any = {};
-  @Input() locationFilterOn: boolean = false;
+  @Input() locationFilterOn: boolean = false
+  @Input() dropdownActions: any[] = [];
   @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
+  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 
@@ -27,6 +29,15 @@ export class MapListCardComponent implements OnInit {
 
   selectCard() {
     this.clickedMarker.emit(this.index);
+  }
+
+  showMoreOptions(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  callBodyAction(action) {
+    this.bodyActions.emit(action);
   }
 
 }

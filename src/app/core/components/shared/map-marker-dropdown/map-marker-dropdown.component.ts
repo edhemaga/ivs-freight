@@ -14,6 +14,8 @@ export class MapMarkerDropdownComponent implements OnInit {
   @Input() type: string = '';
   @Input() sortCategory: any = {};
   @Input() locationFilterOn: boolean = false;
+  @Input() dropdownActions: any[] = [];
+  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   public copiedPhone: boolean = false;
   public copiedEmail: boolean = false;
@@ -71,5 +73,14 @@ export class MapMarkerDropdownComponent implements OnInit {
 
   toggleWorkingHours() {
     this.showAllDays = !this.showAllDays;
+  }
+
+  showMoreOptions(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  
+  callBodyAction(action) {
+    this.bodyActions.emit(action);
   }
 }

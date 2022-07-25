@@ -56,9 +56,10 @@
                 max-width: none !important;
                 max-height: none !important;
                 overflow: hidden;
-                transition: height 0.2s ease-in-out;
+                transition: height 0.15s ease-in-out;
+                overflow: visible;
 
-                &.shadow {
+                &.marker-tooltip-shadow {
                     box-shadow: $box-shadow;
                 }
             }
@@ -82,11 +83,11 @@
         }
         
         .marker-expanded-view {
-            transition: height 0.2s ease-in-out;
+            transition: height 0.15s ease-in-out;
 
             &.unopened{
                 height: 0px;
-                transition: height 0.2s ease-in-out;
+                transition: height 0.15s ease-in-out;
             }
         }
 
@@ -107,7 +108,7 @@
             
             .marker-expand-svg {
                 display: inline-block;
-                transition: all 0.2s ease-in-out;
+                transition: all 0.15s ease-in-out;
                 
                 &:hover {
                     svg {
@@ -152,6 +153,7 @@
             font-weight: 800;
             color: $bw6-2;
             line-height: 18px;
+            user-select: none;
         }
 
         .marker-info-container-all {
@@ -159,7 +161,8 @@
             
             .show-more {
                 //top: 7px;
-                height: 22px;
+                height: 18px;
+                margin-top: 2px;
 
                 .table-dropdown-container {
                     transform: rotate(90deg);
@@ -201,6 +204,22 @@
                 color: #F44336 !important;
             }
         }
+
+        .marker-icon {
+            svg {
+                #Ellipse_6005 {
+                    fill: $ta-blue-2;
+                }
+            }
+
+            &.permanently-closed-icon {
+                svg {
+                    #Ellipse_6005 {
+                        fill: #F44336;
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -222,6 +241,8 @@
     overflow: hidden;
     opacity: 1;
     transition: 0.15s;
+    user-select: none;
+    cursor: pointer;
 
     @supports (-webkit-line-clamp: 2) {
         overflow: hidden;
@@ -266,16 +287,54 @@
     font-size: 14px;
     line-height: 18px;
     color: $bw6-2;
+
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+      }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
+
+    .title-text {
+        &::-moz-selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+          }
+        &::selection {
+            color: $bw6-2;
+            background: #6c6c6c33;
+        }
+    }
 }
 
 .marker-bold-text {
     font-weight: 700;
+
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+      }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
 }
 
 .marker-like-text {
     font-size: 11px;
     line-height: 14px;
     color: $bw6-2;
+
+    &::-moz-selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+      }
+    &::selection {
+        color: $bw6-2;
+        background: #6c6c6c33;
+    }
 }
 
 .uppercase {
@@ -290,13 +349,56 @@
 
     .show-more {
         position: relative;
-        right: -5px;
         height: 18px;
         cursor: pointer;
 
-        .table-dropdown-container {
+        &.table-dropdown-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
             height: 18px;
-        }
+            cursor: pointer;
+
+            .dropdown-dots {
+                svg {
+                    width: 18px;
+                    height: 18px;
+
+                    path {
+                        fill: #AAAAAA;
+                    }
+                }
+            }
+
+            &:hover {
+                .dropdown-dots {
+                    svg {
+                        path {
+                            fill: #6C6C6C;
+                        }
+                    }
+                }
+            }
+
+            &.active-drop {
+                .dropdown-dots {
+                    svg {
+                        path {
+                            fill: #6C6C6C !important;
+                        }
+                    }
+                
+                    &:hover {
+                        svg {
+                            path {
+                                fill: #3d3d3d !important;
+                            }
+                        }
+                    }
+                }
+              }
+          }
     }
 }
 
@@ -399,7 +501,7 @@
             #Ellipse_6006 {
                 //r: 3;
                 transform: translate(14px, 14px) scale(0.5);
-                transition: all 0.2s;
+                transition: all 0.15s;
             }
         }
     }
@@ -425,7 +527,7 @@
     opacity: 0;
     transform: scale(0.8) !important;
     pointer-events: none;
-    transition: all 0.3s ease-out !important;
+    transition: all 0.15s ease-out !important;
 }
 
 .show-marker-dropdown {
@@ -447,7 +549,7 @@
     &.show {
         opacity: 1;
         transform: scale(0.6) !important;
-        transition: all 0.3s ease-out !important;
+        transition: all 0.15s ease-out !important;
     }
 
     &.modal-animation {

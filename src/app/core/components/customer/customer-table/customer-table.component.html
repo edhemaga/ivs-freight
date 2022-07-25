@@ -29,6 +29,7 @@
         [sortTypes]="sortTypes" 
         [columns]="columns" 
         [activeSortType]="activeSortType"
+        [mapListContent]="viewData"
         (changeSortCategory)="changeSortCategory($event)" 
         (changeSortDirection)="changeSortDirection($event)"
         (searchData)="searchShippers($event)"
@@ -45,21 +46,13 @@
           [type]="'Shipper'"
           [sortCategory]="activeSortType"
           [locationFilterOn]="locationFilterOn"
+          [dropdownActions]="tableOptions.actions"
+          (bodyActions)="onTableBodyActions($event)"
           (clickedMarker)="clickedMarker(latlong.id)"
           [ngStyle]="{
             display: locationFilterOn && latlong?.isShown == false ? 'none' : 'block'
           }"
-        >
-          <div class="show-more" (click)="showMoreOptions($event)">
-            <app-table-dropdown
-              [options]="tableOptions.actions"
-              [placement]="'bottom-left'"
-              [id]="latlong.id"
-              (dropDownActions)="onTableBodyActions($event)"
-            >
-            </app-table-dropdown>
-          </div>
-        </app-map-list-card>
+        ></app-map-list-card>
       </app-map-list>
 
       <agm-map 
@@ -68,10 +61,11 @@
         [restriction]="mapRestrictions"
         [streetViewControl]="false"
         [styles]="styles"
-        [zoom]="1"
+        [zoom]="mapZoom"
         [usePanning]="true"
         [keyboardShortcuts]="false"
-        (mapClick)="mapClick()">
+        (mapClick)="mapClick()"
+        (zoomChange)="zoomChange($event)">
           <!-- <agm-marker-cluster [minimumClusterSize]= "2"
           [averageCenter]="true"
           imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"> -->
@@ -107,18 +101,18 @@
                 *ngIf="!locationFilterOn || latlong.isShown != false"
               >
                 <ng-template>
-                  <div class="marker-container">
+                  <div class="marker-container" 
+                  (click)="clickedMarker(latlong.id)" 
+                  (mousewheel)="markerZoom($event, latlong)">
                     <svg-icon
                       class="marker-icon"
                       src="assets/svg/common/ic_marker.svg"
-                      (click)="clickedMarker(latlong.id)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status != 2"
                     ></svg-icon>
                     <svg-icon
                       class="marker-icon permanently-closed-icon"
                       src="assets/svg/common/ic_marker_closed.svg"
-                      (click)="clickedMarker(latlong.id)" 
                       [ngClass]="{ 'selected-marker': latlong.isSelected }"
                       *ngIf="latlong.status == 2"
                     ></svg-icon>
@@ -134,22 +128,14 @@
                  
                   <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown marker-dropdown-animation': latlong?.isSelected}">
                     <app-map-marker-dropdown
-                    [title]="latlong?.businessName"
-                    [item]="latlong"
-                    [type]="'Shipper'"
-                    [sortCategory]="activeSortType"
-                    [locationFilterOn]="locationFilterOn"
-                  >
-                    <div class="show-more">
-                      <app-table-dropdown
-                        [options]="tableOptions.actions"
-                        [placement]="'bottom-left'"
-                        [id]="latlong.id"
-                        (dropDownActions)="onTableBodyActions($event)"
-                      >
-                      </app-table-dropdown>
-                    </div>
-                  </app-map-marker-dropdown>
+                      [title]="latlong?.businessName"
+                      [item]="latlong"
+                      [type]="'Shipper'"
+                      [sortCategory]="activeSortType"
+                      [locationFilterOn]="locationFilterOn"
+                      [dropdownActions]="tableOptions.actions"
+                      (bodyActions)="onTableBodyActions($event)"
+                    ></app-map-marker-dropdown>
                   </div>
                 </ng-template>
               </agm-snazzy-info-window>

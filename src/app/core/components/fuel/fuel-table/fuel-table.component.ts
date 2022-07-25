@@ -116,6 +116,8 @@ export class FuelTableComponent implements OnInit {
           name: 'edit',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -124,6 +126,9 @@ export class FuelTableComponent implements OnInit {
           text: 'Are you sure you want to delete fuel(s)?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -336,10 +341,10 @@ export class FuelTableComponent implements OnInit {
           this.markerSelected = false;
         }
 
-        document.querySelectorAll('.si-float-wrapper').forEach(function(parentElement: HTMLElement) {
+        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
           parentElement.style.zIndex = '998';
   
-          setTimeout(function() { 
+          setTimeout(() => { 
             var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
             if ( childElements.length ) parentElement.style.zIndex = '999';
           }, 1);

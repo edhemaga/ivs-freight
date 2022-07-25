@@ -40,7 +40,7 @@
       <div class="map-list-body">
         <ng-content></ng-content>
       </div>
-      <div class="map-list-resize-button" (click)="resizeMapList()">
+      <div class="map-list-resize-button" (click)="resizeMapList()" *ngIf="showExpandButton">
         <svg-icon
           src="assets/svg/common/fill_arrow_down.svg"
           class="map-list-resize-svg"

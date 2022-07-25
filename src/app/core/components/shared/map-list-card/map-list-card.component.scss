@@ -20,6 +20,17 @@
         
         .marker-info-text {
             color: $ta-light-grey-3;
+
+            .title-text {
+                &::-moz-selection {
+                    color: $ta-light-grey-3;
+                    background: #3c3c3c33;
+                }
+                &::selection {
+                    color: $ta-light-grey-3;
+                    background: #3c3c3c33;
+                }
+            }
         }
 
         .marker-like-text {
@@ -28,6 +39,17 @@
         
         .map-list-card-address {
             color: $bw6-2;
+            
+            .address-text, .marker-bold-text {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: #6c6c6c33;
+                }
+                &::selection {
+                    color: $bw6-2;
+                    background: #6c6c6c33;
+                }
+            }
         }
 
         .marker-rating-svg {
@@ -51,25 +73,38 @@
         font-size: 11px;
         line-height: 14px;
         color: $ta-light-grey-2;
+
+        .address-text, .marker-bold-text {
+            &::-moz-selection {
+                color: $ta-light-grey-2;
+                background: #aaaaaa33;
+            }
+            &::selection {
+                color: $ta-light-grey-2;
+                background: #aaaaaa33;
+            }
+        }
     }
 
     .title-container {
         margin-top: 2px;
-    }
-    
-    .show-more {
-        position: absolute;
-        top: 2px;
-        right: 2px;
-        height: 18px;
-    
-        cursor: pointer;
     }
 
     .marker-info-text {
         font-size: 14px;
         line-height: 18px;
         color: $bw6-2;
+        
+        .title-text {
+            &::-moz-selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+            &::selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+        }
     }
     
     .marker-medium-text {

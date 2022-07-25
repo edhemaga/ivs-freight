@@ -52,6 +52,7 @@ export class AccidentTableComponent implements OnInit {
 
   public markerAnimations: any = {};
   public showMarkerWindow: any = {};
+  public dropDownActive: number = -1;
 
   constructor(
     private modalService: ModalService,
@@ -115,6 +116,8 @@ export class AccidentTableComponent implements OnInit {
           name: 'edit-accident',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -123,6 +126,9 @@ export class AccidentTableComponent implements OnInit {
           text: 'Are you sure you want to delete accident?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -139,7 +145,7 @@ export class AccidentTableComponent implements OnInit {
         title: 'Reportable',
         field: 'active',
         length: 10,
-        data: this.getDumyData(10),
+        data: this.getDumyData(2),
         extended: false,
         gridNameTitle: 'Accident',
         stateName: 'accidents',
@@ -346,10 +352,10 @@ export class AccidentTableComponent implements OnInit {
           this.markerSelected = false;
         }
 
-        document.querySelectorAll('.si-float-wrapper').forEach(function(parentElement: HTMLElement) {
+        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
           parentElement.style.zIndex = '998';
   
-          setTimeout(function() { 
+          setTimeout(() => { 
             var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
             if ( childElements.length ) parentElement.style.zIndex = '999';
           }, 1);
@@ -376,5 +382,36 @@ export class AccidentTableComponent implements OnInit {
         });
       }, 100);
     }, 1000);
+  }
+
+  onDropAction(action: any, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.onTableBodyActions({
+      id: this.dropDownActive,
+      type: action.name,
+    });
+
+    this.tooltip.close();
+  }
+
+  toggleDropdown(tooltip: any, id: number, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.tableOptions.actions });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? id : -1;
+  }
+
+  showMoreOptions(event) {
+    event.preventDefault();
+    event.stopPropagation();
   }
 }

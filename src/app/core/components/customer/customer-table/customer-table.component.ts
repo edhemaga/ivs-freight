@@ -69,6 +69,12 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
   public markerAnimations: any = {};
   public showMarkerWindow: any = {};
+  public dropDownActive: number = -1;
+  public mapZoom: number = 1;
+  public mapCenter: any = {
+    lat: 41.860119,
+    lng: -87.660156,
+  }
 
   constructor(
     private modalService: ModalService,
@@ -243,6 +249,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           name: 'edit-cutomer-or-shipper',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -254,6 +262,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
               : 'Are you sure you want to delete shipper(s)?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -585,12 +596,22 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           this.markerSelected = false;
         }
 
-        document.querySelectorAll('.si-float-wrapper').forEach(function(parentElement: HTMLElement) {
+        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
             parentElement.style.zIndex = '998';
 
-            setTimeout(function() { 
+            var shadowElement = parentElement.querySelectorAll<HTMLElement>(".si-content")[0];
+            shadowElement.classList.remove("marker-tooltip-shadow");
+
+            setTimeout(() => { 
               var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-              if ( childElements.length ) parentElement.style.zIndex = '999';
+              if ( childElements.length ) {
+                
+                setTimeout(() => { 
+                  shadowElement.classList.add("marker-tooltip-shadow");
+                }, 150);
+
+                parentElement.style.zIndex = '999';
+              }
             }, 1);
         });
         
@@ -642,6 +663,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data.isSelected = false;
       }
     });
+    
+    var shadowElements = document.getElementsByClassName("marker-tooltip-shadow");
+    if ( shadowElements.length ) shadowElements[0].classList.remove("marker-tooltip-shadow");
   }
 
   sortShippers() {
@@ -769,5 +793,48 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           });
         }, 100);
       }, 1000);
+  }
+
+  toggleDropdown(tooltip: any, id: number, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.tableOptions.actions });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? id : -1;
+  }
+
+  onDropAction(action: any, event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.onTableBodyActions({
+      id: this.dropDownActive,
+      type: action.name,
+    });
+
+    this.tooltip.close();
+  }
+
+  zoomChange(event){
+    this.mapZoom = event;
+  }
+
+  markerZoom(e, item) {
+    if(e.wheelDeltaY > 0) {
+      // The user scrolled up.
+      this.zoomChange(this.mapZoom+1);
+
+      this.mapLatitude = item.latitude;
+      this.mapLongitude = item.longitude;
+    } else {
+      // The user scrolled down.
+      this.zoomChange(this.mapZoom-1);
+    }
   }
 }

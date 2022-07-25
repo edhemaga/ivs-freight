@@ -29,6 +29,7 @@
       [sortTypes]="sortTypes" 
       [columns]="columns" 
       [activeSortType]="activeSortType"
+      [mapListContent]="viewData"
       (changeSortCategory)="changeSortCategory($event)" 
       (changeSortDirection)="changeSortDirection($event)"
       (searchData)="searchShops($event)"
@@ -45,21 +46,13 @@
         [type]="'Shipper'"
         [sortCategory]="activeSortType"
         [locationFilterOn]="locationFilterOn"
+        [dropdownActions]="tableOptions.actions"
+        (bodyActions)="onTableBodyActions($event)"
         (clickedMarker)="clickedMarker(latlong.id)"
         [ngStyle]="{
           display: locationFilterOn && latlong?.isShown == false ? 'none' : 'block'
         }"
-      >
-        <div class="show-more" (click)="showMoreOptions($event)">
-          <app-table-dropdown
-            [options]="tableOptions.actions"
-            [placement]="'bottom-left'"
-            [id]="latlong.id"
-            (dropDownActions)="onTableBodyActions($event)"
-          >
-          </app-table-dropdown>
-        </div>
-      </app-map-list-card>
+      ></app-map-list-card>
     </app-map-list>
 
     <agm-map
@@ -139,22 +132,14 @@
             
             <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown marker-dropdown-animation': latlong?.isSelected}">
               <app-map-marker-dropdown
-              [title]="latlong?.name"
-              [item]="latlong"
-              [type]="'Repair'"
-              [sortCategory]="activeSortType"
-              [locationFilterOn]="locationFilterOn"
-            >
-              <div class="show-more">
-                <app-table-dropdown
-                  [options]="tableOptions.actions"
-                  [placement]="'bottom-left'"
-                  [id]="latlong.id"
-                  (dropDownActions)="onTableBodyActions($event)"
-                >
-                </app-table-dropdown>
-              </div>
-            </app-map-marker-dropdown>
+                [title]="latlong?.name"
+                [item]="latlong"
+                [type]="'Repair'"
+                [sortCategory]="activeSortType"
+                [locationFilterOn]="locationFilterOn"
+                [dropdownActions]="tableOptions.actions"
+                (bodyActions)="onTableBodyActions($event)"
+              ></app-map-marker-dropdown>
             </div>
           </ng-template>
         </agm-snazzy-info-window>

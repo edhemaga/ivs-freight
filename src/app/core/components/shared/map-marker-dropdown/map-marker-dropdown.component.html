@@ -3,16 +3,18 @@
     <div class="marker-info-container-all">
       <div class="title-container">
         <div class="marker-business-name">{{ title }}</div>
-        <!-- <div class="show-more">
-          <app-table-dropdown
-            [options]="tableOptions.actions"
+        <div 
+          class="show-more" 
+          (click)="showMoreOptions($event)" 
+          [ngClass]="item?.isSelected ? 'table-dropdown-container active-drop' : 'table-dropdown-container'">
+          <app-details-page-dropdown
+            [options]="dropdownActions"
             [placement]="'bottom-left'"
-            [id]="latlong.id"
-            (dropDownActions)="onTableBodyActions($event)"
+            [id]="item?.id"
+            (dropDownActions)="callBodyAction($event)"
           >
-          </app-table-dropdown>
-        </div> -->
-        <ng-content></ng-content>
+          </app-details-page-dropdown>
+        </div>
       </div>
       <div class="marker-accident-container" *ngIf="type == 'Accident'">
         <div class="accident-report-container">
@@ -180,14 +182,14 @@
         </div>
         <div class="marker-info-text">
           <div *ngIf="item?.address">
-            <div *ngIf="item?.address.street">
+            <div *ngIf="item?.address.street" class="title-text">
               {{ item?.address.streetNumber ? item?.address.streetNumber : '' }} 
               {{ item?.address.street }}
               {{ item?.address.addressUnit ? item?.address.addressUnit : '' }}
             </div>
-            <div>
+            <div class="title-text">
               {{ item?.address.city }}, 
-              {{ item?.address.state }}<span *ngIf="item?.address.zipCode"> {{ item?.address.zipCode }}</span>,
+              {{ item?.address.state }}<span class="title-text" *ngIf="item?.address.zipCode"> {{ item?.address.zipCode }}</span>,
               {{ item?.address.country }}
             </div>
           </div>
@@ -270,10 +272,10 @@
         <div class="marker-title">
           <div class="marker-dual-info-container p-0">
             <span class="data-count">{{ type == 'Shipper' ? '769' : type == 'Repair' ? item.order : type == 'Accident' ? '9' : '' }}</span>
-            {{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : type == 'Accident' ? 'Total Weight' : '' }}
+            <span class="load-text">{{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : type == 'Accident' ? 'Total Weight' : '' }}</span>
           </div>
           <div class="marker-dual-info-container" *ngIf="type == 'Repair'">
-            <span class="marker-bold-text blue-text">${{ item.cost }}K </span><span class="font-weight-normal">Cost</span>
+            <span class="marker-bold-text blue-text">${{ item.cost }}K </span><span class="load-text font-weight-normal">Cost</span>
           </div>
         </div>
         <div class="marker-expanded-info-container" *ngIf="type == 'Shipper'">
@@ -318,7 +320,7 @@
                 [name]="item.driverFullName"
                 [type]="'driver'"
               ></app-profile-images>
-              <span class="mg-left-6">{{ item?.firstName }} <br *ngIf="item.coDriver" /> {{ item.lastName }}</span>
+              <span class="title-text mg-left-6">{{ item?.firstName }} <br class="title-text" *ngIf="item.coDriver" /> {{ item.lastName }}</span>
             </div>
           </div>
           <div class="marker-dual-info-container mg-bottom-4" *ngIf="item.coDriver">
@@ -330,7 +332,7 @@
                 [name]="item.driverFullName"
                 [type]="'driver'"
               ></app-profile-images>
-              <span class="mg-left-6">{{ item?.firstName }} <br /> {{ item.lastName }}</span>
+              <span class="title-text mg-left-6">{{ item?.firstName }} <br class="title-text" /> {{ item.lastName }}</span>
             </div>
           </div>
         </div>
@@ -338,7 +340,7 @@
           <div class="marker-dual-info-container mg-bottom-8">
             <div class="marker-like-text marker-bold-text mg-bottom-4">Truck</div>
             <div class="marker-info-text driver-name-container">
-              <span>{{ item?.truckNumber }}</span>
+              <span class="title-text">{{ item?.truckNumber }}</span>
               <svg-icon
                 class="truck-svg mg-left-6"
                 src="assets/svg/common/ic_driver-truck.svg"
@@ -349,7 +351,7 @@
           <div class="marker-dual-info-container mg-bottom-8">
             <div class="marker-like-text marker-bold-text mg-bottom-4">Trailer</div>
             <div class="marker-info-text driver-name-container">
-              <span>{{ item?.trailerNumber }}</span>
+              <span class="title-text">{{ item?.trailerNumber }}</span>
               <svg-icon
                 class="truck-svg mg-left-6"
                 src="assets/svg/common/trailer.svg"

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
@@ -6,11 +6,12 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
   templateUrl: './map-list.component.html',
   styleUrls: ['./map-list.component.scss']
 })
-export class MapListComponent implements OnInit {
+export class MapListComponent implements OnInit, OnChanges {
 
   @Input() sortTypes: any[] = [];
   @Input() columns: any;
   @Input() activeSortType: any = {};
+  @Input() mapListContent: any[] = [];
   @Output() changeSortCategory: EventEmitter<any> = new EventEmitter<any>();
   @Output() changeSortDirection: EventEmitter<any> = new EventEmitter<any>();
   @Output() searchData: EventEmitter<any> = new EventEmitter<any>();
@@ -22,11 +23,26 @@ export class MapListComponent implements OnInit {
   notPinedColumns: any[] = [];
   actionColumns: any[] = [];
   private tooltip: any;
+  showExpandButton: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
   ) { }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log('ngOnChanges', changes);
+    if ( changes.mapListContent ) {
+      
+      if ( changes.mapListContent.currentValue.length > 5 ) {
+        this.showExpandButton = true;
+
+        var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+        var mapListHeight = mapListElement.clientHeight;
+        mapListElement.style.height = 'max-content';
+      }
+    }
+  }
 
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
@@ -38,6 +54,10 @@ export class MapListComponent implements OnInit {
     });
 
     this.setVisibleColumns();
+
+    if ( this.mapListContent.length > 5 ) {
+      this.showExpandButton = true;
+    }
   }
 
   resizeMapList() {
@@ -45,11 +65,17 @@ export class MapListComponent implements OnInit {
     
     var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
+    var mapListHeight = mapListElement.clientHeight;
+    mapListElement.style.height = mapListHeight + "px";
+
     if ( this.mapListExpanded ) {
-      mapListElement.style.height = '';
+      setTimeout(() => {
+        mapListElement.style.height = mapListHeight*2 + "px";
+      }, 10);
     } else {
-      var mapListHeight = mapListElement.clientHeight;
-      mapListElement.style.height = mapListHeight/2+'px';
+      setTimeout(() => {
+        mapListElement.style.height = mapListHeight/2 + "px";
+      }, 10);
     }
   }
 

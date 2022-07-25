@@ -9,7 +9,7 @@
               [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
             ></svg-icon>
           </span>
-          <span>{{ title }}</span>
+          <span class="title-text">{{ title }}</span>
         </div>
         <!-- <div class="show-more" (click)="showMoreOptions($event)">
           <app-table-dropdown
@@ -27,7 +27,19 @@
             [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
             *ngIf="sortCategory.name == 'Favorites'"
           ></svg-icon>
-          <ng-content></ng-content>
+          <div 
+            class="show-more" 
+            (click)="showMoreOptions($event)" 
+            [ngClass]="item?.isSelected ? 'table-dropdown-container active-drop' : 'table-dropdown-container'">
+            <app-details-page-dropdown
+              [options]="dropdownActions"
+              [placement]="'bottom-right'"
+              [hasVericalDots]="true"
+              [id]="item?.id"
+              (dropDownActions)="callBodyAction($event)"
+            >
+            </app-details-page-dropdown>
+          </div>
         </div>
       </div>
       <div class="marker-rating-container mg-top-2">
@@ -169,7 +181,7 @@
       </div>
       <div class="map-list-card-address mg-top-2" *ngIf="address">
         <span class="marker-bold-text" *ngIf="sortCategory.name != 'Location' && locationFilterOn">{{ item.distanceBetween }} mi - </span>
-        <span>
+        <span class="address-text">
           {{ address.city }},
           {{ address.state }}
           {{ address.zipCode }},
