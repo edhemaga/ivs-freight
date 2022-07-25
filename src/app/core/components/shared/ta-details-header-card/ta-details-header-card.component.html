@@ -74,13 +74,12 @@
         ></svg-icon>
       </span>
     </div>
-    <div *ngIf="hasArrow" class="verical-dots-header">
+    <div *ngIf="hasArrow" class="vertical-dots-header">
       <app-details-page-dropdown
         [options]="optionsDrop.actions"
         [id]="optionsId"
-        [placement]="'bottom-left'"
+        [placement]="'bottom-right'"
         (dropDownActions)="dropAct($event)"
-        [customClassDropDown]="'table-dropdown-container-vertical'"
       >
       </app-details-page-dropdown>
     </div>

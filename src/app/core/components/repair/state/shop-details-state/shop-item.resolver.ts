@@ -9,14 +9,13 @@ import {
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { RepairTService } from '../repair.service';
-import { ShopState, ShopStore } from '../shop-state/shop.store';
 import { ShopDetailsQuery } from './shop-details.query';
-import { ShopItemStore } from './shop-detail.store';
+import { ShopItemState, ShopItemStore } from './shop-detail.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ShopRepairItemResolver implements Resolve<ShopState> {
+export class ShopRepairItemResolver implements Resolve<ShopItemState> {
   constructor(
     private shopService: RepairTService,
     private shopDetailQuery: ShopDetailsQuery,
@@ -26,7 +25,7 @@ export class ShopRepairItemResolver implements Resolve<ShopState> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<ShopState> | Observable<any> {
+  ): Observable<ShopItemState> | Observable<any> {
     const shop_id = route.paramMap.get('id');
     let id = parseInt(shop_id);
 

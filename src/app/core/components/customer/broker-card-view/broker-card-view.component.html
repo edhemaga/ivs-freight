@@ -108,7 +108,7 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [hasDivider]="true"
-        [hasCounter]="37"
+        [hasCounter]="invoiceAgeingCounter?invoiceAgeingCounter:0"
         [cardName]="'Invoice Ageing'"
         [isCardOpen]="true"
       >
@@ -179,7 +179,13 @@
           </div>
         </div>
         <div class="progress-container">
-          <div class="inside-fill"></div>
+          <app-ta-currency-progress-bar
+          [template]="'broker-credit'"
+          [totalAmount]="broker.creditLimit"
+          [paidSoFarAmount]="broker.totalDebt"
+          
+        >
+        </app-ta-currency-progress-bar>
         </div>
 
         <div class="additional-template-broker-data">

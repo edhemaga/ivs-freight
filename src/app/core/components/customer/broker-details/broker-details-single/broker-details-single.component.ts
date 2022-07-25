@@ -27,16 +27,15 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     if (!changes?.brokerData?.firstChange && changes?.brokerData) {
       this.brokerContacts =
         changes.brokerData.currentValue[0].data.brokerContacts;
-      this.brokerLikes = changes.brokerData.currentValue[0].data.upRatingCount;
-      this.brokerDislike =
-        changes.brokerData.currentValue[0].data.downRatingCount;
+      this.brokerLikes = changes.brokerData.currentValue[0].data.upCount;
+      this.brokerDislike = changes.brokerData.currentValue[0].data.downCount;
       this.getReviews(changes.brokerData.currentValue[0].data);
       this.getStops(changes.brokerData.currentValue[0].data);
     }
   }
   ngOnInit(): void {
-    this.brokerLikes = this.brokerData[0].data.upRatingCount;
-    this.brokerDislike = this.brokerData[0].data.downRatingCount;
+    this.brokerLikes = this.brokerData[0].data.upCount;
+    this.brokerDislike = this.brokerData[0].data.downCount;
     this.brokerContacts = this.brokerData[0].data.brokerContacts;
     this.getReviews(this.brokerData[0].data);
     this.initTableOptions();
@@ -54,7 +53,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
       datas = item.stops.map((itemStop) => {
         if (itemStop.stopType.name === 'Pickup') {
           return {
-            date: itemStop.date,
+            date: itemStop.dateFrom,
             stopOrder: itemStop.stopOrder,
             addressCity: itemStop.shipper.address.city,
             addressShortState: itemStop.shipper.address.stateShortName,
@@ -62,7 +61,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
         }
         if (itemStop.stopType.name === 'Delivery') {
           return {
-            date: itemStop.date,
+            date: itemStop.dateFrom,
             stopOrder: itemStop.stopOrder,
             addressCity: itemStop.shipper.address.city,
             addressShortState: itemStop.shipper.address.stateShortName,

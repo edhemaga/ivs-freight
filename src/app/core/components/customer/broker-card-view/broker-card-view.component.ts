@@ -1,3 +1,4 @@
+import { BrokerResponse } from 'appcoretruckassist';
 import { BrokerMinimalListQuery } from './../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
 import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import {
@@ -25,6 +26,7 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   public brokerList: any[] = this.brokerMinimalQuery.getAll();
   public note: FormControl = new FormControl();
   public tabsBroker: any;
+  public invoiceAgeingCounter: number = 0;
   constructor(
     private brokerQuery: BrokerQuery,
     private brokerMinimalQuery: BrokerMinimalListQuery,
@@ -35,12 +37,14 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
     if (!changes?.broker?.firstChange && changes?.broker) {
       this.note.patchValue(changes.broker.currentValue.note);
       this.getBrokerDropdown();
+      this.getInvoiceAgeingCount(changes.broker.currentValue);
     }
   }
   ngOnInit(): void {
     this.note.patchValue(this.broker.note);
     this.getBrokerDropdown();
     this.tabsButton();
+    this.getInvoiceAgeingCount(this.broker);
   }
 
   public tabsButton() {
@@ -75,6 +79,16 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
       },
     ];
   }
+
+  public getInvoiceAgeingCount(data: BrokerResponse) {
+    let firstGroup = data.invoiceAgeingGroupOne.totalSum;
+    let secondGroup = data.invoiceAgeingGroupTwo.totalSum;
+    let threeGroup = data.invoiceAgeingGroupThree.totalSum;
+    let fourGroup = data.invoiceAgeingGroupFour.totalSum;
+    this.invoiceAgeingCounter =
+      firstGroup + secondGroup + threeGroup + fourGroup;
+  }
+
   public getBrokerDropdown() {
     this.brokerDropdowns = this.brokerQuery.getAll().map((item) => {
       return {

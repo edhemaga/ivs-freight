@@ -30,7 +30,7 @@ export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
         return of('No shipper data for...' + ids);
       }),
       tap((shipperRespon: ShipperResponse) => {
-        this.shipperDetailsStore.set({ 0: shipperRespon });
+        this.shipperDetailsStore.set({ ids: shipperRespon });
       })
     );
   }

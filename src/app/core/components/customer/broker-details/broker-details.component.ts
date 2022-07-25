@@ -79,6 +79,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
+        hasArrowDown: true,
         length: data?.loads?.length ? data.loads.length : 0,
         hasCost: true,
         hide: false,
