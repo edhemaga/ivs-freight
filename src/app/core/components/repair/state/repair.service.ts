@@ -30,18 +30,18 @@ export class RepairTService {
     return this.repairService.apiRepairModalGet();
   }
 
-  //Get Shipper Minimal List
-  // public getRepairShopMinimalList(
-  //   pageIndex?: number,
-  //   pageSize?: number,
-  //   count?: number
-  // ): Observable<RepairShopMinimalListResponse> {
-  //   return this.repairService.apiRepairListGet(
-  //     pageIndex,
-  //     pageSize,
-  //     count
-  //   );
-  // }
+  // Get Repair Minimal List
+  public getRepairShopMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<RepairShopMinimalListResponse> {
+    return this.shopServices.apiRepairshopListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
+    );
+  }
 
   public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
     return this.repairService.apiRepairPost(data);

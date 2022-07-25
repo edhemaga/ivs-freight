@@ -53,12 +53,12 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       .subscribe((id) => {
         let query;
         if (!this.shopDetailsQuery.hasEntity(id)) {
-          query = this.shopService.getRepairById(id);
+          query = this.shopService.getRepairShopById(id);
         } else {
           query = this.shopDetailsQuery.selectEntity(id);
         }
         this.shopService
-          .getRepairById(id)
+          .getRepairShopById(id)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: RepairShopResponse) => {

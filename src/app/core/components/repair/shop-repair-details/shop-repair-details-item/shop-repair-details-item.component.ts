@@ -24,13 +24,12 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
   public repairShopDislike: number;
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.shopData.firstChange && changes.shopData.currentValue) {
+    if (!changes?.shopData?.firstChange && changes?.shopData) {
       this.shopData = changes.shopData.currentValue;
-      this.repairShopLikes =
-        changes.shopData.currentValue[0].data.upRatingCount;
+      this.repairShopLikes = changes.shopData.currentValue.data.upRatingCount;
       this.repairShopDislike =
-        changes.shopData.currentValue[0].data.downRatingCount;
-      this.getReviews(changes.shopData.currentValue[0].data);
+        changes.shopData.currentValue.data.downRatingCount;
+      this.getReviews(changes.shopData.currentValue.data);
     }
   }
   ngOnInit(): void {
@@ -76,7 +75,7 @@ export class ShopRepairDetailsItemComponent implements OnInit, OnChanges {
     };
   }
   public getReviews(reviewsData: RepairShopResponse) {
-    this.reviewsRepair = reviewsData.reviews.map((item) => {
+    this.reviewsRepair = reviewsData?.reviews.map((item) => {
       return {
         ...item,
         companyUser: {

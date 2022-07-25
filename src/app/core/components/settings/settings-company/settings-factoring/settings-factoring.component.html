@@ -23,17 +23,17 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      [cardNameCommon]="factoringData.name"
+      [cardNameCommon]="factoringData?.name"
       [haveHeaderText]="true"
       [haveDots]="false"
       [hasFooter]="false"
-      *ngIf="factoringData.name"
+      *ngIf="factoringData?.name"
     >
       <div class="settings-body-items">
-        <div *ngIf="factoringData.phone" class="single-item">
+        <div *ngIf="factoringData?.phone" class="single-item">
           <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
           <div class="value-copy-container" [ngClass]="{ copied: factoringPhone }">
-            <span class="insurance-value">{{ factoringData.phone | formatPhoneP }}</span>
+            <span class="insurance-value">{{ factoringData?.phone | formatPhoneP }}</span>
             <span
               [tooltipBackground]="factoringPhone ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
@@ -41,7 +41,7 @@
               position="top"
               class="tooltip-copy"
               [autoClose]="false"
-              (click)="copyText(factoringData.phone, 'phone')"
+              (click)="copyText(factoringData?.phone, 'phone')"
             >
               <svg-icon
                 class="copy-icon"
@@ -51,11 +51,11 @@
             </span>
           </div>
         </div>
-        <div *ngIf="factoringData.email" class="single-item">
+        <div *ngIf="factoringData?.email" class="single-item">
           <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
 
           <div class="value-copy-container" [ngClass]="{ copied: factoringEmail }">
-            <span class="insurance-value">{{ factoringData.email }}</span>
+            <span class="insurance-value">{{ factoringData?.email }}</span>
             <span
               [tooltipBackground]="factoringEmail ? '#536BC2' : '#6c6c6c'"
               ngbTooltip
@@ -63,7 +63,7 @@
               position="top"
               class="tooltip-copy"
               [autoClose]="false"
-              (click)="copyText(factoringData.email, 'email')"
+              (click)="copyText(factoringData?.email, 'email')"
             >
               <svg-icon
                 class="copy-icon"
@@ -73,12 +73,12 @@
             </span>
           </div>
         </div>
-        <div *ngIf="factoringData.address" class="single-item">
+        <div *ngIf="factoringData?.address" class="single-item">
           <svg-icon
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span class="single-item-address">{{
-            factoringData.address.address
+            factoringData?.address?.address
           }}</span>
         </div>
       </div>
@@ -96,7 +96,7 @@
         >
           <div class="notice-template-item">
             <div class="notice-item-value">
-              {{ factoringData.noticeOfAssigment }}
+              {{ factoringData?.noticeOfAssigment }}
             </div>
           </div>
           <!-- <div class="notice-template-item">
