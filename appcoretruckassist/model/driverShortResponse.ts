@@ -48,9 +48,12 @@ export interface DriverShortResponse {
     payroll?: NotificationEntity;
     cdlNumber?: string | null;
     licenseStateShortName?: string | null;
-    cdlExpiration?: string | null;
     hired?: string | null;
-    medicalExpiration?: string | null;
-    mvrIssueDate?: string | null;
+    mvrExpirationDays?: number | null;
+    cdlExpirationDays?: number | null;
+    medicalExpirationDays?: number | null;
+    mvrPercentage?: number | null;
+    cdlPercentage?: number | null;
+    medicalPercentage?: number | null;
 }
 

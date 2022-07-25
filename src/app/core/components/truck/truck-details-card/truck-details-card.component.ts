@@ -15,7 +15,7 @@ import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TruckQuery } from '../state/truck.query';
+/* import { TruckQuery } from '../state/truck.query'; */
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -414,7 +414,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   constructor(
     private activeted_route: ActivatedRoute,
     private modalService: ModalService,
-    private trucksQuery: TruckQuery,
+    /* private trucksQuery: TruckQuery, */
     private detailsPageDriverSer: DetailsPageService,
     private clipboar: Clipboard,
     private truckMinimalListQuery: TrucksMinimalListQuery

@@ -11,17 +11,15 @@
  */
 import { CommentResponse } from './commentResponse';
 import { CompanyShortResponse } from './companyShortResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { LoadStatusHistoryResponse } from './loadStatusHistoryResponse';
 import { LoadRequirementsResponse } from './loadRequirementsResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
-import { TruckMinimalResponse } from './truckMinimalResponse';
 import { BrokerContactResponse } from './brokerContactResponse';
 import { LoadPaymentPayResponse } from './loadPaymentPayResponse';
 import { SplitLoadResponse } from './splitLoadResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { LoadStopResponse } from './loadStopResponse';
 import { LoadBillingAdditionalResponse } from './loadBillingAdditionalResponse';
 
@@ -30,12 +28,11 @@ export interface LoadResponse {
     id?: number;
     type?: EnumValue;
     status?: EnumValue;
+    lastStatusPassed?: { [key: string]: number; } | null;
     dispatcher?: CompanyUserShortResponse;
     company?: CompanyShortResponse;
     dateCreated?: string | null;
-    truck?: TruckMinimalResponse;
-    trailer?: TrailerMinimalResponse;
-    driver?: DriverMinimalResponse;
+    dispatch?: DispatchShortResponse;
     broker?: BrokerShortResponse;
     brokerContact?: BrokerContactResponse;
     referenceNumber?: string | null;
