@@ -9,7 +9,7 @@ import { tab_modal_animation } from '../../../shared/animations/tabs-modal.anima
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { DropZoneConfig } from '../../../shared/ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 

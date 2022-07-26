@@ -10,8 +10,19 @@ import {
   styleUrls: ['./ta-files.component.scss'],
 })
 export class TaFilesComponent {
+  // *******************  **************  TREBA DA SE IZBACI OVA KOMPONENTA !!! NE KORISTITI JE !!! ************* ************************
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
   @Input() files: any[] = [];
-  @Input() fileType: string = null;  // single-pdf | single-document(word,excel) | multiple-pdf | multiple-document
+  @Input() fileType: string = null; // single-pdf | single-document(word,excel) | multiple-pdf | multiple-document
 
   // Convention: name-component or page - single/multiple - type of upload (pdf, image, document)
   // example: driver-details-single-pdf

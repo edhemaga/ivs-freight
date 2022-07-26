@@ -1,25 +1,27 @@
-<div class="modal-upload-carousel {{ customClass }}">
+<div class="upload-carousel {{ customClass }}">
   <div class="ta-upload-files-carousel">
     <div
       class="carousel-slider"
       [ngClass]="{
-        'multiple-slider': ['modal-medium', 'modal-large'].includes(
+        'multiple-slider': ['medium', 'large'].includes(
           this.customClass.toLowerCase()
         )
       }"
-      [ngStyle]="{ transform: 'translateX(' + translateXMultipleSlides + 'px)' }"
+      [ngStyle]="{
+        transform: 'translateX(' + translateXMultipleSlides + 'px)'
+      }"
     >
       <ng-content></ng-content>
     </div>
   </div>
-  
+
   <!-- Carousel Buttons Left & Right -->
   <div
     class="ta-upload-carousel-control-bg prev"
     [hidden]="
-      (filesLength < 2 && customClass === 'modal-small') ||
-      (filesLength < 3 && customClass === 'modal-medium') ||
-      (filesLength < 4 && customClass === 'modal-large')
+      (filesLength < 2 && customClass === 'small') ||
+      (filesLength < 3 && customClass === 'medium') ||
+      (filesLength < 4 && customClass === 'large')
     "
     (click)="onAction('prev')"
   >
@@ -31,9 +33,9 @@
   <div
     class="ta-upload-carousel-control-bg next"
     [hidden]="
-      (filesLength < 2 && customClass === 'modal-small') ||
-      (filesLength < 3 && customClass === 'modal-medium') ||
-      (filesLength < 4 && customClass === 'modal-large')
+      (filesLength < 2 && customClass === 'small') ||
+      (filesLength < 3 && customClass === 'medium') ||
+      (filesLength < 4 && customClass === 'large')
     "
     (click)="onAction('next')"
   >
@@ -43,4 +45,3 @@
     ></svg-icon>
   </div>
 </div>
-

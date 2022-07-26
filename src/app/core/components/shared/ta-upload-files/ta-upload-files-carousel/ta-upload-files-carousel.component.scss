@@ -1,4 +1,4 @@
-.modal-upload-carousel {
+.upload-carousel {
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
@@ -75,7 +75,7 @@
     }
   }
 
-  &.modal-medium {
+  &.medium {
     .ta-upload-carousel-control-bg {
       &.next {
         left: 95%;
@@ -83,7 +83,7 @@
     }
   }
 
-  &.modal-large {
+  &.large {
     .ta-upload-carousel-control-bg {
       &.next {
         left: 510px;
@@ -91,8 +91,8 @@
     }
   }
 }
-.ta-upload-files-carousel-right{
-  svg{
+.ta-upload-files-carousel-right {
+  svg {
     transform: rotate(180deg);
   }
 }

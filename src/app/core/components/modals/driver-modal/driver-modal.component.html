@@ -2,10 +2,11 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Driver' : 'Edit Driver'"
   [editName]="driverFullName"
   [editData]="editData"
+  [saveAndAddNew]="editData?.type !== 'edit'"
   [customClass]="'modal-container-M'"
   [isModalValid]="editData ? driverForm.valid && isDirty : driverForm.valid"
   [dropZoneConfig]="dropZoneConfig"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"
@@ -136,14 +137,14 @@
           <div
             class="custom-row-paytype-driver"
             [ngStyle]="
-              driverForm.get('truckAsssistACH').value && {
+              driverForm.get('useTruckAssistAch').value && {
                 'margin-bottom': '32px'
               }
             "
           >
             <div class="checkbox-paytype-driver">
               <app-ta-checkbox
-                formControlName="truckAsssistACH"
+                formControlName="useTruckAssistAch"
                 [customClass]="'medium'"
                 [name]="'truckassistACH'"
                 [label]="'Use TruckAssist ACH'"
@@ -179,7 +180,7 @@
               <app-ta-input
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
-                  name: 'Empty Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Empty Mi',
                   isRequired: true,
@@ -193,7 +194,7 @@
               <app-ta-input
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
-                  name: 'Loaded Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Loaded Mi',
                   isRequired: true,
@@ -208,13 +209,10 @@
                 formControlName="soloPerStop"
                 [inputConfig]="{
                   name: 'Per Stop',
-                  type: 'number',
                   label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
-                  min: 0,
-                  max: 10
+                  thousandSeparator: true
                 }"
               ></app-ta-input>
             </div>
@@ -223,10 +221,11 @@
               <app-ta-input
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
-                  name: 'Empty Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Empty Mi',
                   placeholderIcon: 'dollar',
+                  isRequired: true,
                   customClass: 'dollar-placeholderIcon',
                   step: 0.01,
                   min: 0,
@@ -236,10 +235,11 @@
               <app-ta-input
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
-                  name: 'Loaded Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Loaded Mi',
                   placeholderIcon: 'dollar',
+                  isRequired: true,
                   customClass: 'dollar-placeholderIcon',
                   step: 0.01,
                   min: 0,
@@ -250,13 +250,10 @@
                 formControlName="teamPerStop"
                 [inputConfig]="{
                   name: 'Per Stop',
-                  type: 'number',
                   label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
-                  min: 0,
-                  max: 10
+                  thousandSeparator: true
                 }"
               ></app-ta-input>
             </div>
@@ -309,7 +306,7 @@
                   type: 'text',
                   label: 'Bank Name',
                   isDropdown: true,
-                  isRequired: driverForm.get('truckAsssistACH').value,
+                  isRequired: driverForm.get('useTruckAssistAch').value,
                   dropdownWidthClass: 'w-col-banks-driver'
                 }"
                 [canAddNew]="true"
@@ -488,14 +485,14 @@
         <div class="ta-card-body-overflow-none">
           <app-ta-custom-card
             [hasCounter]="documents.length ? documents.length : '0'"
-            [cardName]="'Documents'"
+            [cardName]="'Document'"
             [isCardOpen]="documents.length"
           >
-            <app-ta-modal-upload
+            <app-ta-upload-files
               [files]="documents"
-              [modalSize]="'modal-medium'"
+              [size]="'medium'"
               (onFileEvent)="onFilesEvent($event)"
-            ></app-ta-modal-upload>
+            ></app-ta-upload-files>
           </app-ta-custom-card>
         </div>
         <!-- Emergency Contact -->
@@ -602,7 +599,7 @@
               }"
             >
               <app-ta-input
-                formControlName="mvr"
+                formControlName="mvrExpiration"
                 [inputConfig]="{
                   name: 'MVR',
                   type: 'text',

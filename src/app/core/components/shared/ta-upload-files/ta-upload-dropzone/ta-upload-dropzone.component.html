@@ -1,16 +1,16 @@
 <!-- Dropzone -->
-<div class="ta-modal-dropzone" *ngIf="!unSupporetedType">
-  <label for="pdf" class="ta-modal-dropzone-label">
+<div class="ta-upload-dropzone" *ngIf="!unSupporetedType">
+  <label for="pdf" class="ta-upload-dropzone-label">
     <svg-icon
-      class="ta-modal-dropzone-area"
+      class="ta-upload-dropzone-area"
       [src]="dropZoneConfig.dropZoneSvg"
     ></svg-icon>
-    <div class="ta-modal-dropzone-text">
+    <div class="ta-upload-dropzone-text">
       <!-- Files -->
       <span
         *ngIf="dropZoneConfig.dropZoneType === 'files'"
         [ngClass]="{
-          'ta-modal-dropzone-text-big': dropZoneConfig.globalDropZone
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
         }"
       >
         {{ !textChangeOverModal ? "DRAG FILES HERE" : "DROP IT LIKE IT'S HOT" }}
@@ -19,7 +19,7 @@
       <span
         *ngIf="dropZoneConfig.dropZoneType === 'media'"
         [ngClass]="{
-          'ta-modal-dropzone-text-big': dropZoneConfig.globalDropZone
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
         }"
       >
         {{ !textChangeOverModal ? "DRAG MEDIA HERE" : "DROP IT LIKE IT'S HOT" }}
@@ -28,14 +28,14 @@
       <span
         *ngIf="dropZoneConfig.dropZoneType === 'image'"
         [ngClass]="{
-          'ta-modal-dropzone-text-big': dropZoneConfig.globalDropZone
+          'ta-upload-dropzone-text-big': dropZoneConfig.globalDropZone
         }"
       >
         {{ !textChangeOverModal ? "DRAG IMAGE HERE" : "DROP IT LIKE IT'S HOT" }}
       </span>
       <span
         *ngIf="!dropZoneConfig.globalDropZone"
-        class="ta-modal-dropzone-text-small"
+        class="ta-upload-dropzone-text-small"
         >OR CLICK TO ADD</span
       >
     </div>
@@ -49,16 +49,16 @@
   />
 </div>
 <!-- Dropzone Unsupported -->
-<div class="ta-modal-dropzone-unsupported" *ngIf="unSupporetedType">
+<div class="ta-upload-dropzone-unsupported" *ngIf="unSupporetedType">
   <svg-icon
     class="cancel-unsupported-zone"
     src="assets/svg/common/ic_x.svg"
     (click)="unSupporetedType = false"
   ></svg-icon>
-  <label for="pdf" class="ta-modal-dropzone-label">
-    <div class="ta-modal-dropzone-text">
-      <span class="ta-modal-dropzone-text-big">UNSUPPORTED FILE TYPE</span>
-      <span class="ta-modal-dropzone-text-small"
+  <label for="pdf" class="ta-upload-dropzone-label">
+    <div class="ta-upload-dropzone-text">
+      <span class="ta-upload-dropzone-text-big">UNSUPPORTED FILE TYPE</span>
+      <span class="ta-upload-dropzone-text-small"
         >WE CURRENTLY SUPPORT THESE FORMATS</span
       >
       <div class="supported-extensions">

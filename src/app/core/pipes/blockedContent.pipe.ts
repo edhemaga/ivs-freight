@@ -33,10 +33,15 @@ export class BlockedContentPipe implements PipeTransform {
         'mvr authorization',
         'psp authorization',
         'sph',
+        'sph form',
+        'prospective employer',
+        'accident history',
+        'drug & alcohol history',
         'hos rules',
         'ssn card',
         'cdl card',
         'end screen',
+        'pdf',
       ].includes(value?.toLowerCase())
     ) {
       return true;

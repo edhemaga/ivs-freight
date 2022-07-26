@@ -1,4 +1,4 @@
-import { TaUploadFileService } from './../ta-modal-upload/ta-upload-file.service';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import {
   createBase64,
   getStringFromBase64,
@@ -20,8 +20,8 @@ import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { DomSanitizer } from '@angular/platform-browser';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 
 @Component({
   selector: 'app-ta-logo-change',

@@ -8,7 +8,7 @@
   [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
   [customClass]="'modal-container-M'"
   [dropZoneConfig]="dropZoneConfig"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-tab-switcher
     (switchClicked)="tabChange($event)"
@@ -730,7 +730,7 @@
               <app-ta-input
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
-                  name: 'Empty Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Empty Mi',
                   isRequired: true,
@@ -744,7 +744,7 @@
               <app-ta-input
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
-                  name: 'Loaded Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Loaded Mi',
                   isRequired: true,
@@ -759,13 +759,10 @@
                 formControlName="soloPerStop"
                 [inputConfig]="{
                   name: 'Per Stop',
-                  type: 'number',
                   label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
-                  min: 0,
-                  max: 10
+                  thousandSeparator: true
                 }"
               ></app-ta-input>
             </div>
@@ -774,7 +771,7 @@
               <app-ta-input
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
-                  name: 'Empty Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Empty Mi',
                   placeholderIcon: 'dollar',
@@ -787,7 +784,7 @@
               <app-ta-input
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
-                  name: 'Loaded Mile',
+                  name: 'Per Mile',
                   type: 'number',
                   label: 'Loaded Mi',
                   placeholderIcon: 'dollar',
@@ -801,13 +798,10 @@
                 formControlName="teamPerStop"
                 [inputConfig]="{
                   name: 'Per Stop',
-                  type: 'number',
                   label: 'Per Stop',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  step: 0.01,
-                  min: 0,
-                  max: 10
+                  thousandSeparator: true
                 }"
               ></app-ta-input>
             </div>

@@ -38,3 +38,4 @@ export const insurancePolicyRegex = [
 ];
 
 export const mileValidation = [Validators.min(0), Validators.max(10)];
+export const perStopValidation = [];

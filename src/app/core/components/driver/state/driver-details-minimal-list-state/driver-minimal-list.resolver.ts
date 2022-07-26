@@ -26,7 +26,7 @@ export class DriverMinimalResolver implements Resolve<DriverMinimalListState> {
   ) {}
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<DriverMinimalListState> | Observable<any> {
+  ): Observable<DriverMinimalListResponse> | Observable<any> {
     return this.driverService
       .getDriversMinimalList(this.pageIndex, this.pageSize, this.count)
       .pipe(
