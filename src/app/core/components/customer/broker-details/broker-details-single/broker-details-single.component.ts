@@ -24,7 +24,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
   public stopsDataDelivery: any;
   constructor() {}
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes?.brokerData?.firstChange && changes?.brokerData) {
+    if (changes.brokerData?.currentValue != changes.brokerData?.previousValue) {
       this.brokerContacts =
         changes.brokerData.currentValue[0].data.brokerContacts;
       this.brokerLikes = changes.brokerData.currentValue[0].data.upCount;
@@ -34,12 +34,7 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     }
   }
   ngOnInit(): void {
-    this.brokerLikes = this.brokerData[0].data.upCount;
-    this.brokerDislike = this.brokerData[0].data.downCount;
-    this.brokerContacts = this.brokerData[0].data.brokerContacts;
-    this.getReviews(this.brokerData[0].data);
     this.initTableOptions();
-    this.getStops(this.brokerData[0].data);
   }
 
   /**Function return id */
