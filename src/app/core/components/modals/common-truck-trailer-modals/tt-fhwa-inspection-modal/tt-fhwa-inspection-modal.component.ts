@@ -146,7 +146,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
     };
     this.commonTruckTrailerService
-      .addInspection(newData)
+      .addInspection(newData, this.editData.tabSelected)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

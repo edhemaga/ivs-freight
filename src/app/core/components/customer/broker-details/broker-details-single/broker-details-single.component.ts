@@ -20,22 +20,20 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
   public brokerDislike: number;
   public reviewsRepair: any = [];
   public dotsData: any;
+  public stopsDataPickup: any;
+  public stopsDataDelivery: any;
   constructor() {}
   ngOnChanges(changes: SimpleChanges) {
-    if (!changes?.brokerData?.firstChange && changes?.brokerData) {
+    if (changes.brokerData?.currentValue != changes.brokerData?.previousValue) {
       this.brokerContacts =
         changes.brokerData.currentValue[0].data.brokerContacts;
-      this.brokerLikes = changes.brokerData.currentValue[0].data.upRatingCount;
-      this.brokerDislike =
-        changes.brokerData.currentValue[0].data.downRatingCount;
+      this.brokerLikes = changes.brokerData.currentValue[0].data.upCount;
+      this.brokerDislike = changes.brokerData.currentValue[0].data.downCount;
       this.getReviews(changes.brokerData.currentValue[0].data);
+      this.getStops(changes.brokerData.currentValue[0].data);
     }
   }
   ngOnInit(): void {
-    this.brokerLikes = this.brokerData[0].data.upRatingCount;
-    this.brokerDislike = this.brokerData[0].data.downRatingCount;
-    this.brokerContacts = this.brokerData[0].data.brokerContacts;
-    this.getReviews(this.brokerData[0].data);
     this.initTableOptions();
   }
 
@@ -44,6 +42,31 @@ export class BrokerDetailsSingleComponent implements OnInit, OnChanges {
     return item.id;
   }
 
+  public getStops(data: BrokerResponse) {
+    let datas;
+    let dataStops = data.loads.map((item) => {
+      datas = item.stops.map((itemStop) => {
+        if (itemStop.stopType.name === 'Pickup') {
+          return {
+            date: itemStop.dateFrom,
+            stopOrder: itemStop.stopOrder,
+            addressCity: itemStop.shipper.address.city,
+            addressShortState: itemStop.shipper.address.stateShortName,
+          };
+        }
+        if (itemStop.stopType.name === 'Delivery') {
+          return {
+            date: itemStop.dateFrom,
+            stopOrder: itemStop.stopOrder,
+            addressCity: itemStop.shipper.address.city,
+            addressShortState: itemStop.shipper.address.stateShortName,
+          };
+        }
+      });
+      this.stopsDataPickup = datas[0];
+      this.stopsDataDelivery = datas[1];
+    });
+  }
   public getReviews(reviewsData: BrokerResponse) {
     this.reviewsRepair = reviewsData.reviews.map((item) => {
       return {

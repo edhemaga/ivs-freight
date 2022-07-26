@@ -13,6 +13,8 @@ import {
 import { FormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { Clipboard } from '@angular/cdk/clipboard';
+
 @Component({
   selector: 'app-settings-general',
   templateUrl: './settings-general.component.html',
@@ -36,7 +38,17 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   public companyDivision: boolean = false;
   public hasArrow: boolean;
 
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  public phoneHeader: boolean;
+  public emailHeader: boolean;
+  public faxHeader: boolean;
+  public departmentPhone: boolean;
+  public departmentEmail: boolean;
+  public bankRouting: boolean;
+  public bankAccount: boolean;
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.companyData?.currentValue?.divisions.length < 1) {
@@ -93,5 +105,33 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     this.selectValue.emit(event);
   }
 
+  /* To copy any Text */
+  public copyText(val: any, name: string) {
+    switch (name) {
+      case 'phone-h':
+        this.phoneHeader = true;
+        break;
+      case 'fax-h':
+        this.faxHeader = true;
+        break;
+      case 'email-h':
+        this.emailHeader = true;
+        break;
+      case 'email-dep':
+        this.departmentEmail = true;
+        break;
+      case 'phone-dep':
+        this.departmentPhone = true;
+        break;
+      case 'routing':
+        this.bankRouting = true;
+        break;
+      case 'account':
+        this.bankAccount = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
+  }
   ngOnDestroy(): void {}
 }

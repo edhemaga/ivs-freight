@@ -10,27 +10,23 @@
  * Do not edit the class manually.
  */
 import { TrailerLengthResponse } from './trailerLengthResponse';
+import { BrokerContactResponse } from './brokerContactResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
 import { CompanyShortResponse } from './companyShortResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { ShipperShortResponse } from './shipperShortResponse';
-import { DriverMinimalResponse } from './driverMinimalResponse';
 import { BrokerShortResponse } from './brokerShortResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { HazardousMaterialResponse } from './hazardousMaterialResponse';
-import { TruckMinimalResponse } from './truckMinimalResponse';
-import { BrokerContactResponse } from './brokerContactResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
 
 
 export interface LoadModalResponse { 
     templates?: Array<EnumValue> | null;
     dispatchers?: Array<CompanyUserShortResponse> | null;
     companies?: Array<CompanyShortResponse> | null;
-    trucks?: Array<TruckMinimalResponse> | null;
-    trailers?: Array<TrailerMinimalResponse> | null;
-    drivers?: Array<DriverMinimalResponse> | null;
+    dispatches?: Array<DispatchShortResponse> | null;
     brokers?: Array<BrokerShortResponse> | null;
     brokerContacts?: Array<BrokerContactResponse> | null;
     loadTypes?: Array<EnumValue> | null;

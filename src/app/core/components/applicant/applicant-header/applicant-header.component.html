@@ -2,13 +2,14 @@
   <nav>
     <ul class="d-flex">
       <li
-        class="d-flex align-items-center"
         *ngFor="let menuItem of menuItems; index as i; trackBy: trackByIdentity"
+        class="d-flex align-items-center tab"
+        routerLinkActive="tab-active"
+        [ngClass]="{ 'completed-tab': storeArr[i].isCompleted }"
       >
         <a
           class="d-flex align-items-center ta-font-medium"
-          [routerLink]="[menuItem.route, applicant ? applicant.id : 'id']"
-          routerLinkActive="nav-active"
+          [routerLink]="[menuItem.route, applicant ? applicant.id : 1]"
         >
           <svg-icon
             class="nav-icon"

@@ -95,6 +95,8 @@
           text-align: center;
           width: 82px;
           height: 24px;
+          transform-origin: right;
+
           background-color: #f3f3f3;
           border-radius: 2px;
           transition: all 0.3 ease-in-out;
@@ -353,6 +355,13 @@
     &:hover {
       path {
         fill: #cccccc !important;
+      }
+    }
+  }
+  &:hover {
+    svg {
+      path {
+        fill: #cccccc;
       }
     }
   }

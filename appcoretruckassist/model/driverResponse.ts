@@ -33,6 +33,7 @@ export interface DriverResponse {
     ssn?: string | null;
     status?: number;
     note?: string | null;
+    mvrExpiration?: number;
     address?: AddressEntity;
     dateOfBirth?: string;
     dateTerminated?: string | null;

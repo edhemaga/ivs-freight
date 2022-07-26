@@ -7,7 +7,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { card_modal_animation } from '../animations/card-modal.animation';
-import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 
 @Component({
   selector: 'app-ta-custom-card',
@@ -39,7 +39,7 @@ export class TaCustomCardComponent {
   @Input() controlName: FormControl;
   @Input() stayOpen: boolean = false;
   @Input() disabledCard: boolean = false;
-  @Input() customClassHeaderSvg:boolean=false;
+  @Input() customClassHeaderSvg: boolean = false;
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );

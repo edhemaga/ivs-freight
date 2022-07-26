@@ -11,6 +11,7 @@ export class ApplicantNextBackBtnComponent implements OnInit {
   @Input() backStep: boolean;
   @Input() lastStep: boolean;
   @Input() lastPage: boolean;
+  @Input() lastSphFormPage: boolean;
 
   @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 

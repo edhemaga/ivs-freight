@@ -22,9 +22,7 @@ export interface UpdateLoadCommand {
     dispatcherId?: number | null;
     dateCreated?: string | null;
     status?: LoadStatus;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
+    dispatchId?: number | null;
     brokerId?: number;
     brokerContactId?: number | null;
     referenceNumber?: string | null;
@@ -35,7 +33,7 @@ export interface UpdateLoadCommand {
     adjustedRate?: number | null;
     revisedRate?: number | null;
     tonuRate?: number | null;
-    additionalBiilingRates?: Array<LoadBillingAdditionalCommand> | null;
+    additionalBillingRates?: Array<LoadBillingAdditionalCommand> | null;
     pays?: Array<LoadPaymentPayCommand> | null;
     stops?: Array<LoadStopCommand> | null;
     splitLoad?: SplitLoadCommand;

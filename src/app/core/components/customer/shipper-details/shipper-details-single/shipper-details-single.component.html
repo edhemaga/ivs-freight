@@ -6,65 +6,48 @@
         </app-shipper-card-view>
       </div>
       <div *ngSwitchCase="'load'" class="load">
-        <div class="repair-container">
+        <div class="repair-container" *ngIf="shipperData.data.loadStops.length">
           <div class="repair-header">
             <span class="repaier-headers">LOAD</span>
+            <span class="repaier-headers">DRIVER</span>
             <span class="repaier-headers">TRUCK</span>
             <span class="repaier-headers">TRAILER</span>
-            <span class="repaier-headers">DRIVER</span>
             <span class="repaier-headers">ARRIVE</span>
             <span class="repaier-headers">DEPART</span>
             <span class="repaier-headers">WAIT</span>
           </div>
           <div class="divider"></div>
-          <div class="repair-items-wrapper">
+          <div class="repair-items-wrapper" *ngFor="let loads of shipperData.data.loadStops; trackBy: identity ">
             <div class="repair-items">
               <div class="items-header">
                 <div class="icon-svg-repair">
                   <svg-icon
                     class="arrow-ri"
+                    *ngIf="loads.stopType.name==='Pickup'"
                     src="assets/svg/common/ic_arrow-right-line.svg"
                   ></svg-icon>
-                  <span class="unit">5469</span>
+                  <svg-icon
+                    class="arrow-le"
+                    *ngIf="loads.stopType.name==='Delivery'"
+                    src="assets/svg/common/ic_arrow-line-left.svg"
+                  ></svg-icon>
+                  <span class="unit">{{loads?.load?.id}}</span>
                 </div>
-                <span class="date">A.Djordjevic</span>
-                <span class="date">3568</span>
-                <span class="date">V101</span>
+                <span class="date">{{loads?.load?.dispatch.driver?.firstName.length>6?loads?.load?.dispatch.driver?.firstName[0] + '.' :loads?.load?.dispatch.driver?.firstName}} {{loads?.load?.dispatch.driver?.lastName}}</span>
+                <span class="date">{{loads?.load?.dispatch.truck?.truckNumber}}</span>
+                <span class="date">{{loads?.load?.dispatch.trailer?.trailerNumber}}</span>
                 <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
+                  <span class="date">{{loads?.arrive | formatDateP}}</span>
+                  <span class="time"> {{loads?.arrive | formatTime}}</span>
                 </div>
                 <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
+                  <span class="date">{{loads?.depart | formatDateP}}</span>
+                  <span class="time"> {{loads?.depart | formatTime}}</span>
                 </div>
-                <span class="wait-time">57 min</span>
+                <span class="wait-time"><span class="hours" *ngIf="loads?.wait.days>0">{{loads?.wait.days}} d </span> <span class="hours" *ngIf="loads?.wait.hours>0">{{loads?.wait.hours}} h</span> <span class="hours" *ngIf="loads?.wait.days<=0">{{loads?.wait.minutes}}</span> min</span>
               </div>
             </div>
             <div class="divider"></div>
-            <div class="repair-items">
-              <div class="items-header">
-                <div class="icon-svg-repair">
-                  <svg-icon
-                    class="arrow-le"
-                    src="assets/svg/common/ic_arrow-line-left.svg"
-                  ></svg-icon>
-                  <span class="unit">5469</span>
-                </div>
-                <span class="date">A.Djordjevic</span>
-                <span class="date">3568</span>
-                <span class="date">V101</span>
-                <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
-                </div>
-                <div class="time-date">
-                  <span class="date">20/12/20</span>
-                  <span class="time"> 04:44 AM</span>
-                </div>
-                <span class="wait-time">57 min</span>
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -87,7 +70,7 @@
                 class="parking-template-item parking-template-email parking-name"
               >
                 <span class="parking-template-name">{{
-                  shipperContact.fullName
+                  shipperContact?.fullName
                 }}</span>
                 <div class="svg-wrapper">
                   <span
@@ -117,7 +100,7 @@
               <div class="parking-template-item">
                 <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
                 <span class="parking-template-text">{{
-                  shipperContact.phone | formatPhoneP
+                  shipperContact?.phone | formatPhoneP
                 }}</span>
               </div>
               <div class="parking-template-item">
@@ -126,14 +109,14 @@
                     src="assets/svg/common/ic_phone-extension.svg"
                   ></svg-icon>
                   <span class="parking-template-text">{{
-                    shipperContact.phoneExt
+                    shipperContact?.phoneExt
                   }}</span>
                 </div>
               </div>
               <div class="parking-template-item parking-template-email">
                 <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
                 <span class="parking-template-text">{{
-                  shipperContact.email
+                  shipperContact?.email
                 }}</span>
               </div>
             </div>

@@ -24,21 +24,21 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
   public shipperDropdowns: any[] = [];
   public shipperList: any[] = this.shipperMinimalListQuery.getAll();
   public note: FormControl = new FormControl();
+  public shipperTabs: any[] = [];
   constructor(
     private shipperQuery: ShipperQuery,
     private detailsPageDriverSer: DetailsPageService,
     private shipperMinimalListQuery: ShipperMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.shipper?.firstChange && changes?.shipper) {
+    if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
       this.note.patchValue(changes?.shipper.currentValue.note);
       this.shipper = changes.shipper.currentValue;
       this.getShipperDropdown();
     }
   }
   ngOnInit(): void {
-    this.getShipperDropdown();
-    this.note.patchValue(this.shipper.note);
+    this.tabsButton();
   }
   public getShipperDropdown() {
     this.shipperDropdowns = this.shipperMinimalListQuery
@@ -52,6 +52,38 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
       });
   }
 
+  public tabsButton() {
+    this.shipperTabs = [
+      {
+        id: 223,
+        name: '1M',
+      },
+      {
+        name: '3M',
+        checked: false,
+      },
+      {
+        id: 412,
+        name: '6M',
+        checked: false,
+      },
+      {
+        id: 515,
+        name: '1Y',
+        checked: false,
+      },
+      {
+        id: 1210,
+        name: 'YTD',
+        checked: false,
+      },
+      {
+        id: 1011,
+        name: 'ALL',
+        checked: false,
+      },
+    ];
+  }
   public onSelectedShipper(event: any) {
     if (event.id !== this.shipper.id) {
       this.shipperList = this.shipperMinimalListQuery.getAll().map((item) => {

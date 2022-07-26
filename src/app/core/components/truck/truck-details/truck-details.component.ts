@@ -1,6 +1,6 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-import { TruckQuery } from './../state/truck.query';
+/* import { TruckQuery } from './../state/truck.query'; */
 import { Subject } from 'rxjs';
 import {
   Component,
@@ -127,8 +127,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
 
         {
@@ -136,8 +136,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           name: 'delete-item',
           type: 'truck',
           text: 'Are you sure you want to delete truck(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,

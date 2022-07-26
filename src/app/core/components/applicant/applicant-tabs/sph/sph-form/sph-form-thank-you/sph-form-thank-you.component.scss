@@ -1,0 +1,71 @@
+@import 'src/theme/variables';
+
+.thank-you-container {
+  background-color: $white;
+  min-height: 100vh;
+  padding-top: 60px;
+
+  .thank-you-text {
+    h1 {
+      font-size: 52px;
+      height: 63px;
+      width: 828px;
+      color: $ta-blue;
+      margin-bottom: 32px !important;
+
+      &::-moz-selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue;
+        background: rgb(83, 107, 194, 0.2);
+      }
+
+      span {
+        color: $bw6-2;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+      }
+    }
+
+    p {
+      font-size: 14px;
+      height: 40px;
+      width: 410px;
+      line-height: 22px;
+      color: $bw6-2;
+      margin-bottom: 32px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
+
+  .copyright {
+    height: 42px;
+    border-top: 0.1rem solid $ta-gray-02;
+
+    p {
+      color: $ta-blue-2;
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+}

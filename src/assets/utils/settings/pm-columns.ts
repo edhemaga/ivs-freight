@@ -433,7 +433,7 @@ export function getTrailerPMColumnDefinition() {
         headIconStyle: {
           width: 18,
           height: 18,
-          imgPath: 'assets/svg/truckassist-table/head-color.svg',
+          imgPath: 'assets/svg/truckassist-table/color-type.svg',
         },
         hidden: false,
         width: 54,

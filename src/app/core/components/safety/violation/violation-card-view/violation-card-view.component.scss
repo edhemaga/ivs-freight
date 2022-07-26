@@ -1,3 +1,20 @@
+@keyframes change {
+    from {
+        color: #6c6c6c;
+    }
+    to {
+        color: #3551b7;
+    }
+}
+@keyframes changeSVG {
+    from {
+        fill: #6c6c6c;
+    }
+    to {
+        fill: #3551b7;
+    }
+}
+
 .wrapper-additional-cards {
     max-height: calc(75vh - 74px);
     min-height: calc(24vh - 10px);
@@ -60,6 +77,7 @@
     column-gap: 62px;
     padding: 0 10px;
     row-gap: 12px;
+    margin-top: -4px;
     .violation-card-items {
         display: flex;
         flex-direction: column;
@@ -96,6 +114,7 @@
     padding: 0 10px;
     display: grid;
     grid-template-columns: 210px 200px;
+    margin-top: -4px;
     .violation-driver-item {
         display: flex;
         align-items: center;
@@ -120,6 +139,9 @@
             svg {
                 height: 20px;
                 width: 18px;
+                path {
+                    fill: #aaaaaa;
+                }
             }
         }
         .truck {
@@ -187,6 +209,48 @@
             &::selection {
                 color: #6c6c6c;
                 background: rgb(108, 108, 108, 0.2);
+            }
+        }
+    }
+}
+.value-copy-container {
+    display: flex;
+    .copy-icon {
+        display: none;
+        margin-left: 6px;
+        cursor: pointer;
+        &:hover {
+            svg {
+                path {
+                    fill: #6c6c6c;
+                }
+            }
+        }
+    }
+    &:hover {
+        .copy-icon {
+            display: flex;
+        }
+    }
+}
+.copied {
+    .value {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+    .value-police {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+    .copy-icon {
+        svg {
+            path {
+                animation-duration: 1500ms;
+                animation-name: changeSVG;
+                &:hover {
+                    animation-duration: 1500ms;
+                    animation-name: changeSVG;
+                }
             }
         }
     }

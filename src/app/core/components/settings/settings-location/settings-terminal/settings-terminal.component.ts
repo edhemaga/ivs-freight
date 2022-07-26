@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',
@@ -123,8 +123,14 @@ export class SettingsTerminalComponent implements OnInit {
       ],
     },
   ];
-
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  public terminalPhone: boolean[] = [];
+  public terminalEmail: boolean[] = [];
+  public departmentPhone: boolean[] = [];
+  public departmentEmail: boolean[] = [];
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard
+  ) {}
 
   ngOnInit() {}
   public onAction(modal: { modalName: string; type: string; company?: any }) {
@@ -137,5 +143,25 @@ export class SettingsTerminalComponent implements OnInit {
 
   public identityCardData(index: number, item: any): number {
     return item.id;
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, index: number, name: string) {
+    switch (name) {
+      case 'terminal-phone':
+        this.terminalPhone[index] = true;
+        break;
+      case 'terminal-email':
+        this.terminalEmail[index] = true;
+        break;
+      case 'department-phone':
+        this.departmentPhone[index] = true;
+        break;
+      case 'department-email':
+        this.departmentEmail[index] = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
   }
 }

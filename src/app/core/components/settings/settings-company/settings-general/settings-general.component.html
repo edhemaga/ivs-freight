@@ -102,9 +102,27 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_phone.svg"
           ></svg-icon>
-          <p class="basic-data-value">
-            {{ companyData?.phone | formatPhoneP }}
-          </p>
+
+          <div class="value-copy-container" [ngClass]="{ copied: phoneHeader }">
+            <p class="basic-data-value">
+              {{ companyData?.phone | formatPhoneP }}
+            </p>
+            <span
+              [tooltipBackground]="phoneHeader ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="phoneHeader ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(companyData?.phone, 'phone-h')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="phoneHeader = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
         </div>
 
         <div class="basic-data">
@@ -112,7 +130,28 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_email.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.email }}</p>
+         
+          <div
+          class="value-copy-container"
+          [ngClass]="{ copied: emailHeader }"
+        >
+        <p class="basic-data-value">{{ companyData?.email }}</p>
+          <span
+            [tooltipBackground]="emailHeader ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="emailHeader ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            [autoClose]="false"
+            (click)="copyText(companyData?.email, 'email-h')"
+          >
+            <svg-icon
+              class="copy-icon"
+              (mouseleave)="emailHeader = false"
+              src="assets/svg/common/ic_copy.svg"
+            ></svg-icon>
+          </span>
+        </div>
         </div>
 
         <div class="basic-data">
@@ -120,21 +159,42 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_fax.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.fax | formatPhoneP }}</p>
+          
+          <div
+          class="value-copy-container"
+          [ngClass]="{ copied: faxHeader }"
+        >
+        <p class="basic-data-value">{{ companyData?.fax | formatPhoneP }}</p>
+          <span
+            [tooltipBackground]="faxHeader ? '#536BC2' : '#6c6c6c'"
+            ngbTooltip
+            [mainTooltip]="faxHeader ? 'Copied' : 'Copy'"
+            position="top"
+            class="tooltip-copy"
+            [autoClose]="false"
+            (click)="copyText(companyData?.fax, 'fax-h')"
+          >
+            <svg-icon
+              class="copy-icon"
+              (mouseleave)="faxHeader = false"
+              src="assets/svg/common/ic_copy.svg"
+            ></svg-icon>
+          </span>
+        </div>
         </div>
         <div class="basic-data">
           <svg-icon
             class="basic-data-svg"
             src="assets/svg/common/ic_web.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.webURL }}</p>
+          <p class="basic-data-value">{{ companyData?.webUrl }}</p>
         </div>
       </div>
       <!-- Bottom -->
       <div class="basic-bottom">
         <div class="basic-bottom-card">
           <p class="bottom-card-left">USDOT</p>
-          <p class="bottom-card-right">{{ companyData?.usdot }}</p>
+          <p class="bottom-card-right">{{ companyData?.usDot }}</p>
         </div>
         <div class="basic-bottom-card">
           <p class="bottom-card-left">EIN</p>
@@ -200,7 +260,7 @@
         [isCardOpen]="true"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
-        *ngIf="companyData?.departmentContacts.length"
+        *ngIf="companyData.departmentContacts.length"
         [hasCounter]="companyData.departmentContacts.length"
       >
         <div class="department-template-data">
@@ -224,10 +284,48 @@
             trackBy: identity
           "
         >
-          <span class="body-value-department">Department</span>
-          <span class="body-value">{{ department.phone | formatPhoneP }}</span>
+          <span class="body-value-department">{{department.department.name}}</span>
+          <div class="value-copy-container" [ngClass]="{ copied: departmentPhone }">
+            <span class="body-value">{{ department?.phone | formatPhoneP }}</span>
+            <span
+              [tooltipBackground]="departmentPhone ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="departmentPhone ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(department?.phone, 'phone-dep')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="departmentPhone = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
+          
+
+          
           <span class="body-value">{{ department.extensionPhone }}</span>
-          <span class="body-value-email">{{ department.email }}</span>
+          <div class="value-copy-container" [ngClass]="{ copied: departmentEmail }">
+            <span class="body-value-email">{{ department?.email }}</span>
+            <span
+              [tooltipBackground]="departmentEmail ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="departmentEmail ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(department?.email, 'email-dep')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="departmentEmail = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
+          
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
@@ -235,7 +333,7 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [animationsDisabled]="false"
-        *ngIf="companyData?.bankAccounts.length"
+        *ngIf="companyData.bankAccounts.length"
       >
         <div
           class="additional-template-data"
@@ -251,13 +349,28 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Routing</p>
 
-            <p class="additional-template-value">
-              <span> {{ bank?.routing }}</span>
-            </p>
+            <div class="value-copy-container" [ngClass]="{ copied: bankRouting }">
+              <span class="additional-template-value">{{ bank?.routing }}</span>
+              <span
+                [tooltipBackground]="bankRouting ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="bankRouting ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText(bank?.routing, 'routing')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="bankRouting = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Account</p>
-            <div class="show-hide">
+            <div class="show-hide" [ngClass]="{ copied: bankAccount }">
               <p class="additional-template-value">
                 <span>
                   {{
@@ -285,6 +398,22 @@
                   }}"
                 ></svg-icon>
               </span>
+
+              <span
+              [tooltipBackground]="bankAccount ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="bankAccount ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText( bank?.account , 'account')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="bankAccount = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
             </div>
           </div>
         </div>
@@ -317,7 +446,7 @@
           *ngFor="let bankC of companyData?.bankCards; trackBy: identity"
         >
           <div class="bank-card-template-item-body">
-            <p class="item-body-nick-name">{{ bankC.nickname }}</p>
+            <p class="item-body-nick-name">{{ bankC?.nickname }}</p>
             <div class="item-body-icon-text">
               <svg-icon
                 class="svg-bank"
@@ -325,13 +454,13 @@
               ></svg-icon>
 
               <p class="item-body-cvc">
-                {{ bankC.card | hidePassword: "card" }}
+                {{ bankC?.card | hidePassword: "card" }}
               </p>
             </div>
 
-            <p class="item-body-cvc">{{ bankC.cvc | hidePassword: "cvc" }}</p>
+            <p class="item-body-cvc">{{ bankC?.cvc | hidePassword: "cvc" }}</p>
             <p class="item-body-nick-name">
-              {{ bankC.expireDate | formatDateP: "short-format" }}
+              {{ bankC?.expireDate | formatDateP: "short-format" }}
             </p>
           </div>
         </div>
@@ -346,9 +475,9 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Load Format</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.prefix }}
-              {{ companyData?.additionalInfo.starting }}
-              {{ companyData?.additionalInfo.sufix }}
+              {{ companyData?.additionalInfo?.prefix }}
+              {{ companyData?.additionalInfo?.starting }}
+              {{ companyData?.additionalInfo?.sufix }}
             </p>
           </div>
 
@@ -356,7 +485,7 @@
             <p class="additional-template-value-name">Pref. Load Type</p>
             <p class="additional-template-value">
               {{
-                companyData?.additionalInfo.preferredLoadType == 0
+                companyData?.additionalInfo?.preferredLoadType == 0
                   ? "FTL"
                   : "LTL"
               }}
@@ -366,28 +495,28 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Auto Invoicing</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.autoInvoicing ? "On" : "Off" }}
+              {{ companyData?.additionalInfo?.autoInvoicing ? "On" : "Off" }}
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.customerPayTerm }} days
+              {{ companyData?.additionalInfo?.customerPayTerm }} days
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
-              ${{ companyData?.additionalInfo.customerCredit }}
+              ${{ companyData?.additionalInfo?.customerCredit }}
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Factory by Default</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.factorByDefault ? "On" : "Off" }}
+              {{ companyData?.additionalInfo?.factorByDefault ? "On" : "Off" }}
             </p>
           </div>
         </div>
@@ -402,18 +531,18 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">MVR</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.mvrMonths }}
+              {{ companyData?.additionalInfo?.mvrMonths }}
               {{
-                companyData?.additionalInfo.mvrMonths > 1 ? "months" : "month"
+                companyData?.additionalInfo?.mvrMonths > 1 ? "months" : "month"
               }}
             </p>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Truck Inspection</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.truckInspectionMonths }}
+              {{ companyData?.additionalInfo?.truckInspectionMonths }}
               {{
-                companyData?.additionalInfo.truckInspectionMonths > 1
+                companyData?.additionalInfo?.truckInspectionMonths > 1
                   ? "months"
                   : "month"
               }}
@@ -422,9 +551,9 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Trailer Inspection</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.trailerInspectionMonths }}
+              {{ companyData?.additionalInfo?.trailerInspectionMonths }}
               {{
-                companyData?.additionalInfo.trailerInspectionMonths > 1
+                companyData?.additionalInfo?.trailerInspectionMonths > 1
                   ? "months"
                   : "month"
               }}

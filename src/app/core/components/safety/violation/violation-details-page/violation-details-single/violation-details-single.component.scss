@@ -185,17 +185,41 @@
                 font-weight: 800;
                 color: #6c6c6c;
                 margin-left: 6px;
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
         }
         .total-weight {
             font-size: 14px;
             font-weight: 500;
             color: #6c6c6c;
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
             .total-weight-number {
                 font-size: 18px;
                 margin-left: 12px;
                 margin-right: 12px;
                 font-weight: 800;
+                &::-moz-selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+                &::selection {
+                    color: #6c6c6c;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
         }
     }
@@ -235,20 +259,52 @@
             font-size: 14px;
             font-weight: 800;
             color: #6c6c6c;
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
         }
         .name-default {
             font-size: 14px;
             font-weight: 400;
             color: #6c6c6c;
             white-space: nowrap;
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
         }
         .total-violation {
             font-size: 14px;
             font-weight: 600;
             color: #6c6c6c;
             text-align: center;
+            &::-moz-selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
+            &::selection {
+                color: #6c6c6c;
+                background: rgb(108, 108, 108, 0.2);
+            }
             .total-yellow {
                 color: #ffa726;
+                &::-moz-selection {
+                    color: #ffa726;
+                    background: rgb(255, 167, 38, 0.2);
+                }
+                &::selection {
+                    color: #ffa726;
+                    background: rgb(255, 167, 38, 0.2);
+                }
             }
         }
     }

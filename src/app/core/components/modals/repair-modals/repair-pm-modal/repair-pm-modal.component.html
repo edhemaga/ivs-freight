@@ -8,7 +8,7 @@
   "
   [disableDelete]="true"
   [isModalValid]="editData ? PMform.valid && isDirty : PMform.valid"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="PMform" class="form-container">
     <app-ta-custom-card

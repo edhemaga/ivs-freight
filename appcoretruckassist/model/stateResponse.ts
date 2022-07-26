@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface StateResponse { 
     id?: number;
+    countryType?: EnumValue;
     stateShortName?: string | null;
     stateName?: string | null;
 }

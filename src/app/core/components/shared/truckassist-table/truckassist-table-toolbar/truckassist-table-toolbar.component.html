@@ -49,7 +49,7 @@
   </div>
 
   <!-- BORDER -->
-  <div class="border-container">
+  <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
     <div class="border"></div>
   </div>
 
@@ -59,7 +59,7 @@
   ></app-truckassist-search>
 
   <!-- BORDER -->
-  <div class="border-container">
+  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
     <div class="border"></div>
   </div>
 
@@ -195,10 +195,9 @@
     </div>
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
-      <div class="column" *ngFor="let column of columns; let i = index">
+      <div (click)="onToaggleColumn(column, i)" class="column" *ngFor="let column of columns; let i = index">
         <div class="checkbox" *ngIf="!column.isPined && i > 1">
           <input
-            (click)="onToaggleColumn(column, i)"
             [checked]="!column.hidden"
             class="columns-options-checkbox"
             id="checkbox{{ i }}"
@@ -216,7 +215,8 @@
             [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
           ></svg-icon>
         </div>
-        <div class="column-text">
+
+        <div class="column-text" [ngClass]="{'selectable-text': !column.isPined}">
           {{ column.name !== "" ? column.name : column.title }}
         </div>
       </div>
