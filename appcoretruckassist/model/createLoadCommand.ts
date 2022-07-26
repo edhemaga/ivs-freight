@@ -19,11 +19,9 @@ export interface CreateLoadCommand {
     type?: LoadType;
     loadTemplateId?: number | null;
     dispatcherId?: number | null;
-    companyId?: number;
+    companyId?: number | null;
+    dispatchId?: number | null;
     dateCreated?: string | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
     brokerId?: number;
     brokerContactId?: number | null;
     referenceNumber?: string | null;

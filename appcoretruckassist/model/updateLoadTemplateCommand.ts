@@ -20,9 +20,7 @@ export interface UpdateLoadTemplateCommand {
     name?: string | null;
     dispatcherId?: number | null;
     dateCreated?: string | null;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
+    dispatchId?: number | null;
     brokerId?: number;
     brokerContactId?: number | null;
     referenceNumber?: string | null;

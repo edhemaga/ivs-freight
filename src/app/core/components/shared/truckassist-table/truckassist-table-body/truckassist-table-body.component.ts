@@ -42,6 +42,7 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
+  showMoreContainerWidth: number = 200;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
@@ -93,7 +94,7 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          this.checkForScroll();
+          this.getNotPinedMaxWidth();
         }
       });
 
@@ -127,18 +128,7 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-
-      if (
-        changes?.tableContainerWidth?.currentValue <
-        changes?.tableContainerWidth?.previousValue
-      ) {
-      } else if (
-        changes?.tableContainerWidth?.currentValue >
-        changes?.tableContainerWidth?.previousValue
-      ) {
-      }
-
-      this.getNotPinedMaxWidth(true, 100);
+      this.getNotPinedMaxWidth();
     }
 
     if (
@@ -148,7 +138,9 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
-      this.getNotPinedMaxWidth(true);
+      setTimeout(() => {
+        this.getNotPinedMaxWidth();
+      }, 10);
     }
 
     if (
@@ -164,7 +156,7 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
-    this.getNotPinedMaxWidth(true);
+    this.getNotPinedMaxWidth();
   }
 
   @HostListener('window:scroll', ['$event'])
@@ -174,7 +166,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getNotPinedMaxWidth(checkScroll?: boolean, ms?: number) {
+  getNotPinedMaxWidth() {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
@@ -185,9 +177,7 @@ export class TruckassistTableBodyComponent
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
         8;
 
-      if (checkScroll) {
-        this.checkForScroll();
-      }
+      this.checkForScroll();
     }
   }
 
@@ -200,13 +190,21 @@ export class TruckassistTableBodyComponent
   }
 
   checkForScroll() {
-    clearTimeout(this.checkForScrollTimeout);
-
     const div = document.getElementById('scroll-container');
+    const pinedColumns = document.querySelector('.pined-tr');
+    const actionColumns = document.querySelector('.actions');
 
     if (div) {
       this.checkForScrollTimeout = setTimeout(() => {
         this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
+
+        let notPinedWidth =
+          div.clientWidth <= this.notPinedMaxWidth
+            ? div.clientWidth
+            : this.notPinedMaxWidth;
+
+        this.showMoreContainerWidth +=
+          pinedColumns.clientWidth + actionColumns.clientWidth + notPinedWidth;
 
         this.changeDetectorRef.detectChanges();
       }, 100);

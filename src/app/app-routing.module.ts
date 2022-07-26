@@ -1,4 +1,3 @@
-import { TruckassistProgressExpirationComponent } from './core/components/shared/truckassist-progress-expiration/truckassist-progress-expiration.component';
 import { DispatcherResolverService } from './core/components/dispatcher/state/dispatcher-resolver.service';
 import { DashboardResolverService } from './core/components/dashboard/state/dashboard-resolver.service';
 import { NgModule } from '@angular/core';
@@ -12,15 +11,16 @@ import { DriverActiveResolver } from './core/components/driver/state/driver-acti
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
-import { TruckResolver } from './core/components/truck/state/truck.resolver';
 import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-
 import { Step3PdfComponent } from './core/components/applicant/state/pdf-export/application/step3-pdf/step3-pdf.component';
+
+import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
+import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -81,7 +81,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     resolve: {
       driverActive: DriverActiveResolver,
-      driversInactive: DriverInactiveResolver,
+      driverInactive: DriverInactiveResolver,
     },
   },
   {
@@ -89,7 +89,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/truck/truck.module').then((m) => m.TruckModule),
     canActivate: [AuthGuard],
-    resolve: { truck: TruckResolver },
+    resolve: {
+      truckActive: TruckActiveResolver,
+      truckInactive: TruckInactiveResolver,
+    },
   },
   {
     path: 'trailer',

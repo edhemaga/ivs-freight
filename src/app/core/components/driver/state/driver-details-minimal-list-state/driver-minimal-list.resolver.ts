@@ -30,7 +30,7 @@ export class DriverMinimalResolver
           return of('No drivers data for...');
         }),
         tap((driverMinimalList: DriverMinimalListResponse) => {
-          //  this.driverMinimalList.set(driverMinimalList.pagination.data);
+          /* this.driverMinimalList.set(driverMinimalList.pagination.data); */
         })
       );
   }

@@ -22,9 +22,7 @@ export interface UpdateLoadCommand {
     dispatcherId?: number | null;
     dateCreated?: string | null;
     status?: LoadStatus;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
+    dispatchId?: number | null;
     brokerId?: number;
     brokerContactId?: number | null;
     referenceNumber?: string | null;
