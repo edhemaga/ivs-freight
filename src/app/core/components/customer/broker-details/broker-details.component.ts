@@ -6,24 +6,28 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { BrokerTService } from '../state/broker-state/broker.service';
+import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 @Component({
   selector: 'app-broker-details',
   templateUrl: './broker-details.component.html',
   styleUrls: ['./broker-details.component.scss'],
-  providers: [DetailsPageService],
+  providers: [DetailsPageService, SumArraysPipe],
 })
 export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public brokerConfig: any[] = [];
+  public brokerDrop: any;
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
     private notificationService: NotificationService,
     private brokerQuery: BrokerDetailsQuery,
     private brokerService: BrokerTService,
-    private detailsPageService: DetailsPageService
+    private detailsPageService: DetailsPageService,
+    private sumArr: SumArraysPipe
   ) {}
 
   ngOnInit(): void {
+    this.initTableOptions();
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
@@ -50,7 +54,19 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     this.brokerInitConfig(this.activated_route.snapshot.data.broker);
   }
 
-  public brokerInitConfig(data: BrokerResponse | any) {
+  public brokerInitConfig(data: BrokerResponse) {
+    let totalCost;
+    if (data.loads.length) {
+      totalCost = this.sumArr.transform(
+        data.loads.map((item) => {
+          return {
+            id: item.id,
+            value: item.totalRate,
+          };
+        })
+      );
+    }
+
     this.brokerConfig = [
       {
         id: 0,
@@ -63,11 +79,13 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
-        length: 25,
+        hasArrowDown: true,
+        length: data?.loads?.length ? data.loads.length : 0,
         hasCost: true,
         hide: false,
-        hasArrow: false,
+        hasArrow: true,
         customText: 'Revenue',
+        total: totalCost,
         icons: [
           {
             id: Math.random() * 1000,
@@ -127,6 +145,60 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         hasArrow: false,
       },
     ];
+  }
+
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.brokerDrop = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'truck',
+          text: 'Are you sure you want to delete truck(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
   }
   /**Function return id */
   public identity(index: number, item: any): number {

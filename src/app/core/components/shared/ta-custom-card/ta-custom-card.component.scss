@@ -358,4 +358,11 @@
       }
     }
   }
+  &:hover {
+    svg {
+      path {
+        fill: #cccccc;
+      }
+    }
+  }
 }

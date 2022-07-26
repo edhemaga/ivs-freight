@@ -164,6 +164,9 @@ svg {
         padding-right: 7px;
         padding-bottom: 3px;
         svg {
+            path {
+                fill: #aaaaaa;
+            }
             &:hover {
                 path {
                     fill: #6c6c6c;
@@ -284,5 +287,20 @@ svg {
     &::selection {
         color: #919191;
         background: rgb(145, 145, 145, 0.2);
+    }
+}
+.header-text-arrow-down {
+    display: flex;
+    align-items: center;
+    .arrow-down-header {
+        margin-right: 10px;
+        svg {
+            display: flex;
+            &:hover {
+                path {
+                    fill: #6c6c6c;
+                }
+            }
+        }
     }
 }
