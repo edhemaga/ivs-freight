@@ -11,7 +11,6 @@ import { DriverActiveResolver } from './core/components/driver/state/driver-acti
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
-import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
@@ -21,6 +20,8 @@ import { Step3PdfComponent } from './core/components/applicant/state/pdf-export/
 
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
+import { TrailerActiveResolver } from './core/components/trailer/state/trailer-active-state/trailer-active.resolver';
+import { TrailerInactiveResolver } from './core/components/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -101,7 +102,7 @@ const routes: Routes = [
         (m) => m.TrailerModule
       ),
     canActivate: [AuthGuard],
-    resolve: { trailer: TrailerResolver },
+    resolve: { trailerActive: TrailerActiveResolver, trailerInactive: TrailerInactiveResolver },
   },
   {
     path: 'customer',

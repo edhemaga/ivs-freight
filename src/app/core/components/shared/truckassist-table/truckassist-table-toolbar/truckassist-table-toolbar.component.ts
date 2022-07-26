@@ -72,6 +72,7 @@ export class TruckassistTableToolbarComponent
   toolbarWidth: string = '';
   maxToolbarWidth: number = 0;
   inactiveTimeOutInterval: any;
+  timeOutToaggleColumn: any;
 
   constructor(private tableService: TruckassistTableService) {}
 
@@ -270,16 +271,20 @@ export class TruckassistTableToolbarComponent
   }
 
   onToaggleColumn(column: any, index: number) {
-    if (!column.isPined) {
-      column.hidden = !column.hidden;
-
-      this.resetInactivityTimer();
-
-      this.tableService.sendToaggleColumn({
-        column: column,
-        index: index,
-      });
-    }
+    clearTimeout(this.timeOutToaggleColumn);
+    
+    this.timeOutToaggleColumn = setTimeout(() => {
+      if (!column.isPined) {
+        column.hidden = !column.hidden;
+  
+        this.resetInactivityTimer();
+  
+        this.tableService.sendToaggleColumn({
+          column: column,
+          index: index,
+        });
+      }
+    }, 10)
   }
 
   ngOnDestroy(): void {
