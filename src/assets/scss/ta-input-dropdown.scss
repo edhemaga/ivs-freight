@@ -159,6 +159,12 @@
           .svgtext-template-logo {
             height: auto;
             margin-right: 6.5px;
+            transition: all 0.2s ease-in-out;
+
+            &.hide-hover-icons {
+              display: none;
+              transform: translateX(-30px);
+            }
           }
 
           .svgtext-template-text {
@@ -172,6 +178,15 @@
           .colors {
             height: 18px;
             width: 18px;
+          }
+
+          &:hover {
+            .svgtext-template-logo {
+              &.hide-hover-icons {
+                transform: translateX(0px) !important;
+                display: inline-block !important;
+              }
+            }
           }
         }
 

@@ -168,7 +168,11 @@
             class="svgtext-template-logo {{
               option.name.trim().replace(' ', '').toLowerCase()
             }}"
-            [ngClass]="{ active: option.id === activeItem?.id }"
+            [ngClass]="{
+              active: option.id === activeItem?.id,
+              'hide-hover-icons':
+                inputConfig.customClass === 'truck-trailer-dropdown'
+            }"
             [src]="option.logoName"
           ></svg-icon>
           <div
