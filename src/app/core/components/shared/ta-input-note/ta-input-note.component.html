@@ -21,7 +21,7 @@
       placeholder="Write a note..."
       class="note-textarea"
       contenteditable="true"
-      (input)="changeValue($event.target.innrHTML)"
+      (input)="changeValue($event.target.innerHTML)"
       (focus)="checkFocus($event)"
       (blur)="prepareForTextRange()"
     ></div>

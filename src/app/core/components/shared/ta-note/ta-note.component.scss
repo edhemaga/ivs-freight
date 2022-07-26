@@ -373,6 +373,12 @@
 }
 
 .note_inner_text{
+  display: -webkit-box; 
   font-size: 11px;
   color: #6C6C6C;
+
+  overflow: hidden;
+  
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

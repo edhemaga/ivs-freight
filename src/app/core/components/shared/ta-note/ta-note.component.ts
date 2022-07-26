@@ -33,16 +33,20 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
   @Input() openAllNotesText: any;
   @ViewChild('t2') t2: any;
-  @ViewChild('mainEditor', {static: false}) public mainEditor: any;
+  @ViewChild('main_editor', {static: false}) public main_editor: any;
+  
   tooltip: any;
   showCollorPattern: boolean;
   buttonsExpanded = false;
   isExpanded = false;
   noteOpened: boolean = false;
   editorDoc: any;
-  value = '';
+  value: string = '';
+  savedValue: string = '';
+  saveInterval: any;
+  saveIntervalStarted: boolean = false;
   noteIcon: string = 'Note - Empty.svg';
-  selectedPaternColor = '#FFFFFFF';
+  selectedPaternColor = '#6C6C6C';
   activeOptions: any = {
     bold: false,
     italic: false,
@@ -112,17 +116,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   checkFocus(e) {
-    e.preventDefault();
     e.stopPropagation();
-    var div = document.getElementById('main_editor');
-    console.log(div, 'divdivdiv')
-    setTimeout(function() {
-        div.focus();
-    });
-    
+    e.preventDefault();
+
     this.isFocused = true;
     console.log('check focus')
-      //this.openedAll = false;
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
       this.isExpanded = true;
@@ -141,7 +139,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (tooltip.isOpen()) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
-        //this.openedAll = false;
         this.sharedService.emitAllNoteOpened.next(false);
       } else if (!this.isExpanded) {
         this.leaveThisOpened = false;
@@ -182,6 +179,11 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);
     }
+    this.saveIntervalStarted = false;
+    clearInterval(this.saveInterval);
+    if ( this.savedValue != this.value ) {
+      this.saveNote();
+    }
   }
 
   preventMouseDown(ev) {
@@ -192,23 +194,36 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   valueChange(event) {
     this.value = event;
     this.checkActiveItems();
+    let saveValue = this.value;
+
+    if ( !this.saveIntervalStarted ) {
+      this.saveIntervalStarted = true;
+      this.saveInterval = setInterval(() => {
+        if ( saveValue == this.value ){
+          this.saveIntervalStarted = false;
+          clearInterval(this.saveInterval);
+        }
+        this.saveNote(true);
+        
+      },60000);
+    }
   }
 
   checkActiveItems() {
     this.sharedService.emitUpdateNoteActiveList.next(null);
   }
 
-  saveNote() {
-    this.leaveThisOpened = false;
-    this.showCollorPattern = false;
-    this.isExpanded = false;
-    this.buttonsExpanded = false;
-    if (this.t2) {
-      this.t2.close();
+  saveNote(autoSave?: boolean) {
+    console.log('NOTE SAVED');
+    if ( !autoSave ) {
+      this.closeNote();
     }
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
+
+    this.note = this.value;
+    this.savedValue = this.value;
     this.saveNoteValue.emit(this.value);
   }
 
@@ -254,12 +269,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   expandAllNotes() {
-    this.isExpanded = true;
-    setTimeout(() => {
-      if ( this.openedAll ) {
-        this.toggleNote(this.t2, this.note);
-      }
-    });
+    if ( !this.isExpanded ) {
+      setTimeout(() => {
+        if ( this.openedAll ) {
+          this.isExpanded = true;
+        }
+      });
+    }
   }
 
   public ngOnDestroy(): void {

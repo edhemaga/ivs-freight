@@ -1,8 +1,10 @@
 import {
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnInit,
+  Output,
   Renderer2,
   Self,
   ViewChild,
@@ -21,7 +23,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = null;
   selectionTaken: any;
   range: any;
-  value: any;
+  value: string = '';
+  savedValue: string = '';
+  saveInterval: any;
+  saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
 
@@ -35,7 +40,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() placeholder: string = 'Write a note.';
   @Input() isReadOnly: boolean = false;
   @Input() customClass: string = null;
-
+  @Output() saveNoteValue = new EventEmitter();
   @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
   @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
@@ -83,18 +88,48 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   changeValue(event){
+    console.log(event)
     this.value = event;
     this.checkActiveItems();
+    let saveValue = this.value;
+
+    if ( !this.saveIntervalStarted ) {
+      this.saveIntervalStarted = true;
+      this.saveInterval = setInterval(() => {
+        if ( saveValue == this.value ){
+          this.saveIntervalStarted = false;
+          clearInterval(this.saveInterval);
+        }
+        this.saveNote(true);
+        
+      },60000);
+    }
   }
 
   checkActiveItems() {
     this.sharedService.emitUpdateNoteActiveList.next(null);
   }
 
+  saveNote(allowSave?: boolean) {
+    console.log('NOTE SAVED');
+    if (this.value == '<br>') {
+      this.value = this.value.replace('<br>', '');
+    }
+    if ( allowSave ) {
+      this.savedValue = this.value;
+      this.saveNoteValue.emit(this.value);
+    }
+  }
+
   prepareForTextRange() {
     this.selectionTaken = window.getSelection();
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);
+    }
+    this.saveIntervalStarted = false;
+    clearInterval(this.saveInterval);
+    if ( this.savedValue != this.value ) {
+      this.saveNote(true);
     }
   }
 }

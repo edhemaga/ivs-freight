@@ -57,7 +57,7 @@ export class TaNoteContainerComponent implements OnInit {
     },
   ]
   selectedColorName: any = {
-    color: "#B7B7B7",
+    color: "#6C6C6C",
     name: "Gray"
   };
   slowTimeout: any;
