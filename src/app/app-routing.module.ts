@@ -19,8 +19,8 @@ import { ShipperResolver } from './core/components/customer/state/shipper-state/
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-import { AccidentHistoryPdfComponent } from './core/components/applicant/state/pdf-export/sph-form/accident-history-pdf/accident-history-pdf.component';
-import { ProspectiveEmployerPdfComponent } from './core/components/applicant/state/pdf-export/sph-form/prospective-employer-pdf/prospective-employer-pdf.component';
+
+import { Step3PdfComponent } from './core/components/applicant/state/pdf-export/application/step3-pdf/step3-pdf.component';
 
 const routes: Routes = [
   // Auth Routes
@@ -281,7 +281,7 @@ const routes: Routes = [
   },
   {
     path: 'pdf',
-    component: ProspectiveEmployerPdfComponent,
+    component: Step3PdfComponent,
     data: { title: 'pdf' },
   },
   {

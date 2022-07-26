@@ -42,6 +42,10 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
 
 import { ProspectiveEmployerPdfComponent } from './state/pdf-export/sph-form/prospective-employer-pdf/prospective-employer-pdf.component';
 import { AccidentHistoryPdfComponent } from './state/pdf-export/sph-form/accident-history-pdf/accident-history-pdf.component';
+import { DrugAlcoholTestingPdfComponent } from './state/pdf-export/sph-form/drug-alcohol-testing-pdf/drug-alcohol-testing-pdf.component';
+import { Step1PdfComponent } from './state/pdf-export/application/step1-pdf/step1-pdf.component';
+import { Step2PdfComponent } from './state/pdf-export/application/step2-pdf/step2-pdf.component';
+import { Step3PdfComponent } from './state/pdf-export/application/step3-pdf/step3-pdf.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +79,10 @@ import { AccidentHistoryPdfComponent } from './state/pdf-export/sph-form/acciden
 
     ProspectiveEmployerPdfComponent,
     AccidentHistoryPdfComponent,
+    DrugAlcoholTestingPdfComponent,
+    Step1PdfComponent,
+    Step2PdfComponent,
+    Step3PdfComponent,
   ],
   imports: [
     CommonModule,
