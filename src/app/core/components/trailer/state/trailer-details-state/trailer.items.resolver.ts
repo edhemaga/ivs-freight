@@ -3,10 +3,9 @@ import { TrailerResponse } from '../../../../../../../appcoretruckassist/model/t
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, Router, RouterStateSnapshot } from '@angular/router';
 import { Observable,tap, of } from 'rxjs';
-import { catchError, take } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { TrailerTService } from '../trailer.service';
-import { TrailerState, TrailerStore } from '../trailer.store';
-import { TrailerItemStore } from './trailer-details.store';
+import { TrailerItemState, TrailerItemStore } from './trailer-details.store';
 import { TrailerDetailsQuery } from './trailer-details.query';
 
 
@@ -15,7 +14,7 @@ import { TrailerDetailsQuery } from './trailer-details.query';
 @Injectable({
   providedIn: 'root',
 })
-export class TrailerItemResolver implements Resolve<TrailerState> {
+export class TrailerItemResolver implements Resolve<TrailerItemState> {
   constructor(
     private trailerService: TrailerTService,
     private trailerDetailStore: TrailerItemStore,
@@ -25,7 +24,7 @@ export class TrailerItemResolver implements Resolve<TrailerState> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): Observable<TrailerState> | Observable<any> {
+  ): Observable<TrailerItemState> | Observable<any> {
      const trailer_id=route.paramMap.get('id');
      let id=parseInt(trailer_id)
     //  if(this.trailerDetailQuery.hasEntity(id)){

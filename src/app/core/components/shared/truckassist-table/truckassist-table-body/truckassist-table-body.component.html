@@ -624,6 +624,15 @@
                   [ngStyle]="{ fill: row[column.field] }"
                 />
               </svg>
+
+              <div
+                [ngStyle]="{
+                  width: column.width - 18 + 'px'
+                }"
+                class="color-name"
+              >
+                {{ row.colorName }}
+              </div>
             </div>
 
             <!-- SVG COLUMN -->
@@ -1379,6 +1388,14 @@
                   [ngStyle]="{ fill: row[column.field] }"
                 />
               </svg>
+              <div
+                [ngStyle]="{
+                  width: column.width - 18 + 'px'
+                }"
+                class="color-name"
+              >
+                {{ row.colorName }}
+              </div>
             </div>
 
             <!-- SVG COLUMN -->

@@ -42,7 +42,7 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  showMoreContainerWidth: number = 200;
+  showMoreContainerWidth: number = 220;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;

@@ -570,8 +570,19 @@ table {
             }
 
             // COLOR COLUMN
-            .color-icon{
+            .color-icon {
               display: flex;
+            }
+
+            .color-name {
+              width: fit-content;
+              color: #6C6C6C;
+              margin-left: 4px;
+              font-size: 14px;
+              font-weight: 400;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
 
             // SVG COLUMN
