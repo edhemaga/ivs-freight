@@ -105,6 +105,7 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
+import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +177,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    ProgressInvoicesComponent,
   ],
   imports: [
     CommonModule,
@@ -297,7 +299,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaChartComponent,
     FilterComponent,
     TaTabSwitchComponent,
-
+    ProgressInvoicesComponent,
     // Modals Components
     TaModalComponent,
     TaInputAddressComponent,

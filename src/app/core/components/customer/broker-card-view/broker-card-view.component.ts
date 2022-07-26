@@ -34,17 +34,14 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.broker?.firstChange && changes?.broker) {
+    if (changes?.broker?.currentValue != changes.broker?.previousValue) {
       this.note.patchValue(changes.broker.currentValue.note);
       this.getBrokerDropdown();
       this.getInvoiceAgeingCount(changes.broker.currentValue);
     }
   }
   ngOnInit(): void {
-    this.note.patchValue(this.broker.note);
-    this.getBrokerDropdown();
     this.tabsButton();
-    this.getInvoiceAgeingCount(this.broker);
   }
 
   public tabsButton() {

@@ -1,0 +1,23 @@
+<div class="progress-text-wrapper">
+  <div class="text-broker-wrapper">
+    <span class="days">{{ invoiceDays }} days</span>
+    <span class="invoice-days"
+      >{{ invoiceCounter }} <span class="inv">Inv.</span></span
+    >
+    <span class="cost-total-ageing">{{ invoiceTotal | formatCurrency }} </span>
+  </div>
+  <div [ngSwitch]="template">
+    <div *ngSwitchCase="'light-blue'" class="custom-progress-light-blue">
+      <div class="inside-progress"></div>
+    </div>
+    <div *ngSwitchCase="'mid-blue'" class="custom-progress-mid-blue">
+      <div class="inside-progress"></div>
+    </div>
+    <div *ngSwitchCase="'dark-blue'" class="custom-progress-dark-blue">
+      <div class="inside-progress"></div>
+    </div>
+    <div *ngSwitchCase="'danger'" class="custom-progress-danger-broker">
+      <div class="inside-progress"></div>
+    </div>
+  </div>
+</div>
