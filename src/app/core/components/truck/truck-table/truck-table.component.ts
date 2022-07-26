@@ -17,11 +17,13 @@ import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query
 import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
 import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-truck-table',
   templateUrl: './truck-table.component.html',
   styleUrls: ['./truck-table.component.scss'],
+  providers: [TaThousandSeparatorPipe],
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
@@ -52,7 +54,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private truckActiveQuery: TruckActiveQuery,
     private truckInactiveQuery: TruckInactiveQuery,
     private truckService: TruckTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   ngOnInit(): void {
@@ -160,7 +163,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData.splice(truckIndex, 1);
             clearInterval(inetval);
           }, 1000);
-        }else if (res.animation === 'delete') {
+        } else if (res.animation === 'delete') {
           let truckIndex: number;
 
           this.viewData = this.viewData.map((truck: any, index: number) => {
@@ -379,21 +382,31 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewData = this.viewData.map((data) => {
       return this.mapTruckData(data);
     });
+
+    /* For Testing */
+    /* for(let i = 0; i < 500; i++){
+      this.viewData.push(this.viewData[0])
+    } */
   }
 
   mapTruckData(data: any) {
     return {
       ...data,
+      textCommission: '15%',
+      textGrossWeight: 'G - 60,001 - 61,000 lbs.',
+      textPurchasePrice: '100$',
+      textPurchaseDate: '03/12/22',
       textYear: data.year ? data.year : '',
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
       color: data?.color?.code ? data.color.code : '',
-      svgIcon: 'Treba da se sredi',
+      truckTypeIcon: data.truckType.logoName,
+      truckTypeClass: data.truckType.logoName.replace('.svg', ''),
       ownerName: data?.owner?.name ? data.owner.name : '',
       truckAxises: data?.axles ? data.axles : '',
       truckEmptyWeight: data?.emptyWeight
-        ? data.emptyWeight
-        : '' /* Treba formatirati 24444 -> 24,444 lbs. */,
+        ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+        : '',
       truckEngine: data?.truckEngineType?.name ? data.truckEngineType.name : '',
       truckTireSize: data?.tireSize?.name ? data.tireSize.name : '',
       truckMileage: data?.mileage ? data.mileage : '',
@@ -510,7 +523,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           {
             ...event,
             modal: 'truck',
-            tabSelected: this.selectedTab
+            tabSelected: this.selectedTab,
           }
         );
         break;
@@ -522,7 +535,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           {
             ...event,
             modal: 'truck',
-            tabSelected: this.selectedTab
+            tabSelected: this.selectedTab,
           }
         );
         break;

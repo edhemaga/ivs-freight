@@ -264,11 +264,11 @@ table {
                 transition: 0.2s;
               }
 
-              .avatar-img{
+              .avatar-img {
                 width: 18px;
                 height: 20px;
-                
-                img{
+
+                img {
                   display: flex;
                   width: 100%;
                   height: 100%;
@@ -569,37 +569,72 @@ table {
               }
             }
 
-            // COLOR
-            .table-color {
-              width: 22px;
-              height: 22px;
-              border-radius: 3px;
-            }
-
-            .add-box-shadow {
-              box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+            // COLOR COLUMN
+            .color-icon{
+              display: flex;
             }
 
             // SVG COLUMN
             .truckassist-icon {
-              cursor: pointer;
               svg-icon {
-                svg {
-                  path {
-                    fill: #dadada;
-                  }
-                  circle {
-                    fill: #dadada;
+                display: flex;
+              }
+
+              &:hover {
+                // TRUCKS
+                .ic_truck_semi-truck {
+                  svg {
+                    path {
+                      fill: #97d568;
+                    }
                   }
                 }
-              }
-            }
 
-            .side-kit-icon {
-              svg-icon {
-                svg {
-                  rect {
-                    fill: white;
+                .ic_truck_semi-wSleeper {
+                  svg {
+                    path {
+                      fill: #ffb74d;
+                    }
+                  }
+                }
+
+                .ic_truck_box-truck {
+                  svg {
+                    path {
+                      fill: #e57373;
+                    }
+                  }
+                }
+
+                .ic_truck_cargo-van {
+                  svg {
+                    path {
+                      fill: #68c3ff;
+                    }
+                  }
+                }
+
+                .ic_truck_tow-truck {
+                  svg {
+                    path {
+                      fill: #ba68c8;
+                    }
+                  }
+                }
+
+                .ic_truck_car-hauler {
+                  svg {
+                    path {
+                      fill: #59a5a5;
+                    }
+                  }
+                }
+
+                .ic_truck_spotter {
+                  svg {
+                    path {
+                      fill: #415fc1;
+                    }
                   }
                 }
               }
