@@ -173,9 +173,38 @@
     }
 
     .files-container {
-      background-color: $ta-light-grey-2;
       width: 616px;
-      height: 234px;
+
+      .files-header {
+        border-top: 0.2px solid $ta-light-grey-4;
+        border-radius: 1px;
+        margin-bottom: 9px;
+        padding-top: 5px;
+        height: 24px;
+
+        .counter-container {
+          border-radius: 2px;
+          background: $ta-light-grey-4;
+          width: 24px;
+          height: 24px;
+
+          p {
+            font-size: 14px;
+            color: $bw6-2;
+            user-select: none;
+          }
+        }
+
+        .document-title-container {
+          .documents-title {
+            height: 18px;
+            font-size: 14px;
+            color: $bw6-2;
+            user-select: none;
+            margin-left: 4px !important;
+          }
+        }
+      }
     }
 
     .license-check-container {

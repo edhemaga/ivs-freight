@@ -1,0 +1,51 @@
+<div
+  class="ta-upload"
+  [ngClass]="{
+    'ta-upload-small': files.length && size === 'small',
+    'ta-upload-medium-file':
+      files.length && files.length < 2 && size === 'medium',
+    'ta-upload-medium-files':
+      files.length && files.length > 1 && size === 'medium',
+    'ta-upload-large-file':
+      files.length && files.length < 2 && size === 'large',
+    'ta-upload-large-twofiles':
+      files.length && files.length >= 2 && size === 'large',
+    'ta-upload-large-threefiles':
+      files.length && files.length >= 3 && size === 'large'
+  }"
+>
+  <!-- Carousel Files -->
+  <app-ta-upload-files-carousel
+    *ngIf="files.length"
+    [filesLength]="files.length"
+    [customClass]="size"
+    (activeSlide)="currentSlide = $event"
+  >
+    <div
+      class="ta-upload-carousel-container"
+      *ngFor="let file of files; let ind = index; trackBy: identity"
+    >
+      <div [ngSwitch]="size">
+        <div *ngSwitchCase="'small'">
+          <app-ta-upload-file
+            *ngIf="currentSlide === ind"
+            [file]="file"
+            [hasTag]="hasTag"
+            (fileAction)="onFileAction($event)"
+          ></app-ta-upload-file>
+        </div>
+        <div *ngSwitchDefault>
+          <app-ta-upload-file
+            [file]="file"
+            [hasTag]="hasTag"
+            (fileAction)="onFileAction($event)"
+          ></app-ta-upload-file>
+        </div>
+      </div>
+    </div>
+  </app-ta-upload-files-carousel>
+
+  <app-ta-upload-dropzone
+    (onFileEvent)="onUploadFiles($event)"
+  ></app-ta-upload-dropzone>
+</div>

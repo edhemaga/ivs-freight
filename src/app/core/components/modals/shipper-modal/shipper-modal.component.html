@@ -4,7 +4,7 @@
   [editName]="editData?.id"
   [isModalValid]="editData ? shipperForm.valid && isDirty : shipperForm.valid"
   [customClass]="'modal-container-M'"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"

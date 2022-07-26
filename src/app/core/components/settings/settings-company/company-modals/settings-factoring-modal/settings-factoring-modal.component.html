@@ -9,7 +9,7 @@
   [isModalValid]="
     editData ? factoringForm.valid && isDirty : factoringForm.valid
   "
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="factoringForm" class="form-container">
     <div class="row">

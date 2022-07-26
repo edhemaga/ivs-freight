@@ -48,9 +48,6 @@
                 (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
-            <div *ngIf="driver.status === 0" class="inactive-wrapper">
-              Inactive
-            </div>
           </div>
           <div
             class="information-item"
@@ -1243,7 +1240,7 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [startDate]="mvr?.issueDate | formatDateP"
-                        [expireDate]="mvr?.issueDate | formatDateP"
+                        [expireDate]="mvr?.expDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>

@@ -377,6 +377,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: any) => {
+              this.editShipperById(this.editData.id);
               this.notificationService.success(
                 'Rating successfully updated.',
                 'Success:'

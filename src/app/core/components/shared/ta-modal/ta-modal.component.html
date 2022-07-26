@@ -31,6 +31,7 @@
       <ng-content></ng-content>
     </div>
     <div
+      *ngIf="!disableFooter"
       class="modal-footer"
       [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
     >
@@ -97,21 +98,37 @@
           {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
         </button>
       </div>
-
-      <button
-        (click)="onAction('save')"
-        class="modal-save-btn"
-        [ngClass]="{ valid: isModalValid }"
-        ngbAutofocus
-        type="button"
-      >
-        {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
-        <div
-          *ngIf="saveSpinnerVisibility"
-          class="spinner-border"
-          role="status"
-        ></div>
-      </button>
+      <div class="right-side">
+        <button
+          *ngIf="saveAndAddNew"
+          (click)="onAction('save and add new')"
+          class="modal-save-btn modal-save-btn-add-new"
+          [ngClass]="{ valid: isModalValid }"
+          ngbAutofocus
+          type="button"
+        >
+          Save and Add New
+          <div
+            *ngIf="saveAddNewSpinnerVisibility"
+            class="spinner-border"
+            role="status"
+          ></div>
+        </button>
+        <button
+          (click)="onAction('save')"
+          class="modal-save-btn"
+          [ngClass]="{ valid: isModalValid }"
+          ngbAutofocus
+          type="button"
+        >
+          {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
+          <div
+            *ngIf="saveSpinnerVisibility"
+            class="spinner-border"
+            role="status"
+          ></div>
+        </button>
+      </div>
     </div>
 
     <!-- DropZone -->

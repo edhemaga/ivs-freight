@@ -7,7 +7,7 @@
     [lastEdit]="'3 days ago'"
     [options]="violationDropdown"
   >
-    <!-- [options]="truckDropDowns"
+    <!-- 
     (selectValue)="onSelectedTruck($event)"
     (changeEvent)="onChangeTruck($event)" -->
 
@@ -58,26 +58,29 @@
         [cardName]="'Driver'"
         [isCardOpen]="true"
       >
-      <div class="violation-driver-container">
-        <div class="violation-driver-item">
-          <svg-icon class="driver" src="assets/svg/common/user-image.svg"></svg-icon>
-          <span class="driver-name">Angello Trotter</span>
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/user-image.svg"
+            ></svg-icon>
+            <span class="driver-name">Angello Trotter</span>
+          </div>
         </div>
-      </div>
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Licence No.</span>
-          <span class="value">123456</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Licence No.</span>
+            <span class="value">123456</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value">Texas (TX)</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Date of Birth</span>
+            <span class="value">22/12/89</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">State</span>
-          <span class="value">Texas (TX)</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Date of Birth</span>
-          <span class="value">22/12/89</span>
-        </div>
-      </div>
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
@@ -86,26 +89,29 @@
         [cardName]="'Co-Driver'"
         [isCardOpen]="true"
       >
-      <div class="violation-driver-container">
-        <div class="violation-driver-item">
-          <svg-icon class="driver" src="assets/svg/common/user-image.svg"></svg-icon>
-          <span class="driver-name">Denis Rodman</span>
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/user-image.svg"
+            ></svg-icon>
+            <span class="driver-name">Denis Rodman</span>
+          </div>
         </div>
-      </div>
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Licence No.</span>
-          <span class="value">123456</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Licence No.</span>
+            <span class="value">123456</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value">Texas (TX)</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Date of Birth</span>
+            <span class="value">22/12/89</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">State</span>
-          <span class="value">Texas (TX)</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Date of Birth</span>
-          <span class="value">22/12/89</span>
-        </div>
-      </div>
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
@@ -114,31 +120,33 @@
         [cardName]="'Truck'"
         [isCardOpen]="true"
       >
-
-      <div class="violation-driver-container">
-        <div class="violation-driver-item">
-          <span class="driver-name">Unit 36543</span>
-          <svg-icon class="truck" src="assets/svg/common/semi-truck.svg"></svg-icon>
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <span class="driver-name">Unit 36543</span>
+            <svg-icon
+              class="truck"
+              src="assets/svg/common/semi-truck.svg"
+            ></svg-icon>
+          </div>
         </div>
-      </div>
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Make</span>
-          <span class="value">VOLVO</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Make</span>
+            <span class="value">VOLVO</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Vin</span>
+            <span class="value">1234567897654</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Plate No.</span>
+            <span class="value">PA 24735</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value">Pennsylvania (PA)</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">Vin</span>
-          <span class="value">1234567897654</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Plate No.</span>
-          <span class="value">PA 24735</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">State</span>
-          <span class="value">Pennsylvania (PA)</span>
-        </div>
-      </div>
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
@@ -147,31 +155,33 @@
         [cardName]="'Trailer'"
         [isCardOpen]="true"
       >
-
-      <div class="violation-driver-container">
-        <div class="violation-driver-item">
-          <span class="driver-name">Unit C3543</span>
-          <svg-icon class="truck" src="assets/svg/common/trailer.svg"></svg-icon>
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <span class="driver-name">Unit C3543</span>
+            <svg-icon
+              class="truck"
+              src="assets/svg/common/trailer.svg"
+            ></svg-icon>
+          </div>
         </div>
-      </div>
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Make</span>
-          <span class="value">VOLVO</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Make</span>
+            <span class="value">VOLVO</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Vin</span>
+            <span class="value">1234567897654</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Plate No.</span>
+            <span class="value">PA 24735</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">State</span>
+            <span class="value">Pennsylvania (PA)</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">Vin</span>
-          <span class="value">1234567897654</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Plate No.</span>
-          <span class="value">PA 24735</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">State</span>
-          <span class="value">Pennsylvania (PA)</span>
-        </div>
-      </div>
       </app-ta-custom-card>
 
       <app-ta-custom-card
@@ -181,41 +191,108 @@
         [cardName]="'Authority Details'"
         [isCardOpen]="true"
       >
-      <div class="violation-driver-container">
-        <div class="violation-driver-item">
-          <span class="driver-name">Indiana State Police</span>
-          
+        <div class="violation-driver-container">
+          <div class="violation-driver-item">
+            <span class="driver-name">Indiana State Police</span>
+          </div>
         </div>
-      </div>
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Police Officer</span>
-          <span class="value">Aleksandar Djordjevic</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Police Officer</span>
+            <span class="value">Aleksandar Djordjevic</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Badge No.</span>
+            <div
+              class="value-copy-container"
+              [ngClass]="{ copied: copiedBadgeNo }"
+            >
+              <span class="value">123456</span>
+              <span
+                [tooltipBackground]="copiedBadgeNo ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copiedBadgeNo ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText('123456', 'badge')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="copiedBadgeNo = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">Badge No.</span>
-          <span class="value">123456</span>
+        <div class="violation-driver-container authority">
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/truckassist-table/location-icon.svg"
+            ></svg-icon>
+            <span class="value-police"
+              >5462 N East River Rd apt 611, Chicago, IL 60656, USA</span
+            >
+          </div>
+          <div class="violation-driver-item"></div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+           
+            <div
+              class="value-copy-container"
+              [ngClass]="{ copied: copiedPhone }"
+            >
+            <span class="value-police">(123) 333-2344</span>
+              <span
+                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
+                ngbTooltip
+                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
+                position="top"
+                class="tooltip-copy"
+                [autoClose]="false"
+                (click)="copyText('(123) 333-2344', 'phone')"
+              >
+                <svg-icon
+                  class="copy-icon"
+                  (mouseleave)="copiedPhone = false"
+                  src="assets/svg/common/ic_copy.svg"
+                ></svg-icon>
+              </span>
+            </div>
+          </div>
+          <div class="violation-driver-item">
+            <svg-icon
+              class="driver"
+              src="assets/svg/common/ic_fax.svg"
+            ></svg-icon>
+            <div
+            class="value-copy-container"
+            [ngClass]="{ copied: copiedFax }"
+          >
+          <span class="value-police">(123) 333-1344</span>
+            <span
+              [tooltipBackground]="copiedFax ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="copiedFax ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText('(123) 333-1344', 'fax')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="copiedFax = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
+          </div>
         </div>
-      </div>
-      <div class="violation-driver-container authority">
-        <div class="violation-driver-item">
-          <svg-icon class="driver" src="assets/svg/truckassist-table/location-icon.svg"></svg-icon>
-          <span class="value-police">5462 N East River Rd apt 611, Chicago, IL 60656, USA</span>
-          
-        </div>
-        <div class="violation-driver-item">    
-        </div>
-        <div class="violation-driver-item">
-          <svg-icon class="driver" src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <span class="value-police">(123) 333-2344</span>
-          
-        </div>
-        <div class="violation-driver-item">
-          <svg-icon class="driver" src="assets/svg/common/ic_fax.svg"></svg-icon>
-          <span class="value-police">(123) 333-2344</span>
-          
-        </div>
-      </div>
       </app-ta-custom-card>
 
       <app-ta-custom-card
@@ -225,24 +302,24 @@
         [cardName]="'Location Details'"
         [isCardOpen]="true"
       >
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Country</span>
-          <span class="value">Chestnut County</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Country</span>
+            <span class="value">Chestnut County</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Facillity</span>
+            <span class="value">Roadside</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Highway</span>
+            <span class="value">165</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">MilePost</span>
+            <span class="value">39</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">Facillity</span>
-          <span class="value">Roadside</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Highway</span>
-          <span class="value">165</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">MilePost</span>
-          <span class="value">39</span>
-        </div>
-      </div>
       </app-ta-custom-card>
 
       <app-ta-custom-card
@@ -252,28 +329,28 @@
         [cardName]="'Customer Details'"
         [isCardOpen]="true"
       >
-      <div class="violation-template-cards-data">
-        <div class="violation-card-items">
-          <span class="name">Customer</span>
-          <span class="value">COMAX TRADE, INC</span>
+        <div class="violation-template-cards-data">
+          <div class="violation-card-items">
+            <span class="name">Customer</span>
+            <span class="value">COMAX TRADE, INC</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">BoL</span>
+            <span class="value">2425354454</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Origin</span>
+            <span class="value">Plainfield, IN, USA</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Destination</span>
+            <span class="value">Carol Stream, IL, USA</span>
+          </div>
+          <div class="violation-card-items">
+            <span class="name">Cargo</span>
+            <span class="value">Office Supplies</span>
+          </div>
         </div>
-        <div class="violation-card-items">
-          <span class="name">BoL</span>
-          <span class="value">2425354454</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Origin</span>
-          <span class="value">Plainfield, IN, USA</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Destination</span>
-          <span class="value">Carol Stream, IL, USA</span>
-        </div>
-        <div class="violation-card-items">
-          <span class="name">Cargo</span>
-          <span class="value">Office Supplies</span>
-        </div>
-      </div>
       </app-ta-custom-card>
       <app-ta-custom-card
         [bodyTemplate]="'card'"
@@ -283,14 +360,26 @@
         [cardName]="'Special Checks'"
         [isCardOpen]="true"
       >
-
-      <div class="violation-driver-container ">
-        <div class="violation-driver-item" *ngFor="let special of dummyDataSpecial">
-          <svg-icon class="special" src="{{special.checked ? 'assets/svg/common/ic_cancel_violation.svg':' assets/svg/common/ic_confirm.svg' }}"></svg-icon>
-          <span class="value-police" [ngClass]="{'cross-out':special.checked}">{{special.name}}</span>
-          
+        <div class="violation-driver-container">
+          <div
+            class="violation-driver-item"
+            *ngFor="let special of dummyDataSpecial"
+          >
+            <svg-icon
+              class="special"
+              src="{{
+                special.checked
+                  ? 'assets/svg/common/ic_cancel_violation.svg'
+                  : ' assets/svg/common/ic_confirm.svg'
+              }}"
+            ></svg-icon>
+            <span
+              class="value-police"
+              [ngClass]="{ 'cross-out': special.checked }"
+              >{{ special.name }}</span
+            >
+          </div>
         </div>
-      </div>
       </app-ta-custom-card>
       <!--------Note--------->
       <div class="divider"></div>

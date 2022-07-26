@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-violation-card-view',
@@ -13,8 +14,10 @@ export class ViolationCardViewComponent implements OnInit {
   public violationDropdown: any;
   public noteControl: FormControl = new FormControl();
   public dummyDataSpecial: any;
-
-  constructor() {}
+  public copiedBadgeNo: boolean;
+  public copiedPhone: boolean;
+  public copiedFax: boolean;
+  constructor(private clipboar: Clipboard) {}
 
   ngOnInit(): void {
     this.dummyDataSpecial = [
@@ -84,5 +87,24 @@ export class ViolationCardViewComponent implements OnInit {
         active: item.id === 1,
       };
     });
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, name: string) {
+    switch (name) {
+      case 'phone':
+        this.copiedPhone = true;
+        break;
+
+      case 'badge':
+        this.copiedBadgeNo = true;
+        break;
+
+      case 'fax':
+        this.copiedFax = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
   }
 }

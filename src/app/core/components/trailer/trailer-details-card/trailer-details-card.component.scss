@@ -67,3 +67,10 @@ app-trailer-details-card {
         padding: 0 7px;
     }
 }
+.wrapper-owner-items {
+    display: grid;
+    row-gap: 12px;
+    padding: 12px 0;
+    // padding-bottom: 12px;
+    // padding-top: 12px;
+}

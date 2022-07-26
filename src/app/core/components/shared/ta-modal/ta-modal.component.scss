@@ -119,6 +119,14 @@
     }
   }
 
+  &.modal-container-sph-applicant {
+    width: 940px;
+
+    .divider {
+      display: none;
+    }
+  }
+
   .divider {
     width: 455px;
     height: 2px;
@@ -152,7 +160,19 @@
     }
   }
 
-  .modal-footer > * {
-    margin: 0px !important;
+  .modal-footer {
+    & > * {
+      margin: 0px !important;
+    }
+
+    .right-side {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      .modal-save-btn-add-new {
+        width: 182px !important;
+      }
+    }
   }
 }

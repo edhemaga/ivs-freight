@@ -81,10 +81,10 @@ import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
 import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
-import { TaUploadFileComponent } from './ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { TaUploadFilesCarouselComponent } from './ta-modal-upload/ta-upload-files-carousel/ta-upload-files-carousel.component';
+import { TaUploadFileComponent } from './ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { TaUploadFilesCarouselComponent } from './ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
-import { TaUploadDropzoneComponent } from './ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadDropzoneComponent } from './ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 
 import { AppTooltipeModule } from './app-tooltip/app-tooltip.module';
 
@@ -104,7 +104,9 @@ import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
+import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
 
 @NgModule({
   declarations: [
@@ -176,6 +178,8 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    ProgressInvoicesComponent,
+    TaUploadFilesComponent,
   ],
   imports: [
     CommonModule,
@@ -297,7 +301,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaChartComponent,
     FilterComponent,
     TaTabSwitchComponent,
-
+    ProgressInvoicesComponent,
     // Modals Components
     TaModalComponent,
     TaInputAddressComponent,
@@ -323,6 +327,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     RepairOrderModalComponent,
     TaInputDropdownLabelComponent,
     LoadModalComponent,
+    TaUploadFilesComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

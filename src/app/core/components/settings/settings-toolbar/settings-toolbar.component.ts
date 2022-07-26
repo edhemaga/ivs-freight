@@ -7,15 +7,12 @@ import { CompanyQuery } from '../state/company-state/company-settings.query';
   styleUrls: ['./settings-toolbar.component.scss'],
 })
 export class SettingsToolbarComponent implements OnInit {
-  public countCompany:number;
-  public settingsToolbar:any;
-  
- 
-  constructor(private copmanyQuery:CompanyQuery){
+  public countCompany: number;
+  public settingsToolbar: any;
 
-  }
+  constructor(private copmanyQuery: CompanyQuery) {}
   ngOnInit(): void {
-     this.settingsToolbar = [
+    this.settingsToolbar = [
       {
         id: 1,
         name: 'Settings',
@@ -80,7 +77,7 @@ export class SettingsToolbarComponent implements OnInit {
         background: '#FFFFFF',
         route: null,
       },
-    ] 
+    ];
   }
   public identity(index: number, item: any): number {
     return item.id;

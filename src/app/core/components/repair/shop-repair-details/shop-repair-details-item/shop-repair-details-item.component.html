@@ -7,7 +7,7 @@
       </app-shop-repair-card-view>
     </div>
     <div *ngSwitchCase="'repair'">
-      <div class="repair-container">
+      <div class="repair-container" *ngIf="shopData.data.repairs.length">
         <div class="repair-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">DATE</span>
@@ -23,7 +23,7 @@
           >
             <div class="repair-items">
               <div class="items-header">
-                <span class="unit">{{ repairs.trailer.trailerNumber }}</span>
+                <span class="unit">{{ repairs?.trailer?.trailerNumber ? repairs.trailer.trailerNumber :  repairs.truck.truckNumber }}</span>
                 <span class="date">{{ repairs.date | formatDateP }}</span>
                 <span *ngIf="repairs.invoice" class="date">{{ repairs.invoice }}</span>
                 <div *ngIf="!repairs.invoice && !repairs.total"  class="no-invoice">
@@ -58,7 +58,7 @@
       </div>
     </div>
     <div *ngSwitchCase="'repaired-vehicle'">
-      <div class="repaired-vehicle-container">
+      <div class="repaired-vehicle-container"  *ngIf="shopData.data.repairsByUnit.length">
         <div class="repair-vehicle-header">
           <span class="repaier-headers">UNIT</span>
           <span class="repaier-headers">TYPE</span>
@@ -72,7 +72,9 @@
         >
           <div class="items-vehicle">
             <span class="unit">{{ vehicle.unitNumber }}</span>
-            <svg-icon class="vehicle-icon" src="assets/svg/common/trailers/{{ vehicle.logoName }}"></svg-icon>
+
+            <svg-icon class="vehicle-icon" *ngIf="vehicle.unitType==='Trailer'" src="assets/svg/common/trailers/{{ vehicle.logoName }} "></svg-icon>
+            <svg-icon class="vehicle-icon" *ngIf="vehicle.unitType==='Truck'" src="assets/svg/common/trucks/{{ vehicle.logoName }} "></svg-icon>
             <span class="date">{{ vehicle.totalOrder }}</span>
             <span class="cost">{{ vehicle.totalCost  | formatCurrency}}</span>
           </div>

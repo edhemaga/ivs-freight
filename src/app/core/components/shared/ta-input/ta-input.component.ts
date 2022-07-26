@@ -639,8 +639,7 @@ export class TaInputComponent
       [
         'routing number',
         'account number',
-        'empty mile',
-        'loaded mile',
+        'per mile',
         'per stop',
         'empty weight',
         'axles',
@@ -767,7 +766,7 @@ export class TaInputComponent
       }
     }
 
-    this.input.nativeElement.value.trimEnd();
+    this.input.nativeElement.value.trim();
   }
 
   public disableConsecutivelySpaces(event: any) {

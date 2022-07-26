@@ -4,7 +4,7 @@
   [editName]="modalName"
   [isModalValid]="editData ? mvrForm.valid && isDirty : mvrForm.valid"
   [specificCaseModalName]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="mvrForm" class="form-container">
     <div class="row first-row last-row">
@@ -29,10 +29,10 @@
         [cardName]="'Documents'"
         [isCardOpen]="documents.length"
       >
-        <app-ta-modal-upload
+        <app-ta-upload-files
           [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-modal-upload>
+        ></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
     <app-ta-input-note

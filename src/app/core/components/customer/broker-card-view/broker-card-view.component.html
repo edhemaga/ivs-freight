@@ -34,11 +34,20 @@
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-        <p class="repair-value">{{ broker?.mainAddress?.address ? broker.mainAddress.address : broker.billingAddress.address }}</p>
+        <p class="repair-value">
+          {{
+            broker?.mainAddress?.address
+              ? broker.mainAddress.address
+              : broker?.billingAddress?.address
+          }}
+        </p>
       </div>
     </div>
   </app-ta-details-header-card>
-  <div class="wrapper-additional-cards"  [ngClass]="{ 'bind-heigth': !templateCard }">
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-heigth': !templateCard }"
+  >
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
@@ -108,59 +117,47 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [hasDivider]="true"
-        [hasCounter]="37"
+        [hasCounter]="invoiceAgeingCounter ? invoiceAgeingCounter : 0"
         [cardName]="'Invoice Ageing'"
         [isCardOpen]="true"
       >
         <div class="invoice-ageing-template">
           <div class="invoice-ageing-template-item">
             <span class="header-name">Total Debt</span>
-            <span class="value-ageing">$65,238.22</span>
-          </div>
-        </div>
-        <div class="progress-text-wrapper">
-          <div class="text-broker-wrapper">
-            <span class="days">0 - 20 days</span>          
-            <span class="invoice-days">18 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$12,222.22</span>
-          </div>
-          <div class="custom-progress-light-blue">
-            <div class="inside-progress"></div>
-          </div>
-        </div>
+            <span class="value-ageing">{{
+              broker?.totalDebt | formatCurrency
+            }}</span>
+      </div>
+      </div>
+        <app-progress-invoices
+          [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
+          [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
+          [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
+          [template]="'light-blue'"
+        >
+        </app-progress-invoices>
 
-        <div class="progress-text-wrapper">
-          <div class="text-broker-wrapper">
-            <span class="days">21 - 40 days</span>
-            <span class="invoice-days">26 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$9,222.22</span>
-          </div>
-          <div class="custom-progress-mid-blue">
-            <div class="inside-progress"></div>
-          </div>
-        </div>
-
-        <div class="progress-text-wrapper">
-          <div class="text-broker-wrapper">
-            <span class="days">41 - 60 days</span>
-            <span class="invoice-days">37 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$10,222.22</span>
-          </div>
-          <div class="custom-progress-dark-blue">
-            <div class="inside-progress"></div>
-          </div>
-        </div>
-
-        <div class="progress-text-wrapper">
-          <div class="text-broker-wrapper">
-            <span class="days">60+ days</span>
-            <span class="invoice-days">13 <span class="inv">Inv.</span></span>
-            <span class="cost-total-ageing">$22,222.22</span>
-          </div>
-          <div class="custom-progress-danger-broker">
-            <div class="inside-progress"></div>
-          </div>
-        </div>
+        <app-progress-invoices
+          [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
+          [invoiceCounter]="broker?.invoiceAgeingGroupTwo?.countInvoice"
+          [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
+          [template]="'mid-blue'"
+        >
+        </app-progress-invoices>
+        <app-progress-invoices
+          [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
+          [invoiceCounter]="broker?.invoiceAgeingGroupThree?.countInvoice"
+          [invoiceTotal]="broker?.invoiceAgeingGroupThree?.totalSum"
+          [template]="'dark-blue'"
+        >
+        </app-progress-invoices>
+        <app-progress-invoices
+          [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
+          [invoiceCounter]="broker?.invoiceAgeingGroupFour?.countInvoice"
+          [invoiceTotal]="broker?.invoiceAgeingGroupFour?.totalSum"
+          [template]="'danger'"
+        >
+        </app-progress-invoices>
       </app-ta-custom-card>
 
       <app-ta-custom-card
@@ -179,7 +176,12 @@
           </div>
         </div>
         <div class="progress-container">
-          <div class="inside-fill"></div>
+          <app-ta-currency-progress-bar
+            [template]="'broker-credit'"
+            [totalAmount]="broker.creditLimit"
+            [paidSoFarAmount]="broker.totalDebt"
+          >
+          </app-ta-currency-progress-bar>
         </div>
 
         <div class="additional-template-broker-data">
@@ -191,7 +193,7 @@
           </div>
           <div class="addition-template-item">
             <span class="header">Pay Term</span>
-            <span class="value charts-value">{{ broker?.payTerm.name }}</span>
+            <span class="value charts-value">{{ broker?.payTerm?.name }}</span>
           </div>
         </div>
       </app-ta-custom-card>
