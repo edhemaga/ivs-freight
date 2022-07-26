@@ -192,23 +192,27 @@
                 </app-ta-input-note>
               </div>
             </div>
-          </app-ta-re-card>
-        </div>
+          </div>
+        </app-ta-re-card>
       </div>
       <div class="card-width" *ngSwitchCase="'mvr'">
         <div>
           <app-ta-re-card
             *ngFor="
               let mvr of driverItem.data.mvrs;
-              let i =index;
+              let i = index;
               trackBy: identity
             "
             [options]="dataTest"
             [cardNameCurrent]="'mvr'"
             (clickedCard)="getName($event)"
             [cardDocumentCounter]="6"
-            [noteIcons]="mvr.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            (resizePage)="toggleResizePage(i,'mvr')"
+            [noteIcons]="
+              mvr.note
+                ? 'assets/svg/truckassist-table/note/Note.svg'
+                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+            "
+            (resizePage)="toggleResizePage(i, 'mvr')"
             [cardNameCommon]="mvr?.issueDate | formatDateP"
             [expDateClose]="mvr?.issueDate | setFutureYear"
             [optionsId]="mvr.id"
@@ -253,21 +257,21 @@
                 </div>
                 <div class="card-pdf">
                   <app-ta-upload-files
-                  [files]="[
-                    {
-                      name: 'truckassist - 0',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    },
-                    {
-                      name: 'truckassist - 1',
-                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                      extension: 'pdf'
-                    }
-                  ]"
-                  [customClassName]="'driver-details-pdf'"
-                  [hasCarouselBottomTabs]="true"
-                ></app-ta-upload-files>
+                    [files]="[
+                      {
+                        name: 'truckassist - 0',
+                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                        extension: 'pdf'
+                      },
+                      {
+                        name: 'truckassist - 1',
+                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                        extension: 'pdf'
+                      }
+                    ]"
+                    [customClassName]="'driver-details-pdf'"
+                    [hasCarouselBottomTabs]="true"
+                  ></app-ta-upload-files>
                 </div>
                 <div class="divider"></div>
                 <div class="card-note">
