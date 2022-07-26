@@ -182,7 +182,8 @@
                   label: 'City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
-                  textTransform: 'capitalize'
+                  textTransform: 'capitalize',
+                  onlyCityAndZipAddress: true
                 }"
                 (selectedAddress)="onHandleAddress($event, 'physical-pobox')"
               ></app-ta-input-address>
@@ -281,7 +282,8 @@
                     label: 'City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    onlyCityAndZipAddress: true
                   }"
                   (selectedAddress)="onHandleAddress($event, 'billing-pobox')"
                 ></app-ta-input-address>

@@ -4,14 +4,14 @@
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
-        [ngClass]="{'single-data':options.length==1}"
+        [ngClass]="{ 'single-data': options.length == 1 }"
         (click)="onPickItem()"
         ngbTooltip
-        [mainTooltip]="options.length>1 ? searchInputName :''"
+        [mainTooltip]="options.length > 1 ? searchInputName : ''"
         position="top"
-        [tooltipBackground]="options.length>1?  '#6C6C6C':'#eeeeee'"
+        [tooltipBackground]="options.length > 1 ? '#6C6C6C' : '#eeeeee'"
       >
-        <p class="current-active-name" >
+        <p class="current-active-name">
           {{ (options | detailActiveItem).name }}
         </p>
         <span
@@ -29,7 +29,7 @@
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown
-        *ngIf="selectedDropdown && options.length>1"
+        *ngIf="selectedDropdown && options.length > 1"
         class="dropInput"
         [formControl]="inputFormControl"
         [inputConfig]="{
@@ -50,7 +50,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div *ngIf="!hasArrow && options.length>1" class="arrows">
+    <div *ngIf="!hasArrow && options.length > 1" class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"
@@ -207,24 +207,21 @@
       </span>
 
       <span
-      style="margin-left: 130px"
-      *ngIf="lastEdit"
-      tooltipBackground="#6C6C6C"
-      ngbTooltip
-      mainTooltip="Date Check"
-      position="top"
-    >
-      <div
+        style="margin-left: 130px"
         *ngIf="lastEdit"
-        class="details-header-wrapper-data-item bottom"
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        mainTooltip="Date Check"
+        position="top"
       >
-        <svg-icon
-          class="date-terminated"
-          src="assets/svg/common/ic_violation_last-edit.svg"
-        ></svg-icon>
-        <span class="vin-text">{{ lastEdit }}</span>
-      </div>
-    </span>
+        <div *ngIf="lastEdit" class="details-header-wrapper-data-item bottom">
+          <svg-icon
+            class="date-terminated"
+            src="assets/svg/common/ic_violation_last-edit.svg"
+          ></svg-icon>
+          <span class="vin-text">{{ lastEdit }}</span>
+        </div>
+      </span>
     </div>
   </div>
 </div>

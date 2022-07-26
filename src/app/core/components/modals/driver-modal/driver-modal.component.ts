@@ -729,8 +729,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : this.owner
           ? this.owner.id
           : null,
-      ownerType:
-        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      ownerType: !this.driverForm.get('isOwner').value
+        ? null
+        : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+        ? 2
+        : 1,
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
@@ -794,12 +797,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           if (this.addNewAfterSave) {
             this.driverForm.reset();
             this.inputServiceReset.resetInputSubject.next(true);
+            this.driverForm.get('ownerType').patchValue(null);
             this.driverForm.get('payType').patchValue(null);
             this.driverForm.get('commissionSolo').patchValue(25);
             this.driverForm.get('commissionTeam').patchValue(25);
             this.driverForm.get('mvrExpiration').patchValue(5);
             this.driverForm.get('mailNotificationGeneral').patchValue(true);
             this.driverForm.get('mailNotificationPayroll').patchValue(true);
+            this.driverForm.get('smsNotificationGeneral').patchValue(false);
+            this.driverForm.get('smsNotificationPayroll').patchValue(false);
+            this.driverForm.get('pushNotificationGeneral').patchValue(false);
+            this.driverForm.get('pushNotificationPayroll').patchValue(false);
+            this.driverForm.get('useTruckAssistAch').patchValue(false);
+            this.driverForm.get('twic').patchValue(false);
+            this.driverForm.get('isOwner').patchValue(false);
+
             this.offDutyLocations.clear();
             this.selectedPayType = null;
             this.addNewAfterSave = false;
@@ -844,8 +856,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : this.owner
           ? this.owner.id
           : null,
-      ownerType:
-        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      ownerType: !this.driverForm.get('isOwner').value
+        ? null
+        : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+        ? 2
+        : 1,
       bussinesName:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null

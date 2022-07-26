@@ -364,7 +364,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onPickExistLabel(event: any) {
     this.selectedContactLabel = event;
-    console.log(this.selectedContactLabel);
   }
 
   public onSelectColorLabel(event: any): void {
