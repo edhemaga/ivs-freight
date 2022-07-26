@@ -34,17 +34,18 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.broker?.firstChange && changes?.broker) {
+    if (changes.broker?.currentValue != changes.broker?.previousValue) {
+      console.log('RENDERUJE SE =');
       this.note.patchValue(changes.broker.currentValue.note);
       this.getBrokerDropdown();
       this.getInvoiceAgeingCount(changes.broker.currentValue);
     }
   }
   ngOnInit(): void {
-    this.note.patchValue(this.broker.note);
-    this.getBrokerDropdown();
+    // this.note.patchValue(this.broker.note);
+    // this.getBrokerDropdown();
     this.tabsButton();
-    this.getInvoiceAgeingCount(this.broker);
+    // this.getInvoiceAgeingCount(this.broker);
   }
 
   public tabsButton() {
@@ -81,10 +82,10 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   }
 
   public getInvoiceAgeingCount(data: BrokerResponse) {
-    let firstGroup = data.invoiceAgeingGroupOne.totalSum;
-    let secondGroup = data.invoiceAgeingGroupTwo.totalSum;
-    let threeGroup = data.invoiceAgeingGroupThree.totalSum;
-    let fourGroup = data.invoiceAgeingGroupFour.totalSum;
+    let firstGroup = data?.invoiceAgeingGroupOne?.totalSum;
+    let secondGroup = data?.invoiceAgeingGroupTwo?.totalSum;
+    let threeGroup = data?.invoiceAgeingGroupThree?.totalSum;
+    let fourGroup = data?.invoiceAgeingGroupFour?.totalSum;
     this.invoiceAgeingCounter =
       firstGroup + secondGroup + threeGroup + fourGroup;
   }
