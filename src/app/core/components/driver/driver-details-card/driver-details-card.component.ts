@@ -160,11 +160,12 @@ export class DriverDetailsCardComponent
       this.hideArrow = false;
     }
     this.initTableOptions();
-    this.initTableOptionsCard();
+    this.initTableOptionsCard(this.driver);
     this.getDriversDropdown();
     this.tabsButton();
     this.getYearsAndDays(this.driver);
     this.widthOfProgress();
+    this.getExpireDate(this.driver);
   }
 
   /**Function return user image if have in DB or default image */
@@ -329,17 +330,29 @@ export class DriverDetailsCardComponent
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
-
+        {
+          title: 'Renew',
+          name: 'renew',
+          svg: 'assets/svg/common/ic_reload_renew.svg',
+          show: true,
+        },
+        {
+          title: 'Void',
+          name: 'activate-item',
+          svg: 'assets/svg/common/ic_cancel_violation.svg',
+          show: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,
@@ -347,7 +360,7 @@ export class DriverDetailsCardComponent
   }
 
   /**Function for dots in cards */
-  public initTableOptionsCard(): void {
+  public initTableOptionsCard(data: DriverResponse): void {
     this.dropData = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -362,37 +375,40 @@ export class DriverDetailsCardComponent
       },
       actions: [
         {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: data.status == 1 ? true : false,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: data.status == 1 || data.status == 0 ? true : false,
+        },
+
+        {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: data.status == 1 ? true : false,
         },
         {
-          title: 'Deactivate',
-          reverseTitle: 'Activate',
-          name: 'activate-item',
-          class: 'regular-text',
-          contentType: 'activate',
-        },
-        {
-          title: 'Print Details',
-          name: 'print',
-          class: 'regular-text',
-          contentType: 'print',
-        },
-        {
-          title: 'Forward Email',
-          name: 'email',
-          class: 'regular-text',
-          contentType: 'email',
+          title: data.status == 0 ? 'Activate' : 'Deactivate',
+          name: 'deactivate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          activate: data.status == 0 ? true : false,
+          deactivate: data.status == 1 ? true : false,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
       ],
       export: true,

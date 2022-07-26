@@ -22,7 +22,7 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of repairShopData; trackBy: identity"
+      *ngFor="let item of repairShopData; let i =index; trackBy: identity"
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
@@ -31,11 +31,45 @@
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
           <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <span>{{ item.phone }}</span>
+          <div class="value-copy-container" [ngClass]="{ copied: repairPhone[i] }">
+            <span class="office-template-value">{{ item.phone  }}</span>
+            <span
+              [tooltipBackground]="repairPhone[i] ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="repairPhone[i] ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(item.phone , i,'repair-phone')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="repairPhone[i] = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
         </div>
         <div *ngIf="item.email" class="single-item">
           <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-          <span>{{ item.email }}</span>
+          <div class="value-copy-container" [ngClass]="{ copied: repairEmail[i] }">
+            <span class="office-template-value">{{ item.email  }}</span>
+            <span
+              [tooltipBackground]="repairEmail[i] ? '#536BC2' : '#6c6c6c'"
+              ngbTooltip
+              [mainTooltip]="repairEmail[i] ? 'Copied' : 'Copy'"
+              position="top"
+              class="tooltip-copy"
+              [autoClose]="false"
+              (click)="copyText(item.email , i,'repair-email')"
+            >
+              <svg-icon
+                class="copy-icon"
+                (mouseleave)="repairEmail[i] = false"
+                src="assets/svg/common/ic_copy.svg"
+              ></svg-icon>
+            </span>
+          </div>
         </div>
         <div *ngIf="item.address" class="single-item">
           <svg-icon

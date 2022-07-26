@@ -13,6 +13,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 @Component({
   selector: 'app-shop-repair-card-view',
   templateUrl: './shop-repair-card-view.component.html',
@@ -27,22 +28,24 @@ export class ShopRepairCardViewComponent
   public count: number;
   public tabs: any;
   public shopsDropdowns: any[] = [];
-  public shopsList: any[] = this.shopQuery.getAll();
+  public shopsList: any[] = this.repairShopMinimalQuery.getAll();
   constructor(
     private shopQuery: ShopQuery,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    private repairShopMinimalQuery: RepairShopMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.shopResponse?.firstChange && changes?.shopResponse) {
+    if (
+      changes.shopResponse?.currentValue != changes.shopResponse?.previousValue
+    ) {
       this.getActiveServices(changes.shopResponse.currentValue);
       this.getShopsDropdown();
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
   }
   ngOnInit(): void {
-    // this.noteControl.patchValue(this.shopResponse.note);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -51,8 +54,6 @@ export class ShopRepairCardViewComponent
           this.cdRef.detectChanges();
         }
       });
-    this.getShopsDropdown();
-    this.getActiveServices(this.shopResponse);
     this.tabsSwitcher();
   }
 
@@ -62,7 +63,7 @@ export class ShopRepairCardViewComponent
   }
 
   public getShopsDropdown() {
-    this.shopsDropdowns = this.shopQuery.getAll().map((item) => {
+    this.shopsDropdowns = this.repairShopMinimalQuery.getAll().map((item) => {
       return {
         id: item.id,
         name: item.name,
@@ -76,7 +77,7 @@ export class ShopRepairCardViewComponent
 
   public onSelectedShop(event: any) {
     if (event.id !== this.shopResponse.id) {
-      this.shopsList = this.shopQuery.getAll().map((items) => {
+      this.shopsList = this.repairShopMinimalQuery.getAll().map((items) => {
         return {
           id: items.id,
           name: items.name,

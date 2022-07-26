@@ -146,17 +146,18 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
 
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'truck',
-          text: 'Are you sure you want to delete trailer(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          text: 'Are you sure you want to delete truck(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,

@@ -185,10 +185,25 @@
           <!-- FILES CONTAINER -->
 
           <div
-            class="d-flex files-container"
+            class="d-flex flex-column files-container"
             *ngIf="!dontHaveMvrForm.get('dontHaveMvr').value"
           >
-            FILES
+            <div class="d-flex align-items-center files-header">
+              <div
+                class="d-flex align-items-center justify-content-center counter-container"
+              >
+                <p class="m-0 ta-font-extra-bold">{{ documents.length }}</p>
+              </div>
+              <div class="d-flex align-items-center document-title-container">
+                <p class="m-0 ta-font-extra-bold documents-title">Documents</p>
+              </div>
+            </div>
+
+            <app-ta-modal-upload
+              [files]="documents"
+              [modalSize]="'modal-large'"
+              (onFileEvent)="onFilesAction($event)"
+            ></app-ta-modal-upload>
           </div>
 
           <!-- LICENSE CHECK CHECKBOX -->
