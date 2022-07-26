@@ -5,7 +5,9 @@ import moment from 'moment';
   name: 'formatTimeP',
 })
 export class formatTimePipe implements PipeTransform {
-  transform(date: string): any {
-    return moment(date).format('hh:mm A');
+  transform(time: string): any {
+    if (time) {
+      return moment(time).format('hh:mm A');
+    }
   }
 }
