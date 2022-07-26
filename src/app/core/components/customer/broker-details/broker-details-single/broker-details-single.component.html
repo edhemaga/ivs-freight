@@ -2,7 +2,7 @@
   <div *ngFor="let broker of brokerData; trackBy: identity">
     <div [ngSwitch]="broker?.template">
       <div *ngSwitchCase="'general'">
-        <app-broker-card-view [broker]="broker?.data"> </app-broker-card-view>
+        <app-broker-card-view [broker]="broker.data"> </app-broker-card-view>
       </div>
       <div *ngSwitchCase="'load'" class="load">
         <div

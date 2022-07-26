@@ -6,6 +6,9 @@ import moment from 'moment';
 })
 export class formatCurrency implements PipeTransform {
   transform(currency: any) {
-    return '$' + currency.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+    if (currency)
+      return (
+        '$' + currency.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+      );
   }
 }

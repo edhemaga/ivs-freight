@@ -127,8 +127,8 @@
             <span class="value-ageing">{{
               broker?.totalDebt | formatCurrency
             }}</span>
-          </div>
-        </div>
+      </div>
+      </div>
         <app-progress-invoices
           [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
@@ -193,7 +193,7 @@
           </div>
           <div class="addition-template-item">
             <span class="header">Pay Term</span>
-            <span class="value charts-value">{{ broker?.payTerm.name }}</span>
+            <span class="value charts-value">{{ broker?.payTerm?.name }}</span>
           </div>
         </div>
       </app-ta-custom-card>
