@@ -133,7 +133,7 @@
         <div
           *ngFor="let repair of services; trackBy: identity"
           class="repair-shop-service"
-          [class.active]="repair.active"
+          [ngClass]="{ active: repair.active }"
           (click)="repair.active = !repair.active"
         >
           <svg-icon src="{{ repair.svg }}"></svg-icon>

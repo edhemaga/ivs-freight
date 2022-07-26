@@ -341,19 +341,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.services = this.services.map((item) => {
-      return {
-        serviceType: item.serviceType,
-        active: item.active,
-      };
-    });
-
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       bankId: this.selectedBank ? this.selectedBank.id : null,
       openHours: openHours,
-      serviceTypes: this.services,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
     };
 
     this.shopService
@@ -393,20 +391,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.services = this.services.map((item) => {
-      return {
-        serviceType: item.serviceType,
-        active: item.active,
-      };
-    });
-
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
-      serviceTypes: this.services,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
     };
 
     this.shopService
