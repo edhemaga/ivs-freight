@@ -62,7 +62,7 @@
             }
         }
     }
-    .custom-progress {
+    .app-progress-invoices {
         width: 408px;
         height: 8px;
         border-radius: 2px;
@@ -71,19 +71,19 @@
             height: 8px;
             border-radius: 2px 0 0 2px;
         }
-        .light-blue {
+        .inside-progress-light-blue {
             width: 20%;
             background-color: #bdcaeb;
         }
-        .mid-blue {
+        .inside-progress-mid-blue {
             width: 40%;
             background-color: #97a8dc;
         }
-        .dark-blue {
+        .inside-progress-dark-blue {
             width: 60%;
             background-color: #6d82c8;
         }
-        .danger-broker {
+        .inside-progress-danger-broker {
             width: 25%;
             background-color: #e57373;
         }

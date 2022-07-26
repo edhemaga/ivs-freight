@@ -17,7 +17,7 @@
             <span class="repaier-headers">WAIT</span>
           </div>
           <div class="divider"></div>
-          <div class="repair-items-wrapper" *ngFor="let loads of shipperData?.data.loadStops; trackBy: identity ">
+          <div class="repair-items-wrapper" *ngFor="let loads of shipperData.data.loadStops; trackBy: identity ">
             <div class="repair-items">
               <div class="items-header">
                 <div class="icon-svg-repair">
@@ -31,18 +31,18 @@
                     *ngIf="loads.stopType.name==='Delivery'"
                     src="assets/svg/common/ic_arrow-line-left.svg"
                   ></svg-icon>
-                  <span class="unit">{{loads.load.id}}</span>
+                  <span class="unit">{{loads?.load?.id}}</span>
                 </div>
                 <span class="date">{{loads?.load?.dispatch.driver?.firstName.length>6?loads?.load?.dispatch.driver?.firstName[0] + '.' :loads?.load?.dispatch.driver?.firstName}} {{loads?.load?.dispatch.driver?.lastName}}</span>
                 <span class="date">{{loads?.load?.dispatch.truck?.truckNumber}}</span>
                 <span class="date">{{loads?.load?.dispatch.trailer?.trailerNumber}}</span>
                 <div class="time-date">
                   <span class="date">{{loads?.arrive | formatDateP}}</span>
-                  <span class="time"> {{loads?.arrive | formatTimeP}}</span>
+                  <span class="time"> {{loads?.arrive | formatTime}}</span>
                 </div>
                 <div class="time-date">
                   <span class="date">{{loads?.depart | formatDateP}}</span>
-                  <span class="time"> {{loads?.depart | formatTimeP}}</span>
+                  <span class="time"> {{loads?.depart | formatTime}}</span>
                 </div>
                 <span class="wait-time"><span class="hours" *ngIf="loads?.wait.days>0">{{loads?.wait.days}} d </span> <span class="hours" *ngIf="loads?.wait.hours>0">{{loads?.wait.hours}} h</span> <span class="hours" *ngIf="loads?.wait.days<=0">{{loads?.wait.minutes}}</span> min</span>
               </div>
@@ -70,7 +70,7 @@
                 class="parking-template-item parking-template-email parking-name"
               >
                 <span class="parking-template-name">{{
-                  shipperContact.fullName
+                  shipperContact?.fullName
                 }}</span>
                 <div class="svg-wrapper">
                   <span
@@ -100,7 +100,7 @@
               <div class="parking-template-item">
                 <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
                 <span class="parking-template-text">{{
-                  shipperContact.phone | formatPhoneP
+                  shipperContact?.phone | formatPhoneP
                 }}</span>
               </div>
               <div class="parking-template-item">
@@ -109,14 +109,14 @@
                     src="assets/svg/common/ic_phone-extension.svg"
                   ></svg-icon>
                   <span class="parking-template-text">{{
-                    shipperContact.phoneExt
+                    shipperContact?.phoneExt
                   }}</span>
                 </div>
               </div>
               <div class="parking-template-item parking-template-email">
                 <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
                 <span class="parking-template-text">{{
-                  shipperContact.email
+                  shipperContact?.email
                 }}</span>
               </div>
             </div>

@@ -37,14 +37,15 @@ export class ShopRepairCardViewComponent
     private repairShopMinimalQuery: RepairShopMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.shopResponse?.firstChange && changes?.shopResponse) {
+    if (
+      changes.shopResponse?.currentValue != changes.shopResponse?.previousValue
+    ) {
       this.getActiveServices(changes.shopResponse.currentValue);
       this.getShopsDropdown();
       this.noteControl.patchValue(changes.shopResponse.currentValue.note);
     }
   }
   ngOnInit(): void {
-    // this.noteControl.patchValue(this.shopResponse.note);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -53,8 +54,6 @@ export class ShopRepairCardViewComponent
           this.cdRef.detectChanges();
         }
       });
-    this.getShopsDropdown();
-    this.getActiveServices(this.shopResponse);
     this.tabsSwitcher();
   }
 

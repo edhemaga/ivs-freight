@@ -7,17 +7,17 @@
     <span class="cost-total-ageing">{{ invoiceTotal | formatCurrency }} </span>
   </div>
   <div [ngSwitch]="template">
-    <div *ngSwitchCase="'light-blue'" class="custom-progress">
-      <div class="inside-progress light-blue"></div>
+    <div *ngSwitchCase="'light-blue'" class="app-progress-invoices">
+      <div class="inside-progress inside-progress-light-blue"></div>
     </div>
-    <div *ngSwitchCase="'mid-blue'" class="custom-progress">
-      <div class="inside-progress mid-blue"></div>
+    <div *ngSwitchCase="'mid-blue'" class="app-progress-invoices">
+      <div class="inside-progress inside-progress-mid-blue"></div>
     </div>
-    <div *ngSwitchCase="'dark-blue'" class="custom-progress">
-      <div class="inside-progress dark-blue"></div>
+    <div *ngSwitchCase="'dark-blue'" class="app-progress-invoices">
+      <div class="inside-progress inside-progress-dark-blue"></div>
     </div>
-    <div *ngSwitchCase="'danger'" class="custom-progress">
-      <div class="inside-progress danger-broker"></div>
+    <div *ngSwitchCase="'danger'" class="app-progress-invoices">
+      <div class="inside-progress inside-progress-danger-broker"></div>
     </div>
   </div>
 </div>

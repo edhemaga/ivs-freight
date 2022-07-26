@@ -31,7 +31,7 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
     private shipperMinimalListQuery: ShipperMinimalListQuery
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.shipper?.firstChange && changes?.shipper) {
+    if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
       this.note.patchValue(changes?.shipper.currentValue.note);
       this.shipper = changes.shipper.currentValue;
       this.getShipperDropdown();
@@ -39,8 +39,6 @@ export class ShipperCardViewComponent implements OnInit, OnChanges {
   }
   ngOnInit(): void {
     this.tabsButton();
-    this.getShipperDropdown();
-    this.note.patchValue(this.shipper.note);
   }
   public getShipperDropdown() {
     this.shipperDropdowns = this.shipperMinimalListQuery
