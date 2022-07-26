@@ -26,8 +26,6 @@ export class TaCopyComponent implements OnInit {
 
   /**Show hide eye function */
   public showHide(event: any) {
-    console.log(event);
-
     this.showHideEye.emit(event);
   }
 }
