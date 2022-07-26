@@ -221,7 +221,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 26px;
+    justify-content: center;
 
     .ta-upload-file-delete-text {
       margin: 0;
@@ -359,6 +359,11 @@
 
     .ta-upload-file-footer {
       bottom: 33px;
+    }
+
+    .ta-upload-file-delete-template {
+      width: 304px;
+      height: 320px;
     }
   }
 }
