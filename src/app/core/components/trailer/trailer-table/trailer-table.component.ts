@@ -345,8 +345,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapTrailerData(data: any) {
-    console.log('Truck Data');
-    console.log(data);
     return {
       ...data,
       isSelected: false,

@@ -275,7 +275,6 @@ export class TruckassistTableToolbarComponent
     
     this.timeOutToaggleColumn = setTimeout(() => {
       if (!column.isPined) {
-        console.log('Radi onToaggleColumn')
         column.hidden = !column.hidden;
   
         this.resetInactivityTimer();
