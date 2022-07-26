@@ -13,6 +13,8 @@ export class MedicalCertificateComponent implements OnInit {
 
   public medicalCertificateForm: FormGroup;
 
+  public documents: any[] = [];
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -24,5 +26,9 @@ export class MedicalCertificateComponent implements OnInit {
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
     });
+  }
+
+  public onFilesAction(event: any): void {
+    this.documents = event.files;
   }
 }

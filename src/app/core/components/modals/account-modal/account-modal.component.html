@@ -3,7 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="editData ? accountForm.valid && isDirty : accountForm.valid"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="accountForm" class="form-container">
     <div class="row">

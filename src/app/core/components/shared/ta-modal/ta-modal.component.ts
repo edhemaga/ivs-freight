@@ -11,9 +11,9 @@ import {
 } from '@angular/core';
 import { ModalService } from './modal.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { UploadFile } from '../ta-modal-upload/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-modal-upload/ta-upload-dropzone/ta-upload-dropzone.component';
-import { TaUploadFileService } from '../ta-modal-upload/ta-upload-file.service';
+import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
+import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import {
   animate,
   state,
@@ -49,9 +49,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
+  @Input() saveAndAddNew: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
-
+  @Input() disableFooter: boolean = false;
   @Input() disableDelete: boolean = false;
   @Input() isDeactivated: boolean = false;
   @Input() isDNU: boolean = false;
@@ -69,7 +70,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   @Input() tabChange: any;
 
-  @Output() modalActionTypeEmitter: EventEmitter<{
+  @Output() action: EventEmitter<{
     action: string;
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
@@ -79,6 +80,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   private timeout = null;
 
   public saveSpinnerVisibility: boolean = false;
+  public saveAddNewSpinnerVisibility: boolean = false;
   public deleteSpinnerVisibility: boolean = false;
 
   // Drag & Drop properties
@@ -133,18 +135,25 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.deleteSpinnerVisibility = data.status;
             break;
           }
+          case 'save and add new': {
+            this.saveAddNewSpinnerVisibility = data.status;
+            break;
+          }
           default: {
             this.saveSpinnerVisibility = data.status;
             break;
           }
         }
-        if (this.timeout) {
-          clearTimeout(this.timeout);
+
+        if (data.action !== 'save and add new') {
+          if (this.timeout) {
+            clearTimeout(this.timeout);
+          }
+          this.timeout = setTimeout(() => {
+            this.ngbActiveModal.close();
+            clearTimeout(this.timeout);
+          }, 1000);
         }
-        this.timeout = setTimeout(() => {
-          this.ngbActiveModal.close();
-          clearTimeout(this.timeout);
-        }, 1000);
       });
   }
 
@@ -182,11 +191,15 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public onAction(action: string) {
     switch (action) {
       case 'save': {
-        this.modalActionTypeEmitter.emit({ action: action, bool: false });
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
+      case 'save and add new': {
+        this.action.emit({ action: action, bool: false });
         break;
       }
       case 'close': {
-        this.modalActionTypeEmitter.emit({ action: action, bool: false });
+        this.action.emit({ action: action, bool: false });
         $('.pac-container').remove();
         this.timeout = setTimeout(() => {
           this.ngbActiveModal.dismiss();
@@ -198,7 +211,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'deactivate': {
         this.isDeactivated = !this.isDeactivated;
-        this.modalActionTypeEmitter.emit({
+        this.action.emit({
           action: action,
           bool: this.isDeactivated,
         });
@@ -206,16 +219,16 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'dnu': {
         this.isDNU = !this.isDNU;
-        this.modalActionTypeEmitter.emit({ action: action, bool: this.isDNU });
+        this.action.emit({ action: action, bool: this.isDNU });
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
-        this.modalActionTypeEmitter.emit({ action: action, bool: this.isBFB });
+        this.action.emit({ action: action, bool: this.isBFB });
         break;
       }
       case 'delete': {
-        this.modalActionTypeEmitter.emit({ action: action, bool: false });
+        this.action.emit({ action: action, bool: false });
         break;
       }
       default: {

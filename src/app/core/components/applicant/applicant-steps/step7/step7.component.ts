@@ -71,6 +71,7 @@ export class Step7Component implements OnInit, OnDestroy {
       ],
     },
   ];
+
   public sevenDaysHosDaysData: string[] = [
     'Day',
     '1',
@@ -81,6 +82,7 @@ export class Step7Component implements OnInit, OnDestroy {
     '6',
     '7',
   ];
+
   public sevenDaysHosDateData: string[] = [
     'Date',
     '01/22/21',

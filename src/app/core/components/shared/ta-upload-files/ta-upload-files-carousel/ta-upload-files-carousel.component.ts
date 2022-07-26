@@ -1,10 +1,16 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 
 @Component({
   selector: 'app-ta-upload-files-carousel',
   templateUrl: './ta-upload-files-carousel.component.html',
   styleUrls: ['./ta-upload-files-carousel.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaUploadFilesCarouselComponent {
   @Input() filesLength: number;
@@ -26,11 +32,7 @@ export class TaUploadFilesCarouselComponent {
         this.currentSlide = previous < 0 ? this.filesLength - 1 : previous;
         this.activeSlide.emit(this.currentSlide);
         // Multiple slides previous
-        if (
-          ['modal-medium', 'modal-large'].includes(
-            this.customClass.toLowerCase()
-          )
-        ) {
+        if (['medium', 'large'].includes(this.customClass.toLowerCase())) {
           if (--this.multipleCurrentSlide <= 0) {
             this.multipleCurrentSlide = 0;
             return;
@@ -46,7 +48,7 @@ export class TaUploadFilesCarouselComponent {
         this.activeSlide.emit(this.currentSlide);
 
         // Multiple slides previous
-        if (['modal-medium'].includes(this.customClass.toLowerCase())) {
+        if (['medium'].includes(this.customClass.toLowerCase())) {
           if (++this.multipleCurrentSlide >= this.filesLength - 1) {
             this.multipleCurrentSlide = this.filesLength - 1;
 
@@ -56,7 +58,7 @@ export class TaUploadFilesCarouselComponent {
           }
         }
 
-        if (['modal-large'].includes(this.customClass.toLowerCase())) {
+        if (['large'].includes(this.customClass.toLowerCase())) {
           if (++this.multipleCurrentSlide >= this.filesLength - 2) {
             this.multipleCurrentSlide = this.filesLength - 2;
 

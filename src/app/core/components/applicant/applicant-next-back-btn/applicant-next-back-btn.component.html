@@ -4,7 +4,7 @@
     class="d-flex justify-content-center align-items-center step-btn"
     [ngClass]="{ 'filled-correctly': filledCorrectly }"
     [ngStyle]="{
-      width: lastPage ? '234px' : '100px'
+      width: lastPage || lastSphFormPage ? '234px' : '100px'
     }"
     (click)="onStepAction('next-step')"
   >
@@ -13,7 +13,15 @@
       [ngStyle]="{
         color: filledCorrectly ? '#3551B7' : '#6c6c6c'
       }"
-      >{{ lastStep ? 'Finish' : lastPage ? 'Finish & Save Profile' : 'Next' }}
+      >{{
+        lastStep
+          ? 'Finish'
+          : lastPage
+          ? 'Finish & Save Profile'
+          : lastSphFormPage
+          ? 'Finish & Send'
+          : 'Next'
+      }}
     </span>
 
     <svg-icon
