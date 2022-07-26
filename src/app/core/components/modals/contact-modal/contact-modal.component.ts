@@ -22,7 +22,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { createBase64 } from 'src/app/core/utils/base64.image';
 
 @Component({
   selector: 'app-contact-modal',
