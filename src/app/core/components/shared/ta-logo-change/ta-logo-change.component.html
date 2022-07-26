@@ -36,32 +36,20 @@
         <div
           (click)="saveImage()"
           class="save-check"
-          [appTooltip]="'Confirm'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#536bc2'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="-7"
+          ngbTooltip
+          mainTooltip="Confirm"
+          tooltipBackground="#536bc2"
+          position="top"
         >
           <svg-icon src="assets/svg/common/ic_save-logo.svg"></svg-icon>
         </div>
         <div
           (click)="onCancel()"
           class="cancel-check"
-          [appTooltip]="'Cancel'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#6c6c6c'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="-4"
+          ngbTooltip
+          mainTooltip="Cancel"
+          tooltipBackground="#6c6c6c"
+          position="top"
         >
           <svg-icon src="assets/svg/common/ic_cancel.svg"></svg-icon>
         </div>
@@ -73,16 +61,10 @@
   <div class="ta-logo-saved-image" *ngIf="imageUrl">
     <div
       class="ta-logo-image-delete"
-      [appTooltip]="'Delete'"
-      [position]="'top-middle'"
-      [tooltipBackground]="'#EF5350'"
-      [tooltipColor]="'#FFFFFF'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
-      [customPosition]="-2"
+      ngbTooltip
+      mainTooltip="Delete"
+      tooltipBackground="#EF5350"
+      position="top"
       (click)="onDeleteSavedImage()"
     >
       <svg-icon
