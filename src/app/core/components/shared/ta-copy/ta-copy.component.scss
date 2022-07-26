@@ -1,0 +1,71 @@
+@keyframes change {
+    from {
+        color: #6c6c6c;
+    }
+    to {
+        color: #3551b7;
+    }
+}
+@keyframes changeSVG {
+    from {
+        fill: #6c6c6c;
+    }
+    to {
+        fill: #3551b7;
+    }
+}
+.icon-text-cont {
+    display: flex;
+    align-items: center;
+    width: 250px;
+    .copy-value {
+        white-space: nowrap;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    .card-icon-copy {
+        margin-left: 6px;
+        display: none;
+        cursor: pointer;
+        svg {
+            width: 18px;
+            height: 18px;
+            &:hover {
+                path {
+                    fill: #6c6c6c;
+                }
+            }
+        }
+    }
+    &:hover {
+        .card-icon-copy {
+            display: flex;
+        }
+    }
+}
+.copied {
+    .copy-value {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
+
+    .card-icon-copy {
+        svg {
+            display: flex;
+            path {
+                animation-duration: 1500ms;
+                animation-name: changeSVG;
+                &:hover {
+                    animation-duration: 1500ms;
+                    animation-name: changeSVG;
+                }
+            }
+        }
+    }
+}
