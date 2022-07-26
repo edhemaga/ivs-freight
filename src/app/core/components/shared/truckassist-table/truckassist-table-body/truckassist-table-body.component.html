@@ -19,7 +19,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">
@@ -841,7 +841,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
           [ngClass]="{
             'border-inactive': !showScrollSectionBorder
@@ -1600,7 +1600,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">
