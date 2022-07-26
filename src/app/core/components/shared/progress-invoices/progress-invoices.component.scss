@@ -62,51 +62,29 @@
             }
         }
     }
-    .custom-progress-light-blue {
+    .custom-progress {
         width: 408px;
         height: 8px;
         border-radius: 2px;
         background-color: #f3f3f3;
         .inside-progress {
-            width: 20%;
             height: 8px;
             border-radius: 2px 0 0 2px;
+        }
+        .light-blue {
+            width: 20%;
             background-color: #bdcaeb;
         }
-    }
-    .custom-progress-mid-blue {
-        width: 408px;
-        height: 8px;
-        border-radius: 2px;
-        background-color: #f3f3f3;
-        .inside-progress {
+        .mid-blue {
             width: 40%;
-            height: 8px;
-            border-radius: 2px 0 0 2px;
             background-color: #97a8dc;
         }
-    }
-    .custom-progress-dark-blue {
-        width: 408px;
-        height: 8px;
-        border-radius: 2px;
-        background-color: #f3f3f3;
-        .inside-progress {
+        .dark-blue {
             width: 60%;
-            height: 8px;
-            border-radius: 2px 0 0 2px;
             background-color: #6d82c8;
         }
-    }
-    .custom-progress-danger-broker {
-        width: 408px;
-        height: 8px;
-        border-radius: 2px;
-        background-color: #f3f3f3;
-        .inside-progress {
+        .danger-broker {
             width: 25%;
-            height: 8px;
-            border-radius: 2px 0 0 2px;
             background-color: #e57373;
         }
     }
