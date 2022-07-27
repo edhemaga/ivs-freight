@@ -17,7 +17,7 @@ import { ShipperResolver } from './core/components/customer/state/shipper-state/
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-import { Step3PdfComponent } from './core/components/applicant/state/pdf-export/application/step3-pdf/step3-pdf.component';
+import { Step11PdfComponent } from './core/components/applicant/state/pdf-export/application/step11-pdf/step11-pdf.component';
 
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
@@ -284,7 +284,7 @@ const routes: Routes = [
   },
   {
     path: 'pdf',
-    component: Step3PdfComponent,
+    component: Step11PdfComponent,
     data: { title: 'pdf' },
   },
   {

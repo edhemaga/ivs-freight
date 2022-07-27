@@ -46,6 +46,17 @@ import { DrugAlcoholTestingPdfComponent } from './state/pdf-export/sph-form/drug
 import { Step1PdfComponent } from './state/pdf-export/application/step1-pdf/step1-pdf.component';
 import { Step2PdfComponent } from './state/pdf-export/application/step2-pdf/step2-pdf.component';
 import { Step3PdfComponent } from './state/pdf-export/application/step3-pdf/step3-pdf.component';
+import { Step4PdfComponent } from './state/pdf-export/application/step4-pdf/step4-pdf.component';
+import { Step5ZeroPdfComponent } from './state/pdf-export/application/step5-pdf/step5-zero-pdf/step5-zero-pdf.component';
+import { Step5PdfComponent } from './state/pdf-export/application/step5-pdf/step5-pdf.component';
+import { Step6PdfComponent } from './state/pdf-export/application/step6-pdf/step6-pdf.component';
+import { Step7PdfComponent } from './state/pdf-export/application/step7-pdf/step7-pdf.component';
+import { Step8ZeroPdfComponent } from './state/pdf-export/application/step8-pdf/step8-zero-pdf/step8-zero-pdf.component';
+import { Step8PdfComponent } from './state/pdf-export/application/step8-pdf/step8-pdf.component';
+import { Step9Page1PdfComponent } from './state/pdf-export/application/step9-pdf/step9-page1-pdf/step9-page1-pdf.component';
+import { Step9Page2PdfComponent } from './state/pdf-export/application/step9-pdf/step9-page2-pdf/step9-page2-pdf.component';
+import { Step10PdfComponent } from './state/pdf-export/application/step10-pdf/step10-pdf.component';
+import { Step11PdfComponent } from './state/pdf-export/application/step11-pdf/step11-pdf.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +94,17 @@ import { Step3PdfComponent } from './state/pdf-export/application/step3-pdf/step
     Step1PdfComponent,
     Step2PdfComponent,
     Step3PdfComponent,
+    Step4PdfComponent,
+    Step5ZeroPdfComponent,
+    Step5PdfComponent,
+    Step6PdfComponent,
+    Step7PdfComponent,
+    Step8ZeroPdfComponent,
+    Step8PdfComponent,
+    Step9Page1PdfComponent,
+    Step9Page2PdfComponent,
+    Step10PdfComponent,
+    Step11PdfComponent,
   ],
   imports: [
     CommonModule,
