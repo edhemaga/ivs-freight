@@ -1,16 +1,21 @@
-import { AuthStoreService } from './../state/auth.service';
 import {
   ChangeDetectionStrategy,
   Component,
   OnDestroy,
   OnInit,
 } from '@angular/core';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import moment from 'moment';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+
 import { untilDestroyed } from 'ngx-take-until-destroy';
+
+import { AuthStoreService } from './../state/auth.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+
+import moment from 'moment';
+
+import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +25,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 })
 export class LoginComponent implements OnInit, OnDestroy {
   public loginForm: FormGroup;
+
   public copyrightYear!: number;
 
   constructor(
@@ -30,8 +36,17 @@ export class LoginComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.copyrightYear = moment().year();
     this.createForm();
+
+    this.copyrightYear = moment().year();
+  }
+
+  private createForm(): void {
+    this.loginForm = this.formBuilder.group({
+      email: [null, [Validators.required, emailRegex]],
+      password: [null, [Validators.required]],
+      staySignedIn: [false],
+    });
   }
 
   public userLogin() {
@@ -56,11 +71,10 @@ export class LoginComponent implements OnInit, OnDestroy {
       });
   }
 
-  private createForm() {
-    this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex]],
-      password: [null, [Validators.required]],
-    });
+  public onKeyDown(event: any): void {
+    if (event.keyCode === 13) {
+      this.userLogin();
+    }
   }
 
   ngOnDestroy(): void {}
