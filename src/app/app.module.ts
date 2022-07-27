@@ -27,7 +27,6 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
-import { CreateBase64Class } from './core/utils/base64.image';
 
 @NgModule({
   declarations: [
@@ -73,7 +72,6 @@ import { CreateBase64Class } from './core/utils/base64.image';
       deps: [UserLoggedService],
       multi: false,
     },
-    CreateBase64Class
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
