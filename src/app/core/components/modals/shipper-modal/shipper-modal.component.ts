@@ -264,9 +264,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private createShipperContacts(): FormGroup {
     return this.formBuilder.group({
-      fullName: [null],
-      departmentId: [null],
-      phone: [null, phoneRegex],
+      fullName: [null, Validators.required],
+      departmentId: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null],
       email: [null, emailRegex],
     });

@@ -188,6 +188,7 @@
                 <app-ta-input
                   formControlName="description"
                   [inputConfig]="{
+                    id: 'Description' + ind,
                     name: 'Description',
                     type: 'text',
                     textTransform: 'capitalize',
@@ -242,6 +243,7 @@
                 *ngIf="selectedHeaderTab === 1"
                 formControlName="price"
                 [inputConfig]="{
+                  id: 'Price' + ind,
                   name: 'Price',
                   type: 'text',
                   textTransform: 'capitalize',
@@ -256,6 +258,7 @@
               <app-ta-input
                 formControlName="quantity"
                 [inputConfig]="{
+                  id: 'QTY' + ind,
                   name: 'QTY',
                   type: 'text',
                   textTransform: 'capitalize',

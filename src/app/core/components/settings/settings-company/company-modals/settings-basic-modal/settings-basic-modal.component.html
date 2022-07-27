@@ -10,14 +10,16 @@
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+  <app-ta-tab-switch
     [tabs]="
       editData.type === 'new-division' || editData.type === 'edit-division'
         ? tabsDivision
         : tabs
     "
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="companyForm"
@@ -208,6 +210,7 @@
             <app-ta-input-dropdown
               formControlName="timeZone"
               [inputConfig]="{
+                id: 'Input Dropdown TimeZone',
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Time Zone',
@@ -224,6 +227,7 @@
             <app-ta-input-dropdown
               formControlName="currency"
               [inputConfig]="{
+                id: 'Input Dropdown Currency',
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Currency',
@@ -242,6 +246,7 @@
             <app-ta-input-dropdown
               formControlName="companyType"
               [inputConfig]="{
+                id: 'Input Dropdown Company Type',
                 name: 'Input Dropdown',
                 type: 'text',
                 label: 'Company Type',
@@ -299,7 +304,7 @@
               <p>DEPARTMENT <span>*</span></p>
               <p>PHONE <span>*</span></p>
               <p>EXT</p>
-              <p>EMAIL</p>
+              <p>EMAIL <span>*</span></p>
             </div>
             <div
               *ngFor="
@@ -311,6 +316,7 @@
                 <app-ta-input-dropdown
                   formControlName="departmentId"
                   [inputConfig]="{
+                    id: 'Input Dropdown Dep' + ind,
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
@@ -325,6 +331,7 @@
                 <app-ta-input
                   formControlName="phone"
                   [inputConfig]="{
+                    id: 'Phone' + ind,
                     name: 'Phone',
                     type: 'text',
                     mask: '(000) 000-0000'
@@ -333,6 +340,7 @@
                 <app-ta-input
                   formControlName="extensionPhone"
                   [inputConfig]="{
+                    id: 'Phone Extension' + ind,
                     name: 'Phone Extension',
                     type: 'text',
                     maxLength: 3
@@ -341,6 +349,7 @@
                 <app-ta-input
                   formControlName="email"
                   [inputConfig]="{
+                    id: 'Email' + ind,
                     name: 'Email',
                     type: 'text'
                   }"
@@ -388,25 +397,26 @@
                   formControlName="bankId"
                   [template]="'svg-template'"
                   [inputConfig]="{
+                    id: 'Input Dropdown Bank' + ind,
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-banks'
                   }"
                   [canAddNew]="true"
-                  [options]="[]"
+                  [options]="banks"
                   [activeItem]="selectedBankAccountFormArray[ind]"
                   (selectedItem)="
-                    onSelectFakeTableData($event, ind, 'bankaccounts')
+                    onSelectFakeTableData($event, ind, 'bankAccounts')
                   "
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="routing"
                   [inputConfig]="{
+                    id: 'Routing Number' + ind,
                     name: 'Routing Number',
                     type: 'text',
-                    isDisabled: !isBankSelected,
-                    isRequired: isBankSelected,
+                    isDisabled: !isBankSelectedFormArray[ind],
                     minLength: 9,
                     maxLength: 9
                   }"
@@ -414,11 +424,11 @@
                 <app-ta-input
                   formControlName="account"
                   [inputConfig]="{
+                    id: 'Account Number' + ind,
                     name: 'Account Number',
                     type: 'password',
                     placeholderIcon: 'password',
-                    isDisabled: !isBankSelected,
-                    isRequired: isBankSelected,
+                    isDisabled: !isBankSelectedFormArray[ind],
                     maxLength: 17,
                     minLength: 4
                   }"
@@ -473,14 +483,16 @@
                 <app-ta-input
                   formControlName="nickname"
                   [inputConfig]="{
+                    id: 'Nickname' + ind,
                     name: 'Nickname',
                     type: 'text',
                     textTransform: 'capitalize'
                   }"
                 ></app-ta-input>
                 <app-ta-input
-                  formControlName="cardNumber"
+                  formControlName="card"
                   [inputConfig]="{
+                    id: 'Card Number' + ind,
                     name: 'Card Number',
                     type: 'password',
                     placeholderIcon: 'visa',
@@ -491,6 +503,7 @@
                 <app-ta-input
                   formControlName="cvc"
                   [inputConfig]="{
+                    id: 'CVC' + ind,
                     name: 'CVC',
                     type: 'password',
                     placeholderIcon: 'password',
@@ -499,8 +512,9 @@
                   }"
                 ></app-ta-input>
                 <app-ta-input
-                  formControlName="exp"
+                  formControlName="expireDate"
                   [inputConfig]="{
+                    id: 'Datepicker' + ind,
                     name: 'datepicker',
                     type: 'text',
                     isDropdown: true,
@@ -543,7 +557,7 @@
                 <app-ta-input
                   formControlName="starting"
                   [inputConfig]="{
-                    name: 'Starting No',
+                    name: 'Starting',
                     type: 'text',
                     label: 'Starting No',
                     isRequired: true,
@@ -566,12 +580,12 @@
             <div class="preferred-load-company-additional">
               <div class="preffered-field-one">
                 <span class="r-text">Preferred Load Type</span>
-                <div class="r-btns">
-                  <app-ta-input-radiobuttons
-                    [buttons]="prefferedLoadBtns"
-                    (changedValue)="onPrefferedLoadCheck($event)"
-                  ></app-ta-input-radiobuttons>
-                </div>
+                <app-ta-tab-switch
+                  [tabs]="prefferedLoadBtns"
+                  (switchClicked)="onPrefferedLoadCheck($event)"
+                  [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
               </div>
               <div class="preffered-field">
                 <app-ta-checkbox
@@ -667,11 +681,11 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: companyForm.get('useACHPayout').value }"
-            (click)="useACHPayout($event)"
           >
             <app-ta-checkbox
               formControlName="useACHPayout"
               [label]="truckAssistText"
+              [name]="'Use ACH Payout'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow visible"
@@ -695,6 +709,7 @@
               <app-ta-input-dropdown
                 formControlName="driveOwnerPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -711,7 +726,8 @@
               <app-ta-input-dropdown
                 formControlName="driverOwnerEndingIn"
                 [inputConfig]="{
-                  name: 'Input Dropdown',
+                  id: 'Input Dropdown Owner Ending in',
+                  name: 'Input Dropdown Owner',
                   type: 'text',
                   label: 'Ending In',
                   isDropdown: true,
@@ -730,30 +746,37 @@
               <app-ta-input
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
+                  id: 'Per Mile Solo Empty',
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Empty Mi',
+                  isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
+                  id: 'Per Mile Solo Loaded',
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Loaded Mi',
+                  isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
                 formControlName="soloPerStop"
                 [inputConfig]="{
+                  id: 'Per Mile Solo Stop',
                   name: 'Per Stop',
                   label: 'Per Stop',
                   type: 'text',
@@ -770,30 +793,35 @@
               <app-ta-input
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
+                  id: 'Per Mile Team Empty',
                   name: 'Per Mile',
-                  type: 'number',
-                  label: 'Empty Mi',
+                  type: 'text',
+                  label: 'Per Mi',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
+                  id: 'Per Mile Team Loaded',
                   name: 'Per Mile',
-                  type: 'number',
+                  type: 'text',
                   label: 'Loaded Mi',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
                 formControlName="teamPerStop"
                 [inputConfig]="{
+                  id: 'Per Mile Team Stop',
                   name: 'Per Stop',
                   label: 'Per Stop',
                   type: 'text',
@@ -860,12 +888,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Accounting'">
+        <app-ta-custom-card
+          [cardName]="'Accounting'"
+          [isCardOpen]="companyForm.get('accountingDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="accountingPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Accounting Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -884,6 +916,7 @@
               <app-ta-input-dropdown
                 formControlName="accountingEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Accounting Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -902,6 +935,7 @@
               <app-ta-input
                 formControlName="accountingDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Accounting',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -913,12 +947,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Company Owner'">
+        <app-ta-custom-card
+          [cardName]="'Company Owner'"
+          [isCardOpen]="companyForm.get('companyOwnerDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="companyOwnerPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Owner Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -937,6 +975,7 @@
               <app-ta-input-dropdown
                 formControlName="companyOwnerEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Owner Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -955,6 +994,7 @@
               <app-ta-input
                 formControlName="companyOwnerDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Company Owner',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -966,12 +1006,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Dispatch'">
+        <app-ta-custom-card
+          [cardName]="'Dispatch'"
+          [isCardOpen]="companyForm.get('dispatchDefaultBase').value"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
                 formControlName="dispatchPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Dispatch Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -988,6 +1032,7 @@
               <app-ta-input-dropdown
                 formControlName="dispatchEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Dispatch Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1006,6 +1051,7 @@
               <app-ta-input
                 formControlName="dispatchDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Dispatch',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -1032,12 +1078,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Manager'">
+        <app-ta-custom-card
+          [cardName]="'Manager'"
+          [isCardOpen]="companyForm.get('managerDefaultBase').value"
+        >
           <div class="row">
             <div class="col-6">
               <app-ta-input-dropdown
                 formControlName="managerPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Manager Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -1054,6 +1104,7 @@
               <app-ta-input-dropdown
                 formControlName="managerEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Manager Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1072,6 +1123,7 @@
               <app-ta-input
                 formControlName="managerDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Manager',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -1098,12 +1150,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Recruiting'">
+        <app-ta-custom-card
+          [cardName]="'Recruiting'"
+          [isCardOpen]="companyForm.get('recruitingDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="recruitingPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Recruting Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -1122,6 +1178,7 @@
               <app-ta-input-dropdown
                 formControlName="recruitingEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Recruting Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1140,6 +1197,7 @@
               <app-ta-input
                 formControlName="recruitingDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Recruiting',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -1151,12 +1209,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Repair'">
+        <app-ta-custom-card
+          [cardName]="'Repair'"
+          [isCardOpen]="companyForm.get('repairDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="repairPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Repair Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -1173,6 +1235,7 @@
               <app-ta-input-dropdown
                 formControlName="repairEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Repair Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1189,6 +1252,7 @@
               <app-ta-input
                 formControlName="repairDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Repair',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -1200,12 +1264,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Safety'">
+        <app-ta-custom-card
+          [cardName]="'Safety'"
+          [isCardOpen]="companyForm.get('safetyDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="safetyPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Safety Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -1222,6 +1290,7 @@
               <app-ta-input-dropdown
                 formControlName="safetyEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Safety Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1238,6 +1307,7 @@
               <app-ta-input
                 formControlName="safetyDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Safety',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
@@ -1249,12 +1319,16 @@
             </div>
           </div>
         </app-ta-custom-card>
-        <app-ta-custom-card [cardName]="'Other'">
+        <app-ta-custom-card
+          [cardName]="'Other'"
+          [isCardOpen]="companyForm.get('otherDefaultBase').value"
+        >
           <div class="row last-row">
             <div class="col-4">
               <app-ta-input-dropdown
                 formControlName="otherPayPeriod"
                 [inputConfig]="{
+                  id: 'Input Dropdown Other Pay Period',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay Period',
@@ -1271,6 +1345,7 @@
               <app-ta-input-dropdown
                 formControlName="otherEndingIn"
                 [inputConfig]="{
+                  id: 'Input Dropdown Other Ending In',
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Ending In',
@@ -1287,6 +1362,7 @@
               <app-ta-input
                 formControlName="otherDefaultBase"
                 [inputConfig]="{
+                  id: 'Default Base Other',
                   name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',

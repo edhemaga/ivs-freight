@@ -334,7 +334,7 @@
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
-    [id]="inputConfig.name"
+    [id]="inputConfig.id ? inputConfig.id : inputConfig.name"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete ? inputConfig.autocomplete : 'off'"

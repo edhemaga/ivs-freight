@@ -9,15 +9,28 @@
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
-        (click)="onAction({ modalName: 'basic', type: 'payroll-tab' })"
+        (click)="
+          onAction({
+            modalName: 'basic',
+            type: 'payroll-tab',
+            company: payrollData
+          })
+        "
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <!-- Driver & Owner -->
-    <div *ngIf="payrollData.length" class="cards-custom-payroll">
+    <div
+      *ngIf="payrollData?.companyPayrolls?.length"
+      class="cards-custom-payroll"
+    >
       <app-ta-custom-card
-        *ngFor="let payroll of payrollData; let i = index; trackBy: identity"
+        *ngFor="
+          let payroll of payrollData.companyPayrolls;
+          let i = index;
+          trackBy: identity
+        "
         [cardName]="payroll?.department?.name"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"

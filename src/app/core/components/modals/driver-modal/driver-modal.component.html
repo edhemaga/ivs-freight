@@ -187,7 +187,8 @@
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -454,6 +455,7 @@
                 <app-ta-input
                   formControlName="nickname"
                   [inputConfig]="{
+                    id: 'NICKNAME' + ind,
                     name: 'NICKNAME',
                     type: 'text',
                     textTransform: 'capitalize',
@@ -464,6 +466,7 @@
                 <app-ta-input-address
                   formControlName="address"
                   [inputConfig]="{
+                    id: 'Address' + ind,
                     name: 'Address',
                     type: 'text',
                     textTransform: 'capitalize',
