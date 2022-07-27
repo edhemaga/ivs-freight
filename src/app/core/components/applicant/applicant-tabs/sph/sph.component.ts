@@ -54,8 +54,13 @@ export class SphComponent implements OnInit {
   }
 
   public handleReviewSectionsClick(): void {
-    this.modalService.openModal(SphModalComponent, {
-      size: 'modal-container-sph-applicant',
-    });
+    this.modalService.openModal(
+      SphModalComponent,
+      {
+        size: 'sph-applicant',
+      },
+      null,
+      'sph-applicant-backdrop'
+    );
   }
 }

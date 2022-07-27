@@ -103,7 +103,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.trailerForm = this.formBuilder.group({
-      companyOwned: [false],
+      companyOwned: [true],
       trailerNumber: [null, [Validators.required, Validators.maxLength(8)]],
       trailerTypeId: [null, [Validators.required]],
       vin: [
@@ -119,7 +119,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       colorId: [null],
       year: [null, [Validators.required, yearValidRegex]],
       trailerLengthId: [null, [Validators.required]],
-      ownerId: [null, Validators.required],
+      ownerId: [null],
       note: [null],
       axles: [null],
       suspension: [null],
@@ -245,13 +245,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
-          this.trailerMakeType = res.trailerMakes.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'trailermake',
-            };
-          });
+          this.trailerMakeType = res.trailerMakes;
 
           this.colorType = res.colors.map((item) => {
             return {
@@ -287,7 +281,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       trailerLengthId: this.selectedTrailerLength.id,
       ownerId: this.trailerForm.get('companyOwned').value
         ? null
-        : this.selectedOwner.id,
+        : this.selectedOwner
+        ? this.selectedOwner.id
+        : null,
       axles: this.trailerForm.get('axles').value
         ? parseInt(this.trailerForm.get('axles').value)
         : null,
@@ -366,7 +362,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       trailerLengthId: this.selectedTrailerLength.id,
       ownerId: this.trailerForm.get('companyOwned').value
         ? null
-        : this.selectedOwner.id,
+        : this.selectedOwner
+        ? this.selectedOwner.id
+        : null,
       axles: this.trailerForm.get('axles').value
         ? parseInt(this.trailerForm.get('axles').value)
         : null,

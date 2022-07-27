@@ -1,5 +1,5 @@
 <div
-  class="ta-upload"
+  class="ta-upload {{ customClassName }}"
   [ngClass]="{
     'ta-upload-small': files.length && size === 'small',
     'ta-upload-medium-file':
@@ -17,8 +17,10 @@
   <!-- Carousel Files -->
   <app-ta-upload-files-carousel
     *ngIf="files.length"
-    [filesLength]="files.length"
+    [files]="files"
+    [hasCarouselBottomTabs]="hasCarouselBottomTabs"
     [customClass]="size"
+    [customDetailsPageClass]="customClassName"
     (activeSlide)="currentSlide = $event"
   >
     <div
@@ -31,6 +33,7 @@
             *ngIf="currentSlide === ind"
             [file]="file"
             [hasTag]="hasTag"
+            [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"
           ></app-ta-upload-file>
         </div>
@@ -38,14 +41,15 @@
           <app-ta-upload-file
             [file]="file"
             [hasTag]="hasTag"
+            [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"
           ></app-ta-upload-file>
         </div>
       </div>
     </div>
   </app-ta-upload-files-carousel>
-
   <app-ta-upload-dropzone
+    *ngIf="customClassName !== 'driver-details-pdf'"
     (onFileEvent)="onUploadFiles($event)"
   ></app-ta-upload-dropzone>
 </div>

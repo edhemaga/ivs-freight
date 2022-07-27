@@ -37,18 +37,26 @@
         [tooltipBackground]="tooltipName ? '#6c6c6c' : '#ffffff'"
         position="top"
       >
-        <svg-icon [ngClass]="{'header-svg-bank':customClassHeaderSvg}" class="header-svg" src="{{ hasHeaderSvg }}"></svg-icon>
+        <svg-icon
+          [ngClass]="{ 'header-svg-bank': customClassHeaderSvg }"
+          class="header-svg"
+          src="{{ hasHeaderSvg }}"
+        ></svg-icon>
       </div>
     </div>
     <div
       class="header-actions"
-      [ngClass]="{ 'like-dislike-template': hasLikeDislike }"
+      [ngClass]="{
+        'like-dislike-template': hasLikeDislike,
+        'hidden-add-new-action': disableMultipleReviews
+      }"
     >
       <app-ta-like-dislike
         *ngIf="hasLikeDislike && hasBodyData && isCardOpen"
       ></app-ta-like-dislike>
+
       <div
-        *ngIf="hasActionSvg"
+        *ngIf="hasActionSvg && !disableMultipleReviews"
         class="header-action-container"
         [class.hovered]="isHeaderHover"
         [class.data]="

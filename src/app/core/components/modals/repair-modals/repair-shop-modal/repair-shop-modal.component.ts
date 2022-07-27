@@ -40,6 +40,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   public labelsBank: any[] = [];
   public selectedBank: any = null;
+  public isBankSelected: boolean = false;
 
   public services: any[] = [];
   public openHoursDays = [
@@ -221,9 +222,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.repairShopForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (this.selectedBank) {
+        if (value) {
+          this.isBankSelected = true;
           this.inputService.changeValidators(
             this.repairShopForm.get('routing'),
             true,
@@ -236,6 +238,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
+          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.repairShopForm.get('routing'),
             false
@@ -338,19 +341,17 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.services = this.services.map((item) => {
-      return {
-        serviceType: item.serviceType,
-        active: item.active,
-      };
-    });
-
     const newData: CreateRepairShopCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       bankId: this.selectedBank ? this.selectedBank.id : null,
       openHours: openHours,
-      serviceTypes: this.services,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
     };
 
     this.shopService
@@ -390,20 +391,18 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.services = this.services.map((item) => {
-      return {
-        serviceType: item.serviceType,
-        active: item.active,
-      };
-    });
-
     const newData: UpdateRepairShopCommand = {
       id: id,
       ...form,
       bankId: this.selectedBank ? this.selectedBank.id : null,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       openHours: openHours,
-      serviceTypes: this.services,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
     };
 
     this.shopService
@@ -456,13 +455,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
-          this.labelsBank = res.banks.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'banks',
-            };
-          });
+          this.labelsBank = res.banks;
 
           this.services = res.serviceTypes.map((item) => {
             return {
