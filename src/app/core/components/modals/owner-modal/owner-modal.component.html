@@ -132,8 +132,8 @@
         ></app-ta-input>
       </div>
     </div>
-    <div class="row">
-      <div class="col-12">
+    <div class="custom-bank-row last-row">
+      <div class="bank-field">
         <app-ta-input-dropdown
           formControlName="bankId"
           [template]="'svg-template'"
@@ -142,7 +142,7 @@
             type: 'text',
             label: 'Bank Name',
             isDropdown: true,
-            dropdownWidthClass: 'w-col-12'
+            dropdownWidthClass: 'w-col-owner-bank'
           }"
           [canAddNew]="true"
           [options]="labelsBank"
@@ -150,23 +150,7 @@
           (selectedItem)="onSelectBank($event)"
         ></app-ta-input-dropdown>
       </div>
-    </div>
-    <div class="row last-row">
-      <div class="col-7">
-        <app-ta-input
-          formControlName="accountNumber"
-          [inputConfig]="{
-            name: 'Account Number',
-            type: 'text',
-            label: 'Account #',
-            isDisabled: !isBankSelected,
-            isRequired: isBankSelected,
-            maxLength: 17,
-            minLength: 4
-          }"
-        ></app-ta-input>
-      </div>
-      <div class="col-5">
+      <div class="bank-field">
         <app-ta-input
           formControlName="routingNumber"
           [inputConfig]="{
@@ -177,6 +161,20 @@
             isRequired: isBankSelected,
             minLength: 9,
             maxLength: 9
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="bank-field">
+        <app-ta-input
+          formControlName="accountNumber"
+          [inputConfig]="{
+            name: 'Account Number',
+            type: 'text',
+            label: 'Account #',
+            isDisabled: !isBankSelected,
+            isRequired: isBankSelected,
+            maxLength: 17,
+            minLength: 4
           }"
         ></app-ta-input>
       </div>

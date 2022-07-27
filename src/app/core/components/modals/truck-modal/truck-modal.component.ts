@@ -251,13 +251,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               subFolder: 'trucks',
             };
           });
-          this.truckMakeType = res.truckMakes.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'trucksmake',
-            };
-          });
+          this.truckMakeType = res.truckMakes;
           this.colorType = res.colors.map((item) => {
             return {
               ...item,

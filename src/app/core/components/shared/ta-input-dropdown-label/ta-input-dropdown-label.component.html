@@ -1,15 +1,15 @@
 <app-ta-input-dropdown
-  *ngIf="selectedAccountLabel?.id !== 7655"
+  *ngIf="selectedLabel?.id !== 7655"
   [formControl]="getSuperControl"
   [inputConfig]="dropdownConfig"
   [options]="options"
   [canAddNew]="true"
   [isOpenSomethingElse]="true"
-  [activeItem]="selectedAccountLabel"
-  (selectedItem)="onSelectDropdown($event, 'account-label')"
+  [activeItem]="selectedLabel"
+  (selectedItem)="onSelectDropdown($event)"
 ></app-ta-input-dropdown>
 
-<div *ngIf="selectedAccountLabel?.id === 7655">
+<div *ngIf="selectedLabel?.id === 7655">
   <app-ta-input
     [formControl]="newLabel"
     [inputConfig]="inputConfig"
@@ -31,7 +31,7 @@
         <svg-icon
           class="ta-label-option-svg"
           src="assets/svg/common/ic_dynamic_label.svg"
-          [svgStyle]="{ fill: label?.color ? label?.color : '#b7b7b7' }"
+          [svgStyle]="{ fill: label?.code ? label?.code : '#b7b7b7' }"
         ></svg-icon>
         <div class="ta-label-vertical-divider"></div>
         <div class="d-flex justify-content-between flex-fill">

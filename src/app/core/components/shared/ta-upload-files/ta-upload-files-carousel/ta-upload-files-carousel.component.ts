@@ -13,8 +13,10 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaUploadFilesCarouselComponent {
-  @Input() filesLength: number;
+  @Input() files: any[];
   @Input() customClass: string;
+  @Input() customDetailsPageClass: string;
+  @Input() hasCarouselBottomTabs: boolean;
 
   @Output() activeSlide: EventEmitter<number> = new EventEmitter<number>(null);
 
@@ -29,10 +31,10 @@ export class TaUploadFilesCarouselComponent {
     switch (action) {
       case 'prev': {
         const previous = this.currentSlide - 1;
-        this.currentSlide = previous < 0 ? this.filesLength - 1 : previous;
+        this.currentSlide = previous < 0 ? this.files.length - 1 : previous;
         this.activeSlide.emit(this.currentSlide);
         // Multiple slides previous
-        if (['medium', 'large'].includes(this.customClass.toLowerCase())) {
+        if (['medium', 'large'].includes(this.customClass?.toLowerCase())) {
           if (--this.multipleCurrentSlide <= 0) {
             this.multipleCurrentSlide = 0;
             return;
@@ -44,13 +46,13 @@ export class TaUploadFilesCarouselComponent {
       }
       case 'next': {
         const next = this.currentSlide + 1;
-        this.currentSlide = next === this.filesLength ? 0 : next;
+        this.currentSlide = next === this.files.length ? 0 : next;
         this.activeSlide.emit(this.currentSlide);
 
         // Multiple slides previous
-        if (['medium'].includes(this.customClass.toLowerCase())) {
-          if (++this.multipleCurrentSlide >= this.filesLength - 1) {
-            this.multipleCurrentSlide = this.filesLength - 1;
+        if (['medium'].includes(this.customClass?.toLowerCase())) {
+          if (++this.multipleCurrentSlide >= this.files.length - 1) {
+            this.multipleCurrentSlide = this.files.length - 1;
 
             return;
           } else {
@@ -58,9 +60,9 @@ export class TaUploadFilesCarouselComponent {
           }
         }
 
-        if (['large'].includes(this.customClass.toLowerCase())) {
-          if (++this.multipleCurrentSlide >= this.filesLength - 2) {
-            this.multipleCurrentSlide = this.filesLength - 2;
+        if (['large'].includes(this.customClass?.toLowerCase())) {
+          if (++this.multipleCurrentSlide >= this.files.length - 2) {
+            this.multipleCurrentSlide = this.files.length - 2;
 
             return;
           } else {
@@ -74,5 +76,10 @@ export class TaUploadFilesCarouselComponent {
         break;
       }
     }
+  }
+
+  // TruckBy ngFor files changes
+  public identity(index: number, item: any): number {
+    return item.name;
   }
 }

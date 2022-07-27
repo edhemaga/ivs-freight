@@ -41,7 +41,7 @@ import {
           transform: 'scale(1)',
         })
       ),
-      transition('closed => open', animate(250)),
+      transition('closed => open', animate(200)),
     ]),
   ],
 })
@@ -124,6 +124,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
         if (value) {
           this.dragOver();
           this.dragLeave();
+          this.dragDrop();
         }
       });
 
@@ -183,6 +184,23 @@ export class TaModalComponent implements OnInit, OnDestroy {
           this.dropZoneCounter = 0;
           this.isLeaveZone = false;
         }
+        clearTimeout(this.timeout);
+      }, 150);
+    });
+  }
+
+  public dragDrop() {
+    $(document).on('drop', '.modal', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      if (this.timeout) {
+        clearTimeout(this.timeout);
+      }
+      this.timeout = setTimeout(() => {
+        this.dropZoneCounter = 0;
+        this.isDropZoneVisible = false;
+        this.isLeaveZone = false;
+
         clearTimeout(this.timeout);
       }, 150);
     });

@@ -47,7 +47,7 @@
           (click)="
             onAction({
               modalName: 'basic',
-              type: companyData?.divisions.length
+              type: companyData?.divisions?.length
                 ? 'edit-company'
                 : 'edit-division',
               company: companyData
@@ -260,8 +260,8 @@
         [isCardOpen]="true"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
-        *ngIf="companyData.departmentContacts.length"
-        [hasCounter]="companyData.departmentContacts.length"
+        *ngIf="companyData?.departmentContacts?.length"
+        [hasCounter]="companyData?.departmentContacts?.length"
       >
         <div class="department-template-data">
           <div class="department-template-item">
@@ -333,7 +333,7 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [animationsDisabled]="false"
-        *ngIf="companyData.bankAccounts.length"
+        *ngIf="companyData?.bankAccounts?.length"
       >
         <div
           class="additional-template-data"
