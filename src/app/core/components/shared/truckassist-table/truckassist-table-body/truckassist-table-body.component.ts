@@ -119,10 +119,6 @@ export class TruckassistTableBodyComponent
       this.viewData = changes.viewData.currentValue;
     }
 
-    if (!changes?.viewData?.firstChange && changes?.viewData) {
-      this.viewData = changes.viewData.currentValue;
-    }
-
     if (
       !changes?.tableContainerWidth?.firstChange &&
       changes?.tableContainerWidth &&
