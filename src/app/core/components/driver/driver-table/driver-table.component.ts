@@ -425,6 +425,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.mapDriverData(data);
       });
 
+      console.log('View Data');
+      console.log(this.viewData);
+
       // For Testing
       /* for (let i = 0; i < 500; i++) {
         this.viewData.push(this.viewData[0]);
@@ -438,9 +441,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!data?.avatar) {
       this.mapingIndex++;
     }
-
-    console.log('Driver Data');
-    console.log(data);
 
     return {
       ...data,
@@ -459,34 +459,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdlNumber
         : data?.cdls?.length
         ? data.cdls[0].cdlNumber
-        : '587662410',
+        : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
-        start: data?.cdlExpiration
-          ? data.cdlExpiration
-          : data?.cdls?.length
-          ? data.cdls[0].expDate
-          : null,
-        end: null,
+        expirationDays: data?.cdlExpirationDays ? data.cdlExpirationDays : null,
+        percentage: data?.cdlPercentage ? data.cdlPercentage : null,
       },
       tableMedicalData: {
-        start: data?.medicalExpiration
-          ? data.medicalExpiration
-          : data?.medicals?.length
-          ? data.medicals[0].expDate
+        expirationDays: data?.medicalExpirationDays
+          ? data.medicalExpirationDays
           : null,
-        end: null,
+        percentage: data?.medicalPercentage ? data.medicalPercentage : null,
       },
       tableMvrData: {
-        start: data?.mvrIssueDate
-          ? data.mvrIssueDate
-          : data?.mvrs?.length
-          ? data.mvrs[0].issueDate
-          : null,
-        end: null,
+        expirationDays: data?.mvrExpirationDays ? data.mvrExpirationDays : null,
+        percentage: data?.mvrPercentage ? data.mvrPercentage : null,
       },
       tableDrugOrAlcoholTest: null,
     };
