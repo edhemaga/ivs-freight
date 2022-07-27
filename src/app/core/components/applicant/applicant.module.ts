@@ -40,9 +40,9 @@ import { SharedModule } from '../shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
 import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 
-import { ProspectiveEmployerPdfComponent } from './state/pdf-export/sph-form/prospective-employer-pdf/prospective-employer-pdf.component';
-import { AccidentHistoryPdfComponent } from './state/pdf-export/sph-form/accident-history-pdf/accident-history-pdf.component';
-import { DrugAlcoholTestingPdfComponent } from './state/pdf-export/sph-form/drug-alcohol-testing-pdf/drug-alcohol-testing-pdf.component';
+import { ProspectiveEmployerPdfComponent } from './state/pdf-export/sph/sph-form/prospective-employer-pdf/prospective-employer-pdf.component';
+import { AccidentHistoryPdfComponent } from './state/pdf-export/sph/sph-form/accident-history-pdf/accident-history-pdf.component';
+import { DrugAlcoholTestingPdfComponent } from './state/pdf-export/sph/sph-form/drug-alcohol-testing-pdf/drug-alcohol-testing-pdf.component';
 import { Step1PdfComponent } from './state/pdf-export/application/step1-pdf/step1-pdf.component';
 import { Step2PdfComponent } from './state/pdf-export/application/step2-pdf/step2-pdf.component';
 import { Step3PdfComponent } from './state/pdf-export/application/step3-pdf/step3-pdf.component';
@@ -57,6 +57,12 @@ import { Step9Page1PdfComponent } from './state/pdf-export/application/step9-pdf
 import { Step9Page2PdfComponent } from './state/pdf-export/application/step9-pdf/step9-page2-pdf/step9-page2-pdf.component';
 import { Step10PdfComponent } from './state/pdf-export/application/step10-pdf/step10-pdf.component';
 import { Step11PdfComponent } from './state/pdf-export/application/step11-pdf/step11-pdf.component';
+import { MvrPdfComponent } from './state/pdf-export/mvr/mvr-pdf/mvr-pdf.component';
+import { PspPage1PdfComponent } from './state/pdf-export/psp/psp-page1-pdf/psp-page1-pdf.component';
+import { PspPage2PdfComponent } from './state/pdf-export/psp/psp-page2-pdf/psp-page2-pdf.component';
+import { HosPdfComponent } from './state/pdf-export/hos/hos-pdf/hos-pdf.component';
+import { SphPage1PdfComponent } from './state/pdf-export/sph/sph-page1-pdf/sph-page1-pdf.component';
+import { SphPage2PdfComponent } from './state/pdf-export/sph/sph-page2-pdf/sph-page2-pdf.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +111,12 @@ import { Step11PdfComponent } from './state/pdf-export/application/step11-pdf/st
     Step9Page2PdfComponent,
     Step10PdfComponent,
     Step11PdfComponent,
+    MvrPdfComponent,
+    PspPage1PdfComponent,
+    PspPage2PdfComponent,
+    HosPdfComponent,
+    SphPage1PdfComponent,
+    SphPage2PdfComponent,
   ],
   imports: [
     CommonModule,
