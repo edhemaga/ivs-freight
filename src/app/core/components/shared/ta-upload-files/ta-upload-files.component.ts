@@ -22,9 +22,11 @@ export class TaUploadFilesComponent implements OnInit {
   @ViewChild(TaUploadFilesCarouselComponent)
   modalCarousel: TaUploadFilesCarouselComponent;
 
+  @Input() customClassName: string;
   @Input() files: UploadFile[] = [];
   @Input() hasTag: boolean = false;
-  @Input() size: string = 'modal-small'; // small | medium | large
+  @Input() size: string = 'small'; // small | medium | large
+  @Input() hasCarouselBottomTabs: boolean;
 
   @Output() onFileEvent: EventEmitter<{ files: UploadFile[]; action: string }> =
     new EventEmitter<{ files: UploadFile[]; action: string }>(null);

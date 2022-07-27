@@ -32,6 +32,10 @@ ngb-modal-window[aria-hidden="true"] {
       bottom: 6%;
     }
 
+    &.modal-sph-applicant {
+      bottom: 3%;
+    }
+
     @media (min-width: 576px) {
       max-width: -webkit-max-content !important;
       max-width: -moz-max-content !important;
@@ -69,7 +73,7 @@ ngb-modal-window[aria-hidden="true"] {
     .modal-container {
       border: none;
       border-radius: 5px;
-      box-shadow: 0 0 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 32px rgba(0, 0, 0, 0.15);
       background-color: #fff;
 
       &.cdk-drag-dragging {
@@ -336,6 +340,22 @@ body.modal-open {
       animation-duration: 0.3s;
     }
   }
+
+  .sph-applicant-backdrop {
+    &.fade {
+      transition: background-color 2s ease-out !important;
+      opacity: 1 !important;
+      background-color: transparent !important;
+      -webkit-backdrop-filter: blur(5px);
+      backdrop-filter: blur(5px);
+
+      -webkit-animation-name: modalShow;
+      animation-name: modalShow;
+
+      -webkit-animation-duration: 0.3s;
+      animation-duration: 0.3s;
+    }
+  }
 }
 
 body:not(.modal-open) {
@@ -343,6 +363,14 @@ body:not(.modal-open) {
     opacity: 1 !important;
     transition: background-color 0.3s ease-out !important;
     background-color: rgba(0, 0, 0, 0);
+  }
+
+  .sph-applicant-backdrop {
+    opacity: 1 !important;
+    transition: background-color 0.3s ease-out !important;
+    background-color: transparent !important;
+    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(5px);
   }
 }
 

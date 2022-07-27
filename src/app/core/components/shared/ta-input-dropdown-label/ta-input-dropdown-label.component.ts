@@ -2,8 +2,10 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
   Self,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, FormControl } from '@angular/forms';
@@ -18,14 +20,16 @@ import { TaInputService } from '../ta-input/ta-input.service';
   templateUrl: './ta-input-dropdown-label.component.html',
   styleUrls: ['./ta-input-dropdown-label.component.scss'],
 })
-export class TaInputDropdownLabelComponent implements ControlValueAccessor {
+export class TaInputDropdownLabelComponent
+  implements OnChanges, ControlValueAccessor
+{
   @ViewChild('t2') t2Ref: NgbPopover;
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
 
   @Input() options: any[] = [];
   @Input() colors: any[] = [];
   @Input() inputConfig: ITaInput;
-  @Input() selectedAccountLabel: any = null;
+  @Input() selectedLabel: any = null;
 
   @Output() selectedColorLabel: EventEmitter<any> = new EventEmitter<any>();
   @Output() saveLabel: EventEmitter<{ action: string; label: string }> =
@@ -40,6 +44,21 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     private inputService: TaInputService
   ) {
     this.superControl.valueAccessor = this;
+  }
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.selectedLabel?.currentValue) {
+      this.dropdownConfig = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Label',
+        placeholder: 'Label Name',
+        placeholderIcon: 'ic_dynamic_label',
+        dropdownWidthClass: 'w-col-12',
+        specificDropdownLabel: true,
+        isDropdown: true,
+        dropdownLabelSelected: changes.selectedLabel.currentValue,
+      };
+    }
   }
 
   ngOnInit() {
@@ -85,28 +104,19 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    * SELECT FROM ITEMS DROPDOWN
    */
   public onSelectDropdown(event: any, action: string) {
-    switch (action) {
-      case 'account-label': {
-        this.selectedAccountLabel = event;
+    this.selectedLabel = event;
 
-        if (this.selectedAccountLabel?.name !== 'Add New') {
-          this.pickExistLabel.emit(this.selectedAccountLabel);
-        }
-
-        const timeout = setTimeout(() => {
-          this.inputRef.setInputCursorAtTheEnd(
-            this.inputRef.input.nativeElement,
-            100
-          );
-          this.t2Ref.open();
-          clearTimeout(timeout);
-        }, 100);
-
-        break;
-      }
-      default: {
-        break;
-      }
+    if (this.selectedLabel?.name !== 'Add New') {
+      this.pickExistLabel.emit(this.selectedLabel);
+    } else {
+      const timeout = setTimeout(() => {
+        this.inputRef.setInputCursorAtTheEnd(
+          this.inputRef.input.nativeElement,
+          100
+        );
+        this.t2Ref.open();
+        clearTimeout(timeout);
+      }, 100);
     }
   }
 
@@ -114,7 +124,7 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    *
    * SELECT FROM COLOR DROPDOWN
    */
-  public onSelectColorLabel(event: Event, label: any) {
+  public onSelectColorLabel(event: Event, color: any) {
     event.preventDefault();
     event.stopPropagation();
     const timeout = setTimeout(() => {
@@ -127,10 +137,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     }, 50);
     this.dropdownConfig = {
       ...this.dropdownConfig,
-      dropdownLabelSelected: label,
+      dropdownLabelSelected: color,
     };
 
-    this.selectedColorLabel.emit(label);
+    this.selectedColorLabel.emit(color);
   }
 
   /**
@@ -146,6 +156,8 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
       this.newLabel.patchValue(null);
       return;
     }
+    console.log('SAVED LABEL');
+
     this.saveLabel.emit({ action: event, label: this.newLabel.value });
     this.getSuperControl.patchValue(this.newLabel.value);
     this.newLabel.patchValue(null);

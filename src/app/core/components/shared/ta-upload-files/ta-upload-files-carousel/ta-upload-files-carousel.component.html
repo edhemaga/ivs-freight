@@ -1,10 +1,10 @@
-<div class="upload-carousel {{ customClass }}">
+<div class="upload-carousel {{ customClass }} {{ customDetailsPageClass }}">
   <div class="ta-upload-files-carousel">
     <div
       class="carousel-slider"
       [ngClass]="{
         'multiple-slider': ['medium', 'large'].includes(
-          this.customClass.toLowerCase()
+          this.customClass?.toLowerCase()
         )
       }"
       [ngStyle]="{
@@ -15,13 +15,23 @@
     </div>
   </div>
 
+  <!-- Carousel Button Tabs -->
+
+  <div *ngIf="hasCarouselBottomTabs" class="carousel-tabs-control">
+    <div
+      *ngFor="let len of files; let ind = index; trackBy: identity"
+      class="carousel-tab"
+      [ngClass]="{ 'active-tab': currentSlide === ind }"
+    ></div>
+  </div>
+
   <!-- Carousel Buttons Left & Right -->
   <div
     class="ta-upload-carousel-control-bg prev"
     [hidden]="
-      (filesLength < 2 && customClass === 'small') ||
-      (filesLength < 3 && customClass === 'medium') ||
-      (filesLength < 4 && customClass === 'large')
+      (files.length < 2 && customClass === 'small') ||
+      (files.length < 3 && customClass === 'medium') ||
+      (files.length < 4 && customClass === 'large')
     "
     (click)="onAction('prev')"
   >
@@ -33,9 +43,9 @@
   <div
     class="ta-upload-carousel-control-bg next"
     [hidden]="
-      (filesLength < 2 && customClass === 'small') ||
-      (filesLength < 3 && customClass === 'medium') ||
-      (filesLength < 4 && customClass === 'large')
+      (files.length < 2 && customClass === 'small') ||
+      (files.length < 3 && customClass === 'medium') ||
+      (files.length < 4 && customClass === 'large')
     "
     (click)="onAction('next')"
   >

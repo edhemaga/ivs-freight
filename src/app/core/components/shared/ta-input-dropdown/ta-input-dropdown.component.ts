@@ -530,10 +530,10 @@ export class TaInputDropdownComponent
     this.inputRef.focusInput = false;
     this.inputRef.input.nativeElement.blur();
 
-    const timeout = setTimeout(() => {
-      this.inputConfig.multiSelectDropdownActive = true;
-      clearTimeout(timeout);
-    }, 150);
+    this.inputConfig = {
+      ...this.inputConfig,
+      multiSelectDropdownActive: true,
+    };
   }
 
   public removeMultiSelectItem(index: number) {
