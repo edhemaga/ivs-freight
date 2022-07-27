@@ -25,12 +25,13 @@ import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inac
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { DomSanitizer } from '@angular/platform-browser';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
-  providers: [NameInitialsPipe],
+  providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
@@ -65,6 +66,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverTService: DriverTService,
     private notificationService: NotificationService,
     private nameInitialsPipe: NameInitialsPipe,
+    private thousandSeparator: TaThousandSeparatorPipe,
     private createBase64: CreateBase64Class
   ) {}
 
@@ -465,20 +467,86 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
-        expirationDays: data?.cdlExpirationDays ? data.cdlExpirationDays : null,
+        expirationDays: data?.cdlExpirationDays
+          ? this.thousandSeparator.transform(data.cdlExpirationDays)
+          : null,
         percentage: data?.cdlPercentage ? data.cdlPercentage : null,
       },
       tableMedicalData: {
         expirationDays: data?.medicalExpirationDays
-          ? data.medicalExpirationDays
+          ? this.thousandSeparator.transform(data.medicalExpirationDays)
           : null,
         percentage: data?.medicalPercentage ? data.medicalPercentage : null,
       },
       tableMvrData: {
-        expirationDays: data?.mvrExpirationDays ? data.mvrExpirationDays : null,
+        expirationDays: data?.mvrExpirationDays
+          ? this.thousandSeparator.transform(data.mvrExpirationDays)
+          : null,
         percentage: data?.mvrPercentage ? data.mvrPercentage : null,
       },
       tableDrugOrAlcoholTest: null,
+      textPayType: data?.payType?.name ? data.payType.name : '',
+      textTeam: [
+        {
+          title: 'Loaded',
+          value: data?.team?.loadedMile
+            ? '$' + this.thousandSeparator.transform(data.team.loadedMile)
+            : null,
+        },
+        {
+          title: 'Empty',
+          value: data?.team?.emptyMile
+            ? '$' + this.thousandSeparator.transform(data.team.emptyMile)
+            : null,
+        },
+        {
+          title: 'Per Stop',
+          value: data?.team?.perStop
+            ? '$' + this.thousandSeparator.transform(data.team.perStop)
+            : null,
+        },
+      ],
+      textSolo: [
+        {
+          title: 'Loaded',
+          value: data?.solo?.loadedMile
+            ? '$' + this.thousandSeparator.transform(data.solo.loadedMile)
+            : null,
+        },
+        {
+          title: 'Empty',
+          value: data?.solo?.emptyMile
+            ? '$' + this.thousandSeparator.transform(data.solo.emptyMile)
+            : null,
+        },
+        {
+          title: 'Per Stop',
+          value: data?.solo?.perStop
+            ? '$' + this.thousandSeparator.transform(data.solo.perStop)
+            : null,
+        },
+      ],
+      textFuelCard: data?.fuelCard ? data.fuelCard : '',
+      textEmergencyContact: [
+        {
+          title: 'First Name',
+          value: data?.emergencyContactName
+            ? data.emergencyContactName
+            : null,
+        },
+        {
+          title: 'Phone',
+          value: data?.emergencyContactPhone
+            ? data.emergencyContactPhone
+            : null,
+        },
+        {
+          title: 'Relationship',
+          value: data?.emergencyContactRelationship
+            ? data.emergencyContactRelationship
+            : null,
+        },
+      ],
     };
   }
 
