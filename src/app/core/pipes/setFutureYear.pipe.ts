@@ -6,6 +6,8 @@ import moment from 'moment';
 })
 export class setFutureYear implements PipeTransform {
   transform(date: string) {
-    return moment(date).add(1, 'years').format('MM/DD/YY');
+    if (date) {
+      return moment(date).add(1, 'years').format('MM/DD/YY');
+    }
   }
 }

@@ -42,7 +42,7 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  showMoreContainerWidth: number = 0;
+  showMoreContainerWidth: number = 220;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
@@ -190,8 +190,6 @@ export class TruckassistTableBodyComponent
   }
 
   checkForScroll() {
-    clearTimeout(this.checkForScrollTimeout);
-
     const div = document.getElementById('scroll-container');
     const pinedColumns = document.querySelector('.pined-tr');
     const actionColumns = document.querySelector('.actions');

@@ -37,20 +37,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public repairOrderForm: FormGroup;
-
-  public selectedTab: number = 1;
+  public selectedHeaderTab: number = 1;
   public headerTabs = [
     {
       id: 1,
-      label: 'headerTab',
-      value: 'Bill',
       name: 'Bill',
       checked: true,
     },
     {
       id: 2,
-      label: 'headerTab',
-      value: 'Order',
       name: 'Order',
       checked: false,
     },
@@ -59,16 +54,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public typeOfRepair = [
     {
       id: 5231,
-      label: 'Truck',
-      value: 'Truck',
-      name: 'repair-type',
+      name: 'Truck',
       checked: true,
     },
     {
       id: 5232,
-      label: 'Trailer',
-      value: 'Trailer',
-      name: 'repair-type',
+      name: 'Trailer',
       checked: false,
     },
   ];
@@ -114,25 +105,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairDropdowns();
-
-    const timeout = setTimeout(() => {
-      if (this.editData?.type) {
-        if (this.editData.type.includes('truck')) {
-          this.onTypeOfRepair(this.typeOfRepair);
-        } else {
-          this.onTypeOfRepair(
-            this.typeOfRepair.map((item) => {
-              if (item.label === 'Trailer') {
-                return { ...item, checked: true };
-              } else {
-                return { ...item, checked: false };
-              }
-            })
-          );
-        }
-      }
-      clearTimeout(timeout);
-    }, 150);
 
     if (this.editData?.type.includes('edit')) {
       this.editData = {
@@ -277,8 +249,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalHeaderTabChange(event: any) {
-    this.selectedTab = event.id;
-    if (this.selectedTab === 2) {
+    this.selectedHeaderTab = event.id;
+    if (event.id === 2) {
       this.inputService.changeValidators(
         this.repairOrderForm.get('repairShopId'),
         false
@@ -290,15 +262,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       );
       this.repairOrderForm.get('repairType').patchValue('Bill');
     }
+
+    this.headerTabs = this.headerTabs.map((item) => {
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
+    });
   }
 
-  public onTypeOfRepair(event: any) {
-    this.typeOfRepair = [...event];
-
-    this.typeOfRepair.forEach((item) => {
-      if (item.checked) {
-        this.repairOrderForm.get('unitType').patchValue(item.label);
+  public onTypeOfRepair(event: any, action?: string) {
+    this.typeOfRepair = this.typeOfRepair.map((item) => {
+      if (item.id === event.id) {
+        this.repairOrderForm.get('unitType').patchValue(item.name);
       }
+      return {
+        ...item,
+        checked: item.id == event.id,
+      };
     });
 
     if (this.repairOrderForm.get('unitType')?.value === 'Truck') {
@@ -308,6 +289,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.pmOptions = this.pmTrailers;
       this.labelsUnit = this.unitTrailers;
     }
+
+    if (action) {
+      return;
+    }
+
+    this.repairOrderForm.get('unit').patchValue(null);
+    this.selectedUnit = null;
+    this.selectedPM = [];
+    this.selectedPM.push({
+      id: null,
+      logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
+    });
+    this.selectedPMIndex = null;
   }
 
   public onSelectDropDown(event: any, action: string) {
@@ -639,14 +633,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               });
           }
 
-          // Bill/Order Tab
-          this.headerTabs.filter((item) => {
-            if (res.repairType.name === 'Bill') {
-              return { ...item, checked: true };
-            } else {
-              return { ...item, checked: false };
-            }
-          });
+          this.onModalHeaderTabChange(
+            this.headerTabs.find((item) => item.name === res.repairType.name)
+          );
+          console.log('UNIT TYYPE');
+          console.log(res.unitType.name);
+          this.onTypeOfRepair(
+            this.typeOfRepair.find((item) => item.name === res.unitType.name),
+            'edit-mode'
+          );
 
           // Repair Items
           if (res.items.length) {

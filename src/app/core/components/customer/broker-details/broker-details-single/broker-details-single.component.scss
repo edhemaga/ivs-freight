@@ -81,7 +81,7 @@
 
     .t-body-broker {
         padding: 0 2px;
-        height: calc(110vh - 68px);
+        // height: calc(110vh - 68px);
         .t-body-broker-items {
             display: grid;
             grid-template-columns: 91px 89px 124px 126px 173px 90px;
@@ -101,11 +101,11 @@
                     color: #6c6c6c;
                     &::-moz-selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                 }
                 .default-name {
@@ -115,11 +115,11 @@
                     line-height: 25px;
                     &::-moz-selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                 }
             }
@@ -141,11 +141,11 @@
                     text-transform: uppercase;
                     &::-moz-selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                 }
                 .time {
@@ -154,11 +154,11 @@
                     color: #919191;
                     &::-moz-selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                 }
             }
@@ -234,11 +234,11 @@
                     height: 15px;
                     &::-moz-selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                     &::selection {
                         color: #6c6c6c;
-                        background: rgb(183, 183, 183, 0.2);
+                        background: rgb(108, 108, 108, 0.2);
                     }
                 }
                 .date {
@@ -290,4 +290,14 @@
     height: 27px;
     position: relative;
     right: 10px;
+}
+.hours {
+    &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
 }

@@ -1,7 +1,7 @@
 import { BrokerResponse } from 'appcoretruckassist';
 
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { BrokerTService } from '../broker-state/broker.service';
@@ -15,30 +15,23 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
   constructor(
     private brokerService: BrokerTService,
     private brokerDetailsQuery: BrokerDetailsQuery,
-    private brokerDetailsStore: BrokerDetailsStore
+    private brokerDetailsStore: BrokerDetailsStore,
+    private router: Router
   ) {}
   resolve(
     route: ActivatedRouteSnapshot
   ): Observable<BrokerResponse[]> | Observable<any> {
     const broker_id = route.paramMap.get('id');
     let ids = parseInt(broker_id);
-    if (this.brokerDetailsQuery.hasEntity(ids)) {
-      return this.brokerDetailsQuery.selectEntity(ids).pipe(
-        catchError((error) => {
-          return of('erorr');
-        }),
 
-        take(1)
-      );
-    } else {
-      return this.brokerService.getBrokerById(ids).pipe(
-        catchError(() => {
-          return of('No broker data for...' + ids);
-        }),
-        tap((brokerRespon: BrokerResponse) => {
-          this.brokerDetailsStore.set({ ids: brokerRespon });
-        })
-      );
-    }
+    return this.brokerService.getBrokerById(ids).pipe(
+      catchError(() => {
+        this.router.navigate(['/customer']);
+        return of('No broker data for...' + ids);
+      }),
+      tap((brokerRespon: BrokerResponse) => {
+        this.brokerDetailsStore.set({ ids: brokerRespon });
+      })
+    );
   }
 }

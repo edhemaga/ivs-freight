@@ -49,22 +49,26 @@
             <span class="name-item">Receiving Hours</span>
             <div *ngIf="shipper?.receivingFrom" class="icon-wrapper">
               <svg-icon
-              *ngIf="shipper?.receivingAppointment"
+                *ngIf="shipper?.receivingAppointment"
                 class="svg-appoiment"
                 src="assets/svg/common/ic_appoiment.svg"
               ></svg-icon>
-              <span  class="value-item"
+              <span class="value-item"
                 >{{ shipper?.receivingFrom }} AM -
                 {{ shipper?.receivingTo }} PM</span
               >
             </div>
-            <span *ngIf="shipper?.receivingOpenTwentyFourHours" class="value-item">24h</span>
+            <span
+              *ngIf="shipper?.receivingOpenTwentyFourHours"
+              class="value-item"
+              >24h</span
+            >
           </div>
           <div class="hours-item">
             <span class="name-item">Shipping Hours</span>
             <div *ngIf="shipper?.shippingFrom" class="icon-wrapper">
               <svg-icon
-               *ngIf="shipper?.shippingAppointment"
+                *ngIf="shipper?.shippingAppointment"
                 class="svg-appoiment"
                 src="assets/svg/common/ic_appoiment.svg"
               ></svg-icon>
@@ -73,8 +77,29 @@
                 {{ shipper?.shippingTo }} PM</span
               >
             </div>
-            <span *ngIf="shipper?.shippingOpenTwentyFourHours" class="value-item">24h</span>
+            <span
+              *ngIf="shipper?.shippingOpenTwentyFourHours"
+              class="value-item"
+              >24h</span
+            >
           </div>
+        </div>
+      </app-ta-custom-card>
+      <app-ta-custom-card
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        [hasDivider]="true"
+        [cardName]="'Average Waiting Time'"
+        [tooltipName]="'View in Modal'"
+        [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+        [isCardOpen]="true"
+      > 
+      <div class="charts-template perfomance">
+        <app-ta-tab-switch
+          [tabs]="shipperTabs"
+          [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
         </div>
       </app-ta-custom-card>
       <!--------Note--------->

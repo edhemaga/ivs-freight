@@ -48,9 +48,6 @@
                 (mouseleave)="copiedSSN = false"
               ></svg-icon>
             </span>
-            <div *ngIf="driver.status === 0" class="inactive-wrapper">
-              Inactive
-            </div>
           </div>
           <div
             class="information-item"
@@ -938,33 +935,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <!-- <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files> -->
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1042,33 +1028,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1160,33 +1135,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1243,7 +1207,7 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [startDate]="mvr?.issueDate | formatDateP"
-                        [expireDate]="mvr?.issueDate | formatDateP"
+                        [expireDate]="mvr?.expDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -1274,33 +1238,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">

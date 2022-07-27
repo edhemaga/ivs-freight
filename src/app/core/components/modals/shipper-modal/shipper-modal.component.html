@@ -4,7 +4,7 @@
   [editName]="editData?.id"
   [isModalValid]="editData ? shipperForm.valid && isDirty : shipperForm.valid"
   [customClass]="'modal-container-M'"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"
@@ -51,7 +51,6 @@
                   name: 'Phone',
                   type: 'text',
                   label: 'Phone',
-                  isRequired: true,
                   placeholderIcon: 'phone',
                   mask: '(000) 000-0000'
                 }"
@@ -184,60 +183,57 @@
 
         <app-ta-custom-card
           [cardName]="'Shipping Work Hours'"
-          *ngIf="!shipperForm.get('shippingHoursSameReceiving').value"
           [isCardOpen]="!shipperForm.get('shippingHoursSameReceiving').value"
         >
-          <div *ngIf="!shipperForm.get('shippingHoursSameReceiving').value">
-            <div class="shipper-work-hours row-mt-20 last-row">
-              <div
-                class="shipper-work-hours-field appointment"
-                [ngClass]="{ active: isAppointmentShipping }"
-                (click)="onAppontmentShipping()"
-              >
-                Appointment
-              </div>
-              <div class="shipper-work-hours-field">
-                <app-ta-checkbox
-                  formControlName="shippingOpenTwentyFourHours"
-                  [name]="'shippingOpenTwentyFourHours'"
-                  [customClass]="'medium'"
-                  [label]="'Open 24h'"
-                ></app-ta-checkbox>
-              </div>
-              <div class="shipper-work-hours-field">
-                <!-- Time Picker -->
-                <app-ta-input
-                  formControlName="shippingFrom"
-                  [inputConfig]="{
-                    name: 'timepicker',
-                    type: 'text',
-                    label: 'From',
-                    placeholderIcon: 'time',
-                    isDropdown: true,
-                    isDisabled:
-                      shipperForm.get('shippingOpenTwentyFourHours').value &&
-                      shipperForm.get('shippingAppointment').value,
-                    customClass: 'datetimeclass'
-                  }"
-                ></app-ta-input>
-              </div>
-              <div class="shipper-work-hours-field">
-                <!-- Time Picker -->
-                <app-ta-input
-                  formControlName="shippingTo"
-                  [inputConfig]="{
-                    name: 'timepicker',
-                    type: 'text',
-                    label: 'To',
-                    placeholderIcon: 'time',
-                    isDropdown: true,
-                    isDisabled:
-                      shipperForm.get('shippingOpenTwentyFourHours').value &&
-                      shipperForm.get('shippingAppointment').value,
-                    customClass: 'datetimeclass'
-                  }"
-                ></app-ta-input>
-              </div>
+          <div class="shipper-work-hours row-mt-20 last-row">
+            <div
+              class="shipper-work-hours-field appointment"
+              [ngClass]="{ active: isAppointmentShipping }"
+              (click)="onAppontmentShipping()"
+            >
+              Appointment
+            </div>
+            <div class="shipper-work-hours-field">
+              <app-ta-checkbox
+                formControlName="shippingOpenTwentyFourHours"
+                [name]="'shippingOpenTwentyFourHours'"
+                [customClass]="'medium'"
+                [label]="'Open 24h'"
+              ></app-ta-checkbox>
+            </div>
+            <div class="shipper-work-hours-field">
+              <!-- Time Picker -->
+              <app-ta-input
+                formControlName="shippingFrom"
+                [inputConfig]="{
+                  name: 'timepicker',
+                  type: 'text',
+                  label: 'From',
+                  placeholderIcon: 'time',
+                  isDropdown: true,
+                  isDisabled:
+                    shipperForm.get('shippingOpenTwentyFourHours').value &&
+                    shipperForm.get('shippingAppointment').value,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
+            </div>
+            <div class="shipper-work-hours-field">
+              <!-- Time Picker -->
+              <app-ta-input
+                formControlName="shippingTo"
+                [inputConfig]="{
+                  name: 'timepicker',
+                  type: 'text',
+                  label: 'To',
+                  placeholderIcon: 'time',
+                  isDropdown: true,
+                  isDisabled:
+                    shipperForm.get('shippingOpenTwentyFourHours').value &&
+                    shipperForm.get('shippingAppointment').value,
+                  customClass: 'datetimeclass'
+                }"
+              ></app-ta-input>
             </div>
           </div>
         </app-ta-custom-card>
@@ -356,6 +352,7 @@
           [hasBodyData]="reviews.length"
           [isCommentData]="true"
           [hasScrollBody]="reviews.length > 6"
+          [disableMultipleReviews]="disableOneMoreReview"
           (onActionEvent)="createReview($event)"
         >
           <div class="no-review-shipper" *ngIf="!reviews.length">

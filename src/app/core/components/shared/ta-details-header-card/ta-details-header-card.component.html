@@ -4,14 +4,14 @@
       <div
         *ngIf="!selectedDropdown"
         class="current-active-item"
-        [ngClass]="{'single-data':options.length==1}"
+        [ngClass]="{ 'single-data': options.length == 1 }"
         (click)="onPickItem()"
         ngbTooltip
-        [mainTooltip]="options.length>1 ? searchInputName :''"
+        [mainTooltip]="options.length > 1 ? searchInputName : ''"
         position="top"
-        [tooltipBackground]="options.length>1?  '#6C6C6C':'#eeeeee'"
+        [tooltipBackground]="options.length > 1 ? '#6C6C6C' : '#eeeeee'"
       >
-        <p class="current-active-name" >
+        <p class="current-active-name">
           {{ (options | detailActiveItem).name }}
         </p>
         <span
@@ -29,7 +29,7 @@
       </div>
       <!-- Input dropdown -->
       <app-ta-input-dropdown
-        *ngIf="selectedDropdown && options.length>1"
+        *ngIf="selectedDropdown && options.length > 1"
         class="dropInput"
         [formControl]="inputFormControl"
         [inputConfig]="{
@@ -50,7 +50,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div *ngIf="!hasArrow && options.length>1" class="arrows">
+    <div *ngIf="!hasArrow && options.length > 1" class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"
@@ -74,64 +74,70 @@
         ></svg-icon>
       </span>
     </div>
-    <div *ngIf="hasArrow" class="verical-dots-header">
+    <div *ngIf="hasArrow" class="vertical-dots-header">
       <app-details-page-dropdown
         [options]="optionsDrop.actions"
         [id]="optionsId"
-        [placement]="'bottom-left'"
+        [placement]="'bottom-right'"
         (dropDownActions)="dropAct($event)"
-        [customClassDropDown]="'table-dropdown-container-vertical'"
       >
       </app-details-page-dropdown>
     </div>
   </div>
-  <!-- <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
+
+    <!-- Second Input -->
+  <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
       <div
-      *ngIf="!selectedDropdown"
+      *ngIf="!selectedDropdownSecond"
       class="current-active-item"
-      (click)="onPickItem()"
+      [ngClass]="{'single-data':optionsSecondInput.length==1}"
+      (click)="onPickSecondInput()"
       ngbTooltip
-      [mainTooltip]="searchInputName"
+      [mainTooltip]="'Search Store'"
       position="top"
       tooltipBackground="#6C6C6C"
     >
       <p class="current-active-name">
-        {{ (options | detailActiveItem).name }}
+        {{ (optionsSecondInput | detailActiveItem).name }}
       </p>
       <span
       ngbTooltip
-      [mainTooltip]="searchName"
+      [mainTooltip]="'Pinned'"
       position="top"
-      [tooltipBackground]="searchName ? '#6C6C6C':''"
+      [tooltipBackground]="'#6C6C6C'"
       >
       <svg-icon
         class="current-active-owner"
-        src="{{ (options | detailActiveItem).svg }}"
+        src="{{ (optionsSecondInput | detailActiveItem).svg }}"
       ></svg-icon>
     </span>
     </div>
       <app-ta-input-dropdown
         class="dropInput"
+        *ngIf="selectedDropdownSecond && optionsSecondInput.length>1"
         [formControl]="inputFormControl"
         [inputConfig]="{
           name: 'Input Dropdown',
           type: 'text',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-details-template'
+          dropdownWidthClass: 'w-col-details-template-big',
+          textTransform: 'capitalize',
+          customClass: 'input-32 input-32-font-20 details-pages'
         }"
-        [options]="options"
+        [options]="optionsSecondInput"
         [template]="'details-template'"
-        [isDetailsActive]="selectedDropdown"
-        (selectedItem)="onSelecItem($event)"
+        [isDetailsActive]="selectedDropdownSecond"
+        (selectedItem)="onSelectItem($event)"
+        
       >
       </app-ta-input-dropdown>
     </div>
-    <div class="arrows">
+    <div class="arrows" *ngIf=" optionsSecondInput.length>1">
       <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
         <svg-icon
           class="arrow-left"
-          (click)="onPreviousAction($event)"
+          
           src="assets/svg/common/arrow-left.svg"
         >
         </svg-icon>
@@ -139,12 +145,12 @@
       <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
       <svg-icon
         class="arrow-right"
-        (click)="onNextAction()"
+       
         src="assets/svg/common/arrow-left.svg"
       ></svg-icon>
       </span>
     </div>
-  </div> -->
+  </div>
   <div class="details-header-wrapper-container">
     <div class="details-header-wrapper">
       <ng-content></ng-content>
@@ -207,24 +213,21 @@
       </span>
 
       <span
-      style="margin-left: 130px"
-      *ngIf="lastEdit"
-      tooltipBackground="#6C6C6C"
-      ngbTooltip
-      mainTooltip="Date Check"
-      position="top"
-    >
-      <div
+        style="margin-left: 130px"
         *ngIf="lastEdit"
-        class="details-header-wrapper-data-item bottom"
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        mainTooltip="Date Check"
+        position="top"
       >
-        <svg-icon
-          class="date-terminated"
-          src="assets/svg/common/ic_violation_last-edit.svg"
-        ></svg-icon>
-        <span class="vin-text">{{ lastEdit }}</span>
-      </div>
-    </span>
+        <div *ngIf="lastEdit" class="details-header-wrapper-data-item bottom">
+          <svg-icon
+            class="date-terminated"
+            src="assets/svg/common/ic_violation_last-edit.svg"
+          ></svg-icon>
+          <span class="vin-text">{{ lastEdit }}</span>
+        </div>
+      </span>
     </div>
   </div>
 </div>

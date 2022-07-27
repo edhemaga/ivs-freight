@@ -1,409 +1,218 @@
 <div class="details-component">
-  
-    <div *ngFor="let driverItem of drivers; trackBy: identity" [ngSwitch]="driverItem.template">
-      <!---------------------- GENERAL TEMPLATE ------------------>
-      <div *ngSwitchCase="'general'">
-        <app-driver-details-card
-          [driver]="driverItem.data"
-        ></app-driver-details-card>
-      </div>
-      <div class="card-width" *ngSwitchCase="'cdl'">
-        <div>
-          <app-ta-re-card
-            *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
-            [options]="dataTest"
-            [cardDocumentCounter]="6"
-            (resizePage)="toggleResizePage(i,'cdl')"
-            [cardNameCommon]="cdl?.cdlNumber"
-            [expDateClose]="cdl?.expDate | formatDateP"
-            [hasCopyIcon]="true"
-            [optionsId]="cdl.id"
-
-            (clickedCard)="getName($event)"
-            [cardNameCurrent]="'cdl'"
-            [noteIcons]="cdl.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            [isDeactivated]="cdl.dateDeactivated"
-            [weeklyWidth]="'28'"
-            [stateTooltipName]="cdl.state.stateName"
-            [shortName]="cdl.state.stateShortName"
-            (dropActions)="optionsEvent($event, 'edit-licence')"
-          >
-            <div class="cards-container">
-              <div class="card-body-cdl">
-                <div
-                  [ngClass]="{ 'card-row-issued': cdl.dateDeactivated }"
-                  class="card-restriction-endorsment card-restriction-class"
-                >
-                  <div class="card-restriction">
-                    <div class="restriction-name">Class</div>
-                    <div class="restriction-item-value">
-                      {{ cdl?.classType.name }}
-                    </div>
-                  </div>
-                  <div class="card-restriction">
-                    <div class="restriction-name">Issued</div>
-                    <div class="restriction-item-value">
-                      {{ cdl?.issueDate | formatDateP }}
-                    </div>
-                  </div>
-                  <div *ngIf="cdl.dateDeactivated" class="card-restriction">
-                    <div class="restriction-name">Voided</div>
-                    <div class="restriction-item-value">
-                      {{ cdl.dateDeactivated | formatDateP }}
-                    </div>
+  <div
+    *ngFor="let driverItem of drivers; trackBy: identity"
+    [ngSwitch]="driverItem.template"
+  >
+    <!---------------------- GENERAL TEMPLATE ------------------>
+    <div *ngSwitchCase="'general'">
+      <app-driver-details-card
+        [driver]="driverItem.data"
+      ></app-driver-details-card>
+    </div>
+    <div class="card-width" *ngSwitchCase="'cdl'">
+      <div>
+        <app-ta-re-card
+          *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
+          [options]="dataTest"
+          [cardDocumentCounter]="6"
+          (resizePage)="toggleResizePage(i, 'cdl')"
+          [cardNameCommon]="cdl?.cdlNumber"
+          [expDateClose]="cdl?.expDate | formatDateP"
+          [hasCopyIcon]="true"
+          [optionsId]="cdl.id"
+          (clickedCard)="getName($event)"
+          [cardNameCurrent]="'cdl'"
+          [noteIcons]="
+            cdl.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          [isDeactivated]="cdl.dateDeactivated"
+          [weeklyWidth]="'28'"
+          [stateTooltipName]="cdl.state.stateName"
+          [shortName]="cdl.state.stateShortName"
+          (dropActions)="optionsEvent($event, 'edit-licence')"
+        >
+          <div class="cards-container">
+            <div class="card-body-cdl">
+              <div
+                [ngClass]="{ 'card-row-issued': cdl.dateDeactivated }"
+                class="card-restriction-endorsment card-restriction-class"
+              >
+                <div class="card-restriction">
+                  <div class="restriction-name">Class</div>
+                  <div class="restriction-item-value">
+                    {{ cdl?.classType.name }}
                   </div>
                 </div>
-                <div
-                  [ngClass]="{ 'card-restriction-endorsment': !toggler[i + 'cdl'] }"
-                >
-                  <div class="card-restriction">
-                    <p class="restriction-name">Restriction</p>
-                    <div class="item-card-wrapper">
-                      <p
-                        class="restriction-item-value"
-                        *ngFor="
-                          let rest of cdl.cdlRestrictions;
-                          trackBy: identity
-                        "
-                      >
-                        <span class="value-name">{{ rest?.code }}</span>
-                        <span class="desc" *ngIf="toggler[i + 'cdl']"
-                          >- {{ rest?.description }}
-                        </span>
-                      </p>
-                      <span
-                        class="no-data-driver-details"
-                        style="padding: 0 !important"
-                        *ngIf="cdl.cdlRestrictions.length == 0"
-                        >None</span
-                      >
-                    </div>
+                <div class="card-restriction">
+                  <div class="restriction-name">Issued</div>
+                  <div class="restriction-item-value">
+                    {{ cdl?.issueDate | formatDateP }}
                   </div>
-                  <div class="card-restriction endorsement">
-                    <p class="restriction-name">Endorsement</p>
-                    <div class="item-card-wrapper">
-                      <p
-                        class="restriction-item-value"
-                        *ngFor="
-                          let endors of cdl.cdlEndorsements;
-                          trackBy: identity
-                        "
+                </div>
+                <div *ngIf="cdl.dateDeactivated" class="card-restriction">
+                  <div class="restriction-name">Voided</div>
+                  <div class="restriction-item-value">
+                    {{ cdl.dateDeactivated | formatDateP }}
+                  </div>
+                </div>
+              </div>
+              <div
+                [ngClass]="{
+                  'card-restriction-endorsment': !toggler[i + 'cdl']
+                }"
+              >
+                <div class="card-restriction">
+                  <p class="restriction-name">Restriction</p>
+                  <div class="item-card-wrapper">
+                    <p
+                      class="restriction-item-value"
+                      *ngFor="
+                        let rest of cdl.cdlRestrictions;
+                        trackBy: identity
+                      "
+                    >
+                      <span class="value-name">{{ rest?.code }}</span>
+                      <span class="desc" *ngIf="toggler[i + 'cdl']"
+                        >- {{ rest?.description }}
+                      </span>
+                    </p>
+                    <span
+                      class="no-data-driver-details"
+                      style="padding: 0 !important"
+                      *ngIf="cdl.cdlRestrictions.length == 0"
+                      >None</span
+                    >
+                  </div>
+                </div>
+                <div class="card-restriction endorsement">
+                  <p class="restriction-name">Endorsement</p>
+                  <div class="item-card-wrapper">
+                    <p
+                      class="restriction-item-value"
+                      *ngFor="
+                        let endors of cdl.cdlEndorsements;
+                        trackBy: identity
+                      "
+                    >
+                      <span
+                        class="span-value"
+                        *ngIf="endors.description && endors.code"
                       >
-                        <span
-                          class="span-value"
-                          *ngIf="endors.description && endors.code"
+                        <span class="value-name">{{ endors?.code }}</span>
+                        <span *ngIf="toggler[i + 'cdl']" class="desc"
+                          >- {{ endors?.description }}</span
                         >
-                          <span class="value-name">{{ endors?.code }}</span>
-                          <span *ngIf="toggler[i + 'cdl']" class="desc"
-                            >- {{ endors?.description }}</span
-                          >
-                        </span>
-                      </p>
-                      <span
-                        class="no-data-driver-details"
-                        style="padding: 0 !important"
-                        *ngIf="cdl.cdlEndorsements.length == 0"
-                        >None</span
-                      >
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[i + 'cdl'] }"
-                >
-                  <div class="card-details-progress-container">
-                    <app-truckassist-progress-expiration
-                      [expireDate]="cdl?.expDate | formatDateP"
-                      [startDate]="cdl?.issueDate | formatDateP"
-                      [expiresSettings]="'details'"
+                      </span>
+                    </p>
+                    <span
+                      class="no-data-driver-details"
+                      style="padding: 0 !important"
+                      *ngIf="cdl.cdlEndorsements.length == 0"
+                      >None</span
                     >
-                    </app-truckassist-progress-expiration>
-                  </div>
-                  <div
-                    *ngIf="cdl.dateDeactivated && cdl.showButton"
-                    (click)="activateDeactiveCdl(cdl.id)"
-                    class="activate-button"
-                  >
-                    Activate
-                  </div>
-                  <div *ngIf="!cdl.showButton" class="activate-button">
-                    Renew
                   </div>
                 </div>
               </div>
-              <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">
-                <div class="divider"></div>
+              <div
+                class="card-row-progress"
+                [ngClass]="{ 'second-progress': toggler[i + 'cdl'] }"
+              >
+                <div class="card-details-progress-container">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="cdl?.expDate | formatDateP"
+                    [startDate]="cdl?.issueDate | formatDateP"
+                    [expiresSettings]="'details'"
+                  >
+                  </app-truckassist-progress-expiration>
+                </div>
+                <div
+                  *ngIf="cdl.dateDeactivated && cdl.showButton"
+                  (click)="activateDeactiveCdl(cdl.id)"
+                  class="activate-button"
+                >
+                  Activate
+                </div>
+                <div *ngIf="!cdl.showButton" class="activate-button">Renew</div>
+              </div>
+            </div>
+            <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">
+              <div class="divider"></div>
 
-                <div class="details-document-container">
-                  <div class="icon-counter-wrapper">
-                    <div class="counter-text-wrapper">
-                      <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="6"
-                      >
-                      </app-ta-counter>
-                      <p class="details-document-name">Document</p>
-                    </div>
-                    <svg-icon
-                      (click)="onFileAction('download')"
-                      src="assets/svg/common/ic_download.svg"
+              <div class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
                     >
-                    </svg-icon>
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
                   </div>
-                </div>
-                <div class="card-pdf">
-                  <!-- <app-ta-files
-                    [files]="[
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      }
-                    ]"
-                    [fileType]="'multiple-pdf'"
-                    [customClassName]="'driver-details-multiple-pdf'"
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
                   >
-                  </app-ta-files> -->
-                </div>
-                <div class="divider"></div>
-                <div class="card-note">
-                  <app-ta-input-note
-                    [formControl]="cdlNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleSecondDivider]="false"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                  >
-                  </app-ta-input-note>
+                  </svg-icon>
                 </div>
               </div>
-            </div>
-          </app-ta-re-card>
-        </div>
-      </div>
-      <div class="card-width" *ngSwitchCase="'drug-alcohol'">
-        <div>
-          <app-ta-re-card
-            *ngFor="let test of driverItem.data.tests; let i=index; trackBy: identity"
-            [options]="dataTest"
-            [cardNameCommon]="test?.testingDate | formatDateP"
-            (resizePage)="toggleResizePage(i,'test')"
-            [optionsId]="test.id"
-            (clickedCard)="getName($event)"
-            [cardDocumentCounter]="6"
-            [weeklyWidth]="'18'"
-            [cardNameCurrent]="'test'"
-            [noteIcons]="test.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            [cardSecondName]="test?.testReason.name"
-            [shortName]="test.testType.name[0]"
-            [stateTooltipName]="test.testType.name + ' Test'"
-            (dropActions)="optionsEvent($event, 'edit-drug')"
-          >
-            <div [ngClass]="{ 'second-progress': toggler[i + 'test'] }"></div>
-            <div class="cards-container">
-              <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
-                <div class="divider"></div>
-                <div class="details-document-container">
-                  <div class="icon-counter-wrapper">
-                    <div class="counter-text-wrapper">
-                      <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="6"
-                      >
-                      </app-ta-counter>
-                      <p class="details-document-name">Document</p>
-                    </div>
-                    <svg-icon
-                      (click)="onFileAction('download')"
-                      src="assets/svg/common/ic_download.svg"
-                    >
-                    </svg-icon>
-                  </div>
-                </div>
-                <div class="card-pdf">
-                  <!-- <app-ta-files
-                    [files]="[
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      }
-                    ]"
-                    [fileType]="'multiple-pdf'"
-                    [customClassName]="'driver-details-multiple-pdf'"
-                  >
-                  </app-ta-files> -->
-                </div>
-                <div class="divider"></div>
-                <div class="card-note">
-                  <app-ta-input-note
-                    [formControl]="cdlNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleSecondDivider]="false"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                  >
-                  </app-ta-input-note>
-                </div>
+              <div class="card-pdf">
+                <app-ta-upload-files
+                  [files]="[
+                    {
+                      name: 'truckassist - 0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      name: 'truckassist - 1',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                ></app-ta-upload-files>
               </div>
-            </div>
-          </app-ta-re-card>
-        </div>
-      </div>
-      <div class="card-width" *ngSwitchCase="'medical'">
-        <div>
-          <app-ta-re-card
-            *ngFor="let med of driverItem.data.medicals; let i=index; trackBy: identity"
-            [options]="dataTest"
-            [cardNameCommon]="med?.issueDate | formatDateP"
-            [expDateClose]="med?.expDate | formatDateP"
-            [optionsId]="med.id"
-            (clickedCard)="getName($event)"
-            [cardNameCurrent]="'medical'"
-            [noteIcons]="med.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            (resizePage)="toggleResizePage(i,'medical')"
-            (dropActions)="optionsEvent($event, 'edit-medical')"
-          >
-            <div class="cards-container">
-              <div class="card-body-cdl">
-                <div
-                  class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[i + 'medical'] }"
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
                 >
-                  <div class="card-details-progress-container">
-                    <app-truckassist-progress-expiration
-                      [expireDate]="med?.expDate | formatDateP"
-                      [startDate]="med?.issueDate | formatDateP"
-                      [expiresSettings]="'details'"
-                    >
-                    </app-truckassist-progress-expiration>
-                  </div>
-                </div>
-              </div>
-              <div [@showHideCardBody]="toggler[i + 'medical'] ? 'true' : 'false'">
-                <div class="divider"></div>
-                <div class="details-document-container">
-                  <div class="icon-counter-wrapper">
-                    <div class="counter-text-wrapper">
-                      <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="6"
-                      >
-                      </app-ta-counter>
-                      <p class="details-document-name">Document</p>
-                    </div>
-                    <svg-icon
-                      (click)="onFileAction('download')"
-                      src="assets/svg/common/ic_download.svg"
-                    >
-                    </svg-icon>
-                  </div>
-                </div>
-                <div class="card-pdf">
-                  <!-- <app-ta-files
-                    [files]="[
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      }
-                    ]"
-                    [fileType]="'multiple-pdf'"
-                    [customClassName]="'driver-details-multiple-pdf'"
-                  >
-                  </app-ta-files> -->
-                </div>
-                <div class="divider"></div>
-                <div class="card-note">
-                  <app-ta-input-note
-                    [formControl]="cdlNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleSecondDivider]="false"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                  >
-                  </app-ta-input-note>
-                </div>
+                </app-ta-input-note>
               </div>
             </div>
-          </app-ta-re-card>
-        </div>
+          </div>
+        </app-ta-re-card>
       </div>
       <div class="card-width" *ngSwitchCase="'mvr'">
         <div>
           <app-ta-re-card
             *ngFor="
               let mvr of driverItem.data.mvrs;
-              let i =index;
+              let i = index;
               trackBy: identity
             "
             [options]="dataTest"
             [cardNameCurrent]="'mvr'"
             (clickedCard)="getName($event)"
             [cardDocumentCounter]="6"
-            [noteIcons]="mvr.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
-            (resizePage)="toggleResizePage(i,'mvr')"
+            [noteIcons]="
+              mvr.note
+                ? 'assets/svg/truckassist-table/note/Note.svg'
+                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+            "
+            (resizePage)="toggleResizePage(i, 'mvr')"
             [cardNameCommon]="mvr?.issueDate | formatDateP"
             [expDateClose]="mvr?.issueDate | setFutureYear"
             [optionsId]="mvr.id"
@@ -418,7 +227,7 @@
                   <div class="card-details-progress-container">
                     <app-truckassist-progress-expiration
                       [startDate]="mvr?.issueDate | formatDateP"
-                      [expireDate]="mvr?.issueDate | setFutureYear"
+                      [expireDate]="mvr?.expDate | formatDateP"
                       [expiresSettings]="'details'"
                     >
                     </app-truckassist-progress-expiration>
@@ -447,33 +256,22 @@
                   </div>
                 </div>
                 <div class="card-pdf">
-                  <!-- <app-ta-files
+                  <app-ta-upload-files
                     [files]="[
                       {
-                        fileName: 'truckassist0',
+                        name: 'truckassist - 0',
                         url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                         extension: 'pdf'
                       },
                       {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        fileName: 'truckassist0',
+                        name: 'truckassist - 1',
                         url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                         extension: 'pdf'
                       }
                     ]"
-                    [fileType]="'multiple-pdf'"
-                    [customClassName]="'driver-details-multiple-pdf'"
-                  >
-                  </app-ta-files> -->
+                    [customClassName]="'driver-details-pdf'"
+                    [hasCarouselBottomTabs]="true"
+                  ></app-ta-upload-files>
                 </div>
                 <div class="divider"></div>
                 <div class="card-note">
@@ -495,4 +293,286 @@
         </div>
       </div>
     </div>
+    <div class="card-width" *ngSwitchCase="'drug-alcohol'">
+      <div>
+        <app-ta-re-card
+          *ngFor="
+            let test of driverItem.data.tests;
+            let i = index;
+            trackBy: identity
+          "
+          [options]="dataTest"
+          [cardNameCommon]="test?.testingDate | formatDateP"
+          (resizePage)="toggleResizePage(i, 'test')"
+          [optionsId]="test.id"
+          (clickedCard)="getName($event)"
+          [cardDocumentCounter]="6"
+          [weeklyWidth]="'18'"
+          [cardNameCurrent]="'test'"
+          [noteIcons]="
+            test.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          [cardSecondName]="test?.testReason.name"
+          [shortName]="test.testType.name[0]"
+          [stateTooltipName]="test.testType.name + ' Test'"
+          (dropActions)="optionsEvent($event, 'edit-drug')"
+        >
+          <div [ngClass]="{ 'second-progress': toggler[i + 'test'] }"></div>
+          <div class="cards-container">
+            <div [@showHideCardBody]="toggler[i + 'test'] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf">
+                <app-ta-upload-files
+                  [files]="[
+                    {
+                      name: 'truckassist - 0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      name: 'truckassist - 1',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                ></app-ta-upload-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
+            </div>
+          </div>
+        </app-ta-re-card>
+      </div>
+    </div>
+    <div class="card-width" *ngSwitchCase="'medical'">
+      <div>
+        <app-ta-re-card
+          *ngFor="
+            let med of driverItem.data.medicals;
+            let i = index;
+            trackBy: identity
+          "
+          [options]="dataTest"
+          [cardNameCommon]="med?.issueDate | formatDateP"
+          [expDateClose]="med?.expDate | formatDateP"
+          [optionsId]="med.id"
+          (clickedCard)="getName($event)"
+          [cardNameCurrent]="'medical'"
+          [noteIcons]="
+            med.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          (resizePage)="toggleResizePage(i, 'medical')"
+          (dropActions)="optionsEvent($event, 'edit-medical')"
+        >
+          <div class="cards-container">
+            <div class="card-body-cdl">
+              <div
+                class="card-row-progress"
+                [ngClass]="{ 'second-progress': toggler[i + 'medical'] }"
+              >
+                <div class="card-details-progress-container">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="med?.expDate | formatDateP"
+                    [startDate]="med?.issueDate | formatDateP"
+                    [expiresSettings]="'details'"
+                  >
+                  </app-truckassist-progress-expiration>
+                </div>
+              </div>
+            </div>
+            <div
+              [@showHideCardBody]="toggler[i + 'medical'] ? 'true' : 'false'"
+            >
+              <div class="divider"></div>
+              <div class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf">
+                <app-ta-upload-files
+                  [files]="[
+                    {
+                      name: 'truckassist - 0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      name: 'truckassist - 1',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                ></app-ta-upload-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
+            </div>
+          </div>
+        </app-ta-re-card>
+      </div>
+    </div>
+    <div class="card-width" *ngSwitchCase="'mvr'">
+      <div>
+        <app-ta-re-card
+          *ngFor="
+            let mvr of driverItem.data.mvrs;
+            let i = index;
+            trackBy: identity
+          "
+          [options]="dataTest"
+          [cardNameCurrent]="'mvr'"
+          (clickedCard)="getName($event)"
+          [cardDocumentCounter]="6"
+          [noteIcons]="
+            mvr.note
+              ? 'assets/svg/truckassist-table/note/Note.svg'
+              : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+          "
+          (resizePage)="toggleResizePage(i, 'mvr')"
+          [cardNameCommon]="mvr?.issueDate | formatDateP"
+          [expDateClose]="mvr?.issueDate | setFutureYear"
+          [optionsId]="mvr.id"
+          (dropActions)="optionsEvent($event, 'edit-mvr')"
+        >
+          <div class="cards-container">
+            <div class="card-body-cdl">
+              <div
+                class="card-row-progress"
+                [ngClass]="{ 'second-progress': toggler[i + 'mvr'] }"
+              >
+                <div class="card-details-progress-container">
+                  <app-truckassist-progress-expiration
+                    [startDate]="mvr?.issueDate | formatDateP"
+                    [expireDate]="mvr?.issueDate | setFutureYear"
+                    [expiresSettings]="'details'"
+                  >
+                  </app-truckassist-progress-expiration>
+                </div>
+              </div>
+            </div>
+            <div [@showHideCardBody]="toggler[i + 'mvr'] ? 'true' : 'false'">
+              <div class="divider"></div>
+              <div class="details-document-container">
+                <div class="icon-counter-wrapper">
+                  <div class="counter-text-wrapper">
+                    <app-ta-counter
+                      [countBackgroud]="'#F3F3F3'"
+                      [countHeight]="'24px'"
+                      [countWidth]="'24px'"
+                      [count]="6"
+                    >
+                    </app-ta-counter>
+                    <p class="details-document-name">Document</p>
+                  </div>
+                  <svg-icon
+                    (click)="onFileAction('download')"
+                    src="assets/svg/common/ic_download.svg"
+                  >
+                  </svg-icon>
+                </div>
+              </div>
+              <div class="card-pdf">
+                <app-ta-upload-files
+                  [files]="[
+                    {
+                      name: 'truckassist - 0',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    },
+                    {
+                      name: 'truckassist - 1',
+                      url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+                      extension: 'pdf'
+                    }
+                  ]"
+                  [customClassName]="'driver-details-pdf'"
+                  [hasCarouselBottomTabs]="true"
+                ></app-ta-upload-files>
+              </div>
+              <div class="divider"></div>
+              <div class="card-note">
+                <app-ta-input-note
+                  [formControl]="cdlNote"
+                  [isVisibleDivider]="false"
+                  [isVisibleNote]="true"
+                  [isVisibleSecondDivider]="false"
+                  [isVisibleArrow]="false"
+                  [minRows]="1"
+                  [placeholder]="'Write something.'"
+                  [customClass]="'note-small'"
+                >
+                </app-ta-input-note>
+              </div>
+            </div>
+          </div>
+        </app-ta-re-card>
+      </div>
+    </div>
+  </div>
 </div>

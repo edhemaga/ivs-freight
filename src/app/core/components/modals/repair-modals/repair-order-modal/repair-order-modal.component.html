@@ -10,20 +10,22 @@
   [tabChange]="headerTabs"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="repairOrderForm" class="form-container">
     <div
       [ngClass]="
-        selectedTab === 1
+        selectedHeaderTab === 1
           ? 'repair-modal-bill-first-row'
           : 'repair-modal-order-first-row'
       "
     >
-      <app-ta-input-radiobuttons
-        [buttons]="typeOfRepair"
-        (changedValue)="onTypeOfRepair($event)"
-      ></app-ta-input-radiobuttons>
+      <app-ta-tab-switch
+        [tabs]="typeOfRepair"
+        (switchClicked)="onTypeOfRepair($event)"
+        [type]="'type2-modal-popup'"
+      ></app-ta-tab-switch>
+
       <app-ta-input-dropdown
         formControlName="unit"
         [inputConfig]="{
@@ -33,7 +35,7 @@
           isDropdown: true,
           isRequired: true,
           dropdownWidthClass:
-            selectedTab === 2
+            selectedHeaderTab === 2
               ? 'w-col-repair-m-unit-order'
               : 'w-col-repair-m-unit-bill'
         }"
@@ -64,7 +66,7 @@
         }"
       ></app-ta-input>
       <app-ta-input
-        *ngIf="selectedTab === 1"
+        *ngIf="selectedHeaderTab === 1"
         formControlName="invoice"
         [inputConfig]="{
           name: 'Invoice',
@@ -78,7 +80,7 @@
       <div class="col-12">
         <div *ngIf="selectedRepairShop" class="selected-repair-shop">
           <div class="repair-shop-label">
-            Repair Shop <span *ngIf="selectedTab === 1">*</span>
+            Repair Shop <span *ngIf="selectedHeaderTab === 1">*</span>
           </div>
           <p class="repair-shop-name">
             {{ selectedRepairShop?.name }}
@@ -107,14 +109,19 @@
             </div>
           </div>
           <div class="clear-repair-shop">
-            <svg-icon
-              src="assets/svg/ic_x.svg"
+            <div
+              ngbTooltip
+              mainTooltip="Clear"
+              tooltipBackground="#6c6c6c"
+              position="top"
               class="clear-x"
               (click)="
                 selectedRepairShop = null;
                 repairOrderForm.get('repairShopId').patchValue(null)
               "
-            ></svg-icon>
+            >
+              <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
+            </div>
           </div>
         </div>
         <app-ta-input-dropdown
@@ -125,7 +132,7 @@
             type: 'text',
             label: 'Repair Shop',
             isDropdown: true,
-            isRequired: selectedTab === 1,
+            isRequired: selectedHeaderTab === 1,
             dropdownWidthClass: 'w-col-repair-m-shop'
           }"
           [options]="labelsRepairShop"
@@ -135,7 +142,7 @@
       </div>
     </div>
     <!-- Fake Table Card -->
-    <div [ngClass]="{ 'repair-order': selectedTab !== 1 }">
+    <div [ngClass]="{ 'repair-order': selectedHeaderTab !== 1 }">
       <app-ta-custom-card
         [hasCounter]="items.length ? items.length : '0'"
         [cardName]="'Item'"
@@ -151,7 +158,7 @@
           formArrayName="items"
           class="common-fake-table-modal"
           [ngClass]="
-            selectedTab === 1
+            selectedHeaderTab === 1
               ? 'common-fake-table-modal-repair-bill-item'
               : 'common-fake-table-modal-repair-order-item'
           "
@@ -161,9 +168,9 @@
             <p></p>
             <p>DESCRIPTION</p>
             <p>PM</p>
-            <p *ngIf="selectedTab === 1">PRICE</p>
+            <p *ngIf="selectedHeaderTab === 1">PRICE</p>
             <p>QTY</p>
-            <p *ngIf="selectedTab === 1">SUBTOTAL</p>
+            <p *ngIf="selectedHeaderTab === 1">SUBTOTAL</p>
           </div>
           <div *ngFor="let item of items.controls; let ind = index">
             <div
@@ -201,7 +208,7 @@
                   <svg-icon
                     class="pm-svg"
                     [class.active]="
-                      selectedPM
+                      selectedPM.length
                         ? !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                         : false
                     "
@@ -232,7 +239,7 @@
               </div>
 
               <app-ta-input
-                *ngIf="selectedTab === 1"
+                *ngIf="selectedHeaderTab === 1"
                 formControlName="price"
                 [inputConfig]="{
                   name: 'Price',
@@ -259,7 +266,7 @@
                 (change)="onChange('quantity', ind)"
               ></app-ta-input>
 
-              <p *ngIf="selectedTab === 1" class="item-subtotal">
+              <p *ngIf="selectedHeaderTab === 1" class="item-subtotal">
                 {{ subtotal[ind].value | currency }}
               </p>
 
@@ -276,7 +283,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="selectedTab === 1" class="row item-total-row">
+        <div *ngIf="selectedHeaderTab === 1" class="row item-total-row">
           <p class="item-total">
             <span class="item-total-text">TOTAL</span>
             {{ subtotal | sumArrays | currency }}
@@ -302,17 +309,17 @@
         </div>
       </div>
     </app-ta-custom-card>
-    <div *ngIf="selectedTab === 1" class="ta-card-body-overflow-none">
+    <div *ngIf="selectedHeaderTab === 1" class="ta-card-body-overflow-none">
       <app-ta-custom-card
         [hasCounter]="documents.length ? documents.length : '0'"
         [cardName]="'Documents'"
         [isCardOpen]="documents.length"
       >
-        <app-ta-modal-upload
+        <app-ta-upload-files
           [files]="documents"
-          [modalSize]="'modal-large'"
+          [size]="'large'"
           (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-modal-upload>
+        ></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
     <!-- Note -->

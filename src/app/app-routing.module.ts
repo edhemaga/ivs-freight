@@ -11,13 +11,17 @@ import { DriverActiveResolver } from './core/components/driver/state/driver-acti
 import { HelperSignupUserComponent } from './core/components/authentication/helper-signup-user/helper-signup-user.component';
 import { HelperComponent } from './core/components/authentication/helper/helper.component';
 import { HelperForgotPasswordComponent } from './core/components/authentication/helper-forgot-password/helper-forgot-password.component';
-import { TrailerResolver } from './core/components/trailer/state/trailer.resolver';
 import { BrokerResolver } from './core/components/customer/state/broker-state/broker.resolver';
 import { ShipperResolver } from './core/components/customer/state/shipper-state/shipper.resolver';
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
+import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
+import { Step3PdfComponent } from './core/components/applicant/state/pdf-export/application/step3-pdf/step3-pdf.component';
+
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
+import { TrailerActiveResolver } from './core/components/trailer/state/trailer-active-state/trailer-active.resolver';
+import { TrailerInactiveResolver } from './core/components/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -86,7 +90,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/truck/truck.module').then((m) => m.TruckModule),
     canActivate: [AuthGuard],
-    resolve: { truckActive: TruckActiveResolver, truckInactive: TruckInactiveResolver },
+    resolve: {
+      truckActive: TruckActiveResolver,
+      truckInactive: TruckInactiveResolver,
+    },
   },
   {
     path: 'trailer',
@@ -95,7 +102,7 @@ const routes: Routes = [
         (m) => m.TrailerModule
       ),
     canActivate: [AuthGuard],
-    resolve: { trailer: TrailerResolver },
+    resolve: { trailerActive: TrailerActiveResolver, trailerInactive: TrailerInactiveResolver },
   },
   {
     path: 'customer',
@@ -198,7 +205,7 @@ const routes: Routes = [
     data: { title: 'End Screen' },
   },
   {
-    path: 'applicant/:id',
+    path: 'application/:id',
     loadChildren: () =>
       import('./core/components/applicant/applicant.module').then(
         (m) => m.ApplicantModule
@@ -239,6 +246,20 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'sph-form',
+    loadChildren: () =>
+      import(
+        './core/components/applicant/applicant-tabs/sph/sph-form/sph-form.module'
+      ).then((m) => m.SphFormModule),
+
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'sph-form-end',
+    component: SphFormThankYouComponent,
+    data: { title: 'End Screen' },
+  },
+  {
     path: 'hos-rules/:id',
     loadChildren: () =>
       import(
@@ -263,9 +284,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'pdf',
+    component: Step3PdfComponent,
+    data: { title: 'pdf' },
+  },
+  {
     path: 'catalog',
     component: SvgDefinitionsComponent,
   },
+
   { path: '**', redirectTo: 'dashboard' },
 ];
 

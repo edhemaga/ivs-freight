@@ -10,8 +10,64 @@
       padding: 0;
       margin-bottom: 0;
 
-      li {
+      .tab {
         margin-right: 14px;
+
+        &.tab-active {
+          a {
+            color: $ta-blue;
+            background: $ta-light-grey-4;
+
+            .nav-icon {
+              svg {
+                path {
+                  fill: $ta-light-blue;
+                }
+              }
+            }
+
+            &:hover {
+              color: $ta-blue;
+              background: $ta-light-grey-4;
+
+              .nav-icon {
+                svg {
+                  path {
+                    fill: $ta-light-blue;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        &.completed-tab {
+          a {
+            color: $ta-blue-3;
+            background: transparent;
+
+            .nav-icon {
+              svg {
+                path {
+                  fill: $ta-blue-4;
+                }
+              }
+            }
+
+            &:hover {
+              color: $ta-blue-3;
+              background: $ta-light-grey-4;
+
+              .nav-icon {
+                svg {
+                  path {
+                    fill: $ta-blue-4;
+                  }
+                }
+              }
+            }
+          }
+        }
 
         a {
           height: 28px;
@@ -51,19 +107,6 @@
                 path {
                   transition: fill 0.3s ease-in-out;
                   fill: $bw5;
-                }
-              }
-            }
-          }
-
-          &.nav-active {
-            color: $ta-blue;
-            background: $ta-light-grey-4;
-
-            .nav-icon {
-              svg {
-                path {
-                  fill: $ta-light-blue;
                 }
               }
             }
