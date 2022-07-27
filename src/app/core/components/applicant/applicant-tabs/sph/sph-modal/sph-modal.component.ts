@@ -17,6 +17,7 @@ import { TruckType } from '../../../state/model/truck-type.model';
   styleUrls: ['./sph-modal.component.scss'],
 })
 export class SphModalComponent implements OnInit {
+  public prospectiveEmployerForm: FormGroup;
   public accidentHistoryForm: FormGroup;
   public drugAndAlcoholTestingHistoryForm: FormGroup;
 
@@ -274,6 +275,15 @@ export class SphModalComponent implements OnInit {
   public trackByIdentity = (index: number, item: any): number => index;
 
   private createForm(): void {
+    this.prospectiveEmployerForm = this.formBuilder.group({
+      toPreviousEmployer: [null],
+      phone: [null, [phoneRegex]],
+      email: [null],
+      fax: [null],
+      address: [null],
+      addressUnit: [null, Validators.maxLength(6)],
+    });
+
     this.accidentHistoryForm = this.formBuilder.group({
       applicantWorkForCompany: [null],
       applicantWorkForCompanyBeforeExplain: [null],

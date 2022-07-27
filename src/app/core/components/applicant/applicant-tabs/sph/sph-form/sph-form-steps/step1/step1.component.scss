@@ -108,6 +108,7 @@
 
         p {
           height: 18px;
+          line-height: 18px;
           font-size: 14px;
           color: $bw6-2;
 
@@ -348,6 +349,7 @@
 
         p {
           height: 18px;
+          line-height: 18px;
 
           &::-moz-selection {
             color: $bw6-2;
@@ -367,7 +369,7 @@
 
           &.date-to-box {
             width: 75px;
-            margin-right: 72px;
+            margin-right: 74px;
           }
         }
       }
