@@ -28,6 +28,9 @@
             color: #6c6c6c;
             background: rgb(108, 108, 108, 0.2);
         }
+        &:hover {
+            color: #3c3c3c;
+        }
     }
     .card-icon-copy {
         margin-left: 6px;
@@ -65,6 +68,20 @@
                     animation-duration: 1500ms;
                     animation-name: changeSVG;
                 }
+            }
+        }
+    }
+}
+.app-icon-copy {
+    display: flex;
+    align-items: center;
+}
+.hidden-svg-eyes {
+    margin-left: 6px;
+    svg {
+        &:hover {
+            path {
+                fill: #6c6c6c;
             }
         }
     }

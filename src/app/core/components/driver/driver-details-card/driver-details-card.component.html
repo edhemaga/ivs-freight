@@ -386,7 +386,7 @@
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">EIN</div>
-            <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
+            <div class="purchase-icon-copy">
               <app-ta-copy [copyValue]="driver.owner.ssnEin"> </app-ta-copy>
             </div>
           </div>
@@ -565,13 +565,7 @@
             <div class="purchase-template-item-name">Account</div>
             <div
               class="purchase-icon-copy"
-              [ngClass]="{ copied: copiedBankAccount }"
             >
-              <!-- <div class="purchase-template-item-value">
-                {{
-                  driver.account | hideAccount: "account":isAccountVisibleDriver
-                }}
-              </div> -->
               <app-ta-copy [hasEye]="true" (showHide)="isAccountVisibleDriver=!isAccountVisibleDriver" [copyValue]="driver?.account"> </app-ta-copy>
             </div>
           </div>

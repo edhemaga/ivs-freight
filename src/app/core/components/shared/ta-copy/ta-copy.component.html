@@ -10,7 +10,7 @@
     >
       {{ hasEye ? (copyValue | hideAccount: "account":isVisible) : copyValue }}
     </div>
-
+    <div class="app-icon-copy">
     <span
      *ngIf="hasEye"
       tooltipBackground="#6c6c6c"
@@ -22,7 +22,7 @@
     >
       <svg-icon
       (click)="showHide(isVisible)"
-        class="hidden-svg-eye"
+        class="hidden-svg-eyes"
         src="{{
           isVisible
             ? 'assets/svg/common/ic_eye-visible.svg'
@@ -35,7 +35,6 @@
       ngbTooltip
       [mainTooltip]="textCopied ? 'Copied' : 'Copy'"
       position="top"
-      class="tooltip-copy"
       [autoClose]="false"
       (click)="copyText(copyValue)"
     >
@@ -45,5 +44,6 @@
         (mouseleave)="textCopied = false"
       ></svg-icon>
     </span>
+  </div>
   </div>
 </div>
