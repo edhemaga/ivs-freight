@@ -319,9 +319,9 @@
                   type: 'text',
                   label: 'Credit Limit',
                   isRequired:
-                    this.brokerForm.get('creditType').value === 'Enable',
+                    this.brokerForm.get('creditType').value === 'Custom',
                   isDisabled:
-                    this.brokerForm.get('creditType').value !== 'Enable',
+                    this.brokerForm.get('creditType').value !== 'Custom',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   thousandSeparator: true
@@ -335,8 +335,6 @@
                   name: 'Input Dropdown',
                   type: 'text',
                   label: 'Pay term',
-                  isDisabled:
-                    this.brokerForm.get('creditType').value !== 'Enable',
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-broker-payterm'
                 }"

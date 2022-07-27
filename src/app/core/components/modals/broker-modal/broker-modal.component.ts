@@ -113,12 +113,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   public billingCredit = [
     {
       id: 301,
-      name: 'Enable',
+      name: 'Custom',
       checked: true,
     },
     {
       id: 300,
-      name: 'Disable',
+      name: 'Unlimited',
       checked: false,
     },
   ];
@@ -200,7 +200,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       billingPoBox: [null],
       billingPoBoxCity: [null],
       isCredit: [true],
-      creditType: ['Enable'], // Enable | Disable
+      creditType: ['Custom'], // Enable | Disable
       creditLimit: [null],
       availableCredit: [null],
       payTerm: [null],
@@ -475,7 +475,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (this.brokerForm.get('creditType').value === 'Enable') {
+    if (this.brokerForm.get('creditType').value === 'Custom') {
       this.inputService.changeValidators(this.brokerForm.get('creditLimit'));
     } else {
       this.inputService.changeValidators(
@@ -888,14 +888,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
               : null,
             creditType: reasponse.creditType,
             creditLimit:
-              reasponse.creditType.name === 'Enable'
+              reasponse.creditType.name === 'Custom'
                 ? convertNumberInThousandSep(reasponse.creditLimit)
                 : null,
             availableCredit: reasponse.availableCredit,
-            payTerm:
-              reasponse.creditType.name === 'Enable'
-                ? reasponse.payTerm.name
-                : null,
+            payTerm: reasponse.payTerm.name ? reasponse.payTerm.name : null,
             note: reasponse.note,
             ban: reasponse.ban,
             dnu: reasponse.dnu,
@@ -928,7 +925,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ? reasponse.billingPoBox
             : null;
           this.selectedPayTerm =
-            reasponse.creditType === 'Enable' ? reasponse.payTerm : null;
+            reasponse.creditType === 'Custom' ? reasponse.payTerm : null;
 
           if (reasponse.brokerContacts) {
             for (const contact of reasponse.brokerContacts) {

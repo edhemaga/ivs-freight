@@ -250,6 +250,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.colorType = res.colors.map((item) => {
             return {
               ...item,
+              folder: 'common',
+              subFolder: 'colors',
               logoName: 'ic_color.svg',
             };
           });
