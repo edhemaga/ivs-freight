@@ -294,7 +294,7 @@
 
     <!-- CONTACT -->
 
-    <form [formGroup]="contactForm" class="contact-form">
+    <form class="contact-form">
       <h3
         class="contact-title text-center ta-font-bold"
         [ngStyle]="{
@@ -323,7 +323,8 @@
             *ngIf="
               (contactsArray.length > 1 && helperIndex !== 0 && i === 0) ||
               (helperIndex === 0 && i === 1) ||
-              (helperIndex !== 0 && i > helperIndex)
+              (helperIndex !== 0 && i > helperIndex) ||
+              (i === helperIndex + 1 && selectedAccidentIndex > -1)
             "
           >
             <div class="d-flex align-items-center name-title-box">
@@ -398,63 +399,23 @@
             class="d-flex flex-column contacts-view-form"
             *ngIf="contact.isEditingContact"
           >
-            <app-step6-form [form]="contactForm"></app-step6-form>
-
-            <div
-              class="d-flex align-items-center mx-auto justify-content-center btn-container"
-            >
-              <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-                (click)="onCancelEditContact()"
-              >
-                Cancel
-              </button>
-              <button
-                type="button"
-                class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-                [ngClass]="{
-                  disabled: !isContactEdited
-                }"
-                (click)="onSaveEditedContact()"
-              >
-                Save Changes
-              </button>
-            </div>
+            <app-step6-form
+              [isEditing]="isEditing"
+              [isContactEdited]="isContactEdited"
+              [formValuesToPatch]="formValuesToPatch"
+              (formValuesEmitter)="getContactFormValues($event)"
+              (cancelFormEditingEmitter)="cancelContactEditing($event)"
+              (saveFormEditingEmitter)="saveEditedContact($event)"
+            ></app-step6-form>
           </div>
         </div>
       </div>
 
       <div class="d-flex" *ngIf="!isEditing">
-        <app-step6-form [form]="contactForm"></app-step6-form>
-      </div>
-
-      <!-- ADD SECOND CONTACT -->
-
-      <div
-        class="d-flex flex-column align-items-center add-second-contact-container"
-      >
-        <button
-          type="button"
-          class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-          (click)="onAddContact()"
-          [ngClass]="{
-            disabled: contactForm.invalid
-          }"
-          *ngIf="!isEditing"
-        >
-          <svg-icon
-            class="plus-icon"
-            src="assets/svg/common/ic_plus.svg
-        "
-            [svgStyle]="{
-              'width.px': 18,
-              'height.px': 18
-            }"
-          ></svg-icon>
-
-          Add Second Emergency Contact
-        </button>
+        <app-step6-form
+          [isEditing]="isEditing"
+          (formValuesEmitter)="getContactFormValues($event)"
+        ></app-step6-form>
       </div>
     </form>
   </div>

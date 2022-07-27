@@ -1,10 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
-import { isFormValueEqual } from '../../state/utils/utils';
-
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { Applicant } from '../../state/model/applicant.model';
@@ -13,11 +9,6 @@ import {
   Education,
   ContactModel,
 } from '../../state/model/education.model';
-
-import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
-
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step6',
@@ -29,11 +20,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
-  private subscription: Subscription;
-
   public educationForm: FormGroup;
 
-  public contactForm: FormGroup;
   public contactsArray: ContactModel[] = [];
 
   public schoolGrades: string[] = [
@@ -183,6 +171,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public helperIndex: number = 2;
 
+  public formValuesToPatch: any;
+
   //
 
   /*  public contactsFormArray: Contact[] | undefined = [];
@@ -191,11 +181,7 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public editContact: number = -1;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -223,12 +209,6 @@ export class Step6Component implements OnInit, OnDestroy {
       unableForJob: [null, Validators.required],
       unableForJobExplain: [null, Validators.required],
     });
-
-    this.contactForm = this.formBuilder.group({
-      contactName: [null, Validators.required],
-      contactPhone: [null, [Validators.required, phoneRegex]],
-      contactRelationship: [null, Validators.required],
-    });
   }
 
   public handleInputSelect(event: any): void {
@@ -244,26 +224,10 @@ export class Step6Component implements OnInit, OnDestroy {
       .patchValue(selectedCheckbox.label);
   }
 
-  public onAddContact(): void {
-    if (this.contactForm.invalid) {
-      this.inputService.markInvalid(this.contactForm);
-      return;
-    }
+  public getContactFormValues(event: any): void {
+    this.contactsArray = [...this.contactsArray, event];
 
     this.helperIndex = 2;
-
-    const contactForm = this.contactForm.value;
-
-    const saveData: ContactModel = {
-      ...contactForm,
-      isEditingContact: false,
-    };
-
-    this.contactsArray = [...this.contactsArray, saveData];
-
-    this.contactForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
   }
 
   public onDeleteContact(index: number): void {
@@ -290,62 +254,23 @@ export class Step6Component implements OnInit, OnDestroy {
 
     const selectedContact = this.contactsArray[index];
 
-    this.contactForm.patchValue({
-      contactName: selectedContact.contactName,
-      contactPhone: selectedContact.contactPhone,
-      contactRelationship: selectedContact.contactRelationship,
-    });
-
-    this.subscription = this.contactForm.valueChanges.subscribe(
-      (newFormValue) => {
-        if (isFormValueEqual(selectedContact, newFormValue)) {
-          this.isContactEdited = false;
-        } else {
-          this.isContactEdited = true;
-        }
-      }
-    );
+    this.formValuesToPatch = selectedContact;
   }
 
-  public onSaveEditedContact(): void {
-    if (this.contactForm.invalid) {
-      this.inputService.markInvalid(this.contactForm);
-      return;
-    }
-
-    if (!this.isContactEdited) {
-      return;
-    }
-
-    this.contactsArray[this.selectedContactIndex] = this.contactForm.value;
-
+  public cancelContactEditing(event: any): void {
     this.isEditing = false;
     this.contactsArray[this.selectedContactIndex].isEditingContact = false;
 
-    this.isContactEdited = false;
-
     this.helperIndex = 2;
-
-    this.contactForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
+    this.selectedContactIndex = -1;
   }
 
-  public onCancelEditContact(): void {
-    this.isEditing = false;
-    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
+  public saveEditedContact(event: any): void {
+    this.contactsArray[this.selectedContactIndex] = event;
 
-    this.isContactEdited = false;
+    this.isEditing = false;
 
     this.helperIndex = 2;
-
-    this.contactForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
   }
 
   private formFIlling(): void {
