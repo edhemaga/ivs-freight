@@ -181,13 +181,10 @@
               <p
                 class="m-0 ta-font-regular d-inline-block text-truncate"
                 style="max-width: 123px"
-                [appTooltip]="violation.violationLocation"
-                tooltipColor="#FFFFFF"
+                ngbTooltip
+                [mainTooltip]="violation.violationLocation"
                 tooltipBackground="#6C6C6C"
-                position="bottom-right"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
+                position="bottom-left"
               >
                 {{ violation.violationLocation }}
               </p>
@@ -197,52 +194,49 @@
               <p
                 class="m-0 ta-font-regular d-inline-block text-truncate"
                 style="max-width: 185px"
-                [appTooltip]="violation.violationDescription"
-                tooltipColor="#FFFFFF"
+                ngbTooltip
+                [mainTooltip]="violation.violationDescription"
                 tooltipBackground="#6C6C6C"
-                position="bottom-right"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
+                position="bottom-left"
               >
                 {{ violation.violationDescription }}
               </p>
             </div>
 
             <div class="d-flex align-items-center btn-container">
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                appTooltip="Edit"
-                tooltipColor="#FFFFFF"
+              <div
+                ngbTooltip
+                mainTooltip="Edit"
                 tooltipBackground="#6C6C6C"
-                position="top-middle"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
-                (click)="onEditViolation(i)"
-              ></svg-icon>
+                position="top"
+              >
+                <svg-icon
+                  class="edit-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onEditViolation(i)"
+                ></svg-icon>
+              </div>
 
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                appTooltip="Delete"
-                tooltipColor="#FFFFFF"
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
                 tooltipBackground="#EF5350"
-                position="top-middle"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
-                (click)="onDeleteViolation(i)"
-              ></svg-icon>
+                position="top"
+              >
+                <svg-icon
+                  class="delete-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onDeleteViolation(i)"
+                ></svg-icon>
+              </div>
             </div>
           </div>
 

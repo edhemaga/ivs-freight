@@ -309,39 +309,39 @@
                         isEditingArray[i]?.isEditingAddress
                       "
                     >
-                      <svg-icon
-                        class="confirm-icon"
-                        src="assets/svg/ic_spec-confirm.svg"
-                        [svgStyle]="{
-                          'width.px': 26,
-                          'height.px': 26
-                        }"
-                        appTooltip="Confirm"
-                        tooltipColor="#FFFFFF"
+                      <div
+                        ngbTooltip
+                        mainTooltip="Confirm"
                         tooltipBackground="#536BC2"
-                        position="top-middle"
-                        borderRadius="2px"
-                        fontSize="11px"
-                        fontWeight="bold"
-                        (click)="onConfirmEditedNewAddress(i)"
-                      ></svg-icon>
+                        position="top"
+                      >
+                        <svg-icon
+                          class="confirm-icon"
+                          src="assets/svg/ic_spec-confirm.svg"
+                          [svgStyle]="{
+                            'width.px': 26,
+                            'height.px': 26
+                          }"
+                          (click)="onConfirmEditedNewAddress(i)"
+                        ></svg-icon>
+                      </div>
 
-                      <svg-icon
-                        class="cancel-icon"
-                        src="assets/svg/ic_x.svg"
-                        [svgStyle]="{
-                          'width.px': 26,
-                          'height.px': 26
-                        }"
-                        appTooltip="Cancel"
-                        tooltipColor="#FFFFFF"
+                      <div
+                        ngbTooltip
+                        mainTooltip="Cancel"
                         tooltipBackground="#6C6C6C"
-                        position="top-middle"
-                        borderRadius="2px"
-                        fontSize="11px"
-                        fontWeight="bold"
-                        (click)="onCancelEditingNewAddress(i)"
-                      ></svg-icon>
+                        position="top"
+                      >
+                        <svg-icon
+                          class="cancel-icon"
+                          src="assets/svg/ic_x.svg"
+                          [svgStyle]="{
+                            'width.px': 26,
+                            'height.px': 26
+                          }"
+                          (click)="onCancelEditingNewAddress(i)"
+                        ></svg-icon>
+                      </div>
                     </div>
 
                     <div
@@ -354,22 +354,22 @@
                         !isEditingArray[i].isFirstAddress
                       "
                     >
-                      <svg-icon
-                        class="delete-icon"
-                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                        [svgStyle]="{
-                          'width.px': 18,
-                          'height.px': 18
-                        }"
-                        appTooltip="Delete"
-                        tooltipColor="#FFFFFF"
+                      <div
+                        ngbTooltip
+                        mainTooltip="Delete"
                         tooltipBackground="#EF5350"
-                        position="top-middle"
-                        borderRadius="2px"
-                        fontSize="11px"
-                        fontWeight="bold"
-                        (click)="onRemoveNewAddress(i)"
-                      ></svg-icon>
+                        position="top"
+                      >
+                        <svg-icon
+                          class="delete-icon"
+                          src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                          [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                          }"
+                          (click)="onRemoveNewAddress(i)"
+                        ></svg-icon>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -414,39 +414,39 @@
                   class="d-flex align-items-center btn-container"
                   *ngIf="!isEditingArray[i]?.isEditing"
                 >
-                  <svg-icon
-                    class="edit-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    appTooltip="Edit"
-                    tooltipColor="#FFFFFF"
+                  <div
+                    ngbTooltip
+                    mainTooltip="Edit"
                     tooltipBackground="#6C6C6C"
-                    position="top-middle"
-                    borderRadius="2px"
-                    fontSize="11px"
-                    fontWeight="bold"
-                    (click)="onEditNewAddress(i)"
-                  ></svg-icon>
+                    position="top"
+                  >
+                    <svg-icon
+                      class="edit-icon"
+                      src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
+                      (click)="onEditNewAddress(i)"
+                    ></svg-icon>
+                  </div>
 
-                  <svg-icon
-                    class="delete-icon"
-                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                    [svgStyle]="{
-                      'width.px': 18,
-                      'height.px': 18
-                    }"
-                    appTooltip="Delete"
-                    tooltipColor="#FFFFFF"
+                  <div
+                    ngbTooltip
+                    mainTooltip="Delete"
                     tooltipBackground="#EF5350"
-                    position="top-middle"
-                    borderRadius="2px"
-                    fontSize="11px"
-                    fontWeight="bold"
-                    (click)="onRemoveNewAddress(i)"
-                  ></svg-icon>
+                    position="top"
+                  >
+                    <svg-icon
+                      class="delete-icon"
+                      src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
+                      (click)="onRemoveNewAddress(i)"
+                    ></svg-icon>
+                  </div>
                 </div>
               </div>
 

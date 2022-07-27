@@ -84,39 +84,39 @@
               <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
             </div>
             <div class="d-flex align-items-center btn-container">
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                appTooltip="Edit"
-                tooltipColor="#FFFFFF"
+              <div
+                ngbTooltip
+                mainTooltip="Edit"
                 tooltipBackground="#6C6C6C"
-                position="top-middle"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
-                (click)="onEditWorkExperience(i)"
-              ></svg-icon>
+                position="top"
+              >
+                <svg-icon
+                  class="edit-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onEditWorkExperience(i)"
+                ></svg-icon>
+              </div>
 
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                appTooltip="Delete"
-                tooltipColor="#FFFFFF"
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
                 tooltipBackground="#EF5350"
-                position="top-middle"
-                borderRadius="2px"
-                fontSize="11px"
-                fontWeight="bold"
-                (click)="onDeleteWorkExperience(i)"
-              ></svg-icon>
+                position="top"
+              >
+                <svg-icon
+                  class="delete-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onDeleteWorkExperience(i)"
+                ></svg-icon>
+              </div>
             </div>
           </div>
 
