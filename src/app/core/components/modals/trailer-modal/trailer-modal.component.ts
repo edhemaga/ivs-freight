@@ -163,7 +163,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     } else {
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
-          .changeTrailerStatus(this.editData.id)
+          .changeTrailerStatus(this.editData.id, this.editData.tabSelected)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: HttpResponseBase) => {
@@ -331,7 +331,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
   private deleteTrailerById(id: number): void {
     this.trailerModalService
-      .deleteTrailerById(id)
+      .deleteTrailerById(id, this.editData.tabSelected)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

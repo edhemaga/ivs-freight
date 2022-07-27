@@ -1,6 +1,6 @@
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
 import {
-  createBase64,
+  CreateBase64Class,
   getStringFromBase64,
 } from './../../../utils/base64.image';
 import {
@@ -18,7 +18,6 @@ import {
 import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
-import { DomSanitizer } from '@angular/platform-browser';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
@@ -76,16 +75,14 @@ export class TaLogoChangeComponent
   public isImageValid: boolean = false;
 
   constructor(
-    private sanitizer: DomSanitizer,
-    private uploadFileService: TaUploadFileService
+    private uploadFileService: TaUploadFileService,
+    private createBase64: CreateBase64Class
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const timeout = setTimeout(() => {
       this.imageUrl = changes.imageUrl.currentValue
-        ? this.sanitizer.bypassSecurityTrustUrl(
-            createBase64(changes.imageUrl.currentValue)
-          )
+        ? this.createBase64.sanitizer(changes.imageUrl.currentValue)
         : null;
 
       clearTimeout(timeout);

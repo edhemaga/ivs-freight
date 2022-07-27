@@ -1,3 +1,4 @@
+import { CreateBase64Class } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   Component,
@@ -28,6 +29,7 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-driver-table',
@@ -67,7 +69,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public datePipe: DatePipe,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
-    private nameInitialsPipe: NameInitialsPipe
+    private nameInitialsPipe: NameInitialsPipe,
+    private createBase64: CreateBase64Class,
   ) {}
 
   ngOnInit(): void {
@@ -437,6 +440,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapDriverData(data: any) {
+    console.log('Driver data');
+    console.log(data);
+
     this.mapingIndex++;
 
     return {
@@ -445,7 +451,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
-      avatarImg: '',
+      avatarImg: data?.avatar ? this.createBase64.sanitizer(data.avatar) : '',
       textDOB: data.dateOfBirth
         ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
         : '',

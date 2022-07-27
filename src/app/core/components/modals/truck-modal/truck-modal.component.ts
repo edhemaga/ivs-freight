@@ -163,7 +163,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     } else {
       if (data.action === 'deactivate' && this.editData) {
         this.truckModalService
-          .changeTruckStatus(this.editData.id)
+          .changeTruckStatus(this.editData.id, this.editData.tabSelected)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: HttpResponseBase) => {
@@ -381,7 +381,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   public deleteTruckById(id: number) {
     this.truckModalService
-      .deleteTruckById(id)
+      .deleteTruckById(id, this.editData.tabSelected)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
