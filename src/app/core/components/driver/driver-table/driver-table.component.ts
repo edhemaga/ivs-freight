@@ -1,11 +1,6 @@
 import { CreateBase64Class } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -70,7 +65,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private driverTService: DriverTService,
     private notificationService: NotificationService,
     private nameInitialsPipe: NameInitialsPipe,
-    private createBase64: CreateBase64Class,
+    private createBase64: CreateBase64Class
   ) {}
 
   ngOnInit(): void {
@@ -440,10 +435,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapDriverData(data: any) {
-    console.log('Driver data');
-    console.log(data);
+    if (!data?.avatar) {
+      this.mapingIndex++;
+    }
 
-    this.mapingIndex++;
+    console.log('Driver Data');
+    console.log(data);
 
     return {
       ...data,
@@ -593,6 +590,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
+      this.mapingIndex = 0;
+
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
