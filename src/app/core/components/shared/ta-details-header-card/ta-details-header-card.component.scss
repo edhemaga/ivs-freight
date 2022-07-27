@@ -252,12 +252,10 @@ $border-radius: 3px;
   display: flex;
   align-items: center;
 }
-.verical-dots-header {
+.vertical-dots-header {
   margin-top: 7px;
-  .table-dropdown-container-vertical {
-    right: 0 !important;
-    left: 43px;
-  }
+  display: flex;
+  justify-content: flex-end;
 }
 
 .single-data {

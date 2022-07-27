@@ -11,17 +11,14 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute } from '@angular/router';
 import { DriverResponse } from 'appcoretruckassist';
-import { createBase64 } from 'src/app/core/utils/base64.image';
+import { CreateBase64Class } from 'src/app/core/utils/base64.image';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -117,14 +114,14 @@ export class DriverDetailsCardComponent
   };
 
   constructor(
-    private sanitazer: DomSanitizer,
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
     private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
-    private driverMinimalQuery: DriversMinimalListQuery
+    private driverMinimalQuery: DriversMinimalListQuery,
+    private createBase64: CreateBase64Class,
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -160,23 +157,23 @@ export class DriverDetailsCardComponent
       this.hideArrow = false;
     }
     this.initTableOptions();
-    this.initTableOptionsCard();
+    this.initTableOptionsCard(this.driver);
     this.getDriversDropdown();
     this.tabsButton();
     this.getYearsAndDays(this.driver);
     this.widthOfProgress();
+    this.getExpireDate(this.driver);
   }
 
   /**Function return user image if have in DB or default image */
   public transformImage() {
-    let img;
-    if (this.driver.avatar) {
-      img = createBase64(this.driver.avatar);
-    } else {
-      img = 'assets/svg/common/ic_no_avatar_driver.svg';
-    }
-    return this.sanitazer.bypassSecurityTrustResourceUrl(img);
+    return this.createBase64.sanitizer(
+      this.driver.avatar
+        ? this.driver.avatar
+        : 'assets/svg/common/ic_no_avatar_driver.svg'
+    );
   }
+
   public tabsButton() {
     this.tabsDriver = [
       {
@@ -329,17 +326,29 @@ export class DriverDetailsCardComponent
         {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
         },
-
+        {
+          title: 'Renew',
+          name: 'renew',
+          svg: 'assets/svg/common/ic_reload_renew.svg',
+          show: true,
+        },
+        {
+          title: 'Void',
+          name: 'activate-item',
+          svg: 'assets/svg/common/ic_cancel_violation.svg',
+          show: true,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
         },
       ],
       export: true,
@@ -347,7 +356,7 @@ export class DriverDetailsCardComponent
   }
 
   /**Function for dots in cards */
-  public initTableOptionsCard(): void {
+  public initTableOptionsCard(data: DriverResponse): void {
     this.dropData = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -362,37 +371,40 @@ export class DriverDetailsCardComponent
       },
       actions: [
         {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: data.status == 1 ? true : false,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: data.status == 1 || data.status == 0 ? true : false,
+        },
+
+        {
           title: 'Edit',
           name: 'edit',
-          class: 'regular-text',
-          contentType: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: data.status == 1 ? true : false,
         },
         {
-          title: 'Deactivate',
-          reverseTitle: 'Activate',
-          name: 'activate-item',
-          class: 'regular-text',
-          contentType: 'activate',
-        },
-        {
-          title: 'Print Details',
-          name: 'print',
-          class: 'regular-text',
-          contentType: 'print',
-        },
-        {
-          title: 'Forward Email',
-          name: 'email',
-          class: 'regular-text',
-          contentType: 'email',
+          title: data.status == 0 ? 'Activate' : 'Deactivate',
+          name: 'deactivate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          activate: data.status == 0 ? true : false,
+          deactivate: data.status == 1 ? true : false,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          class: 'delete-text',
-          contentType: 'delete',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: data.status == 1 || data.status == 0 ? true : false,
         },
       ],
       export: true,

@@ -258,7 +258,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          svg: 'assets/svg/common/ic_trash.svg',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: data.status == 1 || data.status == 0 ? true : false,
         },

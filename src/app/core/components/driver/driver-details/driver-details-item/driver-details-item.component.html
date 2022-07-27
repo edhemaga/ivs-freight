@@ -418,7 +418,7 @@
                   <div class="card-details-progress-container">
                     <app-truckassist-progress-expiration
                       [startDate]="mvr?.issueDate | formatDateP"
-                      [expireDate]="mvr?.issueDate | setFutureYear"
+                      [expireDate]="mvr?.expDate | formatDateP"
                       [expiresSettings]="'details'"
                     >
                     </app-truckassist-progress-expiration>

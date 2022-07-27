@@ -19,7 +19,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">
@@ -624,6 +624,15 @@
                   [ngStyle]="{ fill: row[column.field] }"
                 />
               </svg>
+
+              <div
+                [ngStyle]="{
+                  width: column.width - 18 + 'px'
+                }"
+                class="color-name"
+              >
+                {{ row.colorName }}
+              </div>
             </div>
 
             <!-- SVG COLUMN -->
@@ -832,7 +841,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
           [ngClass]="{
             'border-inactive': !showScrollSectionBorder
@@ -1379,6 +1388,14 @@
                   [ngStyle]="{ fill: row[column.field] }"
                 />
               </svg>
+              <div
+                [ngStyle]="{
+                  width: column.width - 18 + 'px'
+                }"
+                class="color-name"
+              >
+                {{ row.colorName }}
+              </div>
             </div>
 
             <!-- SVG COLUMN -->
@@ -1583,7 +1600,7 @@
       >
         <div
           class="columns-container"
-          (mouseenter)="hoverActive = i"
+          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">

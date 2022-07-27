@@ -19,6 +19,16 @@ app-shipper-details-single {
       }
     }
   }
+  .hours {
+    &::-moz-selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+      color: $color-gray-dark;
+      background: rgb(108, 108, 108, 0.2);
+    }
+  }
   .contact-wrapper {
     background-color: $color-white;
     border-radius: 3px;
@@ -32,7 +42,7 @@ app-shipper-details-single {
   }
 
   .repair-header {
-    grid-template-columns: 80px 107px 62px 86px 69px 83px !important;
+    grid-template-columns: 80px 107px 62px 86px 69px 84px !important;
     column-gap: 29px !important;
     grid-auto-flow: column;
   }

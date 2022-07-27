@@ -239,7 +239,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.truckrBackFilter(searchEvent.query);
+              this.truckBackFilter(searchEvent.query);
             } else if (searchEvent.action === 'store') {
               this.sendTruckData();
             }
@@ -400,6 +400,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
       color: data?.color?.code ? data.color.code : '',
+      colorName: data?.color?.name ? data.color.name : '', 
       truckTypeIcon: data.truckType.logoName,
       truckTypeClass: data.truckType.logoName.replace('.svg', ''),
       ownerName: data?.owner?.name ? data.owner.name : '',
@@ -409,7 +410,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         : '',
       truckEngine: data?.truckEngineType?.name ? data.truckEngineType.name : '',
       truckTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-      truckMileage: data?.mileage ? data.mileage : '',
+      truckMileage: data?.mileage ? this.thousandSeparator.transform(data.mileage) + ' mi' : '',
       truckIpasEzpass: data?.ipasEzpass ? data.ipasEzpass : '',
       truckLicensePlate: data?.licensePlate
         ? data.licensePlate
@@ -446,7 +447,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  truckrBackFilter(filter: {
+  truckBackFilter(filter: {
     active: number;
     pageIndex: number;
     pageSize: number;
@@ -495,7 +496,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
-        this.truckrBackFilter(this.backFilterQuery);
+        this.truckBackFilter(this.backFilterQuery);
       } else {
         this.sendTruckData();
       }
@@ -512,6 +513,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...event,
             type: 'edit',
             disableButton: true,
+            tabSelected: this.selectedTab,
           }
         );
         break;

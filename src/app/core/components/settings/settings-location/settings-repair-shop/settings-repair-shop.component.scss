@@ -45,19 +45,18 @@
           color: $settings-white-dark !important;
           background: rgb(183, 183, 183, 0.2) !important;
         }
-      
       }
     }
     .repair-shop-template-svg {
       user-select: none;
-      svg{
+      svg {
         width: 18px;
         height: 18px;
-        path{
+        path {
           fill: #aaaaaa;
         }
-        &:hover{
-          path{
+        &:hover {
+          path {
             fill: $settings-gray-dark;
           }
         }
@@ -75,4 +74,7 @@
   &.no-line {
     margin-bottom: 0px !important;
   }
+}
+.copy-icon {
+  margin-left: 1px !important;
 }
