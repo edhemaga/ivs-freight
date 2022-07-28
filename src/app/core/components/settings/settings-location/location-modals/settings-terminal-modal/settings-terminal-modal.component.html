@@ -3,7 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="editData ? terminalForm.valid && isDirty : terminalForm.valid"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-tab-switcher
     (switchClicked)="tabChange($event)"

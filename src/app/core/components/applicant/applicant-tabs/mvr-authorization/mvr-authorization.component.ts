@@ -15,6 +15,8 @@ export class MvrAuthorizationComponent implements OnInit {
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;
 
+  public documents: any[] = [];
+
   public signature: any;
 
   constructor(private formBuilder: FormBuilder) {}
@@ -68,5 +70,9 @@ export class MvrAuthorizationComponent implements OnInit {
 
   public onSignatureAction(event: any): void {
     this.signature = event;
+  }
+
+  public onFilesAction(event: any): void {
+    this.documents = event.files;
   }
 }

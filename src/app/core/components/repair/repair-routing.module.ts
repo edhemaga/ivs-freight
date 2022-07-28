@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RepairCardComponent } from './repair-card/repair-card.component';
 import { RepairTableComponent } from './repair-table/repair-table.component';
 import { ShopRepairItemResolver } from './state/shop-details-state/shop-item.resolver';
-
+import { RepairShopMinimalResolver } from './state/shop-details-state/shop-minimal-list-state/shop-minimal.resolver';
 
 const routes: Routes = [
   {
@@ -19,6 +19,7 @@ const routes: Routes = [
       ),
     resolve: {
       shop: ShopRepairItemResolver,
+      repairShopMinimal: RepairShopMinimalResolver,
     },
     data: { title: 'Shop Repair Details' },
   },

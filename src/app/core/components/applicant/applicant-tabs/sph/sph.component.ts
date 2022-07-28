@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
+import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+import { SphModalComponent } from './sph-modal/sph-modal.component';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 
@@ -16,7 +20,10 @@ export class SphComponent implements OnInit {
 
   public signature: any;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private modalService: ModalService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -44,5 +51,16 @@ export class SphComponent implements OnInit {
 
   public onSignatureAction(event: any): void {
     this.signature = event;
+  }
+
+  public handleReviewSectionsClick(): void {
+    this.modalService.openModal(
+      SphModalComponent,
+      {
+        size: 'sph-applicant',
+      },
+      null,
+      'sph-applicant-backdrop'
+    );
   }
 }

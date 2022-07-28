@@ -4,7 +4,7 @@
   [editName]="modalName"
   [isModalValid]="editData ? medicalForm.valid && isDirty : medicalForm.valid"
   [specificCaseModalName]="true"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="medicalForm" class="form-container">
     <div class="row first-row last-row">
@@ -43,10 +43,10 @@
         [cardName]="'Documents'"
         [isCardOpen]="documents.length"
       >
-        <app-ta-modal-upload
+        <app-ta-upload-files
           [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-modal-upload>
+        ></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
 

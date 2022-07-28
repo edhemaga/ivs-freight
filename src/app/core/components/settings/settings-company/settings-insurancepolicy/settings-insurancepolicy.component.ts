@@ -1,4 +1,10 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
@@ -123,16 +129,15 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
       ],
     },
   };
- @Input() public insurancePolicyData: any;
- public copyPolicyName:boolean[]=[];
+  @Input() public insurancePolicyData: any;
+  public copyPolicyName: boolean[] = [];
+
   constructor(
     private settingsStoreService: SettingsStoreService,
-    private clipboar: Clipboard,
+    private clipboar: Clipboard
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {
-  }
-  ngOnInit(): void {  
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnInit(): void {}
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
@@ -141,11 +146,11 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
     return item.id;
   }
 
-   /* To copy any Text */
-  public copyText(val: any, index:number) {
-  
-   this.copyPolicyName[index]=true
+  /* To copy any Text */
+  public copyText(val: any, index: number) {
+    this.copyPolicyName[index] = true;
     this.clipboar.copy(val);
   }
+
   public onShowDetails() {}
 }

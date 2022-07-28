@@ -13,6 +13,7 @@ import {
 import { FormControl } from '@angular/forms';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+
 @Component({
   selector: 'app-settings-general',
   templateUrl: './settings-general.component.html',

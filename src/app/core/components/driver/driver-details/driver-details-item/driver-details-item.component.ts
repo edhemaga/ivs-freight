@@ -120,13 +120,13 @@ export class DriverDetailsItemComponent
         {
           title: 'Renew',
           name: 'renew',
-          svg: 'assets/svg/common/ic_plus.svg',
+          svg: 'assets/svg/common/ic_reload_renew.svg',
           show: !this.templateName ? true : false,
         },
         {
-          title: 'Deactivate',
+          title: 'Void',
           name: 'activate-item',
-          svg: 'assets/svg/common/ic_deactivate.svg',
+          svg: 'assets/svg/common/ic_cancel_violation.svg',
           show: !this.templateName ? true : false,
         },
         {
@@ -134,7 +134,7 @@ export class DriverDetailsItemComponent
           name: 'delete-item',
           type: 'driver',
           text: 'Are you sure you want to delete driver(s)?',
-          svg: 'assets/svg/common/ic_trash.svg',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
         },

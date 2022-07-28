@@ -15,12 +15,16 @@ export class FuelDetailsItemComponent implements OnInit {
   public dummyData: any;
   public tabsFuel: any[] = [];
   public selectedTab: number;
+  public fuelDropdown: any;
+  public storeDropdown: any;
   constructor() {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.dummyDataVeh();
     this.dummyDataRep();
+    this.fuelDropDown();
+    this.storeDropDown();
     this.noteControl.patchValue('Neki note fuel');
     this.tabsFuel = [
       {
@@ -84,6 +88,36 @@ export class FuelDetailsItemComponent implements OnInit {
       export: true,
     };
   }
+
+  public fuelDropDown() {
+    let fuelNames = [
+      { id: 1, name: 'PILOT TRAVEL STOP 1' },
+      { id: 2, name: 'PILOT TRAVEL STOP 2' },
+    ];
+    this.fuelDropdown = fuelNames.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        active: item.id,
+      };
+    });
+  }
+
+  public storeDropDown() {
+    let storeNames = [
+      { id: 1, name: 'Store 424', pinned: true },
+      { id: 2, name: 'Store 555', pinned: null },
+    ];
+    this.storeDropdown = storeNames.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        svg: item.pinned ? 'star' : null,
+        folder: 'common',
+        active: item.id,
+      };
+    });
+  }
   public dummyDataVeh() {
     this.dummyDataVehicle = [
       {
@@ -94,7 +128,7 @@ export class FuelDetailsItemComponent implements OnInit {
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/gray-icons/car-hauler.svg',
+        icon: 'assets/svg/truckassist-table/trailer/container.svg',
         key: '54',
         cost: '132,567,25',
       },
@@ -106,7 +140,7 @@ export class FuelDetailsItemComponent implements OnInit {
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/truckassist-table/trailer/gray-icons/reefer.svg',
+        icon: 'assets/svg/truckassist-table/trailer/dumper.svg',
         key: '42',
         cost: '132,567,25',
       },

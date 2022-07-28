@@ -42,7 +42,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public selectedAccountColor: any = {
     id: 1,
     name: 'No Color',
-    color: null,
+    code: null,
     count: 0,
   };
 
@@ -273,8 +273,10 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     if (data.action === 'cancel') {
       this.selectedAccountLabel = {
         name: data.label,
-        color: this.selectedAccountColor.name,
-        count: this.selectedAccountColor.count,
+        code: this.selectedAccountColor.code,
+        count: this.selectedAccountColor.count
+          ? this.selectedAccountColor.count
+          : null,
         createdAt: null,
         updatedAt: null,
       };
@@ -283,7 +285,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     this.selectedAccountLabel = {
       id: uuidv4(),
       name: data.label,
-      color: this.selectedAccountColor.name,
+      code: this.selectedAccountColor.code,
       count: this.selectedAccountColor.count,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),

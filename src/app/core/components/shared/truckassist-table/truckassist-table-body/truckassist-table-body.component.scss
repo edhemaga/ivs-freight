@@ -6,76 +6,6 @@ table {
   tbody {
     display: flex;
 
-    // Borders
-    .not-pined-border-left,
-    .not-pined-border-right {
-      width: 4px;
-      height: 32px;
-      background: white;
-    }
-
-    .not-pined-border-left {
-      background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
-    }
-
-    .not-pined-border-right {
-      background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
-    }
-
-    .not-pined-tr {
-      overflow-y: hidden;
-      overflow-x: scroll;
-
-      scrollbar-width: none !important; /* Firefox */
-
-      &::-webkit-scrollbar {
-        width: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: #cccccc;
-        border: 6px solid #eeeeee;
-        border-radius: 1px;
-      }
-
-      &::-webkit-scrollbar-track {
-        padding: 5px;
-        position: absolute;
-        right: -3rem;
-        top: -50rem;
-        background: transparent;
-      }
-    }
-
-    .actions {
-      tr {
-        width: 100%;
-      }
-    }
-
-    .pined-tr-container {
-      border-radius: 3px 0px 0px 3px;
-      padding: 2px 0px 2px 2px;
-    }
-
-    .not-pined-tr-container {
-      border-radius: 0px 0px 0px 0px;
-      padding: 2px 0px 2px 0px;
-    }
-
-    .actions-tr-container {
-      border-radius: 0px 3px 3px 0px;
-      padding: 2px 2px 2px 0px;
-
-      .columns-container {
-        justify-content: flex-end;
-
-        .td-content {
-          justify-content: center;
-        }
-      }
-    }
-
     tr {
       width: fit-content;
       height: 32px;
@@ -85,7 +15,6 @@ table {
       .columns-container {
         width: 100%;
         height: 100%;
-        border-radius: 2px;
         display: flex;
 
         td {
@@ -170,6 +99,51 @@ table {
                   color: #ffffff;
                   background: #ffffff20;
                 }
+              }
+            }
+
+            // COMPACT TEXT
+            .compact-text-container {
+              width: 100%;
+              height: 28px;
+              padding-top: 1px;
+              display: flex;
+              overflow: hidden;
+
+              .title-values-container {
+                width: fit-content;
+                height: fit-content;
+
+                .title-compact-text,
+                .values-compact-text {
+                  width: fit-content;
+                  align-self: center;
+                  overflow: hidden;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                }
+
+                .title-compact-text {
+                  height: 10px;
+                  color: #919191;
+                  font-size: 10px;
+                  font-weight: bold;
+                  line-height: 7px;
+                  margin-bottom: 2px;
+                }
+
+                .values-compact-text {
+                  height: 14px;
+                  line-height: 14px;
+                  font-size: 14px;
+                  font-weight: 400;
+                  color: #6c6c6c;
+                  max-width: 60px;
+                }
+              }
+
+              .title-values-margin {
+                margin-right: 12px;
               }
             }
 
@@ -260,15 +234,15 @@ table {
               cursor: pointer;
 
               &:hover {
-                transform: scale(1.4);
+                transform: scale(1.8);
                 transition: 0.2s;
               }
 
-              .avatar-img{
+              .avatar-img {
                 width: 18px;
                 height: 20px;
-                
-                img{
+
+                img {
                   display: flex;
                   width: 100%;
                   height: 100%;
@@ -569,37 +543,83 @@ table {
               }
             }
 
-            // COLOR
-            .table-color {
-              width: 22px;
-              height: 22px;
-              border-radius: 3px;
+            // COLOR COLUMN
+            .color-icon {
+              display: flex;
             }
 
-            .add-box-shadow {
-              box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+            .color-name {
+              width: fit-content;
+              color: #6c6c6c;
+              margin-left: 4px;
+              font-size: 14px;
+              font-weight: 400;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
             }
 
             // SVG COLUMN
             .truckassist-icon {
-              cursor: pointer;
               svg-icon {
-                svg {
-                  path {
-                    fill: #dadada;
-                  }
-                  circle {
-                    fill: #dadada;
+                display: flex;
+              }
+
+              &:hover {
+                // TRUCKS
+                .ic_truck_semi-truck {
+                  svg {
+                    path {
+                      fill: #97d568;
+                    }
                   }
                 }
-              }
-            }
 
-            .side-kit-icon {
-              svg-icon {
-                svg {
-                  rect {
-                    fill: white;
+                .ic_truck_semi-wSleeper {
+                  svg {
+                    path {
+                      fill: #ffb74d;
+                    }
+                  }
+                }
+
+                .ic_truck_box-truck {
+                  svg {
+                    path {
+                      fill: #e57373;
+                    }
+                  }
+                }
+
+                .ic_truck_cargo-van {
+                  svg {
+                    path {
+                      fill: #68c3ff;
+                    }
+                  }
+                }
+
+                .ic_truck_tow-truck {
+                  svg {
+                    path {
+                      fill: #ba68c8;
+                    }
+                  }
+                }
+
+                .ic_truck_car-hauler {
+                  svg {
+                    path {
+                      fill: #59a5a5;
+                    }
+                  }
+                }
+
+                .ic_truck_spotter {
+                  svg {
+                    path {
+                      fill: #415fc1;
+                    }
                   }
                 }
               }
@@ -1001,6 +1021,119 @@ table {
         }
       }
     }
+
+    // Hover Row
+    .regular-columns-hover {
+      .border-inactive {
+        border-right: 4px solid #f7f7f7 !important;
+        border-left: 4px solid #f7f7f7 !important;
+      }
+
+      .columns-container {
+        background: #f7f7f7 !important;
+
+        .table-text,
+        .table-name-link,
+        .color-name,
+        .table-progress-text {
+          color: #3c3c3c !important;
+        }
+
+        .table-state {
+          background: #ffffff !important;
+        }
+
+        .table-checkbox-label {
+          background-color: #aaaaaa !important;
+        }
+      }
+    }
+
+    // Selected Row
+    .selected-row {
+      .columns-container {
+        background: #e5e5e5;
+      }
+
+      .border-inactive {
+        border-right: 4px solid #e5e5e5;
+        border-left: 4px solid #e5e5e5;
+      }
+    }
+
+    // Borders
+    .not-pined-border-left,
+    .not-pined-border-right {
+      width: 4px;
+      height: 32px;
+      background: white;
+    }
+
+    .not-pined-border-left {
+      background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
+    }
+
+    .not-pined-border-right {
+      background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
+    }
+
+    .not-pined-tr {
+      overflow-y: hidden;
+      overflow-x: scroll;
+
+      scrollbar-width: none !important; /* Firefox */
+
+      &::-webkit-scrollbar {
+        width: 3px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: #cccccc;
+        border: 6px solid #eeeeee;
+        border-radius: 1px;
+      }
+
+      &::-webkit-scrollbar-track {
+        padding: 5px;
+        position: absolute;
+        right: -3rem;
+        top: -50rem;
+        background: transparent;
+      }
+    }
+
+    .actions {
+      tr {
+        width: 100%;
+      }
+    }
+
+    .pined-tr-container {
+      border-radius: 3px 0px 0px 3px;
+      padding: 2px 0px 2px 2px;
+
+      .columns-container {
+        border-radius: 3px 0px 0px 3px;
+      }
+    }
+
+    .not-pined-tr-container {
+      border-radius: 0px 0px 0px 0px;
+      padding: 2px 0px 2px 0px;
+    }
+
+    .actions-tr-container {
+      border-radius: 0px 3px 3px 0px;
+      padding: 2px 2px 2px 0px;
+      .columns-container {
+        justify-content: flex-end;
+        border-radius: 0px 3px 3px 0px;
+
+        .td-content {
+          justify-content: center;
+        }
+      }
+    }
   }
 }
 
@@ -1097,17 +1230,6 @@ table {
 }
 
 // NG CLASS
-.regular-columns-hover {
-  .border-inactive {
-    border-right: 4px solid #f7f7f7 !important;
-    border-left: 4px solid #f7f7f7 !important;
-  }
-
-  .columns-container {
-    background: #f7f7f7 !important;
-  }
-}
-
 .border-inactive {
   border-right: 4px solid white;
   border-left: 4px solid white;

@@ -23,7 +23,7 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
   public reviewsRepair: any = [];
   constructor() {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes.shipper.firstChange && changes.shipper.currentValue) {
+    if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
       this.shipper = changes.shipper.currentValue;
 
       this.shipperContacts =
@@ -34,12 +34,7 @@ export class ShipperDetailsSingleComponent implements OnInit, OnChanges {
       this.getReviews(changes.shipper.currentValue[0].data);
     }
   }
-  ngOnInit(): void {
-    this.shipperLikes = this.shipper[0].data.upRatingCount;
-    this.shipperDislike = this.shipper[0].data.downRatingCount;
-    this.shipperContacts = this.shipper[0].data.shipperContacts;
-    this.getReviews(this.shipper[0].data);
-  }
+  ngOnInit(): void {}
 
   /**Function return id */
   public identity(index: number, item: any): number {

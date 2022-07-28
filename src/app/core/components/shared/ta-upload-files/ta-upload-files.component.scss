@@ -1,0 +1,66 @@
+.ta-card-body {
+  overflow: visible !important;
+}
+.ta-upload {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 194px;
+  align-items: center;
+
+  .ta-upload-dropzone {
+    height: 194px;
+  }
+
+  &-small {
+    grid-template-columns: 168px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-medium-file {
+    grid-template-columns: 168px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-medium-files {
+    grid-template-columns: 348px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-file {
+    grid-template-columns: 168px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-twofiles {
+    grid-template-columns: 348px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &-large-threefiles {
+    grid-template-columns: 528px 1fr;
+    grid-template-rows: 194px;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &.driver-details-pdf {
+    grid-template-columns: 1fr;
+    grid-template-rows: 343px;
+  }
+}

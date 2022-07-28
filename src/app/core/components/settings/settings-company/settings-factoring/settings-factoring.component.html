@@ -23,27 +23,33 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      [cardNameCommon]="factoringData.name"
+      [cardNameCommon]="factoringData?.name"
       [haveHeaderText]="true"
       [haveDots]="false"
       [hasFooter]="false"
-      *ngIf="factoringData.name"
+      *ngIf="factoringData?.name"
     >
       <div class="settings-body-items">
-        <div *ngIf="factoringData.phone" class="single-item">
-          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <span>{{ factoringData.phone }}</span>
+        <div class="single-item">
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.phone"> </app-ta-copy>
         </div>
-        <div *ngIf="factoringData.email" class="single-item">
-          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-          <span>{{ factoringData.email }}</span>
+        <div class="single-item">
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.email"> </app-ta-copy>
         </div>
-        <div *ngIf="factoringData.address" class="single-item">
+        <div class="single-item">
           <svg-icon
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span class="single-item-address">{{
-            factoringData.address.address
+            factoringData?.address?.address
           }}</span>
         </div>
       </div>
@@ -61,7 +67,7 @@
         >
           <div class="notice-template-item">
             <div class="notice-item-value">
-              {{ factoringData.noticeOfAssigment }}
+              {{ factoringData?.noticeOfAssigment }}
             </div>
           </div>
           <!-- <div class="notice-template-item">

@@ -36,6 +36,8 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() public optionsId: number;
   @Input() hasDateNav: boolean = true;
   @Input() counterViolation: number;
+  @Input() hasArrowDown: boolean;
+  @Input() totalCost: any;
   public up: boolean = false;
   public down: boolean = false;
   constructor(private routes: ActivatedRoute) {}

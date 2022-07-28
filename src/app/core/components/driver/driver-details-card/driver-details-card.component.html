@@ -23,89 +23,27 @@
           ></app-profile-images>
         </div>
         <div class="driver-information">
-          <div class="information-item" [ngClass]="{ copied: copiedSSN }">
+          <div class="information-item">
             <svg-icon
               class="information-svg"
               src="assets/svg/common/ic_ssn.svg"
             ></svg-icon>
-            <p class="information-value ssn">
-              {{ driver.ssn | formatSsnP }}
-            </p>
-
-            <span
-              [tooltipBackground]="copiedSSN ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="copiedSSN ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(driver.ssn, 'ssn')"
-            >
-              <svg-icon
-                class="card-icon"
-                id="card-icon"
-                src="assets/svg/common/ic_copy.svg"
-                (mouseleave)="copiedSSN = false"
-              ></svg-icon>
-            </span>
-            <div *ngIf="driver.status === 0" class="inactive-wrapper">
-              Inactive
-            </div>
+            <app-ta-copy [textFontSize]="'18px'" [copyValue]="driver?.ssn">
+            </app-ta-copy>
           </div>
-          <div
-            class="information-item"
-            [ngClass]="{ copied: copiedDriverPhone }"
-          >
+          <div class="information-item">
             <svg-icon
               class="information-svg"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-            <p class="information-value">
-              {{ driver.phone | formatPhoneP }}
-            </p>
-            <span
-              [tooltipBackground]="copiedDriverPhone ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="copiedDriverPhone ? 'Copied' : 'Copy'"
-              position="top"
-              [autoClose]="false"
-              class="tooltip-copy"
-              (click)="copyText(driver.phone, 'driver-phone')"
-            >
-              <svg-icon
-                class="card-icon"
-                (mouseleave)="copiedDriverPhone = false"
-                src="assets/svg/common/ic_copy.svg"
-              >
-              </svg-icon>
-            </span>
+            <app-ta-copy [copyValue]="driver?.phone"> </app-ta-copy>
           </div>
-          <div
-            class="information-item"
-            [ngClass]="{ copied: copiedDriverEmail }"
-          >
+          <div class="information-item">
             <svg-icon
               class="information-svg"
               src="assets/svg/common/ic_email.svg"
             ></svg-icon>
-            <p class="information-value information-email-value">
-              {{ driver.email }}
-            </p>
-            <span
-              [tooltipBackground]="copiedDriverEmail ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="copiedDriverEmail ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(driver.email, 'driver-email')"
-            >
-              <svg-icon
-                class="card-icon"
-                src="assets/svg/common/ic_copy.svg"
-                (mouseleave)="copiedDriverEmail = false"
-              ></svg-icon>
-            </span>
+            <app-ta-copy [copyValue]="driver?.email"> </app-ta-copy>
           </div>
         </div>
       </div>
@@ -448,24 +386,8 @@
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">EIN</div>
-            <div class="purchase-icon-copy" [ngClass]="{ copied: copiedEin }">
-              <div class="purchase-template-item-value">
-                {{ driver.owner.ssnEin | formatEinP }}
-              </div>
-              <span
-                [tooltipBackground]="copiedEin ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [autoClose]="false"
-                [mainTooltip]="copiedEin ? 'Copied' : 'Copy'"
-                position="top"
-              >
-                <svg-icon
-                  (click)="copyText(driver.owner.ssnEin, 'ein')"
-                  class="card-icon"
-                  (mouseleave)="copiedEin = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
+            <div class="purchase-icon-copy">
+              <app-ta-copy [copyValue]="driver.owner.ssnEin"> </app-ta-copy>
             </div>
           </div>
         </div>
@@ -635,79 +557,16 @@
         <div class="purchase-template">
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Routing</div>
-            <div
-              class="purchase-icon-copy"
-              [ngClass]="{ copied: copiedBankRouting }"
-            >
-              <div class="purchase-template-item-value">
-                {{ driver?.routing ? driver?.routing : "No routing" }}
-              </div>
-              <span
-                [tooltipBackground]="copiedBankRouting ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedBankRouting ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-ein"
-                [autoClose]="false"
-                (click)="copyText(driver?.routing, 'bankRouting')"
-              >
-                <svg-icon
-                  (mouseleave)="copiedBankRouting = false"
-                  class="card-icon"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
+            <div class="purchase-icon-copy">
+              <app-ta-copy [copyValue]="driver?.routing"> </app-ta-copy>
             </div>
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Account</div>
             <div
               class="purchase-icon-copy"
-              [ngClass]="{ copied: copiedBankAccount }"
             >
-              <div class="purchase-template-item-value">
-                {{
-                  driver.account | hideAccount: "account":isAccountVisibleDriver
-                }}
-              </div>
-              <span
-                *ngIf="driver.account !== null"
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                [autoClose]="false"
-                [mainTooltip]="
-                  isAccountVisibleDriver
-                    ? 'Hide Account Number'
-                    : 'Show Account Number'
-                "
-                position="top"
-                (click)="isAccountVisibleDriver = !isAccountVisibleDriver"
-              >
-                <svg-icon
-                  class="hidden-svg-eye"
-                  src="{{
-                    isAccountVisibleDriver
-                      ? 'assets/svg/common/ic_eye-visible.svg'
-                      : 'assets/svg/common/ic_eye-hidden.svg'
-                  }}"
-                ></svg-icon>
-              </span>
-              <span
-                *ngIf="driver.account !== null"
-                [tooltipBackground]="copiedBankAccount ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedBankAccount ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-ein"
-                [autoClose]="false"
-                (click)="copyText(driver.account, 'bankAcc')"
-              >
-                <svg-icon
-                  (mouseleave)="copiedBankAccount = false"
-                  class="card-icon"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
+              <app-ta-copy [hasEye]="true" (showHide)="isAccountVisibleDriver=!isAccountVisibleDriver" [copyValue]="driver?.account"> </app-ta-copy>
             </div>
           </div>
         </div>
@@ -748,24 +607,9 @@
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Phone</div>
-            <div class="purchase-icon-copy" [ngClass]="{ copied: copiedPhone }">
-              <div class="purchase-template-item-value">
-                {{ driver.emergencyContactPhone | formatPhoneP }}
-              </div>
-              <span
-                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
-                position="top"
-                [autoClose]="false"
-                (click)="copyText(driver.emergencyContactPhone, 'phone')"
-              >
-                <svg-icon
-                  (mouseleave)="copiedPhone = false"
-                  class="card-icon"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
+            <div class="purchase-icon-copy">
+              
+              <app-ta-copy [copyValue]="driver.emergencyContactPhone"> </app-ta-copy>
             </div>
           </div>
         </div>
@@ -938,33 +782,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <!-- <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files> -->
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1042,33 +875,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1160,33 +982,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">
@@ -1243,7 +1054,7 @@
                     <div class="card-details-progress-container">
                       <app-truckassist-progress-expiration
                         [startDate]="mvr?.issueDate | formatDateP"
-                        [expireDate]="mvr?.issueDate | formatDateP"
+                        [expireDate]="mvr?.expDate | formatDateP"
                         [expiresSettings]="'details'"
                       >
                       </app-truckassist-progress-expiration>
@@ -1274,33 +1085,22 @@
                     </div>
                   </div>
                   <div class="card-pdf">
-                    <app-ta-files
+                    <app-ta-upload-files
                       [files]="[
                         {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 0',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         },
                         {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
-                          url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                          extension: 'pdf'
-                        },
-                        {
-                          fileName: 'truckassist0',
+                          name: 'truckassist - 1',
                           url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
                           extension: 'pdf'
                         }
                       ]"
-                      [fileType]="'multiple-pdf'"
-                      [customClassName]="'driver-details-multiple-pdf'"
-                    >
-                    </app-ta-files>
+                      [customClassName]="'driver-details-pdf'"
+                      [hasCarouselBottomTabs]="true"
+                    ></app-ta-upload-files>
                   </div>
                   <div class="divider"></div>
                   <div class="card-note">

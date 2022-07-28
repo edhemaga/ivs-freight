@@ -140,6 +140,16 @@
       font-weight: 600;
       color: #6c6c6c;
       margin-right: 10px;
+
+      &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
     &-general {
@@ -362,7 +372,7 @@
 //---------------- Broker Billing ----------------
 .broker-billing {
   display: grid;
-  grid-template-columns: 1fr 214px 194px;
+  grid-template-columns: 1fr 214px 176px;
   -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;

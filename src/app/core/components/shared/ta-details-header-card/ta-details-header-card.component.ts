@@ -23,6 +23,7 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() public tooltipPrevious: string = '';
   @Input() public searchName: string = '';
   @Input() public options: any = [];
+  @Input() public optionsSecondInput: any = [];
   @Input() public optionsDrop: any = [];
   @Input() public statusInactive: number = 1;
   @Input() public haveTwoInput: boolean;
@@ -31,12 +32,14 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() public optionsId: number;
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
+  @Output() selectValueStore = new EventEmitter<string>();
   @Output() changeEvent = new EventEmitter<string>();
   @Input() public dateChecked: string = '';
   @Input() public lastEdit: string = '';
   public inputFormControl: FormControl = new FormControl();
 
   public selectedDropdown: boolean = false;
+  public selectedDropdownSecond: boolean = false;
 
   constructor() {}
 
@@ -52,6 +55,18 @@ export class TaDetailsHeaderCardComponent implements OnInit {
     }
   }
 
+  public onPickSecondInput(): void {
+    if (this.optionsSecondInput.length > 1) {
+      this.selectedDropdownSecond = true;
+    }
+  }
+
+  public onSelectItem(value: any) {
+    if (this.optionsSecondInput.length > 1) {
+      this.selectedDropdownSecond = !this.selectedDropdownSecond;
+      this.selectValueStore.emit(value);
+    }
+  }
   public onSelecItem(value: any): void {
     if (this.options.length > 1) {
       this.selectedDropdown = !this.selectedDropdown;

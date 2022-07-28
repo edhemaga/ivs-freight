@@ -42,12 +42,14 @@ export class TruckassistTableBodyComponent
   hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
-  showMoreContainerWidth: number = 0;
+  showMoreContainerWidth: number = 220;
   dropContent: any[] = [];
   tooltip: any;
   dropDownActive: number = -1;
   progressData: any[] = [];
   checkForScrollTimeout: any;
+  viewDataEmpty: number;
+  viewDataTimeOut: any;
 
   constructor(
     private router: Router,
@@ -55,6 +57,8 @@ export class TruckassistTableBodyComponent
     private changeDetectorRef: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
+    this.viewDataEmpty = this.viewData.length;
+
     // Get Selected Tab Data
     this.getSelectedTabTableData();
 
@@ -116,11 +120,17 @@ export class TruckassistTableBodyComponent
 
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
+      clearTimeout(this.viewDataTimeOut);
+      
       this.viewData = changes.viewData.currentValue;
-    }
 
-    if (!changes?.viewData?.firstChange && changes?.viewData) {
-      this.viewData = changes.viewData.currentValue;
+      if (!this.viewDataEmpty && changes.viewData.currentValue) {
+        this.viewDataTimeOut = setTimeout(() => {
+          this.getNotPinedMaxWidth();
+        }, 10);
+      }
+
+      this.viewDataEmpty = this.viewData.length;
     }
 
     if (
@@ -190,8 +200,6 @@ export class TruckassistTableBodyComponent
   }
 
   checkForScroll() {
-    clearTimeout(this.checkForScrollTimeout);
-
     const div = document.getElementById('scroll-container');
     const pinedColumns = document.querySelector('.pined-tr');
     const actionColumns = document.querySelector('.actions');

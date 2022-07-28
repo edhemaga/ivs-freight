@@ -47,7 +47,7 @@
           (click)="
             onAction({
               modalName: 'basic',
-              type: companyData?.divisions.length
+              type: companyData?.divisions?.length
                 ? 'edit-company'
                 : 'edit-division',
               company: companyData
@@ -102,9 +102,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_phone.svg"
           ></svg-icon>
-          <p class="basic-data-value">
-            {{ companyData?.phone | formatPhoneP }}
-          </p>
+          <app-ta-copy [copyValue]="companyData?.phone"> </app-ta-copy>
         </div>
 
         <div class="basic-data">
@@ -112,7 +110,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_email.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.email }}</p>
+          <app-ta-copy [copyValue]="companyData?.email"> </app-ta-copy>
         </div>
 
         <div class="basic-data">
@@ -120,21 +118,21 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_fax.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.fax | formatPhoneP }}</p>
+          <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
         </div>
         <div class="basic-data">
           <svg-icon
             class="basic-data-svg"
             src="assets/svg/common/ic_web.svg"
           ></svg-icon>
-          <p class="basic-data-value">{{ companyData?.webURL }}</p>
+          <p class="basic-data-value">{{ companyData?.webUrl }}</p>
         </div>
       </div>
       <!-- Bottom -->
       <div class="basic-bottom">
         <div class="basic-bottom-card">
           <p class="bottom-card-left">USDOT</p>
-          <p class="bottom-card-right">{{ companyData?.usdot }}</p>
+          <p class="bottom-card-right">{{ companyData?.usDot }}</p>
         </div>
         <div class="basic-bottom-card">
           <p class="bottom-card-left">EIN</p>
@@ -200,8 +198,8 @@
         [isCardOpen]="true"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
-        *ngIf="companyData?.departmentContacts.length"
-        [hasCounter]="companyData.departmentContacts.length"
+        *ngIf="companyData?.departmentContacts?.length"
+        [hasCounter]="companyData?.departmentContacts?.length"
       >
         <div class="department-template-data">
           <div class="department-template-item">
@@ -224,10 +222,13 @@
             trackBy: identity
           "
         >
-          <span class="body-value-department">Department</span>
-          <span class="body-value">{{ department.phone | formatPhoneP }}</span>
+          <span class="body-value-department">{{
+            department.department.name
+          }}</span>
+          <app-ta-copy [copyValue]="department?.phone"> </app-ta-copy>
+
           <span class="body-value">{{ department.extensionPhone }}</span>
-          <span class="body-value-email">{{ department.email }}</span>
+          <app-ta-copy [copyValue]="department?.email"> </app-ta-copy>
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
@@ -235,7 +236,7 @@
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
         [animationsDisabled]="false"
-        *ngIf="companyData?.bankAccounts.length"
+        *ngIf="companyData?.bankAccounts?.length"
       >
         <div
           class="additional-template-data"
@@ -250,42 +251,16 @@
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Routing</p>
-
-            <p class="additional-template-value">
-              <span> {{ bank?.routing }}</span>
-            </p>
+            <app-ta-copy [copyValue]="bank?.routing"> </app-ta-copy>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Account</p>
-            <div class="show-hide">
-              <p class="additional-template-value">
-                <span>
-                  {{
-                    bank?.account | hidePassword: "account":isAccountVisible
-                  }}</span
-                >
-              </p>
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                [mainTooltip]="
-                  isAccountVisible
-                    ? 'Hide Account Number'
-                    : 'Show Account Number'
-                "
-                position="top"
-                (click)="isAccountVisible = !isAccountVisible"
-              >
-                <svg-icon
-                  class="hidden-svg-eye"
-                  src="{{
-                    isAccountVisible
-                      ? 'assets/svg/common/ic_eye-visible.svg'
-                      : 'assets/svg/common/ic_eye-hidden.svg'
-                  }}"
-                ></svg-icon>
-              </span>
-            </div>
+            <app-ta-copy
+              [hasEye]="true"
+              (showHide)="isAccountVisible = !isAccountVisible"
+              [copyValue]="bank?.account"
+            >
+            </app-ta-copy>
           </div>
         </div>
       </app-ta-custom-card>
@@ -317,7 +292,7 @@
           *ngFor="let bankC of companyData?.bankCards; trackBy: identity"
         >
           <div class="bank-card-template-item-body">
-            <p class="item-body-nick-name">{{ bankC.nickname }}</p>
+            <p class="item-body-nick-name">{{ bankC?.nickname }}</p>
             <div class="item-body-icon-text">
               <svg-icon
                 class="svg-bank"
@@ -325,13 +300,13 @@
               ></svg-icon>
 
               <p class="item-body-cvc">
-                {{ bankC.card | hidePassword: "card" }}
+                {{ bankC?.card | hidePassword: "card" }}
               </p>
             </div>
 
-            <p class="item-body-cvc">{{ bankC.cvc | hidePassword: "cvc" }}</p>
+            <p class="item-body-cvc">{{ bankC?.cvc | hidePassword: "cvc" }}</p>
             <p class="item-body-nick-name">
-              {{ bankC.expireDate | formatDateP: "short-format" }}
+              {{ bankC?.expireDate | formatDateP: "short-format" }}
             </p>
           </div>
         </div>
@@ -346,9 +321,9 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Load Format</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.prefix }}
-              {{ companyData?.additionalInfo.starting }}
-              {{ companyData?.additionalInfo.sufix }}
+              {{ companyData?.additionalInfo?.prefix }}
+              {{ companyData?.additionalInfo?.starting }}
+              {{ companyData?.additionalInfo?.sufix }}
             </p>
           </div>
 
@@ -356,7 +331,7 @@
             <p class="additional-template-value-name">Pref. Load Type</p>
             <p class="additional-template-value">
               {{
-                companyData?.additionalInfo.preferredLoadType == 0
+                companyData?.additionalInfo?.preferredLoadType == 0
                   ? "FTL"
                   : "LTL"
               }}
@@ -366,28 +341,28 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Auto Invoicing</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.autoInvoicing ? "On" : "Off" }}
+              {{ companyData?.additionalInfo?.autoInvoicing ? "On" : "Off" }}
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.customerPayTerm }} days
+              {{ companyData?.additionalInfo?.customerPayTerm }} days
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
-              ${{ companyData?.additionalInfo.customerCredit }}
+              ${{ companyData?.additionalInfo?.customerCredit }}
             </p>
           </div>
 
           <div class="additional-template-item">
             <p class="additional-template-value-name">Factory by Default</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.factorByDefault ? "On" : "Off" }}
+              {{ companyData?.additionalInfo?.factorByDefault ? "On" : "Off" }}
             </p>
           </div>
         </div>
@@ -402,18 +377,18 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">MVR</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.mvrMonths }}
+              {{ companyData?.additionalInfo?.mvrMonths }}
               {{
-                companyData?.additionalInfo.mvrMonths > 1 ? "months" : "month"
+                companyData?.additionalInfo?.mvrMonths > 1 ? "months" : "month"
               }}
             </p>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Truck Inspection</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.truckInspectionMonths }}
+              {{ companyData?.additionalInfo?.truckInspectionMonths }}
               {{
-                companyData?.additionalInfo.truckInspectionMonths > 1
+                companyData?.additionalInfo?.truckInspectionMonths > 1
                   ? "months"
                   : "month"
               }}
@@ -422,9 +397,9 @@
           <div class="additional-template-item">
             <p class="additional-template-value-name">Trailer Inspection</p>
             <p class="additional-template-value">
-              {{ companyData?.additionalInfo.trailerInspectionMonths }}
+              {{ companyData?.additionalInfo?.trailerInspectionMonths }}
               {{
-                companyData?.additionalInfo.trailerInspectionMonths > 1
+                companyData?.additionalInfo?.trailerInspectionMonths > 1
                   ? "months"
                   : "month"
               }}

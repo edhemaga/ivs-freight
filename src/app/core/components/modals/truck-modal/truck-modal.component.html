@@ -3,7 +3,7 @@
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="editData ? truckForm.valid && isDirty : truckForm.valid"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <app-ta-tab-switch
     [tabs]="tabs"
@@ -41,7 +41,8 @@
                 label: 'Type',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-8'
+                dropdownWidthClass: 'w-col-8',
+                customClass: 'truck-trailer-dropdown'
               }"
               [options]="truckType"
               [activeItem]="selectedTruckType"

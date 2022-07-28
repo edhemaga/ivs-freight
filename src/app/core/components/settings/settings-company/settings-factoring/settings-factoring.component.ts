@@ -1,7 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 import { CompanyResponse } from 'appcoretruckassist';
-
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
@@ -10,13 +9,15 @@ import { CompanyResponse } from 'appcoretruckassist';
 export class SettingsFactoringComponent implements OnInit {
   @Input() public factoringData: any;
   public changeDefaultNotice: boolean;
+  public factoringPhone: boolean;
+  public factoringEmail: boolean;
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit(): void {
     this.getFactoringData(this.factoringData);
   }
   public getFactoringData(data: CompanyResponse) {
-    if (this.factoringData.customNoticeOfAssigment) {
+    if (data?.factoringCompany?.customNoticeOfAssigment) {
       this.changeDefaultNotice = true;
     } else {
       this.changeDefaultNotice = false;

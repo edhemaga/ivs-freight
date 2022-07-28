@@ -10,7 +10,13 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 export class SsnCardComponent implements OnInit {
   public selectedMode: string = SelectedMode.APPLICANT;
 
+  public documents: any[] = [];
+
   constructor() {}
 
   ngOnInit(): void {}
+
+  public onFilesAction(event: any): void {
+    this.documents = event.files;
+  }
 }

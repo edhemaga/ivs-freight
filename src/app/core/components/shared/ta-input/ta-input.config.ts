@@ -23,14 +23,14 @@ export interface ITaInput {
   // 'datetimeclass' -> date/time pickers
   // 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
-  autoFocus?: boolean; // focus first input in form,
+  autoFocus?: boolean;
   hideClear?: boolean;
   hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
-  thousandSeparator?: boolean; // type of input must be string
+  thousandSeparator?: boolean; // type of input must be 'text'
   commands?: {
     active?: boolean;
-    type?: string; // 'increment-decrement', 'confirm-cancel'
+    type?: string; // examples:  'increment-decrement', 'confirm-cancel'
     firstCommand?: {
       popup?: {
         name?: string;
@@ -65,4 +65,6 @@ export interface ITaInput {
   blueInputColor?: boolean; // some inputs has blue color on focus out
   // Specific label input
   placeholderInsteadOfLabel?: boolean;
+  // Address
+  onlyCityAndZipAddress?: boolean;
 }
