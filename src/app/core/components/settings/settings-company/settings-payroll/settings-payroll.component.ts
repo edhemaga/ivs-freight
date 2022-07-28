@@ -30,6 +30,8 @@ export class SettingsPayrollComponent implements OnInit, OnChanges {
     return item.id;
   }
   public onAction(modal: { modalName: string; type: string; company?: any }) {
+    console.log('ON ACTION PAYROLL DATA');
+    console.log(modal);
     this.settingsStoreService.onModalAction(modal);
   }
 }

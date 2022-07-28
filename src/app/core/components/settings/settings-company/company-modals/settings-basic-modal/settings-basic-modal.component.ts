@@ -203,29 +203,36 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    this.checkForCompany();
     this.getModalDropdowns();
     this.validateMiles();
+  }
 
+  private checkForCompany() {
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.createDivisionForm();
+
+      if (this.editData.type === 'new-division') {
+      } else {
+        this.editCompanyDivision();
+      }
+    } else {
+      this.createForm();
+    }
+
+    if (this.editData.type === 'edit-company') {
+      const timeout = setTimeout(() => {
+        this.editCompany();
+        clearTimeout(timeout);
+      }, 150);
     }
 
     if (this.editData?.type === 'payroll-tab') {
       this.tabChange({ id: 3 });
-    }
-
-    if (this.editData.type === 'new-division') {
-    } else {
-      if (this.editData.type === 'edit-company') {
-        const timeout = setTimeout(() => {
-          this.editCompany();
-          clearTimeout(timeout);
-        }, 150);
-      } else {
-        // Edit Division
-        this.editCompanyDivision();
-      }
+      const timeout = setTimeout(() => {
+        this.editCompany();
+        clearTimeout(timeout);
+      }, 150);
     }
   }
 

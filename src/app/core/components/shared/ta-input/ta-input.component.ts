@@ -696,7 +696,7 @@ export class TaInputComponent
         this.disableMultiplePoints(event);
 
         // Check for max length
-        if (this.getSuperControl.value?.includes('.')) {
+        if (this.getSuperControl.value?.toString().includes('.')) {
           this.inputConfig.maxLength = 4;
         } else {
           this.inputConfig.maxLength = 2;
@@ -843,7 +843,7 @@ export class TaInputComponent
         return false;
       }
 
-      if (this.getSuperControl.value?.includes('.')) {
+      if (this.getSuperControl.value?.toString().includes('.')) {
         event.preventDefault();
         return false;
       }
