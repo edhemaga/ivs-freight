@@ -12,6 +12,7 @@
 
 
 export interface EditMvrCommand { 
+    driverId: number;
     id?: number;
     issueDate?: string;
     note?: string | null;

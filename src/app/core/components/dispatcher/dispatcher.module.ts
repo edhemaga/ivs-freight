@@ -18,7 +18,7 @@ import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboa
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 
 export function playerFactory() {
-  return player;
+  return import('lottie-web');
 }
 
 @NgModule({

@@ -60,13 +60,13 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.mvrForm);
+    // this.formService.checkFormChange(this.mvrForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   private getDriverById(id: number) {
@@ -116,8 +116,10 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private updateMVR() {
+    console.log('updateMVR editData', this.editData);
     const { issueDate } = this.mvrForm.value;
     const newData: EditMvrCommand = {
+      driverId: this.editData.id,
       id: this.editData.file_id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),

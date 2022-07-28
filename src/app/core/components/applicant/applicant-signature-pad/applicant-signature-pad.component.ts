@@ -46,12 +46,6 @@ export class ApplicantSignaturePadComponent implements AfterViewInit {
     console.log('Start drawing', event);
   }
 
-  public drawComplete(event: MouseEvent | Touch): void {
-    this.signature = this.signaturePad.toDataURL();
-
-    this.signatureEmitter.emit(this.signature);
-  }
-
   public onClearDrawing(): void {
     this.signaturePad.clear();
 
@@ -70,5 +64,11 @@ export class ApplicantSignaturePadComponent implements AfterViewInit {
 
       this.signatureEmitter.emit(this.signature);
     }
+  }
+
+  public onConfirmDrawing(): void {
+    this.signature = this.signaturePad.toDataURL();
+
+    this.signatureEmitter.emit(this.signature);
   }
 }

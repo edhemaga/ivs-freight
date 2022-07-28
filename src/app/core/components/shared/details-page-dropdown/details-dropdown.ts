@@ -45,6 +45,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
 
   toggleDropdown(tooltip: any) {
     this.tooltip = tooltip;
+    console.log('toggleDropdown tooltip', this.tooltip);
     if (tooltip.isOpen()) {
       tooltip.close();
     } else {
@@ -64,6 +65,8 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   }
 
   onAction(action: any) {
+console.log('dropdown action', action);
+
     this.dropDownActions.emit({
       id: this.id,
       type: action.name,

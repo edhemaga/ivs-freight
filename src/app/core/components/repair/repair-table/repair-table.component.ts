@@ -1,6 +1,7 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 import {
   getRepairsShopColumnDefinition,
   getRepairTrailerColumnDefinition,
@@ -10,24 +11,41 @@ import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
+import { ShopQuery } from '../state/shop-state/shop.query';
+import { ShopState } from '../state/shop-state/shop.store';
 
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
-  styleUrls: ['./repair-table.component.scss'],
+  styleUrls: ['./repair-table.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RepairTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
+
+  public sortTypes: any[] = [];
+  public sortDirection: string = 'asc';
+  public activeSortType: any = {};
+  public sortBy: any;
+  public searchValue: string = '';
+  public locationFilterOn: boolean = false;
+  public repairShops: ShopState[] = [];
+
   resetColumns: boolean;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    public router: Router
+    public router: Router,
+    private ref: ChangeDetectorRef,
+    private shopQuery: ShopQuery,
+    private mapsService: MapsService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +73,26 @@ export class RepairTableComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+      this.sortTypes = [
+        {name: 'Business Name', id: 1, sortName: 'name'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
+        {name: 'Favorites', id: 8, sortName: 'favorites'},
+        {name: 'Available', id: 9, sortName: 'available'},
+        {name: 'Rating', id: 3, sortName: 'rating'},
+        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt'},
+        {name: 'Orders', id: 6, sortName: 'orders'},
+        {name: 'Total Cost', id: 7, sortName: 'cost'}
+      ];
+
+      this.activeSortType = this.sortTypes[0];
+
+      this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
   }
 
   public initTableOptions(): void {
@@ -62,7 +100,9 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        hideViewMode: this.selectedTab === 'repair-shop' ? false : true,
+        showMapView: this.selectedTab === 'repair-shop' ? true : false,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -77,6 +117,8 @@ export class RepairTableComponent implements OnInit, OnDestroy {
           name: 'edit',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -87,6 +129,9 @@ export class RepairTableComponent implements OnInit, OnDestroy {
             : 'Are you sure you want to delete repair(s)',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -98,6 +143,10 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   }
 
   sendRepairData() {
+    this.repairShops = this.shopQuery.getAll().length
+        ? this.shopQuery.getAll()
+        : [];
+
     this.tableData = [
       {
         title: 'Truck',
@@ -123,9 +172,9 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       },
       {
         title: 'Shop',
-        field: null,
+        field: 'repair-shop',
         length: 25,
-        data: this.getDumyData(25, 'shop'),
+        data: this.repairShops,
         extended: false,
         checkPinned: true,
         gridNameTitle: 'Shop',
@@ -162,8 +211,17 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     this.columns = td.gridColumns;
 
     this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
+      return {
+        ...data,
+        isSelected: false,
+        textDbaName: '',
+        textAddress: data?.address
+          ? data.address.city + ', ' + data.address.state
+          : '',
+        mcNumber: '',
+        loadCount: '',
+        total: '',
+      };
     });
   }
 
@@ -492,6 +550,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
         this.setRepairData(event.tabData);
+        this.initTableOptions();
         break;
       }
       case 'open-modal': {
@@ -526,6 +585,13 @@ export class RepairTableComponent implements OnInit, OnDestroy {
             });
             break;
           }
+        }
+        break;
+      }
+      case 'view-mode': {
+        this.tableOptions.toolbarActions.viewModeActive = event.mode;
+        if ( event.mode == 'Map' ) {
+          //this.mapsComponent.markersDropAnimation();
         }
         break;
       }
@@ -566,5 +632,40 @@ export class RepairTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.tableService.sendCurrentSwitchOptionSelected(null);
+  }
+
+  changeSortDirection(direction) {
+    this.sortDirection = direction;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+  
+  changeSortCategory(item, column) {
+    this.activeSortType = item;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+
+  searchShops(value) {
+    this.searchValue = value;
+    //if ( this.searchValue.length > 3 ) {
+      //this.sortShippers();
+    //}
+  }
+
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

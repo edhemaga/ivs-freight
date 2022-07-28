@@ -1,0 +1,212 @@
+@import 'src/theme/variables.scss';
+
+.map-list-card-container {
+    position: relative;
+    width: 100%;
+    padding: 6px;
+    border-bottom: 1px solid $ta-light-grey-4;
+    cursor: pointer;
+
+    &:hover {
+        background: #F7F7F7;
+    }
+
+    &.map-list-card-selected {
+        background: $ta-light-grey;
+
+        &:hover {
+            background: $ta-light-grey;
+        }
+        
+        .marker-info-text {
+            color: $ta-light-grey-3;
+
+            .title-text {
+                &::-moz-selection {
+                    color: $ta-light-grey-3;
+                    background: #3c3c3c33;
+                }
+                &::selection {
+                    color: $ta-light-grey-3;
+                    background: #3c3c3c33;
+                }
+            }
+        }
+
+        .marker-like-text {
+            color: $ta-light-grey-3;
+        }
+        
+        .map-list-card-address {
+            color: $bw6-2;
+            
+            .address-text, .marker-bold-text {
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: #6c6c6c33;
+                }
+                &::selection {
+                    color: $bw6-2;
+                    background: #6c6c6c33;
+                }
+            }
+        }
+
+        .marker-rating-svg {
+            svg {
+                path {
+                    fill: $bw4;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #4DB6A2;
+                    }
+                }
+            }
+        }
+    }
+
+    .map-list-card-address {
+        font-size: 11px;
+        line-height: 14px;
+        color: $ta-light-grey-2;
+
+        .address-text, .marker-bold-text {
+            &::-moz-selection {
+                color: $ta-light-grey-2;
+                background: #aaaaaa33;
+            }
+            &::selection {
+                color: $ta-light-grey-2;
+                background: #aaaaaa33;
+            }
+        }
+    }
+
+    .title-container {
+        margin-top: 2px;
+    }
+
+    .marker-info-text {
+        font-size: 14px;
+        line-height: 18px;
+        color: $bw6-2;
+        
+        .title-text {
+            &::-moz-selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+            &::selection {
+                color: $bw6-2;
+                background: #6c6c6c33;
+            }
+        }
+    }
+    
+    .marker-medium-text {
+        font-weight: 500;
+    }
+
+    .marker-bold-text {
+        font-weight: 700;
+    }
+    
+    .marker-like-text {
+        font-size: 11px;
+        line-height: 14px;
+        color: $bw6-2;
+    }
+
+    .permanently-closed-text {
+        display: flex;
+        color: $ta-light-grey-2;
+    }
+    
+    .permanently-closed-svg {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 4px;
+    }
+
+    .marker-rating-container {
+        display: flex;
+        align-items: center;
+        height: 14px;
+        user-select: none;
+    
+        .marker-rating {
+            margin-right: 12px;
+            cursor: pointer;
+        
+            .marker-rating-svg {
+                margin-right: 4px;
+    
+                &:hover {
+                    svg {
+                        path {
+                            fill: $ta-light-grey-2;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .map-list-card-info {
+        .marker-rating {
+            margin-right: 22px;
+        }
+    }
+
+    .mg-bottom-2 {
+        margin-bottom: 2px;
+    }
+    
+    .mg-bottom-4 {
+        margin-bottom: 4px;
+    }
+    
+    .mg-bottom-8 {
+        margin-bottom: 8px;
+    }
+    
+    .mg-top-2 {
+        margin-top: 2px;
+    }
+    
+    .mg-top-4 {
+        margin-top: 4px;
+    }
+}
+
+.favorite-svg {
+    position: relative;
+    display: flex;
+    height: 18px;
+    margin-right: 12px;
+
+    &.active {
+        svg {
+            path {
+                fill: #6D82C7;
+            }
+        }
+    }
+}
+
+.truck-svg {
+    margin-left: 6px;
+}
+
+.vertical-divider {
+    height: 10px;
+    width: 0;
+    margin: 0px 12px;
+    border-right: 0.5px solid #DADADA;
+    border-radius: 1px;
+}

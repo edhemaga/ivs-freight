@@ -38,15 +38,7 @@ export class DriverDetailsCardComponent
   @Input() driver: any;
   @Input() templateCard: boolean;
   public note: FormControl = new FormControl();
-  public copiedPhone: boolean = false;
-  public copiedBankRouting: boolean = false;
-  public copiedBankAccount: boolean = false;
-  public copiedEin: boolean = false;
-  public copiedSSN: boolean = false;
-  public copiedDriverPhone: boolean = false;
-  public copiedDriverEmail: boolean = false;
   public isAccountVisibleDriver: boolean = false;
-  public accountText: string = null;
   public toggler: boolean[] = [];
   public dataTest: any;
   public selectedTab: number;
@@ -65,7 +57,6 @@ export class DriverDetailsCardComponent
   public mvrNote: FormControl = new FormControl();
   public dropData: any;
   public dataProggress: any;
-
   public hideArrow: boolean;
   public expDateCard: boolean;
   // Driver Dropdown
@@ -268,39 +259,6 @@ export class DriverDetailsCardComponent
         break;
       }
     }
-  }
-
-  /* To copy any Text */
-  public copyText(val: any, copyVal: string) {
-    switch (copyVal) {
-      case 'phone':
-        this.copiedPhone = true;
-        break;
-
-      case 'bankAcc':
-        this.copiedBankAccount = true;
-        break;
-
-      case 'bankRouting':
-        this.copiedBankRouting = true;
-        break;
-
-      case 'ein':
-        this.copiedEin = true;
-        break;
-
-      case 'ssn':
-        this.copiedSSN = true;
-        break;
-
-      case 'driver-phone':
-        this.copiedDriverPhone = true;
-        break;
-      case 'driver-email':
-        this.copiedDriverEmail = true;
-        break;
-    }
-    this.clipboar.copy(val);
   }
 
   /**Function retrun id */

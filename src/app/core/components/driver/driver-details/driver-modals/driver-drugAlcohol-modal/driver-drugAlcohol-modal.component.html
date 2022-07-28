@@ -1,8 +1,8 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Test' : 'Edit Test'"
+  [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="editData ? drugForm.valid && isDirty : drugForm.valid"
+  [isModalValid]="drugForm.valid"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

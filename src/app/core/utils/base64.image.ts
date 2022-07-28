@@ -5,7 +5,9 @@ export const getStringFromBase64 = (url: string) => {
   return url.split(',')[1];
 };
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CreateBase64Class {
   constructor(public domSanitizer: DomSanitizer) {}
 
