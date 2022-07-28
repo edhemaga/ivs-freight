@@ -68,4 +68,6 @@ export interface ITaInput {
   placeholderInsteadOfLabel?: boolean;
   // Address
   onlyCityAndZipAddress?: boolean;
+  // Applicant review
+  incorrectInput?: boolean;
 }

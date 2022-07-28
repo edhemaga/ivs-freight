@@ -4,14 +4,11 @@ import {
   convertThousanSepInNumber,
 } from './../../../../../utils/methods.calculations';
 import {
-  accountBankRegex,
-  bankRoutingValidator,
   daysValidRegex,
   emailRegex,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
-  routingBankRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -25,7 +22,6 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import {
   AddressEntity,
   CompanyModalResponse,
-  CompanyResponse,
   CreateDivisionCompanyCommand,
   CreateResponse,
   UpdateCompanyCommand,
@@ -46,7 +42,7 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -466,8 +462,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [0],
       bankId: [null],
-      routing: [null, routingBankRegex],
-      account: [null, accountBankRegex],
+      routing: [null],
+      account: [null],
     });
   }
 
@@ -617,6 +613,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public incorrectInput($event) {
+    console.log($event);
   }
 
   private validateMiles() {

@@ -17,13 +17,10 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import {
-  accountBankRegex,
   einNumberRegex,
-  routingBankRegex,
   ssnNumberRegex,
   emailRegex,
   phoneRegex,
-  bankRoutingValidator,
   mileValidation,
   perStopValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -50,7 +47,7 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

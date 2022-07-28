@@ -89,6 +89,54 @@
     right: 27px !important;
   }
 
+  &.incorrect-input {
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ef5350 !important;
+        }
+        rect {
+          fill: transparent !important;
+        }
+      }
+      &:hover {
+        svg {
+          path {
+            fill: #ffffff !important;
+          }
+          rect {
+            fill: #ef5350 !important;
+          }
+        }
+      }
+    }
+  }
+
+  &.incorrect-input-enabled {
+    display: inline-block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ffffff !important;
+        }
+        rect {
+          fill: #ef5350 !important;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #ffffff !important;
+          }
+          rect {
+            fill: #ef5350 !important;
+          }
+        }
+      }
+    }
+  }
+
   //------------------------- Custom class -------------------------
   &.input-32 {
     top: 3.5px;

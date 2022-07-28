@@ -51,6 +51,10 @@ export class TaInputComponent
   private ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
+  @Input() incorrectValue: boolean = false;
+
+  @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
+    new EventEmitter<any>();
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
   @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
@@ -82,6 +86,8 @@ export class TaInputComponent
 
   // Number of points
   public numberOfPoints: number = 0;
+
+  // Applicant incorrect
 
   constructor(
     @Self() public superControl: NgControl,
@@ -319,16 +325,21 @@ export class TaInputComponent
   public clearInput(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.input.nativeElement.value = null;
-    this.getSuperControl.setValue(null);
-    this.numberOfSpaces = 0;
-    this.touchedInput = true;
+    if (this.inputConfig.incorrectInput) {
+      this.incorrectValue = !this.incorrectValue;
+      this.incorrectInput.emit(this.incorrectValue);
+    } else {
+      this.input.nativeElement.value = null;
+      this.getSuperControl.setValue(null);
+      this.numberOfSpaces = 0;
+      this.touchedInput = true;
 
-    if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
-      this.resetDateTimeInputs();
+      if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
+        this.resetDateTimeInputs();
+      }
+
+      this.inputService.onClearInput$.next(true);
     }
-
-    this.inputService.onClearInput$.next(true);
   }
 
   public resetDateTimeInputs() {

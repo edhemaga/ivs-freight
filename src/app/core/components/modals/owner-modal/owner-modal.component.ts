@@ -1,7 +1,3 @@
-import {
-  accountBankRegex,
-  bankRoutingValidator,
-} from './../../shared/ta-input/ta-input.regex-validations';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -26,7 +22,6 @@ import {
   einNumberRegex,
   emailRegex,
   phoneRegex,
-  routingBankRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -38,7 +33,7 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
   templateUrl: './owner-modal.component.html',
   styleUrls: ['./owner-modal.component.scss'],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;

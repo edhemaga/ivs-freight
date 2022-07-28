@@ -15,11 +15,8 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
-  accountBankRegex,
-  bankRoutingValidator,
   emailRegex,
   phoneRegex,
-  routingBankRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -28,7 +25,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
   styleUrls: ['./repair-shop-modal.component.scss'],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;

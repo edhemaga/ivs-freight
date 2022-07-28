@@ -1,9 +1,4 @@
-import {
-  accountBankRegex,
-  bankRoutingValidator,
-  emailRegex,
-  routingBankRegex,
-} from './../../shared/ta-input/ta-input.regex-validations';
+import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -13,7 +8,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { AddressEntity } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
@@ -29,7 +23,7 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
   styleUrls: ['./user-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
   encapsulation: ViewEncapsulation.None,
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
