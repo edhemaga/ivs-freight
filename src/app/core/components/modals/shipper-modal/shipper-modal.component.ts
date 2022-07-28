@@ -87,6 +87,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   public disableOneMoreReview: boolean = false;
 
+  public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -117,7 +119,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.shipperForm = this.formBuilder.group({
       businessName: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, phoneRegex],
       phoneExt: [null],
       email: [null, emailRegex],
       address: [null, Validators.required],
@@ -126,7 +128,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       receivingOpenTwentyFourHours: [false],
       receivingFrom: [null],
       receivingTo: [null],
-      shippingHoursSameReceiving: [false],
+      shippingHoursSameReceiving: [true],
       shippingAppointment: [false],
       shippingOpenTwentyFourHours: [false],
       shippingFrom: [null],
@@ -620,14 +622,16 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             receivingTo: reasponse.receivingTo,
             shippingHoursSameReceiving: reasponse.shippingHoursSameReceiving,
             shippingAppointment: reasponse.shippingAppointment,
-            shippingOpenTwentyFourHours: false,
+            shippingOpenTwentyFourHours: reasponse.shippingOpenTwentyFourHours,
             shippingFrom: reasponse.shippingFrom,
             shippingTo: reasponse.shippingTo,
             note: reasponse.note,
             shipperContacts: [],
           });
+
           this.selectedAddress = reasponse.address;
           this.isPhoneExtExist = reasponse.phoneExt ? true : false;
+
           if (reasponse.phoneExt) {
             this.isPhoneExtExist = true;
           }
@@ -653,7 +657,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.isAppointmentReceiving = true;
           }
 
-          if (reasponse.shippingAppointment) {
+          if (
+            reasponse.shippingAppointment ||
+            reasponse.shippingHoursSameReceiving
+          ) {
             this.isAppointmentShipping = true;
           }
 
@@ -670,7 +677,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           }));
 
           const reviewIndex = this.reviews.findIndex(
-            (item) => item.companyUser.id === this.editData.id
+            (item) => item.companyUser.id === this.user.companyUserId
           );
 
           if (reviewIndex !== -1) {

@@ -134,7 +134,7 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url('../..//assets/svg/common/ic_confirm.svg');
+            content: url("../..//assets/svg/common/ic_confirm.svg");
             width: 14px;
             height: 10px;
           }
@@ -159,6 +159,12 @@
           .svgtext-template-logo {
             height: auto;
             margin-right: 6.5px;
+            transition: all 0.2s ease-in-out;
+
+            &.hide-hover-icons {
+              display: none;
+              transform: translateX(-30px);
+            }
           }
 
           .svgtext-template-text {
@@ -172,6 +178,15 @@
           .colors {
             height: 18px;
             width: 18px;
+          }
+
+          &:hover {
+            .svgtext-template-logo {
+              &.hide-hover-icons {
+                transform: translateX(0px) !important;
+                display: inline-block !important;
+              }
+            }
           }
         }
 
@@ -322,7 +337,7 @@
       }
 
       &.w-col-broker-payterm {
-        width: 194px;
+        width: 176px;
       }
 
       &.w-col-broker-department,
@@ -368,6 +383,10 @@
       &.w-col-load-req {
         width: 164px;
         max-height: 304px;
+      }
+
+      &.w-col-owner-bank {
+        width: 166px;
       }
 
       &.w-col-load-selectTemplate,
@@ -506,7 +525,7 @@
                 &::after {
                   position: absolute;
                   right: 3px;
-                  content: url('../..//assets/svg/common/ic_confirm.svg');
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
                   width: 14px;
                   height: 10px;
                 }
@@ -608,7 +627,7 @@
           font-weight: 600;
 
           &::before {
-            content: '';
+            content: "";
             height: 2px;
             width: 162px;
             background-color: #f3f3f3;

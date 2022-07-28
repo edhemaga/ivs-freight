@@ -8,7 +8,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable, tap, of } from 'rxjs';
-import { catchError, take } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 import { TrailerTService } from '../trailer.service';
 
 import { TrailerItemState, TrailerItemStore } from './trailer-details.store';

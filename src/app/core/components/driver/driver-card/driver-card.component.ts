@@ -1,4 +1,3 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import { DriverTService } from './../state/driver.service';
 import {
   Component,
@@ -6,9 +5,10 @@ import {
   Input,
   OnDestroy,
   ChangeDetectorRef,
-  ViewEncapsulation,
 } from '@angular/core';
-import { createBase64 } from 'src/app/core/utils/base64.image';
+import {
+  CreateBase64Class,
+} from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -27,12 +27,12 @@ export class DriverCardComponent implements OnInit, OnDestroy {
 
   constructor(
     private driverService: DriverTService,
-    private sanitazer: DomSanitizer,
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
     private driverDetailsQuery: DriversDetailsQuery,
     private cdRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    private createBase64: CreateBase64Class
   ) {}
 
   ngOnInit(): void {
@@ -65,13 +65,11 @@ export class DriverCardComponent implements OnInit, OnDestroy {
     this.transformImage();
   }
   public transformImage() {
-    let img;
-    if (this.viewData.avatar) {
-      img = createBase64(this.viewData.avatar);
-    } else {
-      img = 'assets/svg/common/ic_no_avatar_driver.svg';
-    }
-    return this.sanitazer.bypassSecurityTrustResourceUrl(img);
+    return this.createBase64.sanitizer(
+      this.viewData.avatar
+        ? this.viewData.avatar
+        : 'assets/svg/common/ic_no_avatar_driver.svg'
+    );
   }
   changeChatBox(e: number) {
     this.driverService

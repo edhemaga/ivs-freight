@@ -13,7 +13,6 @@
   .ta-upload-file-header {
     position: absolute;
     top: 4px;
-    left: 4px;
     right: 4px;
     width: 160px;
     height: 30px;
@@ -64,6 +63,7 @@
     .ta-upload-file-action-rightside {
       display: flex;
       justify-content: space-around;
+      align-items: center;
       width: 60px;
       height: 30px;
       text-align: center;
@@ -76,6 +76,7 @@
       .ta-upload-action-delete {
         width: 18px;
         height: 18px;
+        line-height: 15px;
         svg {
           height: 18px;
           width: 18px;
@@ -137,6 +138,23 @@
       box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
     }
 
+    .ta-upload-file-number-of-pages {
+      position: absolute;
+      bottom: -4px;
+      left: 0px;
+      font-size: 11px;
+      font-weight: 600;
+      height: 18px;
+      text-align: center;
+      padding: 2px 6px;
+      border-radius: 2px;
+      background-color: rgba(108, 108, 108, 0.9);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 15px;
+    }
+
     .ta-upload-file-tag {
       max-width: 101px;
       height: 18px;
@@ -166,6 +184,30 @@
         opacity: 1;
       }
     }
+
+    //-------------- Driver Details Single PDF
+    &.driver-details-pdf {
+      width: 303px;
+      height: 343px;
+      position: relative;
+
+      .ng2-pdf-viewer-container {
+        overflow: hidden !important;
+        background-color: transparent !important;
+        width: 295px !important;
+        height: 312px !important;
+        border-radius: 3px !important;
+
+        .canvasWrapper,
+        .pdfViewer,
+        .pdfViewer .page,
+        canvas {
+          width: 295px !important;
+          height: 335px !important;
+          margin: 0 !important;
+        }
+      }
+    }
   }
 
   .ta-upload-file-delete-template {
@@ -179,7 +221,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-top: 26px;
+    justify-content: center;
 
     .ta-upload-file-delete-text {
       margin: 0;
@@ -286,13 +328,13 @@
       text-overflow: ellipsis;
 
       &::-moz-selection {
-        background-color: rgb(183, 183, 183, 0.2) !important;
-        color: rgb(183, 183, 183, 0.2) !important;
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
       }
 
       &::selection {
-        background-color: rgb(183, 183, 183, 0.2) !important;
-        color: rgb(183, 183, 183, 0.2) !important;
+        background-color: rgb(108, 108, 108, 0.2) !important;
+        color: #6c6c6c !important;
       }
     }
   }
@@ -306,6 +348,22 @@
 
     .ta-upload-file-footer {
       background-color: #eeeeee;
+    }
+  }
+
+  // --------------------- Custom Classes ---------------------
+  &.driver-details-pdf {
+    width: 303px;
+    height: 343px;
+    grid-template-rows: 343px;
+
+    .ta-upload-file-footer {
+      bottom: 33px;
+    }
+
+    .ta-upload-file-delete-template {
+      width: 304px;
+      height: 320px;
     }
   }
 }

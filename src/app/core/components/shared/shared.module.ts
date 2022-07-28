@@ -30,7 +30,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-import { NFormatterPipe } from '../../pipes/n-formatter.pipe';
 //import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
@@ -44,8 +43,6 @@ import { TaCounterComponent } from './ta-counter/ta-counter.component';
 import { TaNgxSliderComponent } from './ta-ngx-slider/ta-ngx-slider.component';
 import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component';
 
-import { TaFilesComponent } from './ta-files/ta-files.component';
-import { TaFileComponent } from './ta-files/ta-file/ta-file.component';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
@@ -80,7 +77,6 @@ import { ShipperModalComponent } from '../modals/shipper-modal/shipper-modal.com
 import { OwnerModalComponent } from '../modals/owner-modal/owner-modal.component';
 import { TaCurrencyProgressBarComponent } from './ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { UserModalComponent } from '../modals/user-modal/user-modal.component';
-import { TaModalUploadComponent } from './ta-modal-upload/ta-modal-upload.component';
 import { TaUploadFileComponent } from './ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files/ta-upload-files-carousel/ta-upload-files-carousel.component';
 import { TaskModalComponent } from '../modals/task-modal/task-modal.component';
@@ -137,8 +133,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
-    TaFilesComponent,
-    TaFileComponent,
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
@@ -164,7 +158,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaModalUploadComponent,
     TaUploadFileComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
@@ -193,12 +186,12 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     PipesModule,
     ProfileImagesModule,
     AngularSvgIconModule.forRoot(),
+    AngularSvgIconPreloaderModule.forRoot({
+      configUrl: '../../assets/preload-svg/preload-svg.json',
+    }),
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
       libraries: ['geometry', 'places'],
-    }),
-    AngularSvgIconPreloaderModule.forRoot({
-      configUrl: '../../assets/imgPreloadJson/svgImages.json',
     }),
     NgxSliderModule,
     DatePickerModule,
@@ -293,8 +286,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     TaInputDropdownComponent,
     TaInputNoteComponent,
     TaInputComponent,
-    TaFilesComponent,
-    TaFileComponent,
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
@@ -318,7 +309,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaModalUploadComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,

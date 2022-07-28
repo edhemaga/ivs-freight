@@ -1,7 +1,5 @@
 import { Observable, of, tap } from 'rxjs';
 import { Injectable } from '@angular/core';
-
-import { TrailerStore } from './trailer.store';
 import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
@@ -12,27 +10,44 @@ import {
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
 /* import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse'; */
-import { TrailerQuery } from './trailer.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
+import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
+import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
+import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService {
   constructor(
-    private trailerStore: TrailerStore,
+    private trailerActiveStore: TrailerActiveStore,
+    private trailerInactiveStore: TrailerInactiveStore,
     private trailerService: TrailerService,
-    private trailerQuery: TrailerQuery,
+    private trailerActiveQuery: TrailerActiveQuery,
+    private trailerInactiveQuery: TrailerInactiveQuery,
     private tableService: TruckassistTableService
   ) {}
 
   /* Observable<CreateTrailerResponse> */
-  public addTrailer(
-    data: CreateTrailerCommand
-  ): Observable<any> {
+  public addTrailer(data: CreateTrailerCommand): Observable<any> {
     return this.trailerService.apiTrailerPost(data).pipe(
       tap((res: any) => {
         const subTrailer = this.getTrailerById(res.id).subscribe({
           next: (trailer: TrailerResponse | any) => {
-            this.trailerStore.add(trailer);
+            this.trailerActiveStore.add(trailer);
+
+            const trailerCount = JSON.parse(
+              localStorage.getItem('trailerTableCount')
+            );
+
+            trailerCount.active++;
+
+            localStorage.setItem(
+              'trailerTableCount',
+              JSON.stringify({
+                active: trailerCount.active,
+                inactive: trailerCount.inactive,
+              })
+            );
 
             this.tableService.sendActionAnimation({
               animation: 'add',
@@ -70,7 +85,16 @@ export class TrailerTService {
     search1?: string,
     search2?: string
   ): Observable<TrailerListResponse> {
-    return this.trailerService.apiTrailerListGet(active, pageIndex, pageSize);
+    return this.trailerService.apiTrailerListGet(
+      active,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   public updateTrailer(data: UpdateTrailerCommand): Observable<any> {
@@ -78,9 +102,9 @@ export class TrailerTService {
       tap(() => {
         const subTrailer = this.getTrailerById(data.id).subscribe({
           next: (trailer: TrailerResponse | any) => {
-            this.trailerStore.remove(({ id }) => id === trailer.id);
+            this.trailerActiveStore.remove(({ id }) => id === data.id);
 
-            this.trailerStore.add(trailer);
+            this.trailerActiveStore.add(trailer);
 
             this.tableService.sendActionAnimation({
               animation: 'update',
@@ -95,10 +119,33 @@ export class TrailerTService {
     );
   }
 
-  public deleteTrailerById(id: number): Observable<any> {
-    return this.trailerService.apiTrailerIdDelete(id).pipe(
+  public deleteTrailerById(
+    trailerId: number,
+    tableSelectedTab?: string
+  ): Observable<any> {
+    return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
       tap(() => {
-        this.trailerStore.remove(({ id }) => id === id);
+        const trailerCount = JSON.parse(
+          localStorage.getItem('trailerTableCount')
+        );
+
+        if (tableSelectedTab === 'active') {
+          this.trailerActiveStore.remove(({ id }) => id === trailerId);
+
+          trailerCount.active--;
+        } else if (tableSelectedTab === 'inactive') {
+          this.trailerInactiveStore.remove(({ id }) => id === trailerId);
+
+          trailerCount.inactive--;
+        }
+
+        localStorage.setItem(
+          'trailerTableCount',
+          JSON.stringify({
+            active: trailerCount.active,
+            inactive: trailerCount.inactive,
+          })
+        );
       })
     );
   }
@@ -128,20 +175,64 @@ export class TrailerTService {
     return this.trailerService.apiTrailerIdGet(id);
   }
 
-  public changeTrailerStatus(trailerId: number): Observable<any> {
+  public changeTrailerStatus(
+    trailerId: number,
+    tabSelected?: string
+  ): Observable<any> {
     return this.trailerService
       .apiTrailerStatusIdPut(trailerId, 'response')
       .pipe(
         tap(() => {
           const subTrailer = this.getTrailerById(trailerId).subscribe({
             next: () => {
-              const trailerToUpdate = this.trailerQuery.getAll({
-                filterBy: ({ id }) => id === trailerId,
-              });
+              /* Get Table Tab Count */
+              const trailerCount = JSON.parse(
+                localStorage.getItem('trailerTableCount')
+              );
 
-              this.trailerStore.update(({ id }) => id === trailerId, {
-                status: trailerToUpdate[0].status === 0 ? 1 : 0,
-              });
+              /* Get Data From Store To Update */
+              let truckToUpdate =
+                tabSelected === 'active'
+                  ? this.trailerActiveQuery.getAll({
+                      filterBy: ({ id }) => id === trailerId,
+                    })
+                  : this.trailerInactiveQuery.getAll({
+                      filterBy: ({ id }) => id === trailerId,
+                    });
+
+              /* Remove Data From Store */
+              tabSelected === 'active'
+                ? this.trailerActiveStore.remove(({ id }) => id === trailerId)
+                : this.trailerInactiveStore.remove(({ id }) => id === trailerId);
+
+              /* Add Data To New Store */
+              tabSelected === 'active'
+                ? this.trailerActiveStore.add({
+                    ...truckToUpdate[0],
+                    status: 0,
+                  })
+                : this.trailerActiveStore.add({
+                    ...truckToUpdate[0],
+                    status: 1,
+                  });
+
+              /* Update Table Tab Count */
+              if (tabSelected === 'active') {
+                trailerCount.active--;
+                trailerCount.inactive++;
+              } else if (tabSelected === 'inactive') {
+                trailerCount.active++;
+                trailerCount.inactive--;
+              }
+
+              /* Send Table Tab Count To Local Storage */
+              localStorage.setItem(
+                'trailerTableCount',
+                JSON.stringify({
+                  active: trailerCount.active,
+                  inactive: trailerCount.inactive,
+                })
+              );
 
               this.tableService.sendActionAnimation({
                 animation: 'update-status',

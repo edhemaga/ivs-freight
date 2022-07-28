@@ -17,7 +17,7 @@ export class SettingsFactoringComponent implements OnInit {
     this.getFactoringData(this.factoringData);
   }
   public getFactoringData(data: CompanyResponse) {
-    if (this.factoringData.customNoticeOfAssigment) {
+    if (data?.factoringCompany?.customNoticeOfAssigment) {
       this.changeDefaultNotice = true;
     } else {
       this.changeDefaultNotice = false;

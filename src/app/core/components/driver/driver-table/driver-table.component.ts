@@ -1,10 +1,6 @@
+import { CreateBase64Class } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  AfterViewInit,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
@@ -28,12 +24,14 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
+import { DomSanitizer } from '@angular/platform-browser';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
   styleUrls: ['./driver-table.component.scss'],
-  providers: [NameInitialsPipe],
+  providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   public tableOptions: any = {};
@@ -67,7 +65,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public datePipe: DatePipe,
     private driverTService: DriverTService,
     private notificationService: NotificationService,
-    private nameInitialsPipe: NameInitialsPipe
+    private nameInitialsPipe: NameInitialsPipe,
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private createBase64: CreateBase64Class
   ) {}
 
   ngOnInit(): void {
@@ -437,7 +437,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapDriverData(data: any) {
-    this.mapingIndex++;
+    if (!data?.avatar) {
+      this.mapingIndex++;
+    }
 
     return {
       ...data,
@@ -445,7 +447,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
-      avatarImg: '',
+      avatarImg: data?.avatar ? this.createBase64.sanitizer(data.avatar) : '',
       textDOB: data.dateOfBirth
         ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
         : '',
@@ -456,36 +458,92 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdlNumber
         : data?.cdls?.length
         ? data.cdls[0].cdlNumber
-        : '587662410',
+        : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
-        start: data?.cdlExpiration
-          ? data.cdlExpiration
-          : data?.cdls?.length
-          ? data.cdls[0].expDate
+        expirationDays: data?.cdlExpirationDays
+          ? this.thousandSeparator.transform(data.cdlExpirationDays)
           : null,
-        end: null,
+        percentage: data?.cdlPercentage ? data.cdlPercentage : null,
       },
       tableMedicalData: {
-        start: data?.medicalExpiration
-          ? data.medicalExpiration
-          : data?.medicals?.length
-          ? data.medicals[0].expDate
+        expirationDays: data?.medicalExpirationDays
+          ? this.thousandSeparator.transform(data.medicalExpirationDays)
           : null,
-        end: null,
+        percentage: data?.medicalPercentage ? data.medicalPercentage : null,
       },
       tableMvrData: {
-        start: data?.mvrIssueDate
-          ? data.mvrIssueDate
-          : data?.mvrs?.length
-          ? data.mvrs[0].issueDate
+        expirationDays: data?.mvrExpirationDays
+          ? this.thousandSeparator.transform(data.mvrExpirationDays)
           : null,
-        end: null,
+        percentage: data?.mvrPercentage ? data.mvrPercentage : null,
       },
       tableDrugOrAlcoholTest: null,
+      textPayType: data?.payType?.name ? data.payType.name : '',
+      textTeam: [
+        {
+          title: 'Loaded',
+          value: data?.team?.loadedMile
+            ? '$' + this.thousandSeparator.transform(data.team.loadedMile)
+            : null,
+        },
+        {
+          title: 'Empty',
+          value: data?.team?.emptyMile
+            ? '$' + this.thousandSeparator.transform(data.team.emptyMile)
+            : null,
+        },
+        {
+          title: 'Per Stop',
+          value: data?.team?.perStop
+            ? '$' + this.thousandSeparator.transform(data.team.perStop)
+            : null,
+        },
+      ],
+      textSolo: [
+        {
+          title: 'Loaded',
+          value: data?.solo?.loadedMile
+            ? '$' + this.thousandSeparator.transform(data.solo.loadedMile)
+            : null,
+        },
+        {
+          title: 'Empty',
+          value: data?.solo?.emptyMile
+            ? '$' + this.thousandSeparator.transform(data.solo.emptyMile)
+            : null,
+        },
+        {
+          title: 'Per Stop',
+          value: data?.solo?.perStop
+            ? '$' + this.thousandSeparator.transform(data.solo.perStop)
+            : null,
+        },
+      ],
+      textFuelCard: data?.fuelCard ? data.fuelCard : '',
+      textEmergencyContact: [
+        {
+          title: 'First Name',
+          value: data?.emergencyContactName
+            ? data.emergencyContactName
+            : null,
+        },
+        {
+          title: 'Phone',
+          value: data?.emergencyContactPhone
+            ? data.emergencyContactPhone
+            : null,
+        },
+        {
+          title: 'Relationship',
+          value: data?.emergencyContactRelationship
+            ? data.emergencyContactRelationship
+            : null,
+        },
+      ],
     };
   }
 
@@ -587,6 +645,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
+      this.mapingIndex = 0;
+
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
