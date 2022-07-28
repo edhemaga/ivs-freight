@@ -47,13 +47,13 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.factoringForm);
+    // this.formService.checkFormChange(this.factoringForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onHandleAddress(event: {

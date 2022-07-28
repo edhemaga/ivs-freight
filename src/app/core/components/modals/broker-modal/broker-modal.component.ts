@@ -165,7 +165,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getBrokerDropdown();
-    this.isCredit({ id: 301, name: 'Enable', checked: true });
+    this.isCredit({ id: 301, name: 'Custom', checked: true });
     this.followIsBillingAddressSame();
 
     if (this.editData) {
@@ -200,7 +200,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       billingPoBox: [null],
       billingPoBoxCity: [null],
       isCredit: [true],
-      creditType: ['Custom'], // Enable | Disable
+      creditType: ['Custom'], // Custom | Unlimited
       creditLimit: [null],
       availableCredit: [null],
       payTerm: [null],
@@ -210,15 +210,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       brokerContacts: this.formBuilder.array([]),
     });
 
-    if (this.editData) {
-      this.formService.checkFormChange(this.brokerForm);
+    // if (this.editData) {
+    //   this.formService.checkFormChange(this.brokerForm);
 
-      this.formService.formValueChange$
-        .pipe(untilDestroyed(this))
-        .subscribe((isFormChange: boolean) => {
-          isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-        });
-    }
+    //   this.formService.formValueChange$
+    //     .pipe(untilDestroyed(this))
+    //     .subscribe((isFormChange: boolean) => {
+    //       isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //     });
+    // }
   }
 
   public get brokerContacts(): FormArray {
@@ -227,9 +227,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private createBrokerContacts(): FormGroup {
     return this.formBuilder.group({
-      contactName: [null],
-      departmentId: [null],
-      phone: [null, phoneRegex],
+      contactName: [null, Validators.required],
+      departmentId: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null, Validators.maxLength(3)],
       email: [null, emailRegex],
     });

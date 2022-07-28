@@ -59,13 +59,13 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       newPMs: this.formBuilder.array([]),
     });
 
-    this.formService.checkFormChange(this.PMform);
+    // this.formService.checkFormChange(this.PMform);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public get defaultPMs(): FormArray {

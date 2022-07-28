@@ -33,6 +33,10 @@
 			"iconPath": "/assets/svg/common/banks/ic_bank_mb_financial.svg"
 		},
     {
+			"iconName": "ic_bank_meta.svg",
+			"iconPath": "/assets/svg/common/banks/ic_bank_meta.svg"
+		},
+    {
 			"iconName": "ic_bank_navi_federal.svg",
 			"iconPath": "/assets/svg/common/banks/ic_bank_navi_federal.svg"
 		},

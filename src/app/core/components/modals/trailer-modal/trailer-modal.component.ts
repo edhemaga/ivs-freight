@@ -132,13 +132,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       insurancePolicy: [null, insurancePolicyRegex],
     });
 
-    this.formService.checkFormChange(this.trailerForm);
+    // this.formService.checkFormChange(this.trailerForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   private isCompanyOwned() {

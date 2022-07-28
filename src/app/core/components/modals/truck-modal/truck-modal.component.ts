@@ -139,13 +139,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ipasEzpass: [null, Validators.maxLength(14)],
     });
 
-    this.formService.checkFormChange(this.truckForm);
+    // this.formService.checkFormChange(this.truckForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {
