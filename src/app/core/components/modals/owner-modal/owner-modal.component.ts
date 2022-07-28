@@ -31,6 +31,7 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 
 @Component({
   selector: 'app-owner-modal',
@@ -73,7 +74,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ownerModalService: OwnerModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit() {
@@ -196,45 +198,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(
-            this.ownerForm.get('routingNumber'),
-            true,
-            routingBankRegex
-          );
-          this.routingNumberTyping();
-          this.inputService.changeValidators(
-            this.ownerForm.get('accountNumber'),
-            true,
-            accountBankRegex
-          );
-        } else {
-          this.isBankSelected = false;
-          this.inputService.changeValidators(
-            this.ownerForm.get('routingNumber'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.ownerForm.get('accountNumber'),
-            false
-          );
-        }
-      });
-  }
-
-  private routingNumberTyping() {
-    this.ownerForm
-      .get('routingNumber')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value && value.split('').length > 8) {
-          if (bankRoutingValidator(value)) {
-            this.ownerForm.get('routingNumber').setErrors(null);
-          } else {
-            this.ownerForm.get('routingNumber').setErrors({ invalid: true });
-          }
-        }
+        this.isBankSelected = this.bankVerificationService.onSelectBank(
+          value,
+          this.ownerForm.get('routingNumber'),
+          this.ownerForm.get('accountNumber')
+        );
       });
   }
 
@@ -366,6 +334,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.tabChange(
             this.tabs.find((item) => item.id === res.ownerType.id)
           );
+
+          this.onBankSelected();
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');

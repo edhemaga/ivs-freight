@@ -41,6 +41,7 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -150,12 +151,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService,
-    private formService: FormService
+    private formService: FormService,
+    private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
@@ -344,50 +345,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onBankSelected(): void {
+  private onBankSelected() {
     this.driverForm
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            true,
-            routingBankRegex
-          );
-          this.routingNumberTyping();
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            true,
-            accountBankRegex
-          );
-        } else {
-          this.isBankSelected = false;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            false
-          );
-        }
-      });
-  }
-
-  private routingNumberTyping() {
-    this.driverForm
-      .get('routing')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value && value.split('').length > 8) {
-          if (bankRoutingValidator(value)) {
-            this.driverForm.get('routing').setErrors(null);
-          } else {
-            this.driverForm.get('routing').setErrors({ invalid: true });
-          }
-        }
+        this.isBankSelected = this.bankVerificationService.onSelectBank(
+          value,
+          this.driverForm.get('routing'),
+          this.driverForm.get('account')
+        );
       });
   }
 
@@ -1007,6 +974,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             address: res.address,
             valid: res.address ? true : false,
           });
+
+          this.onBankSelected();
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

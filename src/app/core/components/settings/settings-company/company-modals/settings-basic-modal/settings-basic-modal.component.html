@@ -1,9 +1,13 @@
 <app-ta-modal
   [modalTitle]="
-    editData.type === 'new-division' ? 'Add Division Company' : 'Company'
+    editData.type === 'new-division'
+      ? 'Add Division Company'
+      : editData.type === 'edit-division'
+      ? 'Division Company'
+      : 'Company'
   "
   [editData]="editData"
-  [editName]="null"
+  [editName]="editData?.company?.name"
   [disableDelete]="editData.type === 'edit-company'"
   [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
   [customClass]="'modal-container-M'"
