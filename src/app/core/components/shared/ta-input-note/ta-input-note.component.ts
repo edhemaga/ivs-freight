@@ -26,6 +26,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   value: string = '';
   savedValue: string = '';
   saveInterval: any;
+  isFocused: any = false;
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
@@ -79,6 +80,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   checkFocus(e) {
+    this.isFocused = true;
     if (!this._isVisibleNote) {
       this.sharedService.emitAllNoteOpened.next(false);
       setTimeout(() => {
@@ -88,7 +90,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   changeValue(event){
-    console.log(event)
     this.value = event;
     this.checkActiveItems();
     let saveValue = this.value;
@@ -101,7 +102,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
           clearInterval(this.saveInterval);
         }
         this.saveNote(true);
-        
       },60000);
     }
   }
@@ -122,6 +122,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   }
 
   prepareForTextRange() {
+    this.isFocused = false;
     this.selectionTaken = window.getSelection();
     if (this.selectionTaken.rangeCount && this.selectionTaken.getRangeAt) {
       this.range = this.selectionTaken.getRangeAt(0);

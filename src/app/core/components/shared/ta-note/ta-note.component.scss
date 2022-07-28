@@ -13,6 +13,11 @@
   }
 }
 
+.closed_main_holder{
+  position: relative;
+  display: flex;
+}
+
 .note_button_hold {
   .note-btn {
     width: 16px;
@@ -324,6 +329,10 @@
         }
       }
 
+      &.parking_text_hold{
+        max-height: 124px;
+      }
+
       // &:after {
       //   width: 0;
       //   height: 0;
@@ -369,6 +378,12 @@
     .k-editor{
       width: auto;
     }
+  }
+
+  &.closed_note_hold{
+    position: absolute;
+    left: -264px;
+    top: -8px;
   }
 }
 

@@ -4,6 +4,18 @@
     padding-left: 2px;
     align-items: center;
 
+    &.parking_editor_menu{
+      padding: 0px 5px 0px 4px;
+    }
+
+    .font_editor{
+      display: flex;
+
+      &.parking_font_editor{
+        flex: 1;
+      }
+    }
+
     .editor_buttons {
       display: flex;
       align-items: center;

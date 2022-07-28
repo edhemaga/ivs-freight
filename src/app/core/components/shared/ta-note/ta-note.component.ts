@@ -32,7 +32,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
 export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
   @Input() openAllNotesText: any;
-  @ViewChild('t2') t2: any;
+  @Input() parking: any = false;
   @ViewChild('main_editor', {static: false}) public main_editor: any;
   
   tooltip: any;
@@ -68,51 +68,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     if ( this.note && this.note != '' ) {
       this.noteIcon = 'Note.svg';
     }
-
-    // setTimeout(() => {
-    //   if ( this.openedAll ) {
-    //     this.toggleNote(this.t2, this.note);
-    //   }
-    // });
-
-    /* this.sharedService.emitCloseNote
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((res) => {
-      console.log('Poziva se servis za zatvaraeanje nota')
-      if ( !window.getSelection().toString() ) {
-        if (this.tooltip !== undefined && res && !this.openedAll) {
-          if (this.tooltip.isOpen() && this.isExpanded) {
-            this.value = this.value == '' ? this.note : this.value;
-            this.saveNote();
-          }
-          this.tooltip.close();
-          this.isExpanded = false;
-          this.showCollorPattern = false;
-          setTimeout(() => {
-            this.buttonsExpanded = false;
-          }, 200);
-        }
-      }
-    }); */
-
-    /* this.sharedService.emitAllNoteOpened
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((res) => {
-      console.log('Poziva se servis za emitAllNoteOpened')
-      if ( res ) {
-        if ( this.note ) {
-          this.openedAll = true;
-          this.isExpanded = false;
-          this.buttonsExpanded = false;
-          this.t2.open();
-        }
-      } else if (!this.leaveThisOpened) {
-        this.openedAll = false;
-        this.t2.close();
-        this.isExpanded = false;
-        this.buttonsExpanded = false;
-      } else { this.leaveThisOpened = false; }
-    }); */
   }
 
   checkFocus(e) {
@@ -120,7 +75,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     e.preventDefault();
 
     this.isFocused = true;
-    console.log('check focus')
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
       this.isExpanded = true;
@@ -130,13 +84,8 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }, 150);
   }
 
-  toggleNote(tooltip: any, data: any) {
-    console.log('Note kliknut');
-    console.log(tooltip);
-    console.log(data);
-
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
+  toggleNote(data: any) {
+    if (this.noteOpened) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
         this.sharedService.emitAllNoteOpened.next(false);
@@ -149,11 +98,9 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.isExpanded = false;
         this.buttonsExpanded = false;
         this.leaveThisOpened = false;
-        tooltip.close();
         this.noteOpened = false;
       }
       this.showCollorPattern = false;
-      console.log('Note se zatvara');
     } else {
       if (!data || data == '') {
         this.buttonsExpanded = true;
@@ -161,9 +108,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
-      tooltip.open({data});
       this.noteOpened = true;
-      console.log('Note se otvara');
     }
   }
 
@@ -204,7 +149,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
           clearInterval(this.saveInterval);
         }
         this.saveNote(true);
-        
       },60000);
     }
   }
@@ -228,14 +172,10 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   closeNote() {
-    console.log('Poziva se closeNote Metoda');
     this.leaveThisOpened = false;
     this.showCollorPattern = false;
     this.isExpanded = false;
     this.buttonsExpanded = false;
-    if (this.t2) {
-      this.t2.close();
-    }
   }
 
   maxLimitForContenteditableDiv(e: any, limit: number) {

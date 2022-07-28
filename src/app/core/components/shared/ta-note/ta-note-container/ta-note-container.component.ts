@@ -26,7 +26,8 @@ export class TaNoteContainerComponent implements OnInit {
   @Input() selectionTaken: any;
   @Input() selectedEditor: any;
   @Input() isExpanded: boolean;
-  selectedPaternColor = '#FFFFFFF';
+  @Input() parking: boolean = false;
+  selectedPaternColor = '#6c6c6c';
   showCollorPattern: boolean;
   activeOptions: any = {
     bold: false,
@@ -84,7 +85,6 @@ export class TaNoteContainerComponent implements OnInit {
   }
 
   executeEditor(action: string, color?: string, indx?: number) {
-    console.log(action, color, indx, 'testttt')
     if (indx) {
       this.selectedColorName = this.containerColors[indx];
     }
@@ -97,7 +97,6 @@ export class TaNoteContainerComponent implements OnInit {
     if (action !== 'foreColor') {
       this.showCollorPattern = false;
       this.activeOptions[action] = !this.activeOptions[action];
-      console.log(action, this.activeOptions[action], this.activeOptions)
       if (!this.activeOptions[action]) {
         if (this.value.replace('<br>', '') == '') {
           this.selectionTaken.removeAllRanges();
@@ -122,12 +121,9 @@ export class TaNoteContainerComponent implements OnInit {
   }
 
   focusElement(): void {
-    console.log('focusElement 111')
     if (this.selectedEditor) {
-      console.log('focusElement 222')
       this.selectedEditor.focus();
     } else {
-      console.log('focusElement 333')
       document.getElementById('main_editor').focus();
     }
   }
@@ -135,13 +131,12 @@ export class TaNoteContainerComponent implements OnInit {
   checkActiveItems() {
     for (const act in this.activeOptions) {
       this.activeOptions[act] = document.queryCommandState(act);
-      console.log(act, document.queryCommandState(act), this.activeOptions)
 
       clearTimeout(this.slowTimeout);
       this.slowTimeout = setTimeout(() => {
         const findedColor = this.containerColors.find(item => item.color == document.queryCommandValue('ForeColor'));
         this.selectedColorName = findedColor ? findedColor : {
-          color: "#B7B7B7",
+          color: "#6c6c6c",
           name: "Gray"
         };
         this.filterContainersColor();
@@ -155,5 +150,4 @@ export class TaNoteContainerComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }
