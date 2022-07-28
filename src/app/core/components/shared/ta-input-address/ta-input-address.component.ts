@@ -44,6 +44,7 @@ export class TaInputAddressComponent
   public invalidAddress: boolean = false;
 
   public options = {
+    types: null,
     componentRestrictions: { country: ['US', 'CA'] },
   };
 
@@ -70,6 +71,11 @@ export class TaInputAddressComponent
           this.inputResetService.resetInputSubject.next(false);
         }
       });
+    // Only City and Zip In Address
+    this.options = {
+      ...this.options,
+      types: this.inputConfig.onlyCityAndZipAddress ? ['(cities)'] : null,
+    };
   }
 
   public handleAddressChange(address: AddressEntity) {

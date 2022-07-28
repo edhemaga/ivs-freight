@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 import { CompanyResponse } from 'appcoretruckassist';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
@@ -10,13 +10,18 @@ import { CompanyResponse } from 'appcoretruckassist';
 export class SettingsFactoringComponent implements OnInit {
   @Input() public factoringData: any;
   public changeDefaultNotice: boolean;
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  public factoringPhone: boolean;
+  public factoringEmail: boolean;
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard
+  ) {}
 
   ngOnInit(): void {
     this.getFactoringData(this.factoringData);
   }
   public getFactoringData(data: CompanyResponse) {
-    if (this.factoringData.customNoticeOfAssigment) {
+    if (data?.factoringCompany?.customNoticeOfAssigment) {
       this.changeDefaultNotice = true;
     } else {
       this.changeDefaultNotice = false;
@@ -32,5 +37,19 @@ export class SettingsFactoringComponent implements OnInit {
         break;
       }
     }
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, name: string) {
+    switch (name) {
+      case 'phone':
+        this.factoringPhone = true;
+        break;
+      case 'email':
+        this.factoringEmail = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
   }
 }

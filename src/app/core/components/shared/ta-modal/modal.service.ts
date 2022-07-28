@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
 import { ModalOptions } from './modal.options';
@@ -31,11 +30,16 @@ export class ModalService {
     this.modalStatusChange.next({ name: data.name, status: data.status });
   }
 
-  public openModal(component: any, options: ModalOptions, editData?: any) {
+  public openModal(
+    component: any,
+    options: ModalOptions,
+    editData?: any,
+    backdropClass?: string
+  ) {
     options = {
       ...options,
       backdrop: 'static',
-      backdropClass: 'myDropback',
+      backdropClass: backdropClass ? backdropClass : 'myDropback',
     };
 
     const modal = this.ngbModal.open(component, options);

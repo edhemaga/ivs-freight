@@ -6,7 +6,7 @@
   [isModalValid]="
     editData ? registrationForm.valid && isDirty : registrationForm.valid
   "
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="registrationForm" class="form-container">
     <div class="row last-row">
@@ -56,10 +56,10 @@
         [cardName]="'Documents'"
         [isCardOpen]="documents.length"
       >
-        <app-ta-modal-upload
+        <app-ta-upload-files
           [files]="documents"
           (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-modal-upload>
+        ></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
 

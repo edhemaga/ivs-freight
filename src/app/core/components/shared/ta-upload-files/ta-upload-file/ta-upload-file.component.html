@@ -1,0 +1,135 @@
+<div class="ta-upload-file-container {{ customClassName }}">
+  <!-- File Header Actions -->
+  <div *ngIf="!isFileDelete" class="ta-upload-file-header">
+    <div
+      class="ta-upload-file-action-leftside"
+      [ngClass]="{ 'no-action-tag': !hasTag }"
+    >
+      <div
+        ngbTooltip
+        mainTooltip="Tag"
+        tooltipBackground="#6c6c6c"
+        position="top"
+        class="ta-upload-action-tag"
+        (click)="onAction('tag')"
+      >
+        <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
+      </div>
+    </div>
+    <div class="ta-upload-file-action-rightside">
+      <div
+        ngbTooltip
+        mainTooltip="Download"
+        tooltipBackground="#6c6c6c"
+        position="top"
+        class="ta-upload-action-download"
+        (click)="onAction('download')"
+      >
+        <svg-icon src="assets/svg/common/ic_download.svg"></svg-icon>
+      </div>
+      <div
+        ngbTooltip
+        mainTooltip="Delete"
+        tooltipBackground="#EF5350"
+        position="top"
+        class="ta-upload-action-delete"
+        (click)="isFileDelete = true"
+      >
+        <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+      </div>
+    </div>
+  </div>
+
+  <!-- File Content -->
+  <div class="ta-upload-file-content  {{ customClassName }}">
+    <!-- Pdf Content -->
+    <pdf-viewer
+      *ngIf="file?.extension?.toLowerCase() === 'pdf'"
+      [src]="file?.url"
+      [(page)]="activePage"
+      [render-text]="false"
+      [show-all]="false"
+      [autoresize]="false"
+      [original-size]="true"
+      [fit-to-page]="true"
+      style="display: block"
+      (after-load-complete)="afterLoadComplete($event)"
+    ></pdf-viewer>
+
+    <!-- Image Content -->
+    <img
+      class="ta-upload-file-image"
+      *ngIf="file?.extension?.toLowerCase() !== 'pdf'"
+      [src]="file?.url"
+      [alt]="file?.name"
+    />
+
+    <!-- Number of pages -->
+    <div *ngIf="hasNumberOfPages" class="ta-upload-file-number-of-pages">
+      <p>{{ numberOfFilePages }}</p>
+    </div>
+
+    <!-- Tag Content -->
+    <div
+      *ngIf="hasTag"
+      class="ta-upload-file-tag"
+      [ngClass]="{ 'no-tag': !file?.tag }"
+    >
+      <span>{{ file?.tag ? file?.tag : "No Tag" }}</span>
+    </div>
+  </div>
+
+  <!-- File Delete Template -->
+  <div *ngIf="isFileDelete" class="ta-upload-file-delete-template">
+    <div class="ta-upload-file-delete-text">
+      Are you sure you want to delete file?
+    </div>
+    <div
+      class="ta-upload-file-btn ta-upload-file-btn-delete"
+      (click)="onAction('delete')"
+    >
+      Delete
+    </div>
+    <div
+      class="ta-upload-file-btn ta-upload-file-btn-cancel"
+      (click)="onAction('cancel')"
+    >
+      Cancel
+    </div>
+  </div>
+
+  <!-- File Footer Information -->
+  <div
+    class="ta-upload-file-footer"
+    [ngClass]="{ 'edit-mode': editFile }"
+    (click)="onEditFile()"
+  >
+    <!-- No edit mode -->
+    <div
+      *ngIf="!editFile"
+      class="ta-upload-file-ext ta-upload-file-ext-{{
+        file?.extension | lowercase
+      }}"
+      [ngClass]="{ 'no-tag': !file?.tag }"
+      ngbTooltip
+      mainTooltip="numberOfFilePages"
+      tooltipBackground="#6c6c6c"
+      position="top"
+    >
+      {{ file?.extension | uppercase }}
+    </div>
+    <p *ngIf="!editFile" class="ta-upload-file-name">{{ file?.name }}</p>
+    <!-- Edit mode -->
+    <app-ta-input
+      *ngIf="editFile"
+      [formControl]="fileNewName"
+      [inputConfig]="{
+        name: 'File Name',
+        type: 'text',
+        label: null,
+        placeholder: file.name,
+        textTransform: 'capitalize'
+      }"
+    ></app-ta-input>
+  </div>
+</div>

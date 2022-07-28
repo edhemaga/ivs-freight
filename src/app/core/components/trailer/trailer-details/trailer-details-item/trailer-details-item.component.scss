@@ -18,8 +18,10 @@
 app-trailer-details-item {
   .owner-container {
     padding: 0 10px;
-    // margin-top: -7px;
+    margin-top: -4px;
     .owner-items-name {
+      height: 22px;
+      text-transform: uppercase;
       .firm-name {
         font-size: $font-size18;
         font-weight: $font-medium;
@@ -39,7 +41,6 @@ app-trailer-details-item {
     .icon-show {
       display: flex;
       align-items: flex-end;
-      margin-top: 14px;
       height: 18px;
       justify-content: center;
       cursor: pointer;
@@ -65,7 +66,6 @@ app-trailer-details-item {
       }
       .icon-show {
         justify-content: flex-start !important;
-        margin-top: 18px !important;
       }
     }
   }
@@ -79,8 +79,13 @@ app-trailer-details-item {
       margin-bottom: 6px;
     }
     .status-items {
-      padding: 0 6px;
+      // padding: 0 6px;
       margin-top: 8px;
+      &:last-child {
+        .divider {
+          visibility: hidden;
+        }
+      }
     }
     .item-wrapper {
       grid-template-columns: 122px 131px 75px !important;

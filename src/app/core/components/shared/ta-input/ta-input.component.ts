@@ -80,6 +80,9 @@ export class TaInputComponent
   // Input Commands
   public isVisibleCommands: boolean = false;
 
+  // Number of points
+  public numberOfPoints: number = 0;
+
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
@@ -329,7 +332,6 @@ export class TaInputComponent
   }
 
   public resetDateTimeInputs() {
-    
     if (this.inputConfig.name === 'datepicker') {
       this.span1.nativeElement.innerHTML = 'mm';
       this.span2.nativeElement.innerHTML = 'dd';
@@ -639,9 +641,6 @@ export class TaInputComponent
       [
         'routing number',
         'account number',
-        'empty mile',
-        'loaded mile',
-        'per stop',
         'empty weight',
         'axles',
         'base rate',
@@ -656,6 +655,56 @@ export class TaInputComponent
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        const timeout = setTimeout(() => {
+          if (this.getSuperControl.value) {
+            let perStopValue = this.getSuperControl.value.replace(/,/g, '');
+            if (
+              perStopValue > this.inputConfig.max ||
+              perStopValue < this.inputConfig.min
+            ) {
+              this.getSuperControl.setErrors({ invalid: true });
+              return false;
+            }
+            return true;
+          }
+          clearTimeout(timeout);
+        }, 0);
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        this.disableMultiplePoints(event);
+
+        // Check for max length
+        if (this.getSuperControl.value?.includes('.')) {
+          this.inputConfig.maxLength = 4;
+        } else {
+          this.inputConfig.maxLength = 2;
+        }
+
+        // Check for range
+        if (
+          this.getSuperControl.value > this.inputConfig.max ||
+          this.getSuperControl.value < this.inputConfig.min
+        ) {
+          this.getSuperControl.setErrors({ invalid: true });
+          return false;
+        }
         return true;
       } else {
         event.preventDefault();
@@ -767,7 +816,7 @@ export class TaInputComponent
       }
     }
 
-    this.input.nativeElement.value.trimEnd();
+    this.input.nativeElement.value.trim();
   }
 
   public disableConsecutivelySpaces(event: any) {
@@ -779,6 +828,28 @@ export class TaInputComponent
       }
     } else {
       this.numberOfSpaces = 0;
+    }
+  }
+
+  public disableMultiplePoints(event: any) {
+    if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
+      if (!this.getSuperControl.value) {
+        event.preventDefault();
+        return false;
+      }
+
+      if (this.getSuperControl.value?.includes('.')) {
+        event.preventDefault();
+        return false;
+      }
+
+      this.numberOfPoints++;
+      if (this.numberOfPoints > 1) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      this.numberOfPoints = 0;
     }
   }
 

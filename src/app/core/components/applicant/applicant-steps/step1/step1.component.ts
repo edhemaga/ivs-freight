@@ -216,7 +216,7 @@ export class Step1Component implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private applicantListsService: ApplicantListsService,
-    private inputService: TaInputService /* 
+    private inputService: TaInputService /*
     private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 
@@ -338,13 +338,7 @@ export class Step1Component implements OnInit, OnDestroy {
       .getBanksDropdownList()
       .pipe(untilDestroyed(this))
       .subscribe((data) => {
-        this.banksDropdownList = data.map((item) => {
-          return {
-            ...item,
-            folder: 'common',
-            subFolder: 'banks',
-          };
-        });
+        this.banksDropdownList = data;
       });
   }
 

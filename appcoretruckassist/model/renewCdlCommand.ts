@@ -13,6 +13,7 @@
 
 export interface RenewCdlCommand { 
     id?: number;
+    issueDate?: string;
     expDate?: string;
 }
 

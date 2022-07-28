@@ -205,6 +205,7 @@ export class DriverTService {
               data: driver,
               id: driver.id,
             });
+            
             subDriver.unsubscribe();
           },
         });

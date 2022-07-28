@@ -18,9 +18,7 @@ export interface SplitLoadCommand {
     splitDate?: string | null;
     splitTime?: string | null;
     splitLocation?: AddressEntity;
-    newTruckId?: number | null;
-    newTrailerId?: number | null;
-    newDriverId?: number | null;
+    newDispatchId?: number | null;
     rateFirstLoad?: number;
     rateSecondLoad?: number;
     firstLegMiles?: number | null;

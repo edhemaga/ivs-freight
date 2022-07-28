@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-
+import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-parking',
   templateUrl: './settings-parking.component.html',
@@ -54,8 +54,12 @@ export class SettingsParkingComponent implements OnInit {
       day: '25th',
     },
   ];
-
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  public parkingPhone: boolean;
+  public parkingEmail: boolean;
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private clipboar: Clipboard
+  ) {}
 
   ngOnInit() {}
 
@@ -73,5 +77,19 @@ export class SettingsParkingComponent implements OnInit {
 
   public generateTextForProgressBar(data: any): string {
     return data.pay_period + ' Rent ' + `- ${data.rent}`;
+  }
+
+  /* To copy any Text */
+  public copyText(val: any, name: string) {
+    switch (name) {
+      case 'phone-parking':
+        this.parkingPhone = true;
+        break;
+      case 'email-parking':
+        this.parkingEmail = true;
+        break;
+    }
+
+    this.clipboar.copy(val);
   }
 }

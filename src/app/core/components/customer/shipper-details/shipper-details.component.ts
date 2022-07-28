@@ -20,6 +20,7 @@ import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-stat
 })
 export class ShipperDetailsComponent implements OnInit, OnDestroy {
   public shipperConfig: any[] = [];
+  public shipperDrop: any;
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
@@ -31,7 +32,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-   
+    this.initTableOptions();
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
@@ -42,7 +43,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
           query = this.shipperService.getShipperById(id);
         }
         query.pipe(untilDestroyed(this)).subscribe({
-          next: (res: ShipperResponse) => {          
+          next: (res: ShipperResponse) => {
             this.shipperConf(res);
             this.router.navigate([`/customer/${res.id}/shipper-details`]);
             this.notificationService.success(
@@ -56,7 +57,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
           },
         });
       });
-      this.shipperConf(this.activated_route.snapshot.data.shipper);
+    this.shipperConf(this.activated_route.snapshot.data.shipper);
   }
 
   public shipperConf(data: ShipperResponse) {
@@ -72,7 +73,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         nameDefault: 'Load',
         template: 'load',
         icon: true,
-        length: 25,
+        length: data?.loadStops?.length ? data.loadStops.length : 0,
         hide: true,
         hasArrow: true,
         customText: 'Date',
@@ -101,7 +102,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         id: 2,
         nameDefault: 'Contact',
         template: 'contact',
-        length: data?.shipperContacts?.length?data.shipperContacts.length:0,
+        length: data?.shipperContacts?.length ? data.shipperContacts.length : 0,
         hide: false,
         icon: true,
         hasArrow: false,
@@ -125,6 +126,60 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         hasArrow: false,
       },
     ];
+  }
+
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.shipperDrop = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        // {
+        //   title: 'Send Message',
+        //   name: 'dm',
+        //   class: 'regular-text',
+        //   contentType: 'dm',
+        // },
+        // {
+        //   title: 'Print',
+        //   name: 'print',
+        //   class: 'regular-text',
+        //   contentType: 'print',
+        // },
+        // {
+        //   title: 'Deactivate',
+        //   name: 'deactivate',
+        //   class: 'regular-text',
+        //   contentType: 'deactivate',
+        // },
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'truck',
+          text: 'Are you sure you want to delete truck(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
   }
   /**Function return id */
   public identity(index: number, item: any): number {

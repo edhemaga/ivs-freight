@@ -95,6 +95,8 @@
           text-align: center;
           width: 82px;
           height: 24px;
+          transform-origin: right;
+
           background-color: #f3f3f3;
           border-radius: 2px;
           transition: all 0.3 ease-in-out;
@@ -171,6 +173,12 @@
         .ta-like-dislike {
           position: relative;
           margin-right: 8px;
+        }
+      }
+
+      &.hidden-add-new-action {
+        .ta-like-dislike {
+          margin-right: -2px;
         }
       }
     }
@@ -353,6 +361,13 @@
     &:hover {
       path {
         fill: #cccccc !important;
+      }
+    }
+  }
+  &:hover {
+    svg {
+      path {
+        fill: #cccccc;
       }
     }
   }

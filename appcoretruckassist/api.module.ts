@@ -14,6 +14,7 @@ import { CompanyContactService } from './api/companyContact.service';
 import { CompanyContactLabelService } from './api/companyContactLabel.service';
 import { CompanyOfficeService } from './api/companyOffice.service';
 import { CompanyUserService } from './api/companyUser.service';
+import { DispatchService } from './api/dispatch.service';
 import { DriverService } from './api/driver.service';
 import { EmploymentHistoryService } from './api/employmentHistory.service';
 import { InspectionService } from './api/inspection.service';

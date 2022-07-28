@@ -4,7 +4,7 @@
   [editName]="editData?.id"
   [isModalValid]="contactForm.valid"
   [dropZoneConfig]="dropZoneConfig"
-  (modalActionTypeEmitter)="onModalAction($event)"
+  (action)="onModalAction($event)"
 >
   <form [formGroup]="contactForm" class="form-container">
     <div class="row">
@@ -61,7 +61,7 @@
           }"
           [colors]="colors"
           [options]="contactLabels"
-          [selectedAccountLabel]="selectedContactLabel"
+          [selectedLabel]="selectedContactLabel"
           (pickExistLabel)="onPickExistLabel($event)"
           (selectedColorLabel)="onSelectColorLabel($event)"
           (saveLabel)="onSaveLabel($event)"
