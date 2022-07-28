@@ -78,7 +78,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.onBankSelected();
     this.getOwnerDropdowns();
 
     if (this.editData) {
@@ -96,7 +95,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       bussinesName: [null, Validators.required],
       firstName: [null],
       lastName: [null],
-      ssn: [null],
+      ssn: [null, ssnNumberRegex],
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, Validators.required],
       addressUnit: [null, [Validators.maxLength(6)]],
@@ -119,7 +118,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public tabChange(event: any): void {
     this.selectedTab = event.id;
-    this.tabSwitcher.activeTab = this.selectedTab;
 
     if (this.selectedTab === 1) {
       this.inputService.changeValidators(
@@ -187,6 +185,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public onSelectBank(event: any): void {
     this.selectedBank = event;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
   }
 
   private onBankSelected(): void {
@@ -226,7 +228,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .get('routingNumber')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
+        if (value && value.split('').length > 8) {
           if (bankRoutingValidator(value)) {
             this.ownerForm.get('routingNumber').setErrors(null);
           } else {
@@ -377,13 +379,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerModalResponse) => {
-          this.labelsBank = res.banks.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'banks',
-            };
-          });
+          this.labelsBank = res.banks;
         },
         error: () => {
           this.notificationService.error(

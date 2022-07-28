@@ -58,4 +58,9 @@
     column-gap: 12px;
     transition: all 0.3s ease-in-out;
   }
+
+  &.driver-details-pdf {
+    grid-template-columns: 1fr;
+    grid-template-rows: 343px;
+  }
 }

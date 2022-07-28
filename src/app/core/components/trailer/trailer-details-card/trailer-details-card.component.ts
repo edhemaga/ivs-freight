@@ -9,15 +9,14 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import moment from 'moment';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TrailerQuery } from '../state/trailer.query';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ActivatedRoute } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -42,7 +41,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   constructor(
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
-    private trailerQuery: TrailerQuery,
+    private trailerQuery: TrailerDetailsQuery,
     private activeted_route: ActivatedRoute,
     private clipboar: Clipboard,
     private trailerMinimalQuery: TrailersMinimalListQuery

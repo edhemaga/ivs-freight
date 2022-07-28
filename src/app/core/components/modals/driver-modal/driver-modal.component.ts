@@ -37,10 +37,6 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
-import {
-  createBase64,
-  getStringFromBase64,
-} from 'src/app/core/utils/base64.image';
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -68,6 +64,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public selectedOwnerTab: any = null;
   public selectedAddress: AddressEntity = null;
   public selectedBank: any = null;
+  public isBankSelected: boolean = false;
   public selectedPayType: any = null;
 
   public driverFullName: string = null;
@@ -134,11 +131,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public documents: any[] = [];
 
   public dropZoneConfig: DropZoneConfig = {
-    dropZoneType: 'image',
-    dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
-    dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
-    multiple: false,
-    globalDropZone: true,
+    dropZoneType: 'files',
+    dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+    dropZoneAvailableFiles: 'application/pdf, application/png, application/jpg',
+    multiple: true,
+    globalDropZone: false,
   };
 
   public isDirty: boolean;
@@ -260,10 +257,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       useTruckAssistAch: [false],
       soloEmptyMile: [null, mileValidation],
       soloLoadedMile: [null, mileValidation],
-      soloPerStop: [null],
+      soloPerStop: [null, perStopValidation],
       teamEmptyMile: [null, mileValidation],
       teamLoadedMile: [null, mileValidation],
-      teamPerStop: [null],
+      teamPerStop: [null, perStopValidation],
       commissionSolo: [25],
       commissionTeam: [25],
       isOwner: [false],
@@ -350,9 +347,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.driverForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
+          this.isBankSelected = true;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             true,
@@ -365,6 +363,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             accountBankRegex
           );
         } else {
+          this.isBankSelected = false;
           this.inputService.changeValidators(
             this.driverForm.get('routing'),
             false
@@ -373,7 +372,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm.get('account'),
             false
           );
-          this.selectedBank = null;
         }
       });
   }
@@ -522,12 +520,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     this.uploadFileService.visibilityDropZone(this.selectedTab === 2);
 
-    let dotAnimation = document.querySelector('.animation-three-tabs');
+    let dotAnimation = document.querySelector('.animation-two-tabs');
 
     this.animationObject = {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
+
+    if (this.selectedTab === 1) {
+      this.dropZoneConfig = {
+        dropZoneType: 'files',
+        dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
+        dropZoneAvailableFiles:
+          'application/pdf, application/png, application/jpg',
+        multiple: true,
+        globalDropZone: false,
+      };
+    } else {
+      this.dropZoneConfig = {
+        dropZoneType: 'image',
+        dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
+        dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
+        multiple: false,
+        globalDropZone: true,
+      };
+    }
   }
 
   public tabOwnerChange(event: any): void {
@@ -615,13 +632,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (data: GetDriverModalResponse) => {
-          this.labelsBank = data.banks.map((item) => {
-            return {
-              ...item,
-              folder: 'common',
-              subFolder: 'banks',
-            };
-          });
+          this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
         },
         error: (err) => {
@@ -714,8 +725,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : this.owner
           ? this.owner.id
           : null,
-      ownerType:
-        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      ownerType: !this.driverForm.get('isOwner').value
+        ? null
+        : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+        ? 2
+        : 1,
       bussinesName: this.owner
         ? null
         : this.driverForm.get('bussinesName').value,
@@ -779,12 +793,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           if (this.addNewAfterSave) {
             this.driverForm.reset();
             this.inputServiceReset.resetInputSubject.next(true);
+            this.driverForm.get('ownerType').patchValue(null);
             this.driverForm.get('payType').patchValue(null);
             this.driverForm.get('commissionSolo').patchValue(25);
             this.driverForm.get('commissionTeam').patchValue(25);
             this.driverForm.get('mvrExpiration').patchValue(5);
             this.driverForm.get('mailNotificationGeneral').patchValue(true);
             this.driverForm.get('mailNotificationPayroll').patchValue(true);
+            this.driverForm.get('smsNotificationGeneral').patchValue(false);
+            this.driverForm.get('smsNotificationPayroll').patchValue(false);
+            this.driverForm.get('pushNotificationGeneral').patchValue(false);
+            this.driverForm.get('pushNotificationPayroll').patchValue(false);
+            this.driverForm.get('useTruckAssistAch').patchValue(false);
+            this.driverForm.get('twic').patchValue(false);
+            this.driverForm.get('isOwner').patchValue(false);
+
             this.offDutyLocations.clear();
             this.selectedPayType = null;
             this.addNewAfterSave = false;
@@ -829,8 +852,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : this.owner
           ? this.owner.id
           : null,
-      ownerType:
-        this.driverForm.get('ownerType').value === 'Sole Proprietor' ? 2 : 1,
+      ownerType: !this.driverForm.get('isOwner').value
+        ? null
+        : this.driverForm.get('ownerType').value === 'Sole Proprietor'
+        ? 2
+        : 1,
       bussinesName:
         this.driverForm.get('ownerType').value === 'Sole Proprietor'
           ? null
@@ -908,7 +934,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address ? res.address.addressUnit : null,
             dateOfBirth: convertDateFromBackend(res.dateOfBirth),
             ssn: res.ssn,
-            mvrExpiration: 5, // TODO: BACK DA DOSTAVI,
+            mvrExpiration: res.mvrExpiration,
             bankId: res.bank ? res.bank.name : null,
             account: res.account,
             routing: res.routing,
@@ -1096,6 +1122,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.driverForm.get('avatar').patchValue(event);
+  }
+
+  public onImageValidation(event: boolean) {
+    if (event) {
+      this.inputService.changeValidators(this.driverForm.get('avatar'));
+    } else {
+      this.inputService.changeValidators(this.driverForm.get('avatar'), false);
+    }
   }
 
   ngOnDestroy(): void {}

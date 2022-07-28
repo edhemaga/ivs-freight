@@ -18,9 +18,9 @@ import { TaInputService } from '../../ta-input/ta-input.service';
 export interface UploadFile {
   name: string;
   url: string | any;
-  extension: string;
-  guid: string;
-  size: number | string;
+  extension?: string;
+  guid?: string;
+  size?: number | string;
   tag?: string;
 }
 
@@ -33,9 +33,10 @@ export interface UploadFile {
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
-
+  @Input() customClassName: string;
   @Input() file: UploadFile;
   @Input() hasTag: boolean = false;
+  @Input() hasNumberOfPages: boolean = false;
   @Input() activePage: number = 1;
 
   @Output() fileAction: EventEmitter<{ file: UploadFile; action: string }> =
@@ -67,9 +68,10 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   }
 
   public afterLoadComplete(pdf: PDFDocumentProxy) {
-    this.numberOfFilePages = pdf._pdfInfo.numPages
-      .toString()
-      .concat(' ', 'pages');
+    this.numberOfFilePages =
+      pdf._pdfInfo.numPages === 1
+        ? pdf._pdfInfo.numPages.toString().concat(' ', 'PAGE')
+        : pdf._pdfInfo.numPages.toString().concat(' ', 'PAGES');
   }
 
   public onAction(action: string) {
@@ -108,12 +110,14 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
   }
 
   public onEditFile() {
-    this.editFile = true;
-    this.fileNewName.patchValue(this.file.name);
-    const timeout = setTimeout(() => {
-      this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
-      clearTimeout(timeout);
-    }, 300);
+    if (this.customClassName !== 'driver-details-pdf') {
+      this.editFile = true;
+      this.fileNewName.patchValue(this.file.name);
+      const timeout = setTimeout(() => {
+        this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+        clearTimeout(timeout);
+      }, 300);
+    }
   }
 
   ngOnDestroy(): void {}

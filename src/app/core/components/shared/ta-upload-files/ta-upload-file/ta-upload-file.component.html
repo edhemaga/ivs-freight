@@ -1,65 +1,50 @@
-<div class="ta-upload-file-container">
+<div class="ta-upload-file-container {{ customClassName }}">
   <!-- File Header Actions -->
   <div *ngIf="!isFileDelete" class="ta-upload-file-header">
     <div
       class="ta-upload-file-action-leftside"
       [ngClass]="{ 'no-action-tag': !hasTag }"
     >
-      <svg-icon
+      <div
+        ngbTooltip
+        mainTooltip="Tag"
+        tooltipBackground="#6c6c6c"
+        position="top"
         class="ta-upload-action-tag"
-        src="assets/svg/common/ic_tag.svg"
-        [appTooltip]="'Tag'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="1"
         (click)="onAction('tag')"
-      ></svg-icon>
+      >
+        <svg-icon src="assets/svg/common/ic_tag.svg"></svg-icon>
+      </div>
     </div>
     <div class="ta-upload-file-action-rightside">
-      <svg-icon
+      <div
+        ngbTooltip
+        mainTooltip="Download"
+        tooltipBackground="#6c6c6c"
+        position="top"
         class="ta-upload-action-download"
-        src="assets/svg/common/ic_download.svg"
-        [appTooltip]="'Download'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#6C6C6C'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-19"
         (click)="onAction('download')"
-      ></svg-icon>
-      <svg-icon
+      >
+        <svg-icon src="assets/svg/common/ic_download.svg"></svg-icon>
+      </div>
+      <div
+        ngbTooltip
+        mainTooltip="Delete"
+        tooltipBackground="#EF5350"
+        position="top"
         class="ta-upload-action-delete"
-        src="assets/svg/common/ic_trash.svg"
-        [appTooltip]="'Delete'"
-        [position]="'top-middle'"
-        [tooltipBackground]="'#EF5350'"
-        [tooltipColor]="'#FFFFFF'"
-        [zIndex]="900"
-        [borderRadius]="'2px'"
-        [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-        [fontWeight]="'bold'"
-        [fontSize]="'11px'"
-        [customPosition]="-9"
         (click)="isFileDelete = true"
-      ></svg-icon>
+      >
+        <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
+      </div>
     </div>
   </div>
 
   <!-- File Content -->
-  <div class="ta-upload-file-content">
+  <div class="ta-upload-file-content  {{ customClassName }}">
     <!-- Pdf Content -->
     <pdf-viewer
-      *ngIf="file?.extension.toLowerCase() === 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() === 'pdf'"
       [src]="file?.url"
       [(page)]="activePage"
       [render-text]="false"
@@ -74,10 +59,15 @@
     <!-- Image Content -->
     <img
       class="ta-upload-file-image"
-      *ngIf="file?.extension.toLowerCase() !== 'pdf'"
+      *ngIf="file?.extension?.toLowerCase() !== 'pdf'"
       [src]="file?.url"
       [alt]="file?.name"
     />
+
+    <!-- Number of pages -->
+    <div *ngIf="hasNumberOfPages" class="ta-upload-file-number-of-pages">
+      <p>{{ numberOfFilePages }}</p>
+    </div>
 
     <!-- Tag Content -->
     <div
@@ -109,7 +99,11 @@
   </div>
 
   <!-- File Footer Information -->
-  <div class="ta-upload-file-footer" [ngClass]="{'edit-mode': editFile}" (click)="onEditFile()">
+  <div
+    class="ta-upload-file-footer"
+    [ngClass]="{ 'edit-mode': editFile }"
+    (click)="onEditFile()"
+  >
     <!-- No edit mode -->
     <div
       *ngIf="!editFile"
@@ -117,17 +111,10 @@
         file?.extension | lowercase
       }}"
       [ngClass]="{ 'no-tag': !file?.tag }"
-      [appTooltip]="numberOfFilePages"
-      [position]="'top-middle'"
-      [tooltipBackground]="'#6C6C6C'"
-      [tooltipColor]="'#FFFFFF'"
-      [zIndex]="900"
-      [borderRadius]="'2px'"
-      [boxShadow]="'0 0 4px rgb(0,0,0,.2)'"
-      [fontWeight]="'bold'"
-      [fontSize]="'11px'"
-      [customPosition]="13"
-      [tatooltipvisible]="file?.extension.toLowerCase() === 'pdf'"
+      ngbTooltip
+      mainTooltip="numberOfFilePages"
+      tooltipBackground="#6c6c6c"
+      position="top"
     >
       {{ file?.extension | uppercase }}
     </div>

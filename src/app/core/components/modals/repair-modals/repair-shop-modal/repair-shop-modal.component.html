@@ -133,7 +133,7 @@
         <div
           *ngFor="let repair of services; trackBy: identity"
           class="repair-shop-service"
-          [class.active]="repair.active"
+          [ngClass]="{ active: repair.active }"
           (click)="repair.active = !repair.active"
         >
           <svg-icon src="{{ repair.svg }}"></svg-icon>
@@ -221,8 +221,8 @@
               name: 'Routing Number',
               type: 'text',
               label: 'Routing #',
-              isDisabled: !selectedBank,
-              isRequired: selectedBank,
+              isDisabled: !isBankSelected,
+              isRequired: isBankSelected,
               minLength: 9,
               maxLength: 9
             }"
@@ -235,8 +235,8 @@
               name: 'Account Number',
               type: 'text',
               label: 'Account #',
-              isDisabled: !selectedBank,
-              isRequired: selectedBank,
+              isDisabled: !isBankSelected,
+              isRequired: isBankSelected,
               maxLength: 17,
               minLength: 4
             }"
