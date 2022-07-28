@@ -131,8 +131,7 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
   };
   @Input() public insurancePolicyData: any;
   public copyPolicyName: boolean[] = [];
-  public copyInsurancePhone: boolean;
-  public copyInsuranceEmail: boolean;
+
   constructor(
     private settingsStoreService: SettingsStoreService,
     private clipboar: Clipboard
@@ -153,18 +152,5 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
     this.clipboar.copy(val);
   }
 
-  /* To copy any Text */
-  public copyTextWhitoutIndex(val: any, name: string) {
-    switch (name) {
-      case 'phone':
-        this.copyInsurancePhone = true;
-        break;
-      case 'email':
-        this.copyInsuranceEmail = true;
-        break;
-    }
-
-    this.clipboar.copy(val);
-  }
   public onShowDetails() {}
 }

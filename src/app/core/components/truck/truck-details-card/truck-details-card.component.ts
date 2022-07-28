@@ -18,7 +18,6 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 /* import { TruckQuery } from '../state/truck.query'; */
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -26,11 +25,10 @@ import { Clipboard } from '@angular/cdk/clipboard';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-
 export class TruckDetailsCardComponent implements OnInit, OnChanges {
-  @ViewChild('revenueChart', {static: false}) public revenueChart: any;
-  @ViewChild('stackedBarChart', {static: false}) public stackedBarChart: any;
-  @ViewChild('payrollChart', {static: false}) public payrollChart: any;
+  @ViewChild('revenueChart', { static: false }) public revenueChart: any;
+  @ViewChild('stackedBarChart', { static: false }) public stackedBarChart: any;
+  @ViewChild('payrollChart', { static: false }) public payrollChart: any;
   public noteControl: FormControl = new FormControl();
   public buttonsArrayPerfomance: any;
   public buttonsArrayFuel: any;
@@ -42,9 +40,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   @Input() truck: TruckResponse | any;
   public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
   public truck_list: any[] = this.truckMinimalListQuery.getAll();
-  public copiedPhone: boolean;
-  public copiedEmail: boolean;
-  public copiedVin: boolean;
 
   payrollChartConfig: any = {
     dataProperties: [
@@ -52,8 +47,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         defaultConfig: {
           type: 'line',
           data: [
-            9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000,
-            17000, 10000, 11000, 14000
+            9000, 7500, 19000, 10000, 11000, 13500, 18000, 22000, 17000, 10000,
+            11000, 14000,
           ],
           label: 'Salary',
           yAxisID: 'y-axis-1',
@@ -62,8 +57,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           pointHoverBackgroundColor: '#6D82C7',
           pointHoverBorderColor: '#FFFFFF',
           pointHoverRadius: 3,
-          pointBorderWidth: 2
-        }
+          pointBorderWidth: 2,
+        },
       },
       {
         defaultConfig: {
@@ -74,9 +69,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           borderColor: '#FFCC80',
           backgroundColor: '#FFCC80',
           hoverBackgroundColor: '#FFA726',
-          barThickness: 18
-        }
-      }
+          barThickness: 18,
+        },
+      },
     ],
     showLegend: false,
     chartValues: [],
@@ -95,12 +90,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       '',
       'JUL',
       '',
-      'SEP'
+      'SEP',
     ],
     onHoverAnnotation: true,
     offset: true,
     hoverTimeDisplay: true,
-    noChartImage: 'assets/svg/common/yellow_no_data.svg'
+    noChartImage: 'assets/svg/common/yellow_no_data.svg',
   };
 
   revenueChartConfig: any = {
@@ -109,8 +104,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         defaultConfig: {
           type: 'line',
           data: [
-            10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000,
-            20000, 15000, 19000, 20000
+            10000, 18000, 20000, 13000, 9000, 10000, 16000, 19000, 20000, 15000,
+            19000, 20000,
           ],
           label: 'Salary',
           yAxisID: 'y-axis-1',
@@ -119,8 +114,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           pointHoverBackgroundColor: '#6D82C7',
           pointHoverBorderColor: '#FFFFFF',
           pointHoverRadius: 3,
-          pointBorderWidth: 2
-        }
+          pointBorderWidth: 2,
+        },
       },
       {
         defaultConfig: {
@@ -131,9 +126,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           borderColor: '#B2DFD1',
           backgroundColor: '#B2DFD1',
           hoverBackgroundColor: '#4DB6A2',
-          barThickness: 18
-        }
-      }
+          barThickness: 18,
+        },
+      },
     ],
     showLegend: false,
     chartValues: [150, 257.7, 190, 568.85],
@@ -152,12 +147,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       '',
       'JUL',
       '',
-      'SEP'
+      'SEP',
     ],
     onHoverAnnotation: true,
     hoverTimeDisplay: true,
     offset: true,
-    noChartImage: 'assets/svg/common/green_no_data.svg'
+    noChartImage: 'assets/svg/common/green_no_data.svg',
   };
 
   stackedBarChartConfig: any = {
@@ -172,8 +167,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           backgroundColor: '#FFCC80',
           hoverBackgroundColor: '#FFA726',
           hoverBorderColor: '#FFA726',
-          barThickness: 18
-        }
+          barThickness: 18,
+        },
       },
       {
         defaultConfig: {
@@ -185,9 +180,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
           backgroundColor: '#97A8DC',
           hoverBackgroundColor: '#536BC2',
           hoverBorderColor: '#536BC2',
-          barThickness: 18
-        }
-      }
+          barThickness: 18,
+        },
+      },
     ],
     showLegend: false,
     chartValues: [150, 257.7, 190, 568.85],
@@ -206,13 +201,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       '',
       'JUL',
       '',
-      'SEP'
+      'SEP',
     ],
     onHoverAnnotation: true,
     hoverTimeDisplay: true,
     stacked: true,
     offset: true,
-    noChartImage: 'assets/svg/common/stacked_no_data.svg'
+    noChartImage: 'assets/svg/common/stacked_no_data.svg',
   };
 
   public barChartLegend: any[] = [
@@ -255,21 +250,21 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       value: 68.56,
       image: 'assets/svg/common/round_yellow.svg',
       prefix: '$',
-      elementId: 0
+      elementId: 0,
     },
     {
       title: 'Repair Cost',
       value: 37.56,
       image: 'assets/svg/common/round_blue.svg',
       prefix: '$',
-      elementId: 1
+      elementId: 1,
     },
     {
       title: 'Total Cost',
       value: 105.63,
       prefix: '$',
-      elementId: 'total'
-    }
+      elementId: 'total',
+    },
   ];
 
   public mixedBarChartLegend: any[] = [
@@ -364,20 +359,20 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       minValue: 0,
       maxValue: 60,
       stepSize: 15,
-      showGridLines: true
+      showGridLines: true,
     },
     verticalRightAxes: {
       visible: true,
       minValue: 0,
       maxValue: 24000,
       stepSize: 6000,
-      showGridLines: false
+      showGridLines: false,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   public mixedBarAxes: object = {
@@ -416,7 +411,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     private modalService: ModalService,
     /* private trucksQuery: TruckQuery, */
     private detailsPageDriverSer: DetailsPageService,
-    private clipboar: Clipboard,
     private truckMinimalListQuery: TrucksMinimalListQuery
   ) {}
 
@@ -647,20 +641,5 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         break;
       }
     }
-  }
-  /* To copy any Text */
-  public copyText(val: any, copyVal: string) {
-    switch (copyVal) {
-      case 'phone':
-        this.copiedPhone = true;
-        break;
-      case 'email':
-        this.copiedEmail = true;
-        break;
-      case 'vin':
-        this.copiedVin = true;
-        break;
-    }
-    this.clipboar.copy(val);
   }
 }

@@ -103,6 +103,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
+import { TaCopyComponent } from './ta-copy/ta-copy.component';
 
 @NgModule({
   declarations: [
@@ -173,6 +174,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     LoadModalComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
+    TaCopyComponent,
   ],
   imports: [
     CommonModule,
@@ -293,6 +295,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     FilterComponent,
     TaTabSwitchComponent,
     ProgressInvoicesComponent,
+    TaCopyComponent,
     // Modals Components
     TaModalComponent,
     TaInputAddressComponent,
