@@ -4,6 +4,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import moment from 'moment';
 
+import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { CompanyInfoModel } from '../state/model/company.model';
 
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
@@ -14,11 +15,35 @@ import { ApplicantActionsService } from './../state/services/applicant-actions.s
   styleUrls: ['./applicant-footer.component.scss'],
 })
 export class ApplicantFooterComponent implements OnInit, OnDestroy {
+  public selectedMode: string = SelectedMode.REVIEW;
+
   public copyrightYear: string;
 
   public companyInfo: CompanyInfoModel;
 
   public displayInfoBox: boolean = false;
+  public displayDocumentsBox: boolean = false;
+
+  public selectedTab: number = 1;
+
+  public tabs: any[] = [
+    {
+      id: 1,
+      name: 'CDL',
+    },
+    {
+      id: 2,
+      name: 'SSN',
+    },
+    {
+      id: 3,
+      name: 'Medical',
+    },
+    {
+      id: 4,
+      name: 'MVR',
+    },
+  ];
 
   constructor(private applicantActionsService: ApplicantActionsService) {}
 
@@ -36,12 +61,20 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     this.displayInfoBox = !this.displayInfoBox;
   }
 
+  public onDisplayOrHideDocumentsBox(): void {
+    this.displayDocumentsBox = !this.displayDocumentsBox;
+  }
+
   public getCompanyInfo() {
     this.applicantActionsService.getApplicantInfo$
       .pipe(untilDestroyed(this))
       .subscribe((data) => {
         this.companyInfo = data.companyInfo;
       });
+  }
+
+  public tabChange(event: any): void {
+    this.selectedTab = event.id;
   }
 
   ngOnDestroy(): void {}

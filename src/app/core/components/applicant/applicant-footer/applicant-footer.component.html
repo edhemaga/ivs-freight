@@ -7,6 +7,7 @@
     <div
       class="d-flex flex-column info-box"
       [ngClass]="{ 'display-box': displayInfoBox }"
+      *ngIf="selectedMode !== 'REVIEW_MODE'"
     >
       <div class="d-flex align-items-center justify-content-between box-header">
         <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
@@ -66,10 +67,30 @@
       </div>
     </div>
 
+    <!-- DOCUMENTS BOX -->
+
+    <div
+      class="d-flex flex-column documents-box"
+      [ngClass]="{ 'display-box': displayDocumentsBox }"
+      *ngIf="selectedMode === 'REVIEW_MODE'"
+    >
+      <app-ta-tab-switch
+        [tabs]="tabs"
+        (switchClicked)="tabChange($event)"
+        [type]="'type1-modal-popup'"
+      >
+      </app-ta-tab-switch>
+    </div>
+
     <!-- INFO BAR -->
 
     <div class="d-flex align-items-end info-bar">
-      <div class="d-flex align-items-center">
+      <!-- COMPANY INFO BUTTON -->
+
+      <div
+        class="d-flex align-items-center"
+        *ngIf="selectedMode !== 'REVIEW_MODE'"
+      >
         <svg-icon
           class="info-icon"
           [ngClass]="{ 'display-box': displayInfoBox }"
@@ -81,8 +102,32 @@
         <p
           class="m-0 ta-font-medium"
           [ngClass]="{ 'display-box': displayInfoBox }"
+          (click)="onDisplayOrHideInfoBox()"
         >
           Company Info
+        </p>
+      </div>
+
+      <!-- DOCUMENTS BUTTON-->
+
+      <div
+        class="d-flex align-items-center"
+        *ngIf="selectedMode === 'REVIEW_MODE'"
+      >
+        <svg-icon
+          class="documents-icon"
+          [ngClass]="{ 'display-box': displayDocumentsBox }"
+          src="assets/svg/common/ic_filemanager.svg"
+          [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+          (click)="onDisplayOrHideDocumentsBox()"
+        ></svg-icon>
+
+        <p
+          class="m-0 ta-font-medium"
+          [ngClass]="{ 'display-box': displayDocumentsBox }"
+          (click)="onDisplayOrHideDocumentsBox()"
+        >
+          Documents
         </p>
       </div>
     </div>

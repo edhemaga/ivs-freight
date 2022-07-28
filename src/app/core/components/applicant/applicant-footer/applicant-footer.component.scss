@@ -120,8 +120,27 @@
       }
     }
 
+    .documents-box {
+      position: absolute;
+      top: -400px;
+      width: 400px;
+      padding: 0 12px 12px 12px;
+      margin-left: -10px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
+      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      visibility: hidden;
+      opacity: 0;
+
+      &.display-box {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+
     .info-bar {
-      .info-icon {
+      .info-icon,
+      .documents-icon {
         cursor: pointer;
         margin-right: 6px !important;
         margin-top: 12px !important;
@@ -157,14 +176,18 @@
           }
         }
       }
-
       p {
+        cursor: pointer;
         margin-top: 12px !important;
         height: 18px;
         font-size: 14px;
         color: $bw6-2;
         user-select: none;
         transition: color 0.2s ease-in-out;
+
+        &:hover {
+          color: $ta-light-grey-3;
+        }
 
         &.display-box {
           color: $ta-blue;
