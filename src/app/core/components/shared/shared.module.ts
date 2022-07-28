@@ -108,6 +108,8 @@ import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-inpu
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
+import { MapsComponent } from './maps/maps.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 
 @NgModule({
   declarations: [
@@ -182,6 +184,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    MapsComponent,
   ],
   imports: [
     CommonModule,
@@ -227,6 +230,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     TruckassistTableModule,
     AppTooltipeModule,
     ChartsModule,
+    AgmSnazzyInfoWindowModule,
   ],
   exports: [
     // Modules
@@ -262,6 +266,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     PdfViewerModule,
     AppTooltipeModule,
     ProfileImagesModule,
+    AgmSnazzyInfoWindowModule,
 
     // Components
     TabSwitcherComponent,
@@ -306,6 +311,7 @@ import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdo
     MapListComponent,
     MapListCardComponent,
     MapMarkerDropdownComponent,
+    MapsComponent,
 
     // Modals Components
     TaModalComponent,

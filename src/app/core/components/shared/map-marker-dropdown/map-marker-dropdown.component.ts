@@ -21,6 +21,15 @@ export class MapMarkerDropdownComponent implements OnInit {
   public copiedEmail: boolean = false;
   public copiedAddress: boolean = false;
   public showAllDays: boolean = false;
+
+  public fuelPriceColors: any[] = [
+    '#4CAF4F',
+    '#8AC34A',
+    '#FEC107',
+    '#FF9800',
+    '#EF5350',
+    '#919191'
+  ];
   
   constructor(
     private ref: ChangeDetectorRef

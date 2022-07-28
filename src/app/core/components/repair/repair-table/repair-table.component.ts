@@ -1,5 +1,5 @@
 import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import {
@@ -11,8 +11,6 @@ import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
-import * as AppConst from 'src/app/const';
-import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
 
@@ -20,43 +18,23 @@ import { ShopState } from '../state/shop-state/shop.store';
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
   styleUrls: ['./repair-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDrop')]
+  encapsulation: ViewEncapsulation.None
 })
 export class RepairTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
 
-  public agmMap: any;
-  public styles = AppConst.GOOGLE_MAP_STYLES;
-  mapRestrictions = {
-    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
-    strictBounds: true,
-  };
-
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
-  public markerSelected: boolean = false;
-  public mapLatitude: number = 41.860119;
-  public mapLongitude: number = -87.660156;
   public sortBy: any;
   public searchValue: string = '';
-  public mapMarkers: any[] = [];
-  public mapCircle: any = {
-    lat: 41.860119,
-    lng: -87.660156,
-    radius: 160934.4 // 100 miles
-  };
   public locationFilterOn: boolean = false;
-  private tooltip: any;
-  public locationRange: any = 100;
-
-  public markerAnimations: any = {};
-  public showMarkerWindow: any = {};
   public repairShops: ShopState[] = [];
 
   resetColumns: boolean;
@@ -103,7 +81,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         {name: 'Available', id: 9, sortName: 'available'},
         {name: 'Rating', id: 3, sortName: 'rating'},
         {name: 'Date Added', id: 4, sortName: 'createdAt'},
-        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt'},
         {name: 'Orders', id: 6, sortName: 'orders'},
         {name: 'Total Cost', id: 7, sortName: 'cost'}
       ];
@@ -122,8 +100,8 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: false,
-        showMapView: true,
+        hideViewMode: this.selectedTab === 'repair-shop' ? false : true,
+        showMapView: this.selectedTab === 'repair-shop' ? true : false,
         viewModeActive: 'List'
       },
       config: {
@@ -194,7 +172,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       },
       {
         title: 'Shop',
-        field: null,
+        field: 'repair-shop',
         length: 25,
         data: this.repairShops,
         extended: false,
@@ -572,6 +550,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
         this.setRepairData(event.tabData);
+        this.initTableOptions();
         break;
       }
       case 'open-modal': {
@@ -612,7 +591,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       case 'view-mode': {
         this.tableOptions.toolbarActions.viewModeActive = event.mode;
         if ( event.mode == 'Map' ) {
-          this.markersDropAnimation();
+          //this.mapsComponent.markersDropAnimation();
         }
         break;
       }
@@ -655,67 +634,6 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     this.tableService.sendCurrentSwitchOptionSelected(null);
   }
 
-  mapClick() {
-    this.viewData.map((data: any, index) => {
-      if (data.isSelected) {
-        data.isSelected = false;
-      }
-    });
-  }
-
-  clickedMarker(id) {
-    this.viewData.map((data: any, index) => {
-      if (data.isExpanded) {
-        data.isExpanded = false;
-      }
-
-      if (data.isSelected && data.id != id) {
-        data.isSelected = false;
-      }
-      else if ( data.id == id ) {
-        data.isSelected = !data.isSelected;
-
-        if ( data.isSelected ) {
-          this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
-        }
-        else {
-          this.markerSelected = false;
-        }
-
-        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-          parentElement.style.zIndex = '998';
-  
-          setTimeout(() => { 
-            var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-            if ( childElements.length ) parentElement.style.zIndex = '999';
-          }, 1);
-        });
-      }
-    });
-  }
-
-  markersDropAnimation() {
-    var mainthis = this;
-
-    setTimeout(() => {
-      this.viewData.map((data: any) => {
-        if ( !mainthis.markerAnimations[data.id] ) {
-          mainthis.markerAnimations[data.id] = true;
-        }
-      });
-        
-      setTimeout(() => {
-        this.viewData.map((data: any) => {
-          if ( !mainthis.showMarkerWindow[data.id] ) {
-            mainthis.showMarkerWindow[data.id] = true;
-          }
-        });
-      }, 100);
-    }, 1000);
-  }
-
   changeSortDirection(direction) {
     this.sortDirection = direction;
 
@@ -740,15 +658,14 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     //this.sortShippers();
   }
 
-  showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   searchShops(value) {
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
       //this.sortShippers();
     //}
+  }
+
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

@@ -186,7 +186,9 @@
 
 .favorite-svg {
     position: relative;
-    top: -3px;
+    display: flex;
+    height: 18px;
+    margin-right: 12px;
 
     &.active {
         svg {

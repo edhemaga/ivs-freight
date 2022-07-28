@@ -258,3 +258,74 @@
       margin-right: 22px;
     }
   }
+
+  .marker-fuel-stop-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 8px 4px 4px;
+
+    .fuel-price-colors-container {
+      .fuel-price-text-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .fuel-price-text {
+          font-size: 11px;
+          font-weight: 500;
+          color: #AAAAAA;
+          line-height: 14px;
+
+          &::-moz-selection {
+            color: #AAAAAA;
+            background: #AAAAAA33;
+          }
+          &::selection {
+              color: #AAAAAA;
+              background: #AAAAAA33;
+          }
+        }
+      }
+
+      .fuel-price-colors {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 228px;
+
+        .fuel-price-level {
+          width: 44px;
+          height: 8px;
+          
+          &.first-color {
+            border-radius: 2px 0 0 2px;
+          }
+
+          &.last-color {
+            border-radius: 0 2px 2px 0;
+          }
+        }
+
+        .fuel-price-svg {
+          position: absolute;
+          left: 50%;
+          top: 50%;
+
+          transform: translate(-50%, -50%);
+
+          svg {
+            #Ellipse_635 {
+              fill: #fff;
+            }
+            
+            #Ellipse_636 {
+              fill: #fff;
+              stroke: #FEC107;
+            }
+          }
+        }
+      }
+    }
+  }

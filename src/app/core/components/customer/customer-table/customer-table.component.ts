@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -17,21 +17,17 @@ import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
-import * as AppConst from 'src/app/const';
-import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { MapsAPILoader } from '@agm/core';
-
-declare var google: any;
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
   styleUrls: ['./customer-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDrop')]
+  encapsulation: ViewEncapsulation.None
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -40,41 +36,16 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public shipper: ShipperState[] = [];
   public selectedTab = 'broker';
   public resetColumns: boolean;
-  public agmMap: any;
-  public styles = AppConst.GOOGLE_MAP_STYLES;
-  mapRestrictions = {
-    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
-    strictBounds: true,
-  };
 
   public searchForm!: FormGroup;
   public locationForm!: FormGroup;
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
-  public markerSelected: boolean = false;
-  public mapLatitude: number = 41.860119;
-  public mapLongitude: number = -87.660156;
   public sortBy: any;
   public searchValue: string = '';
   public mapMarkers: any[] = [];
-  public mapCircle: any = {
-    lat: 41.860119,
-    lng: -87.660156,
-    radius: 160934.4 // 100 miles
-  };
   public locationFilterOn: boolean = false;
-  private tooltip: any;
-  public locationRange: any = 100;
-
-  public markerAnimations: any = {};
-  public showMarkerWindow: any = {};
-  public dropDownActive: number = -1;
-  public mapZoom: number = 1;
-  public mapCenter: any = {
-    lat: 41.860119,
-    lng: -87.660156,
-  }
 
   constructor(
     private modalService: ModalService,
@@ -87,17 +58,12 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private ref: ChangeDetectorRef,
     private formBuilder: FormBuilder,
     private shipperStore: ShipperStore,
-    private mapsAPILoader: MapsAPILoader,
     private mapsService: MapsService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
     this.sendCustomerData();
-
-    this.mapsAPILoader.load().then(() => {
-      console.log('mapsAPILoader');
-    });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -211,7 +177,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
       this.locationForm.valueChanges.subscribe((changes) => {
         if ( changes.range ) {
-          this.changeLocationRange(changes.range);
+          this.mapsComponent.changeLocationRange(changes.range);
         }
 
         if ( changes.location ) {
@@ -392,9 +358,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
       if ( event.mode == 'Map' ) {
         this.getMapMarkers();
-        this.showHideMarkers();
         this.sortShippers();
-        this.markersDropAnimation();
       }
     }
   }
@@ -490,7 +454,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.viewData = closeAnimationAction(false, this.viewData);
 
       this.sortShippers();
-      this.markersDropAnimation();
+      this.mapsComponent.markersDropAnimation();
 
       clearInterval(inetval);
     }, 1000);
@@ -558,77 +522,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.tableService.sendDeleteSelectedRows([]);
   }
 
-  public getMapInstance(map) {
-    this.agmMap = map;
-  }
-
-  clickedMarker(id) {
-    this.viewData.map((data: any, index) => {
-      if (data.isExpanded) {
-        data.isExpanded = false;
-      }
-
-      if (data.isSelected && data.id != id) {
-        data.isSelected = false;
-      }
-      else if ( data.id == id ) {
-        data.isSelected = !data.isSelected;
-      }
-    });
-
-    this.mapMarkers.map((data: any, index) => {
-      if (data.isExpanded) {
-        data.isExpanded = false;
-      }
-
-      if (data.isSelected && data.id != id) {
-        data.isSelected = false;
-      }
-      else if ( data.id == id ) {
-        data.isSelected = !data.isSelected;
-
-        if ( data.isSelected ) {
-          this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
-        }
-        else {
-          this.markerSelected = false;
-        }
-
-        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-            parentElement.style.zIndex = '998';
-
-            var shadowElement = parentElement.querySelectorAll<HTMLElement>(".si-content")[0];
-            shadowElement.classList.remove("marker-tooltip-shadow");
-
-            setTimeout(() => { 
-              var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-              if ( childElements.length ) {
-                
-                setTimeout(() => { 
-                  shadowElement.classList.add("marker-tooltip-shadow");
-                }, 150);
-
-                parentElement.style.zIndex = '999';
-              }
-            }, 1);
-        });
-        
-        // data.markerAnimation = 'BOUNCE';
-
-        // setTimeout(function() {
-        //   data.markerAnimation = 'none';
-        // }, 500);
-      }
-    });
-  }
-
-  showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
-
   changeSortDirection(direction) {
     this.sortDirection = direction;
 
@@ -641,7 +534,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.sortShippers();
   }
   
-  changeSortCategory(item, column) {
+  changeSortCategory(item) {
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
@@ -651,21 +544,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       : '';
       
     this.sortShippers();
-  }
-  
-  closePopover() {
-    this.tooltip.close();
-  }
-
-  mapClick() {
-    this.viewData.map((data: any, index) => {
-      if (data.isSelected) {
-        data.isSelected = false;
-      }
-    });
-    
-    var shadowElements = document.getElementsByClassName("marker-tooltip-shadow");
-    if ( shadowElements.length ) shadowElements[0].classList.remove("marker-tooltip-shadow");
   }
 
   sortShippers() {
@@ -684,7 +562,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           this.viewData = res.pagination.data;
           
           if ( this.locationFilterOn ) {
-            this.showHideMarkers();
+            this.mapsComponent.showHideMarkers();
           }
           
           this.ref.detectChanges();
@@ -723,118 +601,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     });
   }
 
-  showHideMarkers(){
-    this.viewData.map((data: any) => {
-      var getDistance = this.mapsService.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
-      data.isShown = getDistance[0];
-      data.distanceBetween = this.mapsService.getMiles(getDistance[1]).toFixed(1);
-    });
-  }
-
-  setLocationRange(value) {
-    this.mapCircle.radius = this.mapsService.getMeters(value);
-    this.showHideMarkers();
-    this.locationFilterOn = true;
-
-    this.sortTypes[1].isHidden = false;
-    this.ref.detectChanges();
-  }
-
-  clearLocationRange() {
-    this.mapCircle.radius = this.mapsService.getMeters(100);
-    this.showHideMarkers();
-    this.locationFilterOn = false;
-
-    this.sortTypes[1].isHidden = true;
-
-    if ( this.activeSortType.name == 'Location' ) {
-      this.activeSortType = this.sortTypes[0];
-    }
-
-    this.locationForm.reset();
-    
-    this.ref.detectChanges();
-  }
-
-  changeLocationRange(value) {
-    this.locationRange = value;
-  }
-
-  setLocationFilter() {
-    this.setLocationRange(this.locationRange);
-    this.closePopover();
-  }
-
-  clearLocationFilter() {
-    this.locationRange = 100;
-    this.clearLocationRange();
-    this.closePopover();
-  }
-
-  onHandleAddress(event) {
-    console.log('onHandleAddress', event);
-  }
-
-  markersDropAnimation() {
-    var mainthis = this;
-
-      setTimeout(() => {
-        this.viewData.map((data: any) => {
-          if ( !mainthis.markerAnimations[data.id] ) {
-            mainthis.markerAnimations[data.id] = true;
-          }
-        });
-          
-        setTimeout(() => {
-          this.viewData.map((data: any) => {
-            if ( !mainthis.showMarkerWindow[data.id] ) {
-              mainthis.showMarkerWindow[data.id] = true;
-            }
-          });
-        }, 100);
-      }, 1000);
-  }
-
-  toggleDropdown(tooltip: any, id: number, event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
-      tooltip.close();
-    } else {
-      tooltip.open({ data: this.tableOptions.actions });
-    }
-
-    this.dropDownActive = tooltip.isOpen() ? id : -1;
-  }
-
-  onDropAction(action: any, event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.onTableBodyActions({
-      id: this.dropDownActive,
-      type: action.name,
-    });
-
-    this.tooltip.close();
-  }
-
-  zoomChange(event){
-    this.mapZoom = event;
-  }
-
-  markerZoom(e, item) {
-    if(e.wheelDeltaY > 0) {
-      // The user scrolled up.
-      this.zoomChange(this.mapZoom+1);
-
-      this.mapLatitude = item.latitude;
-      this.mapLongitude = item.longitude;
-    } else {
-      // The user scrolled down.
-      this.zoomChange(this.mapZoom-1);
-    }
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

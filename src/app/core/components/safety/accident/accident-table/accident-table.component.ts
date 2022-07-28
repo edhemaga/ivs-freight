@@ -1,21 +1,19 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { AccidentModalComponent } from '../accident-modal/accident-modal.component';
 
-import { input_dropdown_animation } from '../../../shared/ta-input-dropdown/ta-input-dropdown.animation';
-import * as AppConst from 'src/app/const';
-
 @Component({
   selector: 'app-accident-table',
   templateUrl: './accident-table.component.html',
   styleUrls: ['./accident-table.component.scss', '../../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDrop')]
+  encapsulation: ViewEncapsulation.None
 })
 export class AccidentTableComponent implements OnInit {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -25,34 +23,12 @@ export class AccidentTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  public agmMap: any;
-  public styles = AppConst.GOOGLE_MAP_STYLES;
-  mapRestrictions = {
-    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
-    strictBounds: true,
-  };
-
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
-  public markerSelected: boolean = false;
-  public mapLatitude: number = 41.860119;
-  public mapLongitude: number = -87.660156;
   public sortBy: any;
   public searchValue: string = '';
-  public mapMarkers: any[] = [];
-  public mapCircle: any = {
-    lat: 41.860119,
-    lng: -87.660156,
-    radius: 160934.4 // 100 miles
-  };
   public locationFilterOn: boolean = false;
-  private tooltip: any;
-  public locationRange: any = 100;
-
-  public markerAnimations: any = {};
-  public showMarkerWindow: any = {};
-  public dropDownActive: number = -1;
 
   constructor(
     private modalService: ModalService,
@@ -82,7 +58,8 @@ export class AccidentTableComponent implements OnInit {
         {name: 'Date & Time', id: 3, sortName: 'date'},
         {name: 'Drivers Name', id: 4, sortName: 'driverName'},
         {name: 'Truck Unit', id: 5, sortName: 'truck'},
-        {name: 'Trailer Unit', id: 6, sortName: 'trailer'}
+        {name: 'Trailer Unit', id: 6, sortName: 'trailer'},
+        {name: 'Inspection Level', id: 7, sortName: 'inspectionLevel', isHidden: false}, // for Roadside Inspection only
       ];
 
       this.activeSortType = this.sortTypes[0];
@@ -275,7 +252,7 @@ export class AccidentTableComponent implements OnInit {
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
       if ( event.mode == 'Map' ) {
-        this.markersDropAnimation();
+        //this.mapsComponent.markersDropAnimation();
       }
     }
   }
@@ -323,95 +300,7 @@ export class AccidentTableComponent implements OnInit {
     //}
   }
 
-  mapClick() {
-    this.viewData.map((data: any, index) => {
-      if (data.isSelected) {
-        data.isSelected = false;
-      }
-    });
-  }
-
-  clickedMarker(id) {
-    this.viewData.map((data: any, index) => {
-      if (data.isExpanded) {
-        data.isExpanded = false;
-      }
-
-      if (data.isSelected && data.id != id) {
-        data.isSelected = false;
-      }
-      else if ( data.id == id ) {
-        data.isSelected = !data.isSelected;
-
-        if ( data.isSelected ) {
-          this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
-        }
-        else {
-          this.markerSelected = false;
-        }
-
-        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-          parentElement.style.zIndex = '998';
-  
-          setTimeout(() => { 
-            var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-            if ( childElements.length ) parentElement.style.zIndex = '999';
-          }, 1);
-        });
-      }
-    });
-  }
-
-  markersDropAnimation() {
-    var mainthis = this;
-
-    setTimeout(() => {
-      this.viewData.map((data: any) => {
-        if ( !mainthis.markerAnimations[data.id] ) {
-          mainthis.markerAnimations[data.id] = true;
-        }
-      });
-        
-      setTimeout(() => {
-        this.viewData.map((data: any) => {
-          if ( !mainthis.showMarkerWindow[data.id] ) {
-            mainthis.showMarkerWindow[data.id] = true;
-          }
-        });
-      }, 100);
-    }, 1000);
-  }
-
-  onDropAction(action: any, event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.onTableBodyActions({
-      id: this.dropDownActive,
-      type: action.name,
-    });
-
-    this.tooltip.close();
-  }
-
-  toggleDropdown(tooltip: any, id: number, event) {
-    event.preventDefault();
-    event.stopPropagation();
-
-    this.tooltip = tooltip;
-    if (tooltip.isOpen()) {
-      tooltip.close();
-    } else {
-      tooltip.open({ data: this.tableOptions.actions });
-    }
-
-    this.dropDownActive = tooltip.isOpen() ? id : -1;
-  }
-
-  showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

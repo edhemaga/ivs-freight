@@ -31,7 +31,6 @@ export class MapListComponent implements OnInit, OnChanges {
   ) { }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges', changes);
     if ( changes.mapListContent ) {
       
       if ( changes.mapListContent.currentValue.length > 5 ) {
@@ -82,11 +81,6 @@ export class MapListComponent implements OnInit, OnChanges {
   openPopover(t2) {
     t2.open();
     this.tooltip = t2;
-  }
-
-  showMoreOptions(event) {
-    event.preventDefault();
-    event.stopPropagation();
   }
 
   changeSortingDirection() {

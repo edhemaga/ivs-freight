@@ -6,7 +6,7 @@
         <div 
           class="show-more" 
           (click)="showMoreOptions($event)" 
-          [ngClass]="item?.isSelected ? 'table-dropdown-container active-drop' : 'table-dropdown-container'">
+          [ngClass]="item?.isSelected ? 'table-dropdown-container' : 'table-dropdown-container'">
           <app-details-page-dropdown
             [options]="dropdownActions"
             [placement]="'bottom-left'"
@@ -16,7 +16,7 @@
           </app-details-page-dropdown>
         </div>
       </div>
-      <div class="marker-accident-container" *ngIf="type == 'Accident'">
+      <div class="marker-accident-container" *ngIf="type == 'accident'">
         <div class="accident-report-container">
           <div class="accident-svg-container vehicles-number" [ngClass]="{ 'inactive': item?.vehicles == 0 }">
             <svg-icon
@@ -60,6 +60,32 @@
           </div>
         </div>
       </div>
+      <div class="accident-report-container inspection-container" *ngIf="type == 'inspection'">
+        <div class="accident-svg-container violation-number" [ngClass]="{ 'inactive': item?.vehicles == 0 }">
+          <svg-icon
+            class="accident-report-svg"
+            src="assets/svg/common/ic_inpsection_violation.svg"
+            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+          ></svg-icon>
+          <div class="marker-like-text"><span class="marker-bold-text">4</span> Violations</div>
+        </div>
+        <div class="accident-svg-container injury-number" [ngClass]="{ 'inactive': item?.injuries == 0 }">
+          <svg-icon
+            class="accident-report-svg"
+            src="assets/svg/common/ic_inspection_oss.svg"
+            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+          ></svg-icon>
+          <div class="marker-like-text"><span class="marker-bold-text">1</span> Out of Service</div>
+        </div>
+        <div class="accident-svg-container fatality-number" [ngClass]="{ 'inactive': item?.fatality == 0 }">
+          <svg-icon
+            class="accident-report-svg"
+            src="assets/svg/common/ic_inspection_citation.svg"
+            [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
+          ></svg-icon>
+          <div class="marker-like-text"><span class="marker-bold-text">1</span> Citation</div>
+        </div>
+      </div>
       <div class="marker-info-text marker-bold-text uppercase red-text mg-bottom-2 mg-top-4" *ngIf="item.status == 2">
         Permanently Closed
       </div>
@@ -70,7 +96,7 @@
           <span class="marker-bold-text">- 1 hour 27 minutes</span> est.
         </span>
       </div>
-      <div class="marker-rating-container mg-top-4" *ngIf="type != 'Accident'">
+      <div class="marker-rating-container mg-top-4" *ngIf="type != 'accident' && type != 'fuelStop' && type != 'inspection'">
         <span class="marker-rating">
           <svg-icon
               class="marker-rating-svg"
@@ -89,7 +115,7 @@
         </span>
       </div>
     </div>
-    <div *ngIf="type == 'Repair'">
+    <div *ngIf="type == 'repairShop'">
       <div class="marker-divider"></div>
       <div class="marker-info-container-all">
         <div class="marker-repair-icons-container">
@@ -100,6 +126,45 @@
             [ngClass]="{ 'active': service.active }"
             [svgStyle]="{ 'width.px': 24, 'height.px': 24 }"
           ></svg-icon>
+        </div>  
+      </div>
+    </div>
+    <div *ngIf="type == 'fuelStop'">
+      <div class="marker-divider"></div>
+      <div class="marker-info-container-all">
+        <div class="marker-fuel-stop-container">
+          <div class="fuel-price-container">
+            <div class="marker-info-text marker-bold-text mg-bottom-2">$4.092</div>
+            <div class="marker-like-text">59 days ago</div>
+          </div>
+          <div class="fuel-price-colors-container">
+            <div class="fuel-price-text-container mg-bottom-4">
+              <div class="fuel-price-text">$3.23</div>
+              <div class="fuel-price-text">$4.18</div>
+            </div>
+            <div class="fuel-price-colors">
+              <div class="fuel-price-level first-color" [ngStyle]="{
+                background: fuelPriceColors[0]
+              }"></div>
+              <div class="fuel-price-level" [ngStyle]="{
+                background: fuelPriceColors[1]
+              }"></div>
+              <div class="fuel-price-level" [ngStyle]="{
+                background: fuelPriceColors[2]
+              }"></div>
+              <div class="fuel-price-level" [ngStyle]="{
+                background: fuelPriceColors[3]
+              }"></div>
+              <div class="fuel-price-level last-color" [ngStyle]="{
+                background: fuelPriceColors[4]
+              }"></div>
+              <svg-icon
+                class="fuel-price-svg"
+                src="assets/svg/common/ic_owner-status.svg"
+                [svgStyle]="{ 'width.px': 22, 'height.px': 22 }"
+              ></svg-icon>
+            </div>
+          </div>
         </div>  
       </div>
     </div>
@@ -150,7 +215,7 @@
         </span>
       </div>
       
-      <div class="marker-info-container" *ngIf="type == 'Accident'">
+      <div class="marker-info-container" *ngIf="type == 'accident' || type == 'inspection'">
         <div class="marker-dual-info-container p-0">
           <div class="marker-date-holder accident-date">
             <svg-icon
@@ -214,7 +279,7 @@
     [class.unopened]="item?.isExpanded === undefined"
     [@showHideDrop]="item?.isExpanded">
       <div class="marker-divider"></div>
-      <div *ngIf="type == 'Shipper' && (item?.shippingFrom && item?.shippingTo) || (item?.receivingFrom && item?.receivingTo)">
+      <div *ngIf="type == 'shipper' && (item?.shippingFrom && item?.shippingTo) || (item?.receivingFrom && item?.receivingTo)">
         <div class="marker-info-container-all">
           <div class="marker-title">Available Hours</div>
           <div class="marker-expanded-info-container">
@@ -230,7 +295,7 @@
         </div>
         <div class="marker-divider"></div>
       </div>
-      <div *ngIf="type == 'Repair' && item?.openHours">
+      <div *ngIf="type == 'repairShop' && item?.openHours">
         <div class="marker-info-container-all">
           <div class="marker-title">Working Hours</div>
           <div class="marker-expanded-info-container">
@@ -271,14 +336,14 @@
       <div class="marker-info-container-all">
         <div class="marker-title">
           <div class="marker-dual-info-container p-0">
-            <span class="data-count">{{ type == 'Shipper' ? '769' : type == 'Repair' ? item.order : type == 'Accident' ? '9' : '' }}</span>
-            <span class="load-text">{{ type == 'Shipper' ? 'Load' : type == 'Repair' ? 'Order' : type == 'Accident' ? 'Total Weight' : '' }}</span>
+            <span class="data-count">{{ type == 'shipper' ? '769' : type == 'repairShop' ? item.order : (type == 'accident' || type == 'inspection') ? '9' : type == 'fuelStop' ? '769' : '' }}</span>
+            <span class="load-text">{{ type == 'shipper' ? 'Load' : type == 'repairShop' ? 'Order' : (type == 'accident' || type == 'inspection') ? 'Total Weight' : type == 'fuelStop' ? 'Order' : '' }}</span>
           </div>
-          <div class="marker-dual-info-container" *ngIf="type == 'Repair'">
-            <span class="marker-bold-text blue-text">${{ item.cost }}K </span><span class="load-text font-weight-normal">Cost</span>
+          <div class="marker-dual-info-container" *ngIf="type == 'repairShop' || type == 'fuelStop'">
+            <span class="marker-bold-text blue-text">${{ item.cost ? item.cost : '137.56' }}K </span><span class="load-text font-weight-normal">Cost</span>
           </div>
         </div>
-        <div class="marker-expanded-info-container" *ngIf="type == 'Shipper'">
+        <div class="marker-expanded-info-container" *ngIf="type == 'shipper'">
           <div class="marker-dual-info-container">
             <div class="marker-info-text mg-bottom-4"><span class="marker-bold-text">632</span> Picked Up</div>
             <div class="marker-like-text">Avg. Loading <span class="marker-bold-text">22m 37s</span></div>
@@ -287,7 +352,7 @@
             <div class="marker-info-text mg-bottom-4"><span class="marker-bold-text">127</span> Delivered</div>
           </div>
         </div>
-        <div class="marker-expanded-info-container" *ngIf="type == 'Accident'">
+        <div class="marker-expanded-info-container" *ngIf="type == 'accident' || type == 'inspection'">
           <div class="marker-dual-info-container">
             <div class="marker-info-text mg-bottom-8"><span class="marker-bold-text">3</span> Severity Weight</div>
           </div>
@@ -296,8 +361,8 @@
           </div>
         </div>
       </div>
-      <div class="marker-divider"></div>
-      <div class="marker-info-container-all" *ngIf="type != 'Accident'">
+      <div class="marker-divider" [ngClass]="{ 'mg-top-6': type != 'accident' && type != 'shipper' }"></div>
+      <div class="marker-info-container-all" *ngIf="type != 'accident'">
         <div class="marker-expanded-info-container">
           <div class="marker-dual-info-container mg-bottom-4">
             <div class="marker-like-text marker-bold-text mg-bottom-4">Date Added</div>
@@ -309,7 +374,7 @@
           </div>
         </div>
       </div>
-      <div class="marker-info-container-all" *ngIf="type == 'Accident'">
+      <div class="marker-info-container-all" *ngIf="type == 'accident' || type == 'inspection'">
         <div class="marker-expanded-info-container">
           <div class="marker-dual-info-container mg-bottom-4">
             <div class="marker-like-text marker-bold-text mg-bottom-4">Driver</div>

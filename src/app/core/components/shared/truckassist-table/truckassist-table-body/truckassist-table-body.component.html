@@ -427,7 +427,7 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center">
+              <div class="service-container set-center" *ngIf="row.doc">
                 <div
                   class="img-style img-margin"
                   [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
@@ -1171,7 +1171,7 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center">
+              <div class="service-container set-center" *ngIf="row.doc">
                 <div
                   class="img-style img-margin"
                   [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"

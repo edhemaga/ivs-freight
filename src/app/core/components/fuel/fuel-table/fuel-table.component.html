@@ -43,114 +43,25 @@
         [index]="i"
         [address]="latlong.address"
         [rating]="{'up': latlong?.upRatingCount, 'down': latlong?.downRatingCount}"
-        [type]="'Shipper'"
+        [type]="'fuelStop'"
         [sortCategory]="activeSortType"
         [locationFilterOn]="locationFilterOn"
         [dropdownActions]="tableOptions.actions"
         (bodyActions)="onTableBodyActions($event)"
-        (clickedMarker)="clickedMarker(latlong.id)"
+        (clickedMarker)="selectItem(latlong.id)"
         [ngStyle]="{
           display: locationFilterOn && latlong?.isShown == false ? 'none' : 'block'
         }"
       ></app-map-list-card>
     </app-map-list>
 
-    <agm-map 
-      [latitude]="mapLatitude"
-      [longitude]="mapLongitude"
-      [restriction]="mapRestrictions"
-      [streetViewControl]="false"
-      [styles]="styles"
-      [zoom]="1"
-      [usePanning]="true"
-      [keyboardShortcuts]="false"
-      (mapClick)="mapClick()">
-        <!-- <agm-marker-cluster [minimumClusterSize]= "2"
-        [averageCenter]="true"
-        imagePath="https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m"> -->
-          <agm-marker 
-            *ngFor="let latlong of viewData; let i = index;" 
-            (markerClick)="clickedMarker(latlong.id, $event)" 
-            [label]="latlong?.companyName" 
-            [latitude]="latlong.latitude" 
-            [longitude]="latlong.longitude"
-            [agmFitBounds]="true" 
-            [animation]="'DROP'" 
-            [visible]="!showMarkerWindow[latlong.id]"
-            [iconUrl]="{
-              url: 
-                latlong?.isSelected && latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed_big.svg' :
-                latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed.svg' :
-                latlong?.isSelected ? 'assets/svg/common/ic_marker_selected.svg' : 
-                'assets/svg/common/ic_marker.svg'
-            }">
-            <agm-snazzy-info-window
-              [closeOnMapClick]="false"
-              [closeWhenOthersOpen]="false"
-              [isOpen]="markerAnimations[latlong.id]"
-              [latitude]="latlong.latitude"
-              [longitude]="latlong.longitude"
-              [maxHeight]="32"
-              [maxWidth]="26"
-              [openOnMarkerClick]="false"
-              [pointer]="false"
-              [showCloseButton]="false"
-              [panOnOpen]="false"
-              placement="bottom"
-              *ngIf="!locationFilterOn || latlong.isShown != false"
-            >
-              <ng-template>
-                <div class="marker-container">
-                  <svg-icon
-                    class="marker-icon"
-                    src="assets/svg/common/ic_marker.svg"
-                    (click)="clickedMarker(latlong.id)" 
-                    [ngClass]="{ 'selected-marker': latlong.isSelected }"
-                    *ngIf="latlong.status != 2"
-                  ></svg-icon>
-                  <svg-icon
-                    class="marker-icon permanently-closed-icon"
-                    src="assets/svg/common/ic_marker_closed.svg"
-                    (click)="clickedMarker(latlong.id)" 
-                    [ngClass]="{ 'selected-marker': latlong.isSelected }"
-                    *ngIf="latlong.status == 2"
-                  ></svg-icon>
-                  <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected }">
-                    <div
-                      class="marker-tooltip"
-                      [ngClass]="{ 'hide-marker-tooltip': latlong.isSelected }"
-                    >
-                      {{ latlong.companyName }}
-                    </div>
-                  </div>
-                </div>
-               
-                <div class="marker-dropdown" [ngClass]="{'show-marker-dropdown marker-dropdown-animation': latlong?.isSelected}">
-                  <app-map-marker-dropdown
-                    [title]="latlong?.businessName"
-                    [item]="latlong"
-                    [type]="'Shipper'"
-                    [sortCategory]="activeSortType"
-                    [locationFilterOn]="locationFilterOn"
-                    [dropdownActions]="tableOptions.actions"
-                    (bodyActions)="onTableBodyActions($event)"
-                  ></app-map-marker-dropdown>
-                </div>
-              </ng-template>
-            </agm-snazzy-info-window>
-          </agm-marker>
-          
-          <agm-circle 
-              *ngIf="locationFilterOn"
-              [latitude]="mapCircle.lat" 
-              [longitude]="mapCircle.lng"
-              [radius]="mapCircle.radius"
-              [fillColor]="'lightBlue'"
-              [circleDraggable]="false" 
-              [editable]="false">
-          </agm-circle>
-        <!-- </agm-marker-cluster> -->
-    </agm-map>
+    <app-maps
+      #mapsComponent
+      [viewData]="viewData"
+      [dropdownActions]="tableOptions.actions"
+      [mapType]="'fuelStop'"
+      (callDropDownAction)="onTableBodyActions($event)"
+    ></app-maps>
   </div>
 </div>
   

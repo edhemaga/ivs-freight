@@ -1,21 +1,20 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { input_dropdown_animation } from '../../shared/ta-input-dropdown/ta-input-dropdown.animation';
-import * as AppConst from 'src/app/const';
 
 @Component({
   selector: 'app-fuel-table',
   templateUrl: './fuel-table.component.html',
   styleUrls: ['./fuel-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None,
-  animations: [input_dropdown_animation('showHideDrop')]
+  encapsulation: ViewEncapsulation.None
 })
 export class FuelTableComponent implements OnInit {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -25,33 +24,30 @@ export class FuelTableComponent implements OnInit {
   public selectedTab = 'active';
   resetColumns: boolean;
 
-  public agmMap: any;
-  public styles = AppConst.GOOGLE_MAP_STYLES;
-  mapRestrictions = {
-    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
-    strictBounds: true,
-  };
-
   public sortTypes: any[] = [];
   public sortDirection: string = 'asc';
   public activeSortType: any = {};
-  public markerSelected: boolean = false;
-  public mapLatitude: number = 41.860119;
-  public mapLongitude: number = -87.660156;
   public sortBy: any;
   public searchValue: string = '';
-  public mapMarkers: any[] = [];
-  public mapCircle: any = {
-    lat: 41.860119,
-    lng: -87.660156,
-    radius: 160934.4 // 100 miles
-  };
   public locationFilterOn: boolean = false;
-  private tooltip: any;
-  public locationRange: any = 100;
 
-  public markerAnimations: any = {};
-  public showMarkerWindow: any = {};
+  public fuelPriceColors: any[] = [
+    '#4CAF4F',
+    '#8AC34A',
+    '#FEC107',
+    '#FF9800',
+    '#EF5350',
+    '#919191'
+  ];
+
+  public fuelPriceHoverColors: any[] = [
+    '#43A047',
+    '#7CB242',
+    '#FFB300',
+    '#FB8C00',
+    '#F34235',
+    '#6C6C6C'
+  ];
 
   constructor(
     private modalService: ModalService,
@@ -77,11 +73,9 @@ export class FuelTableComponent implements OnInit {
         {name: 'Business Name', id: 1, sortName: 'name'},
         {name: 'Location', id: 2, sortName: 'location', isHidden: true},
         {name: 'Favorites', id: 8, sortName: 'favorites'},
-        {name: 'Available', id: 9, sortName: 'available'},
-        {name: 'Rating', id: 3, sortName: 'rating'},
-        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Fuel Price', id: 9, sortName: 'fuelPrice'},
         {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
-        {name: 'Orders', id: 6, sortName: 'orders'},
+        {name: 'Purchase', id: 6, sortName: 'purchase'},
         {name: 'Total Cost', id: 7, sortName: 'cost'}
       ];
 
@@ -264,7 +258,7 @@ export class FuelTableComponent implements OnInit {
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
       if ( event.mode == 'Map' ) {
-        this.markersDropAnimation();
+        //this.mapsComponent.markersDropAnimation();
       }
     }
   }
@@ -312,64 +306,7 @@ export class FuelTableComponent implements OnInit {
     //}
   }
 
-  mapClick() {
-    this.viewData.map((data: any, index) => {
-      if (data.isSelected) {
-        data.isSelected = false;
-      }
-    });
-  }
-
-  clickedMarker(id) {
-    this.viewData.map((data: any, index) => {
-      if (data.isExpanded) {
-        data.isExpanded = false;
-      }
-
-      if (data.isSelected && data.id != id) {
-        data.isSelected = false;
-      }
-      else if ( data.id == id ) {
-        data.isSelected = !data.isSelected;
-
-        if ( data.isSelected ) {
-          this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
-        }
-        else {
-          this.markerSelected = false;
-        }
-
-        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-          parentElement.style.zIndex = '998';
-  
-          setTimeout(() => { 
-            var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-            if ( childElements.length ) parentElement.style.zIndex = '999';
-          }, 1);
-        });
-      }
-    });
-  }
-
-  markersDropAnimation() {
-    var mainthis = this;
-
-    setTimeout(() => {
-      this.viewData.map((data: any) => {
-        if ( !mainthis.markerAnimations[data.id] ) {
-          mainthis.markerAnimations[data.id] = true;
-        }
-      });
-        
-      setTimeout(() => {
-        this.viewData.map((data: any) => {
-          if ( !mainthis.showMarkerWindow[data.id] ) {
-            mainthis.showMarkerWindow[data.id] = true;
-          }
-        });
-      }, 100);
-    }, 1000);
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }
