@@ -17,13 +17,10 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import {
-  accountBankRegex,
   einNumberRegex,
-  routingBankRegex,
   ssnNumberRegex,
   emailRegex,
   phoneRegex,
-  bankRoutingValidator,
   mileValidation,
   perStopValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -41,6 +38,7 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -49,7 +47,7 @@ import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.servic
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -150,12 +148,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService,
-    private formService: FormService
+    private formService: FormService,
+    private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
@@ -285,13 +283,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       smsNotificationPayroll: [false],
     });
 
-    this.formService.checkFormChange(this.driverForm);
+    // this.formService.checkFormChange(this.driverForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public get offDutyLocations(): FormArray {
@@ -344,50 +342,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onBankSelected(): void {
+  private onBankSelected() {
     this.driverForm
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            true,
-            routingBankRegex
-          );
-          this.routingNumberTyping();
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            true,
-            accountBankRegex
-          );
-        } else {
-          this.isBankSelected = false;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            false
-          );
-        }
-      });
-  }
-
-  private routingNumberTyping() {
-    this.driverForm
-      .get('routing')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value && value.split('').length > 8) {
-          if (bankRoutingValidator(value)) {
-            this.driverForm.get('routing').setErrors(null);
-          } else {
-            this.driverForm.get('routing').setErrors({ invalid: true });
-          }
-        }
+        this.isBankSelected = this.bankVerificationService.onSelectBank(
+          value,
+          this.driverForm.get('routing'),
+          this.driverForm.get('account')
+        );
       });
   }
 
@@ -1007,6 +971,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             address: res.address,
             valid: res.address ? true : false,
           });
+
+          this.onBankSelected();
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

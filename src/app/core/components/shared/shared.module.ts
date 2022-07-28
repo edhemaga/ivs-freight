@@ -103,6 +103,7 @@ import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.compon
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
+import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 
 @NgModule({
@@ -146,6 +147,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     FilterComponent,
     TaChartComponent,
     TaInputArrowsComponent,
+    TaSpinnerComponent,
 
     // Modals Components
     TaModalComponent,
@@ -295,6 +297,8 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     FilterComponent,
     TaTabSwitchComponent,
     ProgressInvoicesComponent,
+    TaSpinnerComponent,
+
     TaCopyComponent,
     // Modals Components
     TaModalComponent,

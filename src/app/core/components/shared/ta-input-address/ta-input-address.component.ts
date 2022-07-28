@@ -44,7 +44,6 @@ export class TaInputAddressComponent
   public invalidAddress: boolean = false;
 
   public options = {
-    types: null,
     componentRestrictions: { country: ['US', 'CA'] },
   };
 
@@ -72,10 +71,9 @@ export class TaInputAddressComponent
         }
       });
     // Only City and Zip In Address
-    this.options = {
-      ...this.options,
-      types: this.inputConfig.onlyCityAndZipAddress ? ['(cities)'] : null,
-    };
+    if (this.inputConfig.onlyCityAndZipAddress) {
+      this.options['types'] = ['(cities)'];
+    }
   }
 
   public handleAddressChange(address: AddressEntity) {

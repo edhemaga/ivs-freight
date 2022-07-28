@@ -32,6 +32,7 @@ export interface UpdateDivisionCompanyCommand {
     scac?: string | null;
     timeZone?: number | null;
     currency?: number | null;
+    logo?: string | null;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;

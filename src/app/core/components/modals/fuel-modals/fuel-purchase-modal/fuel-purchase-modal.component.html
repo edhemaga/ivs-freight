@@ -4,7 +4,7 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? fuelForm.valid && isDirty : fuelForm.valid"
+  [isModalValid]="fuelForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="fuelForm" class="form-container">
