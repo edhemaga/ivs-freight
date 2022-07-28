@@ -1,6 +1,7 @@
 import { AfterContentInit, AfterViewChecked, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-custom-scrollbar',
@@ -20,17 +21,13 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
   barClickPosition: number = 0;
   barClickRestHeight: number = 0;
 
-  constructor(private ngZone: NgZone, private elRef: ElementRef, private router: Router) {
-    router.events.pipe(
-      filter(event => event instanceof NavigationEnd)  
-    ).subscribe((event: NavigationEnd) => {
-      console.log(event.url);
-      console.log("NAVIGATION HAS BEEN ENDED");
-      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
-
-    });
+  constructor(private ngZone: NgZone, private elRef: ElementRef, private sharedService: SharedService) {
   }
   ngOnInit(): void {
+
+    this.sharedService.emitUpdateScrollHeight.subscribe(res => {
+      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+    });
 
     this.ngZone.runOutsideAngular(() => {
       document.addEventListener('mouseup', () => {
@@ -78,8 +75,8 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
     const visible_height = window.innerHeight;
 
     this.showScrollbar = true;
-
-    if (content_height < visible_height) {
+    
+    if (content_height <= visible_height) {
       this.showScrollbar = false;
       return;
     }

@@ -177,7 +177,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private http: HttpClient
-  ) {}
+  ) { }
 
   ngOnInit() {
     //this.dashboardStoreService.addStats();
@@ -246,4 +246,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     ],
     export: true,
   };
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.sharedService.emitUpdateScrollHeight.emit(true);
+    }, 200);
+  }
 }

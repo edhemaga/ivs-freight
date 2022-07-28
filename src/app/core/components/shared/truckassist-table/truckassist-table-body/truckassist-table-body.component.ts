@@ -15,6 +15,7 @@ import {
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-truckassist-table-body',
@@ -52,7 +53,8 @@ export class TruckassistTableBodyComponent
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    private sharedService: SharedService
   ) {}
   ngOnInit(): void {
     // Get Selected Tab Data
@@ -156,6 +158,7 @@ export class TruckassistTableBodyComponent
   }
 
   ngAfterViewInit(): void {
+    this.sharedService.emitUpdateScrollHeight.emit(true);
     this.getNotPinedMaxWidth();
   }
 

@@ -7,6 +7,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
 import { applyDrag } from 'src/app/core/utils/methods.globals';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -15,7 +16,7 @@ import { applyDrag } from 'src/app/core/utils/methods.globals';
   encapsulation: ViewEncapsulation.None,
 })
 export class ToDoListCardComponent implements OnInit {
-  
+
   public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
@@ -24,6 +25,7 @@ export class ToDoListCardComponent implements OnInit {
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
+  public dropdownOptions: any;
 
 
   scene = {
@@ -132,11 +134,13 @@ export class ToDoListCardComponent implements OnInit {
 
   constructor(
     private todoTService: TodoTService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private sharedService: SharedService
   ) { }
 
   ngOnInit(): void {
     this.getTodoList();
+    this.initTableOptions();
   }
 
   dragStart = (e) => {
@@ -186,6 +190,7 @@ export class ToDoListCardComponent implements OnInit {
   public openModalTodo() {
     this.modalService.openModal(TaskModalComponent, { size: 'small' });
   }
+
 
   public updateStatus(todo) {
     this.todoTService
@@ -299,6 +304,64 @@ export class ToDoListCardComponent implements OnInit {
 
   log(...params) {
     console.log(...params);
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.sharedService.emitUpdateScrollHeight.emit(true);
+    }, 200);
+  }
+
+
+  /**Function for dots in cards */
+  public initTableOptions(): void {
+    this.dropdownOptions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
+
+  dropAct(event) {
+    if (event.type == "delete-item") {
+      this.todoTService.deleteTodoById(event.id).subscribe();
+      this.cardData = this.cardData.filter(item => item.id !== event.id);
+      this.scene.children = this.scene.children.map(item => {
+        item.children = item.children.filter(item => item.id !== event.id);
+        return item;
+      });
+    } else {
+      this.modalService.openModal(TaskModalComponent, { size: 'small' }, {
+        ...event,
+        type: 'edit'
+      });
+    }
   }
 
 }

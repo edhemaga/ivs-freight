@@ -442,9 +442,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   mapDriverData(data: any) {
-    console.log('Driver data');
-    console.log(data);
-
     this.mapingIndex++;
 
     return {

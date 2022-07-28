@@ -6,6 +6,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import moment from 'moment';
+import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
   selector: 'app-calendar',
@@ -675,7 +676,7 @@ export class CalendarComponent implements OnInit {
   calendarOptions: CalendarOptions;
 
 
-  constructor() {
+  constructor(private sharedService: SharedService) {
     const name = Calendar.name
    }
 
@@ -711,6 +712,9 @@ export class CalendarComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.sharedService.emitUpdateScrollHeight.emit(true);
+    }, 200);
     if(this.fullcalendar){
       this.checkCalendarTitle();
     }
