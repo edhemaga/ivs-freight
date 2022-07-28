@@ -103,6 +103,7 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
 import { MapsComponent } from './maps/maps.component';
@@ -142,7 +143,6 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
@@ -182,6 +182,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    CustomScrollbarComponent,
     MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
@@ -281,13 +282,14 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
+    CustomScrollbarComponent,
+
     DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,

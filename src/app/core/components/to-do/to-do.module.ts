@@ -8,6 +8,7 @@ import { ToDoListCardComponent } from './to-do-list-card/to-do-list-card.compone
 
 import { GridsterModule } from 'angular-gridster2';
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
+import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { TruckassistProgressExpirationModule } from './../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TruckassistProgressExpirationModule } from './../shared/truckassist-pro
     GridsterModule,
     AppTooltipeModule,
     SharedModule,
-    TruckassistProgressExpirationModule,
+    NgxSmoothDnDModule,
+    TruckassistProgressExpirationModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

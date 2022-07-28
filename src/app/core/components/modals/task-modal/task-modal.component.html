@@ -7,134 +7,91 @@
   <form [formGroup]="taskForm" class="form-container">
     <div class="row">
       <div class="col-12">
-        <app-ta-input
-          formControlName="title"
-          [inputConfig]="{
+        <app-ta-input formControlName="title" [inputConfig]="{
             name: 'Title',
             type: 'text',
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
             autoFocus: editData?.type === 'edit' ? false : true
-          }"
-        ></app-ta-input>
+          }"></app-ta-input>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <app-ta-input
-          formControlName="description"
-          [inputConfig]="{
+        <app-ta-input formControlName="description" [inputConfig]="{
             name: 'Description',
             type: 'text',
             label: 'Description',
             textTransform: 'capitalize'
-          }"
-        ></app-ta-input>
+          }"></app-ta-input>
       </div>
     </div>
     <div class="row">
       <div class="col-8">
-        <app-ta-input
-          formControlName="url"
-          [inputConfig]="{
+        <app-ta-input formControlName="url" [inputConfig]="{
             name: 'Hyperlink',
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
             isRequired: true,
             maxLength: 400
-          }"
-        ></app-ta-input>
+          }"></app-ta-input>
       </div>
       <div class="col-4">
-        <app-ta-input
-          formControlName="deadline"
-          [inputConfig]="{
+        <app-ta-input formControlName="deadline" [inputConfig]="{
             name: 'datepicker',
             type: 'text',
             isDropdown: true,
             label: 'Deadline',
             placeholderIcon: 'date',
             customClass: 'datetimeclass'
-          }"
-        ></app-ta-input>
+          }"></app-ta-input>
       </div>
     </div>
     <div class="row">
       <div class="col-12">
-        <app-ta-input-dropdown
-          formControlName="departmentIds"
-          [template]="'multiselect'"
-          [inputConfig]="{
+        <app-ta-input-dropdown formControlName="departmentIds" [template]="'multiselect'" [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             isDropdown: true,
             label: 'Department',
             multiselectDropdown: true,
             dropdownWidthClass: 'w-col-12'
-          }"
-          [options]="resDepartments"
-          [preloadMultiselectItems]="selectedDepartments"
-          (selectedItems)="onSelectDropDown($event, 'res-department')"
-        ></app-ta-input-dropdown>
+          }" [options]="resDepartments" [preloadMultiselectItems]="selectedDepartments"
+          (selectedItems)="onSelectDropDown($event, 'res-department')"></app-ta-input-dropdown>
       </div>
     </div>
     <div class="row last-row">
       <div class="col-12">
-        <app-ta-input-dropdown
-          formControlName="companyUserIds"
-          [template]="'multiselect'"
-          [inputConfig]="{
+        <app-ta-input-dropdown formControlName="companyUserIds" [template]="'multiselect'" [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             isDropdown: true,
             label: 'Assign task',
             multiselectDropdown: true,
             dropdownWidthClass: 'w-col-12'
-          }"
-          [options]="resCompanyUsers"
-          [preloadMultiselectItems]="selectedCompanyUsers"
-          (selectedItems)="onSelectDropDown($event, 'assign-task')"
-        ></app-ta-input-dropdown>
+          }" [options]="resCompanyUsers" [preloadMultiselectItems]="selectedCompanyUsers"
+          (selectedItems)="onSelectDropDown($event, 'assign-task')"></app-ta-input-dropdown>
       </div>
     </div>
-    <app-ta-custom-card
-      [hasCounter]="comments.length ? comments.length : '0'"
-      [cardName]="'Comment'"
-      [isCardOpen]="false"
-      [disabledCard]="true"
-      (onActionEvent)="createComment($event)"
-    >
+    <app-ta-custom-card [hasCounter]="comments.length ? comments.length : '0'" [cardName]="'Comment'"
+      [isCardOpen]="false" [hasActionSvg]="'assets/svg/common/ic_plus.svg'" [hasArrow]="false"
+      [disabledCard]="!editData" (onActionEvent)="createComment($event)">
       <div class="no-review-broker" *ngIf="!comments.length">
-        <svg-icon
-          class="no-review-svg"
-          src="assets/svg/common/ic_no_review.svg"
-        ></svg-icon>
+        <svg-icon class="no-review-svg" src="assets/svg/common/ic_no_review.svg"></svg-icon>
       </div>
-      <app-ta-user-review
-        *ngIf="comments.length"
-        [reviewData]="comments"
-        [isNewReview]="comments[0].isNewReview"
-        (changeReviewsEvent)="changeCommentsEvent($event)"
-      ></app-ta-user-review>
+      <app-ta-user-review *ngIf="comments.length" [reviewData]="comments"
+        (changeReviewsEvent)="changeCommentsEvent($event)" [isNewReview]="comments[0].isNewReview"></app-ta-user-review>
+      <!-- [isNewReview]="comments[0].isNewReview" -->
     </app-ta-custom-card>
     <div class="ta-card-body-overflow-none">
-      <app-ta-custom-card
-        [hasCounter]="documents.length ? documents.length : '0'"
-        [cardName]="'Documents'"
-        [isCardOpen]="documents.length"
-      >
-        <app-ta-upload-files
-          [files]="documents"
-          (onFileEvent)="onFilesEvent($event)"
-        ></app-ta-upload-files>
+      <app-ta-custom-card [hasCounter]="documents.length ? documents.length : '0'" [cardName]="'Documents'"
+        [isCardOpen]="documents.length">
+        <app-ta-upload-files [files]="documents" (onFileEvent)="onFilesEvent($event)"></app-ta-upload-files>
       </app-ta-custom-card>
     </div>
 
-    <app-ta-input-note
-      formControlName="note"
-      [isVisibleNote]="taskForm.get('note').value"
-    ></app-ta-input-note>
+    <app-ta-input-note formControlName="note" [isVisibleNote]="taskForm.get('note').value"></app-ta-input-note>
   </form>
 </app-ta-modal>
