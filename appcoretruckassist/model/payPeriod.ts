@@ -11,9 +11,10 @@
  */
 
 
-export interface RenewCdlCommand { 
-    id?: number;
-    issueDate?: string;
-    expDate?: string;
-}
+export type PayPeriod = 'Weekly' | 'Monthly';
+
+export const PayPeriod = {
+    Weekly: 'Weekly' as PayPeriod,
+    Monthly: 'Monthly' as PayPeriod
+};
 

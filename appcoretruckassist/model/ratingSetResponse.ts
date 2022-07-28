@@ -9,11 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface RenewCdlCommand { 
-    id?: number;
-    issueDate?: string;
-    expDate?: string;
+export interface RatingSetResponse { 
+    entityType?: EnumValue;
+    entityId?: number;
+    upCount?: number;
+    downCount?: number;
+    currentCompanyUserRating?: number | null;
 }
 

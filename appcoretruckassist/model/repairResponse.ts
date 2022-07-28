@@ -14,6 +14,7 @@ import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { RepairServiceTypeResponse } from './repairServiceTypeResponse';
 import { RepairItemResponse } from './repairItemResponse';
+import { RepairShopShortResponse } from './repairShopShortResponse';
 
 
 export interface RepairResponse { 
@@ -28,7 +29,7 @@ export interface RepairResponse {
     odometer?: number | null;
     date?: string | null;
     invoice?: string | null;
-    repairShopId?: number | null;
+    repairShop?: RepairShopShortResponse;
     total?: number | null;
     serviceTypes?: Array<RepairServiceTypeResponse> | null;
     note?: string | null;
