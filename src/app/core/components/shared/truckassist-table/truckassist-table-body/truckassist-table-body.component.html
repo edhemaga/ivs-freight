@@ -774,20 +774,41 @@
                 column.isPined
               "
             >
-              <!-- *ngIf="row[column.field] && row[column.field]['start']" -->
-              <div class="table-progress-cotnainer">
+              <div
+                class="table-progress-cotnainer"
+                *ngIf="row[column.field]?.expirationDays"
+              >
                 <!-- Progres Bar  -->
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
-                    'bg-orange-container': true
+                    'bg-sliver-container':
+                      row[column.field].percentage >= 25 &&
+                      row[column.field].percentage <= 100,
+                    'bg-orange-container':
+                      row[column.field].percentage >= 5 &&
+                      row[column.field].percentage < 25,
+                    'bg-danger-container':
+                      row[column.field].percentage >= 0 &&
+                      row[column.field].percentage < 5
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-orange': true
+                      'bg-progress-muted':
+                        row[column.field].percentage >= 50 &&
+                        row[column.field].percentage <= 100,
+                      'bg-progress-sliver':
+                        row[column.field].percentage >= 25 &&
+                        row[column.field].percentage < 50,
+                      'bg-progress-orange':
+                        row[column.field].percentage >= 5 &&
+                        row[column.field].percentage < 25,
+                      'bg-progress-danger':
+                        row[column.field].percentage >= 0 &&
+                        row[column.field].percentage < 5
                     }"
-                    [ngStyle]="{ width: 50 + '%' }"
+                    [ngStyle]="{ width: row[column.field].percentage + '%' }"
                     class="table-progress-bar"
                   ></div>
                 </div>
@@ -799,7 +820,7 @@
                     width: column.width - 30 + 'px'
                   }"
                 >
-                  in 1,565 days
+                  in {{ row[column.field].expirationDays }} days
                 </div>
               </div>
             </div>
@@ -1020,6 +1041,67 @@
               }"
             >
               <div class="lvl-container">{{ row[column.field] }}</div>
+            </div>
+
+            <!-- COMPACT TEXT -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'compact-text' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                class="compact-text-container"
+                *ngIf="
+                  row[column.field][0].value ||
+                  row[column.field][1].value ||
+                  row[column.field][2].value
+                "
+              >
+                <!-- First -->
+                <div
+                  class="title-values-container title-values-margin"
+                  *ngIf="row[column.field][0].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][0].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][0].value }}
+                  </div>
+                </div>
+
+                <!-- Second  -->
+                <div
+                  class="title-values-container title-values-margin"
+                  *ngIf="row[column.field][1].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][1].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][1].value }}
+                  </div>
+                </div>
+
+                <!-- Third  -->
+                <div
+                  class="title-values-container"
+                  *ngIf="row[column.field][2].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][2].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][2].value }}
+                  </div>
+                </div>
+              </div>
             </div>
 
             <!-- CITATION COLUMN -->
@@ -1537,21 +1619,41 @@
                 !column.isPined
               "
             >
-              <!-- 
-              *ngIf="row[column.field] && row[column.field]['start']" -->
-              <div class="table-progress-cotnainer">
+              <div
+                class="table-progress-cotnainer"
+                *ngIf="row[column.field]?.expirationDays"
+              >
                 <!-- Progres Bar  -->
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
-                    'bg-orange-container': true
+                    'bg-sliver-container':
+                      row[column.field].percentage >= 25 &&
+                      row[column.field].percentage <= 100,
+                    'bg-orange-container':
+                      row[column.field].percentage >= 5 &&
+                      row[column.field].percentage < 25,
+                    'bg-danger-container':
+                      row[column.field].percentage >= 0 &&
+                      row[column.field].percentage < 5
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-orange': true
+                      'bg-progress-muted':
+                        row[column.field].percentage >= 50 &&
+                        row[column.field].percentage <= 100,
+                      'bg-progress-sliver':
+                        row[column.field].percentage >= 25 &&
+                        row[column.field].percentage < 50,
+                      'bg-progress-orange':
+                        row[column.field].percentage >= 5 &&
+                        row[column.field].percentage < 25,
+                      'bg-progress-danger':
+                        row[column.field].percentage >= 0 &&
+                        row[column.field].percentage < 5
                     }"
-                    [ngStyle]="{ width: 50 + '%' }"
+                    [ngStyle]="{ width: row[column.field].percentage + '%' }"
                     class="table-progress-bar"
                   ></div>
                 </div>
@@ -1563,7 +1665,7 @@
                     width: column.width - 30 + 'px'
                   }"
                 >
-                  in 1,565 days
+                  in {{ row[column.field].expirationDays }} days
                 </div>
               </div>
             </div>
