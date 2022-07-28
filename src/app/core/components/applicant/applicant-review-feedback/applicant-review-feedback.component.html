@@ -1,6 +1,44 @@
 <!-- REVIEW -->
 
-<div class="review-container" *ngIf="!isFeedback">
+<div class="d-flex review-container" [formGroup]="annotationForm">
+  <!-- ANNOTATION BUTTON -->
+
+  <div
+    ngbTooltip
+    mainTooltip="Add Annotation"
+    tooltipBackground="#6C6C6C"
+    position="top"
+    *ngIf="!displayAnnotationTextArea"
+  >
+    <svg-icon
+      class="pen-icon"
+      [ngClass]="{
+        'display-icon': displayAnnotationIcon
+      }"
+      src="assets/svg/applicant/pen-box.svg"
+      [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
+      (click)="handleAnnotationClick()"
+    ></svg-icon>
+  </div>
+
+  <!-- INPUT -->
+
+  <div class="d-flex">
+    <div class="annotation-group">
+      <app-ta-input
+        formControlName="annotation"
+        [inputConfig]="{
+          name: 'Explain',
+          type: 'text',
+          label: 'Write Annotation',
+          textTransform: 'capitalize'
+        }"
+      ></app-ta-input>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="review-container" *ngIf="!isFeedback">
   <svg-icon
     (click)="onApprove(true)"
     class="ok-svg"
@@ -22,10 +60,10 @@
     [ngClass]="{ 'show-textarea': approved === false }"
   ></textarea>
 </div>
-
+ -->
 <!-- FEEDBACK -->
 
-<div *ngIf="isFeedback" class="feedback-container">
+<!-- <div *ngIf="isFeedback" class="feedback-container">
   <svg-icon
     src="{{
       isApproved
@@ -47,3 +85,4 @@
     aliquyam erat, sed diam voluptua. At vero eos et...
   </div>
 </div>
+ -->

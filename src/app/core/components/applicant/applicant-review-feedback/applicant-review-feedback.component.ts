@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 import { ReviewFeedbackService } from '../state/services/review-feedback.service';
 
@@ -8,19 +9,30 @@ import { ReviewFeedbackService } from '../state/services/review-feedback.service
   styleUrls: ['./applicant-review-feedback.component.scss'],
 })
 export class ApplicantReviewFeedbackComponent implements OnInit {
-  public approved?: boolean;
+  @Input() displayAnnotationIcon: boolean;
+
+  public annotationForm: FormGroup;
+
+  public displayAnnotationTextArea: boolean = false;
+
+  /*   public approved?: boolean;
   public description: string = '';
 
   @Input() reviewFeedbackData: any = {};
   @Input() index: number = 0;
   @Input() isFeedback: boolean = false;
   @Input() isApproved: boolean = false;
-  @Output() sendReview: EventEmitter<any> = new EventEmitter();
+  @Output() sendReview: EventEmitter<any> = new EventEmitter(); */
 
-  constructor(private reviewFeedbackService: ReviewFeedbackService) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private reviewFeedbackService: ReviewFeedbackService
+  ) {}
 
   ngOnInit(): void {
-    let isFirstLoad = true;
+    this.createForm();
+
+    /* let isFirstLoad = true;
 
     this.reviewFeedbackService.currentSetAllConfirmed.subscribe(
       (confirmed: boolean) => {
@@ -40,15 +52,25 @@ export class ApplicantReviewFeedbackComponent implements OnInit {
 
         isFirstLoad = false;
       }
-    );
+    ); */
   }
 
-  onApprove(isApprove: boolean) {
+  /*  onApprove(isApprove: boolean) {
     this.approved = isApprove;
     this.description = '';
 
     if (!isApprove) {
       this.reviewFeedbackService.sendBtnAction(false);
     }
+  } */
+
+  public createForm(): void {
+    this.annotationForm = this.formBuilder.group({
+      annotation: [null],
+    });
+  }
+
+  public handleAnnotationClick(): void {
+    this.displayAnnotationTextArea = true;
   }
 }

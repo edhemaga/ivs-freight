@@ -1,7 +1,85 @@
 @import 'src/theme/variables.scss';
 
-/* Review */
 .review-container {
+  .pen-icon {
+    cursor: pointer;
+    visibility: none;
+    opacity: 0;
+    transition: visibility 0.2s ease-in-out, opacity 0.2s ease-in-out;
+
+    &.display-icon {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    &:hover {
+      svg {
+        path {
+          fill: $white;
+        }
+
+        rect {
+          fill: $bw6-2;
+        }
+      }
+    }
+
+    svg {
+      path {
+        transition: fill 0.2s ease-in-out;
+        fill: $ta-light-grey-2;
+      }
+
+      rect {
+        transition: fill 0.2s ease-in-out;
+        fill: $ta-light-grey-4;
+      }
+    }
+  }
+
+  .annotation-group {
+    width: 397px;
+    visibility: visible;
+    opacity: 1;
+    transition: width 0.2s ease-in-out, visibility 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+
+    &.display-annotation {
+      visibility: visible;
+      opacity: 1;
+      width: 100%;
+    }
+  }
+
+  .review-textarea {
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+    height: 26px;
+    resize: none;
+    border: none;
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #f3f3f3;
+    font-size: 14px;
+    color: $bw5;
+    padding: 4px 6px;
+    line-height: 18px;
+    transition: width 0.2s ease-in-out, visibility 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+
+    &.display-textarea {
+      visibility: visible;
+      opacity: 1;
+      width: 100%;
+    }
+  }
+}
+
+/* Review */
+/* .review-container {
   width: fit-content;
   height: 26px;
   display: flex;
@@ -55,10 +133,10 @@
     line-height: 26px;
     transition: width 0.25s, visibility 0.25s, opacity 0.25s;
   }
-}
+} */
 
 /* Feedback */
-.feedback-container {
+/* .feedback-container {
   width: fit-content;
   height: 26px;
   display: flex;
@@ -94,11 +172,11 @@
     }
   }
 }
-
+ */
 /* NG CLASS */
 
 /* Feedback */
-.feedback-approved,
+/* .feedback-approved,
 .feedback-not-approved {
   svg {
     path {
@@ -122,10 +200,10 @@
       fill: rgba(255, 93, 93, 0.7) !important;
     }
   }
-}
+} */
 
 /* Review */
-.approved,
+/* .approved,
 .not-approved {
   svg {
     rect,
@@ -161,3 +239,4 @@
   opacity: 1 !important;
   transition: width 0.25s;
 }
+ */

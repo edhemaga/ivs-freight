@@ -79,6 +79,17 @@
   .form-section {
     margin-top: 32px;
 
+    .line-container {
+      position: relative;
+
+      .review-feedback-container {
+        position: absolute;
+        top: 0;
+        right: -403px;
+        width: 397px;
+      }
+    }
+
     .form-input-container {
       margin-bottom: 32px;
       width: 616px;
@@ -116,6 +127,7 @@
 
       .date-group {
         width: 148px;
+        margin-right: 0 !important;
       }
 
       .phone-group {
@@ -124,6 +136,7 @@
 
       .email-group {
         width: 375px;
+        margin-right: 0 !important;
       }
 
       .address-group {
@@ -132,6 +145,7 @@
 
       .address-unit-group {
         width: 124px;
+        margin-right: 0 !important;
       }
 
       .ssn-group {
@@ -142,6 +156,7 @@
       .bank-group {
         margin-top: 26px;
         width: 416px;
+        margin-right: 0 !important;
       }
 
       .account-number-group {

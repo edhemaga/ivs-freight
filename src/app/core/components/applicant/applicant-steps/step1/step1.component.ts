@@ -28,7 +28,6 @@ import {
 import { getPersonalInfoReviewFeedbackData } from '../../state/utils/review-feedback-data/step1';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
 @Component({
@@ -37,7 +36,7 @@ import { ReviewFeedbackService } from '../../state/services/review-feedback.serv
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public personalInfoForm: FormGroup;
 
@@ -62,6 +61,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public previousAddressOnEdit: string;
   public previousAddressUnitOnEdit: string;
+
+  public displayAnnotationIcon: boolean = false;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -215,8 +216,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService,
-    private inputService: TaInputService /*
+    private applicantListsService: ApplicantListsService /*
     private reviewFeedbackService: ReviewFeedbackService */
   ) {}
 
@@ -520,6 +520,14 @@ export class Step1Component implements OnInit, OnDestroy {
     }
 
     if (event.action === 'back-step') {
+    }
+  }
+
+  public incorrectInput(event: any): void {
+    if (event) {
+      this.displayAnnotationIcon = true;
+      console.log('event', event);
+      console.log('iconDisplay', this.displayAnnotationIcon);
     }
   }
 

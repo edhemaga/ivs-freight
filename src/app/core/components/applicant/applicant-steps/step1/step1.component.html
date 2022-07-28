@@ -81,7 +81,7 @@
     <form [formGroup]="personalInfoForm">
       <!-- FIRST NAME, LAST NAME, DOB -->
 
-      <div class="d-flex form-input-container">
+      <div class="d-flex form-input-container line-container">
         <div class="group first-name-group">
           <app-ta-input
             formControlName="firstName"
@@ -91,8 +91,11 @@
               label: 'First Name',
               isRequired: true,
               textTransform: 'capitalize',
-              autoFocus: true
+              autoFocus: true,
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event)"
           ></app-ta-input>
         </div>
         <div class="group last-name-group">
@@ -123,11 +126,12 @@
 
         <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <div
+          class="review-feedback-container"
+          *ngIf="selectedMode === 'REVIEW_MODE'"
+        >
           <app-applicant-review-feedback
-            [index]="0"
-            [reviewFeedbackData]="reviewFeedback[0]"
-            (sendReview)="onSubmitReview($event)"
+            [displayAnnotationIcon]="displayAnnotationIcon"
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -163,14 +167,14 @@
         </div>
 
         <!-- REVIEW AND FEEDBACK -->
-
+        <!-- 
         <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
           <app-applicant-review-feedback
             [index]="1"
             [reviewFeedbackData]="reviewFeedback[1]"
             (sendReview)="onSubmitReview($event)"
           ></app-applicant-review-feedback>
-        </div>
+        </div> -->
       </div>
 
       <!-- PREVIOUS ADDRESSES -->
@@ -452,7 +456,7 @@
 
               <!-- REVIEW AND FEEDBACK -->
 
-              <div
+              <!--      <div
                 class="review-feedback"
                 *ngIf="selectedMode === 'REVIEW_MODE'"
               >
@@ -461,7 +465,7 @@
                   [reviewFeedbackData]="reviewFeedback[11 + i]"
                   (sendReview)="onSubmitReview($event)"
                 ></app-applicant-review-feedback>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -535,13 +539,13 @@
 
         <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <!--     <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
           <app-applicant-review-feedback
             [index]="3"
             [reviewFeedbackData]="reviewFeedback[3]"
             (sendReview)="onSubmitReview($event)"
           ></app-applicant-review-feedback>
-        </div>
+        </div> -->
       </div>
 
       <!-- ACCOUNT NUMBER, ROUTING NUMBER -->
@@ -578,13 +582,13 @@
 
         <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <!--  <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
           <app-applicant-review-feedback
             [index]="4"
             [reviewFeedbackData]="reviewFeedback[4]"
             (sendReview)="onSubmitReview($event)"
           ></app-applicant-review-feedback>
-        </div>
+        </div> -->
       </div>
 
       <!-- QUESTIONS SECTION -->
@@ -617,7 +621,7 @@
 
               <!-- REVIEW AND FEEDBACK -->
 
-              <div
+              <!--   <div
                 class="review-feedback"
                 *ngIf="selectedMode === 'REVIEW_MODE'"
               >
@@ -626,7 +630,7 @@
                   [reviewFeedbackData]="reviewFeedback[5 + i]"
                   (sendReview)="onSubmitReview($event)"
                 ></app-applicant-review-feedback>
-              </div>
+              </div> -->
             </div>
 
             <span
@@ -692,7 +696,8 @@
 </div>
 
 <!-- CONFIRM ALL REVIEW -->
-
+<!-- 
 <app-applicant-confirm-all-review
   *ngIf="selectedMode === 'REVIEW_MODE'"
 ></app-applicant-confirm-all-review>
+ -->
