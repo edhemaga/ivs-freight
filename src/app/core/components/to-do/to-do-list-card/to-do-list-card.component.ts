@@ -35,6 +35,7 @@ export class ToDoListCardComponent implements OnInit {
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
+  public currentDate: any;
 
   reviews: any = [
     {
@@ -145,6 +146,9 @@ export class ToDoListCardComponent implements OnInit {
         enabled: false,
       },
     };
+
+    this.currentDate = new Date();
+    console.log('currentDate', this.currentDate);
 
     this.getTodoList();
   }
