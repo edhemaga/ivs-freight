@@ -4,7 +4,7 @@
   [editData]="editData"
   [saveAndAddNew]="editData?.type !== 'edit'"
   [customClass]="'modal-container-M'"
-  [isModalValid]="editData ? driverForm.valid && isDirty : driverForm.valid"
+  [isModalValid]="driverForm.valid"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
 >

@@ -154,13 +154,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       shippingCargo: [null],
     });
 
-    this.formService.checkFormChange(this.accidentForm);
+    // this.formService.checkFormChange(this.accidentForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {

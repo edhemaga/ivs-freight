@@ -109,13 +109,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.ownerForm);
+    // this.formService.checkFormChange(this.ownerForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {

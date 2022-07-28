@@ -146,13 +146,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.userForm);
+    // this.formService.checkFormChange(this.userForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

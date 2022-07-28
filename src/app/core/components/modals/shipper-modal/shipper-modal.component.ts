@@ -137,13 +137,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       shipperContacts: this.formBuilder.array([]),
     });
 
-    this.formService.checkFormChange(this.shipperForm);
+    // this.formService.checkFormChange(this.shipperForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

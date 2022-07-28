@@ -9,7 +9,7 @@
   [editData]="editData"
   [editName]="editData?.company?.name"
   [disableDelete]="editData.type === 'edit-company'"
-  [isModalValid]="editData ? companyForm.valid && isDirty : companyForm.valid"
+  [isModalValid]="companyForm.valid"
   [customClass]="'modal-container-M'"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"

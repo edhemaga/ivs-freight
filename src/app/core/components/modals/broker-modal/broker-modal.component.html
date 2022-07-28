@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Broker' : 'Edit Broker'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? brokerForm.valid && isDirty : brokerForm.valid"
+  [isModalValid]="brokerForm.valid"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >

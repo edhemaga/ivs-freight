@@ -210,15 +210,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       brokerContacts: this.formBuilder.array([]),
     });
 
-    if (this.editData) {
-      this.formService.checkFormChange(this.brokerForm);
+    // if (this.editData) {
+    //   this.formService.checkFormChange(this.brokerForm);
 
-      this.formService.formValueChange$
-        .pipe(untilDestroyed(this))
-        .subscribe((isFormChange: boolean) => {
-          isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-        });
-    }
+    //   this.formService.formValueChange$
+    //     .pipe(untilDestroyed(this))
+    //     .subscribe((isFormChange: boolean) => {
+    //       isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //     });
+    // }
   }
 
   public get brokerContacts(): FormArray {

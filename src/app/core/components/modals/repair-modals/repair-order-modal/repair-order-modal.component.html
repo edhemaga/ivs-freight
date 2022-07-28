@@ -4,9 +4,7 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="
-    editData ? repairOrderForm.valid && isDirty : repairOrderForm.valid
-  "
+  [isModalValid]="repairOrderForm.valid"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"

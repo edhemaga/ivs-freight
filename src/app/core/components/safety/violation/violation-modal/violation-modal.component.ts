@@ -175,13 +175,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       cargo: [null],
     });
 
-    this.formService.checkFormChange(this.violationForm);
+    // this.formService.checkFormChange(this.violationForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {

@@ -286,13 +286,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       smsNotificationPayroll: [false],
     });
 
-    this.formService.checkFormChange(this.driverForm);
+    // this.formService.checkFormChange(this.driverForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public get offDutyLocations(): FormArray {

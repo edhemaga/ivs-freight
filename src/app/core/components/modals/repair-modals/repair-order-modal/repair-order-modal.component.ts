@@ -128,13 +128,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.repairOrderForm);
+    // this.formService.checkFormChange(this.repairOrderForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

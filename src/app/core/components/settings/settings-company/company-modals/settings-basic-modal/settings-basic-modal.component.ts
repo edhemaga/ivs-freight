@@ -29,6 +29,7 @@ import {
   CreateDivisionCompanyCommand,
   CreateResponse,
   UpdateCompanyCommand,
+  UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
 import { distinctUntilChanged, identity } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -205,8 +206,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log('COMPANY ');
-    console.log(this.editData);
     this.checkForCompany();
     this.onPrefferedLoadCheck({ id: 1 });
     this.getModalDropdowns();
@@ -349,13 +348,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherDefaultBase: [null],
     });
 
-    this.formService.checkFormChange(this.companyForm);
+    // this.formService.checkFormChange(this.companyForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -375,7 +374,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             this.addCompanyDivision();
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            this.updateCompanyDivision(this.editData.id);
+            this.updateCompanyDivision(this.editData.company.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           }
         } else {
@@ -963,7 +962,132 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public updateCompanyDivision(id: number) {}
+  public updateCompanyDivision(id: number) {
+    const {
+      addressUnit,
+      timeZone,
+      currency,
+      departmentContacts,
+      bankAccounts,
+      bankCards,
+      //----- Exclude Properties From Company Division -----
+      companyType,
+      dateOfIncorporation,
+      prefix,
+      starting,
+      sufix,
+      customerPayTerm,
+      customerCredit,
+      mvrMonths,
+      trailerInspectionMonths,
+      truckInspectionMonths,
+      preferredLoadType,
+      autoInvoicing,
+      factorByDefault,
+      //----- Whole Payroll tab
+      useACHPayout,
+      // Driver & Owner
+      driveOwnerPayPeriod,
+      driverOwnerEndingIn,
+      soloEmptyMile,
+      soloLoadedMile,
+      soloPerStop,
+      teamEmptyMile,
+      teamLoadedMile,
+      teamPerStop,
+      driverOwnerHasLoadedEmptyMiles,
+      driverSoloDefaultCommission,
+      driverTeamDefaultCommission,
+      ownerDefaultCommission,
+      // Accounting
+      accountingPayPeriod,
+      accountingEndingIn,
+      accountingDefaultBase,
+      // Company Owner
+      companyOwnerPayPeriod,
+      companyOwnerEndingIn,
+      companyOwnerDefaultBase,
+      // Dispatch
+      dispatchPayPeriod,
+      dispatchEndingIn,
+      dispatchDefaultBase,
+      dispatchDefaultCommission,
+      // Manager
+      managerPayPeriod,
+      managerEndingIn,
+      managerDefaultBase,
+      managerDefaultCommission,
+      // Recruiting
+      recruitingPayPeriod,
+      recruitingEndingIn,
+      recruitingDefaultBase,
+      // Repair
+      repairPayPeriod,
+      repairEndingIn,
+      repairDefaultBase,
+      // Safety
+      safetyPayPeriod,
+      safetyEndingIn,
+      safetyDefaultBase,
+      // Other
+      otherPayPeriod,
+      otherEndingIn,
+      otherDefaultBase,
+      ...form
+    } = this.companyForm.value;
+
+    let newData: UpdateDivisionCompanyCommand = {
+      id: id,
+      ...form,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
+      timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
+      currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+    };
+
+    for (let index = 0; index < departmentContacts.length; index++) {
+      departmentContacts[index].departmentId =
+        this.selectedDepartmentFormArray[index].id;
+    }
+
+    for (let index = 0; index < bankAccounts.length; index++) {
+      bankAccounts[index].bankId = this.selectedBankAccountFormArray[index].id;
+    }
+
+    for (let index = 0; index < bankCards.length; index++) {
+      bankCards[index].expireDate = convertDateToBackend(
+        bankCards[index].expireDate
+      );
+    }
+
+    newData = {
+      ...newData,
+      departmentContacts,
+      bankAccounts,
+      bankCards,
+    };
+
+    this.settingsService
+      .updateCompanyDivision(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully updated company division',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't updated company division",
+            'Error'
+          );
+        },
+      });
+  }
 
   public deleteCompanyDivisionById(id: number) {
     this.settingsService
@@ -1224,7 +1348,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       .updateCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: Object) => {
+        next: () => {
           this.notificationService.success(
             'Successfully update your main company',
             'Success'
@@ -1232,7 +1356,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Can't update company!", 'Error');
+          this.notificationService.error("Can't update main company!", 'Error');
         },
       });
   }
