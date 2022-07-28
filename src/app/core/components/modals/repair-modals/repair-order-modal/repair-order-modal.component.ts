@@ -589,7 +589,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               : null,
             date: convertDateFromBackend(res.date),
             invoice: res.invoice,
-            repairShopId: res.repairShopId,
+            repairShopId: res.id,
             items: [],
             note: res.note,
           });
@@ -609,9 +609,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          if (res.repairShopId) {
+          if (res.id) {
             this.repairService
-              .getRepairShopById(res.repairShopId)
+              .getRepairShopById(res.id)
               .pipe(untilDestroyed(this))
               .subscribe({
                 next: (res: RepairShopResponse) => {
