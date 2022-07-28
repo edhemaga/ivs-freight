@@ -30,50 +30,21 @@
       *ngIf="factoringData?.name"
     >
       <div class="settings-body-items">
-        <div *ngIf="factoringData?.phone" class="single-item">
-          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <div class="value-copy-container" [ngClass]="{ copied: factoringPhone }">
-            <span class="insurance-value">{{ factoringData?.phone | formatPhoneP }}</span>
-            <span
-              [tooltipBackground]="factoringPhone ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="factoringPhone ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(factoringData?.phone, 'phone')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="factoringPhone = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+        <div class="single-item">
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.phone"> </app-ta-copy>
         </div>
-        <div *ngIf="factoringData?.email" class="single-item">
-          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-
-          <div class="value-copy-container" [ngClass]="{ copied: factoringEmail }">
-            <span class="insurance-value">{{ factoringData?.email }}</span>
-            <span
-              [tooltipBackground]="factoringEmail ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="factoringEmail ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(factoringData?.email, 'email')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="factoringEmail = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+        <div class="single-item">
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.email"> </app-ta-copy>
         </div>
-        <div *ngIf="factoringData?.address" class="single-item">
+        <div class="single-item">
           <svg-icon
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
