@@ -56,7 +56,6 @@ export class TaReCardComponent implements OnInit {
 
   ngOnInit(): void {
     this.CloseCard();
-    console.log('dataTest', this.options);
   }
 
   public CloseCard() {

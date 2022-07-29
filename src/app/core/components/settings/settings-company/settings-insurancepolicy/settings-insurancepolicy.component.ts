@@ -129,6 +129,7 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
       ],
     },
   };
+  public dropOptions: any;
   @Input() public insurancePolicyData: any;
   public copyPolicyName: boolean[] = [];
 
@@ -137,11 +138,12 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
     private clipboar: Clipboard
   ) {}
   ngOnChanges(changes: SimpleChanges): void {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.initDropOptions();
+  }
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
-
   public identity(index: number, item: any): number {
     return item.id;
   }
@@ -151,6 +153,49 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
     this.copyPolicyName[index] = true;
     this.clipboar.copy(val);
   }
+  /**Function for dots in cards */
+  public initDropOptions(): void {
+    this.dropOptions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
 
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
+
+  //Function for drop-down
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      default: {
+        break;
+      }
+    }
+  }
   public onShowDetails() {}
 }
