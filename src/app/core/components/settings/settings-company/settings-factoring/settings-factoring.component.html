@@ -12,7 +12,7 @@
           (click)="
             onAction({
               modalName: 'factoring',
-              type: 'edit',
+              type: factoringData.factoringCompany?.name ? 'edit' : 'new',
               company: factoringData
             })
           "
@@ -23,6 +23,7 @@
         <svg-icon
           src="assets/svg/common/ic_trash.svg"
           class="settings-trash-button"
+          (click)="onDeleteFactoringCompany()"
         ></svg-icon>
       </div>
     </div>
@@ -69,7 +70,7 @@
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
       >
-        <div
+        <!-- <div
           class="notice-template-data-default"
           [ngClass]="{ 'notice-template-data-change': changeDefaultNotice }"
         >
@@ -77,8 +78,8 @@
             <div class="notice-item-value">
               {{ factoringData?.factoringCompany?.noticeOfAssigment }}
             </div>
-          </div>
-          <!-- <div class="notice-template-item">
+          </div> -->
+        <!-- <div class="notice-template-item">
             <div class="notice-item-value">
               {{
                 factoringData?.factoringCompany?.noticeAssigment.param1 +
@@ -113,7 +114,7 @@
               {{ factoringData?.factoringCompany?.noticeAssigment.param2 }} <a href="tel:+{{factoringData?.factoringCompany?.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
             </div>
           </div> -->
-        </div>
+        <!-- </div> -->
       </app-ta-custom-card>
     </app-ta-re-card>
   </div>

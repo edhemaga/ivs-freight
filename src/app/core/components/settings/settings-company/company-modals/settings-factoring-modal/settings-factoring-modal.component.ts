@@ -36,8 +36,10 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.editData);
     this.createForm();
+    if (this.editData.type === 'edit') {
+      this.editFactoringCompany(this.editData.company);
+    }
   }
 
   private createForm() {
@@ -46,7 +48,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       address: [null],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       noticeOfAssigment: [null],
       note: [null],
     });
@@ -64,7 +66,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }) {
-    this.selectedAddress = event;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -79,12 +81,12 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.factoringForm);
           return;
         }
-        this.updateFactoringCompany(this.editData.id);
+        this.updateFactoringCompany(this.editData.company);
         this.modalService.setModalSpinner({ action: null, status: true });
         break;
       }
       case 'delete': {
-        this.deleteFactoringCompanyById(this.editData.id);
+        this.deleteFactoringCompanyById(this.editData.company);
         this.modalService.setModalSpinner({ action: 'delete', status: true });
 
         break;
@@ -95,7 +97,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateFactoringCompany(id: number) {
+  private updateFactoringCompany(company: any) {
     const {
       name,
       phone,
@@ -107,27 +109,25 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     } = this.factoringForm.value;
 
     const newData: UpdateFactoringCompanyCommand = {
-      companyId: id,
+      companyId: company.divisions.length ? null : company.id,
       factoringCompany: {
         name: name,
         phone: phone,
         email: email,
-        address: {
-          ...this.selectedAddress,
-          addressUnit: addressUnit,
-        },
+        address: { ...this.selectedAddress, addressUnit: addressUnit },
         noticeOfAssigment: noticeOfAssigment,
         note: note,
       },
     };
-
     this.settingsService
       .updateFactoringCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Successfully updated factoring company',
+            `Successfully ${
+              this.editData.type === 'new' ? 'created' : 'updated'
+            } factoring company`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
@@ -141,9 +141,11 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private deleteFactoringCompanyById(id: number) {
+  private deleteFactoringCompanyById(company: any) {
     this.settingsService
-      .deleteFactoringCompanyById(id)
+      .deleteFactoringCompanyById(
+        company.divisions.length ? null : this.editData.company.id
+      )
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -163,6 +165,23 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
           );
         },
       });
+  }
+
+  private editFactoringCompany(company: any) {
+    this.factoringForm.patchValue({
+      name: company.factoringCompany.name,
+      phone: company.factoringCompany.phone,
+      email: company.factoringCompany.email,
+      address: company.factoringCompany.address.address,
+      addressUnit: company.factoringCompany.address.addressUnit,
+      noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
+      note: company.factoringCompany.note,
+    });
+
+    this.onHandleAddress({
+      address: company.factoringCompany.address,
+      valid: company.factoringCompany.address.address ? true : false,
+    });
   }
 
   ngOnDestroy(): void {}

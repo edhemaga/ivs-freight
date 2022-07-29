@@ -149,6 +149,7 @@ export class SettingsStoreService {
   public getInsurancePolicyModal(): Observable<InsurancePolicyModalResponse> {
     return this.settingCompanyService.apiCompanyInsurancepolicyModalGet();
   }
+
   public deleteInsurancePolicyById(id: number): Observable<any> {
     return this.settingCompanyService.apiCompanyInsurancepolicyIdDelete(id);
   }
@@ -163,6 +164,10 @@ export class SettingsStoreService {
     data: UpdateInsurancePolicyCommand
   ): Observable<object> {
     return this.settingCompanyService.apiCompanyInsurancepolicyPut(data);
+  }
+
+  public getInsurancePolicyById(id: number): Observable<object> {
+    return this.settingCompanyService.apiCompanyInsurancepolicyIdGet(id);
   }
 
   // Factoring Company

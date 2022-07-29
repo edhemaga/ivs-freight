@@ -370,7 +370,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     address: AddressEntity;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onAction(event: any, action: string) {

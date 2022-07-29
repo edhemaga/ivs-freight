@@ -306,7 +306,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       stateShortName: [null],
       country: [null],
       zipCode: [null],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       street: [null],
       streetNumber: [null],
     });

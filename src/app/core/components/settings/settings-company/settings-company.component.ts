@@ -51,13 +51,12 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        console.log(id);
         this.settingsStoreService
           .getCompanyDivisionById(id)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: CompanyResponse) => {
-              this.getData(res, id);
+              this.getData(res);
               this.notificationService.success(
                 'Company Division successfully changed',
                 'Success:'
@@ -65,7 +64,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
               this.cdRef.detectChanges();
             },
             error: () => {
-              this.getData(this.activated.snapshot.data.company, id);
+              this.getData(this.activated.snapshot.data.company);
               this.notificationService.success(
                 'Company successfully changed',
                 'Success:'
@@ -75,14 +74,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getData(data: CompanyResponse, id?: number) {
+  public getData(data: CompanyResponse) {
     this.data = data;
-    if (id) {
-      this.data = {
-        ...this.data,
-        id: id,
-      };
-    }
   }
   public getCompanyDivision() {
     this.optionsCmp = this.dataCompany.map((item) => {

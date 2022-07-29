@@ -338,7 +338,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     address: AddressEntity;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onUploadImage(event: any) {

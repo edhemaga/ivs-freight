@@ -521,7 +521,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }) {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectDropdown(event: any, action: string) {
