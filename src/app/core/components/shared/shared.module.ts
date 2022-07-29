@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
 import { DatePickerModule } from '@progress/kendo-angular-dateinputs';
@@ -202,6 +203,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
       libraries: ['geometry', 'places'],
     }),
+    AgmDirectionModule,
     NgxSliderModule,
     DatePickerModule,
     GooglePlaceModule,

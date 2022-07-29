@@ -1,0 +1,226 @@
+@import "../../../../../theme/variables.scss";
+
+.table-container {
+    width: calc(100% - 74px);
+    position: absolute;
+    top: 0;
+
+    .customer-map-container {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 100vw;
+        height: 100vh;
+        padding-left: 56px;
+        z-index: 1;
+
+        .route-card-container {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100vh;
+
+            padding: 62px 0px 18px 74px;
+
+            z-index: 2;
+
+            &:last-child {
+                margin-bottom: 0px;
+            }
+        }
+    }
+}
+
+.route-info-card {
+    width: 312px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 3px;
+    margin-bottom: 8px;
+    transition: 0.2s;
+    max-height: 500px;
+
+    &.route-hidden {
+        max-height: 30px;
+        overflow: hidden;
+
+        .route-card-svg {
+            background-image: url('../../../../../assets/svg/common/ic_route_hidden.svg') !important;
+        }
+
+        &:hover {
+            .route-card-svg {
+                background-image: url('../../../../../assets/svg/common/ic_eye-visible.svg') !important;
+            }
+        }
+
+        .route-type-text {
+            background: #CCCCCC !important;
+        }
+
+        .marker-info-text {
+            &:hover {
+                color: #6C6C6C !important;
+            }
+        }
+    }
+
+    &.full-address-card {
+        width: 392px;
+    }
+
+    .route-info-header {
+        display: flex;
+        align-items: center;
+        height: 18px;
+        margin: 2px 2px 0px 2px;
+
+        .route-card-svg {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+
+            background-image: url('../../../../../assets/svg/common/ic_route_card.svg');
+            background-repeat: no-repeat;
+        }
+
+        .route-card-icon {
+            svg {
+                path {
+                    fill: #AAAAAA;
+                }
+            }
+        }
+
+        .marker-info-text {
+            &:hover {
+                color: #ED445E;
+                cursor: pointer;
+            }
+        }
+
+        .route-type-text {
+            font-size: 11px;
+            line-height: 14px;
+            background: #919191;
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 2px;
+            user-select: none;
+        }
+
+        .route-card-header-divider {
+            width: 2px;
+            height: 18px;
+            background: #F3F3F3;
+            border-radius: 1px;
+
+            margin: 0px 7px;
+        }
+    }
+}
+
+.route-card-content {
+    position: relative;
+    margin-top: 8px;
+
+    .empty-miles {
+        position: absolute;
+        left: 2px;
+        top: 26px;
+        width: 18px;
+        height: 66px;
+
+        background: #F27B8E;
+        opacity: 0.2;
+        border-radius: 2px;
+    }
+}
+
+.route-card-row {
+    display: flex;
+    align-items: center;
+    padding: 4px;
+    margin-bottom: 2px;
+
+    &:hover {
+        background: #F3F3F3;
+        cursor: grab;
+    }
+
+    .route-row-number {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 14px;
+        margin-right: 16px;
+    }
+
+    .route-row-location {
+        width: 140px;
+        margin-right: 18px;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    .route-row-leg {
+        width: 44px;
+        text-align: right;
+        margin-right: 18px;
+    }
+
+    .route-row-total {
+        width: 46px;
+        text-align: right;
+    }
+}
+
+.cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: $box-shadow;
+  }
+  
+  .cdk-drag-placeholder {
+    background: #DADADACC;
+
+    div {
+        opacity: 0;
+    }
+  }
+  
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+  .route-card-container.cdk-drop-list-dragging .route-info-card:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+  
+.pink-text {
+    color: #F27B8E !important;
+
+    &::-moz-selection {
+        color: #F27B8E;
+        background: #F27B8E33;
+      }
+    &::selection {
+        color: #F27B8E;
+        background: #F27B8E33;
+    }
+}
+
+.gray-text {
+    color: #B7B7B7 !important;
+
+    &::-moz-selection {
+        color: #B7B7B7;
+        background: #B7B7B733;
+      }
+    &::selection {
+        color: #B7B7B7;
+        background: #B7B7B733;
+    }
+}

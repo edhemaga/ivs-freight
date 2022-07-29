@@ -1,0 +1,118 @@
+<div class="table-container">
+    <div class="table-toolbar-container toolbar-absolute">
+      <!-- <app-truckassist-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+      ></app-truckassist-table-toolbar> -->
+    </div>
+    
+    <div class="customer-map-container">
+        <div class="route-card-container" cdkDropList (cdkDropListDropped)="drop($event, routes)">
+            <div class="route-info-card" cdkDrag *ngFor="let route of routes; let i = index;" [ngClass]="{ 'route-hidden': route.hidden }">
+                <div class="route-info-header">
+                    <div 
+                        cdkDragHandle
+                        class="route-card-svg"
+                    ></div>
+                    <div 
+                        class="marker-info-text marker-bold-text mg-left-8" 
+                        [tooltipBackground]="'#616161'"
+                        ngbTooltip
+                        [mainTooltip]="route.hidden ? 'Show Route' : 'Hide Route'"
+                        position="right"
+                        [ngClass]="{ 'gray-text': route.hidden }"
+                        (click)="showHideRoute(route)">
+                        {{ route.name }}
+                    </div>
+                    <div class="route-type-text mg-left-12" *ngIf="!route.hidden">Practical</div>
+                    <div class="route-type-text mg-left-12" *ngIf="route.hidden">7 Stops</div>
+                    <div class="route-type-text mg-left-12" *ngIf="route.hidden">537 mi</div>
+                </div>
+                <div class="route-card-content" cdkDropList (cdkDropListDropped)="drop($event, route.stops)">
+                    <div class="route-card-row">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">1</div>
+                        <div class="route-row-location marker-like-text">{{ route.startPoint.address }}</div>
+                        <div class="route-row-leg marker-like-text marker-bold-text gray-text">Leg</div>
+                        <div class="route-row-total marker-like-text marker-bold-text gray-text">Total</div>
+                    </div>
+                    <div class="route-card-row" *ngFor="let stop of route.stops; let b = index;" cdkDrag>
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">{{ b + 2 }}</div>
+                        <div class="route-row-location marker-like-text">{{ stop.address }}</div>
+                        <div class="route-row-leg marker-like-text">{{ stop.leg }}</div>
+                        <div class="route-row-total marker-like-text marker-semibold-text">{{ stop.total }}</div>
+                    </div>
+                    <div class="route-card-row m-0">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text"></div>
+                        <div class="route-row-location marker-like-text marker-bold-text gray-text">Add New Stop</div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="mg-bottom-8"></div>
+            <div class="route-info-card" cdkDrag cdkDragBoundary=".route-card-container">
+                <div class="route-info-header">
+                    <svg-icon
+                        cdkDragHandle
+                        class="route-card-svg"
+                        src="assets/svg/common/ic_route_card.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    ></svg-icon>
+                    <div class="marker-info-text marker-bold-text mg-left-8">Route 2</div>
+                    <div class="route-type-text mg-left-12">Cheapest</div>
+                    <div class="route-card-header-divider"></div>
+                    <svg-icon
+                        class="route-card-icon"
+                        src="assets/svg/common/ic_time.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    ></svg-icon>
+                    <div class="route-card-header-divider"></div>
+                    <svg-icon
+                        class="route-card-icon"
+                        src="assets/svg/common/ic_dollar.svg"
+                        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                    ></svg-icon>
+                </div>
+                <div class="route-card-content">
+                    <div class="empty-miles"></div>
+                    <div class="route-card-row">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">1</div>
+                        <div class="route-row-location marker-like-text">Gary, IN 30055</div>
+                        <div class="route-row-leg marker-like-text marker-bold-text gray-text">Leg</div>
+                        <div class="route-row-total marker-like-text marker-bold-text gray-text">Total</div>
+                    </div>
+                    <div class="route-card-row">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">2</div>
+                        <div class="route-row-location marker-like-text">Chicago, IL 65005</div>
+                        <div class="route-row-leg marker-like-text">60.6</div>
+                        <div class="route-row-total marker-like-text marker-semibold-text">60.6</div>
+                    </div>
+                    <div class="route-card-row">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">3</div>
+                        <div class="route-row-location marker-like-text">Philadelphia, PA 52320</div>
+                        <div class="route-row-leg marker-like-text">45.2</div>
+                        <div class="route-row-total marker-like-text marker-semibold-text">105.8</div>
+                    </div>
+                    <div class="route-card-row">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text">4</div>
+                        <div class="route-row-location marker-like-text">Nashville, KE 89600</div>
+                        <div class="route-row-leg marker-like-text">168.8</div>
+                        <div class="route-row-total marker-like-text marker-extrabold-text pink-text">273.1</div>
+                    </div>
+                    <div class="route-card-row m-0">
+                        <div class="route-row-number marker-like-text marker-bold-text pink-text"></div>
+                        <div class="route-row-location marker-like-text marker-bold-text gray-text">Add New Stop</div>
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+        <app-maps>
+            [viewData]="[]"
+            [dropdownActions]="[]"
+            [mapType]="'routing'"
+            (callDropDownAction)="onTableBodyActions($event)"
+        </app-maps>
+    </div>
+  </div>
