@@ -405,7 +405,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             'Trailer successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
+          this.modalService.setModalSpinner({ action: null, status: true });
         },
         error: () =>
           this.notificationService.error("Trailer can't be updated.", 'Error:'),
@@ -422,7 +422,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,
             trailerTypeId: res.trailerType ? res.trailerType.name : null,
-            vin: res.vin,
             trailerMakeId: res.trailerMake ? res.trailerMake.name : null,
             model: res.model,
             colorId: res.color ? res.color.name : null,
@@ -444,6 +443,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             volume: res.volume,
             insurancePolicy: res.insurancePolicy,
           });
+
+          this.trailerForm.get('vin').patchValue(res.vin, { emitEvent: false });
+
           this.selectedTrailerType = res.trailerType ? res.trailerType : null;
           this.selectedTrailerMake = res.trailerMake ? res.trailerMake : null;
           this.selectedColor = res.color ? res.color : null;
@@ -526,12 +528,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.trailerForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  trailerMakeId: res.truckMake?.name
-                    ? res.truckMake.name
+                  trailerMakeId: res.trailerMake?.name
+                    ? res.trailerMake.name
                     : null,
                 });
 
-                this.selectedTrailerMake = res.truckMake;
+                this.selectedTrailerMake = res.trailerMake;
               },
               error: (error: any) => {
                 this.notificationService.error(

@@ -155,14 +155,15 @@
         &.svg-text-template {
           display: flex;
           align-items: center;
+          gap: 6px;
 
           .svgtext-template-logo {
             height: auto;
-            margin-right: 6.5px;
             transition: all 0.2s ease-in-out;
 
             &.hide-hover-icons {
-              display: none;
+              visibility: none;
+              opacity: 0;
               transform: translateX(-30px);
             }
           }
@@ -173,6 +174,10 @@
             &.truck-text {
               top: 1px;
             }
+
+            &.move-hover-text {
+              transform: translateX(-60px);
+            }
           }
 
           .colors {
@@ -182,9 +187,18 @@
 
           &:hover {
             .svgtext-template-logo {
+              transition: all 0.3s ease-in-out;
               &.hide-hover-icons {
-                transform: translateX(0px) !important;
-                display: inline-block !important;
+                visibility: visible;
+                opacity: 1;
+                transform: translateX(0px);
+              }
+            }
+
+            .svgtext-template-text {
+              transition: all 0.3s ease-in-out;
+              &.move-hover-text {
+                transform: translateX(0px);
               }
             }
           }

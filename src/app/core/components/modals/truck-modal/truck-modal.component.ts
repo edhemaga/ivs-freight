@@ -408,7 +408,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
             truckTypeId: res.truckType ? res.truckType.name : null,
-            vin: res.vin,
             truckMakeId: res.truckMake ? res.truckMake.name : null,
             model: res.model,
             year: res.year,
@@ -434,8 +433,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             mileage: res.mileage,
             ipasEzpass: res.ipasEzpass,
           });
-          this.selectedTruckType = res.truckType ? res.truckType : null;
+          this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
 
+          this.selectedTruckType = res.truckType ? res.truckType : null;
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;
