@@ -20,7 +20,6 @@ export interface CompanyModalResponse {
     timeZones?: Array<EnumValue> | null;
     payPeriods?: Array<EnumValue> | null;
     endingIns?: Array<EnumValue> | null;
-    ratings?: Array<EnumValue> | null;
     insurancePolicyAddonTypes?: Array<EnumValue> | null;
     companyTypes?: Array<EnumValue> | null;
     banks?: Array<BankResponse> | null;

@@ -9,6 +9,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import {
   AddressEntity,
   CreateInsurancePolicyCommand,
+  InsurancePolicyModalResponse,
   UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
@@ -38,6 +39,7 @@ export class SettingsInsurancePolicyModalComponent
   public selectedTrailerRating: any = null;
 
   public documents: any[] = [];
+  public ratings: any[] = [];
 
   public isDirty: boolean;
 
@@ -184,6 +186,23 @@ export class SettingsInsurancePolicyModalComponent
 
   public onFilesEvent(event) {
     this.documents = event.files;
+  }
+
+  private getInsurancePolicyDropdowns() {
+    this.settingsService
+      .getInsurancePolicyModal()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: InsurancePolicyModalResponse) => {
+          this.ratings = res.ratings;
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load Insurance Policy dropdowns",
+            'Error'
+          );
+        },
+      });
   }
 
   private addInsurancePolicy(id: number) {

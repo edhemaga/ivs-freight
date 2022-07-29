@@ -178,6 +178,7 @@ model/getTruckModalResponse.ts
 model/hazardousMaterialResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
+model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
 model/invoiceAgeingResponse.ts
 model/loadBillingAdditionalCommand.ts

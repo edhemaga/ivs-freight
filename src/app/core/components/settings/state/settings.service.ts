@@ -17,6 +17,7 @@ import {
   CreateInsurancePolicyAddonCommand,
   CreateInsurancePolicyCommand,
   CreateResponse,
+  InsurancePolicyModalResponse,
   UpdateCompanyCommand,
   UpdateDivisionCompanyCommand,
   UpdateFactoringCompanyCommand,
@@ -145,6 +146,9 @@ export class SettingsStoreService {
   }
 
   // Insurance Policy
+  public getInsurancePolicyModal(): Observable<InsurancePolicyModalResponse> {
+    return this.settingCompanyService.apiCompanyInsurancepolicyModalGet();
+  }
   public deleteInsurancePolicyById(id: number): Observable<any> {
     return this.settingCompanyService.apiCompanyInsurancepolicyIdDelete(id);
   }
