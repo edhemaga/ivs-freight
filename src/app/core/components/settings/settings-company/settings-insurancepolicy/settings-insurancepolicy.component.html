@@ -22,6 +22,7 @@
         [cardNameCommon]="insurance?.producerName"
         [haveHeaderText]="true"
         [cardDocumentCounter]="1"
+        [paddingDots]="'11px 0px 0px 12px'"
         [noteIcons]="
           insurance?.note
             ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -39,6 +40,7 @@
           </div>
           <div *ngIf="insurance.address" class="single-item">
             <svg-icon
+            class="company-icons" 
               src="assets/svg/truckassist-table/location-icon.svg"
             ></svg-icon>
             <span class="single-item-address">{{

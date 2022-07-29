@@ -26,53 +26,23 @@
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
+      [paddingDots]="'11px 0px 0px 12px'"
+
     >
       <div class="settings-body-items">
         <div *ngIf="item.phone" class="single-item">
-          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <div class="value-copy-container" [ngClass]="{ copied: parkingPhone }">
-            <span class="insurance-value">{{ item.phone }}</span>
-            <span
-              [tooltipBackground]="parkingPhone ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="parkingPhone ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(item.phone, 'phone-parking')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="parkingPhone = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+          <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
+         
         </div>
         <div *ngIf="item.email" class="single-item">
-          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-         
-          <div class="value-copy-container" [ngClass]="{ copied: parkingEmail }">
-            <span class="insurance-value">{{ item.email }}</span>
-            <span
-              [tooltipBackground]="parkingEmail ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="parkingEmail ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(item.email, 'email-parking')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="parkingEmail = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+          <svg-icon class="company-icons"  src="assets/svg/common/ic_email.svg"></svg-icon>
+          <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+        
         </div>
         <div *ngIf="item.address" class="single-item">
           <svg-icon
+          class="company-icons" 
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span>{{ item.address }}</span>

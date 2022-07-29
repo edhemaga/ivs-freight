@@ -15,12 +15,14 @@
           *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
           [options]="dataTest"
           [cardDocumentCounter]="6"
+          [statusActive]="cdl.status"
           (resizePage)="toggleResizePage(i, 'cdl')"
           [cardNameCommon]="cdl?.cdlNumber"
           [expDateClose]="cdl?.expDate | formatDateP"
           [hasCopyIcon]="true"
           [optionsId]="cdl.id"
-          (clickedCard)="getName($event)"
+          [isCardOpen]="cdl.status==1?true:false"
+          (clickedCard)="getNameForDrop($event)"
           [cardNameCurrent]="'cdl'"
           [noteIcons]="
             cdl.note
@@ -195,103 +197,6 @@
           </div>
         </app-ta-re-card>
       </div>
-      <div class="card-width" *ngSwitchCase="'mvr'">
-        <div>
-          <app-ta-re-card
-            *ngFor="
-              let mvr of driverItem.data.mvrs;
-              let i = index;
-              trackBy: identity
-            "
-            [options]="dataTest"
-            [cardNameCurrent]="'mvr'"
-            (clickedCard)="getName($event)"
-            [cardDocumentCounter]="6"
-            [noteIcons]="
-              mvr.note
-                ? 'assets/svg/truckassist-table/note/Note.svg'
-                : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-            "
-            (resizePage)="toggleResizePage(i, 'mvr')"
-            [cardNameCommon]="mvr?.issueDate | formatDateP"
-            [expDateClose]="mvr?.issueDate | setFutureYear"
-            [optionsId]="mvr.id"
-            (dropActions)="optionsEvent($event, 'edit-mvr')"
-          >
-            <div class="cards-container">
-              <div class="card-body-cdl">
-                <div
-                  class="card-row-progress"
-                  [ngClass]="{ 'second-progress': toggler[i + 'mvr'] }"
-                >
-                  <div class="card-details-progress-container">
-                    <app-truckassist-progress-expiration
-                      [startDate]="mvr?.issueDate | formatDateP"
-                      [expireDate]="mvr?.expDate | formatDateP"
-                      [expiresSettings]="'details'"
-                    >
-                    </app-truckassist-progress-expiration>
-                  </div>
-                </div>
-              </div>
-              <div [@showHideCardBody]="toggler[i + 'mvr'] ? 'true' : 'false'">
-                <div class="divider"></div>
-                <div class="details-document-container">
-                  <div class="icon-counter-wrapper">
-                    <div class="counter-text-wrapper">
-                      <app-ta-counter
-                        [countBackgroud]="'#F3F3F3'"
-                        [countHeight]="'24px'"
-                        [countWidth]="'24px'"
-                        [count]="6"
-                      >
-                      </app-ta-counter>
-                      <p class="details-document-name">Document</p>
-                    </div>
-                    <svg-icon
-                      (click)="onFileAction('download')"
-                      src="assets/svg/common/ic_download.svg"
-                    >
-                    </svg-icon>
-                  </div>
-                </div>
-                <div class="card-pdf">
-                  <app-ta-upload-files
-                    [files]="[
-                      {
-                        name: 'truckassist - 0',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      },
-                      {
-                        name: 'truckassist - 1',
-                        url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                        extension: 'pdf'
-                      }
-                    ]"
-                    [customClassName]="'driver-details-pdf'"
-                    [hasCarouselBottomTabs]="true"
-                  ></app-ta-upload-files>
-                </div>
-                <div class="divider"></div>
-                <div class="card-note">
-                  <app-ta-input-note
-                    [formControl]="cdlNote"
-                    [isVisibleDivider]="false"
-                    [isVisibleNote]="true"
-                    [isVisibleSecondDivider]="false"
-                    [isVisibleArrow]="false"
-                    [minRows]="1"
-                    [placeholder]="'Write something.'"
-                    [customClass]="'note-small'"
-                  >
-                  </app-ta-input-note>
-                </div>
-              </div>
-            </div>
-          </app-ta-re-card>
-        </div>
-      </div>
     </div>
     <div class="card-width" *ngSwitchCase="'drug-alcohol'">
       <div>
@@ -305,7 +210,8 @@
           [cardNameCommon]="test?.testingDate | formatDateP"
           (resizePage)="toggleResizePage(i, 'test')"
           [optionsId]="test.id"
-          (clickedCard)="getName($event)"
+
+          (clickedCard)="getNameForDrop($event)"
           [cardDocumentCounter]="6"
           [weeklyWidth]="'18'"
           [cardNameCurrent]="'test'"
@@ -391,7 +297,8 @@
           [cardNameCommon]="med?.issueDate | formatDateP"
           [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
-          (clickedCard)="getName($event)"
+          [isCardOpen]="i==0?true:false"
+          (clickedCard)="getNameForDrop($event)"
           [cardNameCurrent]="'medical'"
           [noteIcons]="
             med.note
@@ -487,7 +394,8 @@
           "
           [options]="dataTest"
           [cardNameCurrent]="'mvr'"
-          (clickedCard)="getName($event)"
+          [isCardOpen]="i==0?true:false"
+          (clickedCard)="getNameForDrop($event)"
           [cardDocumentCounter]="6"
           [noteIcons]="
             mvr.note
@@ -496,7 +404,7 @@
           "
           (resizePage)="toggleResizePage(i, 'mvr')"
           [cardNameCommon]="mvr?.issueDate | formatDateP"
-          [expDateClose]="mvr?.issueDate | setFutureYear"
+          [expDateClose]="mvr?.expDate | formatDateP"
           [optionsId]="mvr.id"
           (dropActions)="optionsEvent($event, 'edit-mvr')"
         >
