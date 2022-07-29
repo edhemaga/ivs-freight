@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { MapsService } from 'src/app/core/services/shared/maps.service';
 import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
@@ -13,16 +14,20 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { BrokerState } from '../state/broker-state/broker.store';
-import { ShipperState } from '../state/shipper-state/shipper.store';
+import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
-  styleUrls: ['./customer-table.component.scss'],
+  styleUrls: ['./customer-table.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -32,6 +37,16 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public selectedTab = 'broker';
   public resetColumns: boolean;
 
+  public searchForm!: FormGroup;
+  public locationForm!: FormGroup;
+  public sortTypes: any[] = [];
+  public sortDirection: string = 'asc';
+  public activeSortType: any = {};
+  public sortBy: any;
+  public searchValue: string = '';
+  public mapMarkers: any[] = [];
+  public locationFilterOn: boolean = false;
+
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
@@ -39,7 +54,11 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private brokerService: BrokerTService,
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ref: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
+    private shipperStore: ShipperStore,
+    private mapsService: MapsService
   ) {}
 
   ngOnInit(): void {
@@ -126,14 +145,62 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+      this.sortTypes = [
+        {name: 'Business Name', id: 1, sortName: 'name'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
+        {name: 'Rating', id: 3, sortName: 'rating'},
+        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
+        {name: 'Pickups', id: 6, sortName: 'pickups'},
+        {name: 'Deliveries', id: 7, sortName: 'deliveries'},
+        {name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime'},
+        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveriesTime'}
+      ];
+
+      this.activeSortType = this.sortTypes[0];
+
+      this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+  
+      this.searchForm = this.formBuilder.group({
+        search: ''
+      });
+
+      this.locationForm = this.formBuilder.group({
+        location: '',
+        range: 100
+      });
+
+      this.locationForm.valueChanges.subscribe((changes) => {
+        if ( changes.range ) {
+          this.mapsComponent.changeLocationRange(changes.range);
+        }
+
+        if ( changes.location ) {
+          // var autocomplete = new google.maps.places.Autocomplete(changes.location);
+          // var place = autocomplete.getPlace();
+          // console.log('changeLocation', place);
+          // var placeLat = place.geometry.location.lat();
+          // var placeLng = place.geometry.location.lng();
+          
+          // console.log('changeLocation', placeLat);
+          // console.log('changeLocation', placeLng);
+        }
+      });
   }
 
   public initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: true,
+        hideLocationFilter: false,
+        hideViewMode: this.selectedTab === 'broker' ? true : false,
+        showMapView: this.selectedTab === 'broker' ? false : true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -148,6 +215,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           name: 'edit-cutomer-or-shipper',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -159,6 +228,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
               : 'Are you sure you want to delete shipper(s)?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -184,7 +256,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.brokers,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Broker',
+        gridNameTitle: 'Customer',
         stateName: 'brokers',
         gridColumns: this.getGridColumns('brokers', this.resetColumns),
       },
@@ -195,7 +267,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.shipper,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Shipper',
+        gridNameTitle: 'Customer',
         stateName: 'shippers',
         gridColumns: this.getGridColumns('shippers', this.resetColumns),
       },
@@ -223,6 +295,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   setCustomerData(td: any) {
     this.viewData = td.data;
     this.columns = td.gridColumns;
+    
+    this.initTableOptions();
 
     this.viewData = this.viewData.map((data: any) => {
       if (this.selectedTab === 'broker') {
@@ -279,6 +353,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendCustomerData();
+    }
+    else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      if ( event.mode == 'Map' ) {
+        this.getMapMarkers();
+        this.sortShippers();
+      }
     }
   }
 
@@ -366,12 +447,14 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       if (data.id === dataId) {
         data.actionAnimation = 'add';
       }
-
       return data;
     });
 
     const inetval = setInterval(() => {
       this.viewData = closeAnimationAction(false, this.viewData);
+
+      this.sortShippers();
+      this.mapsComponent.markersDropAnimation();
 
       clearInterval(inetval);
     }, 1000);
@@ -437,5 +520,88 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
+  }
+
+  changeSortDirection(direction) {
+    this.sortDirection = direction;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    this.sortShippers();
+  }
+  
+  changeSortCategory(item) {
+    this.activeSortType = item;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    this.sortShippers();
+  }
+
+  sortShippers() {
+    if ( this.activeSortType.name == 'Location' ) {
+      if ( this.sortDirection == 'asc' ) {
+        this.viewData.sort((a,b) => a.distanceBetween - b.distanceBetween);
+      } else {
+        this.viewData.sort((a,b) => b.distanceBetween - a.distanceBetween);
+      }
+    } else {
+      this.shipperService
+      .getShippersList(null, null, 1, 25, null, this.sortBy, this.searchValue)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: any) => {
+          this.viewData = res.pagination.data;
+          
+          if ( this.locationFilterOn ) {
+            this.mapsComponent.showHideMarkers();
+          }
+          
+          this.ref.detectChanges();
+        },
+        error: () => {
+          this.notificationService.error(
+            "Shippers can't be sorted",
+            'Error:'
+          );
+        },
+      });
+    }
+  }
+
+  searchShippers(value) {
+    this.searchValue = value;
+    //if ( this.searchValue.length > 3 ) {
+      this.sortShippers();
+    //}
+  }
+
+  getMapMarkers() {
+    this.shipperService
+    .getShipperMap()
+    .pipe(untilDestroyed(this))
+    .subscribe({
+      next: (res: any) => {
+        this.mapMarkers = res.mapMarkers;
+      },
+      error: () => {
+        this.notificationService.error(
+          "Shippers can't be sorted",
+          'Error:'
+        );
+      },
+    });
+  }
+
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

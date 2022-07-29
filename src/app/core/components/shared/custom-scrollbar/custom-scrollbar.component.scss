@@ -1,0 +1,38 @@
+.custom-scrollbar-holder{
+    position: relative;
+    height: 100vh;
+    //overflow: hidden;
+
+    scrollbar-width: none !important; /* Firefox */
+    -ms-overflow-style: none !important;
+    &::-webkit-scrollbar { 
+        display: none !important;  /* Safari and Chrome */
+    }
+
+    ::-webkit-scrollbar-thumb, ::-webkit-scrollbar {
+        width: 1px !important;
+        display: none !important;
+    }
+
+    .right-bar-scroll{
+        height: 100%;
+        position: fixed;
+        right: 0;
+        top: 0;
+        user-select: none;
+
+        .right-bar{
+            position: absolute;
+            right: 3px;
+            width: 6px;
+            min-height: 30px;
+            border-radius: 1px;
+            background-color: #AAAAAA;
+
+            &:hover{
+                background: rgba(0, 0, 0, .55);
+                //@debug: grabbing;
+            }
+        }
+    }
+}

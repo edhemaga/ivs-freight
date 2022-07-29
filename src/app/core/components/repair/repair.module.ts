@@ -6,6 +6,8 @@ import { RepairRoutingModule } from './repair-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { RepairCardComponent } from './repair-card/repair-card.component';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [RepairTableComponent, RepairCardComponent],
@@ -14,7 +16,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RepairRoutingModule,
     TruckassistTableModule,
     AngularSvgIconModule,
-    SharedModule
+    SharedModule,
+    AgmCoreModule, 
+    AgmSnazzyInfoWindowModule
   ],
 })
 export class RepairModule {}

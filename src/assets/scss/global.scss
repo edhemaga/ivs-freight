@@ -94,7 +94,7 @@ body{
   scrollbar-width: none !important; /* Firefox */
 
   &::-webkit-scrollbar {
-    width: 16px;
+    width: 0px;
   }
 
   &::-webkit-scrollbar-thumb {
