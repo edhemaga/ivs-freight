@@ -128,13 +128,13 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       day: [null],
     });
 
-    this.formService.checkFormChange(this.repairShopForm);
+    // this.formService.checkFormChange(this.repairShopForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {

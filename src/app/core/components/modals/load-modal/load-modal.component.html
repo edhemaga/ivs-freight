@@ -2,7 +2,7 @@
   [modalTitle]="!editData?.type?.includes('edit') ? 'Create Load' : 'Edit Load'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? loadForm.valid && isDirty : loadForm.valid"
+  [isModalValid]="loadForm.valid"
   [tabChange]="headerTabs"
   [customClass]="'modal-container-load'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"

@@ -56,13 +56,13 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.fhwaInspectionForm);
+    // this.formService.checkFormChange(this.fhwaInspectionForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

@@ -686,10 +686,10 @@
 //---------------- Preferred Load Company Additional  ----------------
 .preferred-load-company-additional {
   display: grid;
-  grid-template-columns: 26px;
-  grid-template-columns: 253px 145px 1fr;
+  grid-template-columns: 275px 145px 1fr;
   margin: 32px 0px;
   padding-left: 6px;
+  align-items: center;
 
   .preffered-field-one {
     display: flex;
@@ -700,10 +700,6 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
-    }
-    .r-btns {
-      width: 86px;
-      height: 26px;
     }
   }
 }

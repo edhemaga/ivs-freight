@@ -61,7 +61,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: CompanyResponse) => {
-              this.getData(res);
+              this.getData(res, id);
               this.notificationService.success(
                 'Company Division successfully changed',
                 'Success:'
@@ -79,8 +79,14 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getData(data: CompanyResponse) {
+  public getData(data: CompanyResponse, id?: number) {
     this.data = data;
+    if (id) {
+      this.data = {
+        ...this.data,
+        id: id,
+      };
+    }
   }
   public getCompanyDivision() {
     this.optionsCmp = this.dataCompany.map((item) => {

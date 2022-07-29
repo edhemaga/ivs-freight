@@ -100,13 +100,13 @@ export class SettingsInsurancePolicyModalComponent
       note: [null],
     });
 
-    this.formService.checkFormChange(this.insurancePolicyForm);
+    // this.formService.checkFormChange(this.insurancePolicyForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(event: any) {}

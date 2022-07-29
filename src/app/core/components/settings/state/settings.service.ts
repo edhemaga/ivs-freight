@@ -17,6 +17,7 @@ import {
   CreateDivisionCompanyCommand,
   CreateResponse,
   UpdateCompanyCommand,
+  UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
@@ -111,6 +112,12 @@ export class SettingsStoreService {
     data: CreateDivisionCompanyCommand
   ): Observable<CreateResponse> {
     return this.settingCompanyService.apiCompanyDivisionPost(data);
+  }
+
+  public updateCompanyDivision(
+    data: UpdateDivisionCompanyCommand
+  ): Observable<object> {
+    return this.settingCompanyService.apiCompanyDivisionPut(data);
   }
 
   public getCompanyDivisionById(id: number): Observable<CompanyResponse> {

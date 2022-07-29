@@ -35,6 +35,7 @@ app-applicant-signature-pad {
     margin-right: 6px;
 
     .undo-icon,
+    .confirm-icon,
     .clear-icon {
       cursor: pointer;
 
@@ -57,6 +58,7 @@ app-applicant-signature-pad {
         }
       }
 
+      &.confirm-icon,
       &.undo-icon {
         margin-right: 4px;
       }

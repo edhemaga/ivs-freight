@@ -414,6 +414,67 @@
               ></span>
             </div>
 
+            <!-- COMPACT TEXT -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'compact-text' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                class="compact-text-container"
+                *ngIf="
+                  row[column.field][0].value ||
+                  row[column.field][1].value ||
+                  row[column.field][2].value
+                "
+              >
+                <!-- First -->
+                <div
+                  class="title-values-container title-values-margin"
+                  *ngIf="row[column.field][0].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][0].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][0].value }}
+                  </div>
+                </div>
+
+                <!-- Second  -->
+                <div
+                  class="title-values-container title-values-margin"
+                  *ngIf="row[column.field][1].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][1].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][1].value }}
+                  </div>
+                </div>
+
+                <!-- Third  -->
+                <div
+                  class="title-values-container"
+                  *ngIf="row[column.field][2].value"
+                >
+                  <div class="title-compact-text">
+                    {{ row[column.field][2].title }}
+                  </div>
+                  <div class="values-compact-text">
+                    {{ row[column.field][2].value }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- SERVICE COLUMN-->
             <div
               class="td-content"

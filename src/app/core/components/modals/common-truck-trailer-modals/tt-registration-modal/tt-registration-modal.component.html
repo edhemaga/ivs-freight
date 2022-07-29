@@ -3,9 +3,7 @@
     editData?.type !== 'edit' ? 'Add new registration' : 'Edit new registration'
   "
   [editData]="editData"
-  [isModalValid]="
-    editData ? registrationForm.valid && isDirty : registrationForm.valid
-  "
+  [isModalValid]="registrationForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="registrationForm" class="form-container">
