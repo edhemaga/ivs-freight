@@ -89,7 +89,7 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
     this.scrollRatioFull = content_height / visible_height;
     this.scrollTop = elem.scrollTop * this.scrollRatio;
 
-    this.bar.nativeElement.style.transform = `translateY(${this.scrollTop}px)`;
+    if( this.bar ){ this.bar.nativeElement.style.transform = `translateY(${this.scrollTop}px)`; }
 
     this.scrollHeight = this.scrollRatio * visible_height;
   }
