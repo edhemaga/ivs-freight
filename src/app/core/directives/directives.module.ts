@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TooltipDirective } from './tooltip.directive';
 import { AutoFocusDirective } from './auto-focus.directive';
 import { InputFocusDirective } from './input-focus.directive';
 import { InputRestrictionDirective } from './input-restriction.directive';
 import { TextareaAutosizeDirective } from './TextareaAutosize.directive';
 
 @NgModule({
-  declarations: [TooltipDirective,
+  declarations: [
    // Directive
     AutoFocusDirective,
     InputFocusDirective,
@@ -15,10 +14,10 @@ import { TextareaAutosizeDirective } from './TextareaAutosize.directive';
     TextareaAutosizeDirective,
   ],
   imports: [CommonModule],
-  exports: [TooltipDirective,
+  exports: [
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    TextareaAutosizeDirective,],
+    TextareaAutosizeDirective],
 })
 export class DirectivesModule {}

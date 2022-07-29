@@ -6,7 +6,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-import { CompanyResponse } from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({

@@ -11,27 +11,43 @@
   >
     <div class="repair-information-wrapper">
       <div class="repair-information-item">
+        <span
+        tooltipBackground="#6c6c6c"
+        ngbTooltip
+        mainTooltip="Call"
+        position="top"
+        class="semi-tooltip"
+      >
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_phone.svg"
         ></svg-icon>
-        <p class="repair-value">
-          {{ shipper?.phone | formatPhoneP }}
-        </p>
+        </span>
+        <app-ta-copy [copyValue]="shipper?.phone"></app-ta-copy>
+       
       </div>
       <div class="repair-information-item">
+        <span
+        tooltipBackground="#6c6c6c"
+        ngbTooltip
+        mainTooltip="Send Email"
+        position="top"
+        class="semi-tooltip"
+      >
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shipper?.email }}</p>
+        </span>
+        <app-ta-copy [copyValue]="shipper?.email"></app-ta-copy>
+      
       </div>
       <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-        <p class="repair-value">{{ shipper?.address?.address }}</p>
+        <app-ta-copy [copyValue]="shipper?.address?.address"></app-ta-copy>
       </div>
     </div>
   </app-ta-details-header-card>

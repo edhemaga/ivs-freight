@@ -16,15 +16,17 @@ export class MapListCardComponent implements OnInit {
   @Input() index: any = {};
   @Input() type: string = '';
   @Input() sortCategory: any = {};
-  @Input() locationFilterOn: boolean = false
   @Input() dropdownActions: any[] = [];
   @Output() clickedMarker: EventEmitter<string> = new EventEmitter<string>();
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+  public locationFilterOn: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
-    
+    if ( !this.sortCategory?.name ) {
+      this.sortCategory = {name: 'Business Name', id: 1, sortName: 'name'};
+    }
   }
 
   selectCard() {

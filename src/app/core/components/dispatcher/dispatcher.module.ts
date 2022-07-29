@@ -15,7 +15,6 @@ import { DispatcherDropdownComponent } from './dispatcher-dropdown/dispatcher-dr
 import { PipesModule } from '../../pipes/pipes.module';
 import { DispatcherParkingComponent } from './dispatcher-parking/dispatcher-parking.component';
 import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboard-tables.component';
-import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -37,7 +36,6 @@ export function playerFactory() {
     CommonModule,
     DispatchRoutingModule,
     SharedModule,
-    AppTooltipeModule,
     AgmSnazzyInfoWindowModule,
     LottieModule.forRoot({ player: playerFactory }),
     PipesModule,

@@ -122,7 +122,7 @@
           <svg-icon
             *ngFor="let service of item?.serviceTypes; let i = index;"
             class="marker-repair-svg"
-            src="assets/svg/common/repair-services/repair-serivces-details/{{service.logoName}}"
+            src="assets/svg/common/repair-services/{{service.logoName}}"
             [ngClass]="{ 'active': service.active }"
             [svgStyle]="{ 'width.px': 24, 'height.px': 24 }"
           ></svg-icon>

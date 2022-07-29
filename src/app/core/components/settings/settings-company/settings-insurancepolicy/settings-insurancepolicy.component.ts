@@ -16,6 +16,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 export class SettingsInsurancepolicyComponent implements OnChanges {
   @Input() public insurancePolicyData: any;
   public copyPolicyName: boolean[] = [];
+  public dropOptions: any;
 
   constructor(
     private settingsStoreService: SettingsStoreService,
@@ -29,6 +30,10 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
     ) {
       this.insurancePolicyData = changes?.insurancePolicyData?.currentValue;
     }
+  }
+
+  ngOnInit(): void {
+    this.initDropOptions();
   }
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
@@ -57,4 +62,49 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
     this.copyPolicyName[index] = true;
     this.clipboar.copy(val);
   }
+  /**Function for dots in cards */
+  public initDropOptions(): void {
+    this.dropOptions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
+
+  //Function for drop-down
+  public optionsEvent(any: any, action: string) {
+    switch (action) {
+      default: {
+        break;
+      }
+    }
+  }
+  public onShowDetails() {}
 }

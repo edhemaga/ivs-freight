@@ -4,7 +4,7 @@
       <p>Factoring Company</p>
     </div>
 
-    <div class="settings-header-buttons">
+    <div class="settings-header-buttons" *ngIf="factoringData.email">
       <div class="settings-header-button">
         <svg-icon
           src="assets/svg/common/ic_pen.svg"
@@ -26,6 +26,14 @@
           (click)="onDeleteFactoringCompany()"
         ></svg-icon>
       </div>
+    </div>
+    <div class="settings-header-button" *ngIf="!factoringData.email">
+      <div class="border-left"></div>
+      <svg-icon
+        src="assets/svg/common/ic_plus.svg"
+        class="settings-plus-button"
+        (click)="onAction({ modalName: 'basic', type: 'new' })"
+      ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
@@ -55,6 +63,7 @@
         </div>
         <div class="single-item">
           <svg-icon
+          class="company-icons" 
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span class="single-item-address">{{
@@ -72,7 +81,7 @@
       >
         <!-- <div
           class="notice-template-data-default"
-          [ngClass]="{ 'notice-template-data-change': changeDefaultNotice }"
+          
         >
           <div class="notice-template-item">
             <div class="notice-item-value">
