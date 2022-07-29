@@ -100,7 +100,7 @@ export class ShipperTService {
     search1?: string,
     search2?: string
   ): Observable<ShipperListResponse> {
-    return this.shipperService.apiShipperListGet(ban, dnu, pageIndex, pageSize);
+    return this.shipperService.apiShipperListGet(ban, dnu, pageIndex, pageSize, companyId, sort, search);
   }
 
   // Get Shipper By Id
@@ -151,6 +151,10 @@ export class ShipperTService {
 
   public getShipperDropdowns(): Observable<ShipperModalResponse> {
     return this.shipperService.apiShipperModalGet();
+  }
+  
+  public getShipperMap(): Observable<any> {
+    return this.shipperService.apiShipperMapGet();
   }
 
   //  <--------------------------------- Review ---------------------------------->

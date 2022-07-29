@@ -146,6 +146,7 @@ export class DriverDetailsItemComponent
   }
 
   public optionsEvent(any: any, action: string) {
+    console.log('optionsEvent', any, action);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
@@ -251,6 +252,12 @@ export class DriverDetailsItemComponent
         a.click();
       });
     });
+  }
+
+  addYearToDate(startDate: any) {
+    //console.log('addYearToDate startDate', startDate);
+    //console.log('addYearToDate add year', moment(startDate).add(1, 'years').format());
+    return moment(startDate).add(1, 'years').format();
   }
 
   ngOnDestroy(): void {}

@@ -77,13 +77,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       fuelItems: this.formBuilder.array([]),
     });
 
-    this.formService.checkFormChange(this.fuelForm);
+    // this.formService.checkFormChange(this.fuelForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public get fuelItems(): FormArray {

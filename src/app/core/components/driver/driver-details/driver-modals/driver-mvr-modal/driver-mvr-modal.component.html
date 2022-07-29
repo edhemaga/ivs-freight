@@ -1,8 +1,8 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add MVR' : 'Edit MVR'"
+  [modalTitle]="editData?.type !== 'edit-mvr' ? 'Add MVR' : 'Edit MVR'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="editData ? mvrForm.valid && isDirty : mvrForm.valid"
+  [isModalValid]="mvrForm.valid"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

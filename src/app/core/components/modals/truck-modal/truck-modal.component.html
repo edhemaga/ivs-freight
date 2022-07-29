@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? truckForm.valid && isDirty : truckForm.valid"
+  [isModalValid]="truckForm.valid"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

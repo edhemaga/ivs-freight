@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Broker' : 'Edit Broker'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? brokerForm.valid && isDirty : brokerForm.valid"
+  [isModalValid]="brokerForm.valid"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
 >
@@ -385,7 +385,7 @@
           >
             <div class="common-fake-table-label">
               <p>FULL NAME <span>*</span></p>
-              <p>DEPARTMENT</p>
+              <p>DEPARTMENT <span>*</span></p>
               <p>PHONE <span>*</span></p>
               <p>EXT</p>
               <p>EMAIL</p>
@@ -400,6 +400,7 @@
                 <app-ta-input
                   formControlName="contactName"
                   [inputConfig]="{
+                    id: 'Full Name' + ind,
                     name: 'Full Name',
                     type: 'text',
                     textTransform: 'capitalize'
@@ -408,6 +409,7 @@
                 <app-ta-input-dropdown
                   formControlName="departmentId"
                   [inputConfig]="{
+                    id: 'Input Dropdown' + ind,
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
@@ -421,6 +423,7 @@
                 <app-ta-input
                   formControlName="phone"
                   [inputConfig]="{
+                    id: 'Phone' + ind,
                     name: 'Phone',
                     type: 'text',
                     mask: '(000) 000-0000'
@@ -429,6 +432,7 @@
                 <app-ta-input
                   formControlName="extensionPhone"
                   [inputConfig]="{
+                    id: 'Phone Extension' + ind,
                     name: 'Phone Extension',
                     type: 'text',
                     maxLength: 3
@@ -437,6 +441,7 @@
                 <app-ta-input
                   formControlName="email"
                   [inputConfig]="{
+                    id: 'Email' + ind,
                     name: 'Email',
                     type: 'text'
                   }"

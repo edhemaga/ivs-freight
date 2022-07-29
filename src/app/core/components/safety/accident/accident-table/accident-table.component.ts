@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
@@ -8,9 +8,12 @@ import { AccidentModalComponent } from '../accident-modal/accident-modal.compone
 @Component({
   selector: 'app-accident-table',
   templateUrl: './accident-table.component.html',
-  styleUrls: ['./accident-table.component.scss'],
+  styleUrls: ['./accident-table.component.scss', '../../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AccidentTableComponent implements OnInit {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -19,6 +22,13 @@ export class AccidentTableComponent implements OnInit {
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
+
+  public sortTypes: any[] = [];
+  public sortDirection: string = 'asc';
+  public activeSortType: any = {};
+  public sortBy: any;
+  public searchValue: string = '';
+  public locationFilterOn: boolean = false;
 
   constructor(
     private modalService: ModalService,
@@ -39,6 +49,26 @@ export class AccidentTableComponent implements OnInit {
           this.sendAccidentData();
         }
       });
+
+      this.sortTypes = [
+        {name: 'Report Number', id: 1, sortName: 'report'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
+        {name: 'Inspection Results', id: 8, sortName: 'results'},
+        {name: 'Inspection Weights', id: 9, sortName: 'weights'},
+        {name: 'Date & Time', id: 3, sortName: 'date'},
+        {name: 'Drivers Name', id: 4, sortName: 'driverName'},
+        {name: 'Truck Unit', id: 5, sortName: 'truck'},
+        {name: 'Trailer Unit', id: 6, sortName: 'trailer'},
+        {name: 'Inspection Level', id: 7, sortName: 'inspectionLevel', isHidden: false}, // for Roadside Inspection only
+      ];
+
+      this.activeSortType = this.sortTypes[0];
+
+      this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
   }
 
   public initTableOptions(): void {
@@ -46,7 +76,9 @@ export class AccidentTableComponent implements OnInit {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        hideViewMode: false,
+        showMapView: true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -61,6 +93,8 @@ export class AccidentTableComponent implements OnInit {
           name: 'edit-accident',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -69,6 +103,9 @@ export class AccidentTableComponent implements OnInit {
           text: 'Are you sure you want to delete accident?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -85,7 +122,7 @@ export class AccidentTableComponent implements OnInit {
         title: 'Reportable',
         field: 'active',
         length: 10,
-        data: this.getDumyData(10),
+        data: this.getDumyData(2),
         extended: false,
         gridNameTitle: 'Accident',
         stateName: 'accidents',
@@ -95,7 +132,7 @@ export class AccidentTableComponent implements OnInit {
         title: 'Non-Reportable',
         field: 'non-reportable',
         length: 7,
-        data: this.getDumyData(7),
+        data: this.getDumyData(8),
         extended: false,
         gridNameTitle: 'Accident',
         stateName: 'accidents_non-reportable',
@@ -148,9 +185,20 @@ export class AccidentTableComponent implements OnInit {
         policeReport: null,
         csaReport: null,
         eventDate: '03/07/22',
-        eventTime: null,
+        eventTime: '08:47 PM',
+        coDriver: true,
         location: null,
-        address: 'New York, NY, USA',
+        address: {
+          address: "1 International Square, Kansas City, MO 64153, USA",
+          addressUnit: null,
+          city: "Kansas City",
+          country: "US",
+          state: "MO",
+          stateShortName: "MO",
+          street: "International Square",
+          streetNumber: "1",
+          zipCode: "64153"
+        },
         city: null,
         zip: null,
         county: null,
@@ -160,9 +208,9 @@ export class AccidentTableComponent implements OnInit {
         latitude: 40.777048,
         report: 'asdsdaf',
         insuranceClaim: null,
-        fatality: '0',
-        injuries: '0',
-        towing: 'No',
+        fatality: '1',
+        injuries: '2',
+        towing: 'Yes',
         hm: 'No',
         note: null,
         doc: {
@@ -184,6 +232,7 @@ export class AccidentTableComponent implements OnInit {
         createdAt: '2022-03-07T14:58:45',
         updatedAt: '2022-03-07T14:58:45',
         guid: '5e8c5a59-0d7f-4264-8c5a-a747a8399eb3',
+        vehicles: 6
       },
     ];
 
@@ -200,6 +249,11 @@ export class AccidentTableComponent implements OnInit {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccidentData(event.tabData);
+    } else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
+      if ( event.mode == 'Map' ) {
+        //this.mapsComponent.markersDropAnimation();
+      }
     }
   }
 
@@ -213,5 +267,40 @@ export class AccidentTableComponent implements OnInit {
         );
       }
     }
+  }
+
+  changeSortDirection(direction) {
+    this.sortDirection = direction;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+  
+  changeSortCategory(item) {
+    this.activeSortType = item;
+
+    this.sortBy = this.sortDirection
+      ? this.activeSortType.sortName +
+        (this.sortDirection[0]?.toUpperCase() +
+        this.sortDirection?.substr(1).toLowerCase())
+      : '';
+      
+    //this.sortShippers();
+  }
+
+  searchStops(value) {
+    this.searchValue = value;
+    //if ( this.searchValue.length > 3 ) {
+      //this.sortShippers();
+    //}
+  }
+
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

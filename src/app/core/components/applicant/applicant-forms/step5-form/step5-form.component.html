@@ -1,4 +1,4 @@
-<div class="d-flex flex-column step-form" [formGroup]="form">
+<div class="d-flex flex-column step-form" [formGroup]="violationsForm">
   <div class="d-flex">
     <div class="group date-group">
       <app-ta-input
@@ -58,6 +58,55 @@
           isRequired: true
         }"
       ></app-ta-input>
+    </div>
+  </div>
+
+  <!-- ADD ANOTHER VIOLATION -->
+
+  <div class="d-flex justify-content-center align-items-center btn-container">
+    <button
+      type="button"
+      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+      [ngClass]="{
+        disabled: violationsForm.invalid
+      }"
+      *ngIf="!isEditing"
+      (click)="onAddViolation()"
+    >
+      <svg-icon
+        class="plus-icon"
+        src="assets/svg/common/ic_plus.svg
+  "
+        [svgStyle]="{
+          'width.px': 18,
+          'height.px': 18
+        }"
+      ></svg-icon>
+
+      Add Another Violation
+    </button>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container"
+      *ngIf="isEditing"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelEditAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isViolationEdited
+        }"
+        (click)="onSaveEditedViolation()"
+      >
+        Save Changes
+      </button>
     </div>
   </div>
 </div>
