@@ -70,6 +70,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     if (this.editData.type === 'edit-licence') {
       this.getCdlById();
     }
+
+    console.log('editData', this.editData);
   }
 
   private createForm() {
@@ -85,13 +87,13 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.cdlForm);
+    // this.formService.checkFormChange(this.cdlForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -191,6 +193,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
+          console.log('classTypes', this.classTypes);
           this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
@@ -250,7 +253,12 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public updateCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
 
+    console.log('editData updateCdl', this.editData);
+    console.log('editData updateCdl issueDate', issueDate);
+    console.log('editData updateCdl expDate', expDate);
+    
     const newData: EditCdlCommand = {
+      driverId: this.editData.id,
       id: this.editData.file_id,
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
@@ -285,6 +293,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public addCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
+
+    console.log('editData addCdl', this.editData);
+    console.log('editData addCdl issueDate', issueDate);
+    console.log('editData addCdl expDate', expDate);
 
     const newData: CreateCdlCommand = {
       driverId: this.editData.id,

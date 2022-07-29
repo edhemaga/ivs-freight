@@ -40,6 +40,7 @@ export interface UpdateCompanyCommand {
     mvrMonths?: number;
     truckInspectionMonths?: number;
     trailerInspectionMonths?: number;
+    logo?: string | null;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;
     bankCards?: Array<UpdateBankCardCommand> | null;

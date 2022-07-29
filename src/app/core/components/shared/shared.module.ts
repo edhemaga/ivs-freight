@@ -97,12 +97,20 @@ import { ChartsModule } from 'ng2-charts';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { ProfileImagesModule } from './profile-images/profile-images.module';
 import { TaTabSwitchComponent } from './ta-tab-switch/ta-tab-switch.component';
+import { MapListComponent } from './map-list/map-list.component';
+import { MapListCardComponent } from './map-list-card/map-list-card.component';
+import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dropdown.component';
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
+import { MapsComponent } from './maps/maps.component';
+import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
+import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
+import { TaCopyComponent } from './ta-copy/ta-copy.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +143,6 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     TaCounterComponent,
     TaNgxSliderComponent,
     TaLogoChangeComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaLikeDislikeComponent,
     TaUserReviewComponent,
@@ -145,6 +152,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     FilterComponent,
     TaChartComponent,
     TaInputArrowsComponent,
+    TaSpinnerComponent,
 
     // Modals Components
     TaModalComponent,
@@ -168,11 +176,17 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    MapListComponent,
+    MapListCardComponent,
+    MapMarkerDropdownComponent,
     TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
     LoadModalComponent,
+    CustomScrollbarComponent,
+    MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
+    TaCopyComponent,
   ],
   imports: [
     CommonModule,
@@ -218,6 +232,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     TruckassistTableModule,
     AppTooltipeModule,
     ChartsModule,
+    AgmSnazzyInfoWindowModule,
   ],
   exports: [
     // Modules
@@ -253,6 +268,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     PdfViewerModule,
     AppTooltipeModule,
     ProfileImagesModule,
+    AgmSnazzyInfoWindowModule,
 
     // Components
     TabSwitcherComponent,
@@ -266,13 +282,14 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     CalendarDaysComponent,
     CalendarLeftComponent,
     DateCalendarsComponent,
-    TaCustomCardComponent,
     TaInputRadiobuttonsComponent,
     TaUserReviewComponent,
     TaUploadFileComponent,
     TaUploadFilesCarouselComponent,
     TaUploadDropzoneComponent,
     TaInputArrowsComponent,
+    CustomScrollbarComponent,
+
     DetailsDropdownComponent,
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
@@ -292,7 +309,15 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
     TaChartComponent,
     FilterComponent,
     TaTabSwitchComponent,
+    MapListComponent,
+    MapListCardComponent,
+    MapMarkerDropdownComponent,
+    MapsComponent,
+
     ProgressInvoicesComponent,
+    TaSpinnerComponent,
+
+    TaCopyComponent,
     // Modals Components
     TaModalComponent,
     TaInputAddressComponent,

@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? trailerForm.valid && isDirty : trailerForm.valid"
+  [isModalValid]="trailerForm.valid"
   (action)="onModalAction($event)"
 >
   <app-ta-tab-switch

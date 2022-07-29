@@ -1,4 +1,5 @@
 export interface ITaInput {
+  id?: any; // only for form array to indefier element
   name: string;
   type: string;
   label: string;
@@ -67,4 +68,6 @@ export interface ITaInput {
   placeholderInsteadOfLabel?: boolean;
   // Address
   onlyCityAndZipAddress?: boolean;
+  // Applicant review
+  incorrectInput?: boolean;
 }

@@ -203,27 +203,8 @@
           </div>
           <div class="violation-card-items">
             <span class="name">Badge No.</span>
-            <div
-              class="value-copy-container"
-              [ngClass]="{ copied: copiedBadgeNo }"
-            >
-              <span class="value">123456</span>
-              <span
-                [tooltipBackground]="copiedBadgeNo ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedBadgeNo ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyText('123456', 'badge')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="copiedBadgeNo = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
+            <app-ta-copy [copyValue]="'123456'"> </app-ta-copy>
+           
           </div>
         </div>
         <div class="violation-driver-container authority">
@@ -242,55 +223,15 @@
               class="driver"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
-           
-            <div
-              class="value-copy-container"
-              [ngClass]="{ copied: copiedPhone }"
-            >
-            <span class="value-police">(123) 333-2344</span>
-              <span
-                [tooltipBackground]="copiedPhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copiedPhone ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyText('(123) 333-2344', 'phone')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="copiedPhone = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
+            <app-ta-copy [copyValue]="'(123) 333-2344'"> </app-ta-copy>
           </div>
           <div class="violation-driver-item">
             <svg-icon
               class="driver"
               src="assets/svg/common/ic_fax.svg"
             ></svg-icon>
-            <div
-            class="value-copy-container"
-            [ngClass]="{ copied: copiedFax }"
-          >
-          <span class="value-police">(123) 333-1344</span>
-            <span
-              [tooltipBackground]="copiedFax ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="copiedFax ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText('(123) 333-1344', 'fax')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="copiedFax = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+            <app-ta-copy [copyValue]="'(123) 333-1344'"> </app-ta-copy>
+           
           </div>
         </div>
       </app-ta-custom-card>

@@ -103,51 +103,48 @@
             <p
               class="m-0 ta-font-regular d-inline-block text-truncate"
               style="max-width: 207px"
-              [appTooltip]="accident.accidentDescription"
-              tooltipColor="#FFFFFF"
+              ngbTooltip
+              [mainTooltip]="accident.accidentDescription"
               tooltipBackground="#6C6C6C"
-              position="bottom-right"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
+              position="bottom-left"
             >
               {{ accident.accidentDescription }}
             </p>
           </div>
           <div class="d-flex align-items-center btn-container">
-            <svg-icon
-              class="edit-icon"
-              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Edit"
-              tooltipColor="#FFFFFF"
+            <div
+              ngbTooltip
+              mainTooltip="Edit"
               tooltipBackground="#6C6C6C"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onEditAccident(i)"
-            ></svg-icon>
+              position="top"
+            >
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onEditAccident(i)"
+              ></svg-icon>
+            </div>
 
-            <svg-icon
-              class="delete-icon"
-              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              appTooltip="Delete"
-              tooltipColor="#FFFFFF"
+            <div
+              ngbTooltip
+              mainTooltip="Delete"
               tooltipBackground="#EF5350"
-              position="top-middle"
-              borderRadius="2px"
-              fontSize="11px"
-              fontWeight="bold"
-              (click)="onDeleteAccident(i)"
-            ></svg-icon>
+              position="top"
+            >
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onDeleteAccident(i)"
+              ></svg-icon>
+            </div>
           </div>
         </div>
 

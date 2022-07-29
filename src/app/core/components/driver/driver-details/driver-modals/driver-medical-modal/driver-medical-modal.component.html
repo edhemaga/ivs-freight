@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Medical' : 'Edit Medical'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="editData ? medicalForm.valid && isDirty : medicalForm.valid"
+  [isModalValid]="medicalForm.valid"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >
