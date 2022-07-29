@@ -9,6 +9,7 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 export class MapListComponent implements OnInit, OnChanges {
 
   @Input() sortTypes: any[] = [];
+  @Input() type: string = '';
   @Input() columns: any;
   @Input() activeSortType: any = {};
   @Input() mapListContent: any[] = [];
@@ -49,13 +50,29 @@ export class MapListComponent implements OnInit, OnChanges {
     });
 
     this.searchForm.valueChanges.subscribe((changes) => {
-      this.searchData.emit(changes.search);
+      if ( this.searchData ) this.searchData.emit(changes.search);
     });
 
     this.setVisibleColumns();
 
     if ( this.mapListContent.length > 5 ) {
       this.showExpandButton = true;
+    }
+
+    if ( !this.sortTypes ) {
+      this.sortTypes = [
+        {name: 'Business Name', id: 1, sortName: 'name'},
+        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
+        {name: 'Rating', id: 3, sortName: 'rating'},
+        {name: 'Date Added', id: 4, sortName: 'createdAt'},
+        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
+        {name: 'Pickups', id: 6, sortName: 'pickups'},
+        {name: 'Deliveries', id: 7, sortName: 'deliveries'},
+        {name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime'},
+        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveriesTime'}
+      ];
+
+      this.activeSortType = this.sortTypes[0];
     }
   }
 
@@ -86,7 +103,7 @@ export class MapListComponent implements OnInit, OnChanges {
   changeSortingDirection() {
     this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
 
-    this.changeSortDirection.emit(this.sortDirection);
+    if ( this.changeSortDirection ) this.changeSortDirection.emit(this.sortDirection);
   }
   
   changeSortType(item) {
@@ -99,7 +116,7 @@ export class MapListComponent implements OnInit, OnChanges {
     item.isActive = true;
     this.tooltip.close();
 
-    this.changeSortCategory.emit(item);
+    if ( this.changeSortCategory ) this.changeSortCategory.emit(item);
   }
 
   setVisibleColumns() {
@@ -141,4 +158,5 @@ export class MapListComponent implements OnInit, OnChanges {
 
     this.ref.detectChanges();
   }
+  
 }

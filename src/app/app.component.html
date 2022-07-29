@@ -2,28 +2,6 @@
 
 <app-custom-scrollbar>
   <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
-  <div style="display: none">
-    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <symbol id="plus_sign" height="26" viewBox="0 0 26 26" width="26">
-          <g data-name="Group 56267" id="Group_56267" transform="translate(-265 -246)">
-            <g id="Icon" transform="translate(-1145 226)">
-              <rect data-name="Rectangle 29109" fill="#fff" height="26" id="Rectangle_29109" rx="2"
-                transform="translate(1410 20)" width="26" />
-            </g>
-            <path
-              d="M102.159,286.762h-4.8v-4.8a1.6,1.6,0,0,0-3.2,0v4.8h-4.8a1.6,1.6,0,1,0,0,3.2h4.8v4.8a1.6,1.6,0,1,0,3.2,0v-4.8h4.8a1.6,1.6,0,1,0,0-3.2Z"
-              data-name="Path 29986" fill="#b7b7b7" id="Path_29986" transform="translate(182.242 -29.361)" />
-          </g>
-        </symbol>
-        <symbol id="home_filled" viewBox="0 0 24 24">
-          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-          <path d="M0 0h24v24H0z" fill="none" />
-        </symbol>
-      </defs>
-    </svg>
-  </div>
-
   <div id="top" class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}">
     <router-outlet></router-outlet>
 
