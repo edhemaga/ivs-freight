@@ -12,9 +12,7 @@ export class SettingsFactoringComponent implements OnInit {
   public factoringEmail: boolean;
   constructor(private settingsStoreService: SettingsStoreService) {}
 
-  ngOnInit(): void {
-    console.log(this.factoringData);
-  }
+  ngOnInit(): void {}
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     switch (modal.type) {

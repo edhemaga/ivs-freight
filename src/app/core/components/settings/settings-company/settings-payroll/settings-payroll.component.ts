@@ -22,7 +22,6 @@ export class SettingsPayrollComponent implements OnInit, OnChanges {
       changes?.payrollData?.currentValue !== changes?.payrollData?.previousValue
     ) {
       this.payrollData = changes?.payrollData?.currentValue;
-      console.log(this.payrollData);
     }
   }
   ngOnInit(): void {}
@@ -30,8 +29,6 @@ export class SettingsPayrollComponent implements OnInit, OnChanges {
     return item.id;
   }
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    console.log('ON ACTION PAYROLL DATA');
-    console.log(modal);
     this.settingsStoreService.onModalAction(modal);
   }
 }
