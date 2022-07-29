@@ -80,7 +80,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
       description: [null],
-      url: [null, Validators.required],
+      url: [null],
       deadline: [null],
       departmentIds: [null],
       companyUserIds: [null],

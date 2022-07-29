@@ -392,7 +392,7 @@ export class SettingsInsurancePolicyModalComponent
       expires: convertDateToBackend(expires),
       address: {
         ...this.selectedAddress,
-        addressUnit: addressUnit,
+        addressUnit: this.insurancePolicyForm.get('addressUnit').value,
       },
     };
 
