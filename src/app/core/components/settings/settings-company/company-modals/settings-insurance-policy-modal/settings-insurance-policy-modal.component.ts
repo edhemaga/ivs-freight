@@ -75,7 +75,6 @@ export class SettingsInsurancePolicyModalComponent
     this.trackCheckboxValues();
 
     if (this.editData.type === 'edit') {
-      console.log(this.editData);
       this.editInsurancePolicyById(this.editData.company);
     }
   }
@@ -614,9 +613,9 @@ export class SettingsInsurancePolicyModalComponent
       address: this.selectedAddress ? this.selectedAddress : null,
     };
 
-    const commLiablity = this.idCommercial
+    const commLiablity = commericalGeneralLiability
       ? {
-          id: this.idCommercial,
+          id: this.idCommercial ? this.idCommercial : 0,
           isCommercialGeneralLiabillityChecked: commericalGeneralLiability,
           policy: commericalPolicy,
           insurerName: commericalInsurerName,
@@ -644,9 +643,9 @@ export class SettingsInsurancePolicyModalComponent
         }
       : null;
 
-    const autoLiability = this.idAutomobile
+    const autoLiability = automobileLiability
       ? {
-          id: this.idAutomobile,
+          id: this.idAutomobile ? this.idAutomobile : 0,
           isAutomobileLiabillityChecked: automobileLiability,
           policy: automobilePolicy,
           insurerName: automobileInsurerName,
@@ -668,9 +667,9 @@ export class SettingsInsurancePolicyModalComponent
         }
       : null;
 
-    const motTruckCargo = this.idMotor
+    const motTruckCargo = motorTruckCargo
       ? {
-          id: this.idMotor,
+          id: this.idMotor ? this.idMotor : 0,
           isMotorTruckChecked: motorTruckCargo,
           isMotorTruckReeferChecked: motorTruckCargo,
           policy: motorPolicy,
@@ -685,9 +684,9 @@ export class SettingsInsurancePolicyModalComponent
         }
       : null;
 
-    const physDamage = this.idPhysicalDamage
+    const physDamage = physicalDamage
       ? {
-          id: this.idPhysicalDamage,
+          id: this.idPhysicalDamage ? this.idPhysicalDamage : 0,
           isPhysicalDamageChecked: physicalDamage,
           policy: physicalPolicy,
           insurerName: physicalInsurerName,
@@ -703,9 +702,9 @@ export class SettingsInsurancePolicyModalComponent
         }
       : null;
 
-    const trailInterchange = this.idTrailerInterchange
+    const trailInterchange = trailerInterchange
       ? {
-          id: this.idTrailerInterchange,
+          id: this.idTrailerInterchange ? this.idTrailerInterchange : 0,
           isTrailerInterchangeChecked: trailerInterchange,
           policy: trailerPolicy,
           insurerName: trailerInsurerName,

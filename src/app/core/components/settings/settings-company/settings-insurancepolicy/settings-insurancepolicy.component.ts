@@ -99,12 +99,23 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
   }
 
   //Function for drop-down
-  public optionsEvent(any: any, action: string) {
-    switch (action) {
+  public optionsEvent(action: any, insurance: any) {
+    switch (action.type) {
+      case 'edit': {
+        this.onAction({
+          modalName: 'insurance-policy',
+          type: 'edit',
+          company: insurance,
+        });
+        break;
+      }
+      case 'delete-item': {
+        this.deleteInsurancePolicy(insurance);
+        break;
+      }
       default: {
         break;
       }
     }
   }
-  public onShowDetails() {}
 }
