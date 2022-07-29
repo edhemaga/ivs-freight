@@ -782,8 +782,6 @@ export class SettingsInsurancePolicyModalComponent
   }
 
   private editInsurancePolicyById(insurance: any) {
-    console.log('EDIT BY ID');
-    console.log(insurance);
     this.insurancePolicyForm.patchValue({
       producerName: insurance.producerName,
       issued: convertDateFromBackend(insurance.issued),

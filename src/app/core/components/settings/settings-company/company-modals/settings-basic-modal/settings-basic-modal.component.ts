@@ -615,10 +615,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public incorrectInput($event) {
-    console.log($event);
-  }
-
   private validateMiles() {
     this.companyForm
       .get('soloEmptyMile')
