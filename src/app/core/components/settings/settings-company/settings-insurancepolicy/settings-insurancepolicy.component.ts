@@ -7,143 +7,52 @@ import {
 } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
 })
-export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
-  public insuranceData = {
-    phone: '(123) 456-7890',
-    email: 'peraperic@gmail.com',
-    address: '5462 N East River Rd apt 611,Chicago, IL 60656, USA',
-
-    generalLiability: {
-      insurerName: 'LLOYDS OF LONDON',
-      rating: 'A++',
-      numberOfPolicy: 'WGL000695-00',
-      fields: [
-        {
-          id: 1,
-          name: 'Each Occurrence',
-          value: '$1,000.000',
-        },
-        {
-          id: 2,
-          name: 'Dmg. to Rented Pr.',
-          value: '$2,000.000',
-        },
-        {
-          id: 3,
-          name: 'Medical Expiration',
-          value: '$500.000',
-        },
-        {
-          id: 4,
-          name: 'Pers. and Adv. Injury',
-          value: '$100.000',
-        },
-        {
-          id: 5,
-          name: 'General Aggregate',
-          value: '$300.000',
-        },
-        {
-          id: 6,
-          name: 'Products - Comp / OP',
-          value: '$800.000',
-        },
-      ],
-    },
-    automobileLiability: {
-      insurerName: 'UNIQUE INSURANCE CO',
-      rating: '',
-      numberOfPolicy: 'KBG5675678-01',
-      fields: [
-        {
-          id: 1,
-          name: 'Combined Single',
-          value: '$1,000.000',
-        },
-        {
-          id: 2,
-          name: 'Combined Single',
-          value: '$2,000.000',
-        },
-        {
-          id: 3,
-          name: 'Boldly Injury (Person)',
-          value: '$100.000',
-        },
-        {
-          id: 4,
-          name: 'Boldly Injury (Accident)',
-          value: '$100.000',
-        },
-      ],
-    },
-    motorTruckCargo: {
-      insurerName: 'Unique Insurance Co',
-      rating: 'NR',
-      numberOfPolicy: 'KBG5675678-01',
-      fields: [
-        {
-          id: 1,
-          name: 'Single Conveyance',
-          value: '$100.000',
-        },
-        {
-          id: 2,
-          name: 'Deductable',
-          value: '$300.000',
-        },
-      ],
-    },
-    physicalDamage: {
-      insurerName: 'Unique Insurance Co',
-      rating: 'NR',
-      numberOfPolicy: 'KBG5675678-01',
-      fields: [
-        {
-          id: 1,
-          name: 'Comprehensive & Collision',
-          value: '$100.000',
-        },
-        {
-          id: 2,
-          name: 'Deductable',
-          value: '$300.000',
-        },
-      ],
-    },
-    trailerInterchange: {
-      insurerName: 'Unique Insurance Co',
-      rating: 'NR',
-      numberOfPolicy: 'KBG5675678-01',
-      fields: [
-        {
-          id: 1,
-          name: 'Value',
-          value: '$100.000',
-        },
-      ],
-    },
-  };
-  public dropOptions: any;
+export class SettingsInsurancepolicyComponent implements OnChanges {
   @Input() public insurancePolicyData: any;
   public copyPolicyName: boolean[] = [];
+  public dropOptions: any;
 
   constructor(
     private settingsStoreService: SettingsStoreService,
+    private notificationService: NotificationService,
     private clipboar: Clipboard
   ) {}
-  ngOnChanges(changes: SimpleChanges): void {}
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes?.insurancePolicyData?.currentValue !==
+      changes?.insurancePolicyData?.previousValue
+    ) {
+      this.insurancePolicyData = changes?.insurancePolicyData?.currentValue;
+    }
+  }
+
   ngOnInit(): void {
     this.initDropOptions();
   }
+
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsStoreService.onModalAction(modal);
   }
+
+  public deleteInsurancePolicy(insurance: any) {
+    this.settingsStoreService
+      .deleteInsurancePolicyById(insurance.id)
+      .subscribe({
+        next: () => {
+          this.notificationService.success('SUCCESS DELETE', 'Success');
+        },
+        error: () => {
+          this.notificationService.error('Error  DELETE', 'Error');
+        },
+      });
+  }
+
   public identity(index: number, item: any): number {
     return item.id;
   }
@@ -190,12 +99,23 @@ export class SettingsInsurancepolicyComponent implements OnInit, OnChanges {
   }
 
   //Function for drop-down
-  public optionsEvent(any: any, action: string) {
-    switch (action) {
+  public optionsEvent(action: any, insurance: any) {
+    switch (action.type) {
+      case 'edit': {
+        this.onAction({
+          modalName: 'insurance-policy',
+          type: 'edit',
+          company: insurance,
+        });
+        break;
+      }
+      case 'delete-item': {
+        this.deleteInsurancePolicy(insurance);
+        break;
+      }
       default: {
         break;
       }
     }
   }
-  public onShowDetails() {}
 }

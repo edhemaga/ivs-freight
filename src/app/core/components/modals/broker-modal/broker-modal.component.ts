@@ -447,19 +447,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   ) {
     switch (action) {
       case 'physical-address': {
-        this.selectedPhysicalAddress = event.address;
+        if (event.valid) this.selectedPhysicalAddress = event.address;
         break;
       }
       case 'physical-pobox': {
-        this.selectedPhysicalPoBox = event.address;
+        if (event.valid) this.selectedPhysicalPoBox = event.address;
         break;
       }
       case 'billing-address': {
-        this.selectedBillingAddress = event.address;
+        if (event.valid) this.selectedBillingAddress = event.address;
         break;
       }
       case 'billing-pobox': {
-        this.selectedBillingPoBox = event.address;
+        if (event.valid) this.selectedBillingPoBox = event.address;
         break;
       }
       default: {

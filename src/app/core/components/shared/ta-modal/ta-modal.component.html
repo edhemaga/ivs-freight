@@ -117,9 +117,15 @@
           ngbAutofocus
           type="button"
         >
-          {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
+          {{
+            saveSpinnerVisibility
+              ? "Saving"
+              : editData?.type?.includes("edit")
+              ? "Save Changes"
+              : "Save"
+          }}
           <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
-            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
           </div>
         </button>
       </div>

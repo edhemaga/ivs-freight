@@ -115,7 +115,7 @@
   //---------------- Bank Inputs ----------------
   .custom-bank-row {
     display: grid;
-    grid-template-columns: 164px 100px 168px;
+    grid-template-columns: 164px 113px 155px;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
@@ -162,6 +162,21 @@
         margin-right: 13px;
       }
     }
+  }
+
+  //---------------- Driver First Row ------------------------------------
+  .driver-modal-first-row {
+    display: grid;
+    grid-template-columns: repeat(2, 226px) 140px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .driver-modal-second-row {
+    display: grid;
+    grid-template-columns: 170px 282px 140px;
+    column-gap: 12px;
+    margin-bottom: 32px;
   }
 
   //---------------- Custom Checkbox Card With Content In ----------------
