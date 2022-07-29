@@ -143,24 +143,18 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        // {
-        //   title: 'Send Message',
-        //   name: 'dm',
-        //   class: 'regular-text',
-        //   contentType: 'dm',
-        // },
-        // {
-        //   title: 'Print',
-        //   name: 'print',
-        //   class: 'regular-text',
-        //   contentType: 'print',
-        // },
-        // {
-        //   title: 'Deactivate',
-        //   name: 'deactivate',
-        //   class: 'regular-text',
-        //   contentType: 'deactivate',
-        // },
+        {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
         {
           title: 'Edit',
           name: 'edit',

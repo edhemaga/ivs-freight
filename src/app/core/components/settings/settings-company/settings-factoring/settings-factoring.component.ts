@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-import { CompanyResponse } from 'appcoretruckassist';
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
@@ -14,15 +13,9 @@ export class SettingsFactoringComponent implements OnInit {
   constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit(): void {
-    this.getFactoringData(this.factoringData);
+    console.log(this.factoringData);
   }
-  public getFactoringData(data: CompanyResponse) {
-    if (data?.factoringCompany?.customNoticeOfAssigment) {
-      this.changeDefaultNotice = true;
-    } else {
-      this.changeDefaultNotice = false;
-    }
-  }
+
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     switch (modal.type) {
       case 'edit': {

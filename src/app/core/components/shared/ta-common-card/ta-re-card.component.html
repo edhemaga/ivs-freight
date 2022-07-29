@@ -7,6 +7,7 @@
     class="tooltipClose"
   >
     <div class="name-dots disable-selection"  
+    [ngStyle]="{'padding':paddingDots}"
     >
       <div class="text-icon-common" (click)="toggleCard($event)" [ngClass]="{ copied: copiedCommon }">
         <div  class="content-wrapper">
@@ -73,12 +74,20 @@
               src="assets/svg/common/ic_copy.svg"
             ></svg-icon>
           </span>
+          <span
+          *ngIf="settingsIcon && isCardOpen"
+          ngbTooltip
+          [mainTooltip]="'Company Owned'"
+          position="bottom"
+          [tooltipBackground]="'#6c6c6c'"
+        >
           <svg-icon
             *ngIf="settingsIcon && isCardOpen"
             src="{{ settingsIcon }}"
             class="settings-icon"
           >
           </svg-icon>
+          </span>
         </div>
       </div>
       <div *ngIf="haveDots" (click)="clickedCardName(cardNameCurrent)" class="dots-common-cards">
