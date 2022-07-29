@@ -146,7 +146,6 @@ export class DriverDetailsItemComponent
   }
 
   public optionsEvent(any: any, action: string) {
-    console.log('optionsEvent', any, action);
     switch (action) {
       case 'edit-licence': {
         this.modalService.openModal(
