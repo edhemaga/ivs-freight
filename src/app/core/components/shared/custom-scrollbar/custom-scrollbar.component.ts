@@ -35,7 +35,6 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
       });
       document.addEventListener("mousemove", (e) => {
         if (this.isMouseDown) {
-          console.log("down");
           const offsetBar = e.clientY - this.barClickPosition;
           if (offsetBar > -1 && ((e.clientY + this.barClickRestHeight) < window.innerHeight)) {
             this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
