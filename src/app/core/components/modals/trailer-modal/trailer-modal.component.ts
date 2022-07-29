@@ -26,6 +26,10 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import {
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from 'src/app/core/utils/methods.calculations';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -287,31 +291,18 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       axles: this.trailerForm.get('axles').value
         ? parseInt(this.trailerForm.get('axles').value)
         : null,
-      suspension: this.selectedSuspension
-        ? this.selectedSuspension.value
-        : null,
+      suspension: this.selectedSuspension ? this.selectedSuspension.id : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-      doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
-      reeferUnit: this.selectedReeferType
-        ? this.selectedReeferType.value
-        : null,
+      doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
+      reeferUnit: this.selectedReeferType ? this.selectedReeferType.id : null,
       emptyWeight: this.trailerForm.get('emptyWeight').value
-        ? parseFloat(
-            this.trailerForm
-              .get('emptyWeight')
-              .value.toString()
-              .replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('emptyWeight').value)
         : null,
       mileage: this.trailerForm.get('mileage').value
-        ? parseFloat(
-            this.trailerForm.get('mileage').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('mileage').value)
         : null,
       volume: this.trailerForm.get('volume').value
-        ? parseFloat(
-            this.trailerForm.get('volume').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
     };
 
@@ -368,31 +359,34 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       axles: this.trailerForm.get('axles').value
         ? parseInt(this.trailerForm.get('axles').value)
         : null,
-      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
       suspension: this.selectedSuspension
-        ? this.selectedSuspension.value
+        ? this.selectedSuspension.id != 0
+          ? this.selectedSuspension.id
+          : null
         : null,
-      doorType: this.selectedDoorType ? this.selectedDoorType.value : null,
+      tireSizeId: this.selectedTireSize
+        ? this.selectedTireSize.id != 0
+          ? this.selectedTireSize.id
+          : null
+        : null,
+      doorType: this.selectedDoorType
+        ? this.selectedDoorType.id != 0
+          ? this.selectedDoorType.id
+          : null
+        : null,
       reeferUnit: this.selectedReeferType
-        ? this.selectedReeferType.value
+        ? this.selectedReeferType.id != 0
+          ? this.selectedReeferType.id
+          : null
         : null,
       emptyWeight: this.trailerForm.get('emptyWeight').value
-        ? parseFloat(
-            this.trailerForm
-              .get('emptyWeight')
-              .value.toString()
-              .replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('emptyWeight').value)
         : null,
       mileage: this.trailerForm.get('mileage').value
-        ? parseFloat(
-            this.trailerForm.get('mileage').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('mileage').value)
         : null,
       volume: this.trailerForm.get('volume').value
-        ? parseFloat(
-            this.trailerForm.get('volume').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
     };
 
@@ -438,9 +432,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             tireSizeId: res.tireSize ? res.tireSize.name : null,
             doorType: res.doorType ? res.doorType.name : null,
             reeferUnit: res.reeferUnit ? res.reeferUnit.name : null,
-            emptyWeight: res.emptyWeight,
-            mileage: res.mileage,
-            volume: res.volume,
+            emptyWeight: res.emptyWeight
+              ? convertNumberInThousandSep(res.emptyWeight)
+              : null,
+            mileage: res.mileage
+              ? convertNumberInThousandSep(res.mileage)
+              : null,
+            volume: res.volume ? convertNumberInThousandSep(res.volume) : null,
             insurancePolicy: res.insurancePolicy,
           });
 

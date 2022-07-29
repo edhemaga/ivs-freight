@@ -58,7 +58,5 @@ export class SettingsFactoringComponent implements OnChanges, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnDestroy(): void {}
 }

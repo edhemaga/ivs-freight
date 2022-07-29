@@ -155,11 +155,11 @@
         &.svg-text-template {
           display: flex;
           align-items: center;
-          gap: 6px;
 
           .svgtext-template-logo {
             height: auto;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
+            margin-right: 6px;
 
             &.hide-hover-icons {
               visibility: none;
@@ -176,6 +176,7 @@
             }
 
             &.move-hover-text {
+              transition: all 0.3s ease-in-out;
               transform: translateX(-60px);
             }
           }
@@ -187,7 +188,6 @@
 
           &:hover {
             .svgtext-template-logo {
-              transition: all 0.3s ease-in-out;
               &.hide-hover-icons {
                 visibility: visible;
                 opacity: 1;
@@ -196,7 +196,6 @@
             }
 
             .svgtext-template-text {
-              transition: all 0.3s ease-in-out;
               &.move-hover-text {
                 transform: translateX(0px);
               }
