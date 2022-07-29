@@ -108,13 +108,20 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       note,
     } = this.factoringForm.value;
 
+    if (this.selectedAddress) {
+      this.selectedAddress = {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      };
+    }
+
     const newData: UpdateFactoringCompanyCommand = {
       companyId: company.divisions.length ? null : company.id,
       factoringCompany: {
         name: name,
         phone: phone,
         email: email,
-        address: { ...this.selectedAddress, addressUnit: addressUnit },
+        address: this.selectedAddress,
         noticeOfAssigment: noticeOfAssigment,
         note: note,
       },

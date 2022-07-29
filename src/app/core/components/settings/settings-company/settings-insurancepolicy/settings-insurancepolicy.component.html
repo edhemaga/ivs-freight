@@ -9,14 +9,23 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'insurance-policy', type: 'new' })"
+        (click)="
+          onAction({
+            modalName: 'insurance-policy',
+            type: 'new',
+            company: insurancePolicyData
+          })
+        "
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <div
       class="settings-insuarnce"
-      *ngFor="let insurance of insurancePolicyData; trackBy: identity"
+      *ngFor="
+        let insurance of insurancePolicyData?.insurancePolicies;
+        trackBy: identity
+      "
     >
       <app-ta-re-card
         [cardNameCommon]="insurance?.producerName"
@@ -33,6 +42,13 @@
             <svg-icon
               class="company-icons"
               src="assets/svg/common/ic_phone.svg"
+              (click)="
+                onAction({
+                  modalName: 'insurance-policy',
+                  type: 'edit',
+                  company: insurance
+                })
+              "
             ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.phone"> </app-ta-copy>
           </div>
@@ -40,6 +56,7 @@
             <svg-icon
               class="company-icons"
               src="assets/svg/common/ic_email.svg"
+              (click)="deleteInsurancePolicy(insurance)"
             ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.email"> </app-ta-copy>
           </div>

@@ -9,7 +9,7 @@
 >
   <form [formGroup]="insurancePolicyForm" class="form-container">
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
         <app-ta-input
           formControlName="producerName"
           [inputConfig]="{
@@ -22,7 +22,9 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-3">
+    </div>
+    <div class="row">
+      <div class="col-6">
         <app-ta-input
           formControlName="issued"
           [inputConfig]="{
@@ -36,7 +38,7 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-3 no-p-left">
+      <div class="col-6">
         <app-ta-input
           formControlName="expires"
           [inputConfig]="{
@@ -318,7 +320,7 @@
             </div>
             <div class="col-3 no-p-left">
               <app-ta-input-dropdown
-                formControlName="commericalRating"
+                formControlName="automobileRating"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
