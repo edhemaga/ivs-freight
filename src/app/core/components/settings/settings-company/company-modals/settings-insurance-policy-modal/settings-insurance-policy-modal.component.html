@@ -13,7 +13,7 @@
         <app-ta-input
           formControlName="producerName"
           [inputConfig]="{
-            name: 'Producer Name',
+            name: 'Full Name',
             type: 'text',
             label: 'Producer Name',
             isRequired: true,
@@ -110,12 +110,11 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('commericalGeneralLiability').value
         }"
-        (click)="openCloseCheckboxCard($event, 'commericalGeneralLiability')"
       >
         <app-ta-checkbox
           formControlName="commericalGeneralLiability"
-          [label]="'Commerical General Liability'"
-          [name]="'Commerical'"
+          [label]="'Commercial General Liability'"
+          [name]="'Commercial'"
         ></app-ta-checkbox>
         <svg-icon
           class="checkbox-card-header-arrow"
@@ -181,7 +180,7 @@
               <app-ta-input
                 formControlName="commericalOccurrence"
                 [inputConfig]="{
-                  name: 'Occurence',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Each Occurrence',
                   placeholderIcon: 'dollar',
@@ -194,7 +193,7 @@
               <app-ta-input
                 formControlName="commericalDamage"
                 [inputConfig]="{
-                  name: 'Damage Rented Prem',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Damage To Rented Prem.',
                   placeholderIcon: 'dollar',
@@ -209,7 +208,7 @@
               <app-ta-input
                 formControlName="commericalInj"
                 [inputConfig]="{
-                  name: 'Personal and Advertising Inj',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Personal & Adver. Inj.',
                   placeholderIcon: 'dollar',
@@ -222,7 +221,7 @@
               <app-ta-input
                 formControlName="commericalMedical"
                 [inputConfig]="{
-                  name: 'Medical Expanses',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Medical Expanses',
                   placeholderIcon: 'dollar',
@@ -237,7 +236,7 @@
               <app-ta-input
                 formControlName="commericalGeneralAggregate"
                 [inputConfig]="{
-                  name: 'General Aggregate',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'General Aggregate',
                   placeholderIcon: 'dollar',
@@ -250,7 +249,7 @@
               <app-ta-input
                 formControlName="commericalProducts"
                 [inputConfig]="{
-                  name: 'Products Comp',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Products Comp/OP Agg.',
                   placeholderIcon: 'dollar',
@@ -271,7 +270,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('automobileLiability').value
         }"
-        (click)="openCloseCheckboxCard($event, 'automobileLiability')"
       >
         <app-ta-checkbox
           formControlName="automobileLiability"
@@ -339,7 +337,7 @@
               <app-ta-input
                 formControlName="automobileAccident"
                 [inputConfig]="{
-                  name: 'Bodily Injury',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Bodily Injury (Accident)',
                   placeholderIcon: 'dollar',
@@ -352,7 +350,7 @@
               <app-ta-input
                 formControlName="automobileInjuryPerson"
                 [inputConfig]="{
-                  name: 'Bodily Injury',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Bodily Injury (Person)',
                   placeholderIcon: 'dollar',
@@ -367,7 +365,7 @@
               <app-ta-input
                 formControlName="automobileLimit"
                 [inputConfig]="{
-                  name: 'Combined Single Limit',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Combined Single Limit',
                   placeholderIcon: 'dollar',
@@ -380,7 +378,7 @@
               <app-ta-input
                 formControlName="automobileDamage"
                 [inputConfig]="{
-                  name: 'Property Damage',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Property Damage',
                   placeholderIcon: 'dollar',
@@ -401,7 +399,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('motorTruckCargo').value
         }"
-        (click)="openCloseCheckboxCard($event, 'motorTruckCargo')"
       >
         <div class="grouping-checkboxes">
           <app-ta-checkbox
@@ -478,7 +475,7 @@
               <app-ta-input
                 formControlName="motorConveyance"
                 [inputConfig]="{
-                  name: 'Single Conveyance',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Single Conveyance',
                   placeholderIcon: 'dollar',
@@ -491,7 +488,7 @@
               <app-ta-input
                 formControlName="motorDeductable"
                 [inputConfig]="{
-                  name: 'Motor Deductable',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
@@ -512,7 +509,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('physicalDamage').value
         }"
-        (click)="openCloseCheckboxCard($event, 'physicalDamage')"
       >
         <app-ta-checkbox
           formControlName="physicalDamage"
@@ -581,7 +577,7 @@
               <app-ta-input
                 formControlName="physicalCollision"
                 [inputConfig]="{
-                  name: 'Comprehen Collision',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Comprehen. & Collision',
                   placeholderIcon: 'dollar',
@@ -594,7 +590,7 @@
               <app-ta-input
                 formControlName="physicalDeductable"
                 [inputConfig]="{
-                  name: 'Physical Deductable',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
@@ -615,7 +611,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('trailerInterchange').value
         }"
-        (click)="openCloseCheckboxCard($event, 'trailerInterchange')"
       >
         <app-ta-checkbox
           formControlName="trailerInterchange"
@@ -684,7 +679,7 @@
               <app-ta-input
                 formControlName="trailerValue"
                 [inputConfig]="{
-                  name: 'Trailer Value',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Value',
                   placeholderIcon: 'dollar',

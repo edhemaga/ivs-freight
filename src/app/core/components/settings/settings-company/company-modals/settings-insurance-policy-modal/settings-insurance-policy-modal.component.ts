@@ -6,10 +6,16 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { AddressEntity } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  CreateInsurancePolicyCommand,
+  UpdateInsurancePolicyCommand,
+} from 'appcoretruckassist';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
+import { SettingsStoreService } from '../../../state/settings.service';
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
@@ -40,7 +46,8 @@ export class SettingsInsurancePolicyModalComponent
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private settingsService: SettingsStoreService
   ) {}
 
   ngOnInit(): void {
@@ -109,65 +116,31 @@ export class SettingsInsurancePolicyModalComponent
     //   });
   }
 
-  public onModalAction(event: any) {}
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        this.insurancePolicyForm.reset();
+        break;
+      }
+      case 'save': {
+        // If Form not valid
+        if (this.insurancePolicyForm.invalid) {
+          this.inputService.markInvalid(this.insurancePolicyForm);
+          return;
+        }
+        if (this.editData) {
+          this.updateInsurancePolicy(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        } else {
+          this.addInsurancePolicy(this.editData.id);
+          this.modalService.setModalSpinner({ action: null, status: true });
+        }
+        break;
+      }
+      case 'delete': {
+        this.deleteInsurancePolicyById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
 
-  public onHandleAddress(event: {
-    address: AddressEntity;
-    valid: boolean;
-  }): void {
-    this.selectedAddress = event.address;
-  }
-
-  public openCloseCheckboxCard(event: any, action) {
-    switch (action) {
-      case 'commericalGeneralLiability': {
-        if (this.insurancePolicyForm.get('commericalGeneralLiability').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.insurancePolicyForm
-            .get('commericalGeneralLiability')
-            .setValue(false);
-        }
-        this.isChecked(
-          'commericalGeneralLiability',
-          'commericalPolicy',
-          'commericalInsurerName'
-        );
-        break;
-      }
-      case 'automobileLiability': {
-        if (this.insurancePolicyForm.get('automobileLiability').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.insurancePolicyForm.get('automobileLiability').setValue(false);
-        }
-        this.isChecked(
-          'automobileLiability',
-          'automobilePolicy',
-          'automobileInsurerName'
-        );
-        break;
-      }
-      case 'motorTruckCargo': {
-        if (this.insurancePolicyForm.get('motorTruckCargo').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.insurancePolicyForm.get('motorTruckCargo').setValue(false);
-        }
-        this.isChecked('motorTruckCargo', 'motorPolicy', 'motorInsurerName');
-        break;
-      }
-      case 'physicalDamage': {
-        if (this.insurancePolicyForm.get('physicalDamage').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.insurancePolicyForm.get('physicalDamage').setValue(false);
-        }
-        this.isChecked(
-          'physicalDamage',
-          'physicalPolicy',
-          'physicalInsurerName'
-        );
         break;
       }
       default: {
@@ -176,33 +149,11 @@ export class SettingsInsurancePolicyModalComponent
     }
   }
 
-  private isChecked(
-    formControlName: string,
-    validation_first: string,
-    validation_second: string
-  ) {
-    this.insurancePolicyForm
-      .get(formControlName)
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.inputService.changeValidators(
-            this.insurancePolicyForm.get(validation_first)
-          );
-          this.inputService.changeValidators(
-            this.insurancePolicyForm.get(validation_second)
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.insurancePolicyForm.get(validation_first),
-            false
-          );
-          this.inputService.changeValidators(
-            this.insurancePolicyForm.get(validation_second),
-            false
-          );
-        }
-      });
+  public onHandleAddress(event: {
+    address: AddressEntity;
+    valid: boolean;
+  }): void {
+    this.selectedAddress = event.address;
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -233,6 +184,338 @@ export class SettingsInsurancePolicyModalComponent
 
   public onFilesEvent(event) {
     this.documents = event.files;
+  }
+
+  private addInsurancePolicy(id: number) {
+    const {
+      address,
+      addressUnit,
+      // Commerical General Liability
+      commericalGeneralLiability,
+      commericalPolicy,
+      commericalInsurerName,
+      commericalRating,
+      commericalOccurrence,
+      commericalDamage,
+      commericalInj,
+      commericalMedical,
+      commericalGeneralAggregate,
+      commericalProducts,
+      // Automobile Liability
+      automobileLiability,
+      automobilePolicy,
+      automobileInsurerName,
+      automobileRating,
+      automobileAccident,
+      automobileInjuryPerson,
+      automobileLimit,
+      automobileDamage,
+      // Moto Truck & Reefer Breakdown
+      motorTruckCargo,
+      reeferBreakdown,
+      motorPolicy,
+      motorInsurerName,
+      motorRating,
+      motorConveyance,
+      motorDeductable,
+      // Physical Damage
+      physicalDamage,
+      physicalPolicy,
+      physicalInsurerName,
+      physicalRating,
+      physicalCollision,
+      physicalDeductable,
+      // Trailer Interchange
+      trailerInterchange,
+      trailerPolicy,
+      trailerInsurerName,
+      trailerRating,
+      trailerValue,
+      ...form
+    } = this.insurancePolicyForm.value;
+
+    let newData: CreateInsurancePolicyCommand = {
+      companyId: id,
+      ...form,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
+    };
+
+    const commLiablity = {
+      isCommercialGeneralLiabillityChecked: commericalGeneralLiability,
+      policy: commericalPolicy,
+      insurerName: commericalInsurerName,
+      rating: this.selectedCommericalRating,
+      eachOccurrence: commericalOccurrence
+        ? convertThousanSepInNumber(commericalOccurrence)
+        : null,
+      damageToRentedPremises: commericalDamage
+        ? convertThousanSepInNumber(commericalDamage)
+        : null,
+      personalAndAdvertisingInjury: commericalInj
+        ? convertThousanSepInNumber(commericalInj)
+        : null,
+      medicalExpanses: commericalMedical
+        ? convertThousanSepInNumber(commericalMedical)
+        : null,
+      generalAggregate: commericalGeneralAggregate
+        ? convertThousanSepInNumber(commericalGeneralAggregate)
+        : null,
+      productsCompOperAggregate: commericalProducts
+        ? convertThousanSepInNumber(commericalProducts)
+        : null,
+    };
+
+    const autoLiability = {
+      isAutomobileLiabillityChecked: automobileLiability,
+      policy: automobilePolicy,
+      insurerName: automobileInsurerName,
+      rating: this.selectedAutomobileRating,
+      bodilyInjuryAccident: automobileAccident,
+      bodilyInjuryPerson: automobileInjuryPerson,
+      combinedSingleLimit: automobileLimit,
+      propertyDamage: automobileDamage,
+    };
+
+    const motTruckCargo = {
+      isMotorTruckChecked: motorTruckCargo,
+      isMotorTruckReeferChecked: motorTruckCargo,
+      policy: motorPolicy,
+      insurerName: motorInsurerName,
+      rating: this.selectedMotorRating,
+      singleConveyance: motorConveyance
+        ? convertThousanSepInNumber(motorConveyance)
+        : null,
+      deductable: motorDeductable
+        ? convertThousanSepInNumber(motorDeductable)
+        : null,
+    };
+
+    const physDamage = {
+      isPhysicalDamageChecked: physicalDamage,
+      policy: physicalPolicy,
+      insurerName: physicalInsurerName,
+      rating: this.selectedPhysicalDamageRating,
+      comprehensiveAndCollision: physicalCollision,
+      deductable: physicalDeductable,
+    };
+
+    const trailInterchange = {
+      isTrailerInterchangeChecked: trailerInterchange,
+      policy: trailerPolicy,
+      insurerName: trailerInsurerName,
+      rating: this.selectedTrailerRating,
+      value: trailerValue,
+    };
+
+    newData = {
+      ...newData,
+      insurancePolicyAddons: [
+        commLiablity,
+        autoLiability,
+        motTruckCargo,
+        physDamage,
+        trailInterchange,
+      ],
+    };
+
+    console.log(newData);
+    this.settingsService
+      .addInsurancePolicy(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully added insurance policy',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Can't add insurance policy", 'Error');
+        },
+      });
+  }
+
+  private updateInsurancePolicy(id: number) {
+    const {
+      address,
+      addressUnit,
+      // Commerical General Liability
+      commericalGeneralLiability,
+      commericalPolicy,
+      commericalInsurerName,
+      commericalRating,
+      commericalOccurrence,
+      commericalDamage,
+      commericalInj,
+      commericalMedical,
+      commericalGeneralAggregate,
+      commericalProducts,
+      // Automobile Liability
+      automobileLiability,
+      automobilePolicy,
+      automobileInsurerName,
+      automobileRating,
+      automobileAccident,
+      automobileInjuryPerson,
+      automobileLimit,
+      automobileDamage,
+      // Moto Truck & Reefer Breakdown
+      motorTruckCargo,
+      reeferBreakdown,
+      motorPolicy,
+      motorInsurerName,
+      motorRating,
+      motorConveyance,
+      motorDeductable,
+      // Physical Damage
+      physicalDamage,
+      physicalPolicy,
+      physicalInsurerName,
+      physicalRating,
+      physicalCollision,
+      physicalDeductable,
+      // Trailer Interchange
+      trailerInterchange,
+      trailerPolicy,
+      trailerInsurerName,
+      trailerRating,
+      trailerValue,
+      ...form
+    } = this.insurancePolicyForm.value;
+
+    let newData: UpdateInsurancePolicyCommand = {
+      id: id,
+      ...form,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
+    };
+
+    const commLiablity = {
+      id: 0,
+      isCommercialGeneralLiabillityChecked: commericalGeneralLiability,
+      policy: commericalPolicy,
+      insurerName: commericalInsurerName,
+      rating: this.selectedCommericalRating,
+      eachOccurrence: commericalOccurrence
+        ? convertThousanSepInNumber(commericalOccurrence)
+        : null,
+      damageToRentedPremises: commericalDamage
+        ? convertThousanSepInNumber(commericalDamage)
+        : null,
+      personalAndAdvertisingInjury: commericalInj
+        ? convertThousanSepInNumber(commericalInj)
+        : null,
+      medicalExpanses: commericalMedical
+        ? convertThousanSepInNumber(commericalMedical)
+        : null,
+      generalAggregate: commericalGeneralAggregate
+        ? convertThousanSepInNumber(commericalGeneralAggregate)
+        : null,
+      productsCompOperAggregate: commericalProducts
+        ? convertThousanSepInNumber(commericalProducts)
+        : null,
+    };
+
+    const autoLiability = {
+      id: 0,
+      isAutomobileLiabillityChecked: automobileLiability,
+      policy: automobilePolicy,
+      insurerName: automobileInsurerName,
+      rating: this.selectedAutomobileRating,
+      bodilyInjuryAccident: automobileAccident,
+      bodilyInjuryPerson: automobileInjuryPerson,
+      combinedSingleLimit: automobileLimit,
+      propertyDamage: automobileDamage,
+    };
+
+    const motTruckCargo = {
+      id: 0,
+      isMotorTruckChecked: motorTruckCargo,
+      isMotorTruckReeferChecked: motorTruckCargo,
+      policy: motorPolicy,
+      insurerName: motorInsurerName,
+      rating: this.selectedMotorRating,
+      singleConveyance: motorConveyance
+        ? convertThousanSepInNumber(motorConveyance)
+        : null,
+      deductable: motorDeductable
+        ? convertThousanSepInNumber(motorDeductable)
+        : null,
+    };
+
+    const physDamage = {
+      id: 0,
+      isPhysicalDamageChecked: physicalDamage,
+      policy: physicalPolicy,
+      insurerName: physicalInsurerName,
+      rating: this.selectedPhysicalDamageRating,
+      comprehensiveAndCollision: physicalCollision,
+      deductable: physicalDeductable,
+    };
+
+    const trailInterchange = {
+      id: 0,
+      isTrailerInterchangeChecked: trailerInterchange,
+      policy: trailerPolicy,
+      insurerName: trailerInsurerName,
+      rating: this.selectedTrailerRating,
+      value: trailerValue,
+    };
+
+    newData = {
+      ...newData,
+      insurancePolicyAddons: [
+        commLiablity,
+        autoLiability,
+        motTruckCargo,
+        physDamage,
+        trailInterchange,
+      ],
+    };
+
+    console.log(newData);
+    this.settingsService
+      .updateInsurancePolicy(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully updated insurance policy',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update insurance policy",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteInsurancePolicyById(id: number) {
+    this.settingsService
+      .deleteInsurancePolicyById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully deleted insurance policy',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete insurance policy",
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {}

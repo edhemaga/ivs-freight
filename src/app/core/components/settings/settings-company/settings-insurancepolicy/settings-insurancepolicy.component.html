@@ -9,7 +9,7 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'basic', type: 'new' })"
+        (click)="onAction({ modalName: 'insurance-policy', type: 'new' })"
       ></svg-icon>
     </div>
   </div>
@@ -30,11 +30,17 @@
       >
         <div class="settings-body-items">
           <div *ngIf="insurance?.phone" class="single-item">
-            <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.phone"> </app-ta-copy>
           </div>
           <div *ngIf="insurance.email" class="single-item">
-            <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.email"> </app-ta-copy>
           </div>
           <div *ngIf="insurance.address" class="single-item">

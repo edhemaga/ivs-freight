@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
 import { CompanyResponse } from 'appcoretruckassist';
 @Component({
@@ -6,16 +6,23 @@ import { CompanyResponse } from 'appcoretruckassist';
   templateUrl: './settings-factoring.component.html',
   styleUrls: ['./settings-factoring.component.scss'],
 })
-export class SettingsFactoringComponent implements OnInit {
+export class SettingsFactoringComponent implements OnChanges {
   @Input() public factoringData: any;
   public changeDefaultNotice: boolean;
   public factoringPhone: boolean;
   public factoringEmail: boolean;
   constructor(private settingsStoreService: SettingsStoreService) {}
 
-  ngOnInit(): void {
-    this.getFactoringData(this.factoringData);
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes?.factoringData?.currentValue !==
+      changes?.factoringData?.previousValue
+    ) {
+      this.factoringData = changes?.factoringData?.currentValue;
+      this.getFactoringData(this.factoringData);
+    }
   }
+
   public getFactoringData(data: CompanyResponse) {
     if (data?.factoringCompany?.customNoticeOfAssigment) {
       this.changeDefaultNotice = true;
@@ -23,7 +30,7 @@ export class SettingsFactoringComponent implements OnInit {
       this.changeDefaultNotice = false;
     }
   }
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
+  public onAction(modal: { modalName: string; type: string; company: any }) {
     switch (modal.type) {
       case 'edit': {
         this.settingsStoreService.onModalAction(modal);
