@@ -38,42 +38,15 @@
   }
 
   .annotation-group {
-    width: 397px;
-    visibility: visible;
-    opacity: 1;
-    transition: width 0.2s ease-in-out, visibility 0.2s ease-in-out,
-      opacity 0.2s ease-in-out;
+    width: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: width 0.2s, visibility 0.2s, opacity 0.2s;
 
     &.display-annotation {
       visibility: visible;
       opacity: 1;
-      width: 100%;
-    }
-  }
-
-  .review-textarea {
-    width: 0;
-    visibility: hidden;
-    opacity: 0;
-    height: 26px;
-    resize: none;
-    border: none;
-    outline: none;
-    white-space: nowrap;
-    overflow: hidden;
-    border-radius: 2px;
-    background: #f3f3f3;
-    font-size: 14px;
-    color: $bw5;
-    padding: 4px 6px;
-    line-height: 18px;
-    transition: width 0.2s ease-in-out, visibility 0.2s ease-in-out,
-      opacity 0.2s ease-in-out;
-
-    &.display-textarea {
-      visibility: visible;
-      opacity: 1;
-      width: 100%;
+      width: 397px;
     }
   }
 }

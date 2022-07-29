@@ -9,11 +9,12 @@ import { ReviewFeedbackService } from '../state/services/review-feedback.service
   styleUrls: ['./applicant-review-feedback.component.scss'],
 })
 export class ApplicantReviewFeedbackComponent implements OnInit {
-  @Input() displayAnnotationIcon: boolean;
+  @Input() openAnnotation: boolean;
+  @Input() displayAnnotationTextArea: boolean;
 
   public annotationForm: FormGroup;
 
-  public displayAnnotationTextArea: boolean = false;
+  /* public displayAnnotationTextArea: boolean = false; */
 
   /*   public approved?: boolean;
   public description: string = '';

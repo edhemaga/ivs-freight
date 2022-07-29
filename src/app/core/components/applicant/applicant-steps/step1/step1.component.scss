@@ -149,12 +149,10 @@
       }
 
       .ssn-group {
-        margin-top: 26px;
         width: 187px;
       }
 
       .bank-group {
-        margin-top: 26px;
         width: 416px;
         margin-right: 0 !important;
       }
@@ -165,6 +163,7 @@
 
       .routing-number-group {
         width: 224px;
+        margin-right: 0 !important;
       }
     }
 
@@ -389,6 +388,7 @@
       }
 
       .previous-address-btn-container {
+        margin-bottom: 26px;
         width: 616px;
 
         .previous-address-title {

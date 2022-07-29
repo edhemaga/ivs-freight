@@ -62,7 +62,13 @@ export class Step1Component implements OnInit, OnDestroy {
   public previousAddressOnEdit: string;
   public previousAddressUnitOnEdit: string;
 
-  public displayAnnotationIcon: boolean = false;
+  public openAnnotationArray: any[] = [
+    {
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+    },
+  ];
+  public displayAnnotationTextArea: boolean = false;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -523,11 +529,108 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public incorrectInput(event: any): void {
-    if (event) {
-      this.displayAnnotationIcon = true;
-      console.log('event', event);
-      console.log('iconDisplay', this.displayAnnotationIcon);
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number
+  ): void {
+    switch (lineIndex) {
+      case 0:
+        if (event) {
+          if (inputIndex === 0) {
+            this.openAnnotationArray[0].lineInputs[0] = true;
+          } else if (inputIndex === 1) {
+            this.openAnnotationArray[0].lineInputs[1] = true;
+          } else if (inputIndex === 2) {
+            this.openAnnotationArray[0].lineInputs[2] = true;
+          }
+
+          this.openAnnotationArray[0].displayAnnotationButton = true;
+        }
+
+        if (!event) {
+          if (inputIndex === 0) {
+            this.openAnnotationArray[0].lineInputs[0] = false;
+          } else if (inputIndex === 1) {
+            this.openAnnotationArray[0].lineInputs[1] = false;
+          } else if (inputIndex === 2) {
+            this.openAnnotationArray[0].lineInputs[2] = false;
+          }
+
+          const firstLineItems = this.openAnnotationArray[0].lineInputs;
+          const isAnyInputInLineIncorrect = firstLineItems.some(
+            (item: boolean) => item
+          );
+
+          if (!isAnyInputInLineIncorrect) {
+            this.openAnnotationArray[0].displayAnnotationButton = false;
+            this.displayAnnotationTextArea = false;
+          }
+        }
+
+        break;
+      /*      case 1:
+        if (event) {
+          this.openAnnotation[1] = true;
+        }
+
+        break;
+      case 2:
+        if (event) {
+          this.openAnnotation[2] = true;
+        }
+
+        break;
+      case 3:
+        if (event) {
+          this.openAnnotation[3] = true;
+        }
+
+        break;
+      case 4:
+        if (event) {
+          this.openAnnotation[4] = true;
+        }
+
+        break;
+      case 5:
+        if (event) {
+          this.openAnnotation[5] = true;
+        }
+
+        break;
+      case 6:
+        if (event) {
+          this.openAnnotation[6] = true;
+        }
+
+        break;
+      case 7:
+        if (event) {
+          this.openAnnotation[7] = true;
+        }
+
+        break;
+      case 8:
+        if (event) {
+          this.openAnnotation[8] = true;
+        }
+
+        break;
+      case 9:
+        if (event) {
+          this.openAnnotation[9] = true;
+        }
+
+        break;
+      case 10:
+        if (event) {
+          this.openAnnotation[10] = true;
+        }
+
+        break; */
+      default:
+        break;
     }
   }
 

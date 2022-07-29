@@ -8,12 +8,12 @@
     mainTooltip="Add Annotation"
     tooltipBackground="#6C6C6C"
     position="top"
-    *ngIf="!displayAnnotationTextArea"
+    *ngIf="openAnnotation && !displayAnnotationTextArea"
   >
     <svg-icon
       class="pen-icon"
       [ngClass]="{
-        'display-icon': displayAnnotationIcon
+        'display-icon': openAnnotation
       }"
       src="assets/svg/applicant/pen-box.svg"
       [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
@@ -21,17 +21,23 @@
     ></svg-icon>
   </div>
 
-  <!-- INPUT -->
+  <!-- ANNOTATION INPUT -->
 
   <div class="d-flex">
-    <div class="annotation-group">
+    <div
+      class="annotation-group"
+      [ngClass]="{
+        'display-annotation': openAnnotation && displayAnnotationTextArea
+      }"
+    >
       <app-ta-input
         formControlName="annotation"
         [inputConfig]="{
-          name: 'Explain',
+          name: 'Annotation',
           type: 'text',
           label: 'Write Annotation',
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
+          autoFocus: true
         }"
       ></app-ta-input>
     </div>
