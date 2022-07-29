@@ -25,26 +25,26 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
   }
   ngOnInit(): void {
 
-    this.sharedService.emitUpdateScrollHeight.subscribe(res => {
-      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
-    });
+    // this.sharedService.emitUpdateScrollHeight.subscribe(res => {
+    //   this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+    // });
 
-    this.ngZone.runOutsideAngular(() => {
-      document.addEventListener('mouseup', () => {
-        this.isMouseDown = false;
-      });
-      document.addEventListener("mousemove", (e) => {
-        if (this.isMouseDown) {
-          const offsetBar = e.clientY - this.barClickPosition;
-          if (offsetBar > -1 && ((e.clientY + this.barClickRestHeight) < window.innerHeight)) {
-            this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
-          }
-          document.scrollingElement.scrollTop = (e.clientY - this.barClickPosition) * this.scrollRatioFull;
-        }
-      });
+    // this.ngZone.runOutsideAngular(() => {
+    //   document.addEventListener('mouseup', () => {
+    //     this.isMouseDown = false;
+    //   });
+    //   document.addEventListener("mousemove", (e) => {
+    //     if (this.isMouseDown) {
+    //       const offsetBar = e.clientY - this.barClickPosition;
+    //       if (offsetBar > -1 && ((e.clientY + this.barClickRestHeight) < window.innerHeight)) {
+    //         this.bar.nativeElement.style.transform = `translateY(${offsetBar}px)`;
+    //       }
+    //       document.scrollingElement.scrollTop = (e.clientY - this.barClickPosition) * this.scrollRatioFull;
+    //     }
+    //   });
 
-      document.addEventListener("scroll", this.setScrollEvent.bind(this));
-    });
+    //   document.addEventListener("scroll", this.setScrollEvent.bind(this));
+    // });
   }
 
   public setScrollEvent(e: any) {
