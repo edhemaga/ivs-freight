@@ -16,7 +16,6 @@ import { BrokerState } from '../state/broker-state/broker.store';
 import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-table',
@@ -44,9 +43,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
-    private ref: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
-    private shipperStore: ShipperStore
   ) {}
 
   ngOnInit(): void {
@@ -457,7 +453,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.tableService.sendDeleteSelectedRows([]);
   }
 
-  selectItem(id) {
+
+  // MAP
+  selectItem(id: any) {
     this.mapsComponent.clickedMarker(id);
   }
 }
