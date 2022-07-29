@@ -9,7 +9,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
   styleUrls: ['./custom-scrollbar.component.scss']
 })
 export class CustomScrollbarComponent implements OnInit, AfterContentInit {
-  @ViewChild('bar') private bar: ElementRef;
+  @ViewChild('bar', {static: false}) private bar: ElementRef;
   scrollTop: number = 5;
   showScrollbar: boolean = false;
   scrollHeight: number = 0;
@@ -44,6 +44,9 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
       });
 
       document.addEventListener("scroll", this.setScrollEvent.bind(this));
+      window.addEventListener("resize", (e: any) => {
+        if (!this.isMouseDown) this.calculateBarSizeAndPosition(e.target.document.scrollingElement);
+      })
     });
   }
 
@@ -80,10 +83,12 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
       this.showScrollbar = false;
       return;
     }
-
+    
     this.scrollRatio = visible_height / content_height;
     this.scrollRatioFull = content_height / visible_height;
     this.scrollTop = elem.scrollTop * this.scrollRatio;
+
+    if( this.bar ){ this.bar.nativeElement.style.transform = `translateY(${this.scrollTop}px)`; }
 
     this.scrollHeight = this.scrollRatio * visible_height;
   }

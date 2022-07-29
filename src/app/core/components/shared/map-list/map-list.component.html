@@ -24,7 +24,7 @@
               [container]="'body'"
               [popoverClass]="'map-list-sort-popover'"
               (click)="openPopover(t2)">
-                <div class="map-list-sort-category marker-info-text">{{ activeSortType.name }}</div>
+                <div class="map-list-sort-category marker-info-text" *ngIf="activeSortType?.name">{{ activeSortType.name }}</div>
             </div>
             <div class="map-list-sort-arrows" (click)="changeSortingDirection()">
               <svg-icon

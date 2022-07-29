@@ -128,7 +128,7 @@
                                                 tooltipBackground="#6C6C6C" (mousedown)="toggleComment($event, i, j)"
                                                 [class.blue-icons]="item.commentActive">
                                                 <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
-                                                <div class="number-comments">0</div>
+                                                <div class="number-comments">{{item.commentsCount}}</div>
                                             </div>
                                             <div class="icon-box" ngbTooltip mainTooltip="Documents" position="bottom"
                                                 tooltipBackground="#6C6C6C">
@@ -150,8 +150,10 @@
                                     <div class="list-text">{{item.description}}</div>
                                     <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
                                 </div>
-                                <div class="comment-holder" *ngIf="reviews.length && item.commentActive">
-                                    <app-ta-user-review [reviewData]="reviews" [isNewReview]="reviews[0].isNewReview">
+                                <div class="comment-holder" *ngIf="item.comments.length && item.commentActive">
+                                    <app-ta-user-review 
+                                    (changeReviewsEvent)="changeReviewsEvent($event)"
+                                    [reviewData]="item.comments">
                                     </app-ta-user-review>
                                 </div>
                                 <div class="list-items-frame">
