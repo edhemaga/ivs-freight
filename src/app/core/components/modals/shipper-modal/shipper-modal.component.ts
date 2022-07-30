@@ -292,7 +292,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectContactDepartment(event: any, ind: number) {

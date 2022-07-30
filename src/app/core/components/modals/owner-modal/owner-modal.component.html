@@ -14,7 +14,7 @@
 
   <form [formGroup]="ownerForm" class="form-container">
     <div class="row" *ngIf="selectedTab === 1">
-      <div class="col-9">
+      <div class="col-8">
         <app-ta-input
           formControlName="bussinesName"
           [inputConfig]="{
@@ -27,7 +27,7 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-3">
+      <div class="col-4">
         <app-ta-input
           formControlName="ein"
           [inputConfig]="{

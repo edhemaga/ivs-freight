@@ -8,6 +8,7 @@ import { TaskModalComponent } from '../../modals/task-modal/task-modal.component
 import { DropResult } from 'ngx-smooth-dnd';
 import { applyDrag } from 'src/app/core/utils/methods.globals';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -135,7 +136,8 @@ export class ToDoListCardComponent implements OnInit {
   constructor(
     private todoTService: TodoTService,
     private modalService: ModalService,
-    private sharedService: SharedService
+    private sharedService: SharedService,
+    private commentsService: CommentsService,
   ) { }
 
   ngOnInit(): void {
@@ -360,6 +362,33 @@ export class ToDoListCardComponent implements OnInit {
       this.modalService.openModal(TaskModalComponent, { size: 'small' }, {
         ...event,
         type: 'edit'
+      });
+    }
+  }
+
+  changeReviewsEvent(event){
+    console.log(event);
+    if( event.action == "delete" ){
+      this.commentsService.deleteCommentById(event.data)
+      .subscribe({
+        next: () => {
+          console.log("SUCCESS DELETING");
+
+        },
+        error: () => {
+          console.log("ERROR WHILE DELETING");
+        },
+      });
+    }else if(event.action == "update"){
+      this.commentsService.updateComment({id: event.data.id, commentContent: event.data.commentContent})
+      .subscribe({
+        next: () => {
+          console.log("SUCCESS DELETING");
+
+        },
+        error: () => {
+          console.log("ERROR WHILE DELETING");
+        },
       });
     }
   }

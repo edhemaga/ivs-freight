@@ -216,7 +216,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectDropdown(event: any, action: string) {

@@ -137,6 +137,7 @@ export * from './getTruckModalResponse';
 export * from './hazardousMaterialResponse';
 export * from './inspectionResponse';
 export * from './insurancePolicyAddonResponse';
+export * from './insurancePolicyModalResponse';
 export * from './insurancePolicyResponse';
 export * from './invoiceAgeingResponse';
 export * from './loadBillingAdditionalCommand';

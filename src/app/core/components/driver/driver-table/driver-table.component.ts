@@ -428,9 +428,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
       // For Testing
-     /*  for (let i = 0; i < 300; i++) {
-        this.viewData.push(this.viewData[0]);
-      } */
+      // for (let i = 0; i < 300; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
     } else {
       this.viewData = [];
     }
@@ -527,9 +527,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textEmergencyContact: [
         {
           title: 'First Name',
-          value: data?.emergencyContactName
-            ? data.emergencyContactName
-            : null,
+          value: data?.emergencyContactName ? data.emergencyContactName : null,
         },
         {
           title: 'Phone',

@@ -177,7 +177,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectBank(event: any): void {

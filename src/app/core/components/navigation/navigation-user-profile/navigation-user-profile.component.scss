@@ -113,6 +113,11 @@
       top: 1px;
       p {
         margin-left: 6px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 140px;
+        overflow: hidden;
+
         &:nth-child(1) {
           font-weight: $nav-font-semibold;
         }

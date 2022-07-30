@@ -15,11 +15,13 @@
   text-overflow: ellipsis;
 
   &::-moz-selection {
-    background-color: #919191 !important;
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
   }
 
   &::selection {
-    background-color: #919191 !important;
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
   }
 
   &.center {
@@ -153,10 +155,12 @@
 
     &::-moz-selection {
       background-color: #6d82c7 !important;
+      color: #ffffff !important;
     }
 
     &::selection {
       background-color: #6d82c7 !important;
+      color: #ffffff !important;
     }
   }
 
@@ -165,10 +169,12 @@
 
     &::-moz-selection {
       background-color: #e57373 !important;
+      color: #ffffff !important;
     }
 
     &::selection {
       background-color: #e57373 !important;
+      color: #ffffff !important;
     }
   }
 

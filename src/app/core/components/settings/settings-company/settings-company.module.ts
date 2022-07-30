@@ -29,6 +29,7 @@ import { SettingsSharedModule } from '../settings-shared/settings-shared.module'
     SettingsSharedModule,
     TruckassistProgressExpirationModule,
   ],
+  exports: [SharedModule],
   declarations: [
     SettingsCompanyComponent,
     SettingsGeneralComponent,

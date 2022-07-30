@@ -46,7 +46,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       this.companyDivision = false;
     }
     if (
-      !changes?.companyData?.firstChange &&
       changes?.companyData?.currentValue !== changes?.companyData?.previousValue
     ) {
       this.companyData = changes?.companyData?.currentValue;
