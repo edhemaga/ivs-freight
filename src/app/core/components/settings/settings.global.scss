@@ -233,7 +233,6 @@ p {
       span {
         font-size: 14px;
         font-weight: 400;
-        margin-left: 6px;
         color: $settings-gray-dark;
         &::-moz-selection {
           color: $settings-gray-dark;
@@ -431,23 +430,6 @@ p {
     }
   }
 }
-.value-copy-container {
-  display: flex;
-  .copy-icon {
-    display: none;
-    margin-left: 6px;
-    cursor: pointer;
-    &:hover {
-      svg {
-        path {
-          fill: #6c6c6c;
-        }
-      }
-    }
-  }
-  &:hover {
-    .copy-icon {
-      display: flex;
-    }
-  }
+.company-icons {
+  margin-right: 6px;
 }

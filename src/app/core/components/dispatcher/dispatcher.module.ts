@@ -19,7 +19,7 @@ import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 
 export function playerFactory() {
-  return player;
+  return import('lottie-web');
 }
 
 @NgModule({
@@ -38,7 +38,6 @@ export function playerFactory() {
     CommonModule,
     DispatchRoutingModule,
     SharedModule,
-    AppTooltipeModule,
     AgmSnazzyInfoWindowModule,
     LottieModule.forRoot({ player: playerFactory }),
     PipesModule,

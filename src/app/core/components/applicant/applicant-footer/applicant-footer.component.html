@@ -11,19 +11,19 @@
       <div class="d-flex align-items-center justify-content-between box-header">
         <h2 class="m-0 ta-font-black">{{ companyInfo?.name }}</h2>
 
-        <svg-icon
-          class="d-flex align-items-center justify-content-center close-icon"
-          src="assets/svg/common/ic_x.svg"
-          [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
-          (click)="onHideInfoBox()"
-          appTooltip="Close"
-          tooltipColor="#FFFFFF"
+        <div
+          ngbTooltip
+          mainTooltip="Close"
           tooltipBackground="#6C6C6C"
-          position="bottom-left"
-          borderRadius="2px"
-          fontSize="11px"
-          fontWeight="bold"
-        ></svg-icon>
+          position="top"
+        >
+          <svg-icon
+            class="d-flex align-items-center justify-content-center close-icon"
+            src="assets/svg/common/ic_x.svg"
+            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
+            (click)="onHideInfoBox()"
+          ></svg-icon>
+        </div>
       </div>
 
       <div class="d-flex align-items-center box-dets">

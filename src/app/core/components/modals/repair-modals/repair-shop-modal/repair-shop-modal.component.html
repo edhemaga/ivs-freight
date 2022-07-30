@@ -4,9 +4,7 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="
-    editData ? repairShopForm.valid && isDirty : repairShopForm.valid
-  "
+  [isModalValid]="repairShopForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="repairShopForm" class="form-container">

@@ -80,20 +80,20 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
       description: [null],
-      url: [null, Validators.required],
+      url: [null],
       deadline: [null],
       departmentIds: [null],
       companyUserIds: [null],
       note: [null],
     });
 
-    this.formService.checkFormChange(this.taskForm);
+    // this.formService.checkFormChange(this.taskForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {

@@ -55,7 +55,30 @@ export class CdlTService {
   }
 
   public updateCdl(data: EditCdlCommand): Observable<object> {
-    return this.cdlService.apiCdlPut(data);
+    return this.cdlService.apiCdlPut(data).pipe(
+      tap((res: any) => {
+        const subDriver = this.driverService.getDriverById(data.id).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === data.id);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driver.id,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public deleteCdlById(id: number): Observable<any> {

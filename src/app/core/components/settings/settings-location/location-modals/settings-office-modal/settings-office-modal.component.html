@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? officeForm.valid && isDirty : officeForm.valid"
+  [isModalValid]="officeForm.valid"
   (action)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -240,7 +240,7 @@
             <app-ta-input
               formControlName="rent"
               [inputConfig]="{
-                name: 'Rent',
+                name: 'Dollar',
                 type: 'text',
                 label: 'Rent',
                 placeholderIcon: 'dollar',

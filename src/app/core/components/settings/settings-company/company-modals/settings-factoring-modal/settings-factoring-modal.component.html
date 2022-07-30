@@ -6,16 +6,14 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="
-    editData ? factoringForm.valid && isDirty : factoringForm.valid
-  "
+  [isModalValid]="factoringForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="factoringForm" class="form-container">
     <div class="row">
       <div class="col-12">
         <app-ta-input
-          formControlName="companyName"
+          formControlName="name"
           [inputConfig]="{
             name: 'Company Name',
             type: 'text',

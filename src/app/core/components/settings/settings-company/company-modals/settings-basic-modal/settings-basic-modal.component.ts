@@ -1,13 +1,14 @@
-import { convertDateToBackend } from './../../../../../utils/methods.calculations';
 import {
-  accountBankRegex,
-  bankRoutingValidator,
+  convertDateFromBackend,
+  convertDateToBackend,
+  convertThousanSepInNumber,
+} from './../../../../../utils/methods.calculations';
+import {
   daysValidRegex,
   emailRegex,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
-  routingBankRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -21,30 +22,29 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import {
   AddressEntity,
   CompanyModalResponse,
-  CompanyResponse,
   CreateDivisionCompanyCommand,
   CreateResponse,
   UpdateCompanyCommand,
+  UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, identity } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
-import { TabSwitcherComponent } from 'src/app/core/components/switchers/tab-switcher/tab-switcher.component';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsStoreService } from '../../../state/settings.service';
-import { convertDateFromBackend } from 'src/app/core/utils/methods.calculations';
+import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 
 @Component({
   selector: 'app-settings-basic-modal',
   templateUrl: './settings-basic-modal.component.html',
   styleUrls: ['./settings-basic-modal.component.scss'],
   animations: [tab_modal_animation('animationTabsModal')],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
-  @ViewChild(TabSwitcherComponent) tabSwitcher: any;
   @Input() editData: any;
 
   public companyForm: FormGroup;
@@ -54,14 +54,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     {
       id: 1,
       name: 'Basic',
+      checked: true,
     },
     {
       id: 2,
       name: 'Additional',
+      checked: false,
     },
     {
       id: 3,
       name: 'Payroll',
+      checked: false,
     },
   ];
 
@@ -76,19 +79,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public prefferedLoadBtns = [
+  public prefferedLoadBtns: any[] = [
     {
-      id: 322,
-      label: 'FTL',
-      value: 'FTL',
-      name: 'credit',
+      id: 1,
+      name: 'FTL',
       checked: true,
     },
     {
-      id: 323,
-      label: 'LTL',
-      value: 'LTL',
-      name: 'credit',
+      id: 2,
+      name: 'LTL',
       checked: false,
     },
   ];
@@ -153,9 +152,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   // Additional Tab
   public selectedDepartmentFormArray: any[] = [];
+
   public selectedBankAccountFormArray: any[] = [];
-  public isBankFormArraySelected: any[] = [];
-  public selectedBankCardFormArray: any[] = [];
+  public isBankSelectedFormArray: boolean[] = [];
 
   // Payroll tab
   public truckAssistText: string = "Use Truck Assist's ACH Payout";
@@ -163,6 +162,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public isDirty: boolean;
 
   // Dropdowns
+  public banks: any[] = [];
   public payPeriods: any[] = [];
   public endingIns: any[] = [];
   public timeZones: any[] = [];
@@ -197,34 +197,40 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private settingsService: SettingsStoreService
+    private settingsService: SettingsStoreService,
+    private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
+    this.checkForCompany();
+    this.onPrefferedLoadCheck({ id: 1 });
     this.getModalDropdowns();
     this.validateMiles();
+  }
 
+  private checkForCompany() {
+    this.createForm();
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.createDivisionForm();
+
+      if (this.editData.type === 'edit-division') {
+        this.editCompanyDivision();
+      }
+    }
+
+    if (this.editData.type === 'edit-company') {
+      const timeout = setTimeout(() => {
+        this.editCompany();
+        clearTimeout(timeout);
+      }, 150);
     }
 
     if (this.editData?.type === 'payroll-tab') {
+      this.tabChange({ id: 3 });
       const timeout = setTimeout(() => {
-        this.selectedTab = 3;
-        this.tabSwitcher.activeTab = this.selectedTab;
-        clearTimeout(timeout);
-      }, 10);
-    }
-
-    if (this.editData.type === 'new-division') {
-    } else {
-      if (this.editData.type === 'edit-company') {
         this.editCompany();
-      } else {
-        // Edit Division
-        this.editCompanyDivision();
-      }
+        clearTimeout(timeout);
+      }, 150);
     }
   }
 
@@ -338,13 +344,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherDefaultBase: [null],
     });
 
-    this.formService.checkFormChange(this.companyForm);
+    // this.formService.checkFormChange(this.companyForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -362,8 +368,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         if (!this.editData.company?.divisions.length) {
           if (this.editData.type === 'new-division') {
             this.addCompanyDivision();
+            this.modalService.setModalSpinner({ action: null, status: true });
           } else {
-            this.updateCompanyDivision(this.editData.id);
+            this.updateCompanyDivision(this.editData.company.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           }
         } else {
@@ -393,6 +400,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       value: this.selectedTab,
       params: { height: `${dotAnimation.getClientRects()[0].height}px` },
     };
+
+    this.tabs = this.tabs.map((item) => {
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
+    });
   }
 
   // Department FormArray
@@ -402,10 +416,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   private createDepartmentContacts(): FormGroup {
     return this.formBuilder.group({
-      departmentId: [null],
-      phone: [null, phoneRegex],
+      id: [0],
+      departmentId: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null],
-      email: [null, emailRegex],
+      email: [null, [Validators.required, emailRegex]],
     });
   }
 
@@ -428,6 +443,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       }
       case 'bankAccounts': {
         this.selectedBankAccountFormArray[index] = event;
+        this.isBankSelectedFormArray[index] = true;
         this.onBankSelected(index);
         break;
       }
@@ -444,9 +460,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   private createBankAccount(): FormGroup {
     return this.formBuilder.group({
+      id: [0],
       bankId: [null],
-      routing: [null, routingBankRegex],
-      account: [null, accountBankRegex],
+      routing: [null],
+      account: [null],
     });
   }
 
@@ -458,58 +475,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public removeBankAccount(id: number) {
     this.bankAccounts.removeAt(id);
-    this.selectedDepartmentFormArray.splice(id, 1);
+    this.selectedBankAccountFormArray.splice(id, 1);
+    this.isBankSelectedFormArray.splice(id, 1);
   }
 
   private onBankSelected(index: number): void {
     this.bankAccounts
       .at(index)
-      .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankFormArraySelected[index] = true;
-          this.inputService.changeValidators(
+        this.isBankSelectedFormArray[index] =
+          this.bankVerificationService.onSelectBank(
+            value,
             this.bankAccounts.at(index).get('routing'),
-            true,
-            routingBankRegex
+            this.bankAccounts.at(index).get('account')
           );
-          this.routingNumberTyping(index);
-          this.inputService.changeValidators(
-            this.bankAccounts.at(index).get('account'),
-            true,
-            accountBankRegex
-          );
-        } else {
-          this.isBankFormArraySelected[index] = false;
-          this.inputService.changeValidators(
-            this.bankAccounts.get('routing'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.bankAccounts.at(index).get('account'),
-            false
-          );
-        }
-      });
-  }
-
-  private routingNumberTyping(index: number) {
-    this.bankAccounts
-      .at(index)
-      .get('routing')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          if (bankRoutingValidator(value)) {
-            this.bankAccounts.at(index).get('routing').setErrors(null);
-          } else {
-            this.bankAccounts
-              .at(index)
-              .get('routing')
-              .setErrors({ invalid: true });
-          }
-        }
       });
   }
 
@@ -521,9 +501,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private createBankCard(): FormGroup {
     return this.formBuilder.group({
       nickname: [null],
-      cardNumber: [null, [Validators.minLength(16), Validators.maxLength(16)]],
+      card: [null, [Validators.minLength(16), Validators.maxLength(16)]],
       cvc: [null, [Validators.minLength(3), Validators.maxLength(3)]],
-      exp: [null],
+      expireDate: [null],
     });
   }
 
@@ -535,14 +515,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public removeBankCard(id: number) {
     this.bankCards.removeAt(id);
-    this.selectedBankCardFormArray.splice(id, 1);
   }
 
   public onHandleAddress(event: {
     address: AddressEntity | any;
     valid: boolean;
   }) {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -704,24 +683,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public useACHPayout(event: any) {
-    if (this.companyForm.get('useACHPayout').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.companyForm.get('useACHPayout').setValue(false);
-    }
-  }
-
   public onUploadImage(event: any) {
     this.companyForm.get('logo').patchValue(event);
   }
 
   public onPrefferedLoadCheck(event: any) {
-    this.prefferedLoadBtns = [...event];
-    this.prefferedLoadBtns.forEach((item) => {
-      if (item.checked) {
-        this.companyForm.get('preferredLoadType').patchValue(item.label);
+    this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
+      if (item.id === event.id) {
+        this.companyForm.get('preferredLoadType').patchValue(item.name);
       }
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
     });
   }
 
@@ -731,6 +705,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CompanyModalResponse) => {
+          this.banks = res.banks;
           this.payPeriods = res.payPeriods;
           this.endingIns = res.endingIns;
           this.timeZones = res.timeZones;
@@ -768,14 +743,29 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public addCompanyDivision() {
     const {
-      address,
       addressUnit,
       timeZone,
       currency,
-      companyType,
-      dateOfIncorporation,
       departmentContacts,
       bankAccounts,
+      bankCards,
+      //----- Exclude Properties From Company Division -----
+      companyType,
+      dateOfIncorporation,
+      prefix,
+      starting,
+      sufix,
+      customerPayTerm,
+      customerCredit,
+      mvrMonths,
+      trailerInspectionMonths,
+      truckInspectionMonths,
+      preferredLoadType,
+      autoInvoicing,
+      factorByDefault,
+      //----- Whole Payroll tab
+      useACHPayout,
+      // Driver & Owner
       driveOwnerPayPeriod,
       driverOwnerEndingIn,
       soloEmptyMile,
@@ -822,7 +812,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherPayPeriod,
       otherEndingIn,
       otherDefaultBase,
-
       ...form
     } = this.companyForm.value;
 
@@ -830,20 +819,33 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ...form,
       address: {
         ...this.selectedAddress,
-        addressUnit: this.companyForm.get('addressUnit').value,
+        addressUnit: addressUnit,
       },
       timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
       currency: this.selectedCurrency ? this.selectedCurrency.id : null,
     };
 
-    for (let index = 0; index < departmentContacts; index++) {
+    for (let index = 0; index < departmentContacts.length; index++) {
       departmentContacts[index].departmentId =
         this.selectedDepartmentFormArray[index].id;
     }
 
     for (let index = 0; index < bankAccounts.length; index++) {
-      bankAccounts[index].id = this.selectedBankAccountFormArray[index].id;
+      bankAccounts[index].bankId = this.selectedBankAccountFormArray[index].id;
     }
+
+    for (let index = 0; index < bankCards.length; index++) {
+      bankCards[index].expireDate = convertDateToBackend(
+        bankCards[index].expireDate
+      );
+    }
+
+    newData = {
+      ...newData,
+      departmentContacts,
+      bankAccounts,
+      bankCards,
+    };
 
     this.settingsService
       .addCompanyDivision(newData)
@@ -863,93 +865,225 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   private editCompanyDivision() {
+    this.companyForm.patchValue({
+      // -------------------- Basic Tab
+      name: this.editData.company.name,
+      usDot: this.editData.company.usDot,
+      ein: this.editData.company.ein,
+      mc: this.editData.company.mc,
+      phone: this.editData.company.phone,
+      email: this.editData.company.email,
+      fax: this.editData.company.fax,
+      webUrl: this.editData.company.webUrl,
+      address: this.editData.company.address.address,
+      addressUnit: this.editData.company.address.addressUnit,
+      irp: this.editData.company.irp,
+      ifta: this.editData.company.ifta,
+      toll: this.editData.company.toll,
+      scac: this.editData.company.scac,
+      timeZone: this.editData.company.timeZone.name
+        ? this.editData.company.timeZone.name
+        : null,
+      currency: this.editData.company.currency.name
+        ? this.editData.company.currency.name
+        : null,
+      logo: this.editData.company.logo,
+    });
+
+    this.selectedAddress = this.editData.company.address;
+
+    this.selectedTimeZone =
+      this.editData.company.timeZone.id !== 0
+        ? this.editData.company.timeZone
+        : null;
+
+    this.selectedCurrency =
+      this.editData.company.currency.id !== 0
+        ? this.editData.company.currency
+        : null;
+
+    if (this.editData.company.departmentContacts.length) {
+      for (const department of this.editData.company.departmentContacts) {
+        this.departmentContacts.push(
+          this.formBuilder.group({
+            id: department.id,
+            departmentId: department.department.name,
+            phone: department.phone,
+            extensionPhone: department.extensionPhone,
+            email: department.email,
+          })
+        );
+        this.selectedDepartmentFormArray.push(department);
+      }
+    }
+
+    if (this.editData.company.bankAccounts.length) {
+      for (
+        let index = 0;
+        index < this.editData.company.bankAccounts.length;
+        index++
+      ) {
+        this.bankAccounts.push(
+          this.formBuilder.group({
+            id: this.editData.company.bankAccounts[index].id,
+            bankId: this.editData.company.bankAccounts[index].bank.name,
+            routing: this.editData.company.bankAccounts[index].routing,
+            account: this.editData.company.bankAccounts[index].account,
+          })
+        );
+        this.selectedBankAccountFormArray.push(
+          this.editData.company.bankAccounts[index]
+        );
+        this.isBankSelectedFormArray.push(
+          this.editData.company.bankAccounts[index].id ? true : false
+        );
+        this.onBankSelected(index);
+      }
+    }
+
+    if (this.editData.company.bankCards.length) {
+      for (const card of this.editData.company.bankCards) {
+        this.bankCards.push(
+          this.formBuilder.group({
+            id: card.id,
+            nickname: card.nickname,
+            card: card.card,
+            cvc: card.cvc,
+            expireDate: card.expireDate
+              ? convertDateFromBackend(card.expireDate)
+              : null,
+          })
+        );
+      }
+    }
+  }
+
+  public updateCompanyDivision(id: number) {
+    const {
+      addressUnit,
+      timeZone,
+      currency,
+      departmentContacts,
+      bankAccounts,
+      bankCards,
+      //----- Exclude Properties From Company Division -----
+      companyType,
+      dateOfIncorporation,
+      prefix,
+      starting,
+      sufix,
+      customerPayTerm,
+      customerCredit,
+      mvrMonths,
+      trailerInspectionMonths,
+      truckInspectionMonths,
+      preferredLoadType,
+      autoInvoicing,
+      factorByDefault,
+      //----- Whole Payroll tab
+      useACHPayout,
+      // Driver & Owner
+      driveOwnerPayPeriod,
+      driverOwnerEndingIn,
+      soloEmptyMile,
+      soloLoadedMile,
+      soloPerStop,
+      teamEmptyMile,
+      teamLoadedMile,
+      teamPerStop,
+      driverOwnerHasLoadedEmptyMiles,
+      driverSoloDefaultCommission,
+      driverTeamDefaultCommission,
+      ownerDefaultCommission,
+      // Accounting
+      accountingPayPeriod,
+      accountingEndingIn,
+      accountingDefaultBase,
+      // Company Owner
+      companyOwnerPayPeriod,
+      companyOwnerEndingIn,
+      companyOwnerDefaultBase,
+      // Dispatch
+      dispatchPayPeriod,
+      dispatchEndingIn,
+      dispatchDefaultBase,
+      dispatchDefaultCommission,
+      // Manager
+      managerPayPeriod,
+      managerEndingIn,
+      managerDefaultBase,
+      managerDefaultCommission,
+      // Recruiting
+      recruitingPayPeriod,
+      recruitingEndingIn,
+      recruitingDefaultBase,
+      // Repair
+      repairPayPeriod,
+      repairEndingIn,
+      repairDefaultBase,
+      // Safety
+      safetyPayPeriod,
+      safetyEndingIn,
+      safetyDefaultBase,
+      // Other
+      otherPayPeriod,
+      otherEndingIn,
+      otherDefaultBase,
+      ...form
+    } = this.companyForm.value;
+
+    let newData: UpdateDivisionCompanyCommand = {
+      id: id,
+      ...form,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
+      timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
+      currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+    };
+
+    for (let index = 0; index < departmentContacts.length; index++) {
+      departmentContacts[index].departmentId =
+        this.selectedDepartmentFormArray[index].id;
+    }
+
+    for (let index = 0; index < bankAccounts.length; index++) {
+      bankAccounts[index].bankId = this.selectedBankAccountFormArray[index].id;
+    }
+
+    for (let index = 0; index < bankCards.length; index++) {
+      bankCards[index].expireDate = convertDateToBackend(
+        bankCards[index].expireDate
+      );
+    }
+
+    newData = {
+      ...newData,
+      departmentContacts,
+      bankAccounts,
+      bankCards,
+    };
+
     this.settingsService
-      .getCompanyDivisionById(this.editData.company.id)
+      .updateCompanyDivision(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: CompanyResponse) => {
-          this.companyForm.patchValue({
-            // -------------------- Basic Tab
-            name: this.editData.company.name,
-            usDot: this.editData.company.usDot,
-            ein: this.editData.company.ein,
-            mc: this.editData.company.mc,
-            phone: this.editData.company.phone,
-            email: this.editData.company.email,
-            fax: this.editData.company.fax,
-            webUrl: this.editData.company.webUrl,
-            address: this.editData.company.address.address,
-            addressUnit: this.editData.company.address.addressUnit,
-            irp: this.editData.company.irp,
-            ifta: this.editData.company.ifta,
-            toll: this.editData.company.toll,
-            scac: this.editData.company.scac,
-            timeZone: this.editData.company.timeZone.name,
-            currency: this.editData.company.currency.name,
-            companyType: this.editData.company.companyType.name,
-            dateOfIncorporation: this.editData.company.dateOfIncorporation
-              ? convertDateFromBackend(
-                  this.editData.company.dateOfIncorporation
-                )
-              : null,
-            logo: this.editData.company.logo,
-          });
-
-          this.selectedAddress = this.editData.company.address;
-          this.selectedTimeZone = this.editData.company.timeZone;
-          this.selectedCompanyData = this.editData.company.companyType;
-          this.selectedCurrency = this.editData.company.currency;
-
-          if (this.editData.company.departmentContacts.length) {
-            for (const department of this.editData.company.departmentContacts) {
-              this.departments.push(
-                this.formBuilder.group({
-                  departmentId: department.id,
-                  phone: department.phone,
-                  extensionPhone: department.extensionPhone,
-                  email: department.email,
-                })
-              );
-            }
-          }
-
-          if (this.editData.company.bankAccounts.length) {
-            for (const bank of this.editData.company.bankAccounts) {
-              this.bankAccounts.push(
-                this.formBuilder.group({
-                  bankId: bank.id,
-                  routing: bank.routing,
-                  account: bank.account,
-                })
-              );
-            }
-          }
-
-          if (this.editData.company.bankCards.length) {
-            for (const card of this.editData.company.bankCards) {
-              this.bankCards.push(
-                this.formBuilder.group({
-                  nickname: card.nickname,
-                  cardNumber: card.cardType,
-                  cvc: card.cvc,
-                  exp: card.expireDate
-                    ? convertDateFromBackend(card.expireDate)
-                    : null,
-                })
-              );
-            }
-          }
+        next: () => {
+          this.notificationService.success(
+            'Successfully updated company division',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
-            "Can't Load Division Company",
+            "Can't updated company division",
             'Error'
           );
         },
       });
   }
-
-  public updateCompanyDivision(id: number) {}
 
   public deleteCompanyDivisionById(id: number) {
     this.settingsService
@@ -959,8 +1093,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.notificationService.success(
             'Successfully delete company division',
-            'SUCCESS'
+            'Success'
           );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
         },
         error: () => {
           this.notificationService.error(
@@ -976,20 +1114,66 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       address,
       addressUnit,
       timeZone,
+      email,
+      ein,
+      name,
       currency,
       companyType,
       dateOfIncorporation,
       departmentContacts,
       bankAccounts,
+      bankCards,
+      driveOwnerPayPeriod,
+      driverOwnerEndingIn,
+      soloEmptyMile,
+      soloLoadedMile,
+      soloPerStop,
+      teamEmptyMile,
+      teamLoadedMile,
+      teamPerStop,
+      driverOwnerHasLoadedEmptyMiles,
+      driverSoloDefaultCommission,
+      driverTeamDefaultCommission,
+      ownerDefaultCommission,
+      // Accounting
+      accountingPayPeriod,
+      accountingEndingIn,
+      accountingDefaultBase,
+      // Company Owner
+      companyOwnerPayPeriod,
+      companyOwnerEndingIn,
+      companyOwnerDefaultBase,
+      // Dispatch
+      dispatchPayPeriod,
+      dispatchEndingIn,
+      dispatchDefaultBase,
+      dispatchDefaultCommission,
+      // Manager
+      managerPayPeriod,
+      managerEndingIn,
+      managerDefaultBase,
+      managerDefaultCommission,
+      // Recruiting
+      recruitingPayPeriod,
+      recruitingEndingIn,
+      recruitingDefaultBase,
+      // Repair
+      repairPayPeriod,
+      repairEndingIn,
+      repairDefaultBase,
+      // Safety
+      safetyPayPeriod,
+      safetyEndingIn,
+      safetyDefaultBase,
+      // Other
+      otherPayPeriod,
+      otherEndingIn,
+      otherDefaultBase,
       ...form
     } = this.companyForm.value;
 
     let newData: UpdateCompanyCommand = {
       ...form,
-      address: {
-        ...this.selectedAddress,
-        addressUnit: this.companyForm.get('addressUnit').value,
-      },
       timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
       currency: this.selectedCurrency ? this.selectedCurrency.id : null,
       companyType: this.selectedCompanyData
@@ -998,29 +1182,45 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       dateOfIncorporation: dateOfIncorporation
         ? convertDateToBackend(dateOfIncorporation)
         : null,
+      preferredLoadType:
+        this.companyForm.get('preferredLoadType').value === 'FTL' ? 1 : 2,
     };
 
-    for (let index = 0; index < departmentContacts; index++) {
+    for (let index = 0; index < departmentContacts.length; index++) {
       departmentContacts[index].departmentId =
         this.selectedDepartmentFormArray[index].id;
     }
 
     for (let index = 0; index < bankAccounts.length; index++) {
-      bankAccounts[index].id = this.selectedBankAccountFormArray[index].id;
+      bankAccounts[index].bankId = this.selectedBankAccountFormArray[index].id;
+    }
+
+    for (let index = 0; index < bankCards.length; index++) {
+      bankCards[index].expireDate = convertDateToBackend(
+        bankCards[index].expireDate
+      );
     }
 
     const accountingPayroll = {
       departmentId: 1,
       payPeriod: this.selectedAccountingPayPeriod.id,
       endingIn: this.selectedAccountingEndingIn.id,
-      defaultBase: this.companyForm.get('accountingDefaultBase').value,
+      defaultBase: this.companyForm.get('accountingDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('accountingDefaultBase').value
+          )
+        : null,
     };
 
     const dispatchPayroll = {
       departmentId: 2,
       payPeriod: this.selectedDispatchPayPeriod.id,
       endingIn: this.selectedDispatchEndingIn.id,
-      defaultBase: this.companyForm.get('dispatchDefaultBase').value,
+      defaultBase: this.companyForm.get('dispatchDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('dispatchDefaultBase').value
+          )
+        : null,
       defaultCommission: this.companyForm.get('dispatchDefaultCommission')
         .value,
     };
@@ -1029,28 +1229,44 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentId: 3,
       payPeriod: this.selectedRecPayPeriod.id,
       endingIn: this.selectedRecEndingIn.id,
-      defaultBase: this.companyForm.get('recruitingDefaultBase').value,
+      defaultBase: this.companyForm.get('recruitingDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('recruitingDefaultBase').value
+          )
+        : null,
     };
 
     const repairPayroll = {
       departmentId: 4,
       payPeriod: this.selectedRepairPayPeriod.id,
       endingIn: this.selectedRepairEndingIn.id,
-      defaultBase: this.companyForm.get('repairDefaultBase').value,
+      defaultBase: this.companyForm.get('repairDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('repairDefaultBase').value
+          )
+        : null,
     };
 
     const safetyPayroll = {
       departmentId: 5,
       payPeriod: this.selectedSafetyPayPeriod.id,
       endingIn: this.selectedSafetyEndingIn.id,
-      defaultBase: this.companyForm.get('safetyDefaultBase').value,
+      defaultBase: this.companyForm.get('safetyDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('safetyDefaultBase').value
+          )
+        : null,
     };
 
     const managerPayroll = {
       departmentId: 7,
       payPeriod: this.selectedManagerPayPeriod.id,
       endingIn: this.selectedManagerEndingIn.id,
-      defaultBase: this.companyForm.get('managerDefaultBase').value,
+      defaultBase: this.companyForm.get('managerDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('managerDefaultBase').value
+          )
+        : null,
       defaultCommission: this.companyForm.get('managerDefaultCommission').value,
     };
 
@@ -1059,14 +1275,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentId: 8,
       payPeriod: this.selectedCompanyPayPeriod.id,
       endingIn: this.selectedCompanyEndingIn.id,
-      defaultBase: this.companyForm.get('companyOwnerDefaultBase').value,
+      defaultBase: this.companyForm.get('companyOwnerDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('companyOwnerDefaultBase').value
+          )
+        : null,
     };
 
     const otherPayroll = {
       departmentId: 9,
       payPeriod: this.selectedOtherPayPeriod.id,
       endingIn: this.selectedOtherEndingIn.id,
-      defaultBase: this.companyForm.get('otherDefaultBase').value,
+      defaultBase: this.companyForm.get('otherDefaultBase').value
+        ? convertThousanSepInNumber(
+            this.companyForm.get('otherDefaultBase').value
+          )
+        : null,
     };
 
     const driverOwnerPayroll = {
@@ -1075,10 +1299,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       endingIn: this.selectedDriverEndingIn.id,
       soloEmptyMile: this.companyForm.get('soloEmptyMile').value,
       soloLoadedMile: this.companyForm.get('soloLoadedMile').value,
-      soloPerStop: this.companyForm.get('soloPerStop').value,
+      soloPerStop: this.companyForm.get('soloPerStop').value
+        ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
+        : null,
       teamEmptyMile: this.companyForm.get('teamEmptyMile').value,
       teamLoadedMile: this.companyForm.get('teamLoadedMile').value,
-      teamPerStop: this.companyForm.get('teamPerStop').value,
+      teamPerStop: this.companyForm.get('teamPerStop').value
+        ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
+        : null,
       defaultSoloDriverCommission: this.companyForm.get(
         'driverSoloDefaultCommission'
       ).value,
@@ -1108,6 +1336,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ...newData,
       bankAccounts,
       departmentContacts,
+      bankCards,
       payrolls,
     };
 
@@ -1115,14 +1344,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       .updateCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: (res: Object) => {
+        next: () => {
           this.notificationService.success(
             'Successfully update your main company',
             'Success'
           );
+          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Can't update company!", 'Error');
+          this.notificationService.error("Can't update main company!", 'Error');
         },
       });
   }
@@ -1168,7 +1398,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       starting: this.editData.company.additionalInfo.starting,
       sufix: this.editData.company.additionalInfo.sufix,
       autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
-      preferredLoadType: this.editData.company.additionalInfo.preferredLoadType,
+      preferredLoadType:
+        this.editData.company.additionalInfo.preferredLoadType === 1
+          ? 'FTL'
+          : 'LTL',
       factorByDefault: this.editData.company.additionalInfo.factorByDefault,
       customerPayTerm: this.editData.company.additionalInfo.customerPayTerm,
       customerCredit: this.editData.company.additionalInfo.customerCredit,
@@ -1178,45 +1411,68 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       trailerInspectionMonths:
         this.editData.company.additionalInfo.trailerInspectionMonths,
       //-------------------- Payroll Tab
-      useACHPayout: this.editData.company.useACHPayout,
+      useACHPayout: this.editData.company.useACHPayout ? true : false,
     });
 
     this.selectedAddress = this.editData.company.address;
+
     this.selectedTimeZone =
       this.editData.company.timeZone.id !== 0
-        ? this.editData.company.timeZone.id
+        ? this.editData.company.timeZone
         : null;
+
     this.selectedCompanyData =
       this.editData.company.companyType.id !== 0
         ? this.editData.company.companyType
         : null;
+
     this.selectedCurrency =
       this.editData.company.currency.id !== 0
-        ? this.editData.company.currency.id
+        ? this.editData.company.currency
         : null;
+
+    this.onPrefferedLoadCheck(
+      this.editData.company.additionalInfo.preferredLoadType === 1
+        ? { id: 1 }
+        : { id: 2 }
+    );
 
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
-        this.departments.push(
+        this.departmentContacts.push(
           this.formBuilder.group({
-            departmentId: department.id,
+            id: department.id,
+            departmentId: department.department.name,
             phone: department.phone,
             extensionPhone: department.extensionPhone,
             email: department.email,
           })
         );
+        this.selectedDepartmentFormArray.push(department);
       }
     }
 
     if (this.editData.company.bankAccounts.length) {
-      for (const bank of this.editData.company.bankAccounts) {
+      for (
+        let index = 0;
+        index < this.editData.company.bankAccounts.length;
+        index++
+      ) {
         this.bankAccounts.push(
           this.formBuilder.group({
-            bankId: bank.id,
-            routing: bank.routing,
-            account: bank.account,
+            id: this.editData.company.bankAccounts[index].id,
+            bankId: this.editData.company.bankAccounts[index].bank.name,
+            routing: this.editData.company.bankAccounts[index].routing,
+            account: this.editData.company.bankAccounts[index].account,
           })
         );
+        this.selectedBankAccountFormArray.push(
+          this.editData.company.bankAccounts[index]
+        );
+        this.isBankSelectedFormArray.push(
+          this.editData.company.bankAccounts[index].id ? true : false
+        );
+        this.onBankSelected(index);
       }
     }
 
@@ -1224,10 +1480,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       for (const card of this.editData.company.bankCards) {
         this.bankCards.push(
           this.formBuilder.group({
+            id: card.id,
             nickname: card.nickname,
-            cardNumber: card.cardType,
+            card: card.card,
             cvc: card.cvc,
-            exp: card.expireDate
+            expireDate: card.expireDate
               ? convertDateFromBackend(card.expireDate)
               : null,
           })
@@ -1248,7 +1505,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('accountingDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
+
+            this.selectedAccountingPayPeriod = payroll.payPeriod;
+            this.selectedAccountingEndingIn = payroll.endingIn;
             break;
           }
           case 2: {
@@ -1261,10 +1525,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('dispatchDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
             this.companyForm
               .get('dispatchDefaultCommission')
               .patchValue(payroll.defaultCommission);
+
+            this.selectedDispatchPayPeriod = payroll.payPeriod;
+            this.selectedDispatchEndingIn = payroll.endingIn;
             break;
           }
           case 3: {
@@ -1277,7 +1548,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('recruitingDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
+
+            this.selectedRecPayPeriod = payroll.payPeriod;
+            this.selectedRecEndingIn = payroll.endingIn;
             break;
           }
           case 4: {
@@ -1290,7 +1568,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('repairDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
             break;
           }
           case 5: {
@@ -1303,7 +1585,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('safetyDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
+
+            this.selectedSafetyPayPeriod = payroll.payPeriod;
+            this.selectedSafetyEndingIn = payroll.endingIn;
             break;
           }
           case 7: {
@@ -1316,15 +1605,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('managerDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
             this.companyForm
               .get('managerDefaultCommission')
               .patchValue(payroll.defaultCommission);
-            break;
+
+            this.selectedManagerPayPeriod = payroll.payPeriod;
+            this.selectedManagerEndingIn = payroll.endingIn;
             break;
           }
           case 8: {
-            // Owner
+            // Company Owner
             this.companyForm
               .get('companyOwnerPayPeriod')
               .patchValue(payroll.payPeriod.name);
@@ -1333,8 +1628,14 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('companyOwnerDefaultBase')
-              .patchValue(payroll.defaultBase);
-            break;
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
+
+            this.selectedCompanyPayPeriod = payroll.payPeriod;
+            this.selectedCompanyEndingIn = payroll.endingIn;
             break;
           }
           case 9: {
@@ -1347,7 +1648,65 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
               .patchValue(payroll.endingIn.name);
             this.companyForm
               .get('otherDefaultBase')
-              .patchValue(payroll.defaultBase);
+              .patchValue(
+                payroll.defaultBase
+                  ? convertNumberInThousandSep(payroll.defaultBase)
+                  : null
+              );
+
+            this.selectedOtherPayPeriod = payroll.payPeriod;
+            this.selectedOtherEndingIn = payroll.endingIn;
+            break;
+          }
+          case 10: {
+            this.companyForm
+              .get('driveOwnerPayPeriod')
+              .patchValue(payroll.payPeriod.name);
+            this.companyForm
+              .get('driverOwnerEndingIn')
+              .patchValue(payroll.endingIn.name);
+
+            this.companyForm
+              .get('soloEmptyMile')
+              .patchValue(payroll.soloEmptyMile);
+            this.companyForm
+              .get('soloLoadedMile')
+              .patchValue(payroll.soloLoadedMile);
+            this.companyForm
+              .get('soloPerStop')
+              .patchValue(
+                payroll.soloPerStop
+                  ? convertNumberInThousandSep(payroll.soloPerStop)
+                  : null
+              );
+
+            this.companyForm
+              .get('teamEmptyMile')
+              .patchValue(payroll.teamEmptyMile);
+            this.companyForm
+              .get('teamLoadedMile')
+              .patchValue(payroll.teamLoadedMile);
+            this.companyForm
+              .get('teamPerStop')
+              .patchValue(
+                payroll.teamPerStop
+                  ? convertNumberInThousandSep(payroll.teamPerStop)
+                  : null
+              );
+
+            this.companyForm
+              .get('driverSoloDefaultCommission')
+              .patchValue(payroll.defaultSoloDriverCommission);
+            this.companyForm
+              .get('driverTeamDefaultCommission')
+              .patchValue(payroll.defaultTeamDriverCommission);
+
+            this.companyForm
+              .get('ownerDefaultCommission')
+              .patchValue(payroll.defaultOwnerCommission);
+
+            this.selectedDriverPayPeriod = payroll.payPeriod;
+            this.selectedDriverEndingIn = payroll.endingIn;
             break;
           }
           default: {

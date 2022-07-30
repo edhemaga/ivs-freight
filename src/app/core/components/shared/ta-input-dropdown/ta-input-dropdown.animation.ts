@@ -17,6 +17,6 @@ import {
         })
       ),
       state('false', style({ height: '0px', overflow: 'hidden', opacity: '0' })),
-      transition('false <=> true', [animate('0.2s ease-in-out')]),
+      transition('false <=> true', [animate('0.15s ease-in-out')]),
     ]);
   

@@ -9,68 +9,56 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'basic', type: 'new' })"
+        (click)="
+          onAction({
+            modalName: 'insurance-policy',
+            type: 'new',
+            company: insurancePolicyData
+          })
+        "
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <div
       class="settings-insuarnce"
-      *ngFor="let insurance of insurancePolicyData; trackBy: identity"
+      *ngFor="
+        let insurance of insurancePolicyData?.insurancePolicies;
+        trackBy: identity
+      "
     >
       <app-ta-re-card
         [cardNameCommon]="insurance?.producerName"
         [haveHeaderText]="true"
         [cardDocumentCounter]="1"
-        [noteIcons]="insurance?.note? 'assets/svg/truckassist-table/note/Note.svg':'assets/svg/truckassist-table/note/Note - Empty.svg'"
+        [options]="dropOptions"
+        [optionsId]="insurance.id"
+        (dropActions)="optionsEvent($event, insurance)"
+        [paddingDots]="'11px 0px 0px 12px'"
+        [noteIcons]="
+          insurance?.note
+            ? 'assets/svg/truckassist-table/note/Note.svg'
+            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+        "
       >
         <div class="settings-body-items">
           <div *ngIf="insurance?.phone" class="single-item">
-            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <div class="value-copy-container" [ngClass]="{ copied: copyInsurancePhone }">
-              <span class="insurance-value">{{ insurance?.phone | formatPhoneP }}</span>
-              <span
-                [tooltipBackground]="copyInsurancePhone ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copyInsurancePhone ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyTextWhitoutIndex(insurance?.phone, 'phone')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="copyInsurancePhone = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
-          
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <app-ta-copy [copyValue]="insurance?.phone"> </app-ta-copy>
           </div>
           <div *ngIf="insurance.email" class="single-item">
-            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-            <div class="value-copy-container" [ngClass]="{ copied: copyInsuranceEmail }">
-              <span class="insurance-value">{{ insurance?.email }}</span>
-              <span
-                [tooltipBackground]="copyInsuranceEmail ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="copyInsuranceEmail ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyTextWhitoutIndex(insurance?.email, 'email')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="copyInsuranceEmail = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
-          
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
+            <app-ta-copy [copyValue]="insurance?.email"> </app-ta-copy>
           </div>
           <div *ngIf="insurance.address" class="single-item">
             <svg-icon
+              class="company-icons"
               src="assets/svg/truckassist-table/location-icon.svg"
             ></svg-icon>
             <span class="single-item-address">{{
@@ -138,39 +126,54 @@
               <div class="payroll-template-item">
                 <p class="payroll-name">Each Occurrence</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.eachOccurrence }}
+                  ${{
+                    insuranceAdditional?.eachOccurrence | taThousandSeparator
+                  }}
                 </p>
               </div>
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Dmg. to Rented Pr.</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.damageToRentedPremises }}
+                  ${{
+                    insuranceAdditional?.damageToRentedPremises
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Medical Expanses</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.medicalExpanses }}
+                  ${{
+                    insuranceAdditional?.medicalExpanses | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Pers. and Adv. Injury</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.personalAndAdvertisingInjury }}
+                  ${{
+                    insuranceAdditional?.personalAndAdvertisingInjury
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">General Aggregate</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.generalAggregate }}
+                  ${{
+                    insuranceAdditional?.generalAggregate | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Products - Comp / OP</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.productsCompOperAggregate }}
+                  ${{
+                    insuranceAdditional?.productsCompOperAggregate
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
             </div>
@@ -185,25 +188,36 @@
               <div class="payroll-template-item">
                 <p class="payroll-name">Combined Single</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.combinedSingleLimit }}
+                  ${{
+                    insuranceAdditional?.combinedSingleLimit
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Property Damage</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.propertyDamage }}
+                  ${{
+                    insuranceAdditional?.propertyDamage | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Boldly Injury(Person)</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.bodilyInjuryPerson }}
+                  ${{
+                    insuranceAdditional?.bodilyInjuryPerson
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Boldly Injury(Accident)</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.bodilyInjuryAccident }}
+                  ${{
+                    insuranceAdditional?.bodilyInjuryAccident
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
             </div>
@@ -224,7 +238,7 @@
               <div class="payroll-template-item">
                 <p class="payroll-name">Deductable</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.deductable }}
+                  ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
             </div>
@@ -239,13 +253,16 @@
               <div class="payroll-template-item">
                 <p class="payroll-name">Comprehen. & Collision</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.comprehensiveAndCollision }}
+                  ${{
+                    insuranceAdditional?.comprehensiveAndCollision
+                      | taThousandSeparator
+                  }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Deductable</p>
                 <p class="payroll-value">
-                  ${{ insuranceAdditional?.deductable }}
+                  ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
             </div>
@@ -259,7 +276,9 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Value</p>
-                <p class="payroll-value">${{ insuranceAdditional?.value }}</p>
+                <p class="payroll-value">
+                  ${{ insuranceAdditional?.value | taThousandSeparator }}
+                </p>
               </div>
             </div>
           </app-ta-custom-card>

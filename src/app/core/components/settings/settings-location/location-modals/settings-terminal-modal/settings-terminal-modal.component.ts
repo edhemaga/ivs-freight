@@ -152,13 +152,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       day: [null],
     });
 
-    this.formService.checkFormChange(this.terminalForm);
+    // this.formService.checkFormChange(this.terminalForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {
@@ -370,7 +370,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     address: AddressEntity;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onAction(event: any, action: string) {

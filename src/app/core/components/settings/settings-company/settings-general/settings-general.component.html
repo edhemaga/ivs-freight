@@ -102,27 +102,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_phone.svg"
           ></svg-icon>
-
-          <div class="value-copy-container" [ngClass]="{ copied: phoneHeader }">
-            <p class="basic-data-value">
-              {{ companyData?.phone | formatPhoneP }}
-            </p>
-            <span
-              [tooltipBackground]="phoneHeader ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="phoneHeader ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(companyData?.phone, 'phone-h')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="phoneHeader = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+          <app-ta-copy [copyValue]="companyData?.phone"> </app-ta-copy>
         </div>
 
         <div class="basic-data">
@@ -130,28 +110,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_email.svg"
           ></svg-icon>
-         
-          <div
-          class="value-copy-container"
-          [ngClass]="{ copied: emailHeader }"
-        >
-        <p class="basic-data-value">{{ companyData?.email }}</p>
-          <span
-            [tooltipBackground]="emailHeader ? '#536BC2' : '#6c6c6c'"
-            ngbTooltip
-            [mainTooltip]="emailHeader ? 'Copied' : 'Copy'"
-            position="top"
-            class="tooltip-copy"
-            [autoClose]="false"
-            (click)="copyText(companyData?.email, 'email-h')"
-          >
-            <svg-icon
-              class="copy-icon"
-              (mouseleave)="emailHeader = false"
-              src="assets/svg/common/ic_copy.svg"
-            ></svg-icon>
-          </span>
-        </div>
+          <app-ta-copy [copyValue]="companyData?.email"> </app-ta-copy>
         </div>
 
         <div class="basic-data">
@@ -159,28 +118,7 @@
             class="basic-data-svg"
             src="assets/svg/common/ic_fax.svg"
           ></svg-icon>
-          
-          <div
-          class="value-copy-container"
-          [ngClass]="{ copied: faxHeader }"
-        >
-        <p class="basic-data-value">{{ companyData?.fax | formatPhoneP }}</p>
-          <span
-            [tooltipBackground]="faxHeader ? '#536BC2' : '#6c6c6c'"
-            ngbTooltip
-            [mainTooltip]="faxHeader ? 'Copied' : 'Copy'"
-            position="top"
-            class="tooltip-copy"
-            [autoClose]="false"
-            (click)="copyText(companyData?.fax, 'fax-h')"
-          >
-            <svg-icon
-              class="copy-icon"
-              (mouseleave)="faxHeader = false"
-              src="assets/svg/common/ic_copy.svg"
-            ></svg-icon>
-          </span>
-        </div>
+          <app-ta-copy [copyValue]="companyData?.fax"> </app-ta-copy>
         </div>
         <div class="basic-data">
           <svg-icon
@@ -284,48 +222,13 @@
             trackBy: identity
           "
         >
-          <span class="body-value-department">{{department.department.name}}</span>
-          <div class="value-copy-container" [ngClass]="{ copied: departmentPhone }">
-            <span class="body-value">{{ department?.phone | formatPhoneP }}</span>
-            <span
-              [tooltipBackground]="departmentPhone ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="departmentPhone ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(department?.phone, 'phone-dep')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="departmentPhone = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
-          
+          <span class="body-value-department">{{
+            department.department.name
+          }}</span>
+          <app-ta-copy [copyValue]="department?.phone"> </app-ta-copy>
 
-          
           <span class="body-value">{{ department.extensionPhone }}</span>
-          <div class="value-copy-container" [ngClass]="{ copied: departmentEmail }">
-            <span class="body-value-email">{{ department?.email }}</span>
-            <span
-              [tooltipBackground]="departmentEmail ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="departmentEmail ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(department?.email, 'email-dep')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="departmentEmail = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
-          
+          <app-ta-copy [copyValue]="department?.email"> </app-ta-copy>
         </div>
       </app-ta-custom-card>
       <app-ta-custom-card
@@ -348,73 +251,17 @@
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Routing</p>
-
-            <div class="value-copy-container" [ngClass]="{ copied: bankRouting }">
-              <span class="additional-template-value">{{ bank?.routing }}</span>
-              <span
-                [tooltipBackground]="bankRouting ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="bankRouting ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyText(bank?.routing, 'routing')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="bankRouting = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
+            <app-ta-copy [copyValue]="bank?.routing"> </app-ta-copy>
           </div>
           <div class="additional-template-item">
             <p class="additional-template-value-name">Account</p>
-            <div class="show-hide" [ngClass]="{ copied: bankAccount }">
-              <p class="additional-template-value">
-                <span>
-                  {{
-                    bank?.account | hidePassword: "account":isAccountVisible
-                  }}</span
-                >
-              </p>
-              <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                [mainTooltip]="
-                  isAccountVisible
-                    ? 'Hide Account Number'
-                    : 'Show Account Number'
-                "
-                position="top"
-                (click)="isAccountVisible = !isAccountVisible"
-              >
-                <svg-icon
-                  class="hidden-svg-eye"
-                  src="{{
-                    isAccountVisible
-                      ? 'assets/svg/common/ic_eye-visible.svg'
-                      : 'assets/svg/common/ic_eye-hidden.svg'
-                  }}"
-                ></svg-icon>
-              </span>
-
-              <span
-              [tooltipBackground]="bankAccount ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="bankAccount ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText( bank?.account , 'account')"
+            <app-ta-copy
+              [hasEye]="true"
+              [accountCompany]="true"
+              (showHide)="isAccountVisible = !isAccountVisible"
+              [copyValue]="bank?.account"
             >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="bankAccount = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-            </div>
+            </app-ta-copy>
           </div>
         </div>
       </app-ta-custom-card>

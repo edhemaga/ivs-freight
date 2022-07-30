@@ -22,6 +22,7 @@ import { CreateResponse } from '../model/models';
 import { CreateReviewCommand } from '../model/models';
 import { GetRatingReviewModalResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
+import { RatingSetResponse } from '../model/models';
 import { ReviewByEntityTypeListResponse } from '../model/models';
 import { ReviewResponse } from '../model/models';
 import { UpdateReviewCommand } from '../model/models';
@@ -145,9 +146,9 @@ export class RatingReviewService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RatingSetResponse>;
+    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RatingSetResponse>>;
+    public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RatingSetResponse>>;
     public apiRatingReviewRatingPost(createRatingCommand?: CreateRatingCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -190,7 +191,7 @@ export class RatingReviewService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<any>(`${this.configuration.basePath}/api/RatingReview/rating`,
+        return this.httpClient.post<RatingSetResponse>(`${this.configuration.basePath}/api/RatingReview/rating`,
             createRatingCommand,
             {
                 responseType: <any>responseType,

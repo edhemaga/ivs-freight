@@ -4,12 +4,18 @@
       <p>Factoring Company</p>
     </div>
 
-    <div class="settings-header-buttons">
+    <div class="settings-header-buttons" *ngIf="factoringData.email">
       <div class="settings-header-button">
         <svg-icon
           src="assets/svg/common/ic_pen.svg"
           class="settings-edit-button"
-          (click)="onAction({ modalName: 'factoring', type: 'edit' })"
+          (click)="
+            onAction({
+              modalName: 'factoring',
+              type: factoringData.factoringCompany?.name ? 'edit' : 'new',
+              company: factoringData
+            })
+          "
         ></svg-icon>
       </div>
       <div class="settings-header-button">
@@ -17,68 +23,51 @@
         <svg-icon
           src="assets/svg/common/ic_trash.svg"
           class="settings-trash-button"
+          (click)="onDeleteFactoringCompany()"
         ></svg-icon>
       </div>
+    </div>
+    <div class="settings-header-button" *ngIf="!factoringData.email">
+      <div class="border-left"></div>
+      <svg-icon
+        src="assets/svg/common/ic_plus.svg"
+        class="settings-plus-button"
+        (click)="onAction({ modalName: 'basic', type: 'new' })"
+      ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      [cardNameCommon]="factoringData?.name"
+      [cardNameCommon]="factoringData?.factoringCompany?.name"
       [haveHeaderText]="true"
       [haveDots]="false"
       [hasFooter]="false"
-      *ngIf="factoringData?.name"
+      *ngIf="factoringData?.factoringCompany?.name"
     >
       <div class="settings-body-items">
-        <div *ngIf="factoringData?.phone" class="single-item">
-          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <div class="value-copy-container" [ngClass]="{ copied: factoringPhone }">
-            <span class="insurance-value">{{ factoringData?.phone | formatPhoneP }}</span>
-            <span
-              [tooltipBackground]="factoringPhone ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="factoringPhone ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(factoringData?.phone, 'phone')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="factoringPhone = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
-        </div>
-        <div *ngIf="factoringData?.email" class="single-item">
-          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-
-          <div class="value-copy-container" [ngClass]="{ copied: factoringEmail }">
-            <span class="insurance-value">{{ factoringData?.email }}</span>
-            <span
-              [tooltipBackground]="factoringEmail ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="factoringEmail ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(factoringData?.email, 'email')"
-            >
-              <svg-icon
-                class="copy-icon"
-                (mouseleave)="factoringEmail = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
-        </div>
-        <div *ngIf="factoringData?.address" class="single-item">
+        <div class="single-item">
           <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.factoringCompany?.phone">
+          </app-ta-copy>
+        </div>
+        <div class="single-item">
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
+          <app-ta-copy [copyValue]="factoringData?.factoringCompany?.email">
+          </app-ta-copy>
+        </div>
+        <div class="single-item">
+          <svg-icon
+          class="company-icons" 
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span class="single-item-address">{{
-            factoringData?.address?.address
+            factoringData?.factoringCompany?.address?.address
           }}</span>
         </div>
       </div>
@@ -90,51 +79,51 @@
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
       >
-        <div
+        <!-- <div
           class="notice-template-data-default"
-          [ngClass]="{ 'notice-template-data-change': changeDefaultNotice }"
+          
         >
           <div class="notice-template-item">
             <div class="notice-item-value">
-              {{ factoringData?.noticeOfAssigment }}
+              {{ factoringData?.factoringCompany?.noticeOfAssigment }}
             </div>
-          </div>
-          <!-- <div class="notice-template-item">
+          </div> -->
+        <!-- <div class="notice-template-item">
             <div class="notice-item-value">
               {{
-                factoringData.noticeAssigment.param1 +
-                  factoringData.noticeAssigment.param3
+                factoringData?.factoringCompany?.noticeAssigment.param1 +
+                  factoringData?.factoringCompany?.noticeAssigment.param3
               }}
             </div>
           </div>
           <div class="notice-template-item">
             <div class="notice-item-value">
-              {{ factoringData.noticeAssigment.param2 }}
+              {{ factoringData?.factoringCompany?.noticeAssigment.param2 }}
             </div>
           </div>
         </div>
         <div *ngIf="!changeDefaultNotice" class="notice-template-data-change">
           <div class="notice-change-item">
             <div class="notice-item-header">
-              {{ factoringData.noticeAssigment.text }}
+              {{ factoringData?.factoringCompany?.noticeAssigment.text }}
             </div>
           </div>
 
           <div class="notice-change-item">
             <div class="notice-item-middle">
-              {{ factoringData.noticeAssigment.param1 }}
+              {{ factoringData?.factoringCompany?.noticeAssigment.param1 }}
 
             </div>
             <div class="bottom-data-notice">{{
-              factoringData.noticeAssigment.param3
+              factoringData?.factoringCompany?.noticeAssigment.param3
             }}</div>
           </div>
           <div class="notice-change-item bottom-notice-item">
             <div class="notice-item-bottom">
-              {{ factoringData.noticeAssigment.param2 }} <a href="tel:+{{factoringData.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
+              {{ factoringData?.factoringCompany?.noticeAssigment.param2 }} <a href="tel:+{{factoringData?.factoringCompany?.noticeAssigment.phone }}"><span class="phone-notice-item">{{factoringData.noticeAssigment.phone }}</span></a>
             </div>
           </div> -->
-        </div>
+        <!-- </div> -->
       </app-ta-custom-card>
     </app-ta-re-card>
   </div>

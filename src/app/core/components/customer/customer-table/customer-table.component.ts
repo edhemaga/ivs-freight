@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -13,16 +13,20 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { BrokerState } from '../state/broker-state/broker.store';
-import { ShipperState } from '../state/shipper-state/shipper.store';
+import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
-  styleUrls: ['./customer-table.component.scss'],
+  styleUrls: ['./customer-table.component.scss', '../../../../../assets/scss/maps.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class CustomerTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -39,7 +43,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private brokerService: BrokerTService,
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private ref: ChangeDetectorRef,
+    private formBuilder: FormBuilder,
+    private shipperStore: ShipperStore
   ) {}
 
   ngOnInit(): void {
@@ -132,8 +139,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
-        hideLocationFilter: true,
-        hideViewMode: true,
+        hideLocationFilter: false,
+        hideViewMode: this.selectedTab === 'broker' ? true : false,
+        showMapView: this.selectedTab === 'broker' ? false : true,
+        viewModeActive: 'List'
       },
       config: {
         showSort: true,
@@ -148,6 +157,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           name: 'edit-cutomer-or-shipper',
           class: 'regular-text',
           contentType: 'edit',
+          show: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
         },
         {
           title: 'Delete',
@@ -159,6 +170,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
               : 'Are you sure you want to delete shipper(s)?',
           class: 'delete-text',
           contentType: 'delete',
+          show: true,
+          danger: true,
+          svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
         },
       ],
       export: true,
@@ -184,7 +198,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.brokers,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Broker',
+        gridNameTitle: 'Customer',
         stateName: 'brokers',
         gridColumns: this.getGridColumns('brokers', this.resetColumns),
       },
@@ -195,7 +209,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         data: this.shipper,
         extended: false,
         isCustomer: true,
-        gridNameTitle: 'Shipper',
+        gridNameTitle: 'Customer',
         stateName: 'shippers',
         gridColumns: this.getGridColumns('shippers', this.resetColumns),
       },
@@ -223,6 +237,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   setCustomerData(td: any) {
     this.viewData = td.data;
     this.columns = td.gridColumns;
+    
+    this.initTableOptions();
 
     this.viewData = this.viewData.map((data: any) => {
       if (this.selectedTab === 'broker') {
@@ -279,6 +295,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendCustomerData();
+    }
+    else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 
@@ -366,7 +385,6 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       if (data.id === dataId) {
         data.actionAnimation = 'add';
       }
-
       return data;
     });
 
@@ -437,5 +455,9 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
+  }
+
+  selectItem(id) {
+    this.mapsComponent.clickedMarker(id);
   }
 }

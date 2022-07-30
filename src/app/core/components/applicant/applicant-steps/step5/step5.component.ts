@@ -1,23 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
-import { isFormValueEqual } from '../../state/utils/utils';
-
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { TruckType } from '../../state/model/truck-type.model';
-import { Address } from '../../state/model/address.model';
 import {
   Violation,
   ViolationInfo,
   ViolationModel,
 } from '../../state/model/violations.model';
-
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step5',
@@ -29,14 +20,11 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public applicant: Applicant | undefined;
 
-  private subscription: Subscription;
-
   public trafficViolationsForm: FormGroup;
   public notBeenConvictedForm: FormGroup;
   public onlyOneHoldLicenseForm: FormGroup;
   public certifyForm: FormGroup;
 
-  public violationsForm: FormGroup;
   public violationsArray: ViolationModel[] = [
     {
       violationDate: '01/20/19',
@@ -74,10 +62,10 @@ export class Step5Component implements OnInit, OnDestroy {
   public truckType: TruckType[] = [];
 
   public selectedViolationIndex: number;
-  public selectedTruckType: any = null;
-  public selectedAddress: Address = null;
 
   public helperIndex: number = 2;
+
+  public formValuesToPatch: any;
 
   //
 
@@ -87,11 +75,7 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public editViolation: number = -1;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -121,74 +105,21 @@ export class Step5Component implements OnInit, OnDestroy {
     this.certifyForm = this.formBuilder.group({
       certify: [false, Validators.required],
     });
-
-    this.violationsForm = this.formBuilder.group({
-      violationDate: [null, Validators.required],
-      truckType: [null, Validators.required],
-      violationLocation: [null, Validators.required],
-      violationDescription: [null, Validators.required],
-    });
   }
 
   public handleCheckboxParagraphClick(type: string) {
     if (type === 'notBeenConvicted') {
-      this.violationsForm.patchValue({
-        notBeenConvicted: !this.violationsForm.get('notBeenConvicted').value,
+      this.notBeenConvictedForm.patchValue({
+        notBeenConvicted:
+          !this.notBeenConvictedForm.get('notBeenConvicted').value,
       });
     }
 
     if (type === 'certify') {
-      this.violationsForm.patchValue({
-        certify: !this.violationsForm.get('certify').value,
+      this.certifyForm.patchValue({
+        certify: !this.certifyForm.get('certify').value,
       });
     }
-  }
-
-  public handleInputSelect(event: any, action: string): void {
-    switch (action) {
-      case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
-
-        break;
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.violationsForm
-            .get('violationLocation')
-            .setErrors({ invalid: true });
-        }
-
-        break;
-      default:
-        break;
-    }
-  }
-
-  public onAddViolation(): void {
-    if (this.violationsForm.invalid) {
-      this.inputService.markInvalid(this.violationsForm);
-      return;
-    }
-
-    this.helperIndex = 2;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    /*  const violationForm = this.violationsForm.value;
-    const violation = new Violation();
-
-    violation.violationLocation = violationForm.violationLocation;
-    violation.violationDate = violationForm.violationDate;
-    violation.violationDescription = violationForm.violationDescription;
-    violation.truckType = violationForm.truckType;
-
-    violation.isDeleted = false;
-
-    this.violationFormArray.push(violation);
-
-    this.violationsForm.reset();
-    this.editViolation = -1; */
   }
 
   public onDeleteViolation(index: number): void {
@@ -215,66 +146,30 @@ export class Step5Component implements OnInit, OnDestroy {
 
     const selectedViolation = this.violationsArray[index];
 
-    this.violationsForm.patchValue({
-      violationDate: selectedViolation.violationDate,
-      truckType: selectedViolation.truckType,
-      violationLocation: selectedViolation.violationLocation,
-      violationDescription: selectedViolation.violationDescription,
-    });
-
-    this.subscription = this.violationsForm.valueChanges.subscribe(
-      (newFormValue) => {
-        if (isFormValueEqual(selectedViolation, newFormValue)) {
-          this.isViolationEdited = false;
-        } else {
-          this.isViolationEdited = true;
-        }
-      }
-    );
+    this.formValuesToPatch = selectedViolation;
   }
 
-  public onSaveEditedViolation(): void {
-    if (this.violationsForm.invalid) {
-      this.inputService.markInvalid(this.violationsForm);
-      return;
-    }
+  public getViolationFormValues(event: any): void {
+    this.violationsArray = [...this.violationsArray, event];
 
-    if (!this.isViolationEdited) {
-      return;
-    }
+    this.helperIndex = 2;
+  }
 
-    this.violationsArray[this.selectedViolationIndex] =
-      this.violationsForm.value;
+  public saveEditedViolation(event: any): void {
+    this.violationsArray[this.selectedViolationIndex] = event;
 
+    this.isEditing = false;
+
+    this.helperIndex = 2;
+  }
+
+  public cancelViolationEditing(event: any): void {
     this.isEditing = false;
     this.violationsArray[this.selectedViolationIndex].isEditingViolation =
       false;
 
-    this.isViolationEdited = false;
-
     this.helperIndex = 2;
-
-    this.violationsForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
-  }
-
-  public onCancelEditAccident(): void {
-    this.isEditing = false;
-    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
-      false;
-
-    this.isViolationEdited = false;
-
-    this.helperIndex = 2;
-
-    this.violationsForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
+    this.selectedViolationIndex = -1;
   }
 
   private formFilling(): void {

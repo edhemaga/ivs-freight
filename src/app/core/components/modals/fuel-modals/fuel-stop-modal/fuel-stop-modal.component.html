@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? fuelStopForm.valid && isDirty : fuelStopForm.valid"
+  [isModalValid]="fuelStopForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="fuelStopForm" class="form-container">

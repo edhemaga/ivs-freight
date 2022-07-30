@@ -44,11 +44,9 @@
           type="button"
         >
           Delete
-          <div
-            *ngIf="deleteSpinnerVisibility"
-            class="spinner-border"
-            role="status"
-          ></div>
+          <div *ngIf="deleteSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
         <button
           *ngIf="editData?.disableButton"
@@ -108,11 +106,9 @@
           type="button"
         >
           Save and Add New
-          <div
-            *ngIf="saveAddNewSpinnerVisibility"
-            class="spinner-border"
-            role="status"
-          ></div>
+          <div *ngIf="saveAddNewSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
         <button
           (click)="onAction('save')"
@@ -121,12 +117,16 @@
           ngbAutofocus
           type="button"
         >
-          {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
-          <div
-            *ngIf="saveSpinnerVisibility"
-            class="spinner-border"
-            role="status"
-          ></div>
+          {{
+            saveSpinnerVisibility
+              ? "Saving"
+              : editData?.type?.includes("edit")
+              ? "Save Changes"
+              : "Save"
+          }}
+          <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
       </div>
     </div>

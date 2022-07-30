@@ -4,18 +4,16 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="
-    editData ? insurancePolicyForm.valid && isDirty : insurancePolicyForm.valid
-  "
+  [isModalValid]="insurancePolicyForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="insurancePolicyForm" class="form-container">
     <div class="row">
-      <div class="col-6">
+      <div class="col-12">
         <app-ta-input
           formControlName="producerName"
           [inputConfig]="{
-            name: 'Producer Name',
+            name: 'Full Name',
             type: 'text',
             label: 'Producer Name',
             isRequired: true,
@@ -24,7 +22,9 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-3">
+    </div>
+    <div class="row">
+      <div class="col-6">
         <app-ta-input
           formControlName="issued"
           [inputConfig]="{
@@ -38,7 +38,7 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-3 no-p-left">
+      <div class="col-6">
         <app-ta-input
           formControlName="expires"
           [inputConfig]="{
@@ -112,12 +112,11 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('commericalGeneralLiability').value
         }"
-        (click)="openCloseCheckboxCard($event, 'commericalGeneralLiability')"
       >
         <app-ta-checkbox
           formControlName="commericalGeneralLiability"
-          [label]="'Commerical General Liability'"
-          [name]="'Commerical'"
+          [label]="'Commercial General Liability'"
+          [name]="'Commercial'"
         ></app-ta-checkbox>
         <svg-icon
           class="checkbox-card-header-arrow"
@@ -172,7 +171,7 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-3'
                 }"
-                [options]="[]"
+                [options]="ratings"
                 [activeItem]="selectedCommericalRating"
                 (selectedItem)="onSelectDropdown($event, 'commercial')"
               ></app-ta-input-dropdown>
@@ -183,7 +182,7 @@
               <app-ta-input
                 formControlName="commericalOccurrence"
                 [inputConfig]="{
-                  name: 'Occurence',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Each Occurrence',
                   placeholderIcon: 'dollar',
@@ -196,7 +195,7 @@
               <app-ta-input
                 formControlName="commericalDamage"
                 [inputConfig]="{
-                  name: 'Damage Rented Prem',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Damage To Rented Prem.',
                   placeholderIcon: 'dollar',
@@ -211,7 +210,7 @@
               <app-ta-input
                 formControlName="commericalInj"
                 [inputConfig]="{
-                  name: 'Personal and Advertising Inj',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Personal & Adver. Inj.',
                   placeholderIcon: 'dollar',
@@ -224,7 +223,7 @@
               <app-ta-input
                 formControlName="commericalMedical"
                 [inputConfig]="{
-                  name: 'Medical Expanses',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Medical Expanses',
                   placeholderIcon: 'dollar',
@@ -239,7 +238,7 @@
               <app-ta-input
                 formControlName="commericalGeneralAggregate"
                 [inputConfig]="{
-                  name: 'General Aggregate',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'General Aggregate',
                   placeholderIcon: 'dollar',
@@ -252,7 +251,7 @@
               <app-ta-input
                 formControlName="commericalProducts"
                 [inputConfig]="{
-                  name: 'Products Comp',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Products Comp/OP Agg.',
                   placeholderIcon: 'dollar',
@@ -273,7 +272,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('automobileLiability').value
         }"
-        (click)="openCloseCheckboxCard($event, 'automobileLiability')"
       >
         <app-ta-checkbox
           formControlName="automobileLiability"
@@ -322,7 +320,7 @@
             </div>
             <div class="col-3 no-p-left">
               <app-ta-input-dropdown
-                formControlName="commericalRating"
+                formControlName="automobileRating"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
@@ -330,7 +328,7 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-3'
                 }"
-                [options]="[]"
+                [options]="ratings"
                 [activeItem]="selectedAutomobileRating"
                 (selectedItem)="onSelectDropdown($event, 'automobile')"
               ></app-ta-input-dropdown>
@@ -341,7 +339,7 @@
               <app-ta-input
                 formControlName="automobileAccident"
                 [inputConfig]="{
-                  name: 'Bodily Injury',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Bodily Injury (Accident)',
                   placeholderIcon: 'dollar',
@@ -354,7 +352,7 @@
               <app-ta-input
                 formControlName="automobileInjuryPerson"
                 [inputConfig]="{
-                  name: 'Bodily Injury',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Bodily Injury (Person)',
                   placeholderIcon: 'dollar',
@@ -369,7 +367,7 @@
               <app-ta-input
                 formControlName="automobileLimit"
                 [inputConfig]="{
-                  name: 'Combined Single Limit',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Combined Single Limit',
                   placeholderIcon: 'dollar',
@@ -382,7 +380,7 @@
               <app-ta-input
                 formControlName="automobileDamage"
                 [inputConfig]="{
-                  name: 'Property Damage',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Property Damage',
                   placeholderIcon: 'dollar',
@@ -403,7 +401,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('motorTruckCargo').value
         }"
-        (click)="openCloseCheckboxCard($event, 'motorTruckCargo')"
       >
         <div class="grouping-checkboxes">
           <app-ta-checkbox
@@ -469,7 +466,7 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-3'
                 }"
-                [options]="[]"
+                [options]="ratings"
                 [activeItem]="selectedMotorRating"
                 (selectedItem)="onSelectDropdown($event, 'motor')"
               ></app-ta-input-dropdown>
@@ -480,7 +477,7 @@
               <app-ta-input
                 formControlName="motorConveyance"
                 [inputConfig]="{
-                  name: 'Single Conveyance',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Single Conveyance',
                   placeholderIcon: 'dollar',
@@ -493,7 +490,7 @@
               <app-ta-input
                 formControlName="motorDeductable"
                 [inputConfig]="{
-                  name: 'Motor Deductable',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
@@ -514,7 +511,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('physicalDamage').value
         }"
-        (click)="openCloseCheckboxCard($event, 'physicalDamage')"
       >
         <app-ta-checkbox
           formControlName="physicalDamage"
@@ -572,7 +568,7 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-3'
                 }"
-                [options]="[]"
+                [options]="ratings"
                 [activeItem]="selectedPhysicalDamageRating"
                 (selectedItem)="onSelectDropdown($event, 'physical damage')"
               ></app-ta-input-dropdown>
@@ -583,7 +579,7 @@
               <app-ta-input
                 formControlName="physicalCollision"
                 [inputConfig]="{
-                  name: 'Comprehen Collision',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Comprehen. & Collision',
                   placeholderIcon: 'dollar',
@@ -596,7 +592,7 @@
               <app-ta-input
                 formControlName="physicalDeductable"
                 [inputConfig]="{
-                  name: 'Physical Deductable',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Deductable',
                   placeholderIcon: 'dollar',
@@ -617,7 +613,6 @@
         [ngClass]="{
           pointer: insurancePolicyForm.get('trailerInterchange').value
         }"
-        (click)="openCloseCheckboxCard($event, 'trailerInterchange')"
       >
         <app-ta-checkbox
           formControlName="trailerInterchange"
@@ -675,7 +670,7 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-3'
                 }"
-                [options]="[]"
+                [options]="ratings"
                 [activeItem]="selectedTrailerRating"
                 (selectedItem)="onSelectDropdown($event, 'trailer interchange')"
               ></app-ta-input-dropdown>
@@ -686,7 +681,7 @@
               <app-ta-input
                 formControlName="trailerValue"
                 [inputConfig]="{
-                  name: 'Trailer Value',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Value',
                   placeholderIcon: 'dollar',

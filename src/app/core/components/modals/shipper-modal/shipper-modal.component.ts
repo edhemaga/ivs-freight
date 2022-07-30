@@ -137,13 +137,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       shipperContacts: this.formBuilder.array([]),
     });
 
-    this.formService.checkFormChange(this.shipperForm);
+    // this.formService.checkFormChange(this.shipperForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -264,9 +264,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private createShipperContacts(): FormGroup {
     return this.formBuilder.group({
-      fullName: [null],
-      departmentId: [null],
-      phone: [null, phoneRegex],
+      fullName: [null, Validators.required],
+      departmentId: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null],
       email: [null, emailRegex],
     });
@@ -292,7 +292,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   }
 
   public onHandleAddress(event: { address: AddressEntity; valid: boolean }) {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectContactDepartment(event: any, ind: number) {
