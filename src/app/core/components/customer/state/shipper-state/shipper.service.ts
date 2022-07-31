@@ -44,6 +44,20 @@ export class ShipperTService {
               id: shipper.id,
             });
 
+            const brokerShipperCount = JSON.parse(
+              localStorage.getItem('brokerShipperTableCount')
+            );
+    
+            brokerShipperCount.shipper++;
+    
+            localStorage.setItem(
+              'brokerShipperTableCount',
+              JSON.stringify({
+                broker: brokerShipperCount.broker,
+                shipper: brokerShipperCount.shipper,
+              })
+            );
+
             subShipper.unsubscribe();
           },
         });
@@ -135,6 +149,20 @@ export class ShipperTService {
     return this.shipperService.apiShipperIdDelete(shipperId).pipe(
       tap(() => {
         this.shipperStore.remove(({ id }) => id === shipperId);
+
+        const brokerShipperCount = JSON.parse(
+          localStorage.getItem('brokerShipperTableCount')
+        );
+
+        brokerShipperCount.shipper--;
+
+        localStorage.setItem(
+          'brokerShipperTableCount',
+          JSON.stringify({
+            broker: brokerShipperCount.broker,
+            shipper: brokerShipperCount.shipper,
+          })
+        );
       })
     );
   }
