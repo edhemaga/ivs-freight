@@ -528,16 +528,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
-        } else {
-          this.truckForm.patchValue({
-            model: null,
-            year: null,
-            truckMakeId: null,
-            truckEngineTypeId: null,
-          });
-
-          this.selectedTruckMake = null;
-          this.selectedEngineType = null;
         }
       });
   }

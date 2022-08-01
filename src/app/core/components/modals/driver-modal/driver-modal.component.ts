@@ -137,7 +137,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public isDirty: boolean;
-
+  public disablePayType: boolean = false;
   public addNewAfterSave: boolean = false;
 
   constructor(
@@ -540,6 +540,49 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (value && !this.driverForm.get('ownerType').value) {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
+        }
+
+        if (value) {
+          this.disablePayType = true;
+          this.inputService.changeValidators(
+            this.driverForm.get('payType'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloEmptyMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloLoadedMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloPerStop'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamEmptyMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamLoadedMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamPerStop'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('commissionSolo'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('commissionTeam'),
+            false
+          );
+        } else {
+          this.disablePayType = false;
+          this.inputService.changeValidators(this.driverForm.get('payType'));
         }
       });
   }

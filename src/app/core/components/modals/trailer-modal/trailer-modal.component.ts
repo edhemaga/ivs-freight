@@ -542,13 +542,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
-        } else {
-          this.trailerForm.patchValue({
-            model: null,
-            year: null,
-            trailerMakeId: null,
-          });
-          this.selectedTrailerMake = null;
         }
       });
   }
