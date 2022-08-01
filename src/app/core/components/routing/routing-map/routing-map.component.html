@@ -32,6 +32,7 @@
                     <div class="route-type-text mg-left-12" *ngIf="route.hidden">537 mi</div>
                 </div>
                 <div class="route-card-content" cdkDropList (cdkDropListDropped)="drop($event, route.stops)">
+                    <div class="empty-miles"></div>
                     <div class="route-card-row">
                         <div class="route-row-number marker-like-text marker-bold-text pink-text">1</div>
                         <div class="route-row-location marker-like-text">{{ route.startPoint.address }}</div>
@@ -42,7 +43,7 @@
                         <div class="route-row-number marker-like-text marker-bold-text pink-text">{{ b + 2 }}</div>
                         <div class="route-row-location marker-like-text">{{ stop.address }}</div>
                         <div class="route-row-leg marker-like-text">{{ stop.leg }}</div>
-                        <div class="route-row-total marker-like-text marker-semibold-text">{{ stop.total }}</div>
+                        <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{'pink-text': b == route.stops.length-1}">{{ stop.total }}</div>
                     </div>
                     <div class="route-card-row m-0">
                         <div class="route-row-number marker-like-text marker-bold-text pink-text"></div>

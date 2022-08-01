@@ -146,6 +146,11 @@
     &:hover {
         background: #F3F3F3;
         cursor: grab;
+
+        &:first-child, &:last-child {
+            background: #fff;
+            cursor: default;
+        }
     }
 
     .route-row-number {
@@ -203,12 +208,12 @@
     color: #F27B8E !important;
 
     &::-moz-selection {
-        color: #F27B8E;
-        background: #F27B8E33;
+        color: #F27B8E !important;
+        background: #F27B8E33 !important;
       }
     &::selection {
         color: #F27B8E;
-        background: #F27B8E33;
+        background: #F27B8E33 !important;
     }
 }
 
@@ -216,11 +221,11 @@
     color: #B7B7B7 !important;
 
     &::-moz-selection {
-        color: #B7B7B7;
-        background: #B7B7B733;
+        color: #B7B7B7 !important;
+        background: #B7B7B733 !important;
       }
     &::selection {
-        color: #B7B7B7;
-        background: #B7B7B733;
+        color: #B7B7B7 !important;
+        background: #B7B7B733 !important;
     }
 }
