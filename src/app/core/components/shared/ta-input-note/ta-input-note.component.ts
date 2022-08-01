@@ -3,7 +3,6 @@ import {
   ElementRef,
   Input,
   OnInit,
-  Renderer2,
   Self,
   ViewChild,
 } from '@angular/core';
@@ -35,10 +34,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @ViewChild('note', { static: true }) noteRef: ElementRef;
   @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
-  constructor(
-    @Self() public superControl: NgControl,
-    private renderer: Renderer2
-  ) {
+  constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
   }
 

@@ -682,6 +682,7 @@ export class TaInputComponent
         'starting',
         'customer pay term',
         'dollar',
+        'fatalinjuries',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
