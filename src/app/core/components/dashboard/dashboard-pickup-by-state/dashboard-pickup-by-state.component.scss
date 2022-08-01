@@ -211,8 +211,75 @@ $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2
             width: 100%;
 
             .col-4{
-                display: flex;
-                padding-right: 0px;
+                padding: 13px 0px 11px 0px;
+                .state_all_holder{
+                    padding: 0 12px;
+
+                    border: 2px solid #F3F3F3;
+                    border-top: none;
+                    border-bottom: none;
+                    border-radius: 1px;
+                    .state_hold_main{
+                        display: flex;
+                        justify-content: flex-end;
+    
+                        .state_data_hold{
+                            .state_data_info{
+                                display: flex;
+                                margin-bottom: 2px;
+                                
+                                .state_data_info_name{
+                                    font-size: 11px;
+                                    line-height: 14px;
+                                    color: #6C6C6C;
+                                    font-weight: 500;
+        
+                                    &.left{
+                                        flex: 1;
+                                    }
+                                }
+                            }
+        
+                            .state_data_legend{
+                                svg-icon{
+                                    svg{
+                                        display: flex;
+                                        width: 88px;
+                                        height: 6px;
+                                    }
+                                }
+                            }
+        
+                            .stat_no_data_hold{
+                                display: flex;
+                                align-items: center;
+                                margin-top: 8px;
+        
+                                .state_no_data_icon{
+                                    svg-icon{
+                                        svg{
+                                            display: flex;
+                                            width: 10px;
+                                            height: 10px;
+        
+                                            rect{
+                                                fill: #E4E4E4;
+                                            }
+                                        }
+                                    }
+                                }
+        
+                                .state_no_data_text{
+                                    font-size: 11px;
+                                    line-height: 14px;
+                                    color: #6C6C6C;
+                                    font-weight: 500; 
+                                    margin-left: 4px;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             .col-5{

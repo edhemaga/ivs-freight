@@ -1,0 +1,59 @@
+.dashboard-top-driver-header-toolbar-dropdown{
+    position: relative;
+    width: 108px;
+    height: 32px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    border-radius: 3px;
+    background-color: #fff;
+    user-select: none;
+
+    .dashboard-top-driver-header-toolbar-dropdown-text{
+        font-size: 14px;
+        font-weight: 800;
+        color: #6C6C6C;
+        padding-left: 12px;
+        box-sizing: border-box;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 85px;
+    }
+
+    .dashboard-top-driver-header-toolbar-dropdown-arrow{
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        top: 50%;
+        right: 8px;
+        transform: translateY(-50%);
+
+        svg-icon{
+            svg{
+                transition: all 0.3s;
+                display: flex;
+                width: 13px;
+                height: 8.15px;
+
+                path{
+                    fill: #B7B7B7;
+                }
+            }
+        }   
+            
+    }
+
+    &.active-options{
+        .dashboard-top-driver-header-toolbar-dropdown-arrow{
+            svg-icon{
+                svg{
+                    transform: rotate(180deg);
+                }
+            }
+        }
+    }
+}

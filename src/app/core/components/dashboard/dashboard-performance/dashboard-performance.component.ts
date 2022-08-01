@@ -7,9 +7,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardPerformanceComponent implements OnInit {
   @ViewChild('topChart', {static: false}) public topChart: any;
+  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
   @ViewChild('t2') t2: any;
-
-  periodTitle: string = "Daily";
 
   dashboardSwitchTabs: any[] = [];
 
@@ -408,8 +407,6 @@ export class DashboardPerformanceComponent implements OnInit {
     }
   };
 
-  periodSwitchItems: any[] = [];
-
   constructor() { }
 
   ngOnInit(): void {
@@ -440,27 +437,11 @@ export class DashboardPerformanceComponent implements OnInit {
         name: 'Custom',
         custom: true
       }
-    ]
-
-    this.periodSwitchItems = [
-      {
-        name: 'Hourly'
-      },
-      {
-        name: 'Daily',
-        active: true
-      },
-      {
-        name: 'Weekly'
-      },
-      {
-        name: 'Monthly'
-      }
-    ]
+    ];
   }
 
   changeDashboardTabs(ev){
-
+    this.timePeriod.changeTimePeriod(ev['name']);
   }
 
   setColor(type: string){
@@ -489,15 +470,4 @@ export class DashboardPerformanceComponent implements OnInit {
   hoverFocusCard(type: string, color: any){
     this.topChart.changeChartFillProperty(type, color);
   }
-
-  changePeriod(item){
-    this.periodTitle = item.name;
-    this.periodSwitchItems.map((item) => {
-      item.active = false;
-      return item;
-    })
-    item.active = true;
-    this.t2.close();
-  }
-
 }

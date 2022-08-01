@@ -113,6 +113,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
 import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
+import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -159,6 +160,7 @@ export function playerFactory() {
     TaChartComponent,
     TaInputArrowsComponent,
     TaSpinnerComponent,
+    TaTimePeriodComponent,
 
     // Modals Components
     TaModalComponent,
@@ -192,7 +194,7 @@ export function playerFactory() {
     MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
-    TaCopyComponent,
+    TaCopyComponent
   ],
   imports: [
     CommonModule,
@@ -351,6 +353,7 @@ export function playerFactory() {
     TaInputDropdownLabelComponent,
     LoadModalComponent,
     TaUploadFilesComponent,
+    TaTimePeriodComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
