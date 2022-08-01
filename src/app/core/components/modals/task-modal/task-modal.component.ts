@@ -280,6 +280,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       status: this.taskStatus.name,
     };
 
+    console.log(newData);
+
     this.todoService
       .updateTodo(newData)
       .pipe(untilDestroyed(this))
@@ -372,7 +374,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
               name: item.firstName.concat(' ', item.lastName),
             };
           });
-          console.log(res.comments);
+
           this.comments = res.comments.map((item: CommentResponse) => {
             return {
               ...item,
@@ -411,13 +413,15 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropDown(event: any[], action: string) {
+    console.log('ON SELECTED');
+    console.log(event);
     switch (action) {
       case 'res-department': {
-        this.selectedDepartments = event;
+        this.selectedDepartments = [...event];
         break;
       }
       case 'assign-task': {
-        this.selectedCompanyUsers = event;
+        this.selectedCompanyUsers = [...event];
         break;
       }
       default: {

@@ -149,6 +149,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteFactoringCompanyById(company: any) {
+    console.log(company);
     this.settingsService
       .deleteFactoringCompanyById(
         company.divisions.length ? null : this.editData.company.id

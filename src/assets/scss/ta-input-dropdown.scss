@@ -207,6 +207,16 @@
         &.details-template {
           display: flex;
           align-items: center;
+          .details-template-text {
+            &.active {
+              color: #536bc2;
+
+              &:hover {
+                color: #3551b7;
+                transition: all 0.3s ease-in-out;
+              }
+            }
+          }
           .details-template-logo {
             margin-left: 6px;
             width: 14px;
