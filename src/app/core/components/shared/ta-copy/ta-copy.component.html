@@ -8,7 +8,8 @@
         'font-weight': textFontWeight
       }"
     >
-      {{ hasEye ? (copyValue | hideAccount: "account":isVisible) : copyValue }}
+     <span *ngIf="!accountCompany" class="copy-text">{{ hasEye ? (copyValue | hideAccount: "account":isVisible) : copyValue }}</span> 
+     <span *ngIf="accountCompany" class="copy-text">{{ hasEye ? (copyValue | hidePassword: "account":isVisible) : copyValue }}</span> 
     </div>
     <div class="app-icon-copy">
     <span
@@ -40,6 +41,7 @@
     >
       <svg-icon
         class="card-icon-copy"
+       
         src="assets/svg/common/ic_copy.svg"
         (mouseleave)="textCopied = false"
       ></svg-icon>

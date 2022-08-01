@@ -112,6 +112,11 @@ import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices.component';
 import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
+import { LottieModule } from 'ngx-lottie';
+
+export function playerFactory() {
+  return import('lottie-web');
+}
 
 @NgModule({
   declarations: [
@@ -207,6 +212,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
       libraries: ['geometry', 'places'],
     }),
     AgmDirectionModule,
+    LottieModule.forRoot({ player: playerFactory }),
     NgxSliderModule,
     DatePickerModule,
     GooglePlaceModule,

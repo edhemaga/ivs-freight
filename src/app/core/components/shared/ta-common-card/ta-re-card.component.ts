@@ -45,15 +45,17 @@ export class TaReCardComponent implements OnInit {
   @Input() isDeactivated: any;
   @Input() noteIcons: string = '';
   @Input() cardNameCurrent: string;
+  @Input() statusActive: number;
+  @Input() paddingDots: string = '11px 8px 0 12px';
   @Output() clickedCard = new EventEmitter<any>();
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
+  public showHideText: boolean;
   constructor(private clipboard: Clipboard, private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.CloseCard();
-    console.log('dataTest', this.options);
   }
 
   public CloseCard() {
@@ -67,7 +69,11 @@ export class TaReCardComponent implements OnInit {
     event.preventDefault();
     event.stopPropagation();
     let currentDate = moment().format('MM/DD/YYYY');
-    if (moment(this.expDateClose).isBefore(currentDate) || this.isDeactivated) {
+    if (
+      moment(this.expDateClose).isBefore(currentDate) ||
+      this.isDeactivated ||
+      this.statusActive == 0
+    ) {
       this.isCardOpen = !this.isCardOpen;
     }
   }

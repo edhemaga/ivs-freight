@@ -2,49 +2,49 @@
 .trucks {
   &.semitruck {
     &:hover {
-      background-color: #ef6e6e !important;
+      background-color: #97d568 !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.semisleeper {
     &:hover {
-      background-color: #955fa2 !important;
+      background-color: #ffb74d !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.boxtruck {
     &:hover {
-      background-color: #76a77d !important;
+      background-color: #fb6f6f !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.cargovan {
     &:hover {
-      background-color: #8fdee1 !important;
+      background-color: #68c3ff !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.towtruck {
     &:hover {
-      background-color: #ffbe7d !important;
+      background-color: #ba68c8 !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.carhauler {
     &:hover {
-      background-color: #484848 !important;
+      background-color: #59a5a5 !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.spotter {
     &:hover {
-      background-color: #81CCFF !important;
+      background-color: #415fc1 !important;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -74,21 +74,21 @@
 .trailers {
   &.reefer {
     &:hover {
-      background-color: #EF6E6E !important;
+      background-color: #ef6e6e !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.dryvan {
     &:hover {
-      background-color: #5673AA !important;
+      background-color: #5673aa !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.sidekit {
     &:hover {
-      background-color: #76A77D !important;
+      background-color: #76a77d !important;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -102,30 +102,29 @@
 
   &.dumper {
     &:hover {
-      background-color: #8FDEE1 !important;
+      background-color: #8fdee1 !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.trailerContainer {
-
     .container {
       width: auto !important;
       max-width: auto !important;
       margin: 0 !important;
       padding: 0 !important;
       margin-right: 6px !important;
-    } 
+    }
 
     &:hover {
-      background-color: #FFBE7D !important;
+      background-color: #ffbe7d !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.tanker {
     &:hover {
-      background-color: #81CCFF !important;
+      background-color: #81ccff !important;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -139,14 +138,14 @@
 
   &.flatbed {
     &:hover {
-      background-color: #AF88EA !important;
+      background-color: #af88ea !important;
       transition: all 0.3s ease-in-out;
     }
   }
 
   &.lowboyrgn {
     &:hover {
-      background-color: #955FA2 !important;
+      background-color: #955fa2 !important;
       transition: all 0.3s ease-in-out;
     }
   }
@@ -160,7 +159,7 @@
 
   &.stepdeck {
     &:hover {
-      background-color: #F2DD75 !important;
+      background-color: #f2dd75 !important;
       transition: all 0.3s ease-in-out;
     }
   }

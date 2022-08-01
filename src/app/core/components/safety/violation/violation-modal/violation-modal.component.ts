@@ -230,15 +230,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
   ) {
     switch (action) {
       case 'address-authority': {
-        this.selectedAuthorityAddress = event;
+        if (event.valid) this.selectedAuthorityAddress = event;
         break;
       }
       case 'address-origin': {
-        this.selectedAuthorityOrigin = event;
+        if (event.valid) this.selectedAuthorityOrigin = event;
         break;
       }
       case 'address-destination': {
-        this.selectedAuthorityDestination = event;
+        if (event.valid) this.selectedAuthorityDestination = event;
         break;
       }
     }

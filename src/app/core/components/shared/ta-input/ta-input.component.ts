@@ -601,6 +601,24 @@ export class TaInputComponent
       }
     }
 
+    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+          this.numberOfSpaces++;
+        } else {
+          this.numberOfSpaces = 0;
+        }
+        if (this.numberOfSpaces > 1) {
+          event.preventDefault();
+          return false;
+        }
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     if (
       [
         'first name',
@@ -609,7 +627,6 @@ export class TaInputComponent
         'full name',
         'relationship',
         'title',
-        'description',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       let spaces = this.input.nativeElement.value.split(' ').length;
@@ -654,10 +671,8 @@ export class TaInputComponent
         'account number',
         'empty weight',
         'axles',
-        'base rate',
         'mileage',
         'ipas ezpass',
-        'credit limit',
         'phone extension',
         'qty',
         'price',
@@ -666,7 +681,7 @@ export class TaInputComponent
         'sufix',
         'starting',
         'customer pay term',
-        'customer credit',
+        'dollar',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
