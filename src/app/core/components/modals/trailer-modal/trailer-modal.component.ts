@@ -521,7 +521,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
-            .getVINDecoderData(value.toString())
+            .getVINDecoderData(value.toString(), 2)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: VinDecodeResponse) => {

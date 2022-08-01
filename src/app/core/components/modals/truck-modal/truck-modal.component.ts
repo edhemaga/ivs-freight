@@ -505,7 +505,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
-            .getVINDecoderData(value.toString())
+            .getVINDecoderData(value.toString(), 1)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: VinDecodeResponse) => {
