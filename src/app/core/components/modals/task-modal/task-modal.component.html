@@ -101,25 +101,21 @@
     <app-ta-custom-card
       [hasCounter]="comments.length ? comments.length : '0'"
       [cardName]="'Comment'"
-      [isCardOpen]="false"
+      [isCardOpen]="comments.length"
       [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
-      [hasArrow]="false"
-      [disabledCard]="!editData"
+      [isCommentData]="true"
+      [hasBodyData]="comments.length"
+      [hasScrollBody]="comments.length > 4"
+      [disabledCard]="editData?.type !== 'edit'"
+      [hasActionSvg]="editData?.type === 'edit'"
       (onActionEvent)="createComment($event)"
     >
-      <div class="no-review-broker" *ngIf="!comments.length">
-        <svg-icon
-          class="no-review-svg"
-          src="assets/svg/common/ic_no_review.svg"
-        ></svg-icon>
-      </div>
       <app-ta-user-review
         *ngIf="comments.length"
         [reviewData]="comments"
         (changeReviewsEvent)="changeCommentsEvent($event)"
         [isNewReview]="comments[0].isNewReview"
       ></app-ta-user-review>
-      <!-- [isNewReview]="comments[0].isNewReview" -->
     </app-ta-custom-card>
     <div class="ta-card-body-overflow-none">
       <app-ta-custom-card
