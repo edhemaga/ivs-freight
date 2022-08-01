@@ -30,6 +30,7 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -81,7 +82,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   };
 
   public trailerStatus: boolean = true;
-
+  public loadingVinDecoder: boolean = false;
   public isDirty: boolean;
 
   constructor(
@@ -518,6 +519,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value?.length === 17) {
+          this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString())
             .pipe(untilDestroyed(this))
@@ -530,7 +532,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     ? res.trailerMake.name
                     : null,
                 });
-
+                this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;
               },
               error: (error: any) => {

@@ -83,7 +83,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   };
 
   public truckStatus: boolean = true;
-
+  public loadingVinDecoder: boolean = false;
   public isDirty: boolean;
 
   constructor(
@@ -503,6 +503,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value?.length === 17) {
+          this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString())
             .pipe(untilDestroyed(this))
@@ -516,7 +517,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     ? res.engineType.name
                     : null,
                 });
-
+                this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
                 this.selectedEngineType = res.engineType;
               },
