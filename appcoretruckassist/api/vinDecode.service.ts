@@ -87,15 +87,19 @@ export class VinDecodeService {
 
     /**
      * @param vin 
+     * @param vinType 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDecodeVinGet(vin: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<VinDecodeResponse>;
-    public apiDecodeVinGet(vin: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<VinDecodeResponse>>;
-    public apiDecodeVinGet(vin: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<VinDecodeResponse>>;
-    public apiDecodeVinGet(vin: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<VinDecodeResponse>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<VinDecodeResponse>>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<VinDecodeResponse>>;
+    public apiDecodeVinVinTypeGet(vin: string, vinType: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
         if (vin === null || vin === undefined) {
-            throw new Error('Required parameter vin was null or undefined when calling apiDecodeVinGet.');
+            throw new Error('Required parameter vin was null or undefined when calling apiDecodeVinVinTypeGet.');
+        }
+        if (vinType === null || vinType === undefined) {
+            throw new Error('Required parameter vinType was null or undefined when calling apiDecodeVinVinTypeGet.');
         }
 
         let headers = this.defaultHeaders;
@@ -127,7 +131,7 @@ export class VinDecodeService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<VinDecodeResponse>(`${this.configuration.basePath}/api/decode/${encodeURIComponent(String(vin))}`,
+        return this.httpClient.get<VinDecodeResponse>(`${this.configuration.basePath}/api/decode/${encodeURIComponent(String(vin))}/${encodeURIComponent(String(vinType))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

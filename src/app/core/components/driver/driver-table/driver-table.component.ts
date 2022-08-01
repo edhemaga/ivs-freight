@@ -1,4 +1,4 @@
-import { CreateBase64Class } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
@@ -67,7 +67,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
     private nameInitialsPipe: NameInitialsPipe,
     private thousandSeparator: TaThousandSeparatorPipe,
-    private createBase64: CreateBase64Class
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {
@@ -447,7 +447,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
-      avatarImg: data?.avatar ? this.createBase64.sanitizer(data.avatar) : '',
+      avatarImg: data?.avatar
+        ? this.imageBase64Service.sanitizer(data.avatar)
+        : '',
       textDOB: data.dateOfBirth
         ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
         : '',
@@ -527,9 +529,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textEmergencyContact: [
         {
           title: 'First Name',
-          value: data?.emergencyContactName
-            ? data.emergencyContactName
-            : null,
+          value: data?.emergencyContactName ? data.emergencyContactName : null,
         },
         {
           title: 'Phone',
