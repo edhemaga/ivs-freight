@@ -453,6 +453,27 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSaveNewBank(bank: any, index: number) {
+    this.selectedBankAccountFormArray[index] = event;
+    this.isBankSelectedFormArray[index] = true;
+    this.onBankSelected(index);
+
+    this.bankVerificationService
+      .createBank(bank.name)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
+  }
+
   // bankAccounts FormArray
   public get bankAccounts(): FormArray {
     return this.companyForm.get('bankAccounts') as FormArray;

@@ -52,6 +52,7 @@ export class TaInputDropdownComponent
   @Input() isDetailsActive: boolean = false;
 
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saveNewItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   public originalOptions: any[] = [];
@@ -377,8 +378,7 @@ export class TaInputDropdownComponent
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
-
-    this.selectedItem.emit(newItem);
+    this.saveNewItem.emit(newItem);
   }
 
   public onAddNewEvent() {

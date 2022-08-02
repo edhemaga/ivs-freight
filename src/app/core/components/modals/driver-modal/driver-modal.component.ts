@@ -69,6 +69,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public owner: CheckOwnerSsnEinResponse = null;
 
+  public disablePayType: boolean = false;
+  public paytypeValue: string;
+
   public logoOptions: Options = {
     floor: 0.1,
     ceil: 1.5,
@@ -137,7 +140,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public isDirty: boolean;
-  public disablePayType: boolean = false;
+
   public addNewAfterSave: boolean = false;
 
   constructor(
@@ -354,7 +357,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         );
       });
   }
-  paytypeValue: string;
+
   private onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
@@ -1089,7 +1092,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .find((item) => item.checked);
 
             if (activeOwnerTab) {
-              console.log(activeOwnerTab);
               this.tabOwnerChange(activeOwnerTab);
             }
           }
@@ -1141,10 +1143,32 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank(bank.name)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
+  }
+
   public onSelectDropdown(event: any, action: string): void {
     switch (action) {
       case 'bank': {
-        console.log(event);
         this.selectedBank = event;
         if (this.selectedBank) {
           this.onBankSelected();

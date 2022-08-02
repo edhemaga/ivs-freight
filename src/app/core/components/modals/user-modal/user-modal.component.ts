@@ -16,6 +16,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -100,7 +101,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private formService: FormService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -241,6 +243,29 @@ export class UserModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank(bank.name)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
   }
 
   private updateUser(id: number) {}
