@@ -61,6 +61,7 @@ export class TaInputDropdownComponent
   public multiselectItems: any[] = [];
   public isMultiSelectInputFocus: boolean = false;
   public multiSelectLabel: string = null;
+  public lastActiveMultiselectItem: any = null;
 
   // Add mode
   public isInAddMode: boolean = false;
@@ -556,6 +557,10 @@ export class TaInputDropdownComponent
       (x, y) => Number(y.active) - Number(x.active)
     );
     this.originalOptions = [...this.options];
+
+    this.lastActiveMultiselectItem = this.options
+      .filter((item) => item.active)
+      .slice(-1)[0];
 
     this.inputRef.focusInput = false;
     this.inputRef.input.nativeElement.blur();
