@@ -277,7 +277,7 @@
     }
 
     &.scroll {
-      overflow-y: scroll;
+      overflow-y: scroll !important;
       scrollbar-width: none !important; /* Firefox */
 
       &::-webkit-scrollbar {

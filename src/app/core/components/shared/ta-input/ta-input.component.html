@@ -34,7 +34,8 @@
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
       !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.commands?.active
+      !inputConfig.commands?.active &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -101,10 +102,22 @@
       !inputConfig.isDropdown &&
       !inputConfig.blackInput &&
       !inputConfig.hideRequiredCheck &&
-      !inputConfig.incorrectInput
+      !inputConfig.incorrectInput &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
+
+  <!-- Input Loading spinner -->
+  <div
+    *ngIf="inputConfig?.loadingSpinner?.isLoading"
+    class="input-loading-spinner"
+  >
+    <app-ta-spinner
+      [size]="inputConfig.loadingSpinner?.size"
+      [color]="inputConfig.loadingSpinner?.color"
+    ></app-ta-spinner>
+  </div>
 
   <!-- Input Password Caps Lock -->
   <p

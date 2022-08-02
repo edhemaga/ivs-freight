@@ -144,7 +144,8 @@
                     label: 'Pay type',
                     isRequired: true,
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-paytype'
+                    dropdownWidthClass: 'w-col-paytype',
+                    isDisabled: disablePayType
                   }"
                   [canAddNew]="true"
                   [options]="labelsPayType"
@@ -576,7 +577,7 @@
               <div
                 class="no-p-left"
                 [ngClass]="{
-                  'col-6': !driverForm.get('twic').value,
+                  'col-5': !driverForm.get('twic').value,
                   'col-4': driverForm.get('twic').value
                 }"
               >
@@ -592,20 +593,21 @@
               <div
                 class="no-p-left"
                 [ngClass]="{
-                  'col-4': !driverForm.get('twic').value,
+                  'col-5': !driverForm.get('twic').value,
                   'col-3': driverForm.get('twic').value
                 }"
               >
-                <app-ta-input
+                <app-ta-input-arrows
                   formControlName="mvrExpiration"
                   [inputConfig]="{
                     name: 'MVR',
                     type: 'text',
-                    label: 'MVR',
-                    isRequired: true,
                     placeholderText: 'months'
                   }"
-                ></app-ta-input>
+                  [name]="'MVR'"
+                  [required]="true"
+                >
+                </app-ta-input-arrows>
               </div>
             </div>
           </app-ta-custom-card>

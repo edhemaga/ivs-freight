@@ -265,18 +265,19 @@
 
   //--------------- end ---------------
 
-  @import "./ta-input.label.scss";
-  @import "./ta-input.input.scss";
-  @import "./ta-input.requiredcheck.scss";
-  @import "./ta-input.clear.scss";
-  @import "./ta-input.placeholdericon.scss";
-  @import "./ta-input.dropdown.scss";
-  @import "./ta-input.error.scss";
-  @import "./ta-input.passwordeye.scss";
-  @import "./ta-input.datepicker.scss";
-  @import "./ta-input.placeholderText.scss";
-  @import "./ta-input.dangermark.scss";
-  @import "./ta-input.passwordcapslock.scss";
-  @import "./ta-input.commands.scss";
-  @import "./ta-input.labelcounter.scss";
+  @import "./scss/ta-input.label.scss";
+  @import "./scss/ta-input.input.scss";
+  @import "./scss/ta-input.requiredcheck.scss";
+  @import "./scss/ta-input.clear.scss";
+  @import "./scss/ta-input.placeholdericon.scss";
+  @import "./scss/ta-input.dropdown.scss";
+  @import "./scss/ta-input.error.scss";
+  @import "./scss/ta-input.passwordeye.scss";
+  @import "./scss/ta-input.datepicker.scss";
+  @import "./scss/ta-input.placeholderText.scss";
+  @import "./scss/ta-input.dangermark.scss";
+  @import "./scss/ta-input.passwordcapslock.scss";
+  @import "./scss/ta-input.commands.scss";
+  @import "./scss/ta-input.labelcounter.scss";
+  @import "./scss/ta-input.spinner.scss";
 }
