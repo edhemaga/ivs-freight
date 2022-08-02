@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 .note-container {
   display: block;
 
@@ -138,11 +140,25 @@
       }
 
       &::-moz-selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
       }
 
       &::selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      span{
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+  
+        &::selection {
+          color: $bw6-2  !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
       }
 
       &:empty:before {

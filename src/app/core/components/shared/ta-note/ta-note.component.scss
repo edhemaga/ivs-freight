@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 .my-note-popover {
   margin-right: 4px;
   box-shadow: none !important;
@@ -372,6 +374,28 @@
 
       .editor{
         width: auto;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+  
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+  
+        span{
+          &::-moz-selection {
+            color: $bw6-2 !important;
+            background: rgb(108, 108, 108, 0.2) !important;
+          }
+    
+          &::selection {
+            color: $bw6-2  !important;
+            background: rgb(108, 108, 108, 0.2) !important;
+          }
+        }
       }
     }
 
