@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="37" viewBox="0 0 34 37">
+  <defs>
+    <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
+      <feOffset input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feFlood flood-opacity="0.149"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <ellipse id="Ellipse_6007" data-name="Ellipse 6007" cx="6" cy="1.5" rx="6" ry="1.5" transform="translate(11 30)" fill="#6c6c6c"/>
+  <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
+    <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
+  </g>
+  <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" fill="#fec107"/>
+  <circle id="Ellipse_6006" data-name="Ellipse 6006" cx="6" cy="6" r="6" transform="translate(11 11)" fill="#fff"/>
+</svg>

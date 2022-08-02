@@ -48,6 +48,11 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+
+html{
+  scroll-behavior: auto !important;
+}
+
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 @import './assets/scss/modal';
@@ -67,3 +72,5 @@ body {
 @import './assets/scss/fake-table-modal.scss';
 @import './assets/scss/fonts.scss';
 @import './assets/scss/ta-input-dropdown-label.scss';
+
+@import "~overlayscrollbars/css/OverlayScrollbars.css";

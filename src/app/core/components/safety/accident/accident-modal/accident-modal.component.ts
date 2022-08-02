@@ -242,19 +242,19 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
   ) {
     switch (action) {
       case 'address-authority': {
-        this.addressAuthority = event;
+        if (event.valid) this.addressAuthority = event;
         break;
       }
       case 'address-origin': {
-        this.addressOrigin = event;
+        if (event.valid) this.addressOrigin = event;
         break;
       }
       case 'address-destination': {
-        this.addressDestination = event;
+        if (event.valid) this.addressDestination = event;
         break;
       }
       case 'location': {
-        this.addressLocation = event;
+        if (event.valid) this.addressLocation = event;
         break;
       }
       default: {

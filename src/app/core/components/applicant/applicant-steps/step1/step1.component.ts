@@ -418,7 +418,7 @@ export class Step1Component implements OnInit, OnDestroy {
   private createNewAddress(): FormGroup {
     return this.formBuilder.group({
       address: [null, Validators.required],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
     });
   }
 

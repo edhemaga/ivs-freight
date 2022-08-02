@@ -220,7 +220,7 @@ p {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 11px 8px 0 12px;
+    // padding: 11px 8px 0 12px;
 }
 .drop-common {
     height: 21px;
@@ -301,7 +301,14 @@ p {
 .settings-icon {
     position: relative;
     top: 0px;
-    left: 6px;
+    margin-left: 6px;
+    svg {
+        &:hover {
+            path {
+                fill: #6c6c6c;
+            }
+        }
+    }
 }
 .second-name {
     font-size: 14px;

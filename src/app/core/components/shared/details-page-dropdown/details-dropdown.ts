@@ -62,7 +62,10 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
       }
     }
   }
-
+  /**Function retrun id */
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
   onAction(action: any) {
     this.dropDownActions.emit({
       id: this.id,

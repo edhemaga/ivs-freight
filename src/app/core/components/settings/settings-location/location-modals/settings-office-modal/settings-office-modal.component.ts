@@ -171,7 +171,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onScrollingDepartmentContacts(event: any) {

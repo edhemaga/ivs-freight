@@ -230,7 +230,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private addCompanyContact(): void {
     const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
-    const { streetName, streetNumber, ...address } = this.selectedAddress || {};
+
+    if (this.selectedAddress) {
+      this.selectedAddress = {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      };
+    }
 
     const newData: CreateCompanyContactCommand = {
       ...form,
@@ -239,10 +245,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: {
-        ...address,
-        addressUnit,
-      },
+      address: this.selectedAddress,
     };
 
     this.contactModalService
@@ -267,7 +270,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private updateCompanyContact(id: number): void {
     const { sharedLabelId, addressUnit, ...form } = this.contactForm.value;
-    const { streetName, streetNumber, ...address } = this.selectedAddress || {};
+
+    if (this.selectedAddress) {
+      this.selectedAddress = {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      };
+    }
 
     const newData: UpdateCompanyContactCommand = {
       id: id,
@@ -277,11 +286,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: {
-        ...address,
-        addressUnit,
-      },
+      address: this.selectedAddress,
     };
+
     this.contactModalService
       .updateCompanyContact(newData)
       .pipe(untilDestroyed(this))
@@ -338,7 +345,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     address: AddressEntity;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onUploadImage(event: any) {

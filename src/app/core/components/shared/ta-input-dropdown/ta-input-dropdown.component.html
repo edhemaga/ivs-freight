@@ -177,7 +177,11 @@
           ></svg-icon>
           <div
             class="svgtext-template-text"
-            [ngClass]="{ 'truck-text': option.subFolder === 'trucks' }"
+            [ngClass]="{
+              'truck-text': option.subFolder === 'trucks',
+              'move-hover-text':
+                inputConfig.customClass === 'truck-trailer-dropdown'
+            }"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
@@ -199,6 +203,9 @@
         >
           <div
             class="details-template-text"
+            [ngClass]="{
+              active: sort === 'active-drivers' && option?.status === 1
+            }"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]

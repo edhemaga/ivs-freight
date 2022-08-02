@@ -26,53 +26,23 @@
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
+      [paddingDots]="'11px 0px 0px 12px'"
+
       [haveHeaderText]="true"
     >
       <div class="settings-body-items">
         <div *ngIf="item.phone !== ''" class="single-item">
-          <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-          <div class="value-copy-container" [ngClass]="{ copied: terminalPhone[i] }">
-            <span class="office-template-value">{{ item.phone }}</span>
-            <span
-              [tooltipBackground]="terminalPhone[i] ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="terminalPhone[i] ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(item.phone , i,'terminal-phone')"
-            >
-              <svg-icon
-                class="copy-icon small-office-icon"
-                (mouseleave)="terminalPhone[i] = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+          <svg-icon class="company-icons"  src="assets/svg/common/ic_phone.svg"></svg-icon>
+          <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
         </div>
         <div *ngIf="item.email !== ''" class="single-item">
-          <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-          <div class="value-copy-container" [ngClass]="{ copied: terminalEmail[i] }">
-            <span class="office-template-value">{{ item.email }}</span>
-            <span
-              [tooltipBackground]="terminalEmail[i] ? '#536BC2' : '#6c6c6c'"
-              ngbTooltip
-              [mainTooltip]="terminalEmail[i] ? 'Copied' : 'Copy'"
-              position="top"
-              class="tooltip-copy"
-              [autoClose]="false"
-              (click)="copyText(item.email , i,'terminal-email')"
-            >
-              <svg-icon
-                class="copy-icon small-office-icon"
-                (mouseleave)="terminalEmail[i] = false"
-                src="assets/svg/common/ic_copy.svg"
-              ></svg-icon>
-            </span>
-          </div>
+          <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+          <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
+
         </div>
         <div *ngIf="item.address !== ''" class="single-item">
           <svg-icon
+          class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span>{{ item.address }}</span>
@@ -88,25 +58,9 @@
       >
         <div class="parking-template-data">
           <div *ngIf="opt.phone" class="parking-template-item">
-            <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
-            <div class="value-copy-container" [ngClass]="{ copied: departmentPhone[i] }">
-              <span class="parking-template-text">{{ opt.phone }}</span>
-              <span
-                [tooltipBackground]="departmentPhone[i] ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="departmentPhone[i] ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyText(opt.phone , i,'department-phone')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="departmentPhone[i] = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
+            <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <app-ta-copy [copyValue]="opt?.phone"> </app-ta-copy>
+
           </div>
           <div class="parking-template-item">
             <div *ngIf="opt.phone_ext" class="parking-template-item">
@@ -120,26 +74,8 @@
             *ngIf="opt.email"
             class="parking-template-item parking-template-email"
           >
-            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
-
-            <div class="value-copy-container" [ngClass]="{ copied: departmentEmail[i] }">
-              <span class="parking-template-text">{{ opt.email }}</span>
-              <span
-                [tooltipBackground]="departmentEmail[i] ? '#536BC2' : '#6c6c6c'"
-                ngbTooltip
-                [mainTooltip]="departmentEmail[i] ? 'Copied' : 'Copy'"
-                position="top"
-                class="tooltip-copy"
-                [autoClose]="false"
-                (click)="copyText(opt.email , i,'department-email')"
-              >
-                <svg-icon
-                  class="copy-icon"
-                  (mouseleave)="departmentEmail[i] = false"
-                  src="assets/svg/common/ic_copy.svg"
-                ></svg-icon>
-              </span>
-            </div>
+            <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+            <app-ta-copy [copyValue]="opt?.email"> </app-ta-copy>
           </div>
           <div *ngIf="opt.parking_slot" class="parking-template-item">
             <p class="parking-template-number">{{ opt.parking_slot }}</p>

@@ -158,8 +158,8 @@
 
   .modal-spinner {
     position: absolute;
-    bottom: 4px;
-    right: 18px;
+    bottom: 7px;
+    right: 12px;
   }
 
   //   Ovveride global settings for row > columns
@@ -183,14 +183,11 @@
       margin: 0px !important;
     }
 
-    .right-side {
+    .ta-modal-footer-right-side,
+    .ta-modal-footer-left-side {
       display: flex;
       align-items: center;
       gap: 12px;
-
-      .modal-save-btn-add-new {
-        width: 182px !important;
-      }
     }
   }
 }

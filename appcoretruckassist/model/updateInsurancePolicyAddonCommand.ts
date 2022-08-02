@@ -15,7 +15,7 @@ export interface UpdateInsurancePolicyAddonCommand {
     id?: number | null;
     policy?: string | null;
     insurerName?: string | null;
-    rating?: number;
+    rating?: number | null;
     isCommercialGeneralLiabillityChecked?: boolean;
     eachOccurrence?: number | null;
     damageToRentedPremises?: number | null;

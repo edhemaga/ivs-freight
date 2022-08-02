@@ -91,6 +91,10 @@ app-trailer-details-item {
       grid-template-columns: 122px 131px 75px !important;
       .employment {
         font-weight: $font-semibold !important;
+        width: 155px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
     }
   }

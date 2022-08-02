@@ -71,7 +71,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     // -------------- DEVELOP MODE --------------------
     this.companyUser = JSON.parse(localStorage.getItem('user'));
 
-    if (this.editData) {
+    if (this.editData?.type === 'edit') {
       this.editTask(this.editData.id);
     }
   }
@@ -80,7 +80,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
       description: [null],
-      url: [null, Validators.required],
+      url: [null],
       deadline: [null],
       departmentIds: [null],
       companyUserIds: [null],
@@ -107,7 +107,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.taskForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.type === 'edit') {
           this.updateTaskById(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -155,7 +155,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     // this.comments.unshift({
     //   companyUser: {
     //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //     avatar: this.companyUser.avatar,
     //   },
     //   commentContent: '',
     //   createdAt: new Date().toISOString(),
@@ -170,7 +170,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
           ' ',
           this.companyUser.lastName
         ),
-        avatar: 'https://picsum.photos/id/237/200/300',
+        avatar: this.companyUser.avatar,
       },
       commentContent: null,
       createdAt: new Date().toISOString(),
@@ -280,6 +280,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       status: this.taskStatus.name,
     };
 
+    console.log(newData);
+
     this.todoService
       .updateTodo(newData)
       .pipe(untilDestroyed(this))
@@ -372,12 +374,13 @@ export class TaskModalComponent implements OnInit, OnDestroy {
               name: item.firstName.concat(' ', item.lastName),
             };
           });
+
           this.comments = res.comments.map((item: CommentResponse) => {
             return {
               ...item,
               companyUser: {
                 ...item.companyUser,
-                avatar: 'https://picsum.photos/id/237/200/300',
+                avatar: this.companyUser.avatar,
               },
             };
           });
@@ -410,13 +413,15 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropDown(event: any[], action: string) {
+    console.log('ON SELECTED');
+    console.log(event);
     switch (action) {
       case 'res-department': {
-        this.selectedDepartments = event;
+        this.selectedDepartments = [...event];
         break;
       }
       case 'assign-task': {
-        this.selectedCompanyUsers = event;
+        this.selectedCompanyUsers = [...event];
         break;
       }
       default: {

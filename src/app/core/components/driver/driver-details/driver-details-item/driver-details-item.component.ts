@@ -43,6 +43,8 @@ export class DriverDetailsItemComponent
   public expDateCard: any;
   public dataCDl: any;
   public templateName: boolean;
+  public hasActiveCdl: boolean;
+  public arrayOfActiveCdl: any[] = [];
   constructor(
     private modalService: ModalService,
     private driverService: DriverTService
@@ -75,7 +77,7 @@ export class DriverDetailsItemComponent
   public activateDeactiveCdl(id: number) {
     this.driverService.activateDeactiveCdl(id);
   }
-  public getName(name: string) {
+  public getNameForDrop(name: string) {
     switch (name) {
       case 'cdl':
         this.templateName = false;
@@ -249,6 +251,12 @@ export class DriverDetailsItemComponent
         a.click();
       });
     });
+  }
+
+  addYearToDate(startDate: any) {
+    //console.log('addYearToDate startDate', startDate);
+    //console.log('addYearToDate add year', moment(startDate).add(1, 'years').format());
+    return moment(startDate).add(1, 'years').format();
   }
 
   ngOnDestroy(): void {}
