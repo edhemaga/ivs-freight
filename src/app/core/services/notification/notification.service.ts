@@ -11,7 +11,7 @@ export class NotificationService {
 
   public success(message: string, title?: string) {
     this.toastr.success(message, title, {
-      progressBar: true,
+      progressBar: false, 
       progressAnimation: 'increasing',
       easeTime: 300,
       timeOut: 3000
@@ -20,7 +20,7 @@ export class NotificationService {
 
   public error(message: string, title?: string) {
     this.toastr.error(message, title, {
-      progressBar: true,
+      progressBar: false,
       progressAnimation: 'increasing',
       easeTime: 300,
       timeOut: 3000
@@ -29,7 +29,7 @@ export class NotificationService {
 
   public warning(message: string, title?: string) {
     this.toastr.warning(message, title, {
-      progressBar: true,
+      progressBar: false,
       progressAnimation: 'increasing',
       easeTime: 300,
       timeOut: 3000

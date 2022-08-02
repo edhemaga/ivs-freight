@@ -1,0 +1,72 @@
+.overlay-container{
+
+    .toast-bottom-left {
+        bottom: 12px;
+        left: 60px;
+      }
+
+    .toast-container .ngx-toastr {
+        position: relative;
+        overflow: hidden;
+        margin: 0 0 6px;
+        padding: 12px 12px;
+        width: 540px;
+
+        border-radius: 5px;
+        background-position: 13px 13px;
+        background-repeat: no-repeat;
+        background-size: 17px;
+        box-shadow: none !important; 
+
+        color: #FFFFFF;
+        font-family: "Montserrat", sans-serif;
+      }
+      
+    .toast-error {
+        background-color: #EF5350;
+        background-image: url("../../assets/svg/common/ic_danger_white.svg");
+      }
+     
+    .toast-success {
+        background-color: #26A690;
+        background-image: url("../../assets/svg/common/confirm-circle_white.svg");
+      }  
+
+    .toast-info {
+        background-color: #AAAAAA;
+        background-image: url("../../assets/svg/common/ic_info_white.svg");
+      }
+     
+    .toast-warning {
+        background-color: #FFA726;
+        background-image: url("../../assets/svg/common/ic_clock_white.svg");
+      } 
+     
+    .toast-title{
+        padding-left: 24px;
+        padding-bottom: 9px;
+
+        font-size: 14px;
+        font-weight: bold;
+    }
+      
+    .toast-message{
+        
+        font-size: 14px; 
+    }  
+
+    .toast-close-button{
+        top: -8px;
+        right: -4px;
+
+        font-size: 26px;
+        opacity: 0.7;
+
+        &:hover{
+            opacity: 1;
+            color: #FFFFFF;
+        }
+    }
+    
+
+}
