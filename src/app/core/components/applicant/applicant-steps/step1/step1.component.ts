@@ -657,9 +657,16 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public getAnnotationBtnClickValue(event: any): void {
-    this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
-    this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea = true;
+  public getAnnotationBtnClickValue(event: any, type: string): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 
   /* private formFIlling(): void {

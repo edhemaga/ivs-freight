@@ -21,7 +21,7 @@
       }"
       src="assets/svg/applicant/pen-box.svg"
       [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-      (click)="handleAnnotationClick()"
+      (click)="handleAnnotationClick('open')"
     ></svg-icon>
   </div>
 
@@ -41,11 +41,34 @@
           type: 'text',
           label: 'Write Annotation',
           textTransform: 'capitalize',
+          blackInput: true,
+          hideRequiredCheck: true,
           placeholder: cardsLength > 1 ? 'Write Annotation' : '',
           placeholderInsteadOfLabel: cardsLength > 1 && cardIndex !== 2,
           autoFocus: true
         }"
       ></app-ta-input>
+    </div>
+
+    <div
+      ngbTooltip
+      mainTooltip="Close Annotation"
+      tooltipBackground="#6C6C6C"
+      position="top"
+      class="close-icon-container"
+    >
+      <svg-icon
+        class="close-icon"
+        [ngClass]="{
+          'display-icon': displayAnnotationTextArea
+        }"
+        src="assets/svg/applicant/close-small-square.svg"
+        [svgStyle]="{
+          'width.px': 26,
+          'height.px': 26
+        }"
+        (click)="handleAnnotationClick('close')"
+      ></svg-icon>
     </div>
   </div>
 </div>

@@ -121,60 +121,6 @@
       }
     }
 
-    .documents-box {
-      position: absolute;
-      top: -400px;
-      width: 400px;
-      padding: 12px;
-      margin-left: -10px;
-      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-      border-radius: 3px;
-      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
-      visibility: hidden;
-      opacity: 0;
-      background: $white;
-
-      &.display-box {
-        visibility: visible;
-        opacity: 1;
-      }
-
-      .box-header {
-        .box-tabs {
-          flex: 90%;
-        }
-
-        .icon-box {
-          width: 22px;
-          margin-left: 12px;
-
-          .close-icon {
-            cursor: pointer;
-            transition: background 0.3s ease-in-out;
-            background: transparent;
-            border-radius: 2px;
-
-            svg {
-              path {
-                transition: fill 0.3s ease-in-out;
-                fill: $bw4;
-              }
-            }
-
-            &:hover {
-              background: $bw5;
-
-              svg {
-                path {
-                  fill: $white;
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-
     .requests-box {
       position: absolute;
       width: 400px;
@@ -203,7 +149,6 @@
 
           .close-icon {
             cursor: pointer;
-            transition: background 0.3s ease-in-out;
             background: transparent;
             border-radius: 2px;
 
@@ -215,11 +160,9 @@
             }
 
             &:hover {
-              background: $bw5;
-
               svg {
                 path {
-                  fill: $white;
+                  fill: $bw6-2;
                 }
               }
             }
@@ -330,6 +273,57 @@
 
           &.date-group {
             margin-right: 12px;
+          }
+        }
+      }
+    }
+
+    .documents-box {
+      position: absolute;
+      top: -400px;
+      width: 400px;
+      padding: 12px;
+      margin-left: -10px;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+      border-radius: 3px;
+      transition: visibility 0.3s ease-in-out, opacity 0.3s ease-in-out;
+      visibility: hidden;
+      opacity: 0;
+      background: $white;
+
+      &.display-box {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .box-header {
+        .box-tabs {
+          flex: 90%;
+        }
+
+        .icon-box {
+          width: 22px;
+          margin-left: 12px;
+
+          .close-icon {
+            cursor: pointer;
+            background: transparent;
+            border-radius: 2px;
+
+            svg {
+              path {
+                transition: fill 0.3s ease-in-out;
+                fill: $bw4;
+              }
+            }
+
+            &:hover {
+              svg {
+                path {
+                  fill: $bw6-2;
+                }
+              }
+            }
           }
         }
       }

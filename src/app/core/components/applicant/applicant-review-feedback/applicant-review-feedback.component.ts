@@ -19,6 +19,7 @@ export class ApplicantReviewFeedbackComponent implements OnInit {
 
   @Output() annotationBtnClickEvent: EventEmitter<{
     lineIndex: number;
+    type: string;
   }> = new EventEmitter();
 
   public annotationForm: FormGroup;
@@ -77,13 +78,21 @@ export class ApplicantReviewFeedbackComponent implements OnInit {
     });
   }
 
-  public handleAnnotationClick(): void {
+  public handleAnnotationClick(type: string): void {
     this.annotationForm.patchValue({
       annotation: [null],
     });
 
-    this.annotationBtnClickEvent.emit({
-      lineIndex: this.lineIndex,
-    });
+    if (type === 'open') {
+      this.annotationBtnClickEvent.emit({
+        lineIndex: this.lineIndex,
+        type: 'open',
+      });
+    } else {
+      this.annotationBtnClickEvent.emit({
+        lineIndex: this.lineIndex,
+        type: 'close',
+      });
+    }
   }
 }
