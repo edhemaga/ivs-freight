@@ -20,7 +20,6 @@ export class TaSpinnerComponent implements OnChanges {
           this.size === 'small' ? '18px' : '32px'
         }/${this.color}.json`,
       };
-      console.log(this.lottieSpinner);
     }
   }
 }

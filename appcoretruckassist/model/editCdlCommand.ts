@@ -24,6 +24,5 @@ export interface EditCdlCommand {
     endorsements?: Array<number> | null;
     stateId?: number;
     note?: string | null;
-    driverId?: number;
 }
 

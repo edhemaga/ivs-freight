@@ -1,30 +1,58 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  Self,
+} from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { ITaInput } from '../ta-input/ta-input.config';
 
 @Component({
   selector: 'app-ta-input-arrows',
   templateUrl: './ta-input-arrows.component.html',
   styleUrls: ['./ta-input-arrows.component.scss'],
 })
-export class TaInputArrowsComponent implements OnInit {
+export class TaInputArrowsComponent implements ControlValueAccessor {
   @Input() name: string;
-  @Input() counter: number;
+  @Input() type: string; // 'applicant'
+  @Input() required: boolean;
+  @Input() inputConfig: ITaInput;
 
-  @Output() counterEmmiter = new EventEmitter<number>();
-
-  constructor() {}
-
-  ngOnInit(): void {}
+  constructor(@Self() public superControl: NgControl) {
+    this.superControl.valueAccessor = this;
+  }
 
   public valueEmmiter(action: string) {
     if (action === 'increment') {
-      this.counter = this.counter + 1;
+      this.getSuperControl.patchValue(
+        (this.getSuperControl.value
+          ? parseInt(this.getSuperControl.value)
+          : 0) + 1
+      );
     } else {
-      if (this.counter === 0) {
+      if (
+        parseInt(this.getSuperControl.value) === 0 ||
+        !this.getSuperControl.value
+      ) {
         return;
       }
-      this.counter = this.counter - 1;
-    }
 
-    this.counterEmmiter.emit(this.counter);
+      this.getSuperControl.patchValue(
+        (this.getSuperControl.value
+          ? parseInt(this.getSuperControl.value)
+          : 0) - 1
+      );
+    }
   }
+
+  get getSuperControl() {
+    return this.superControl.control;
+  }
+
+  public writeValue(obj: any): void {}
+  public registerOnChange(fn: any): void {}
+  public onChange(event: any): void {}
+  public registerOnTouched(fn: any): void {}
 }

@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface EditMvrCommand { 
-    id?: number;
-    issueDate?: string;
-    note?: string | null;
+export interface InsurancePolicyModalResponse { 
+    ratings?: Array<EnumValue> | null;
 }
 

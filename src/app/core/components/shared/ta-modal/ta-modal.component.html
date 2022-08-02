@@ -35,7 +35,12 @@
       class="modal-footer"
       [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
     >
-      <div class="left-side" *ngIf="editData?.type?.includes('edit')">
+      <!-- Footer Left Side -->
+      <div
+        class="ta-modal-footer-left-side"
+        *ngIf="editData?.type?.includes('edit')"
+      >
+        <!-- Delete -->
         <button
           *ngIf="!disableDelete"
           (click)="onAction('delete')"
@@ -44,10 +49,9 @@
           type="button"
         >
           Delete
-          <div *ngIf="deleteSpinnerVisibility" class="modal-spinner">
-            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
-          </div>
         </button>
+
+        <!-- Deactivated -->
         <button
           *ngIf="editData?.disableButton"
           (click)="onAction('deactivate')"
@@ -57,6 +61,8 @@
         >
           {{ isDeactivated ? "Activate" : "Deactivate" }}
         </button>
+
+        <!-- DNU -->
         <button
           *ngIf="editData?.dnuButton"
           (click)="onAction('dnu')"
@@ -76,6 +82,8 @@
         >
           {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
         </button>
+
+        <!-- BFB -->
         <button
           *ngIf="editData?.bfbButton"
           (click)="onAction('bfb')"
@@ -96,7 +104,10 @@
           {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
         </button>
       </div>
-      <div class="right-side">
+
+      <!-- Footer right side -->
+      <div class="ta-modal-footer-right-side">
+        <!-- Save and Add New button -->
         <button
           *ngIf="saveAndAddNew"
           (click)="onAction('save and add new')"
@@ -105,11 +116,13 @@
           ngbAutofocus
           type="button"
         >
-          Save and Add New
+          {{ saveAddNewSpinnerVisibility ? "Saving" : "Save and Add New" }}
           <div *ngIf="saveAddNewSpinnerVisibility" class="modal-spinner">
-            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
           </div>
         </button>
+
+        <!-- Save button -->
         <button
           (click)="onAction('save')"
           class="modal-save-btn"
@@ -117,9 +130,15 @@
           ngbAutofocus
           type="button"
         >
-          {{ editData?.type?.includes("edit") ? "Save Changes" : "Save" }}
+          {{
+            saveSpinnerVisibility
+              ? "Saving"
+              : editData?.type?.includes("edit")
+              ? "Save Changes"
+              : "Save"
+          }}
           <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
-            <app-ta-spinner [size]="'18px'" [color]="'white'"></app-ta-spinner>
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
           </div>
         </button>
       </div>

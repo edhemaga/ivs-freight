@@ -447,19 +447,19 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   ) {
     switch (action) {
       case 'physical-address': {
-        this.selectedPhysicalAddress = event.address;
+        if (event.valid) this.selectedPhysicalAddress = event.address;
         break;
       }
       case 'physical-pobox': {
-        this.selectedPhysicalPoBox = event.address;
+        if (event.valid) this.selectedPhysicalPoBox = event.address;
         break;
       }
       case 'billing-address': {
-        this.selectedBillingAddress = event.address;
+        if (event.valid) this.selectedBillingAddress = event.address;
         break;
       }
       case 'billing-pobox': {
-        this.selectedBillingPoBox = event.address;
+        if (event.valid) this.selectedBillingPoBox = event.address;
         break;
       }
       default: {
@@ -520,7 +520,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     // this.reviews.unshift({
     //   companyUser: {
     //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //     avatar: this.companyUser.avatar,
     //   },
     //   commentContent: '',
     //   createdAt: new Date().toISOString(),
@@ -534,7 +534,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           ' ',
           this.companyUser.lastName
         ),
-        avatar: 'https://picsum.photos/id/237/200/300',
+        avatar: this.companyUser.avatar,
       },
       commentContent: '',
       createdAt: new Date().toISOString(),
@@ -946,9 +946,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             ...item,
             companyUser: {
               ...item.companyUser,
-              avatar: item.companyUser.avatar
-                ? item.companyUser.avatar
-                : 'assets/svg/common/ic_profile.svg',
+              avatar: item.companyUser.avatar,
             },
             commentContent: item.comment,
             rating: item.ratingFromTheReviewer,

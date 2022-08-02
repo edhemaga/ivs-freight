@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 
-export const getStringFromBase64 = (url: string) => {
-  return url.split(',')[1];
-};
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class CreateBase64Class {
+export class ImageBase64Service {
   constructor(public domSanitizer: DomSanitizer) {}
 
   sanitizer(url: string) {
@@ -16,4 +12,8 @@ export class CreateBase64Class {
       `data:image/*;base64,${url}`
     );
   }
+
+  getStringFromBase64 = (url: string) => {
+    return url.split(',')[1];
+  };
 }

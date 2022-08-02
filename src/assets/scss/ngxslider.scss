@@ -9,6 +9,16 @@
     font-weight: 600;
     color: #6c6c6c;
     margin-bottom: 10px !important;
+
+    &::-moz-selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
+
+    &::selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
   }
 
   .ngx-slider {

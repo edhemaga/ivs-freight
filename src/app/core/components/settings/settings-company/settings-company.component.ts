@@ -1,23 +1,17 @@
-import { map } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import {
   Component,
   OnInit,
   ViewEncapsulation,
-  OnChanges,
-  SimpleChanges,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
 import { SettingsStoreService } from './../state/settings.service';
-import { Observable, of } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
-import { companySettingsResolver } from '../state/company-state/company-settings.resolver';
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',
@@ -43,6 +37,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.activated.snapshot.data);
     this.getData(this.activated.snapshot.data.company);
     this.settingCompanyQuery.getAll().map((item) => {
       this.dataCompany = item.divisions;
@@ -61,7 +56,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: CompanyResponse) => {
-              this.getData(res, id);
+              this.getData(res);
               this.notificationService.success(
                 'Company Division successfully changed',
                 'Success:'
@@ -79,14 +74,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
       });
   }
 
-  public getData(data: CompanyResponse, id?: number) {
+  public getData(data: CompanyResponse) {
     this.data = data;
-    if (id) {
-      this.data = {
-        ...this.data,
-        id: id,
-      };
-    }
   }
   public getCompanyDivision() {
     this.optionsCmp = this.dataCompany.map((item) => {

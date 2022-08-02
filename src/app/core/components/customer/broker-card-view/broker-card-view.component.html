@@ -14,33 +14,48 @@
         <span class="header-bottom">{{ broker?.dbaName }}</span>
       </div>
       <div class="repair-information-item">
+        <span
+                tooltipBackground="#6c6c6c"
+                ngbTooltip
+                mainTooltip="Call"
+                position="top"
+                class="semi-tooltip"
+              >
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_phone.svg"
         ></svg-icon>
-        <p class="repair-value">
-          {{ broker?.phone | formatPhoneP }}
-        </p>
+        </span>
+        <app-ta-copy [copyValue]="broker?.phone"></app-ta-copy>
       </div>
       <div class="repair-information-item">
+        <span
+        tooltipBackground="#6c6c6c"
+        ngbTooltip
+        mainTooltip="Send Email"
+        position="top"
+        class="semi-tooltip"
+      >
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
         ></svg-icon>
-        <p class="repair-value">{{ broker?.email }}</p>
+        </span>
+        <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
       </div>
       <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_address.svg"
         ></svg-icon>
-        <p class="repair-value">
-          {{
+        <app-ta-copy
+          [copyValue]="
             broker?.mainAddress?.address
               ? broker.mainAddress.address
               : broker?.billingAddress?.address
-          }}
-        </p>
+          "
+        ></app-ta-copy>
+      
       </div>
     </div>
   </app-ta-details-header-card>
@@ -127,8 +142,8 @@
             <span class="value-ageing">{{
               broker?.totalDebt | formatCurrency
             }}</span>
-      </div>
-      </div>
+          </div>
+        </div>
         <app-progress-invoices
           [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"

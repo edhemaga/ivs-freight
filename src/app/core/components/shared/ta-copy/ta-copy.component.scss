@@ -18,6 +18,7 @@
     display: flex;
     align-items: center;
     width: 250px;
+    gap: 6px;
     .copy-value {
         white-space: nowrap;
         &::-moz-selection {
@@ -33,7 +34,6 @@
         }
     }
     .card-icon-copy {
-        margin-left: 6px;
         display: none;
         cursor: pointer;
         svg {
@@ -57,7 +57,10 @@
         animation-duration: 1500ms;
         animation-name: change;
     }
-
+    .copy-text {
+        animation-duration: 1500ms;
+        animation-name: change;
+    }
     .card-icon-copy {
         svg {
             display: flex;
@@ -77,7 +80,6 @@
     align-items: center;
 }
 .hidden-svg-eyes {
-    margin-left: 6px;
     svg {
         &:hover {
             path {
@@ -85,4 +87,20 @@
             }
         }
     }
+}
+.copy-text {
+    &:hover {
+        color: #3c3c3c;
+    }
+    &::-moz-selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+    &::selection {
+        color: #6c6c6c;
+        background: rgb(108, 108, 108, 0.2);
+    }
+}
+.hidden-svg-eyes {
+    margin-right: 6px;
 }

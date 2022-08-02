@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 
-import { FormGroup } from '@angular/forms';
+import { FormGroup, FormControl, Form } from '@angular/forms';
 
 import { TruckType } from '../../state/model/truck-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
@@ -22,6 +22,9 @@ export class Step4FormComponent implements OnInit {
   @Input() injuriesCounter: number;
 
   @Input() answerChoices: AnswerChoices[];
+
+  public fatalitiesControl: FormControl = new FormControl(0);
+  public injuriesControl: FormControl = new FormControl(0);
 
   constructor() {}
 

@@ -6,10 +6,7 @@ import { Component, OnInit } from '@angular/core';
   /* styleUrls: ['./step4-pdf.component.scss'] */
 })
 export class Step4PdfComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

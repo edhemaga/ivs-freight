@@ -23,61 +23,75 @@
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
       <!-------------------------------- Basic Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 1">
-        <div class="row">
-          <div class="col-6">
-            <app-ta-input
-              formControlName="firstName"
-              [inputConfig]="{
-                name: 'First name',
-                type: 'text',
-                label: 'First Name',
-                isRequired: true,
-                textTransform: 'capitalize',
-                autoFocus: editData?.type === 'edit' ? false : true
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="col-6">
-            <app-ta-input
-              formControlName="lastName"
-              [inputConfig]="{
-                name: 'Last name',
-                type: 'text',
-                label: 'Last Name',
-                isRequired: true,
-                textTransform: 'capitalize'
-              }"
-            ></app-ta-input>
-          </div>
+        <div class="driver-modal-first-row">
+          <app-ta-input
+            formControlName="firstName"
+            [inputConfig]="{
+              name: 'First name',
+              type: 'text',
+              label: 'First Name',
+              isRequired: true,
+              textTransform: 'capitalize',
+              autoFocus: editData?.type === 'edit' ? false : true
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="lastName"
+            [inputConfig]="{
+              name: 'Last name',
+              type: 'text',
+              label: 'Last Name',
+              isRequired: true,
+              textTransform: 'capitalize'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="dateOfBirth"
+            [inputConfig]="{
+              name: 'datepicker',
+              type: 'text',
+              label: 'DOB',
+              isDropdown: true,
+              placeholderIcon: 'date',
+              isRequired: true,
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
         </div>
-        <div class="row">
-          <div class="col-5">
-            <app-ta-input
-              formControlName="phone"
-              [inputConfig]="{
-                name: 'Phone',
-                type: 'text',
-                label: 'Phone',
-                isRequired: true,
-                placeholderIcon: 'phone',
-                mask: '(000) 000-0000'
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="col-7">
-            <app-ta-input
-              formControlName="email"
-              [inputConfig]="{
-                name: 'Email',
-                type: 'text',
-                label: 'Email',
-                isRequired: true,
-                placeholderIcon: 'email'
-              }"
-            ></app-ta-input>
-          </div>
+        <div class="driver-modal-second-row">
+          <app-ta-input
+            formControlName="phone"
+            [inputConfig]="{
+              name: 'Phone',
+              type: 'text',
+              label: 'Phone',
+              isRequired: true,
+              placeholderIcon: 'phone',
+              mask: '(000) 000-0000'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="email"
+            [inputConfig]="{
+              name: 'Email',
+              type: 'text',
+              label: 'Email',
+              isRequired: true,
+              placeholderIcon: 'email'
+            }"
+          ></app-ta-input>
+          <app-ta-input
+            formControlName="ssn"
+            [inputConfig]="{
+              name: 'SSN',
+              type: 'text',
+              label: 'SSN',
+              isRequired: true,
+              mask: '000-00-0000'
+            }"
+          ></app-ta-input>
         </div>
-        <div class="row">
+        <div class="row last-row">
           <div class="col-10">
             <app-ta-input-address
               formControlName="address"
@@ -100,34 +114,6 @@
                 type: 'text',
                 label: 'Unit #',
                 maxLength: 6
-              }"
-            ></app-ta-input>
-          </div>
-        </div>
-        <div class="row last-row">
-          <div class="col-5">
-            <app-ta-input
-              formControlName="dateOfBirth"
-              [inputConfig]="{
-                name: 'datepicker',
-                type: 'text',
-                label: 'DOB',
-                isDropdown: true,
-                placeholderIcon: 'date',
-                isRequired: true,
-                customClass: 'datetimeclass'
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="col-7">
-            <app-ta-input
-              formControlName="ssn"
-              [inputConfig]="{
-                name: 'SSN',
-                type: 'text',
-                label: 'SSN',
-                isRequired: true,
-                mask: '000-00-0000'
               }"
             ></app-ta-input>
           </div>
@@ -158,7 +144,8 @@
                     label: 'Pay type',
                     isRequired: true,
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-paytype'
+                    dropdownWidthClass: 'w-col-paytype',
+                    isDisabled: disablePayType
                   }"
                   [canAddNew]="true"
                   [options]="labelsPayType"
@@ -590,7 +577,7 @@
               <div
                 class="no-p-left"
                 [ngClass]="{
-                  'col-6': !driverForm.get('twic').value,
+                  'col-5': !driverForm.get('twic').value,
                   'col-4': driverForm.get('twic').value
                 }"
               >
@@ -606,20 +593,21 @@
               <div
                 class="no-p-left"
                 [ngClass]="{
-                  'col-4': !driverForm.get('twic').value,
+                  'col-5': !driverForm.get('twic').value,
                   'col-3': driverForm.get('twic').value
                 }"
               >
-                <app-ta-input
+                <app-ta-input-arrows
                   formControlName="mvrExpiration"
                   [inputConfig]="{
                     name: 'MVR',
                     type: 'text',
-                    label: 'MVR',
-                    isRequired: true,
                     placeholderText: 'months'
                   }"
-                ></app-ta-input>
+                  [name]="'MVR'"
+                  [required]="true"
+                >
+                </app-ta-input-arrows>
               </div>
             </div>
           </app-ta-custom-card>
