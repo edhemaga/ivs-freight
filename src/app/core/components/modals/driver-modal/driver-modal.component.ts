@@ -1144,6 +1144,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public onSelectDropdown(event: any, action: string): void {
     switch (action) {
       case 'bank': {
+        console.log(event);
         this.selectedBank = event;
         if (this.selectedBank) {
           this.onBankSelected();
