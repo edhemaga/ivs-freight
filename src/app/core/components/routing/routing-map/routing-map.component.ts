@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import * as AppConst from '../../../../const';
+import { MapsService } from '../../../services/shared/maps.service';
 
 @Component({
   selector: 'app-routing-map',
@@ -9,10 +11,22 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 })
 export class RoutingMapComponent implements OnInit {
 
+  public agmMap: any;
+  public styles = AppConst.GOOGLE_MAP_STYLES;
+  mapRestrictions = {
+    latLngBounds: AppConst.NORTH_AMERICA_BOUNDS,
+    strictBounds: true,
+  };
+
+  public mapLatitude: number = 41.860119;
+  public mapLongitude: number = -87.660156;
+  public mapZoom: number = 1;
+
   public routes: any[] = [
     {
       'name': 'Route 1',
       'hidden': false,
+      'expanded': false,
       'startPoint': {
         'address': 'Gary, IN 30055',
       },
@@ -21,46 +35,64 @@ export class RoutingMapComponent implements OnInit {
           'address': 'Chicago, IL 65005',
           'leg': '60.6',
           'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15'
         },
         {
           'address': 'Philadelphia, PA 52320',
           'leg': '45.2',
           'total': '105.8',
+          'time': '00:23',
+          'totalTime': '01:38'
         },
         {
           'address': 'Nashville, KE 89600',
           'leg': '168.8',
           'total': '273.1',
+          'time': '00:37',
+          'totalTime': '02:05'
         },
       ]
     },
     {
       'name': 'Route 2',
       'hidden': false,
+      'expanded': false,
       'startPoint': {
         'address': 'Gary, IN 30055',
+        'fullAddress': '2371 W 150th Hwy W, Crouse, NC 28033'
       },
       'stops': [
         {
           'address': 'Chicago, IL 65005',
+          'fullAddress': '1525 Park Dr, Munster, IN 46321',
           'leg': '60.6',
           'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15'
         },
         {
           'address': 'Philadelphia, PA 52320',
+          'fullAddress': '32075 Arlington Dr, Franklin,  MI 48025',
           'leg': '45.2',
           'total': '105.8',
+          'time': '00:23',
+          'totalTime': '01:38'
         },
         {
           'address': 'Nashville, KE 89600',
+          'fullAddress': '2136 Warren H…, Hermanville, MS 39086',
           'leg': '168.8',
           'total': '273.1',
+          'time': '00:37',
+          'totalTime': '02:05'
         },
       ]
     },
     {
       'name': 'Route 3',
       'hidden': false,
+      'expanded': false,
       'startPoint': {
         'address': 'Gary, IN 30055',
       },
@@ -69,22 +101,41 @@ export class RoutingMapComponent implements OnInit {
           'address': 'Chicago, IL 65005',
           'leg': '60.6',
           'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15'
         },
         {
           'address': 'Philadelphia, PA 52320',
           'leg': '45.2',
           'total': '105.8',
+          'time': '00:23',
+          'totalTime': '01:38'
         },
         {
           'address': 'Nashville, KE 89600',
           'leg': '168.8',
           'total': '273.1',
+          'time': '00:37',
+          'totalTime': '02:05'
         },
       ]
     },
   ];
 
-  constructor() { }
+  public routeColors: any[] = [
+    '#8A9AEF',
+    '#FDB46B',
+    '#F27B8E',
+    '#6DC089',
+    '#A574C3',
+    '#73D0F1',
+    '#F69FF3',
+    '#A1887F'
+  ];
+
+  constructor(
+    private mapsService: MapsService
+  ) { }
 
   ngOnInit(): void {
   }
@@ -101,5 +152,26 @@ export class RoutingMapComponent implements OnInit {
 
   showHideRoute(route) {
     route.hidden = !route.hidden;
+  }
+
+  resizeCard(route) {
+    route.expanded = !route.expanded;
+  }
+
+  deleteRouteStop(route, index) {
+    route.stops.splice(index, 1);
+  }
+
+  mapClick(event) {
+    console.log('mapClick', event);
+  }
+
+  zoomChange(event){
+    this.mapZoom = event;
+  }
+
+  getMapInstance(map) {
+    this.agmMap = map;
+    console.log('getMapInstance', this.agmMap);
   }
 }

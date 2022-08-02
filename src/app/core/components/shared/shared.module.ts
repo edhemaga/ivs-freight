@@ -277,6 +277,7 @@ export function playerFactory() {
     AppTooltipeModule,
     ProfileImagesModule,
     AgmSnazzyInfoWindowModule,
+    AgmDirectionModule,
 
     // Components
     TabSwitcherComponent,
