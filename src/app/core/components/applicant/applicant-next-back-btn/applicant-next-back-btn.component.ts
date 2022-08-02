@@ -17,7 +17,7 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public filledCorrectly: boolean = false;
   public reviewFilledCorrectly: boolean = true;
@@ -28,9 +28,5 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   onStepAction(action: string) {
     this.stepEvent.emit({ action });
-  }
-
-  asd() {
-    this.reviewFilledCorrectly = !this.reviewFilledCorrectly;
   }
 }

@@ -261,8 +261,8 @@
             }
 
             .address-unit-container {
-              width: 52px;
-              margin-right: 18px;
+              width: 42px;
+              margin-right: 6px;
 
               p {
                 text-transform: uppercase;
@@ -274,13 +274,14 @@
           }
 
           .btn-container {
-            width: 42px;
+            width: 64px;
             visibility: hidden !important;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
 
             .edit-icon,
-            .delete-icon {
+            .delete-icon,
+            .review-icon {
               cursor: pointer;
 
               &:hover {
@@ -297,10 +298,43 @@
                   fill: $bw4;
                 }
               }
-            }
 
-            .edit-icon {
-              margin-right: 6px;
+              &.edit-icon,
+              &.delete-icon {
+                margin-right: 4px;
+              }
+
+              &.review-icon {
+                svg {
+                  transform: scale(1);
+                  transition: transform 0.3s ease-in-out;
+
+                  path {
+                    fill: $ta-red-2;
+                    transition: fill 0.3s ease-in-out;
+                  }
+
+                  rect {
+                    fill: $ta-light-grey-4;
+                    transition: fill 0.3s ease-in-out;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    transform: scale(1.2);
+
+                    path {
+                      fill: $white;
+                      transition: fill 0.3s ease-in-out;
+                    }
+
+                    rect {
+                      fill: $ta-red-3;
+                    }
+                  }
+                }
+              }
             }
           }
 

@@ -1,6 +1,10 @@
 <!-- REVIEW -->
 
-<div class="d-flex review-container" [formGroup]="annotationForm">
+<div
+  class="d-flex review-container"
+  *ngIf="!isFeedback"
+  [formGroup]="annotationForm"
+>
   <!-- ANNOTATION BUTTON -->
 
   <div
@@ -8,12 +12,12 @@
     mainTooltip="Add Annotation"
     tooltipBackground="#6C6C6C"
     position="top"
-    *ngIf="openAnnotation && !displayAnnotationTextArea"
+    *ngIf="displayAnnotationButton"
   >
     <svg-icon
       class="pen-icon"
       [ngClass]="{
-        'display-icon': openAnnotation
+        'display-icon': displayAnnotationButton
       }"
       src="assets/svg/applicant/pen-box.svg"
       [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
@@ -27,7 +31,7 @@
     <div
       class="annotation-group"
       [ngClass]="{
-        'display-annotation': openAnnotation && displayAnnotationTextArea
+        'display-annotation': displayAnnotationTextArea
       }"
     >
       <app-ta-input
@@ -37,10 +41,22 @@
           type: 'text',
           label: 'Write Annotation',
           textTransform: 'capitalize',
+          placeholder: cardsLength > 1 ? 'Write Annotation' : '',
+          placeholderInsteadOfLabel: cardsLength > 1 && cardIndex !== 2,
           autoFocus: true
         }"
       ></app-ta-input>
     </div>
+  </div>
+</div>
+
+<!-- FEEDBACK -->
+
+<div class="d-flex feedback-container" *ngIf="isFeedback && feedbackText">
+  <div class="d-flex feedback-text-container">
+    <p class="m-0 ta-font-regular">
+      {{ feedbackText }}
+    </p>
   </div>
 </div>
 

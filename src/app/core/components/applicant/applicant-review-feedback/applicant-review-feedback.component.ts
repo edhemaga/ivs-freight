@@ -9,19 +9,25 @@ import { ReviewFeedbackService } from '../state/services/review-feedback.service
   styleUrls: ['./applicant-review-feedback.component.scss'],
 })
 export class ApplicantReviewFeedbackComponent implements OnInit {
-  @Input() openAnnotation: boolean;
+  @Input() displayAnnotationButton: boolean;
   @Input() displayAnnotationTextArea: boolean;
+  @Input() lineIndex: number;
+  @Input() isFeedback: boolean = false;
+  @Input() feedbackText: string;
+  @Input() cardsLength?: number;
+  @Input() cardIndex: number;
+
+  @Output() annotationBtnClickEvent: EventEmitter<{
+    lineIndex: number;
+  }> = new EventEmitter();
 
   public annotationForm: FormGroup;
-
-  /* public displayAnnotationTextArea: boolean = false; */
 
   /*   public approved?: boolean;
   public description: string = '';
 
   @Input() reviewFeedbackData: any = {};
   @Input() index: number = 0;
-  @Input() isFeedback: boolean = false;
   @Input() isApproved: boolean = false;
   @Output() sendReview: EventEmitter<any> = new EventEmitter(); */
 
@@ -72,6 +78,12 @@ export class ApplicantReviewFeedbackComponent implements OnInit {
   }
 
   public handleAnnotationClick(): void {
-    this.displayAnnotationTextArea = true;
+    this.annotationForm.patchValue({
+      annotation: [null],
+    });
+
+    this.annotationBtnClickEvent.emit({
+      lineIndex: this.lineIndex,
+    });
   }
 }

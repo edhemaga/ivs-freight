@@ -51,6 +51,43 @@
   }
 }
 
+.feedback-container {
+  .feedback-text-container {
+    width: 397px;
+    max-height: 45px;
+    padding: 4px 6px;
+    border-radius: 2px;
+    background: $ta-light-grey-4;
+    transition: background 0.3s ease-in-out;
+
+    &:hover {
+      background: $bw2;
+    }
+
+    &:hover p {
+      color: $ta-light-grey-3;
+    }
+
+    p {
+      max-width: 385px;
+      font-size: 14px;
+      line-height: 18px;
+      color: $bw6-2;
+      transition: color 0.3s ease-in-out;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+    }
+  }
+}
+
 /* Review */
 /* .review-container {
   width: fit-content;
