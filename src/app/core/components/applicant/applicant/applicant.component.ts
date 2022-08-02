@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 import { INavigation } from '../state/model/navigation.model';
 
@@ -8,6 +9,8 @@ import { INavigation } from '../state/model/navigation.model';
   styleUrls: ['./applicant.component.scss'],
 })
 export class ApplicantComponent implements OnInit {
+  public selectedMode = SelectedMode.FEEDBACK;
+
   public menuItems: INavigation[] = [
     {
       title: 'Personal Info',
@@ -67,6 +70,7 @@ export class ApplicantComponent implements OnInit {
   ];
 
   storeArr = [
+    { id: 0, isCompleted: false },
     { id: 1, isCompleted: false },
     { id: 2, isCompleted: false },
     { id: 3, isCompleted: false },
@@ -77,7 +81,20 @@ export class ApplicantComponent implements OnInit {
     { id: 8, isCompleted: false },
     { id: 9, isCompleted: false },
     { id: 10, isCompleted: false },
-    { id: 11, isCompleted: false },
+  ];
+
+  reviewStoreArr = [
+    { id: 0, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 1, isReviewed: true, hasIncorrectAnswer: true },
+    { id: 2, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 3, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 4, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 5, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 6, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 7, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 8, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 9, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 10, isReviewed: false, hasIncorrectAnswer: false },
   ];
 
   constructor() {}
