@@ -1151,7 +1151,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     this.bankVerificationService
-      .createBank(bank.name)
+      .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
