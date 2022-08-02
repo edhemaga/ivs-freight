@@ -30,122 +30,117 @@
         Completed by prospective employer
       </h5>
 
-      <div class="d-flex flex-column justify-content-center employer-container">
-        <!-- PROSPECTIVE EMPLOYER -->
+      <div
+        class="d-flex flex-column employer-container"
+        [formGroup]="prospectiveEmployerForm"
+      >
+        <!-- TO PREVIOUS EMPLOYER -->
+
+        <div class="d-flex">
+          <div class="group prev-employer-group">
+            <app-ta-input
+              formControlName="toPreviousEmployer"
+              [inputConfig]="{
+                name: 'Previous Employer',
+                type: 'text',
+                label: 'To Previous employer',
+                textTransform: 'capitalize',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="group phone-group">
+            <app-ta-input
+              formControlName="phone"
+              [inputConfig]="{
+                name: 'Phone',
+                type: 'text',
+                label: 'Phone',
+                placeholderIcon: 'phone',
+                mask: '(000) 000-0000',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+
+          <div class="group email-group">
+            <app-ta-input
+              formControlName="email"
+              [inputConfig]="{
+                name: 'Email',
+                type: 'text',
+                label: 'Email',
+                placeholderIcon: 'email',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+
+          <div class="group fax-group">
+            <app-ta-input
+              formControlName="fax"
+              [inputConfig]="{
+                name: 'Fax',
+                type: 'text',
+                label: 'Fax',
+                placeholderIcon: 'fax',
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <div class="d-flex">
+          <div class="group address-group">
+            <app-ta-input-address
+              formControlName="address"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Address, City, State Zip',
+                placeholderIcon: 'address',
+                textTransform: 'capitalize',
+                isDisabled: true
+              }"
+            ></app-ta-input-address>
+          </div>
+          <div class="group address-unit-group">
+            <app-ta-input
+              formControlName="addressUnit"
+              [inputConfig]="{
+                name: 'Address Unit',
+                type: 'text',
+                label: 'Unit #',
+                maxLength: 6,
+                isDisabled: true
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+
+        <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
 
         <div
-          class="d-flex flex-column justify-content-center to-prev-employer-box"
+          class="d-flex flex-column justify-content-center prev-employer-box"
         >
-          <h3 class="m-0 ta-font-bold">To Previous Employer</h3>
-          <div class="d-flex align-items-center info-box"></div>
-        </div>
-        <div class="d-flex align-items-center">
-          <!-- PHONE -->
-
-          <div class="d-flex flex-column justify-content-center phone-box">
-            <h3 class="m-0 ta-font-bold">Phone</h3>
-            <div class="d-flex align-items-center info-box">
-              <svg-icon
-                class="icon"
-                src="assets/svg/common/ic_phone.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-              ></svg-icon>
-
-              <div class="pipe"></div>
+          <div class="d-flex align-items-center title-container">
+            <div class="d-flex align-items-center name-title-box">
+              <p class="m-0 ta-font-bold">APPLICANT NAME</p>
+            </div>
+            <div class="d-flex align-items-center ssn-title-box">
+              <p class="m-0 ta-font-bold">SSN</p>
+            </div>
+            <div class="d-flex align-items-center dob-title-box">
+              <p class="m-0 ta-font-bold">DOB</p>
             </div>
           </div>
-
-          <!-- EMAIL -->
-
-          <div class="d-flex flex-column justify-content-center email-box">
-            <h3 class="m-0 ta-font-bold">Email</h3>
-            <div class="d-flex align-items-center info-box">
-              <svg-icon
-                class="icon"
-                src="assets/svg/common/ic_email.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-              ></svg-icon>
-
-              <div class="pipe"></div>
-            </div>
-          </div>
-
-          <!-- FAX -->
-
-          <div class="d-flex flex-column justify-content-center fax-box">
-            <h3 class="m-0 ta-font-bold">Fax</h3>
-            <div class="d-flex align-items-center info-box">
-              <svg-icon
-                class="icon"
-                src="assets/svg/common/ic_fax.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-              ></svg-icon>
-
-              <div class="pipe"></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center">
-          <!-- ADDRESS -->
-
-          <div class="d-flex flex-column justify-content-center address-box">
-            <h3 class="m-0 ta-font-bold">Address, City, State Zip</h3>
-            <div class="d-flex align-items-center info-box">
-              <svg-icon
-                class="icon"
-                src="assets/svg/applicant/location.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-              ></svg-icon>
-
-              <div class="pipe"></div>
-            </div>
-          </div>
-
-          <!-- ADDRESS UNIT-->
 
           <div
-            class="d-flex flex-column justify-content-center address-unit-box"
-          >
-            <h3 class="m-0 ta-font-bold">Unit #</h3>
-            <div class="d-flex align-items-center info-box"></div>
-          </div>
-        </div>
-
-        <div class="d-flex align-items-center">
-          <!-- PREVIOUS EMPLOYER NAME, SSN, DOB-->
-
-          <div
-            class="d-flex flex-column justify-content-center prev-employer-box"
-          >
-            <div class="d-flex align-items-center title-container">
-              <div class="d-flex align-items-center name-title-box">
-                <p class="m-0 ta-font-bold">APPLICANT NAME</p>
-              </div>
-              <div class="d-flex align-items-center ssn-title-box">
-                <p class="m-0 ta-font-bold">SSN</p>
-              </div>
-              <div class="d-flex align-items-center dob-title-box">
-                <p class="m-0 ta-font-bold">DOB</p>
-              </div>
-            </div>
-
-            <div
-              class="d-flex align-items-center prev-employer-info-container"
-            ></div>
-          </div>
+            class="d-flex align-items-center prev-employer-info-container"
+          ></div>
         </div>
       </div>
     </div>
@@ -441,14 +436,34 @@
               <div class="d-flex align-items-center fatalities-injuries-group">
                 <div class="d-flex align-items-center injuries-group">
                   <app-ta-input-arrows
-                    name="Injuries #"
-                    [counter]="injuriesCounter"
+                    [formControl]="fatalitiesControl"
+                    [inputConfig]="{
+                      name: 'FatalInjuries',
+                      type: 'text',
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      hideClear: true,
+                      hideErrorMessage: true,
+                      textAlign: 'center'
+                    }"
+                    [name]="'Fatalities #'"
+                    [type]="'applicant'"
                   ></app-ta-input-arrows>
                 </div>
                 <div class="d-flex align-items-center fatalities-group">
                   <app-ta-input-arrows
-                    name="Fatalities #"
-                    [counter]="fatalitiesCounter"
+                    [formControl]="injuriesControl"
+                    [inputConfig]="{
+                      name: 'FatalInjuries',
+                      type: 'text',
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      hideClear: true,
+                      hideErrorMessage: true,
+                      textAlign: 'center'
+                    }"
+                    [name]="'Inj. #'"
+                    [type]="'applicant'"
                   ></app-ta-input-arrows>
                 </div>
               </div>

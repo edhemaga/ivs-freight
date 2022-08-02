@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="editData ? parkingForm.valid && isDirty : parkingForm.valid"
+  [isModalValid]="parkingForm.valid"
   (action)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -201,7 +201,7 @@
               <app-ta-input
                 formControlName="rent"
                 [inputConfig]="{
-                  name: 'Rent',
+                  name: 'Dollar',
                   type: 'text',
                   label: 'Rent',
                   placeholderIcon: 'dollar',

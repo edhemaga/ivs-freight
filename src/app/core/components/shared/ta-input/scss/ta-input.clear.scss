@@ -1,0 +1,171 @@
+// -------------------- Input Clear --------------------
+.input-clear {
+  position: absolute;
+  right: 4px;
+  top: 0px;
+  border-radius: 1px;
+  transition: all 0.3s ease-in-out;
+  display: none;
+  z-index: 10;
+  cursor: pointer;
+
+  .input-clear-x {
+    svg {
+      width: 18px !important;
+      height: 18px !important;
+      overflow: visible;
+      path {
+        fill: #eeeeee;
+      }
+      rect {
+        transition: transform 0.3s;
+        transform: scale(1);
+        transform-origin: center;
+      }
+    }
+
+    &:hover {
+      svg {
+        overflow: visible;
+        rect {
+          transform: scale(1.2);
+          transform-origin: center;
+          transition: transform 0.3s;
+        }
+      }
+    }
+  }
+
+  &.valid-focus-in {
+    display: inline-block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #536bc2;
+        }
+        rect {
+          fill: #bdcaeb !important;
+        }
+      }
+
+      &:hover {
+        svg {
+          rect {
+            fill: #f5fafc !important;
+          }
+        }
+      }
+    }
+  }
+  //  &.invalid-focus-in-required
+  &.invalid-focus-in {
+    display: inline-block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ef5350;
+        }
+        rect {
+          fill: #ffcdd2;
+        }
+      }
+      &:hover {
+        svg {
+          rect {
+            fill: #fffafa;
+          }
+        }
+      }
+    }
+  }
+
+  &.password-eye {
+    display: none !important;
+  }
+
+  // If dropdown
+  &.dropdown-position,
+  &.repair-m-pm {
+    right: 27px !important;
+  }
+
+  &.incorrect-input {
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ef5350 !important;
+        }
+        rect {
+          fill: transparent !important;
+        }
+      }
+      &:hover {
+        svg {
+          path {
+            fill: #ffffff !important;
+          }
+          rect {
+            fill: #ef5350 !important;
+          }
+        }
+      }
+    }
+  }
+
+  &.incorrect-input-enabled {
+    display: inline-block;
+    .input-clear-x {
+      svg {
+        path {
+          fill: #ffffff !important;
+        }
+        rect {
+          fill: #ef5350 !important;
+        }
+      }
+
+      &:hover {
+        svg {
+          path {
+            fill: #ffffff !important;
+          }
+          rect {
+            fill: #ef5350 !important;
+          }
+        }
+      }
+    }
+  }
+
+  //------------------------- Custom class -------------------------
+  &.input-32 {
+    top: 3.5px;
+    right: 6px;
+  }
+
+  &.input-30 {
+    top: 2px;
+  }
+
+  &.focus {
+    &.repair-shop-oh {
+      display: inline-block;
+      svg {
+        path {
+          fill: #6c6c6c !important;
+        }
+        rect {
+          fill: #b7b7b7 !important;
+        }
+      }
+
+      &:hover {
+        svg {
+          rect {
+            fill: #eeeeee !important;
+          }
+        }
+      }
+    }
+  }
+}

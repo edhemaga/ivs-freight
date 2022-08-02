@@ -19,6 +19,7 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
   insurancePolicyRegex,
@@ -82,7 +83,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   };
 
   public truckStatus: boolean = true;
-
+  public loadingVinDecoder: boolean = false;
   public isDirty: boolean;
 
   constructor(
@@ -139,13 +140,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ipasEzpass: [null, Validators.maxLength(14)],
     });
 
-    this.formService.checkFormChange(this.truckForm);
+    // this.formService.checkFormChange(this.truckForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {
@@ -289,17 +290,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
       mileage: this.truckForm.get('mileage').value
-        ? parseFloat(
-            this.truckForm.get('mileage').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
         : null,
       axles: this.truckForm.get('axles').value
         ? parseInt(this.truckForm.get('axles').value)
         : null,
       emptyWeight: this.truckForm.get('emptyWeight').value
-        ? parseFloat(
-            this.truckForm.get('emptyWeight').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.truckForm.get('emptyWeight').value)
         : null,
       commission: this.truckForm.get('commission').value
         ? parseFloat(
@@ -337,24 +334,28 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         ? this.selectedOwner.id
         : null,
       truckGrossWeightId: this.selectedTruckGrossWeight
-        ? this.selectedTruckGrossWeight.id
+        ? this.selectedTruckGrossWeight.id != 0
+          ? this.selectedTruckGrossWeight.id
+          : null
         : null,
       truckEngineTypeId: this.selectedEngineType
-        ? this.selectedEngineType.id
+        ? this.selectedEngineType.id != 0
+          ? this.selectedEngineType.id
+          : null
         : null,
-      tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
+      tireSizeId: this.selectedTireSize
+        ? this.selectedTireSize.id != 0
+          ? this.selectedTireSize.id
+          : null
+        : null,
       mileage: this.truckForm.get('mileage').value
-        ? parseFloat(
-            this.truckForm.get('mileage').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.truckForm.get('mileage').value)
         : null,
       axles: this.truckForm.get('axles').value
         ? parseInt(this.truckForm.get('axles').value)
         : null,
       emptyWeight: this.truckForm.get('emptyWeight').value
-        ? parseFloat(
-            this.truckForm.get('emptyWeight').value.toString().replace(/,/g, '')
-          )
+        ? convertThousanSepInNumber(this.truckForm.get('emptyWeight').value)
         : null,
       commission: this.truckForm.get('commission').value
         ? parseFloat(
@@ -408,7 +409,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
             truckTypeId: res.truckType ? res.truckType.name : null,
-            vin: res.vin,
             truckMakeId: res.truckMake ? res.truckMake.name : null,
             model: res.model,
             year: res.year,
@@ -434,8 +434,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             mileage: res.mileage,
             ipasEzpass: res.ipasEzpass,
           });
-          this.selectedTruckType = res.truckType ? res.truckType : null;
+          this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
 
+          this.selectedTruckType = res.truckType ? res.truckType : null;
           this.selectedTruckMake = res.truckMake ? res.truckMake : null;
           this.selectedColor = res.color ? res.color : null;
           this.selectedOwner = res.owner ? res.owner : null;
@@ -502,8 +503,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value?.length === 17) {
+          this.loadingVinDecoder = true;
           this.vinDecoderService
-            .getVINDecoderData(value.toString())
+            .getVINDecoderData(value.toString(), 1)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: VinDecodeResponse) => {
@@ -515,7 +517,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     ? res.engineType.name
                     : null,
                 });
-
+                this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
                 this.selectedEngineType = res.engineType;
               },
@@ -526,16 +528,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
-        } else {
-          this.truckForm.patchValue({
-            model: null,
-            year: null,
-            truckMakeId: null,
-            truckEngineTypeId: null,
-          });
-
-          this.selectedTruckMake = null;
-          this.selectedEngineType = null;
         }
       });
   }

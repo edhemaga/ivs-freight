@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-import { Clipboard } from '@angular/cdk/clipboard';
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
@@ -84,10 +83,7 @@ export class SettingsOfficeComponent implements OnInit {
   public officeEmail: boolean[] = [];
   public departmentEmail: boolean[] = [];
   public departmentPhone: boolean[] = [];
-  constructor(
-    private settingsStoreService: SettingsStoreService,
-    private clipboar: Clipboard
-  ) {}
+  constructor(private settingsStoreService: SettingsStoreService) {}
 
   ngOnInit() {}
 
@@ -105,25 +101,5 @@ export class SettingsOfficeComponent implements OnInit {
 
   public generateTextForProgressBar(data: any): string {
     return data.pay_period + ' Rent ' + `- ${data.rent}`;
-  }
-
-  /* To copy any Text */
-  public copyText(val: any, index: number, name: string) {
-    switch (name) {
-      case 'office-phone':
-        this.officePhone[index] = true;
-        break;
-      case 'department-phone':
-        this.departmentPhone[index] = true;
-        break;
-      case 'department-email':
-        this.departmentEmail[index] = true;
-        break;
-      case 'office-email':
-        this.officeEmail[index] = true;
-        break;
-    }
-
-    this.clipboar.copy(val);
   }
 }

@@ -129,13 +129,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       day: [null],
     });
 
-    this.formService.checkFormChange(this.parkingForm);
+    // this.formService.checkFormChange(this.parkingForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public tabChange(event: any): void {
@@ -216,7 +216,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     address: AddressEntity | any;
     valid: boolean;
   }): void {
-    this.selectedAddress = event.address;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
   public onSelectDropdown(event: any, action: string) {

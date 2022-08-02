@@ -1,10 +1,12 @@
 export interface ITaInput {
+  id?: any; // only for form array to indefier element
   name: string;
   type: string;
   label: string;
   placeholder?: string; // only for dropdown, otherwise placeholder is label !!!
   placeholderIcon?: string;
   placeholderText?: string;
+  placeholderInsteadOfLabel?: boolean;
   isRequired?: boolean;
   isDisabled?: boolean;
   pattern?: string;
@@ -17,17 +19,26 @@ export interface ITaInput {
   mask?: string; // only for phone type of input
   textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
+  blackInput?: boolean; // has only black background && input clear, no validations
+  blueInputColor?: boolean; // some inputs has blue color on focus out
+  onlyCityAndZipAddress?: boolean;
+  incorrectInput?: boolean;
   // Custom classes
-  // 'input-32' -> height: 32px,
-  // 'input-30' -> height: 30px,
-  // 'datetimeclass' -> date/time pickers
-  // 'dollar-placeholderIcon' -> when input has dollar icon
+  // - 'input-32' -> height: 32px,
+  // - 'input-30' -> height: 30px,
+  // - 'datetimeclass' -> date/time pickers
+  // - 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
   autoFocus?: boolean;
   hideClear?: boolean;
   hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
   thousandSeparator?: boolean; // type of input must be 'text'
+  loadingSpinner?: {
+    size?: string; // small, big
+    color?: string; // black, gray, white, blueLight, blueDark
+    isLoading?: boolean;
+  };
   commands?: {
     active?: boolean;
     type?: string; // examples:  'increment-decrement', 'confirm-cancel'
@@ -49,22 +60,14 @@ export interface ITaInput {
     };
     setTimeout?: number; // if must keep focus on input
   };
-  // Dropdown
+  // ----------------- DROPDOWNS INPUT CONFIG -----------------
+  // Pure Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
   // Label dropdown
   isDropdownLabel?: boolean;
-  specificDropdownLabel?: boolean;
   dropdownLabelSelected?: any;
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;
-  // Black input only
-  blackInput?: boolean; // has only black background && input clear, no validations
-  // Blue Input Text
-  blueInputColor?: boolean; // some inputs has blue color on focus out
-  // Specific label input
-  placeholderInsteadOfLabel?: boolean;
-  // Address
-  onlyCityAndZipAddress?: boolean;
 }

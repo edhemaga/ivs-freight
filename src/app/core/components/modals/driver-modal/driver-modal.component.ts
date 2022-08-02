@@ -17,13 +17,10 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import {
-  accountBankRegex,
   einNumberRegex,
-  routingBankRegex,
   ssnNumberRegex,
   emailRegex,
   phoneRegex,
-  bankRoutingValidator,
   mileValidation,
   perStopValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -41,6 +38,7 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -49,7 +47,7 @@ import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.servic
     tab_modal_animation('animationTabsModal'),
     card_modal_animation('showHidePayroll', '6px'),
   ],
-  providers: [ModalService, FormService],
+  providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
@@ -139,7 +137,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public isDirty: boolean;
-
+  public disablePayType: boolean = false;
   public addNewAfterSave: boolean = false;
 
   constructor(
@@ -150,12 +148,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService,
-    private formService: FormService
+    private formService: FormService,
+    private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
-
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.getDriverDropdowns();
@@ -255,11 +253,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       routing: [null],
       payType: [null, Validators.required],
       useTruckAssistAch: [false],
-      soloEmptyMile: [null, mileValidation],
-      soloLoadedMile: [null, mileValidation],
+      soloEmptyMile: [null, [Validators.required, ...mileValidation]],
+      soloLoadedMile: [null, [Validators.required, ...mileValidation]],
       soloPerStop: [null, perStopValidation],
-      teamEmptyMile: [null, mileValidation],
-      teamLoadedMile: [null, mileValidation],
+      teamEmptyMile: [null, [Validators.required, ...mileValidation]],
+      teamLoadedMile: [null, [Validators.required, ...mileValidation]],
       teamPerStop: [null, perStopValidation],
       commissionSolo: [25],
       commissionTeam: [25],
@@ -285,13 +283,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       smsNotificationPayroll: [false],
     });
 
-    this.formService.checkFormChange(this.driverForm);
+    // this.formService.checkFormChange(this.driverForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public get offDutyLocations(): FormArray {
@@ -308,7 +306,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       stateShortName: [null],
       country: [null],
       zipCode: [null],
-      addressUnit: [null],
+      addressUnit: [null, Validators.maxLength(6)],
       street: [null],
       streetNumber: [null],
     });
@@ -344,59 +342,28 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onBankSelected(): void {
+  private onBankSelected() {
     this.driverForm
       .get('bankId')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value) {
-          this.isBankSelected = true;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            true,
-            routingBankRegex
-          );
-          this.routingNumberTyping();
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            true,
-            accountBankRegex
-          );
-        } else {
-          this.isBankSelected = false;
-          this.inputService.changeValidators(
-            this.driverForm.get('routing'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.driverForm.get('account'),
-            false
-          );
-        }
+        this.isBankSelected = this.bankVerificationService.onSelectBank(
+          value,
+          this.driverForm.get('routing'),
+          this.driverForm.get('account')
+        );
       });
   }
-
-  private routingNumberTyping() {
-    this.driverForm
-      .get('routing')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value && value.split('').length > 8) {
-          if (bankRoutingValidator(value)) {
-            this.driverForm.get('routing').setErrors(null);
-          } else {
-            this.driverForm.get('routing').setErrors({ invalid: true });
-          }
-        }
-      });
-  }
-
+  paytypeValue: string;
   private onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value?.toLowerCase() === 'per mile') {
+        if (value) {
+          this.paytypeValue = value;
+        }
+        if (this.paytypeValue?.toLowerCase() === 'per mile') {
           this.inputService.changeValidators(
             this.driverForm.get('soloEmptyMile')
           );
@@ -577,6 +544,49 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         if (value && !this.driverForm.get('ownerType').value) {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
         }
+
+        if (value) {
+          this.disablePayType = true;
+          this.inputService.changeValidators(
+            this.driverForm.get('payType'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloEmptyMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloLoadedMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('soloPerStop'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamEmptyMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamLoadedMile'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('teamPerStop'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('commissionSolo'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('commissionTeam'),
+            false
+          );
+        } else {
+          this.disablePayType = false;
+          this.inputService.changeValidators(this.driverForm.get('payType'));
+        }
       });
   }
 
@@ -740,22 +750,32 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile: soloEmptyMile
-          ? convertThousanSepInNumber(soloEmptyMile)
-          : null,
-        loadedMile: soloLoadedMile
-          ? convertThousanSepInNumber(soloLoadedMile)
-          : null,
-        perStop: soloPerStop ? convertThousanSepInNumber(soloPerStop) : null,
+        emptyMile:
+          soloEmptyMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloEmptyMile)
+            : null,
+        loadedMile:
+          soloLoadedMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloLoadedMile)
+            : null,
+        perStop:
+          soloPerStop && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloPerStop)
+            : null,
       },
       team: {
-        emptyMile: teamEmptyMile
-          ? convertThousanSepInNumber(teamEmptyMile)
-          : null,
-        loadedMile: teamLoadedMile
-          ? convertThousanSepInNumber(teamLoadedMile)
-          : null,
-        perStop: teamPerStop ? convertThousanSepInNumber(teamPerStop) : null,
+        emptyMile:
+          teamEmptyMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamEmptyMile)
+            : null,
+        loadedMile:
+          teamLoadedMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamLoadedMile)
+            : null,
+        perStop:
+          teamPerStop && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamPerStop)
+            : null,
       },
       general: {
         mailNotification: mailNotificationGeneral,
@@ -767,14 +787,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         pushNotification: pushNotificationPayroll,
         smsNotification: smsNotificationPayroll,
       },
-      commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
-      commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
+      commissionSolo: this.selectedPayType?.id
+        ? parseInt(this.driverForm.get('commissionSolo').value)
+        : null,
+      commissionTeam: this.selectedPayType?.id
+        ? parseInt(this.driverForm.get('commissionTeam').value)
+        : null,
       twicExpDate: this.driverForm.get('twic').value
         ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
-    console.log(newData);
+
     this.driverTService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
@@ -868,22 +892,32 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile: soloEmptyMile
-          ? convertThousanSepInNumber(soloEmptyMile)
-          : null,
-        loadedMile: soloLoadedMile
-          ? convertThousanSepInNumber(soloLoadedMile)
-          : null,
-        perStop: soloPerStop ? convertThousanSepInNumber(soloPerStop) : null,
+        emptyMile:
+          soloEmptyMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloEmptyMile)
+            : null,
+        loadedMile:
+          soloLoadedMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloLoadedMile)
+            : null,
+        perStop:
+          soloPerStop && this.selectedPayType?.id
+            ? convertThousanSepInNumber(soloPerStop)
+            : null,
       },
       team: {
-        emptyMile: teamEmptyMile
-          ? convertThousanSepInNumber(teamEmptyMile)
-          : null,
-        loadedMile: teamLoadedMile
-          ? convertThousanSepInNumber(teamLoadedMile)
-          : null,
-        perStop: teamPerStop ? convertThousanSepInNumber(teamPerStop) : null,
+        emptyMile:
+          teamEmptyMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamEmptyMile)
+            : null,
+        loadedMile:
+          teamLoadedMile && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamLoadedMile)
+            : null,
+        perStop:
+          teamPerStop && this.selectedPayType?.id
+            ? convertThousanSepInNumber(teamPerStop)
+            : null,
       },
       general: {
         mailNotification: mailNotificationGeneral,
@@ -895,8 +929,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         pushNotification: pushNotificationPayroll,
         smsNotification: smsNotificationPayroll,
       },
-      commissionSolo: parseInt(this.driverForm.get('commissionSolo').value),
-      commissionTeam: parseInt(this.driverForm.get('commissionTeam').value),
+      commissionSolo: this.selectedPayType?.id
+        ? parseInt(this.driverForm.get('commissionSolo').value)
+        : null,
+      commissionTeam: this.selectedPayType?.id
+        ? parseInt(this.driverForm.get('commissionTeam').value)
+        : null,
       twicExpDate: this.driverForm.get('twic').value
         ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
@@ -1007,6 +1045,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             address: res.address,
             valid: res.address ? true : false,
           });
+
+          this.onBankSelected();
 
           this.modalService.changeModalStatus({
             name: 'deactivate',

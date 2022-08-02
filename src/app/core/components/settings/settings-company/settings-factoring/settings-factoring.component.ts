@@ -1,37 +1,61 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-import { CompanyResponse } from 'appcoretruckassist';
+import { untilDestroyed } from 'ngx-take-until-destroy';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
   styleUrls: ['./settings-factoring.component.scss'],
 })
-export class SettingsFactoringComponent implements OnInit {
+export class SettingsFactoringComponent implements OnChanges, OnDestroy {
   @Input() public factoringData: any;
-  public changeDefaultNotice: boolean;
   public factoringPhone: boolean;
   public factoringEmail: boolean;
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(
+    private settingsStoreService: SettingsStoreService,
+    private notificationService: NotificationService
+  ) {}
 
-  ngOnInit(): void {
-    this.getFactoringData(this.factoringData);
-  }
-  public getFactoringData(data: CompanyResponse) {
-    if (data?.factoringCompany?.customNoticeOfAssigment) {
-      this.changeDefaultNotice = true;
-    } else {
-      this.changeDefaultNotice = false;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      changes?.factoringData?.currentValue !==
+      changes?.factoringData?.previousValue
+    ) {
+      this.factoringData = changes?.factoringData?.currentValue;
     }
   }
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
-    switch (modal.type) {
-      case 'edit': {
-        this.settingsStoreService.onModalAction(modal);
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+
+  public onAction(modal: { modalName: string; type: string; company: any }) {
+    this.settingsStoreService.onModalAction(modal);
   }
+
+  public onDeleteFactoringCompany() {
+    this.settingsStoreService
+      .deleteFactoringCompanyById(
+        this.factoringData.divisions.length ? null : this.factoringData.id
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully delete factoring company',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete factoring company",
+            'Error'
+          );
+        },
+      });
+  }
+
+  ngOnDestroy(): void {}
 }

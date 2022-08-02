@@ -131,6 +131,7 @@ model/createTodoCommand.ts
 model/createTrailerCommand.ts
 model/createTruckCommand.ts
 model/creditType.ts
+model/dayOfWeek.ts
 model/departmentContactResponse.ts
 model/departmentResponse.ts
 model/dispatchBoardListResponse.ts
@@ -177,6 +178,7 @@ model/getTruckModalResponse.ts
 model/hazardousMaterialResponse.ts
 model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
+model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
 model/invoiceAgeingResponse.ts
 model/loadBillingAdditionalCommand.ts
@@ -239,9 +241,11 @@ model/pMTruckShortResponse.ts
 model/pMTruckUnitListResponse.ts
 model/pMTruckUnitResponse.ts
 model/pMTruckUnitResponsePagination.ts
+model/payPeriod.ts
 model/perMileEntity.ts
 model/poBoxEntity.ts
 model/problemDetails.ts
+model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
 model/registrationResponse.ts

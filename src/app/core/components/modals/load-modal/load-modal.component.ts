@@ -153,13 +153,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
-    this.formService.checkFormChange(this.loadForm);
+    // this.formService.checkFormChange(this.loadForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onModalHeaderTabChange(event: any): void {
@@ -249,7 +249,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // this.reviews.unshift({
     //   companyUser: {
     //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //     avatar: this.companyUser.avatar,
     //   },
     //   commentContent: '',
     //   createdAt: new Date().toISOString(),

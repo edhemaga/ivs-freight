@@ -9,15 +9,28 @@
       <svg-icon
         src="assets/svg/common/ic_pen.svg"
         class="settings-edit-button"
-        (click)="onAction({ modalName: 'basic', type: 'payroll-tab' })"
+        (click)="
+          onAction({
+            modalName: 'basic',
+            type: 'payroll-tab',
+            company: payrollData
+          })
+        "
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <!-- Driver & Owner -->
-    <div *ngIf="payrollData.length" class="cards-custom-payroll">
+    <div
+      *ngIf="payrollData?.companyPayrolls?.length"
+      class="cards-custom-payroll"
+    >
       <app-ta-custom-card
-        *ngFor="let payroll of payrollData; let i = index; trackBy: identity"
+        *ngFor="
+          let payroll of payrollData.companyPayrolls;
+          let i = index;
+          trackBy: identity
+        "
         [cardName]="payroll?.department?.name"
         [bodyTemplate]="'card'"
         [isCardOpen]="true"
@@ -33,27 +46,27 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Empty Mile</span>
-            <span class="payroll-value">${{ payroll?.soloEmptyMile }}</span>
+            <span class="payroll-value">${{ payroll?.soloEmptyMile | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Loaded Mile</span>
-            <span class="payroll-value">${{ payroll?.soloLoadedMile }}</span>
+            <span class="payroll-value">${{ payroll?.soloLoadedMile | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Per Stop</span>
-            <span class="payroll-value">${{ payroll?.soloPerStop }}</span>
+            <span class="payroll-value">${{ payroll?.soloPerStop | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Team Empty Mile</span>
-            <span class="payroll-value">${{ payroll?.teamEmptyMile }}</span>
+            <span class="payroll-value">${{ payroll?.teamEmptyMile | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Team Loaded Mile</span>
-            <span class="payroll-value">${{ payroll?.teamLoadedMile }}</span>
+            <span class="payroll-value">${{ payroll?.teamLoadedMile | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Team Per Stop</span>
-            <span class="payroll-value">${{ payroll?.teamPerStop }}</span>
+            <span class="payroll-value">${{ payroll?.teamPerStop | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Commision</span>
@@ -81,7 +94,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
 
@@ -91,7 +104,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
 
@@ -101,7 +114,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
 
@@ -111,7 +124,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
 
@@ -121,7 +134,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
 
@@ -131,7 +144,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
         </div>
         <div
@@ -140,11 +153,11 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Base</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Load Commison</span>
-            <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
+            <span class="payroll-value">${{ payroll?.defaultCommission | taThousandSeparator }}</span>
           </div>
         </div>
         <div
@@ -153,11 +166,11 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Base</span>
-            <span class="payroll-value">${{ payroll?.defaultBase }}</span>
+            <span class="payroll-value">${{ payroll?.defaultBase | taThousandSeparator }}</span>
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Revenue Commison</span>
-            <span class="payroll-value">${{ payroll?.defaultCommission }}</span>
+            <span class="payroll-value">${{ payroll?.defaultCommission | taThousandSeparator }}</span>
           </div>
         </div>
       </app-ta-custom-card>

@@ -62,6 +62,12 @@ export interface DriverResponse {
     cdls?: Array<CdlResponse> | null;
     employmentHistories?: Array<EmploymentHistoryResponse> | null;
     offDutyLocations?: Array<OffDutyLocationResponse> | null;
+    mvrExpirationDays?: number | null;
+    cdlExpirationDays?: number | null;
+    medicalExpirationDays?: number | null;
+    mvrPercentage?: number | null;
+    cdlPercentage?: number | null;
+    medicalPercentage?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }

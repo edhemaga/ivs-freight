@@ -6,10 +6,22 @@
   <div class="ta-review-header">
     <div class="ta-user-information">
       <img
+        *ngIf="data.companyUser?.avatar"
         class="ta-user-image"
         src="{{ data.companyUser?.avatar }}"
         alt="{{ data.companyUser.fullName.substring(0, 1) }}"
       />
+
+      <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
+        <app-profile-images
+          [indx]="0"
+          [size]="'medium'"
+          [type]="'user'"
+          [name]="data.companyUser.fullName"
+        >
+        </app-profile-images>
+      </div>
+
       <div class="ta-user-data">
         <div class="ta-user-name-rating">
           <p class="ta-user-fullname">{{ data.companyUser.fullName }}</p>
@@ -33,7 +45,7 @@
       </div>
     </div>
     <!-- No Edit Mode Actions -->
-    <div class="ta-user-actions">
+    <div *ngIf="!data.prohibitEditingOthers" class="ta-user-actions">
       <div
         ngbTooltip
         mainTooltip="Edit"

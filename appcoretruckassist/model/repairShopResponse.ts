@@ -12,6 +12,7 @@
 import { RepairByUnitResponse } from './repairByUnitResponse';
 import { RepairShopOpenHoursResponse } from './repairShopOpenHoursResponse';
 import { BankResponse } from './bankResponse';
+import { EnumValue } from './enumValue';
 import { RepairResponse } from './repairResponse';
 import { RepairShopServiceTypeResponse } from './repairShopServiceTypeResponse';
 import { AddressEntity } from './addressEntity';
@@ -38,16 +39,20 @@ export interface RepairShopResponse {
     bank?: BankResponse;
     routing?: string | null;
     account?: string | null;
+    upCount?: number;
+    downCount?: number;
+    currentCompanyUserRating?: number | null;
+    lastVisited?: string | null;
+    rent?: number | null;
+    payPeriod?: EnumValue;
+    weeklyDay?: EnumValue;
+    monthlyDay?: EnumValue;
+    createdAt?: string;
+    updatedAt?: string;
     serviceTypes?: Array<RepairShopServiceTypeResponse> | null;
     openHours?: Array<RepairShopOpenHoursResponse> | null;
     reviews?: Array<ReviewResponse> | null;
-    downRatingCount?: number;
-    upRatingCount?: number;
-    currentCompanyUserRating?: number | null;
     repairs?: Array<RepairResponse> | null;
     repairsByUnit?: Array<RepairByUnitResponse> | null;
-    createdAt?: string;
-    updatedAt?: string;
-    lastVisited?: string | null;
 }
 

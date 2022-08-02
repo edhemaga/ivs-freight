@@ -34,7 +34,8 @@
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
       !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.commands?.active
+      !inputConfig.commands?.active &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -60,11 +61,14 @@
       'password-eye':
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
-        getSuperControl.value
+        getSuperControl.value,
+      'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
+      'incorrect-input-enabled':
+        inputConfig.incorrectInput && getSuperControl.value && incorrectValue
     }"
     ngbTooltip
-    mainTooltip="Clear"
-    tooltipBackground="#6c6c6c"
+    [mainTooltip]="inputConfig.incorrectInput ? 'Mark Incorrect' : 'Clear'"
+    [tooltipBackground]="inputConfig.incorrectInput ? '#ef5350' : '#6c6c6c'"
     position="top"
     (click)="clearInput($event)"
   >
@@ -97,10 +101,23 @@
       !inputConfig.placeholderIcon &&
       !inputConfig.isDropdown &&
       !inputConfig.blackInput &&
-      !inputConfig.hideRequiredCheck
+      !inputConfig.hideRequiredCheck &&
+      !inputConfig.incorrectInput &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
+
+  <!-- Input Loading spinner -->
+  <div
+    *ngIf="inputConfig?.loadingSpinner?.isLoading"
+    class="input-loading-spinner"
+  >
+    <app-ta-spinner
+      [size]="inputConfig.loadingSpinner?.size"
+      [color]="inputConfig.loadingSpinner?.color"
+    ></app-ta-spinner>
+  </div>
 
   <!-- Input Password Caps Lock -->
   <p
@@ -334,7 +351,7 @@
   <input
     #input
     [type]="inputConfig.type | inputType: togglePassword"
-    [id]="inputConfig.name"
+    [id]="inputConfig.id ? inputConfig.id : inputConfig.name"
     [name]="inputConfig.name"
     [disabled]="inputConfig.isDisabled"
     [autocomplete]="inputConfig.autocomplete ? inputConfig.autocomplete : 'off'"

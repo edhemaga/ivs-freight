@@ -2,7 +2,7 @@
   [modalTitle]="editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'"
   [editData]="editData"
   [editName]="modalName"
-  [isModalValid]="editData ? cdlForm.valid && isDirty : cdlForm.valid"
+  [isModalValid]="cdlForm.valid"
   [specificCaseModalName]="true"
   (action)="onModalAction($event)"
 >

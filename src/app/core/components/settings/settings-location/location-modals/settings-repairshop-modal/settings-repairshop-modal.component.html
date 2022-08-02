@@ -4,9 +4,7 @@
   "
   [editData]="editData"
   [editName]="editData?.id"
-  [isModalValid]="
-    editData ? repairShopForm.valid && isDirty : repairShopForm.valid
-  "
+  [isModalValid]="repairShopForm.valid"
   (action)="onModalAction($event)"
 >
   <app-tab-switcher
@@ -176,7 +174,7 @@
             <app-ta-input
               formControlName="rent"
               [inputConfig]="{
-                name: 'Rent',
+                name: 'Dollar',
                 type: 'text',
                 label: 'Rent',
                 placeholderIcon: 'dollar',

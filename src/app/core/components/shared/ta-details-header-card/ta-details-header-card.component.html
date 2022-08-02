@@ -44,6 +44,7 @@
           customClass: 'input-32 input-32-font-20 details-pages'
         }"
         [options]="options"
+        [sort]="sortOptions"
         [template]="'details-template'"
         [isDetailsActive]="selectedDropdown"
         (selectedItem)="onSelecItem($event)"
@@ -85,37 +86,37 @@
     </div>
   </div>
 
-    <!-- Second Input -->
+  <!-- Second Input -->
   <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
     <div class="inactive-icon-input">
       <div
-      *ngIf="!selectedDropdownSecond"
-      class="current-active-item"
-      [ngClass]="{'single-data':optionsSecondInput.length==1}"
-      (click)="onPickSecondInput()"
-      ngbTooltip
-      [mainTooltip]="'Search Store'"
-      position="top"
-      tooltipBackground="#6C6C6C"
-    >
-      <p class="current-active-name">
-        {{ (optionsSecondInput | detailActiveItem).name }}
-      </p>
-      <span
-      ngbTooltip
-      [mainTooltip]="'Pinned'"
-      position="top"
-      [tooltipBackground]="'#6C6C6C'"
+        *ngIf="!selectedDropdownSecond"
+        class="current-active-item"
+        [ngClass]="{ 'single-data': optionsSecondInput.length == 1 }"
+        (click)="onPickSecondInput()"
+        ngbTooltip
+        [mainTooltip]="'Search Store'"
+        position="top"
+        tooltipBackground="#6C6C6C"
       >
-      <svg-icon
-        class="current-active-owner"
-        src="{{ (optionsSecondInput | detailActiveItem).svg }}"
-      ></svg-icon>
-    </span>
-    </div>
+        <p class="current-active-name">
+          {{ (optionsSecondInput | detailActiveItem).name }}
+        </p>
+        <span
+          ngbTooltip
+          [mainTooltip]="'Pinned'"
+          position="top"
+          [tooltipBackground]="'#6C6C6C'"
+        >
+          <svg-icon
+            class="current-active-owner"
+            src="{{ (optionsSecondInput | detailActiveItem).svg }}"
+          ></svg-icon>
+        </span>
+      </div>
       <app-ta-input-dropdown
         class="dropInput"
-        *ngIf="selectedDropdownSecond && optionsSecondInput.length>1"
+        *ngIf="selectedDropdownSecond && optionsSecondInput.length > 1"
         [formControl]="inputFormControl"
         [inputConfig]="{
           name: 'Input Dropdown',
@@ -129,25 +130,29 @@
         [template]="'details-template'"
         [isDetailsActive]="selectedDropdownSecond"
         (selectedItem)="onSelectItem($event)"
-        
       >
       </app-ta-input-dropdown>
     </div>
-    <div class="arrows" *ngIf=" optionsSecondInput.length>1">
-      <span  ngbTooltip [mainTooltip]="tooltipPrevious" position="top" tooltipBackground="#6C6C6C">
-        <svg-icon
-          class="arrow-left"
-          
-          src="assets/svg/common/arrow-left.svg"
-        >
+    <div class="arrows" *ngIf="optionsSecondInput.length > 1">
+      <span
+        ngbTooltip
+        [mainTooltip]="tooltipPrevious"
+        position="top"
+        tooltipBackground="#6C6C6C"
+      >
+        <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
         </svg-icon>
       </span>
-      <span tooltipBackground="#6C6C6C" ngbTooltip [mainTooltip]="tooltipNext" position="top">
-      <svg-icon
-        class="arrow-right"
-       
-        src="assets/svg/common/arrow-left.svg"
-      ></svg-icon>
+      <span
+        tooltipBackground="#6C6C6C"
+        ngbTooltip
+        [mainTooltip]="tooltipNext"
+        position="top"
+      >
+        <svg-icon
+          class="arrow-right"
+          src="assets/svg/common/arrow-left.svg"
+        ></svg-icon>
       </span>
     </div>
   </div>
@@ -197,7 +202,7 @@
         *ngIf="dateChecked"
         tooltipBackground="#6C6C6C"
         ngbTooltip
-        mainTooltip="Date Check"
+        mainTooltip="Last Used"
         position="top"
       >
         <div
@@ -217,7 +222,7 @@
         *ngIf="lastEdit"
         tooltipBackground="#6C6C6C"
         ngbTooltip
-        mainTooltip="Date Check"
+        mainTooltip="Last Used"
         position="top"
       >
         <div *ngIf="lastEdit" class="details-header-wrapper-data-item bottom">

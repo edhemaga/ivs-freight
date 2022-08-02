@@ -8,6 +8,8 @@ import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.reg
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { untilDestroyed } from 'ngx-take-until-destroy';
+import { SettingsStoreService } from '../../../state/settings.service';
+import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-settings-factoring-modal',
@@ -29,41 +31,166 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private settingsService: SettingsStoreService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+    if (this.editData.type === 'edit') {
+      this.editFactoringCompany(this.editData.company);
+    }
   }
 
   private createForm() {
     this.factoringForm = this.formBuilder.group({
-      companyName: [null, Validators.required],
+      name: [null, Validators.required],
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       address: [null],
-      addressUnit: [null],
-      noticeAssignment: [null],
+      addressUnit: [null, Validators.maxLength(6)],
+      noticeOfAssigment: [null],
       note: [null],
     });
 
-    this.formService.checkFormChange(this.factoringForm);
+    // this.formService.checkFormChange(this.factoringForm);
 
-    this.formService.formValueChange$
-      .pipe(untilDestroyed(this))
-      .subscribe((isFormChange: boolean) => {
-        isFormChange ? (this.isDirty = false) : (this.isDirty = true);
-      });
+    // this.formService.formValueChange$
+    //   .pipe(untilDestroyed(this))
+    //   .subscribe((isFormChange: boolean) => {
+    //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
+    //   });
   }
 
   public onHandleAddress(event: {
     address: AddressEntity | any;
     valid: boolean;
   }) {
-    this.selectedAddress = event;
+    if (event.valid) this.selectedAddress = event.address;
   }
 
-  public onModalAction(event) {}
+  public onModalAction(data: { action: string; bool: boolean }) {
+    switch (data.action) {
+      case 'close': {
+        this.factoringForm.reset();
+        break;
+      }
+      case 'save': {
+        // If Form not valid
+        if (this.factoringForm.invalid) {
+          this.inputService.markInvalid(this.factoringForm);
+          return;
+        }
+        this.updateFactoringCompany(this.editData.company);
+        this.modalService.setModalSpinner({ action: null, status: true });
+        break;
+      }
+      case 'delete': {
+        this.deleteFactoringCompanyById(this.editData.company);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  private updateFactoringCompany(company: any) {
+    const {
+      name,
+      phone,
+      email,
+      address,
+      addressUnit,
+      noticeOfAssigment,
+      note,
+    } = this.factoringForm.value;
+
+    if (this.selectedAddress) {
+      this.selectedAddress = {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      };
+    }
+
+    const newData: UpdateFactoringCompanyCommand = {
+      companyId: company.divisions.length ? null : company.id,
+      factoringCompany: {
+        name: name,
+        phone: phone,
+        email: email,
+        address: this.selectedAddress,
+        noticeOfAssigment: noticeOfAssigment,
+        note: note,
+      },
+    };
+    this.settingsService
+      .updateFactoringCompany(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Successfully ${
+              this.editData.type === 'new' ? 'created' : 'updated'
+            } factoring company`,
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update factoring company",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteFactoringCompanyById(company: any) {
+    console.log(company);
+    this.settingsService
+      .deleteFactoringCompanyById(
+        company.divisions.length ? null : this.editData.company.id
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfully delete factoring company',
+            'Success'
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete factoring company",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private editFactoringCompany(company: any) {
+    this.factoringForm.patchValue({
+      name: company.factoringCompany.name,
+      phone: company.factoringCompany.phone,
+      email: company.factoringCompany.email,
+      address: company.factoringCompany.address.address,
+      addressUnit: company.factoringCompany.address.addressUnit,
+      noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
+      note: company.factoringCompany.note,
+    });
+
+    this.onHandleAddress({
+      address: company.factoringCompany.address,
+      valid: company.factoringCompany.address.address ? true : false,
+    });
+  }
 
   ngOnDestroy(): void {}
 }

@@ -8,7 +8,10 @@ import { Observable } from 'rxjs';
 export class VinDecoderService {
   constructor(private vinDecoder: VinDecodeService) {}
 
-  public getVINDecoderData(value: string): Observable<VinDecodeResponse> {
-    return this.vinDecoder.apiDecodeVinGet(value);
+  public getVINDecoderData(
+    value: string,
+    id: number
+  ): Observable<VinDecodeResponse> {
+    return this.vinDecoder.apiDecodeVinVinTypeGet(value, id);
   }
 }

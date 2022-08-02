@@ -40,7 +40,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent,
+    NavigationUserCompanyComponent
   ],
   imports: [
     BrowserModule,

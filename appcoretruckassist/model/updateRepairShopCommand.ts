@@ -9,8 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { DayOfWeek } from './dayOfWeek';
 import { RepairShopOpenHoursCommand } from './repairShopOpenHoursCommand';
 import { RepairShopServiceTypeCommand } from './repairShopServiceTypeCommand';
+import { PayPeriod } from './payPeriod';
 import { AddressEntity } from './addressEntity';
 
 
@@ -27,6 +29,10 @@ export interface UpdateRepairShopCommand {
     bankId?: number | null;
     account?: string | null;
     routing?: string | null;
+    rent?: number | null;
+    payPeriod?: PayPeriod;
+    weeklyDay?: DayOfWeek;
+    monthlyDay?: number | null;
     serviceTypes?: Array<RepairShopServiceTypeCommand> | null;
     openHours?: Array<RepairShopOpenHoursCommand> | null;
 }

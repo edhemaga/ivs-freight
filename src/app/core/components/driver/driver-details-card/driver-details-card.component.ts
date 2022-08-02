@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
-import { CreateBase64Class } from 'src/app/core/utils/base64.image';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
@@ -112,7 +112,7 @@ export class DriverDetailsCardComponent
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
-    private createBase64: CreateBase64Class,
+    private imageBase64Service: ImageBase64Service
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -158,7 +158,7 @@ export class DriverDetailsCardComponent
 
   /**Function return user image if have in DB or default image */
   public transformImage() {
-    return this.createBase64.sanitizer(
+    return this.imageBase64Service.sanitizer(
       this.driver.avatar
         ? this.driver.avatar
         : 'assets/svg/common/ic_no_avatar_driver.svg'

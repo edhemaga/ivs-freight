@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
@@ -17,6 +22,7 @@ import { TruckType } from '../../../state/model/truck-type.model';
   styleUrls: ['./sph-modal.component.scss'],
 })
 export class SphModalComponent implements OnInit {
+  public prospectiveEmployerForm: FormGroup;
   public accidentHistoryForm: FormGroup;
   public drugAndAlcoholTestingHistoryForm: FormGroup;
 
@@ -25,6 +31,9 @@ export class SphModalComponent implements OnInit {
 
   public injuriesCounter: number = 0;
   public fatalitiesCounter: number = 0;
+
+  public fatalitiesControl: FormControl = new FormControl(0);
+  public injuriesControl: FormControl = new FormControl(0);
 
   public questions: ApplicantQuestion[] = [
     {
@@ -274,6 +283,15 @@ export class SphModalComponent implements OnInit {
   public trackByIdentity = (index: number, item: any): number => index;
 
   private createForm(): void {
+    this.prospectiveEmployerForm = this.formBuilder.group({
+      toPreviousEmployer: [null],
+      phone: [null, [phoneRegex]],
+      email: [null],
+      fax: [null],
+      address: [null],
+      addressUnit: [null, Validators.maxLength(6)],
+    });
+
     this.accidentHistoryForm = this.formBuilder.group({
       applicantWorkForCompany: [null],
       applicantWorkForCompanyBeforeExplain: [null],

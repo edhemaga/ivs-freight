@@ -1,7 +1,8 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
   [editName]="editData?.id"
-  [isModalValid]="editData ? taskForm.valid && isDirty : taskForm.valid"
+  [editData]="editData"
+  [isModalValid]="taskForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="taskForm" class="form-container">
@@ -42,7 +43,6 @@
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            isRequired: true,
             maxLength: 400
           }"
         ></app-ta-input>
@@ -102,21 +102,20 @@
     <app-ta-custom-card
       [hasCounter]="comments.length ? comments.length : '0'"
       [cardName]="'Comment'"
-      [isCardOpen]="false"
-      [disabledCard]="true"
+      [isCardOpen]="comments.length"
+      [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
+      [isCommentData]="true"
+      [hasBodyData]="comments.length"
+      [hasScrollBody]="comments.length > 4"
+      [disabledCard]="editData?.type !== 'edit'"
+      [hasActionSvg]="editData?.type === 'edit'"
       (onActionEvent)="createComment($event)"
     >
-      <div class="no-review-broker" *ngIf="!comments.length">
-        <svg-icon
-          class="no-review-svg"
-          src="assets/svg/common/ic_no_review.svg"
-        ></svg-icon>
-      </div>
       <app-ta-user-review
         *ngIf="comments.length"
         [reviewData]="comments"
-        [isNewReview]="comments[0].isNewReview"
         (changeReviewsEvent)="changeCommentsEvent($event)"
+        [isNewReview]="comments[0].isNewReview"
       ></app-ta-user-review>
     </app-ta-custom-card>
     <div class="ta-card-body-overflow-none">
