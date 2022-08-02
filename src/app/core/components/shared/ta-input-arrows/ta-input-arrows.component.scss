@@ -24,6 +24,8 @@
   .btn-container {
     width: 42px;
     height: 18px;
+    position: relative;
+    bottom: 1px;
 
     .minus-icon,
     .plus-icon {

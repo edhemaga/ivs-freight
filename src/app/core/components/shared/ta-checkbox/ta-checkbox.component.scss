@@ -27,7 +27,7 @@
 
     /* Create the mark/indicator (hidden when not checked) */
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       display: none;
       left: 4px;
