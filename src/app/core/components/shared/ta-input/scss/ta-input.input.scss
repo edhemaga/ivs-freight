@@ -97,6 +97,7 @@
   }
 
   &.password-eye,
+  &.address-flag,
   &.input-commands,
   &.dropdown-label-active {
     background-color: #6c6c6c !important;
@@ -198,6 +199,10 @@
 
   &.input-30 {
     height: 30px;
+  }
+
+  &.input-22 {
+    height: 22px;
   }
 
   &.details-pages {

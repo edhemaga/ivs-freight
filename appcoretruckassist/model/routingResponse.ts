@@ -9,16 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { LongLat } from './longLat';
+import { LegResponse } from './legResponse';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
+export interface RoutingResponse { 
+    legs?: Array<LegResponse> | null;
+    totalMiles?: number;
+    totalCost?: number;
+    routePoints?: Array<LongLat> | null;
 }
 

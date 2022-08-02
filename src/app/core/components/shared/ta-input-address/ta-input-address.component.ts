@@ -28,10 +28,13 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
+  @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
+
   @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
@@ -49,6 +52,10 @@ export class TaInputAddressComponent
 
   // Input Commands
   public isVisibleCommands: boolean = false;
+
+  // Address Flag
+  public changeAddressFlag: boolean = false;
+  public isVisibleAddressFlag: boolean = false;
 
   public timeout: any = null;
 
@@ -107,6 +114,10 @@ export class TaInputAddressComponent
   public onFocus(): void {
     this.focusInput = true;
 
+    if (this.inputConfig.addressFlag) {
+      this.isVisibleAddressFlag = true;
+    }
+
     if (!this.activeAddress) {
       this.invalidAddress = true;
       this.getSuperControl.setErrors({ invalid: true });
@@ -131,6 +142,10 @@ export class TaInputAddressComponent
     if (this.inputConfig.commands?.active) {
       this.blurOnCommands();
     }
+
+    if (this.inputConfig.addressFlag) {
+      this.blurOnAddressFlag();
+    }
   }
 
   private blurOnCommands() {
@@ -139,6 +154,17 @@ export class TaInputAddressComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisibleCommands = false;
+      clearTimeout(this.timeout);
+    }, 150);
+  }
+
+  private blurOnAddressFlag() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.isVisibleAddressFlag = false;
+      console.log(this.isVisibleAddressFlag);
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -232,6 +258,24 @@ export class TaInputAddressComponent
         break;
       }
     }
+  }
+
+  public changeFlagText(event: Event) {
+    this.changeAddressFlag = !this.changeAddressFlag;
+    this.changeFlag.emit(this.changeAddressFlag);
+    this.setInputCursorAtTheEnd(this.input.nativeElement);
+  }
+
+  public setInputCursorAtTheEnd(input: any, time: number = 120): void {
+    const selectionEnd = input.selectionEnd;
+    if (input.setSelectionRange) {
+      input.setSelectionRange(selectionEnd, selectionEnd);
+    }
+    const timeout = setTimeout(() => {
+      input.focus();
+      this.onFocus();
+      clearTimeout(timeout);
+    }, time);
   }
 
   ngOnDestroy(): void {}

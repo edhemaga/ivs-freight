@@ -93,17 +93,36 @@
         </div>
         <div class="row last-row">
           <div class="col-10">
+            <!-- <app-ta-input-address
+            formControlName="address"
+            [inputConfig]="{
+              name: 'Address',
+              type: 'text',
+              label: 'Address, City, State Zip',
+              isRequired: true,
+              placeholderIcon: 'address',
+              textTransform: 'capitalize'
+            }"
+            (selectedAddress)="onHandleAddress($event)"
+          ></app-ta-input-address> -->
             <app-ta-input-address
               formControlName="address"
               [inputConfig]="{
                 name: 'Address',
                 type: 'text',
-                label: 'Address, City, State Zip',
-                isRequired: true,
-                placeholderIcon: 'address',
-                textTransform: 'capitalize'
+                placeholder: 'Add New Stop',
+                textTransform: 'capitalize',
+                addressFlag: addressFlag,
+                blackInput: true,
+                hideErrorMessage: true,
+                customClass: 'input-22'
               }"
               (selectedAddress)="onHandleAddress($event)"
+              (changeFlag)="
+                $event === true
+                  ? (addressFlag = 'Loaded')
+                  : (addressFlag = 'Empty')
+              "
             ></app-ta-input-address>
           </div>
           <div class="col-2">

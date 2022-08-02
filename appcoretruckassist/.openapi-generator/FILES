@@ -17,6 +17,7 @@ api/companyUser.service.ts
 api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
+api/geolocation.service.ts
 api/inspection.service.ts
 api/load.service.ts
 api/medical.service.ts
@@ -27,6 +28,7 @@ api/ratingReview.service.ts
 api/registration.service.ts
 api/repair.service.ts
 api/repairShop.service.ts
+api/routing.service.ts
 api/shipper.service.ts
 api/test.service.ts
 api/title.service.ts
@@ -41,7 +43,10 @@ git_push.sh
 index.ts
 model/accountColorResponse.ts
 model/addressEntity.ts
+model/addressListResponse.ts
+model/addressResponse.ts
 model/apiCategory.ts
+model/autocompleteSearchLayer.ts
 model/bankAccountResponse.ts
 model/bankAccountStatus.ts
 model/bankCardResponse.ts
@@ -181,6 +186,7 @@ model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
 model/invoiceAgeingResponse.ts
+model/legResponse.ts
 model/loadBillingAdditionalCommand.ts
 model/loadBillingAdditionalResponse.ts
 model/loadItemUnit.ts
@@ -206,6 +212,7 @@ model/loadTemplateListResponse.ts
 model/loadTemplateResponse.ts
 model/loadTemplateResponsePagination.ts
 model/loadType.ts
+model/longLat.ts
 model/mapMarker.ts
 model/mapMarkerListResponse.ts
 model/medicalResponse.ts
@@ -276,6 +283,7 @@ model/repairUnitType.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
+model/routingResponse.ts
 model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
 model/serviceType.ts

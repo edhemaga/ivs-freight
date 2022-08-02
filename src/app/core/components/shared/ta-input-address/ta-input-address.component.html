@@ -54,6 +54,15 @@
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
 
+  <!-- Adress flag -->
+  <div
+    *ngIf="inputConfig.addressFlag && isVisibleAddressFlag"
+    class="input-address-flag"
+    (click)="changeFlagText($event)"
+  >
+    {{ inputConfig.addressFlag }}
+  </div>
+
   <!-- Input Commands -->
   <div
     *ngIf="inputConfig.commands?.active && isVisibleCommands"
@@ -92,7 +101,7 @@
     class="input-icon {{ inputConfig.customClass }}"
     *ngIf="inputConfig.placeholderIcon"
     [ngClass]="{
-      'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
         getSuperControl.value &&
@@ -146,7 +155,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'has-input-icon': inputConfig.placeholderIcon,
-      'input-commands': inputConfig.commands?.active && isVisibleCommands
+      'input-commands': inputConfig.commands?.active && isVisibleCommands,
+      'address-flag': inputConfig.addressFlag && isVisibleAddressFlag
     }"
     (keyup)="onBackspace($event)"
     (input)="onChange($event.target.value)"
@@ -181,7 +191,8 @@
       !(!getSuperControl.value && focusInput) &&
       (touchedInput || getSuperControl.value) &&
       getSuperControl.invalid &&
-      !inputConfig.commands?.active
+      !inputConfig.commands?.active &&
+      !inputConfig.hideErrorMessage
     "
     class="input-error {{ inputConfig.customClass }}"
   >

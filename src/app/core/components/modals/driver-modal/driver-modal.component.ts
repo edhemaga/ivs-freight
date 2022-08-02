@@ -50,6 +50,8 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
+  addressFlag: string = 'Empty';
+
   @Input() editData: any;
   @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
   public driverForm: FormGroup;
