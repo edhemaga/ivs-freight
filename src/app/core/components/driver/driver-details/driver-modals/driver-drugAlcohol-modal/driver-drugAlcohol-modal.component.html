@@ -18,7 +18,6 @@
           isDropdown: true,
           dropdownWidthClass: 'w-test-types'
         }"
-        [canAddNew]="true"
         [options]="testTypes"
         [activeItem]="selectedTestType"
         (selectedItem)="onSelectDropdown($event, 'test')"
@@ -34,7 +33,6 @@
           isDisabled: !drugForm.get('testType').value,
           dropdownWidthClass: 'w-reason-types'
         }"
-        [canAddNew]="true"
         [options]="reasonTypes"
         [activeItem]="reasonTypes"
         (selectedItem)="onSelectDropdown($event, 'reason')"
