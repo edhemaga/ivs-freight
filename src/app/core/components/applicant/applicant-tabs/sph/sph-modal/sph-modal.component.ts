@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
@@ -26,6 +31,9 @@ export class SphModalComponent implements OnInit {
 
   public injuriesCounter: number = 0;
   public fatalitiesCounter: number = 0;
+
+  public fatalitiesControl: FormControl = new FormControl(0);
+  public injuriesControl: FormControl = new FormControl(0);
 
   public questions: ApplicantQuestion[] = [
     {

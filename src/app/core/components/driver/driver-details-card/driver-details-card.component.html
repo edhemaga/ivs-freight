@@ -7,6 +7,7 @@
     [cardDetailsDateTerminated]="driver.dateTerminated | formatDateP"
     [statusInactive]="driver.status"
     [options]="driversDropdowns"
+    [sortOptions]="'active-drivers'"
     [searchInputName]="'Search Driver'"
     (selectValue)="onSelectedDriver($event)"
     (changeEvent)="onChangeDriver($event)"
@@ -563,10 +564,13 @@
           </div>
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Account</div>
-            <div
-              class="purchase-icon-copy"
-            >
-              <app-ta-copy [hasEye]="true" (showHide)="isAccountVisibleDriver=!isAccountVisibleDriver" [copyValue]="driver?.account"> </app-ta-copy>
+            <div class="purchase-icon-copy">
+              <app-ta-copy
+                [hasEye]="true"
+                (showHide)="isAccountVisibleDriver = !isAccountVisibleDriver"
+                [copyValue]="driver?.account"
+              >
+              </app-ta-copy>
             </div>
           </div>
         </div>
@@ -608,8 +612,8 @@
           <div class="purchase-template-item second-name">
             <div class="purchase-template-item-name">Phone</div>
             <div class="purchase-icon-copy">
-              
-              <app-ta-copy [copyValue]="driver.emergencyContactPhone"> </app-ta-copy>
+              <app-ta-copy [copyValue]="driver.emergencyContactPhone">
+              </app-ta-copy>
             </div>
           </div>
         </div>

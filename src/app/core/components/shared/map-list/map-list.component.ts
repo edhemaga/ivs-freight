@@ -33,14 +33,7 @@ export class MapListComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if ( changes.mapListContent ) {
-      
-      if ( changes.mapListContent.currentValue.length > 5 ) {
-        this.showExpandButton = true;
-
-        var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
-        var mapListHeight = mapListElement.clientHeight;
-        mapListElement.style.height = 'max-content';
-      }
+      this.checkResizeButton();
     }
   }
 
@@ -54,10 +47,6 @@ export class MapListComponent implements OnInit, OnChanges {
     });
 
     this.setVisibleColumns();
-
-    if ( this.mapListContent.length > 5 ) {
-      this.showExpandButton = true;
-    }
 
     if ( !this.sortTypes ) {
       this.sortTypes = [
@@ -74,6 +63,10 @@ export class MapListComponent implements OnInit, OnChanges {
 
       this.activeSortType = this.sortTypes[0];
     }
+
+    setTimeout(() => {
+      this.checkResizeButton();
+    }, 100);
   }
 
   resizeMapList() {
@@ -159,4 +152,19 @@ export class MapListComponent implements OnInit, OnChanges {
     this.ref.detectChanges();
   }
   
+  checkResizeButton() {
+    var mapListContainer = document.querySelectorAll<HTMLElement>('.map-list-container')[0];
+    var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+
+    console.log('checkResizeButton mapListElement.clientHeight', mapListElement.clientHeight);
+    console.log('checkResizeButton mapListContainer.clientHeight', mapListContainer.clientHeight);
+
+    if ( mapListElement.clientHeight > mapListContainer.clientHeight/2 ) {
+      this.showExpandButton = true;
+      mapListElement.style.height = 'max-content';
+    } else {
+      this.showExpandButton = false;
+    }
+  }
+
 }

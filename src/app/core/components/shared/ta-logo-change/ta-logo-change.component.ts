@@ -1,8 +1,5 @@
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
-import {
-  CreateBase64Class,
-  getStringFromBase64,
-} from './../../../utils/base64.image';
+import { ImageBase64Service } from './../../../utils/base64.image';
 import {
   AfterViewInit,
   Component,
@@ -76,13 +73,13 @@ export class TaLogoChangeComponent
 
   constructor(
     private uploadFileService: TaUploadFileService,
-    private createBase64: CreateBase64Class
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     const timeout = setTimeout(() => {
       this.imageUrl = changes.imageUrl.currentValue
-        ? this.createBase64.sanitizer(changes.imageUrl.currentValue)
+        ? this.imageBase64Service.sanitizer(changes.imageUrl.currentValue)
         : null;
 
       clearTimeout(timeout);
@@ -143,7 +140,9 @@ export class TaLogoChangeComponent
 
   public saveImage() {
     this.croppieDirective.croppie.result('base64').then((base64) => {
-      this.base64ImageEvent.emit(getStringFromBase64(base64));
+      this.base64ImageEvent.emit(
+        this.imageBase64Service.getStringFromBase64(base64)
+      );
       this.imageUrl = base64;
       this.showUploadZone = true;
     });

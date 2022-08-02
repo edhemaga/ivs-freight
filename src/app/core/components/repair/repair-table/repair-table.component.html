@@ -1,5 +1,5 @@
 <div class="table-container">
-  <div class="table-toolbar-container" [ngClass]="{ 'toolbar-absolute': tableOptions.toolbarActions.viewModeActive == 'Map' }">
+  <div class="table-toolbar-container" [ngClass]="{ 'toolbar-relative': tableOptions.toolbarActions.viewModeActive == 'Map' }">
     <app-truckassist-table-toolbar
       (toolBarAction)="onToolBarAction($event)"
       [options]="tableOptions"

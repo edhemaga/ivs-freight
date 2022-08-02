@@ -1,8 +1,9 @@
 @import '../../theme/variables.scss';
 
-.toolbar-absolute {
-    position: absolute;
+.toolbar-relative {
+    position: relative;
     width: 100%;
+    padding-right: 18px;
     z-index: 2;
 }
 
@@ -28,6 +29,49 @@
     agm-map {
         width: 100%;
         height: 100vh;
+
+        .gm-bundled-control {
+            right: 34px !important;
+            bottom: 58px !important;
+            
+            .gmnoprint {
+                width: 26px;
+                height: 50px;
+
+                :first-child {
+                    width: 26px !important;
+                    height: 50px !important;
+
+                    .gm-control-active {
+                        width: 26px !important;
+                        height: 25px !important;
+
+                        img {
+                            width: 12px !important;
+                            height: 12px !important;
+                        }
+
+                        img:nth-child(1) {
+                            display: none;
+                        }
+                        
+                        img:nth-child(4) {
+                            display: block;
+                        }
+
+                        &:hover {
+                            img:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    div {
+                        display: none !important;
+                    }
+                }
+            }
+        }
 
         .si-shadow-frame {
             box-shadow: none;

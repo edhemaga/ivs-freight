@@ -203,6 +203,9 @@
         >
           <div
             class="details-template-text"
+            [ngClass]="{
+              active: sort === 'active-drivers' && option?.status === 1
+            }"
             [innerHtml]="
               option.name
                 | taHighlight: [{ index: 45632, text: getSuperControl.value }]
