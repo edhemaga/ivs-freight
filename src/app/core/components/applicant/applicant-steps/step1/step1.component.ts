@@ -37,7 +37,7 @@ import { ReviewFeedbackService } from '../../state/services/review-feedback.serv
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public personalInfoForm: FormGroup;
 
