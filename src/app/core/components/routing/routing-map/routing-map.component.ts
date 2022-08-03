@@ -3,6 +3,10 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  AddressEntity
+} from 'appcoretruckassist';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 
 @Component({
   selector: 'app-routing-map',
@@ -24,6 +28,9 @@ export class RoutingMapComponent implements OnInit {
   public mapZoom: number = 1;
   
   public addressForm: FormGroup;
+  public addressFlag: string = 'empty';
+
+  public selectedAddress: AddressEntity = null;
 
   public routes: any[] = [
     {
@@ -181,5 +188,34 @@ export class RoutingMapComponent implements OnInit {
   getMapInstance(map) {
     this.agmMap = map;
     console.log('getMapInstance', this.agmMap);
+  }
+
+  // public onHandleAddress(event: {
+  //   address: AddressEntity | any;
+  //   valid: boolean;
+  // }): void {
+  //   console.log('onHandleAddress', event);
+  //   if (event.valid) {
+  //     this.selectedAddress = event.address;
+  //   }
+  // }
+
+  public onHandleAddress(
+    event: any,
+    route
+  ) {
+    console.log('onHandleAddress', event);
+    console.log('onHandleAddress', route);
+    if ( event.action == 'confirm' && event.address ) {
+      route.stops.push(
+        {
+          'address': event.address.address,
+          'leg': '60.6',
+          'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15'
+        }
+      );
+    }
   }
 }

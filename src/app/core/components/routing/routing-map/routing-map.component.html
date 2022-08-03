@@ -88,9 +88,48 @@
                         <div class="route-row-total marker-like-text marker-semibold-text" [ngStyle]="{ color: b == route.stops.length-1 ? routeColors[i] : '' }">{{ stop.total }}</div>
                     </div>
                     <!-- <div class="empty-miles"></div> -->
-                    <div class="route-card-row m-0">
+                    <div class="route-card-row m-0" [formGroup]="addressForm">
                         <div class="route-row-number marker-like-text marker-bold-text"></div>
-                        <div class="route-row-location marker-like-text marker-bold-text gray-text">Add New Stop</div>
+                        <div class="route-row-location marker-like-text marker-bold-text gray-text add-new-stop">
+                            <!-- Add New Stop -->
+                            <app-ta-input-address
+                                formControlName="address"
+                                [inputConfig]="{
+                                    name: 'Address',
+                                    type: 'text',
+                                    label: 'Add New Stop',
+                                    textTransform: 'capitalize',
+                                    addressFlag: addressFlag,
+                                    blackInput: true,
+                                    hideErrorMessage: true,
+                                    customClass: 'input-22',
+                                    commands: {
+                                        active: true,
+                                        type: 'confirm-cancel',
+                                        firstCommand: {
+                                            popup: {
+                                                name: 'Confirm',
+                                                backgroundColor: '#6C6C6C'
+                                            },
+                                            name: 'confirm',
+                                            svg: 'assets/svg/ic_spec-confirm.svg'
+                                        },
+                                        secondCommand: {
+                                            popup: {
+                                                name: 'Cancel',
+                                                backgroundColor: '#6C6C6C'
+                                            },
+                                            name: 'cancel',
+                                            svg: 'assets/svg/ic_x.svg'
+                                        }
+                                    }
+                                }"
+                                (commandEvent)="onHandleAddress($event, route)"
+                                (changeFlag)="
+                                    $event === true ? (addressFlag = 'Loaded') : (addressFlag = 'Empty')
+                                "
+                            ></app-ta-input-address>
+                        </div>
                     </div>
                 </div>
                 <div class="route-card-resize-button" (click)="resizeCard(route)">
