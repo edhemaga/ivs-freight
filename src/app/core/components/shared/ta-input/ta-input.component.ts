@@ -670,6 +670,7 @@ export class TaInputComponent
         'routing number',
         'account number',
         'empty weight',
+        'purchase price',
         'axles',
         'mileage',
         'ipas ezpass',
@@ -683,6 +684,7 @@ export class TaInputComponent
         'customer pay term',
         'dollar',
         'fatalinjuries',
+        'months',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
