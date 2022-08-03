@@ -12,6 +12,8 @@ import { Subject } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
 import { SignInResponse } from 'appcoretruckassist';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 
 @Component({
   selector: 'app-navigation-user-profile',
@@ -31,7 +33,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   constructor(
     public router: Router,
     private authService: AuthStoreService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -58,6 +61,11 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public onAction(data: NavigationUserPanel) {
     switch (data.action) {
       case 'update': {
+        this.modalService.openModal(
+          ProfileUpdateModalComponent,
+          { size: 'small' },
+          { user: this.loggedUser }
+        );
         break;
       }
       case 'status': {

@@ -3,9 +3,11 @@
   position: relative;
 
   &.address-flag {
-    display: flex;
+    display: grid;
+    grid-template-columns: 85% 1fr;
     align-items: center;
-    gap: 6px;
+    -moz-column-gap: 6px;
+    column-gap: 6px;
   }
 
   //--------------- Classes on all INPUT ELEMENTS ---------------

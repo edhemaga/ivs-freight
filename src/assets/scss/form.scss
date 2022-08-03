@@ -1077,4 +1077,78 @@
     }
   }
 }
+
+//---------------- Profile Update Old Password ----------------
+.profile-update-oldpassword-row {
+  display: grid;
+  grid-template-columns: 378px 1fr;
+  align-items: center;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
+  padding-left: 6px;
+  margin-bottom: 12px;
+
+  .old-password-text {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #6c6c6c;
+
+    &::-moz-selection {
+      color: #6c6c6c;
+      background-color: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: #6c6c6c;
+      background-color: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .old-password-content {
+    display: grid;
+    grid-template-columns: 172px 26px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+  }
+
+  .old-password-checkmark {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+
+    svg-icon {
+      svg {
+        width: 18px;
+        height: 18px;
+        path {
+          fill: #b7b7b7;
+        }
+      }
+    }
+
+    &.valid {
+      background-color: #6d82c7;
+      svg-icon {
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #536bc2;
+        transition: all 0.3s ease-in-out;
+      }
+    }
+  }
+}
 // ------------------------------------------------ end ------------------------------------------------
