@@ -9,13 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TerminalResponsePagination } from './terminalResponsePagination';
 
 
-export interface ShipperContactCommand { 
-    fullName?: string | null;
-    departmentId?: number;
-    phone?: string | null;
-    phoneExt?: string | null;
-    email?: string | null;
+export interface TerminalListResponse { 
+    pagination?: TerminalResponsePagination;
 }
 

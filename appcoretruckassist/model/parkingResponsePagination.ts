@@ -9,13 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ParkingResponse } from './parkingResponse';
 
 
-export interface ShipperContactCommand { 
-    fullName?: string | null;
-    departmentId?: number;
-    phone?: string | null;
-    phoneExt?: string | null;
-    email?: string | null;
+export interface ParkingResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<ParkingResponse> | null;
 }
 

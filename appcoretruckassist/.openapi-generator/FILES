@@ -24,12 +24,14 @@ api/medical.service.ts
 api/mvr.service.ts
 api/owner.service.ts
 api/ownerHistory.service.ts
+api/parking.service.ts
 api/ratingReview.service.ts
 api/registration.service.ts
 api/repair.service.ts
 api/repairShop.service.ts
 api/routing.service.ts
 api/shipper.service.ts
+api/terminal.service.ts
 api/test.service.ts
 api/title.service.ts
 api/todo.service.ts
@@ -123,6 +125,7 @@ model/createMedicalCommand.ts
 model/createMvrCommand.ts
 model/createOffDutyLocationCommand.ts
 model/createOwnerCommand.ts
+model/createParkingCommand.ts
 model/createRatingCommand.ts
 model/createRegistrationCommand.ts
 model/createRepairCommand.ts
@@ -130,6 +133,7 @@ model/createRepairShopCommand.ts
 model/createResponse.ts
 model/createReviewCommand.ts
 model/createShipperCommand.ts
+model/createTerminalCommand.ts
 model/createTestCommand.ts
 model/createTitleCommand.ts
 model/createTodoCommand.ts
@@ -248,6 +252,9 @@ model/pMTruckShortResponse.ts
 model/pMTruckUnitListResponse.ts
 model/pMTruckUnitResponse.ts
 model/pMTruckUnitResponsePagination.ts
+model/parkingListResponse.ts
+model/parkingResponse.ts
+model/parkingResponsePagination.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/poBoxEntity.ts
@@ -312,6 +319,9 @@ model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
 model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
+model/terminalListResponse.ts
+model/terminalResponse.ts
+model/terminalResponsePagination.ts
 model/testResponse.ts
 model/testType.ts
 model/timeOnly.ts
@@ -382,11 +392,13 @@ model/updatePMTrailerUnitListCommand.ts
 model/updatePMTruckDefaultCommand.ts
 model/updatePMTruckDefaultListCommand.ts
 model/updatePMTruckUnitListCommand.ts
+model/updateParkingCommand.ts
 model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
 model/updateShipperCommand.ts
+model/updateTerminalCommand.ts
 model/updateTitleCommand.ts
 model/updateTodoCommand.ts
 model/updateTodoStatusCommand.ts
