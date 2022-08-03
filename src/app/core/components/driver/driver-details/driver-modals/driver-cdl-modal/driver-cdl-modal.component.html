@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'"
+  [modalTitle]="
+    editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'
+  "
   [editData]="editData"
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
@@ -56,7 +58,6 @@
             isDropdown: true,
             dropdownWidthClass: 'w-col-4-classType'
           }"
-          [canAddNew]="true"
           [options]="classTypes"
           [activeItem]="selectedClassType"
           (selectedItem)="onSelectDropdown($event, 'class')"

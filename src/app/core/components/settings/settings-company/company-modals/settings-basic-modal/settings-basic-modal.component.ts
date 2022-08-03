@@ -27,7 +27,7 @@ import {
   UpdateCompanyCommand,
   UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
-import { distinctUntilChanged, identity } from 'rxjs';
+import { debounceTime, distinctUntilChanged, identity } from 'rxjs';
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
@@ -453,6 +453,27 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSaveNewBank(bank: any, index: number) {
+    this.selectedBankAccountFormArray[index] = event;
+    this.isBankSelectedFormArray[index] = true;
+    this.onBankSelected(index);
+
+    this.bankVerificationService
+      .createBank({ name: bank.name })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
+  }
+
   // bankAccounts FormArray
   public get bankAccounts(): FormArray {
     return this.companyForm.get('bankAccounts') as FormArray;
@@ -482,7 +503,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private onBankSelected(index: number): void {
     this.bankAccounts
       .at(index)
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(
+        debounceTime(150),
+        distinctUntilChanged(),
+        untilDestroyed(this)
+      )
       .subscribe((value) => {
         this.isBankSelectedFormArray[index] =
           this.bankVerificationService.onSelectBank(

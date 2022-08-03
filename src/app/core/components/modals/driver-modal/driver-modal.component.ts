@@ -50,6 +50,8 @@ import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
+  addressFlag: string = 'Empty';
+
   @Input() editData: any;
   @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
   public driverForm: FormGroup;
@@ -68,6 +70,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public driverFullName: string = null;
 
   public owner: CheckOwnerSsnEinResponse = null;
+
+  public disablePayType: boolean = false;
+  public paytypeValue: string;
 
   public logoOptions: Options = {
     floor: 0.1,
@@ -137,7 +142,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public isDirty: boolean;
-  public disablePayType: boolean = false;
+
   public addNewAfterSave: boolean = false;
 
   constructor(
@@ -354,7 +359,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         );
       });
   }
-  paytypeValue: string;
+
   private onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
@@ -1089,7 +1094,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .find((item) => item.checked);
 
             if (activeOwnerTab) {
-              console.log(activeOwnerTab);
               this.tabOwnerChange(activeOwnerTab);
             }
           }
@@ -1137,6 +1141,29 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');
+        },
+      });
+  }
+
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank({ name: bank.name })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
         },
       });
   }

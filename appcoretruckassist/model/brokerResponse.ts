@@ -49,6 +49,7 @@ export interface BrokerResponse {
     status?: number;
     currentCompanyUserRating?: number | null;
     totalDebt?: number | null;
+    invoiceAgeingGroup?: InvoiceAgeingResponse;
     invoiceAgeingGroupOne?: InvoiceAgeingResponse;
     invoiceAgeingGroupTwo?: InvoiceAgeingResponse;
     invoiceAgeingGroupThree?: InvoiceAgeingResponse;

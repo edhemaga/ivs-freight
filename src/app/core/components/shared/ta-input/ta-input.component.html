@@ -271,7 +271,7 @@
     *ngIf="inputConfig.placeholderIcon"
     [svgStyle]="{
       fill:
-        inputConfig.isDropdownLabel || inputConfig.specificDropdownLabel
+        inputConfig.isDropdownLabel || inputConfig.dropdownLabelSelected
           ? inputConfig.dropdownLabelSelected?.code
             ? inputConfig.dropdownLabelSelected.code
             : '#b7b7b7'

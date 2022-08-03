@@ -128,11 +128,15 @@
               }
             "
           >
-            <div class="checkbox-paytype-driver">
+            <div
+              class="checkbox-paytype-driver"
+              [ngClass]="{ 'checkbox-paytype-driver-disabled': disablePayType }"
+            >
               <app-ta-checkbox
                 formControlName="useTruckAssistAch"
                 [customClass]="'medium'"
                 [name]="'truckassistACH'"
+                [disabled]="disablePayType"
                 [label]="'Use TruckAssist ACH'"
               ></app-ta-checkbox>
               <div class="paytype-driver">
@@ -147,7 +151,6 @@
                     dropdownWidthClass: 'w-col-paytype',
                     isDisabled: disablePayType
                   }"
-                  [canAddNew]="true"
                   [options]="labelsPayType"
                   [activeItem]="selectedPayType"
                   (selectedItem)="onSelectDropdown($event, 'paytype')"
@@ -299,12 +302,14 @@
                   label: 'Bank Name',
                   isDropdown: true,
                   isRequired: driverForm.get('useTruckAssistAch').value,
+                  isDisabled: disablePayType,
                   dropdownWidthClass: 'w-col-banks-driver'
                 }"
                 [canAddNew]="true"
                 [options]="labelsBank"
                 [activeItem]="selectedBank"
                 (selectedItem)="onSelectDropdown($event, 'bank')"
+                (saveNewItem)="onSaveNewBank($event)"
               ></app-ta-input-dropdown>
             </div>
             <div class="bank-field">
@@ -552,15 +557,16 @@
             [cardName]="'Cards & MVR Exp.'"
             [isCardOpen]="true"
           >
-            <div class="row last-row">
-              <div class="col-2 twic-driver">
-                <app-ta-checkbox
-                  formControlName="twic"
-                  [label]="'TWIC'"
-                  [customClass]="'medium'"
-                ></app-ta-checkbox>
-              </div>
-              <div class="col-3" *ngIf="driverForm.get('twic').value">
+            <div
+              class="driver-twic-mvr-row"
+              [ngClass]="{ extended: driverForm.get('twic').value }"
+            >
+              <app-ta-checkbox
+                formControlName="twic"
+                [label]="'TWIC'"
+                [customClass]="'medium'"
+              ></app-ta-checkbox>
+              <div *ngIf="driverForm.get('twic').value">
                 <app-ta-input
                   formControlName="twicExpDate"
                   [inputConfig]="{
@@ -574,13 +580,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div
-                class="no-p-left"
-                [ngClass]="{
-                  'col-5': !driverForm.get('twic').value,
-                  'col-4': driverForm.get('twic').value
-                }"
-              >
+              <div>
                 <app-ta-input
                   formControlName="fuelCard"
                   [inputConfig]="{
@@ -590,13 +590,7 @@
                   }"
                 ></app-ta-input>
               </div>
-              <div
-                class="no-p-left"
-                [ngClass]="{
-                  'col-5': !driverForm.get('twic').value,
-                  'col-3': driverForm.get('twic').value
-                }"
-              >
+              <div>
                 <app-ta-input-arrows
                   formControlName="mvrExpiration"
                   [inputConfig]="{
@@ -604,7 +598,8 @@
                     type: 'text',
                     placeholderText: 'months'
                   }"
-                  [name]="'MVR'"
+                  [name]="'MVR Exp.'"
+                  [type]="'driver-modal'"
                   [required]="true"
                 >
                 </app-ta-input-arrows>

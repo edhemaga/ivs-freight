@@ -15,7 +15,6 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { TaInputService } from '../ta-input/ta-input.service';
 
 @Component({
   selector: 'app-ta-input-address',
@@ -28,12 +27,17 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
 
+  @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
-  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
-    new EventEmitter<any>();
+
+  @Output('commandEvent') inputCommandEvent: EventEmitter<{
+    address: AddressEntity;
+    action: string;
+  }> = new EventEmitter<{ address: AddressEntity; action: string }>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
@@ -49,6 +53,10 @@ export class TaInputAddressComponent
 
   // Input Commands
   public isVisibleCommands: boolean = false;
+
+  // Address Flag
+  public changeAddressFlag: boolean = false;
+  public isVisibleAddressFlag: boolean = false;
 
   public timeout: any = null;
 
@@ -82,6 +90,10 @@ export class TaInputAddressComponent
     this.selectedAddress.emit({ address: this.activeAddress, valid: true });
     this.getSuperControl.setValue(this.activeAddress.address);
     this.getSuperControl.setErrors(null);
+
+    if (this.inputConfig.addressFlag) {
+      this.isVisibleAddressFlag = true;
+    }
   }
 
   get getSuperControl() {
@@ -117,6 +129,11 @@ export class TaInputAddressComponent
     if (this.inputConfig.commands?.active) {
       this.isVisibleCommands = true;
     }
+
+    // Address Flag
+    if (this.inputConfig.addressFlag) {
+      this.isVisibleAddressFlag = true;
+    }
   }
 
   public onBlur(): void {
@@ -131,6 +148,10 @@ export class TaInputAddressComponent
     if (this.inputConfig.commands?.active) {
       this.blurOnCommands();
     }
+
+    if (this.inputConfig.addressFlag) {
+      this.blurOnAddressFlag();
+    }
   }
 
   private blurOnCommands() {
@@ -139,6 +160,16 @@ export class TaInputAddressComponent
     }
     this.timeout = setTimeout(() => {
       this.isVisibleCommands = false;
+      clearTimeout(this.timeout);
+    }, 150);
+  }
+
+  private blurOnAddressFlag() {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.timeout = setTimeout(() => {
+      this.isVisibleAddressFlag = false;
       clearTimeout(this.timeout);
     }, 150);
   }
@@ -215,23 +246,40 @@ export class TaInputAddressComponent
       case 'confirm-cancel': {
         switch (action) {
           case 'confirm': {
-            this.inputCommandEvent.emit('confirm');
+            if (this.getSuperControl.value === this.activeAddress.address) {
+              this.inputCommandEvent.emit({
+                address: this.activeAddress,
+                action: 'confirm',
+              });
+            }
             break;
           }
           case 'cancel': {
-            this.inputCommandEvent.emit('cancel');
+            this.inputCommandEvent.emit({ address: null, action: 'cancel' });
             break;
           }
           default: {
             break;
           }
         }
+
+        if (this.inputConfig.addressFlag) {
+          this.isVisibleAddressFlag = false;
+        }
+        this.getSuperControl.patchValue(null);
+        this.isVisibleCommands = false;
         break;
       }
       default: {
         break;
       }
     }
+  }
+
+  public changeFlagText(event: Event) {
+    this.changeAddressFlag = !this.changeAddressFlag;
+    this.changeFlag.emit(this.changeAddressFlag);
+    this.isVisibleAddressFlag = true;
   }
 
   ngOnDestroy(): void {}

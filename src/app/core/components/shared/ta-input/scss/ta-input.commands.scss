@@ -78,6 +78,87 @@
       }
     }
   }
+
+  &.address-flag {
+    position: relative;
+    top: 0;
+    left: 0;
+    line-height: 18px;
+
+    .ta-input-command-first {
+      border-radius: 1px;
+      display: block;
+      transition: all 0.3s ease-in-out;
+      z-index: 20;
+      cursor: pointer;
+
+      .ta-input-command-svg-first {
+        svg {
+          width: 18px !important;
+          height: 18px !important;
+          overflow: visible;
+          path {
+            fill: #ffffff;
+          }
+          rect {
+            transition: transform 0.3s;
+            transform: scale(1);
+            transform-origin: center;
+            fill: #b7b7b7;
+          }
+        }
+
+        &:hover {
+          svg {
+            overflow: visible;
+            rect {
+              transform: scale(1.2);
+              transform-origin: center;
+              transition: transform 0.3s;
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+
+    .ta-input-command-second {
+      border-radius: 1px;
+      display: block;
+      transition: all 0.3s ease-in-out;
+      z-index: 20;
+      cursor: pointer;
+
+      .ta-input-command-svg-second {
+        svg {
+          width: 18px !important;
+          height: 18px !important;
+          overflow: visible;
+          path {
+            fill: #ffffff;
+          }
+          rect {
+            transition: transform 0.3s;
+            transform: scale(1);
+            transform-origin: center;
+            fill: #b7b7b7;
+          }
+        }
+
+        &:hover {
+          svg {
+            overflow: visible;
+            rect {
+              transform: scale(1.2);
+              transform-origin: center;
+              transition: transform 0.3s;
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 // --------------------------- Dropdown Label Name ----------------------------
@@ -91,5 +172,5 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
-  pointer-events: none !important
+  pointer-events: none !important;
 }
