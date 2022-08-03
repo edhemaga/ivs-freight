@@ -129,7 +129,11 @@
 
   <!-- Input Password Eye -->
   <div
-    *ngIf="inputConfig.type === 'password' && getSuperControl.value"
+    *ngIf="
+      inputConfig.type === 'password' &&
+      getSuperControl.value &&
+      !inputConfig?.loadingSpinner?.isLoading
+    "
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
       visible: isVisiblePasswordEye,

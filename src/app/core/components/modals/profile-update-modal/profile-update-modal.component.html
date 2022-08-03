@@ -1,6 +1,5 @@
 <app-ta-modal
   [modalTitle]="'Profile Update'"
-  [editData]="user"
   [isModalValid]="profileUserForm.valid"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
@@ -66,6 +65,7 @@
                 name: 'Email',
                 type: 'text',
                 label: 'Email',
+                isDisabled: true,
                 placeholderIcon: 'email'
               }"
             ></app-ta-input>
@@ -138,7 +138,12 @@
                     label: 'Password',
                     placeholderIcon: 'password',
                     isRequired: true,
-                    maxLength: 20
+                    maxLength: 20,
+                    loadingSpinner: {
+                      size: 'small',
+                      color: 'white',
+                      isLoading: loadingOldPassword
+                    }
                   }"
                 ></app-ta-input>
                 <div
@@ -197,6 +202,7 @@
           <app-ta-logo-change
             [imageUrl]="this.profileUserForm.get('avatar').value"
             [customClass]="'modal-container-M'"
+            [croppieOptions]="croppieOptions"
             (validationEvent)="onImageValidation($event)"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>

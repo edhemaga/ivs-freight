@@ -255,6 +255,7 @@ model/pMTruckUnitResponsePagination.ts
 model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
+model/passwordResponse.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/poBoxEntity.ts
@@ -408,6 +409,7 @@ model/updateTruckCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
 model/userResponse.ts
+model/validatePasswordCommand.ts
 model/verifyForgotPasswordCommand.ts
 model/verifyOwnerCommand.ts
 model/verifyUserCommand.ts

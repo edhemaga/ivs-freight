@@ -61,11 +61,9 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public onAction(data: NavigationUserPanel) {
     switch (data.action) {
       case 'update': {
-        this.modalService.openModal(
-          ProfileUpdateModalComponent,
-          { size: 'small' },
-          { user: this.loggedUser }
-        );
+        this.modalService.openModal(ProfileUpdateModalComponent, {
+          size: 'medium',
+        });
         break;
       }
       case 'status': {
