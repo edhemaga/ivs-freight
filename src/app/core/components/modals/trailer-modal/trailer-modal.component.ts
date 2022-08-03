@@ -313,7 +313,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Trailer ' +'"'+ trailerUnit + '"' + ' added',
+            'Trailer ' +'"'+ trailerUnit + '"' + ' added', 
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });

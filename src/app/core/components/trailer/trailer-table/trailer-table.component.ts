@@ -158,6 +158,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // Delete Selected Rows
+    let trailerNumber = '';
+    let trailersText = 'Trailer ';
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
@@ -170,6 +172,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 response.map((r: any) => {
                   if (trailer.id === r.id) {
                     trailer.actionAnimation = 'delete';
+                    
+
+                    if ( trailerNumber == '' )
+                      {
+                        trailerNumber = trailer.trailerNumber
+                      }
+                    else 
+                      {
+                        trailerNumber = trailerNumber + ', ' +  trailer.trailerNumber;
+                        trailersText = 'Trailers ';
+                      }
                   }
                 });
 
@@ -177,8 +190,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               });
 
               this.notificationService.success(
-                'Trailers successfully deleted',
-                'Success:'
+                ' '+trailersText+'' + '"' + trailerNumber + '"' + ' deleted',
+                'Success'
               );
 
               const inetval = setInterval(() => {
