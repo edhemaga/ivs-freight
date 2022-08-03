@@ -128,11 +128,15 @@
               }
             "
           >
-            <div class="checkbox-paytype-driver">
+            <div
+              class="checkbox-paytype-driver"
+              [ngClass]="{ 'checkbox-paytype-driver-disabled': disablePayType }"
+            >
               <app-ta-checkbox
                 formControlName="useTruckAssistAch"
                 [customClass]="'medium'"
                 [name]="'truckassistACH'"
+                [disabled]="disablePayType"
                 [label]="'Use TruckAssist ACH'"
               ></app-ta-checkbox>
               <div class="paytype-driver">
@@ -298,6 +302,7 @@
                   label: 'Bank Name',
                   isDropdown: true,
                   isRequired: driverForm.get('useTruckAssistAch').value,
+                  isDisabled: disablePayType,
                   dropdownWidthClass: 'w-col-banks-driver'
                 }"
                 [canAddNew]="true"

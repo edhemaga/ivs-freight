@@ -100,10 +100,12 @@
   &.disabled {
     pointer-events: none !important;
     svg-icon {
+      position: relative;
+      bottom: 1px;
       width: 14px;
       height: 15px;
-      position: relative;
-      bottom: 2px;
+      line-height: 14px;
+
       svg {
         path {
           fill: #dadada !important;
