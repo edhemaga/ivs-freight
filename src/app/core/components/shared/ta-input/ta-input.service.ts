@@ -2,7 +2,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { SpinnerService } from 'src/app/core/services/spinner/spinner.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,17 +20,13 @@ export class TaInputService {
 
   public dropdownAddMode$: Subject<boolean> = new Subject<boolean>();
 
-  constructor(
-    public notificationService: NotificationService,
-    private spinnerService: SpinnerService
-  ) {}
+  constructor(public notificationService: NotificationService) {}
 
   /**
    * @param formGroup FormGroup - The form group to touch
    */
   public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean): boolean {
     if (!isSpecialCase) {
-      this.spinnerService.show(true);
     }
 
     if (formGroup.invalid) {
@@ -45,7 +40,7 @@ export class TaInputService {
         'Please fill all required fields.',
         'Warning:'
       );
-      this.spinnerService.show(false);
+
       return false;
     } else {
       (Object as any).values(formGroup.controls).forEach((control: any) => {

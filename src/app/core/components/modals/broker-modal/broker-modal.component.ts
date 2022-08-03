@@ -951,8 +951,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             commentContent: item.comment,
             rating: item.ratingFromTheReviewer,
           }));
-          console.log(this.reviews);
-          console.log(this.user);
+
           const reviewIndex = this.reviews.findIndex(
             (item) => item.companyUser.id === this.user.companyUserId
           );
