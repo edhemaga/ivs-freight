@@ -158,10 +158,14 @@ export class TaInputAddressComponent
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
-    this.timeout = setTimeout(() => {
+    if (this.inputConfig.addressFlag) {
       this.isVisibleCommands = false;
-      clearTimeout(this.timeout);
-    }, 150);
+    } else {
+      this.timeout = setTimeout(() => {
+        this.isVisibleCommands = false;
+        clearTimeout(this.timeout);
+      }, 150);
+    }
   }
 
   private blurOnAddressFlag() {
@@ -279,7 +283,9 @@ export class TaInputAddressComponent
   public changeFlagText(event: Event) {
     this.changeAddressFlag = !this.changeAddressFlag;
     this.changeFlag.emit(this.changeAddressFlag);
-    this.isVisibleAddressFlag = true;
+    setTimeout(() => {
+      this.isVisibleAddressFlag = true;
+    }, 30);
   }
 
   ngOnDestroy(): void {}

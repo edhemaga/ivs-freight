@@ -148,7 +148,9 @@
       'valid-focus-out':
         getSuperControl.value && !getSuperControl.invalid && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && getSuperControl.invalid && !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput,
+      'routing-address': inputConfig.addressFlag && !focusInput,
+      'routing-address-focus': inputConfig.addressFlag && focusInput
     }"
   >
     {{ inputConfig.label }}
