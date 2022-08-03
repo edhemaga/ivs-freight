@@ -6,7 +6,7 @@
 
     <div
       class="d-flex flex-column info-box"
-      [ngClass]="{'display-box': displayInfoBox}"
+      [ngClass]="{ 'display-box': displayInfoBox }"
       *ngIf="selectedMode !== 'REVIEW_MODE'"
     >
       <div class="d-flex align-items-center justify-content-between box-header">
@@ -21,7 +21,7 @@
           <svg-icon
             class="d-flex align-items-center justify-content-center close-icon"
             src="assets/svg/common/ic_x.svg"
-            [svgStyle]="{'width.px': '22', 'height.px': '22'}"
+            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
             (click)="onHidePopupBox('INFO-BOX')"
           ></svg-icon>
         </div>
@@ -35,7 +35,7 @@
         <svg-icon
           class="phone-icon"
           src="assets/svg/common/ic_phone.svg"
-          [svgStyle]="{'width.px': '18', 'height.px': '18'}"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
         ></svg-icon>
         <p class="m-0 ta-font-regular">{{ companyInfo?.phone }}</p>
       </div>
@@ -44,7 +44,7 @@
         <svg-icon
           class="location-icon"
           src="assets/svg/applicant/location.svg"
-          [svgStyle]="{'width.px': '18', 'height.px': '18'}"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
         ></svg-icon>
         <p class="m-0 ta-font-regular">
           {{ companyInfo?.address.address }} #
@@ -61,7 +61,7 @@
         <svg-icon
           class="document-icon"
           src="assets/svg/common/ic_document.svg"
-          [svgStyle]="{'width.px': '18', 'height.px': '18'}"
+          [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
         ></svg-icon>
         <p class="m-0 ta-font-regular">Date of application: 06/03/22</p>
       </div>
@@ -72,7 +72,7 @@
     <div
       #requestsBox
       class="d-flex flex-column requests-box"
-      [ngClass]="{'display-box': displayRequestsBox}"
+      [ngClass]="{ 'display-box': displayRequestsBox }"
       [ngStyle]="{
         top: -requestsBoxHeight + -41 + 'px',
         'padding-bottom': isDocumentsCardOpen ? 0 : '8px'
@@ -93,7 +93,7 @@
           <svg-icon
             class="d-flex align-items-center justify-content-center close-icon"
             src="assets/svg/applicant/close-x.svg"
-            [svgStyle]="{'width.px': '22', 'height.px': '22'}"
+            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
             (click)="onHidePopupBox('REQUESTS-BOX')"
           ></svg-icon>
         </div>
@@ -108,6 +108,7 @@
           <div class="d-flex">
             <div class="employer-group">
               <app-ta-input
+                *ngIf="!hasMultiplePreviousEmployers"
                 formControlName="previousEmployer"
                 [inputConfig]="{
                   name: 'Employer',
@@ -117,6 +118,22 @@
                   isDisabled: true
                 }"
               ></app-ta-input>
+
+              <app-ta-input-dropdown
+                *ngIf="hasMultiplePreviousEmployers"
+                formControlName="previousEmployer"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Previous Employer',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-applicant-previous-employer'
+                }"
+                [options]="previousEmployersList"
+                [activeItem]="selectedEmployer"
+                (selectedItem)="handleInputSelect($event, 'PREVIOUS-EMPLOYER')"
+              ></app-ta-input-dropdown>
             </div>
           </div>
 
@@ -262,11 +279,13 @@
                       type: 'text',
                       label: 'Received By',
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-sph-received-by'
+                      dropdownWidthClass: 'w-col-applicant-sph-received-by'
                     }"
                     [options]="sphReceivedByList"
                     [activeItem]="selectedSphReceivedBy"
-                    (selectedItem)="handleInputSelect($event)"
+                    (selectedItem)="
+                      handleInputSelect($event, 'SPH-RECEIVED-BY')
+                    "
                   ></app-ta-input-dropdown>
                 </div>
               </div>
@@ -296,7 +315,7 @@
     <div
       #documentsBox
       class="d-flex flex-column documents-box"
-      [ngClass]="{'display-box': displayDocumentsBox}"
+      [ngClass]="{ 'display-box': displayDocumentsBox }"
       [ngStyle]="{
         top: -documentsBoxHeight + -53 + 'px'
       }"
@@ -316,7 +335,7 @@
           <svg-icon
             class="d-flex align-items-center justify-content-center close-icon"
             src="assets/svg/applicant/close-x.svg"
-            [svgStyle]="{'width.px': '22', 'height.px': '22'}"
+            [svgStyle]="{ 'width.px': '22', 'height.px': '22' }"
             (click)="onHidePopupBox('DOCUMENTS-BOX')"
           ></svg-icon>
         </div>
@@ -334,15 +353,15 @@
       >
         <svg-icon
           class="info-icon"
-          [ngClass]="{'display-box': displayInfoBox}"
+          [ngClass]="{ 'display-box': displayInfoBox }"
           src="assets/svg/applicant/info.svg"
-          [svgStyle]="{'width.px': 18, 'height.px': 18}"
+          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
           (click)="onDisplayOrHidePopupBox('INFO-BOX')"
         ></svg-icon>
 
         <p
           class="m-0 ta-font-medium"
-          [ngClass]="{'display-box': displayInfoBox}"
+          [ngClass]="{ 'display-box': displayInfoBox }"
           (click)="onDisplayOrHidePopupBox('INFO-BOX')"
         >
           Company Info
@@ -355,9 +374,9 @@
         <div class="d-flex align-items-center">
           <svg-icon
             class="requests-icon"
-            [ngClass]="{'display-box': displayRequestsBox}"
+            [ngClass]="{ 'display-box': displayRequestsBox }"
             src="assets/svg/common/ic_document.svg"
-            [svgStyle]="{'width.px': 20, 'height.px': 20}"
+            [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
             (click)="onDisplayOrHidePopupBox('REQUESTS-BOX')"
           ></svg-icon>
 
@@ -374,15 +393,15 @@
         <div class="d-flex align-items-center">
           <svg-icon
             class="documents-icon"
-            [ngClass]="{'display-box': displayDocumentsBox}"
+            [ngClass]="{ 'display-box': displayDocumentsBox }"
             src="assets/svg/common/ic_filemanager.svg"
-            [svgStyle]="{'width.px': 20, 'height.px': 20}"
+            [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
             (click)="onDisplayOrHidePopupBox('DOCUMENTS-BOX')"
           ></svg-icon>
 
           <p
             class="m-0 ta-font-medium"
-            [ngClass]="{'display-box': displayDocumentsBox}"
+            [ngClass]="{ 'display-box': displayDocumentsBox }"
             (click)="onDisplayOrHidePopupBox('DOCUMENTS-BOX')"
           >
             Documents
@@ -395,7 +414,7 @@
       <svg-icon
         class="logo-icon"
         src="assets/svg/applicant/logo.svg"
-        [svgStyle]="{'width.px': 52, 'height.px': '53.2'}"
+        [svgStyle]="{ 'width.px': 52, 'height.px': '53.2' }"
       ></svg-icon>
     </div>
   </div>

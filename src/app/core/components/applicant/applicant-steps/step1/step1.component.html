@@ -452,6 +452,9 @@
 
                 <div
                   class="d-flex align-items-center btn-container"
+                  [ngClass]="{
+                    active: selectedMode === 'REVIEW_MODE'
+                  }"
                   *ngIf="!isEditingArray[i]?.isEditing"
                 >
                   <div
@@ -497,6 +500,12 @@
                     >
                       <svg-icon
                         class="review-icon"
+                        [ngClass]="{
+                          active:
+                            openAnnotationArray[i + 2]
+                              .displayAnnotationButton ||
+                            openAnnotationArray[i + 2].displayAnnotationTextArea
+                        }"
                         src="assets/svg/ic_x.svg"
                         [svgStyle]="{
                           'width.px': 18,

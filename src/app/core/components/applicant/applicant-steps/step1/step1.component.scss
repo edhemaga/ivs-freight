@@ -195,6 +195,13 @@
           visibility: visible !important;
         }
 
+        &:hover .right-container .btn-container.active {
+          .review-icon {
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+
         .title-container {
           .address-title-container {
             width: 174px;
@@ -279,6 +286,24 @@
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
 
+            &.active {
+              visibility: visible !important;
+              opacity: 1 !important;
+
+              .edit-icon,
+              .delete-icon,
+              .review-icon {
+                visibility: hidden !important;
+                opacity: 0 !important;
+                user-select: none !important;
+
+                &.review-icon.active {
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                }
+              }
+            }
+
             .edit-icon,
             .delete-icon,
             .review-icon {
@@ -323,6 +348,21 @@
                 &:hover {
                   svg {
                     transform: scale(1.2);
+
+                    path {
+                      fill: $white;
+                      transition: fill 0.3s ease-in-out;
+                    }
+
+                    rect {
+                      fill: $ta-red-3;
+                    }
+                  }
+                }
+
+                &.active {
+                  svg {
+                    transform: scale(1);
 
                     path {
                       fill: $white;
