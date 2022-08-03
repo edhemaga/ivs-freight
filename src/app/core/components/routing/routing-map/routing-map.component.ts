@@ -2,6 +2,7 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-routing-map',
@@ -21,6 +22,8 @@ export class RoutingMapComponent implements OnInit {
   public mapLatitude: number = 41.860119;
   public mapLongitude: number = -87.660156;
   public mapZoom: number = 1;
+  
+  public addressForm: FormGroup;
 
   public routes: any[] = [
     {
@@ -134,10 +137,15 @@ export class RoutingMapComponent implements OnInit {
   ];
 
   constructor(
-    private mapsService: MapsService
+    private mapsService: MapsService,
+    private formBuilder: FormBuilder,
   ) { }
 
   ngOnInit(): void {
+    this.addressForm = this.formBuilder.group({
+      address: [null],
+      addressUnit: [null, Validators.maxLength(6)]
+    });
   }
 
   onTableBodyActions(action) {
