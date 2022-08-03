@@ -53,6 +53,7 @@ export class TaInputAddressComponent
 
   // Input Commands
   public isVisibleCommands: boolean = false;
+  public forceVisibilityOfCommands: boolean = false;
 
   // Address Flag
   public changeAddressFlag: boolean = false;
@@ -93,6 +94,7 @@ export class TaInputAddressComponent
       setTimeout(() => {
         this.isVisibleAddressFlag = true;
         this.isVisibleCommands = true;
+        this.forceVisibilityOfCommands = true;
       }, 149);
     }
   }
@@ -129,6 +131,7 @@ export class TaInputAddressComponent
     // Input Commands
     if (this.inputConfig.commands?.active) {
       this.isVisibleCommands = true;
+      this.forceVisibilityOfCommands = true;
     }
 
     // Address Flag
@@ -246,12 +249,23 @@ export class TaInputAddressComponent
                 address: this.activeAddress,
                 action: 'confirm',
               });
+              if (this.inputConfig.addressFlag) {
+                this.isVisibleAddressFlag = false;
+              }
+              this.isVisibleCommands = false;
+              this.forceVisibilityOfCommands = false;
             }
             break;
           }
           case 'cancel': {
             this.inputCommandEvent.emit({ address: null, action: 'cancel' });
             this.getSuperControl.patchValue(null);
+
+            if (this.inputConfig.addressFlag) {
+              this.isVisibleAddressFlag = false;
+            }
+            this.isVisibleCommands = false;
+            this.forceVisibilityOfCommands = false;
             break;
           }
           default: {
@@ -259,10 +273,6 @@ export class TaInputAddressComponent
           }
         }
 
-        if (this.inputConfig.addressFlag) {
-          this.isVisibleAddressFlag = false;
-        }
-        this.isVisibleCommands = false;
         break;
       }
       default: {
@@ -274,9 +284,11 @@ export class TaInputAddressComponent
   public changeFlagText(event: Event) {
     this.changeAddressFlag = !this.changeAddressFlag;
     this.changeFlag.emit(this.changeAddressFlag);
-    this.isVisibleCommands = true;
+
     setTimeout(() => {
       this.isVisibleAddressFlag = true;
+      this.isVisibleCommands = true;
+      this.forceVisibilityOfCommands = true;
     }, 30);
   }
 
