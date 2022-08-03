@@ -48,7 +48,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public grossWeight: any[] = [];
   public engineType: any[] = [];
   public tireSize: any[] = [];
+  public shifter: any[] = [];
 
+  public selectedShifter: any = null;
   public selectedTruckType: any = null;
   public selectedTruckMake: any = null;
   public selectedColor: any = null;
@@ -493,6 +495,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'tire-size': {
         this.selectedTireSize = event;
+        break;
+      }
+      case 'shifter': {
+        this.selectedShifter = event;
         break;
       }
       default: {

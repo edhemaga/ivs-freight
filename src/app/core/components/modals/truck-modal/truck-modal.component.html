@@ -241,7 +241,12 @@
               (selectedItem)="onSelectDropdown($event, 'gross-weight')"
             ></app-ta-input-dropdown>
           </div>
-          <div class="col-7">
+          <div
+            [ngClass]="{
+              'tireSize-axles ': this.truckForm.get('companyOwned').value
+            }"
+            class="col-7"
+          >
             <app-ta-input
               formControlName="emptyWeight"
               [inputConfig]="{
@@ -252,6 +257,20 @@
                 thousandSeparator: true
               }"
             ></app-ta-input>
+            <app-ta-input-dropdown
+              *ngIf="this.truckForm.get('companyOwned').value"
+              formControlName="shifter"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Shifter',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-7'
+              }"
+              [options]="shifter"
+              [activeItem]="selectedShifter"
+              (selectedItem)="onSelectDropdown($event, 'shifter')"
+            ></app-ta-input-dropdown>
           </div>
         </div>
         <div class="row">
