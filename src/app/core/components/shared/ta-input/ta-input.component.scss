@@ -2,6 +2,12 @@
   display: block;
   position: relative;
 
+  &.address-flag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   //--------------- Classes on all INPUT ELEMENTS ---------------
   &.hover-focus-out {
     &:hover {

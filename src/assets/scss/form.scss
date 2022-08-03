@@ -148,7 +148,7 @@
 
   .driver-twic-mvr-row {
     display: grid;
-    grid-template-columns: 59px 202px 1fr;
+    grid-template-columns: 59px 251px 1fr;
     align-items: center;
     -moz-column-gap: 22px;
     column-gap: 22px;
@@ -156,6 +156,8 @@
 
     &.extended {
       grid-template-columns: 59px 143px 116px 1fr;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
     }
 
     .ta-checkbox-container {
