@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
+import { SelectedMode } from '../state/enum/selected-mode.enum';
+
 @Component({
   selector: 'app-applicant-next-back-btn',
   templateUrl: './applicant-next-back-btn.component.html',
@@ -15,7 +17,10 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   @Output() stepEvent: EventEmitter<{ action: string }> = new EventEmitter();
 
+  public selectedMode: string = SelectedMode.REVIEW;
+
   public filledCorrectly: boolean = false;
+  public reviewFilledCorrectly: boolean = true;
 
   constructor() {}
 
