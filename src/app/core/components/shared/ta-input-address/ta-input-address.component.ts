@@ -58,8 +58,6 @@ export class TaInputAddressComponent
   public changeAddressFlag: boolean = false;
   public isVisibleAddressFlag: boolean = false;
 
-  public timeout: any = null;
-
   constructor(
     @Self() public superControl: NgControl,
     private sharedService: SharedService,
@@ -92,7 +90,10 @@ export class TaInputAddressComponent
     this.getSuperControl.setErrors(null);
 
     if (this.inputConfig.addressFlag) {
-      this.isVisibleAddressFlag = true;
+      setTimeout(() => {
+        this.isVisibleAddressFlag = true;
+        this.isVisibleCommands = true;
+      }, 149);
     }
   }
 
@@ -155,23 +156,16 @@ export class TaInputAddressComponent
   }
 
   private blurOnCommands() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-
-    this.timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.isVisibleCommands = false;
-      clearTimeout(this.timeout);
+      clearTimeout(timeout);
     }, 150);
   }
 
   private blurOnAddressFlag() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.isVisibleAddressFlag = false;
-      clearTimeout(this.timeout);
+      clearTimeout(timeout);
     }, 150);
   }
 
@@ -257,6 +251,7 @@ export class TaInputAddressComponent
           }
           case 'cancel': {
             this.inputCommandEvent.emit({ address: null, action: 'cancel' });
+            this.getSuperControl.patchValue(null);
             break;
           }
           default: {
@@ -267,7 +262,6 @@ export class TaInputAddressComponent
         if (this.inputConfig.addressFlag) {
           this.isVisibleAddressFlag = false;
         }
-        this.getSuperControl.patchValue(null);
         this.isVisibleCommands = false;
         break;
       }
@@ -280,6 +274,7 @@ export class TaInputAddressComponent
   public changeFlagText(event: Event) {
     this.changeAddressFlag = !this.changeAddressFlag;
     this.changeFlag.emit(this.changeAddressFlag);
+    this.isVisibleCommands = true;
     setTimeout(() => {
       this.isVisibleAddressFlag = true;
     }, 30);
