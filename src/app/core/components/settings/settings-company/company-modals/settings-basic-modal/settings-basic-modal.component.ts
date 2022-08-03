@@ -35,7 +35,7 @@ import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/t
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsStoreService } from '../../../state/settings.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 
 @Component({
   selector: 'app-settings-basic-modal',

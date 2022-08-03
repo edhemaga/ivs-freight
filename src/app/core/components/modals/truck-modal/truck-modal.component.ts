@@ -18,7 +18,7 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {

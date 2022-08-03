@@ -158,14 +158,11 @@ export class TaInputAddressComponent
     if (this.timeout) {
       clearTimeout(this.timeout);
     }
-    if (this.inputConfig.addressFlag) {
+
+    this.timeout = setTimeout(() => {
       this.isVisibleCommands = false;
-    } else {
-      this.timeout = setTimeout(() => {
-        this.isVisibleCommands = false;
-        clearTimeout(this.timeout);
-      }, 150);
-    }
+      clearTimeout(this.timeout);
+    }, 150);
   }
 
   private blurOnAddressFlag() {

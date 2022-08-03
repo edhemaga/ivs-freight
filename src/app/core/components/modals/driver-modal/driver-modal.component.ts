@@ -38,7 +38,7 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
