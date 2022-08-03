@@ -5,6 +5,23 @@
         left: 60px;
       }
 
+    .ngx-toastr {
+        //animation: ngx-toastr 0.5s;
+
+        animation-name: ngx-toastr, myAnimationClass;
+        animation-delay: 0s, 2.7s;
+        animation-duration: 0.3s;
+      }
+      
+    @keyframes ngx-toastr {
+        from {
+          top: 100px; 
+        }
+        to {
+          top: 0px;
+        }
+      }  
+
     .toast-container .ngx-toastr {
         position: relative;
         overflow: hidden;
@@ -20,8 +37,32 @@
 
         color: #FFFFFF;
         font-family: "Montserrat", sans-serif;
+
+        &:hover {
+          animation-play-state: paused;
+        }
+      }
+
+     /*     
+      .myAnimationClass {
+        animation: myAnimationClass 0.3s, ngx-toastr 0.3s;
+        animation-delay: 2700ms;
+      }
+      */
+      @keyframes myAnimationClass {
+        from {
+          opacity: 1;
+          transform: scale(1);
+          
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.7);
+        }
       }
       
+
+
     .toast-error {
         background-color: #EF5350;
         background-image: url("../../assets/svg/common/ic_danger_white.svg");

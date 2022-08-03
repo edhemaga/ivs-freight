@@ -13,8 +13,11 @@ export class NotificationService {
     this.toastr.success(message, title, {
       progressBar: false, 
       progressAnimation: 'increasing',
-      easeTime: 300,
-      timeOut: 3000
+      positionClass: 'toast-bottom-left',
+      closeButton: true,
+      easeTime: 0,
+      timeOut: 3000,
+      toastClass: 'ngx-toastr myAnimationClass',
     });
   }
 
@@ -22,8 +25,13 @@ export class NotificationService {
     this.toastr.error(message, title, {
       progressBar: false,
       progressAnimation: 'increasing',
-      easeTime: 300,
-      timeOut: 3000
+      positionClass: 'toast-bottom-left',
+      closeButton: true,
+      easeTime: 0,
+      timeOut: 3000,
+      toastClass: 'ngx-toastr myAnimationClass',
+    }).onAction.subscribe(()=>{
+      console.log('---here----');
     });
   }
 
@@ -31,9 +39,13 @@ export class NotificationService {
     this.toastr.warning(message, title, {
       progressBar: false,
       progressAnimation: 'increasing',
-      easeTime: 300,
-      timeOut: 3000
+      positionClass: 'toast-bottom-left',
+      closeButton: true,
+      easeTime: 0,
+      timeOut: 3000,
+      toastClass: 'ngx-toastr myAnimationClass',
     });
+    
   }
 
 }

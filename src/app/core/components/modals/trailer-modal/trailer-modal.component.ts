@@ -305,20 +305,21 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
     };
-
+    console.log('---this.trailerForm----', this.trailerForm);
+    let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .addTrailer(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Trailer successfully added.',
-            'Success:'
+            'Trailer ' +'"'+ trailerUnit + '"' + ' added',
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error("Trailer can't be added.", 'Error:'),
+          this.notificationService.error('Failed to add trailer ' + '"' +trailerUnit+ '"', 'Error'),
       });
   }
 
