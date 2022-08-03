@@ -14,8 +14,29 @@
               trackBy: trackByIdentity
             "
             class="text-center step"
-            routerLinkActive="step-active"
-            [ngClass]="{ 'completed-step': storeArr[i].isCompleted }"
+            [routerLinkActive]="
+              selectedMode === 'REVIEW_MODE' &&
+              reviewStoreArr[i].isReviewed &&
+              !reviewStoreArr[i].hasIncorrectAnswer
+                ? 'step-active-review'
+                : selectedMode === 'REVIEW_MODE' &&
+                  reviewStoreArr[i].isReviewed &&
+                  reviewStoreArr[i].hasIncorrectAnswer
+                ? 'step-active-review-incorrect'
+                : 'step-active'
+            "
+            [ngClass]="{
+              'completed-step':
+                selectedMode === 'APPLICANT_MODE' && storeArr[i].isCompleted,
+              'completed-step-review':
+                selectedMode === 'REVIEW_MODE' &&
+                reviewStoreArr[i].isReviewed &&
+                !reviewStoreArr[i].hasIncorrectAnswer,
+              'completed-step-review-incorrect':
+                selectedMode === 'REVIEW_MODE' &&
+                reviewStoreArr[i].isReviewed &&
+                reviewStoreArr[i].hasIncorrectAnswer
+            }"
           >
             <div
               class="d-inline-flex justify-content-center align-items-center bullet"

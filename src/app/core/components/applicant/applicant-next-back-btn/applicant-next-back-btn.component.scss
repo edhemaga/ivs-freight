@@ -5,6 +5,7 @@
   border: none;
   height: 52px;
   background-color: transparent;
+  padding: 0;
 
   .step-text {
     height: 18px;
@@ -83,6 +84,26 @@
       svg {
         rect {
           fill: $bw2;
+        }
+      }
+    }
+  }
+
+  &.review-btn {
+    .step-icon {
+      svg {
+        rect {
+          fill: $ta-review-green;
+        }
+      }
+    }
+
+    &:hover {
+      .step-icon {
+        svg {
+          rect {
+            fill: $ta-review-green-2;
+          }
         }
       }
     }
