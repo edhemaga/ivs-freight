@@ -21,23 +21,23 @@
       align-items: center;
       justify-content: center;
 
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       font-family: "WebComponentsIcons", sans-serif;
       font-size: 20px;
       color: #91919170;
       cursor: pointer;
       
       .color_picker_arrow{
-        opacity: 0;
+        display: none;
       }
 
       &.italic_text{
-        margin-left: 2px;
+        margin-left: 4px;
       }
 
       &.underline_text{
-        margin-left: 2px;
+        margin-left: 4px;
       }
     
       &.active {
@@ -103,10 +103,11 @@
 
         &:hover {
           opacity: 1;
-          background-color: #f7f7f7;
+          background-color: #EEEEEE;
+          padding-right: 4px;
 
           .color_picker_arrow{
-            opacity: 1;
+            display: block;
           }
         }
 
@@ -198,5 +199,14 @@
             }
         }
       }
+    }
+
+    .note_border_line{
+      height: 24px;
+      width: 2px;
+      margin: 0 4px;
+
+      background-color: #F3F3F3;
+      border-radius: 1px;
     }
   }

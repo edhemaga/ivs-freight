@@ -6,7 +6,6 @@
   .note-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     line-height: 18px;
     padding: 0 6px;
     margin-top: 6px;
@@ -21,6 +20,16 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      flex: 1;
+    }
+
+    .note_upper_hold{
+      display: flex;
+      align-items: center;
+
+      .note_tools_container{
+        margin-right: 7px;
+      }
     }
 
     .note-arrow {

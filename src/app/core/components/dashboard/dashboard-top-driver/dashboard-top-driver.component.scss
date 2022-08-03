@@ -459,7 +459,16 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                         line-height: 22px;
                         font-weight: 700;
                         color: #AAAAAA;
-                        flex: 1
+                        flex: 1;
+
+                        &::-moz-selection {
+                            background: #91919133;
+                            color: #919191;
+                        }
+                          &::selection {
+                            background: #91919133;
+                            color: #919191;
+                        }
                     }
 
                     .chart_legend_hold{
@@ -476,6 +485,15 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                                 font-weight: 500;
                                 line-height: 14px;
                                 color: $bw6-2;
+
+                                &::-moz-selection {
+                                    background: #91919133;
+                                    color: #919191;
+                                }
+                                  &::selection {
+                                    background: #91919133;
+                                    color: #919191;
+                                }
                             }
 
                             .chart_legend_dot{

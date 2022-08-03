@@ -782,6 +782,15 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 line-height: 14px;
                 font-weight: 500;
                 padding-left: 4px;
+
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
            }
 
            .round_dark_grey{
@@ -817,9 +826,20 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     }
 }
 
+@media only screen and (min-width: 1400px) and (max-width: 1764px) {
+    .dashboard-performance-holder .dashboard-performance-body{
+        grid-template-columns: repeat(5, calc((100% - 35px) / 5));
+    }
+}
 
 @media only screen and (max-width: 1400px) {
     .dashboard-performance-holder .dashboard-performance-body{
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1764px) {
+    .dashboard-performance-holder .dashboard-performance-body{
+        grid-template-columns: repeat(10, calc((100% - 72px) / 10));
     }
 }

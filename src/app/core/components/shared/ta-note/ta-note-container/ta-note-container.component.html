@@ -41,6 +41,7 @@
         src="assets/svg/truckassist-table/note/underline-icon.svg"
       ></svg-icon>
     </div>
+    <div class="note_border_line"></div>
   </div>
   <div (click)="showCollorPattern = !showCollorPattern"
        [class.no_opacity]="showCollorPattern"
@@ -50,9 +51,9 @@
        position="bottom"
        class="editor_buttons text_color"
        >
-       <div class="color_picker_arrow" [class.flip_arrow]="showCollorPattern" >
+       <div class="color_picker_arrow" [class.flip_arrow]="!showCollorPattern" >
         <svg-icon
-          src="assets/svg/common/ic_arrow-right.svg"
+          src="assets/svg/truckassist-table/arrow-columns-drop.svg"
         ></svg-icon>
        </div>
     <span [ngStyle]="{'background-color': selectedPaternColor}" *ngIf="!showCollorPattern" class="circle_span"></span>
@@ -78,4 +79,5 @@
       <div (click)="executeEditor('foreColor', '#DB2222')"></div> -->
     </div>
   </div>
+  <div class="note_border_line"></div>
 </div>
