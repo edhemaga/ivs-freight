@@ -24,7 +24,6 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { DomSanitizer } from '@angular/platform-browser';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 @Component({
