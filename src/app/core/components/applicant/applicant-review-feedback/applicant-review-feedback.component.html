@@ -1,10 +1,5 @@
 <!-- REVIEW -->
-
-<div
-  class="d-flex review-container"
-  *ngIf="!isFeedback"
-  [formGroup]="annotationForm"
->
+<div class="d-flex review-container" *ngIf="!isFeedback">
   <!-- ANNOTATION BUTTON -->
 
   <div
@@ -35,7 +30,7 @@
       }"
     >
       <app-ta-input
-        formControlName="annotation"
+        [formControl]="getSuperControl"
         [inputConfig]="{
           name: 'Annotation',
           type: 'text',
@@ -74,7 +69,6 @@
 </div>
 
 <!-- FEEDBACK -->
-
 <div class="d-flex feedback-container" *ngIf="isFeedback && feedbackText">
   <div class="d-flex feedback-text-container">
     <p class="m-0 ta-font-regular">
@@ -82,52 +76,3 @@
     </p>
   </div>
 </div>
-
-<!-- <div class="review-container" *ngIf="!isFeedback">
-  <svg-icon
-    (click)="onApprove(true)"
-    class="ok-svg"
-    src="assets/svg/common/ic_confirm.svg"
-    [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-    [ngClass]="{ approved: approved }"
-  ></svg-icon>
-  <svg-icon
-    (click)="onApprove(false)"
-    class="wrong-svg"
-    src="assets/svg/truckassist-table/x.svg"
-    [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-    [ngClass]="{ 'not-approved': approved === false }"
-  ></svg-icon>
-
-  <textarea
-    [(ngModel)]="description"
-    onkeypress="return event.charCode !== 13"
-    [ngClass]="{ 'show-textarea': approved === false }"
-  ></textarea>
-</div>
- -->
-<!-- FEEDBACK -->
-
-<!-- <div *ngIf="isFeedback" class="feedback-container">
-  <svg-icon
-    src="{{
-      isApproved
-        ? 'assets/svg/common/ic_confirm.svg'
-        : 'assets/svg/truckassist-table/x.svg'
-    }}"
-    [ngClass]="{
-      'feedback-approved': isApproved,
-      'feedback-not-approved': !isApproved
-    }"
-    [svgStyle]="{ 'width.px': 26, 'height.px': 26 }"
-  ></svg-icon>
-
-  <div class="feedback-text" *ngIf="!isApproved">
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy
-    eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam
-    voluptua. At vero eos. Lorem ipsum dolor sit amet, consetetur sadipscing
-    elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-    aliquyam erat, sed diam voluptua. At vero eos et...
-  </div>
-</div>
- -->

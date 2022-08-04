@@ -581,11 +581,16 @@ export class TaInputDropdownComponent
       return item;
     });
 
+    this.options = this.options.sort(
+      (x, y) => Number(y.active) - Number(x.active)
+    );
+
     this.originalOptions = this.options;
     this.multiselectItems.splice(index, 1);
 
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
+      this.lastActiveMultiselectItem = null;
       this.inputConfig.label = this.multiSelectLabel;
     }
 
@@ -612,6 +617,7 @@ export class TaInputDropdownComponent
     });
     this.originalOptions = this.options;
     this.selectedItems.emit([]);
+    this.lastActiveMultiselectItem = null;
   }
 
   public toggleMultiselectDropdown(event: any) {

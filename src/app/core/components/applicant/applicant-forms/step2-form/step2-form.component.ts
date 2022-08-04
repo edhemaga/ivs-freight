@@ -1,3 +1,4 @@
+import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 import { Component, Input, OnInit } from '@angular/core';
 
 import { FormGroup } from '@angular/forms';
@@ -25,6 +26,8 @@ export class Step2FormComponent implements OnInit {
   @Input() trailerLengthType: any[] = [];
 
   @Input() selectedReasonForLeaving: any;
+
+  public selectedAddress: AddressEntity;
 
   constructor() {}
 

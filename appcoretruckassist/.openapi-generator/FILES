@@ -146,12 +146,14 @@ model/departmentResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts
 model/dispatchBoardResponsePagination.ts
+model/dispatchHistoryDriverListResponse.ts
 model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
 model/dispatchModalResponse.ts
 model/dispatchResponse.ts
+model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/driverListResponse.ts
@@ -255,6 +257,7 @@ model/pMTruckUnitResponsePagination.ts
 model/parkingListResponse.ts
 model/parkingResponse.ts
 model/parkingResponsePagination.ts
+model/passwordResponse.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/poBoxEntity.ts
@@ -408,6 +411,7 @@ model/updateTruckCommand.ts
 model/updateTruckPMUnitCommand.ts
 model/updateUserCommand.ts
 model/userResponse.ts
+model/validatePasswordCommand.ts
 model/verifyForgotPasswordCommand.ts
 model/verifyOwnerCommand.ts
 model/verifyUserCommand.ts

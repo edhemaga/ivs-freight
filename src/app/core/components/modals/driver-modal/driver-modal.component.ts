@@ -61,6 +61,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public selectedTab: number = 1;
   public selectedOwnerTab: any = null;
   public selectedAddress: AddressEntity = null;
+  public selectedOffDutyAddressArray: AddressEntity[] = [];
   public selectedBank: any = null;
   public isBankSelected: boolean = false;
   public selectedPayType: any = null;
@@ -323,6 +324,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public removeOffDutyLocation(id: number) {
     this.offDutyLocations.removeAt(id);
+    this.selectedOffDutyAddressArray.slice(id, 1);
   }
 
   private onIncludePayroll(): void {
@@ -447,20 +449,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     event: { address: AddressEntity | any; valid: boolean },
     index: number
   ) {
-    const address: AddressEntity = event.address;
+    this.selectedOffDutyAddressArray[index] = event.address;
+
     if (!event.valid) {
       this.offDutyLocations.at(index).setErrors({ invalid: true });
     } else {
       this.offDutyLocations.at(index).patchValue({
-        address: address.address,
-        city: address.city,
-        state: address.state,
-        stateShortName: address.stateShortName,
-        country: address.country,
-        zipCode: address.zipCode,
+        address: this.selectedOffDutyAddressArray[index].address,
+        city: this.selectedOffDutyAddressArray[index].city,
+        state: this.selectedOffDutyAddressArray[index].state,
+        stateShortName: this.selectedOffDutyAddressArray[index].stateShortName,
+        country: this.selectedOffDutyAddressArray[index].country,
+        zipCode: this.selectedOffDutyAddressArray[index].zipCode,
         addressUnit: this.offDutyLocations.at(index).get('addressUnit').value,
-        street: address.street,
-        streetNumber: address.streetNumber,
+        street: this.selectedOffDutyAddressArray[index].street,
+        streetNumber: this.selectedOffDutyAddressArray[index].streetNumber,
       });
     }
   }
@@ -1097,22 +1100,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           }
 
           if (res.offDutyLocations.length) {
-            for (const offDuty of res.offDutyLocations) {
+            for (let index = 0; index < res.offDutyLocations.length; index++) {
               this.offDutyLocations.push(
                 this.formBuilder.group({
-                  id: offDuty.id,
-                  nickname: offDuty.nickname,
-                  address: offDuty.address.address,
-                  city: offDuty.address.city,
-                  state: offDuty.address.state,
-                  stateShortName: offDuty.address.stateShortName,
-                  country: offDuty.address.country,
-                  zipCode: offDuty.address.zipCode,
-                  addressUnit: offDuty.address.addressUnit,
-                  street: offDuty.address.street,
-                  streetNumber: offDuty.address.streetNumber,
+                  id: res.offDutyLocations[index].id,
+                  nickname: res.offDutyLocations[index].nickname,
+                  address: res.offDutyLocations[index].address.address,
+                  city: res.offDutyLocations[index].address.city,
+                  state: res.offDutyLocations[index].address.state,
+                  stateShortName:
+                    res.offDutyLocations[index].address.stateShortName,
+                  country: res.offDutyLocations[index].address.country,
+                  zipCode: res.offDutyLocations[index].address.zipCode,
+                  addressUnit: res.offDutyLocations[index].address.addressUnit,
+                  street: res.offDutyLocations[index].address.street,
+                  streetNumber:
+                    res.offDutyLocations[index].address.streetNumber,
                 })
               );
+              this.selectedOffDutyAddressArray[index] = res.address;
             }
           }
         },

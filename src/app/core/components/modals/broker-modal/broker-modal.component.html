@@ -133,6 +133,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedPhysicalAddress"
                 (selectedAddress)="onHandleAddress($event, 'physical-address')"
               ></app-ta-input-address>
             </div>
@@ -185,6 +186,7 @@
                   textTransform: 'capitalize',
                   onlyCityAndZipAddress: true
                 }"
+                [activeAddress]="selectedPhysicalPoBox"
                 (selectedAddress)="onHandleAddress($event, 'physical-pobox')"
               ></app-ta-input-address>
             </div>
@@ -233,6 +235,7 @@
                     placeholderIcon: 'address',
                     textTransform: 'capitalize'
                   }"
+                  [activeAddress]="selectedBillingAddress"
                   (selectedAddress)="onHandleAddress($event, 'billing-address')"
                 ></app-ta-input-address>
               </div>
@@ -285,6 +288,7 @@
                     textTransform: 'capitalize',
                     onlyCityAndZipAddress: true
                   }"
+                  [activeAddress]="selectedBillingPoBox"
                   (selectedAddress)="onHandleAddress($event, 'billing-pobox')"
                 ></app-ta-input-address>
               </div>

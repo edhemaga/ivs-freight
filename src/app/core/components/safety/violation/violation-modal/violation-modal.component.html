@@ -466,6 +466,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAuthorityAddress"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
             ></app-ta-input-address>
             <app-ta-input
@@ -540,6 +541,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedAuthorityOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
               ></app-ta-input-address>
             </div>
@@ -553,6 +555,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedAuthorityDestination"
                 (selectedAddress)="
                   onHandleAddress($event, 'address-destination')
                 "
