@@ -1,5 +1,5 @@
 <div class="d-flex flex-column step-form" [formGroup]="violationsForm">
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group date-group">
       <app-ta-input
         formControlName="violationDate"
@@ -9,8 +9,11 @@
           label: 'Date',
           placeholderIcon: 'date',
           isRequired: true,
-          customClass: 'datetimeclass'
+          customClass: 'datetimeclass',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 10)"
       ></app-ta-input>
     </div>
     <div class="group truck-type-group">
@@ -44,9 +47,31 @@
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
     </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[10].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[10].displayAnnotationTextArea
+        "
+        [lineIndex]="10"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
+    </div>
   </div>
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="description-group">
       <app-ta-input
         formControlName="violationDescription"
@@ -55,15 +80,43 @@
           type: 'text',
           label: 'Description of violation',
           textTransform: 'capitalize',
-          isRequired: true
+          isRequired: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 11)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[11].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[11].displayAnnotationTextArea
+        "
+        [lineIndex]="11"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
   <!-- ADD ANOTHER VIOLATION -->
 
-  <div class="d-flex justify-content-center align-items-center btn-container">
+  <div
+    class="d-flex justify-content-center align-items-center btn-container"
+    [ngStyle]="{ 'margin-bottom': isEditing ? '22px' : 0 }"
+  >
     <button
       type="button"
       class="d-flex justify-content-center align-items-center ta-font-bold add-btn"

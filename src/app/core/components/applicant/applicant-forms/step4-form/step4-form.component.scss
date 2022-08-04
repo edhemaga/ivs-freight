@@ -1,6 +1,17 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
+  .line-container {
+    position: relative;
+
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
   .group {
     margin-bottom: 22px;
     margin-right: 12px;
@@ -17,6 +28,7 @@
 
   .date-group {
     width: 159px;
+    margin-right: 0 !important;
   }
 
   .fatalities-injuries-group {
@@ -84,5 +96,6 @@
   .description-group {
     width: 373px;
     margin-bottom: 0;
+    margin-right: 0;
   }
 }

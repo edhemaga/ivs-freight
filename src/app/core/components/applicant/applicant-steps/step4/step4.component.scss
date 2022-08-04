@@ -52,6 +52,17 @@
       width: 616px;
       margin-bottom: 32px;
 
+      .line-container {
+        position: relative;
+
+        .review-feedback-container {
+          position: absolute;
+          top: 0;
+          right: -435px;
+          width: 429px;
+        }
+      }
+
       .title-container {
         width: 100%;
         margin-bottom: 6px;
@@ -134,14 +145,30 @@
         font-size: 14px;
         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-        &:hover {
-          background: $bw2;
-          color: $ta-light-grey-3;
-        }
+        .info-btn-container {
+          &:hover {
+            background: $bw2;
+            color: $ta-light-grey-3;
+          }
 
-        &:hover .btn-container {
-          opacity: 1;
-          visibility: visible !important;
+          &:hover .btn-container {
+            opacity: 1;
+            visibility: visible !important;
+          }
+
+          &:hover .btn-container.active {
+            .edit-icon,
+            .delete-icon {
+              display: none !important;
+            }
+
+            .review-icon-box {
+              .review-icon {
+                visibility: visible !important;
+                opacity: 1 !important;
+              }
+            }
+          }
         }
 
         p {
@@ -200,14 +227,42 @@
           }
         }
 
+        .review-icon-box {
+          margin-left: 25px;
+        }
+
         .btn-container {
           width: 42px;
           visibility: hidden !important;
           opacity: 0;
           transition: opacity 0.2s ease-in-out;
 
+          &.active {
+            visibility: visible !important;
+            opacity: 1 !important;
+
+            .edit-icon,
+            .delete-icon,
+            .review-icon {
+              visibility: hidden !important;
+              opacity: 0 !important;
+              user-select: none !important;
+
+              &.edit-icon,
+              &.delete-icon {
+                display: none !important;
+              }
+
+              &.review-icon.active {
+                visibility: visible !important;
+                opacity: 1 !important;
+              }
+            }
+          }
+
           .edit-icon,
-          .delete-icon {
+          .delete-icon,
+          .review-icon {
             cursor: pointer;
 
             &:hover {
@@ -224,10 +279,48 @@
                 fill: $bw4;
               }
             }
-          }
 
-          .edit-icon {
-            margin-right: 6px;
+            &.edit-icon {
+              margin-right: 6px;
+            }
+
+            &.review-icon {
+              svg {
+                path {
+                  transition: fill 0.3s ease-in-out;
+                  fill: $ta-red-2 !important;
+                }
+
+                rect {
+                  transition: fill 0.3s ease-in-out;
+                  fill: $bw2 !important;
+                }
+              }
+
+              &:hover {
+                svg {
+                  path {
+                    fill: $white !important;
+                  }
+
+                  rect {
+                    fill: $ta-red-2 !important;
+                  }
+                }
+              }
+
+              &.active {
+                svg {
+                  path {
+                    fill: $white !important;
+                  }
+
+                  rect {
+                    fill: $ta-red-3 !important;
+                  }
+                }
+              }
+            }
           }
         }
       }

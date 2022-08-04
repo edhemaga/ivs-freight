@@ -163,84 +163,141 @@
           </div>
 
           <div
-            class="d-flex align-items-center violation-info-container"
+            class="d-flex align-items-center violation-info-container line-container"
             *ngIf="!violation.isEditingViolation"
           >
-            <div class="d-flex align-items-center date-box">
-              <p class="m-0 ta-font-regular">
-                {{ violation.violationDate }}
-              </p>
-            </div>
+            <div class="d-flex align-items-center info-btn-container">
+              <div class="d-flex align-items-center date-box">
+                <p class="m-0 ta-font-regular">
+                  {{ violation.violationDate }}
+                </p>
+              </div>
 
-            <div class="d-flex align-items-center vehicle-box">
-              <p class="m-0 ta-font-regular">
-                {{ violation.truckType }}
-              </p>
-            </div>
+              <div class="d-flex align-items-center vehicle-box">
+                <p class="m-0 ta-font-regular">
+                  {{ violation.truckType }}
+                </p>
+              </div>
 
-            <div class="d-flex align-items-center location-box">
-              <p
-                class="m-0 ta-font-regular d-inline-block text-truncate"
-                style="max-width: 123px"
-                ngbTooltip
-                [mainTooltip]="violation.violationLocation"
-                tooltipBackground="#6C6C6C"
-                position="bottom-left"
-              >
-                {{ violation.violationLocation }}
-              </p>
-            </div>
+              <div class="d-flex align-items-center location-box">
+                <p
+                  class="m-0 ta-font-regular d-inline-block text-truncate"
+                  style="max-width: 123px"
+                  ngbTooltip
+                  [mainTooltip]="violation.violationLocation"
+                  tooltipBackground="#6C6C6C"
+                  position="bottom-left"
+                >
+                  {{ violation.violationLocation }}
+                </p>
+              </div>
 
-            <div class="d-flex align-items-center description-box">
-              <p
-                class="m-0 ta-font-regular d-inline-block text-truncate"
-                style="max-width: 185px"
-                ngbTooltip
-                [mainTooltip]="violation.violationDescription"
-                tooltipBackground="#6C6C6C"
-                position="bottom-left"
-              >
-                {{ violation.violationDescription }}
-              </p>
-            </div>
-
-            <div class="d-flex align-items-center btn-container">
-              <div
-                ngbTooltip
-                mainTooltip="Edit"
-                tooltipBackground="#6C6C6C"
-                position="top"
-              >
-                <svg-icon
-                  class="edit-icon"
-                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onEditViolation(i)"
-                ></svg-icon>
+              <div class="d-flex align-items-center description-box">
+                <p
+                  class="m-0 ta-font-regular d-inline-block text-truncate"
+                  style="max-width: 185px"
+                  ngbTooltip
+                  [mainTooltip]="violation.violationDescription"
+                  tooltipBackground="#6C6C6C"
+                  position="bottom-left"
+                >
+                  {{ violation.violationDescription }}
+                </p>
               </div>
 
               <div
-                ngbTooltip
-                mainTooltip="Delete"
-                tooltipBackground="#EF5350"
-                position="top"
+                class="d-flex align-items-center btn-container"
+                [ngClass]="{
+                  active: selectedMode === 'REVIEW_MODE'
+                }"
               >
-                <svg-icon
-                  class="delete-icon"
-                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                  [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                  }"
-                  (click)="onDeleteViolation(i)"
-                ></svg-icon>
+                <div
+                  ngbTooltip
+                  mainTooltip="Edit"
+                  tooltipBackground="#6C6C6C"
+                  position="top"
+                >
+                  <svg-icon
+                    class="edit-icon"
+                    src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    (click)="onEditViolation(i)"
+                  ></svg-icon>
+                </div>
+
+                <div
+                  ngbTooltip
+                  mainTooltip="Delete"
+                  tooltipBackground="#EF5350"
+                  position="top"
+                >
+                  <svg-icon
+                    class="delete-icon"
+                    src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    (click)="onDeleteViolation(i)"
+                  ></svg-icon>
+                </div>
+
+                <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                  <div
+                    class="review-icon-box"
+                    ngbTooltip
+                    mainTooltip="Mark Incorrect"
+                    tooltipBackground="#F44336"
+                    position="top"
+                  >
+                    <svg-icon
+                      class="review-icon"
+                      [ngClass]="{
+                        active:
+                          openAnnotationArray[i].displayAnnotationButton ||
+                          openAnnotationArray[i].displayAnnotationTextArea
+                      }"
+                      src="assets/svg/ic_x.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
+                      (click)="incorrectInput($event, 0, i, 'card')"
+                    ></svg-icon>
+                  </div>
+                </div>
               </div>
+            </div>
+
+            <!-- REVIEW AND FEEDBACK -->
+
+            <div
+              class="review-feedback-container"
+              *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
+            >
+              <app-applicant-review-feedback
+                [displayAnnotationButton]="
+                  openAnnotationArray[i].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                  openAnnotationArray[i].displayAnnotationTextArea
+                "
+                [lineIndex]="i"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="'Check the number'"
+                [cardsLength]="violationsArray.length"
+                [cardsType]="'trafficViolations'"
+                [cardIndex]="i"
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+              ></app-applicant-review-feedback>
             </div>
           </div>
-
           <div
             class="d-flex flex-column violations-view-form"
             *ngIf="violation.isEditingViolation"
@@ -329,6 +386,7 @@
 
 <!-- CONFIRM ALL REVIEW -->
 
-<app-applicant-confirm-all-review
+<!-- <app-applicant-confirm-all-review
   *ngIf="selectedMode === 'REVIEW_MODE'"
 ></app-applicant-confirm-all-review>
+ -->

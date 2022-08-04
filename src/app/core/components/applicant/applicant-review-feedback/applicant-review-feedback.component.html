@@ -50,6 +50,12 @@
               cardIndex !== 0) ||
             (cardsLength > 1 &&
               cardsType === 'cdlInformation' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'accidentRecord' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'trafficViolations' &&
               cardIndex !== 0)
               ? 'Write Annotation'
               : '',
@@ -60,6 +66,12 @@
               cardIndex !== 0) ||
             (cardsLength > 1 &&
               cardsType === 'cdlInformation' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'accidentRecord' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'trafficViolations' &&
               cardIndex !== 0),
           autoFocus: true
         }"
