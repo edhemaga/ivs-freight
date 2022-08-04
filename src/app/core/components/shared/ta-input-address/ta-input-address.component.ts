@@ -25,6 +25,7 @@ export class TaInputAddressComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) input: ElementRef;
+
   @Input() inputConfig: ITaInput;
   @Input() activeAddress: AddressEntity;
   @Input() incorrectValue: boolean = false;
@@ -126,7 +127,7 @@ export class TaInputAddressComponent
   public onFocus(): void {
     this.focusInput = true;
 
-    if (!this.activeAddress && this.inputConfig.isRequired) {
+    if (!this.activeAddress?.address && this.inputConfig.isRequired) {
       this.invalidAddress = true;
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
@@ -214,6 +215,7 @@ export class TaInputAddressComponent
       this.numberOfSpaces = 0;
       if (!this.input.nativeElement.value) {
         this.clearInput();
+        return;
       }
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {
