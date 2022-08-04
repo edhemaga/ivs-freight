@@ -54,7 +54,6 @@ export class TaInputDropdownLabelComponent
         placeholder: 'Label Name',
         placeholderIcon: 'ic_dynamic_label',
         dropdownWidthClass: 'w-col-12',
-        specificDropdownLabel: true,
         isDropdown: true,
         dropdownLabelSelected: changes.selectedLabel.currentValue,
       };
@@ -86,7 +85,6 @@ export class TaInputDropdownLabelComponent
       placeholder: 'Label Name',
       placeholderIcon: 'ic_dynamic_label',
       dropdownWidthClass: 'w-col-12',
-      specificDropdownLabel: true,
       isDropdown: true,
     };
   }
@@ -156,7 +154,6 @@ export class TaInputDropdownLabelComponent
       this.newLabel.patchValue(null);
       return;
     }
-    console.log('SAVED LABEL');
 
     this.saveLabel.emit({ action: event, label: this.newLabel.value });
     this.getSuperControl.patchValue(this.newLabel.value);

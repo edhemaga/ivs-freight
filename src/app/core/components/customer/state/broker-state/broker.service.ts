@@ -36,7 +36,6 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(res.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.add(broker);
-
             this.tableService.sendActionAnimation({
               animation: 'add',
               tab: 'broker',

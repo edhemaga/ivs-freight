@@ -1,5 +1,5 @@
-<div class="d-flex align-items-center ta-input-arrows-container">
-  <p class="m-0 ta-font-regular">{{ name }}</p>
+<div class="ta-input-arrows-container">
+  <p class="m-0 ta-font-regular">{{ name }} <span *ngIf="required">*</span></p>
 
   <div class="d-flex align-items-center btn-container">
     <svg-icon
@@ -25,7 +25,17 @@
     ></svg-icon>
   </div>
 
-  <div class="d-flex align-items-center justify-content-center input-container">
-    {{ counter }}
+  <div
+    class="d-flex align-items-center justify-content-center"
+    [ngClass]="{
+      'input-container': type === 'applicant',
+      'driver-mvr-container': type === 'driver-modal'
+    }"
+  >
+    <!-- {{ counter }} -->
+    <app-ta-input
+      [formControl]="getSuperControl"
+      [inputConfig]="inputConfig"
+    ></app-ta-input>
   </div>
 </div>

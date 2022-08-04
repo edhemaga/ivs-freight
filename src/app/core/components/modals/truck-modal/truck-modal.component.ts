@@ -18,7 +18,7 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -83,7 +83,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   };
 
   public truckStatus: boolean = true;
-
+  public loadingVinDecoder: boolean = false;
   public isDirty: boolean;
 
   constructor(
@@ -503,8 +503,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value?.length === 17) {
+          this.loadingVinDecoder = true;
           this.vinDecoderService
-            .getVINDecoderData(value.toString())
+            .getVINDecoderData(value.toString(), 1)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: VinDecodeResponse) => {
@@ -516,7 +517,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     ? res.engineType.name
                     : null,
                 });
-
+                this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
                 this.selectedEngineType = res.engineType;
               },
@@ -527,16 +528,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
-        } else {
-          this.truckForm.patchValue({
-            model: null,
-            year: null,
-            truckMakeId: null,
-            truckEngineTypeId: null,
-          });
-
-          this.selectedTruckMake = null;
-          this.selectedEngineType = null;
         }
       });
   }

@@ -1,19 +1,31 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .ta-input-arrows-container {
   width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 
   p {
     font-size: 14px;
+    line-height: 18px;
     color: $bw6-2;
-    margin-right: 12px !important;
     user-select: none !important;
+    position: relative;
+
+    span {
+      color: #ef5350;
+      position: absolute;
+      top: -6px;
+      right: -6px;
+    }
   }
 
   .btn-container {
     width: 42px;
     height: 18px;
-    margin-right: 6px;
+    position: relative;
+    bottom: 1px;
 
     .minus-icon,
     .plus-icon {
@@ -48,13 +60,12 @@
     }
   }
 
+  // Custom width for component input
   .input-container {
     width: 32px;
-    height: 26px;
-    border-radius: 3px;
-    background-color: $ta-light-grey-4;
-    color: $bw6-2;
-    font-size: 14px;
-    user-select: none !important;
+  }
+
+  .driver-mvr-container {
+    width: 130px;
   }
 }

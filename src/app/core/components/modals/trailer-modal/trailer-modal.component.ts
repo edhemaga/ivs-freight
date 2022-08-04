@@ -25,11 +25,12 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -81,7 +82,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   };
 
   public trailerStatus: boolean = true;
-
+  public loadingVinDecoder: boolean = false;
   public isDirty: boolean;
 
   constructor(
@@ -518,8 +519,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (value?.length === 17) {
+          this.loadingVinDecoder = true;
           this.vinDecoderService
-            .getVINDecoderData(value.toString())
+            .getVINDecoderData(value.toString(), 2)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: VinDecodeResponse) => {
@@ -530,7 +532,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     ? res.trailerMake.name
                     : null,
                 });
-
+                this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;
               },
               error: (error: any) => {
@@ -540,13 +542,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
-        } else {
-          this.trailerForm.patchValue({
-            model: null,
-            year: null,
-            trailerMakeId: null,
-          });
-          this.selectedTrailerMake = null;
         }
       });
   }

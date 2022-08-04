@@ -5,12 +5,13 @@ import {
   EventEmitter,
   Input,
   OnChanges,
-  OnInit,
   Output,
   QueryList,
+  SimpleChanges,
   ViewChildren,
 } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
+import { SignInResponse } from 'appcoretruckassist';
 
 export interface ReviewCommentModal {
   sortData: any[];
@@ -24,7 +25,7 @@ export interface ReviewCommentModal {
   styleUrls: ['./ta-user-review.component.scss'],
   providers: [TitleCasePipe],
 })
-export class TaUserReviewComponent implements OnInit, OnChanges {
+export class TaUserReviewComponent implements OnChanges {
   @ViewChildren('reviewMessage') reviewMessageRef: QueryList<ElementRef>;
   @Input() reviewData: any[] = [];
   /**
@@ -33,15 +34,28 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
    * and pass like input, for focusing first created new review !!!
    */
   @Input() isNewReview: boolean = false;
+
   @Output() changeReviewsEvent: EventEmitter<ReviewCommentModal> =
     new EventEmitter<ReviewCommentModal>();
+
+  private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
   constructor(
     private reviewSortPipe: ReviewsSortPipe,
     private titlecasePipe: TitleCasePipe
   ) {}
 
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.reviewData?.currentValue != changes.reviewData?.previousValue) {
+      this.reviewData.filter((item) => {
+        return {
+          ...item,
+          prohibitEditingOthers:
+            item.companyUser.id !== this.user.companyUserId,
+        };
+      });
+    }
+
     if (this.isNewReview) {
       const timeout = setTimeout(() => {
         this.setInputCursorAtTheEnd(
@@ -50,13 +64,10 @@ export class TaUserReviewComponent implements OnInit, OnChanges {
         this.reviewData.filter((item) => (item.isEditMode = false));
         this.reviewData[0].isEditMode = true;
         this.reviewMessageRef.toArray()[0].nativeElement.value = null;
+
         clearTimeout(timeout);
       }, 150);
     }
-  }
-
-  ngOnInit() {
-    this.reviewData.map((item) => ({ ...item, isEditMode: false }));
   }
 
   public onAction(review: any, type: string, index: number) {

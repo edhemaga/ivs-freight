@@ -682,6 +682,7 @@ export class TaInputComponent
         'starting',
         'customer pay term',
         'dollar',
+        'fatalinjuries',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -734,7 +735,6 @@ export class TaInputComponent
           this.getSuperControl.value < this.inputConfig.min
         ) {
           this.getSuperControl.setErrors({ invalid: true });
-          return false;
         }
         return true;
       } else {
@@ -850,7 +850,7 @@ export class TaInputComponent
     this.input.nativeElement.value.trim();
   }
 
-  public disableConsecutivelySpaces(event: any) {
+  private disableConsecutivelySpaces(event: any) {
     if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
       this.numberOfSpaces++;
       if (this.numberOfSpaces > 1) {
@@ -862,7 +862,7 @@ export class TaInputComponent
     }
   }
 
-  public disableMultiplePoints(event: any) {
+  private disableMultiplePoints(event: any) {
     if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
       if (!this.getSuperControl.value) {
         event.preventDefault();

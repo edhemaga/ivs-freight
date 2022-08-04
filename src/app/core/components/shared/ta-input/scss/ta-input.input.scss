@@ -1,0 +1,259 @@
+// -------------------- Input Control --------------------
+.input-control {
+  width: 100%;
+  border: none;
+  outline: none;
+  border-radius: 2px !important;
+  height: 26px;
+  padding: 4px 6px;
+  font-size: 14px;
+  font-weight: 400;
+  background-color: #f3f3f3;
+  color: #6c6c6c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &::-moz-selection {
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
+  }
+
+  &::selection {
+    background-color: #e5e5e5 !important;
+    color: #3c3c3c !important;
+  }
+
+  &.center {
+    text-align: center;
+  }
+
+  &.capitalize {
+    text-transform: capitalize;
+  }
+
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
+  &.lowercase {
+    text-transform: lowercase;
+  }
+
+  &.disabled {
+    background-color: #fbfbfb !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &.disabled-filled {
+    background-color: #fbfbfb !important;
+    color: #919191 !important;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  &:hover {
+    background-color: #eeeeee;
+    color: #3c3c3c;
+  }
+
+  // Hover "label placehoder color change"
+  &:hover ~ .input-label {
+    transition: all 0.3s ease-in-out;
+    color: #3c3c3c;
+  }
+
+  &:focus,
+  &.focused {
+    transition: all 0.3s ease-in-out;
+    background-color: #6c6c6c;
+    color: #ffffff;
+
+    &::-webkit-input-placeholder {
+      color: #aaaaaa;
+    }
+    &::-moz-placeholder {
+      color: #aaaaaa;
+    }
+
+    &:-ms-input-placeholder {
+      color: #aaaaaa;
+    }
+
+    &::-ms-input-placeholder {
+      color: #aaaaaa;
+    }
+
+    &::placeholder {
+      color: #aaaaaa;
+    }
+  }
+
+  &.password-eye,
+  &.address-flag,
+  &.input-commands,
+  &.dropdown-label-active {
+    background-color: #6c6c6c !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #919191 !important;
+    }
+
+    &::selection {
+      background-color: #919191 !important;
+    }
+  }
+
+  &.password-eye-invalid {
+    background-color: #ef5350 !important;
+    color: #ffffff;
+
+    &::-moz-selection {
+      background-color: #e57373 !important;
+    }
+
+    &::selection {
+      background-color: #e57373 !important;
+    }
+  }
+
+  &.has-input-icon {
+    padding-left: 37px;
+  }
+
+  &.valid-focus-in,
+  &.dropdown-placeholder-active,
+  &.multiSelect-dropdown-active {
+    background-color: #536bc2 !important;
+    color: #ffffff !important;
+
+    &::-webkit-input-placeholder {
+      color: #97a8dc;
+    }
+    &::-moz-placeholder {
+      color: #97a8dc;
+    }
+
+    &:-ms-input-placeholder {
+      color: #97a8dc;
+    }
+
+    &::-ms-input-placeholder {
+      color: #97a8dc;
+    }
+
+    &::placeholder {
+      color: #97a8dc;
+    }
+
+    &::-moz-selection {
+      background-color: #6d82c7 !important;
+      color: #ffffff !important;
+    }
+
+    &::selection {
+      background-color: #6d82c7 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  &.invalid-focus-in {
+    background-color: #ef5350 !important;
+
+    &::-moz-selection {
+      background-color: #e57373 !important;
+      color: #ffffff !important;
+    }
+
+    &::selection {
+      background-color: #e57373 !important;
+      color: #ffffff !important;
+    }
+  }
+
+  &.blue-input-color {
+    color: #536bc2 !important;
+  }
+
+  &.dropdown-label-active {
+    padding-left: 143px !important;
+  }
+
+  //------------------------- Custom class -------------------------
+  &.input-32 {
+    height: 32px;
+  }
+
+  &.input-32-font-20 {
+    font-weight: 700;
+    font-size: 20px;
+  }
+
+  &.input-30 {
+    height: 30px;
+  }
+
+  &.input-22 {
+    height: 22px;
+    font-size: 11px;
+    font-weight: 400;
+  }
+
+  &.details-pages {
+    background-color: #6c6c6c !important;
+
+    &::-webkit-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+    &::-moz-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &:-ms-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &::-ms-input-placeholder {
+      color: #b7b7b7 !important;
+    }
+
+    &::placeholder {
+      color: #b7b7b7 !important;
+    }
+  }
+}
+
+//------------------------- Input Number Hide Arrows -------------------------
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0 !important;
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover,
+input[type="number"]::-webkit-inner-spin-button:focus,
+input[type="number"]::-webkit-outer-spin-button:focus {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  margin: 0 !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+input[type="number"]:hover,
+input[type="number"]:focus {
+  -moz-appearance: textfield !important;
+}

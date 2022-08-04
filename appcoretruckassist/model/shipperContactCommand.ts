@@ -13,7 +13,7 @@
 
 export interface ShipperContactCommand { 
     fullName?: string | null;
-    departmentId?: number | null;
+    departmentId?: number;
     phone?: string | null;
     phoneExt?: string | null;
     email?: string | null;

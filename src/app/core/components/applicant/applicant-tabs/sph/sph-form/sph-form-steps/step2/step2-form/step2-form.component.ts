@@ -6,7 +6,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
@@ -67,6 +72,9 @@ export class SphStep2FormComponent implements OnInit {
       checked: false,
     },
   ];
+
+  public fatalitiesControl: FormControl = new FormControl(0);
+  public injuriesControl: FormControl = new FormControl(0);
 
   constructor(
     private formBuilder: FormBuilder,

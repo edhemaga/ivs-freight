@@ -117,14 +117,12 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     const newData: UpdateFactoringCompanyCommand = {
       companyId: company.divisions.length ? null : company.id,
-      factoringCompany: {
-        name: name,
-        phone: phone,
-        email: email,
-        address: this.selectedAddress,
-        noticeOfAssigment: noticeOfAssigment,
-        note: note,
-      },
+      name: name,
+      phone: phone,
+      email: email,
+      address: this.selectedAddress,
+      noticeOfAssigment: noticeOfAssigment,
+      note: note,
     };
     this.settingsService
       .updateFactoringCompany(newData)
@@ -150,9 +148,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
   private deleteFactoringCompanyById(company: any) {
     this.settingsService
-      .deleteFactoringCompanyById(
-        company.divisions.length ? null : this.editData.company.id
-      )
+      .deleteFactoringCompanyById(this.editData.company.id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

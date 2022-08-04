@@ -16,7 +16,6 @@ import { ShipperResolver } from './core/components/customer/state/shipper-state/
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-import { SphPage2PdfComponent } from './core/components/applicant/state/pdf-export/sph/sph-page2-pdf/sph-page2-pdf.component';
 
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
@@ -285,11 +284,6 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
       ).then((m) => m.CdlCardModule),
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'pdf',
-    component: SphPage2PdfComponent,
-    data: { title: 'pdf' },
   },
   {
     path: 'catalog',

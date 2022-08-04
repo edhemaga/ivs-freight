@@ -134,9 +134,23 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url("../..//assets/svg/common/ic_confirm.svg");
+            content: url('../..//assets/svg/common/ic_confirm.svg');
             width: 14px;
             height: 10px;
+          }
+        }
+
+        &.last-active {
+          position: relative;
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 2px;
+            width: 100%;
+            background-color: #f3f3f3;
+            border-radius: 1px;
           }
         }
 
@@ -207,6 +221,16 @@
         &.details-template {
           display: flex;
           align-items: center;
+          .details-template-text {
+            &.active {
+              color: #536bc2;
+
+              &:hover {
+                color: #3551b7;
+                transition: all 0.3s ease-in-out;
+              }
+            }
+          }
           .details-template-logo {
             margin-left: 6px;
             width: 14px;
@@ -439,6 +463,10 @@
         width: 616px;
       }
 
+      &.w-col-sph-received-by {
+        width: 182px;
+      }
+
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
       &.dropdown-options-groups {
         max-height: 495px;
@@ -538,7 +566,7 @@
                 &::after {
                   position: absolute;
                   right: 3px;
-                  content: url("../..//assets/svg/common/ic_confirm.svg");
+                  content: url('../..//assets/svg/common/ic_confirm.svg');
                   width: 14px;
                   height: 10px;
                 }
@@ -640,7 +668,7 @@
           font-weight: 600;
 
           &::before {
-            content: "";
+            content: '';
             height: 2px;
             width: 162px;
             background-color: #f3f3f3;

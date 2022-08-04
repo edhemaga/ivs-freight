@@ -249,7 +249,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // this.reviews.unshift({
     //   companyUser: {
     //     fullName: this.companyUser.firstName.concat(' ', this.companyUser.lastName),
-    //     avatar: 'https://picsum.photos/id/237/200/300',
+    //     avatar: this.companyUser.avatar,
     //   },
     //   commentContent: '',
     //   createdAt: new Date().toISOString(),

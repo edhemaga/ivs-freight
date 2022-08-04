@@ -23,32 +23,6 @@
   transition: $nav-transition;
   overflow: hidden;
 
-  &.scroll {
-    overflow-y: scroll;
-    scrollbar-width: none !important; /* Firefox */
-
-    &::-webkit-scrollbar {
-      width: 2px;
-    }
-    &::-webkit-scrollbar-thumb {
-      background-color: transparent;
-      border: 6px solid transparent;
-      border-radius: 1px;
-    }
-    &::-webkit-scrollbar-track {
-      padding: 0;
-      position: relative;
-      right: 0;
-      top: 0;
-      background: transparent;
-    }
-
-    &::-moz-selection {
-      background-color: rgb(229, 229, 229, 0.2);
-      color: #6c6c6c;
-    }
-  }
-
   &:hover {
     width: 200px;
     box-shadow: $nav-boxshadow;
@@ -67,12 +41,28 @@
   //------- ZOOM IN 110% & 125% for routing container
 
   .wrapper-container {
+    @media only screen and (min-width: 1800px) and (max-width: 2000px) {
+      position: absolute;
+      top: 103px;
+      left: 6px;
+      padding: 11px;
+      height: 700px;
+      width: 194px;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      scrollbar-width: 0px;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
+    }
+
     @media only screen and (max-width: 1800px) {
       position: absolute;
       top: 103px;
       left: 6px;
       padding: 11px;
-      height: 600px;
+      height: 605px;
       width: 194px;
       overflow-x: hidden;
       overflow-y: scroll;
@@ -84,7 +74,7 @@
     }
 
     @media only screen and (max-width: 1600px) {
-      height: 500px;
+      height: 510px;
     }
 
     @media only screen and (max-width: 1300px) {
@@ -100,6 +90,16 @@
 
   .wrapper-line {
     display: none;
+    @media only screen and (min-width: 1800px) and (max-width: 2000px) {
+      display: inline;
+      height: 2px;
+      width: 176px;
+      margin-left: -5px;
+      background-color: $wrapper-line;
+      position: absolute;
+      bottom: 108px;
+    }
+
     @media only screen and (max-width: 1800px) {
       display: inline;
       height: 2px;

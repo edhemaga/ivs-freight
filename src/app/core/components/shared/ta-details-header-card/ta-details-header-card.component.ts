@@ -30,6 +30,8 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() public searchInputName: string;
   @Input() public hasArrow: boolean;
   @Input() public optionsId: number;
+  @Input() public sortOptions: string;
+
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() selectValueStore = new EventEmitter<string>();

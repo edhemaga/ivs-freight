@@ -41,6 +41,7 @@ export class TaCustomCardComponent {
   @Input() disabledCard: boolean = false;
   @Input() customClassHeaderSvg: boolean = false;
   @Input() disableMultipleReviews: boolean = false;
+
   @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
