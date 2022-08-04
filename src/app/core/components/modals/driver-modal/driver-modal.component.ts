@@ -324,6 +324,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public removeOffDutyLocation(id: number) {
     this.offDutyLocations.removeAt(id);
+    this.selectedOffDutyAddressArray.slice(id, 1);
   }
 
   private onIncludePayroll(): void {
@@ -1099,22 +1100,25 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           }
 
           if (res.offDutyLocations.length) {
-            for (const offDuty of res.offDutyLocations) {
+            for (let index = 0; index < res.offDutyLocations.length; index++) {
               this.offDutyLocations.push(
                 this.formBuilder.group({
-                  id: offDuty.id,
-                  nickname: offDuty.nickname,
-                  address: offDuty.address.address,
-                  city: offDuty.address.city,
-                  state: offDuty.address.state,
-                  stateShortName: offDuty.address.stateShortName,
-                  country: offDuty.address.country,
-                  zipCode: offDuty.address.zipCode,
-                  addressUnit: offDuty.address.addressUnit,
-                  street: offDuty.address.street,
-                  streetNumber: offDuty.address.streetNumber,
+                  id: res.offDutyLocations[index].id,
+                  nickname: res.offDutyLocations[index].nickname,
+                  address: res.offDutyLocations[index].address.address,
+                  city: res.offDutyLocations[index].address.city,
+                  state: res.offDutyLocations[index].address.state,
+                  stateShortName:
+                    res.offDutyLocations[index].address.stateShortName,
+                  country: res.offDutyLocations[index].address.country,
+                  zipCode: res.offDutyLocations[index].address.zipCode,
+                  addressUnit: res.offDutyLocations[index].address.addressUnit,
+                  street: res.offDutyLocations[index].address.street,
+                  streetNumber:
+                    res.offDutyLocations[index].address.streetNumber,
                 })
               );
+              this.selectedOffDutyAddressArray[index] = res.address;
             }
           }
         },

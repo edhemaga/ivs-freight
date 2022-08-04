@@ -26,6 +26,7 @@
           placeholderIcon: 'address',
           textTransform: 'capitalize'
         }"
+        [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
     </div>

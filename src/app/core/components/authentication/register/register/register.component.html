@@ -99,6 +99,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedAddress"
                 (selectedAddress)="handleAddressChange($event)"
               ></app-ta-input-address>
             </div>
