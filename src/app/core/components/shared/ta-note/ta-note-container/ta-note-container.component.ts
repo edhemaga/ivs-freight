@@ -82,11 +82,9 @@ export class TaNoteContainerComponent implements OnInit {
       }
       return 1;
     });
-    console.log(this.containerColors, 'this.containerColors 444')
   }
 
   executeEditor(action: string, color?: string, indx?: number) {
-    console.log(this.containerColors, 'this.containerColors 111')
     if (indx) {
       this.selectedColorName = this.containerColors[indx];
     }
@@ -120,8 +118,6 @@ export class TaNoteContainerComponent implements OnInit {
         });
       });
     }
-
-    console.log(this.containerColors, 'this.containerColors 222')
   }
 
   focusElement(): void {
@@ -143,10 +139,8 @@ export class TaNoteContainerComponent implements OnInit {
           color: "#6c6c6c",
           name: "Gray"
         };
-        this.filterContainersColor();
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
-      console.log(this.containerColors, 'this.containerColors 333')
     }
   }
 
