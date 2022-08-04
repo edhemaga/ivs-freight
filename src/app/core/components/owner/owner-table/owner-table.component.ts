@@ -2,7 +2,10 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -10,6 +13,7 @@ import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query
 import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveState } from '../state/owner-inactive-state/owner-inactive.store';
+import { OwnerTService } from '../state/owner.service';
 
 @Component({
   selector: 'app-owner-table',
@@ -36,7 +40,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
     private tableService: TruckassistTableService,
     private ownerActiveQuery: OwnerActiveQuery,
     private ownerInactiveQuery: OwnerInactiveQuery,
-    private phonePipe: formatPhonePipe,
+    private ownerService: OwnerTService,
+    private phonePipe: formatPhonePipe
   ) {}
 
   ngOnInit(): void {
@@ -101,6 +106,110 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
               this.sendOwnerData();
             }
           } */
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          this.ownerService
+            .deleteOwnerList(response, this.selectedTab)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.viewData = this.viewData.map((owner: any) => {
+                response.map((r: any) => {
+                  if (owner.id === r.id) {
+                    owner.actionAnimation = 'delete';
+                  }
+                });
+
+                return owner;
+              });
+
+              this.updateDataCount();
+
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
+
+              this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
+            });
+        }
+      });
+
+    // Owner Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // Add Owner
+        if (res.animation === 'add') {
+          if (this.selectedTab === 'inactive') {
+            this.viewData.push(this.mapOwnerData(res.data));
+
+            this.viewData = this.viewData.map((owner: any) => {
+              if (owner.id === res.id) {
+                owner.actionAnimation = 'add';
+              }
+
+              return owner;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(false, this.viewData);
+
+              clearInterval(inetval);
+            }, 1000);
+          }
+
+          this.updateDataCount();
+        }
+        // Update Owner
+        else if (res.animation === 'update' && this.selectedTab === res.tab) {
+          const updatedOwner = this.mapOwnerData(res.data);
+
+          this.viewData = this.viewData.map((owner: any) => {
+            if (owner.id === res.id) {
+              owner = updatedOwner;
+              owner.actionAnimation = 'update';
+            }
+
+            return owner;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // Delete Owner
+        else if (res.animation === 'delete') {
+          if (this.selectedTab === res.tab) {
+            let ownerIndex: number;
+
+            this.viewData = this.viewData.map((owner: any, index: number) => {
+              if (owner.id === res.id) {
+                owner.actionAnimation = 'delete';
+                ownerIndex = index;
+              }
+
+              return owner;
+            });
+
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(false, this.viewData);
+
+              this.viewData.splice(ownerIndex, 1);
+              clearInterval(inetval);
+            }, 1000);
+          }
+
+          this.updateDataCount();
         }
       });
   }
@@ -194,6 +303,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
     this.setOwnerData(td);
   }
 
+  updateDataCount() {
+    const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
+
+    this.tableData[0].length = ownerCount.active;
+    this.tableData[1].length = ownerCount.inactive;
+  }
+
   getGridColumns(stateName: string, resetColumns: boolean) {
     const userState: any = JSON.parse(
       localStorage.getItem(stateName + '_user_columns_state')
@@ -231,7 +347,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
       isSelected: false,
       textType: data?.ownerType?.name ? data.ownerType.name : '',
       textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
-      textAddress: data?.address?.address ? data.address.address : ''
+      textAddress: data?.address?.address ? data.address.address : '',
     };
   }
 
@@ -280,8 +396,14 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
         {
           ...event,
           type: 'edit',
+          selectedTab: this.selectedTab,
         }
       );
+    } else if (event.type === 'delete-owner') {
+      this.ownerService
+        .deleteOwnerById(event.id, this.selectedTab)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
     }
   }
 }
