@@ -30,6 +30,11 @@
       position: absolute;
       background-color: rgb(238, 238, 238);
 
+      &.theads  {
+        display: flex;
+        align-items: center;
+      }
+
       &:first-child {
         left: 0px;
       }
@@ -42,6 +47,7 @@
     .abs-right {
       width: 30px;
       position: absolute;
+      background-color: rgb(238, 238, 238);
 
       &:nth-child(12) {
         right: 68px;
