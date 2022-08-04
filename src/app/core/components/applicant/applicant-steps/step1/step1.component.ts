@@ -1,7 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-
-import { Observable } from 'rxjs';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+  FormControl,
+} from '@angular/forms';
 
 import { untilDestroyed } from 'ngx-take-until-destroy';
 
@@ -11,12 +15,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import {
-  Applicant,
-  Bank,
-  IApplicantAddress,
-  PersonalInfo,
-} from '../../state/model/applicant.model';
+
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
@@ -27,10 +26,7 @@ import {
   routingBankRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { getPersonalInfoReviewFeedbackData } from '../../state/utils/review-feedback-data/step1';
-
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
-import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
 @Component({
   selector: 'app-step1',
@@ -278,19 +274,9 @@ export class Step1Component implements OnInit, OnDestroy {
     },
   ];
 
-  /*  public loadingApplicant$: Observable<boolean>;
-  public loadingBankData$: Observable<boolean>;
-  public loadingPersonalInfo$: Observable<boolean>;
-
-  public personalInfo: PersonalInfo | undefined;
-
-  public reviewFeedback: any[] = getPersonalInfoReviewFeedbackData();
-  private countOfReview: number = 0; */
-
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService /*
-    private reviewFeedbackService: ReviewFeedbackService */
+    private applicantListsService: ApplicantListsService
   ) {}
 
   ngOnInit(): void {
@@ -312,12 +298,13 @@ export class Step1Component implements OnInit, OnDestroy {
   private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
-
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       dateOfBirth: [null, Validators.required],
+      firstRowReview: [null],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex]],
+      secondRowReview: [null],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       ssn: [null, [Validators.required, ssnNumberRegex]],
