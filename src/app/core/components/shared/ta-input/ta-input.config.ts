@@ -21,24 +21,19 @@ export interface ITaInput {
   textAlign?: string | 'center';
   blackInput?: boolean; // has only black background && input clear, no validations
   blueInputColor?: boolean; // some inputs has blue color on focus out
-  onlyCityAndZipAddress?: boolean;
   incorrectInput?: boolean;
-  // Custom classes
-  // - 'input-32' -> height: 32px,
-  // - 'input-30' -> height: 30px,
-  // - 'datetimeclass' -> date/time pickers
-  // - 'dollar-placeholderIcon' -> when input has dollar icon
-  customClass?: string;
   autoFocus?: boolean;
   hideClear?: boolean;
   hideRequiredCheck?: boolean;
   hideErrorMessage?: boolean;
   thousandSeparator?: boolean; // type of input must be 'text'
+
   loadingSpinner?: {
     size?: string; // small, big
     color?: string; // black, gray, white, blueLight, blueDark
     isLoading?: boolean;
   };
+
   commands?: {
     active?: boolean;
     type?: string; // examples:  'increment-decrement', 'confirm-cancel'
@@ -60,14 +55,28 @@ export interface ITaInput {
     };
     setTimeout?: number; // if must keep focus on input
   };
-  // ----------------- DROPDOWNS INPUT CONFIG -----------------
+
+  // Custom classes
+  // - 'input-22' -> height: 22px
+  // - 'input-32' -> height: 32px,
+  // - 'input-30' -> height: 30px,
+  // - 'datetimeclass' -> date/time pickers
+  // - 'dollar-placeholderIcon' -> when input has dollar icon
+  customClass?: string;
+
   // Pure Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
+
   // Label dropdown
   isDropdownLabel?: boolean;
   dropdownLabelSelected?: any;
+
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
   multiSelectDropdownActive?: boolean;
+
+  // Address
+  onlyCityAndZipAddress?: boolean;
+  addressFlag?: string; // added text in right corner and this flag will be disabled clear button, invalid danger mark
 }

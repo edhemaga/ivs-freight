@@ -38,7 +38,7 @@ import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.c
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -68,6 +68,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public driverFullName: string = null;
 
   public owner: CheckOwnerSsnEinResponse = null;
+
+  public disablePayType: boolean = false;
+  public paytypeValue: string;
 
   public logoOptions: Options = {
     floor: 0.1,
@@ -137,7 +140,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   };
 
   public isDirty: boolean;
-  public disablePayType: boolean = false;
+
   public addNewAfterSave: boolean = false;
 
   constructor(
@@ -354,7 +357,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         );
       });
   }
-  paytypeValue: string;
+
   private onPayTypeSelected(): void {
     this.driverForm
       .get('payType')
@@ -1089,7 +1092,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               .find((item) => item.checked);
 
             if (activeOwnerTab) {
-              console.log(activeOwnerTab);
               this.tabOwnerChange(activeOwnerTab);
             }
           }
@@ -1137,6 +1139,29 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');
+        },
+      });
+  }
+
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank({ name: bank.name })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
         },
       });
   }

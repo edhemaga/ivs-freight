@@ -13,7 +13,8 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput,
-    valid: getSuperControl.value && getSuperControl.valid && !focusInput
+    valid: getSuperControl.value && getSuperControl.valid && !focusInput,
+    'address-flag': inputConfig.addressFlag && forceVisibilityOfCommands
   }"
 >
   <!-- Input Invalid Danger Mark -->
@@ -22,7 +23,8 @@
       touchedInput &&
       getSuperControl.value &&
       getSuperControl.invalid &&
-      !focusInput
+      !focusInput &&
+      !inputConfig.addressFlag
     "
     class="input-invalid-danger-mark"
     src="assets/svg/common/ic_danger.svg"
@@ -31,7 +33,7 @@
 
   <!-- Input Clear -->
   <div
-    *ngIf="!inputConfig.isDisabled"
+    *ngIf="!inputConfig.isDisabled && !inputConfig.addressFlag"
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
       'valid-focus-in':
@@ -54,37 +56,13 @@
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
 
-  <!-- Input Commands -->
+  <!-- Adress flag -->
   <div
-    *ngIf="inputConfig.commands?.active && isVisibleCommands"
-    class="ta-input-commands"
+    *ngIf="inputConfig.addressFlag && isVisibleAddressFlag"
+    class="input-address-flag"
+    (click)="changeFlagText($event)"
   >
-    <div class="ta-input-command-first">
-      <svg-icon
-        class="ta-input-command-svg-first"
-        [src]="inputConfig.commands.firstCommand.svg"
-        (click)="
-          onCommands(
-            $event,
-            inputConfig.commands.type,
-            inputConfig.commands.firstCommand.name
-          )
-        "
-      ></svg-icon>
-    </div>
-    <div class="ta-input-command-second">
-      <svg-icon
-        class="ta-input-command-svg-second"
-        [src]="inputConfig.commands.secondCommand.svg"
-        (click)="
-          onCommands(
-            $event,
-            inputConfig.commands.type,
-            inputConfig.commands.secondCommand.name
-          )
-        "
-      ></svg-icon>
-    </div>
+    <p>{{ inputConfig.addressFlag }}</p>
   </div>
 
   <!-- Input Icon Placeholder -->
@@ -92,7 +70,7 @@
     class="input-icon {{ inputConfig.customClass }}"
     *ngIf="inputConfig.placeholderIcon"
     [ngClass]="{
-      'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
+      disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-required-in':
         getSuperControl.value &&
@@ -146,7 +124,8 @@
         focusInput &&
         !inputConfig.blackInput,
       'has-input-icon': inputConfig.placeholderIcon,
-      'input-commands': inputConfig.commands?.active && isVisibleCommands
+      'input-commands': inputConfig.commands?.active && isVisibleCommands,
+      'address-flag': inputConfig.addressFlag && isVisibleAddressFlag
     }"
     (keyup)="onBackspace($event)"
     (input)="onChange($event.target.value)"
@@ -169,11 +148,70 @@
       'valid-focus-out':
         getSuperControl.value && !getSuperControl.invalid && !focusInput,
       'invalid-focus-out':
-        getSuperControl.value && getSuperControl.invalid && !focusInput
+        getSuperControl.value && getSuperControl.invalid && !focusInput,
+      'routing-address': inputConfig.addressFlag && !focusInput,
+      'routing-address-focus':
+        inputConfig.addressFlag && (focusInput || getSuperControl.value)
     }"
   >
     {{ inputConfig.label }}
   </label>
+
+  <!-- Input Commands -->
+  <div
+    *ngIf="
+      inputConfig.commands?.active &&
+      isVisibleCommands &&
+      inputConfig.addressFlag
+    "
+    class="ta-input-commands"
+    [ngClass]="{ 'address-flag': inputConfig.addressFlag }"
+  >
+    <div
+      class="ta-input-command-first"
+      ngbTooltip
+      [mainTooltip]="inputConfig.commands?.firstCommand?.popup?.name"
+      [tooltipBackground]="
+        inputConfig.commands?.firstCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!inputConfig.commands?.firstCommand?.popup"
+      position="top"
+    >
+      <svg-icon
+        class="ta-input-command-svg-first"
+        [src]="inputConfig.commands.firstCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.firstCommand.name
+          )
+        "
+      ></svg-icon>
+    </div>
+    <div
+      class="ta-input-command-second"
+      ngbTooltip
+      [mainTooltip]="inputConfig.commands?.secondCommand?.popup?.name"
+      [tooltipBackground]="
+        inputConfig.commands?.secondCommand?.popup?.backgroundColor
+      "
+      [disableTooltip]="!inputConfig.commands?.secondCommand?.popup"
+      position="top"
+    >
+      <svg-icon
+        class="ta-input-command-svg-second"
+        [src]="inputConfig.commands.secondCommand.svg"
+        (click)="
+          onCommands(
+            $event,
+            inputConfig.commands.type,
+            inputConfig.commands.secondCommand.name
+          )
+        "
+      ></svg-icon>
+    </div>
+  </div>
 
   <!-- Input Error Message -->
   <span
@@ -181,7 +219,8 @@
       !(!getSuperControl.value && focusInput) &&
       (touchedInput || getSuperControl.value) &&
       getSuperControl.invalid &&
-      !inputConfig.commands?.active
+      !inputConfig.commands?.active &&
+      !inputConfig.hideErrorMessage
     "
     class="input-error {{ inputConfig.customClass }}"
   >

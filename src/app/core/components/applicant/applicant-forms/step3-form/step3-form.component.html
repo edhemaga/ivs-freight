@@ -27,7 +27,6 @@
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-country'
         }"
-        [canAddNew]="true"
         [options]="countryTypes"
         (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
       ></app-ta-input-dropdown>
@@ -71,7 +70,6 @@
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-state'
         }"
-        [canAddNew]="true"
         [options]="stateTypes"
         (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
       ></app-ta-input-dropdown>
@@ -87,7 +85,6 @@
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-class'
         }"
-        [canAddNew]="true"
         [options]="classTypes"
         (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
       ></app-ta-input-dropdown>
@@ -146,7 +143,6 @@
           dropdownWidthClass: 'w-col-12',
           customClass: 'input-30'
         }"
-        [canAddNew]="true"
         [options]="restrictionsList"
         (selectedItem)="handleInputSelect($event, 'RESTRICTIONS')"
       ></app-ta-input-dropdown>
@@ -189,7 +185,6 @@
           dropdownWidthClass: 'w-col-applicant-endorsments',
           customClass: 'input-30'
         }"
-        [canAddNew]="true"
         [options]="endorsmentsList"
         (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
       ></app-ta-input-dropdown>
