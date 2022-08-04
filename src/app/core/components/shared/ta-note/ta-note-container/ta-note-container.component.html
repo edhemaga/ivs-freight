@@ -51,7 +51,7 @@
        position="bottom"
        class="editor_buttons text_color"
        >
-       <div class="color_picker_arrow" [class.flip_arrow]="!showCollorPattern" >
+       <div class="color_picker_arrow" [class.flip_arrow]="!showCollorPattern" [class.active]="showCollorPattern">
         <svg-icon
           src="assets/svg/truckassist-table/arrow-columns-drop.svg"
         ></svg-icon>
@@ -69,10 +69,6 @@
         class="editor_buttons text_color"
         >
       </div>
-      <!-- <div (click)="executeEditor('foreColor', '#158740')"></div>
-      <div (click)="executeEditor('foreColor', '#2B79C7')"></div>
-      <div (click)="executeEditor('foreColor', '#9F48B9')"></div>
-      <div (click)="executeEditor('foreColor', '#DB2222')"></div> -->
     </div>
   </div>
   <div class="note_border_line"></div>

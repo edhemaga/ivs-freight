@@ -37,10 +37,6 @@ export class TaNoteContainerComponent implements OnInit {
   };
   containerColors: any[] = [
     {
-      color: "#6C6C6C",
-      name: "Gray"
-    },
-    {
       color: "#26A690",
       name: "Dark Green"
     },
@@ -56,6 +52,10 @@ export class TaNoteContainerComponent implements OnInit {
       color: "#536BC2",
       name: "Blue"
     },
+    {
+      color: "#6C6C6C",
+      name: "Gray"
+    }
   ]
   selectedColorName: any = {
     color: "#6C6C6C",
@@ -77,14 +77,16 @@ export class TaNoteContainerComponent implements OnInit {
 
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (a['color'] == this.selectedColorName.color) {
+      if (a['color'] != this.selectedColorName.color) {
         return -1;
       }
       return 1;
     });
+    console.log(this.containerColors, 'this.containerColors 444')
   }
 
   executeEditor(action: string, color?: string, indx?: number) {
+    console.log(this.containerColors, 'this.containerColors 111')
     if (indx) {
       this.selectedColorName = this.containerColors[indx];
     }
@@ -118,6 +120,8 @@ export class TaNoteContainerComponent implements OnInit {
         });
       });
     }
+
+    console.log(this.containerColors, 'this.containerColors 222')
   }
 
   focusElement(): void {
@@ -142,6 +146,7 @@ export class TaNoteContainerComponent implements OnInit {
         this.filterContainersColor();
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
+      console.log(this.containerColors, 'this.containerColors 333')
     }
   }
 

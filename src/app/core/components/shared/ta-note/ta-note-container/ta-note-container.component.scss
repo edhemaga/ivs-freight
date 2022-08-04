@@ -162,7 +162,7 @@
               background-color: #6C6C6C;
             }
 
-            &:hover:not(:first-child) {
+            &:hover:not(:last-child) {
               transform: scale(1.1);
               transform-origin: center;
             }
@@ -187,11 +187,14 @@
         &.flip_arrow{
             transform: scaleX(-1);
         }
+        &.active{
+          right: 9px;
+        }
         svg-icon{
             svg{
                 display: flex;
                 width: 7px;
-                height: 7px;
+                height: 10px;
 
                 path{
                     fill: #fff;
