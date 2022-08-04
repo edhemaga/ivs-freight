@@ -26,8 +26,6 @@ import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Subject, takeUntil } from 'rxjs';
-
 
 @UntilDestroy()
 @Component({
@@ -59,8 +57,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   mapingIndex: number = 0;
-
-  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private modalService: ModalService,
@@ -106,7 +102,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -758,8 +754,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

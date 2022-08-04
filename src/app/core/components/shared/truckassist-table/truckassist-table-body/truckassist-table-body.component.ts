@@ -18,7 +18,6 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { Subject, takeUntil } from 'rxjs';
 
 @UntilDestroy()
 @Component({
@@ -28,8 +27,7 @@ import { Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, AfterViewInit, OnDestroy
-{
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
@@ -55,14 +53,13 @@ export class TruckassistTableBodyComponent
   checkForScrollTimeout: any;
   viewDataEmpty: number;
   viewDataTimeOut: any;
-  private destroy$: Subject<void> = new Subject<void>();
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
 
@@ -74,7 +71,7 @@ export class TruckassistTableBodyComponent
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
-    .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this))
       .subscribe((response: string) => {
         if (response !== '') {
           const isSelect = response === 'select';
@@ -98,7 +95,7 @@ export class TruckassistTableBodyComponent
 
     // Columns Reorder
     this.tableService.currentColumnsOrder
-    .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
@@ -111,7 +108,7 @@ export class TruckassistTableBodyComponent
 
     // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
-    .pipe(untilDestroyed(this))
+      .pipe(untilDestroyed(this))
       .subscribe((reset: boolean) => {
         if (reset) {
           this.mySelection = [];
@@ -128,7 +125,7 @@ export class TruckassistTableBodyComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       clearTimeout(this.viewDataTimeOut);
-      
+
       this.viewData = changes.viewData.currentValue;
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
@@ -163,7 +160,7 @@ export class TruckassistTableBodyComponent
     if (
       !changes?.selectedTab?.firstChange &&
       changes?.selectedTab?.currentValue !==
-        changes?.selectedTab?.previousValue &&
+      changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
@@ -265,7 +262,7 @@ export class TruckassistTableBodyComponent
     alert('Treba da se odradi servis i componenta za Attachments');
   }
 
-  onShowItemDrop(index: number) {}
+  onShowItemDrop(index: number) { }
 
   onShowPassword(index: number) {
     this.loadingPassword = index;
@@ -305,8 +302,6 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
   }
 }
