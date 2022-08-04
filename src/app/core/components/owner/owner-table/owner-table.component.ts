@@ -1,16 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
+import { OwnerActiveState } from '../state/owner-active-state/owner-active.store';
+import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
+import { OwnerInactiveState } from '../state/owner-inactive-state/owner-inactive.store';
 
 @Component({
   selector: 'app-owner-table',
   templateUrl: './owner-table.component.html',
   styleUrls: ['./owner-table.component.scss'],
+  providers: [formatPhonePipe],
 })
-export class OwnerTableComponent implements OnInit {
+export class OwnerTableComponent implements OnInit, AfterViewInit {
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -19,15 +26,21 @@ export class OwnerTableComponent implements OnInit {
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+  public ownerActive: OwnerActiveState[] = [];
+  public ownerInactive: OwnerInactiveState[] = [];
 
   constructor(
     private modalService: ModalService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private ownerActiveQuery: OwnerActiveQuery,
+    private ownerInactiveQuery: OwnerInactiveQuery,
+    private phonePipe: formatPhonePipe,
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getOwnerData();
+    this.sendOwnerData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -39,14 +52,81 @@ export class OwnerTableComponent implements OnInit {
           this.sendOwnerData();
         }
       });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          /* const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendOwnerData();
+            }
+          } */
+        }
+      });
   }
 
-  public initTableOptions(): void {
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
+  }
+
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -75,17 +155,23 @@ export class OwnerTableComponent implements OnInit {
     };
   }
 
-  getOwnerData() {
-    this.sendOwnerData();
-  }
-
   sendOwnerData() {
+    this.initTableOptions();
+
+    const ownerCount = JSON.parse(localStorage.getItem('ownerTableCount'));
+
+    const ownerActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const ownerInactiveData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
     this.tableData = [
       {
         title: 'Active',
         field: 'active',
-        length: 8,
-        data: this.getDumyData(8),
+        length: ownerCount.active,
+        data: ownerActiveData,
         extended: false,
         gridNameTitle: 'Owner',
         stateName: 'owners',
@@ -94,8 +180,8 @@ export class OwnerTableComponent implements OnInit {
       {
         title: 'Inactive',
         field: 'inactive',
-        length: 15,
-        data: this.getDumyData(15),
+        length: ownerCount.inactive,
+        data: ownerInactiveData,
         extended: false,
         gridNameTitle: 'Owner',
         stateName: 'owners',
@@ -121,80 +207,44 @@ export class OwnerTableComponent implements OnInit {
   }
 
   setOwnerData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data: any, index: number) => {
+        return this.mapOwnerData(data);
+      });
+
+      // For Testing
+      // for (let i = 0; i < 300; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    } else {
+      this.viewData = [];
+    }
   }
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 233,
-        companyId: 1,
-        ownerCompanyId: null,
-        driverId: null,
-        businessName: 'RSF ENTERPRISES INC',
-        categoryId: null,
-        category: 'Company',
-        taxNumber: '30-0875663',
-        bankId: 1,
-        accountNumber: '291016088388',
-        routingNumber: '051000017',
-        address: null,
-        street: null,
-        city: null,
-        state: null,
-        country: null,
-        zip: null,
-        inactiveTruckCount: 1,
-        inactiveTrailerCount: 0,
-        activeTruckCount: 1,
-        activeTrailerCount: 1,
-        status: 1,
-        used: 0,
-        protected: 0,
-        doc: {
-          additionalData: {
-            email: 'rsfenterprises17@gmail.com',
-            phone: '(702) 803-4272',
-            address: {
-              city: 'Downers Grove',
-              state: 'Illinois',
-              address: '420 74th St, Downers Grove, IL 60516, USA',
-              country: 'US',
-              zipCode: '60516',
-              addressUnit: '203',
-              stateShortName: 'IL',
-            },
-            bankData: {
-              id: 1,
-              bankLogo: 'bank-of-america',
-              bankName: 'Bank of America',
-              bankLogoWide: 'bank-of-america-wide',
-              accountNumber: '291016088388',
-              routingNumber: '051000017',
-            },
-          },
-        },
-        createdAt: '2021-01-18T00:18:12',
-        updatedAt: '2021-06-17T19:12:28',
-        analyticsTimeSeries: null,
-        guid: '296cf410-836c-4dd3-b734-dfb03f474dcc',
-        textPhone: '(702) 803-4272',
-        textEmail: 'rsfenterprises17@gmail.com',
-        textAddress: '420 74th St, Downers Grove, IL 60516, USA',
-      },
-    ];
+  mapOwnerData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textType: data?.ownerType?.name ? data.ownerType.name : '',
+      textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
+      textAddress: data?.address?.address ? data.address.address : ''
+    };
+  }
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[0]);
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.ownerActive = this.ownerActiveQuery.getAll();
+
+      return this.ownerActive?.length ? this.ownerActive : [];
+    } else if (dataType === 'inactive') {
+      this.ownerInactive = this.ownerInactiveQuery.getAll();
+
+      return this.ownerInactive?.length ? this.ownerInactive : [];
     }
-
-    return data;
   }
 
   onToolBarAction(event: any) {
@@ -202,11 +252,27 @@ export class OwnerTableComponent implements OnInit {
       this.modalService.openModal(OwnerModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setOwnerData(event.tabData);
+
+      this.sendOwnerData();
+    } else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 
-  public onTableBodyActions(event: any) {
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        /*   this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendOwnerData();
+      }
+    }
+  }
+
+  onTableBodyActions(event: any) {
     if (event.type === 'edit-owner') {
       this.modalService.openModal(
         OwnerModalComponent,
