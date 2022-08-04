@@ -1,0 +1,59 @@
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+
+.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.scrollholder {
+  position: relative;
+  max-width: 1510px;
+
+  .inside-holder {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    overflow: auto;
+
+    .inside-table {
+      width: 1510px !important;
+    }
+
+    &::-webkit-scrollbar {
+      display: none;
+      /* for Chrome, Safari, and Opera */
+    }
+
+    .abs {
+      position: absolute;
+      background-color: rgb(238, 238, 238);
+
+      &:first-child {
+        left: 0px;
+      }
+
+      &:nth-child(2) {
+        left: 76px;
+      }
+    }
+
+    .abs-right {
+      width: 30px;
+      position: absolute;
+
+      &:nth-child(12) {
+        right: 68px;
+      }
+
+      &:nth-child(13) {
+        right: 34px;
+      }
+
+      &:nth-child(14) {
+        right: 0px;
+      }
+    }
+  }
+}
