@@ -124,7 +124,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .get('createNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        console.log('CHCEKED ', value);
         if (value) {
           this.inputService.changeValidators(
             this.profileUserForm.get('oldPassword')
@@ -136,6 +135,10 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           );
           this.inputService.changeValidators(
             this.profileUserForm.get('password'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.profileUserForm.get('oldPassword'),
             false
           );
           this.setNewPassword = false;
