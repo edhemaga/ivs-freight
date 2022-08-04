@@ -83,7 +83,7 @@
       getSuperControl.value &&
       getSuperControl.invalid &&
       !focusInput &&
-      !!inputConfig.incorrectInput &&
+      !inputConfig.incorrectInput &&
       !inputConfig.blackInput
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
@@ -133,7 +133,8 @@
     *ngIf="
       inputConfig.type === 'password' &&
       getSuperControl.value &&
-      !inputConfig?.loadingSpinner?.isLoading
+      !inputConfig?.loadingSpinner?.isLoading &&
+      !inputConfig.incorrectInput
     "
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -165,9 +166,10 @@
       (inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive) ||
-      inputConfig.name === 'datepicker' ||
-      inputConfig.name === 'timepicker' ||
-      inputConfig.isDropdownLabel
+      ((inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker' ||
+        inputConfig.isDropdownLabel) &&
+        !inputConfig.incorrectInput)
     "
     [ngClass]="{
       active:
