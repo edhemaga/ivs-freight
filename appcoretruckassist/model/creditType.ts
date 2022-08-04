@@ -11,10 +11,10 @@
  */
 
 
-export type CreditType = 'Disable' | 'Enable';
+export type CreditType = 'Custom' | 'Unlimited';
 
 export const CreditType = {
-    Disable: 'Disable' as CreditType,
-    Enable: 'Enable' as CreditType
+    Custom: 'Custom' as CreditType,
+    Unlimited: 'Unlimited' as CreditType
 };
 

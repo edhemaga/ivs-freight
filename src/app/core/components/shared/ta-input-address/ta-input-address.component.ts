@@ -15,7 +15,6 @@ import { untilDestroyed } from 'ngx-take-until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { TaInputService } from '../ta-input/ta-input.service';
 
 @Component({
   selector: 'app-ta-input-address',
@@ -27,20 +26,29 @@ export class TaInputAddressComponent
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
+  @Input() activeAddress: AddressEntity;
+  @Input() incorrectValue: boolean = false;
+
+  @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() selectedAddress: EventEmitter<{
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
-  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+
+  @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
+
+  @Output('commandEvent') inputCommandEvent: EventEmitter<{
+    address: AddressEntity;
+    action: string;
+  }> = new EventEmitter<{ address: AddressEntity; action: string }>();
 
   public focusInput: boolean = false;
   public touchedInput: boolean = false;
 
   public numberOfSpaces: number = 0;
 
-  public activeAddress: AddressEntity;
   public invalidAddress: boolean = false;
 
   public options = {
@@ -49,8 +57,11 @@ export class TaInputAddressComponent
 
   // Input Commands
   public isVisibleCommands: boolean = false;
+  public forceVisibilityOfCommands: boolean = false;
 
-  public timeout: any = null;
+  // Address Flag
+  public changeAddressFlag: boolean = false;
+  public isVisibleAddressFlag: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -82,6 +93,14 @@ export class TaInputAddressComponent
     this.selectedAddress.emit({ address: this.activeAddress, valid: true });
     this.getSuperControl.setValue(this.activeAddress.address);
     this.getSuperControl.setErrors(null);
+
+    if (this.inputConfig.addressFlag) {
+      setTimeout(() => {
+        this.isVisibleAddressFlag = true;
+        this.isVisibleCommands = true;
+        this.forceVisibilityOfCommands = true;
+      }, 149);
+    }
   }
 
   get getSuperControl() {
@@ -107,15 +126,30 @@ export class TaInputAddressComponent
   public onFocus(): void {
     this.focusInput = true;
 
-    if (!this.activeAddress) {
+    if (!this.activeAddress && this.inputConfig.isRequired) {
       this.invalidAddress = true;
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
+    console.log(
+      'Same active and super control ',
+      this.activeAddress?.address === this.getSuperControl.value
+    );
+    console.log('INVALID ', this.invalidAddress);
+    console.log('FOCUS ', this.focusInput);
+    console.log('BLACK INPUT ', this.inputConfig.blackInput);
+    console.log('SUPER CONTROL ', this.getSuperControl.value);
+    console.log('ACTIVE ADDRESS ', this.activeAddress?.address);
 
     // Input Commands
     if (this.inputConfig.commands?.active) {
       this.isVisibleCommands = true;
+      this.forceVisibilityOfCommands = true;
+    }
+
+    // Address Flag
+    if (this.inputConfig.addressFlag) {
+      this.isVisibleAddressFlag = true;
     }
   }
 
@@ -131,34 +165,47 @@ export class TaInputAddressComponent
     if (this.inputConfig.commands?.active) {
       this.blurOnCommands();
     }
+
+    if (this.inputConfig.addressFlag) {
+      this.blurOnAddressFlag();
+    }
   }
 
   private blurOnCommands() {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.timeout = setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.isVisibleCommands = false;
-      clearTimeout(this.timeout);
+      clearTimeout(timeout);
+    }, 150);
+  }
+
+  private blurOnAddressFlag() {
+    const timeout = setTimeout(() => {
+      this.isVisibleAddressFlag = false;
+      clearTimeout(timeout);
     }, 150);
   }
 
   public clearInput(): void {
-    this.input.nativeElement.value = null;
-    this.getSuperControl.setValue(null);
-    this.numberOfSpaces = 0;
-    this.touchedInput = true;
-    this.activeAddress = null;
-    this.invalidAddress = false;
-    this.getSuperControl.setErrors(null);
-
-    if (!this.inputConfig.isRequired) {
-      this.selectedAddress.emit({ address: null, valid: true });
-      this.getSuperControl.setErrors(null);
+    if (this.inputConfig.incorrectInput) {
+      this.incorrectValue = !this.incorrectValue;
+      this.incorrectInput.emit(this.incorrectValue);
     } else {
-      this.selectedAddress.emit({ address: null, valid: false });
-      this.invalidAddress = true;
-      this.getSuperControl.setErrors({ required: true });
+      this.input.nativeElement.value = null;
+      this.getSuperControl.setValue(null);
+      this.numberOfSpaces = 0;
+      this.touchedInput = true;
+      this.activeAddress = null;
+      this.invalidAddress = false;
+      this.getSuperControl.setErrors(null);
+
+      if (!this.inputConfig.isRequired) {
+        this.selectedAddress.emit({ address: null, valid: true });
+        this.getSuperControl.setErrors(null);
+      } else {
+        this.selectedAddress.emit({ address: null, valid: false });
+        this.invalidAddress = true;
+        this.getSuperControl.setErrors({ required: true });
+      }
     }
   }
 
@@ -215,23 +262,52 @@ export class TaInputAddressComponent
       case 'confirm-cancel': {
         switch (action) {
           case 'confirm': {
-            this.inputCommandEvent.emit('confirm');
+            if (this.getSuperControl.value === this.activeAddress.address) {
+              this.inputCommandEvent.emit({
+                address: this.activeAddress,
+                action: 'confirm',
+              });
+              if (this.inputConfig.addressFlag) {
+                this.isVisibleAddressFlag = false;
+              }
+              this.isVisibleCommands = false;
+              this.forceVisibilityOfCommands = false;
+            }
             break;
           }
           case 'cancel': {
-            this.inputCommandEvent.emit('cancel');
+            this.inputCommandEvent.emit({ address: null, action: 'cancel' });
+            this.getSuperControl.patchValue(null);
+
+            if (this.inputConfig.addressFlag) {
+              this.isVisibleAddressFlag = false;
+            }
+            this.isVisibleCommands = false;
+            this.forceVisibilityOfCommands = false;
             break;
           }
           default: {
             break;
           }
         }
+
         break;
       }
       default: {
         break;
       }
     }
+  }
+
+  public changeFlagText(event: Event) {
+    this.changeAddressFlag = !this.changeAddressFlag;
+    this.changeFlag.emit(this.changeAddressFlag);
+
+    setTimeout(() => {
+      this.isVisibleAddressFlag = true;
+      this.isVisibleCommands = true;
+      this.forceVisibilityOfCommands = true;
+    }, 30);
   }
 
   ngOnDestroy(): void {}

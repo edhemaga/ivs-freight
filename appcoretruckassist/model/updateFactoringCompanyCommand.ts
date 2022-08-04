@@ -9,11 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { FactoringCompany } from './factoringCompany';
+import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateFactoringCompanyCommand { 
     companyId?: number | null;
-    factoringCompany?: FactoringCompany;
+    name?: string | null;
+    phone?: string | null;
+    email?: string | null;
+    address?: AddressEntity;
+    noticeOfAssigment?: string | null;
+    note?: string | null;
 }
 

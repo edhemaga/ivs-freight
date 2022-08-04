@@ -14,7 +14,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { OwnerModalService } from './owner-modal.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
@@ -26,7 +25,8 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
+import { OwnerTService } from '../../owner/state/owner.service';
 
 @Component({
   selector: 'app-owner-modal',
@@ -67,7 +67,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private ownerModalService: OwnerModalService,
+    private ownerModalService: OwnerTService,
     private notificationService: NotificationService,
     private formService: FormService,
     private bankVerificationService: BankVerificationService
@@ -78,11 +78,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.getOwnerDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 6,
-      };
       this.editOwnerById(this.editData.id);
     }
   }
@@ -188,6 +183,29 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank({ name: bank.name })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
+  }
+
   private onBankSelected(): void {
     this.ownerForm
       .get('bankId')
@@ -243,7 +261,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   private deleteOwnerById(id: number) {
     this.ownerModalService
-      .deleteOwnerById(id)
+      .deleteOwnerById(id, this.editData.selectedTab)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -307,6 +325,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
+          console.log('editOwnerById')
+          console.log(res)
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({
@@ -319,7 +339,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             phone: res.phone,
             email: res.email,
-            bankId: res.bank.name,
+            bankId: res?.bank?.name ? res.bank.name : null,
             accountNumber: res.accountNumber,
             routingNumber: res.routingNumber,
             note: res.note,

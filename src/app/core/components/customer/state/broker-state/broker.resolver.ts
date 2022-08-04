@@ -10,37 +10,30 @@ import { BrokerState, BrokerStore } from './broker.store';
   providedIn: 'root',
 })
 export class BrokerResolver implements Resolve<BrokerState> {
-  pageIndex: number = 1;
-  pageSize: number = 25;
-
   constructor(
     private brokerService: BrokerTService,
     private brokerStore: BrokerStore
   ) {}
   resolve(): Observable<BrokerState | boolean> {
-    return this.brokerService
-    .getBrokerList(null, null, this.pageIndex, this.pageSize)
-    .pipe(
-      catchError(() => {
-        return of('No brokers data...');
-      }),
-      tap((brokerPagination: GetBrokerListResponse) => {
-        this.brokerStore.set(brokerPagination.pagination.data);
-      })
-    );
-    /* if (this.brokerStore.getValue().ids?.length) {
+    if (this.brokerStore.getValue().ids?.length) {
       return of(true);
     } else {
-      return this.brokerService
-        .getBrokerList(this.tableTab, this.pageIndex, this.pageSize)
-        .pipe(
-          catchError(() => {
-            return of('No brokers data...');
-          }),
-          tap((brokerPagination: GetBrokerListResponse) => {
-            this.brokerStore.set(brokerPagination.pagination.data);
-          })
-        );
-    } */
+      return this.brokerService.getBrokerList(null, null, 1, 25).pipe(
+        catchError(() => {
+          return of('No brokers data...');
+        }),
+        tap((brokerPagination: GetBrokerListResponse) => {
+          localStorage.setItem(
+            'brokerShipperTableCount',
+            JSON.stringify({
+              broker: brokerPagination.count,
+              shipper: brokerPagination.shipperCount,
+            })
+          );
+
+          this.brokerStore.set(brokerPagination.pagination.data);
+        })
+      );
+    }
   }
 }

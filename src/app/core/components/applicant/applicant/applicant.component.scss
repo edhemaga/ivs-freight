@@ -124,14 +124,66 @@
       }
 
       &.step-active {
-        pointer-events: none;
+        pointer-events: none !important;
 
         .bullet {
-          background: $ta-blue;
+          background: $ta-blue !important;
         }
 
         .step-text {
-          color: $ta-blue;
+          color: $ta-blue !important;
+        }
+      }
+
+      &.step-active-review {
+        pointer-events: none !important;
+
+        .bullet {
+          background: $bw6-2 !important;
+
+          &::before {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+          }
+
+          p {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+
+        .step-text {
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: $bw6-2 !important;
+        }
+      }
+
+      &.step-active-review-incorrect {
+        pointer-events: none !important;
+
+        .bullet {
+          background: $ta-red-2 !important;
+
+          &::before {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+          }
+
+          p {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+
+        .step-text {
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: $ta-red-2 !important;
         }
       }
 
@@ -171,6 +223,96 @@
             visibility: visible;
             opacity: 1;
             color: $ta-light-blue;
+          }
+        }
+
+        .step-text {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+
+      &.completed-step-review {
+        .bullet {
+          background: $bw4;
+
+          &::before {
+            display: inline-block;
+            visibility: visible;
+            opacity: 1;
+          }
+
+          p {
+            display: none;
+            visibility: hidden;
+            opacity: 0;
+          }
+
+          &:hover {
+            background: $bw5;
+
+            &::before {
+              display: none;
+              visibility: hidden;
+              opacity: 0;
+            }
+
+            p {
+              display: inline-flex;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          &:hover + .step-text {
+            visibility: visible;
+            opacity: 1;
+            color: $bw5;
+          }
+        }
+
+        .step-text {
+          visibility: hidden;
+          opacity: 0;
+        }
+      }
+
+      &.completed-step-review-incorrect {
+        .bullet {
+          background: $ta-red-4;
+
+          &::before {
+            display: inline-block;
+            visibility: visible;
+            opacity: 1;
+          }
+
+          p {
+            display: none;
+            visibility: hidden;
+            opacity: 0;
+          }
+
+          &:hover {
+            background: $ta-red;
+
+            &::before {
+              display: none;
+              visibility: hidden;
+              opacity: 0;
+            }
+
+            p {
+              display: inline-flex;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          &:hover + .step-text {
+            visibility: visible;
+            opacity: 1;
+            color: $ta-red;
           }
         }
 

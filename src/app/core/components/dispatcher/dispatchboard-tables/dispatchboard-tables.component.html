@@ -1,4 +1,4 @@
-<div class="dispathboard-table-holder">
+<!-- <div class="dispathboard-table-holder">
     <div class="dispatchboard-main-table parking-opened">
         <table width="100%">
             <thead>
@@ -26,61 +26,61 @@
             </thead>
             <tbody
             cdkDropList
+            class="example-list"
             >
-                <tr 
-                    *ngFor="let cell of data">
-                    <td class="truck-field">
-                        <div
+                <tr *ngFor="let cell of data" class="example-box" 
                         cdkDrag 
                         [cdkDragPreviewClass]="'dispatch-dragged-row'"
                         cdkDragBoundary=".dispathboard-table-holder"
                         cdkDragLockAxis="y"
-                        cdkDragRootElement="tr"
-                        class="dispatcher-table-cell-container">
+                        cdkDragPreviewContainer="parent"
+                >
+                    <td class="truck-field">
+                        <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532ta
+                                aaaa
                             </div>
                         </div>
                     </td>
                     <td class="trailer-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532tr
+                                bbb
                             </div>
                         </div>
                     </td>
                     <td class="driver-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532dr
+                                ccc
                             </div>
                         </div>
                     </td>
                     <td class="phoneemail-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532
+                                ddd
                             </div>
                         </div>
                     </td>
                     <td class="location-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532
+                                eee
                             </div>
                         </div>
                     </td>
                     <td class="status-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532
+                                fff
                             </div>
                         </div>
                     </td>
                     <td class="pick-del-field">
                         <div class="dispatcher-table-cell-container">
                             <div class="dispatcher-table-cell-holder">
-                                7532
+                                ggg
                             </div>
                         </div>
                     </td>
@@ -142,4 +142,170 @@
             </tbody>
         </table>
     </div>
+</div> -->
+
+<div class="scrollholder example-list dispatchboard-main-table" cdkDropList>
+    <div class="inside-holder">
+        <table class="inside-table">
+            <thead>
+                <tr>
+                    <th class="theads truck-field abs">Truck</th>
+                    <th class="theads trailer-field abs">Trailer</th>
+                    <th class="theads driver-field">Driver</th>
+                    <th class="theads phoneemail-field">Phone or Email</th>
+                    <th class="theads location-field">Location</th>
+                    <th class="theads status-field">Status</th>
+                    <th class="theads pick-del-field">
+                        <div class="two-table-heads">
+                            <div>Pickup</div>
+                            <div>Delivery</div>
+                        </div>
+                    </th>
+                    <th class="theads empty-field"></th>
+                    <th class="theads empty-field"></th>
+                    <th class="theads empty-field"></th>
+                    <th class="theads note-field">Note</th>
+                    <th class="theads empty-field abs-right"></th>
+                    <th class="theads empty-field abs-right"></th>
+                    <th class="theads empty-field abs-right"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr 
+                    class="item-holder example-box" 
+                    *ngFor="let cell of data" 
+                    cdkDrag 
+                    cdkDragLockAxis="y"
+                    cdkDragPreviewContainer="parent">
+                    <td class="truck-field abs" cdkDragHandle>
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                aaaa
+                            </div>
+                        </div>
+                    </td>
+                    <td class="trailer-field abs">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                bbb
+                            </div>
+                        </div>
+                    </td>
+                    <td class="driver-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                ccc
+                            </div>
+                        </div>
+                    </td>
+                    <td class="phoneemail-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                ddd
+                            </div>
+                        </div>
+                    </td>
+                    <td class="location-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                eee
+                            </div>
+                        </div>
+                    </td>
+                    <td class="status-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                fff
+                            </div>
+                        </div>
+                    </td>
+                    <td class="pick-del-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                ggg
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="note-field">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                7532
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field abs-right">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field abs-right">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                    <td class="empty-field abs-right">
+                        <div class="dispatcher-table-cell-container">
+                            <div class="dispatcher-table-cell-holder">
+                                
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="item-holder example-box" *ngFor="let cell of data" cdkDrag cdkDragLockAxis="y"
+            cdkDragPreviewContainer="parent">
+            <div class="abs" cdkDragHandle>draggingone</div>
+            <div class="abs">absolute</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div class="abs-right">box</div>
+            <div class="abs-right">box</div>
+            <div class="abs-right">box</div>
+        </div> -->
+    </div>
 </div>
+
+
+<!-- <div class="example-list" cdkDropList>
+    <div *ngFor="let cell of data" class="example-box">
+        <div cdkDragLockAxis="y" cdkDragRootElement=".example-box" cdkDragPreviewContainer="parent" cdkDrag>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+        <div>7532ta</div>
+    </div>
+</div> -->

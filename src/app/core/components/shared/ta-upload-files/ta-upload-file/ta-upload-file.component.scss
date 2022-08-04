@@ -21,6 +21,9 @@
     justify-content: space-between;
     z-index: 10;
     display: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 
     .ta-upload-file-action-leftside {
@@ -111,6 +114,9 @@
       border-radius: 2px !important;
       box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
       top: 4px !important;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
       user-select: none !important;
 
       .canvasWrapper,
@@ -126,6 +132,7 @@
     .ta-upload-file-image {
       max-width: 160px;
       max-height: 160px;
+      -o-object-fit: fill;
       object-fit: fill;
       border-radius: 2px;
       vertical-align: middle;
@@ -134,6 +141,9 @@
       left: 50%;
       position: relative;
       transform: translate(-50%, -50%);
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
       user-select: none !important;
       box-shadow: 0 0 2px rgb(0, 0, 0, 0.3);
     }
@@ -153,6 +163,10 @@
       font-size: 11px;
       font-weight: 600;
       line-height: 15px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
     }
 
     .ta-upload-file-tag {
@@ -168,6 +182,9 @@
       left: 0px;
       padding: 1px 4px;
       opacity: 0.9;
+      -webkit-user-select: none !important;
+      -moz-user-select: none !important;
+      -ms-user-select: none !important;
       user-select: none !important;
 
       span {

@@ -10,37 +10,24 @@ import { ShipperState, ShipperStore } from './shipper.store';
   providedIn: 'root',
 })
 export class ShipperResolver implements Resolve<ShipperState> {
-  pageIndex: number = 1;
-  pageSize: number = 25;
-
   constructor(
     private shipperService: ShipperTService,
     private shipperStore: ShipperStore
   ) {}
   resolve(): Observable<ShipperState | boolean> {
-    return this.shipperService
-    .getShippersList(null, null, this.pageIndex, this.pageSize)
-    .pipe(
-      catchError(() => {
-        return of('No shippers data...');
-      }),
-      tap((shipperPagination: ShipperListResponse) => {
-        this.shipperStore.set(shipperPagination.pagination.data);
-      })
-    );
-    /* if (this.shipperStore.getValue().ids?.length) {
+    if (this.shipperStore.getValue().ids?.length) {
       return of(true);
     } else {
       return this.shipperService
-        .getShippersList(this.tableTab, this.pageIndex, this.pageSize)
+        .getShippersList(null, null, 1, 25)
         .pipe(
           catchError(() => {
-            return of('No drivers data...');
+            return of('No shipper data...');
           }),
           tap((shipperPagination: ShipperListResponse) => {
             this.shipperStore.set(shipperPagination.pagination.data);
           })
         );
-    } */
+    }
   }
 }

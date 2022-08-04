@@ -152,6 +152,7 @@
                 isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
@@ -413,6 +414,7 @@
                   (selectedItem)="
                     onSelectFakeTableData($event, ind, 'bankAccounts')
                   "
+                  (saveNewItem)="onSaveNewBank($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="routing"
@@ -641,7 +643,7 @@
                 <app-ta-input
                   formControlName="mvrMonths"
                   [inputConfig]="{
-                    name: 'MVR',
+                    name: 'months',
                     type: 'text',
                     label: 'MVR',
                     isRequired: true,
@@ -653,7 +655,7 @@
                 <app-ta-input
                   formControlName="truckInspectionMonths"
                   [inputConfig]="{
-                    name: 'Truck Inspection',
+                    name: 'months',
                     type: 'text',
                     label: 'Truck Inspection',
                     isRequired: true,
@@ -665,7 +667,7 @@
                 <app-ta-input
                   formControlName="trailerInspectionMonths"
                   [inputConfig]="{
-                    name: 'Trailer Inspection',
+                    name: 'months',
                     type: 'text',
                     label: 'Trailer Inspection',
                     isRequired: true,

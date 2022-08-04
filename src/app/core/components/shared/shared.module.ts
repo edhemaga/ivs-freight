@@ -114,6 +114,7 @@ import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
+import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -161,6 +162,9 @@ export function playerFactory() {
     TaInputArrowsComponent,
     TaSpinnerComponent,
     TaTimePeriodComponent,
+    TaUploadFileComponent,
+    TaInputDropdownLabelComponent,
+    TaUploadFilesComponent,
 
     // Modals Components
     TaModalComponent,
@@ -173,7 +177,6 @@ export function playerFactory() {
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaUploadFileComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
@@ -184,12 +187,14 @@ export function playerFactory() {
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    ProfileUpdateModalComponent,
+    LoadModalComponent,
+
+    //----------------------------
     MapListComponent,
     MapListCardComponent,
     MapMarkerDropdownComponent,
-    TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
-    LoadModalComponent,
     CustomScrollbarComponent,
     MapsComponent,
     ProgressInvoicesComponent,
@@ -328,10 +333,12 @@ export function playerFactory() {
     TaSpinnerComponent,
 
     TaCopyComponent,
-    // Modals Components
-    TaModalComponent,
+    TaInputDropdownLabelComponent,
     TaInputAddressComponent,
     DirectivesModule,
+    TaUploadFilesComponent,
+    // Modals Components
+    TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
@@ -348,9 +355,10 @@ export function playerFactory() {
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
-    TaInputDropdownLabelComponent,
+    ProfileUpdateModalComponent,
     LoadModalComponent,
     TaUploadFilesComponent,
     TaTimePeriodComponent

@@ -4,7 +4,7 @@ import { NotificationService } from '../notification/notification.service';
 import { Observable, Subject, tap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { SpinnerService } from '../spinner/spinner.service';
+
 import { AddressEntity } from 'appcoretruckassist';
 
 class OwnerData {}
@@ -69,7 +69,6 @@ export class SharedService {
 
   constructor(
     public notification: NotificationService,
-    private spinner: SpinnerService,
     public http: HttpClient
   ) {}
 
@@ -86,7 +85,6 @@ export class SharedService {
    */
   public markInvalid(formGroup: FormGroup, isSpecialCase?: boolean) {
     if (!isSpecialCase) {
-      this.spinner.show(true);
     }
 
     if (formGroup.invalid) {
@@ -97,7 +95,7 @@ export class SharedService {
         }
       });
       this.notification.warning('Please fill all required fields.', 'Warning:');
-      this.spinner.show(false);
+
       return false;
     } else {
       (Object as any).values(formGroup.controls).forEach((control: any) => {
@@ -133,7 +131,6 @@ export class SharedService {
       'Something went wrong. Please try again.',
       'Error:'
     );
-    this.spinner.show(false);
   }
 
   /**
@@ -145,7 +142,6 @@ export class SharedService {
         ? error.error.message
         : 'Something went wrong. Please try again.';
     this.notification.error(message, 'Error:');
-    this.spinner.show(false);
   }
 
   /**

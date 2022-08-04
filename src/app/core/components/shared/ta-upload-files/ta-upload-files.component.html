@@ -33,6 +33,7 @@
             *ngIf="currentSlide === ind"
             [file]="file"
             [hasTag]="hasTag"
+            [hasNumberOfPages]="hasNumberOfPages"
             [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"
           ></app-ta-upload-file>
@@ -41,6 +42,7 @@
           <app-ta-upload-file
             [file]="file"
             [hasTag]="hasTag"
+            [hasNumberOfPages]="hasNumberOfPages"
             [customClassName]="customClassName"
             (fileAction)="onFileAction($event)"
           ></app-ta-upload-file>

@@ -154,7 +154,6 @@ export class TaInputDropdownLabelComponent
       this.newLabel.patchValue(null);
       return;
     }
-    console.log('SAVED LABEL');
 
     this.saveLabel.emit({ action: event, label: this.newLabel.value });
     this.getSuperControl.patchValue(this.newLabel.value);

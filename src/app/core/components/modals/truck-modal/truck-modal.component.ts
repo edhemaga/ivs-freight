@@ -19,7 +19,7 @@ import {
 import { untilDestroyed } from 'ngx-take-until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -50,7 +50,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public grossWeight: any[] = [];
   public engineType: any[] = [];
   public tireSize: any[] = [];
+  public shifter: any[] = [];
 
+  public selectedShifter: any = null;
   public selectedTruckType: any = null;
   public selectedTruckMake: any = null;
   public selectedColor: any = null;
@@ -132,6 +134,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       commission: [14.5],
       note: [null],
+      purchaseDate: [null],
+      purchasePrice: [null],
+      shifter: [null],
+      fhwaexp: [12, Validators.required],
       truckGrossWeightId: [null],
       emptyWeight: [null, Validators.maxLength(6)],
       truckEngineTypeId: [null],
@@ -495,6 +501,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'tire-size': {
         this.selectedTireSize = event;
+        break;
+      }
+      case 'shifter': {
+        this.selectedShifter = event;
         break;
       }
       default: {

@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { distinctUntilChanged, take } from 'rxjs';
+import {
+  BankService,
+  CreateBankCommand,
+  CreateResponse,
+} from 'appcoretruckassist';
+import { distinctUntilChanged, Observable, take } from 'rxjs';
 import {
   accountBankRegex,
   bankRoutingValidator,
@@ -12,7 +17,10 @@ import { TaInputService } from '../../components/shared/ta-input/ta-input.servic
   providedIn: 'root',
 })
 export class BankVerificationService {
-  constructor(private inputService: TaInputService) {}
+  constructor(
+    private inputService: TaInputService,
+    private bankService: BankService
+  ) {}
 
   public onSelectBank(
     bankValue: string,
@@ -51,5 +59,9 @@ export class BankVerificationService {
           }
         }
       });
+  }
+
+  public createBank(name: CreateBankCommand): Observable<CreateResponse> {
+    return this.bankService.apiBankPost(name);
   }
 }

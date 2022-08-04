@@ -42,6 +42,7 @@
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "@ng-idle/core": "^11.1.0",
     "@ng-select/ng-select": "^8.1.1",
+    "@ngneat/until-destroy": "^9.2.1",
     "@progress/kendo-angular-buttons": "^7.0.2",
     "@progress/kendo-angular-common": "^2.0.2",
     "@progress/kendo-angular-dateinputs": "^6.0.1",

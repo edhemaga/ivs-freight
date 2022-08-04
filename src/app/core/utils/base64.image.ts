@@ -5,7 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
   providedIn: 'root',
 })
 export class ImageBase64Service {
-  constructor(public domSanitizer: DomSanitizer) {}
+  constructor(private domSanitizer: DomSanitizer) {}
 
   sanitizer(url: string) {
     return this.domSanitizer.bypassSecurityTrustResourceUrl(

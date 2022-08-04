@@ -197,8 +197,37 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <div class="row">
+        <div *ngIf="this.truckForm.get('companyOwned').value" class="row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="purchaseDate"
+              [inputConfig]="{
+                name: 'datepicker',
+                type: 'text',
+                label: 'Purchase Date',
+                isDropdown: true,
+                placeholderIcon: 'date',
+                customClass: 'datetimeclass'
+              }"
+            ></app-ta-input>
+          </div>
           <div class="col-7">
+            <app-ta-input
+              formControlName="purchasePrice"
+              [inputConfig]="{
+                name: 'Purchase Price',
+                type: 'text',
+                label: 'Purchase Price',
+                maxLength: 6,
+                thousandSeparator: true,
+                placeholderIcon: 'dollar',
+                customClass: 'dollar-placeholderIcon'
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5">
             <app-ta-input-dropdown
               formControlName="truckGrossWeightId"
               [inputConfig]="{
@@ -213,7 +242,12 @@
               (selectedItem)="onSelectDropdown($event, 'gross-weight')"
             ></app-ta-input-dropdown>
           </div>
-          <div class="col-5">
+          <div
+            [ngClass]="{
+              'tireSize-axles ': this.truckForm.get('companyOwned').value
+            }"
+            class="col-7"
+          >
             <app-ta-input
               formControlName="emptyWeight"
               [inputConfig]="{
@@ -224,10 +258,24 @@
                 thousandSeparator: true
               }"
             ></app-ta-input>
+            <app-ta-input-dropdown
+              *ngIf="this.truckForm.get('companyOwned').value"
+              formControlName="shifter"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Shifter',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-7'
+              }"
+              [options]="shifter"
+              [activeItem]="selectedShifter"
+              (selectedItem)="onSelectDropdown($event, 'shifter')"
+            ></app-ta-input-dropdown>
           </div>
         </div>
         <div class="row">
-          <div class="col-7">
+          <div class="col-5">
             <app-ta-input-dropdown
               formControlName="truckEngineTypeId"
               [inputConfig]="{
@@ -242,7 +290,7 @@
               (selectedItem)="onSelectDropdown($event, 'engine-type')"
             ></app-ta-input-dropdown>
           </div>
-          <div class="col-5 tireSize-axles">
+          <div class="col-7 tireSize-axles">
             <app-ta-input-dropdown
               formControlName="tireSizeId"
               [inputConfig]="{
@@ -261,25 +309,14 @@
               [inputConfig]="{
                 name: 'Axles',
                 type: 'text',
-                label: 'Axl.',
+                label: 'Axle',
                 maxLength: 1
               }"
             ></app-ta-input>
           </div>
         </div>
-        <div class="row last-modal-row">
-          <div class="col-4">
-            <app-ta-input
-              formControlName="insurancePolicy"
-              [inputConfig]="{
-                name: 'Insurance Policy',
-                type: 'text',
-                label: 'Insurance Policy',
-                textTransform: 'uppercase'
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="col-4">
+        <div class="row">
+          <div class="col-5">
             <app-ta-input
               formControlName="mileage"
               [inputConfig]="{
@@ -291,7 +328,7 @@
               }"
             ></app-ta-input>
           </div>
-          <div class="col-4 no-p-left">
+          <div class="col-7">
             <app-ta-input
               formControlName="ipasEzpass"
               [inputConfig]="{
@@ -299,6 +336,31 @@
                 type: 'text',
                 label: 'IPAS/EZPASS',
                 maxLength: 14
+              }"
+            ></app-ta-input>
+          </div>
+        </div>
+        <div class="row last-modal-row">
+          <div class="col-5">
+            <app-ta-input
+              formControlName="fhwaexp"
+              [inputConfig]="{
+                name: 'months',
+                type: 'text',
+                label: 'FHWA Exp.',
+                isRequired: true,
+                placeholderText: 'months'
+              }"
+            ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input
+              formControlName="insurancePolicy"
+              [inputConfig]="{
+                name: 'Insurance Policy',
+                type: 'text',
+                label: 'Insurance Policy',
+                textTransform: 'uppercase'
               }"
             ></app-ta-input>
           </div>

@@ -52,6 +52,7 @@ export class TaInputDropdownComponent
   @Input() isDetailsActive: boolean = false;
 
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saveNewItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
 
   public originalOptions: any[] = [];
@@ -61,6 +62,7 @@ export class TaInputDropdownComponent
   public multiselectItems: any[] = [];
   public isMultiSelectInputFocus: boolean = false;
   public multiSelectLabel: string = null;
+  public lastActiveMultiselectItem: any = null;
 
   // Add mode
   public isInAddMode: boolean = false;
@@ -376,8 +378,7 @@ export class TaInputDropdownComponent
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
-
-    this.selectedItem.emit(newItem);
+    this.saveNewItem.emit(newItem);
   }
 
   public onAddNewEvent() {
@@ -557,6 +558,10 @@ export class TaInputDropdownComponent
     );
     this.originalOptions = [...this.options];
 
+    this.lastActiveMultiselectItem = this.options
+      .filter((item) => item.active)
+      .slice(-1)[0];
+
     this.inputRef.focusInput = false;
     this.inputRef.input.nativeElement.blur();
     this.inputConfig = {
@@ -576,11 +581,16 @@ export class TaInputDropdownComponent
       return item;
     });
 
+    this.options = this.options.sort(
+      (x, y) => Number(y.active) - Number(x.active)
+    );
+
     this.originalOptions = this.options;
     this.multiselectItems.splice(index, 1);
 
     if (!this.multiselectItems.length) {
       this.inputConfig.multiSelectDropdownActive = null;
+      this.lastActiveMultiselectItem = null;
       this.inputConfig.label = this.multiSelectLabel;
     }
 
@@ -607,6 +617,7 @@ export class TaInputDropdownComponent
     });
     this.originalOptions = this.options;
     this.selectedItems.emit([]);
+    this.lastActiveMultiselectItem = null;
   }
 
   public toggleMultiselectDropdown(event: any) {

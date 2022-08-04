@@ -10,9 +10,11 @@
  * Do not edit the class manually.
  */
 import { ShipperContactDepartmentResponse } from './shipperContactDepartmentResponse';
+import { DepartmentResponse } from './departmentResponse';
 
 
 export interface ShipperModalResponse { 
-    departments?: Array<ShipperContactDepartmentResponse> | null;
+    departmentsShipperContacts?: Array<ShipperContactDepartmentResponse> | null;
+    departments?: Array<DepartmentResponse> | null;
 }
 

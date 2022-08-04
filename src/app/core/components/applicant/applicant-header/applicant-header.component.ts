@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { INavigation } from 'src/app/core/components/applicant/state/model/navigation.model';
-import { Applicant } from 'src/app/core/components/applicant/state/model/applicant.model';
+import { SelectedMode } from '../state/enum/selected-mode.enum';
 
 @Component({
   selector: 'app-applicant-header',
@@ -9,6 +9,8 @@ import { Applicant } from 'src/app/core/components/applicant/state/model/applica
   styleUrls: ['./applicant-header.component.scss'],
 })
 export class ApplicantHeaderComponent implements OnInit {
+  public selectedMode = SelectedMode.FEEDBACK;
+
   public menuItems: INavigation[] = [
     {
       title: 'Application',
@@ -53,14 +55,36 @@ export class ApplicantHeaderComponent implements OnInit {
   ];
 
   storeArr = [
-    { id: 1, isCompleted: false },
+    { id: 0, isCompleted: false },
+    { id: 1, isCompleted: true },
     { id: 2, isCompleted: false },
-    { id: 3, isCompleted: true },
+    { id: 3, isCompleted: false },
     { id: 4, isCompleted: false },
-    { id: 5, isCompleted: true },
+    { id: 5, isCompleted: false },
     { id: 6, isCompleted: false },
     { id: 7, isCompleted: false },
-    { id: 8, isCompleted: false },
+  ];
+
+  reviewStoreArr = [
+    { id: 0, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 1, isReviewed: true, hasIncorrectAnswer: true },
+    { id: 2, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 3, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 4, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 5, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 6, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 7, isReviewed: false, hasIncorrectAnswer: false },
+  ];
+
+  feedbackStoreArr = [
+    { id: 0, hasIncorrectAnswer: false },
+    { id: 1, hasIncorrectAnswer: true },
+    { id: 2, hasIncorrectAnswer: false },
+    { id: 3, hasIncorrectAnswer: false },
+    { id: 4, hasIncorrectAnswer: false },
+    { id: 5, hasIncorrectAnswer: false },
+    { id: 6, hasIncorrectAnswer: false },
+    { id: 7, hasIncorrectAnswer: false },
   ];
 
   constructor() {}

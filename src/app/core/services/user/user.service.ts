@@ -1,44 +1,41 @@
+import {
+  PasswordResponse,
+  UpdateUserCommand,
+  UserResponse,
+  UserService,
+  ValidatePasswordCommand,
+} from 'appcoretruckassist';
 import { Injectable } from '@angular/core';
-import {Observable, Subject} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../../../environments/environment";
-import {UserProfile} from "../../model/user-model";
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class UserService {
-  public newUser = new Subject();
-  public editUser = new Subject();
+export class TaUserService {
+  private updateUserProfileSubject: BehaviorSubject<boolean> =
+    new BehaviorSubject<boolean>(false);
 
-  constructor(private http: HttpClient) {
+  constructor(private userService: UserService) {}
+
+  public get updateUserProfile$() {
+    return this.updateUserProfileSubject.asObservable();
   }
 
-  get getNewUser() {
-    return this.newUser;
+  public updateUserProfile(is: boolean) {
+    this.updateUserProfileSubject.next(is);
   }
 
-  get getEditUser() {
-    return this.editUser;
+  public getUserById(id: number): Observable<UserResponse> {
+    return this.userService.apiUserIdGet(id);
   }
 
-  public createUser(data: any) {
-    return this.http.post(environment.API_ENDPOINT + 'user/create', data);
+  public updateUser(user: UpdateUserCommand): Observable<any> {
+    return this.userService.apiUserPut(user);
   }
 
-  public getUsersList() {
-    return this.http.get(environment.API_ENDPOINT + 'company/user/list/1/' + environment.perPage);
-  }
-
-  public updateUser(id: any, data: any): Observable<UserProfile> {
-    return this.http.put<UserProfile>(environment.API_ENDPOINT + `user/id/${id}`, data)
-  }
-
-  public getUserByUsername(username: string) {
-    return this.http.get(environment.API_ENDPOINT + `user/username/${username}`);
-  }
-
-  public deleteUser(userId: number) {
-    return this.http.delete(environment.API_ENDPOINT + `user/delete/${userId}`);
+  public validateUserPassword(
+    password: ValidatePasswordCommand
+  ): Observable<PasswordResponse> {
+    return this.userService.apiUserValidatepasswordPost(password);
   }
 }

@@ -1,3 +1,5 @@
+import { ImageBase64Service } from './../../../utils/base64.image';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,10 +10,13 @@ import {
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
-import { SignInResponse } from 'appcoretruckassist';
+import { SignInResponse, UserResponse } from 'appcoretruckassist';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
+import { TaUserService } from 'src/app/core/services/user/user.service';
 
 @Component({
   selector: 'app-navigation-user-profile',
@@ -26,12 +31,16 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public userNavigationData: NavigationUserPanel[] = userNavigationData;
   public currentUserStatus: string = 'online';
   public isItemHovered: boolean = false;
-  public loggedUser: SignInResponse = null;
+
+  public loggedUser: any = null;
 
   constructor(
     public router: Router,
     private authService: AuthStoreService,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private modalService: ModalService,
+    private userService: TaUserService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit() {
@@ -46,6 +55,27 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
     // ----------------------- DEVELOP MODE ----------------------------
     this.loggedUser = JSON.parse(localStorage.getItem('user'));
+    this.loggedUser = {
+      ...this.loggedUser,
+      avatar: this.loggedUser.avatar
+        ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
+        : null,
+    };
+
+    this.userService.updateUserProfile$
+      .pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((val: boolean) => {
+        if (val) {
+          this.loggedUser = JSON.parse(localStorage.getItem('user'));
+
+          this.loggedUser = {
+            ...this.loggedUser,
+            avatar: this.loggedUser.avatar
+              ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
+              : 'assets/svg/common/ic_profile.svg',
+          };
+        }
+      });
   }
 
   public onUserPanelClose() {
@@ -58,6 +88,9 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   public onAction(data: NavigationUserPanel) {
     switch (data.action) {
       case 'update': {
+        this.modalService.openModal(ProfileUpdateModalComponent, {
+          size: 'medium',
+        });
         break;
       }
       case 'status': {
@@ -89,14 +122,6 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
   }
 
   private changeMyStatus() {}
-
-  private get changeStatusOption() {
-    return 'online';
-  }
-
-  private isUserInChat() {
-    return this.router.url.includes('communicator');
-  }
 
   ngOnDestroy(): void {}
 }

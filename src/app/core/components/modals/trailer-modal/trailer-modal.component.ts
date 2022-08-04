@@ -25,7 +25,7 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
@@ -250,6 +250,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
+          console.log(this.trailerType);
           this.trailerMakeType = res.trailerMakes;
 
           this.colorType = res.colors.map((item) => {
