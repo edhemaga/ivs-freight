@@ -1,5 +1,4 @@
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { untilDestroyed } from 'ngx-take-until-destroy';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -24,9 +23,11 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { DomSanitizer } from '@angular/platform-browser';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+@UntilDestroy()
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
@@ -68,7 +69,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private nameInitialsPipe: NameInitialsPipe,
     private thousandSeparator: TaThousandSeparatorPipe,
     private imageBase64Service: ImageBase64Service
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.sendDriverData();
@@ -459,8 +460,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textCDL: data?.cdlNumber
         ? data.cdlNumber
         : data?.cdls?.length
-        ? data.cdls[0].cdlNumber
-        : '',
+          ? data.cdls[0].cdlNumber
+          : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
@@ -750,6 +751,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
   }
+
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});

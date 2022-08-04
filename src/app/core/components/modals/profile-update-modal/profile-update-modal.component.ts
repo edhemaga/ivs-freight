@@ -6,6 +6,17 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TaUserService } from 'src/app/core/services/user/user.service';
+import {
+  AddressEntity,
+  SignInResponse,
+  UpdateUserCommand,
+  UserResponse,
+} from 'appcoretruckassist';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
   selector: 'app-profile-update-modal',
@@ -14,7 +25,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   animations: [tab_modal_animation('animationTabsModal')],
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
-  @Input() user: any;
+  private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
   public selectedTab: number = 1;
 
@@ -31,18 +42,38 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public croppieOptions: Croppie.CroppieOptions = {
+    enableExif: true,
+    viewport: {
+      width: 194,
+      height: 194,
+      type: 'circle',
+    },
+    boundary: {
+      width: 456,
+      height: 194,
+    },
+  };
+
+  public selectedAddress: AddressEntity = null;
+
   public correctPassword: boolean = false;
   public setNewPassword: boolean = false;
+  public loadingOldPassword: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private userService: TaUserService,
+    private notificationService: NotificationService,
+    private modalService: ModalService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.changeCheckDetection();
-    this.confirmationOldPassword();
+    this.getUserById();
+    this.changeCheckboxDetection();
   }
 
   public animationObject = {
@@ -77,11 +108,23 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public changeCheckDetection() {
+  public onModalAction(data: { action: string; bool: boolean }): void {
+    if (data.action === 'close') {
+      this.profileUserForm.reset();
+    }
+
+    if (data.action === 'save') {
+      this.updateUserProfile();
+      this.modalService.setModalSpinner({ action: null, status: true });
+    }
+  }
+
+  public changeCheckboxDetection() {
     this.profileUserForm
       .get('createNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
+        console.log('CHCEKED ', value);
         if (value) {
           this.inputService.changeValidators(
             this.profileUserForm.get('oldPassword')
@@ -103,20 +146,59 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           );
         }
       });
+
+    this.confirmationOldPassword();
   }
 
   public confirmationOldPassword() {
     this.profileUserForm
       .get('oldPassword')
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .subscribe((value) => {
+        this.inputService.changeValidators(
+          this.profileUserForm.get('checkingOldPassword')
+        );
+        if (value) {
+          this.loadingOldPassword = true;
+          this.userService
+            .validateUserPassword({ password: value })
+            .pipe(untilDestroyed(this))
+            .subscribe({
+              next: (res: any) => {
+                if (res.correctPassword) {
+                  this.correctPassword = true;
+                } else {
+                  this.correctPassword = false;
+                }
+                this.loadingOldPassword = false;
+              },
+              error: () => {
+                this.notificationService.error(
+                  'Something went wrong, please try again !',
+                  'Error'
+                );
+              },
+            });
+        }
+      });
+
+    this.passwordsNotSame();
+  }
+
+  private passwordsNotSame(): void {
+    this.profileUserForm
+      .get('password')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if (value.length > 3) {
-          this.correctPassword = true;
-          this.inputService.changeValidators(
-            this.profileUserForm.get('checkingOldPassword')
-          );
+        if (
+          value?.toLowerCase() ===
+          this.profileUserForm.get('newPassword').value?.toLowerCase()
+        ) {
+          this.profileUserForm.get('password').setErrors(null);
         } else {
-          this.correctPassword = false;
+          this.profileUserForm.get('password').setErrors({
+            invalid: true,
+          });
         }
       });
   }
@@ -148,16 +230,89 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.profileUserForm.get('avatar').patchValue(event);
+    console.log(event);
   }
 
-  private getUserById() {}
+  public onHandleAddress(event: {
+    address: AddressEntity | any;
+    valid: boolean;
+  }): void {
+    if (event.valid) {
+      this.selectedAddress = event.address;
+    }
+  }
 
-  public onModalAction(data: { action: string; bool: boolean }): void {}
+  private getUserById() {
+    this.userService
+      .getUserById(this.user.userId)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: UserResponse) => {
+          this.profileUserForm.patchValue({
+            firstName: res.firstName,
+            lastName: res.lastName,
+            mobile: res.mobile,
+            email: res.email,
+            address: res.address.address,
+            addressUnit: res.address.addressUnit,
+            avatar: res.avatar,
+          });
+          this.selectedAddress = res.address;
+        },
+        error: () => {
+          this.notificationService.error("Can't get user", 'Error');
+        },
+      });
+  }
 
-  addressFlag: string = 'Empty';
+  private updateUserProfile() {
+    const {
+      address,
+      addressUnit,
+      createNewPassword,
+      checkingOldPassword,
+      oldPassword,
+      newPassword,
+      ...form
+    } = this.profileUserForm.value;
 
-  public onHandleAddress(event: any) {
-    console.log(event);
+    if (this.selectedAddress) {
+      this.selectedAddress = {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      };
+    }
+
+    const newData: UpdateUserCommand = {
+      id: this.user.userId,
+      ...form,
+      address: this.selectedAddress,
+    };
+
+    this.userService
+      .updateUser(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly update profile',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+
+          const newUser = {
+            ...this.user,
+            firstName: this.profileUserForm.get('firstName').value,
+            lastName: this.profileUserForm.get('lastName').value,
+            avatar: this.profileUserForm.get('avatar').value,
+          };
+          this.userService.updateUserProfile(true);
+          localStorage.setItem('user', JSON.stringify(newUser));
+        },
+        error: () => {
+          this.notificationService.error("Can't update your profile.", 'Error');
+        },
+      });
   }
 
   ngOnDestroy(): void {}

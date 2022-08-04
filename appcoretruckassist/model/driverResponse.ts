@@ -9,16 +9,17 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MedicalResponse } from './medicalResponse';
-import { BankResponse } from './bankResponse';
-import { EmploymentHistoryResponse } from './employmentHistoryResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { MvrResponse } from './mvrResponse';
 import { TestResponse } from './testResponse';
 import { EnumValue } from './enumValue';
+import { PerMileEntity } from './perMileEntity';
+import { MedicalResponse } from './medicalResponse';
+import { BankResponse } from './bankResponse';
+import { EmploymentHistoryResponse } from './employmentHistoryResponse';
 import { CdlResponse } from './cdlResponse';
 import { OwnerResponse } from './ownerResponse';
 import { OffDutyLocationResponse } from './offDutyLocationResponse';
-import { PerMileEntity } from './perMileEntity';
 import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
 
@@ -68,6 +69,7 @@ export interface DriverResponse {
     mvrPercentage?: number | null;
     cdlPercentage?: number | null;
     medicalPercentage?: number | null;
+    dispatches?: Array<DispatchShortResponse> | null;
     createdAt?: string;
     updatedAt?: string;
 }

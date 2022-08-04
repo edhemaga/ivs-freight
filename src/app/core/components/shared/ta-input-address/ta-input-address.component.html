@@ -24,7 +24,8 @@
       getSuperControl.value &&
       getSuperControl.invalid &&
       !focusInput &&
-      !inputConfig.addressFlag
+      !inputConfig.addressFlag &&
+      !inputConfig.incorrectInput
     "
     class="input-invalid-danger-mark"
     src="assets/svg/common/ic_danger.svg"
@@ -40,18 +41,22 @@
         activeAddress?.address === getSuperControl.value &&
         !invalidAddress &&
         focusInput &&
-        !inputConfig.blackInput,
+        !inputConfig.blackInput &&
+        getSuperControl.value,
       'invalid-focus-in':
         getSuperControl.value &&
         invalidAddress &&
         focusInput &&
-        !inputConfig.blackInput
+        !inputConfig.blackInput,
+      'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
+      'incorrect-input-enabled':
+        inputConfig.incorrectInput && getSuperControl.value && incorrectValue
     }"
     ngbTooltip
-    mainTooltip="Clear"
-    tooltipBackground="#6c6c6c"
+    [mainTooltip]="inputConfig.incorrectInput ? 'Mark Incorrect' : 'Clear'"
+    [tooltipBackground]="inputConfig.incorrectInput ? '#ef5350' : '#6c6c6c'"
     position="top"
-    (click)="clearInput()"
+    (click)="clearInput($event)"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>

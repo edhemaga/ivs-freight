@@ -108,6 +108,12 @@
     top: 8px;
     right: -1px;
 
+    .panel-image {
+      width: 32px;
+      height: 32px;
+      object-fit: fill;
+    }
+
     .panel-name {
       position: relative;
       top: 1px;

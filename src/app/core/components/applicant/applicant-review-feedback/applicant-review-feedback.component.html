@@ -1,10 +1,5 @@
 <!-- REVIEW -->
-
-<div
-  class="d-flex review-container"
-  *ngIf="!isFeedback"
-  [formGroup]="annotationForm"
->
+<div class="d-flex review-container" *ngIf="!isFeedback">
   <!-- ANNOTATION BUTTON -->
 
   <div
@@ -35,7 +30,7 @@
       }"
     >
       <app-ta-input
-        formControlName="annotation"
+        [formControl]="getSuperControl"
         [inputConfig]="{
           name: 'Annotation',
           type: 'text',
@@ -103,7 +98,6 @@
 </div>
 
 <!-- FEEDBACK -->
-
 <div class="d-flex feedback-container" *ngIf="isFeedback && feedbackText">
   <div class="d-flex feedback-text-container">
     <p class="m-0 ta-font-regular">

@@ -12,8 +12,9 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 const rotate: { [key: string]: any } = {
   asc: '',
@@ -21,6 +22,7 @@ const rotate: { [key: string]: any } = {
   '': 'desc',
 };
 
+@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-head',
   templateUrl: './truckassist-table-head.component.html',
@@ -28,8 +30,7 @@ const rotate: { [key: string]: any } = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
-  implements OnInit, OnChanges, OnDestroy
-{
+  implements OnInit, OnChanges, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   @Input() columns: any[];
   @Input() options: any;
@@ -52,14 +53,14 @@ export class TruckassistTableHeadComponent
   constructor(
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setVisibleColumns();
 
     // Scroll
     this.tableService.currentScroll
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: number) => {
         let scroll = document.getElementById('scroll');
         scroll.scrollLeft = response;
@@ -67,7 +68,7 @@ export class TruckassistTableHeadComponent
 
     // Rows Selected
     this.tableService.currentRowsSelected
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         this.mySelection = response;
 
@@ -76,7 +77,7 @@ export class TruckassistTableHeadComponent
 
     // Unlock Table
     this.tableService.currentUnlockTable
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe((response: any) => {
         if (response.toaggleUnlockTable) {
           this.locked = !this.locked;
@@ -156,7 +157,7 @@ export class TruckassistTableHeadComponent
 
     this.changeDetectorRef.detectChanges();
 
-    if(getNotPinedMaxWidth){
+    if (getNotPinedMaxWidth) {
       setTimeout(() => {
         this.getNotPinedMaxWidth();
       }, 10);
@@ -203,8 +204,8 @@ export class TruckassistTableHeadComponent
 
       const directionSort = column.sortDirection
         ? column.sortName +
-          (column.sortDirection[0]?.toUpperCase() +
-            column.sortDirection?.substr(1).toLowerCase())
+        (column.sortDirection[0]?.toUpperCase() +
+          column.sortDirection?.substr(1).toLowerCase())
         : '';
 
       this.headActions.emit({ action: 'sort', direction: directionSort });

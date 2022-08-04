@@ -2238,7 +2238,7 @@
   overflow-x: auto;
 
   &.dispatchboard-main-table{
-    padding-left: 308px;
+    //padding-left: 308px;
   }
   
 
@@ -2250,7 +2250,7 @@
 
   table {
     width: 1205px !important;
-    padding-left: 76px;
+    //padding-left: 76px;
   }
 
   thead {
@@ -2290,22 +2290,22 @@
     }
   }
 
-  tr {
-    td:nth-child(1), th:nth-child(1) {
-      position: absolute;
-      left: 0;
-    }
+  // tr {
+  //   td:nth-child(1), th:nth-child(1) {
+  //     position: absolute;
+  //     left: -309px;
+  //   }
 
-    td:nth-child(2), th:nth-child(2) {
-      position: absolute;
-      left: 76px;
-    }
+  //   td:nth-child(2), th:nth-child(2) {
+  //     position: absolute;
+  //     left: -232px;
+  //   }
 
-    td:nth-child(3), th:nth-child(3) {
-      position: absolute;
-      left: 174px;
-    }
-  }
+  //   td:nth-child(3), th:nth-child(3) {
+  //     position: absolute;
+  //     left: -134px;
+  //   }
+  // }
 
   .truck-field {
     width: 76px;
@@ -2316,11 +2316,18 @@
   }
 
   .driver-field {
-    width: 134px;
+    width: 319px;
+    padding-left: 175px !important;
+    min-width: 319px;
+  }
+
+  .note-field{
+    width: 359px;
   }
 
   .phoneemail-field {
     width: 176px;
+    min-width: 176px;
   }
   .location-field {
     width: 136px;

@@ -14,6 +14,7 @@ import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { LoadStopShortResponse } from './loadStopShortResponse';
+import { LoadShortResponse } from './loadShortResponse';
 import { AddressEntity } from './addressEntity';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 
@@ -35,5 +36,7 @@ export interface DispatchResponse {
     delivery?: LoadStopShortResponse;
     hoursOfService?: number | null;
     note?: string | null;
+    activeLoad?: LoadShortResponse;
+    assignedLoads?: Array<LoadShortResponse> | null;
 }
 

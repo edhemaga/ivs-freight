@@ -1,6 +1,4 @@
-import { AfterContentInit, AfterViewChecked, Component, ElementRef, HostListener, NgZone, OnInit, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
+import { AfterContentInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
@@ -16,7 +14,7 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
   scrollRatio: number = 0;
   scrollRatioFull: number = 0;
 
-  isMouseDown: boolean = false;
+  isMouseDown: boolean = false; 
   startingBarOffsetTop: number = 0;
   barClickPosition: number = 0;
   barClickRestHeight: number = 0;
