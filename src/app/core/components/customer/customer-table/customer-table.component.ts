@@ -290,7 +290,7 @@ export class CustomerTableComponent
       {
         title: 'Broker',
         field: 'active',
-        length: brokerShipperCount.broker,
+        length: brokerShipperCount?.broker ? brokerShipperCount.broker : 0,
         data: this.brokers,
         extended: false,
         isCustomer: true,
@@ -301,7 +301,7 @@ export class CustomerTableComponent
       {
         title: 'Shipper',
         field: 'inactive',
-        length: brokerShipperCount.shipper,
+        length: brokerShipperCount?.shipper ? brokerShipperCount.shipper : 0,
         data: this.shipper,
         extended: false,
         isCustomer: true,
