@@ -30,7 +30,7 @@ export interface NavigationUserPanel {
 }
 export interface FooterData {
   id: number;
-  image: string;
+  image: string | any;
   text: string | {};
   route?: string;
   isRouteActive?: boolean;

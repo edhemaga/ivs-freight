@@ -40,7 +40,8 @@
         activeAddress?.address === getSuperControl.value &&
         !invalidAddress &&
         focusInput &&
-        !inputConfig.blackInput,
+        !inputConfig.blackInput &&
+        getSuperControl.value,
       'invalid-focus-in':
         getSuperControl.value &&
         invalidAddress &&

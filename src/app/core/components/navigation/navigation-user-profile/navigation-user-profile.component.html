@@ -48,6 +48,11 @@
           ? loggedUser.avatar
           : 'assets/svg/common/ic_profile.svg'
       "
+      [alt]="
+        loggedUser.firstName
+          .substring(0, 1)
+          .concat(' ', loggedUser.lastName.substring(0, 1))
+      "
     />
     <div class="panel-name">
       <p class="nav-footer-user-company">{{ loggedUser.companyName }}</p>

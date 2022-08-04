@@ -16,6 +16,7 @@ import {
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
   selector: 'app-profile-update-modal',
@@ -65,7 +66,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private userService: TaUserService,
     private notificationService: NotificationService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit() {
@@ -228,6 +230,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.profileUserForm.get('avatar').patchValue(event);
+    console.log(event);
   }
 
   public onHandleAddress(event: {
@@ -296,6 +299,15 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
+
+          const newUser = {
+            ...this.user,
+            firstName: this.profileUserForm.get('firstName').value,
+            lastName: this.profileUserForm.get('lastName').value,
+            avatar: this.profileUserForm.get('avatar').value,
+          };
+          this.userService.updateUserProfile(true);
+          localStorage.setItem('user', JSON.stringify(newUser));
         },
         error: () => {
           this.notificationService.error("Can't update your profile.", 'Error');

@@ -26,6 +26,7 @@ export class TaInputAddressComponent
 {
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
+  @Input() activeAddress: AddressEntity;
 
   @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -44,7 +45,6 @@ export class TaInputAddressComponent
 
   public numberOfSpaces: number = 0;
 
-  public activeAddress: AddressEntity;
   public invalidAddress: boolean = false;
 
   public options = {
@@ -122,11 +122,20 @@ export class TaInputAddressComponent
   public onFocus(): void {
     this.focusInput = true;
 
-    if (!this.activeAddress) {
+    if (!this.activeAddress && this.inputConfig.isRequired) {
       this.invalidAddress = true;
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
+    console.log(
+      'Same active and super control ',
+      this.activeAddress?.address === this.getSuperControl.value
+    );
+    console.log('INVALID ', this.invalidAddress);
+    console.log('FOCUS ', this.focusInput);
+    console.log('BLACK INPUT ', this.inputConfig.blackInput);
+    console.log('SUPER CONTROL ', this.getSuperControl.value);
+    console.log('ACTIVE ADDRESS ', this.activeAddress?.address);
 
     // Input Commands
     if (this.inputConfig.commands?.active) {
