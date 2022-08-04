@@ -27,6 +27,7 @@ export class TaInputAddressComponent
   @ViewChild('input', { static: true }) input: ElementRef;
   @Input() inputConfig: ITaInput;
   @Input() activeAddress: AddressEntity;
+  @Input() incorrectValue: boolean = false;
 
   @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -34,6 +35,9 @@ export class TaInputAddressComponent
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
+
+  @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
+    new EventEmitter<any>();
 
   @Output('commandEvent') inputCommandEvent: EventEmitter<{
     address: AddressEntity;
@@ -182,21 +186,26 @@ export class TaInputAddressComponent
   }
 
   public clearInput(): void {
-    this.input.nativeElement.value = null;
-    this.getSuperControl.setValue(null);
-    this.numberOfSpaces = 0;
-    this.touchedInput = true;
-    this.activeAddress = null;
-    this.invalidAddress = false;
-    this.getSuperControl.setErrors(null);
-
-    if (!this.inputConfig.isRequired) {
-      this.selectedAddress.emit({ address: null, valid: true });
-      this.getSuperControl.setErrors(null);
+    if (this.inputConfig.incorrectInput) {
+      this.incorrectValue = !this.incorrectValue;
+      this.incorrectInput.emit(this.incorrectValue);
     } else {
-      this.selectedAddress.emit({ address: null, valid: false });
-      this.invalidAddress = true;
-      this.getSuperControl.setErrors({ required: true });
+      this.input.nativeElement.value = null;
+      this.getSuperControl.setValue(null);
+      this.numberOfSpaces = 0;
+      this.touchedInput = true;
+      this.activeAddress = null;
+      this.invalidAddress = false;
+      this.getSuperControl.setErrors(null);
+
+      if (!this.inputConfig.isRequired) {
+        this.selectedAddress.emit({ address: null, valid: true });
+        this.getSuperControl.setErrors(null);
+      } else {
+        this.selectedAddress.emit({ address: null, valid: false });
+        this.invalidAddress = true;
+        this.getSuperControl.setErrors({ required: true });
+      }
     }
   }
 
