@@ -91,6 +91,7 @@
         position: relative;
         width: auto;
         border-radius: 2px;
+        padding: 4px;
 
         //background-image: url('../../../../assets/img/svgs/right.svg');
         background-repeat: no-repeat;
@@ -104,7 +105,6 @@
         &:hover {
           opacity: 1;
           background-color: #EEEEEE;
-          padding-right: 4px;
 
           .color_picker_arrow{
             display: block;
@@ -181,8 +181,8 @@
       }
 
       .color_picker_arrow{
-        z-index: 1;
-        margin: 0 4px;
+        position: absolute;
+        z-index: 11;
 
         &.flip_arrow{
             transform: scaleX(-1);
@@ -194,7 +194,7 @@
                 height: 7px;
 
                 path{
-                    fill: #AAAAAA;
+                    fill: #fff;
                 }
             }
         }
