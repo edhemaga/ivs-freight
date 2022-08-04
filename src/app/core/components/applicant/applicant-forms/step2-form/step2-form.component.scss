@@ -1,14 +1,30 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
+  .line-container {
+    position: relative;
+
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
   .group {
     margin-bottom: 32px;
     margin-right: 12px;
     width: 616px;
 
     &:last-child {
-      margin-right: 0;
+      margin-right: 0 !important;
     }
+  }
+
+  .employer-group {
+    width: 616px;
+    margin-right: 0;
   }
 
   .job-description-group {
@@ -17,6 +33,10 @@
 
   .date-group {
     width: 138px;
+  }
+
+  .date-to-group {
+    margin-right: 0 !important;
   }
 
   .phone-group {
@@ -29,6 +49,7 @@
 
   .fax-group {
     width: 169px;
+    margin-right: 0 !important;
   }
 
   .address-group {
@@ -39,6 +60,7 @@
   .address-unit-group {
     width: 123px;
     margin-bottom: 22px !important;
+    margin-right: 0 !important;
   }
 
   .driving-position-group {
@@ -58,6 +80,7 @@
   .length-group {
     width: 130px;
     margin-bottom: 22px;
+    margin-right: 0 !important;
   }
 
   .another-class-group {
@@ -150,5 +173,10 @@
 
   .reason-for-leaving-group {
     width: 616px;
+    margin-right: 0 !important;
+  }
+
+  .account-for-period-group {
+    margin-right: 0 !important;
   }
 }

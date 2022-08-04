@@ -1,4 +1,15 @@
 .step-form {
+  .line-container {
+    position: relative;
+
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
   .group {
     margin-bottom: 32px;
     margin-right: 12px;
@@ -15,6 +26,7 @@
 
   .country-group {
     width: 234px;
+    margin-right: 0 !important;
   }
 
   .state-group {
@@ -27,14 +39,17 @@
 
   .exp-date-group {
     width: 172px;
+    margin-right: 0 !important;
   }
 
   .restrictions-group {
     width: 616px;
     margin-bottom: 32px;
+    margin-right: 0 !important;
   }
 
   .endorsments-group {
     width: 616px;
+    margin-right: 0 !important;
   }
 }

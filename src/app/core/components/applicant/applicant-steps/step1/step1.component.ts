@@ -615,7 +615,7 @@ export class Step1Component implements OnInit, OnDestroy {
     event: any,
     inputIndex: number,
     lineIndex: number,
-    type: string
+    type?: string
   ): void {
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
@@ -657,7 +657,7 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public getAnnotationBtnClickValue(event: any, type: string): void {
+  public getAnnotationBtnClickValue(event: any): void {
     if (event.type === 'open') {
       this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =

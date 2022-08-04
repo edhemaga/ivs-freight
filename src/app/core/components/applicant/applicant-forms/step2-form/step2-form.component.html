@@ -1,8 +1,8 @@
 <div class="d-flex flex-column step-form" [formGroup]="form">
   <!-- EMPLOYER -->
 
-  <div class="d-flex">
-    <div class="group">
+  <div class="d-flex line-container">
+    <div class="group employer-group">
       <app-ta-input
         formControlName="employer"
         [inputConfig]="{
@@ -11,15 +11,40 @@
           label: 'Current or last employer',
           isRequired: true,
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 15)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[15].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[15].displayAnnotationTextArea
+        "
+        [lineIndex]="15"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
   <!-- JOB DESCRIPTION, FROM, TO -->
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group job-description-group">
       <app-ta-input
         formControlName="jobDescription"
@@ -28,8 +53,11 @@
           type: 'text',
           label: 'Job description',
           isRequired: true,
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 16)"
       ></app-ta-input>
     </div>
     <div class="group date-group">
@@ -41,11 +69,14 @@
           label: 'From',
           placeholderIcon: 'date',
           isRequired: true,
-          customClass: 'datetimeclass'
+          customClass: 'datetimeclass',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 16)"
       ></app-ta-input>
     </div>
-    <div class="group date-group">
+    <div class="group date-group date-to-group">
       <app-ta-input
         formControlName="toDate"
         [inputConfig]="{
@@ -54,15 +85,40 @@
           label: 'To',
           placeholderIcon: 'date',
           isRequired: true,
-          customClass: 'datetimeclass'
+          customClass: 'datetimeclass',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 2, 16)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[16].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[16].displayAnnotationTextArea
+        "
+        [lineIndex]="16"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
   <!-- PHONE, EMAIL, FAX -->
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group phone-group">
       <app-ta-input
         formControlName="employerPhone"
@@ -72,8 +128,11 @@
           label: 'Employer Phone',
           isRequired: true,
           placeholderIcon: 'phone',
-          mask: '(000) 000-0000'
+          mask: '(000) 000-0000',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 17)"
       ></app-ta-input>
     </div>
     <div class="group email-group">
@@ -84,8 +143,11 @@
           type: 'text',
           label: 'Employer Email',
           isRequired: true,
-          placeholderIcon: 'email'
+          placeholderIcon: 'email',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 17)"
       ></app-ta-input>
     </div>
     <div class="group fax-group">
@@ -95,15 +157,40 @@
           name: 'Fax',
           type: 'text',
           label: 'Employer Fax',
-          placeholderIcon: 'fax'
+          placeholderIcon: 'fax',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 2, 17)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[17].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[17].displayAnnotationTextArea
+        "
+        [lineIndex]="17"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
   <!-- ADDRESS -->
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group address-group">
       <app-ta-input-address
         formControlName="employerAddress"
@@ -125,9 +212,34 @@
           name: 'Address Unit',
           type: 'text',
           label: 'Unit #',
-          maxLength: 6
+          maxLength: 6,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 18)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[18].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[18].displayAnnotationTextArea
+        "
+        [lineIndex]="18"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
@@ -147,7 +259,7 @@
   <!-- TRUCK TYPE, TRAILER TYPE, LENGTH -->
 
   <div class="d-flex flex-column" *ngIf="form.get('isDrivingPosition').value">
-    <div class="d-flex">
+    <div class="d-flex line-container">
       <div class="group vehicle-type-group">
         <app-ta-input-dropdown
           formControlName="truckType"
@@ -158,8 +270,11 @@
             label: 'Vehicle type',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-applicant-t-type'
+            dropdownWidthClass: 'w-col-applicant-t-type',
+            incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [incorrectValue]="false"
+          (incorrectEvent)="incorrectInput($event, 0, 19)"
           [options]="truckType"
           (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
         ></app-ta-input-dropdown>
@@ -175,8 +290,11 @@
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-applicant-t-type'
+            dropdownWidthClass: 'w-col-applicant-t-type',
+            incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [incorrectValue]="false"
+          (incorrectEvent)="incorrectInput($event, 1, 19)"
           [options]="trailerType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
         ></app-ta-input-dropdown>
@@ -191,11 +309,38 @@
             isDropdown: true,
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
-            dropdownWidthClass: 'w-col-applicant-length'
+            dropdownWidthClass: 'w-col-applicant-length',
+            incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
+          [incorrectValue]="false"
+          (incorrectEvent)="incorrectInput($event, 2, 19)"
           [options]="trailerLengthType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
         ></app-ta-input-dropdown>
+      </div>
+
+      <!-- REVIEW AND FEEDBACK -->
+
+      <div
+        class="review-feedback-container"
+        *ngIf="
+          selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+        "
+      >
+        <app-applicant-review-feedback
+          [displayAnnotationButton]="
+            openAnnotationArray[19].displayAnnotationButton
+          "
+          [displayAnnotationTextArea]="
+            openAnnotationArray[19].displayAnnotationTextArea
+          "
+          [lineIndex]="19"
+          [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+          [feedbackText]="
+            'Check the routing number one more time (one number missing)!!!'
+          "
+          (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+        ></app-applicant-review-feedback>
       </div>
     </div>
 
@@ -253,7 +398,7 @@
 
   <!-- REASON FOR LEAVING -->
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group reason-for-leaving-group">
       <app-ta-input-dropdown
         formControlName="reasonForLeaving"
@@ -264,28 +409,75 @@
           label: 'Reason for leaving',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-12'
+          dropdownWidthClass: 'w-col-applicant-reason'
         }"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
         (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
       ></app-ta-input-dropdown>
     </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[20].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[20].displayAnnotationTextArea
+        "
+        [lineIndex]="20"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
+    </div>
   </div>
 
   <!-- ACCOUNT FOR PERIOD -->
 
-  <div class="d-flex">
-    <div class="mb-0 group">
+  <div class="d-flex line-container">
+    <div class="mb-0 account-for-period-group group">
       <app-ta-input
         formControlName="accountForPeriod"
         [inputConfig]="{
           name: 'Account for Period',
           type: 'text',
           label: 'Account for period between jobs (include reason)',
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 21)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        [displayAnnotationButton]="
+          openAnnotationArray[21].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[21].displayAnnotationTextArea
+        "
+        [lineIndex]="21"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 </div>

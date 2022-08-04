@@ -94,18 +94,9 @@
       margin-bottom: 32px;
       width: 616px;
 
-      position: relative;
-
       &:nth-child(3),
       &:nth-child(5) {
         margin-bottom: 22px;
-      }
-
-      .review-feedback {
-        height: 26px;
-        position: absolute;
-        right: -6px;
-        top: 0;
       }
 
       .group {
@@ -171,37 +162,6 @@
       .dets-container {
         width: 616px;
 
-        &:hover
-          .right-container
-          .info-container
-          .address-container
-          .address-icon {
-          svg {
-            path {
-              fill: $ta-light-blue;
-            }
-          }
-        }
-
-        &:hover .right-container .info-container .address-container,
-        &:hover .right-container .info-container .address-unit-container {
-          p {
-            color: $ta-light-grey-3;
-          }
-        }
-
-        &:hover .right-container .btn-container {
-          opacity: 1;
-          visibility: visible !important;
-        }
-
-        &:hover .right-container .btn-container.active {
-          .review-icon {
-            visibility: visible !important;
-            opacity: 1 !important;
-          }
-        }
-
         .title-container {
           .address-title-container {
             width: 174px;
@@ -238,139 +198,168 @@
           height: 26px;
           border-radius: 2px;
 
-          .info-container {
-            .address-container {
-              width: 480px;
-              margin-right: 12px;
-
-              .address-icon {
-                svg {
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $ta-blue-3;
-                  }
+          .info-btn-container {
+            &:hover .info-container .address-container .address-icon {
+              svg {
+                path {
+                  fill: $ta-light-blue;
                 }
               }
+            }
 
-              .pipe {
-                width: 1px;
-                height: 14px;
-                margin: 2px 6px;
-                background-color: $ta-gray-02;
-              }
-
+            &:hover .info-container .address-container,
+            &:hover .info-container .address-unit-container {
               p {
-                text-transform: uppercase;
-                font-size: 14px;
-                color: $bw6-2;
-                transition: color 0.2s ease-in-out;
+                color: $ta-light-grey-3;
               }
             }
 
-            .address-unit-container {
-              width: 42px;
-              margin-right: 6px;
-
-              p {
-                text-transform: uppercase;
-                font-size: 14px;
-                color: $bw6-2;
-                transition: color 0.2s ease-in-out;
-              }
-            }
-          }
-
-          .btn-container {
-            width: 64px;
-            visibility: hidden !important;
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
-
-            &.active {
-              visibility: visible !important;
+            &:hover .info-container + .btn-container {
               opacity: 1 !important;
+              visibility: visible !important;
+            }
 
+            &:hover .info-container + .btn-container.active {
               .edit-icon,
-              .delete-icon,
-              .review-icon {
-                visibility: hidden !important;
-                opacity: 0 !important;
-                user-select: none !important;
+              .delete-icon {
+                display: none;
+              }
 
-                &.review-icon.active {
+              .review-icon-box {
+                margin-left: 44px !important;
+
+                .review-icon {
                   visibility: visible !important;
                   opacity: 1 !important;
                 }
               }
             }
 
-            .edit-icon,
-            .delete-icon,
-            .review-icon {
-              cursor: pointer;
+            .info-container {
+              .address-container {
+                width: 480px;
+                margin-right: 12px;
 
-              &:hover {
-                svg {
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $bw6-2;
+                .address-icon {
+                  svg {
+                    path {
+                      transition: fill 0.2s ease-in-out;
+                      fill: $ta-blue-3;
+                    }
+                  }
+                }
+
+                .pipe {
+                  width: 1px;
+                  height: 14px;
+                  margin: 2px 6px;
+                  background-color: $ta-gray-02;
+                }
+
+                p {
+                  text-transform: uppercase;
+                  font-size: 14px;
+                  color: $bw6-2;
+                  transition: color 0.2s ease-in-out;
+                }
+              }
+
+              .address-unit-container {
+                width: 42px;
+                margin-right: 6px;
+
+                p {
+                  text-transform: uppercase;
+                  font-size: 14px;
+                  color: $bw6-2;
+                  transition: color 0.2s ease-in-out;
+                }
+              }
+            }
+
+            .btn-container {
+              width: 64px;
+              visibility: hidden !important;
+              opacity: 0;
+              transition: opacity 0.2s ease-in-out;
+
+              &.active {
+                visibility: visible !important;
+                opacity: 1 !important;
+
+                .edit-icon,
+                .delete-icon,
+                .review-icon {
+                  visibility: hidden !important;
+                  opacity: 0 !important;
+                  user-select: none !important;
+
+                  &.review-icon.active {
+                    visibility: visible !important;
+                    opacity: 1 !important;
                   }
                 }
               }
 
-              svg {
-                path {
-                  fill: $bw4;
-                }
-              }
-
-              &.edit-icon,
-              &.delete-icon {
-                margin-right: 4px;
-              }
-
-              &.review-icon {
-                svg {
-                  transform: scale(1);
-                  transition: transform 0.3s ease-in-out;
-
-                  path {
-                    fill: $ta-red-2;
-                    transition: fill 0.3s ease-in-out;
-                  }
-
-                  rect {
-                    fill: $ta-light-grey-4;
-                    transition: fill 0.3s ease-in-out;
-                  }
-                }
+              .edit-icon,
+              .delete-icon,
+              .review-icon {
+                cursor: pointer;
 
                 &:hover {
                   svg {
-                    transform: scale(1.2);
-
                     path {
-                      fill: $white;
-                      transition: fill 0.3s ease-in-out;
-                    }
-
-                    rect {
-                      fill: $ta-red-3;
+                      transition: fill 0.2s ease-in-out;
+                      fill: $bw6-2;
                     }
                   }
                 }
 
-                &.active {
-                  svg {
-                    transform: scale(1);
+                svg {
+                  path {
+                    fill: $bw4;
+                  }
+                }
 
+                &.edit-icon,
+                &.delete-icon {
+                  margin-right: 4px;
+                }
+
+                &.review-icon {
+                  svg {
                     path {
-                      fill: $white;
                       transition: fill 0.3s ease-in-out;
+                      fill: $ta-red-2 !important;
                     }
 
                     rect {
-                      fill: $ta-red-3;
+                      transition: fill 0.3s ease-in-out;
+                      fill: $bw2 !important;
+                    }
+                  }
+
+                  &:hover {
+                    svg {
+                      path {
+                        fill: $white !important;
+                      }
+
+                      rect {
+                        fill: $ta-red-2 !important;
+                      }
+                    }
+                  }
+
+                  &.active {
+                    svg {
+                      path {
+                        fill: $white !important;
+                      }
+
+                      rect {
+                        fill: $ta-red-3 !important;
+                      }
                     }
                   }
                 }

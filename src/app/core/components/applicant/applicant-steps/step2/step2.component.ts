@@ -11,7 +11,10 @@ import {
   emailRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { isFormValueEqual } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -35,7 +38,7 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant;
   public applicantId: string = '0';
@@ -188,14 +191,6 @@ export class Step2Component implements OnInit, OnDestroy {
     },
   ];
 
-  public helperIndex: number = 2;
-
-  //
-
-  /* public workExperienceArray: WorkHistory[]; */
-
-  public selectedItemIndex: number = -1;
-
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },
     { id: 2, name: 'Illness' },
@@ -204,6 +199,52 @@ export class Step2Component implements OnInit, OnDestroy {
     { id: 5, name: 'Family obligations' },
     { id: 6, name: 'Other' },
   ];
+
+  public helperIndex: number = 2;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
+
+  //
+
+  public selectedItemIndex: number = -1;
+
+  /* public workExperienceArray: WorkHistory[]; */
 
   // public get showAddNew(): boolean {
   //   /* return this.workHistories?.length &&
@@ -519,6 +560,64 @@ export class Step2Component implements OnInit, OnDestroy {
     this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 
   /* private isNoExperience(): void {

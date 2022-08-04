@@ -16,6 +16,7 @@ export class ApplicantReviewFeedbackComponent implements OnInit {
   @Input() feedbackText: string;
   @Input() cardsLength?: number;
   @Input() cardIndex?: number;
+  @Input() cardsType?: string;
 
   @Output() annotationBtnClickEvent: EventEmitter<{
     lineIndex: number;

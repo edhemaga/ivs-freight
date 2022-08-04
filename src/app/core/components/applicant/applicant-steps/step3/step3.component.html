@@ -48,63 +48,120 @@
       </div>
 
       <div
-        class="d-flex align-items-center license-info-container"
+        class="d-flex align-items-center license-info-container line-container"
         *ngIf="!license.isEditingLicense"
       >
-        <div class="d-flex align-items-center license-box">
-          <p class="m-0 ta-font-regular">
-            {{ license.license }}
-          </p>
-        </div>
-        <div class="d-flex align-items-center state-box">
-          <p class="m-0 ta-font-regular">
-            {{ license.stateId }}
-          </p>
-        </div>
-        <div class="d-flex align-items-center class-box">
-          <p class="m-0 ta-font-regular">
-            {{ license.classType }}
-          </p>
-        </div>
-        <div class="d-flex align-items-center date-box">
-          <p class="m-0 ta-font-regular">
-            {{ license.expDate }}
-          </p>
-        </div>
-        <div class="d-flex align-items-center btn-container">
-          <div
-            ngbTooltip
-            mainTooltip="Edit"
-            tooltipBackground="#6C6C6C"
-            position="top"
-          >
-            <svg-icon
-              class="edit-icon"
-              src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              (click)="onEditLicense(i)"
-            ></svg-icon>
+        <div class="d-flex align-items-center info-btn-container">
+          <div class="d-flex align-items-center license-box">
+            <p class="m-0 ta-font-regular">
+              {{ license.license }}
+            </p>
           </div>
+          <div class="d-flex align-items-center state-box">
+            <p class="m-0 ta-font-regular">
+              {{ license.stateId }}
+            </p>
+          </div>
+          <div class="d-flex align-items-center class-box">
+            <p class="m-0 ta-font-regular">
+              {{ license.classType }}
+            </p>
+          </div>
+          <div class="d-flex align-items-center date-box">
+            <p class="m-0 ta-font-regular">
+              {{ license.expDate }}
+            </p>
+          </div>
+          <div
+            class="d-flex align-items-center btn-container"
+            [ngClass]="{
+              active: selectedMode === 'REVIEW_MODE'
+            }"
+          >
+            <div
+              ngbTooltip
+              mainTooltip="Edit"
+              tooltipBackground="#6C6C6C"
+              position="top"
+            >
+              <svg-icon
+                class="edit-icon"
+                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onEditLicense(i)"
+              ></svg-icon>
+            </div>
 
-          <div
-            ngbTooltip
-            mainTooltip="Delete"
-            tooltipBackground="#EF5350"
-            position="top"
-          >
-            <svg-icon
-              class="delete-icon"
-              src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-              [svgStyle]="{
-                'width.px': 18,
-                'height.px': 18
-              }"
-              (click)="onDeleteLicense(i)"
-            ></svg-icon>
+            <div
+              ngbTooltip
+              mainTooltip="Delete"
+              tooltipBackground="#EF5350"
+              position="top"
+            >
+              <svg-icon
+                class="delete-icon"
+                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                [svgStyle]="{
+                  'width.px': 18,
+                  'height.px': 18
+                }"
+                (click)="onDeleteLicense(i)"
+              ></svg-icon>
+            </div>
+
+            <div *ngIf="selectedMode === 'REVIEW_MODE'">
+              <div
+                class="review-icon-box"
+                ngbTooltip
+                mainTooltip="Mark Incorrect"
+                tooltipBackground="#F44336"
+                position="top"
+              >
+                <svg-icon
+                  class="review-icon"
+                  [ngClass]="{
+                    active:
+                      openAnnotationArray[i].displayAnnotationButton ||
+                      openAnnotationArray[i].displayAnnotationTextArea
+                  }"
+                  src="assets/svg/ic_x.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="incorrectInput($event, 0, i, 'card')"
+                ></svg-icon>
+              </div>
+            </div>
           </div>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div
+          class="review-feedback-container"
+          *ngIf="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+          "
+        >
+          <app-applicant-review-feedback
+            [displayAnnotationButton]="
+              openAnnotationArray[i].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+              openAnnotationArray[i].displayAnnotationTextArea
+            "
+            [lineIndex]="i"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="'Check the number'"
+            [cardsLength]="licenseArray.length"
+            [cardsType]="'cdlInformation'"
+            [cardIndex]="i"
+            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -219,7 +276,7 @@
       <!-- EXPLAIN -->
 
       <div
-        class="d-flex explain-container"
+        class="d-flex explain-container line-container"
         *ngIf="permitForm.get('permit')?.value === 'YES'"
       >
         <div class="w-100">
@@ -232,9 +289,37 @@
               isRequired: true,
               textTransform: 'capitalize',
               placeholder: 'Please explain',
-              placeholderInsteadOfLabel: true
+              placeholderInsteadOfLabel: true,
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event, 0, 14)"
           ></app-ta-input>
+        </div>
+
+        <!-- REVIEW AND FEEDBACK -->
+
+        <div
+          class="review-feedback-container"
+          *ngIf="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+          "
+        >
+          <app-applicant-review-feedback
+            [displayAnnotationButton]="
+              openAnnotationArray[14].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+              openAnnotationArray[14].displayAnnotationTextArea
+            "
+            [lineIndex]="14"
+            d
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+              'Check the routing number one more time (one number missing)!!!'
+            "
+            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -269,6 +354,7 @@
 
 <!-- CONFIRM ALL REVIEW -->
 
-<app-applicant-confirm-all-review
+<!-- <app-applicant-confirm-all-review
   *ngIf="selectedMode === 'REVIEW_MODE'"
 ></app-applicant-confirm-all-review>
+ -->
