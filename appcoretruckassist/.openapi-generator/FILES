@@ -146,12 +146,14 @@ model/departmentResponse.ts
 model/dispatchBoardListResponse.ts
 model/dispatchBoardResponse.ts
 model/dispatchBoardResponsePagination.ts
+model/dispatchHistoryDriverListResponse.ts
 model/dispatchHistoryListResponse.ts
 model/dispatchHistoryModalResponse.ts
 model/dispatchHistoryResponse.ts
 model/dispatchHistoryResponsePagination.ts
 model/dispatchModalResponse.ts
 model/dispatchResponse.ts
+model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/driverListResponse.ts
