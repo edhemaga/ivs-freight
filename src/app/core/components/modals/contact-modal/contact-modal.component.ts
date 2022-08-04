@@ -236,6 +236,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
+    } else {
+      this.selectedAddress = null;
     }
 
     const newData: CreateCompanyContactCommand = {
@@ -276,6 +278,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
+    } else {
+      this.selectedAddress = null;
     }
 
     const newData: UpdateCompanyContactCommand = {

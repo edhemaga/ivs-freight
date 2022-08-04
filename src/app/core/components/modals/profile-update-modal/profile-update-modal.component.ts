@@ -284,6 +284,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
+    } else {
+      this.selectedAddress = null;
     }
 
     const newData: UpdateUserCommand = {

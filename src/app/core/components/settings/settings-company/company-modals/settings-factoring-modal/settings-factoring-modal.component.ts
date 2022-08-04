@@ -113,6 +113,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
+    } else {
+      this.selectedAddress = null;
     }
 
     const newData: UpdateFactoringCompanyCommand = {
