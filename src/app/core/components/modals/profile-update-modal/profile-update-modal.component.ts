@@ -260,6 +260,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             avatar: res.avatar,
           });
+          console.log(res.address);
           this.selectedAddress = res.address;
         },
         error: () => {
@@ -284,14 +285,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     const newData: UpdateUserCommand = {
       id: this.user.userId,
       ...form,
-      address: this.selectedAddress,
+      address: this.selectedAddress ? this.selectedAddress : null,
     };
 
     this.userService

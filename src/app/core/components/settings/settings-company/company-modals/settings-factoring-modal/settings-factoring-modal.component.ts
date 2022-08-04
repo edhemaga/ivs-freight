@@ -113,8 +113,6 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     const newData: UpdateFactoringCompanyCommand = {
@@ -122,7 +120,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       name: name,
       phone: phone,
       email: email,
-      address: this.selectedAddress,
+      address: this.selectedAddress ? this.selectedAddress : null,
       noticeOfAssigment: noticeOfAssigment,
       note: note,
     };

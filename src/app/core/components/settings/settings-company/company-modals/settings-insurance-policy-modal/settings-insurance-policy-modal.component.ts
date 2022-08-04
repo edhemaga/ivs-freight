@@ -399,8 +399,6 @@ export class SettingsInsurancePolicyModalComponent
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     let newData: CreateInsurancePolicyCommand = {
@@ -605,8 +603,6 @@ export class SettingsInsurancePolicyModalComponent
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     let newData: UpdateInsurancePolicyCommand = {

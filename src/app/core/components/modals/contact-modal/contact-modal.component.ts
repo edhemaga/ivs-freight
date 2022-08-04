@@ -219,6 +219,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedContactLabel = res.companyContactLabel;
+          console.log(res.address);
           this.selectedAddress = res.address;
           // TODO: shared departments label selected
         },
@@ -236,8 +237,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     const newData: CreateCompanyContactCommand = {
@@ -247,7 +246,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: this.selectedAddress,
+      address: this.selectedAddress ? this.selectedAddress : null,
     };
 
     this.contactModalService
@@ -278,8 +277,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         ...this.selectedAddress,
         addressUnit: addressUnit,
       };
-    } else {
-      this.selectedAddress = null;
     }
 
     const newData: UpdateCompanyContactCommand = {
@@ -290,7 +287,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: this.selectedAddress,
+      address: this.selectedAddress ? this.selectedAddress : null,
     };
 
     this.contactModalService
