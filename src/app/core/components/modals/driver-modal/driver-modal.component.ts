@@ -316,8 +316,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addOffDutyLocation(event: any) {
-    if (event) {
+  public addOffDutyLocation(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.offDutyLocations.push(this.createOffDutyLocation());
     }
   }

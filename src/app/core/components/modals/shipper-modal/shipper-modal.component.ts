@@ -272,8 +272,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addShipperContacts(event: any) {
-    if (event) {
+  public addShipperContacts(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.shipperContacts.push(this.createShipperContacts());
     }
   }
@@ -319,7 +319,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createReview(event: any) {
+  public createReview(event: { check: boolean; action: string }) {
     if (
       this.reviews.some((item) => item.isNewReview) ||
       this.disableOneMoreReview

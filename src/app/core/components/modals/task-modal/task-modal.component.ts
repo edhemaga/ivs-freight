@@ -147,7 +147,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createComment(event: any) {
+  public createComment(event: { check: boolean; action: string }) {
     if (this.comments.some((item) => item.isNewReview)) {
       return;
     }
@@ -280,8 +280,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       status: this.taskStatus.name,
     };
 
-    console.log(newData);
-
     this.todoService
       .updateTodo(newData)
       .pipe(untilDestroyed(this))
@@ -413,8 +411,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropDown(event: any[], action: string) {
-    console.log('ON SELECTED');
-    console.log(event);
     switch (action) {
       case 'res-department': {
         this.selectedDepartments = [...event];

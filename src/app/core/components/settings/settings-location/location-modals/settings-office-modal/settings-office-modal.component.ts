@@ -152,8 +152,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addDepartmentContacts(event: any) {
-    if (event) {
+  public addDepartmentContacts(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.departmentContacts.push(this.createDepartmentContacts());
     }
   }

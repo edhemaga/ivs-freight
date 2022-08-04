@@ -384,6 +384,7 @@ export class DriverDetailsCardComponent
   }
 
   public onModalAction(action: string): void {
+    console.log(action);
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }

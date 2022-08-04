@@ -6,19 +6,19 @@ import {
   ElementRef,
   NgZone,
 } from '@angular/core';
-import {FormArray, FormBuilder, FormGroup} from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-import {untilDestroyed} from 'ngx-take-until-destroy';
+import { untilDestroyed } from 'ngx-take-until-destroy';
 
 import moment from 'moment';
 
-import {SelectedMode} from '../state/enum/selected-mode.enum';
-import {InputSwitchActions} from '../state/enum/input-switch-actions.enum';
-import {CompanyInfoModel} from '../state/model/company.model';
-import {SphReceivedBy} from '../state/model/sph-received-by.model';
+import { SelectedMode } from '../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
+import { CompanyInfoModel } from '../state/model/company.model';
+import { SphReceivedBy } from '../state/model/sph-received-by.model';
 
-import {ApplicantActionsService} from './../state/services/applicant-actions.service';
-import {convertDateFromBackend} from './../../../utils/methods.calculations';
+import { ApplicantActionsService } from './../state/services/applicant-actions.service';
+import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-applicant-footer',
@@ -46,11 +46,11 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
 
   public selectedDocumentsTab: number = 1;
   public selectedRequestsTab: number = 1;
-  public selectedSphReceivedBy: {id: number; name: string};
+  public selectedSphReceivedBy: { id: number; name: string };
 
   public isDocumentsCardOpen: boolean = true;
 
-  public documentsBoxTabs: {id: number; name: string}[] = [
+  public documentsBoxTabs: { id: number; name: string }[] = [
     {
       id: 1,
       name: 'CDL',
@@ -69,7 +69,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public requestsBoxTabs: {id: number; name: string}[] = [
+  public requestsBoxTabs: { id: number; name: string }[] = [
     {
       id: 1,
       name: 'SPH',
@@ -85,11 +85,11 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   ];
 
   public sphReceivedByList: SphReceivedBy[] = [
-    {id: 1, name: 'Fax'},
-    {id: 2, name: 'Mail'},
-    {id: 3, name: 'E-Mail'},
-    {id: 4, name: 'Telephone'},
-    {id: 5, name: 'Other'},
+    { id: 1, name: 'Fax' },
+    { id: 2, name: 'Mail' },
+    { id: 3, name: 'E-Mail' },
+    { id: 4, name: 'Telephone' },
+    { id: 5, name: 'Other' },
   ];
 
   public documents: any[] = [];
@@ -266,6 +266,10 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.companyInfo = data.companyInfo;
       });
+  }
+
+  public onAction(event: { check: boolean; action: string }) {
+    // TODO: Implement your logic for download documents
   }
 
   ngOnDestroy(): void {}

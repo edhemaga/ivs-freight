@@ -190,8 +190,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addInsurance(event: any) {
-    if (event) {
+  public addInsurance(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.insurances.push(this.createInsurance());
     }
   }

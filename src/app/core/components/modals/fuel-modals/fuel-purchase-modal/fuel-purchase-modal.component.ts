@@ -99,8 +99,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addFuelItems(event: any) {
-    if (event) {
+  public addFuelItems(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.fuelItems.push(this.createFuelItems(++this.fuelItemsCounter));
       this.subtotal = [
         ...this.subtotal,

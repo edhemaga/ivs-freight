@@ -235,8 +235,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addBrokerContacts(event: any) {
-    if (event) {
+  public addBrokerContacts(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.brokerContacts.push(this.createBrokerContacts());
     }
   }
@@ -509,7 +509,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createReview(event: any) {
+  public createReview(event: { check: boolean; action: string }) {
     if (
       this.reviews.some((item) => item.isNewReview) ||
       this.disableOneMoreReview

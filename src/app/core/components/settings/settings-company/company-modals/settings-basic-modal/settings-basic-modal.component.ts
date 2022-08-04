@@ -424,8 +424,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addDepartmentContacts(event: any) {
-    if (event) {
+  public addDepartmentContacts(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.departmentContacts.push(this.createDepartmentContacts());
     }
   }
@@ -488,8 +488,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addBankAccount(event: any) {
-    if (event) {
+  public addBankAccount(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.bankAccounts.push(this.createBankAccount());
     }
   }
@@ -532,8 +532,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addBankCard(event: any) {
-    if (event) {
+  public addBankCard(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.bankCards.push(this.createBankCard());
     }
   }

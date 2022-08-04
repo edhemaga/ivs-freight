@@ -8,8 +8,8 @@
       <img
         *ngIf="data.companyUser?.avatar"
         class="ta-user-image"
-        src="{{ data.companyUser?.avatar }}"
-        alt="{{ data.companyUser.fullName.substring(0, 1) }}"
+        [src]="data.companyUser.avatar"
+        [alt]="data.companyUser.fullName.substring(0, 1)"
       />
 
       <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">

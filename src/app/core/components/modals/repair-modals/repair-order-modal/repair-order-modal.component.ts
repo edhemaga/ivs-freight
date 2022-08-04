@@ -185,8 +185,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addItems(event: any) {
-    if (event) {
+  public addItems(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.items.push(this.createItems(++this.itemsCounter));
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
