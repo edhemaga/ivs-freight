@@ -43,9 +43,6 @@ export class TaLogoChangeComponent
   };
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
-  @Input() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
-    false
-  );
   @Input() dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
@@ -54,6 +51,9 @@ export class TaLogoChangeComponent
     globalDropZone: false,
   };
 
+  @Output() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
   public showUploadZone = true;
@@ -125,7 +125,7 @@ export class TaLogoChangeComponent
         zoom: this.imageScale,
       });
       clearTimeout(timeout);
-      this.isImageValid = true;
+      this.isImageValid = false;
       this.validationEvent.emit(this.isImageValid);
     }, 200);
   }
@@ -147,7 +147,7 @@ export class TaLogoChangeComponent
       this.imageUrl = base64;
       this.showUploadZone = true;
     });
-    this.isImageValid = false;
+    this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
   }
 
@@ -160,7 +160,7 @@ export class TaLogoChangeComponent
   public onCancel() {
     this.showUploadZone = true;
     this.imageUrl = null;
-    this.isImageValid = false;
+    this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
   }
 
