@@ -1203,11 +1203,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.driverForm.get('avatar').patchValue(event);
-    this.inputService.changeValidators(this.driverForm.get('avatar'), false);
+    this.driverForm.get('avatar').setErrors(null);
   }
 
   public onImageValidation(event: boolean) {
-    console.log(event);
     if (!event) {
       this.driverForm.get('avatar').setErrors({ invalid: true });
     } else {

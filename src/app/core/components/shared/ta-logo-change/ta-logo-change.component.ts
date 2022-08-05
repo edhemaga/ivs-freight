@@ -98,18 +98,15 @@ export class TaLogoChangeComponent
   }
 
   public ngAfterViewInit() {
-    const timeout = setTimeout(() => {
-      if (this.imageUrl) {
-        this.croppieDirective.croppie.bind({
-          url: this.imageUrl.changingThisBreaksApplicationSecurity,
-          points: [188, 101, 260, 191],
-          zoom: 0,
-        });
-        this.ngxSliderPosition = 0;
-        this.showUploadZone = true;
-        clearTimeout(timeout);
-      }
-    }, 200);
+    if (this.imageUrl) {
+      this.croppieDirective.croppie.bind({
+        url: this.imageUrl.changingThisBreaksApplicationSecurity,
+        points: [188, 101, 260, 191],
+        zoom: this.imageScale,
+      });
+      this.ngxSliderPosition = 0;
+      this.showUploadZone = true;
+    }
   }
 
   public onUploadImage(event: any) {
@@ -118,16 +115,14 @@ export class TaLogoChangeComponent
 
     const url = event.files[0].url;
 
-    const timeout = setTimeout(() => {
-      this.croppieDirective.croppie.bind({
-        url: url as string,
-        points: [188, 101, 260, 191],
-        zoom: this.imageScale,
-      });
-      clearTimeout(timeout);
-      this.isImageValid = false;
-      this.validationEvent.emit(this.isImageValid);
-    }, 200);
+    this.croppieDirective.croppie.bind({
+      url: url as string,
+      points: [188, 101, 260, 191],
+      zoom: this.imageScale,
+    });
+
+    this.isImageValid = false;
+    this.validationEvent.emit(this.isImageValid);
   }
 
   public handleCroppieUpdate(event) {

@@ -353,6 +353,15 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.contactForm.get('avatar').patchValue(event);
+    this.contactForm.get('avatar').setErrors(null);
+  }
+
+  public onImageValidation(event: boolean) {
+    if (!event) {
+      this.contactForm.get('avatar').setErrors({ invalid: true });
+    } else {
+      this.inputService.changeValidators(this.contactForm.get('avatar'), false);
+    }
   }
 
   private companyContactColorLabels() {

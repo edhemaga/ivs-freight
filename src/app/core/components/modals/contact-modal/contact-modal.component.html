@@ -167,8 +167,10 @@
         <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"
+            [customClass]="'modal-container-S'"
             [imageUrl]="this.contactForm.get('avatar').value"
             (base64ImageEvent)="onUploadImage($event)"
+            (validationEvent)="onImageValidation($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>
       </div>
