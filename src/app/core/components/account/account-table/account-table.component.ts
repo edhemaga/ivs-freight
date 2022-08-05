@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
 import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { AccountQuery } from '../state/account-state/account.query';
+import { AccountState } from '../state/account-state/account.store';
 
 @Component({
   selector: 'app-account-table',
   templateUrl: './account-table.component.html',
   styleUrls: ['./account-table.component.scss'],
 })
-export class AccountTableComponent implements OnInit {
+export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
   
   public tableOptions: any = {};
@@ -19,12 +22,14 @@ export class AccountTableComponent implements OnInit {
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+  accounts: AccountState[] = [];
 
-  constructor(private modalService: ModalService,  private tableService: TruckassistTableService) {}
+  constructor(private modalService: ModalService,  private tableService: TruckassistTableService, private accountQuery: AccountQuery) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getAccountData();
+    this.sendAccountData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -36,6 +41,73 @@ export class AccountTableComponent implements OnInit {
           this.sendAccountData();
         }
       });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          /* const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendAccountData();
+            }
+          } */
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -72,11 +144,14 @@ export class AccountTableComponent implements OnInit {
     };
   }
 
-  getAccountData() {
-    this.sendAccountData();
-  }
-
   sendAccountData() {
+    this.initTableOptions();
+
+    const accountData = this.getTabData();
+
+    console.log('Account Data');
+    console.log(accountData);
+    
     this.tableData = [
       {
         title: 'Accounts',
@@ -93,6 +168,12 @@ export class AccountTableComponent implements OnInit {
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
     this.setAccountData(td);
+  }
+
+  getTabData() {
+    this.accounts = this.accountQuery.getAll();
+
+    return this.accounts?.length ? this.accounts : [];
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
@@ -156,6 +237,31 @@ export class AccountTableComponent implements OnInit {
     return data;
   }
 
+  onToolBarAction(event: any) {
+    if (event.action === 'open-modal') {
+      this.modalService.openModal(
+        AccountModalComponent,
+        { size: 'small' }
+      );
+    } else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+      this.setAccountData(event.tabData);
+    }
+  }
+
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        /* this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendAccountData();
+      }
+    }
+  }
+
   public onTableBodyActions(event: any) {
     if (event.type === 'edit-account') {
       this.modalService.openModal(
@@ -169,15 +275,9 @@ export class AccountTableComponent implements OnInit {
     }
   }
 
-  onToolBarAction(event: any) {
-    if (event.action === 'open-modal') {
-      this.modalService.openModal(
-        AccountModalComponent,
-        { size: 'small' }
-      );
-    } else if (event.action === 'tab-selected') {
-      this.selectedTab = event.tabData.field;
-      this.setAccountData(event.tabData);
-    }
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }
