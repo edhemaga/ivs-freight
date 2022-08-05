@@ -14,7 +14,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
@@ -195,11 +195,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBank = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');

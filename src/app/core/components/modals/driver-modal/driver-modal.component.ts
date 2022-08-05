@@ -12,6 +12,7 @@ import {
   AddressEntity,
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
+  CreateResponse,
   DriverResponse,
   GetDriverModalResponse,
   UpdateDriverCommand,
@@ -1165,11 +1166,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBank = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -1198,11 +1203,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.driverForm.get('avatar').patchValue(event);
+    this.inputService.changeValidators(this.driverForm.get('avatar'), false);
   }
 
   public onImageValidation(event: boolean) {
-    if (event) {
-      this.inputService.changeValidators(this.driverForm.get('avatar'));
+    console.log(event);
+    if (!event) {
+      this.driverForm.get('avatar').setErrors({ invalid: true });
     } else {
       this.inputService.changeValidators(this.driverForm.get('avatar'), false);
     }

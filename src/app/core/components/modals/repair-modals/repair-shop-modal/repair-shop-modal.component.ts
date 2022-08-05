@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   AddressEntity,
   CreateRepairShopCommand,
+  CreateResponse,
   RepairShopModalResponse,
   RepairShopResponse,
   UpdateRepairShopCommand,
@@ -230,11 +231,15 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBank = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
