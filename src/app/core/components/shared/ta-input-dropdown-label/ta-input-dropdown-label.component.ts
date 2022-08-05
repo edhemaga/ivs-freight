@@ -54,7 +54,7 @@ export class TaInputDropdownLabelComponent
         label: 'Label',
         placeholder: 'Label Name',
         placeholderIcon: 'ic_dynamic_label',
-        dropdownWidthClass: 'w-col-12',
+        dropdownWidthClass: 'w-col-455',
         isDropdown: true,
         dropdownLabelSelected: changes.selectedLabel.currentValue,
       };
@@ -85,7 +85,7 @@ export class TaInputDropdownLabelComponent
       label: 'Label',
       placeholder: 'Label Name',
       placeholderIcon: 'ic_dynamic_label',
-      dropdownWidthClass: 'w-col-12',
+      dropdownWidthClass: 'w-col-455',
       isDropdown: true,
     };
   }

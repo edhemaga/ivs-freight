@@ -106,7 +106,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairDropdowns();
-
+    console.log(this.editData);
     if (this.editData?.type.includes('edit')) {
       this.editData = {
         ...this.editData,
