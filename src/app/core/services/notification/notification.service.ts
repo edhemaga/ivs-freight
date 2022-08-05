@@ -10,42 +10,69 @@ export class NotificationService {
   }
 
   public success(message: string, title?: string) {
-    this.toastr.success(message, title, {
+    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    this.toastr.success(newMsg, title, {
       progressBar: false, 
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
-      closeButton: true,
+      tapToDismiss: false,
       easeTime: 0,
       timeOut: 3000,
+      extendedTimeOut: 3000,
+      enableHtml: true,
       toastClass: 'ngx-toastr myAnimationClass',
+    }).onShown.subscribe((show) => { 
+      document.querySelector('.closeToastrBtn')?.addEventListener('click',()=>{
+        this.addCloseAnimation();
+      })
     });
   }
 
   public error(message: string, title?: string) {
-    this.toastr.error(message, title, {
+    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    this.toastr.error(newMsg, title, {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
-      closeButton: true,
       easeTime: 0,
       timeOut: 3000,
+      extendedTimeOut: 3000,
       toastClass: 'ngx-toastr myAnimationClass',
-    }).onAction.subscribe(()=>{
-      console.log('---here----');
-    });
+    }).onShown.subscribe((show) => { 
+      document.querySelector('.closeToastrBtn')?.addEventListener('click',()=>{
+        this.addCloseAnimation();
+      })
+    
+    });; 
   }
 
   public warning(message: string, title?: string) {
-    this.toastr.warning(message, title, {
+    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    this.toastr.warning(newMsg, title, {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
-      closeButton: true,
       easeTime: 0,
       timeOut: 3000,
+      extendedTimeOut: 3000,
       toastClass: 'ngx-toastr myAnimationClass',
-    });
+    }).onShown.subscribe((show) => { 
+      document.querySelector('.closeToastrBtn')?.addEventListener('click',()=>{
+        this.addCloseAnimation();
+      })
     
+    });;
   }
+
+  public addCloseAnimation(){
+    let toastElement = document.querySelector('.ngx-toastr');
+        toastElement.classList.add('closeAnimationBtn');
+        
+        let mainthis = this;
+        setTimeout(function(){
+          mainthis.toastr.clear();
+        }, 200);
+  }
+
 
 }

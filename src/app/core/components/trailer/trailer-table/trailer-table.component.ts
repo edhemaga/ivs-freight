@@ -193,7 +193,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 ' '+trailersText+'' + '"' + trailerNumber + '"' + ' deleted',
                 'Success'
               );
-
+              
+              trailerNumber = '';
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
