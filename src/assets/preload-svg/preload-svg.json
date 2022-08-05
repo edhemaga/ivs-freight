@@ -359,7 +359,28 @@
     {
 			"iconName": "ic_truck_western_star.svg",
 			"iconPath": "/assets/svg/common/trucksmake/ic_truck_western_star.svg"
+		},
+    {
+			"iconName": "ic_pen.svg",
+			"iconPath": "assets/svg/common/ic_pen.svg"
+		},
+    {
+			"iconName": "ic_disable-status.svg",
+			"iconPath": "assets/svg/common/ic_disable-status.svg"
+		},
+    {
+			"iconName": "ic_company.svg",
+			"iconPath": "assets/svg/common/ic_company.svg"
+		},
+    {
+			"iconName": "ic_helpcenter.svg",
+			"iconPath": "assets/svg/common/ic_helpcenter.svg"
+		},
+    {
+			"iconName": "ic_logout.svg",
+			"iconPath": "assets/svg/common/ic_logout.svg"
 		}
+
 	],
   "customIcons": []
 }

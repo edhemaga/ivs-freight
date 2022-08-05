@@ -248,7 +248,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     this.contactModalService
@@ -289,7 +289,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
         : this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     this.contactModalService

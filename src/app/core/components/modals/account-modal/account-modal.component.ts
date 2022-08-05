@@ -78,7 +78,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required]],
+      url: [null],
       companyAccountLabelId: [null],
       note: [null],
     });

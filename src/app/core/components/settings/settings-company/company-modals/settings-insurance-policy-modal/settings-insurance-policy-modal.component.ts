@@ -408,7 +408,7 @@ export class SettingsInsurancePolicyModalComponent
       ...form,
       issued: convertDateToBackend(issued),
       expires: convertDateToBackend(expires),
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     const commLiablity = commericalGeneralLiability
@@ -612,7 +612,7 @@ export class SettingsInsurancePolicyModalComponent
       ...form,
       issued: convertDateToBackend(issued),
       expires: convertDateToBackend(expires),
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     const commLiablity = commericalGeneralLiability

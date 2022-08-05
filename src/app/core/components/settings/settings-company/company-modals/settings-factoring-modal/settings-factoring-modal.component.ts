@@ -121,7 +121,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       name: name,
       phone: phone,
       email: email,
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
       noticeOfAssigment: noticeOfAssigment,
       note: note,
     };

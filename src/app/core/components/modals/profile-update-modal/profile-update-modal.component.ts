@@ -291,7 +291,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     const newData: UpdateUserCommand = {
       id: this.user.userId,
       ...form,
-      address: this.selectedAddress ? this.selectedAddress : null,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     this.userService

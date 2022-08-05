@@ -431,31 +431,31 @@ export const userNavigationData: NavigationUserPanel[] = [
   {
     id: 27,
     name: 'Profile Update',
-    image: 'assets/svg/common/ic_pen.svg',
+    image: 'ic_pen.svg',
     action: 'update',
   },
   {
     id: 28,
     name: 'User status',
-    image: 'assets/svg/common/ic_disable-status.svg',
+    image: 'ic_disable-status.svg',
     action: 'status',
   },
   {
     id: 29,
     name: 'Switch Company',
-    image: 'assets/svg/common/ic_company.svg',
+    image: 'ic_company.svg',
     action: 'company',
   },
   {
     id: 30,
     name: 'Help Center',
-    image: 'assets/svg/common/ic_helpcenter.svg',
+    image: 'ic_helpcenter.svg',
     action: 'help',
   },
   {
     id: 31,
     name: 'Logout',
-    image: 'assets/svg/common/ic_logout.svg',
+    image: 'ic_logout.svg',
     action: 'logout',
   },
 ];
