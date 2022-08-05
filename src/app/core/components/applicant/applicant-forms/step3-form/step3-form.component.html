@@ -25,8 +25,11 @@
           label: 'Country',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-country'
+          dropdownWidthClass: 'w-col-234',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 10)"
         [options]="countryTypes"
         (selectedItem)="handleInputSelect($event, 'COUNTRY-TYPE')"
       ></app-ta-input-dropdown>
@@ -69,8 +72,11 @@
           isRequired: true,
           isDisabled: !licenseForm.get('countryType').value,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-state'
+          dropdownWidthClass: 'w-col-246',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 11)"
         [options]="stateTypes"
         (selectedItem)="handleInputSelect($event, 'STATE-TYPE')"
       ></app-ta-input-dropdown>
@@ -84,8 +90,11 @@
           label: 'Class',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-class'
+          dropdownWidthClass: 'w-col-174',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 11)"
         [options]="classTypes"
         (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
       ></app-ta-input-dropdown>
@@ -142,9 +151,12 @@
           type: 'text',
           label: 'Restrictions',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-455',
-          customClass: 'input-30'
+          dropdownWidthClass: 'w-col-616',
+          customClass: 'input-30',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 12)"
         [options]="restrictionsList"
         (selectedItem)="handleInputSelect($event, 'RESTRICTIONS')"
       ></app-ta-input-dropdown>
@@ -186,8 +198,11 @@
           label: 'Endorsments',
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-endorsments',
-          customClass: 'input-30'
+          customClass: 'w-col-616',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 13)"
         [options]="endorsmentsList"
         (selectedItem)="handleInputSelect($event, 'ENDORSMENTS')"
       ></app-ta-input-dropdown>

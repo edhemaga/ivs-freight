@@ -325,16 +325,6 @@
         ></app-step5-form>
       </form>
 
-      <!-- REVIEW AND FEEDBACK -->
-
-      <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-        <app-applicant-review-feedback
-          [index]="0"
-          [reviewFeedbackData]=""
-          (sendReview)="onSubmitReview($event)"
-        ></app-applicant-review-feedback>
-      </div>
-
       <!-- CERTIFY -->
 
       <div

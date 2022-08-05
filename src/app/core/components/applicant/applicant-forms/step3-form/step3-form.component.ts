@@ -196,11 +196,14 @@ export class Step3FormComponent implements OnInit {
       return;
     }
     /* 
-      const contactForm = this.contactForm.value;
+      const {firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,...licenseForm} = this.licenseForm.value;
 
     const saveData: LicenseModel = {
-      ...contactForm,
-      isEditingContact: false,
+      ...licenseForm,
+      isEditingLicense: false,
     };
  
     this.formValuesEmitter.emit(saveData);*/
@@ -232,7 +235,13 @@ export class Step3FormComponent implements OnInit {
       return;
     }
 
-    const licenseForm = this.licenseForm.value;
+    const {
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      ...licenseForm
+    } = this.licenseForm.value;
 
     const saveData: LicenseModel = {
       ...licenseForm,

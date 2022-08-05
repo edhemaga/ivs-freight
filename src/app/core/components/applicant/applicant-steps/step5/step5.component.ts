@@ -5,7 +5,6 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import { TruckType } from '../../state/model/truck-type.model';
 import {
   Violation,
   ViolationInfo,
@@ -18,7 +17,7 @@ import {
   styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant | undefined;
 
@@ -205,6 +204,21 @@ export class Step5Component implements OnInit, OnDestroy {
     this.violationsArray = [...this.violationsArray, event];
 
     this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public saveEditedViolation(event: any): void {

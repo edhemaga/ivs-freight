@@ -1,4 +1,10 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,7 +20,7 @@ import { SphFormAccidentModel } from './../../../../../state/model/accident.mode
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
 })
-export class Step2Component implements OnInit {
+export class Step2Component implements OnInit, AfterViewInit {
   @ViewChildren('cmp') components: QueryList<any>;
 
   public accidentHistoryForm: FormGroup;

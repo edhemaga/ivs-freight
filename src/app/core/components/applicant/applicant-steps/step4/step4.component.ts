@@ -20,7 +20,7 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
   styleUrls: ['./step4.component.scss'],
 })
 export class Step4Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant | undefined;
 
@@ -193,6 +193,21 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentArray = [...this.accidentArray, event];
 
     this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public cancelAccidentEditing(event: any): void {

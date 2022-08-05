@@ -12,7 +12,6 @@ import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
 import { ApplicantFooterComponent } from './applicant-footer/applicant-footer.component';
 import { ApplicantNextStepComponent } from './applicant-next-step/applicant-next-step.component';
-import { ApplicantConfirmAllReviewComponent } from './applicant-confirm-all-review/applicant-confirm-all-review.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applicant-signature-pad.component';
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
@@ -46,7 +45,6 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
     ApplicantNextStepComponent,
-    ApplicantConfirmAllReviewComponent,
     ApplicantReviewFeedbackComponent,
     ApplicantSignaturePadComponent,
     ApplicantNextBackBtnComponent,

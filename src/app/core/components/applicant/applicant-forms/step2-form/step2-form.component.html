@@ -281,7 +281,7 @@
             label: 'Vehicle type',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-applicant-t-type',
+            dropdownWidthClass: 'w-col-251',
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
@@ -301,7 +301,7 @@
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-applicant-t-type',
+            dropdownWidthClass: 'w-col-211',
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
@@ -320,7 +320,7 @@
             isDropdown: true,
             isDisabled: !isTruckSelected,
             isRequired: isTruckSelected,
-            dropdownWidthClass: 'w-col-applicant-length',
+            dropdownWidthClass: 'w-col-130',
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
@@ -382,33 +382,24 @@
     <!-- QUESTIONS -->
 
     <div class="d-flex align-items-center questions-container">
-      <div class="d-flex align-items-center question-box">
+      <div
+        class="d-flex align-items-center question-box"
+        *ngFor="
+          let question of questions;
+          let i = index;
+          trackBy: trackByIdentity
+        "
+      >
         <div class="question-title-box">
           <p class="m-0 noselect ta-font-regular">
-            {{ questions[0].title }} <span>*</span>
+            {{ question.title }} <span>*</span>
           </p>
         </div>
 
         <div class="question-radios-box">
           <app-ta-input-radiobuttons
-            #cfrComponent
-            [buttons]="questions[0].answerChoices"
-            (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
-          ></app-ta-input-radiobuttons>
-        </div>
-      </div>
-
-      <div class="d-flex align-items-center question-box">
-        <div class="question-title-box">
-          <p class="m-0 noselect ta-font-regular">
-            {{ questions[1].title }} <span>*</span>
-          </p>
-        </div>
-
-        <div class="question-radios-box">
-          <app-ta-input-radiobuttons
-            #fmcsaComponent
-            [buttons]="questions[1].answerChoices"
+            #cmp
+            [buttons]="question.answerChoices"
             (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
           ></app-ta-input-radiobuttons>
         </div>
@@ -429,8 +420,11 @@
           label: 'Reason for leaving',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-455'
+          dropdownWidthClass: 'w-col-616',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 20)"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
         (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"

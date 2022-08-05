@@ -1,6 +1,16 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+import { Subscription } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -15,14 +25,18 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
-import { Subscription } from 'rxjs';
+
+import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @Component({
   selector: 'app-step4-form',
   templateUrl: './step4-form.component.html',
   styleUrls: ['./step4-form.component.scss'],
 })
-export class Step4FormComponent implements OnInit {
+export class Step4FormComponent implements OnInit, AfterViewInit {
+  @ViewChild(TaInputRadiobuttonsComponent)
+  component: TaInputRadiobuttonsComponent;
+
   @Input() isEditing: boolean;
   @Input() isAccidentEdited?: boolean;
   @Input() formValuesToPatch?: any;
@@ -57,6 +71,8 @@ export class Step4FormComponent implements OnInit {
       checked: false,
     },
   ];
+
+  public hazmatSpillRadios: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -117,6 +133,10 @@ export class Step4FormComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.hazmatSpillRadios = this.component.buttons;
+  }
+
   public createForm(): void {
     this.accidentForm = this.formBuilder.group({
       accidentLocation: [null, Validators.required],
@@ -142,6 +162,16 @@ export class Step4FormComponent implements OnInit {
       truckType: this.formValuesToPatch.truckType,
       accidentDescription: this.formValuesToPatch.accidentDescription,
     });
+
+    setTimeout(() => {
+      const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
+
+      if (hazmatSpillValue === 'YES') {
+        this.hazmatSpillRadios[0].checked = true;
+      } else {
+        this.hazmatSpillRadios[1].checked = true;
+      }
+    }, 1);
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -179,12 +209,16 @@ export class Step4FormComponent implements OnInit {
       return;
     }
 
-    const accidentForm = this.accidentForm.value;
+    const { firstRowReview, secondRowReview, ...accidentForm } =
+      this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,
       isEditingAccident: false,
     };
+
+    this.hazmatSpillRadios[0].checked = false;
+    this.hazmatSpillRadios[1].checked = false;
 
     this.formValuesEmitter.emit(saveData);
 
@@ -197,6 +231,9 @@ export class Step4FormComponent implements OnInit {
     this.cancelFormEditingEmitter.emit(1);
 
     this.isAccidentEdited = false;
+
+    this.hazmatSpillRadios[0].checked = false;
+    this.hazmatSpillRadios[1].checked = false;
 
     this.accidentForm.reset();
 
@@ -215,7 +252,8 @@ export class Step4FormComponent implements OnInit {
       return;
     }
 
-    const accidentForm = this.accidentForm.value;
+    const { firstRowReview, secondRowReview, ...accidentForm } =
+      this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,

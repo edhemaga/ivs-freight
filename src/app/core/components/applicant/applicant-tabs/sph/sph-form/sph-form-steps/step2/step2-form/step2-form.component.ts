@@ -207,6 +207,9 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
       isEditingAccident: false,
     };
 
+    this.hazmatSpillRadios[0].checked = false;
+    this.hazmatSpillRadios[1].checked = false;
+
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isAccidentEdited = false;

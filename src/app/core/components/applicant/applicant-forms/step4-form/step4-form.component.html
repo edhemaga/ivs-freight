@@ -10,8 +10,11 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
@@ -126,8 +129,11 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-t-type'
+          dropdownWidthClass: 'w-col-applicant-t-type',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 11)"
         [options]="truckType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>

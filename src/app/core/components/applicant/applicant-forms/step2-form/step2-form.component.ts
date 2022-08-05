@@ -1,4 +1,3 @@
-import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 import {
   AfterViewInit,
   Component,
@@ -7,7 +6,8 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  ViewChild,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -36,17 +36,15 @@ import { TruckType } from '../../state/model/truck-type.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
-
-import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 
 @Component({
   selector: 'app-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class Step2FormComponent implements OnInit, AfterViewInit, OnDestroy {
-  @ViewChild('cfrComponent')
-  cfrComponent: TaInputRadiobuttonsComponent;
+export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChildren('cmp') components: QueryList<any>;
 
   @Input() isEditing: boolean;
   @Input() isWorkExperienceEdited?: boolean;
@@ -225,10 +223,12 @@ export class Step2FormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    setTimeout(() => {
-      console.log(this.cfrComponent);
-    }, 1);
+    const radioButtonsArray = this.components.toArray();
+
+    console.log(radioButtonsArray);
   }
+
+  public trackByIdentity = (index: number, item: any): number => index;
 
   private createForm(): void {
     this.workExperienceForm = this.formBuilder.group({
@@ -384,7 +384,16 @@ export class Step2FormComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const workExperienceForm = this.workExperienceForm.value;
+    const {
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      fifthRowReview,
+      sixthRowReview,
+      seventhRowReview,
+      ...workExperienceForm
+    } = this.workExperienceForm.value;
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
@@ -424,7 +433,16 @@ export class Step2FormComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    const workExperienceForm = this.workExperienceForm.value;
+    const {
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      fifthRowReview,
+      sixthRowReview,
+      seventhRowReview,
+      ...workExperienceForm
+    } = this.workExperienceForm.value;
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,

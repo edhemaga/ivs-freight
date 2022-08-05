@@ -148,10 +148,11 @@ export class Step5FormComponent implements OnInit {
       return;
     }
 
-    /*  const violationForm = this.violationsForm.value;
+    /*  const {firstRowReview,
+      secondRowReview,...violationsForm} = this.violationsForm.value;
 
    const saveData: ViolationModel = {
-      ...violationForm,
+      ...violationsForm,
       isEditingViolation: false,
     };
 
@@ -172,10 +173,11 @@ export class Step5FormComponent implements OnInit {
       return;
     }
 
-    const violationForm = this.violationsForm.value;
+    const { firstRowReview, secondRowReview, ...violationsForm } =
+      this.violationsForm.value;
 
     const saveData: ViolationModel = {
-      ...violationForm,
+      ...violationsForm,
       isEditingViolation: false,
     };
 

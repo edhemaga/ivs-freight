@@ -117,19 +117,6 @@
                     ></app-ta-input>
                   </div>
                 </div>
-
-                <!-- REVIEW AND FEEDBACK -->
-
-                <div
-                  class="review-feedback"
-                  *ngIf="selectedMode === 'REVIEW_MODE'"
-                >
-                  <app-applicant-review-feedback
-                    [index]="0"
-                    [reviewFeedbackData]=""
-                    (sendReview)="onSubmitReview($event)"
-                  ></app-applicant-review-feedback>
-                </div>
               </td>
             </div>
           </tr>
@@ -176,7 +163,7 @@
 
       <!-- DATE, LOCATION -->
 
-      <div class="d-flex date-location-container">
+      <div class="d-flex date-location-container line-container">
         <div class="group date-group">
           <app-ta-input
             formControlName="startDate"
@@ -186,8 +173,11 @@
               label: 'Date',
               placeholderIcon: 'date',
               isRequired: true,
-              customClass: 'datetimeclass'
+              customClass: 'datetimeclass',
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event, 0, 0)"
           ></app-ta-input>
         </div>
         <div class="group location-group">
@@ -199,8 +189,11 @@
               label: 'City, State',
               isRequired: true,
               placeholderIcon: 'address',
-              textTransform: 'capitalize'
+              textTransform: 'capitalize',
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event, 1, 0)"
             [activeAddress]="selectedAddress"
             (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
           ></app-ta-input-address>
@@ -208,11 +201,26 @@
 
         <!-- REVIEW AND FEEDBACK -->
 
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
+        <div
+          class="review-feedback-container"
+          *ngIf="
+            selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+          "
+        >
           <app-applicant-review-feedback
-            [index]="1"
-            [reviewFeedbackData]=""
-            (sendReview)="onSubmitReview($event)"
+            formControlName="firstRowReview"
+            [displayAnnotationButton]="
+              openAnnotationArray[0].displayAnnotationButton
+            "
+            [displayAnnotationTextArea]="
+              openAnnotationArray[0].displayAnnotationTextArea
+            "
+            [lineIndex]="0"
+            [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+            [feedbackText]="
+              'Check the routing number one more time (one number missing)!!!'
+            "
+            (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
           ></app-applicant-review-feedback>
         </div>
       </div>
@@ -257,16 +265,6 @@
               [buttons]="question.answerChoices"
               (changedValue)="handleInputSelect($event, 'ANSWER-CHOICE')"
             ></app-ta-input-radiobuttons>
-          </div>
-
-          <!-- REVIEW AND FEEDBACK -->
-
-          <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-            <app-applicant-review-feedback
-              [index]="2 + i"
-              [reviewFeedbackData]=""
-              (sendReview)="onSubmitReview($event)"
-            ></app-applicant-review-feedback>
           </div>
         </div>
       </div>
@@ -318,9 +316,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"></app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
