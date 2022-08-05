@@ -7,10 +7,11 @@ import { QueryEntity } from '@datorama/akita';
   providedIn: 'root'
 })
 export class DispatcherQuery extends QueryEntity<DispatcherState> {
-  dispatchersList$ = this.select('dispatchers');
+  modalList$ = this.select('modal');
+  dispatchboardList$ = this.select('dispatchList');
 
-  get dispatchersList(){
-    return this.getValue().dispatchers;
+  get modalList(){
+    return this.getValue().modal;
   }
 
   constructor(protected store: DispatcherStore) {

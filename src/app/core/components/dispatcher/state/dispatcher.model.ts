@@ -1,3 +1,4 @@
 export interface IDispatcher {
-    dispatchers: any[]
+    modal: any[],
+    dispatchList: any[]
 }

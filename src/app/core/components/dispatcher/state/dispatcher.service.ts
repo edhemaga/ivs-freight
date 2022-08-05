@@ -1,23 +1,26 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "src/environments/environment";
-import { SharedService } from "src/app/core/services/shared/shared.service";
+import { DispatchService } from 'appcoretruckassist';
 
 @Injectable({ providedIn: "root" })
 export class DispatcherStoreService {
 
     public parkingOpened: boolean = false;
 
-    constructor(private dispatcherStore: DispatcherStore, private http: HttpClient, private sharedService: SharedService) { }
+    constructor(private dispatcherStore: DispatcherStore, private dispatchService: DispatchService) { }
     getDispatcherList() {
-        return this.http.get(environment.API_ENDPOINT + 'select/dispatcher/list');
+        return this.dispatchService.apiDispatchModalGet();
     }
 
-    set dispatcherList(list){
+    getDispatchboardList(){
+        return this.dispatchService.apiDispatchBoardListGet();
+    }
+
+    set dispatcherData(list){
         this.dispatcherStore.update((store) => ({
             ...store,
-            dispatchers: list
+            modal: list[0],
+            dispatchList: list[1]
         }));
     }
 }
