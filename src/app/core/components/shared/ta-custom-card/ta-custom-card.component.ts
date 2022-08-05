@@ -20,31 +20,37 @@ export class TaCustomCardComponent {
   @Input() animationsDisabled = true;
   @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
+  @Input() customClassHeaderSvg: boolean = false;
+
   @Input() hasCounter: number;
   @Input() hasArrow: boolean = true;
   @Input() headerSvgEnabled: boolean = false;
   @Input() hasHeaderSvg: string = null;
   @Input() hasActionSvg: string = null;
-  @Input() isCardOpen: boolean = false; // if has data, set on true
   @Input() hasDivider: boolean = true;
   @Input() hasLikeDislike: boolean = false;
   @Input() hasScrollBody: boolean = false;
   @Input() hasBodyData: boolean = true;
-  @Input() isCommentData: boolean = false;
   @Input() hasCheckbox: boolean = false;
-  @Input() tooltipName: string = '';
   @Input() hasPlusHeader: boolean = false;
-  @Input() textBottomPossiton: string;
   @Input() hasWeeklyStatus: string = null;
+  @Input() hasDownload: string = null;
+  @Input() customTextAction: string = null;
+
   @Input() controlName: FormControl;
+
+  @Input() tooltipName: string = '';
+  @Input() isCardOpen: boolean = false; // if has data, set on true
+  @Input() isCommentData: boolean = false;
+  @Input() textBottomPossiton: string;
+
   @Input() stayOpen: boolean = false;
   @Input() disabledCard: boolean = false;
-  @Input() customClassHeaderSvg: boolean = false;
+
   @Input() disableMultipleReviews: boolean = false;
 
-  @Output() onActionEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
-    false
-  );
+  @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
+    new EventEmitter<{ check: boolean; action: string }>(null);
 
   @Output() onOpenCard: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
@@ -68,9 +74,25 @@ export class TaCustomCardComponent {
     }
   }
 
-  public onAdd(event: any): void {
+  public onAction(event: any, action: string, customTextAction?: string): void {
     event.preventDefault();
     event.stopPropagation();
-    this.onActionEvent.emit(true);
+    switch (action) {
+      case 'add': {
+        this.onActionEvent.emit({ check: true, action: 'add' });
+        break;
+      }
+      case 'download': {
+        this.onActionEvent.emit({ check: true, action: 'download' });
+        break;
+      }
+      case 'custom': {
+        this.onActionEvent.emit({ check: true, action: customTextAction });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
   }
 }

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 
@@ -23,7 +23,7 @@ export interface UploadFile {
   size?: number | string;
   tag?: string;
 }
-
+@UntilDestroy()
 @Component({
   selector: 'app-ta-upload-file',
   templateUrl: './ta-upload-file.component.html',

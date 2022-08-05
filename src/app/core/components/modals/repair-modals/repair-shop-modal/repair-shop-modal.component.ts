@@ -8,7 +8,7 @@ import {
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { distinctUntilChanged } from 'rxjs';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -21,6 +21,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',

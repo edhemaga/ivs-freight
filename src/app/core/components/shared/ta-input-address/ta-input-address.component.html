@@ -118,8 +118,9 @@
       disabled: !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'valid-focus-in':
-        activeAddress &&
-        activeAddress?.address === getSuperControl.value &&
+        (activeAddress?.address
+          ? activeAddress?.address === getSuperControl.value
+          : false) &&
         focusInput &&
         !isVisibleCommands &&
         !inputConfig.blackInput,

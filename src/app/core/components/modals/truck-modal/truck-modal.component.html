@@ -41,7 +41,7 @@
                 label: 'Type',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-8',
+                dropdownWidthClass: 'w-col-308',
                 customClass: 'truck-trailer-dropdown'
               }"
               [options]="truckType"
@@ -80,7 +80,7 @@
                 label: 'Make',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-6'
+                dropdownWidthClass: 'w-col-228'
               }"
               [options]="truckMakeType"
               [activeItem]="selectedTruckMake"
@@ -123,7 +123,7 @@
                 type: 'text',
                 label: 'Color',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-4'
+                dropdownWidthClass: 'w-col-148'
               }"
               [options]="colorType"
               [activeItem]="selectedColor"
@@ -167,7 +167,7 @@
                       label: 'Owner',
                       isRequired: true,
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-6-companyOwned'
+                      dropdownWidthClass: 'w-col-216'
                     }"
                     [options]="ownerType"
                     [activeItem]="selectedOwner"
@@ -234,19 +234,14 @@
                 type: 'text',
                 label: 'Gross Weight',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-7'
+                dropdownWidthClass: 'w-col-176'
               }"
               [options]="grossWeight"
               [activeItem]="selectedTruckGrossWeight"
               (selectedItem)="onSelectDropdown($event, 'gross-weight')"
             ></app-ta-input-dropdown>
           </div>
-          <div
-            [ngClass]="{
-              'tireSize-axles ': this.truckForm.get('companyOwned').value
-            }"
-            class="col-7"
-          >
+          <div class="col-7 tireSize-axles">
             <app-ta-input
               formControlName="emptyWeight"
               [inputConfig]="{
@@ -254,23 +249,19 @@
                 type: 'text',
                 label: 'Empty Weight',
                 maxLength: 6,
+                placeholderText: 'Ibs.',
                 thousandSeparator: true
               }"
             ></app-ta-input>
-            <app-ta-input-dropdown
-              *ngIf="this.truckForm.get('companyOwned').value"
-              formControlName="shifter"
+            <app-ta-input
+              formControlName="axles"
               [inputConfig]="{
-                name: 'Input Dropdown',
+                name: 'Axles',
                 type: 'text',
-                label: 'Shifter',
-                isDropdown: true,
-                dropdownWidthClass: 'w-col-7'
+                label: 'Axle',
+                maxLength: 1
               }"
-              [options]="shifter"
-              [activeItem]="selectedShifter"
-              (selectedItem)="onSelectDropdown($event, 'shifter')"
-            ></app-ta-input-dropdown>
+            ></app-ta-input>
           </div>
         </div>
         <div class="row">
@@ -282,7 +273,7 @@
                 type: 'text',
                 label: 'Engine Type',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-7'
+                dropdownWidthClass: 'w-col-176'
               }"
               [options]="engineType"
               [activeItem]="selectedEngineType"
@@ -297,21 +288,26 @@
                 type: 'text',
                 label: 'Tire Size',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-5-tireSize'
+                dropdownWidthClass: 'w-col-138'
               }"
               [options]="tireSize"
               [activeItem]="selectedTireSize"
               (selectedItem)="onSelectDropdown($event, 'tire-size')"
             ></app-ta-input-dropdown>
-            <app-ta-input
-              formControlName="axles"
+
+            <app-ta-input-dropdown
+              formControlName="shifter"
               [inputConfig]="{
-                name: 'Axles',
+                name: 'Input Dropdown',
                 type: 'text',
-                label: 'Axle',
-                maxLength: 1
+                label: 'Shifter',
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-118'
               }"
-            ></app-ta-input>
+              [options]="shifter"
+              [activeItem]="selectedShifter"
+              (selectedItem)="onSelectDropdown($event, 'shifter')"
+            ></app-ta-input-dropdown>
           </div>
         </div>
         <div class="row">
@@ -323,6 +319,7 @@
                 type: 'text',
                 label: 'Mileage',
                 maxLength: 10,
+                placeholderText: 'mi',
                 thousandSeparator: true
               }"
             ></app-ta-input>
@@ -342,18 +339,6 @@
         <div class="row last-modal-row">
           <div class="col-5">
             <app-ta-input
-              formControlName="fhwaexp"
-              [inputConfig]="{
-                name: 'months',
-                type: 'text',
-                label: 'FHWA Exp.',
-                isRequired: true,
-                placeholderText: 'months'
-              }"
-            ></app-ta-input>
-          </div>
-          <div class="col-7">
-            <app-ta-input
               formControlName="insurancePolicy"
               [inputConfig]="{
                 name: 'Insurance Policy',
@@ -362,6 +347,20 @@
                 textTransform: 'uppercase'
               }"
             ></app-ta-input>
+          </div>
+          <div class="col-7">
+            <app-ta-input-arrows
+              formControlName="fhwaexp"
+              [inputConfig]="{
+                name: 'months',
+                type: 'text',
+                placeholderText: 'months'
+              }"
+              [name]="'FHWA Exp.'"
+              [type]="'truck-modal'"
+              [required]="true"
+            >
+            </app-ta-input-arrows>
           </div>
         </div>
       </div>

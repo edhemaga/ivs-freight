@@ -12,12 +12,13 @@ import { AddressEntity } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged } from 'rxjs';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-user-modal',
   templateUrl: './user-modal.component.html',

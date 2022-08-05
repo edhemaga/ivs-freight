@@ -1,8 +1,8 @@
 import { Validators } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 import {
   CreateRegistrationCommand,
   RegistrationResponse,
@@ -19,6 +19,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',

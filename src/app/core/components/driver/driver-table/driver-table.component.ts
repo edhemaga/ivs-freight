@@ -69,7 +69,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private nameInitialsPipe: NameInitialsPipe,
     private thousandSeparator: TaThousandSeparatorPipe,
     private imageBase64Service: ImageBase64Service
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.sendDriverData();
@@ -192,11 +192,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        } 
+        }
         // On Add Driver Inactive
         else if (res.animation === 'add' && this.selectedTab === 'inactive') {
           this.updateDataCount();
-        } 
+        }
         // On Update Driver
         else if (res.animation === 'update') {
           const updatedDriver = this.mapDriverData(res.data);
@@ -215,7 +215,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        } 
+        }
         // On Update Driver Status
         else if (res.animation === 'update-status') {
           let driverIndex: number;
@@ -237,8 +237,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             this.viewData.splice(driverIndex, 1);
             clearInterval(inetval);
           }, 1000);
-        } 
-         // On Delete Driver
+        }
+        // On Delete Driver
         else if (res.animation === 'delete') {
           let driverIndex: number;
 
@@ -468,8 +468,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textCDL: data?.cdlNumber
         ? data.cdlNumber
         : data?.cdls?.length
-          ? data.cdls[0].cdlNumber
-          : '',
+        ? data.cdls[0].cdlNumber
+        : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
       textBank: data.bank ? data.bank : '',
       textAccount: data.account ? data.account : '',
@@ -759,7 +759,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
     }
   }
-
 
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});

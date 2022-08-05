@@ -1,4 +1,4 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../shared/ta-modal/modal.service';
@@ -8,6 +8,7 @@ import {
 } from 'src/assets/utils/settings/pm-columns';
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-pm-truck-trailer',
   templateUrl: './pm-truck-trailer.component.html',

@@ -340,7 +340,7 @@
                   type: 'text',
                   label: 'Pay term',
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-broker-payterm'
+                  dropdownWidthClass: 'w-col-176'
                 }"
                 [options]="labelsPayTerms"
                 [activeItem]="selectedPayTerm"
@@ -417,8 +417,9 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-broker-department'
+                    dropdownWidthClass: 'w-col-120'
                   }"
+                  [activeItem]="selectedContractDepartmentFormArray[ind]"
                   [options]="labelsDepartments"
                   (selectedItem)="
                     onSelectDropDown($event, 'contact-department', ind)

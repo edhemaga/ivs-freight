@@ -7,10 +7,12 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TrailerTService } from '../state/trailer.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
