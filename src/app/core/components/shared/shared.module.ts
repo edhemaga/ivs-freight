@@ -11,20 +11,8 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
-import { DatePickerModule } from '@progress/kendo-angular-dateinputs';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TabSwitcherComponent } from '../switchers/tab-switcher/tab-switcher.component';
-import { SortableModule } from '@progress/kendo-angular-sortable';
-import { GridModule, PDFModule } from '@progress/kendo-angular-grid';
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { InputsModule, SwitchModule } from '@progress/kendo-angular-inputs';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { LayoutModule } from '@progress/kendo-angular-layout';
-import { ExcelExportModule } from '@progress/kendo-angular-excel-export';
-import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
-import { LabelModule } from '@progress/kendo-angular-label';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
@@ -220,21 +208,7 @@ export function playerFactory() {
     }),
     LottieModule.forRoot({ player: playerFactory }),
     NgxSliderModule,
-    DatePickerModule,
     GooglePlaceModule,
-    SortableModule,
-    GridModule,
-    PDFModule,
-    DropDownsModule,
-    ButtonsModule,
-    SchedulerModule,
-    InputsModule,
-    SwitchModule,
-    DateInputsModule,
-    LayoutModule,
-    ExcelExportModule,
-    PDFExportModule,
-    LabelModule,
     DragDropModule,
     ScrollingModule,
     NgxMaskModule.forRoot(),
@@ -259,20 +233,7 @@ export function playerFactory() {
     AgmCoreModule,
     NgbModule,
     GooglePlaceModule,
-    SortableModule,
-    GridModule,
-    PDFModule,
     PipesModule,
-    DropDownsModule,
-    ButtonsModule,
-    SchedulerModule,
-    InputsModule,
-    SwitchModule,
-    DateInputsModule,
-    LayoutModule,
-    ExcelExportModule,
-    PDFExportModule,
-    LabelModule,
     DragDropModule,
     ScrollingModule,
     NgxMaskModule,

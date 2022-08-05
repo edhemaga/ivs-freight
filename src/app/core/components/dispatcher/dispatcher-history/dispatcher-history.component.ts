@@ -6,7 +6,6 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { SelectionRange } from '@progress/kendo-angular-dateinputs';
 import moment from 'moment';
 import { DISPATCH_BOARD_STATUS } from 'src/app/const';
 import { AppLoadService } from 'src/app/core/services/load/app-load.service';
@@ -105,7 +104,7 @@ export class DispatcherHistoryComponent implements OnInit {
     }
   }
 
-  handleSelectionRange(range: SelectionRange) {
+  handleSelectionRange(range: any) {
     this.selectTime = 'Custom';
     this.customDateSelect = {
       startDate: moment(range.start).toDate(),
