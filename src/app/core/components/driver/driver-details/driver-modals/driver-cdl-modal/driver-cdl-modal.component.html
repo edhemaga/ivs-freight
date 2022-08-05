@@ -72,7 +72,7 @@
             label: 'Country',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4'
+            dropdownWidthClass: 'w-col-148'
           }"
           [options]="countryTypes"
           [activeItem]="selectedCountryType"
@@ -89,7 +89,7 @@
             isRequired: cdlForm.get('countryType').value,
             isDisabled: !cdlForm.get('countryType').value,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4'
+            dropdownWidthClass: 'w-col-148'
           }"
           [options]="stateTypes"
           [activeItem]="selectedStateType"
