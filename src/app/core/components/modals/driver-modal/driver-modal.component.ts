@@ -681,6 +681,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('soloLoadedMile').setErrors({ invalid: true });
         } else {
           this.driverForm.get('soloLoadedMile').setErrors(null);
+
+          this.driverForm.get('soloEmptyMile').patchValue(value);
         }
       });
 
@@ -703,6 +705,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('teamLoadedMile').setErrors({ invalid: true });
         } else {
           this.driverForm.get('teamLoadedMile').setErrors(null);
+
+          this.driverForm.get('teamEmptyMile').patchValue(value);
         }
       });
   }
