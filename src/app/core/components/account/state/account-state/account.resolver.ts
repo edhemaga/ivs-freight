@@ -24,11 +24,15 @@ export class AccountResolver implements Resolve<AccountState> {
       catchError(() => {
         return of('No account data...');
       }),
-      tap((accountPagination: CompanyAccountResponse) => {
-        console.log('Account Resolver Data');
-        console.log(accountPagination);
+      tap((accountPagination: any) => {
+        localStorage.setItem(
+          'accountTableCount',
+          JSON.stringify({
+            account: accountPagination.count,
+          })
+        );
         
-        this.accountStore.set(accountPagination);
+        this.accountStore.set(accountPagination.pagination.data);
       })
     );
     

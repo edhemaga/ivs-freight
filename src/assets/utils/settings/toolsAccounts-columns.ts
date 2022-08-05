@@ -149,7 +149,7 @@ export function getToolsAccountsColumnDefinition() {
     {
       ngTemplate: 'note',
       title: 'Note',
-      field: 'doc.note',
+      field: 'note',
       name: '',
       moveRight: true,
       hidden: false,

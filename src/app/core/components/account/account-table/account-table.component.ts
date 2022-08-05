@@ -1,12 +1,16 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { tableSearch } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
 import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountQuery } from '../state/account-state/account.query';
 import { AccountState } from '../state/account-state/account.store';
+import { AccountTService } from '../state/account.service';
 
 @Component({
   selector: 'app-account-table',
@@ -15,7 +19,7 @@ import { AccountState } from '../state/account-state/account.store';
 })
 export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
-  
+
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -26,7 +30,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   resizeObserver: ResizeObserver;
   accounts: AccountState[] = [];
 
-  constructor(private modalService: ModalService,  private tableService: TruckassistTableService, private accountQuery: AccountQuery) {}
+  constructor(
+    private modalService: ModalService,
+    private tableService: TruckassistTableService,
+    private accountQuery: AccountQuery,
+    private accountService: AccountTService
+  ) {}
 
   ngOnInit(): void {
     this.sendAccountData();
@@ -92,6 +101,106 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
           } */
         }
       });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          this.accountService
+            .deleteAccountList(response)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.viewData = this.viewData.map((account: any) => {
+                response.map((r: any) => {
+                  if (account.id === r.id) {
+                    account.actionAnimation = 'delete';
+                  }
+                });
+
+                return account;
+              });
+
+              this.updateDataCount();
+
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
+
+              this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
+            });
+        }
+      });
+
+    // Account Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // Add Account
+        if (res.animation === 'add') {
+          this.viewData.push(this.mapAccountData(res.data));
+
+          this.viewData = this.viewData.map((owner: any) => {
+            if (owner.id === res.id) {
+              owner.actionAnimation = 'add';
+            }
+
+            return owner;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount();
+        }
+        // Update Owner
+        else if (res.animation === 'update') {
+          const updatedOwner = this.mapAccountData(res.data);
+
+          this.viewData = this.viewData.map((owner: any) => {
+            if (owner.id === res.id) {
+              owner = updatedOwner;
+              owner.actionAnimation = 'update';
+            }
+
+            return owner;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // Delete Owner
+        else if (res.animation === 'delete') {
+          let accountIndex: number;
+
+          this.viewData = this.viewData.map((account: any, index: number) => {
+            if (account.id === res.id) {
+              account.actionAnimation = 'delete';
+              accountIndex = index;
+            }
+
+            return account;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(accountIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount();
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -115,7 +224,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -147,18 +256,17 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendAccountData() {
     this.initTableOptions();
 
+    const accontCount = JSON.parse(localStorage.getItem('accountTableCount'));
+
     const accountData = this.getTabData();
 
-    console.log('Account Data');
-    console.log(accountData);
-    
     this.tableData = [
       {
         title: 'Accounts',
         field: 'active',
         extended: false,
-        length: 8,
-        data: this.getDumyData(8),
+        length: accontCount.account,
+        data: accountData,
         gridNameTitle: 'Account',
         stateName: 'accounts',
         gridColumns: this.getGridColumns('accounts', this.resetColumns),
@@ -168,6 +276,12 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
     this.setAccountData(td);
+  }
+
+  updateDataCount() {
+    const accountCount = JSON.parse(localStorage.getItem('accountTableCount'));
+
+    this.tableData[0].length = accountCount.account;
   }
 
   getTabData() {
@@ -189,63 +303,42 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setAccountData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data: any) => {
+        return this.mapAccountData(data);
+      });
+
+      console.log('Account Data');
+      console.log(this.viewData);
+
+      // For Testing
+      // for (let i = 0; i < 300; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    } else {
+      this.viewData = [];
+    }
   }
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 95,
-        companyId: 1,
-        contactType: 'both',
-        name: 'Advokat Doug',
-        labelId: 1134,
-        labelName: '333',
-        labelColor: '#49CBFF',
-        phone: null,
-        email: null,
-        address: null,
-        addressUnit: null,
-        username: 'Test',
-        note: null,
-        url: 'https://www.youtube.com/watch?v=pBAkrxTkkWw',
-        doc: {
-          note: '',
-          email: 'testets@gmail.com',
-          phone: '(847) 241-2074',
-          address: 'New York, NY, USA',
-          address_unit: '',
-        },
-        createdAt: '2022-01-10T17:00:13',
-        updatedAt: '2022-02-15T12:28:27',
-        textPhone: '(847) 241-2074',
-        textEmail: 'testets@gmail.com',
-        textAddress: 'New York, NY, USA',
-      },
-    ];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[i]);
-    }
-
-    return data;
+  mapAccountData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+    };
   }
 
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
-      this.modalService.openModal(
-        AccountModalComponent,
-        { size: 'small' }
-      );
+      this.modalService.openModal(AccountModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.setAccountData(event.tabData);
+    } else if (event.action === 'view-mode') {
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 
@@ -269,9 +362,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { size: 'small' },
         {
           ...event,
-          type: 'edit'
+          type: 'edit',
         }
       );
+    } else if (event.type === 'delete-account') {
+      this.accountService.deleteCompanyAccountById(event.id).subscribe();
     }
   }
 
