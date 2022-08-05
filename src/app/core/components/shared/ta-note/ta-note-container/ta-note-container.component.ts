@@ -26,7 +26,8 @@ export class TaNoteContainerComponent implements OnInit {
   @Input() selectionTaken: any;
   @Input() selectedEditor: any;
   @Input() isExpanded: boolean;
-  selectedPaternColor = '#FFFFFFF';
+  @Input() parking: boolean = false;
+  selectedPaternColor = '#6c6c6c';
   showCollorPattern: boolean;
   activeOptions: any = {
     bold: false,
@@ -35,10 +36,6 @@ export class TaNoteContainerComponent implements OnInit {
     underline: false
   };
   containerColors: any[] = [
-    {
-      color: "#6C6C6C",
-      name: "Gray"
-    },
     {
       color: "#26A690",
       name: "Dark Green"
@@ -55,9 +52,13 @@ export class TaNoteContainerComponent implements OnInit {
       color: "#536BC2",
       name: "Blue"
     },
+    {
+      color: "#6C6C6C",
+      name: "Gray"
+    }
   ]
   selectedColorName: any = {
-    color: "#B7B7B7",
+    color: "#6C6C6C",
     name: "Gray"
   };
   slowTimeout: any;
@@ -76,7 +77,7 @@ export class TaNoteContainerComponent implements OnInit {
 
   filterContainersColor() {
     this.containerColors.sort((a, b) => {
-      if (a['color'] == this.selectedColorName.color) {
+      if (a['color'] != this.selectedColorName.color) {
         return -1;
       }
       return 1;
@@ -135,10 +136,9 @@ export class TaNoteContainerComponent implements OnInit {
       this.slowTimeout = setTimeout(() => {
         const findedColor = this.containerColors.find(item => item.color == document.queryCommandValue('ForeColor'));
         this.selectedColorName = findedColor ? findedColor : {
-          color: "#B7B7B7",
+          color: "#6c6c6c",
           name: "Gray"
         };
-        this.filterContainersColor();
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
     }
@@ -149,5 +149,4 @@ export class TaNoteContainerComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

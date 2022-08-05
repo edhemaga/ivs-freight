@@ -5,6 +5,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -40,6 +41,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+  @ViewChild('appNote', {static: false}) public appNote: any;
 
   public truckForm: FormGroup;
   public truckType: any[] = [];
@@ -208,6 +210,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.updateTruck(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
+            this.truckForm.controls['note'].setValue(this.appNote.value);
+            console.log(this.appNote.value, 'addtruck 111');
             this.addTruck();
             this.modalService.setModalSpinner({ action: null, status: true });
           }
@@ -283,6 +287,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   public addTruck() {
+    console.log(this.truckForm, 'addtruck 222');
     const newData: CreateTruckCommand = {
       ...this.truckForm.value,
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
@@ -312,6 +317,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         : null,
       year: parseInt(this.truckForm.get('year').value),
     };
+    console.log(newData, 'addtruck 333');
     this.truckModalService
       .addTruck(newData)
       .pipe(untilDestroyed(this))

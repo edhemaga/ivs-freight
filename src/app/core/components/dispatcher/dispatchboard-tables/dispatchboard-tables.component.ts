@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DispatchboardTablesComponent implements OnInit {
   data: any[] = new Array(500).fill(1);
+  @ViewChild('appNote', {static: false}) public appNote: any;
 
   constructor() { }
 

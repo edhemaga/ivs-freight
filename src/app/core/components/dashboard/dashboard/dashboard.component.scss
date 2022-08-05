@@ -1,5 +1,6 @@
 .dashboard-container{
     width: 100%;
+    padding-right: 18px;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
@@ -32,6 +33,15 @@
         font-size: 18px;
         font-weight: 700;
         line-height: 22px;
+
+        &::-moz-selection {
+            background: #91919133;
+            color: #919191;
+        }
+          &::selection {
+            background: #91919133;
+            color: #919191;
+        }
     }
 
     .dashboard_chart_data{

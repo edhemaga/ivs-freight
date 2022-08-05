@@ -1,10 +1,11 @@
+@import 'src/theme/variables.scss';
+
 .note-container {
   display: block;
 
   .note-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     line-height: 18px;
     padding: 0 6px;
     margin-top: 6px;
@@ -19,6 +20,16 @@
       -moz-user-select: none;
       -ms-user-select: none;
       user-select: none;
+      flex: 1;
+    }
+
+    .note_upper_hold{
+      display: flex;
+      align-items: center;
+
+      .note_tools_container{
+        margin-right: 7px;
+      }
     }
 
     .note-arrow {
@@ -44,6 +55,7 @@
     }
 
     &.active {
+      margin-bottom: 12px;
       transition: all 0.3s ease-in-out;
       .note-label {
         color: #6c6c6c;
@@ -83,11 +95,17 @@
       max-height: 600px;
     }
     .note-textarea {
+      overflow: auto;
+      line-height: 15px;
+      min-height: 15px;
+      margin-bottom: 9px;
+      max-height: 75px;
+      font-size: 12px;
+
       width: 100%;
-      font-size: 14px;
       padding: 0;
       resize: none;
-      color: #b7b7b7;
+      color: #6C6C6C;
       border: none;
       box-shadow: none;
       outline: none;
@@ -131,11 +149,30 @@
       }
 
       &::-moz-selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
       }
 
       &::selection {
-        background-color: rgb(183, 183, 183, 0.2);
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      span{
+        &::-moz-selection {
+          color: $bw6-2 !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+  
+        &::selection {
+          color: $bw6-2  !important;
+          background: rgb(108, 108, 108, 0.2) !important;
+        }
+      }
+
+      &:empty:before {
+        content: attr(placeholder);
+        color: #AAAAAA;
       }
     }
   }

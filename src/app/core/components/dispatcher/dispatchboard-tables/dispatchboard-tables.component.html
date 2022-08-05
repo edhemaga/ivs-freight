@@ -106,9 +106,14 @@
                         </div>
                     </td>
                     <td class="note-field">
-                        <div class="dispatcher-table-cell-container">
+                        <div class="dispatcher-table-cell-container" (click)="appNote.expandAllNotes()">
                             <div class="dispatcher-table-cell-holder">
-                                7532
+                                <app-ta-note
+                                #appNote
+                                [note]="'testttt'"
+                                [openedAll]="true"
+                                >
+                                </app-ta-note>
                             </div>
                         </div>
                     </td>
