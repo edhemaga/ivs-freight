@@ -270,6 +270,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   }
 
   public onAction(event: { check: boolean; action: string }) {
+    console.log(event);
     // TODO: Implement your logic for download documents
   }
 
