@@ -1,4 +1,4 @@
-<div class="d-flex flex-column step-form" [formGroup]="form">
+<div class="d-flex flex-column step-form" [formGroup]="licenseForm">
   <div class="d-flex line-container">
     <div class="group license-group">
       <app-ta-input
@@ -39,6 +39,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="firstRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[10].displayAnnotationButton
         "
@@ -66,7 +67,7 @@
           type: 'text',
           label: 'State',
           isRequired: true,
-          isDisabled: !form.get('countryType').value,
+          isDisabled: !licenseForm.get('countryType').value,
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-state'
         }"
@@ -113,6 +114,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="secondRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[11].displayAnnotationButton
         "
@@ -155,6 +157,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="thirdRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[12].displayAnnotationButton
         "
@@ -197,6 +200,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="fourthRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[13].displayAnnotationButton
         "
@@ -211,6 +215,59 @@
         "
         (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
       ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <!-- ADD MORE LICENSES -->
+
+  <div class="d-flex align-items-center btn-container">
+    <h4 class="text-center m-0 ta-font-bold" *ngIf="!isEditing">
+      List any additional license(s) held in past 3 years
+    </h4>
+
+    <button
+      type="button"
+      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+      (click)="onAddLicense()"
+      [ngClass]="{
+        disabled: licenseForm.invalid
+      }"
+      *ngIf="!isEditing"
+    >
+      <svg-icon
+        class="plus-icon"
+        src="assets/svg/common/ic_plus.svg
+        "
+        [svgStyle]="{
+          'width.px': 18,
+          'height.px': 18
+        }"
+      ></svg-icon>
+
+      Add License
+    </button>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isEditing"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelEditLicense()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        (click)="onSaveEditedLicense()"
+        [ngClass]="{
+          disabled: !isLicenseEdited
+        }"
+      >
+        Save Changes
+      </button>
     </div>
   </div>
 </div>

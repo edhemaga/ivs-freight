@@ -50,13 +50,16 @@ export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
         lineIndex: this.lineIndex,
         type: 'open',
       });
+
       this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
     } else {
       this.annotationBtnClickEvent.emit({
         lineIndex: this.lineIndex,
         type: 'close',
       });
+
       this.getSuperControl.patchValue(null);
+
       this.inputRef.focusInput = false;
     }
   }

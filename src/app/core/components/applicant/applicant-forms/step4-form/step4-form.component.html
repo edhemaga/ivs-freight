@@ -1,4 +1,4 @@
-<div class="d-flex flex-column step-form" [formGroup]="form">
+<div class="d-flex flex-column step-form" [formGroup]="accidentForm">
   <div class="d-flex line-container">
     <div class="group location-group">
       <app-ta-input-address
@@ -40,6 +40,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="firstRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[10].displayAnnotationButton
         "
@@ -62,7 +63,7 @@
     <div class="d-flex align-items-center fatalities-injuries-group">
       <div class="d-flex align-items-center fatalities-group">
         <app-ta-input-arrows
-          [formControl]="fatalitiesControl"
+          formControlName="fatalities"
           [inputConfig]="{
             name: 'FatalInjuries',
             type: 'text',
@@ -79,7 +80,7 @@
 
       <div class="d-flex align-items-center injuries-group">
         <app-ta-input-arrows
-          [formControl]="injuriesControl"
+          formControlName="injuries"
           [inputConfig]="{
             name: 'FatalInjuries',
             type: 'text',
@@ -154,6 +155,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="secondRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[11].displayAnnotationButton
         "
@@ -167,6 +169,55 @@
         "
         (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
       ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <!-- ADD ANOTHER ACCIDENT -->
+
+  <div class="d-flex justify-content-center align-items-center btn-container">
+    <button
+      type="button"
+      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+      (click)="onAddAccident()"
+      [ngClass]="{
+        disabled: accidentForm.invalid
+      }"
+      *ngIf="!isEditing"
+    >
+      <svg-icon
+        class="plus-icon"
+        src="assets/svg/common/ic_plus.svg
+  "
+        [svgStyle]="{
+          'width.px': 18,
+          'height.px': 18
+        }"
+      ></svg-icon>
+
+      Add Another Accident
+    </button>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isEditing"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelEditAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isAccidentEdited
+        }"
+        (click)="onSaveEditedAccident()"
+      >
+        Save Changes
+      </button>
     </div>
   </div>
 </div>

@@ -1,9 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { Subscription } from 'rxjs';
+
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
+
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import { LicenseModel } from '../../state/model/cdl-information';
 
 @Component({
   selector: 'app-step3-form',
@@ -11,7 +22,34 @@ import { anyInputInLineIncorrect } from '../../state/utils/utils';
   styleUrls: ['./step3-form.component.scss'],
 })
 export class Step3FormComponent implements OnInit {
+  @Input() isEditing: boolean;
+  @Input() formValuesToPatch?: any;
+  @Input() isLicenseEdited: boolean;
+
+  @Output() formValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
+  @Output() saveFormEditingEmitter = new EventEmitter<any>();
+
   public selectedMode = SelectedMode.REVIEW;
+
+  public licenseForm: FormGroup;
+
+  private subscription: Subscription;
+
+  public canadaStates: any[] = [];
+  public usStates: any[] = [];
+
+  public stateTypes: any[] = [];
+  public countryTypes: any[] = [];
+  public classTypes: any[] = [];
+  public endorsmentsList: any[] = [];
+  public restrictionsList: any[] = [];
+
+  public selectedCountryType: any = null;
+  public selectedStateType: any = null;
+  public selectedClassType: any = null;
+  public selectedEndorsments: any = null;
+  public selectedRestrictions: any = null;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -55,21 +93,162 @@ export class Step3FormComponent implements OnInit {
     },
   ];
 
-  //
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
-  @Input() form: FormGroup;
+  ngOnInit(): void {
+    this.createForm();
 
-  @Input() handleInputSelect: (event: any, action: string) => void;
+    if (this.formValuesToPatch) {
+      this.patchForm();
 
-  @Input() countryTypes: any[] = [];
-  @Input() stateTypes: any[] = [];
-  @Input() classTypes: any[] = [];
-  @Input() endorsmentsList: any[] = [];
-  @Input() restrictionsList: any[] = [];
+      this.subscription = this.licenseForm.valueChanges.subscribe(
+        (newFormValue) => {
+          const { isEditingLicense, ...previousFormValues } =
+            this.formValuesToPatch;
 
-  constructor() {}
+          previousFormValues.license = previousFormValues.license.toUpperCase();
+          newFormValue.license = newFormValue.license.toUpperCase();
 
-  ngOnInit(): void {}
+          if (isFormValueEqual(previousFormValues, newFormValue)) {
+            this.isLicenseEdited = false;
+          } else {
+            this.isLicenseEdited = true;
+          }
+        }
+      );
+    }
+  }
+
+  private createForm(): void {
+    this.licenseForm = this.formBuilder.group({
+      license: [null, Validators.required],
+      countryType: [null, Validators.required],
+      stateId: [null, Validators.required],
+      classType: [null, Validators.required],
+      expDate: [null, Validators.required],
+      restrictions: [null],
+      endorsments: [null],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
+      thirdRowReview: [null],
+      fourthRowReview: [null],
+    });
+  }
+
+  public patchForm(): void {
+    this.licenseForm.patchValue({
+      license: this.formValuesToPatch.license,
+      countryType: this.formValuesToPatch.countryType,
+      stateId: this.formValuesToPatch.stateId,
+      classType: this.formValuesToPatch.classType,
+      expDate: this.formValuesToPatch.expDate,
+      endorsments: this.formValuesToPatch.endorsments,
+      restrictions: this.formValuesToPatch.restrictions,
+    });
+  }
+
+  public handleInputSelect(event: any, action: string): void {
+    switch (action) {
+      case InputSwitchActions.COUNTRY_TYPE:
+        this.selectedCountryType = event;
+
+        this.inputService.changeValidators(
+          this.licenseForm.get('stateId'),
+          false
+        );
+
+        if (this.selectedCountryType.name.toLowerCase() === 'us') {
+          this.stateTypes = this.usStates;
+        } else {
+          this.stateTypes = this.canadaStates;
+        }
+
+        break;
+      case InputSwitchActions.STATE_TYPE:
+        this.selectedStateType = event;
+
+        break;
+      case InputSwitchActions.CLASS_TYPE:
+        this.selectedClassType = event;
+
+        break;
+      case InputSwitchActions.ENDORSMENTS:
+        this.selectedEndorsments = event;
+
+        break;
+      case InputSwitchActions.RESTRICTIONS:
+        this.selectedRestrictions = event;
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  public onAddLicense(): void {
+    if (this.licenseForm.invalid) {
+      this.inputService.markInvalid(this.licenseForm);
+      return;
+    }
+    /* 
+      const contactForm = this.contactForm.value;
+
+    const saveData: LicenseModel = {
+      ...contactForm,
+      isEditingContact: false,
+    };
+ 
+    this.formValuesEmitter.emit(saveData);*/
+
+    this.licenseForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+  }
+
+  public onCancelEditLicense(): void {
+    this.cancelFormEditingEmitter.emit(1);
+
+    this.isLicenseEdited = false;
+
+    this.licenseForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onSaveEditedLicense(): void {
+    if (this.licenseForm.invalid) {
+      this.inputService.markInvalid(this.licenseForm);
+      return;
+    }
+
+    if (!this.isLicenseEdited) {
+      return;
+    }
+
+    const licenseForm = this.licenseForm.value;
+
+    const saveData: LicenseModel = {
+      ...licenseForm,
+      isEditingLicense: false,
+    };
+
+    this.saveFormEditingEmitter.emit(saveData);
+
+    this.isLicenseEdited = false;
+
+    this.licenseForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
 
   public incorrectInput(
     event: any,

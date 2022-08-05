@@ -18,10 +18,11 @@ import {
   styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant | undefined;
 
+  public violationsForm: FormGroup;
   public trafficViolationsForm: FormGroup;
   public notBeenConvictedForm: FormGroup;
   public onlyOneHoldLicenseForm: FormGroup;
@@ -60,8 +61,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
   public isEditing: boolean = false;
   public isViolationEdited: boolean = false;
-
-  public truckType: TruckType[] = [];
 
   public selectedViolationIndex: number;
 
@@ -144,6 +143,19 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.certifyForm = this.formBuilder.group({
       certify: [false, Validators.required],
+    });
+
+    this.violationsForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
     });
   }
 

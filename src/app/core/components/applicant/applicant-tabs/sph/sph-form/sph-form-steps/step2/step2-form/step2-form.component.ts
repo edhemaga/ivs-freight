@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -6,12 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
@@ -32,7 +28,7 @@ import { SphFormAccidentModel } from 'src/app/core/components/applicant/state/mo
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit {
+export class SphStep2FormComponent implements OnInit, AfterViewInit {
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -50,9 +46,6 @@ export class SphStep2FormComponent implements OnInit {
   public subscription: Subscription;
 
   public selectedAddress: Address = null;
-
-  public injuriesCounter: number = 0;
-  public fatalitiesCounter: number = 0;
 
   public hazmatSpillRadios: any;
 
@@ -73,9 +66,6 @@ export class SphStep2FormComponent implements OnInit {
     },
   ];
 
-  public fatalitiesControl: FormControl = new FormControl(0);
-  public injuriesControl: FormControl = new FormControl(0);
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -90,12 +80,12 @@ export class SphStep2FormComponent implements OnInit {
 
       this.subscription = this.accidentForm.valueChanges.subscribe(
         (newFormValue) => {
-          const {
-            address,
-            accidentState,
-            isEditingAccident,
-            ...previousFormValues
-          } = this.formValuesToPatch;
+          const { address, isEditingAccident, ...previousFormValues } =
+            this.formValuesToPatch;
+
+          previousFormValues.accidentLocation = address.address;
+
+          newFormValue.accidentState = this.formValuesToPatch.accidentState;
 
           if (isFormValueEqual(previousFormValues, newFormValue)) {
             this.isAccidentEdited = false;
@@ -117,8 +107,8 @@ export class SphStep2FormComponent implements OnInit {
       accidentLocation: [null, Validators.required],
       accidentDescription: [null, Validators.required],
       hazmatSpill: [null, Validators.required],
-      injuries: [null],
-      fatalities: [null],
+      injuries: [0],
+      fatalities: [0],
     });
   }
 
@@ -150,22 +140,6 @@ export class SphStep2FormComponent implements OnInit {
     }
   }
 
-  public onIncrementDecrementCounter(event: any, type: string) {
-    if (type === 'fatalities') {
-      this.fatalitiesCounter = event;
-      this.accidentForm.patchValue({
-        fatalities: event,
-      });
-    }
-
-    if (type === 'injuries') {
-      this.injuriesCounter = event;
-      this.accidentForm.patchValue({
-        injuries: event,
-      });
-    }
-  }
-
   public patchForm(): void {
     this.accidentForm.patchValue({
       accidentDate: this.formValuesToPatch.accidentDate,
@@ -175,9 +149,6 @@ export class SphStep2FormComponent implements OnInit {
       fatalities: this.formValuesToPatch.fatalities,
       injuries: this.formValuesToPatch.injuries,
     });
-
-    this.injuriesCounter = this.formValuesToPatch.injuries;
-    this.fatalitiesCounter = this.formValuesToPatch.fatalities;
 
     setTimeout(() => {
       const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
@@ -202,8 +173,6 @@ export class SphStep2FormComponent implements OnInit {
       ...registerForm,
       address: this.selectedAddress,
       accidentState: this.selectedAddress.state,
-      injuries: this.injuriesCounter,
-      fatalities: this.fatalitiesCounter,
       isEditingAccident: false,
     };
 
@@ -211,9 +180,6 @@ export class SphStep2FormComponent implements OnInit {
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.injuriesCounter = 0;
-    this.fatalitiesCounter = 0;
 
     this.accidentForm.reset();
 
@@ -230,23 +196,20 @@ export class SphStep2FormComponent implements OnInit {
       return;
     }
 
-    const { address, ...registerForm } = this.accidentForm.value;
+    const { address, accidentState, ...registerForm } = this.accidentForm.value;
 
     const saveData: SphFormAccidentModel = {
       ...registerForm,
       address: this.selectedAddress,
-      accidentState: this.selectedAddress.state,
-      injuries: this.injuriesCounter,
-      fatalities: this.fatalitiesCounter,
+      accidentState: this.selectedAddress.state
+        ? this.selectedAddress.state
+        : accidentState,
       isEditingAccident: false,
     };
 
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isAccidentEdited = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
 
     this.accidentForm.reset();
 
@@ -262,9 +225,6 @@ export class SphStep2FormComponent implements OnInit {
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
 
     this.accidentForm.reset();
 

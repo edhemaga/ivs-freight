@@ -123,7 +123,7 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
-              incorrectInput: true
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="false"
             (incorrectEvent)="incorrectInput($event, 2, 0)"
@@ -526,7 +526,7 @@
                 </div>
 
                 <!-- REVIEW AND FEEDBACK -->
-
+                <!-- 
                 <div
                   class="review-feedback-container"
                   *ngIf="
@@ -534,7 +534,7 @@
                     selectedMode === 'FEEDBACK_MODE'
                   "
                 >
-                  <!-- <app-applicant-review-feedback
+                  <app-applicant-review-feedback
                     [displayAnnotationButton]="
                       openAnnotationArray[i + 2].displayAnnotationButton
                     "
@@ -552,8 +552,8 @@
                     (annotationBtnClickEvent)="
                       getAnnotationBtnClickValue($event)
                     "
-                  ></app-applicant-review-feedback> -->
-                </div>
+                  ></app-applicant-review-feedback>
+                </div> -->
               </div>
             </div>
           </div>
@@ -622,8 +622,11 @@
               type: 'text',
               label: 'Bank Name',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-applicant-bank'
+              dropdownWidthClass: 'w-col-applicant-bank',
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event, 1, 7)"
             [options]="banksDropdownList"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
@@ -637,7 +640,8 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <!-- <app-applicant-review-feedback
+          <app-applicant-review-feedback
+            formControlName="eightRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[7].displayAnnotationButton
             "
@@ -650,7 +654,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback> -->
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -700,7 +704,8 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <!-- <app-applicant-review-feedback
+          <app-applicant-review-feedback
+            formControlName="ninthRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[8].displayAnnotationButton
             "
@@ -713,7 +718,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback> -->
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -802,7 +807,8 @@
                   selectedMode === 'FEEDBACK_MODE'
                 "
               >
-                <!-- <app-applicant-review-feedback
+                <app-applicant-review-feedback
+                  [formControlName]="'questionReview' + (i + 1)"
                   [displayAnnotationButton]="
                     openAnnotationArray[i + 9].displayAnnotationButton
                   "
@@ -815,7 +821,7 @@
                     'Check the routing number one more time (one number missing)!!!'
                   "
                   (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-                ></app-applicant-review-feedback> -->
+                ></app-applicant-review-feedback>
               </div>
             </div>
           </div>
@@ -835,10 +841,3 @@
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-<!--
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
- -->

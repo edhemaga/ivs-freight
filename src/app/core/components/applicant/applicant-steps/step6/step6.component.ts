@@ -224,12 +224,6 @@ export class Step6Component implements OnInit, OnDestroy {
       .patchValue(selectedCheckbox.label);
   }
 
-  public getContactFormValues(event: any): void {
-    this.contactsArray = [...this.contactsArray, event];
-
-    this.helperIndex = 2;
-  }
-
   public onDeleteContact(index: number): void {
     if (this.isEditing) {
       return;
@@ -255,6 +249,12 @@ export class Step6Component implements OnInit, OnDestroy {
     const selectedContact = this.contactsArray[index];
 
     this.formValuesToPatch = selectedContact;
+  }
+
+  public getContactFormValues(event: any): void {
+    this.contactsArray = [...this.contactsArray, event];
+
+    this.helperIndex = 2;
   }
 
   public cancelContactEditing(event: any): void {

@@ -24,7 +24,24 @@ import { ViolationModel } from '../../state/model/violations.model';
   styleUrls: ['./step5-form.component.scss'],
 })
 export class Step5FormComponent implements OnInit {
+  @Input() isEditing: boolean;
+  @Input() formValuesToPatch?: any;
+  @Input() isViolationEdited?: boolean;
+
+  @Output() formValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
+  @Output() saveFormEditingEmitter = new EventEmitter<any>();
+
   public selectedMode = SelectedMode.REVIEW;
+
+  public violationsForm: FormGroup;
+
+  private subscription: Subscription;
+
+  public selectedTruckType: any = null;
+  public selectedAddress: Address = null;
+
+  public truckType: TruckType[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -55,24 +72,6 @@ export class Step5FormComponent implements OnInit {
       displayAnnotationTextArea: false,
     },
   ];
-
-  //
-
-  @Input() isEditing: boolean;
-  @Input() truckType: TruckType[];
-  @Input() formValuesToPatch?: any;
-  @Input() isViolationEdited?: boolean;
-
-  @Output() formValuesEmitter = new EventEmitter<any>();
-  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
-  @Output() saveFormEditingEmitter = new EventEmitter<any>();
-
-  public violationsForm: FormGroup;
-
-  private subscription: Subscription;
-
-  public selectedTruckType: any = null;
-  public selectedAddress: Address = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -107,6 +106,9 @@ export class Step5FormComponent implements OnInit {
       truckType: [null, Validators.required],
       violationLocation: [null, Validators.required],
       violationDescription: [null, Validators.required],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
     });
   }
 

@@ -129,6 +129,7 @@
           'margin-bottom': isEditing ? '0' : '32px'
         }"
         *ngIf="violationsArray.length"
+        [formGroup]="violationsForm"
       >
         <div
           class="d-flex flex-column"
@@ -282,6 +283,7 @@
               "
             >
               <app-applicant-review-feedback
+                [formControlName]="'cardReview' + (i + 1)"
                 [displayAnnotationButton]="
                   openAnnotationArray[i].displayAnnotationButton
                 "
@@ -304,7 +306,6 @@
           >
             <app-step5-form
               [isEditing]="isEditing"
-              [truckType]="truckType"
               [formValuesToPatch]="formValuesToPatch"
               [isViolationEdited]="isViolationEdited"
               (formValuesEmitter)="getViolationFormValues($event)"
@@ -320,7 +321,6 @@
       <form *ngIf="!isEditing">
         <app-step5-form
           [isEditing]="isEditing"
-          [truckType]="truckType"
           (formValuesEmitter)="getViolationFormValues($event)"
         ></app-step5-form>
       </form>
@@ -383,10 +383,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-
-<!-- <app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
- -->

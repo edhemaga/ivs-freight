@@ -34,6 +34,7 @@
     <div
       class="d-flex flex-column justify-content-center accident-view-container"
       *ngIf="accidentArray.length"
+      [formGroup]="accidentForm"
     >
       <div
         class="d-flex flex-column"
@@ -47,7 +48,8 @@
           class="d-flex align-items-center title-container"
           *ngIf="
             (accidentArray.length > 1 && helperIndex !== 0 && i === 0) ||
-            (helperIndex === 0 && i === 1)
+            (helperIndex === 0 && i === 1) ||
+            (i === helperIndex + 1 && selectedAccidentIndex > -1)
           "
         >
           <div class="d-flex align-items-center date-title-box">
@@ -188,6 +190,7 @@
             "
           >
             <app-applicant-review-feedback
+              [formControlName]="'cardReview' + (i + 1)"
               [displayAnnotationButton]="
                 openAnnotationArray[i].displayAnnotationButton
               "
@@ -210,36 +213,13 @@
           *ngIf="accident.isEditingAccident"
         >
           <app-step4-form
-            [form]="accidentForm"
-            [handleInputSelect]="handleInputSelect"
-            [onIncrementDecrementCounter]="onIncrementDecrementCounter"
-            [truckType]="truckType"
-            [fatalitiesCounter]="fatalitiesCounter"
-            [injuriesCounter]="injuriesCounter"
-            [answerChoices]="answerChoices"
+            [isEditing]="isEditing"
+            [isAccidentEdited]="isAccidentEdited"
+            [formValuesToPatch]="formValuesToPatch"
+            (cancelFormEditingEmitter)="cancelAccidentEditing($event)"
+            (formValuesEmitter)="getAccidentFormValues($event)"
+            (saveFormEditingEmitter)="saveEditedAccident($event)"
           ></app-step4-form>
-
-          <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container"
-          >
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-              (click)="onCancelEditAccident()"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-              [ngClass]="{
-                disabled: !isAccidentEdited
-              }"
-              (click)="onSaveEditedAccident()"
-            >
-              Save Changes
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -248,43 +228,10 @@
 
     <form *ngIf="!isEditing">
       <app-step4-form
-        [form]="accidentForm"
-        [handleInputSelect]="handleInputSelect"
-        [onIncrementDecrementCounter]="onIncrementDecrementCounter"
-        [truckType]="truckType"
-        [fatalitiesCounter]="fatalitiesCounter"
-        [injuriesCounter]="injuriesCounter"
-        [answerChoices]="answerChoices"
+        [isEditing]="isEditing"
+        (formValuesEmitter)="getAccidentFormValues($event)"
       ></app-step4-form>
     </form>
-
-    <!-- ADD ANOTHER ACCIDENT -->
-
-    <div
-      class="d-flex justify-content-center align-items-center add-more-accident-container"
-    >
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-        (click)="onAddAccident()"
-        [ngClass]="{
-          disabled: accidentForm.invalid
-        }"
-        *ngIf="!isEditing"
-      >
-        <svg-icon
-          class="plus-icon"
-          src="assets/svg/common/ic_plus.svg
-      "
-          [svgStyle]="{
-            'width.px': 18,
-            'height.px': 18
-          }"
-        ></svg-icon>
-
-        Add Another Accident
-      </button>
-    </div>
   </div>
 </div>
 
@@ -303,10 +250,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-<!-- 
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
- -->

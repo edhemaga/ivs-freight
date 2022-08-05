@@ -17,6 +17,7 @@
   <div
     class="d-flex flex-column justify-content-center license-view-container"
     *ngIf="licenseArray.length"
+    [formGroup]="licenseForm"
   >
     <div
       class="d-flex flex-column"
@@ -30,7 +31,8 @@
         class="d-flex align-items-center title-container"
         *ngIf="
           (licenseArray.length > 1 && helperIndex !== 0 && i === 0) ||
-          (helperIndex === 0 && i === 1)
+          (helperIndex === 0 && i === 1) ||
+          (i === helperIndex + 1 && selectedLicenseIndex > -1)
         "
       >
         <div class="d-flex align-items-center license-title-box">
@@ -148,6 +150,7 @@
           "
         >
           <app-applicant-review-feedback
+            [formControlName]="'cardReview' + (i + 1)"
             [displayAnnotationButton]="
               openAnnotationArray[i].displayAnnotationButton
             "
@@ -170,36 +173,13 @@
         *ngIf="license.isEditingLicense"
       >
         <app-step3-form
-          [form]="licenseForm"
-          [handleInputSelect]="handleInputSelect"
-          [countryTypes]="countryTypes"
-          [stateTypes]="stateTypes"
-          [classTypes]="classTypes"
-          [endorsmentsList]="endorsmentsList"
-          [restrictionsList]="restrictionsList"
+          [isEditing]="isEditing"
+          [isLicenseEdited]="isLicenseEdited"
+          [formValuesToPatch]="formValuesToPatch"
+          (formValuesEmitter)="getLicenseFormValues($event)"
+          (cancelFormEditingEmitter)="cancelLicenseEditing($event)"
+          (saveFormEditingEmitter)="saveEditedLicense($event)"
         ></app-step3-form>
-
-        <div
-          class="d-flex align-items-center mx-auto justify-content-center btn-container"
-        >
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-            (click)="onCancelEditLicense()"
-          >
-            Cancel
-          </button>
-          <button
-            type="button"
-            class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-            (click)="onSaveEditedLicense()"
-            [ngClass]="{
-              disabled: !isLicenseEdited
-            }"
-          >
-            Save Changes
-          </button>
-        </div>
       </div>
     </div>
   </div>
@@ -209,45 +189,10 @@
   <div class="d-flex flex-column justify-content-center form-section">
     <form *ngIf="!isEditing">
       <app-step3-form
-        [form]="licenseForm"
-        [handleInputSelect]="handleInputSelect"
-        [countryTypes]="countryTypes"
-        [stateTypes]="stateTypes"
-        [classTypes]="classTypes"
-        [endorsmentsList]="endorsmentsList"
-        [restrictionsList]="restrictionsList"
+        [isEditing]="isEditing"
+        (formValuesEmitter)="getLicenseFormValues($event)"
       ></app-step3-form>
     </form>
-
-    <!-- ADD MORE LICENSES -->
-
-    <div class="d-flex align-items-center add-more-license-container">
-      <h4 class="text-center m-0 ta-font-bold" *ngIf="!isEditing">
-        List any additional license(s) held in past 3 years
-      </h4>
-
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-        (click)="onAddLicense()"
-        [ngClass]="{
-          disabled: licenseForm.invalid
-        }"
-        *ngIf="!isEditing"
-      >
-        <svg-icon
-          class="plus-icon"
-          src="assets/svg/common/ic_plus.svg
-          "
-          [svgStyle]="{
-            'width.px': 18,
-            'height.px': 18
-          }"
-        ></svg-icon>
-
-        Add License
-      </button>
-    </div>
 
     <!-- PERMIT -->
 
@@ -306,6 +251,7 @@
           "
         >
           <app-applicant-review-feedback
+            formControlName="fifthRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[14].displayAnnotationButton
             "
@@ -321,16 +267,6 @@
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
           ></app-applicant-review-feedback>
         </div>
-      </div>
-
-      <!-- REVIEW AND FEEDBACK -->
-
-      <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-        <app-applicant-review-feedback
-          [index]="2"
-          [reviewFeedbackData]=""
-          (sendReview)="onSubmitReview($event)"
-        ></app-applicant-review-feedback>
       </div>
     </div>
   </div>
@@ -351,10 +287,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-
-<!-- <app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
- -->

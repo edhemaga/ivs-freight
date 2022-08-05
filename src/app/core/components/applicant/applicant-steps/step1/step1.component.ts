@@ -85,7 +85,7 @@ export class Step1Component implements OnInit, OnDestroy {
     {},
     {
       lineIndex: 7,
-      lineInputs: [false],
+      lineInputs: [false, false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
@@ -301,10 +301,8 @@ export class Step1Component implements OnInit, OnDestroy {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       dateOfBirth: [null, Validators.required],
-      firstRowReview: [null],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex]],
-      secondRowReview: [null],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       ssn: [null, [Validators.required, ssnNumberRegex]],
@@ -323,6 +321,18 @@ export class Step1Component implements OnInit, OnDestroy {
       felonyExplain: [null, Validators.required],
       misdemeanorExplain: [null, Validators.required],
       drunkDrivingExplain: [null, Validators.required],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
+
+      eightRowReview: [null],
+      ninthRowReview: [null],
+      questionReview1: [null],
+      questionReview2: [null],
+      questionReview3: [null],
+      questionReview4: [null],
+      questionReview5: [null],
+      questionReview6: [null],
 
       previousAddresses: this.formBuilder.array([]),
     });
@@ -604,6 +614,7 @@ export class Step1Component implements OnInit, OnDestroy {
     lineIndex: number,
     type?: string
   ): void {
+    console.log(event);
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
     );

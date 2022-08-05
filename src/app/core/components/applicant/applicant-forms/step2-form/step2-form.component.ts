@@ -1,23 +1,134 @@
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import { Subscription } from 'rxjs';
+
+import { untilDestroyed } from 'ngx-take-until-destroy';
+
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
+
+import {
+  emailRegex,
+  phoneRegex,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../state/model/trailer-type.model';
 import { TruckType } from '../../state/model/truck-type.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { WorkHistoryModel } from '../../state/model/work-history.model';
+
+import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
 @Component({
   selector: 'app-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class Step2FormComponent implements OnInit {
+export class Step2FormComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('cfrComponent')
+  cfrComponent: TaInputRadiobuttonsComponent;
+
+  @Input() isEditing: boolean;
+  @Input() isWorkExperienceEdited?: boolean;
+  @Input() formValuesToPatch?: any;
+
+  @Output() formValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
+  @Output() saveFormEditingEmitter = new EventEmitter<any>();
+
   public selectedMode: string = SelectedMode.REVIEW;
+
+  public workExperienceForm: FormGroup;
+
+  public selectedAddress: AddressEntity;
+  public selectedTruckType: any = null;
+  public selectedTrailerType: any = null;
+  public selectedTrailerLength: any = null;
+  public selectedReasonForLeaving: any = null;
+
+  public truckType: TruckType[] = [];
+  public trailerType: TrailerType[] = [];
+  public trailerLengthType: any[] = [];
+
+  public isTruckSelected: boolean = false;
+
+  public subscription: Subscription;
+
+  public reasonsForLeaving: ReasonForLeaving[] = [
+    { id: 1, name: 'Better opportunity' },
+    { id: 2, name: 'Illness' },
+    { id: 3, name: 'Company went out of business' },
+    { id: 4, name: 'Fired or terminated' },
+    { id: 5, name: 'Family obligations' },
+    { id: 6, name: 'Other' },
+  ];
+
+  public questions: ApplicantQuestion[] = [
+    {
+      title: 'CFR Part 40?',
+      formControlName: 'cfrPart',
+      answerChoices: [
+        {
+          id: 1,
+          label: 'YES',
+          value: 'cfrPartYes',
+          name: 'cfrPartYes',
+          checked: false,
+          index: 0,
+        },
+        {
+          id: 2,
+          label: 'NO',
+          value: 'cfrPartNo',
+          name: 'cfrPartNo',
+          checked: false,
+          index: 0,
+        },
+      ],
+    },
+    {
+      title: 'FMCSA Regulated',
+      formControlName: 'fmCSA',
+      answerChoices: [
+        {
+          id: 3,
+          label: 'YES',
+          value: 'fmcsaYes',
+          name: 'fmcsaYes',
+          checked: false,
+          index: 1,
+        },
+        {
+          id: 4,
+          label: 'NO',
+          value: 'fmcsaNo',
+          name: 'fmcsaNo',
+          checked: false,
+          index: 1,
+        },
+      ],
+    },
+  ];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -84,26 +195,254 @@ export class Step2FormComponent implements OnInit {
     },
   ];
 
-  //
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
-  @Input() form: FormGroup;
+  ngOnInit(): void {
+    this.createForm();
 
-  @Input() handleInputSelect: (event: any, action: string) => void;
+    if (this.formValuesToPatch) {
+      this.patchForm();
 
-  @Input() questions: ApplicantQuestion[];
-  @Input() reasonsForLeaving: ReasonForLeaving[];
+      this.isDriverPosition();
 
-  @Input() truckType: TruckType[] = [];
-  @Input() trailerType: TrailerType[] = [];
-  @Input() trailerLengthType: any[] = [];
+      this.subscription = this.workExperienceForm.valueChanges.subscribe(
+        (newFormValue) => {
+          const { applicantId, isEditingWorkHistory, ...previousFormValues } =
+            this.formValuesToPatch;
 
-  @Input() selectedReasonForLeaving: any;
+          if (isFormValueEqual(previousFormValues, newFormValue)) {
+            this.isWorkExperienceEdited = false;
+          } else {
+            this.isWorkExperienceEdited = true;
+          }
+        }
+      );
+    }
+  }
 
-  public selectedAddress: AddressEntity;
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      console.log(this.cfrComponent);
+    }, 1);
+  }
 
-  constructor() {}
+  private createForm(): void {
+    this.workExperienceForm = this.formBuilder.group({
+      employer: [null, Validators.required],
+      jobDescription: [null, Validators.required],
+      fromDate: [null, Validators.required],
+      toDate: [null, Validators.required],
+      employerPhone: [null, [Validators.required, phoneRegex]],
+      employerEmail: [null, [Validators.required, emailRegex]],
+      employerFax: [null, phoneRegex],
+      employerAddress: [null, Validators.required],
+      employerAddressUnit: [null, Validators.maxLength(6)],
+      isDrivingPosition: [false],
+      truckType: [null],
+      trailerType: [null],
+      trailerLength: [null],
+      cfrPart: [null],
+      fmCSA: [null],
+      reasonForLeaving: [null, Validators.required],
+      accountForPeriod: [null],
 
-  ngOnInit(): void {}
+      firstRowReview: [null],
+      secondRowReview: [null],
+      thirdRowReview: [null],
+      fourthRowReview: [null],
+      fifthRowReview: [null],
+      sixthRowReview: [null],
+      seventhRowReview: [null],
+    });
+  }
+
+  public patchForm(): void {
+    this.workExperienceForm.patchValue({
+      employer: this.formValuesToPatch.employer,
+      jobDescription: this.formValuesToPatch.jobDescription,
+      fromDate: this.formValuesToPatch.fromDate,
+      toDate: this.formValuesToPatch.toDate,
+      employerPhone: this.formValuesToPatch.employerPhone,
+      employerEmail: this.formValuesToPatch.employerEmail,
+      employerFax: this.formValuesToPatch.employerFax,
+      employerAddress: this.formValuesToPatch.employerAddress,
+      employerAddressUnit: this.formValuesToPatch.employerAddressUnit,
+      isDrivingPosition: this.formValuesToPatch.isDrivingPosition,
+      truckType: this.formValuesToPatch.truckType,
+      trailerType: this.formValuesToPatch.trailerType,
+      trailerLength: this.formValuesToPatch.trailerLength,
+      cfrPart: this.formValuesToPatch.cfrPart,
+      fmCSA: this.formValuesToPatch.fmCSA,
+      reasonForLeaving: this.formValuesToPatch.reasonForLeaving,
+      accountForPeriod: this.formValuesToPatch.accountForPeriod,
+    });
+  }
+
+  private isDriverPosition(): void {
+    this.workExperienceForm
+      .get('isDrivingPosition')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('truckType'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('trailerType'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('trailerLength'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('cfrPart'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('fmCSA'),
+            false
+          );
+        } else {
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('truckType')
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('trailerType')
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('trailerLength')
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('cfrPart')
+          );
+          this.inputService.changeValidators(
+            this.workExperienceForm.get('fmCSA')
+          );
+        }
+      });
+  }
+
+  public handleInputSelect(event: any, action: string): void {
+    switch (action) {
+      case InputSwitchActions.ADDRESS:
+        this.selectedAddress = event.address;
+
+        if (!event.valid) {
+          this.workExperienceForm
+            .get('employerAddress')
+            .setErrors({ invalid: true });
+        }
+
+        break;
+      case InputSwitchActions.TRUCK_TYPE:
+        this.selectedTruckType = event;
+
+        break;
+      case InputSwitchActions.TRAILER_TYPE:
+        this.selectedTrailerType = event;
+
+        break;
+      case InputSwitchActions.TRAILER_LENGTH:
+        this.selectedTrailerLength = event;
+
+        break;
+      case InputSwitchActions.ANSWER_CHOICE:
+        const selectedCheckbox = event.find(
+          (radio: { checked: boolean }) => radio.checked
+        );
+
+        const selectedFormControlName =
+          this.questions[selectedCheckbox.index].formControlName;
+
+        if (selectedCheckbox.label === 'YES') {
+          this.workExperienceForm.get(selectedFormControlName).patchValue(true);
+        } else {
+          this.workExperienceForm
+            .get(selectedFormControlName)
+            .patchValue(false);
+        }
+
+        break;
+      case InputSwitchActions.REASON_FOR_LEAVING:
+        this.selectedReasonForLeaving = event;
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  public onAddSecondOrLastEmployer(): void {
+    if (this.workExperienceForm.invalid) {
+      this.inputService.markInvalid(this.workExperienceForm);
+      return;
+    }
+
+    const workExperienceForm = this.workExperienceForm.value;
+
+    const saveData: WorkHistoryModel = {
+      ...workExperienceForm,
+      isEditingWorkHistory: false,
+    };
+
+    this.formValuesEmitter.emit(saveData);
+
+    this.selectedReasonForLeaving = null;
+
+    this.workExperienceForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+  }
+
+  public onCancelEditWorkExperience(): void {
+    this.cancelFormEditingEmitter.emit(1);
+
+    this.isWorkExperienceEdited = false;
+
+    this.selectedReasonForLeaving = null;
+
+    this.workExperienceForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onSaveEditedWorkExperience(): void {
+    if (this.workExperienceForm.invalid) {
+      this.inputService.markInvalid(this.workExperienceForm);
+      return;
+    }
+
+    if (!this.isWorkExperienceEdited) {
+      return;
+    }
+
+    const workExperienceForm = this.workExperienceForm.value;
+
+    const saveData: WorkHistoryModel = {
+      ...workExperienceForm,
+      isEditingWorkHistory: false,
+    };
+
+    this.saveFormEditingEmitter.emit(saveData);
+
+    this.isWorkExperienceEdited = false;
+
+    this.selectedReasonForLeaving = null;
+
+    this.workExperienceForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
 
   public incorrectInput(
     event: any,
@@ -162,4 +501,6 @@ export class Step2FormComponent implements OnInit {
         false;
     }
   }
+
+  ngOnDestroy(): void {}
 }

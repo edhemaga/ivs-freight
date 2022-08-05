@@ -1,13 +1,21 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { anyInputInLineIncorrect } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
 
 import { TruckType } from '../../state/model/truck-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AddressEntity } from 'appcoretruckassist';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { AccidentModel } from '../../state/model/accident.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-step4-form',
@@ -15,7 +23,40 @@ import { AddressEntity } from 'appcoretruckassist';
   styleUrls: ['./step4-form.component.scss'],
 })
 export class Step4FormComponent implements OnInit {
+  @Input() isEditing: boolean;
+  @Input() isAccidentEdited?: boolean;
+  @Input() formValuesToPatch?: any;
+
+  @Output() formValuesEmitter = new EventEmitter<any>();
+  @Output() cancelFormEditingEmitter = new EventEmitter<any>();
+  @Output() saveFormEditingEmitter = new EventEmitter<any>();
+
   public selectedMode = SelectedMode.REVIEW;
+
+  private subscription: Subscription;
+
+  public accidentForm: FormGroup;
+
+  public selectedAddress: AddressEntity;
+  public selectedTruckType: any = null;
+
+  public truckType: TruckType[] = [];
+  public answerChoices: AnswerChoices[] = [
+    {
+      id: 1,
+      label: 'YES',
+      value: 'hazmatYes',
+      name: 'hazmatYes',
+      checked: false,
+    },
+    {
+      id: 2,
+      label: 'NO',
+      value: 'hazmatNo',
+      name: 'hazmatNo',
+      checked: false,
+    },
+  ];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -47,28 +88,150 @@ export class Step4FormComponent implements OnInit {
     },
   ];
 
-  //
-  ž;
-  @Input() form: FormGroup;
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private inputResetService: TaInputResetService
+  ) {}
 
-  @Input() handleInputSelect: (event: any, action: string) => void;
-  @Input() onIncrementDecrementCounter: (event: any, type: string) => void;
+  ngOnInit(): void {
+    this.createForm();
 
-  @Input() truckType: TruckType[];
+    if (this.formValuesToPatch) {
+      this.patchForm();
 
-  @Input() fatalitiesCounter: number;
-  @Input() injuriesCounter: number;
+      this.subscription = this.accidentForm.valueChanges.subscribe(
+        (newFormValue) => {
+          const { isEditingAccident, ...previousFormValues } =
+            this.formValuesToPatch;
 
-  @Input() answerChoices: AnswerChoices[];
+          newFormValue.accidentState = this.formValuesToPatch.accidentState;
 
-  public fatalitiesControl: FormControl = new FormControl(0);
-  public injuriesControl: FormControl = new FormControl(0);
+          if (isFormValueEqual(previousFormValues, newFormValue)) {
+            this.isAccidentEdited = false;
+          } else {
+            this.isAccidentEdited = true;
+          }
+        }
+      );
+    }
+  }
 
-  public selectedAddress: AddressEntity;
+  public createForm(): void {
+    this.accidentForm = this.formBuilder.group({
+      accidentLocation: [null, Validators.required],
+      accidentDate: [null, Validators.required],
+      fatalities: [0],
+      injuries: [0],
+      hazmatSpill: [null, Validators.required],
+      truckType: [null, Validators.required],
+      accidentDescription: [null, Validators.required],
 
-  constructor() {}
+      firstRowReview: [null],
+      secondRowReview: [null],
+    });
+  }
 
-  ngOnInit(): void {}
+  public patchForm(): void {
+    this.accidentForm.patchValue({
+      accidentLocation: this.formValuesToPatch.accidentLocation,
+      accidentDate: this.formValuesToPatch.accidentDate,
+      hazmatSpill: this.formValuesToPatch.hazmatSpill,
+      fatalities: this.formValuesToPatch.fatalities,
+      injuries: this.formValuesToPatch.injuries,
+      truckType: this.formValuesToPatch.truckType,
+      accidentDescription: this.formValuesToPatch.accidentDescription,
+    });
+  }
+
+  public handleInputSelect(event: any, action: string): void {
+    switch (action) {
+      case InputSwitchActions.HAZMAT_SPILL:
+        const selectedCheckbox = event.find(
+          (radio: { checked: boolean }) => radio.checked
+        );
+
+        this.accidentForm.get('hazmatSpill').patchValue(selectedCheckbox.label);
+
+        break;
+      case InputSwitchActions.TRUCK_TYPE:
+        this.selectedTruckType = event;
+
+        break;
+      case InputSwitchActions.ADDRESS:
+        this.selectedAddress = event.address;
+
+        if (!event.valid) {
+          this.accidentForm
+            .get('accidentLocation')
+            .setErrors({ invalid: true });
+        }
+
+        break;
+      default:
+        break;
+    }
+  }
+
+  public onAddAccident(): void {
+    if (this.accidentForm.invalid) {
+      this.inputService.markInvalid(this.accidentForm);
+      return;
+    }
+
+    const accidentForm = this.accidentForm.value;
+
+    const saveData: AccidentModel = {
+      ...accidentForm,
+      isEditingAccident: false,
+    };
+
+    this.formValuesEmitter.emit(saveData);
+
+    this.accidentForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+  }
+
+  public onCancelEditAccident(): void {
+    this.cancelFormEditingEmitter.emit(1);
+
+    this.isAccidentEdited = false;
+
+    this.accidentForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
+
+  public onSaveEditedAccident(): void {
+    if (this.accidentForm.invalid) {
+      this.inputService.markInvalid(this.accidentForm);
+      return;
+    }
+
+    if (!this.isAccidentEdited) {
+      return;
+    }
+
+    const accidentForm = this.accidentForm.value;
+
+    const saveData: AccidentModel = {
+      ...accidentForm,
+      isEditingAccident: false,
+    };
+
+    this.saveFormEditingEmitter.emit(saveData);
+
+    this.isAccidentEdited = false;
+
+    this.accidentForm.reset();
+
+    this.inputResetService.resetInputSubject.next(true);
+
+    this.subscription.unsubscribe();
+  }
 
   public incorrectInput(
     event: any,

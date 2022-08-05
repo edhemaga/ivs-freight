@@ -226,8 +226,6 @@
               }
 
               .review-icon-box {
-                margin-left: 44px !important;
-
                 .review-icon {
                   visibility: visible !important;
                   opacity: 1 !important;
@@ -277,6 +275,10 @@
               }
             }
 
+            .review-icon-box {
+              margin-left: 44px;
+            }
+
             .btn-container {
               width: 64px;
               visibility: hidden !important;
@@ -293,6 +295,11 @@
                   visibility: hidden !important;
                   opacity: 0 !important;
                   user-select: none !important;
+
+                  &.edit-icon,
+                  &.delete-icon {
+                    display: none !important;
+                  }
 
                   &.review-icon.active {
                     visibility: visible !important;

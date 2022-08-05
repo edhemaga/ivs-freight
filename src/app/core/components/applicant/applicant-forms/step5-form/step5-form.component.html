@@ -56,6 +56,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="firstRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[10].displayAnnotationButton
         "
@@ -96,6 +97,7 @@
       *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
     >
       <app-applicant-review-feedback
+        formControlName="secondRowReview"
         [displayAnnotationButton]="
           openAnnotationArray[11].displayAnnotationButton
         "
@@ -114,10 +116,7 @@
 
   <!-- ADD ANOTHER VIOLATION -->
 
-  <div
-    class="d-flex justify-content-center align-items-center btn-container"
-    [ngStyle]="{ 'margin-bottom': isEditing ? '22px' : 0 }"
-  >
+  <div class="d-flex justify-content-center align-items-center btn-container">
     <button
       type="button"
       class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
@@ -141,7 +140,7 @@
     </button>
 
     <div
-      class="d-flex align-items-center mx-auto justify-content-center btn-container"
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
       *ngIf="isEditing"
     >
       <button
