@@ -4,7 +4,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CommentResponse,
   CreateCommentCommand,
@@ -26,6 +26,7 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',

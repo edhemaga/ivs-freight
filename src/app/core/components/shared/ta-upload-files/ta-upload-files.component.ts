@@ -7,11 +7,12 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaUploadFileService } from './ta-upload-file.service';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-upload-files',
   templateUrl: './ta-upload-files.component.html',

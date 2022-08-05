@@ -3,7 +3,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -39,6 +39,7 @@ import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
+@UntilDestroy()
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',

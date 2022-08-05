@@ -11,11 +11,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input-address',
   templateUrl: './ta-input-address.component.html',

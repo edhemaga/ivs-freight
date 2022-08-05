@@ -3,7 +3,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   AddressEntity,
   CompanyContactModalResponse,
@@ -22,6 +22,8 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+
+@UntilDestroy()
 @Component({
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',

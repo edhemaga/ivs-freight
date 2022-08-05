@@ -1,6 +1,6 @@
 import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -34,6 +34,7 @@ import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/revie
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-shipper-modal',
   templateUrl: './shipper-modal.component.html',

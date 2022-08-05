@@ -1,5 +1,5 @@
 import { AddressEntity } from './../../../../../../appcoretruckassist/model/addressEntity';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -39,6 +39,7 @@ import { debounceTime } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-broker-modal',
   templateUrl: './broker-modal.component.html',

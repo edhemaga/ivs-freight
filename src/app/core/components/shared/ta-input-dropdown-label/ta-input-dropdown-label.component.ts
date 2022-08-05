@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, FormControl } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown-label',
   templateUrl: './ta-input-dropdown-label.component.html',

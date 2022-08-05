@@ -27,8 +27,8 @@ import {
   UpdateCompanyCommand,
   UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
-import { debounceTime, distinctUntilChanged, identity } from 'rxjs';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Options } from '@angular-slider/ngx-slider';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
@@ -37,6 +37,7 @@ import { SettingsStoreService } from '../../../state/settings.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-settings-basic-modal',
   templateUrl: './settings-basic-modal.component.html',

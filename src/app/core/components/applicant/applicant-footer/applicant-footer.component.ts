@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
@@ -20,6 +20,7 @@ import { SphReceivedBy } from '../state/model/sph-received-by.model';
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-applicant-footer',
   templateUrl: './applicant-footer.component.html',

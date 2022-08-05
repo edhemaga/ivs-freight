@@ -22,8 +22,10 @@ import moment from 'moment';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',

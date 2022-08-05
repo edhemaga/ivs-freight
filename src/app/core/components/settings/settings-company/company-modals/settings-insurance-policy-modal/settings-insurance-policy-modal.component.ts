@@ -17,7 +17,7 @@ import {
   InsurancePolicyModalResponse,
   UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import {
@@ -28,6 +28,8 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { SettingsStoreService } from '../../../state/settings.service';
 import { distinctUntilChanged } from 'rxjs';
+
+@UntilDestroy()
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',

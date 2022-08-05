@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
@@ -19,6 +19,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',

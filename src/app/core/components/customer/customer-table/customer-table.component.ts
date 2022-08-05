@@ -6,10 +6,13 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { closeAnimationAction, tableSearch } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
@@ -26,6 +29,7 @@ import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
+@UntilDestroy()
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
@@ -71,7 +75,7 @@ export class CustomerTableComponent
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   ngOnInit(): void {
@@ -354,8 +358,12 @@ export class CustomerTableComponent
       textAddress: data?.mainAddress
         ? data.mainAddress.city + ', ' + data.mainAddress.state
         : '',
-      loadCount: data?.loadCount ? this.thousandSeparator.transform(data.loadCount) : '',
-      textTotal: data?.total ? '$' + this.thousandSeparator.transform(data.total) : '',
+      loadCount: data?.loadCount
+        ? this.thousandSeparator.transform(data.loadCount)
+        : '',
+      textTotal: data?.total
+        ? '$' + this.thousandSeparator.transform(data.total)
+        : '',
     };
   }
 

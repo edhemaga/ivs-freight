@@ -10,7 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ModalService } from './modal.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
@@ -22,6 +22,7 @@ import {
   trigger,
 } from '@angular/animations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-modal',
   templateUrl: './ta-modal.component.html',

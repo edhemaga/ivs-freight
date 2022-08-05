@@ -15,10 +15,11 @@ import {
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { AddressEntity } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-settings-office-modal',
   templateUrl: './settings-office-modal.component.html',
