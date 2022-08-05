@@ -103,6 +103,7 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { TaNoteModule } from './ta-note/ta-note.module';
 import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
@@ -112,6 +113,7 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
 import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
+import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 
 export function playerFactory() {
@@ -159,6 +161,7 @@ export function playerFactory() {
     TaChartComponent,
     TaInputArrowsComponent,
     TaSpinnerComponent,
+    TaTimePeriodComponent,
     TaUploadFileComponent,
     TaInputDropdownLabelComponent,
     TaUploadFilesComponent,
@@ -195,7 +198,8 @@ export function playerFactory() {
     CustomScrollbarComponent,
     MapsComponent,
     ProgressInvoicesComponent,
-    TaCopyComponent,
+    TaUploadFilesComponent,
+    TaCopyComponent
   ],
   imports: [
     CommonModule,
@@ -242,6 +246,7 @@ export function playerFactory() {
     TruckassistTableModule,
     AppTooltipeModule,
     ChartsModule,
+    TaNoteModule,
     AgmSnazzyInfoWindowModule,
   ],
   exports: [
@@ -355,7 +360,8 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
-    // -------------------------
+    TaUploadFilesComponent,
+    TaTimePeriodComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

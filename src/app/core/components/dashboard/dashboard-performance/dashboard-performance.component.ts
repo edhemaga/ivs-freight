@@ -7,9 +7,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class DashboardPerformanceComponent implements OnInit {
   @ViewChild('topChart', {static: false}) public topChart: any;
+  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
   @ViewChild('t2') t2: any;
-
-  periodTitle: string = "Daily";
 
   dashboardSwitchTabs: any[] = [];
 
@@ -327,6 +326,7 @@ export class DashboardPerformanceComponent implements OnInit {
     hasHoverData: true,
     offset: true,
     multiHoverData: true,
+    responsive: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
@@ -370,6 +370,7 @@ export class DashboardPerformanceComponent implements OnInit {
     removeChartMargin: true,
     gridHoverBackground: true,
     hasHoverData: true,
+    responsive: true,
     dataLabels: [['01', 'WED'], ['02', 'THU'], ['03', 'FRI'], ['04', 'SAT'], ['05', 'SUN'], ['06', 'MON'], ['07', 'TUE'], ['08', 'WED'], ['09', 'THU'],
       ['10', 'FRI'], ['11', 'SAT'], ['12', 'SUN'], ['13', 'MON'], ['14', 'TUE'], ['15', 'WED'], ['16', 'THU'], ['17', 'FRI'], ['18', 'SAT'],
       ['19', 'SUN'], ['20', 'MON'], ['21', 'TUE'], ['22', 'WED'], ['23', 'THU'], ['24', 'FRI']
@@ -408,8 +409,6 @@ export class DashboardPerformanceComponent implements OnInit {
     }
   };
 
-  periodSwitchItems: any[] = [];
-
   constructor() { }
 
   ngOnInit(): void {
@@ -440,27 +439,11 @@ export class DashboardPerformanceComponent implements OnInit {
         name: 'Custom',
         custom: true
       }
-    ]
-
-    this.periodSwitchItems = [
-      {
-        name: 'Hourly'
-      },
-      {
-        name: 'Daily',
-        active: true
-      },
-      {
-        name: 'Weekly'
-      },
-      {
-        name: 'Monthly'
-      }
-    ]
+    ];
   }
 
   changeDashboardTabs(ev){
-
+    this.timePeriod.changeTimePeriod(ev['name']);
   }
 
   setColor(type: string){
@@ -489,15 +472,4 @@ export class DashboardPerformanceComponent implements OnInit {
   hoverFocusCard(type: string, color: any){
     this.topChart.changeChartFillProperty(type, color);
   }
-
-  changePeriod(item){
-    this.periodTitle = item.name;
-    this.periodSwitchItems.map((item) => {
-      item.active = false;
-      return item;
-    })
-    item.active = true;
-    this.t2.close();
-  }
-
 }

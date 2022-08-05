@@ -1,4 +1,4 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
   Component,
@@ -19,6 +19,7 @@ import { navigation_route_animation } from '../navigation.animation';
 import { SignInResponse } from 'appcoretruckassist';
 import { TaUserService } from 'src/app/core/services/user/user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',

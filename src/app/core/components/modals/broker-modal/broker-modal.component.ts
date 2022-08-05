@@ -1,5 +1,5 @@
 import { AddressEntity } from './../../../../../../appcoretruckassist/model/addressEntity';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -35,10 +35,10 @@ import {
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { debounceTime } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-broker-modal',
   templateUrl: './broker-modal.component.html',
@@ -68,13 +68,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     {
       id: 'physicaladdress',
       name: 'Physical Address',
-      inputName: 'a',
       checked: true,
     },
     {
       id: 'poboxphysical',
       name: 'PO Box Physical',
-      inputName: 'a',
       checked: false,
     },
   ];
@@ -83,13 +81,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     {
       id: 'billingaddress',
       name: 'Billing Address',
-      inputName: 'n',
       checked: true,
     },
     {
       id: 'poboxbilling',
       name: 'PO Box Billing',
-      inputName: 'n',
       checked: false,
     },
   ];
@@ -105,6 +101,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     name: 'Billing Address',
     checked: true,
   };
+
   public animationObject = {
     value: this.selectedTab,
     params: { height: '0px' },
@@ -149,8 +146,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   public disableOneMoreReview: boolean = false;
 
-  public user: SignInResponse = JSON.parse(localStorage.getItem('user'));
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -169,12 +164,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.followIsBillingAddressSame();
 
     if (this.editData) {
-      this.editBrokerById(this.editData.id);
-      this.tabs.push({
-        id: 3,
-        name: 'Review',
-      });
-      this.ratingChanges();
+      const timeout = setTimeout(() => {
+        this.editBrokerById(this.editData.id);
+        this.tabs.push({
+          id: 3,
+          name: 'Review',
+        });
+        this.ratingChanges();
+        clearTimeout(timeout);
+      }, 50);
     }
 
     this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -235,8 +233,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addBrokerContacts(event: any) {
-    if (event) {
+  public addBrokerContacts(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.brokerContacts.push(this.createBrokerContacts());
     }
   }
@@ -437,6 +435,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       };
     });
   }
+
   //taLikeDislikeService
   public onHandleAddress(
     event: {
@@ -509,7 +508,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createReview(event: any) {
+  public createReview(event: { check: boolean; action: string }) {
     if (
       this.reviews.some((item) => item.isNewReview) ||
       this.disableOneMoreReview
@@ -924,8 +923,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           this.selectedBillingPoBox = reasponse.billingPoBox
             ? reasponse.billingPoBox
             : null;
-          this.selectedPayTerm =
-            reasponse.creditType === 'Custom' ? reasponse.payTerm : null;
+
+          this.selectedPayTerm = reasponse.payTerm;
 
           if (reasponse.brokerContacts) {
             for (const contact of reasponse.brokerContacts) {
@@ -953,7 +952,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           }));
 
           const reviewIndex = this.reviews.findIndex(
-            (item) => item.companyUser.id === this.user.companyUserId
+            (item) => item.companyUser.id === this.companyUser.companyUserId
           );
 
           if (reviewIndex !== -1) {

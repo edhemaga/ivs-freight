@@ -359,7 +359,81 @@
     {
 			"iconName": "ic_truck_western_star.svg",
 			"iconPath": "/assets/svg/common/trucksmake/ic_truck_western_star.svg"
+		},
+    {
+			"iconName": "ic_pen.svg",
+			"iconPath": "assets/svg/common/ic_pen.svg"
+		},
+    {
+			"iconName": "ic_disable-status.svg",
+			"iconPath": "assets/svg/common/ic_disable-status.svg"
+		},
+    {
+			"iconName": "ic_company.svg",
+			"iconPath": "assets/svg/common/ic_company.svg"
+		},
+    {
+			"iconName": "ic_helpcenter.svg",
+			"iconPath": "assets/svg/common/ic_helpcenter.svg"
+		},
+    {
+			"iconName": "ic_logout.svg",
+			"iconPath": "assets/svg/common/ic_logout.svg"
+		},
+
+    {
+			"iconName": "ic_dashboard.svg",
+			"iconPath": "assets/svg/common/ic_dashboard.svg"
+		},
+    {
+			"iconName": "ic_dispatch.svg",
+			"iconPath": "assets/svg/common/ic_dispatch.svg"
+		},
+    {
+			"iconName": "ic_list.svg",
+			"iconPath": "assets/svg/common/ic_list.svg"
+		},
+    {
+			"iconName": "ic_accounting.svg",
+			"iconPath": "assets/svg/common/ic_accounting.svg"
+		},
+    {
+			"iconName": "ic_safety.svg",
+			"iconPath": "assets/svg/common/ic_safety.svg"
+		},
+    {
+			"iconName": "ic_tools.svg",
+			"iconPath": "assets/svg/common/ic_tools.svg"
+		},
+    {
+			"iconName": "ic_routing.svg",
+			"iconPath": "assets/svg/common/ic_routing.svg"
+		},
+    {
+			"iconName": "ic_report.svg",
+			"iconPath": "assets/svg/common/ic_report.svg"
+		},
+    {
+			"iconName": "ic_statistic.svg",
+			"iconPath": "assets/svg/common/ic_statistic.svg"
+		},
+    {
+			"iconName": "ic_chat.svg",
+			"iconPath": "assets/svg/common/ic_chat.svg"
+		},
+    {
+			"iconName": "ic_gps.svg",
+			"iconPath": "assets/svg/common/ic_gps.svg"
+		},
+    {
+			"iconName": "ic_places-new.svg",
+			"iconPath": "assets/svg/common/ic_places-new.svg"
+		},
+    {
+			"iconName": "ic_file_manager-new.svg",
+			"iconPath": "assets/svg/common/ic_file_manager-new.svg"
 		}
+
 	],
   "customIcons": []
 }

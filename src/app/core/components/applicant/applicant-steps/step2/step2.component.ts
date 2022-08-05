@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { UntilDestroy } from '@ngneat/until-destroy';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import {
@@ -14,6 +16,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',

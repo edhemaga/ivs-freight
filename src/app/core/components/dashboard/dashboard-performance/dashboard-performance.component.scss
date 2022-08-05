@@ -126,8 +126,8 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
         .dashboard-performance-body-left-holder{
             position: relative;
            // width: 177px;
-           grid-row-start: 1;
-            grid-row-end: 3;
+            grid-row-start: 1;
+            grid-row-end: 4;
             border-radius: 3px;
             background-color: #fff;
             display: flex;
@@ -461,7 +461,6 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 }
 
                 .dashboard-performance-body-right-cards-title{
-                    width: 100px;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     white-space: nowrap;
@@ -488,11 +487,9 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 align-items: center;
 
                 .dashboard-performance-body-right-cards-trend-up{
-                    width: 18px;
-                    height: 18px;
                     display: flex;
-                    justify-content: center;
-                    align-items: center;
+                    border-radius: 2px;
+                    padding: 2px;
 
                     svg-icon{
                         display: flex;
@@ -782,6 +779,15 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                 line-height: 14px;
                 font-weight: 500;
                 padding-left: 4px;
+
+                &::-moz-selection {
+                    background: #91919133;
+                    color: #919191;
+                }
+                  &::selection {
+                    background: #91919133;
+                    color: #919191;
+                }
            }
 
            .round_dark_grey{
@@ -817,9 +823,24 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     }
 }
 
-
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1200px) {
     .dashboard-performance-holder .dashboard-performance-body{
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(5, calc((100% - 35px) / 5));
+    }
+
+    .dashboard-performance-holder .dashboard-performance-body .dashboard-performance-body-left-holder {
+        grid-row-end: 3;
+    }
+}
+
+@media only screen and (min-width: 1201px) and (max-width: 1664px) {
+    .dashboard-performance-holder .dashboard-performance-body{
+        grid-template-columns: repeat(7, calc((100% - 48px) / 7));
+    }
+}
+
+@media only screen and (min-width: 1664px) {
+    .dashboard-performance-holder .dashboard-performance-body{
+        grid-template-columns: repeat(10, calc((100% - 72px) / 10));
     }
 }

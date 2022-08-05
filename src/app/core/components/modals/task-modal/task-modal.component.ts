@@ -4,7 +4,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CommentResponse,
   CreateCommentCommand,
@@ -26,6 +26,7 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
@@ -147,7 +148,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public createComment(event: any) {
+  public createComment(event: { check: boolean; action: string }) {
     if (this.comments.some((item) => item.isNewReview)) {
       return;
     }
@@ -280,8 +281,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       status: this.taskStatus.name,
     };
 
-    console.log(newData);
-
     this.todoService
       .updateTodo(newData)
       .pipe(untilDestroyed(this))
@@ -413,8 +412,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropDown(event: any[], action: string) {
-    console.log('ON SELECTED');
-    console.log(event);
     switch (action) {
       case 'res-department': {
         this.selectedDepartments = [...event];

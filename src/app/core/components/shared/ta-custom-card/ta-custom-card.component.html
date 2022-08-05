@@ -10,7 +10,9 @@
     (mouseleave)="isHeaderHover = false"
     (click)="isCardOpenEvent($event)"
   >
+    <!-- Left side of header -->
     <div class="header-content" [class.counter]="hasCounter">
+      <!-- Checkbox -->
       <app-ta-checkbox
         *ngIf="hasCheckbox"
         [formControl]="controlName"
@@ -18,6 +20,7 @@
       >
       </app-ta-checkbox>
 
+      <!-- Counter -->
       <app-ta-counter
         *ngIf="hasCounter"
         [count]="hasCounter"
@@ -27,9 +30,13 @@
         [countWidth]="'24px'"
         [countTextBottomPosition]="textBottomPossiton"
       ></app-ta-counter>
+
+      <!-- Name -->
       <span class="header-text" [ngClass]="{ 'no-counter': !hasCounter }">
         {{ cardName }}
       </span>
+
+      <!-- Svg near name -->
       <div
         *ngIf="hasHeaderSvg && (isCardOpen || headerSvgEnabled)"
         ngbTooltip
@@ -44,6 +51,8 @@
         ></svg-icon>
       </div>
     </div>
+
+    <!-- Right Side (action side) of header -->
     <div
       class="header-actions"
       [ngClass]="{
@@ -51,10 +60,28 @@
         'hidden-add-new-action': disableMultipleReviews
       }"
     >
+      <!-- Like & Dislike -->
       <app-ta-like-dislike
         *ngIf="hasLikeDislike && hasBodyData && isCardOpen"
       ></app-ta-like-dislike>
 
+      <div
+        *ngIf="customTextAction"
+        class="header-custom-text-action"
+        (click)="onAction($event, 'custom', customTextAction)"
+      >
+        <p class="header-action-text">{{ customTextAction }}</p>
+      </div>
+
+      <!-- Download -->
+      <svg-icon
+        class="header-action-download"
+        *ngIf="hasDownload"
+        (click)="onAction($event, 'download')"
+        [src]="hasDownload"
+      ></svg-icon>
+
+      <!-- Plus Add New Things -->
       <div
         *ngIf="hasActionSvg && !disableMultipleReviews"
         class="header-action-container"
@@ -64,7 +91,7 @@
           (isHeaderHover && hasBodyData && !isCardOpen && hasArrow)
         "
         [class.comment]="hasBodyData && isCardOpen && isCommentData"
-        (click)="onAdd($event)"
+        (click)="onAction($event, 'add')"
       >
         <svg-icon
           *ngIf="!hasBodyData && !isHeaderHover"
@@ -79,7 +106,12 @@
           ADD NEW
         </p>
       </div>
-      <div class="arrow-down-plus">
+
+      <!-- Header (Details page, Calendar...) -->
+      <div
+        *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
+        class="arrow-down-plus"
+      >
         <div
           class="add-custom-card"
           ngbTooltip
@@ -88,26 +120,27 @@
           tooltipBackground="#536BC2"
         >
           <svg-icon
-            *ngIf="(hasPlusHeader && isCardOpen) || stayOpen"
             class="plus-custom-card"
             src="assets/svg/common/ic_plus.svg"
-            (click)="onAdd($event)"
-          ></svg-icon>
-        </div>
-        <div class="status-icon-weekly">
-          <div *ngIf="hasWeeklyStatus" class="weekly-status">
-            <div class="weekly-status-value">
-              {{ hasWeeklyStatus }}
-            </div>
-          </div>
-          <svg-icon
-            *ngIf="hasArrow && hasBodyData"
-            class="header-arrow"
-            [ngClass]="{ rotate: isCardOpen }"
-            src="assets/svg/common/ic_arrow_down_updated.svg"
+            (click)="onAction($event, 'add')"
           ></svg-icon>
         </div>
       </div>
+
+      <!-- Weekly status -->
+      <div *ngIf="hasWeeklyStatus" class="weekly-status">
+        <div class="weekly-status-value">
+          {{ hasWeeklyStatus }}
+        </div>
+      </div>
+
+      <!-- Arrow -->
+      <svg-icon
+        *ngIf="hasArrow && hasBodyData"
+        class="header-arrow"
+        [ngClass]="{ rotate: isCardOpen }"
+        src="assets/svg/common/ic_arrow_down_updated.svg"
+      ></svg-icon>
     </div>
   </div>
 

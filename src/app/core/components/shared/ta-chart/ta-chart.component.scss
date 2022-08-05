@@ -30,6 +30,7 @@
   }
 
   .hover_data_time{
+    padding: 0;
     .hover_time_title{
       font-size: 14px;
       font-weight: 700;
@@ -50,6 +51,7 @@
   .chart_all_inner_hold{
     display: flex;
     align-items: center;
+    padding: 0;
   }
 }
 
@@ -92,6 +94,15 @@
       line-height: 14px;
       text-align: center;
       color: $bw6-2;
+
+      &::-moz-selection {
+        background: #91919133;
+        color: #919191;
+    }
+      &::selection {
+        background: #91919133;
+        color: #919191;
+    }
     }
 
     .hover_data_border_line{
@@ -110,6 +121,15 @@
         align-items: center;
         margin-bottom: 2px;
 
+        &::-moz-selection {
+          background: #91919133;
+          color: #919191;
+        }
+          &::selection {
+            background: #91919133;
+            color: #919191;
+        }
+
         .hover_data_icon{
             svg{
               display: flex;
@@ -126,6 +146,14 @@
           color: $bw6-2;
           padding-left: 4px;
           
+          &::-moz-selection {
+            background: #91919133;
+            color: #919191;
+          }
+            &::selection {
+              background: #91919133;
+              color: #919191;
+          }
         }
 
         .hover_data_values_hold{
@@ -140,6 +168,15 @@
         font-weight: 600;
         color: $bw6-2;
 
+        &::-moz-selection {
+          background: #91919133;
+          color: #919191;
+        }
+          &::selection {
+            background: #91919133;
+            color: #919191;
+        }
+
         &.increased_title{
           padding-right: 12px;
         }
@@ -150,6 +187,15 @@
         line-height: 14px;
         font-weight: 700;
         color: $bw4;
+
+        &::-moz-selection {
+          background: #91919133;
+          color: #919191;
+        }
+          &::selection {
+            background: #91919133;
+            color: #919191;
+        }
       }
 
       &.hover_data_bigger_hold{

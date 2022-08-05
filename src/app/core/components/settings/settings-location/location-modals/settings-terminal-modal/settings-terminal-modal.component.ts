@@ -7,12 +7,13 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
 import { debounceTime } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-settings-terminal-modal',
   templateUrl: './settings-terminal-modal.component.html',

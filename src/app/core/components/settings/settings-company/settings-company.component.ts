@@ -9,9 +9,11 @@ import {
 import { SettingsStoreService } from './../state/settings.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',

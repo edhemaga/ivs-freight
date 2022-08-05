@@ -1,3 +1,5 @@
+@import 'src/theme/variables.scss';
+
 .my-note-popover {
   margin-right: 4px;
   box-shadow: none !important;
@@ -11,6 +13,11 @@
       display: none !important;
     }
   }
+}
+
+.closed_main_holder{
+  position: relative;
+  display: flex;
 }
 
 .note_button_hold {
@@ -45,7 +52,7 @@
     }
   }
 
-  &.note-focused{
+  &.note-all-expanded{
     svg{
       path{
         fill: #6D82C7;
@@ -264,14 +271,15 @@
     line-height: 1.5;
     height: auto;
     min-width: 250px;
-    background-color: transparent;
+    background-color: #ffffff;
 
     &.expanded {
       box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
     }
 
     .editor {
-      height: 32px;
+      min-height: 32px;
+      max-height: 80px;
       width: 250px;
       border-radius: 3px;
       background-color: rgba(255, 255, 255, 1);
@@ -297,9 +305,6 @@
         }
 
         &.openedAll {
-          background-color: #6c6c6c;
-          color: #fff;
-
           &:after {
             border-left: 5px solid #6c6c6c;
           }
@@ -324,6 +329,10 @@
             color: rgba(255, 206, 206, 1) !important;
           }
         }
+      }
+
+      &.parking_text_hold{
+        max-height: 124px;
       }
 
       // &:after {
@@ -351,4 +360,64 @@
       }
     }
   }
+
+  &.opened_all_hold{
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    z-index: 1;
+
+    .custom_editor{
+      min-width: auto;
+
+      .editor{
+        width: auto;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+  
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+  
+        span{
+          &::-moz-selection {
+            color: $bw6-2 !important;
+            background: rgb(108, 108, 108, 0.2) !important;
+          }
+    
+          &::selection {
+            color: $bw6-2  !important;
+            background: rgb(108, 108, 108, 0.2) !important;
+          }
+        }
+      }
+    }
+
+    .k-editor{
+      width: auto;
+    }
+  }
+
+  &.closed_note_hold{
+    position: absolute;
+    left: -264px;
+    top: -8px;
+  }
+}
+
+.note_inner_text{
+  display: -webkit-box; 
+  font-size: 11px;
+  color: #6C6C6C;
+
+  overflow: hidden;
+  
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }

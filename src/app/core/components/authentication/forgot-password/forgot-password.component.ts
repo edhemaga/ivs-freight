@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
@@ -15,6 +15,7 @@ import { NotificationService } from '../../../services/notification/notification
 
 import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCommand';
 
+@UntilDestroy()
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
@@ -73,7 +74,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
             this.router.navigate(['/auth/forgot-password/check-email']);
           }
         },
-        error: err => {
+        error: (err) => {
           this.notification.error(err, 'Error');
         },
       });

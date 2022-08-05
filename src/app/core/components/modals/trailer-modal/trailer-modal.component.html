@@ -41,7 +41,7 @@
                 label: 'Trailer Type',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-9',
+                dropdownWidthClass: 'w-col-348',
                 customClass: 'truck-trailer-dropdown'
               }"
               [options]="trailerType"
@@ -80,7 +80,7 @@
                 label: 'Make',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-5'
+                dropdownWidthClass: 'w-col-188'
               }"
               [options]="trailerMakeType"
               [activeItem]="selectedTrailerMake"
@@ -110,7 +110,7 @@
                 type: 'text',
                 label: 'Color',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-trailerColor'
+                dropdownWidthClass: 'w-col-126'
               }"
               [options]="colorType"
               [activeItem]="selectedColor"
@@ -138,7 +138,7 @@
                 label: 'Length',
                 isDropdown: true,
                 isRequired: true,
-                dropdownWidthClass: 'w-col-trailerLength'
+                dropdownWidthClass: 'w-col-106'
               }"
               [options]="trailerLengthType"
               [activeItem]="selectedTrailerLength"
@@ -179,7 +179,7 @@
                       label: 'Owner',
                       isDropdown: true,
                       isRequired: true,
-                      dropdownWidthClass: 'w-col-12'
+                      dropdownWidthClass: 'w-col-455'
                     }"
                     [options]="ownerType"
                     [activeItem]="selectedOwner"
@@ -210,7 +210,7 @@
                 type: 'text',
                 label: 'Reefer Unit',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-4-reeferUnit'
+                dropdownWidthClass: 'w-col-136'
               }"
               [options]="reeferUnitType"
               [activeItem]="selectedReeferType"
@@ -244,8 +244,8 @@
                 isDropdown: true,
                 dropdownWidthClass:
                   trailerForm.get('trailerTypeId').value !== 'Reefer'
-                    ? 'w-col-6'
-                    : 'w-col-3-suspension'
+                    ? 'w-col-228'
+                    : 'w-col-108'
               }"
               [options]="suspensionType"
               [activeItem]="selectedSuspension"
@@ -263,7 +263,7 @@
                 type: 'text',
                 label: 'Tire Size',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-4'
+                dropdownWidthClass: 'w-col-148'
               }"
               [options]="tireSize"
               [activeItem]="selectedTireSize"
@@ -281,7 +281,7 @@
                 type: 'text',
                 label: 'Door Type',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-3-doortype'
+                dropdownWidthClass: 'w-col-108'
               }"
               [options]="doorType"
               [activeItem]="selectedDoorType"
@@ -302,7 +302,7 @@
                 type: 'text',
                 label: 'Tire Size',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-4-tireSize'
+                dropdownWidthClass: 'w-col-136'
               }"
               [options]="tireSize"
               [activeItem]="selectedTireSize"
@@ -324,7 +324,7 @@
                 type: 'text',
                 label: 'Door Type',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-4-doortype'
+                dropdownWidthClass: 'w-col-136'
               }"
               [options]="doorType"
               [activeItem]="selectedDoorType"

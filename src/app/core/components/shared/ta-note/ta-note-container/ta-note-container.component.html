@@ -1,42 +1,47 @@
-<div @pickupAnimation [class.hidden]="!isExpanded" class="editor_menu">
-  <div
-    (click)="executeEditor('bold')"
-    [class.active]="activeOptions.bold"
-    [tooltipBackground]="'#6C6C6C'"
-    ngbTooltip
-    [mainTooltip]="'Bold'"
-    position="bottom"
-    class="editor_buttons bold_text"
-    >
-    <svg-icon
-      src="assets/svg/truckassist-table/note/bold-icon.svg"
-    ></svg-icon>
-  </div>
-  <div
-    (click)="executeEditor('italic')"
-    [class.active]="activeOptions.italic"
-    [tooltipBackground]="'#6C6C6C'"
-    ngbTooltip
-    [mainTooltip]="'Italic'"
-    position="bottom"
-    class="editor_buttons italic_text"
-    >
-    <svg-icon
-      src="assets/svg/truckassist-table/note/italic-icon.svg"
-    ></svg-icon>
-  </div>
-  <div
-    (click)="executeEditor('underline')"
-    [class.active]="activeOptions.underline"
-    [tooltipBackground]="'#6C6C6C'"
-    ngbTooltip
-    [mainTooltip]="'Underline'"
-    position="bottom"
-    class="editor_buttons underline_text"
-    >
-    <svg-icon
-      src="assets/svg/truckassist-table/note/underline-icon.svg"
-    ></svg-icon>
+<div @pickupAnimation [class.hidden]="!isExpanded" [class.parking_editor_menu]="parking" class="editor_menu">
+  <div class="font_editor" [class.parking_font_editor]="parking">
+    <div
+      (click)="executeEditor('bold')"
+      [class.active]="activeOptions.bold"
+      [tooltipBackground]="'#6C6C6C'"
+      ngbTooltip
+      [mainTooltip]="'Bold'"
+      position="bottom"
+      class="editor_buttons bold_text"
+      >
+      <svg-icon
+        src="assets/svg/truckassist-table/note/bold-icon.svg"
+      ></svg-icon>
+    </div>
+    <div
+      *ngIf="!parking || (parking && !showCollorPattern)"
+      (click)="executeEditor('italic')"
+      [class.active]="activeOptions.italic"
+      [tooltipBackground]="'#6C6C6C'"
+      ngbTooltip
+      [mainTooltip]="'Italic'"
+      position="bottom"
+      class="editor_buttons italic_text"
+      >
+      <svg-icon
+        src="assets/svg/truckassist-table/note/italic-icon.svg"
+      ></svg-icon>
+    </div>
+    <div
+      *ngIf="!parking || (parking && !showCollorPattern)"
+      (click)="executeEditor('underline')"
+      [class.active]="activeOptions.underline"
+      [tooltipBackground]="'#6C6C6C'"
+      ngbTooltip
+      [mainTooltip]="'Underline'"
+      position="bottom"
+      class="editor_buttons underline_text"
+      >
+      <svg-icon
+        src="assets/svg/truckassist-table/note/underline-icon.svg"
+      ></svg-icon>
+    </div>
+    <div class="note_border_line"></div>
   </div>
   <div (click)="showCollorPattern = !showCollorPattern"
        [class.no_opacity]="showCollorPattern"
@@ -46,9 +51,9 @@
        position="bottom"
        class="editor_buttons text_color"
        >
-       <div class="color_picker_arrow" [class.flip_arrow]="showCollorPattern" >
+       <div class="color_picker_arrow" [class.flip_arrow]="!showCollorPattern" [class.active]="showCollorPattern">
         <svg-icon
-          src="assets/svg/common/ic_arrow-right.svg"
+          src="assets/svg/truckassist-table/arrow-columns-drop.svg"
         ></svg-icon>
        </div>
     <span [ngStyle]="{'background-color': selectedPaternColor}" *ngIf="!showCollorPattern" class="circle_span"></span>
@@ -63,15 +68,8 @@
         position="bottom"
         class="editor_buttons text_color"
         >
-        <svg-icon
-          *ngIf="indx == 0"
-          [svgStyle]="{ 'width.px': '4', 'height.px': '7' }"
-          src="assets/img/svgs/left.svg"></svg-icon>
       </div>
-      <!-- <div (click)="executeEditor('foreColor', '#158740')"></div>
-      <div (click)="executeEditor('foreColor', '#2B79C7')"></div>
-      <div (click)="executeEditor('foreColor', '#9F48B9')"></div>
-      <div (click)="executeEditor('foreColor', '#DB2222')"></div> -->
     </div>
   </div>
+  <div class="note_border_line"></div>
 </div>

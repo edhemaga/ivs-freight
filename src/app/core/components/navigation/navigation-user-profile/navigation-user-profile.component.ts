@@ -1,5 +1,5 @@
 import { ImageBase64Service } from './../../../utils/base64.image';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,6 +18,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from 'src/app/core/services/user/user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-navigation-user-profile',
   templateUrl: './navigation-user-profile.component.html',

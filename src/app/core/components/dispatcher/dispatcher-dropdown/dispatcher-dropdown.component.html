@@ -21,7 +21,7 @@
             <div class="user_avatar" *ngIf="item.dispatcherAvatar" 
             [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
             ></div>
-            <span>{{item.dispatcherFirstName}} {{item.dispatcherLastName}}</span>
+            <span>{{item.fullName}}</span>
         </div>
     </ng-template>
     <ng-template let-item="item" let-search="searchTerm" ng-option-tmp>
@@ -32,7 +32,7 @@
             <div class="user_avatar" *ngIf="item.dispatcherAvatar" 
             [ngStyle]="item.dispatcherAvatar && { 'background-image': 'url(' + item.dispatcherAvatar + ')' }"
             ></div>
-            <span>{{item.dispatcherFirstName}} {{item.dispatcherLastName}}</span>
+            <span>{{item.fullName}}</span>
         </div>
     </ng-template>
     </ng-select>

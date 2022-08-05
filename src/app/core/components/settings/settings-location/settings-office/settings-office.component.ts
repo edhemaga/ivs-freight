@@ -13,7 +13,7 @@ export class SettingsOfficeComponent implements OnInit {
       phone: '(123) 456-7890',
       email: 'contact@windsor-brokers.com',
       address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned: 'assets/svg/common/ic_company.svg',
+      companyOwned: 'ic_company.svg',
       departments: [
         {
           name: 'Accounting Department',

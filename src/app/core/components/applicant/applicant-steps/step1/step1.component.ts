@@ -7,7 +7,7 @@ import {
   FormControl,
 } from '@angular/forms';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -28,6 +28,7 @@ import {
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-step1',
   templateUrl: './step1.component.html',

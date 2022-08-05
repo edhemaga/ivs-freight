@@ -253,7 +253,13 @@
 
         <!-- SPH RECEIVED -->
 
-        <app-ta-custom-card [cardName]="'SPH Received'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'SPH Received'"
+          [isCardOpen]="true"
+          [customTextAction]="'Open SPH'"
+          [hasDownload]="'assets/svg/common/ic_download.svg'"
+          (onActionEvent)="onAction($event)"
+        >
           <div class="sph-received-card">
             <div class="d-flex">
               <div class="d-flex">
@@ -279,7 +285,7 @@
                       type: 'text',
                       label: 'Received By',
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-applicant-sph-received-by'
+                      dropdownWidthClass: 'w-col-sph-received-by'
                     }"
                     [options]="sphReceivedByList"
                     [activeItem]="selectedSphReceivedBy"

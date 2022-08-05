@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dispatchboard-tables.component.scss']
 })
 export class DispatchboardTablesComponent implements OnInit {
+  @Input() gridData: any[] = [];
   data: any[] = new Array(500).fill(1);
 
   constructor() { }

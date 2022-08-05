@@ -1,11 +1,14 @@
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TrailerListResponse } from 'appcoretruckassist';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { closeAnimationAction, tableSearch } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
@@ -17,6 +20,7 @@ import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-in
 import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerTService } from '../state/trailer.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-trailer-table',
   templateUrl: './trailer-table.component.html',
@@ -349,12 +353,16 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       ...data,
       isSelected: false,
       textMake: data?.trailerMake?.name ? data.trailerMake.name : '',
-      textAxies: data?.axles ?  data?.axles : '',
+      textAxies: data?.axles ? data?.axles : '',
       textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
       textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
       textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
-      textEmptyWeight: data?.emptyWeight ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.' : '',
-      textMileage: data?.mileage ? this.thousandSeparator.transform(data.mileage) + ' mi' : '',
+      textEmptyWeight: data?.emptyWeight
+        ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
+        : '',
+      textMileage: data?.mileage
+        ? this.thousandSeparator.transform(data.mileage) + ' mi'
+        : '',
       textModel: data?.model ? data?.model : '',
       ownerName: data?.owner?.name ? data.owner.name : '',
       textColor: data?.color?.code ? data.color.code : '',

@@ -6,8 +6,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { SettingsStoreService } from '../../state/settings.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
+@UntilDestroy()
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
