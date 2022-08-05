@@ -79,6 +79,17 @@
   .form-section {
     margin-top: 32px;
 
+    .line-container {
+      position: relative;
+
+      .review-feedback-container {
+        position: absolute;
+        top: 0;
+        right: -435px;
+        width: 429px;
+      }
+    }
+
     .form-input-container {
       margin-bottom: 32px;
       width: 616px;
@@ -116,6 +127,7 @@
 
       .date-group {
         width: 148px;
+        margin-right: 0 !important;
       }
 
       .phone-group {
@@ -124,6 +136,7 @@
 
       .email-group {
         width: 375px;
+        margin-right: 0 !important;
       }
 
       .address-group {
@@ -132,16 +145,16 @@
 
       .address-unit-group {
         width: 124px;
+        margin-right: 0 !important;
       }
 
       .ssn-group {
-        margin-top: 26px;
         width: 187px;
       }
 
       .bank-group {
-        margin-top: 26px;
         width: 416px;
+        margin-right: 0 !important;
       }
 
       .account-number-group {
@@ -150,6 +163,7 @@
 
       .routing-number-group {
         width: 224px;
+        margin-right: 0 !important;
       }
     }
 
@@ -247,8 +261,8 @@
             }
 
             .address-unit-container {
-              width: 52px;
-              margin-right: 18px;
+              width: 42px;
+              margin-right: 6px;
 
               p {
                 text-transform: uppercase;
@@ -260,13 +274,14 @@
           }
 
           .btn-container {
-            width: 42px;
+            width: 64px;
             visibility: hidden !important;
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
 
             .edit-icon,
-            .delete-icon {
+            .delete-icon,
+            .review-icon {
               cursor: pointer;
 
               &:hover {
@@ -283,10 +298,43 @@
                   fill: $bw4;
                 }
               }
-            }
 
-            .edit-icon {
-              margin-right: 6px;
+              &.edit-icon,
+              &.delete-icon {
+                margin-right: 4px;
+              }
+
+              &.review-icon {
+                svg {
+                  transform: scale(1);
+                  transition: transform 0.3s ease-in-out;
+
+                  path {
+                    fill: $ta-red-2;
+                    transition: fill 0.3s ease-in-out;
+                  }
+
+                  rect {
+                    fill: $ta-light-grey-4;
+                    transition: fill 0.3s ease-in-out;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    transform: scale(1.2);
+
+                    path {
+                      fill: $white;
+                      transition: fill 0.3s ease-in-out;
+                    }
+
+                    rect {
+                      fill: $ta-red-3;
+                    }
+                  }
+                }
+              }
             }
           }
 
@@ -374,6 +422,7 @@
       }
 
       .previous-address-btn-container {
+        margin-bottom: 26px;
         width: 616px;
 
         .previous-address-title {

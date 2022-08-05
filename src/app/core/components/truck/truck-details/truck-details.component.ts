@@ -15,10 +15,12 @@ import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',

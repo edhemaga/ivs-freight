@@ -7,10 +7,11 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SettingsStoreService } from '../../../state/settings.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 
+@UntilDestroy()
 @Component({
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
@@ -117,14 +118,12 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
 
     const newData: UpdateFactoringCompanyCommand = {
       companyId: company.divisions.length ? null : company.id,
-      factoringCompany: {
-        name: name,
-        phone: phone,
-        email: email,
-        address: this.selectedAddress,
-        noticeOfAssigment: noticeOfAssigment,
-        note: note,
-      },
+      name: name,
+      phone: phone,
+      email: email,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
+      noticeOfAssigment: noticeOfAssigment,
+      note: note,
     };
     this.settingsService
       .updateFactoringCompany(newData)
@@ -149,11 +148,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteFactoringCompanyById(company: any) {
-    console.log(company);
     this.settingsService
-      .deleteFactoringCompanyById(
-        company.divisions.length ? null : this.editData.company.id
-      )
+      .deleteFactoringCompanyById(this.editData.company.id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

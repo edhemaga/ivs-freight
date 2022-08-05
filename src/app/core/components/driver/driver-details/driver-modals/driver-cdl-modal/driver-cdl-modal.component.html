@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'"
+  [modalTitle]="
+    editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'
+  "
   [editData]="editData"
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
@@ -54,9 +56,8 @@
             label: 'Class',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4-classType'
+            dropdownWidthClass: 'w-col-136'
           }"
-          [canAddNew]="true"
           [options]="classTypes"
           [activeItem]="selectedClassType"
           (selectedItem)="onSelectDropdown($event, 'class')"
@@ -71,7 +72,7 @@
             label: 'Country',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4'
+            dropdownWidthClass: 'w-col-148'
           }"
           [options]="countryTypes"
           [activeItem]="selectedCountryType"
@@ -88,7 +89,7 @@
             isRequired: cdlForm.get('countryType').value,
             isDisabled: !cdlForm.get('countryType').value,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-4'
+            dropdownWidthClass: 'w-col-148'
           }"
           [options]="stateTypes"
           [activeItem]="selectedStateType"
@@ -107,7 +108,7 @@
             isDropdown: true,
             label: 'Restrictions',
             multiselectDropdown: true,
-            dropdownWidthClass: 'w-col-12'
+            dropdownWidthClass: 'w-col-455'
           }"
           [options]="restrictions"
           [preloadMultiselectItems]="selectedRestrictions"
@@ -126,7 +127,7 @@
             isDropdown: true,
             label: 'Endorsements',
             multiselectDropdown: true,
-            dropdownWidthClass: 'w-col-12'
+            dropdownWidthClass: 'w-col-455'
           }"
           [options]="endorsements"
           [preloadMultiselectItems]="selectedEndorsment"

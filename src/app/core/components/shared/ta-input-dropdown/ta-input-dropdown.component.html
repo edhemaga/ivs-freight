@@ -103,6 +103,8 @@
     popoverClass="ta-input-dropdown"
     [container]="'body'"
     (commandEvent)="onCommandInput($event)"
+    [incorrectValue]="incorrectValue"
+    (incorrectEvent)="onIncorrectInput($event)"
   ></app-ta-input>
 </div>
 
@@ -285,7 +287,8 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            active: option?.active
+            active: option?.active,
+            'last-active': lastActiveMultiselectItem?.id === option.id
           }"
           (click)="onMultiselectSelect(option, 'multiselect')"
           [innerHtml]="

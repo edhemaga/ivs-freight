@@ -1,4 +1,3 @@
-import { SpinnerService } from './../../../services/spinner/spinner.service';
 import { SearchDataService } from './../../../services/shared/search-data.service';
 import { SearchFilterEvent } from './../../../model/searchFilter';
 import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
@@ -238,7 +237,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
 
   constructor(
     private loadService: AppLoadService,
-    private spinner: SpinnerService,
+
     private shared: SharedService,
     private signalRService: SignalRService,
     public sortService: DispatchSortService,

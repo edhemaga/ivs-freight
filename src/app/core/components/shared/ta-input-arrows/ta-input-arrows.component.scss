@@ -24,6 +24,8 @@
   .btn-container {
     width: 42px;
     height: 18px;
+    position: relative;
+    bottom: 1px;
 
     .minus-icon,
     .plus-icon {
@@ -58,7 +60,16 @@
     }
   }
 
+  // Custom width for component input
   .input-container {
     width: 32px;
+  }
+
+  .driver-mvr-container {
+    width: 129px;
+  }
+
+  .truck-fhwa-container {
+    width: 123px;
   }
 }

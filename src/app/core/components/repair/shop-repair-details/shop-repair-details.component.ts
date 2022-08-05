@@ -8,12 +8,14 @@ import {
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RepairTService } from '../state/repair.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
 import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+
+@UntilDestroy()
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',

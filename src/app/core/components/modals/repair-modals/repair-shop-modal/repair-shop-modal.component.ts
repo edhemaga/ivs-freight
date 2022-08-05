@@ -8,9 +8,9 @@ import {
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { distinctUntilChanged } from 'rxjs';
-import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -21,6 +21,7 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
@@ -216,6 +217,29 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onSaveNewBank(bank: any) {
+    this.selectedBank = bank;
+
+    if (this.selectedBank) {
+      this.onBankSelected();
+    }
+
+    this.bankVerificationService
+      .createBank({ name: bank.name })
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
   }
 
   private onBankSelected(): void {

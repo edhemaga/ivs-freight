@@ -130,8 +130,12 @@
               </div>
             </td>
             <td class="note">
-              <div class="inside" [innerHTML]="slots.note | safeHtml">
-              </div>
+              <app-ta-note
+              [note]="slots.note"
+              [openedAll]="true"
+              [parking]="true"
+              >
+              </app-ta-note>
             </td>
           </tr>
         </tbody>

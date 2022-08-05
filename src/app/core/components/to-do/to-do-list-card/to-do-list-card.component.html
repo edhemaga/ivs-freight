@@ -1,453 +1,594 @@
 <div class="todo-list-holder">
-    <div class="todo-tollbar">
-        <div class="toolbar">
-            <div class="toolbar-title">To-Do</div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div class="count-box">{{toDoTasks.length}}</div>
-                    <div class="border-right"></div>
-                    <div class="box-icons" ngbTooltip mainTooltip="Search" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons" ngbTooltip mainTooltip="Time Filter" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <app-filter [type]="'timeFilter'" [icon]="'pending'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="User Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <app-filter [type]="'userFilter'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="Department Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                </div>
-                <div class="toolbar-icons-frame">
-                    <div class="border-right"></div>
-                    <div class="plus-box" ngbTooltip mainTooltip="Add New" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <svg-icon (click)="openModalTodo()" src="assets/svg/truckassist-table/dropdown/content/add.svg">
-                        </svg-icon>
-                    </div>
-                </div>
-            </div>
+  <div class="todo-tollbar">
+    <div class="toolbar">
+      <div class="toolbar-title">To-Do</div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div class="count-box">{{ toDoTasks.length }}</div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Time Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="User Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <app-filter [type]="'userFilter'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Department Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
         </div>
-        <div class="toolbar">
-            <div class="toolbar-title">Ongoing</div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div class="count-box">{{inProgressTasks.length}}</div>
-                    <div class="border-right"></div>
-                    <div class="box-icons" ngbTooltip mainTooltip="Search" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="Time Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <app-filter [type]="'timeFilter'" [icon]="'pending'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="User Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <app-filter [type]="'userFilter'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="Department Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                </div>
-            </div>
+        <div class="toolbar-icons-frame">
+          <div class="border-right"></div>
+          <div
+            class="plus-box"
+            ngbTooltip
+            mainTooltip="Add New"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <svg-icon
+              (click)="openModalTodo()"
+              src="assets/svg/truckassist-table/dropdown/content/add.svg"
+            >
+            </svg-icon>
+          </div>
         </div>
-        <div class="toolbar">
-            <div class="toolbar-title">Done</div>
-            <div class="toolbar-menu-holder">
-                <div class="toolbar-icons-frame">
-                    <div class="count-box">{{doneTasks.length}}</div>
-                    <div class="border-right"></div>
-                    <div class="box-icons" ngbTooltip mainTooltip="Search" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                    <div class="box-icons" ngbTooltip mainTooltip="Time Filter" position="bottom"
-                        tooltipBackground="#6C6C6C">
-                        <app-filter [type]="'timeFilter'" [icon]="'pending'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="User Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <app-filter [type]="'userFilter'">
-                        </app-filter>
-                    </div>
-                    <div class="border-right"></div>
-                    <div ngbTooltip mainTooltip="Department Filter" position="bottom" tooltipBackground="#6C6C6C"
-                        class="box-icons">
-                        <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
-                    </div>
-                    <div class="border-right"></div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
-    <div class="card-main-to-do-holder">
-        <smooth-dnd-container [orientation]="'horizontal'" [dragHandleSelector]="'.column-drag-handle'">
-            <smooth-dnd-draggable *ngFor="let column of scene.children; let i = index">
-                <span class="column-drag-handle"></span>
-                <div [ngClass]="column.props.className">
-                    <div class="card-column-header"></div>
-                    <smooth-dnd-container [groupName]="'col'" (drop)="onCardDrop(column.id, $event)"
-                        [getChildPayload]="getCardPayload(column.id)" [dragClass]="'card-ghost'"
-                        [dropClass]="'card-ghost-drop'" (dragStart)="log('drag start', $event)"
-                        (dragEnd)="log('drag end', $event)" [dragBeginDelay]="0"
-                        [dropPlaceholder]="{ className: 'dropShadowClass, showOnTop: true'}">
-                        <smooth-dnd-draggable *ngFor="let item of column.children; let j = index">
-                            <div class="list-holder">
-                                <div class="list-top-holder">
-                                    <div class="list-items-frame">
-                                        <div class="list-title">{{item.title}}</div>
-                                        <div class="icons-frame">
-                                            <div (mousedown)="toggleLinkShow($event, i, j)" ngbTooltip
-                                                mainTooltip="Hyperlink" position="bottom" tooltipBackground="#6C6C6C"
-                                                class="icon-box" [class.blue-icons]="item.linkActive">
-                                                <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
-                                            </div>
-                                            <div class="icon-box" ngbTooltip mainTooltip="Comments" position="bottom"
-                                                tooltipBackground="#6C6C6C" (mousedown)="toggleComment($event, i, j)"
-                                                [class.blue-icons]="item.commentActive">
-                                                <svg-icon src="assets/svg/detail-cards/comment - count.svg"></svg-icon>
-                                                <div class="number-comments">{{item.commentsCount}}</div>
-                                            </div>
-                                            <div class="icon-box" ngbTooltip mainTooltip="Documents" position="bottom"
-                                                tooltipBackground="#6C6C6C">
-                                                <svg-icon src="assets/svg/common/ic_attachment.svg"></svg-icon>
-                                            </div>
-                                            <div class="icon-box dots">
-                                                <app-details-page-dropdown [options]="dropdownOptions.actions"
-                                                    [id]="item.id" [placement]="'bottom-right'"
-                                                    (dropDownActions)="dropAct($event)"
-                                                    [customClassDropDown]="'drop-down-details-single'">
-                                                </app-details-page-dropdown>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="options-frame">
-                                        <div class="dispatch-box" *ngFor="let dep of item.departments">{{dep.name}}
-                                        </div>
-                                    </div>
-                                    <div class="list-text">{{item.description}}</div>
-                                    <div class="link" *ngIf="item.linkActive">{{item.url}}</div>
-                                </div>
-                                <div class="comment-holder" *ngIf="item.comments.length && item.commentActive">
-                                    <app-ta-user-review 
-                                    (changeReviewsEvent)="changeReviewsEvent($event)"
-                                    [reviewData]="item.comments">
-                                    </app-ta-user-review>
-                                </div>
-                                <div class="list-items-frame">
-                                    <div class="list-time">Deadline in 2 days</div>
-                                    <div class="icons-frame">
-                                        <div class="list-time time">12:00 AM</div>
-                                        <div class="list-time">07/31/21</div>
-                                    </div>
-                                </div>
-                                <div class="line-holder">
-                                    <div class="line-left orange-line"></div>
-                                    <div class="line-right dark-orange-line"></div>
-                                </div>
-                            </div>
-                        </smooth-dnd-draggable>
-                    </smooth-dnd-container>
+    <div class="toolbar">
+      <div class="toolbar-title">Ongoing</div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div class="count-box">{{ inProgressTasks.length }}</div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Time Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="User Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <app-filter [type]="'userFilter'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Department Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
+        </div>
+      </div>
+    </div>
+    <div class="toolbar">
+      <div class="toolbar-title">Done</div>
+      <div class="toolbar-menu-holder">
+        <div class="toolbar-icons-frame">
+          <div class="count-box">{{ doneTasks.length }}</div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Search"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Time Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-filter [type]="'timeFilter'" [icon]="'pending'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="User Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <app-filter [type]="'userFilter'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Department Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon>
+          </div>
+          <div class="border-right"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card-main-to-do-holder">
+    <smooth-dnd-container
+      [orientation]="'horizontal'"
+      [dragHandleSelector]="'.column-drag-handle'"
+    >
+      <smooth-dnd-draggable
+        *ngFor="let column of scene.children; let i = index"
+      >
+        <span class="column-drag-handle"></span>
+        <div [ngClass]="column.props.className">
+          <div class="card-column-header"></div>
+          <smooth-dnd-container
+            [groupName]="'col'"
+            (drop)="onCardDrop(column.id, $event)"
+            [getChildPayload]="getCardPayload(column.id)"
+            [dragClass]="'card-ghost'"
+            [dropClass]="'card-ghost-drop'"
+            (dragStart)="log('drag start', $event)"
+            (dragEnd)="log('drag end', $event)"
+            [dragBeginDelay]="0"
+            [dropPlaceholder]="{
+              className: 'dropShadowClass, showOnTop: true'
+            }"
+          >
+            <smooth-dnd-draggable
+              *ngFor="let item of column.children; let j = index"
+            >
+              <div class="list-holder">
+                <div class="list-top-holder">
+                  <div class="list-items-frame">
+                    <div class="list-title">{{ item.title }}</div>
+                    <div class="icons-frame">
+                      <div
+                        (mousedown)="toggleLinkShow($event, i, j)"
+                        ngbTooltip
+                        mainTooltip="Hyperlink"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                        class="icon-box"
+                        [class.blue-icons]="item.linkActive"
+                      >
+                        <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
+                      </div>
+                      <div
+                        class="icon-box"
+                        ngbTooltip
+                        mainTooltip="Comments"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                        (mousedown)="toggleComment($event, i, j)"
+                        [class.blue-icons]="item.commentActive"
+                      >
+                        <svg-icon
+                          src="assets/svg/detail-cards/comment - count.svg"
+                        ></svg-icon>
+                        <div class="number-comments">
+                          {{ item.commentsCount }}
+                        </div>
+                      </div>
+                      <div
+                        class="icon-box"
+                        ngbTooltip
+                        mainTooltip="Documents"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                      >
+                        <svg-icon
+                          src="assets/svg/common/ic_attachment.svg"
+                        ></svg-icon>
+                      </div>
+                      <div class="icon-box dots">
+                        <app-details-page-dropdown
+                          [options]="dropdownOptions.actions"
+                          [id]="item.id"
+                          [placement]="'bottom-right'"
+                          (dropDownActions)="dropAct($event)"
+                          [customClassDropDown]="'drop-down-details-single'"
+                        >
+                        </app-details-page-dropdown>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="options-frame">
+                    <div
+                      class="dispatch-box"
+                      *ngFor="let dep of item.departments"
+                    >
+                      {{ dep.name }}
+                    </div>
+                  </div>
+                  <div class="list-text">{{ item.description }}</div>
+                  <div class="link" *ngIf="item.linkActive">{{ item.url }}</div>
                 </div>
+                <div
+                  class="comment-holder"
+                  *ngIf="item.comments.length && item.commentActive"
+                >
+                  <app-ta-user-review
+                    (changeReviewsEvent)="changeReviewsEvent($event)"
+                    [reviewData]="item.comments"
+                  >
+                  </app-ta-user-review>
+                </div>
+                <div class="list-items-frame">
+                  <div class="list-time">Deadline in 2 days</div>
+                  <div class="icons-frame">
+                    <div class="list-time time">12:00 AM</div>
+                    <div class="list-time">07/31/21</div>
+                  </div>
+                </div>
+                <div class="line-holder">
+                  <div class="line-left orange-line"></div>
+                  <div class="line-right dark-orange-line"></div>
+                </div>
+              </div>
             </smooth-dnd-draggable>
-        </smooth-dnd-container>
-    </div>
+          </smooth-dnd-container>
+        </div>
+      </smooth-dnd-draggable>
+    </smooth-dnd-container>
+  </div>
 
-    <div class="widgets-holder">
-        <div class="widgets-title-holder">
-            <div class="widgets-title-frame">
-                <div class="widgets-title">Widgets</div>
-                <div class="refresh-icon">
-                    <svg-icon src="assets/svg/truckassist-table/refresh-widgets.svg"></svg-icon>
-                </div>
-                <div class="update-text">Updated <br> 5 min ago</div>
-            </div>
-            <div class="lock">
-                <svg-icon src="assets/svg/truckassist-table/lock.svg"></svg-icon>
-            </div>
+  <div class="widgets-holder">
+    <div class="widgets-title-holder">
+      <div class="widgets-title-frame">
+        <div class="widgets-title">Widgets</div>
+        <div class="refresh-icon">
+          <svg-icon
+            src="assets/svg/truckassist-table/refresh-widgets.svg"
+          ></svg-icon>
         </div>
-        <div class="middle-holder">
-            <div class="world-clock-holder padding-none">
-                <div class="world-clock-title-holder">
-                    <div class="world-clock-title">WORLD CLOCK</div>
-                    <div class="add">
-                        <svg-icon src="assets/svg/truckassist-table/plus-icon.svg"></svg-icon>
-                    </div>
-                </div>
-                <div *ngFor="let item of worldClockHolder; let indx=index" class="city-holder">
-                    <div class="city-frame">
-                        <div class="city">{{item.city}}</div>
-                        <div class="state">{{item.state}}</div>
-                    </div>
-                    <div class="time-and-date-holder">
-                        <div class="date-holder">
-                            <div class="day">{{item.day}}</div>
-                            <div class="date">{{item.date}}</div>
-                        </div>
-                        <div class="time">{{item.time}}</div>
-                        <div class="part-of-day">{{item.partDay}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="world-clock-holder">
-                <div class="vehicle-title">Vehicle Status</div>
-                <div class="vehicle-statistics-holder">
-                    <div class="vehicle-ring-icon">
-                        <svg-icon src="assets/svg/truckassist-table/vehicle-ring-status.svg"></svg-icon>
-                        <div class="total-vehicle">
-                            <div class="total">221</div>
-                            <div class="total-text">Vehicle</div>
-                        </div>
-                    </div>
-                    <div class="vehicle-statistics-frame">
-                        <div class="statistics-items-frame">
-                            <div class="statistics-items">MOVING</div>
-                            <div class="percent">72%</div>
-                        </div>
-                        <div class="statistics-items-frame">
-                            <div class="statistics-items short-stop">SHORT STOP</div>
-                            <div class="percent">7%</div>
-                        </div>
-                        <div class="statistics-items-frame">
-                            <div class="statistics-items extra-stop">EXT. STOP</div>
-                            <div class="percent">14%</div>
-                        </div>
-                        <div class="statistics-items-frame no-padding-bottom">
-                            <div class="statistics-items parking">PARKING</div>
-                            <div class="percent">10%</div>
-                        </div>
-                    </div>
-                    <div class="current-holder">
-                        <div class="current">153</div>
-                        <div class="current">15</div>
-                        <div class="current">31</div>
-                        <div class="current">22</div>
-                    </div>
-                </div>
-            </div>
-            <div class="world-clock-holder">
-                <div class="world-clock-title-holder">
-                    <div class="weather-city-holder">
-                        <div class="weather-icon">
-                            <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
-                        </div>
-                        <div class="temperature-city">48°</div>
-                        <div class="weather-status-holder">
-                            <div class="weather-city">Philadelphia, PA</div>
-                            <div class="weather-status">Sunny</div>
-                        </div>
-                    </div>
-                    <div class="add different-fill">
-                        <svg-icon src="assets/svg/truckassist-table/plus-icon.svg"></svg-icon>
-                    </div>
-                </div>
-                <div class="max-min-temp-holder">
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">55°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position"></div>
-                        </div>
-                        <div class="max-temp min-temp">42°</div>
-                        <div class="weather-status-icon">
-                            <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">FRI</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">49°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scales-thunder"></div>
-                        </div>
-                        <div class="max-temp min-temp">39°</div>
-                        <div class="weather-status-icon thunder">
-                            <svg-icon src="assets/svg/truckassist-table/thunder-rain.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">SAT</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">35°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scale-rain"></div>
-                        </div>
-                        <div class="max-temp min-temp">20°</div>
-                        <div class="weather-status-icon rain">
-                            <svg-icon src="assets/svg/truckassist-table/rain.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">SUN</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">53°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scale-cloudy"></div>
-                        </div>
-                        <div class="max-temp min-temp">40°</div>
-                        <div class="weather-status-icon rain">
-                            <svg-icon src="assets/svg/truckassist-table/cloudy.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">MON</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">53°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scale-mostly-sunny"></div>
-                        </div>
-                        <div class="max-temp min-temp">42°</div>
-                        <div class="weather-status-icon cloudy-sunny">
-                            <svg-icon src="assets/svg/truckassist-table/partly-cloudy-day.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">TUE</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">54°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scale-wind"></div>
-                        </div>
-                        <div class="max-temp min-temp">42°</div>
-                        <div class="weather-status-icon rain">
-                            <svg-icon src="assets/svg/truckassist-table/wind.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">WED</div>
-                    </div>
-                    <div class="max-min-temp-items-holder">
-                        <div class="max-temp">69°</div>
-                        <div class="temp-scale">
-                            <div class="scale-position scale-sunny"></div>
-                        </div>
-                        <div class="max-temp min-temp">43°</div>
-                        <div class="weather-status-icon">
-                            <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
-                        </div>
-                        <div class="weather-day">THU</div>
-                    </div>
-                </div>
-                <div class="border-bottom"></div>
-                <div class="temp-in-cities-global-holder">
-                    <div class="temp-in-cities-holder">
-                        <div class="cities">Westmont, IL</div>
-                        <div class="weather-temp-holder">
-                            <div class="weather-description-holder">
-                                <div class="weather-box-icons">
-                                    <svg-icon src="assets/svg/truckassist-table/cloudy.svg"></svg-icon>
-                                </div>
-                                <div class="weather-description">Cloudy</div>
-                            </div>
-                            <div class="temp-in-cities">67°</div>
-                        </div>
-                    </div>
-                    <div class="temp-in-cities-holder">
-                        <div class="cities">New Orleans, LU</div>
-                        <div class="weather-temp-holder">
-                            <div class="weather-description-holder">
-                                <div class="weather-box-icons">
-                                    <svg-icon src="assets/svg/truckassist-table/fog.svg"></svg-icon>
-                                </div>
-                                <div class="weather-description">Fog</div>
-                            </div>
-                            <div class="temp-in-cities">32°</div>
-                        </div>
-                    </div>
-                    <div class="temp-in-cities-holder">
-                        <div class="cities">Anaheim, CA</div>
-                        <div class="weather-temp-holder">
-                            <div class="weather-description-holder">
-                                <div class="weather-box-icons snow">
-                                    <svg-icon src="assets/svg/truckassist-table/snow-showers-day.svg"></svg-icon>
-                                </div>
-                                <div class="weather-description">Snow Showers</div>
-                            </div>
-                            <div class="temp-in-cities">18°</div>
-                        </div>
-                    </div>
-                    <div class="temp-in-cities-holder padding-bottom">
-                        <div class="cities">Scranton, PA</div>
-                        <div class="weather-temp-holder">
-                            <div class="weather-description-holder">
-                                <div class="weather-box-icons sunny">
-                                    <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
-                                </div>
-                                <div class="weather-description">Sunny</div>
-                            </div>
-                            <div class="temp-in-cities">105°</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="world-clock-holder no-margin">
-                <div class="ring-chart">
-                    <svg-icon src="assets/svg/truckassist-table/ring-chart.svg"></svg-icon>
-                </div>
-                <div class="world-clock-title-holder">
-                    <div class="vehicle-title">INVOICE</div>
-                    <div class="vehicle-title">AGEING</div>
-                </div>
-                <div class="invoice-holder">
-                    <div class="invoice-text">76 invoicess</div>
-                    <div class="invoice-price">$41,431.76</div>
-                    <div class="invoice-days-holder">
-                        <div class="invoice-days-frame">
-                            <div class="invoice-number">7</div>
-                            <div class="invoice-days">0-20 days</div>
-                        </div>
-                        <div class="invoice-days-frame">
-                            <div class="invoice-number color-light-blue">21</div>
-                            <div class="invoice-days">21-40 days</div>
-                        </div>
-                        <div class="invoice-days-frame">
-                            <div class="invoice-number color-blue">32</div>
-                            <div class="invoice-days">41-60 days</div>
-                        </div>
-                        <div class="invoice-days-frame">
-                            <div class="invoice-number color-light-red">16</div>
-                            <div class="invoice-days">60+ days</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="update-text">
+          Updated <br />
+          5 min ago
         </div>
-        <div class="menu-holder">
-            <div class="border"></div>
-            <div class="menu-icons-holder">
-                <div class="menu-icons">
-                    <svg-icon src="assets/svg/common/ic_company.svg"></svg-icon>
-                </div>
-                <div class="menu-icons">
-                    <svg-icon src="assets/svg/common/ic_document.svg"></svg-icon>
-                </div>
-                <div class="menu-icons active">
-                    <svg-icon src="assets/svg/truckassist-table/widgets.svg"></svg-icon>
-                </div>
-                <div class="menu-icons">
-                    <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
-                    <div class="circle-notification">
-                        <div class="circle-blue"></div>
-                    </div>
-                </div>
-                <div class="menu-icons">
-                    <svg-icon src="assets/svg/truckassist-table/activity-log.svg"></svg-icon>
-                </div>
-            </div>
-        </div>
+      </div>
+      <div class="lock">
+        <svg-icon src="assets/svg/truckassist-table/lock.svg"></svg-icon>
+      </div>
     </div>
+    <div class="middle-holder">
+      <div class="world-clock-holder padding-none">
+        <div class="world-clock-title-holder">
+          <div class="world-clock-title">WORLD CLOCK</div>
+          <div class="add">
+            <svg-icon
+              src="assets/svg/truckassist-table/plus-icon.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div
+          *ngFor="let item of worldClockHolder; let indx = index"
+          class="city-holder"
+        >
+          <div class="city-frame">
+            <div class="city">{{ item.city }}</div>
+            <div class="state">{{ item.state }}</div>
+          </div>
+          <div class="time-and-date-holder">
+            <div class="date-holder">
+              <div class="day">{{ item.day }}</div>
+              <div class="date">{{ item.date }}</div>
+            </div>
+            <div class="time">{{ item.time }}</div>
+            <div class="part-of-day">{{ item.partDay }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder">
+        <div class="vehicle-title">Vehicle Status</div>
+        <div class="vehicle-statistics-holder">
+          <div class="vehicle-ring-icon">
+            <svg-icon
+              src="assets/svg/truckassist-table/vehicle-ring-status.svg"
+            ></svg-icon>
+            <div class="total-vehicle">
+              <div class="total">221</div>
+              <div class="total-text">Vehicle</div>
+            </div>
+          </div>
+          <div class="vehicle-statistics-frame">
+            <div class="statistics-items-frame">
+              <div class="statistics-items">MOVING</div>
+              <div class="percent">72%</div>
+            </div>
+            <div class="statistics-items-frame">
+              <div class="statistics-items short-stop">SHORT STOP</div>
+              <div class="percent">7%</div>
+            </div>
+            <div class="statistics-items-frame">
+              <div class="statistics-items extra-stop">EXT. STOP</div>
+              <div class="percent">14%</div>
+            </div>
+            <div class="statistics-items-frame no-padding-bottom">
+              <div class="statistics-items parking">PARKING</div>
+              <div class="percent">10%</div>
+            </div>
+          </div>
+          <div class="current-holder">
+            <div class="current">153</div>
+            <div class="current">15</div>
+            <div class="current">31</div>
+            <div class="current">22</div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder">
+        <div class="world-clock-title-holder">
+          <div class="weather-city-holder">
+            <div class="weather-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="temperature-city">48°</div>
+            <div class="weather-status-holder">
+              <div class="weather-city">Philadelphia, PA</div>
+              <div class="weather-status">Sunny</div>
+            </div>
+          </div>
+          <div class="add different-fill">
+            <svg-icon
+              src="assets/svg/truckassist-table/plus-icon.svg"
+            ></svg-icon>
+          </div>
+        </div>
+        <div class="max-min-temp-holder">
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">55°</div>
+            <div class="temp-scale">
+              <div class="scale-position"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="weather-day">FRI</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">49°</div>
+            <div class="temp-scale">
+              <div class="scale-position scales-thunder"></div>
+            </div>
+            <div class="max-temp min-temp">39°</div>
+            <div class="weather-status-icon thunder">
+              <svg-icon
+                src="assets/svg/truckassist-table/thunder-rain.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">SAT</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">35°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-rain"></div>
+            </div>
+            <div class="max-temp min-temp">20°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon src="assets/svg/truckassist-table/rain.svg"></svg-icon>
+            </div>
+            <div class="weather-day">SUN</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">53°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-cloudy"></div>
+            </div>
+            <div class="max-temp min-temp">40°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon
+                src="assets/svg/truckassist-table/cloudy.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">MON</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">53°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-mostly-sunny"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon cloudy-sunny">
+              <svg-icon
+                src="assets/svg/truckassist-table/partly-cloudy-day.svg"
+              ></svg-icon>
+            </div>
+            <div class="weather-day">TUE</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">54°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-wind"></div>
+            </div>
+            <div class="max-temp min-temp">42°</div>
+            <div class="weather-status-icon rain">
+              <svg-icon src="assets/svg/truckassist-table/wind.svg"></svg-icon>
+            </div>
+            <div class="weather-day">WED</div>
+          </div>
+          <div class="max-min-temp-items-holder">
+            <div class="max-temp">69°</div>
+            <div class="temp-scale">
+              <div class="scale-position scale-sunny"></div>
+            </div>
+            <div class="max-temp min-temp">43°</div>
+            <div class="weather-status-icon">
+              <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+            </div>
+            <div class="weather-day">THU</div>
+          </div>
+        </div>
+        <div class="border-bottom"></div>
+        <div class="temp-in-cities-global-holder">
+          <div class="temp-in-cities-holder">
+            <div class="cities">Westmont, IL</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/cloudy.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Cloudy</div>
+              </div>
+              <div class="temp-in-cities">67°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder">
+            <div class="cities">New Orleans, LU</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/fog.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Fog</div>
+              </div>
+              <div class="temp-in-cities">32°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder">
+            <div class="cities">Anaheim, CA</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons snow">
+                  <svg-icon
+                    src="assets/svg/truckassist-table/snow-showers-day.svg"
+                  ></svg-icon>
+                </div>
+                <div class="weather-description">Snow Showers</div>
+              </div>
+              <div class="temp-in-cities">18°</div>
+            </div>
+          </div>
+          <div class="temp-in-cities-holder padding-bottom">
+            <div class="cities">Scranton, PA</div>
+            <div class="weather-temp-holder">
+              <div class="weather-description-holder">
+                <div class="weather-box-icons sunny">
+                  <svg-icon src="assets/svg/weather-icons/sun.svg"></svg-icon>
+                </div>
+                <div class="weather-description">Sunny</div>
+              </div>
+              <div class="temp-in-cities">105°</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="world-clock-holder no-margin">
+        <div class="ring-chart">
+          <svg-icon
+            src="assets/svg/truckassist-table/ring-chart.svg"
+          ></svg-icon>
+        </div>
+        <div class="world-clock-title-holder">
+          <div class="vehicle-title">INVOICE</div>
+          <div class="vehicle-title">AGEING</div>
+        </div>
+        <div class="invoice-holder">
+          <div class="invoice-text">76 invoicess</div>
+          <div class="invoice-price">$41,431.76</div>
+          <div class="invoice-days-holder">
+            <div class="invoice-days-frame">
+              <div class="invoice-number">7</div>
+              <div class="invoice-days">0-20 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-light-blue">21</div>
+              <div class="invoice-days">21-40 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-blue">32</div>
+              <div class="invoice-days">41-60 days</div>
+            </div>
+            <div class="invoice-days-frame">
+              <div class="invoice-number color-light-red">16</div>
+              <div class="invoice-days">60+ days</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-holder">
+      <div class="border"></div>
+      <div class="menu-icons-holder">
+        <div class="menu-icons">
+          <svg-icon src="ic_company.svg"></svg-icon>
+        </div>
+        <div class="menu-icons">
+          <svg-icon src="assets/svg/common/ic_document.svg"></svg-icon>
+        </div>
+        <div class="menu-icons active">
+          <svg-icon src="assets/svg/truckassist-table/widgets.svg"></svg-icon>
+        </div>
+        <div class="menu-icons">
+          <svg-icon src="assets/svg/common/ic_bell.svg"></svg-icon>
+          <div class="circle-notification">
+            <div class="circle-blue"></div>
+          </div>
+        </div>
+        <div class="menu-icons">
+          <svg-icon
+            src="assets/svg/truckassist-table/activity-log.svg"
+          ></svg-icon>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -8,6 +8,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -22,8 +23,10 @@ import moment from 'moment';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -35,6 +38,7 @@ import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-st
 export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
+  @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @Input() driver: any;
   @Input() templateCard: boolean;
   public note: FormControl = new FormControl();
@@ -65,6 +69,67 @@ export class DriverDetailsCardComponent
   public dataCDl: any;
 
   public driverOwner: boolean;
+
+  barChartConfig: any = {
+    dataProperties: [
+      {
+        defaultConfig: {
+          type: 'line',
+          data: [
+            1050, 950, 2200, 1100, 1250, 1550, 2100, 2500, 2000,
+            1150, 1300, 1700
+          ],
+          label: 'Salary',
+          yAxisID: 'y-axis-1',
+          borderColor: '#6D82C7',
+          pointBackgroundColor: '#FFFFFF',
+          pointHoverBackgroundColor: '#6D82C7',
+          pointHoverBorderColor: '#FFFFFF',
+          pointHoverRadius: 3,
+          pointBorderWidth: 2
+        }
+      },
+      {
+        defaultConfig: {
+          type: 'bar',
+          data: [
+            2200, 1700, 2800, 1100, 1500, 2200, 3300, 3700, 2500,
+            1400, 2200, 2800
+          ],
+          label: 'Miles',
+          yAxisID: 'y-axis-0',
+          borderColor: '#FFCC80',
+          backgroundColor: '#FFCC80',
+          hoverBackgroundColor: '#FFA726',
+          barThickness: 18
+        }
+      }
+    ],
+    showLegend: false,
+    chartValues: [46, 755, 0, 36.854],
+    onHoverAnnotation: true,
+    hoverTimeDisplay: true,
+    defaultType: 'bar',
+    chartWidth: '417',
+    chartHeight: '130',
+    offset: true,
+    dataLabels: [
+      '',
+      'NOV',
+      '',
+      '2021',
+      '',
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP'
+    ],
+    noChartImage: 'assets/svg/common/yellow_no_data.svg'
+  };
+
   public barChartLegend: any[] = [
     {
       title: 'Miles',
@@ -384,6 +449,7 @@ export class DriverDetailsCardComponent
   }
 
   public onModalAction(action: string): void {
+    console.log(action);
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }

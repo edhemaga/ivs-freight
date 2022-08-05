@@ -5,6 +5,7 @@ import {
   Input,
   OnDestroy,
   OnInit,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -15,10 +16,10 @@ import {
   UpdateTruckCommand,
   VinDecodeResponse,
 } from 'appcoretruckassist';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/VIN-DECODER/vindecoder.service';
+import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
 import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
@@ -29,6 +30,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../../truck/state/truck.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-truck-modal',
   templateUrl: './truck-modal.component.html',
@@ -39,6 +41,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+  @ViewChild('appNote', {static: false}) public appNote: any;
 
   public truckForm: FormGroup;
   public truckType: any[] = [];
@@ -48,7 +51,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public grossWeight: any[] = [];
   public engineType: any[] = [];
   public tireSize: any[] = [];
+  public shifter: any[] = [];
 
+  public selectedShifter: any = null;
   public selectedTruckType: any = null;
   public selectedTruckMake: any = null;
   public selectedColor: any = null;
@@ -130,6 +135,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       commission: [14.5],
       note: [null],
+      purchaseDate: [null],
+      purchasePrice: [null],
+      shifter: [null],
+      fhwaexp: [12, Validators.required],
       truckGrossWeightId: [null],
       emptyWeight: [null, Validators.maxLength(6)],
       truckEngineTypeId: [null],
@@ -201,6 +210,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.updateTruck(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
+            this.truckForm.controls['note'].setValue(this.appNote.value);
+            console.log(this.appNote.value, 'addtruck 111');
             this.addTruck();
             this.modalService.setModalSpinner({ action: null, status: true });
           }
@@ -276,6 +287,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   public addTruck() {
+    console.log(this.truckForm, 'addtruck 222');
     const newData: CreateTruckCommand = {
       ...this.truckForm.value,
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
@@ -305,6 +317,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         : null,
       year: parseInt(this.truckForm.get('year').value),
     };
+    console.log(newData, 'addtruck 333');
     this.truckModalService
       .addTruck(newData)
       .pipe(untilDestroyed(this))
@@ -489,6 +502,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'tire-size': {
         this.selectedTireSize = event;
+        break;
+      }
+      case 'shifter': {
+        this.selectedShifter = event;
         break;
       }
       default: {

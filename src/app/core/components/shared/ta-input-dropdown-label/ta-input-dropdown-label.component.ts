@@ -10,11 +10,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl, FormControl } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { TaInputService } from '../ta-input/ta-input.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown-label',
   templateUrl: './ta-input-dropdown-label.component.html',
@@ -53,7 +54,7 @@ export class TaInputDropdownLabelComponent
         label: 'Label',
         placeholder: 'Label Name',
         placeholderIcon: 'ic_dynamic_label',
-        dropdownWidthClass: 'w-col-12',
+        dropdownWidthClass: 'w-col-455',
         isDropdown: true,
         dropdownLabelSelected: changes.selectedLabel.currentValue,
       };
@@ -84,7 +85,7 @@ export class TaInputDropdownLabelComponent
       label: 'Label',
       placeholder: 'Label Name',
       placeholderIcon: 'ic_dynamic_label',
-      dropdownWidthClass: 'w-col-12',
+      dropdownWidthClass: 'w-col-455',
       isDropdown: true,
     };
   }
@@ -154,7 +155,6 @@ export class TaInputDropdownLabelComponent
       this.newLabel.patchValue(null);
       return;
     }
-    console.log('SAVED LABEL');
 
     this.saveLabel.emit({ action: event, label: this.newLabel.value });
     this.getSuperControl.patchValue(this.newLabel.value);

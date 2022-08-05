@@ -103,6 +103,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
@@ -290,7 +291,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-shipper-department'
+                    dropdownWidthClass: 'w-col-120'
                   }"
                   [options]="labelsDepartments"
                   [activeItem]="selectedContractDepartmentFormArray[ind]"

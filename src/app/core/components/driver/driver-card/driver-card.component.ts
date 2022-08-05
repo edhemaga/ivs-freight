@@ -7,13 +7,14 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 
+@UntilDestroy()
 @Component({
   selector: 'app-driver-card',
   templateUrl: './driver-card.component.html',

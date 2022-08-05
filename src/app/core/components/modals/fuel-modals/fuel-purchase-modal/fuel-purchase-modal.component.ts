@@ -7,12 +7,13 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
@@ -99,8 +100,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addFuelItems(event: any) {
-    if (event) {
+  public addFuelItems(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.fuelItems.push(this.createFuelItems(++this.fuelItemsCounter));
       this.subtotal = [
         ...this.subtotal,

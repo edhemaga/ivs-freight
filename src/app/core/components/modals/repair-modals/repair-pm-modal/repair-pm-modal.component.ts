@@ -1,6 +1,6 @@
 import { PmTService } from './../../../pm-truck-trailer/state/pm.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -20,6 +20,7 @@ import { debounceTime } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-repair-pm-modal',
   templateUrl: './repair-pm-modal.component.html',

@@ -36,13 +36,26 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(res.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.add(broker);
-
             this.tableService.sendActionAnimation({
               animation: 'add',
               tab: 'broker',
               data: broker,
               id: broker.id,
             });
+
+            const brokerShipperCount = JSON.parse(
+              localStorage.getItem('brokerShipperTableCount')
+            );
+
+            brokerShipperCount.broker++;
+
+            localStorage.setItem(
+              'brokerShipperTableCount',
+              JSON.stringify({
+                broker: brokerShipperCount.broker,
+                shipper: brokerShipperCount.shipper,
+              })
+            );
 
             subBroker.unsubscribe();
           },
@@ -101,7 +114,7 @@ export class BrokerTService {
     search1?: string,
     search2?: string
   ): Observable<GetBrokerListResponse> {
-    return this.brokerService.apiBrokerListGet(ban, dnu, pageIndex, pageSize);
+    return this.brokerService.apiBrokerListGet(ban, dnu, pageIndex, pageSize, companyId, sort, search, search1, search2);
   }
 
   // Get Broker By ID
@@ -136,6 +149,20 @@ export class BrokerTService {
     return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
       tap(() => {
         this.brokerStore.remove(({ id }) => id === id);
+
+        const brokerShipperCount = JSON.parse(
+          localStorage.getItem('brokerShipperTableCount')
+        );
+
+        brokerShipperCount.broker--;
+
+        localStorage.setItem(
+          'brokerShipperTableCount',
+          JSON.stringify({
+            broker: brokerShipperCount.broker,
+            shipper: brokerShipperCount.shipper,
+          })
+        );
       })
     );
   }

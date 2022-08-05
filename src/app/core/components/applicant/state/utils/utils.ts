@@ -14,3 +14,7 @@ export function isFormValueEqual(formValue: object, newFormValue: object) {
 
   return true;
 }
+
+export const anyInputInLineIncorrect = (lineInputs: boolean[]) => {
+  return lineInputs.some((item: boolean) => item);
+};

@@ -4,7 +4,6 @@ import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlco
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnChanges,
@@ -14,17 +13,16 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import moment from 'moment';
-import { DriversActiveStore } from '../state/driver-active-state/driver-active.store';
-import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
-import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+
+@UntilDestroy()
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',

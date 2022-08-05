@@ -1,6 +1,5 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
 import {
   CdlResponse,
   CreateCdlCommand,
@@ -12,14 +11,15 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
-import moment from 'moment';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-driver-cdl-modal',
   templateUrl: './driver-cdl-modal.component.html',
@@ -256,7 +256,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     console.log('editData updateCdl', this.editData);
     console.log('editData updateCdl issueDate', issueDate);
     console.log('editData updateCdl expDate', expDate);
-    
+
     const newData: EditCdlCommand = {
       driverId: this.editData.id,
       id: this.editData.file_id,

@@ -2362,6 +2362,12 @@
     min-width: 34px;
   }
 
+  .note-field{
+    .dispatcher-table-cell-container {
+      position: relative;
+    }
+  }
+
   // &.parking-opened {
   //   .note-field {
   //     width: 229px;

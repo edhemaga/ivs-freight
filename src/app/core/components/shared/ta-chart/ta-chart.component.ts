@@ -81,13 +81,13 @@ export class TaChartComponent implements OnInit {
 
   setChartOptions() {
     this.lineChartOptions = {
-      responsive: false,
+      responsive: this.chartConfig['responsive'] ? this.chartConfig['responsive'] : false,
       cutoutPercentage: 90,
       animation: {
         duration: this.allowAnimation ? this.animationDuration : 0
       },
       onHover: (evt, elements) => {
-        if ( elements && elements[0] ) {
+        if ( elements?.length ) {
           this.hoveringStatus = true;
           this.animationDuration = 0;
           if ( elements[0]['_index'] != this.lastHoveredIndex ) {
@@ -99,9 +99,9 @@ export class TaChartComponent implements OnInit {
           }
         }
         else{
-          this.hoveringStatus = false;  this.ref.detectChanges();
+          this.hoveringStatus = false;
+          this.ref.detectChanges();
           this.showHoverData = false;
-          this.lastHoveredIndex = -1;
           this.animationDuration = 1000;
           if (this.chartConfig['onHoverAnnotation'] ) { this.setHoverAnnotation(null); }
           if ( this.lineChartType == 'doughnut' && this.driversList?.length ) { this.hoverDoughnut(null) }

@@ -15,10 +15,11 @@ import {
 import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',

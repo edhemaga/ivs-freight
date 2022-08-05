@@ -1,4 +1,4 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
@@ -10,7 +10,7 @@ import {
   InspectionResponse,
   UpdateInspectionCommand,
 } from 'appcoretruckassist';
-import moment from 'moment';
+
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
   convertDateFromBackend,
@@ -18,6 +18,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',

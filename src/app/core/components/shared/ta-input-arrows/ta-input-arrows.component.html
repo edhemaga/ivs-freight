@@ -1,5 +1,10 @@
 <div class="ta-input-arrows-container">
-  <p class="m-0 ta-font-regular">{{ name }} <span *ngIf="required">*</span></p>
+  <p
+    class="m-0 ta-font-regular"
+    [ngClass]="{ 'ta-font-medium': type === 'truck-modal' || 'driver-modal' }"
+  >
+    {{ name }} <span *ngIf="required">*</span>
+  </p>
 
   <div class="d-flex align-items-center btn-container">
     <svg-icon
@@ -27,7 +32,11 @@
 
   <div
     class="d-flex align-items-center justify-content-center"
-    [ngClass]="{ 'input-container': type === 'applicant' }"
+    [ngClass]="{
+      'input-container': type === 'applicant',
+      'driver-mvr-container': type === 'driver-modal',
+      'truck-fhwa-container': type === 'truck-modal'
+    }"
   >
     <!-- {{ counter }} -->
     <app-ta-input

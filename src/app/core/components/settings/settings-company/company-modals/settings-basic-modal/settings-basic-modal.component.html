@@ -152,6 +152,7 @@
                 isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
@@ -220,7 +221,7 @@
                 label: 'Time Zone',
                 isDropdown: true,
                 isRequired: editData.type === 'new-division' ? false : true,
-                dropdownWidthClass: 'w-col-medium-8'
+                dropdownWidthClass: 'w-col-403'
               }"
               [options]="timeZones"
               [activeItem]="selectedTimezone"
@@ -255,7 +256,7 @@
                 type: 'text',
                 label: 'Company Type',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-medium-6'
+                dropdownWidthClass: 'w-col-297'
               }"
               [options]="companyData"
               [activeItem]="selectedCompanyData"
@@ -324,7 +325,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-broker-department'
+                    dropdownWidthClass: 'w-col-120'
                   }"
                   [options]="departments"
                   [activeItem]="selectedDepartmentFormArray[ind]"
@@ -405,7 +406,7 @@
                     name: 'Input Dropdown',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-banks'
+                    dropdownWidthClass: 'w-col-163'
                   }"
                   [canAddNew]="true"
                   [options]="banks"
@@ -413,6 +414,7 @@
                   (selectedItem)="
                     onSelectFakeTableData($event, ind, 'bankAccounts')
                   "
+                  (saveNewItem)="onSaveNewBank($event, ind)"
                 ></app-ta-input-dropdown>
                 <app-ta-input
                   formControlName="routing"
@@ -641,7 +643,7 @@
                 <app-ta-input
                   formControlName="mvrMonths"
                   [inputConfig]="{
-                    name: 'MVR',
+                    name: 'months',
                     type: 'text',
                     label: 'MVR',
                     isRequired: true,
@@ -653,7 +655,7 @@
                 <app-ta-input
                   formControlName="truckInspectionMonths"
                   [inputConfig]="{
-                    name: 'Truck Inspection',
+                    name: 'months',
                     type: 'text',
                     label: 'Truck Inspection',
                     isRequired: true,
@@ -665,7 +667,7 @@
                 <app-ta-input
                   formControlName="trailerInspectionMonths"
                   [inputConfig]="{
-                    name: 'Trailer Inspection',
+                    name: 'months',
                     type: 'text',
                     label: 'Trailer Inspection',
                     isRequired: true,
@@ -719,7 +721,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-297'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedDriverPayPeriod"
@@ -736,7 +738,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-308'
                 }"
                 [options]="endingIns"
                 [activeItem]="selectedDriverEndingIn"
@@ -904,7 +906,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedAccountingPayPeriod"
@@ -960,7 +962,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedCompanyPayPeriod"
@@ -1016,7 +1018,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-297'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedDispatchPayPeriod"
@@ -1033,7 +1035,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-308'
                 }"
                 [options]="endingIns"
                 [activeItem]="selectedDispatchEndingIn"
@@ -1085,7 +1087,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6'
+                  dropdownWidthClass: 'w-col-297'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedManagerPayPeriod"
@@ -1102,7 +1104,7 @@
                   label: 'Ending In',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-6-second-col'
+                  dropdownWidthClass: 'w-col-308'
                 }"
                 [options]="endingIns"
                 [activeItem]="selectedManagerEndingIn"
@@ -1154,7 +1156,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedRecPayPeriod"
@@ -1210,7 +1212,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedRepairPayPeriod"
@@ -1262,7 +1264,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedSafetyPayPeriod"
@@ -1314,7 +1316,7 @@
                   label: 'Pay Period',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-medium-4-col-1'
+                  dropdownWidthClass: 'w-col-189'
                 }"
                 [options]="payPeriods"
                 [activeItem]="selectedOtherPayPeriod"

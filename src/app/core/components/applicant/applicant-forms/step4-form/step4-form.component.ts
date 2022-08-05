@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Form } from '@angular/forms';
 
 import { TruckType } from '../../state/model/truck-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-step4-form',
@@ -25,6 +26,8 @@ export class Step4FormComponent implements OnInit {
 
   public fatalitiesControl: FormControl = new FormControl(0);
   public injuriesControl: FormControl = new FormControl(0);
+
+  public selectedAddress: AddressEntity;
 
   constructor() {}
 

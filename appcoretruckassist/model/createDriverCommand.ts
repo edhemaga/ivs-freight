@@ -28,7 +28,7 @@ export interface CreateDriverCommand {
     bankId?: number | null;
     account?: string | null;
     routing?: string | null;
-    payType?: number;
+    payType?: number | null;
     useTruckAssistAch?: boolean;
     solo: PerMileEntity;
     team: PerMileEntity;

@@ -1,13 +1,24 @@
 <div class="note-container {{ customClass }}">
   <div *ngIf="isVisibleDivider" class="divider"></div>
-  <div class="note-header"  [class.active]="_isVisibleNote" (click)="openNote()">
-    <span class="note-label">Note</span>
-    <svg-icon
-      *ngIf="isVisibleArrow"
-      class="note-arrow"
-      [ngClass]="{ 'rotate': _isVisibleNote}"
-      src="assets/svg/common/ic_arrow_down_updated.svg"
-    ></svg-icon>
+  <div class="note-header"  [class.active]="_isVisibleNote">
+    <div class="note-label"  (click)="openNote()">Note</div>
+    <div class="note_upper_hold">
+      <div class="note_tools_container">
+        <app-ta-note-container
+        [isExpanded]="_isVisibleNote"
+        [range]="range"
+        [selectionTaken]="selectionTaken"
+        [value]="value"
+        ></app-ta-note-container>
+      </div>
+      <svg-icon
+        *ngIf="isVisibleArrow"
+        class="note-arrow"
+        [ngClass]="{ 'rotate': _isVisibleNote}"
+        src="assets/svg/common/ic_arrow_down_updated.svg"
+        (click)="openNote()"
+      ></svg-icon>
+    </div>
   </div>
   <div 
     class="note-body unopened" 
@@ -15,17 +26,16 @@
     [@showHideNote]="_isVisibleNote"
     [class.unopened]="_isVisibleNote === null"
   >
-    <textarea
-      #note
-      [readOnly]="isReadOnly"
-      appTextareaAutosize
-      [rows]="minRows"
-      [minRows]="minRows"
-      [maxRows]="maxRows"
-      [placeholder]="placeholder"
+    <div
+      #main_editor
+      id="main_editor"
+      placeholder="Write a note..."
       class="note-textarea"
-      (input)="onChange($event.target.value)"
-    ></textarea>
+      contenteditable="true"
+      (input)="changeValue($event.target.innerHTML)"
+      (focus)="checkFocus($event)"
+      (blur)="prepareForTextRange()"
+    ></div>
   </div>
   <div *ngIf="isVisibleSecondDivider" class="divider divider-second"></div>
 </div>

@@ -9,6 +9,7 @@ export class DashboardPickupByStateComponent implements OnInit {
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
   @ViewChild('statesBarChart', {static: false}) public statesBarChart: any;
+  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
 
   public barChartConfig: object = {
     dataProperties: [
@@ -67,9 +68,7 @@ export class DashboardPickupByStateComponent implements OnInit {
       position: 'bottom',
       showGridLines: false
     }
-  };  
-
-  periodTitle: string = "Daily";
+  };
 
   pickupTitle: string = "Pickup";
 
@@ -82,8 +81,6 @@ export class DashboardPickupByStateComponent implements OnInit {
   stateSwitchTabsType4: any[] = [];
 
   pickupSwitch: any[] = [];
-
-  periodSwitchItems: any[] = [];
 
   pickupStateList: any[] = [
     {
@@ -230,26 +227,10 @@ export class DashboardPickupByStateComponent implements OnInit {
         custom: true
       }
     ];
-
-    this.periodSwitchItems = [
-      {
-        name: 'Hourly'
-      },
-      {
-        name: 'Daily',
-        active: true
-      },
-      {
-        name: 'Weekly'
-      },
-      {
-        name: 'Monthly'
-      }
-    ];
   }
 
   changeStateSwitchTabs(ev){
-
+    this.timePeriod.changeTimePeriod(ev['name']);
   }
 
   selectStateCompare(item, indx){
@@ -305,16 +286,6 @@ export class DashboardPickupByStateComponent implements OnInit {
     })
     item.active = true;
     this.t3.close();
-  }
-
-  changePeriod(item){
-    this.periodTitle = item.name;
-    this.periodSwitchItems.map((item) => {
-      item.active = false;
-      return item;
-    })
-    item.active = true;
-    this.t2.close();
   }
 
   hoverState(index: any){
