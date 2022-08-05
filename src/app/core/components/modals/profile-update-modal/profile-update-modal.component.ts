@@ -221,20 +221,20 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onUploadImage(event: any) {
+    this.profileUserForm.get('avatar').patchValue(event);
+    this.profileUserForm.get('avatar').setErrors(null);
+  }
+
   public onImageValidation(event: boolean) {
-    if (event) {
-      this.inputService.changeValidators(this.profileUserForm.get('avatar'));
+    if (!event) {
+      this.profileUserForm.get('avatar').setErrors({ invalid: true });
     } else {
       this.inputService.changeValidators(
         this.profileUserForm.get('avatar'),
         false
       );
     }
-  }
-
-  public onUploadImage(event: any) {
-    this.profileUserForm.get('avatar').patchValue(event);
-    console.log(event);
   }
 
   public onHandleAddress(event: {
