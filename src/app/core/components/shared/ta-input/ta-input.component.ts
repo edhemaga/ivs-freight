@@ -51,7 +51,7 @@ export class TaInputComponent
   private ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
-  @Input() incorrectValue: boolean = false;
+  @Input() incorrectValue: boolean;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();

@@ -42,19 +42,21 @@ export class TaInputDropdownComponent
   @Input() template: string;
 
   @Input() inputConfig: ITaInput;
-  @Input() canAddNew: boolean = false;
-  @Input() isOpenSomethingElse: boolean = false;
+  @Input() canAddNew: boolean;
+  @Input() isOpenSomethingElse: boolean;
   @Input() sort: string;
 
   @Input() activeItem: any;
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
   @Input() preloadMultiselectItems: any[] = [];
 
-  @Input() isDetailsActive: boolean = false;
+  @Input() isDetailsActive: boolean;
+  @Input() incorrectValue: boolean;
 
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() saveNewItem: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
+  @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public originalOptions: any[] = [];
   private dropdownPosition: number = -1;
@@ -458,6 +460,10 @@ export class TaInputDropdownComponent
       ...this.inputConfig,
       commands: null,
     };
+  }
+
+  public onIncorrectInput(event: boolean) {
+    this.incorrectEvent.emit(event);
   }
 
   public identity(index: number, item: any): number {
