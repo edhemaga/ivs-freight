@@ -103,6 +103,10 @@ ngb-modal-window[aria-hidden="true"] {
           gap: 12px;
         }
 
+        .modal-header-tab-change-reorder {
+          order: 2;
+        }
+
         .modal-title {
           flex: 1;
           cursor: -webkit-grab;
