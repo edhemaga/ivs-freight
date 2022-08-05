@@ -17,34 +17,59 @@
             <span class="repaier-headers">WAIT</span>
           </div>
           <div class="divider"></div>
-          <div class="repair-items-wrapper" *ngFor="let loads of shipperData.data.loadStops; trackBy: identity ">
+          <div
+            class="repair-items-wrapper"
+            *ngFor="let loads of shipperData.data.loadStops; trackBy: identity"
+          >
             <div class="repair-items">
               <div class="items-header">
                 <div class="icon-svg-repair">
                   <svg-icon
                     class="arrow-ri"
-                    *ngIf="loads.stopType.name==='Pickup'"
+                    *ngIf="loads.stopType.name === 'Pickup'"
                     src="assets/svg/common/ic_arrow-right-line.svg"
                   ></svg-icon>
                   <svg-icon
                     class="arrow-le"
-                    *ngIf="loads.stopType.name==='Delivery'"
+                    *ngIf="loads.stopType.name === 'Delivery'"
                     src="assets/svg/common/ic_arrow-line-left.svg"
                   ></svg-icon>
-                  <span class="unit">{{loads?.load?.id}}</span>
+                  <span class="unit">{{ loads?.load?.id }}</span>
                 </div>
-                <span class="date">{{loads?.load?.dispatch.driver?.firstName.length>6?loads?.load?.dispatch.driver?.firstName[0] + '.' :loads?.load?.dispatch.driver?.firstName}} {{loads?.load?.dispatch.driver?.lastName}}</span>
-                <span class="date">{{loads?.load?.dispatch.truck?.truckNumber}}</span>
-                <span class="date">{{loads?.load?.dispatch.trailer?.trailerNumber}}</span>
+                <span class="date"
+                  >{{
+                    loads?.load?.dispatch.driver?.firstName.length > 6
+                      ? loads?.load?.dispatch.driver?.firstName[0] + "."
+                      : loads?.load?.dispatch.driver?.firstName
+                  }}
+                  {{ loads?.load?.dispatch.driver?.lastName }}</span
+                >
+                <span class="date">{{
+                  loads?.load?.dispatch.truck?.truckNumber
+                }}</span>
+                <span class="date">{{
+                  loads?.load?.dispatch.trailer?.trailerNumber
+                }}</span>
                 <div class="time-date">
-                  <span class="date">{{loads?.arrive | formatDateP}}</span>
-                  <span class="time"> {{loads?.arrive | formatTime}}</span>
+                  <span class="date">{{ loads?.arrive | formatDateP }}</span>
+                  <span class="time"> {{ loads?.arrive | formatTime }}</span>
                 </div>
                 <div class="time-date">
-                  <span class="date">{{loads?.depart | formatDateP}}</span>
-                  <span class="time"> {{loads?.depart | formatTime}}</span>
+                  <span class="date">{{ loads?.depart | formatDateP }}</span>
+                  <span class="time"> {{ loads?.depart | formatTime }}</span>
                 </div>
-                <span class="wait-time"><span class="hours" *ngIf="loads?.wait.days>0">{{loads?.wait.days}} d </span> <span class="hours" *ngIf="loads?.wait.hours>0">{{loads?.wait.hours}} h</span> <span class="hours" *ngIf="loads?.wait.days<=0">{{loads?.wait.minutes}}</span> min</span>
+                <span class="wait-time"
+                  ><span class="hours" *ngIf="loads?.wait.days > 0"
+                    >{{ loads?.wait.days }} d
+                  </span>
+                  <span class="hours" *ngIf="loads?.wait.hours > 0"
+                    >{{ loads?.wait.hours }} h</span
+                  >
+                  <span class="hours" *ngIf="loads?.wait.days <= 0">{{
+                    loads?.wait.minutes
+                  }}</span>
+                  min</span
+                >
               </div>
             </div>
             <div class="divider"></div>
@@ -54,10 +79,7 @@
       <div *ngSwitchCase="'contact'" class="contact">
         <div *ngIf="shipperContacts.length" class="contact-wrapper">
           <app-ta-custom-card
-            *ngFor="
-              let shipperContact of shipperContacts;
-              trackBy: identity
-            "
+            *ngFor="let shipperContact of shipperContacts; trackBy: identity"
             [bodyTemplate]="'card'"
             [animationsDisabled]="false"
             [hasDivider]="false"
@@ -79,10 +101,7 @@
                     position="top"
                     tooltipBackground="#6C6C6C"
                   >
-                    <svg-icon
-                      src="assets/svg/common/ic_pen.svg"
-                      class="svg-icon-edit"
-                    ></svg-icon>
+                    <svg-icon src="ic_pen.svg" class="svg-icon-edit"></svg-icon>
                   </span>
                   <span
                     ngbTooltip
@@ -159,7 +178,9 @@
           </div>
         </div>
         <div class="review-container">
-          <div  *ngIf="!reviewsRepair.length" class="no-reviews-details">No review</div>
+          <div *ngIf="!reviewsRepair.length" class="no-reviews-details">
+            No review
+          </div>
           <app-ta-user-review
             *ngIf="reviewsRepair.length"
             [reviewData]="reviewsRepair"

@@ -419,6 +419,7 @@
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-broker-department'
                   }"
+                  [activeItem]="selectedContractDepartmentFormArray[ind]"
                   [options]="labelsDepartments"
                   (selectedItem)="
                     onSelectDropDown($event, 'contact-department', ind)

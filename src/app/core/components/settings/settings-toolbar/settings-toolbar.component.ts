@@ -25,7 +25,7 @@ export class SettingsToolbarComponent implements OnInit {
         id: 2,
         name: 'Company',
         count: 3,
-        svg: 'assets/svg/common/ic_company.svg',
+        svg: 'ic_company.svg',
         background: '#FFFFFF',
         route: '/settings/company',
       },
