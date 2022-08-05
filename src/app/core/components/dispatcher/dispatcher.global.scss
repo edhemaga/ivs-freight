@@ -2260,6 +2260,7 @@
       font-weight: 700;
       font-size: 14px;
       padding-left: 9px;
+      text-transform: uppercase;
     }
   }
   tr, & {
@@ -2323,7 +2324,7 @@
 
   .note-field{
     width: 359px;
-    padding-right: 100px !important;;
+    padding-right: 100px !important;
   }
 
   .phoneemail-field {
@@ -2336,6 +2337,11 @@
 
   .status-field {
     width: 112px;
+
+    &.theads{
+      padding-left: 0 !important;
+      text-align: center;
+    }
   }
 
   .pick-del-field {

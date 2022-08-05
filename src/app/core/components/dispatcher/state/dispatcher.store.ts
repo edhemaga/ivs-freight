@@ -6,7 +6,8 @@ export interface DispatcherState extends EntityState<IDispatcher, string> {}
 
 export function createInitialState(): DispatcherState {
     return {
-        dispatchers: []
+        modal: [],
+        dispatchList: []
     };
   }
 
