@@ -1,9 +1,4 @@
 import { HttpParams } from '@angular/common/http';
-import {
-  CompositeFilterDescriptor,
-  FilterDescriptor,
-  process,
-} from '@progress/kendo-data-query';
 
 export function tableSearch(
   res: any,
@@ -290,48 +285,6 @@ export function mapUserData(user: any): any {
   /* user.show = false; */
 
   return user;
-}
-
-/* Search Filter Methods */
-export function onFilter(
-  inputValue: string,
-  filteredData: Array<any>[],
-  data: any,
-  fieldName: string
-) {
-  const availableFilters: (CompositeFilterDescriptor | FilterDescriptor)[] =
-    checkDataForFiltering(inputValue, data, fieldName);
-
-  filteredData = process(filteredData, {
-    filter: {
-      logic: 'or',
-      filters: availableFilters,
-    },
-  }).data;
-
-  return availableFilters;
-}
-
-function checkDataForFiltering(
-  inputValue: string,
-  data: any,
-  fieldName: string
-): (CompositeFilterDescriptor | FilterDescriptor)[] {
-  const filterDescriptor = [];
-
-  for (const d of data) {
-    for (const [key, value] of Object.entries(d)) {
-      if (key === fieldName) {
-        filterDescriptor.push({
-          field: value,
-          operator: 'contains',
-          value: inputValue,
-        });
-      }
-    }
-  }
-
-  return filterDescriptor;
 }
 
 /* Animate From To Count */

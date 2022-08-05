@@ -1,5 +1,12 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  ChangeDetectorRef,
+  ViewChild,
+} from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { MapsService } from 'src/app/core/services/shared/maps.service';
 import {
@@ -14,14 +21,18 @@ import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-ord
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
 
+@UntilDestroy()
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
-  styleUrls: ['./repair-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [
+    './repair-table.component.scss',
+    '../../../../../assets/scss/maps.scss',
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RepairTableComponent implements OnInit, OnDestroy {
-  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+  @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -74,24 +85,24 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         }
       });
 
-      this.sortTypes = [
-        {name: 'Business Name', id: 1, sortName: 'name'},
-        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
-        {name: 'Favorites', id: 8, sortName: 'favorites'},
-        {name: 'Available', id: 9, sortName: 'available'},
-        {name: 'Rating', id: 3, sortName: 'rating'},
-        {name: 'Date Added', id: 4, sortName: 'createdAt'},
-        {name: 'Last Used Date', id: 5, sortName: 'updatedAt'},
-        {name: 'Orders', id: 6, sortName: 'orders'},
-        {name: 'Total Cost', id: 7, sortName: 'cost'}
-      ];
+    this.sortTypes = [
+      { name: 'Business Name', id: 1, sortName: 'name' },
+      { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+      { name: 'Favorites', id: 8, sortName: 'favorites' },
+      { name: 'Available', id: 9, sortName: 'available' },
+      { name: 'Rating', id: 3, sortName: 'rating' },
+      { name: 'Date Added', id: 4, sortName: 'createdAt' },
+      { name: 'Last Used Date', id: 5, sortName: 'updatedAt' },
+      { name: 'Orders', id: 6, sortName: 'orders' },
+      { name: 'Total Cost', id: 7, sortName: 'cost' },
+    ];
 
-      this.activeSortType = this.sortTypes[0];
+    this.activeSortType = this.sortTypes[0];
 
-      this.sortBy = this.sortDirection
+    this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
   }
 
@@ -102,7 +113,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         hideLocationFilter: true,
         hideViewMode: this.selectedTab === 'repair-shop' ? false : true,
         showMapView: this.selectedTab === 'repair-shop' ? true : false,
-        viewModeActive: 'List'
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -144,8 +155,8 @@ export class RepairTableComponent implements OnInit, OnDestroy {
 
   sendRepairData() {
     this.repairShops = this.shopQuery.getAll().length
-        ? this.shopQuery.getAll()
-        : [];
+      ? this.shopQuery.getAll()
+      : [];
 
     this.tableData = [
       {
@@ -590,7 +601,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       }
       case 'view-mode': {
         this.tableOptions.toolbarActions.viewModeActive = event.mode;
-        if ( event.mode == 'Map' ) {
+        if (event.mode == 'Map') {
           //this.mapsComponent.markersDropAnimation();
         }
         break;
@@ -640,28 +651,28 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
-      
+
     //this.sortShippers();
   }
-  
+
   changeSortCategory(item, column) {
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
-      
+
     //this.sortShippers();
   }
 
   searchShops(value) {
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
-      //this.sortShippers();
+    //this.sortShippers();
     //}
   }
 

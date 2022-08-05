@@ -4,28 +4,40 @@
     padding-left: 2px;
     align-items: center;
 
+    &.parking_editor_menu{
+      padding: 0px 5px 0px 4px;
+    }
+
+    .font_editor{
+      display: flex;
+
+      &.parking_font_editor{
+        flex: 1;
+      }
+    }
+
     .editor_buttons {
       display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 18px;
-      height: 18px;
+      width: 24px;
+      height: 24px;
       font-family: "WebComponentsIcons", sans-serif;
       font-size: 20px;
       color: #91919170;
       cursor: pointer;
       
       .color_picker_arrow{
-        opacity: 0;
+        display: none;
       }
 
       &.italic_text{
-        margin-left: 2px;
+        margin-left: 4px;
       }
 
       &.underline_text{
-        margin-left: 2px;
+        margin-left: 4px;
       }
     
       &.active {
@@ -79,6 +91,7 @@
         position: relative;
         width: auto;
         border-radius: 2px;
+        padding: 4px;
 
         //background-image: url('../../../../assets/img/svgs/right.svg');
         background-repeat: no-repeat;
@@ -91,17 +104,17 @@
 
         &:hover {
           opacity: 1;
-          background-color: #f7f7f7;
+          background-color: #EEEEEE;
 
           .color_picker_arrow{
-            opacity: 1;
+            display: block;
           }
         }
 
         .circle_span {
           width: 16px;
           height: 16px;
-          background-color: #fff;
+          background-color: #6c6c6c;
           border-radius: 3px;
           cursor: pointer;
         }
@@ -149,7 +162,7 @@
               background-color: #6C6C6C;
             }
 
-            &:hover:not(:first-child) {
+            &:hover:not(:last-child) {
               transform: scale(1.1);
               transform-origin: center;
             }
@@ -168,23 +181,35 @@
       }
 
       .color_picker_arrow{
-        z-index: 1;
-        margin: 0 4px;
+        position: absolute;
+        z-index: 11;
 
         &.flip_arrow{
             transform: scaleX(-1);
         }
+        &.active{
+          right: 9px;
+        }
         svg-icon{
             svg{
                 display: flex;
-                width: 7px;
-                height: 7px;
+                width: 9px;
+                height: 10px;
 
                 path{
-                    fill: #AAAAAA;
+                    fill: #fff;
                 }
             }
         }
       }
+    }
+
+    .note_border_line{
+      height: 24px;
+      width: 2px;
+      margin: 0 4px;
+
+      background-color: #F3F3F3;
+      border-radius: 1px;
     }
   }

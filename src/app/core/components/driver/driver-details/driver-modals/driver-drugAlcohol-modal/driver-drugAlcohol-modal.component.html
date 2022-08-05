@@ -16,7 +16,7 @@
           label: 'Type',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-test-types'
+          dropdownWidthClass: 'w-col-140'
         }"
         [options]="testTypes"
         [activeItem]="selectedTestType"
@@ -31,7 +31,7 @@
           isRequired: true,
           isDropdown: true,
           isDisabled: !drugForm.get('testType').value,
-          dropdownWidthClass: 'w-reason-types'
+          dropdownWidthClass: 'w-col-168'
         }"
         [options]="reasonTypes"
         [activeItem]="reasonTypes"

@@ -11,9 +11,11 @@ import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShopQuery } from '../state/shop-state/shop.query';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
+
+@UntilDestroy()
 @Component({
   selector: 'app-shop-repair-card-view',
   templateUrl: './shop-repair-card-view.component.html',

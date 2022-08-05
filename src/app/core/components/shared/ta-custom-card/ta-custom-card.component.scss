@@ -1,12 +1,13 @@
 .ta-custom-card {
   display: block;
 
+  // CARD HEADER
   .ta-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 4px 0px;
-    padding-right: 6px;
+    padding-right: 5px;
     height: 26px;
     cursor: pointer;
 
@@ -39,6 +40,7 @@
         }
       }
 
+      // LEFT SIDE NEAR NAME SVG
       .header-svg {
         margin-left: 6px;
         width: 18px;
@@ -53,12 +55,36 @@
           }
         }
       }
+
+      .header-svg-bank {
+        margin-left: 12px !important;
+        svg {
+          path {
+            fill: #cccccc;
+          }
+          &:hover {
+            path {
+              fill: #cccccc !important;
+            }
+          }
+        }
+        &:hover {
+          svg {
+            path {
+              fill: #cccccc;
+            }
+          }
+        }
+      }
     }
 
+    // CARD RIGHT SIDE ACTIONS
     .header-actions {
       display: flex;
       align-items: center;
+      gap: 12px;
 
+      // PLUS ADD ACTION
       .header-action-container {
         .header-action-svg {
           height: 16px;
@@ -104,7 +130,7 @@
           position: relative;
           left: 6px;
 
-          p {
+          .header-action-text {
             margin: 0;
             font-size: 11px;
             font-weight: 700;
@@ -127,7 +153,7 @@
             transition: all 0.3 ease-in-out;
             background-color: #536bc2;
 
-            p {
+            .header-action-text {
               color: #ffffff;
             }
 
@@ -140,15 +166,123 @@
             }
           }
         }
+      }
 
-        &.data {
-          left: -8px;
+      .header-custom-text-action {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 82px;
+        height: 24px;
+        transform-origin: right;
+
+        background-color: #f3f3f3;
+        border-radius: 2px;
+        transition: all 0.3 ease-in-out;
+        cursor: pointer;
+        position: relative;
+
+        .header-action-text {
+          margin: 0;
+          font-size: 11px;
+          font-weight: 700;
+          line-height: 18px;
+          color: #536bc2;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        &:hover {
+          transition: all 0.3 ease-in-out;
+          background-color: #536bc2;
+
+          .header-action-text {
+            color: #ffffff;
+          }
         }
       }
 
+      // DOWNLOAD ACTION
+      .header-action-download {
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        svg {
+          width: 100%;
+          height: 100%;
+          path {
+            fill: #b7b7b7;
+          }
+        }
+
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #919191;
+            }
+          }
+        }
+      }
+
+      // WEEKLY STATUS
+      .weekly-status {
+        background-color: #f3f3f3;
+        height: 20px;
+        padding: 2.5px 6px;
+        border-radius: 2px;
+
+        .weekly-status-value {
+          font-size: 12px;
+          font-weight: 700;
+          color: #919191;
+          line-height: 15px;
+          &::-moz-selection {
+            color: #919191;
+            background: rgb(145, 145, 145, 0.2);
+          }
+          &::selection {
+            color: #919191;
+            background: rgb(145, 145, 145, 0.2);
+          }
+        }
+      }
+
+      // HEADER (DETAILS, CALENDAR...)
+      .arrow-down-plus {
+        display: flex;
+        align-items: center;
+
+        .add-custom-card {
+          display: flex;
+          align-items: center;
+        }
+
+        .plus-custom-card {
+          svg {
+            margin-right: 11px;
+            width: 18px;
+            height: 18px;
+            path {
+              fill: #6d82c7;
+            }
+            &:hover {
+              path {
+                fill: #536bc2 !important;
+              }
+            }
+          }
+        }
+      }
+
+      // ARROW
       .header-arrow {
-        position: relative;
-        bottom: 1px;
+        width: 18px;
+        height: 20px;
+        line-height: 18px;
         svg {
           transform: rotate(0deg);
           transition: all 0.3s ease-in-out;
@@ -165,15 +299,11 @@
         }
       }
 
+      // LIKE DISLIKE ACTION
       &.like-dislike-template {
         display: flex;
         align-items: center;
         position: relative;
-
-        .ta-like-dislike {
-          position: relative;
-          margin-right: 8px;
-        }
       }
 
       &.hidden-add-new-action {
@@ -266,6 +396,7 @@
     }
   }
 
+  // CARD BODY
   .ta-card-body {
     max-height: 0;
     overflow: hidden;
@@ -299,75 +430,6 @@
       &::-moz-selection {
         background-color: rgb(229, 229, 229, 0.2);
         color: #6c6c6c;
-      }
-    }
-  }
-}
-.plus-custom-card {
-  svg {
-    margin-right: 11px;
-    width: 18px;
-    height: 18px;
-    path {
-      fill: #6d82c7;
-    }
-    &:hover {
-      path {
-        fill: #536bc2 !important;
-      }
-    }
-  }
-}
-.status-icon-weekly {
-  display: flex;
-  align-items: center;
-  .weekly-status {
-    background-color: #f3f3f3;
-    height: 20px;
-    padding: 2.5px 6px;
-    border-radius: 2px;
-    margin-right: 12px;
-    .weekly-status-value {
-      font-size: 12px;
-      font-weight: 700;
-      color: #919191;
-      line-height: 15px;
-      &::-moz-selection {
-        color: #919191;
-        background: rgb(145, 145, 145, 0.2);
-      }
-      &::selection {
-        color: #919191;
-        background: rgb(145, 145, 145, 0.2);
-      }
-    }
-  }
-}
-.arrow-down-plus {
-  display: flex;
-  align-items: center;
-
-  .add-custom-card {
-    display: flex;
-    align-items: center;
-  }
-}
-.header-svg-bank {
-  margin-left: 12px !important;
-  svg {
-    path {
-      fill: #cccccc;
-    }
-    &:hover {
-      path {
-        fill: #cccccc !important;
-      }
-    }
-  }
-  &:hover {
-    svg {
-      path {
-        fill: #cccccc;
       }
     }
   }

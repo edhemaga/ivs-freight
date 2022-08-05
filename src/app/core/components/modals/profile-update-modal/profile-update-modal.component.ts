@@ -1,8 +1,8 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -14,10 +14,11 @@ import {
   UserResponse,
 } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
+@UntilDestroy()
 @Component({
   selector: 'app-profile-update-modal',
   templateUrl: './profile-update-modal.component.html',
@@ -124,7 +125,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .get('createNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        console.log('CHCEKED ', value);
         if (value) {
           this.inputService.changeValidators(
             this.profileUserForm.get('oldPassword')
@@ -136,6 +136,10 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           );
           this.inputService.changeValidators(
             this.profileUserForm.get('password'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.profileUserForm.get('oldPassword'),
             false
           );
           this.setNewPassword = false;
@@ -257,6 +261,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             avatar: res.avatar,
           });
+          console.log(res.address);
           this.selectedAddress = res.address;
         },
         error: () => {
@@ -286,7 +291,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     const newData: UpdateUserCommand = {
       id: this.user.userId,
       ...form,
-      address: this.selectedAddress,
+      address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
     this.userService

@@ -11,8 +11,9 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-accident-modal',
   templateUrl: './accident-modal.component.html',
@@ -190,8 +191,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addInsurance(event: any) {
-    if (event) {
+  public addInsurance(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.insurances.push(this.createInsurance());
     }
   }

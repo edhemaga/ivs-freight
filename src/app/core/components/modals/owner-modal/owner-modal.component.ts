@@ -3,7 +3,7 @@ import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
 import { NotificationService } from './../../../services/notification/notification.service';
 import { OwnerModalResponse } from './../../../../../../appcoretruckassist/model/ownerModalResponse';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -28,6 +28,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
@@ -325,8 +326,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
-          console.log('editOwnerById')
-          console.log(res)
+          console.log('editOwnerById');
+          console.log(res);
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({

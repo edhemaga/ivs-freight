@@ -9,8 +9,9 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-like-dislike',
   templateUrl: './ta-like-dislike.component.html',
