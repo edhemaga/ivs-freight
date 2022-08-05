@@ -29,13 +29,13 @@
     line-height: 16px;
 
     .nav-item-arrow {
-      margin-right: 4px;
+      margin-right: 5px;
       transform: rotate(0deg);
       transition: $nav-transition;
     }
 
     .nav-item-arrow-first {
-      margin-right: 5px !important;
+      margin-right: 6px !important;
     }
 
     .nav-item-arrow-rotate {

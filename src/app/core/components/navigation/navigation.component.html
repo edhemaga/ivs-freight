@@ -1,4 +1,3 @@
-<!--   [ngClass]="{ scroll: isActiveSubroute }" -->
 <div
   class="navigation"
   (mouseenter)="onHoveredNavigation(true)"
@@ -14,28 +13,45 @@
         isModalPanelOpen && isNavigationHovered
       "
     ></app-navigation-modals>
+  </div>
 
+  <div class="navigation-middle">
     <div
-      class="wrapper-container"
-      [ngClass]="{ 'wrapper-container-nohover': !isNavigationHovered }"
+      class="navigation-routes-container"
+      (mouseenter)="onHoveredRoutesContainer(true)"
+      (mouseleave)="onHoveredRoutesContainer(false)"
     >
       <div
-        class="navigation-routes-container"
-        (mouseenter)="onHoveredRoutesContainer(true)"
-        (mouseleave)="onHoveredRoutesContainer(false)"
+        class="navigation-routes"
+        *ngFor="let item of navigation; let ind = index; trackBy: identity"
+        [ngClass]="{
+          'new-magic-line-selected':
+            item.isRouteActive ||
+            item.isSubrouteActive ||
+            isActiveRouteOnReload(item.route)
+        }"
       >
-        <div
-          class="navigation-routes"
-          *ngFor="let item of navigation; let ind = index; trackBy: identity"
-          [ngClass]="{
-            'new-magic-line-selected':
-              item.isRouteActive ||
-              item.isSubrouteActive ||
-              isActiveRouteOnReload(item.route)
-          }"
+        <app-navigation-route
+          *ngIf="!item.arrow"
+          [route]="item"
+          [isNavigationHovered]="isNavigationHovered"
+          [isActiveSubroute]="isActiveSubroute"
+          (onRouteEvent)="onRouteEvent($event)"
+        >
+        </app-navigation-route>
+
+        <app-navigation-subroute-card
+          *ngIf="item.arrow"
+          [isNavigationCardActive]="
+            item.isRouteActive &&
+            isNavigationHovered &&
+            !isModalPanelOpen &&
+            !isUserPanelOpen &&
+            !isUserCompanyDetailsOpen
+          "
+          [contentHeight]="item.route.length"
         >
           <app-navigation-route
-            *ngIf="!item.arrow"
             [route]="item"
             [isNavigationHovered]="isNavigationHovered"
             [isActiveSubroute]="isActiveSubroute"
@@ -43,53 +59,33 @@
           >
           </app-navigation-route>
 
-          <app-navigation-subroute-card
-            *ngIf="item.arrow"
-            [isNavigationCardActive]="
-              item.isRouteActive &&
+          <app-navigation-subroute
+            *ngIf="
               isNavigationHovered &&
+              item.isRouteActive &&
               !isModalPanelOpen &&
               !isUserPanelOpen &&
               !isUserCompanyDetailsOpen
             "
-            [contentHeight]="item.route.length"
+            [subroute]="item"
+            [isActiveSubroute]="isActiveSubroute"
+            [isNavigationHovered]="isNavigationHovered"
+            (onSubrouteActiveEvent)="onRouteEvent($event)"
           >
-            <app-navigation-route
-              [route]="item"
-              [isNavigationHovered]="isNavigationHovered"
-              [isActiveSubroute]="isActiveSubroute"
-              (onRouteEvent)="onRouteEvent($event)"
-            >
-            </app-navigation-route>
-
-            <app-navigation-subroute
-              *ngIf="
-                isNavigationHovered &&
-                item.isRouteActive &&
-                !isModalPanelOpen &&
-                !isUserPanelOpen &&
-                !isUserCompanyDetailsOpen
-              "
-              [subroute]="item"
-              [isActiveSubroute]="isActiveSubroute"
-              [isNavigationHovered]="isNavigationHovered"
-              (onSubrouteActiveEvent)="onRouteEvent($event)"
-            >
-            </app-navigation-subroute>
-          </app-navigation-subroute-card>
-        </div>
-        <div
-          [@showHideDetails]="
-            isNavigationHovered &&
-            !isActiveSubroute &&
-            !isActiveFooterRoute &&
-            isActiveMagicLine
-              ? 'true'
-              : 'false'
-          "
-          class="new-magic-line"
-        ></div>
+          </app-navigation-subroute>
+        </app-navigation-subroute-card>
       </div>
+      <div
+        [@showHideDetails]="
+          isNavigationHovered &&
+          !isActiveSubroute &&
+          !isActiveFooterRoute &&
+          isActiveMagicLine
+            ? 'true'
+            : 'false'
+        "
+        class="new-magic-line"
+      ></div>
     </div>
     <hr *ngIf="isNavigationHovered && isActiveSubroute" class="wrapper-line" />
   </div>

@@ -8,7 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged } from 'rxjs';
@@ -257,11 +257,15 @@ export class UserModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBank = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');

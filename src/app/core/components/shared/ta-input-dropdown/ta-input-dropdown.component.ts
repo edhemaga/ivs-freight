@@ -84,8 +84,8 @@ export class TaInputDropdownComponent
     if (changes.options?.currentValue != changes.options?.previousValue) {
       switch (this.sort) {
         case 'active-drivers': {
-          this.options = this.options.sort((x, y) =>
-            x?.status === y?.status ? 0 : x ? -1 : 1
+          this.options = this.options.sort(
+            (x, y) => Number(y.status) - Number(x.status)
           );
           this.originalOptions = [...this.options];
           break;
