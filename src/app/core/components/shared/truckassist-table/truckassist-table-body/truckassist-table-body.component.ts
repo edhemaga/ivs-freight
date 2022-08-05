@@ -14,9 +14,12 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
@@ -24,8 +27,7 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, AfterViewInit, OnDestroy
-{
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
@@ -57,7 +59,7 @@ export class TruckassistTableBodyComponent
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService
-  ) {}
+  ) { }
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
 
@@ -123,7 +125,7 @@ export class TruckassistTableBodyComponent
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       clearTimeout(this.viewDataTimeOut);
-      
+
       this.viewData = changes.viewData.currentValue;
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
@@ -158,7 +160,7 @@ export class TruckassistTableBodyComponent
     if (
       !changes?.selectedTab?.firstChange &&
       changes?.selectedTab?.currentValue !==
-        changes?.selectedTab?.previousValue &&
+      changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
@@ -260,7 +262,7 @@ export class TruckassistTableBodyComponent
     alert('Treba da se odradi servis i componenta za Attachments');
   }
 
-  onShowItemDrop(index: number) {}
+  onShowItemDrop(index: number) { }
 
   onShowPassword(index: number) {
     this.loadingPassword = index;
