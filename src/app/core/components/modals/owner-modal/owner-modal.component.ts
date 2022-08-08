@@ -253,13 +253,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Changes saved for ' + '"' + bussinesName + '"',
+            `Changes saved for "${bussinesName}"`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error('Failed to save changes for ' + '"' + bussinesName + '"', 'Error');
+          this.notificationService.error(`Failed to save changes for "${bussinesName}"`, 'Error');
         },
       });
   }
@@ -271,17 +271,14 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            '"' + bussinesName + '"' + ' deleted',
-            'Success'
-          );
+          this.notificationService.success(`"${bussinesName}" deleted` , 'Success');
           this.modalService.setModalSpinner({
             action: 'delete',
             status: false,
           });
         },
         error: () => {
-          this.notificationService.error('Failed to delete ' + '"' + bussinesName + '"', 'Error');
+          this.notificationService.error(`Failed to delete "${bussinesName}"`, 'Error');
         },
       });
   }
@@ -307,20 +304,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       bankId: this.selectedBank ? this.selectedBank.id : null,
     };
-    console.log('--bussinesName---', bussinesName);
+
     this.ownerModalService
       .addOwner(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            '"' + bussinesName + '"' + ' added',
+            `"${bussinesName}" added`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error('Failed to add ' + '"' + bussinesName + '"', 'Error');
+          this.notificationService.error(`Failed to add "${bussinesName}"`, 'Error');
         },
       });
   }

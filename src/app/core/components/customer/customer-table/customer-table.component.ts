@@ -189,7 +189,7 @@ export class CustomerTableComponent
 
 
                 this.notificationService.success(
-                  ''+brokerText+' '+ '"' + brokerName + '"' +' deleted',
+                  `${brokerText} "${brokerName}" deleted`,
                   'Success'
                 );
 
@@ -222,7 +222,7 @@ export class CustomerTableComponent
               .pipe(untilDestroyed(this))
               .subscribe(() => {
                 this.notificationService.success(
-                  ''+shipText+''+ '"' + shipperName + '"' +' deleted',
+                  `${shipText} "${shipperName}" deleted `,
                   'Success'
                 );
 
@@ -582,7 +582,7 @@ export class CustomerTableComponent
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Broker ' + '"' + businessName + '"' + ' deleted',
+                `Broker "${businessName}" deleted`, 
                 'Success'
               );
 
@@ -590,7 +590,7 @@ export class CustomerTableComponent
             },
             error: () => {
               this.notificationService.error(
-                `Failed to delete Broker ` + '"' + businessName + '"',
+                `Failed to delete Broker "${businessName}" `, 
                 'Error'
               );
             },
@@ -604,7 +604,7 @@ export class CustomerTableComponent
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Shipper ' + '"' + businessName + '"' + ' deleted',
+                `Shipper "${businessName}" deleted`,
                 'Success'
               );
 
@@ -612,7 +612,7 @@ export class CustomerTableComponent
             },
             error: () => {
               this.notificationService.error(
-                'Failed to delete Shipper ' + '"' + businessName + '"',
+                `Failed to delete Shipper "${businessName}" `,
                 'Error'
               );
             },

@@ -737,7 +737,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       brokerContacts,
     };
 
-    console.log('---this.brokerForm.value;----', this.brokerForm.value);
     let businessName = this.brokerForm.value.businessName;
     this.brokerModalService
       .addBroker(newData)
@@ -745,7 +744,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Broker ' + '"' + businessName +'"' + ' added',
+            `Broker "${businessName}" added`,
             'Success'
           );
           this.modalService.setModalSpinner({
@@ -754,7 +753,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () => {
-          this.notificationService.error('Failed to add Broker ' + '"' + businessName + '"', 'Error');
+          this.notificationService.error(`Failed to add Broker "${businessName}"`, 'Error');
         },
       });
   }

@@ -672,7 +672,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     let driverFullName = '';
     this.viewData.map((driver: any) => {
       if (driver.id === event.id) {
-        console.log('----drjver--', driver);
         driverFullName = driver.firstName + ' ' + driver.lastName;
       }
     });
@@ -715,18 +714,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
-
-      let successfullyMessage = '';
-      let errorullyMessage = '';
-      
-      if ( this.selectedTab == 'active' ) {
-          successfullyMessage = '"' + driverFullName + '"' + ' Deactivated';
-          errorullyMessage = 'Failed to Deactivate ' + '"' + driverFullName + '"';
-        }
-      else {
-        successfullyMessage = '"' + driverFullName + '"' + ' Activated';
-        errorullyMessage = 'Failed to Activate ' + '"' + driverFullName + '"';
-      }
+     
+      let successfullyMessage = `"${driverFullName}" ${ this.selectedTab == 'active' ? 'Deactivated' : 'Activated' }`
+      let errorullyMessage = `Failed to ${ this.selectedTab == 'active' ? 'Deactivate' : 'Activate' } "${driverFullName}"`; 
 
       this.driverTService
         .changeDriverStatus(event.id, this.selectedTab)
@@ -753,7 +743,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         .subscribe({
           next: () => {
             this.notificationService.success(
-              '"' + driverFullName + '"' + ' deleted',
+              `"${driverFullName}" deleted`,
               'Success'
             );
 
@@ -775,7 +765,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           error: () => {
             this.notificationService.error(
-              `Failed to delete ` + '"' + driverFullName + '"', 
+              `Failed to delete "${driverFullName}" `, 
               'Error'
             );
           },

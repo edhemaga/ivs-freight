@@ -328,13 +328,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Truck ' + '"' + truckNum + '"' + ' added',
+            `Truck "${truckNum}" added`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error('Failed to add truck ' + '"' + truckNum + '"', 'Error'),  
+          this.notificationService.error(`Failed to add truck "${truckNum}"`, 'Error'),  
       });
   }
 
@@ -389,13 +389,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Truck '+ '"' + truckNum + '"' +' updated',
+            `Truck "${truckNum}" updated`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error('Truck ' + '"' + truckNum + '"' + ' update failed', 'Error'),
+          this.notificationService.error(`Truck "${truckNum}" update failed`, 'Error'),
       });
   }
 

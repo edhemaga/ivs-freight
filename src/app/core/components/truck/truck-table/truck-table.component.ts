@@ -584,7 +584,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
               });
 
               this.notificationService.success(
-                'Truck ' + '"' + truckNum + '"' + ' deleted',
+                `Truck "${truckNum}" deleted`,
                 'Success'
               );
 

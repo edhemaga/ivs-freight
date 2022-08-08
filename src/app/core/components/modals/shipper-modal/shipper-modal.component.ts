@@ -523,13 +523,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Shipper ' + '"' + shipperBuisnisName + '"' + ' added',
+            `Shipper "${shipperBuisnisName}" added`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error('Failed to add Shipper ' + '"' + shipperBuisnisName + '"', 'Error');
+          this.notificationService.error(`Failed to add Shipper "${shipperBuisnisName}"`, 'Error');
         },
       });
   }

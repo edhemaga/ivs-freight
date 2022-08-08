@@ -168,20 +168,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
-
-      let successMessage = '';
-      let errorMessage = '';
-      
-      if ( !this.trailerStatus )
-        {
-          successMessage = 'Trailer ' + '"' + trailerUnit + '"' + ' Deactivated';
-          errorMessage = 'Failed to Deactivate Trailer ' + '"' + trailerUnit + '"';
-        }
-      else 
-        {
-          successMessage = 'Trailer ' + '"' + trailerUnit + '"' + ' Activated';
-          errorMessage = 'Failed to Activate Trailer ' + '"' + trailerUnit + '"';
-        } 
+     
+      let successMessage = `Trailer "${trailerUnit}" ${ !this.trailerStatus ? 'Deactivated' : 'Activated' } `;  
+      let errorMessage = `Failed to ${ !this.trailerStatus ? 'Deactivated' : 'Activated' } Trailer "${trailerUnit}" `;
 
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
@@ -329,14 +318,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            'Trailer ' +'"'+ trailerUnit + '"' + ' added', 
+          this.notificationService.success(`Trailer "${trailerUnit} added"`, 
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error('Failed to add trailer ' + '"' +trailerUnit+ '"', 'Error'),
+          this.notificationService.error(`Failed to add Trailer "${trailerUnit}"`, 'Error'),
       });
   }
 
@@ -348,7 +336,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Trailer ' + '"' + trailerUnit + '"' + ' deleted',
+            `Trailer "${trailerUnit}" deleted`,
             'Success'
           );
           this.modalService.setModalSpinner({
@@ -357,7 +345,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () =>
-          this.notificationService.error('Failed to delete trailer ' + '"' + trailerUnit + '"', 'Error'),
+          this.notificationService.error(`Failed to delete Trailer "${trailerUnit}"`
+          , 'Error'),
       });
   }
 
@@ -417,13 +406,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Changes saved for Trailer ' + '"' + trailerUnit + '"' ,
+            `Changes saved for Trailer "${trailerUnit}"`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: true });
         },
         error: () =>
-          this.notificationService.error('Failed to save changes for Trailer ' + '"' + trailerUnit + '"', 'Error'),
+          this.notificationService.error(`Failed to save changes for Trailer "${trailerUnit}"`, 'Error'),
       });
   }
 

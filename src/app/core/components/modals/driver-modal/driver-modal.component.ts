@@ -180,19 +180,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // Change Driver Status
 
     let fullName = this.driverForm.get('firstName').value + ' ' + this.driverForm.get('lastName').value;
-    let successMessage = '';
-    let errorMessage = '';
 
-    if ( data.action === 'deactivate' )
-      {
-        successMessage = '"' + fullName + '"' + ' Deactivated';
-        errorMessage = 'Failed to Deactivate ' + '"' + fullName + '"';
-      }
-    else 
-      {
-        successMessage = '"' + fullName + '"' + ' Activated';
-        errorMessage = 'Failed to Activate ' + '"' + fullName + '"';
-      } 
+    let successMessage = `"${fullName}" ${ data.action === 'deactivate' ? 'Deactivated' : 'Activated' }`
+    let errorMessage = `Failed to ${ data.action === 'deactivate' ? 'Deactivate' : 'Activate' } "${fullName}"`; 
+      
     if (data.action === 'deactivate' && this.editData) {
       this.driverTService
         .changeDriverStatus(
@@ -223,7 +214,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           },
           error: () => {
             this.notificationService.error(
-              successMessage,
+              errorMessage,
               'Error'
             );
           },
@@ -832,7 +823,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Driver ' + '"' + driverFullName + '"' + ' added',
+            `Driver "${driverFullName}" added`,
             'Success'
           );
 
@@ -865,7 +856,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           }
         },
         error: () =>
-          this.notificationService.error('Failed to add ' + '"' + driverFullName + '"', 'Error'),
+          this.notificationService.error(`Failed to add "${driverFullName}" `, 'Error'),
       });
   }
 
@@ -976,13 +967,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Changes saved for ' + '"' + driverFullName + '"',
+            `Changes saved for "${driverFullName}" `,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error('Failed to save changes for ' + '"' + driverFullName + '"' , 'Error'),
+          this.notificationService.error(`Failed to save changes for "${driverFullName}" `, 'Error'),
       });
   }
 

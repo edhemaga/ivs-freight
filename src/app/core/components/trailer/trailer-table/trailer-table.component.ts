@@ -194,7 +194,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               });
 
               this.notificationService.success(
-                ' '+trailersText+'' + '"' + trailerNumber + '"' + ' deleted',
+                `${trailersText} "${trailerNumber}" deleted`,
                 'Success'
               );
               
@@ -526,7 +526,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Trailer ' + '"' + trailerNum + '"' + ' Activated',
+                `Trailer "${trailerNum}" Activated`,
                 'Success'
               );
 
@@ -548,7 +548,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Trailer ' + '"' + trailerNum + '"' + ' deleted',
+                `Trailer "${trailerNum}" deleted`,
                 'Success'
               );
 
@@ -568,7 +568,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                `Failed to delete Trailer ` + '"' + trailerNum + '"',
+                `Failed to delete Trailer "${trailerNum}"`,
                 'Error'
               );
             },

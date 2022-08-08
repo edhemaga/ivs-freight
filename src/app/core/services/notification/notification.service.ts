@@ -68,9 +68,10 @@ export class NotificationService {
     let toastElement = document.querySelector('.ngx-toastr');
         toastElement.classList.add('closeAnimationBtn');
         
-        let mainthis = this;
-        setTimeout(function(){
-          mainthis.toastr.clear();
+        setTimeout(() =>{
+
+          this.toastr.clear();
+
         }, 200);
   }
 
