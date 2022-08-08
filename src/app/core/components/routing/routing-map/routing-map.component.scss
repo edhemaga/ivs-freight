@@ -19,8 +19,12 @@
             left: 0;
             top: 0;
             height: 100vh;
+            width: 100%;
 
             padding: 62px 0px 18px 74px;
+
+            overflow-y: auto;
+            pointer-events: none;
 
             z-index: 2;
 
@@ -42,6 +46,8 @@
     max-height: 500px;
 
     transition: 0.2s;
+
+    pointer-events: all;
 
     &.route-hidden {
         max-height: 30px;
@@ -70,13 +76,66 @@
 
     &.expanded-card {
         max-width: 800px;
+
+        .route-card-row .route-row-location.add-new-stop .input-custom-group {
+            grid-template-columns: 88% 1fr !important;
+        }
+
+        .route-card-row .route-row-location.add-new-stop.full-address .input-custom-group {
+            grid-template-columns: 90% 1fr !important;
+        }
     }
 
     .route-info-header {
         display: flex;
         align-items: center;
+        justify-content: space-between;
         height: 18px;
-        margin: 2px 2px 0px 2px;
+        margin: 2px 4px 0px 2px;
+
+        .header-content-container {
+            display: flex;
+        }
+
+        .show-more {
+            margin-left: 12px;
+
+            .dropdown-dots {
+                svg {
+                    path {
+                        fill: #AAAAAA;
+                    }
+                }
+            }
+
+            .svg-text-dropdown {
+                &:hover {
+                    background-color: #F3F3F3;
+
+                    .dropdown-content-text-details {
+                        color: #3C3C3C;
+                    }
+
+                    .action-svg {
+                        svg {
+                            path {
+                                fill: #6C6C6C;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            &:hover, &.active-drop {
+                .dropdown-dots {
+                    svg {
+                        path {
+                            fill: #6C6C6C;
+                        }
+                    }
+                }
+            }
+        }
 
         .route-card-svg {
             display: flex;
@@ -155,6 +214,10 @@
 
         .delete-button {
             display: flex;
+
+            &.drag-arrows {
+                display: none!important;
+            }
         }
 
         .route-row-number {
@@ -174,15 +237,24 @@
         }
     }
 
-    &:first-child:hover, &:last-child:hover {
-        cursor: pointer;
-
-        .delete-button {
-            display: none;
-        }
+    &:last-child {
+        padding-right: 0px;
 
         .route-row-number {
-            display: flex;
+            margin-right: 10px;
+        }
+
+        &:hover {
+            cursor: pointer;
+
+            .plus-button {
+                display: flex;
+                margin-right: 9px;
+            }
+    
+            .route-row-number {
+                display: none;
+            }
         }
     }
 
@@ -228,7 +300,7 @@
     }
 
     .delete-button:hover + .delete-stop-text {
-        display: flex;
+        display: flex!important;
     }
     
     .route-row-number {
@@ -250,11 +322,21 @@
 
         &.full-address {
             width: 220px;
+
+            &.add-new-stop {
+                .input-custom-group {
+                    grid-template-columns: 87% 1fr !important;
+                }
+            }
         }
 
         &.add-new-stop {
             width: 100%;
             margin-right: 0px;
+
+            .input-custom-group {
+                grid-template-columns: 83% 1fr !important;
+            }
         
             input {
                 background-color: #fff !important;
@@ -290,13 +372,30 @@
 
 .cdk-drag-preview {
     box-sizing: border-box;
+    background-color: #fff;
     border-radius: 4px;
     box-shadow: $box-shadow;
+
+    .delete-button {
+        display: none!important;
+
+        &.drag-arrows {
+            display: flex!important;
+        }
+    }
+
+    .route-row-number {
+        display: none;
+    }
   }
   
   .cdk-drag-placeholder {
     background: #DADADACC;
 
+    .delete-button {
+        display: none!important;
+    }
+    
     div {
         opacity: 0;
     }

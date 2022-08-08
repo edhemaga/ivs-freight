@@ -2,11 +2,13 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import {
   AddressEntity
 } from 'appcoretruckassist';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+
+declare var google: any;
 
 @Component({
   selector: 'app-routing-map',
@@ -32,54 +34,148 @@ export class RoutingMapComponent implements OnInit {
 
   public selectedAddress: AddressEntity = null;
 
+  addressInputs: FormArray = this.formBuilder.array([]);
+
+  dropdownActions: any[] = [
+    {
+      title: 'Settings',
+      name: 'open-settings',
+      class: 'regular-text',
+      contentType: 'settings',
+      show: true,
+      svg: 'assets/svg/common/ic_settings.svg',
+    },
+    {
+      title: 'Report',
+      name: 'open-report',
+      class: 'regular-text',
+      contentType: 'report',
+      show: true,
+      svg: 'assets/svg/common/ic_route_report.svg',
+    },
+    {
+      title: 'Print',
+      name: 'print-route',
+      class: 'regular-text',
+      contentType: 'print',
+      show: true,
+      svg: 'assets/svg/common/ic_print.svg',
+    },
+    {
+      title: 'Duplicate',
+      name: 'duplicate-route',
+      class: 'regular-text',
+      contentType: 'duplicate',
+      show: true,
+      svg: 'assets/svg/common/ic_route_duplicate.svg',
+    },
+    {
+      title: 'Reverse',
+      name: 'reverse-route-stops',
+      class: 'regular-text',
+      contentType: 'reverse',
+      show: true,
+      svg: 'assets/svg/common/ic_route_reverse.svg',
+    },
+    {
+      title: 'Clear All',
+      name: 'clear-route-stops',
+      class: 'regular-text',
+      contentType: 'clear',
+      show: true,
+      svg: 'assets/svg/common/ic_route_clear.svg',
+    },
+    {
+      title: 'Delete',
+      name: 'delete',
+      type: 'route',
+      text: 'Are you sure you want to delete this Route?',
+      class: 'delete-text',
+      contentType: 'delete',
+      show: true,
+      danger: true,
+      svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
+    },
+  ];
+
   public routes: any[] = [
     {
+      'id': 1,
       'name': 'Route 1',
       'hidden': false,
       'expanded': false,
-      'startPoint': {
-        'address': 'Gary, IN 30055',
-      },
+      'fullAddressView': false,
       'stops': [
+        {
+          'address': 'Gary, IN 30055',
+          'leg': '60.6',
+          'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15',
+          'empty': true,
+          'lat': 41.601970,
+          'long': -87.349680
+        },
         {
           'address': 'Chicago, IL 65005',
           'leg': '60.6',
           'total': '60.6',
           'time': '01:15',
-          'totalTime': '01:15'
+          'totalTime': '01:15',
+          'empty': true,
+          'lat': 41.883230,
+          'long': -87.632400
         },
         {
           'address': 'Philadelphia, PA 52320',
           'leg': '45.2',
           'total': '105.8',
           'time': '00:23',
-          'totalTime': '01:38'
+          'totalTime': '01:38',
+          'empty': true,
+          'lat': 39.951060,
+          'long': -75.165620
         },
         {
           'address': 'Nashville, KE 89600',
           'leg': '168.8',
           'total': '273.1',
           'time': '00:37',
-          'totalTime': '02:05'
+          'totalTime': '02:05',
+          'empty': false,
+          'lat': 30.826909,
+          'long': -96.655749
         },
       ]
     },
     {
+      'id': 2,
       'name': 'Route 2',
       'hidden': false,
       'expanded': false,
-      'startPoint': {
-        'address': 'Gary, IN 30055',
-        'fullAddress': '2371 W 150th Hwy W, Crouse, NC 28033'
-      },
+      'fullAddressView': true,
       'stops': [
+        {
+          'address': 'Gary, IN 30055',
+          'fullAddress': '2371 W 150th Hwy W, Crouse, NC 28033',
+          'leg': '60.6',
+          'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15',
+          'empty': true,
+          'lat': 35.404478,
+          'long': -81.331493
+        },
         {
           'address': 'Chicago, IL 65005',
           'fullAddress': '1525 Park Dr, Munster, IN 46321',
           'leg': '60.6',
           'total': '60.6',
           'time': '01:15',
-          'totalTime': '01:15'
+          'totalTime': '01:15',
+          'empty': false,
+          'lat': 41.5577897,
+          'long': -87.4925295
         },
         {
           'address': 'Philadelphia, PA 52320',
@@ -87,7 +183,10 @@ export class RoutingMapComponent implements OnInit {
           'leg': '45.2',
           'total': '105.8',
           'time': '00:23',
-          'totalTime': '01:38'
+          'totalTime': '01:38',
+          'empty': true,
+          'lat': 42.526144,
+          'long': -83.20796
         },
         {
           'address': 'Nashville, KE 89600',
@@ -95,38 +194,59 @@ export class RoutingMapComponent implements OnInit {
           'leg': '168.8',
           'total': '273.1',
           'time': '00:37',
-          'totalTime': '02:05'
+          'totalTime': '02:05',
+          'empty': false,
+          'lat': 32.469674,
+          'long': -90.50994
         },
       ]
     },
     {
+      'id': 3,
       'name': 'Route 3',
       'hidden': false,
       'expanded': false,
-      'startPoint': {
-        'address': 'Gary, IN 30055',
-      },
+      'fullAddressView': false,
       'stops': [
         {
           'address': 'Chicago, IL 65005',
           'leg': '60.6',
           'total': '60.6',
           'time': '01:15',
-          'totalTime': '01:15'
+          'totalTime': '01:15',
+          'empty': true,
+          'lat': 41.883230,
+          'long': -87.632400
         },
         {
-          'address': 'Philadelphia, PA 52320',
-          'leg': '45.2',
-          'total': '105.8',
-          'time': '00:23',
-          'totalTime': '01:38'
+          'address': 'Gary, IN 30055',
+          'leg': '60.6',
+          'total': '60.6',
+          'time': '01:15',
+          'totalTime': '01:15',
+          'empty': true,
+          'lat': 41.601970,
+          'long': -87.349680
         },
         {
           'address': 'Nashville, KE 89600',
           'leg': '168.8',
           'total': '273.1',
           'time': '00:37',
-          'totalTime': '02:05'
+          'totalTime': '02:05',
+          'empty': true,
+          'lat': 30.826909,
+          'long': -96.655749
+        },
+        {
+          'address': 'Philadelphia, PA 52320',
+          'leg': '45.2',
+          'total': '105.8',
+          'time': '00:23',
+          'totalTime': '01:38',
+          'empty': true,
+          'lat': 39.951060,
+          'long': -75.165620
         },
       ]
     },
@@ -150,19 +270,43 @@ export class RoutingMapComponent implements OnInit {
 
   ngOnInit(): void {
     this.addressForm = this.formBuilder.group({
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)]
+      address: [null]
     });
+
+    this.initAddressFields();
+
+    this.routes.map((item, index) => {
+      console.log('routes.map', index);
+      this.calculateDistanceBetweenStops(index);
+    });
+  }
+
+  initAddressFields() {
+    new Array(this.routes.length).fill(1).map((item, index)=> {
+      this.addressInputs.push(this.formBuilder.group({
+        address: []
+      }));
+    });
+  }
+
+  get addressFields() {
+    return this.addressInputs;
   }
 
   onTableBodyActions(action) {
     console.log('action', action);
   }
 
-  drop(event: CdkDragDrop<string[]>, dropArray) {
+  dropRoutes(event: CdkDragDrop<string[]>, dropArray) {
+    moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
+  }
+
+  dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
 
     console.log(dropArray, event.previousIndex, event.currentIndex);
+    
+    this.calculateDistanceBetweenStops(index);
   }
 
   showHideRoute(route) {
@@ -175,6 +319,8 @@ export class RoutingMapComponent implements OnInit {
 
   deleteRouteStop(route, index) {
     route.stops.splice(index, 1);
+
+    this.checkFullAddressView(route);
   }
 
   mapClick(event) {
@@ -202,20 +348,174 @@ export class RoutingMapComponent implements OnInit {
 
   public onHandleAddress(
     event: any,
-    route
+    route,
+    index
   ) {
-    console.log('onHandleAddress', event);
-    console.log('onHandleAddress', route);
+    this.addressInputs.at(index).reset();
     if ( event.action == 'confirm' && event.address ) {
+      console.log('onHandleAddress event', event);
+
       route.stops.push(
         {
           'address': event.address.address,
+          'fullAddress': event.address.street ? event.address.address : false,
           'leg': '60.6',
           'total': '60.6',
           'time': '01:15',
-          'totalTime': '01:15'
+          'totalTime': '01:15',
+          'empty': this.addressFlag == 'empty' ? true : false,
+          'lat': 32.469674,
+          'long': -90.50994
         }
       );
+
+      this.calculateDistanceBetweenStops(index);
+      this.checkFullAddressView(route);
     }
+  }
+
+  checkFullAddressView(route) {
+    let fullAdressStops = 0;
+
+    route.stops.map((item)=> {
+      if ( item.fullAddress ) {
+        fullAdressStops++;
+      }
+    });
+
+    if ( fullAdressStops ) {
+      route.fullAddressView = true;
+    } else {
+      route.fullAddressView = false;
+    }
+  }
+
+  calculateDistanceBetweenStops(i: number) {
+    console.log('calculateDistanceBetweenStops route', this.routes[i]);
+
+    /* Set all distance and totalDistance to 0 km or miles */
+    for (let j = 0; j < this.routes[i].stops.length; j++) {
+      this.routes[i].stops[j].leg = 0;
+      this.routes[i].stops[j].total = 0;
+    }
+    /* For  Calculate Distance*/
+    for (let j = 1; j < this.routes[i].stops.length; j++) {
+      console.log('calculateDistanceBetweenStops stop', this.routes[i].stops[j]);
+      if (
+        this.routes[i].stops[j].lat !== undefined &&
+        this.routes[i].stops[j].long !== undefined
+      ) {
+        console.log('calculateDistanceBetweenStops stop inside', this.routes[i].stops[j]);
+        const firstAddress = new google.maps.LatLng(
+          this.routes[i].stops[j - 1].lat,
+          this.routes[i].stops[j - 1].long
+        );
+        const secondAddress = new google.maps.LatLng(
+          this.routes[i].stops[j].lat,
+          this.routes[i].stops[j].long
+        );
+
+        console.log('calculateDistanceBetweenStops firstAddress', firstAddress);
+        console.log('calculateDistanceBetweenStops firstAddress', secondAddress);
+
+        let distance: number;
+        /* Chack if miles or km */
+        // if (this.appTaSwitchData[0].data[0].checked) {
+        //   distance =
+        //     google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) *
+        //     0.000621371;
+        // } else {
+          distance =
+            google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) /
+            1000.0;
+        // }
+
+        this.routes[i].stops[j].leg = distance;
+        this.routes[i].stops[j].total =
+          parseFloat(this.routes[i].stops[j - 1].total) + parseFloat(this.routes[i].stops[j].leg);
+      }
+    }
+    for (let j = 1; j < this.routes[i].stops.length; j++) {
+      var stopLeg = parseFloat(this.routes[i].stops[j].leg);
+      var stopTotal = parseFloat(this.routes[i].stops[j].total);
+      this.routes[i].stops[j].leg = stopLeg.toFixed(1);
+      this.routes[i].stops[j].total = stopTotal.toFixed(1);
+    }
+  }
+
+  callDropDownAction(event: any) {
+    console.log('callDropDownAction', event);
+    // Edit Call
+    if (event.type === 'duplicate-route') {
+      this.duplicateRoute(event.id);
+    } else if (event.type === 'reverse-route-stops') {
+      this.reverseRouteStops(event.id);
+    } else if (event.type === 'clear-route-stops') {
+      this.clearRouteStops(event.id);
+    } else if (event.type === 'delete') {
+      this.deleteRoute(event.id);
+    }
+  }
+
+  showMoreOptions(route) {
+    route.dropdownOpen = !route.dropdownOpen;
+    console.log('showMoreOptions', route.dropdownOpen);
+  }
+
+  duplicateRoute(id) {
+    let route = this.getRouteById(id);
+
+    if ( route ) {
+      this.addressInputs.push(this.formBuilder.group({
+        address: []
+      }));
+
+      const lastId = Math.max(...this.routes.map(item => item.id));
+
+      const newRoute = JSON.parse(JSON.stringify(route));
+      newRoute.id = lastId+1;
+      
+      this.routes.push(newRoute);
+
+      this.calculateDistanceBetweenStops(this.routes.length-1);
+    }
+  }
+
+  reverseRouteStops(id) {
+    let route = this.getRouteById(id);
+    const routeIndex = this.routes.findIndex(route => {
+      return route.id === id;
+    });
+
+    if ( route && route.stops && route.stops.length ) {
+      route.stops = route.stops.reverse();
+
+      this.calculateDistanceBetweenStops(routeIndex);
+    }
+  }
+
+  clearRouteStops(id) {
+    let route = this.getRouteById(id);
+
+    if ( route && route.stops && route.stops.length ) {
+      route.stops = [];
+    }
+  }
+
+  deleteRoute(id) {
+    const routeIndex = this.routes.findIndex(route => {
+      return route.id === id;
+    });
+
+    if ( routeIndex > -1 ) {
+      this.routes.splice(routeIndex, 1);
+    }
+  }
+
+  getRouteById(id) {
+    let route = this.routes
+        .filter((item) => item.id === id)[0];
+
+    return route ? route : false;
   }
 }
