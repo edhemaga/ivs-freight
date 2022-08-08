@@ -1,5 +1,5 @@
 import { FormArray } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { concatMap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -146,6 +146,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public addNewAfterSave: boolean = false;
 
+  public disabledEmptyLoadedMile: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -165,6 +167,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.getDriverDropdowns();
     this.validateMiles();
     this.isCheckedOwner();
+
+    this.handlingPayrollFleetType();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
@@ -259,6 +263,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       routing: [null],
       payType: [null, Validators.required],
       useTruckAssistAch: [false],
+      soloDriver: [true],
+      teamDriver: [false],
       soloEmptyMile: [null, [Validators.required, ...mileValidation]],
       soloLoadedMile: [null, [Validators.required, ...mileValidation]],
       soloPerStop: [null, perStopValidation],
@@ -445,6 +451,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     if (event.valid) {
       this.selectedAddress = event.address;
     }
+  }
+
+  public handlingPayrollFleetType() {
+    this.driverForm
+      .get('soloDriver')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((val) => {
+        if (!val) {
+          this.driverForm.get('teamDriver').patchValue(true);
+        }
+      });
+
+    this.driverForm
+      .get('teamDriver')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((val) => {
+        if (!val) {
+          this.driverForm.get('soloDriver').patchValue(true);
+        }
+      });
   }
 
   public onHandleAddressFormArray(
@@ -762,33 +788,49 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile:
-          soloEmptyMile && this.selectedPayType?.id
+        emptyMile: this.driverForm.get('soloDriver').value
+          ? soloEmptyMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloEmptyMile)
-            : null,
-        loadedMile:
-          soloLoadedMile && this.selectedPayType?.id
+            : null
+          : null,
+        loadedMile: this.driverForm.get('soloDriver').value
+          ? soloLoadedMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloLoadedMile)
-            : null,
-        perStop:
-          soloPerStop && this.selectedPayType?.id
+            : null
+          : null,
+        perStop: this.driverForm.get('soloDriver').value
+          ? soloPerStop && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloPerStop)
-            : null,
+            : null
+          : null,
       },
       team: {
-        emptyMile:
-          teamEmptyMile && this.selectedPayType?.id
+        emptyMile: this.driverForm.get('teamDriver').value
+          ? teamEmptyMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamEmptyMile)
-            : null,
-        loadedMile:
-          teamLoadedMile && this.selectedPayType?.id
+            : null
+          : null,
+        loadedMile: this.driverForm.get('teamDriver').value
+          ? teamLoadedMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamLoadedMile)
-            : null,
-        perStop:
-          teamPerStop && this.selectedPayType?.id
+            : null
+          : null,
+        perStop: this.driverForm.get('teamDriver').value
+          ? teamPerStop && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamPerStop)
-            : null,
+            : null
+          : null,
       },
+      commissionSolo: this.driverForm.get('soloDriver').value
+        ? this.selectedPayType?.id
+          ? parseInt(this.driverForm.get('commissionSolo').value)
+          : null
+        : null,
+      commissionTeam: this.driverForm.get('teamDriver').value
+        ? this.selectedPayType?.id
+          ? parseInt(this.driverForm.get('commissionTeam').value)
+          : null
+        : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -799,12 +841,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         pushNotification: pushNotificationPayroll,
         smsNotification: smsNotificationPayroll,
       },
-      commissionSolo: this.selectedPayType?.id
-        ? parseInt(this.driverForm.get('commissionSolo').value)
-        : null,
-      commissionTeam: this.selectedPayType?.id
-        ? parseInt(this.driverForm.get('commissionTeam').value)
-        : null,
       twicExpDate: this.driverForm.get('twic').value
         ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
@@ -904,33 +940,49 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       payType: this.selectedPayType ? this.selectedPayType.id : null,
       solo: {
-        emptyMile:
-          soloEmptyMile && this.selectedPayType?.id
+        emptyMile: this.driverForm.get('soloDriver').value
+          ? soloEmptyMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloEmptyMile)
-            : null,
-        loadedMile:
-          soloLoadedMile && this.selectedPayType?.id
+            : null
+          : null,
+        loadedMile: this.driverForm.get('soloDriver').value
+          ? soloLoadedMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloLoadedMile)
-            : null,
-        perStop:
-          soloPerStop && this.selectedPayType?.id
+            : null
+          : null,
+        perStop: this.driverForm.get('soloDriver').value
+          ? soloPerStop && this.selectedPayType?.id
             ? convertThousanSepInNumber(soloPerStop)
-            : null,
+            : null
+          : null,
       },
       team: {
-        emptyMile:
-          teamEmptyMile && this.selectedPayType?.id
+        emptyMile: this.driverForm.get('teamDriver').value
+          ? teamEmptyMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamEmptyMile)
-            : null,
-        loadedMile:
-          teamLoadedMile && this.selectedPayType?.id
+            : null
+          : null,
+        loadedMile: this.driverForm.get('teamDriver').value
+          ? teamLoadedMile && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamLoadedMile)
-            : null,
-        perStop:
-          teamPerStop && this.selectedPayType?.id
+            : null
+          : null,
+        perStop: this.driverForm.get('teamDriver').value
+          ? teamPerStop && this.selectedPayType?.id
             ? convertThousanSepInNumber(teamPerStop)
-            : null,
+            : null
+          : null,
       },
+      commissionSolo: this.driverForm.get('soloDriver').value
+        ? this.selectedPayType?.id
+          ? parseInt(this.driverForm.get('commissionSolo').value)
+          : null
+        : null,
+      commissionTeam: this.driverForm.get('teamDriver').value
+        ? this.selectedPayType?.id
+          ? parseInt(this.driverForm.get('commissionTeam').value)
+          : null
+        : null,
       general: {
         mailNotification: mailNotificationGeneral,
         pushNotification: pushNotificationGeneral,
@@ -941,12 +993,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         pushNotification: pushNotificationPayroll,
         smsNotification: smsNotificationPayroll,
       },
-      commissionSolo: this.selectedPayType?.id
-        ? parseInt(this.driverForm.get('commissionSolo').value)
-        : null,
-      commissionTeam: this.selectedPayType?.id
-        ? parseInt(this.driverForm.get('commissionTeam').value)
-        : null,
+
       twicExpDate: this.driverForm.get('twic').value
         ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,

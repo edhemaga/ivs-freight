@@ -123,41 +123,47 @@
         <app-ta-custom-card [cardName]="'Payroll'" [isCardOpen]="true">
           <div
             class="custom-row-paytype-driver"
-            [ngStyle]="
-              driverForm.get('useTruckAssistAch').value && {
-                'margin-bottom': '32px'
-              }
-            "
+            [ngClass]="{ 'custom-row-paytype-driver-disabled': disablePayType }"
           >
-            <div
-              class="checkbox-paytype-driver"
-              [ngClass]="{ 'checkbox-paytype-driver-disabled': disablePayType }"
-            >
-              <app-ta-checkbox
-                formControlName="useTruckAssistAch"
-                [customClass]="'medium'"
-                [name]="'truckassistACH'"
-                [disabled]="disablePayType"
-                [label]="'Use TruckAssist ACH'"
-              ></app-ta-checkbox>
-              <div class="paytype-driver">
-                <app-ta-input-dropdown
-                  formControlName="payType"
-                  [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Pay type',
-                    isRequired: true,
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-422',
-                    isDisabled: disablePayType
-                  }"
-                  [options]="labelsPayType"
-                  [activeItem]="selectedPayType"
-                  (selectedItem)="onSelectDropdown($event, 'paytype')"
-                ></app-ta-input-dropdown>
-              </div>
-            </div>
+            <app-ta-checkbox
+              formControlName="useTruckAssistAch"
+              [customClass]="'medium'"
+              [name]="'truckassistACH'"
+              [disabled]="disablePayType"
+              [label]="'Use TruckAssist ACH'"
+            ></app-ta-checkbox>
+
+            <app-ta-input-dropdown
+              formControlName="payType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay type',
+                isRequired: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-167',
+                isDisabled: disablePayType
+              }"
+              [options]="labelsPayType"
+              [activeItem]="selectedPayType"
+              (selectedItem)="onSelectDropdown($event, 'paytype')"
+            ></app-ta-input-dropdown>
+
+            <app-ta-checkbox
+              formControlName="soloDriver"
+              [customClass]="'medium'"
+              [name]="'solorDriver'"
+              [disabled]="disablePayType"
+              [label]="'Solo Driver'"
+            ></app-ta-checkbox>
+
+            <app-ta-checkbox
+              formControlName="teamDriver"
+              [customClass]="'medium'"
+              [name]="'teamrDriver'"
+              [disabled]="disablePayType"
+              [label]="'Team Driver'"
+            ></app-ta-checkbox>
           </div>
 
           <!-- Pay Type Per Mile -->
@@ -166,7 +172,14 @@
             [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
             *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
           >
-            <div class="permile-fields">
+            <div
+              *ngIf="
+                this.driverForm.get('soloDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="permile-fields"
+            >
               <p>SOLO</p>
               <app-ta-input
                 formControlName="soloLoadedMile"
@@ -210,7 +223,14 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="permile-fields">
+            <div
+              *ngIf="
+                this.driverForm.get('teamDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="permile-fields"
+            >
               <p>TEAM</p>
               <app-ta-input
                 formControlName="teamLoadedMile"
@@ -259,11 +279,23 @@
           <div
             class="paytype-commission"
             *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
-            [class.active]="
-              selectedPayType?.name.toLowerCase() === 'commission'
-            "
+            [ngClass]="{
+              'paytype-commission-single':
+                (this.driverForm.get('soloDriver').value &&
+                  !this.driverForm.get('teamDriver').value) ||
+                (!this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value),
+              active: selectedPayType?.name.toLowerCase() === 'commission'
+            }"
           >
-            <div class="paytype-field">
+            <div
+              *ngIf="
+                this.driverForm.get('soloDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="paytype-field"
+            >
               <app-ta-ngx-slider
                 [sliderName]="'SOLO'"
                 [sliderOptions]="soloSliderOptions"
@@ -276,7 +308,14 @@
                 "
               ></app-ta-ngx-slider>
             </div>
-            <div class="paytype-field">
+            <div
+              *ngIf="
+                this.driverForm.get('teamDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="paytype-field"
+            >
               <app-ta-ngx-slider
                 [sliderName]="'TEAM'"
                 [sliderOptions]="teamSliderOptions"
@@ -639,6 +678,8 @@
               [customClass]="'medium'"
               [name]="'Email Payroll'"
               [label]="'Email'"
+              [disabled]="true"
+              [customClass]="'disabled-valid'"
             ></app-ta-checkbox>
             <app-ta-checkbox
               formControlName="pushNotificationPayroll"
