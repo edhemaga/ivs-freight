@@ -1,12 +1,12 @@
 <div class="table-container">
     <div class="table-toolbar-container toolbar-relative">
-      <!-- <app-truckassist-table-toolbar
+      <app-truckassist-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
         [selectedTab]="selectedTab"
-        [columns]="columns"
-      ></app-truckassist-table-toolbar> -->
+        [columns]="[]"
+      ></app-truckassist-table-toolbar>
     </div>
     
     <div class="customer-map-container">
@@ -29,11 +29,12 @@
                             ngbTooltip
                             [mainTooltip]="'Route Reorder'"
                             position="right"
+                            (click)="focusRoute(i)"
                             >
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" *ngIf="!route.hidden">
                                     <g id="Drag" transform="translate(-935.139 -1357)" opacity="0.7">
-                                    <rect id="Rectangle_63459" data-name="Rectangle 63459" width="18" height="18" rx="2" transform="translate(935.139 1357)" fill="#f27b8e" opacity="0"/>
-                                    <path id="grip-vertical" d="M3,0H1A1,1,0,0,0,0,1V3A1,1,0,0,0,1,4H3A1,1,0,0,0,4,3V1A1,1,0,0,0,3,0ZM3,5H1A1,1,0,0,0,0,6V8A1,1,0,0,0,1,9H3A1,1,0,0,0,4,8V6A1,1,0,0,0,3,5Zm0,5H1a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H3a1,1,0,0,0,1-1V11A1,1,0,0,0,3,10ZM9,0H7A1,1,0,0,0,6,1V3A1,1,0,0,0,7,4H9a1,1,0,0,0,1-1V1A1,1,0,0,0,9,0ZM9,5H7A1,1,0,0,0,6,6V8A1,1,0,0,0,7,9H9a1,1,0,0,0,1-1V6A1,1,0,0,0,9,5Zm0,5H7a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H9a1,1,0,0,0,1-1V11A1,1,0,0,0,9,10Z" transform="translate(951.139 1361) rotate(90)" [ngStyle]="{ fill: routeColors[i] }" stroke="rgba(0,0,0,0)" stroke-width="1"/>
+                                        <rect id="Rectangle_63459" data-name="Rectangle 63459" width="18" height="18" rx="2" transform="translate(935.139 1357)" fill="#f27b8e" opacity="0"/>
+                                        <path id="grip-vertical" d="M3,0H1A1,1,0,0,0,0,1V3A1,1,0,0,0,1,4H3A1,1,0,0,0,4,3V1A1,1,0,0,0,3,0ZM3,5H1A1,1,0,0,0,0,6V8A1,1,0,0,0,1,9H3A1,1,0,0,0,4,8V6A1,1,0,0,0,3,5Zm0,5H1a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H3a1,1,0,0,0,1-1V11A1,1,0,0,0,3,10ZM9,0H7A1,1,0,0,0,6,1V3A1,1,0,0,0,7,4H9a1,1,0,0,0,1-1V1A1,1,0,0,0,9,0ZM9,5H7A1,1,0,0,0,6,6V8A1,1,0,0,0,7,9H9a1,1,0,0,0,1-1V6A1,1,0,0,0,9,5Zm0,5H7a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H9a1,1,0,0,0,1-1V11A1,1,0,0,0,9,10Z" transform="translate(951.139 1361) rotate(90)" [ngStyle]="{ fill: route.isFocused ? '#fff' : routeColors[i] }" stroke="rgba(0,0,0,0)" stroke-width="1"/>
                                     </g>
                                 </svg>
                             </div>
@@ -87,7 +88,17 @@
                             <div class="route-row-total marker-like-text marker-bold-text gray-text" *ngIf="!route.expanded">Total</div>
                             <div class="route-row-total marker-like-text marker-bold-text gray-text" *ngIf="route.expanded">Total mi</div>
                         </div> -->
-                        <div class="route-card-row" *ngFor="let stop of route.stops; let b = index;" cdkDrag cdkDragBoundary=".route-card-content">
+                        <div 
+                            class="route-card-row" 
+                            *ngFor="let stop of route.stops; let b = index;" 
+                            cdkDrag 
+                            cdkDragBoundary=".route-card-content"
+                            [ngClass]="{ 'focused-route': route.isFocused }">
+                            <div 
+                                class="focused-route-number-background" 
+                                [ngStyle]="{ backgroundColor: routeColors[i] }"
+                                *ngIf="route.isFocused"
+                            ></div>
                             <svg-icon
                                 src="assets/svg/truckassist-table/dropdown/content/delete.svg"
                                 class="delete-button"
@@ -97,13 +108,13 @@
                             <div class="delete-button drag-arrows">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
                                     <g id="Height" transform="translate(-648 761) rotate(-90)">
-                                    <rect id="Rectangle_62626" data-name="Rectangle 62626" width="14" height="14" transform="translate(747 648)" fill="#fff" opacity="0"/>
-                                    <path id="arrows-alt-h" d="M8.581,146.725v1.594H4.639v-1.594a.831.831,0,0,0-1.418-.587L.243,149.116a.831.831,0,0,0,0,1.175l2.979,2.979a.831.831,0,0,0,1.418-.587v-1.594H8.581v1.594A.831.831,0,0,0,10,153.27l2.979-2.979a.831.831,0,0,0,0-1.175L10,146.138a.831.831,0,0,0-1.418.587Z" transform="translate(747.39 505.296)" [ngStyle]="{ fill: routeColors[i] }" />
+                                        <rect id="Rectangle_62626" data-name="Rectangle 62626" width="14" height="14" transform="translate(747 648)" fill="#fff" opacity="0"/>
+                                        <path id="arrows-alt-h" d="M8.581,146.725v1.594H4.639v-1.594a.831.831,0,0,0-1.418-.587L.243,149.116a.831.831,0,0,0,0,1.175l2.979,2.979a.831.831,0,0,0,1.418-.587v-1.594H8.581v1.594A.831.831,0,0,0,10,153.27l2.979-2.979a.831.831,0,0,0,0-1.175L10,146.138a.831.831,0,0,0-1.418.587Z" transform="translate(747.39 505.296)" [ngStyle]="{ fill: route.isFocused ? '#fff' : routeColors[i] }" />
                                     </g>
                                 </svg>
                             </div>
                             <div class="delete-stop-text">Delete</div>
-                            <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: routeColors[i] }">{{ b + 1 }}</div>
+                            <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: route.isFocused ? '#fff' : routeColors[i] }">{{ b + 1 }}</div>
                             <div class="route-row-location marker-like-text" [ngClass]="{ 'full-address': route.fullAddressView }">{{ stop.fullAddress ? stop.fullAddress : stop.address }}</div>
                             <div class="route-row-leg shorter-leg-text marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded">{{ b === 0 ? 'Leg t' : stop.time }}</div>
                             <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: b == route.stops.length-1 ? routeColors[i] : '' }" *ngIf="route.expanded">{{ b === 0 ? 'Total t' : stop.totalTime }}</div>
@@ -111,11 +122,11 @@
                             <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: b == route.stops.length-1 ? routeColors[i] : '' }">{{ b === 0 && route.expanded ? 'Total mi' : b === 0 && !route.expanded ? 'Total' : (stop.total) }}</div>
                         </div>
                         <!-- <div class="empty-miles"></div> -->
-                        <div class="route-card-row m-0" [formGroup]="$any(addressInputs)">
+                        <div class="route-card-row m-0" [formGroup]="$any(addressInputs)" [ngClass]="{ 'focused-route': route.isFocused }">
                             <svg-icon
                                 src="assets/svg/common/ic_plus.svg"
                                 class="delete-button plus-button"
-                                [svgStyle]="{ 'width.px': 14, 'height.px': 14, fill: routeColors[i] }"
+                                [svgStyle]="{ 'width.px': 14, 'height.px': 14, fill: route.isFocused ? '#fff' : routeColors[i] }"
                             ></svg-icon>
                             <div class="route-row-number marker-like-text marker-bold-text"></div>
                             <div 
@@ -163,7 +174,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="route-card-resize-button" (click)="resizeCard(route)" *ngIf="!route.dropdownOpen">
+                    <div class="selected-route" *ngIf="route.isFocused" [ngStyle]="{ backgroundColor: routeColors[i] }"></div>
+                    <div class="route-card-resize-button" (click)="resizeCard(route)" *ngIf="!route.dropdownOpen && !route.hidden">
                         <svg-icon
                             src="assets/svg/common/fill_arrow_down.svg"
                             class="map-list-resize-svg"
@@ -189,14 +201,64 @@
             (mapReady)="getMapInstance($event)">
 
             <div *ngFor="let route of routes; let i = index;">
-                <div *ngIf="route.stops?.length">
-                    <agm-direction
-                        *ngFor="let e of [].constructor(route.stops.length-1); let j = index"
-                        [renderOptions]="{ polylineOptions: { strokeColor: routeColors[i], strokeWeight: 6 } }"
-                        [optimizeWaypoints]="false"
-                        [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
-                        [destination]="{ lat: route.stops[j+1].lat, lng: route.stops[j+1].long }"
-                    ></agm-direction>
+                <div *ngIf="route.stops?.length && !route.hidden">
+                    <div *ngFor="let e of [].constructor(route.stops.length); let j = index">
+                        <agm-marker
+                            [agmFitBounds]="true"
+                            [latitude]="route.stops[j].lat"
+                            [longitude]="route.stops[j].long"
+                            [visible]="false"
+                            >
+                            <agm-snazzy-info-window
+                                [closeOnMapClick]="false"
+                                [closeWhenOthersOpen]="false"
+                                [isOpen]="true"
+                                [latitude]="route.stops[j].lat"
+                                [longitude]="route.stops[j].long"
+                                [maxHeight]="32"
+                                [maxWidth]="26"
+                                [openOnMarkerClick]="false"
+                                placement="bottom"
+                                [showCloseButton]="false"
+                                [pointer]="false"
+                            >
+                                <ng-template>
+                                    <div class="marker-container marker-icon" *ngIf="route.isFocused">
+                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="37" viewBox="0 0 34 37">
+                                            <defs>
+                                            <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
+                                                <feOffset input="SourceAlpha"/>
+                                                <feGaussianBlur stdDeviation="2" result="blur"/>
+                                                <feFlood flood-opacity="0.149"/>
+                                                <feComposite operator="in" in2="blur"/>
+                                                <feComposite in="SourceGraphic"/>
+                                            </filter>
+                                            </defs>
+                                            <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
+                                            <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
+                                            </g>
+                                            <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" [ngStyle]="{ fill: routeColors[i] }" />
+                                            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ j+1 }}</tspan></text>
+                                        </svg>
+                                    </div>
+                                    <div class="marker-container circle-marker">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12">
+                                            <circle id="Ellipse_6245" data-name="Ellipse 6245" cx="6" cy="6" r="6" [ngStyle]="{ fill: routeColors[i] }" />
+                                            <circle id="Ellipse_6246" data-name="Ellipse 6246" cx="2" cy="2" r="2" transform="translate(4 4)" fill="#fff"/>
+                                        </svg>
+                                    </div>
+                                </ng-template>
+                            </agm-snazzy-info-window>
+                        </agm-marker>
+                    </div>
+                    <div *ngFor="let e of [].constructor(route.stops.length-1); let j = index">
+                        <agm-direction
+                            [renderOptions]="{ polylineOptions: { strokeColor: routeColors[i], strokeWeight: 6 }, suppressMarkers: true }"
+                            [optimizeWaypoints]="false"
+                            [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
+                            [destination]="{ lat: route.stops[j+1].lat, lng: route.stops[j+1].long }"
+                        ></agm-direction>
+                    </div>
                 </div>
             </div>
 

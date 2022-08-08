@@ -5,6 +5,7 @@ import { RoutingRoutingModule } from './routing-routing.module';
 import { RoutingMapComponent } from './routing-map/routing-map.component';
 
 import { SharedModule } from '../shared/shared.module';
+import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { SharedModule } from '../shared/shared.module';
     CommonModule,
     RoutingRoutingModule,
     SharedModule,
+    TruckassistTableModule
   ]
 })
 export class RoutingModule { }

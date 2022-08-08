@@ -36,6 +36,23 @@ export class RoutingMapComponent implements OnInit {
 
   addressInputs: FormArray = this.formBuilder.array([]);
 
+  public markerOptions = {
+      origin: {
+          icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
+          draggable: true,
+      },
+      destination: {
+          icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
+          label: 'MARKER LABEL',
+          opacity: 0.8,
+      },
+  }
+
+  selectedTab: string = 'map1';
+  tableOptions: any = {};
+
+  tableData: any[] = [];
+
   dropdownActions: any[] = [
     {
       title: 'Settings',
@@ -116,7 +133,7 @@ export class RoutingMapComponent implements OnInit {
           'lat': 41.601970,
           'long': -87.349680
         },
-        {
+        /*{
           'address': 'Chicago, IL 65005',
           'leg': '60.6',
           'total': '60.6',
@@ -125,7 +142,7 @@ export class RoutingMapComponent implements OnInit {
           'empty': true,
           'lat': 41.883230,
           'long': -87.632400
-        },
+        },*/
         {
           'address': 'Philadelphia, PA 52320',
           'leg': '45.2',
@@ -166,7 +183,7 @@ export class RoutingMapComponent implements OnInit {
           'lat': 35.404478,
           'long': -81.331493
         },
-        {
+        /*{
           'address': 'Chicago, IL 65005',
           'fullAddress': '1525 Park Dr, Munster, IN 46321',
           'leg': '60.6',
@@ -176,7 +193,7 @@ export class RoutingMapComponent implements OnInit {
           'empty': false,
           'lat': 41.5577897,
           'long': -87.4925295
-        },
+        },*/
         {
           'address': 'Philadelphia, PA 52320',
           'fullAddress': '32075 Arlington Dr, Franklin,  MI 48025',
@@ -201,7 +218,7 @@ export class RoutingMapComponent implements OnInit {
         },
       ]
     },
-    {
+    /*{
       'id': 3,
       'name': 'Route 3',
       'hidden': false,
@@ -249,7 +266,7 @@ export class RoutingMapComponent implements OnInit {
           'long': -75.165620
         },
       ]
-    },
+    },*/
   ];
 
   public routeColors: any[] = [
@@ -269,6 +286,8 @@ export class RoutingMapComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.initTableOptions();
+
     this.addressForm = this.formBuilder.group({
       address: [null]
     });
@@ -311,6 +330,7 @@ export class RoutingMapComponent implements OnInit {
 
   showHideRoute(route) {
     route.hidden = !route.hidden;
+    if ( route.isFocused ) { route.isFocused = false; }
   }
 
   resizeCard(route) {
@@ -391,8 +411,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   calculateDistanceBetweenStops(i: number) {
-    console.log('calculateDistanceBetweenStops route', this.routes[i]);
-
     /* Set all distance and totalDistance to 0 km or miles */
     for (let j = 0; j < this.routes[i].stops.length; j++) {
       this.routes[i].stops[j].leg = 0;
@@ -400,12 +418,10 @@ export class RoutingMapComponent implements OnInit {
     }
     /* For  Calculate Distance*/
     for (let j = 1; j < this.routes[i].stops.length; j++) {
-      console.log('calculateDistanceBetweenStops stop', this.routes[i].stops[j]);
       if (
         this.routes[i].stops[j].lat !== undefined &&
         this.routes[i].stops[j].long !== undefined
       ) {
-        console.log('calculateDistanceBetweenStops stop inside', this.routes[i].stops[j]);
         const firstAddress = new google.maps.LatLng(
           this.routes[i].stops[j - 1].lat,
           this.routes[i].stops[j - 1].long
@@ -414,9 +430,6 @@ export class RoutingMapComponent implements OnInit {
           this.routes[i].stops[j].lat,
           this.routes[i].stops[j].long
         );
-
-        console.log('calculateDistanceBetweenStops firstAddress', firstAddress);
-        console.log('calculateDistanceBetweenStops firstAddress', secondAddress);
 
         let distance: number;
         /* Chack if miles or km */
@@ -517,5 +530,86 @@ export class RoutingMapComponent implements OnInit {
         .filter((item) => item.id === id)[0];
 
     return route ? route : false;
+  }
+  
+  focusRoute(i) {
+    this.routes.map((route, index) => {
+      if ( index == i ) {
+        if ( !route.hidden ) {
+          route.isFocused = !route.isFocused;
+        }
+      } else {
+        route.isFocused = false;
+      }
+    });
+  }
+
+  onToolBarAction(event: any) {
+    console.log('onToolBarAction', event);
+
+    // // Add Call
+    // if (event.action === 'open-modal') {
+    //   // Add Broker Call Modal
+    //   if (this.selectedTab === 'active') {
+    //     this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
+    //   }
+    //   // Add Shipper Call Modal
+    //   else {
+    //     this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
+    //   }
+    // }
+    // // Switch Tab Call
+    // else if (event.action === 'tab-selected') {
+    //   this.selectedTab = event.tabData.field;
+
+    //   this.sendCustomerData();
+    // } else if (event.action === 'view-mode') {
+    //   this.tableOptions.toolbarActions.viewModeActive = event.mode;
+    // }
+  }
+
+  public initTableOptions(): void {
+    this.tableOptions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideLocationFilter: true,
+        hideViewMode: true,
+        showMapView: false
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      }
+    };
+
+    this.tableData = [
+      {
+        title: 'Map 1',
+        field: 'map1',
+        length: this.routes.length,
+        gridNameTitle: 'Routing'
+      },
+      // {
+      //   title: 'Map 2',
+      //   field: 'map2',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
+      // {
+      //   title: 'Map 3',
+      //   field: 'map3',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
+      // {
+      //   title: 'Map 4',
+      //   field: 'map4',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
+    ];
   }
 }
