@@ -1,4 +1,13 @@
 import { Injectable } from '@angular/core';
+import {
+  CompanyOfficeModalResponse,
+  CompanyOfficeResponse,
+  CompanyOfficeService,
+  CreateCompanyOfficeCommand,
+  CreateResponse,
+  UpdateCompanyOfficeCommand,
+} from 'appcoretruckassist';
+import { Observable } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { SettingsOfficeModalComponent } from '../../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from '../../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
@@ -9,7 +18,10 @@ import { SettingsTerminalModalComponent } from '../../settings-location/location
   providedIn: 'root',
 })
 export class SettingsLocationService {
-  constructor(private modalService: ModalService) {}
+  constructor(
+    private modalService: ModalService,
+    private companyOfficeService: CompanyOfficeService
+  ) {}
 
   /**
    * Open Modal
@@ -50,5 +62,30 @@ export class SettingsLocationService {
       default:
         break;
     }
+  }
+
+  // Location Office
+  public deleteCompanyOfficeById(id: number): Observable<any> {
+    return this.companyOfficeService.apiCompanyofficeIdDelete(id);
+  }
+
+  public getCompanyOfficeById(id: number): Observable<CompanyOfficeResponse> {
+    return this.companyOfficeService.apiCompanyofficeIdGet(id);
+  }
+
+  public getCompanyOfficeModal(): Observable<CompanyOfficeModalResponse> {
+    return this.companyOfficeService.apiCompanyofficeModalGet();
+  }
+
+  public addCompanyOffice(
+    data: CreateCompanyOfficeCommand
+  ): Observable<CreateResponse> {
+    return this.companyOfficeService.apiCompanyofficePost(data);
+  }
+
+  public updateCompanyOffice(
+    data: UpdateCompanyOfficeCommand
+  ): Observable<any> {
+    return this.companyOfficeService.apiCompanyofficePut(data);
   }
 }

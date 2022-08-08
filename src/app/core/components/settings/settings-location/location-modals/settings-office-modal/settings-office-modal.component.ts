@@ -1,3 +1,8 @@
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from 'src/app/core/utils/methods.calculations';
+import { SettingsLocationService } from './../../../state/location-state/settings-location.service';
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -13,7 +18,13 @@ import {
   emailRegex,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { AddressEntity } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  CompanyOfficeModalResponse,
+  CompanyOfficeResponse,
+  CreateCompanyOfficeCommand,
+  UpdateCompanyOfficeCommand,
+} from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
@@ -34,13 +45,19 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public officeForm: FormGroup;
 
   public selectedTab: number = 1;
+
   public selectedAddress: AddressEntity = null;
   public isPhoneExtExist: boolean = false;
 
+  public payPeriods: any[] = [];
   public selectedPayPeriod: any = null;
-  public selectedDay: any = null;
+
+  public monthlyDays: any[] = [];
+  public selectedMonthlyDay: any = null;
 
   public isContactCardsScrolling: boolean = false;
+
+  public departments: any[] = [];
   public selectedDepartmentFormArray: any[] = [];
 
   public isDirty: boolean;
@@ -66,27 +83,33 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private settingsLocationService: SettingsLocationService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.isCheckedCompanyOwned();
+    this.getCompanyOfficeDropdowns();
+
+    if (this.editData) {
+      this.editCompanyOfficeById(this.editData.id);
+    }
   }
 
   private createForm() {
     this.officeForm = this.formBuilder.group({
-      companyOwned: [false],
-      officeName: [null, Validators.required],
+      isOwner: [false],
+      name: [null, Validators.required],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, Validators.required, phoneRegex],
-      phoneExtension: [null],
+      phone: [null, [Validators.required, phoneRegex]],
+      extensionPhone: [null],
       email: [null, emailRegex],
       departmentContacts: this.formBuilder.array([]),
       rent: [null],
       payPeriod: [null],
-      day: [null],
+      monthlyDay: [null],
     });
 
     // this.formService.checkFormChange(this.officeForm);
@@ -119,17 +142,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData) {
-          this.updateOffice(this.editData.id);
+          this.updateCompanyOffice(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
-          this.addOffice();
+          this.addCompanyOffice();
           this.modalService.setModalSpinner({ action: null, status: true });
         }
         break;
       }
       case 'delete': {
         if (this.editData) {
-          this.deleteOfficeById(this.editData.id);
+          this.deleteCompanyOfficeById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
         }
         break;
@@ -146,10 +169,11 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   private createDepartmentContacts(): FormGroup {
     return this.formBuilder.group({
-      departmentId: [null],
-      phone: [null, phoneRegex],
+      id: [0],
+      departmentId: [null, Validators.required],
+      phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null],
-      email: [null, emailRegex],
+      email: [null, [Validators.required, emailRegex]],
     });
   }
 
@@ -183,21 +207,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.officeForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.officeForm.get('companyOwned').setValue(false);
-    }
-  }
-
   private isCheckedCompanyOwned() {
     this.officeForm
-      .get('companyOwned')
+      .get('isOwner')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         if (!value) {
-          this.inputService.changeValidators(this.officeForm.get('officeName'));
+          this.inputService.changeValidators(this.officeForm.get('name'));
           this.inputService.changeValidators(this.officeForm.get('address'));
           this.inputService.changeValidators(
             this.officeForm.get('phone'),
@@ -206,7 +222,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           );
         } else {
           this.inputService.changeValidators(
-            this.officeForm.get('officeName'),
+            this.officeForm.get('name'),
             false
           );
           this.inputService.changeValidators(
@@ -214,7 +230,15 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             false
           );
           this.inputService.changeValidators(
+            this.officeForm.get('addressUnit'),
+            false
+          );
+          this.inputService.changeValidators(
             this.officeForm.get('phone'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.officeForm.get('email'),
             false
           );
         }
@@ -227,8 +251,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         this.selectedPayPeriod = event;
         break;
       }
-      case 'day': {
-        this.selectedDay = event;
+      case 'monthlyDay': {
+        this.selectedMonthlyDay = event;
         break;
       }
       default: {
@@ -237,11 +261,180 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateOffice(id: number) {}
+  private updateCompanyOffice(id: number) {
+    const { address, addressUnit, departmentContacts, rent, ...form } =
+      this.officeForm.value;
 
-  private addOffice() {}
+    let newData: UpdateCompanyOfficeCommand = {
+      id: id,
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      payPeriod: this.selectedPayPeriod.id,
+      monthlyDay: this.selectedMonthlyDay.id,
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+    };
 
-  private deleteOfficeById(id: number) {}
+    for (let index = 0; index < departmentContacts.length; index++) {
+      departmentContacts[index].departmentId =
+        this.selectedDepartmentFormArray[index].id;
+    }
+
+    newData = {
+      ...newData,
+      departmentContacts,
+    };
+
+    console.log(newData);
+
+    this.settingsLocationService
+      .updateCompanyOffice(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly updated company office',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update company office",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private addCompanyOffice() {
+    const { address, addressUnit, departmentContacts, rent, ...form } =
+      this.officeForm.value;
+
+    let newData: CreateCompanyOfficeCommand = {
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      payPeriod: this.selectedPayPeriod.id,
+      monthlyDay: this.selectedMonthlyDay.id,
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+    };
+
+    for (let index = 0; index < departmentContacts.length; index++) {
+      departmentContacts[index].departmentId =
+        this.selectedDepartmentFormArray[index].id;
+    }
+
+    newData = {
+      ...newData,
+      departmentContacts,
+    };
+
+    console.log(newData);
+
+    this.settingsLocationService
+      .addCompanyOffice(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly created company office',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't create company office",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteCompanyOfficeById(id: number) {
+    this.settingsLocationService
+      .deleteCompanyOfficeById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly delete company office',
+            'Success'
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete company office",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private editCompanyOfficeById(id: number) {
+    this.settingsLocationService
+      .getCompanyOfficeById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyOfficeResponse) => {
+          this.officeForm.patchValue({
+            isOwner: res.isOwner,
+            name: res.name,
+            address: res.address.address,
+            addressUnit: res.address.addressUnit,
+            phone: res.phone,
+            extensionPhone: '321',
+            email: res.email,
+            rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
+            payPeriod: res.payPeriod.name,
+            monthlyDay: res.monthlyDay.name,
+          });
+
+          this.selectedMonthlyDay = res.monthlyDay;
+          this.selectedPayPeriod = res.payPeriod;
+
+          for (let index = 0; index < res.departmentContacts.length; index++) {
+            this.departmentContacts.push(
+              this.formBuilder.group({
+                id: res.departmentContacts[index].id,
+                departmentId: res.departmentContacts[index].department.name,
+                phone: res.departmentContacts[index].phone,
+                extensionPhone: res.departmentContacts[index].extensionPhone,
+                email: res.departmentContacts[index].email,
+              })
+            );
+
+            this.selectedDepartmentFormArray[index] =
+              res.departmentContacts[index].department;
+          }
+        },
+        error: () => {
+          this.notificationService.error("Can't load company office ", 'Error');
+        },
+      });
+  }
+
+  private getCompanyOfficeDropdowns() {
+    this.settingsLocationService
+      .getCompanyOfficeModal()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyOfficeModalResponse) => {
+          this.monthlyDays = res.payPeriodMonthly;
+          this.payPeriods = res.payPeriod;
+          this.departments = res.departments;
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load company office dropdowns",
+            'Error'
+          );
+        },
+      });
+  }
 
   ngOnDestroy(): void {}
 }

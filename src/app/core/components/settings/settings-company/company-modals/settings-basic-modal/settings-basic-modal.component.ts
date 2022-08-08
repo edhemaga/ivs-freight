@@ -433,13 +433,28 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('departmentContacts') as FormArray;
   }
 
-  private createDepartmentContacts(): FormGroup {
+  private createDepartmentContacts(data?: {
+    id: any;
+    departmentId: any;
+    phone: any;
+    extensionPhone: any;
+    email: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      departmentId: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null],
-      email: [null, [Validators.required, emailRegex]],
+      id: [data?.id ? data.id : 0],
+      departmentId: [
+        data?.departmentId ? data?.departmentId : null,
+        Validators.required,
+      ],
+      phone: [
+        data?.phone ? data?.phone : null,
+        [Validators.required, phoneRegex],
+      ],
+      extensionPhone: [data?.extensionPhone ? data?.extensionPhone : null],
+      email: [
+        data?.email ? data?.email : null,
+        [Validators.required, emailRegex],
+      ],
     });
   }
 
@@ -502,12 +517,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('bankAccounts') as FormArray;
   }
 
-  private createBankAccount(): FormGroup {
+  private createBankAccount(data?: {
+    id: any;
+    bankId: any;
+    routing: any;
+    account: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      bankId: [null],
-      routing: [null],
-      account: [null],
+      id: [data?.id ? data.id : 0],
+      bankId: [data?.bankId ? data.bankId : null],
+      routing: [data?.routing ? data.routing : null],
+      account: [data?.account ? data.account : null],
     });
   }
 
@@ -546,12 +566,25 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('bankCards') as FormArray;
   }
 
-  private createBankCard(): FormGroup {
+  private createBankCard(data?: {
+    id: any;
+    nickname: any;
+    card: any;
+    cvc: any;
+    expireDate: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      nickname: [null],
-      card: [null, [Validators.minLength(16), Validators.maxLength(16)]],
-      cvc: [null, [Validators.minLength(3), Validators.maxLength(3)]],
-      expireDate: [null],
+      id: [data?.id ? data.id : 0],
+      nickname: [data?.nickname ? data.nickname : null],
+      card: [
+        data?.card ? data.card : null,
+        [Validators.minLength(16), Validators.maxLength(16)],
+      ],
+      cvc: [
+        data?.cvc ? data.cvc : null,
+        [Validators.minLength(3), Validators.maxLength(3)],
+      ],
+      expireDate: [data?.expireDate ? data.expireDate : null],
     });
   }
 
@@ -769,7 +802,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         checked: item.id === event.id,
       };
     });
-    console.log(this.fleetTypeBtns);
   }
 
   private getModalDropdowns() {
@@ -978,7 +1010,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
         this.departmentContacts.push(
-          this.formBuilder.group({
+          this.createDepartmentContacts({
             id: department.id,
             departmentId: department.department.name,
             phone: department.phone,
@@ -997,7 +1029,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         index++
       ) {
         this.bankAccounts.push(
-          this.formBuilder.group({
+          this.createBankAccount({
             id: this.editData.company.bankAccounts[index].id,
             bankId: this.editData.company.bankAccounts[index].bank.name,
             routing: this.editData.company.bankAccounts[index].routing,
@@ -1017,7 +1049,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.bankCards.length) {
       for (const card of this.editData.company.bankCards) {
         this.bankCards.push(
-          this.formBuilder.group({
+          this.createBankCard({
             id: card.id,
             nickname: card.nickname,
             card: card.card,
@@ -1531,7 +1563,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
         this.departmentContacts.push(
-          this.formBuilder.group({
+          this.createDepartmentContacts({
             id: department.id,
             departmentId: department.department.name,
             phone: department.phone,
@@ -1550,7 +1582,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         index++
       ) {
         this.bankAccounts.push(
-          this.formBuilder.group({
+          this.createBankAccount({
             id: this.editData.company.bankAccounts[index].id,
             bankId: this.editData.company.bankAccounts[index].bank.name,
             routing: this.editData.company.bankAccounts[index].routing,
@@ -1570,7 +1602,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.bankCards.length) {
       for (const card of this.editData.company.bankCards) {
         this.bankCards.push(
-          this.formBuilder.group({
+          this.createBankCard({
             id: card.id,
             nickname: card.nickname,
             card: card.card,

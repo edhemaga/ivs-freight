@@ -1010,7 +1010,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
-    console.log(newData);
+
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
@@ -1124,8 +1124,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           });
 
           this.driverStatus = res.status === 1 ? false : true;
-
-          console.log(this.driverForm.value);
 
           if (res.owner) {
             if (this.driverForm.get('ein').value) {

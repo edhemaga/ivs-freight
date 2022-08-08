@@ -90,19 +90,27 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
   public get fuelItems(): FormArray {
     return this.fuelForm.get('fuelItems') as FormArray;
   }
-  private createFuelItems(id: number): FormGroup {
+  private createFuelItems(data?: {
+    id: number;
+    itemId?: string;
+    qty?: string;
+    price?: string;
+    subtotal?: string;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [id],
-      itemId: [null], // Validators.required
-      qty: [null, Validators.required],
-      price: [null, Validators.required],
-      subtotal: [null],
+      id: [data?.id ? data?.id : null],
+      itemId: [data?.itemId ? data?.itemId : null], // Validators.required
+      qty: [[data?.qty ? data?.qty : null], Validators.required],
+      price: [[data?.price ? data?.price : null], Validators.required],
+      subtotal: [[data?.subtotal ? data?.subtotal : null]],
     });
   }
 
   public addFuelItems(event: { check: boolean; action: string }) {
     if (event.check) {
-      this.fuelItems.push(this.createFuelItems(++this.fuelItemsCounter));
+      this.fuelItems.push(
+        this.createFuelItems({ id: ++this.fuelItemsCounter })
+      );
       this.subtotal = [
         ...this.subtotal,
         { id: this.fuelItemsCounter, value: 0 },

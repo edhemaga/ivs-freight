@@ -27,28 +27,27 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: officeForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
+            [ngClass]="{ pointer: officeForm.get('isOwner').value }"
           >
             <app-ta-checkbox
-              formControlName="companyOwned"
+              formControlName="isOwner"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !officeForm.get('companyOwned')?.value }"
+              [ngClass]="{ visible: !officeForm.get('isOwner')?.value }"
             ></svg-icon>
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{ 'active-20': !officeForm.get('companyOwned').value }"
+            [ngClass]="{ 'active-20': !officeForm.get('isOwner').value }"
           >
-            <div *ngIf="!officeForm.get('companyOwned').value">
+            <div *ngIf="!officeForm.get('isOwner').value">
               <div class="row">
                 <div class="col-12">
                   <app-ta-input
-                    formControlName="officeName"
+                    formControlName="name"
                     [inputConfig]="{
                       name: 'Office Name',
                       type: 'text',
@@ -119,7 +118,7 @@
                   </div>
                   <app-ta-input
                     *ngIf="isPhoneExtExist"
-                    formControlName="phoneExtension"
+                    formControlName="extensionPhone"
                     [inputConfig]="{
                       name: 'Phone Extension',
                       type: 'text',
@@ -149,7 +148,7 @@
           [hasCounter]="
             departmentContacts.length ? departmentContacts.length : '0'
           "
-          [cardName]="'Contact'"
+          [cardName]="'Department Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="true"
           [hasBodyData]="departmentContacts.length"
@@ -184,7 +183,7 @@
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'
                   }"
-                  [options]="[]"
+                  [options]="departments"
                   [activeItem]="selectedDepartmentFormArray[ind]"
                   (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
@@ -260,14 +259,14 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
+              [options]="payPeriods"
               [activeItem]="selectedPayPeriod"
               (selectedItem)="onSelectDropdown($event, 'pay-period')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-4 no-p-left">
             <app-ta-input-dropdown
-              formControlName="day"
+              formControlName="monthlyDay"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -275,9 +274,9 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
-              [activeItem]="selectedDay"
-              (selectedItem)="onSelectDropdown($event, 'day')"
+              [options]="monthlyDays"
+              [activeItem]="selectedMonthlyDay"
+              (selectedItem)="onSelectDropdown($event, 'monthlyDay')"
             ></app-ta-input-dropdown>
           </div>
         </div>

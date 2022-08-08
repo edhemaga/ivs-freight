@@ -242,7 +242,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
-          console.log(this.trailerType);
+
           this.trailerMakeType = res.trailerMakes;
 
           this.colorType = res.colors.map((item) => {

@@ -754,7 +754,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ...newData,
       brokerContacts,
     };
-    console.log(newData);
+
     this.brokerModalService
       .addBroker(newData)
       .pipe(untilDestroyed(this))
@@ -915,7 +915,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             dnu: reasponse.dnu,
             brokerContacts: [],
           });
-          console.log(reasponse);
+
           this.modalService.changeModalStatus({
             name: 'dnu',
             status: reasponse.dnu,
@@ -945,7 +945,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           this.selectedPayTerm = reasponse.payTerm;
 
           if (reasponse.brokerContacts) {
-            console.log(reasponse.brokerContacts);
             for (const contact of reasponse.brokerContacts) {
               this.brokerContacts.push(
                 this.createBrokerContacts({
@@ -1031,8 +1030,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                   checked: false,
                 }
           );
-
-          console.log(this.brokerForm.value);
         },
         error: () => {
           this.notificationService.error("Broker can't be loaded.", 'Error:');

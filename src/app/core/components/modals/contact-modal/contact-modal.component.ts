@@ -189,7 +189,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           this.contactLabels = res.labels;
           this.sharedDepartments = res.departments;
           this.sharedDepartments = [];
-          console.log(res.labels);
         },
         error: () => {
           this.notificationService.error(
@@ -221,7 +220,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedContactLabel = res.companyContactLabel;
-          console.log(res.address);
+
           this.selectedAddress = res.address;
           // TODO: shared departments label selected
         },
