@@ -166,7 +166,7 @@
               <p>DEPARTMENT <span>*</span></p>
               <p>PHONE <span>*</span></p>
               <p>EXT</p>
-              <p>EMAIL</p>
+              <p>EMAIL <span>*</span></p>
             </div>
             <div
               *ngFor="
@@ -274,8 +274,10 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="monthlyDays"
-              [activeItem]="selectedMonthlyDay"
+              [options]="
+                selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
+              "
+              [activeItem]="selectedDay"
               (selectedItem)="onSelectDropdown($event, 'monthlyDay')"
             ></app-ta-input-dropdown>
           </div>

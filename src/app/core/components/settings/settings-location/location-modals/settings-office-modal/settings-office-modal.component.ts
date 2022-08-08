@@ -53,7 +53,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public selectedPayPeriod: any = null;
 
   public monthlyDays: any[] = [];
-  public selectedMonthlyDay: any = null;
+  public selectedDay: any = null;
+
+  public weeklyDays: any[] = [];
 
   public isContactCardsScrolling: boolean = false;
 
@@ -91,8 +93,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.isCheckedCompanyOwned();
     this.getCompanyOfficeDropdowns();
-
-    if (this.editData) {
+    console.log(this.editData);
+    if (this.editData.type === 'edit') {
       this.editCompanyOfficeById(this.editData.id);
     }
   }
@@ -110,6 +112,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       rent: [null],
       payPeriod: [null],
       monthlyDay: [null],
+      weeklyDay: [null],
     });
 
     // this.formService.checkFormChange(this.officeForm);
@@ -167,13 +170,28 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     return this.officeForm.get('departmentContacts') as FormArray;
   }
 
-  private createDepartmentContacts(): FormGroup {
+  private createDepartmentContacts(data?: {
+    id: any;
+    departmentId: any;
+    phone: any;
+    extensionPhone: any;
+    email: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      departmentId: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null],
-      email: [null, [Validators.required, emailRegex]],
+      id: [data?.id ? data.id : 0],
+      departmentId: [
+        data?.departmentId ? data.departmentId : null,
+        Validators.required,
+      ],
+      phone: [
+        data?.phone ? data.phone : null,
+        [Validators.required, phoneRegex],
+      ],
+      extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
+      email: [
+        data?.email ? data.email : null,
+        [Validators.required, emailRegex],
+      ],
     });
   }
 
@@ -252,13 +270,16 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'monthlyDay': {
-        this.selectedMonthlyDay = event;
+        this.selectedDay = event;
         break;
       }
       default: {
         break;
       }
     }
+    this.officeForm.get('monthlyDay').patchValue(null);
+    this.officeForm.get('weeklyDay').patchValue(null);
+    this.selectedDay = null;
   }
 
   private updateCompanyOffice(id: number) {
@@ -270,7 +291,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
-      monthlyDay: this.selectedMonthlyDay.id,
+      monthlyDay:
+        this.selectedPayPeriod.name === 'Monthly' ? this.selectedDay.id : null,
+      weeklyDay:
+        this.selectedPayPeriod.name === 'Weekly' ? this.selectedDay.id : null,
       rent: rent ? convertThousanSepInNumber(rent) : null,
     };
 
@@ -314,7 +338,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
-      monthlyDay: this.selectedMonthlyDay.id,
+      monthlyDay:
+        this.selectedPayPeriod.name === 'Monthly' ? this.selectedDay.id : null,
+      weeklyDay:
+        this.selectedPayPeriod.name === 'Weekly' ? this.selectedDay.id : null,
       rent: rent ? convertThousanSepInNumber(rent) : null,
     };
 
@@ -390,11 +417,19 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             email: res.email,
             rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
             payPeriod: res.payPeriod.name,
-            monthlyDay: res.monthlyDay.name,
+            monthlyDay: res.payPeriod?.name
+              ? res.payPeriod.name === 'Monthly'
+                ? res.monthlyDay.name
+                : res.weeklyDay.name
+              : null,
           });
 
-          this.selectedMonthlyDay = res.monthlyDay;
+          console.log(res.payPeriod);
+
+          this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
+          this.selectedDay =
+            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
 
           for (let index = 0; index < res.departmentContacts.length; index++) {
             this.departmentContacts.push(
@@ -426,6 +461,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           this.monthlyDays = res.payPeriodMonthly;
           this.payPeriods = res.payPeriod;
           this.departments = res.departments;
+          this.weeklyDays = res.dayOfWeek;
         },
         error: () => {
           this.notificationService.error(

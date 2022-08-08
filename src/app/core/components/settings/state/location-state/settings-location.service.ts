@@ -25,38 +25,49 @@ export class SettingsLocationService {
 
   /**
    * Open Modal
-   * @param type - is modal active
+   * @param type - payload
    * @param modalName - modal name
-   * @param action - type of tab-switcher to be active
    */
-  public onModalAction(data: {
-    modalName: string;
-    type?: string;
-    company?: any;
-  }) {
+  public onModalAction(data: { modalName: string; type?: any }) {
     switch (data.modalName) {
       case 'parking': {
-        this.modalService.openModal(SettingsParkingModalComponent, {
-          size: 'small',
-        });
+        this.modalService.openModal(
+          SettingsParkingModalComponent,
+          {
+            size: 'small',
+          },
+          { ...data.type }
+        );
         break;
       }
       case 'office': {
-        this.modalService.openModal(SettingsOfficeModalComponent, {
-          size: 'small',
-        });
+        this.modalService.openModal(
+          SettingsOfficeModalComponent,
+          {
+            size: 'small',
+          },
+          { ...data.type }
+        );
         break;
       }
       case 'repairshop': {
-        this.modalService.openModal(SettingsRepairshopModalComponent, {
-          size: 'small',
-        });
+        this.modalService.openModal(
+          SettingsRepairshopModalComponent,
+          {
+            size: 'small',
+          },
+          { ...data.type }
+        );
         break;
       }
       case 'terminal': {
-        this.modalService.openModal(SettingsTerminalModalComponent, {
-          size: 'small',
-        });
+        this.modalService.openModal(
+          SettingsTerminalModalComponent,
+          {
+            size: 'small',
+          },
+          { ...data.type }
+        );
         break;
       }
       default:
