@@ -202,14 +202,6 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     if (event.valid) this.selectedAddress = event.address;
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.repairShopForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.repairShopForm.get('companyOwned').setValue(false);
-    }
-  }
-
   public isCheckedCompanyOwned() {
     this.repairShopForm
       .get('companyOwned')

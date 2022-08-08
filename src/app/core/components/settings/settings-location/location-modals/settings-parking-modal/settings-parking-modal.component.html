@@ -20,7 +20,6 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: parkingForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="companyOwned"

@@ -205,47 +205,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public openCloseCheckboxCard(event: any, action: string) {
     switch (action) {
       case 'companyOwned': {
-        if (this.terminalForm.get('companyOwned').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('companyOwned').setValue(false);
-        }
         this.isCheckedCompanyOwned();
         break;
       }
       case 'office': {
-        if (this.terminalForm.get('office').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('office').setValue(false);
-        }
         this.isCheckedOffice();
         break;
       }
       case 'parking': {
-        if (this.terminalForm.get('parking').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('parking').setValue(false);
-        }
         this.isCheckedParking();
         break;
       }
       case 'warehouse': {
-        if (this.terminalForm.get('warehouse').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('warehouse').setValue(false);
-        }
         this.isCheckedWarehouse();
         break;
       }
       case 'fuelStation': {
-        if (this.terminalForm.get('fuelStation').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('fuelStation').setValue(false);
-        }
         this.isCheckedFuelStation();
         break;
       }

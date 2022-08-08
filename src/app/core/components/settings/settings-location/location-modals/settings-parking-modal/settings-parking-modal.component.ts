@@ -148,14 +148,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.parkingForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.parkingForm.get('companyOwned').setValue(false);
-    }
-  }
-
   public isCheckedCompanyOwned() {
     this.parkingForm
       .get('companyOwned')

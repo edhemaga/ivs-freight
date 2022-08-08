@@ -41,7 +41,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
-  @ViewChild('appNote', {static: false}) public appNote: any;
+  @ViewChild('appNote', { static: false }) public appNote: any;
 
   public truckForm: FormGroup;
   public truckType: any[] = [];
@@ -240,14 +240,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           );
         }
       });
-  }
-
-  public openCloseCheckboxCard(event: any) {
-    if (this.truckForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.truckForm.get('companyOwned').setValue(false);
-    }
   }
 
   public getTruckDropdowns() {

@@ -308,19 +308,31 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     return this.driverForm.get('offDutyLocations') as FormArray;
   }
 
-  private createOffDutyLocation(): FormGroup {
+  private createOffDutyLocation(data?: {
+    id: number;
+    nickname: string;
+    address: string;
+    city: string;
+    state: string;
+    stateShortName: string;
+    country: string;
+    zipCode: string;
+    addressUnit: string;
+    street: string;
+    streetNumber: string;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      nickname: [null],
-      address: [null],
-      city: [null],
-      state: [null],
-      stateShortName: [null],
-      country: [null],
-      zipCode: [null],
-      addressUnit: [null, Validators.maxLength(6)],
-      street: [null],
-      streetNumber: [null],
+      id: [data?.id ? data.id : 0],
+      nickname: [data?.nickname ? data.nickname : null],
+      address: [data?.address ? data.address : null],
+      city: [data?.city ? data.city : null],
+      state: [data?.state ? data.state : null],
+      stateShortName: [data?.stateShortName ? data.stateShortName : null],
+      country: [data?.country ? data.country : null],
+      zipCode: [data?.zipCode ? data.zipCode : null],
+      addressUnit: [data?.addressUnit ? data.addressUnit : null],
+      street: [data?.street ? data.street : null],
+      streetNumber: [data?.streetNumber ? data.streetNumber : null],
     });
   }
 
@@ -993,13 +1005,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         pushNotification: pushNotificationPayroll,
         smsNotification: smsNotificationPayroll,
       },
-
       twicExpDate: this.driverForm.get('twic').value
         ? convertDateToBackend(this.driverForm.get('twicExpDate').value)
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
-
+    console.log(newData);
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
@@ -1114,6 +1125,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           this.driverStatus = res.status === 1 ? false : true;
 
+          console.log(this.driverForm.value);
+
           if (res.owner) {
             if (this.driverForm.get('ein').value) {
               this.driverTService
@@ -1155,7 +1168,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           if (res.offDutyLocations.length) {
             for (let index = 0; index < res.offDutyLocations.length; index++) {
               this.offDutyLocations.push(
-                this.formBuilder.group({
+                this.createOffDutyLocation({
                   id: res.offDutyLocations[index].id,
                   nickname: res.offDutyLocations[index].nickname,
                   address: res.offDutyLocations[index].address.address,

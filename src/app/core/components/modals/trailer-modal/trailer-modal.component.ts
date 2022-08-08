@@ -229,14 +229,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     };
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.trailerForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.trailerForm.get('companyOwned').setValue(false);
-    }
-  }
-
   private getTrailerDropdowns(): void {
     this.trailerModalService
       .getTrailerDropdowns()
