@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
@@ -25,8 +25,8 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { TaInputResetService } from './ta-input-reset.service';
-import { debounceTime } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -51,7 +51,7 @@ export class TaInputComponent
   private ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
-  @Input() incorrectValue: boolean = false;
+  @Input() incorrectValue: boolean;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
@@ -670,6 +670,7 @@ export class TaInputComponent
         'routing number',
         'account number',
         'empty weight',
+        'purchase price',
         'axles',
         'mileage',
         'ipas ezpass',
@@ -683,6 +684,7 @@ export class TaInputComponent
         'customer pay term',
         'dollar',
         'fatalinjuries',
+        'months',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {

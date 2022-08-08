@@ -1,7 +1,6 @@
 import {DatePipe} from '@angular/common';
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
-import {FormatSettings} from '@progress/kendo-angular-dateinputs';
 import {environment} from 'src/environments/environment';
 
 export interface HistoryData {
@@ -39,7 +38,6 @@ export class HistoryDataComponent implements OnInit {
   @Output() removeEvent: EventEmitter<any> = new EventEmitter();
 
   @Input() items: GroupItem[] = [];
-  format: FormatSettings = environment.dateFormat;
 
   // showDialog = false;
 

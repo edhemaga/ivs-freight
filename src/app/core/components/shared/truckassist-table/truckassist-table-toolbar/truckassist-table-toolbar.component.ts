@@ -9,8 +9,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-toolbar',
   templateUrl: './truckassist-table-toolbar.component.html',

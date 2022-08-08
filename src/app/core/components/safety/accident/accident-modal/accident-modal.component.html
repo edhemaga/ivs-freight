@@ -119,6 +119,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="addressLocation"
               (selectedAddress)="onHandleAddress($event, 'location')"
             ></app-ta-input-address>
           </div>
@@ -269,7 +270,7 @@
                 type: 'text',
                 label: 'Unit',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-accident-trailer-unit'
+                dropdownWidthClass: 'w-col-100'
               }"
               [options]="labelsTrailerUnits"
               (selectedItem)="onSelectDropDown($event, 'trailer-unit')"
@@ -417,7 +418,7 @@
                       name: 'Input Dropdown',
                       type: 'text',
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-4-insuranceType'
+                      dropdownWidthClass: 'w-col-136'
                     }"
                     [options]="labelsInsuranceType"
                     (selectedItem)="
@@ -620,6 +621,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="addressAuthority"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
             ></app-ta-input-address>
             <app-ta-input
@@ -659,6 +661,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="addressOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
               ></app-ta-input-address>
             </div>
@@ -672,6 +675,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="addressDestination"
                 (selectedAddress)="
                   onHandleAddress($event, 'address-destination')
                 "
@@ -686,7 +690,7 @@
                 type: 'text',
                 label: 'Customer',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-large-modal-cutomer'
+                dropdownWidthClass: 'w-col-273'
               }"
               [options]="labelsViolationCustomer"
               (selectedItem)="onSelectDropDown($event, 'shipping-customer')"

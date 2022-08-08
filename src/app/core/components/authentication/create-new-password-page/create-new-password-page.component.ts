@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
@@ -13,6 +13,7 @@ import { NotificationService } from '../../../services/notification/notification
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
 
+@UntilDestroy()
 @Component({
   selector: 'app-create-new-password-page',
   templateUrl: './create-new-password-page.component.html',
@@ -50,7 +51,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     this.createNewPasswordForm
       .get('confirmNewPassword')
       .valueChanges.pipe(untilDestroyed(this))
-      .subscribe(value => {
+      .subscribe((value) => {
         if (
           value?.toLowerCase() ===
           this.createNewPasswordForm.get('newPassword').value?.toLowerCase()
@@ -76,7 +77,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
 
     this.authStoreService.getForgotPassword$
       .pipe(untilDestroyed(this))
-      .subscribe(token => {
+      .subscribe((token) => {
         localStorage.setItem('user', JSON.stringify({ token: token }));
 
         this.authStoreService
@@ -97,7 +98,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
                 ]);
               }
             },
-            error: err => {
+            error: (err) => {
               this.notification.error(err, 'Error');
             },
           });

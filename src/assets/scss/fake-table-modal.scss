@@ -158,8 +158,8 @@
       width: 18px;
       height: 18px;
       position: absolute;
-      bottom: 7.5px;
-      right: 4.5px;
+      bottom: 8px;
+      right: 5px;
       display: none;
       cursor: pointer;
       svg {
@@ -343,10 +343,6 @@
 
     .common-fake-table-card {
       grid-template-columns: 110px 1fr 18px;
-
-      .common-fake-table-delete {
-        right: 7.5px;
-      }
     }
   }
 

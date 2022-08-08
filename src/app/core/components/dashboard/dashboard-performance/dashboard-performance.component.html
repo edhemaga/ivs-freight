@@ -11,20 +11,7 @@
                 </app-ta-tab-switch>
             </div>
             <div class="dashboard-performance-border"></div>
-            <div class="dashboard-performance-dropdown-holder"
-            #t2="ngbPopover"
-            [ngbPopover]="periodPopover"
-            [placement]="['bottom-right']"
-            [popoverClass]="'periodpopovermain'"
-            autoClose="outside"
-            [container]="'body'" 
-            [ngClass]="{ 'active-options': t2?.isOpen() }"       
-            >
-                <div class="dashboard-performance-dropdown-text">{{periodTitle}}</div>
-                <div class="dashboard-performance-arrow-holder">
-                    <svg-icon src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
-                </div>
-            </div>
+            <app-ta-time-period #timePeriod></app-ta-time-period>
         </div>
     </div>
     <div class="dashboard-performance-body">
@@ -676,19 +663,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #periodPopover let-data="data">
-    <div class="period-popover-holder">
-        <div 
-        *ngFor="let item of periodSwitchItems; let indx=index" 
-        class="period-popover-items-holder"
-        [ngClass]="{'active': item.active}"
-        (click)="changePeriod(item)"
-        >
-            {{item.name}}
-            <div class="period-popover-icon-holder">
-                <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-            </div>
-        </div>
-    </div>
-</ng-template>

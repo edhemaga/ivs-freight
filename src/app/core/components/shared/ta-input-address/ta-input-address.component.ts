@@ -11,11 +11,12 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input-address',
   templateUrl: './ta-input-address.component.html',
@@ -25,7 +26,10 @@ export class TaInputAddressComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) input: ElementRef;
+
   @Input() inputConfig: ITaInput;
+  @Input() activeAddress: AddressEntity;
+  @Input() incorrectValue: boolean = false;
 
   @Output() changeFlag: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -33,6 +37,9 @@ export class TaInputAddressComponent
     address: AddressEntity;
     valid: boolean;
   }> = new EventEmitter<{ address: AddressEntity; valid: boolean }>(null);
+
+  @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
+    new EventEmitter<any>();
 
   @Output('commandEvent') inputCommandEvent: EventEmitter<{
     address: AddressEntity;
@@ -44,7 +51,6 @@ export class TaInputAddressComponent
 
   public numberOfSpaces: number = 0;
 
-  public activeAddress: AddressEntity;
   public invalidAddress: boolean = false;
 
   public options = {
@@ -122,11 +128,20 @@ export class TaInputAddressComponent
   public onFocus(): void {
     this.focusInput = true;
 
-    if (!this.activeAddress) {
+    if (!this.activeAddress?.address && this.inputConfig.isRequired) {
       this.invalidAddress = true;
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
+    console.log(
+      'Same active and super control ',
+      this.activeAddress?.address === this.getSuperControl.value
+    );
+    console.log('INVALID ', this.invalidAddress);
+    console.log('FOCUS ', this.focusInput);
+    console.log('BLACK INPUT ', this.inputConfig.blackInput);
+    console.log('SUPER CONTROL ', this.getSuperControl.value);
+    console.log('ACTIVE ADDRESS ', this.activeAddress?.address);
 
     // Input Commands
     if (this.inputConfig.commands?.active) {
@@ -173,21 +188,26 @@ export class TaInputAddressComponent
   }
 
   public clearInput(): void {
-    this.input.nativeElement.value = null;
-    this.getSuperControl.setValue(null);
-    this.numberOfSpaces = 0;
-    this.touchedInput = true;
-    this.activeAddress = null;
-    this.invalidAddress = false;
-    this.getSuperControl.setErrors(null);
-
-    if (!this.inputConfig.isRequired) {
-      this.selectedAddress.emit({ address: null, valid: true });
-      this.getSuperControl.setErrors(null);
+    if (this.inputConfig.incorrectInput) {
+      this.incorrectValue = !this.incorrectValue;
+      this.incorrectInput.emit(this.incorrectValue);
     } else {
-      this.selectedAddress.emit({ address: null, valid: false });
-      this.invalidAddress = true;
-      this.getSuperControl.setErrors({ required: true });
+      this.input.nativeElement.value = null;
+      this.getSuperControl.setValue(null);
+      this.numberOfSpaces = 0;
+      this.touchedInput = true;
+      this.activeAddress = null;
+      this.invalidAddress = false;
+      this.getSuperControl.setErrors(null);
+
+      if (!this.inputConfig.isRequired) {
+        this.selectedAddress.emit({ address: null, valid: true });
+        this.getSuperControl.setErrors(null);
+      } else {
+        this.selectedAddress.emit({ address: null, valid: false });
+        this.invalidAddress = true;
+        this.getSuperControl.setErrors({ required: true });
+      }
     }
   }
 
@@ -196,6 +216,7 @@ export class TaInputAddressComponent
       this.numberOfSpaces = 0;
       if (!this.input.nativeElement.value) {
         this.clearInput();
+        return;
       }
     }
     if (this.activeAddress?.address !== this.getSuperControl.value) {

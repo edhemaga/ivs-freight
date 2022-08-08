@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {SortDescriptor} from '@progress/kendo-data-query';
 
 export type SortDirection = 'asc' | 'desc' | '';
 const rotate: { [key: string]: SortDirection } = {
@@ -15,7 +14,7 @@ const rotate: { [key: string]: SortDirection } = {
 
 export class DispatchSortService {
   sortDirection: SortDirection = '';
-  public sortItem: SortDescriptor[] = [
+  public sortItem: any[] = [
     {
       field: 'status'
     }

@@ -54,6 +54,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
@@ -107,7 +108,7 @@
                   label: 'Department',
                   isRequired: true,
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-4-department-user'
+                  dropdownWidthClass: 'w-col-136'
                 }"
                 [options]="departments"
                 [activeItem]="selectedDepartment"
@@ -122,7 +123,7 @@
                   type: 'text',
                   label: 'Office',
                   isDropdown: true,
-                  dropdownWidthClass: 'w-col-5'
+                  dropdownWidthClass: 'w-col-188'
                 }"
                 [options]="offices"
                 [activeItem]="selectedOffice"
@@ -268,7 +269,7 @@
                     type: 'text',
                     label: 'Bank Name',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-banks'
+                    dropdownWidthClass: 'w-col-163'
                   }"
                   [canAddNew]="true"
                   [options]="labelsBank"

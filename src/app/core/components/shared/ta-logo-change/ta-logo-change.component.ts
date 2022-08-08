@@ -15,10 +15,11 @@ import {
 import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
@@ -42,9 +43,6 @@ export class TaLogoChangeComponent
   };
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
-  @Input() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
-    false
-  );
   @Input() dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'image',
     dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
@@ -53,6 +51,9 @@ export class TaLogoChangeComponent
     globalDropZone: false,
   };
 
+  @Output() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
 
   public showUploadZone = true;
@@ -97,18 +98,15 @@ export class TaLogoChangeComponent
   }
 
   public ngAfterViewInit() {
-    const timeout = setTimeout(() => {
-      if (this.imageUrl) {
-        this.croppieDirective.croppie.bind({
-          url: this.imageUrl.changingThisBreaksApplicationSecurity,
-          points: [188, 101, 260, 191],
-          zoom: 0,
-        });
-        this.ngxSliderPosition = 0;
-        this.showUploadZone = true;
-        clearTimeout(timeout);
-      }
-    }, 200);
+    if (this.imageUrl) {
+      this.croppieDirective.croppie.bind({
+        url: this.imageUrl.changingThisBreaksApplicationSecurity,
+        points: [188, 101, 260, 191],
+        zoom: this.imageScale,
+      });
+      this.ngxSliderPosition = 0;
+      this.showUploadZone = true;
+    }
   }
 
   public onUploadImage(event: any) {
@@ -117,16 +115,14 @@ export class TaLogoChangeComponent
 
     const url = event.files[0].url;
 
-    const timeout = setTimeout(() => {
-      this.croppieDirective.croppie.bind({
-        url: url as string,
-        points: [188, 101, 260, 191],
-        zoom: this.imageScale,
-      });
-      clearTimeout(timeout);
-      this.isImageValid = true;
-      this.validationEvent.emit(this.isImageValid);
-    }, 200);
+    this.croppieDirective.croppie.bind({
+      url: url as string,
+      points: [188, 101, 260, 191],
+      zoom: this.imageScale,
+    });
+
+    this.isImageValid = false;
+    this.validationEvent.emit(this.isImageValid);
   }
 
   public handleCroppieUpdate(event) {
@@ -146,7 +142,7 @@ export class TaLogoChangeComponent
       this.imageUrl = base64;
       this.showUploadZone = true;
     });
-    this.isImageValid = false;
+    this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
   }
 
@@ -159,7 +155,7 @@ export class TaLogoChangeComponent
   public onCancel() {
     this.showUploadZone = true;
     this.imageUrl = null;
-    this.isImageValid = false;
+    this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
   }
 

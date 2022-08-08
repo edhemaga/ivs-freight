@@ -1,3 +1,5 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
   Component,
   Input,
@@ -6,15 +8,18 @@ import {
   OnInit,
   OnDestroy,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
-import { Subject } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import { navigation_route_animation } from '../navigation.animation';
 import { SignInResponse } from 'appcoretruckassist';
+import { TaUserService } from 'src/app/core/services/user/user.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',
@@ -31,23 +36,18 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
 
   public footerData: FooterData[] = footerData;
 
-  public loggedUser: SignInResponse = null;
+  public loggedUser: any = null;
 
   constructor(
     private router: Router,
-    private navigationService: NavigationService
+    private navigationService: NavigationService,
+    private imageBase64Service: ImageBase64Service,
+    private userService: TaUserService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
     this.isActiveFooterRouteOnReload(window.location.pathname);
-
-    // this.communicatorUserDataService.chatUser
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((chatUser: any) => {
-    //     setTimeout(() => {
-    //       this.currentUserStatus = chatUser?.status;
-    //     });
-    //   });
 
     // ----------------------- PRODUCSTION MODE ----------------------------
     // if(this.authQuery.getEntity(1)) {
@@ -59,24 +59,57 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     // }
 
     // ----------------------- DEVELOP MODE ----------------------------
+
     this.loggedUser = JSON.parse(localStorage.getItem('user'));
 
-    this.footerData = [
-      ...this.footerData,
-      {
-        id: 34,
-        image: this.loggedUser?.avatar
-          ? this.loggedUser.avatar
-          : 'assets/svg/common/ic_profile.svg',
-        text: {
-          companyName: this.loggedUser.companyName,
-          userName: this.loggedUser.firstName.concat(
-            ' ',
-            this.loggedUser.lastName
-          ),
-        },
+    this.loggedUser = {
+      ...this.loggedUser,
+      avatar: this.loggedUser.avatar
+        ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
+        : 'assets/svg/common/ic_profile.svg',
+    };
+
+    this.footerData[2] = {
+      id: this.loggedUser.userId,
+      image: this.loggedUser.avatar,
+      text: {
+        companyName: this.loggedUser.companyName,
+        userName: this.loggedUser.firstName.concat(
+          ' ',
+          this.loggedUser.lastName
+        ),
       },
-    ];
+    };
+
+    this.userService.updateUserProfile$
+      .pipe(debounceTime(1000), untilDestroyed(this))
+      .subscribe((val: boolean) => {
+        console.log('SUBSCRIBE ', val);
+        if (val) {
+          this.loggedUser = JSON.parse(localStorage.getItem('user'));
+
+          this.loggedUser = {
+            ...this.loggedUser,
+            avatar: this.loggedUser.avatar
+              ? this.imageBase64Service.sanitizer(this.loggedUser.avatar)
+              : 'assets/svg/common/ic_profile.svg',
+          };
+
+          this.footerData[2] = {
+            id: this.loggedUser.userId,
+            image: this.loggedUser.avatar,
+            text: {
+              companyName: this.loggedUser.companyName,
+              userName: this.loggedUser.firstName.concat(
+                ' ',
+                this.loggedUser.lastName
+              ),
+            },
+          };
+
+          this.cdRef.detectChanges();
+        }
+      });
   }
 
   public onAction(index: number, action: string) {

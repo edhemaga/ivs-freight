@@ -110,7 +110,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     private gpsDataService: AppDispatchSignalrService,
     private dispatcherQuery: DispatcherQuery,
     public dispatcherStoreService: DispatcherStoreService
-  ) {}
+  ) { }
 
   openParking() {
     this.dispatcherStoreService.parkingOpened =
@@ -137,10 +137,20 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.user = JSON.parse(localStorage.getItem('currentUser'));
     this.setUserInactivityListener();
 
-    this.dispatcherQuery.dispatchersList$
+    this.dispatcherQuery.modalList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        this.getDispatcherData(result);
+        console.log("dispatcherList");
+        console.log(result);
+        this.getDispatcherData(result.dispatchers);
+      });
+
+
+    this.dispatcherQuery.dispatchboardList$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((result) => {
+        console.log("dispatcherList");
+        console.log(result);
       });
 
     this.loadService.editDispatchBoard
@@ -302,13 +312,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
       id: -1,
-      dispatcherFirstName: 'Team',
-      dispatcherLastName: 'Board',
+      fullName: 'Team Board'
     });
     this.dispatcherItems.unshift({
       id: 0,
-      dispatcherFirstName: 'All',
-      dispatcherLastName: 'Boards',
+      fullName: 'All Boards'
     });
 
     const previous_selected = localStorage.getItem('dispatchUserSelect');
@@ -340,7 +348,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.refreshDispatchBoard(null);
   }
 
-  openAddLoad(id: any) {}
+  openAddLoad(id: any) { }
 
   addLoad() {
     const data = {
@@ -427,6 +435,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   refreshDispatchBoard(item?: any, id?: number) {
+
     if (this.dispatcher) {
       id = this.dispatcher;
     }
@@ -442,17 +451,17 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
             if (el.statusId > 0 && el.route) {
               const routesInfo = el.route
                 ? el.route.reduce(
-                    (routesNumb, item) => {
-                      if (item.PointType == 'pickup') {
-                        routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
-                      } else {
-                        routesNumb.deliveryNumber =
-                          routesNumb.deliveryNumber + 1;
-                      }
-                      return routesNumb;
-                    },
-                    { pickupNumber: 0, deliveryNumber: 0 }
-                  )
+                  (routesNumb, item) => {
+                    if (item.PointType == 'pickup') {
+                      routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
+                    } else {
+                      routesNumb.deliveryNumber =
+                        routesNumb.deliveryNumber + 1;
+                    }
+                    return routesNumb;
+                  },
+                  { pickupNumber: 0, deliveryNumber: 0 }
+                )
                 : { pickupNumber: 0, deliveryNumber: 0 };
               Object.assign(el, routesInfo);
             }
@@ -461,7 +470,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
           this.getDispatcherItemsData();
           this.formatGridData(this.gridData);
         },
-        (error) => {}
+        (error) => { }
       );
   }
 
@@ -540,7 +549,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
   }
 
-  openDispatchHistory() {}
+  openDispatchHistory() { }
 
   private startHttpRequest = () => {
     this.http

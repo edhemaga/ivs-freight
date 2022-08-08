@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { AuthStoreService } from '../../state/auth.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
@@ -19,6 +19,7 @@ import {
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',

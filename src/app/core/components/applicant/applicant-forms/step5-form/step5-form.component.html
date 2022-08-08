@@ -41,6 +41,7 @@
           textTransform: 'capitalize',
           autoFocus: true
         }"
+        [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
     </div>

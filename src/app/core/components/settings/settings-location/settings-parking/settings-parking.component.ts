@@ -30,7 +30,7 @@ export class SettingsParkingComponent implements OnInit {
       address: '5462 N East River Rd apt 611, Chicago, IL 60656,USA',
       parking_slot: 12,
       parking_slot_full: 47,
-      companyOwned: 'assets/svg/common/ic_company.svg',
+      companyOwned: 'ic_company.svg',
       gate: true,
       security_camera: true,
       rent: '',

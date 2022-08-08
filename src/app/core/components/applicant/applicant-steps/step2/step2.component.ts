@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { Subscription } from 'rxjs';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import {
   phoneRegex,
@@ -29,6 +29,7 @@ import { TrailerType } from '../../state/model/trailer-type.model';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',

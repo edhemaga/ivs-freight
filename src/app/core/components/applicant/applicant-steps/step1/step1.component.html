@@ -123,7 +123,7 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
-              incorrectInput: selectedMode === 'REVIEW_MODE'
+              incorrectInput: true
             }"
             [incorrectValue]="false"
             (incorrectEvent)="incorrectInput($event, 2, 0)"
@@ -139,6 +139,7 @@
           "
         >
           <app-applicant-review-feedback
+            formControlName="firstRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[0].displayAnnotationButton
             "
@@ -197,6 +198,7 @@
           "
         >
           <app-applicant-review-feedback
+            formControlName="secondRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[1].displayAnnotationButton
             "
@@ -517,7 +519,7 @@
                     selectedMode === 'FEEDBACK_MODE'
                   "
                 >
-                  <app-applicant-review-feedback
+                  <!-- <app-applicant-review-feedback
                     [displayAnnotationButton]="
                       openAnnotationArray[i + 2].displayAnnotationButton
                     "
@@ -534,7 +536,7 @@
                     (annotationBtnClickEvent)="
                       getAnnotationBtnClickValue($event)
                     "
-                  ></app-applicant-review-feedback>
+                  ></app-applicant-review-feedback> -->
                 </div>
               </div>
             </div>
@@ -604,7 +606,7 @@
               type: 'text',
               label: 'Bank Name',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-applicant-bank'
+              dropdownWidthClass: 'w-col-416'
             }"
             [options]="banksDropdownList"
             (selectedItem)="handleInputSelect($event, 'BANK')"
@@ -619,7 +621,7 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <app-applicant-review-feedback
+          <!-- <app-applicant-review-feedback
             [displayAnnotationButton]="
               openAnnotationArray[7].displayAnnotationButton
             "
@@ -632,7 +634,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback>
+          ></app-applicant-review-feedback> -->
         </div>
       </div>
 
@@ -682,7 +684,7 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <app-applicant-review-feedback
+          <!-- <app-applicant-review-feedback
             [displayAnnotationButton]="
               openAnnotationArray[8].displayAnnotationButton
             "
@@ -695,7 +697,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback>
+          ></app-applicant-review-feedback> -->
         </div>
       </div>
 
@@ -784,7 +786,7 @@
                   selectedMode === 'FEEDBACK_MODE'
                 "
               >
-                <app-applicant-review-feedback
+                <!-- <app-applicant-review-feedback
                   [displayAnnotationButton]="
                     openAnnotationArray[i + 9].displayAnnotationButton
                   "
@@ -797,7 +799,7 @@
                     'Check the routing number one more time (one number missing)!!!'
                   "
                   (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-                ></app-applicant-review-feedback>
+                ></app-applicant-review-feedback> -->
               </div>
             </div>
           </div>
@@ -819,7 +821,7 @@
 </div>
 
 <!-- CONFIRM ALL REVIEW -->
-<!-- 
+<!--
 <app-applicant-confirm-all-review
   *ngIf="selectedMode === 'REVIEW_MODE'"
 ></app-applicant-confirm-all-review>

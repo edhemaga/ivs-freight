@@ -3,7 +3,7 @@ import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
 import { NotificationService } from './../../../services/notification/notification.service';
 import { OwnerModalResponse } from './../../../../../../appcoretruckassist/model/ownerModalResponse';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -14,8 +14,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { OwnerModalService } from './owner-modal.service';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
@@ -27,7 +26,9 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
+import { OwnerTService } from '../../owner/state/owner.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
@@ -67,7 +68,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private ownerModalService: OwnerModalService,
+    private ownerModalService: OwnerTService,
     private notificationService: NotificationService,
     private formService: FormService,
     private bankVerificationService: BankVerificationService
@@ -78,11 +79,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.getOwnerDropdowns();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 6,
-      };
       this.editOwnerById(this.editData.id);
     }
   }
@@ -199,11 +195,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBank = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -266,7 +266,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   private deleteOwnerById(id: number) {
     this.ownerModalService
-      .deleteOwnerById(id)
+      .deleteOwnerById(id, this.editData.selectedTab)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -330,6 +330,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
+          console.log('editOwnerById');
+          console.log(res);
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({
@@ -342,7 +344,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             phone: res.phone,
             email: res.email,
-            bankId: res.bank.name,
+            bankId: res?.bank?.name ? res.bank.name : null,
             accountNumber: res.accountNumber,
             routingNumber: res.routingNumber,
             note: res.note,

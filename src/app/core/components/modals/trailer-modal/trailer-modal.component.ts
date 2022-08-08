@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
@@ -30,8 +30,8 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
-import { debounceTime } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
@@ -250,6 +250,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               subFolder: 'trailers',
             };
           });
+          console.log(this.trailerType);
           this.trailerMakeType = res.trailerMakes;
 
           this.colorType = res.colors.map((item) => {

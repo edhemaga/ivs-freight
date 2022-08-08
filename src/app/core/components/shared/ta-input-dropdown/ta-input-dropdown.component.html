@@ -103,6 +103,8 @@
     popoverClass="ta-input-dropdown"
     [container]="'body'"
     (commandEvent)="onCommandInput($event)"
+    [incorrectValue]="incorrectValue"
+    (incorrectEvent)="onIncorrectInput($event)"
   ></app-ta-input>
 </div>
 

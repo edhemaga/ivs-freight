@@ -134,7 +134,7 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url('../..//assets/svg/common/ic_confirm.svg');
+            content: url("../..//assets/svg/common/ic_confirm.svg");
             width: 14px;
             height: 10px;
           }
@@ -266,205 +266,193 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
-      &.w-col-12 {
-        width: 455px;
-      }
-
-      &.w-col-9 {
-        width: 348px;
-      }
-
-      &.w-col-8 {
-        width: 308px;
-      }
-
-      &.w-col-medium-8 {
-        width: 403px;
-      }
-
-      &.w-col-7 {
-        width: 256px;
-      }
-
-      &.w-col-6 {
-        width: 228px;
-      }
-
-      &.w-col-8-fuelstop {
-        width: 296px;
-      }
-
-      &.w-col-medium-6 {
-        width: 297px;
-      }
-
-      &.w-col-medium-6-second-col {
-        width: 308px;
-      }
-
-      &.w-col-6-companyOwned,
-      &.w-col-6-truckType {
-        width: 216px;
-      }
-
-      &.w-col-5 {
-        width: 188px;
-      }
-
-      &.w-col-5-tireSize {
-        width: 130px;
-      }
-
-      &.w-col-4 {
-        width: 148px;
-      }
-
-      &.w-col-medium-4 {
-        width: 201px;
-      }
-
-      &.w-col-medium-4-col-1 {
-        width: 189px;
-      }
-
-      &.w-col-3 {
-        width: 108px;
-      }
-
-      &.w-test-types {
-        width: 140px;
-      }
-
-      &.w-reason-types {
-        width: 168px;
-      }
-
-      &.w-col-4-tireSize,
-      &.w-col-4-doortype,
-      &.w-col-4-reeferUnit,
-      &.w-col-4-classType,
-      &.w-col-4-department-user,
-      &.w-col-4-insuranceType {
-        width: 136px;
-      }
-
-      &.w-col-3-suspension,
-      &.w-col-3-doortype {
-        width: 108px;
-      }
-
-      &.w-col-banks {
-        width: 163px;
-      }
-
-      &.w-col-banks-driver {
-        width: 184px;
-      }
-
-      &.w-col-paytype {
-        width: 422px;
-      }
-
-      &.w-col-trailerColor {
-        width: 126px;
-      }
-
-      &.w-col-trailerLength {
-        width: 106px;
-      }
-
-      &.w-col-broker-payterm {
-        width: 176px;
-      }
-
-      &.w-col-broker-department,
-      &.w-col-shipper-department {
-        width: 120px;
-      }
-
-      &.w-col-details-template-big {
-        width: 366px;
-      }
-      &.w-col-details-template-big-company {
-        width: 512px;
-      }
-      &.w-col-details-template-small {
-        width: 332px;
-      }
-
-      &.w-col-custom-fuel-modal-dropdown {
-        width: 114px;
-      }
-
-      &.w-col-large-modal-cutomer {
-        width: 273px;
-      }
-
-      &.w-col-accident-trailer-unit {
-        width: 100px;
-      }
-
-      &.w-col-repair-m-unit-bill {
-        width: 129px;
-      }
-
-      &.w-col-repair-m-unit-order {
-        width: 291px;
-      }
-
-      &.w-col-repair-m-shop {
+      &.w-col-686 {
         width: 686px;
       }
 
-      &.w-col-dropdown-label,
-      &.w-col-load-req {
+      &.w-col-616 {
+        width: 616px;
+      }
+
+      &.w-col-512 {
+        width: 512px;
+      }
+
+      &.w-col-455 {
+        width: 455px;
+      }
+
+      &.w-col-439 {
+        width: 439px;
+      }
+
+      &.w-col-422 {
+        width: 422px;
+      }
+
+      &.w-col-416 {
+        width: 416px;
+      }
+
+      &.w-col-403 {
+        width: 403px;
+      }
+
+      &.w-col-details-366 {
+        width: 366px;
+      }
+
+      &.w-col-348 {
+        width: 348px;
+      }
+
+      &.w-col-332 {
+        width: 332px;
+      }
+
+      &.w-col-308 {
+        width: 308px;
+      }
+
+      &.w-col-297 {
+        width: 297px;
+      }
+
+      &.w-col-296 {
+        width: 296px;
+      }
+
+      &.w-col-291 {
+        width: 291px;
+      }
+
+      &.w-col-273 {
+        width: 273px;
+      }
+
+      &.w-col-256 {
+        width: 256px;
+      }
+
+      &.w-col-228 {
+        width: 228px;
+      }
+
+      &.w-col-220 {
+        width: 220px;
+      }
+
+      &.w-col-216 {
+        width: 216px;
+      }
+
+      &.w-col-201 {
+        width: 201px;
+      }
+
+      &.w-col-189 {
+        width: 189px;
+      }
+
+      &.w-col-188 {
+        width: 188px;
+      }
+
+      &.w-col-184 {
+        width: 184px;
+      }
+
+      &.w-col-182 {
+        width: 182px;
+      }
+
+      &.w-col-178 {
+        width: 178px;
+      }
+
+      &.w-col-177 {
+        width: 117px;
+      }
+
+      &.w-col-176 {
+        width: 176px;
+      }
+
+      &.w-col-168 {
+        width: 168px;
+      }
+
+      &.w-col-166 {
+        width: 166px;
+      }
+
+      &.w-col-164 {
         width: 164px;
         max-height: 304px;
       }
 
-      &.w-col-owner-bank {
-        width: 166px;
+      &.w-col-163 {
+        width: 163px;
       }
 
-      &.w-col-load-selectTemplate,
-      &.w-col-load-dispatcher {
-        width: 220px;
+      &.w-col-148 {
+        width: 148px;
       }
 
-      &.w-col-load-commodity {
-        width: 178px;
+      &.w-col-140 {
+        width: 140px;
       }
 
-      &.w-col-load-broker {
-        width: 439px;
+      &.w-col-138 {
+        width: 138px;
       }
 
-      &.w-col-load-door-type {
+      &.w-col-136 {
+        width: 136px;
+      }
+
+      &.w-col-129 {
+        width: 129px;
+      }
+
+      &.w-col-126 {
+        width: 126px;
+      }
+
+      &.w-col-120 {
+        width: 120px;
+      }
+
+      &.w-col-118 {
+        width: 118px;
+      }
+
+      &.w-col-114 {
+        width: 114px;
+      }
+
+      &.w-col-108 {
+        width: 108px;
+      }
+
+      &.w-col-107 {
         width: 107px;
       }
 
-      &.w-col-load-suspension {
-        width: 117px;
+      &.w-col-106 {
+        width: 106px;
       }
 
-      &.w-col-load-length {
+      &.w-col-100 {
+        width: 100px;
+      }
+
+      &.w-col-88 {
         width: 88px;
       }
 
-      &.w-col-load-year {
+      &.w-col-66 {
         width: 66px;
-      }
-
-      &.w-col-applicant-bank {
-        width: 416px;
-      }
-
-      &.w-col-applicant-reason {
-        width: 616px;
-      }
-
-      &.w-col-sph-received-by {
-        width: 182px;
       }
 
       // ---------------------------------------- DROPDOWN GROUPS ----------------------------------------
@@ -566,7 +554,7 @@
                 &::after {
                   position: absolute;
                   right: 3px;
-                  content: url('../..//assets/svg/common/ic_confirm.svg');
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
                   width: 14px;
                   height: 10px;
                 }
@@ -668,7 +656,7 @@
           font-weight: 600;
 
           &::before {
-            content: '';
+            content: "";
             height: 2px;
             width: 162px;
             background-color: #f3f3f3;

@@ -1,7 +1,7 @@
 import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.service';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
 import { Injectable } from '@angular/core';
-import { Observable, of, tap, filter } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -18,8 +18,6 @@ import { DriversActiveQuery } from './driver-active-state/driver-active.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { DriversDetailsQuery } from './driver-details-state/driver-details.query';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +34,7 @@ export class DriverTService {
     private tableService: TruckassistTableService
   ) {}
 
-  //Get Driver Minimal List
-
+  // Get Driver Minimal List
   public getDriversMinimalList(
     pageIndex?: number,
     pageSize?: number,

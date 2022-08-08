@@ -1,24 +1,28 @@
 <div class="table-container">
-    <app-truckassist-table-toolbar
-      (toolBarAction)="onToolBarAction($event)"
-      [options]="tableOptions"
-      [tableData]="tableData"
-      [selectedTab]="selectedTab"
-      [columns]="columns"
-    ></app-truckassist-table-toolbar>
-  
-    <app-truckassist-table-head
-      [options]="tableOptions"
-      [viewData]="viewData"
-      [columns]="columns"
-    ></app-truckassist-table-head>
-  
-    <app-truckassist-table-body
-      [viewData]="viewData"
-      [columns]="columns"
-      [options]="tableOptions"
-      [selectedTab]="selectedTab"
-      (bodyActions)="onTableBodyActions($event)"
-    ></app-truckassist-table-body>
-  </div>
-  
+  <app-truckassist-table-toolbar
+    (toolBarAction)="onToolBarAction($event)"
+    [options]="tableOptions"
+    [tableData]="tableData"
+    [selectedTab]="selectedTab"
+    [columns]="columns"
+    [tableContainerWidth]="tableContainerWidth"
+  ></app-truckassist-table-toolbar>
+
+  <app-truckassist-table-head
+    [options]="tableOptions"
+    [viewData]="viewData"
+    [columns]="columns"
+    (headActions)="onTableHeadActions($event)"
+    [tableContainerWidth]="tableContainerWidth"
+  ></app-truckassist-table-head>
+
+  <app-truckassist-table-body
+    [viewData]="viewData"
+    [columns]="columns"
+    [options]="tableOptions"
+    [selectedTab]="selectedTab"
+    (bodyActions)="onTableBodyActions($event)"
+    [tableData]="tableData"
+    [tableContainerWidth]="tableContainerWidth"
+  ></app-truckassist-table-body>
+</div>

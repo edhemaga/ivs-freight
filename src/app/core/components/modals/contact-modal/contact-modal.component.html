@@ -35,7 +35,7 @@
             placeholderIcon: 'ic_dynamic_label',
             isDropdownLabel: true,
             dropdownLabelSelected: selectedContactColor,
-            dropdownWidthClass: 'w-col-dropdown-label',
+            dropdownWidthClass: 'w-col-164',
             textTransform: 'capitalize',
             blackInput: true,
             commands: {
@@ -105,6 +105,7 @@
             placeholderIcon: 'address',
             textTransform: 'capitalize'
           }"
+          [activeAddress]="selectedAddress"
           (selectedAddress)="onHandleAddress($event)"
         ></app-ta-input-address>
       </div>
@@ -153,7 +154,7 @@
                   label: 'Share Contact',
                   isDropdown: true,
                   isRequired: true,
-                  dropdownWidthClass: 'w-col-12'
+                  dropdownWidthClass: 'w-col-455'
                 }"
                 [options]="sharedDepartments"
                 (selectedItem)="onSelectDropdown($event, 'departments')"
@@ -166,8 +167,10 @@
         <app-ta-custom-card [cardName]="'Contact Image'" [isCardOpen]="true">
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"
+            [customClass]="'modal-container-S'"
             [imageUrl]="this.contactForm.get('avatar').value"
             (base64ImageEvent)="onUploadImage($event)"
+            (validationEvent)="onImageValidation($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>
       </div>

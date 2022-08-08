@@ -1,12 +1,14 @@
 import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import { BrokerResponse } from 'appcoretruckassist';
-import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+
+@UntilDestroy()
 @Component({
   selector: 'app-broker-details',
   templateUrl: './broker-details.component.html',

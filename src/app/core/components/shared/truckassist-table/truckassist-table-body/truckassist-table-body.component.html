@@ -200,6 +200,9 @@
               }"
             >
               <span
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
                 class="table-name-link"
                 (click)="goToDetails(column, row)"
                 >{{ row[column.field] }}</span
@@ -1047,7 +1050,14 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <span class="table-name-link">{{ row[column.field] }}</span>
+              <span
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+                class="table-name-link"
+                (click)="goToDetails(column, row)"
+                >{{ row[column.field] }}</span
+              >
             </div>
 
             <!-- OOS COLUMN -->

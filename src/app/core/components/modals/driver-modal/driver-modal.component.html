@@ -103,6 +103,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAddress"
               (selectedAddress)="onHandleAddress($event)"
             ></app-ta-input-address>
           </div>
@@ -148,7 +149,7 @@
                     label: 'Pay type',
                     isRequired: true,
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-paytype',
+                    dropdownWidthClass: 'w-col-422',
                     isDisabled: disablePayType
                   }"
                   [options]="labelsPayType"
@@ -168,11 +169,11 @@
             <div class="permile-fields">
               <p>SOLO</p>
               <app-ta-input
-                formControlName="soloEmptyMile"
+                formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
                   type: 'text',
-                  label: 'Empty Mi',
+                  label: 'Loaded Mi',
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
@@ -182,11 +183,11 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                formControlName="soloLoadedMile"
+                formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
                   type: 'text',
-                  label: 'Loaded Mi',
+                  label: 'Empty Mi',
                   isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
@@ -212,19 +213,6 @@
             <div class="permile-fields">
               <p>TEAM</p>
               <app-ta-input
-                formControlName="teamEmptyMile"
-                [inputConfig]="{
-                  name: 'Per Mile',
-                  type: 'text',
-                  label: 'Empty Mi',
-                  placeholderIcon: 'dollar',
-                  isRequired: true,
-                  customClass: 'dollar-placeholderIcon',
-                  min: 0,
-                  max: 10
-                }"
-              ></app-ta-input>
-              <app-ta-input
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -236,6 +224,19 @@
                   min: 0,
                   max: 10,
                   maxLength: 4
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                formControlName="teamEmptyMile"
+                [inputConfig]="{
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Empty Mi',
+                  placeholderIcon: 'dollar',
+                  isRequired: true,
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10
                 }"
               ></app-ta-input>
               <app-ta-input
@@ -303,7 +304,7 @@
                   isDropdown: true,
                   isRequired: driverForm.get('useTruckAssistAch').value,
                   isDisabled: disablePayType,
-                  dropdownWidthClass: 'w-col-banks-driver'
+                  dropdownWidthClass: 'w-col-184'
                 }"
                 [canAddNew]="true"
                 [options]="labelsBank"
@@ -464,6 +465,7 @@
                     textTransform: 'capitalize',
                     blackInput: true
                   }"
+                  [activeAddress]="selectedAddress"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
                 ></app-ta-input-address>
                 <div
@@ -594,7 +596,7 @@
                 <app-ta-input-arrows
                   formControlName="mvrExpiration"
                   [inputConfig]="{
-                    name: 'MVR',
+                    name: 'months',
                     type: 'text',
                     placeholderText: 'months'
                   }"
