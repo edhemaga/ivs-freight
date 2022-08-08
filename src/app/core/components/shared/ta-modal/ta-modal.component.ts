@@ -70,6 +70,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   };
 
   @Input() tabChange: any;
+  @Input() tabChangePosition: string = 'left'; // left/right
 
   @Output() action: EventEmitter<{
     action: string;

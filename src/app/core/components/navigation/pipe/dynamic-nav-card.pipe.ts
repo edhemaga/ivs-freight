@@ -5,6 +5,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DynamicNavHeightPipe implements PipeTransform {
   transform(value: any, hover: boolean): any {
-    return hover ? (value + 1) * 29 + 5 : 0;
+    return hover ? (value + 1) * 29 : 0;
   }
 }

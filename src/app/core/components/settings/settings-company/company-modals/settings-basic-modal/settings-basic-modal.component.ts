@@ -463,11 +463,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
-        next: () => {
+        next: (res: CreateResponse) => {
           this.notificationService.success(
             'Successfuly add new bank',
             'Success'
           );
+          this.selectedBankAccountFormArray[index] = {
+            id: res.id,
+            name: bank.name,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -711,6 +715,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public onUploadImage(event: any) {
     this.companyForm.get('logo').patchValue(event);
+    this.companyForm.get('logo').setErrors(null);
+  }
+
+  public onImageValidation(event: boolean) {
+    if (!event) {
+      this.companyForm.get('logo').setErrors({ invalid: true });
+    } else {
+      this.inputService.changeValidators(this.companyForm.get('logo'), false);
+    }
   }
 
   public onPrefferedLoadCheck(event: any) {

@@ -2,7 +2,13 @@
   <div [ngClass]="{ 'load-modal-content': customClass?.includes('load') }">
     <div cdkDragHandle class="modal-header">
       <div class="modal-header-leftside">
-        <div *ngIf="tabChange" class="modal-header-tab-change">
+        <div
+          *ngIf="tabChange"
+          class="modal-header-tab-change"
+          [ngClass]="{
+            'modal-header-tab-change-reorder': tabChangePosition === 'right'
+          }"
+        >
           <app-ta-tab-switch
             [tabs]="tabChange"
             (switchClicked)="onTabChange($event)"

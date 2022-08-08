@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -21,7 +21,7 @@ import { OwnerTService } from '../state/owner.service';
   styleUrls: ['./owner-table.component.scss'],
   providers: [formatPhonePipe],
 })
-export class OwnerTableComponent implements OnInit, AfterViewInit {
+export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$: Subject<void> = new Subject<void>();
 
   public tableOptions: any = {};
@@ -43,7 +43,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
     private ownerService: OwnerTService,
     private phonePipe: formatPhonePipe
   ) {}
-
   ngOnInit(): void {
     this.sendOwnerData();
 
@@ -405,5 +404,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

@@ -281,6 +281,7 @@
           <app-ta-logo-change
             [customClass]="'modal-container-M'"
             [imageUrl]="this.companyForm.get('logo').value"
+            (validationEvent)="onImageValidation($event)"
             (base64ImageEvent)="onUploadImage($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>
