@@ -5,7 +5,7 @@ import {
   SimpleChanges,
   OnDestroy,
 } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { SettingsCompanyService } from '../../state/settings-company.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
@@ -20,7 +20,7 @@ export class SettingsFactoringComponent implements OnChanges, OnDestroy {
   public factoringPhone: boolean;
   public factoringEmail: boolean;
   constructor(
-    private settingsStoreService: SettingsStoreService,
+    private settingsCompanyService: SettingsCompanyService,
     private notificationService: NotificationService
   ) {}
 
@@ -34,11 +34,11 @@ export class SettingsFactoringComponent implements OnChanges, OnDestroy {
   }
 
   public onAction(modal: { modalName: string; type: string; company: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsCompanyService.onModalAction(modal);
   }
 
   public onDeleteFactoringCompany() {
-    this.settingsStoreService
+    this.settingsCompanyService
       .deleteFactoringCompanyById(
         this.factoringData.divisions.length ? null : this.factoringData.id
       )

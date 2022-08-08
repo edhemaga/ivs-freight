@@ -1,8 +1,8 @@
 import { Observable } from 'rxjs';
-import { SettingsTerminalModalComponent } from './../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { SettingsRepairshopModalComponent } from './../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsOfficeModalComponent } from './../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from './../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsTerminalModalComponent } from '../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsRepairshopModalComponent } from '../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsOfficeModalComponent } from '../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
 import { Injectable } from '@angular/core';
 
 import { SettingsBasicModalComponent } from '../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
@@ -14,7 +14,6 @@ import {
   CompanyResponse,
   CompanyService,
   CreateDivisionCompanyCommand,
-  CreateInsurancePolicyAddonCommand,
   CreateInsurancePolicyCommand,
   CreateResponse,
   InsurancePolicyModalResponse,
@@ -25,10 +24,10 @@ import {
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
-export class SettingsStoreService {
+export class SettingsCompanyService {
   constructor(
     private modalService: ModalService,
-    private settingCompanyService: CompanyService
+    private settingService: CompanyService
   ) {}
 
   /**
@@ -82,30 +81,6 @@ export class SettingsStoreService {
         );
         break;
       }
-      case 'parking': {
-        this.modalService.openModal(SettingsParkingModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
-      case 'office': {
-        this.modalService.openModal(SettingsOfficeModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
-      case 'repairshop': {
-        this.modalService.openModal(SettingsRepairshopModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
-      case 'terminal': {
-        this.modalService.openModal(SettingsTerminalModalComponent, {
-          size: 'small',
-        });
-        break;
-      }
       default:
         break;
     }
@@ -113,71 +88,71 @@ export class SettingsStoreService {
 
   // Main Company
   public updateCompany(data: UpdateCompanyCommand): Observable<object> {
-    return this.settingCompanyService.apiCompanyPut(data);
+    return this.settingService.apiCompanyPut(data);
   }
 
   public getCompany(): Observable<CompanyResponse> {
-    return this.settingCompanyService.apiCompanyGet();
+    return this.settingService.apiCompanyGet();
   }
 
   public getCompanyModal(): Observable<CompanyModalResponse> {
-    return this.settingCompanyService.apiCompanyModalGet();
+    return this.settingService.apiCompanyModalGet();
   }
 
   // Division Company
   public addCompanyDivision(
     data: CreateDivisionCompanyCommand
   ): Observable<CreateResponse> {
-    return this.settingCompanyService.apiCompanyDivisionPost(data);
+    return this.settingService.apiCompanyDivisionPost(data);
   }
 
   public updateCompanyDivision(
     data: UpdateDivisionCompanyCommand
   ): Observable<object> {
-    return this.settingCompanyService.apiCompanyDivisionPut(data);
+    return this.settingService.apiCompanyDivisionPut(data);
   }
 
   public getCompanyDivisionById(id: number): Observable<CompanyResponse> {
-    return this.settingCompanyService.apiCompanyDivisionIdGet(id);
+    return this.settingService.apiCompanyDivisionIdGet(id);
   }
 
   public deleteCompanyDivisionById(id: number): Observable<any> {
-    return this.settingCompanyService.apiCompanyDivisionIdDelete(id);
+    return this.settingService.apiCompanyDivisionIdDelete(id);
   }
 
   // Insurance Policy
   public getInsurancePolicyModal(): Observable<InsurancePolicyModalResponse> {
-    return this.settingCompanyService.apiCompanyInsurancepolicyModalGet();
+    return this.settingService.apiCompanyInsurancepolicyModalGet();
   }
 
   public deleteInsurancePolicyById(id: number): Observable<any> {
-    return this.settingCompanyService.apiCompanyInsurancepolicyIdDelete(id);
+    return this.settingService.apiCompanyInsurancepolicyIdDelete(id);
   }
 
   public addInsurancePolicy(
     data: CreateInsurancePolicyCommand
   ): Observable<CreateResponse> {
-    return this.settingCompanyService.apiCompanyInsurancepolicyPost(data);
+    return this.settingService.apiCompanyInsurancepolicyPost(data);
   }
 
   public updateInsurancePolicy(
     data: UpdateInsurancePolicyCommand
   ): Observable<object> {
-    return this.settingCompanyService.apiCompanyInsurancepolicyPut(data);
+    return this.settingService.apiCompanyInsurancepolicyPut(data);
   }
 
   public getInsurancePolicyById(id: number): Observable<object> {
-    return this.settingCompanyService.apiCompanyInsurancepolicyIdGet(id);
+    return this.settingService.apiCompanyInsurancepolicyIdGet(id);
   }
 
   // Factoring Company
   public updateFactoringCompany(
     data: UpdateFactoringCompanyCommand
   ): Observable<object> {
-    return this.settingCompanyService.apiCompanyFactoringcompanyPut(data);
+    return this.settingService.apiCompanyFactoringcompanyPut(data);
   }
 
   public deleteFactoringCompanyById(id: number): Observable<any> {
-    return this.settingCompanyService.apiCompanyFactoringcompanyIdDelete(id);
+    return this.settingService.apiCompanyFactoringcompanyIdDelete(id);
   }
 }

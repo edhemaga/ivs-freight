@@ -8,7 +8,7 @@ import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.reg
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SettingsStoreService } from '../../../state/settings.service';
+import { SettingsCompanyService } from '../../../state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 
 @UntilDestroy()
@@ -33,7 +33,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private settingsService: SettingsStoreService
+    private settingsCompanyService: SettingsCompanyService
   ) {}
 
   ngOnInit(): void {
@@ -125,7 +125,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       noticeOfAssigment: noticeOfAssigment,
       note: note,
     };
-    this.settingsService
+    this.settingsCompanyService
       .updateFactoringCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -148,7 +148,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteFactoringCompanyById(company: any) {
-    this.settingsService
+    this.settingsCompanyService
       .deleteFactoringCompanyById(this.editData.company.id)
       .pipe(untilDestroyed(this))
       .subscribe({

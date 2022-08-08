@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { Component, OnInit } from '@angular/core';
+import { SettingsLocationService } from '../../state/settings-location.service';
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
@@ -83,12 +83,12 @@ export class SettingsOfficeComponent implements OnInit {
   public officeEmail: boolean[] = [];
   public departmentEmail: boolean[] = [];
   public departmentPhone: boolean[] = [];
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(private settingsLocationService: SettingsLocationService) {}
 
   ngOnInit() {}
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsLocationService.onModalAction(modal);
   }
 
   public identityOfficeData(index: number, item: any): number {

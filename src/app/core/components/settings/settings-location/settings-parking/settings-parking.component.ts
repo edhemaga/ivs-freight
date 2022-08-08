@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { Component, OnInit } from '@angular/core';
+import { SettingsLocationService } from '../../state/settings-location.service';
 @Component({
   selector: 'app-settings-parking',
   templateUrl: './settings-parking.component.html',
@@ -55,12 +55,12 @@ export class SettingsParkingComponent implements OnInit {
   ];
   public parkingPhone: boolean;
   public parkingEmail: boolean;
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(private settingsLocationService: SettingsLocationService) {}
 
   ngOnInit() {}
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsLocationService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

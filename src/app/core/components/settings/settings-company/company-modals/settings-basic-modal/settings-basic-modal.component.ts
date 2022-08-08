@@ -33,7 +33,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { SettingsStoreService } from '../../../state/settings.service';
+import { SettingsCompanyService } from '../../../state/settings-company.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 
@@ -214,7 +214,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private settingsService: SettingsStoreService,
+    private settingsCompanyService: SettingsCompanyService,
     private bankVerificationService: BankVerificationService
   ) {}
 
@@ -773,7 +773,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   private getModalDropdowns() {
-    this.settingsService
+    this.settingsCompanyService
       .getCompanyModal()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -920,7 +920,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .addCompanyDivision(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1138,7 +1138,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .updateCompanyDivision(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1159,7 +1159,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   public deleteCompanyDivisionById(id: number) {
-    this.settingsService
+    this.settingsCompanyService
       .deleteCompanyDivisionById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1429,7 +1429,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       payrolls,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .updateCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
