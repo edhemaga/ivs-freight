@@ -10,7 +10,7 @@ import {
 import { NotificationService } from './../../../../services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RepairTService } from '../../../repair/state/repair.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import {
@@ -25,6 +25,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
 import { FormService } from 'src/app/core/services/form/form.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-repair-order-modal',
   templateUrl: './repair-order-modal.component.html',
@@ -109,9 +110,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     if (this.editData?.type.includes('edit')) {
       this.editData = {
         ...this.editData,
-        id: 1,
+        id: 3,
       };
       this.editRepairById(this.editData.id);
+    }
+
+    if (this.editData?.type.includes('truck')) {
+      this.onTypeOfRepair(
+        this.typeOfRepair.find((item) => item.name === 'Truck')
+      );
+    } else {
+      this.onTypeOfRepair(
+        this.typeOfRepair.find((item) => item.name === 'Trailer')
+      );
     }
   }
 
@@ -185,8 +196,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public addItems(event: any) {
-    if (event) {
+  public addItems(event: { check: boolean; action: string }) {
+    if (event.check) {
       this.items.push(this.createItems(++this.itemsCounter));
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
@@ -281,6 +292,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         checked: item.id == event.id,
       };
     });
+    console.log(event);
+    console.log(this.typeOfRepair);
 
     if (this.repairOrderForm.get('unitType')?.value === 'Truck') {
       this.pmOptions = this.pmTrucks;
@@ -636,8 +649,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           this.onModalHeaderTabChange(
             this.headerTabs.find((item) => item.name === res.repairType.name)
           );
-          console.log('UNIT TYYPE');
-          console.log(res.unitType.name);
+
           this.onTypeOfRepair(
             this.typeOfRepair.find((item) => item.name === res.unitType.name),
             'edit-mode'

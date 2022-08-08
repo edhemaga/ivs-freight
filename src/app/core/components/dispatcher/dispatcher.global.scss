@@ -2238,7 +2238,7 @@
   overflow-x: auto;
 
   &.dispatchboard-main-table{
-    padding-left: 308px;
+    //padding-left: 308px;
   }
   
 
@@ -2250,7 +2250,7 @@
 
   table {
     width: 1205px !important;
-    padding-left: 76px;
+    //padding-left: 76px;
   }
 
   thead {
@@ -2260,6 +2260,7 @@
       font-weight: 700;
       font-size: 14px;
       padding-left: 9px;
+      text-transform: uppercase;
     }
   }
   tr, & {
@@ -2290,22 +2291,22 @@
     }
   }
 
-  tr {
-    td:nth-child(1), th:nth-child(1) {
-      position: absolute;
-      left: 0;
-    }
+  // tr {
+  //   td:nth-child(1), th:nth-child(1) {
+  //     position: absolute;
+  //     left: -309px;
+  //   }
 
-    td:nth-child(2), th:nth-child(2) {
-      position: absolute;
-      left: 76px;
-    }
+  //   td:nth-child(2), th:nth-child(2) {
+  //     position: absolute;
+  //     left: -232px;
+  //   }
 
-    td:nth-child(3), th:nth-child(3) {
-      position: absolute;
-      left: 174px;
-    }
-  }
+  //   td:nth-child(3), th:nth-child(3) {
+  //     position: absolute;
+  //     left: -134px;
+  //   }
+  // }
 
   .truck-field {
     width: 76px;
@@ -2316,11 +2317,19 @@
   }
 
   .driver-field {
-    width: 134px;
+    width: 319px;
+    padding-left: 172px !important;
+    min-width: 319px
+  }
+
+  .note-field{
+    width: 359px;
+    padding-right: 100px !important;
   }
 
   .phoneemail-field {
     width: 176px;
+    min-width: 176px;
   }
   .location-field {
     width: 136px;
@@ -2328,6 +2337,11 @@
 
   .status-field {
     width: 112px;
+
+    &.theads{
+      padding-left: 0 !important;
+      text-align: center;
+    }
   }
 
   .pick-del-field {
@@ -2346,6 +2360,12 @@
     width: 34px;
     max-width: 34px;
     min-width: 34px;
+  }
+
+  .note-field{
+    .dispatcher-table-cell-container {
+      position: relative;
+    }
   }
 
   // &.parking-opened {

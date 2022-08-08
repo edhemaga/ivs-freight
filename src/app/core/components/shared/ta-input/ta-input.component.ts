@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
@@ -25,8 +25,8 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { TaInputResetService } from './ta-input-reset.service';
-import { debounceTime } from 'rxjs';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -51,7 +51,7 @@ export class TaInputComponent
   private ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
-  @Input() incorrectValue: boolean = false;
+  @Input() incorrectValue: boolean;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
@@ -670,6 +670,7 @@ export class TaInputComponent
         'routing number',
         'account number',
         'empty weight',
+        'purchase price',
         'axles',
         'mileage',
         'ipas ezpass',
@@ -682,6 +683,8 @@ export class TaInputComponent
         'starting',
         'customer pay term',
         'dollar',
+        'fatalinjuries',
+        'months',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -734,7 +737,6 @@ export class TaInputComponent
           this.getSuperControl.value < this.inputConfig.min
         ) {
           this.getSuperControl.setErrors({ invalid: true });
-          return false;
         }
         return true;
       } else {
@@ -850,7 +852,7 @@ export class TaInputComponent
     this.input.nativeElement.value.trim();
   }
 
-  public disableConsecutivelySpaces(event: any) {
+  private disableConsecutivelySpaces(event: any) {
     if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
       this.numberOfSpaces++;
       if (this.numberOfSpaces > 1) {
@@ -862,7 +864,7 @@ export class TaInputComponent
     }
   }
 
-  public disableMultiplePoints(event: any) {
+  private disableMultiplePoints(event: any) {
     if (/^[.]*$/.test(String.fromCharCode(event.charCode))) {
       if (!this.getSuperControl.value) {
         event.preventDefault();

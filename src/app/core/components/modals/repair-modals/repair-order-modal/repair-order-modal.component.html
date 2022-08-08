@@ -6,6 +6,7 @@
   [editName]="editData?.id"
   [isModalValid]="repairOrderForm.valid"
   [tabChange]="headerTabs"
+  [tabChangePosition]="'right'"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
@@ -33,9 +34,7 @@
           isDropdown: true,
           isRequired: true,
           dropdownWidthClass:
-            selectedHeaderTab === 2
-              ? 'w-col-repair-m-unit-order'
-              : 'w-col-repair-m-unit-bill'
+            selectedHeaderTab === 2 ? 'w-col-291' : 'w-col-129'
         }"
         [options]="labelsUnit"
         [activeItem]="selectedUnit"
@@ -131,7 +130,7 @@
             label: 'Repair Shop',
             isDropdown: true,
             isRequired: selectedHeaderTab === 1,
-            dropdownWidthClass: 'w-col-repair-m-shop'
+            dropdownWidthClass: 'w-col-686'
           }"
           [options]="labelsRepairShop"
           [activeItem]="selectedRepairShop"

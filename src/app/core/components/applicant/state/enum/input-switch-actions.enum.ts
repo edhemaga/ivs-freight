@@ -40,4 +40,8 @@ export enum InputSwitchActions {
   IS_DISCLOSURE_REGARDING_REPORT = 'isDisclosureRegardingReport',
 
   IS_TESTED = 'isTested',
+
+  INFO_BOX = 'INFO-BOX',
+  DOCUMENTS_BOX = 'DOCUMENTS-BOX',
+  REQUESTS_BOX = 'REQUESTS-BOX',
 }

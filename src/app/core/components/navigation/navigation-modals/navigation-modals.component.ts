@@ -129,9 +129,13 @@ export class NavigationModalsComponent {
         break;
       }
       case 'repair-order': {
-        this.modalService.openModal(RepairOrderModalComponent, {
-          size: 'large',
-        });
+        this.modalService.openModal(
+          RepairOrderModalComponent,
+          {
+            size: 'large',
+          },
+          { type: 'new-truck' }
+        );
         break;
       }
       case 'repair-shop': {

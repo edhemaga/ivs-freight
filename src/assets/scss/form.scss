@@ -116,6 +116,7 @@
   .custom-bank-row {
     display: grid;
     grid-template-columns: 164px 113px 155px;
+    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     margin-bottom: 32px;
@@ -126,7 +127,45 @@
     }
   }
 
-  //---------------- Driver Notifications ----------------
+  //---------------- Driver Modal ------------------------------------
+  .driver-modal-first-row {
+    display: grid;
+    grid-template-columns: repeat(2, 226px) 140px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .driver-modal-second-row {
+    display: grid;
+    grid-template-columns: 170px 282px 140px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+    margin-bottom: 32px;
+  }
+
+  .driver-twic-mvr-row {
+    display: grid;
+    grid-template-columns: 59px 251px 1fr;
+    align-items: center;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    margin-bottom: 22px;
+
+    &.extended {
+      grid-template-columns: 59px 143px 116px 1fr;
+      -moz-column-gap: 12px;
+      column-gap: 12px;
+    }
+
+    .ta-checkbox-container {
+      top: 2px !important;
+    }
+  }
+
+  // Driver Notification
   .driver-notification {
     display: flex;
     gap: 22px;
@@ -162,21 +201,6 @@
         margin-right: 13px;
       }
     }
-  }
-
-  //---------------- Driver First Row ------------------------------------
-  .driver-modal-first-row {
-    display: grid;
-    grid-template-columns: repeat(2, 226px) 140px;
-    column-gap: 12px;
-    margin-bottom: 32px;
-  }
-
-  .driver-modal-second-row {
-    display: grid;
-    grid-template-columns: 170px 282px 140px;
-    column-gap: 12px;
-    margin-bottom: 32px;
   }
 
   //---------------- Custom Checkbox Card With Content In ----------------
@@ -295,6 +319,10 @@
         width: 422px;
       }
     }
+
+    .checkbox-paytype-driver-disabled {
+      gap: 12px;
+    }
   }
 
   //---------------- PayType Commission ----------------
@@ -304,6 +332,7 @@
     grid-template-rows: 22px;
     grid-column-gap: 22px;
     -moz-column-gap: 22px;
+    align-items: center;
     column-gap: 22px;
     padding-left: 6px;
     padding-right: 1px;
@@ -337,10 +366,11 @@
       display: grid;
       grid-template-columns: auto repeat(3, 177px);
       grid-template-rows: 26px;
-      margin-bottom: 32px;
+      align-items: center;
       -moz-column-gap: 12px;
       column-gap: 12px;
-      align-items: center;
+
+      margin-bottom: 32px;
 
       p {
         margin: 0;
@@ -359,6 +389,7 @@
   .emergency-contact {
     display: grid;
     grid-template-columns: 214px 190px 188px;
+    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
     height: 36px;
@@ -369,7 +400,8 @@
   //---------------- TireSize & Axles ----------------
   .tireSize-axles {
     display: grid;
-    grid-template-columns: 130px 46px;
+    grid-template-columns: 138px 1fr;
+    align-items: center;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -380,6 +412,7 @@
 .custom-model-color-year-length {
   display: grid;
   grid-template-columns: 100px 126px 88px 106px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
 }
@@ -388,9 +421,9 @@
 .broker-billing {
   display: grid;
   grid-template-columns: 1fr 214px 176px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
-  align-items: center;
   padding-left: 6px;
 
   &.row-gap {
@@ -439,6 +472,10 @@
       padding: 2px 12px;
       transition: all 0.3s ease-in-out;
       cursor: pointer;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
 
       &.active {
         background-color: #6d82c7;
@@ -452,6 +489,7 @@
 .phone-extension-medium-modal {
   display: grid;
   grid-template-columns: 258px 1fr;
+  align-items: center;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
@@ -509,6 +547,7 @@
   display: grid;
   grid-template-columns: 180px 1fr;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 32px 0px;
@@ -580,6 +619,7 @@
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  align-items: center;
   margin: 0px;
   margin-top: 26px;
   margin-bottom: 32px;
@@ -590,6 +630,7 @@
   display: grid;
   grid-template-columns: 140px 168px 124px;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 0;
@@ -601,6 +642,7 @@
   display: grid;
   grid-template-columns: 140px 1fr;
   grid-template-rows: 26px;
+  align-items: center;
   margin: 12px 0px;
   padding-left: 6px;
 
@@ -627,6 +669,7 @@
   -moz-column-gap: 12px;
   column-gap: 12px;
   row-gap: 6px;
+  align-items: center;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -686,6 +729,7 @@
 
 .violation-special-checks {
   grid-template-columns: repeat(5, 158px);
+  align-items: center;
 }
 
 //---------------- Company IRP, IFTA, TOLL, SCAC  ----------------
@@ -723,6 +767,7 @@
   display: grid;
   grid-template-columns: 292px repeat(2, 260px);
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin: 0;
@@ -732,6 +777,7 @@
   display: grid;
   grid-template-columns: 274px 60px repeat(3, 150px);
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -741,6 +787,7 @@
   display: grid;
   grid-template-columns: 320px 210px 120px 150px;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -750,6 +797,7 @@
   display: grid;
   grid-template-columns: 100px 178px 138px 110px 60px 190px;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -758,6 +806,7 @@
   display: grid;
   grid-template-columns: 452px 200px 160px;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -769,6 +818,7 @@
   display: grid;
   grid-template-columns: 272px 210px 330px;
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -779,6 +829,7 @@
   display: grid;
   grid-template-columns: 292px repeat(2, 260px);
   grid-template-rows: 26px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
@@ -822,6 +873,7 @@
   grid-template-columns: 140px repeat(2, 220px) 226px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  align-items: center;
   margin-top: 26px;
   margin-bottom: 32px;
 
@@ -843,6 +895,7 @@
   grid-template-columns: 397px 114px 178px 117px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  align-items: center;
   margin-bottom: 32px;
 }
 
@@ -851,6 +904,7 @@
   grid-template-columns: 439px 391px;
   -moz-column-gap: 12px;
   column-gap: 12px;
+  align-items: center;
   margin-bottom: 22px;
 
   .broker-load-information {
@@ -869,6 +923,7 @@
 .stop-load-first-row {
   display: grid;
   grid-template-columns: 134px 696px;
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 32px;
@@ -877,6 +932,7 @@
 .stop-load-second-row {
   display: grid;
   grid-template-columns: 202px 106px repeat(2, 172px);
+  align-items: center;
   -moz-column-gap: 12px;
   column-gap: 12px;
   margin-bottom: 22px;
@@ -884,6 +940,7 @@
   .date-range {
     display: grid;
     grid-template-columns: 172px 26px;
+    align-items: center;
     -moz-column-gap: 4px;
     column-gap: 4px;
 
@@ -924,11 +981,13 @@
 
   &.date-range-active {
     grid-template-columns: 356px 106px repeat(2, 172px);
+    align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
 
     .date-range {
       grid-template-columns: repeat(2, 172px);
+      align-items: center;
       -moz-column-gap: 12px;
       column-gap: 12px;
     }
@@ -1018,6 +1077,81 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+//---------------- Profile Update Old Password ----------------
+.profile-update-oldpassword-row {
+  display: grid;
+  grid-template-columns: 378px 1fr;
+  align-items: center;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
+  padding-left: 6px;
+  margin-bottom: 12px;
+
+  .old-password-text {
+    font-size: 14px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #6c6c6c;
+    margin: 0;
+
+    &::-moz-selection {
+      color: #6c6c6c;
+      background-color: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: #6c6c6c;
+      background-color: rgb(108, 108, 108, 0.2);
+    }
+  }
+
+  .old-password-content {
+    display: grid;
+    grid-template-columns: 172px 26px;
+    align-items: center;
+    -moz-column-gap: 12px;
+    column-gap: 12px;
+  }
+
+  .old-password-checkmark {
+    width: 100%;
+    height: 100%;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: pointer;
+
+    svg-icon {
+      svg {
+        width: 18px;
+        height: 18px;
+        path {
+          fill: #b7b7b7;
+        }
+      }
+    }
+
+    &.valid {
+      background-color: #6d82c7;
+      svg-icon {
+        svg {
+          path {
+            fill: #ffffff;
+          }
+        }
+      }
+
+      &:hover {
+        background-color: #536bc2;
+        transition: all 0.3s ease-in-out;
       }
     }
   }

@@ -1,4 +1,3 @@
-import { SpinnerService } from './../../../services/spinner/spinner.service';
 import { SearchDataService } from './../../../services/shared/search-data.service';
 import { SearchFilterEvent } from './../../../model/searchFilter';
 import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
@@ -23,10 +22,8 @@ import { Options } from 'ng5-slider';
 import { forkJoin, of, Subject } from 'rxjs';
 import * as AppConst from 'src/app/const';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { RowClassArgs } from '@progress/kendo-angular-grid';
 import { AppAddLoadTableComponent } from './../app-add-load-table/app-add-load-table.component';
 //import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
-import { SortDescriptor } from '@progress/kendo-data-query';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgSelectComponent } from '@ng-select/ng-select';
@@ -238,7 +235,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
 
   constructor(
     private loadService: AppLoadService,
-    private spinner: SpinnerService,
+
     private shared: SharedService,
     private signalRService: SignalRService,
     public sortService: DispatchSortService,
@@ -701,7 +698,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     }
   }
 
-  public rowCallback(context: RowClassArgs) {
+  public rowCallback(context: any) {
     return {
       dragging: context.dataItem.dragging,
     };
@@ -1912,7 +1909,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
     }
   }
 
-  public sortChange(sort: SortDescriptor[]): void {
+  public sortChange(sort: any[]): void {
     this.sortService.sortItem = sort;
     this.sortItems(true);
     this.sortService.sortUpdated.next(null);

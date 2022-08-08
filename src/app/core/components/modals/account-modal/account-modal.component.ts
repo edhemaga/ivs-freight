@@ -17,11 +17,13 @@ import {
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 import { AccountModalService } from './account-modal.service';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { AccountTService } from '../../account/state/account.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
@@ -54,6 +56,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     private accountModalService: AccountModalService,
     private notificationService: NotificationService,
     private modalService: ModalService,
+    private accountService: AccountTService,
     private formService: FormService
   ) {}
 
@@ -63,11 +66,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     this.companyAccountColorLabels();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 2,
-      };
       this.editCompanyAccount(this.editData.id);
     }
   }
@@ -77,7 +75,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, Validators.maxLength(23)]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null, [Validators.required]],
+      url: [null],
       companyAccountLabelId: [null],
       note: [null],
     });
@@ -126,7 +124,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private companyAccountModal(): void {
-    this.accountModalService
+    this.accountService
       .companyAccountModal()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -154,7 +152,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private editCompanyAccount(id: number) {
-    this.accountModalService
+    this.accountService
       .getCompanyAccountById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -188,7 +186,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         ? this.selectedAccountLabel.id
         : null,
     };
-    this.accountModalService
+    this.accountService
       .addCompanyAccount(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -219,7 +217,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         ? this.selectedAccountLabel.id
         : null,
     };
-    this.accountModalService
+    this.accountService
       .updateCompanyAccount(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -239,7 +237,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public deleteCompanyAccountById(id: number): void {
-    this.accountModalService
+    this.accountService
       .deleteCompanyAccountById(id)
       .pipe(untilDestroyed(this))
       .subscribe({

@@ -20,7 +20,8 @@
     <img
       class="nav-footer-image"
       [ngClass]="{ 'nav-footer-image-user': ind === 2 }"
-      src="{{ item.image }}"
+      [src]="item.image"
+      [alt]="item.text.userName"
     />
     <div
       class="nav-footer-rightSide"

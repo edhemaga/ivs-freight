@@ -6,16 +6,15 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import {
-  CreateBase64Class,
-} from 'src/app/core/utils/base64.image';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 
+@UntilDestroy()
 @Component({
   selector: 'app-driver-card',
   templateUrl: './driver-card.component.html',
@@ -32,7 +31,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
     private driverDetailsQuery: DriversDetailsQuery,
     private cdRef: ChangeDetectorRef,
     private router: Router,
-    private createBase64: CreateBase64Class
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {
@@ -65,7 +64,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
     this.transformImage();
   }
   public transformImage() {
-    return this.createBase64.sanitizer(
+    return this.imageBase64Service.sanitizer(
       this.viewData.avatar
         ? this.viewData.avatar
         : 'assets/svg/common/ic_no_avatar_driver.svg'

@@ -8,14 +8,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
   @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
+  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
-  periodTitle: string = "Monthly";
-
   topTenTitle: string = "Driver";
-
-  periodSwitchItems: any[] = [];
 
   selectedDrivers: any[] = [];
 
@@ -324,26 +321,11 @@ export class DashboardTopDriverComponent implements OnInit {
         custom: true
       }
     ];
-
-    this.periodSwitchItems = [
-      {
-        name: 'Hourly'
-      },
-      {
-        name: 'Daily',
-      },
-      {
-        name: 'Weekly'
-      },
-      {
-        name: 'Monthly',
-        active: true
-      }
-    ];
   }
 
   changeDriverSwitchTabs(ev){
-    this.topDriverBarChart.updateTime(ev)
+    this.timePeriod.changeTimePeriod(ev['name']);
+    this.topDriverBarChart.updateTime(ev);
   }
 
   removeDriverFromList(e: Event,indx, item){
@@ -389,16 +371,6 @@ export class DashboardTopDriverComponent implements OnInit {
     })
     item.active = true;
     this.t3.close();
-  }
-
-  changePeriod(item){
-    this.periodTitle = item.name;
-    this.periodSwitchItems.map((item) => {
-      item.active = false;
-      return item;
-    })
-    item.active = true;
-    this.t2.close();
   }
 
   selectCompare(item, indx){

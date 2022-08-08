@@ -34,7 +34,8 @@
       !inputConfig.hideClear &&
       !inputConfig.isDisabled &&
       !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.commands?.active
+      !inputConfig.commands?.active &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{
@@ -82,6 +83,7 @@
       getSuperControl.value &&
       getSuperControl.invalid &&
       !focusInput &&
+      !inputConfig.incorrectInput &&
       !inputConfig.blackInput
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
@@ -101,10 +103,22 @@
       !inputConfig.isDropdown &&
       !inputConfig.blackInput &&
       !inputConfig.hideRequiredCheck &&
-      !inputConfig.incorrectInput
+      !inputConfig.incorrectInput &&
+      !inputConfig?.loadingSpinner?.isLoading
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
+
+  <!-- Input Loading spinner -->
+  <div
+    *ngIf="inputConfig?.loadingSpinner?.isLoading"
+    class="input-loading-spinner"
+  >
+    <app-ta-spinner
+      [size]="inputConfig.loadingSpinner?.size"
+      [color]="inputConfig.loadingSpinner?.color"
+    ></app-ta-spinner>
+  </div>
 
   <!-- Input Password Caps Lock -->
   <p
@@ -116,7 +130,12 @@
 
   <!-- Input Password Eye -->
   <div
-    *ngIf="inputConfig.type === 'password' && getSuperControl.value"
+    *ngIf="
+      inputConfig.type === 'password' &&
+      getSuperControl.value &&
+      !inputConfig?.loadingSpinner?.isLoading &&
+      !inputConfig.incorrectInput
+    "
     class="input-password-eye {{ inputConfig.customClass }}"
     [ngClass]="{
       visible: isVisiblePasswordEye,
@@ -147,9 +166,10 @@
       (inputConfig.isDropdown &&
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive) ||
-      inputConfig.name === 'datepicker' ||
-      inputConfig.name === 'timepicker' ||
-      inputConfig.isDropdownLabel
+      ((inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker' ||
+        inputConfig.isDropdownLabel) &&
+        !inputConfig.incorrectInput)
     "
     [ngClass]="{
       active:
@@ -258,7 +278,7 @@
     *ngIf="inputConfig.placeholderIcon"
     [svgStyle]="{
       fill:
-        inputConfig.isDropdownLabel || inputConfig.specificDropdownLabel
+        inputConfig.isDropdownLabel || inputConfig.dropdownLabelSelected
           ? inputConfig.dropdownLabelSelected?.code
             ? inputConfig.dropdownLabelSelected.code
             : '#b7b7b7'

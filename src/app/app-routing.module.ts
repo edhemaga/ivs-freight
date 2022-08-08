@@ -16,12 +16,14 @@ import { ShipperResolver } from './core/components/customer/state/shipper-state/
 import { ShopResolver } from './core/components/repair/state/shop-state/shop.resolver';
 import { DriverInactiveResolver } from './core/components/driver/state/driver-inactive-state/driver-inactive.resolver';
 import { SphFormThankYouComponent } from './core/components/applicant/applicant-tabs/sph/sph-form/sph-form-thank-you/sph-form-thank-you.component';
-import { SphPage2PdfComponent } from './core/components/applicant/state/pdf-export/sph/sph-page2-pdf/sph-page2-pdf.component';
 
 import { TruckActiveResolver } from './core/components/truck/state/truck-active-state/truck-active.resolver';
 import { TruckInactiveResolver } from './core/components/truck/state/truck-inactive-state/truck-inactive.resolver';
 import { TrailerActiveResolver } from './core/components/trailer/state/trailer-active-state/trailer-active.resolver';
 import { TrailerInactiveResolver } from './core/components/trailer/state/trailer-inactive-state/trailer-inactive.resolver';
+import { OwnerActiveResolver } from './core/components/owner/state/owner-active-state/owner-active.resolver';
+import { OwnerInactiveResolver } from './core/components/owner/state/owner-inactive-state/owner-inactive.resolver';
+import { AccountResolver } from './core/components/account/state/account-state/account.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -150,6 +152,10 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/owner/owner.module').then((m) => m.OwnerModule),
     canActivate: [AuthGuard],
+    resolve: {
+      ownerActive: OwnerActiveResolver,
+      ownerInactive: OwnerInactiveResolver,
+    },
   },
   {
     path: 'account',
@@ -158,6 +164,9 @@ const routes: Routes = [
         (m) => m.AccountModule
       ),
     canActivate: [AuthGuard],
+    resolve: {
+      account: AccountResolver,
+    },
   },
   {
     path: 'contact',
@@ -285,11 +294,6 @@ const routes: Routes = [
         './core/components/applicant/applicant-tabs/cdl-card/cdl-card.module'
       ).then((m) => m.CdlCardModule),
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'pdf',
-    component: SphPage2PdfComponent,
-    data: { title: 'pdf' },
   },
   {
     path: 'catalog',

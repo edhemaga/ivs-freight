@@ -1,22 +1,38 @@
-<div *ngFor="let data of reviewData; trackBy: identity; let ind = index" class="ta-user-review"
-  [ngClass]="{ 'edit-review': data.isEditMode }">
+<div
+  *ngFor="let data of reviewData; trackBy: identity; let ind = index"
+  class="ta-user-review"
+  [ngClass]="{ 'edit-review': data.isEditMode }"
+>
   <div class="ta-review-header">
     <div class="ta-user-information">
-      <img *ngIf="data.companyUser?.avatar" class="ta-user-image" src="{{ data.companyUser?.avatar }}"
-        alt="{{ data.companyUser.fullName.substring(0, 1) }}" />
+      <img
+        *ngIf="data.companyUser?.avatar"
+        class="ta-user-image"
+        [src]="data.companyUser.avatar"
+        [alt]="data.companyUser.fullName.substring(0, 1)"
+      />
 
       <div *ngIf="!data.companyUser?.avatar" class="no-profile-image">
-        <app-profile-images [indx]="0" [size]="'medium'" [type]="'user'" [name]="data.companyUser.fullName">
+        <app-profile-images
+          [indx]="0"
+          [size]="'medium'"
+          [type]="'user'"
+          [name]="data.companyUser.fullName"
+        >
         </app-profile-images>
       </div>
 
       <div class="ta-user-data">
         <div class="ta-user-name-rating">
           <p class="ta-user-fullname">{{ data.companyUser.fullName }}</p>
-          <svg-icon *ngIf="data.rating && !data.isEditMode" class="ta-user-reaction"
-            [ngClass]="{ like: data.rating === 1 }" src="assets/svg/common/ic_{{
+          <svg-icon
+            *ngIf="data.rating && !data.isEditMode"
+            class="ta-user-reaction"
+            [ngClass]="{ like: data.rating === 1 }"
+            src="assets/svg/common/ic_{{
               data.rating === 1 ? 'review_like' : 'dislike'
-            }}.svg"></svg-icon>
+            }}.svg"
+          ></svg-icon>
         </div>
         <div class="ta-user-datetime">
           <div class="ta-user-date">
@@ -29,13 +45,27 @@
       </div>
     </div>
     <!-- No Edit Mode Actions -->
-    <div class="ta-user-actions">
-      <div ngbTooltip mainTooltip="Edit" position="top" tooltipBackground="#6C6C6C" *ngIf="!data.isEditMode"
-        class="action-edit" (click)="onAction(data, 'edit', ind)">
-        <svg-icon src="assets/svg/common/ic_pen.svg"></svg-icon>
+    <div *ngIf="!data.prohibitEditingOthers" class="ta-user-actions">
+      <div
+        ngbTooltip
+        mainTooltip="Edit"
+        position="top"
+        tooltipBackground="#6C6C6C"
+        *ngIf="!data.isEditMode"
+        class="action-edit"
+        (click)="onAction(data, 'edit', ind)"
+      >
+        <svg-icon src="ic_pen.svg"></svg-icon>
       </div>
-      <div ngbTooltip mainTooltip="Delete" position="top" tooltipBackground="#EF5350" *ngIf="!data.isEditMode"
-        class="action-delete" (click)="onAction(data, 'delete', ind)">
+      <div
+        ngbTooltip
+        mainTooltip="Delete"
+        position="top"
+        tooltipBackground="#EF5350"
+        *ngIf="!data.isEditMode"
+        class="action-delete"
+        (click)="onAction(data, 'delete', ind)"
+      >
         <svg-icon src="assets/svg/common/ic_trash.svg"></svg-icon>
       </div>
     </div>
@@ -45,19 +75,47 @@
     <div *ngIf="!data.isEditMode" class="message">
       {{ data.commentContent }}
     </div>
-    <textarea [class.show]="data.isEditMode" #reviewMessage appTextareaAutosize [rows]="1" [minRows]="1" [maxRows]="5"
-      class="review-textarea" (input)="transformText($event.target.value, ind)">
+    <textarea
+      [class.show]="data.isEditMode"
+      #reviewMessage
+      appTextareaAutosize
+      [rows]="1"
+      [minRows]="1"
+      [maxRows]="5"
+      class="review-textarea"
+      (input)="transformText($event.target.value, ind)"
+    >
     </textarea>
 
     <!-- Edit Mode Review Actions -->
     <div *ngIf="data.isEditMode" class="ta-review-message-actions">
-      <div class="ta-review-message-confirm" ngbTooltip mainTooltip="Confirm" tooltipBackground="#E5E5E5"
-        tooltipColor="#6c6c6c" position="top" (click)="onAction(data, !data.isNewReview ? 'update' : 'add', ind)">
-        <svg-icon class="ta-review-message-confirm-first" [src]="'assets/svg/ic_spec-confirm.svg'"></svg-icon>
+      <div
+        class="ta-review-message-confirm"
+        ngbTooltip
+        mainTooltip="Confirm"
+        tooltipBackground="#E5E5E5"
+        tooltipColor="#6c6c6c"
+        position="top"
+        (click)="onAction(data, !data.isNewReview ? 'update' : 'add', ind)"
+      >
+        <svg-icon
+          class="ta-review-message-confirm-first"
+          [src]="'assets/svg/ic_spec-confirm.svg'"
+        ></svg-icon>
       </div>
-      <div class="ta-review-message-cancel" ngbTooltip mainTooltip="Cancel" tooltipBackground="#E5E5E5"
-        tooltipColor="#6c6c6c" position="top" (click)="onAction(data, 'cancel', ind)">
-        <svg-icon class="ta-review-message-cancel-first" [src]="'assets/svg/ic_x.svg'"></svg-icon>
+      <div
+        class="ta-review-message-cancel"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#E5E5E5"
+        tooltipColor="#6c6c6c"
+        position="top"
+        (click)="onAction(data, 'cancel', ind)"
+      >
+        <svg-icon
+          class="ta-review-message-cancel-first"
+          [src]="'assets/svg/ic_x.svg'"
+        ></svg-icon>
       </div>
     </div>
   </div>

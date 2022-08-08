@@ -1,5 +1,4 @@
-import { CreateBase64Class } from 'src/app/core/utils/base64.image';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -24,9 +23,11 @@ import { DriversInactiveState } from '../state/driver-inactive-state/driver-inac
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
 import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { DomSanitizer } from '@angular/platform-browser';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+@UntilDestroy()
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
@@ -67,7 +68,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
     private nameInitialsPipe: NameInitialsPipe,
     private thousandSeparator: TaThousandSeparatorPipe,
-    private createBase64: CreateBase64Class
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {
@@ -114,88 +115,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    // Add Driver
-    this.tableService.currentActionAnimation
+    // Search
+    this.tableService.currentSearchTableData
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        // On Add In Active Tab
-        if (res.animation === 'add' && this.selectedTab === 'active') {
-          this.viewData.push(this.mapDriverData(res.data));
+        if (res) {
+          const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
 
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'add';
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendDriverData();
             }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000);
-        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
-          this.updateDataCount();
-        } else if (res.animation === 'update') {
-          const updatedDriver = this.mapDriverData(res.data);
-
-          this.viewData = this.viewData.map((driver: any) => {
-            if (driver.id === res.id) {
-              driver = updatedDriver;
-              driver.actionAnimation = 'update';
-            }
-
-            return driver;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000);
-        } else if (res.animation === 'update-status') {
-          let driverIndex: number;
-
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'update';
-              driverIndex = index;
-            }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 1000);
-        } else if (res.animation === 'delete') {
-          let driverIndex: number;
-
-          this.viewData = this.viewData.map((driver: any, index: number) => {
-            if (driver.id === res.id) {
-              driver.actionAnimation = 'delete';
-              driverIndex = index;
-            }
-
-            return driver;
-          });
-
-          this.updateDataCount();
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(driverIndex, 1);
-            clearInterval(inetval);
-          }, 1000);
+          }
         }
       });
 
@@ -232,24 +169,96 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
-    // Search
-    this.tableService.currentSearchTableData
+    // Driver Actions
+    this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
-        if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+        // On Add Driver Active
+        if (res.animation === 'add' && this.selectedTab === 'active') {
+          this.viewData.push(this.mapDriverData(res.data));
 
-          if (searchEvent) {
-            if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
-            } else if (searchEvent.action === 'store') {
-              this.sendDriverData();
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'add';
             }
-          }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // On Add Driver Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
+        }
+        // On Update Driver
+        else if (res.animation === 'update') {
+          const updatedDriver = this.mapDriverData(res.data);
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver = updatedDriver;
+              driver.actionAnimation = 'update';
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // On Update Driver Status
+        else if (res.animation === 'update-status') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'update';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // On Delete Driver
+        else if (res.animation === 'delete') {
+          let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
         }
       });
 
@@ -427,7 +436,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.mapDriverData(data);
       });
 
-      // // For Testing
+      // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
@@ -447,7 +456,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
-      avatarImg: data?.avatar ? this.createBase64.sanitizer(data.avatar) : '',
+      avatarImg: data?.avatar
+        ? this.imageBase64Service.sanitizer(data.avatar)
+        : '',
       textDOB: data.dateOfBirth
         ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
         : '',
@@ -527,9 +538,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textEmergencyContact: [
         {
           title: 'First Name',
-          value: data?.emergencyContactName
-            ? data.emergencyContactName
-            : null,
+          value: data?.emergencyContactName ? data.emergencyContactName : null,
         },
         {
           title: 'Phone',

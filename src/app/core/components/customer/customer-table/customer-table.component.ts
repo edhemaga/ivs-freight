@@ -1,8 +1,18 @@
-import { Component, OnInit, OnDestroy, ViewEncapsulation, ChangeDetectorRef, ViewChild } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewEncapsulation,
+  ViewChild,
+  AfterViewInit,
+} from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import {
   getBrokerColumnDefinition,
   getShipperColumnDefinition,
@@ -13,19 +23,27 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { BrokerState } from '../state/broker-state/broker.store';
-import { ShipperState, ShipperStore } from '../state/shipper-state/shipper.store';
+import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
+@UntilDestroy()
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
-  styleUrls: ['./customer-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [
+    './customer-table.component.scss',
+    '../../../../../assets/scss/maps.scss',
+  ],
+  encapsulation: ViewEncapsulation.None,
+  providers: [TaThousandSeparatorPipe],
 })
-export class CustomerTableComponent implements OnInit, OnDestroy {
-  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+export class CustomerTableComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
+  @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -33,8 +51,21 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   public columns: any[] = [];
   public brokers: BrokerState[] = [];
   public shipper: ShipperState[] = [];
-  public selectedTab = 'broker';
+  public selectedTab = 'active';
   public resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+  backFilterQuery = {
+    ban: null,
+    dnu: null,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -44,13 +75,10 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
-    private ref: ChangeDetectorRef,
-    private formBuilder: FormBuilder,
-    private shipperStore: ShipperStore
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
     this.sendCustomerData();
 
     // Reset Columns
@@ -61,6 +89,36 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           this.resetColumns = response;
 
           this.sendCustomerData();
+        }
+      });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
         }
       });
 
@@ -104,7 +162,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         // Multiple Delete
         if (response.length) {
           // Delete Broker List
-          if (this.selectedTab === 'broker') { 
+
+          if (this.selectedTab === 'active') {
             this.brokerService
               .deleteBrokerList(response)
               .pipe(untilDestroyed(this))
@@ -172,6 +231,43 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.brokerAndShipperBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendCustomerData();
+            }
+          }
+        }
+      });
+  }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
   public initTableOptions(): void {
@@ -179,9 +275,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: false,
-        hideViewMode: this.selectedTab === 'broker' ? true : false,
-        showMapView: this.selectedTab === 'broker' ? false : true,
-        viewModeActive: 'List'
+        showMapView: this.selectedTab === 'active' ? false : true,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -204,8 +299,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           name: 'delete',
           type: 'customer',
           text:
-            this.selectedTab === 'broker'
-              ? 'Are you sure you want to delete customer(s)?'
+            this.selectedTab === 'active'
+              ? 'Are you sure you want to delete broker(s)?'
               : 'Are you sure you want to delete shipper(s)?',
           class: 'delete-text',
           contentType: 'delete',
@@ -219,7 +314,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   }
 
   sendCustomerData() {
-    if (this.selectedTab === 'broker') {
+    this.initTableOptions();
+
+    const brokerShipperCount = JSON.parse(
+      localStorage.getItem('brokerShipperTableCount')
+    );
+
+    if (this.selectedTab === 'active') {
       this.brokers = this.brokerQuery.getAll().length
         ? this.brokerQuery.getAll()
         : [];
@@ -232,8 +333,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     this.tableData = [
       {
         title: 'Broker',
-        field: 'broker',
-        length: this.brokers.length,
+        field: 'active',
+        length: brokerShipperCount?.broker ? brokerShipperCount.broker : 0,
         data: this.brokers,
         extended: false,
         isCustomer: true,
@@ -243,8 +344,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       },
       {
         title: 'Shipper',
-        field: 'shipper',
-        length: this.shipper.length,
+        field: 'inactive',
+        length: brokerShipperCount?.shipper ? brokerShipperCount.shipper : 0,
         data: this.shipper,
         extended: false,
         isCustomer: true,
@@ -276,11 +377,12 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   setCustomerData(td: any) {
     this.viewData = td.data;
     this.columns = td.gridColumns;
-    
-    this.initTableOptions();
+
+    console.log('Customer Data');
+    console.log(this.viewData);
 
     this.viewData = this.viewData.map((data: any) => {
-      if (this.selectedTab === 'broker') {
+      if (this.selectedTab === 'active') {
         return this.mapBrokerData(data);
       } else {
         return this.mapShipperData(data);
@@ -294,10 +396,14 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       ...data,
       isSelected: false,
       textAddress: data?.mainAddress
-        ? data.mainAddress.city + ', ' + data.mainAddress.state 
+        ? data.mainAddress.city + ', ' + data.mainAddress.state
         : '',
-      loadCount: '',
-      total: '',
+      loadCount: data?.loadCount
+        ? this.thousandSeparator.transform(data.loadCount)
+        : '',
+      textTotal: data?.total
+        ? '$' + this.thousandSeparator.transform(data.total)
+        : '',
     };
   }
 
@@ -316,12 +422,82 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     };
   }
 
+  // Update Broker And Shipper Count
+  updateDataCount() {
+    const brokerShipperCount = JSON.parse(
+      localStorage.getItem('brokerShipperTableCount')
+    );
+
+    this.tableData[0].length = brokerShipperCount.broker;
+    this.tableData[1].length = brokerShipperCount.shipper;
+  }
+
+  // Broker And Shipper Back Filter Query
+  brokerAndShipperBackFilter(filter: {
+    ban: number | undefined;
+    dnu: number | undefined;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number | undefined;
+    sort: string | undefined;
+    searchOne: string | undefined;
+    searchTwo: string | undefined;
+    searchThree: string | undefined;
+  }) {
+    // Broker Api Call
+    if (this.selectedTab === 'active') {
+      this.brokerService
+        .getBrokerList(
+          filter.ban,
+          filter.dnu,
+          filter.pageIndex,
+          filter.pageSize,
+          filter.companyId,
+          filter.sort,
+          filter.searchOne,
+          filter.searchTwo,
+          filter.searchThree
+        )
+        .pipe(untilDestroyed(this))
+        .subscribe((brokers: GetBrokerListResponse) => {
+          this.viewData = brokers.pagination.data;
+
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapBrokerData(data);
+          });
+        });
+    }
+    // Shipper Api Call
+    else {
+      this.shipperService
+        .getShippersList(
+          filter.ban,
+          filter.dnu,
+          filter.pageIndex,
+          filter.pageSize,
+          filter.companyId,
+          filter.sort,
+          filter.searchOne,
+          filter.searchTwo,
+          filter.searchThree
+        )
+        .pipe(untilDestroyed(this))
+        .subscribe((shippers: ShipperListResponse) => {
+          this.viewData = shippers.pagination.data;
+
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapShipperData(data);
+          });
+        });
+    }
+  }
+
   // Toolbar Actions
   onToolBarAction(event: any) {
     // Add Call
     if (event.action === 'open-modal') {
       // Add Broker Call Modal
-      if (this.selectedTab === 'broker') {
+      if (this.selectedTab === 'active') {
         this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
       }
       // Add Shipper Call Modal
@@ -334,9 +510,21 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       this.selectedTab = event.tabData.field;
 
       this.sendCustomerData();
-    }
-    else if (event.action === 'view-mode') {
+    } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
+    }
+  }
+
+  // Head Actions
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.backFilterQuery.sort = event.direction;
+
+        this.brokerAndShipperBackFilter(this.backFilterQuery);
+      } else {
+        this.sendCustomerData();
+      }
     }
   }
 
@@ -360,7 +548,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
 
     if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
-      if (this.selectedTab === 'broker') {
+      if (this.selectedTab === 'active') {
         this.modalService.openModal(
           BrokerModalComponent,
           { size: 'small' },
@@ -387,7 +575,7 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
     // Delete Call
     else if (event.type === 'delete') {
       // Delete Broker Call
-      if (this.selectedTab === 'broker') {
+      if (this.selectedTab === 'active') {
         this.brokerService
           .deleteBrokerById(event.id)
           .pipe(untilDestroyed(this))
@@ -444,6 +632,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       return data;
     });
 
+    this.updateDataCount();
+
     const inetval = setInterval(() => {
       this.viewData = closeAnimationAction(false, this.viewData);
 
@@ -479,6 +669,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       return data;
     });
 
+    this.updateDataCount();
+
     const inetval = setInterval(() => {
       this.viewData = closeAnimationAction(true, this.viewData);
 
@@ -498,6 +690,8 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
       return data;
     });
 
+    this.updateDataCount();
+
     const inetval = setInterval(() => {
       this.viewData = closeAnimationAction(true, this.viewData);
 
@@ -511,9 +705,13 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
+
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 
-  selectItem(id) {
+  // MAP
+  selectItem(id: any) {
     this.mapsComponent.clickedMarker(id);
   }
 }

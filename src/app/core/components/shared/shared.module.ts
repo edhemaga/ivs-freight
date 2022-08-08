@@ -11,20 +11,8 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
-import { DatePickerModule } from '@progress/kendo-angular-dateinputs';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
 import { TabSwitcherComponent } from '../switchers/tab-switcher/tab-switcher.component';
-import { SortableModule } from '@progress/kendo-angular-sortable';
-import { GridModule, PDFModule } from '@progress/kendo-angular-grid';
-import { DropDownsModule } from '@progress/kendo-angular-dropdowns';
-import { ButtonsModule } from '@progress/kendo-angular-buttons';
-import { SchedulerModule } from '@progress/kendo-angular-scheduler';
-import { InputsModule, SwitchModule } from '@progress/kendo-angular-inputs';
-import { DateInputsModule } from '@progress/kendo-angular-dateinputs';
-import { LayoutModule } from '@progress/kendo-angular-layout';
-import { ExcelExportModule } from '@progress/kendo-angular-excel-export';
-import { PDFExportModule } from '@progress/kendo-angular-pdf-export';
-import { LabelModule } from '@progress/kendo-angular-label';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
@@ -103,6 +91,7 @@ import { MapMarkerDropdownComponent } from './map-marker-dropdown/map-marker-dro
 import { TaInputDropdownLabelComponent } from './ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { LoadModalComponent } from '../modals/load-modal/load-modal.component';
 import { TaInputArrowsComponent } from './ta-input-arrows/ta-input-arrows.component';
+import { TaNoteModule } from './ta-note/ta-note.module';
 import { CustomScrollbarComponent } from './custom-scrollbar/custom-scrollbar.component';
 import { TaUploadFilesComponent } from './ta-upload-files/ta-upload-files.component';
 import { DetailsDropdownComponent } from './details-page-dropdown/details-dropdown';
@@ -112,6 +101,8 @@ import { ProgressInvoicesComponent } from './progress-invoices/progress-invoices
 import { TaSpinnerComponent } from './ta-spinner/ta-spinner.component';
 import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
+import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
+import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -158,6 +149,10 @@ export function playerFactory() {
     TaChartComponent,
     TaInputArrowsComponent,
     TaSpinnerComponent,
+    TaTimePeriodComponent,
+    TaUploadFileComponent,
+    TaInputDropdownLabelComponent,
+    TaUploadFilesComponent,
 
     // Modals Components
     TaModalComponent,
@@ -170,7 +165,6 @@ export function playerFactory() {
     ShipperModalComponent,
     OwnerModalComponent,
     UserModalComponent,
-    TaUploadFileComponent,
     TaskModalComponent,
     TtRegistrationModalComponent,
     TtFhwaInspectionModalComponent,
@@ -181,17 +175,19 @@ export function playerFactory() {
     RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
+    ProfileUpdateModalComponent,
+    LoadModalComponent,
+
+    //----------------------------
     MapListComponent,
     MapListCardComponent,
     MapMarkerDropdownComponent,
-    TaInputDropdownLabelComponent,
     TaTabSwitchComponent,
-    LoadModalComponent,
     CustomScrollbarComponent,
     MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
-    TaCopyComponent,
+    TaCopyComponent
   ],
   imports: [
     CommonModule,
@@ -212,21 +208,7 @@ export function playerFactory() {
     }),
     LottieModule.forRoot({ player: playerFactory }),
     NgxSliderModule,
-    DatePickerModule,
     GooglePlaceModule,
-    SortableModule,
-    GridModule,
-    PDFModule,
-    DropDownsModule,
-    ButtonsModule,
-    SchedulerModule,
-    InputsModule,
-    SwitchModule,
-    DateInputsModule,
-    LayoutModule,
-    ExcelExportModule,
-    PDFExportModule,
-    LabelModule,
     DragDropModule,
     ScrollingModule,
     NgxMaskModule.forRoot(),
@@ -238,6 +220,7 @@ export function playerFactory() {
     TruckassistTableModule,
     AppTooltipeModule,
     ChartsModule,
+    TaNoteModule,
     AgmSnazzyInfoWindowModule,
   ],
   exports: [
@@ -250,20 +233,7 @@ export function playerFactory() {
     AgmCoreModule,
     NgbModule,
     GooglePlaceModule,
-    SortableModule,
-    GridModule,
-    PDFModule,
     PipesModule,
-    DropDownsModule,
-    ButtonsModule,
-    SchedulerModule,
-    InputsModule,
-    SwitchModule,
-    DateInputsModule,
-    LayoutModule,
-    ExcelExportModule,
-    PDFExportModule,
-    LabelModule,
     DragDropModule,
     ScrollingModule,
     NgxMaskModule,
@@ -324,10 +294,12 @@ export function playerFactory() {
     TaSpinnerComponent,
 
     TaCopyComponent,
-    // Modals Components
-    TaModalComponent,
+    TaInputDropdownLabelComponent,
     TaInputAddressComponent,
     DirectivesModule,
+    TaUploadFilesComponent,
+    // Modals Components
+    TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
     TrailerModalComponent,
@@ -344,11 +316,13 @@ export function playerFactory() {
     FuelStopModalComponent,
     ViolationModalComponent,
     AccidentModalComponent,
+    RepairShopModalComponent,
     RepairPmModalComponent,
     RepairOrderModalComponent,
-    TaInputDropdownLabelComponent,
+    ProfileUpdateModalComponent,
     LoadModalComponent,
     TaUploadFilesComponent,
+    TaTimePeriodComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

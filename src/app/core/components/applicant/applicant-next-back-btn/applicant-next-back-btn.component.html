@@ -1,17 +1,29 @@
 <div class="d-flex justify-content-center align-items-center" *ngIf="nextStep">
   <button
     type="button"
-    class="d-flex justify-content-center align-items-center step-btn"
-    [ngClass]="{ 'filled-correctly': filledCorrectly }"
+    class="d-flex justify-content-end align-items-center step-btn"
+    [ngClass]="{
+      'filled-correctly': filledCorrectly,
+      'review-btn': selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+    }"
     [ngStyle]="{
-      width: lastPage || lastSphFormPage ? '234px' : '100px'
+      width:
+        lastPage ||
+        lastSphFormPage ||
+        (selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly)
+          ? '234px'
+          : '100px'
     }"
     (click)="onStepAction('next-step')"
   >
     <span
       class="ta-font-semi-bold step-text step-next-text"
       [ngStyle]="{
-        color: filledCorrectly ? '#3551B7' : '#6c6c6c'
+        color: filledCorrectly
+          ? '#3551B7'
+          : selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+          ? '#00967e'
+          : '#6c6c6c'
       }"
       >{{
         lastStep
@@ -20,6 +32,8 @@
           ? 'Finish & Save Profile'
           : lastSphFormPage
           ? 'Finish & Send'
+          : selectedMode === 'REVIEW_MODE' && reviewFilledCorrectly
+          ? 'Confirm All'
           : 'Next'
       }}
     </span>

@@ -232,6 +232,7 @@ table {
               margin-right: 6px;
               display: flex;
               cursor: pointer;
+              transition: transform 0.2s;
 
               &:hover {
                 transform: scale(1.8);
@@ -340,11 +341,9 @@ table {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              width: 100%;
-              height: 100%;
-              display: flex;
               align-items: center;
               cursor: pointer;
+
               &::selection {
                 color: #6c6c6c;
                 background: #6c6c6c20;

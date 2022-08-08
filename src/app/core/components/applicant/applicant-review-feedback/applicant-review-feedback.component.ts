@@ -1,54 +1,62 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-import { ReviewFeedbackService } from '../state/services/review-feedback.service';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  Self,
+  ViewChild,
+} from '@angular/core';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { TaInputComponent } from '../../shared/ta-input/ta-input.component';
 
 @Component({
   selector: 'app-applicant-review-feedback',
   templateUrl: './applicant-review-feedback.component.html',
   styleUrls: ['./applicant-review-feedback.component.scss'],
 })
-export class ApplicantReviewFeedbackComponent implements OnInit {
-  public approved?: boolean;
-  public description: string = '';
+export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
+  @ViewChild(TaInputComponent) inputRef: TaInputComponent;
 
-  @Input() reviewFeedbackData: any = {};
-  @Input() index: number = 0;
+  @Input() displayAnnotationButton: boolean;
+  @Input() displayAnnotationTextArea: boolean;
+  @Input() lineIndex: number;
   @Input() isFeedback: boolean = false;
-  @Input() isApproved: boolean = false;
-  @Output() sendReview: EventEmitter<any> = new EventEmitter();
+  @Input() feedbackText: string;
+  @Input() cardsLength?: number;
+  @Input() cardIndex: number;
 
-  constructor(private reviewFeedbackService: ReviewFeedbackService) {}
+  @Output() annotationBtnClickEvent: EventEmitter<{
+    lineIndex: number;
+    type: string;
+  }> = new EventEmitter();
 
-  ngOnInit(): void {
-    let isFirstLoad = true;
-
-    this.reviewFeedbackService.currentSetAllConfirmed.subscribe(
-      (confirmed: boolean) => {
-        if (confirmed && !isFirstLoad) {
-          this.approved = true;
-          this.description = '';
-        }
-
-        this.reviewFeedbackData.approved = this.approved;
-        this.reviewFeedbackData.description = this.description;
-
-        this.sendReview.emit({
-          reviewFeedbackData: this.reviewFeedbackData,
-          index: this.index,
-          firstLoad: isFirstLoad,
-        });
-
-        isFirstLoad = false;
-      }
-    );
+  constructor(@Self() public superControl: NgControl) {
+    this.superControl.valueAccessor = this;
   }
 
-  onApprove(isApprove: boolean) {
-    this.approved = isApprove;
-    this.description = '';
+  get getSuperControl() {
+    return this.superControl.control;
+  }
 
-    if (!isApprove) {
-      this.reviewFeedbackService.sendBtnAction(false);
+  public writeValue(obj: any): void {}
+  public registerOnChange(fn: any): void {}
+  public onChange(event: any): void {}
+  public registerOnTouched(fn: any): void {}
+
+  public handleAnnotationClick(type: string): void {
+    if (type === 'open') {
+      this.annotationBtnClickEvent.emit({
+        lineIndex: this.lineIndex,
+        type: 'open',
+      });
+      this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
+    } else {
+      this.annotationBtnClickEvent.emit({
+        lineIndex: this.lineIndex,
+        type: 'close',
+      });
+      this.getSuperControl.patchValue(null);
+      this.inputRef.focusInput = false;
     }
   }
 }

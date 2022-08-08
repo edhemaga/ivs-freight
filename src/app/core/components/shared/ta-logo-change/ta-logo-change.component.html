@@ -58,7 +58,13 @@
   </div>
 
   <!------------------------ Saved File ------------------------>
-  <div class="ta-logo-saved-image" *ngIf="imageUrl">
+  <div
+    class="ta-logo-saved-image"
+    [ngClass]="{
+      'ta-logo-saved-image-circle': croppieOptions.viewport.type === 'circle'
+    }"
+    *ngIf="imageUrl"
+  >
     <div
       class="ta-logo-image-delete"
       ngbTooltip

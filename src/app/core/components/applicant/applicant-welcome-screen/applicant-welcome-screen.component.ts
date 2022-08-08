@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
@@ -9,6 +9,7 @@ import moment from 'moment';
  */
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-applicant-welcome-screen',
   templateUrl: './applicant-welcome-screen.component.html',

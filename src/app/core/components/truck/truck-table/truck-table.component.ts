@@ -1,4 +1,4 @@
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
@@ -19,6 +19,7 @@ import { TruckActiveState } from '../state/truck-active-state/truck-active.store
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
+@UntilDestroy()
 @Component({
   selector: 'app-truck-table',
   templateUrl: './truck-table.component.html',
@@ -400,7 +401,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
       color: data?.color?.code ? data.color.code : '',
-      colorName: data?.color?.name ? data.color.name : '', 
+      colorName: data?.color?.name ? data.color.name : '',
       truckTypeIcon: data.truckType.logoName,
       truckTypeClass: data.truckType.logoName.replace('.svg', ''),
       ownerName: data?.owner?.name ? data.owner.name : '',
@@ -410,7 +411,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         : '',
       truckEngine: data?.truckEngineType?.name ? data.truckEngineType.name : '',
       truckTireSize: data?.tireSize?.name ? data.tireSize.name : '',
-      truckMileage: data?.mileage ? this.thousandSeparator.transform(data.mileage) + ' mi' : '',
+      truckMileage: data?.mileage
+        ? this.thousandSeparator.transform(data.mileage) + ' mi'
+        : '',
       truckIpasEzpass: data?.ipasEzpass ? data.ipasEzpass : '',
       truckLicensePlate: data?.licensePlate
         ? data.licensePlate

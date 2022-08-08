@@ -61,7 +61,7 @@
               label: 'Country',
               isDisabled: true,
               isDropdown: true,
-              dropdownWidthClass: 'w-col-4'
+              dropdownWidthClass: 'w-col-148'
             }"
           ></app-ta-input-dropdown>
           <app-ta-input-dropdown
@@ -72,7 +72,7 @@
               label: 'State',
               isDisabled: true,
               isDropdown: true,
-              dropdownWidthClass: 'w-col-4'
+              dropdownWidthClass: 'w-col-148'
             }"
           ></app-ta-input-dropdown>
           <app-ta-input
@@ -466,6 +466,7 @@
                 placeholderIcon: 'address',
                 textTransform: 'capitalize'
               }"
+              [activeAddress]="selectedAuthorityAddress"
               (selectedAddress)="onHandleAddress($event, 'address-authority')"
             ></app-ta-input-address>
             <app-ta-input
@@ -540,6 +541,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedAuthorityOrigin"
                 (selectedAddress)="onHandleAddress($event, 'address-origin')"
               ></app-ta-input-address>
             </div>
@@ -553,6 +555,7 @@
                   placeholderIcon: 'address',
                   textTransform: 'capitalize'
                 }"
+                [activeAddress]="selectedAuthorityDestination"
                 (selectedAddress)="
                   onHandleAddress($event, 'address-destination')
                 "
@@ -567,7 +570,7 @@
                 type: 'text',
                 label: 'Customer',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-large-modal-cutomer'
+                dropdownWidthClass: 'w-col-273'
               }"
               [options]="labelsViolationCustomer"
               (selectedItem)="onSelectDropDown($event)"

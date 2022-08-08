@@ -183,14 +183,11 @@
       margin: 0px !important;
     }
 
-    .right-side {
+    .ta-modal-footer-right-side,
+    .ta-modal-footer-left-side {
       display: flex;
       align-items: center;
-      gap: 12px;
-
-      .modal-save-btn-add-new {
-        width: 182px !important;
-      }
+      gap: 6px;
     }
   }
 }

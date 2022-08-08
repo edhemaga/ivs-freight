@@ -7,11 +7,12 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaUploadFileService } from './ta-upload-file.service';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 
+@UntilDestroy()
 @Component({
   selector: 'app-ta-upload-files',
   templateUrl: './ta-upload-files.component.html',
@@ -25,6 +26,7 @@ export class TaUploadFilesComponent implements OnInit {
   @Input() customClassName: string;
   @Input() files: UploadFile[] = [];
   @Input() hasTag: boolean = false;
+  @Input() hasNumberOfPages: boolean = false;
   @Input() size: string = 'small'; // small | medium | large
   @Input() hasCarouselBottomTabs: boolean;
 

@@ -4,8 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
-import { untilDestroyed } from 'ngx-take-until-destroy';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
+@UntilDestroy()
 @Component({
   selector: 'app-helper-forgot-password',
   templateUrl: './helper-forgot-password.component.html',
@@ -22,7 +23,7 @@ export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.verifyData = {
         emailHash: params['EmailHash'],
         code: params['Code'],
