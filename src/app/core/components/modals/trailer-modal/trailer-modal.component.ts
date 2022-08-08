@@ -162,9 +162,26 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
+
+    let trailerUnit = this.trailerForm.get('trailerNumber').value;
     if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
+
+      let successMessage = '';
+      let errorMessage = '';
+      
+      if ( !this.trailerStatus )
+        {
+          successMessage = 'Trailer ' + '"' + trailerUnit + '"' + ' Deactivated';
+          errorMessage = 'Failed to Deactivate Trailer ' + '"' + trailerUnit + '"';
+        }
+      else 
+        {
+          successMessage = 'Trailer ' + '"' + trailerUnit + '"' + ' Activated';
+          errorMessage = 'Failed to Activate Trailer ' + '"' + trailerUnit + '"';
+        } 
+
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
           .changeTrailerStatus(this.editData.id, this.editData.tabSelected)
@@ -180,17 +197,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 });
 
                 this.notificationService.success(
-                  `Trailer status changed to ${
-                    this.trailerStatus ? 'deactivate' : 'activate'
-                  }.`,
-                  'Success:'
+                  successMessage,
+                  'Success'
                 );
               }
             },
             error: () => {
               this.notificationService.error(
-                "Truck status can't be changed.",
-                'Error:'
+                errorMessage,
+                'Error'
               );
             },
           });
@@ -269,7 +284,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         error: () => {
           this.notificationService.error(
             "Cant't get trailer dropdown items.",
-            'Error:'
+            'Error'
           );
         },
       });
@@ -305,7 +320,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
     };
-    console.log('---this.trailerForm----', this.trailerForm);
+  
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .addTrailer(newData)
@@ -324,14 +339,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteTrailerById(id: number): void {
+    let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .deleteTrailerById(id, this.editData.tabSelected)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Trailer successfully deleted.',
-            'Success:'
+            'Trailer ' + '"' + trailerUnit + '"' + ' deleted',
+            'Success'
           );
           this.modalService.setModalSpinner({
             action: 'delete',
@@ -339,7 +355,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () =>
-          this.notificationService.error("Trailer can't be deleted.", 'Error:'),
+          this.notificationService.error('Failed to delete trailer ' + '"' + trailerUnit + '"', 'Error'),
       });
   }
 
@@ -391,19 +407,21 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         : null,
     };
 
+    let trailerUnit = this.trailerForm.get('trailerNumber').value;
+
     this.trailerModalService
       .updateTrailer(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Trailer successfully updated.',
-            'Success:'
+            'Changes saved for Trailer ' + '"' + trailerUnit + '"' ,
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: true });
         },
         error: () =>
-          this.notificationService.error("Trailer can't be updated.", 'Error:'),
+          this.notificationService.error('Failed to save changes for Trailer ' + '"' + trailerUnit + '"', 'Error'),
       });
   }
 

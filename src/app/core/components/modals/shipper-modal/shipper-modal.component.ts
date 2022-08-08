@@ -515,19 +515,20 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       shipperContacts,
     };
 
+    let shipperBuisnisName = this.shipperForm.value.businessName;
     this.shipperModalService
       .addShipper(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Shipper successfully added.',
-            'Error:'
+            'Shipper ' + '"' + shipperBuisnisName + '"' + ' added',
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Shipper can't be added.", 'Error:');
+          this.notificationService.error('Failed to add Shipper ' + '"' + shipperBuisnisName + '"', 'Error');
         },
       });
   }

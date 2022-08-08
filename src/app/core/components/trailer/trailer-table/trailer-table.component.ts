@@ -464,6 +464,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+
+    let trailerNum = '';
+    this.viewData.map((data: any) => {
+      if ( data.id == event.id )
+        {
+          trailerNum = data.trailerNumber;
+        }
+    });
+
     switch (event.type) {
       case 'edit-trailer': {
         this.modalService.openModal(
@@ -509,8 +518,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Trailer successfully changed status',
-                'Success:'
+                'Trailer ' + '"' + trailerNum + '"' + ' Activated',
+                'Success'
               );
 
               this.sendTrailerData();
@@ -531,8 +540,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Trailer successfully deleted',
-                'Success:'
+                'Trailer ' + '"' + trailerNum + '"' + ' deleted',
+                'Success'
               );
 
               this.viewData = this.viewData.map((trailer: any) => {
@@ -551,8 +560,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             },
             error: () => {
               this.notificationService.error(
-                `Trailer with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Trailer ` + '"' + trailerNum + '"',
+                'Error'
               );
             },
           });

@@ -104,14 +104,34 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
         // Multiple Delete
         if (response.length) {
           // Delete Broker List
-          if (this.selectedTab === 'broker') {
+          if (this.selectedTab === 'broker') { 
             this.brokerService
               .deleteBrokerList(response)
               .pipe(untilDestroyed(this))
               .subscribe(() => {
+
+                let brokerName = '';
+                let brokerText = 'Broker ';
+                this.viewData.map((data: any) => {
+                  response.map((r: any) => {
+                    if (data.id === r.id) {
+                      console.log(data);
+                      if ( brokerName == '' )
+                        {
+                          brokerName = data.businessName;
+                        }
+                      else 
+                        {
+                          brokerName = brokerName + ', ' + data.businessName;
+                          brokerText = 'Brokers ';
+                        } 
+                    }
+                  }); });
+
+
                 this.notificationService.success(
-                  'Brokers successfully deleted',
-                  'Success:'
+                  ''+brokerText+' '+ '"' + brokerName + '"' +' deleted',
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -119,13 +139,32 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           }
           // Delete Shipper List
           else {
+
+            let shipperName = '';
+            let shipText = 'Shipper ';
+             this.viewData.map((data: any) => {
+              response.map((r: any) => {
+                if (data.id === r.id) {
+                  console.log(data);
+                  if ( shipperName == '' )
+                    {
+                      shipperName = data.businessName;
+                    }
+                   else 
+                    {
+                      shipperName = shipperName + ', ' + data.businessName;
+                      shipText = 'Shippers ';
+                    } 
+                }
+              }); });
+
             this.shipperService
               .deleteShipperList(response)
               .pipe(untilDestroyed(this))
               .subscribe(() => {
                 this.notificationService.success(
-                  'Shippers successfully deleted',
-                  'Success:'
+                  ''+shipText+''+ '"' + shipperName + '"' +' deleted',
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -304,6 +343,21 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
   // Table Body Actions
   onTableBodyActions(event: any) {
     // Edit Call
+
+    let businessName = '';
+    this.viewData.map((data: any) => {
+      if (data.id === event.id) {
+        if ( businessName == '' )
+          {
+            businessName = data.businessName;
+          }
+        else {
+          businessName = businessName + ', ' + data.businessName;
+        }  
+        
+      }
+    });
+
     if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
       if (this.selectedTab === 'broker') {
@@ -340,16 +394,16 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Broker successfully deleted',
-                'Success:'
+                'Broker ' + '"' + businessName + '"' + ' deleted',
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Broker ` + '"' + businessName + '"',
+                'Error'
               );
             },
           });
@@ -362,21 +416,23 @@ export class CustomerTableComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Shipper successfully deleted',
-                'Success:'
+                'Shipper ' + '"' + businessName + '"' + ' deleted',
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                'Failed to delete Shipper ' + '"' + businessName + '"',
+                'Error'
               );
             },
           });
       }
     }
+
+    //businessName = '';
   }
 
   // Add Shipper Or Broker To Viewdata

@@ -365,19 +365,21 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         : null,
       year: parseInt(this.truckForm.get('year').value),
     };
+
+    let truckNum = this.truckForm.get('truckNumber').value;
     this.truckModalService
       .updateTruck(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Truck successfully updated.',
-            'Success:'
+            'Truck '+ '"' + truckNum + '"' +' updated',
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error("Truck can't be updated.", 'Error:'),
+          this.notificationService.error('Truck ' + '"' + truckNum + '"' + ' update failed', 'Error'),
       });
   }
 

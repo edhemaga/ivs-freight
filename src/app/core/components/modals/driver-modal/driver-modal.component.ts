@@ -172,6 +172,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       this.driverForm.reset();
     }
     // Change Driver Status
+
+    let fullName = this.driverForm.get('firstName').value + ' ' + this.driverForm.get('lastName').value;
+    let successMessage = '';
+    let errorMessage = '';
+
+    if ( data.action === 'deactivate' )
+      {
+        successMessage = '"' + fullName + '"' + ' Deactivated';
+        errorMessage = 'Failed to Deactivate ' + '"' + fullName + '"';
+      }
+    else 
+      {
+        successMessage = '"' + fullName + '"' + ' Activated';
+        errorMessage = 'Failed to Activate ' + '"' + fullName + '"';
+      } 
     if (data.action === 'deactivate' && this.editData) {
       this.driverTService
         .changeDriverStatus(
@@ -190,10 +205,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               });
 
               this.notificationService.success(
-                `Driver status changed to ${
-                  this.driverStatus ? 'deactivate' : 'activate'
-                }.`,
-                'Success:'
+                successMessage,
+                'Success'
               );
 
               this.modalService.setModalSpinner({
@@ -204,8 +217,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           },
           error: () => {
             this.notificationService.error(
-              "Driver status can't be changed.",
-              'Error:'
+              successMessage,
+              'Error'
             );
           },
         });
@@ -738,15 +751,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
-    console.log(newData);
+
+    let driverFullName = newData.firstName + ' ' + newData.lastName;
+
     this.driverTService
       .addDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Driver successfully added.',
-            'Success:'
+            'Driver ' + '"' + driverFullName + '"' + ' added',
+            'Success'
           );
 
           this.modalService.setModalSpinner({
@@ -778,7 +793,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           }
         },
         error: () =>
-          this.notificationService.error("Driver can't be added.", 'Error:'),
+          this.notificationService.error('Failed to add ' + '"' + driverFullName + '"', 'Error'),
       });
   }
 
@@ -867,19 +882,21 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       offDutyLocations: this.premmapedOffDutyLocation(),
     };
 
+    let driverFullName = this.driverForm.get('firstName').value + ' ' + this.driverForm.get('lastName').value;
+
     this.driverTService
       .updateDriver(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Driver successfully updated.',
-            'Success:'
+            'Changes saved for ' + '"' + driverFullName + '"',
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error("Driver can't be updated.", 'Error:'),
+          this.notificationService.error('Failed to save changes for ' + '"' + driverFullName + '"' , 'Error'),
       });
   }
 

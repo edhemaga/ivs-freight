@@ -659,6 +659,15 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+
+    let driverFullName = '';
+    this.viewData.map((driver: any) => {
+      if (driver.id === event.id) {
+        console.log('----drjver--', driver);
+        driverFullName = driver.firstName + ' ' + driver.lastName;
+      }
+    });
+
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -697,32 +706,46 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
+
+      let successfullyMessage = '';
+      let errorullyMessage = '';
+      
+      if ( this.selectedTab == 'active' ) {
+          successfullyMessage = '"' + driverFullName + '"' + ' Deactivated';
+          errorullyMessage = 'Failed to Deactivate ' + '"' + driverFullName + '"';
+        }
+      else {
+        successfullyMessage = '"' + driverFullName + '"' + ' Activated';
+        errorullyMessage = 'Failed to Activate ' + '"' + driverFullName + '"';
+      }
+
       this.driverTService
         .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
             this.notificationService.success(
-              `Driver successfully Change Status`,
-              'Success:'
+              successfullyMessage,
+              'Success'
             );
           },
           error: () => {
             this.notificationService.error(
-              `Driver with id: ${event.id}, status couldn't be changed`,
-              'Error:'
+              errorullyMessage,
+              'Error'
             );
           },
         });
     } else if (event.type === 'delete-item') {
+
       this.driverTService
         .deleteDriverById(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
             this.notificationService.success(
-              'Driver successfully deleted',
-              'Success:'
+              '"' + driverFullName + '"' + ' deleted',
+              'Success'
             );
 
             this.viewData = this.viewData.map((driver: any) => {
@@ -743,8 +766,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           },
           error: () => {
             this.notificationService.error(
-              `Driver with id: ${event.id} couldn't be deleted`,
-              'Error:'
+              `Failed to delete ` + '"' + driverFullName + '"', 
+              'Error'
             );
           },
         });

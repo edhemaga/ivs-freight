@@ -651,11 +651,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         next: () => {
           this.notificationService.success(
             'Review successfully updated.',
-            'Success:'
+            'Success'
           );
         },
         error: () => {
-          this.notificationService.error("Review can't be updated.", 'Error:');
+          this.notificationService.error("Review can't be updated.", 'Error');
         },
       });
   }
@@ -687,7 +687,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         error: () => {
           this.notificationService.error(
             "Broker's dropdowns can't be loaded.",
-            'Error:'
+            'Error'
           );
         },
       });
@@ -738,14 +738,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       brokerContacts,
     };
 
+    console.log('---this.brokerForm.value;----', this.brokerForm.value);
+    let businessName = this.brokerForm.value.businessName;
     this.brokerModalService
       .addBroker(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Broker successfully created.',
-            'Success:'
+            'Broker ' + '"' + businessName +'"' + ' added',
+            'Success'
           );
           this.modalService.setModalSpinner({
             action: null,
@@ -753,7 +755,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () => {
-          this.notificationService.error("Broker can't be created.", 'Error:');
+          this.notificationService.error('Failed to add Broker ' + '"' + businessName + '"', 'Error');
         },
       });
   }

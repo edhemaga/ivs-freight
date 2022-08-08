@@ -549,14 +549,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                `Truck successfully Change Status`,
-                'Success:'
+                `Status updated: Active`,
+                'Success'
               );
             },
             error: () => {
               this.notificationService.error(
-                `Truck with id: ${event.id}, status couldn't be changed`,
-                'Error:'
+                `Failed to update status`,
+                'Error'
               );
             },
           });
@@ -568,18 +568,24 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: () => {
-              this.notificationService.success(
-                'Truck successfully deleted',
-                'Success:'
-              );
+
+              let truckNum = '';
 
               this.viewData = this.viewData.map((truck: any) => {
                 if (truck.id === event.id) {
                   truck.actionAnimation = 'delete';
+                  truckNum = truck.truckNumber;
                 }
 
                 return truck;
               });
+
+              this.notificationService.success(
+                'Truck ' + '"' + truckNum + '"' + ' deleted',
+                'Success'
+              );
+
+              
 
               this.updateDataCount();
 
