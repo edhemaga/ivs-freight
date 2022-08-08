@@ -93,6 +93,20 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public fleetTypeBtns: any[] = [
+    {
+      id: 1,
+      name: 'Solo',
+      checked: true,
+    },
+    {
+      id: 2,
+      name: 'Team',
+      checked: false,
+    },
+    { id: 3, name: 'Combined', checked: false },
+  ];
+
   public driverCommissionOptions: Options = {
     floor: 5,
     ceil: 50,
@@ -192,6 +206,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public selectedOtherPayPeriod: any = null;
   public selectedOtherEndingIn: any = null;
 
+  public selectedFleetType: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -205,6 +221,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.checkForCompany();
     this.onPrefferedLoadCheck({ id: 1 });
+    this.onFleetTypeCheck({ id: 1 });
     this.getModalDropdowns();
     this.validateMiles();
   }
@@ -284,6 +301,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       starting: [null, Validators.required],
       sufix: [null],
       autoInvoicing: [false],
+      fleetType: ['Solo'],
       preferredLoadType: ['FTL'],
       factorByDefault: [false],
       customerPayTerm: [null, daysValidRegex],
@@ -736,6 +754,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         checked: item.id === event.id,
       };
     });
+  }
+
+  public onFleetTypeCheck(event: any) {
+    this.fleetTypeBtns = this.fleetTypeBtns.map((item) => {
+      if (item.id === event.id) {
+        this.companyForm.get('fleetType').patchValue(item.name);
+      }
+      if (item.id === event.id) {
+        this.selectedFleetType = item.name;
+      }
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
+    });
+    console.log(this.fleetTypeBtns);
   }
 
   private getModalDropdowns() {
@@ -1336,22 +1370,38 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentId: 10,
       payPeriod: this.selectedDriverPayPeriod.id,
       endingIn: this.selectedDriverEndingIn.id,
-      soloEmptyMile: this.companyForm.get('soloEmptyMile').value,
-      soloLoadedMile: this.companyForm.get('soloLoadedMile').value,
-      soloPerStop: this.companyForm.get('soloPerStop').value
+      soloEmptyMile: ['Solo', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloEmptyMile').value
+        : null,
+      soloLoadedMile: ['Solor', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloLoadedMile').value
+        : null,
+      soloPerStop: ['Solor', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloPerStop').value
+        : null
         ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
         : null,
-      teamEmptyMile: this.companyForm.get('teamEmptyMile').value,
-      teamLoadedMile: this.companyForm.get('teamLoadedMile').value,
-      teamPerStop: this.companyForm.get('teamPerStop').value
+      teamEmptyMile: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamEmptyMile').value
+        : null,
+      teamLoadedMile: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamLoadedMile').value
+        : null,
+      teamPerStop: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamPerStop').value
+        : null
         ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
         : null,
-      defaultSoloDriverCommission: this.companyForm.get(
-        'driverSoloDefaultCommission'
-      ).value,
-      defaultTeamDriverCommission: this.companyForm.get(
-        'driverTeamDefaultCommission'
-      ).value,
+      defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
+        this.selectedFleetType
+      )
+        ? this.companyForm.get('driverSoloDefaultCommission').value
+        : null,
+      defaultTeamDriverCommission: ['Team', 'Combined'].includes(
+        this.selectedFleetType
+      )
+        ? this.companyForm.get('driverTeamDefaultCommission').value
+        : null,
       defaultOwnerCommission: this.companyForm.get('ownerDefaultCommission')
         .value,
       loadedAndEmptySameRate: this.companyForm.get(
@@ -1470,11 +1520,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         ? this.editData.company.currency
         : null;
 
-    this.onPrefferedLoadCheck(
-      this.editData.company.additionalInfo.preferredLoadType === 1
-        ? { id: 1 }
-        : { id: 2 }
-    );
+    this.onPrefferedLoadCheck({
+      id: this.editData.company.additionalInfo.preferredLoadType,
+    });
+
+    this.onFleetTypeCheck({
+      id: 1,
+    });
 
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {

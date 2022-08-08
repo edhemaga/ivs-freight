@@ -377,6 +377,11 @@
         font-size: 14px;
         font-weight: 600;
         color: #6c6c6c;
+
+        &::selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
       }
 
       &:nth-last-child(1) {
@@ -743,14 +748,16 @@
   margin: 32px 0px;
 }
 //---------------- Preferred Load Company Additional  ----------------
-.preferred-load-company-additional {
+.preferred-load-fleet-type-additional {
   display: grid;
-  grid-template-columns: 275px 145px 1fr;
+  grid-template-columns: 243px 1fr;
   margin: 32px 0px;
   padding-left: 6px;
   align-items: center;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
 
-  .preffered-field-one {
+  .preffered-field {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -759,7 +766,20 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
+
+      &::selection {
+        color: #919191;
+        background-color: rgb(145, 145, 145, 0.2);
+      }
     }
+  }
+
+  .preffered-field-second {
+    display: grid;
+    grid-template-columns: 74px 265px;
+    -moz-column-gap: 6px;
+    column-gap: 6px;
+    align-items: center;
   }
 }
 //---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------
