@@ -1,14 +1,14 @@
 import { Observable } from 'rxjs';
-import { SettingsTerminalModalComponent } from '../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { SettingsRepairshopModalComponent } from '../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsOfficeModalComponent } from '../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsTerminalModalComponent } from '../../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { SettingsRepairshopModalComponent } from '../../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsOfficeModalComponent } from '../../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
 import { Injectable } from '@angular/core';
 
-import { SettingsBasicModalComponent } from '../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
-import { SettingsInsurancePolicyModalComponent } from '../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
-import { SettingsFactoringModalComponent } from '../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { SettingsBasicModalComponent } from '../../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
+import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
+import { SettingsFactoringModalComponent } from '../../settings-company/company-modals/settings-factoring-modal/settings-factoring-modal.component';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 import {
   CompanyModalResponse,
   CompanyResponse,

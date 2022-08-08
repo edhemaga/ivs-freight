@@ -8,7 +8,7 @@ import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.reg
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SettingsCompanyService } from '../../../state/settings-company.service';
+import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 
 @UntilDestroy()

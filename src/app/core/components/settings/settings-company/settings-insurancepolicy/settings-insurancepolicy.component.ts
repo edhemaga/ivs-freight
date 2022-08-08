@@ -5,7 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { SettingsCompanyService } from '../../state/settings-company.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({

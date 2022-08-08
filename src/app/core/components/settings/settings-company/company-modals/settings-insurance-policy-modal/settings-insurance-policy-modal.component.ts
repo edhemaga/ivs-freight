@@ -26,7 +26,7 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
-import { SettingsCompanyService } from '../../../state/settings-company.service';
+import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { distinctUntilChanged } from 'rxjs';
 
 @UntilDestroy()

@@ -5,7 +5,7 @@ import {
 } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { CompanyResponse } from 'appcoretruckassist';
-import { SettingsCompanyService } from '../settings-company.service';
+import { SettingsCompanyService } from './settings-company.service';
 import { BehaviorSubject, catchError, Observable, of, take, tap } from 'rxjs';
 import { CompanyQuery } from './company-settings.query';
 import { CompanyStore } from './company-settings.store';

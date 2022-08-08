@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { SettingsCompanyService } from '../state/settings-company.service';
+import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';

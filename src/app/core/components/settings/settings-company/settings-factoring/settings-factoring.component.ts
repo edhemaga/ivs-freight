@@ -5,7 +5,7 @@ import {
   SimpleChanges,
   OnDestroy,
 } from '@angular/core';
-import { SettingsCompanyService } from '../../state/settings-company.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 

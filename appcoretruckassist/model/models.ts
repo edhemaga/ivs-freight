@@ -219,6 +219,7 @@ export * from './problemDetails';
 export * from './ratingSetResponse';
 export * from './reSendSignUpUserCommand';
 export * from './reSendVerifyDriverCommand';
+export * from './refreshTokenCommand';
 export * from './registrationResponse';
 export * from './renewCdlCommand';
 export * from './repairByUnitResponse';

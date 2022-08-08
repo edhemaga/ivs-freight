@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { SettingsLocationService } from '../../state/settings-location.service';
+import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',

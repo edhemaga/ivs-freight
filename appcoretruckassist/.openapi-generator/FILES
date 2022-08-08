@@ -265,6 +265,7 @@ model/problemDetails.ts
 model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
+model/refreshTokenCommand.ts
 model/registrationResponse.ts
 model/renewCdlCommand.ts
 model/repairByUnitResponse.ts

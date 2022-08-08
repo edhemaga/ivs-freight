@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { SettingsOfficeModalComponent } from '../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { SettingsRepairshopModalComponent } from '../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsTerminalModalComponent } from '../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { SettingsOfficeModalComponent } from '../../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
+import { SettingsParkingModalComponent } from '../../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '../../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '../../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 
 @Injectable({
   providedIn: 'root',

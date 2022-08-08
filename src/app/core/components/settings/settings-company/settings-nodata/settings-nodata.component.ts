@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SettingsCompanyService } from '../../state/settings-company.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 
 @Component({
   selector: 'app-settings-nodata',

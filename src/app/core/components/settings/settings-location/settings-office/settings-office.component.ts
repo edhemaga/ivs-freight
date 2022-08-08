@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SettingsLocationService } from '../../state/settings-location.service';
+import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
