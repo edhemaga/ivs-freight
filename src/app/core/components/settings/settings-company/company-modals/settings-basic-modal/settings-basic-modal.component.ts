@@ -10,7 +10,7 @@ import {
   monthsValidRegex,
   perStopValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
@@ -220,7 +220,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.checkForCompany();
-    this.onPrefferedLoadCheck({ id: 1 });
+    this.onPrefferedLoadCheck({ name: 'FTL' });
     this.onFleetTypeCheck({ id: 1 });
     this.getModalDropdowns();
     this.validateMiles();
@@ -779,7 +779,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public onPrefferedLoadCheck(event: any) {
     this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
-      if (item.id === event.id) {
+      if (item.name === event.name) {
         this.companyForm.get('preferredLoadType').patchValue(item.name);
       }
       return {
@@ -1405,13 +1405,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       soloEmptyMile: ['Solo', 'Combined'].includes(this.selectedFleetType)
         ? this.companyForm.get('soloEmptyMile').value
         : null,
-      soloLoadedMile: ['Solor', 'Combined'].includes(this.selectedFleetType)
+      soloLoadedMile: ['Solo', 'Combined'].includes(this.selectedFleetType)
         ? this.companyForm.get('soloLoadedMile').value
         : null,
-      soloPerStop: ['Solor', 'Combined'].includes(this.selectedFleetType)
+      soloPerStop: ['Solo', 'Combined'].includes(this.selectedFleetType)
         ? this.companyForm.get('soloPerStop').value
-        : null
-        ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
+          ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
+          : null
         : null,
       teamEmptyMile: ['Team', 'Combined'].includes(this.selectedFleetType)
         ? this.companyForm.get('teamEmptyMile').value
@@ -1421,8 +1421,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         : null,
       teamPerStop: ['Team', 'Combined'].includes(this.selectedFleetType)
         ? this.companyForm.get('teamPerStop').value
-        : null
-        ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
+          ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
+          : null
         : null,
       defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
         this.selectedFleetType
@@ -1519,10 +1519,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       starting: this.editData.company.additionalInfo.starting,
       sufix: this.editData.company.additionalInfo.sufix,
       autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
-      preferredLoadType:
-        this.editData.company.additionalInfo.preferredLoadType === 1
-          ? 'FTL'
-          : 'LTL',
+      preferredLoadType: this.editData.company.additionalInfo.preferredLoadType,
       factorByDefault: this.editData.company.additionalInfo.factorByDefault,
       customerPayTerm: this.editData.company.additionalInfo.customerPayTerm,
       customerCredit: this.editData.company.additionalInfo.customerCredit,
@@ -1553,12 +1550,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         : null;
 
     this.onPrefferedLoadCheck({
-      id: this.editData.company.additionalInfo.preferredLoadType,
+      id:
+        this.editData.company.additionalInfo.preferredLoadType === 'FTL'
+          ? 1
+          : 2,
+      name: this.editData.company.additionalInfo.preferredLoadType,
     });
 
-    this.onFleetTypeCheck({
-      id: 1,
-    });
+    this.selectedFleetType = this.editData.company.additionalInfo.fleetType;
+
+    this.onFleetTypeCheck(
+      this.fleetTypeBtns.find((item) => item.name === this.selectedFleetType)
+    );
 
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
@@ -1816,6 +1819,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   ? convertNumberInThousandSep(payroll.teamPerStop)
                   : null
               );
+
+            this.companyForm
+              .get('driverOwnerHasLoadedEmptyMiles')
+              .patchValue(payroll.loadedAndEmptySameRate);
 
             this.companyForm
               .get('driverSoloDefaultCommission')
