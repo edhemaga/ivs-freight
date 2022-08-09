@@ -5,7 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 @Component({
@@ -19,7 +19,7 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
   public dropOptions: any;
 
   constructor(
-    private settingsStoreService: SettingsStoreService,
+    private settingsCompanyService: SettingsCompanyService,
     private notificationService: NotificationService,
     private clipboar: Clipboard
   ) {}
@@ -37,11 +37,11 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
   }
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsCompanyService.onModalAction(modal);
   }
 
   public deleteInsurancePolicy(insurance: any) {
-    this.settingsStoreService
+    this.settingsCompanyService
       .deleteInsurancePolicyById(insurance.id)
       .subscribe({
         next: () => {

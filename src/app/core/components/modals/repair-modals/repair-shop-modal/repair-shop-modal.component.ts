@@ -179,6 +179,25 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public openHourDayAction(event: boolean, index: number) {
+    this.openHours
+      .at(index)
+      .get('isDay')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.openHours
+            .at(index)
+            .get('startTime')
+            .patchValue(moment('8:00:00 AM', 'HH:mm:SS A').toDate());
+          this.openHours
+            .at(index)
+            .get('endTime')
+            .patchValue(moment('8:00:00 AM', 'HH:mm:SS A').toDate());
+        }
+      });
+  }
+
   public removeOpenHour(id: number) {
     this.openHours.removeAt(id);
   }

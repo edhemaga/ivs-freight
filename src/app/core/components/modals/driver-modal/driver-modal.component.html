@@ -123,41 +123,52 @@
         <app-ta-custom-card [cardName]="'Payroll'" [isCardOpen]="true">
           <div
             class="custom-row-paytype-driver"
-            [ngStyle]="
-              driverForm.get('useTruckAssistAch').value && {
-                'margin-bottom': '32px'
-              }
-            "
+            [ngClass]="{
+              'custom-row-paytype-driver-disabled': disablePayType,
+              'fleet-type': fleetType !== 'Combined'
+            }"
           >
-            <div
-              class="checkbox-paytype-driver"
-              [ngClass]="{ 'checkbox-paytype-driver-disabled': disablePayType }"
-            >
-              <app-ta-checkbox
-                formControlName="useTruckAssistAch"
-                [customClass]="'medium'"
-                [name]="'truckassistACH'"
-                [disabled]="disablePayType"
-                [label]="'Use TruckAssist ACH'"
-              ></app-ta-checkbox>
-              <div class="paytype-driver">
-                <app-ta-input-dropdown
-                  formControlName="payType"
-                  [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    label: 'Pay type',
-                    isRequired: true,
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-422',
-                    isDisabled: disablePayType
-                  }"
-                  [options]="labelsPayType"
-                  [activeItem]="selectedPayType"
-                  (selectedItem)="onSelectDropdown($event, 'paytype')"
-                ></app-ta-input-dropdown>
-              </div>
-            </div>
+            <app-ta-checkbox
+              formControlName="useTruckAssistAch"
+              [customClass]="'medium'"
+              [name]="'truckassistACH'"
+              [disabled]="disablePayType"
+              [label]="'Use TruckAssist ACH'"
+            ></app-ta-checkbox>
+
+            <app-ta-input-dropdown
+              formControlName="payType"
+              [inputConfig]="{
+                name: 'Input Dropdown',
+                type: 'text',
+                label: 'Pay type',
+                isRequired: true,
+                isDropdown: true,
+                dropdownWidthClass: 'w-col-167',
+                isDisabled: disablePayType
+              }"
+              [options]="labelsPayType"
+              [activeItem]="selectedPayType"
+              (selectedItem)="onSelectDropdown($event, 'paytype')"
+            ></app-ta-input-dropdown>
+
+            <app-ta-checkbox
+              *ngIf="fleetType === 'Combined'"
+              formControlName="soloDriver"
+              [customClass]="'medium'"
+              [name]="'solorDriver'"
+              [disabled]="disablePayType"
+              [label]="'Solo Driver'"
+            ></app-ta-checkbox>
+
+            <app-ta-checkbox
+              *ngIf="fleetType === 'Combined'"
+              formControlName="teamDriver"
+              [customClass]="'medium'"
+              [name]="'teamrDriver'"
+              [disabled]="disablePayType"
+              [label]="'Team Driver'"
+            ></app-ta-checkbox>
           </div>
 
           <!-- Pay Type Per Mile -->
@@ -166,9 +177,18 @@
             [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
             *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
           >
-            <div class="permile-fields">
+            <div
+              *ngIf="
+                this.driverForm.get('soloDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="permile-fields"
+              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+            >
               <p>SOLO</p>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -183,6 +203,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -196,6 +217,23 @@
                   maxLength: 4
                 }"
               ></app-ta-input>
+
+              <app-ta-input
+                *ngIf="milesSameRate"
+                formControlName="perMileSolo"
+                [inputConfig]="{
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+
               <app-ta-input
                 formControlName="soloPerStop"
                 [inputConfig]="{
@@ -210,9 +248,18 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="permile-fields">
+            <div
+              *ngIf="
+                this.driverForm.get('teamDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="permile-fields"
+              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+            >
               <p>TEAM</p>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -227,6 +274,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -239,6 +287,23 @@
                   max: 10
                 }"
               ></app-ta-input>
+
+              <app-ta-input
+                *ngIf="milesSameRate"
+                formControlName="perMileTeam"
+                [inputConfig]="{
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+
               <app-ta-input
                 formControlName="teamPerStop"
                 [inputConfig]="{
@@ -259,11 +324,23 @@
           <div
             class="paytype-commission"
             *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
-            [class.active]="
-              selectedPayType?.name.toLowerCase() === 'commission'
-            "
+            [ngClass]="{
+              'paytype-commission-single':
+                (this.driverForm.get('soloDriver').value &&
+                  !this.driverForm.get('teamDriver').value) ||
+                (!this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value),
+              active: selectedPayType?.name.toLowerCase() === 'commission'
+            }"
           >
-            <div class="paytype-field">
+            <div
+              *ngIf="
+                this.driverForm.get('soloDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="paytype-field"
+            >
               <app-ta-ngx-slider
                 [sliderName]="'SOLO'"
                 [sliderOptions]="soloSliderOptions"
@@ -276,7 +353,14 @@
                 "
               ></app-ta-ngx-slider>
             </div>
-            <div class="paytype-field">
+            <div
+              *ngIf="
+                this.driverForm.get('teamDriver').value ||
+                (this.driverForm.get('soloDriver').value &&
+                  this.driverForm.get('teamDriver').value)
+              "
+              class="paytype-field"
+            >
               <app-ta-ngx-slider
                 [sliderName]="'TEAM'"
                 [sliderOptions]="teamSliderOptions"
@@ -639,6 +723,8 @@
               [customClass]="'medium'"
               [name]="'Email Payroll'"
               [label]="'Email'"
+              [disabled]="true"
+              [customClass]="'disabled-valid'"
             ></app-ta-checkbox>
             <app-ta-checkbox
               formControlName="pushNotificationPayroll"

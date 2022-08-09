@@ -26,7 +26,7 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
-import { SettingsStoreService } from '../../../state/settings.service';
+import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { distinctUntilChanged } from 'rxjs';
 
 @UntilDestroy()
@@ -68,7 +68,7 @@ export class SettingsInsurancePolicyModalComponent
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private settingsService: SettingsStoreService
+    private settingsCompanyService: SettingsCompanyService
   ) {}
 
   ngOnInit(): void {
@@ -331,7 +331,7 @@ export class SettingsInsurancePolicyModalComponent
   }
 
   private getInsurancePolicyDropdowns() {
-    this.settingsService
+    this.settingsCompanyService
       .getInsurancePolicyModal()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -535,7 +535,7 @@ export class SettingsInsurancePolicyModalComponent
       insurancePolicyAddons,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .addInsurancePolicy(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -744,7 +744,7 @@ export class SettingsInsurancePolicyModalComponent
       insurancePolicyAddons,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .updateInsurancePolicy(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -764,7 +764,7 @@ export class SettingsInsurancePolicyModalComponent
   }
 
   private deleteInsurancePolicyById(id: number) {
-    this.settingsService
+    this.settingsCompanyService
       .deleteInsurancePolicyById(id)
       .pipe(untilDestroyed(this))
       .subscribe({

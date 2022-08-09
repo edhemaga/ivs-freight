@@ -19,6 +19,8 @@
     margin: 0px;
     margin-left: 12px;
     padding-top: 2px;
+    font-size: 14px;
+    line-height: 18px;
   }
 
   .nav-item-rightSide {
@@ -29,18 +31,19 @@
     line-height: 16px;
 
     .nav-item-arrow {
-      margin-right: 5px;
+      margin-right: 4px;
       transform: rotate(0deg);
       transition: $nav-transition;
     }
 
     .nav-item-arrow-first {
-      margin-right: 6px !important;
+      margin-right: 5px !important;
     }
 
     .nav-item-arrow-rotate {
       transform: rotate(180deg);
       transition: $nav-transition;
+      margin-top: 3px;
     }
   }
 

@@ -9,21 +9,22 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { OwnerType } from './ownerType';
+import { DayOfWeek } from './dayOfWeek';
+import { PayPeriod } from './payPeriod';
 import { CompanyOfficeDepartmentContactCommand } from './companyOfficeDepartmentContactCommand';
 import { AddressEntity } from './addressEntity';
 
 
 export interface UpdateCompanyOfficeCommand { 
     id?: number;
-    ownerType?: OwnerType;
+    isOwner?: boolean;
     name?: string | null;
     email?: string | null;
     phone?: string | null;
     address?: AddressEntity;
-    payPeriod?: number | null;
     rent?: number | null;
-    dayOfWeek?: number | null;
+    payPeriod?: PayPeriod;
+    weeklyDay?: DayOfWeek;
     monthlyDay?: number | null;
     departmentContacts?: Array<CompanyOfficeDepartmentContactCommand> | null;
 }

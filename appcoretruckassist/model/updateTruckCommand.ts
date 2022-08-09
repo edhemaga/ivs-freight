@@ -24,10 +24,13 @@ export interface UpdateTruckCommand {
     ownerId?: number | null;
     commission?: number | null;
     note?: string | null;
+    purchaseDate?: string | null;
+    purchasePrice?: number | null;
     truckGrossWeightId?: number | null;
     emptyWeight?: number | null;
     truckEngineTypeId?: number | null;
     tireSizeId?: number | null;
+    shifter?: number | null;
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;

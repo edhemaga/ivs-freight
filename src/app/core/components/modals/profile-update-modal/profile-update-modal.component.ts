@@ -261,7 +261,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             addressUnit: res.address.addressUnit,
             avatar: res.avatar,
           });
-          console.log(res.address);
+
           this.selectedAddress = res.address;
         },
         error: () => {

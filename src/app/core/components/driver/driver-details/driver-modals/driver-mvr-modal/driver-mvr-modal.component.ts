@@ -116,7 +116,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   }
 
   private updateMVR() {
-    console.log('updateMVR editData', this.editData);
     const { issueDate } = this.mvrForm.value;
     const newData: EditMvrCommand = {
       driverId: this.editData.id,

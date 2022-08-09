@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
-import { DepartmentResponse } from './departmentResponse';
 
 
-export interface CompanyOfficeModalResponse { 
-    payPeriod?: Array<EnumValue> | null;
-    dayOfWeek?: Array<EnumValue> | null;
-    payPeriodMonthly?: Array<EnumValue> | null;
-    departments?: Array<DepartmentResponse> | null;
-}
+export type PreferredLoadType = 'FTL' | 'LTL';
+
+export const PreferredLoadType = {
+    Ftl: 'FTL' as PreferredLoadType,
+    Ltl: 'LTL' as PreferredLoadType
+};
 

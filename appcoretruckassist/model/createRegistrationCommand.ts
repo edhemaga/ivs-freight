@@ -9,14 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CountryType } from './countryType';
 
 
 export interface CreateRegistrationCommand { 
     truckId?: number | null;
     trailerId?: number | null;
     licensePlate?: string | null;
-    countryType?: CountryType;
     stateId?: number;
     issueDate?: string;
     expDate?: string | null;

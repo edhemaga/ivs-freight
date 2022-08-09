@@ -324,6 +324,11 @@ export const generalNavigationData: NavigationModal[] = [
     name: 'Account',
     path: 'account',
   },
+  {
+    id: 13,
+    name: 'Applicant',
+    path: 'applicant',
+  },
 ];
 // Tools Navigation Data
 

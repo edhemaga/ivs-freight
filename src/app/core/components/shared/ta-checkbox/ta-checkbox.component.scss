@@ -116,6 +116,19 @@
     .ta-checkbox-label {
       color: #dadada !important;
     }
+
+    &.disabled-valid {
+      svg {
+        path {
+          fill: #6d82c7 !important;
+        }
+      }
+
+      .ta-checkbox-label {
+        font-weight: 500;
+        color: #6c6c6c !important;
+      }
+    }
   }
 
   &.medium {

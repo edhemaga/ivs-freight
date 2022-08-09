@@ -6,7 +6,7 @@ import {
   ChangeDetectorRef,
   OnDestroy,
 } from '@angular/core';
-import { SettingsStoreService } from './../state/settings.service';
+import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -30,7 +30,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   public dataCompany: any;
 
   constructor(
-    private settingsStoreService: SettingsStoreService,
+    private SettingsCompanyService: SettingsCompanyService,
     private activated: ActivatedRoute,
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
@@ -53,8 +53,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.detailsPageSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        this.settingsStoreService
-          .getCompanyDivisionById(id)
+        this.SettingsCompanyService.getCompanyDivisionById(id)
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: CompanyResponse) => {
