@@ -102,7 +102,6 @@ model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
-model/countryType.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createCdlCommand.ts
@@ -171,6 +170,7 @@ model/employmentHistoryResponse.ts
 model/entityTypeReview.ts
 model/enumValue.ts
 model/factoringCompany.ts
+model/fleetType.ts
 model/forgotPasswordCommand.ts
 model/getBrokerListResponse.ts
 model/getCdlModalResponse.ts
@@ -261,6 +261,7 @@ model/passwordResponse.ts
 model/payPeriod.ts
 model/perMileEntity.ts
 model/poBoxEntity.ts
+model/preferredLoadType.ts
 model/problemDetails.ts
 model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts

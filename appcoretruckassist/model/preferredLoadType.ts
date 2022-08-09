@@ -11,12 +11,10 @@
  */
 
 
-export interface UpdateRegistrationCommand { 
-    id?: number;
-    stateId?: number;
-    licensePlate?: string | null;
-    issueDate?: string;
-    expDate?: string | null;
-    note?: string | null;
-}
+export type PreferredLoadType = 'FTL' | 'LTL';
+
+export const PreferredLoadType = {
+    Ftl: 'FTL' as PreferredLoadType,
+    Ltl: 'LTL' as PreferredLoadType
+};
 

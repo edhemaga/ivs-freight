@@ -5,10 +5,12 @@
   [isModalValid]="parkingForm.valid"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+  <app-ta-tab-switch
     [tabs]="tabs"
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form [formGroup]="parkingForm" class="form-container form-container-mt-12">
     <div class="animation-two-tabs" [@animationTabsModal]="animationObject">
@@ -19,23 +21,23 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: parkingForm.get('companyOwned').value }"
+            [ngClass]="{ pointer: parkingForm.get('isOwner').value }"
           >
             <app-ta-checkbox
-              formControlName="companyOwned"
+              formControlName="isOwner"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
             <svg-icon
               class="checkbox-card-header-arrow"
               src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !parkingForm.get('companyOwned')?.value }"
+              [ngClass]="{ visible: !parkingForm.get('isOwner')?.value }"
             ></svg-icon>
           </div>
           <div
             class="checkbox-card-body"
-            [ngClass]="{ 'active-20': !parkingForm.get('companyOwned').value }"
+            [ngClass]="{ 'active-20': !parkingForm.get('isOwner').value }"
           >
-            <div *ngIf="!parkingForm.get('companyOwned').value">
+            <div *ngIf="!parkingForm.get('isOwner').value">
               <div class="row">
                 <div class="col-12">
                   <app-ta-input
@@ -220,14 +222,14 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-148'
                 }"
-                [options]="[]"
+                [options]="payPeriods"
                 [activeItem]="selectedPayPeriod"
                 (selectedItem)="onSelectDropdown($event, 'pay-period')"
               ></app-ta-input-dropdown>
             </div>
             <div class="col-4 no-p-left">
               <app-ta-input-dropdown
-                formControlName="day"
+                formControlName="monthlyDay"
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
@@ -235,7 +237,9 @@
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-148'
                 }"
-                [options]="[]"
+                [options]="
+                  selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
+                "
                 [activeItem]="selectedDay"
                 (selectedItem)="onSelectDropdown($event, 'day')"
               ></app-ta-input-dropdown>

@@ -11,12 +11,11 @@
  */
 
 
-export interface UpdateRegistrationCommand { 
-    id?: number;
-    stateId?: number;
-    licensePlate?: string | null;
-    issueDate?: string;
-    expDate?: string | null;
-    note?: string | null;
-}
+export type FleetType = 'Solo' | 'Team' | 'Combined';
+
+export const FleetType = {
+    Solo: 'Solo' as FleetType,
+    Team: 'Team' as FleetType,
+    Combined: 'Combined' as FleetType
+};
 

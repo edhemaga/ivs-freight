@@ -9,13 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { EnumValue } from './enumValue';
 import { StateResponse } from './stateResponse';
 
 
 export interface RegistrationResponse { 
     id?: number;
-    countryType?: EnumValue;
     state?: StateResponse;
     issueDate?: string;
     expDate?: string | null;
