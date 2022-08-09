@@ -398,7 +398,12 @@
                   {{ contact.contactPhone }}
                 </p>
               </div>
-              <div class="d-flex align-items-center relationship-box">
+              <div
+                class="d-flex align-items-center relationship-box"
+                [ngStyle]="{
+                  'margin-right': selectedMode === 'APPLICANT_MODE' ? '20px' : 0
+                }"
+              >
                 <p class="m-0 ta-font-regular">
                   {{ contact.contactRelationship }}
                 </p>
@@ -505,7 +510,6 @@
           >
             <app-step6-form
               [isEditing]="isEditing"
-              [isContactEdited]="isContactEdited"
               [formValuesToPatch]="formValuesToPatch"
               (formValuesEmitter)="getContactFormValues($event)"
               (cancelFormEditingEmitter)="cancelContactEditing($event)"

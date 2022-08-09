@@ -73,7 +73,6 @@ export class Step3Component implements OnInit, OnDestroy {
   public selectedLicenseIndex: number;
 
   public isEditing: boolean = false;
-  public isLicenseEdited: boolean = false;
 
   public answerChoices: AnswerChoices[] = [
     {
@@ -231,8 +230,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isLicenseEdited = false;
-
     this.isEditing = true;
     this.licenseArray[index].isEditingLicense = true;
 
@@ -274,11 +271,12 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public saveEditedLicense(event: any): void {
     this.isEditing = false;
-
-    this.licenseArray[this.selectedLicenseIndex] = event;
     this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
 
+    this.licenseArray[this.selectedLicenseIndex] = event;
+
     this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
   }
 
   public incorrectInput(

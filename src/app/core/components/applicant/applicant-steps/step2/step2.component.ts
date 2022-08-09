@@ -13,9 +13,6 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
-
 @UntilDestroy()
 @Component({
   selector: 'app-step2',
@@ -23,7 +20,7 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant;
 
@@ -38,7 +35,46 @@ export class Step2Component implements OnInit, OnDestroy {
       employerPhone: '(621) 123-4567',
       employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      employerAddressUnit: '1',
+      isDrivingPosition: true,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: false,
+      fmCSA: false,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -59,7 +95,16 @@ export class Step2Component implements OnInit, OnDestroy {
       employerPhone: '(621) 123-4567',
       employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -80,28 +125,16 @@ export class Step2Component implements OnInit, OnDestroy {
       employerPhone: '(621) 123-4567',
       employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
-      employerAddressUnit: '1',
-      isDrivingPosition: false,
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -118,7 +151,6 @@ export class Step2Component implements OnInit, OnDestroy {
   public selectedWorkExperienceIndex: number;
 
   public isEditing: boolean = false;
-  public isWorkExperienceEdited: boolean = false;
 
   public helperIndex: number = 2;
 
@@ -176,12 +208,7 @@ export class Step2Component implements OnInit, OnDestroy {
   //   return true;
   // }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -228,8 +255,6 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isWorkExperienceEdited = false;
-
     this.isEditing = true;
     this.workExperienceArray[index].isEditingWorkHistory = true;
 
@@ -263,7 +288,6 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public cancelWorkExperienceEditing(event: any): void {
     this.isEditing = false;
-
     this.workExperienceArray[
       this.selectedWorkExperienceIndex
     ].isEditingWorkHistory = false;
@@ -273,15 +297,15 @@ export class Step2Component implements OnInit, OnDestroy {
   }
 
   public saveEditedWorkExperience(event: any): void {
-    this.workExperienceArray[this.selectedWorkExperienceIndex] = event;
-
+    this.isEditing = false;
     this.workExperienceArray[
       this.selectedWorkExperienceIndex
     ].isEditingWorkHistory = false;
 
-    this.isEditing = false;
+    this.workExperienceArray[this.selectedWorkExperienceIndex] = event;
 
     this.helperIndex = 2;
+    this.selectedWorkExperienceIndex = -1;
   }
 
   public incorrectInput(

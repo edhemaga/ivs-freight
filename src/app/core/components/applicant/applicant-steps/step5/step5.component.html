@@ -189,7 +189,7 @@
                   tooltipBackground="#6C6C6C"
                   position="bottom-left"
                 >
-                  {{ violation.violationLocation }}
+                  {{ violation.violationLocation.address }}
                 </p>
               </div>
 
@@ -307,7 +307,6 @@
             <app-step5-form
               [isEditing]="isEditing"
               [formValuesToPatch]="formValuesToPatch"
-              [isViolationEdited]="isViolationEdited"
               (formValuesEmitter)="getViolationFormValues($event)"
               (cancelFormEditingEmitter)="cancelViolationEditing($event)"
               (saveFormEditingEmitter)="saveEditedViolation($event)"

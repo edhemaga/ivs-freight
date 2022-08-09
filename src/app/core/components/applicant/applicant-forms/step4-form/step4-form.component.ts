@@ -38,7 +38,6 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
-  @Input() isAccidentEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
@@ -53,6 +52,9 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
 
   public selectedAddress: AddressEntity;
   public selectedTruckType: any = null;
+
+  public isAccidentEdited: boolean;
+  public editingCardAddress: any;
 
   public truckType: TruckType[] = [];
   public answerChoices: AnswerChoices[] = [
@@ -117,13 +119,22 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       this.patchForm();
 
       this.subscription = this.accidentForm.valueChanges.subscribe(
-        (newFormValue) => {
-          const { isEditingAccident, ...previousFormValues } =
-            this.formValuesToPatch;
+        (updatedFormValues) => {
+          const {
+            accidentLocation,
+            accidentState,
+            isEditingAccident,
+            ...previousFormValues
+          } = this.formValuesToPatch;
 
-          newFormValue.accidentState = this.formValuesToPatch.accidentState;
+          previousFormValues.accidentLocation = accidentLocation.address;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          this.editingCardAddress = accidentLocation;
+
+          const { firstRowReview, secondRowReview, ...newFormValues } =
+            updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isAccidentEdited = false;
           } else {
             this.isAccidentEdited = true;
@@ -154,7 +165,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
 
   public patchForm(): void {
     this.accidentForm.patchValue({
-      accidentLocation: this.formValuesToPatch.accidentLocation,
+      accidentLocation: this.formValuesToPatch.accidentLocation.address,
       accidentDate: this.formValuesToPatch.accidentDate,
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
@@ -209,11 +220,17 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const { firstRowReview, secondRowReview, ...accidentForm } =
-      this.accidentForm.value;
+    const {
+      accidentLocation,
+      firstRowReview,
+      secondRowReview,
+      ...accidentForm
+    } = this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,
+      accidentLocation: this.selectedAddress,
+      accidentState: this.selectedAddress.state,
       isEditingAccident: false,
     };
 
@@ -252,11 +269,21 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const { firstRowReview, secondRowReview, ...accidentForm } =
-      this.accidentForm.value;
+    const {
+      accidentLocation,
+      firstRowReview,
+      secondRowReview,
+      ...accidentForm
+    } = this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,
+      accidentLocation: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
+      accidentState: this.selectedAddress
+        ? this.selectedAddress.state
+        : this.editingCardAddress.state,
       isEditingAccident: false,
     };
 

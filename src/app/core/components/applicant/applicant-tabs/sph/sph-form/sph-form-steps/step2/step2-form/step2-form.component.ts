@@ -33,7 +33,6 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
-  @Input() isAccidentEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
@@ -42,6 +41,9 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
 
   public accidentForm: FormGroup;
   public accidentArray: SphFormAccidentModel[] = [];
+
+  public isAccidentEdited?: boolean;
+  public editingCardAddress: any;
 
   public subscription: Subscription;
 
@@ -79,15 +81,19 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
       this.patchForm();
 
       this.subscription = this.accidentForm.valueChanges.subscribe(
-        (newFormValue) => {
-          const { address, isEditingAccident, ...previousFormValues } =
-            this.formValuesToPatch;
+        (updatedFormValues) => {
+          const {
+            accidentLocation,
+            accidentState,
+            isEditingAccident,
+            ...previousFormValues
+          } = this.formValuesToPatch;
 
-          previousFormValues.accidentLocation = address.address;
+          previousFormValues.accidentLocation = accidentLocation.address;
 
-          newFormValue.accidentState = this.formValuesToPatch.accidentState;
+          this.editingCardAddress = accidentLocation;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          if (isFormValueEqual(previousFormValues, updatedFormValues)) {
             this.isAccidentEdited = false;
           } else {
             this.isAccidentEdited = true;
@@ -143,7 +149,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
   public patchForm(): void {
     this.accidentForm.patchValue({
       accidentDate: this.formValuesToPatch.accidentDate,
-      accidentLocation: this.formValuesToPatch.accidentLocation,
+      accidentLocation: this.formValuesToPatch.accidentLocation.address,
       accidentDescription: this.formValuesToPatch.accidentDescription,
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
@@ -167,11 +173,11 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const { address, ...registerForm } = this.accidentForm.value;
+    const { accidentLocation, ...registerForm } = this.accidentForm.value;
 
     const saveData: SphFormAccidentModel = {
       ...registerForm,
-      address: this.selectedAddress,
+      accidentLocation: this.selectedAddress,
       accidentState: this.selectedAddress.state,
       isEditingAccident: false,
     };
@@ -200,10 +206,12 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
 
     const saveData: SphFormAccidentModel = {
       ...registerForm,
-      address: this.selectedAddress,
-      accidentState: this.selectedAddress.state
+      accidentLocation: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
+      accidentState: this.selectedAddress
         ? this.selectedAddress.state
-        : accidentState,
+        : this.editingCardAddress.state,
       isEditingAccident: false,
     };
 

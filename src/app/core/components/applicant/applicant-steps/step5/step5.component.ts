@@ -31,35 +31,70 @@ export class Step5Component implements OnInit, OnDestroy {
     {
       violationDate: '01/20/19',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '02/20/20',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '03/20/21',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '04/20/21',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
   ];
 
   public isEditing: boolean = false;
-  public isViolationEdited: boolean = false;
 
   public selectedViolationIndex: number;
 
@@ -188,8 +223,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isViolationEdited = false;
-
     this.isEditing = true;
     this.violationsArray[index].isEditingViolation = true;
 
@@ -222,11 +255,14 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public saveEditedViolation(event: any): void {
+    this.isEditing = false;
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
     this.violationsArray[this.selectedViolationIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
   }
 
   public cancelViolationEditing(event: any): void {

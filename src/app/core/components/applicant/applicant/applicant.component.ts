@@ -100,14 +100,14 @@ export class ApplicantComponent implements OnInit {
   feedbackStoreArr = [
     { id: 0, hasIncorrectAnswer: false, sentToReview: false },
     { id: 1, hasIncorrectAnswer: true, sentToReview: false },
-    { id: 2, hasIncorrectAnswer: false , sentToReview: false},
+    { id: 2, hasIncorrectAnswer: false, sentToReview: false },
     { id: 3, hasIncorrectAnswer: false, sentToReview: false },
-    { id: 4, hasIncorrectAnswer: false , sentToReview: false},
-    { id: 5, hasIncorrectAnswer: false , sentToReview: false},
-    { id: 6, hasIncorrectAnswer: false , sentToReview: false},
-    { id: 7, hasIncorrectAnswer: false , sentToReview: false},
-    { id: 7, hasIncorrectAnswer: false , sentToReview: false},
-    { id: 7, hasIncorrectAnswer: false , sentToReview: true},
+    { id: 4, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 5, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 6, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: true },
     { id: 7, hasIncorrectAnswer: false, sentToReview: true },
   ];
 

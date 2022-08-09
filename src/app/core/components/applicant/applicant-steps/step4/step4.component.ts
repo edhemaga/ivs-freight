@@ -11,16 +11,13 @@ import {
   AccidentModel,
 } from '../../state/model/accident.model';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
-
 @Component({
   selector: 'app-step4',
   templateUrl: './step4.component.html',
   styleUrls: ['./step4.component.scss'],
 })
 export class Step4Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant | undefined;
 
@@ -28,46 +25,82 @@ export class Step4Component implements OnInit, OnDestroy {
   public accidentArray: AccidentModel[] = [
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
   ];
@@ -75,7 +108,6 @@ export class Step4Component implements OnInit, OnDestroy {
   public selectedAccidentIndex: number;
 
   public isEditing: boolean = false;
-  public isAccidentEdited: boolean = false;
 
   public helperIndex: number = 2;
 
@@ -127,11 +159,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public editAccident: number = -1;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -176,8 +204,6 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
-
-    this.isAccidentEdited = false;
 
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
@@ -225,6 +251,7 @@ export class Step4Component implements OnInit, OnDestroy {
     this.accidentArray[this.selectedAccidentIndex] = event;
 
     this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
   }
 
   public incorrectInput(

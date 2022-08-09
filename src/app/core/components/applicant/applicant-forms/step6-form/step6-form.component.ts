@@ -24,7 +24,6 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 })
 export class Step6FormComponent implements OnInit {
   @Input() isEditing: boolean;
-  @Input() isContactEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
@@ -36,6 +35,8 @@ export class Step6FormComponent implements OnInit {
   public contactForm: FormGroup;
 
   public subscription: Subscription;
+
+  public isContactEdited: boolean;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -109,11 +110,13 @@ export class Step6FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.contactForm.valueChanges.subscribe(
-        (newFormValue) => {
+        (updatedFormValues) => {
           const { isEditingContact, ...previousFormValues } =
             this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          const { firstRowReview, ...newFormValues } = updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isContactEdited = false;
           } else {
             this.isContactEdited = true;

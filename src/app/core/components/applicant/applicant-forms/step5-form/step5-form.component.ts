@@ -26,7 +26,6 @@ import { ViolationModel } from '../../state/model/violations.model';
 export class Step5FormComponent implements OnInit {
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
-  @Input() isViolationEdited?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -35,6 +34,9 @@ export class Step5FormComponent implements OnInit {
   public selectedMode = SelectedMode.REVIEW;
 
   public violationsForm: FormGroup;
+
+  public isViolationEdited: boolean;
+  public editingCardAddress: any;
 
   private subscription: Subscription;
 
@@ -86,11 +88,21 @@ export class Step5FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.violationsForm.valueChanges.subscribe(
-        (newFormValue) => {
-          const { isEditingViolation, ...previousFormValues } =
-            this.formValuesToPatch;
+        (updatedFormValues) => {
+          const {
+            violationLocation,
+            isEditingViolation,
+            ...previousFormValues
+          } = this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          previousFormValues.violationLocation = violationLocation.address;
+
+          this.editingCardAddress = violationLocation;
+
+          const { firstRowReview, secondRowReview, ...newFormValues } =
+            updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isViolationEdited = false;
           } else {
             this.isViolationEdited = true;
@@ -116,7 +128,7 @@ export class Step5FormComponent implements OnInit {
     this.violationsForm.patchValue({
       violationDate: this.formValuesToPatch.violationDate,
       truckType: this.formValuesToPatch.truckType,
-      violationLocation: this.formValuesToPatch.violationLocation,
+      violationLocation: this.formValuesToPatch.violationLocation.address,
       violationDescription: this.formValuesToPatch.violationDescription,
     });
   }
@@ -148,11 +160,12 @@ export class Step5FormComponent implements OnInit {
       return;
     }
 
-    /*  const {firstRowReview,
+    /*  const {violationLocation, firstRowReview,
       secondRowReview,...violationsForm} = this.violationsForm.value;
 
    const saveData: ViolationModel = {
       ...violationsForm,
+      violationLocation: this.selectedAddress,
       isEditingViolation: false,
     };
 
@@ -178,6 +191,9 @@ export class Step5FormComponent implements OnInit {
 
     const saveData: ViolationModel = {
       ...violationsForm,
+      violationLocation: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
       isEditingViolation: false,
     };
 

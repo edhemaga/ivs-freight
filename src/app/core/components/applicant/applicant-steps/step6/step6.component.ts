@@ -170,7 +170,6 @@ export class Step6Component implements OnInit, OnDestroy {
   public highlightGrade: number = -1;
 
   public isEditing: boolean = false;
-  public isContactEdited: boolean = false;
 
   public helperIndex: number = 2;
 
@@ -314,8 +313,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isContactEdited = false;
-
     this.isEditing = true;
     this.contactsArray[index].isEditingContact = true;
 
@@ -356,11 +353,13 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public saveEditedContact(event: any): void {
+    this.isEditing = false;
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
+
     this.contactsArray[this.selectedContactIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedContactIndex = -1;
   }
 
   public incorrectInput(

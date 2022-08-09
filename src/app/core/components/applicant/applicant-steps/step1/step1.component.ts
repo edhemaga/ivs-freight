@@ -127,6 +127,7 @@ export class Step1Component implements OnInit, OnDestroy {
       displayAnnotationTextArea: false,
     },
   ];
+  public cardReviewIndex: number = 0;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -320,8 +321,9 @@ export class Step1Component implements OnInit, OnDestroy {
       firstRowReview: [null],
       secondRowReview: [null],
 
-      eightRowReview: [null],
-      ninthRowReview: [null],
+      thirdRowReview: [null],
+      fourthRowReview: [null],
+
       questionReview1: [null],
       questionReview2: [null],
       questionReview3: [null],
@@ -408,9 +410,12 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   private createNewAddress(): FormGroup {
+    this.cardReviewIndex++;
+
     return this.formBuilder.group({
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
+      [`cardReview${this.cardReviewIndex}`]: [null],
     });
   }
 
@@ -428,6 +433,21 @@ export class Step1Component implements OnInit, OnDestroy {
         isFirstAddress: true,
       },
     ];
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public onAddNewAddress(): void {

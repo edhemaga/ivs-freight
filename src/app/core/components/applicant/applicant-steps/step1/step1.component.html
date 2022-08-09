@@ -324,8 +324,11 @@
                           label: 'Address, City, State Zip',
                           isRequired: true,
                           placeholderIcon: 'address',
-                          textTransform: 'capitalize'
+                          textTransform: 'capitalize',
+                          incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
+                        [incorrectValue]="false"
+                        (incorrectEvent)="incorrectInput($event, 0, i + 2)"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
                         "
@@ -339,8 +342,11 @@
                           name: 'Address Unit',
                           type: 'text',
                           label: 'Unit #',
-                          maxLength: 6
+                          maxLength: 6,
+                          incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
+                        [incorrectValue]="false"
+                        (incorrectEvent)="incorrectInput($event, 1, i + 2)"
                       ></app-ta-input>
                     </div>
 
@@ -526,7 +532,7 @@
                 </div>
 
                 <!-- REVIEW AND FEEDBACK -->
-                <!-- 
+
                 <div
                   class="review-feedback-container"
                   *ngIf="
@@ -535,6 +541,7 @@
                   "
                 >
                   <app-applicant-review-feedback
+                    [formControlName]="'cardReview' + (i + 1)"
                     [displayAnnotationButton]="
                       openAnnotationArray[i + 2].displayAnnotationButton
                     "
@@ -553,7 +560,7 @@
                       getAnnotationBtnClickValue($event)
                     "
                   ></app-applicant-review-feedback>
-                </div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -641,7 +648,7 @@
           "
         >
           <app-applicant-review-feedback
-            formControlName="eightRowReview"
+            formControlName="thirdRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[7].displayAnnotationButton
             "
@@ -705,7 +712,7 @@
           "
         >
           <app-applicant-review-feedback
-            formControlName="ninthRowReview"
+            formControlName="fourthRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[8].displayAnnotationButton
             "

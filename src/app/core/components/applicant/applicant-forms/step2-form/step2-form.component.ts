@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -43,11 +42,17 @@ import { AddressEntity } from './../../../../../../../appcoretruckassist/model/a
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChildren('cmp') components: QueryList<any>;
+export class Step2FormComponent implements OnInit, OnDestroy {
+  @ViewChildren('cmp') set content(content: QueryList<any>) {
+    if (content) {
+      const radioButtonsArray = content.toArray();
+
+      this.cfrPartRadios = radioButtonsArray[0].buttons;
+      this.fmcsaRadios = radioButtonsArray[1].buttons;
+    }
+  }
 
   @Input() isEditing: boolean;
-  @Input() isWorkExperienceEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
@@ -56,7 +61,14 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public selectedMode: string = SelectedMode.REVIEW;
 
+  public subscription: Subscription;
+
   public workExperienceForm: FormGroup;
+
+  public isTruckSelected: boolean = false;
+
+  public isWorkExperienceEdited?: boolean;
+  public editingCardAddress: any;
 
   public selectedAddress: AddressEntity;
   public selectedTruckType: any = null;
@@ -68,9 +80,8 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
   public trailerType: TrailerType[] = [];
   public trailerLengthType: any[] = [];
 
-  public isTruckSelected: boolean = false;
-
-  public subscription: Subscription;
+  private cfrPartRadios: any;
+  private fmcsaRadios: any;
 
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },
@@ -208,11 +219,30 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
       this.isDriverPosition();
 
       this.subscription = this.workExperienceForm.valueChanges.subscribe(
-        (newFormValue) => {
-          const { applicantId, isEditingWorkHistory, ...previousFormValues } =
-            this.formValuesToPatch;
+        (updatedFormValues) => {
+          const {
+            employerAddress,
+            applicantId,
+            isEditingWorkHistory,
+            ...previousFormValues
+          } = this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          previousFormValues.employerAddress = employerAddress.address;
+
+          this.editingCardAddress = employerAddress;
+
+          const {
+            firstRowReview,
+            secondRowReview,
+            thirdRowReview,
+            fourthRowReview,
+            fifthRowReview,
+            sixthRowReview,
+            seventhRowReview,
+            ...newFormValues
+          } = updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isWorkExperienceEdited = false;
           } else {
             this.isWorkExperienceEdited = true;
@@ -221,13 +251,6 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
       );
     }
   }
-
-  ngAfterViewInit(): void {
-    const radioButtonsArray = this.components.toArray();
-
-    console.log(radioButtonsArray);
-  }
-
   public trackByIdentity = (index: number, item: any): number => index;
 
   private createForm(): void {
@@ -269,7 +292,7 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
       employerPhone: this.formValuesToPatch.employerPhone,
       employerEmail: this.formValuesToPatch.employerEmail,
       employerFax: this.formValuesToPatch.employerFax,
-      employerAddress: this.formValuesToPatch.employerAddress,
+      employerAddress: this.formValuesToPatch.employerAddress.address,
       employerAddressUnit: this.formValuesToPatch.employerAddressUnit,
       isDrivingPosition: this.formValuesToPatch.isDrivingPosition,
       truckType: this.formValuesToPatch.truckType,
@@ -280,6 +303,25 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
       reasonForLeaving: this.formValuesToPatch.reasonForLeaving,
       accountForPeriod: this.formValuesToPatch.accountForPeriod,
     });
+
+    if (this.formValuesToPatch.isDrivingPosition) {
+      setTimeout(() => {
+        const cfrPartValue = this.workExperienceForm.get('cfrPart').value;
+        const fmcsaValue = this.workExperienceForm.get('fmCSA').value;
+
+        if (cfrPartValue) {
+          this.cfrPartRadios[0].checked = true;
+        } else {
+          this.cfrPartRadios[1].checked = true;
+        }
+
+        if (fmcsaValue) {
+          this.fmcsaRadios[0].checked = true;
+        } else {
+          this.fmcsaRadios[1].checked = true;
+        }
+      }, 1);
+    }
   }
 
   private isDriverPosition(): void {
@@ -385,6 +427,7 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     const {
+      employerAddress,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -397,6 +440,7 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
+      employerAddress: this.selectedAddress,
       isEditingWorkHistory: false,
     };
 
@@ -434,6 +478,7 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     const {
+      employerAddress,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -446,6 +491,9 @@ export class Step2FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
+      employerAddress: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
       isEditingWorkHistory: false,
     };
 

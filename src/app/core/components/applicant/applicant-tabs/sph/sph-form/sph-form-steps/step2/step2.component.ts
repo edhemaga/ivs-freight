@@ -35,7 +35,6 @@ export class Step2Component implements OnInit, AfterViewInit {
   public selectedAccidentIndex: number;
 
   public isEditing: boolean = false;
-  public isAccidentEdited: boolean = false;
 
   public helperIndex: number = 2;
 
@@ -202,8 +201,6 @@ export class Step2Component implements OnInit, AfterViewInit {
 
     this.helperIndex = index;
 
-    this.isAccidentEdited = false;
-
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
 
@@ -247,10 +244,12 @@ export class Step2Component implements OnInit, AfterViewInit {
   }
 
   public saveEditedAccident(event: any): void {
+    this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
     this.accidentArray[this.selectedAccidentIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
   }
 }

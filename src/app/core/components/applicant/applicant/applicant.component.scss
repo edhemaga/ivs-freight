@@ -334,6 +334,10 @@
           background: $ta-red-4;
 
           &::before {
+            background: url(/assets/svg/applicant/invalid-review-x.svg);
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
             display: inline-block;
             visibility: visible;
             opacity: 1;
@@ -425,6 +429,10 @@
           background: $ta-red-4;
 
           &::before {
+            background: url(/assets/svg/applicant/invalid-review-x.svg);
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
             display: inline-block;
             visibility: visible;
             opacity: 1;

@@ -24,7 +24,6 @@ import { LicenseModel } from '../../state/model/cdl-information';
 export class Step3FormComponent implements OnInit {
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
-  @Input() isLicenseEdited: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
@@ -33,6 +32,8 @@ export class Step3FormComponent implements OnInit {
   public selectedMode = SelectedMode.REVIEW;
 
   public licenseForm: FormGroup;
+
+  public isLicenseEdited: boolean;
 
   private subscription: Subscription;
 
@@ -106,14 +107,22 @@ export class Step3FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.licenseForm.valueChanges.subscribe(
-        (newFormValue) => {
+        (updatedFormValues) => {
           const { isEditingLicense, ...previousFormValues } =
             this.formValuesToPatch;
 
-          previousFormValues.license = previousFormValues.license.toUpperCase();
-          newFormValue.license = newFormValue.license.toUpperCase();
+          const {
+            firstRowReview,
+            secondRowReview,
+            thirdRowReview,
+            fourthRowReview,
+            ...newFormValues
+          } = updatedFormValues;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          previousFormValues.license = previousFormValues.license.toUpperCase();
+          newFormValues.license = newFormValues.license.toUpperCase();
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isLicenseEdited = false;
           } else {
             this.isLicenseEdited = true;
