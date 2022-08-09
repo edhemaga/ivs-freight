@@ -144,7 +144,8 @@
                 label: 'Pay type',
                 isRequired: true,
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-167',
+                dropdownWidthClass:
+                  fleetType !== 'Combined' ? 'w-col-167' : 'w-col-414',
                 isDisabled: disablePayType
               }"
               [options]="labelsPayType"
