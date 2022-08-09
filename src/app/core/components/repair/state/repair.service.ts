@@ -3,7 +3,7 @@ import { RepairModalResponse } from './../../../../../../appcoretruckassist/mode
 
 import { Injectable } from '@angular/core';
 import { RepairService } from 'appcoretruckassist/api/repair.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import {
   CreateRepairCommand,
   CreateResponse,
@@ -14,8 +14,13 @@ import {
   RepairShopModalResponse,
   RepairShopService,
   UpdateRepairShopCommand,
+  RepairListResponse,
 } from 'appcoretruckassist';
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
+import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
+import { RepairTrailerStore } from './repair-trailer-state/repair-trailer.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ShopStore } from './shop-state/shop.store';
 
 @Injectable({
   providedIn: 'root',
@@ -23,54 +28,222 @@ import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/r
 export class RepairTService {
   constructor(
     private repairService: RepairService,
-    private shopServices: RepairShopService
+    private shopServices: RepairShopService,
+    private repairTruckStore: RepairTruckStore,
+    private repairTrailerStore: RepairTrailerStore,
+    private shopStore: ShopStore,
+    private tableService: TruckassistTableService
   ) {}
 
-  public getRepairModalDropdowns(): Observable<RepairModalResponse> {
-    return this.repairService.apiRepairModalGet();
-  }
+  // <----------------------- Repair Truck And Trailer -------------------->
+  public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
+    return this.repairService.apiRepairPost(data).pipe(
+      tap((res: any) => {
+        const subRepair = this.getRepairById(res.id).subscribe({
+          next: (repair: RepairResponse | any) => {
+            const repairCount = JSON.parse(
+              localStorage.getItem('repairTruckTrailerTableCount')
+            );
 
-  // Get Repair Minimal List
-  public getRepairShopMinimalList(
-    pageIndex?: number,
-    pageSize?: number,
-    count?: number
-  ): Observable<RepairShopMinimalListResponse> {
-    return this.shopServices.apiRepairshopListMinimalGet(
-      pageIndex,
-      pageSize,
-      count
+            if (repair.truckId) {
+              this.repairTruckStore.add(repair);
+              repairCount.repairTrucks++;
+            } else if (repair.trailerId) {
+              this.repairTrailerStore.add(repair);
+              repairCount.repairTrailers++;
+            }
+
+            localStorage.setItem(
+              'repairTruckTrailerTableCount',
+              JSON.stringify({
+                repairTrucks: repairCount.repairTrucks,
+                repairTrailers: repairCount.repairTrailers,
+              })
+            );
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              tab: repair?.truckId ? 'active' : 'inactive',
+              data: repair,
+              id: repair.id,
+            });
+
+            subRepair.unsubscribe();
+          },
+        });
+      })
     );
   }
 
-  public addRepair(data: CreateRepairCommand): Observable<CreateResponse> {
-    return this.repairService.apiRepairPost(data);
+  public updateRepair(data: UpdateRepairCommand): Observable<object> {
+    return this.repairService.apiRepairPut(data).pipe(
+      tap(() => {
+        const subRepair = this.getRepairById(data.id).subscribe({
+          next: (repair: RepairResponse | any) => {
+            if (repair.truckId) {
+              this.repairTruckStore.remove(({ id }) => id === data.id);
+
+              this.repairTruckStore.add(repair);
+            } else if (repair.trailerId) {
+              this.repairTrailerStore.remove(({ id }) => id === data.id);
+
+              this.repairTrailerStore.add(repair);
+            }
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              tab: repair?.truckId ? 'active' : 'inactive',
+              data: repair,
+              id: repair.id,
+            });
+
+            subRepair.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
-  public updateRepair(data: UpdateRepairCommand): Observable<object> {
-    return this.repairService.apiRepairPut(data);
+  // Get Repair List
+  public getRepairList(
+    repairShopId?: number,
+    repairType?: number,
+    unitType?: number,
+    dateFrom?: string,
+    dateTo?: string,
+    isPM?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ): Observable<RepairListResponse> {
+    return this.repairService.apiRepairListGet(
+      repairShopId,
+      repairType,
+      unitType,
+      dateFrom,
+      dateTo,
+      isPM,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   public getRepairById(id: number): Observable<RepairResponse> {
     return this.repairService.apiRepairIdGet(id);
   }
 
-  public deleteRepairById(id: number): Observable<object> {
-    return this.repairService.apiRepairIdDelete(id);
+  public getRepairModalDropdowns(): Observable<RepairModalResponse> {
+    return this.repairService.apiRepairModalGet();
   }
 
+  public deleteRepairById(
+    repairId: number,
+    tabSelected: string
+  ): Observable<object> {
+    return this.repairService.apiRepairIdDelete(repairId).pipe(
+      tap(() => {
+        const repairCount = JSON.parse(
+          localStorage.getItem('repairTruckTrailerTableCount')
+        );
+
+        if (tabSelected === 'active') {
+          this.repairTruckStore.remove(({ id }) => id === repairId);
+
+          repairCount.repairTrucks--;
+        } else if (tabSelected === 'inactive') {
+          this.repairTrailerStore.remove(({ id }) => id === repairId);
+
+          repairCount.repairTrailers--;
+        }
+
+        localStorage.setItem(
+          'repairTruckTrailerTableCount',
+          JSON.stringify({
+            repairTrucks: repairCount.repairTrucks,
+            repairTrailers: repairCount.repairTrucks,
+          })
+        );
+
+        this.tableService.sendActionAnimation({
+          animation: 'delete',
+          tab: tabSelected,
+          id: repairId,
+        });
+      })
+    );
+  }
+
+  // <----------------------- Repair Shop -------------------->
   public addRepairShop(
     data: CreateRepairShopCommand
   ): Observable<CreateResponse> {
-    return this.shopServices.apiRepairshopPost(data);
+    return this.shopServices.apiRepairshopPost(data).pipe(
+      tap((res: any) => {
+        const subShop = this.getRepairShopById(res.id).subscribe({
+          next: (shop: RepairShopResponse | any) => {
+            const repairShopCount = JSON.parse(
+              localStorage.getItem('repairShopTableCount')
+            );
+
+            this.shopStore.add(shop);
+
+            repairShopCount.repairShops++;
+
+            localStorage.setItem(
+              'repairShopTableCount',
+              JSON.stringify({
+                repairShops: repairShopCount.repairShops,
+              })
+            );
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              tab: 'repair-shop',
+              data: shop,
+              id: shop.id,
+            });
+
+            subShop.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public updateRepairShop(data: UpdateRepairShopCommand): Observable<object> {
-    return this.shopServices.apiRepairshopPut(data);
+    return this.shopServices.apiRepairshopPut(data).pipe(
+      tap(() => {
+        const subShop = this.getRepairShopById(data.id).subscribe({
+          next: (shop: RepairShopResponse | any) => {
+            this.shopStore.remove(({ id }) => id === data.id);
+
+            this.shopStore.add(shop);
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              tab: 'repair-shop',
+              data: shop,
+              id: shop.id,
+            });
+
+            subShop.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   // Get Repair List
-  public getRepairsList(
+  public getRepairShopList(
     active?: number,
     pinned?: boolean,
     companyOwned?: boolean,
@@ -87,7 +260,25 @@ export class RepairTService {
       pinned,
       companyOwned,
       pageIndex,
-      pageSize
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
+  }
+
+  // Get Repair Minimal List
+  public getRepairShopMinimalList(
+    pageIndex?: number,
+    pageSize?: number,
+    count?: number
+  ): Observable<RepairShopMinimalListResponse> {
+    return this.shopServices.apiRepairshopListMinimalGet(
+      pageIndex,
+      pageSize,
+      count
     );
   }
 
@@ -95,8 +286,31 @@ export class RepairTService {
     return this.shopServices.apiRepairshopIdGet(id);
   }
 
-  public deleteRepairShopById(id: number): Observable<any> {
-    return this.shopServices.apiRepairshopIdDelete(id);
+  public deleteRepairShopById(shopId: number): Observable<any> {
+    return this.shopServices.apiRepairshopIdDelete(shopId).pipe(
+      tap(() => {
+        const shopCount = JSON.parse(
+          localStorage.getItem('repairShopTableCount')
+        );
+
+        this.shopStore.remove(({ id }) => id === shopId);
+
+        shopCount.repairShops--;
+
+        localStorage.setItem(
+          'repairShopTableCount',
+          JSON.stringify({
+            repairShops: shopCount.repairShops,
+          })
+        );
+
+        this.tableService.sendActionAnimation({
+          animation: 'delete',
+          tab: 'repair-shop',
+          id: shopId,
+        });
+      })
+    );
   }
 
   public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {

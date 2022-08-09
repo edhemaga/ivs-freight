@@ -108,10 +108,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.getRepairDropdowns();
 
     if (this.editData?.type.includes('edit')) {
-      this.editData = {
-        ...this.editData,
-        id: 3,
-      };
+      console.log('Edit repair');
+      console.log(this.editData);
       this.editRepairById(this.editData.id);
     }
 
@@ -565,7 +563,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   private deleteRepair(id: number) {
     this.repairService
-      .deleteRepairById(id)
+      .deleteRepairById(
+        id,
+        this.editData.type === 'edit-trailer' ? 'inactive' : 'active'
+      )
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -602,7 +603,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               : null,
             date: convertDateFromBackend(res.date),
             invoice: res.invoice,
-            repairShopId: res.id,
+            repairShopId: res.repairShop.id,
             items: [],
             note: res.note,
           });
@@ -622,9 +623,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          if (res.id) {
+          if (res.repairShop.id) {
             this.repairService
-              .getRepairShopById(res.id)
+              .getRepairShopById(res.repairShop.id)
               .pipe(untilDestroyed(this))
               .subscribe({
                 next: (res: RepairShopResponse) => {
