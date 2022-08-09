@@ -2,7 +2,7 @@
   [ngClass]="{ disabled: disabled }"
   class="ta-checkbox-container {{ customClass }}"
 >
-  <label for="{{ name }}">
+  <label for="{{ name }}" (click)="onAction()">
     <input
       *ngIf="!disabled"
       type="checkbox"
