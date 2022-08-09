@@ -156,8 +156,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   public tabChange(event: any, action?: string): void {
     switch (action) {
       case 'gate': {
-        console.log(event, action);
-
         this.gateBtns = this.gateBtns.map((item) => {
           event.name === 'No'
             ? this.parkingForm.get('gate').patchValue(false)
@@ -216,10 +214,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        if (this.editData) {
-          this.deleteParkingById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
+        this.deleteParkingById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
 
         break;
       }
@@ -298,13 +294,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       rent: rent ? convertThousanSepInNumber(rent) : null,
       payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly'
+        this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
           : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly'
+        this.selectedPayPeriod?.name === 'Weekly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
@@ -360,13 +356,13 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       rent: rent ? convertThousanSepInNumber(rent) : null,
       payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly'
+        this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
           : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly'
+        this.selectedPayPeriod?.name === 'Weekly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
@@ -385,8 +381,6 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         ? this.parkingSlots[1].value
         : 0,
     };
-
-    console.log(newData);
 
     this.settingsLocationService
       .addCompanyParking(newData)
@@ -461,8 +455,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
+
           this.selectedDay =
             res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+
           this.parkingSlots[0] = { id: 1, value: res.parkingSlot };
           this.parkingSlots[1] = { id: 2, value: res.fullParkingSlot };
 

@@ -133,7 +133,8 @@ export class SettingsTerminalComponent implements OnInit {
   ) {}
 
   ngOnInit() {}
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
+
+  public onAction(modal: { modalName: string; type: string }) {
     this.settingsLocationService.onModalAction(modal);
   }
 

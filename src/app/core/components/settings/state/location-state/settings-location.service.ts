@@ -6,10 +6,14 @@ import {
   CreateCompanyOfficeCommand,
   CreateParkingCommand,
   CreateResponse,
+  CreateTerminalCommand,
   ParkingResponse,
   ParkingService,
+  TerminalResponse,
+  TerminalService,
   UpdateCompanyOfficeCommand,
   UpdateParkingCommand,
+  UpdateTerminalCommand,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -25,7 +29,8 @@ export class SettingsLocationService {
   constructor(
     private modalService: ModalService,
     private companyOfficeService: CompanyOfficeService,
-    private companyParkingService: ParkingService
+    private companyParkingService: ParkingService,
+    private companyTerminalService: TerminalService
   ) {}
 
   /**
@@ -122,5 +127,24 @@ export class SettingsLocationService {
     data: UpdateCompanyOfficeCommand
   ): Observable<any> {
     return this.companyOfficeService.apiCompanyofficePut(data);
+  }
+
+  // Location Terminal
+  public deleteCompanyTerminalById(id: number): Observable<any> {
+    return this.companyTerminalService.apiTerminalIdDelete(id);
+  }
+
+  public getCompanyTerminalById(id: number): Observable<TerminalResponse> {
+    return this.companyTerminalService.apiTerminalIdGet(id);
+  }
+
+  public addCompanyTerminal(
+    data: CreateTerminalCommand
+  ): Observable<CreateResponse> {
+    return this.companyTerminalService.apiTerminalPost(data);
+  }
+
+  public updateCompanyTerminal(data: UpdateTerminalCommand): Observable<any> {
+    return this.companyTerminalService.apiTerminalPut(data);
   }
 }

@@ -16,40 +16,58 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'terminal', type: 'add' })"
+        (click)="onAction({ modalName: 'terminal' })"
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of terminalData; let i = index; trackBy: identityTerminalData"
+      *ngFor="
+        let item of terminalData;
+        let i = index;
+        trackBy: identityTerminalData
+      "
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [paddingDots]="'11px 0px 0px 12px'"
-
       [haveHeaderText]="true"
     >
       <div class="settings-body-items">
-        <div *ngIf="item.phone !== ''" class="single-item">
-          <svg-icon class="company-icons"  src="assets/svg/common/ic_phone.svg"></svg-icon>
+        <div
+          *ngIf="item.phone !== ''"
+          class="single-item"
+          (click)="
+            onAction({ modalName: 'terminal', type: { type: 'edit', id: 1 } })
+          "
+        >
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
         </div>
         <div *ngIf="item.email !== ''" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
-
         </div>
         <div *ngIf="item.address !== ''" class="single-item">
           <svg-icon
-          class="company-icons"
+            class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span>{{ item.address }}</span>
         </div>
       </div>
       <app-ta-custom-card
-        *ngFor="let opt of item.options; let i = index; trackBy: identityOfficeData"
+        *ngFor="
+          let opt of item.options;
+          let i = index;
+          trackBy: identityOfficeData
+        "
         [cardName]="opt.name"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
@@ -58,9 +76,11 @@
       >
         <div class="parking-template-data">
           <div *ngIf="opt.phone" class="parking-template-item">
-            <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
             <app-ta-copy [copyValue]="opt?.phone"> </app-ta-copy>
-
           </div>
           <div class="parking-template-item">
             <div *ngIf="opt.phone_ext" class="parking-template-item">
@@ -74,7 +94,10 @@
             *ngIf="opt.email"
             class="parking-template-item parking-template-email"
           >
-            <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+            <svg-icon
+              class="company-icons"
+              src="assets/svg/common/ic_email.svg"
+            ></svg-icon>
             <app-ta-copy [copyValue]="opt?.email"> </app-ta-copy>
           </div>
           <div *ngIf="opt.parking_slot" class="parking-template-item">

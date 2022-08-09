@@ -91,7 +91,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getCompanyOfficeDropdowns();
-    console.log(this.editData);
+
     if (this.editData?.type === 'edit') {
       this.editCompanyOfficeById(this.editData.id);
     }
@@ -152,10 +152,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        if (this.editData) {
-          this.deleteCompanyOfficeById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
+        this.deleteCompanyOfficeById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
+
         break;
       }
       default: {
@@ -253,13 +252,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly'
+        this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
           : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly'
+        this.selectedPayPeriod?.name === 'Weekly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
@@ -306,13 +305,13 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly'
+        this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
           : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly'
+        this.selectedPayPeriod?.name === 'Weekly'
           ? this.selectedDay
             ? this.selectedDay.id
             : null
@@ -399,6 +398,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
+
           this.selectedDay =
             res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
 
