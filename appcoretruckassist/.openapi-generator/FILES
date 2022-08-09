@@ -102,6 +102,7 @@ model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
+model/countryType.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createCdlCommand.ts

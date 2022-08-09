@@ -222,8 +222,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     this.isCheckedParking();
 
     this.isCheckedWarehouse();
-
-    this.isCheckedFuelStation();
   }
 
   public isCheckedOffice() {
@@ -280,26 +278,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         } else {
           this.inputService.changeValidators(
             this.terminalForm.get('warehousePhone'),
-            false
-          );
-        }
-      });
-  }
-
-  public isCheckedFuelStation() {
-    this.terminalForm
-      .get('fuelStationChecked')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.inputService.changeValidators(
-            this.terminalForm.get('fuelStationPhone'),
-            true,
-            [phoneRegex]
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.terminalForm.get('fuelStationPhone'),
             false
           );
         }

@@ -57,6 +57,7 @@ export * from './companyUserResponse';
 export * from './companyUserResponsePagination';
 export * from './companyUserShortResponse';
 export * from './contactColorResponse';
+export * from './countryType';
 export * from './createBankCommand';
 export * from './createBrokerCommand';
 export * from './createCdlCommand';

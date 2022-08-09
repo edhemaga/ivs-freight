@@ -135,7 +135,7 @@ export class SettingsRepairShopComponent implements OnInit {
 
   ngOnInit() {}
 
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
+  public onAction(modal: { modalName: string; type: string }) {
     this.settingsLocationService.onModalAction(modal);
   }
 
