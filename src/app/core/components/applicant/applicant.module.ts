@@ -84,6 +84,7 @@ import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-en
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
     ApplicantSignaturePadComponent,
+    ApplicantReviewFeedbackComponent,
   ],
   providers: [ReviewFeedbackService],
 })

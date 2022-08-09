@@ -172,8 +172,43 @@
       }
     }
 
+    .requested-mvr-feedback-box {
+      width: 616px;
+      height: 26px;
+      background: $ta-light-blue;
+      border-radius: 2px;
+      margin-bottom: 12px;
+
+      p {
+        color: $white;
+        font-size: 14px;
+        line-height: 18px;
+
+        &::-moz-selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+
+        &::selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+      }
+    }
+
     .files-container {
       width: 616px;
+
+      .line-container {
+        position: relative;
+
+        .review-feedback-container {
+          position: absolute;
+          top: 0;
+          right: -435px;
+          width: 429px;
+        }
+      }
 
       .files-header {
         border-top: 0.2px solid $ta-light-grey-4;
@@ -204,6 +239,11 @@
             margin-left: 4px !important;
           }
         }
+      }
+
+      .review-documents-container {
+        max-width: 616px;
+        width: 100%;
       }
     }
 

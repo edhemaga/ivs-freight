@@ -9,7 +9,7 @@ import { INavigation } from '../state/model/navigation.model';
   styleUrls: ['./applicant.component.scss'],
 })
 export class ApplicantComponent implements OnInit {
-  public selectedMode = SelectedMode.FEEDBACK;
+  public selectedMode = SelectedMode.REVIEW;
 
   public menuItems: INavigation[] = [
     {

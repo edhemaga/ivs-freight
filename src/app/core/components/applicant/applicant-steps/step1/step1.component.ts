@@ -320,7 +320,6 @@ export class Step1Component implements OnInit, OnDestroy {
 
       firstRowReview: [null],
       secondRowReview: [null],
-
       thirdRowReview: [null],
       fourthRowReview: [null],
 
@@ -629,7 +628,6 @@ export class Step1Component implements OnInit, OnDestroy {
     lineIndex: number,
     type?: string
   ): void {
-    console.log(event);
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
     );
