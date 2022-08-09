@@ -4,8 +4,12 @@ import {
   CompanyOfficeResponse,
   CompanyOfficeService,
   CreateCompanyOfficeCommand,
+  CreateParkingCommand,
   CreateResponse,
+  ParkingResponse,
+  ParkingService,
   UpdateCompanyOfficeCommand,
+  UpdateParkingCommand,
 } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -20,7 +24,8 @@ import { SettingsTerminalModalComponent } from '../../settings-location/location
 export class SettingsLocationService {
   constructor(
     private modalService: ModalService,
-    private companyOfficeService: CompanyOfficeService
+    private companyOfficeService: CompanyOfficeService,
+    private companyParkingService: ParkingService
   ) {}
 
   /**
@@ -75,6 +80,25 @@ export class SettingsLocationService {
     }
   }
 
+  // Location Parking
+  public deleteCompanyParkingById(id: number): Observable<any> {
+    return this.companyParkingService.apiParkingIdDelete(id);
+  }
+
+  public getCompanyParkingById(id: number): Observable<ParkingResponse> {
+    return this.companyParkingService.apiParkingIdGet(id);
+  }
+
+  public addCompanyParking(
+    data: CreateParkingCommand
+  ): Observable<CreateResponse> {
+    return this.companyParkingService.apiParkingPost(data);
+  }
+
+  public updateCompanyParking(data: UpdateParkingCommand): Observable<any> {
+    return this.companyParkingService.apiParkingPut(data);
+  }
+
   // Location Office
   public deleteCompanyOfficeById(id: number): Observable<any> {
     return this.companyOfficeService.apiCompanyofficeIdDelete(id);
@@ -84,7 +108,7 @@ export class SettingsLocationService {
     return this.companyOfficeService.apiCompanyofficeIdGet(id);
   }
 
-  public getCompanyOfficeModal(): Observable<CompanyOfficeModalResponse> {
+  public getModalDropdowns(): Observable<CompanyOfficeModalResponse> {
     return this.companyOfficeService.apiCompanyofficeModalGet();
   }
 

@@ -191,7 +191,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
-          this.countryTypes = res.countryTypes;
+          // this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
         },
@@ -229,7 +229,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
-            countryType: res.countryType.name,
+            // countryType: res.countryType.name,
             stateId: res.state.stateName,
             restrictions: null,
             endorsements: null,
@@ -238,7 +238,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
-          this.selectedCountryType = res.countryType;
+          // this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
         },
         error: () => {

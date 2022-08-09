@@ -27,111 +27,101 @@
               formControlName="isOwner"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
-            <svg-icon
-              class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !parkingForm.get('isOwner')?.value }"
-            ></svg-icon>
           </div>
-          <div
-            class="checkbox-card-body"
-            [ngClass]="{ 'active-20': !parkingForm.get('isOwner').value }"
-          >
-            <div *ngIf="!parkingForm.get('isOwner').value">
-              <div class="row">
-                <div class="col-12">
-                  <app-ta-input
-                    formControlName="parkingName"
-                    [inputConfig]="{
-                      name: 'Parking Name',
-                      type: 'text',
-                      label: 'Parking Name',
-                      isRequired: true,
-                      textTransform: 'capitalize',
-                      autoFocus: editData?.type === 'edit' ? false : true
-                    }"
-                  ></app-ta-input>
-                </div>
+          <div class="checkbox-card-body active-20">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="name"
+                  [inputConfig]="{
+                    name: 'Parking Name',
+                    type: 'text',
+                    label: 'Parking Name',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    autoFocus: editData?.type === 'edit' ? false : true
+                  }"
+                ></app-ta-input>
               </div>
-              <div class="row">
-                <div class="col-10">
-                  <app-ta-input-address
-                    formControlName="address"
-                    [inputConfig]="{
-                      name: 'Address',
-                      type: 'text',
-                      label: 'Address, City, State Zip',
-                      isRequired: true,
-                      placeholderIcon: 'address',
-                      textTransform: 'capitalize'
-                    }"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                  ></app-ta-input-address>
-                </div>
-                <div class="col-2">
-                  <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                      name: 'Address Unit',
-                      type: 'text',
-                      label: 'Unit #',
-                      maxLength: 6
-                    }"
-                  ></app-ta-input>
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <app-ta-input-address
+                  formControlName="address"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  [activeAddress]="selectedAddress"
+                  (selectedAddress)="onHandleAddress($event)"
+                ></app-ta-input-address>
               </div>
-              <div
-                class="phone-ext-email-small-modal last-row"
-                [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
-              >
-                <div class="phone-extension">
-                  <div class="phone-field">
-                    <app-ta-input
-                      formControlName="phone"
-                      [inputConfig]="{
-                        name: 'Phone',
-                        type: 'text',
-                        label: 'Phone',
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000'
-                      }"
-                    ></app-ta-input>
-                  </div>
-                  <div
-                    class="extension-field"
-                    *ngIf="!isPhoneExtExist"
-                    (click)="isPhoneExtExist = !isPhoneExtExist"
-                    ngbTooltip
-                    mainTooltip="Add Extension"
-                    position="top"
-                    tooltipBackground="#6c6c6c"
-                  >
-                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-                  </div>
+              <div class="col-2">
+                <app-ta-input
+                  formControlName="addressUnit"
+                  [inputConfig]="{
+                    name: 'Address Unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    maxLength: 6
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+            <div
+              class="phone-ext-email-small-modal last-row"
+              [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+            >
+              <div class="phone-extension">
+                <div class="phone-field">
                   <app-ta-input
-                    *ngIf="isPhoneExtExist"
-                    formControlName="phoneExtension"
+                    formControlName="phone"
                     [inputConfig]="{
-                      name: 'Phone Extension',
+                      name: 'Phone',
                       type: 'text',
-                      label: 'Ext.',
-                      maxLength: 3,
-                      placeholderIcon: 'phone-extension'
+                      label: 'Phone',
+                      placeholderIcon: 'phone',
+                      mask: '(000) 000-0000'
                     }"
                   ></app-ta-input>
                 </div>
-                <div class="email-field">
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      label: 'Email',
-                      placeholderIcon: 'email'
-                    }"
-                  ></app-ta-input>
+                <div
+                  class="extension-field"
+                  *ngIf="!isPhoneExtExist"
+                  (click)="isPhoneExtExist = !isPhoneExtExist"
+                  ngbTooltip
+                  mainTooltip="Add Extension"
+                  position="top"
+                  tooltipBackground="#6c6c6c"
+                >
+                  <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                 </div>
+                <app-ta-input
+                  *ngIf="isPhoneExtExist"
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    label: 'Ext.',
+                    maxLength: 3,
+                    placeholderIcon: 'phone-extension'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="email-field">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    label: 'Email',
+                    placeholderIcon: 'email'
+                  }"
+                ></app-ta-input>
               </div>
             </div>
           </div>
@@ -180,19 +170,23 @@
             <div class="gate-field">
               <p>Gate</p>
               <div class="gate-radio">
-                <app-ta-input-radiobuttons
-                  [buttons]="gateBtns"
-                  (changedValue)="onSelectDropdown($event, 'gate')"
-                ></app-ta-input-radiobuttons>
+                <app-ta-tab-switch
+                  [tabs]="gateBtns"
+                  (switchClicked)="tabChange($event, 'gate')"
+                  [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
               </div>
             </div>
             <div class="camera-field">
               <p>Security Camera</p>
               <div class="camera-radio">
-                <app-ta-input-radiobuttons
-                  [buttons]="cameraBtns"
-                  (changedValue)="onSelectDropdown($event, 'camera')"
-                ></app-ta-input-radiobuttons>
+                <app-ta-tab-switch
+                  [tabs]="cameraBtns"
+                  (switchClicked)="tabChange($event, 'camera')"
+                  [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
               </div>
             </div>
           </div>

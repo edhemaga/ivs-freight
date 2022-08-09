@@ -253,9 +253,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly' ? this.selectedDay.id : null,
+        this.selectedPayPeriod.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly' ? this.selectedDay.id : null,
+        this.selectedPayPeriod.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
       rent: rent ? convertThousanSepInNumber(rent) : null,
     };
 
@@ -298,9 +306,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       address: { ...this.selectedAddress, addressUnit: addressUnit },
       payPeriod: this.selectedPayPeriod.id,
       monthlyDay:
-        this.selectedPayPeriod.name === 'Monthly' ? this.selectedDay.id : null,
+        this.selectedPayPeriod.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
       weeklyDay:
-        this.selectedPayPeriod.name === 'Weekly' ? this.selectedDay.id : null,
+        this.selectedPayPeriod.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
       rent: rent ? convertThousanSepInNumber(rent) : null,
     };
 

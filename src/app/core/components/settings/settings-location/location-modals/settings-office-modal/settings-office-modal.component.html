@@ -37,102 +37,100 @@
             ></app-ta-checkbox>
           </div>
           <div class="checkbox-card-body active-20">
-            <div>
-              <div class="row">
-                <div class="col-12">
-                  <app-ta-input
-                    formControlName="name"
-                    [inputConfig]="{
-                      name: 'Office Name',
-                      type: 'text',
-                      label: 'Office Name',
-                      isRequired: true,
-                      textTransform: 'capitalize',
-                      autoFocus: editData?.type === 'edit' ? false : true
-                    }"
-                  ></app-ta-input>
-                </div>
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="name"
+                  [inputConfig]="{
+                    name: 'Office Name',
+                    type: 'text',
+                    label: 'Office Name',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    autoFocus: editData?.type === 'edit' ? false : true
+                  }"
+                ></app-ta-input>
               </div>
-              <div class="row">
-                <div class="col-10">
-                  <app-ta-input-address
-                    formControlName="address"
-                    [inputConfig]="{
-                      name: 'Address',
-                      type: 'text',
-                      label: 'Address, City, State Zip',
-                      isRequired: true,
-                      placeholderIcon: 'address',
-                      textTransform: 'capitalize'
-                    }"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                  ></app-ta-input-address>
-                </div>
-                <div class="col-2">
-                  <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                      name: 'Address Unit',
-                      type: 'text',
-                      label: 'Unit #',
-                      maxLength: 6
-                    }"
-                  ></app-ta-input>
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <app-ta-input-address
+                  formControlName="address"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  [activeAddress]="selectedAddress"
+                  (selectedAddress)="onHandleAddress($event)"
+                ></app-ta-input-address>
               </div>
-              <div
-                class="phone-ext-email-small-modal last-row"
-                [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
-              >
-                <div class="phone-extension">
-                  <div class="phone-field">
-                    <app-ta-input
-                      formControlName="phone"
-                      [inputConfig]="{
-                        name: 'Phone',
-                        type: 'text',
-                        label: 'Phone',
-                        isRequired: true,
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000'
-                      }"
-                    ></app-ta-input>
-                  </div>
-                  <div
-                    class="extension-field"
-                    *ngIf="!isPhoneExtExist"
-                    (click)="isPhoneExtExist = !isPhoneExtExist"
-                    ngbTooltip
-                    mainTooltip="Add Extension"
-                    position="top"
-                    tooltipBackground="#6c6c6c"
-                  >
-                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-                  </div>
+              <div class="col-2">
+                <app-ta-input
+                  formControlName="addressUnit"
+                  [inputConfig]="{
+                    name: 'Address Unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    maxLength: 6
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+            <div
+              class="phone-ext-email-small-modal last-row"
+              [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+            >
+              <div class="phone-extension">
+                <div class="phone-field">
                   <app-ta-input
-                    *ngIf="isPhoneExtExist"
-                    formControlName="extensionPhone"
+                    formControlName="phone"
                     [inputConfig]="{
-                      name: 'Phone Extension',
+                      name: 'Phone',
                       type: 'text',
-                      label: 'Ext.',
-                      maxLength: 3,
-                      placeholderIcon: 'phone-extension'
+                      label: 'Phone',
+                      isRequired: true,
+                      placeholderIcon: 'phone',
+                      mask: '(000) 000-0000'
                     }"
                   ></app-ta-input>
                 </div>
-                <div class="email-field">
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      label: 'Email',
-                      placeholderIcon: 'email'
-                    }"
-                  ></app-ta-input>
+                <div
+                  class="extension-field"
+                  *ngIf="!isPhoneExtExist"
+                  (click)="isPhoneExtExist = !isPhoneExtExist"
+                  ngbTooltip
+                  mainTooltip="Add Extension"
+                  position="top"
+                  tooltipBackground="#6c6c6c"
+                >
+                  <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                 </div>
+                <app-ta-input
+                  *ngIf="isPhoneExtExist"
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    label: 'Ext.',
+                    maxLength: 3,
+                    placeholderIcon: 'phone-extension'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="email-field">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    label: 'Email',
+                    placeholderIcon: 'email'
+                  }"
+                ></app-ta-input>
               </div>
             </div>
           </div>
