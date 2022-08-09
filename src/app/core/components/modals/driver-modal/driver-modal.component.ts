@@ -148,6 +148,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public disabledEmptyLoadedMile: boolean = false;
 
+  // Delete when back coming
+  public milesSameRate: boolean = true;
+  public fleetType: string = 'Solo';
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -267,9 +271,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamDriver: [false],
       soloEmptyMile: [null, [Validators.required, ...mileValidation]],
       soloLoadedMile: [null, [Validators.required, ...mileValidation]],
+      perMileSolo: [null, Validators.required],
       soloPerStop: [null, perStopValidation],
       teamEmptyMile: [null, [Validators.required, ...mileValidation]],
       teamLoadedMile: [null, [Validators.required, ...mileValidation]],
+      perMileTeam: [null, Validators.required],
       teamPerStop: [null, perStopValidation],
       commissionSolo: [25],
       commissionTeam: [25],

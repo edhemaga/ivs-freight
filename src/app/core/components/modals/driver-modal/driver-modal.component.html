@@ -123,7 +123,10 @@
         <app-ta-custom-card [cardName]="'Payroll'" [isCardOpen]="true">
           <div
             class="custom-row-paytype-driver"
-            [ngClass]="{ 'custom-row-paytype-driver-disabled': disablePayType }"
+            [ngClass]="{
+              'custom-row-paytype-driver-disabled': disablePayType,
+              'fleet-type': fleetType !== 'Combined'
+            }"
           >
             <app-ta-checkbox
               formControlName="useTruckAssistAch"
@@ -150,6 +153,7 @@
             ></app-ta-input-dropdown>
 
             <app-ta-checkbox
+              *ngIf="fleetType === 'Combined'"
               formControlName="soloDriver"
               [customClass]="'medium'"
               [name]="'solorDriver'"
@@ -158,6 +162,7 @@
             ></app-ta-checkbox>
 
             <app-ta-checkbox
+              *ngIf="fleetType === 'Combined'"
               formControlName="teamDriver"
               [customClass]="'medium'"
               [name]="'teamrDriver'"
@@ -179,9 +184,11 @@
                   this.driverForm.get('teamDriver').value)
               "
               class="permile-fields"
+              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
             >
               <p>SOLO</p>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -196,6 +203,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -209,6 +217,23 @@
                   maxLength: 4
                 }"
               ></app-ta-input>
+
+              <app-ta-input
+                *ngIf="milesSameRate"
+                formControlName="perMileSolo"
+                [inputConfig]="{
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+
               <app-ta-input
                 formControlName="soloPerStop"
                 [inputConfig]="{
@@ -230,9 +255,11 @@
                   this.driverForm.get('teamDriver').value)
               "
               class="permile-fields"
+              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
             >
               <p>TEAM</p>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -247,6 +274,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="!milesSameRate"
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -259,6 +287,23 @@
                   max: 10
                 }"
               ></app-ta-input>
+
+              <app-ta-input
+                *ngIf="milesSameRate"
+                formControlName="perMileTeam"
+                [inputConfig]="{
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
+                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+
               <app-ta-input
                 formControlName="teamPerStop"
                 [inputConfig]="{

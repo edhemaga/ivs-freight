@@ -316,6 +316,10 @@
       grid-template-columns: repeat(2, 167px) 119px 107px;
       column-gap: 12px;
     }
+
+    &.fleet-type {
+      grid-template-columns: 1fr 414px;
+    }
   }
 
   //---------------- PayType Commission ----------------
@@ -388,6 +392,10 @@
 
       &:nth-last-child(1) {
         margin-bottom: 10px;
+      }
+
+      &.permile-fields-same-rate {
+        grid-template-columns: auto repeat(2, 265px);
       }
     }
   }

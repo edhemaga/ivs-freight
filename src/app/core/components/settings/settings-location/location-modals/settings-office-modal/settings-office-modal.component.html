@@ -5,10 +5,12 @@
   [isModalValid]="officeForm.valid"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+  <app-ta-tab-switch
     [tabs]="tabs"
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="officeForm"
@@ -33,17 +35,9 @@
               formControlName="isOwner"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
-            <svg-icon
-              class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !officeForm.get('isOwner')?.value }"
-            ></svg-icon>
           </div>
-          <div
-            class="checkbox-card-body"
-            [ngClass]="{ 'active-20': !officeForm.get('isOwner').value }"
-          >
-            <div *ngIf="!officeForm.get('isOwner').value">
+          <div class="checkbox-card-body active-20">
+            <div>
               <div class="row">
                 <div class="col-12">
                   <app-ta-input
@@ -278,7 +272,7 @@
                 selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
               "
               [activeItem]="selectedDay"
-              (selectedItem)="onSelectDropdown($event, 'monthlyDay')"
+              (selectedItem)="onSelectDropdown($event, 'day')"
             ></app-ta-input-dropdown>
           </div>
         </div>

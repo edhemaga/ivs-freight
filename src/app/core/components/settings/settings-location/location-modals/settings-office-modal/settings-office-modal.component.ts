@@ -52,10 +52,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   public payPeriods: any[] = [];
   public selectedPayPeriod: any = null;
 
+  public weeklyDays: any[] = [];
   public monthlyDays: any[] = [];
   public selectedDay: any = null;
-
-  public weeklyDays: any[] = [];
 
   public isContactCardsScrolling: boolean = false;
 
@@ -91,10 +90,9 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.isCheckedCompanyOwned();
     this.getCompanyOfficeDropdowns();
     console.log(this.editData);
-    if (this.editData.type === 'edit') {
+    if (this.editData?.type === 'edit') {
       this.editCompanyOfficeById(this.editData.id);
     }
   }
@@ -144,7 +142,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.officeForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.type === 'edit') {
           this.updateCompanyOffice(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -225,51 +223,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private isCheckedCompanyOwned() {
-    this.officeForm
-      .get('isOwner')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputService.changeValidators(this.officeForm.get('name'));
-          this.inputService.changeValidators(this.officeForm.get('address'));
-          this.inputService.changeValidators(
-            this.officeForm.get('phone'),
-            true,
-            [phoneRegex]
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.officeForm.get('name'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.officeForm.get('address'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.officeForm.get('addressUnit'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.officeForm.get('phone'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.officeForm.get('email'),
-            false
-          );
-        }
-      });
-  }
-
   public onSelectDropdown(event: any, action: string) {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;
+
+        this.officeForm.get('monthlyDay').patchValue(null);
+        this.officeForm.get('weeklyDay').patchValue(null);
+        this.selectedDay = null;
         break;
       }
-      case 'monthlyDay': {
+      case 'day': {
         this.selectedDay = event;
         break;
       }
@@ -277,9 +241,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
-    this.officeForm.get('monthlyDay').patchValue(null);
-    this.officeForm.get('weeklyDay').patchValue(null);
-    this.selectedDay = null;
   }
 
   private updateCompanyOffice(id: number) {
@@ -307,8 +268,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ...newData,
       departmentContacts,
     };
-
-    console.log(newData);
 
     this.settingsLocationService
       .updateCompanyOffice(newData)
@@ -354,8 +313,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ...newData,
       departmentContacts,
     };
-
-    console.log(newData);
 
     this.settingsLocationService
       .addCompanyOffice(newData)
@@ -424,8 +381,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
               : null,
           });
 
-          console.log(res.payPeriod);
-
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
           this.selectedDay =
@@ -433,7 +388,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
           for (let index = 0; index < res.departmentContacts.length; index++) {
             this.departmentContacts.push(
-              this.formBuilder.group({
+              this.createDepartmentContacts({
                 id: res.departmentContacts[index].id,
                 departmentId: res.departmentContacts[index].department.name,
                 phone: res.departmentContacts[index].phone,
@@ -454,7 +409,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   private getCompanyOfficeDropdowns() {
     this.settingsLocationService
-      .getCompanyOfficeModal()
+      .getModalDropdowns()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CompanyOfficeModalResponse) => {
