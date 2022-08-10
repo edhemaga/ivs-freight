@@ -20,6 +20,7 @@ export interface UpdateParkingCommand {
     name?: string | null;
     email?: string | null;
     phone?: string | null;
+    extensionPhone?: string | null;
     gate?: boolean | null;
     securityCamera?: boolean | null;
     address?: AddressEntity;
