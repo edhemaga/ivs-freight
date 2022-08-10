@@ -215,7 +215,9 @@ ngb-modal-window[aria-hidden="true"] {
           }
         }
 
-        .modal-deactivate-btn {
+        .modal-deactivate-btn,
+        .modal-resend-email-btn {
+          position: relative;
           min-width: 128px;
           height: 32px;
           text-align: center;

@@ -53,13 +53,14 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() saveAndAddNew: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
-  @Input() disableFooter: boolean = false;
-  @Input() disableDelete: boolean = false;
-  @Input() isDeactivated: boolean = false;
-  @Input() isDNU: boolean = false;
-  @Input() isBFB: boolean = false;
+  @Input() disableFooter: boolean;
+  @Input() disableDelete: boolean;
+  @Input() isDeactivated: boolean;
+  @Input() isDNU: boolean;
+  @Input() isBFB: boolean;
+  @Input() resendEmail: boolean;
 
-  @Input() specificCaseModalName: boolean = false;
+  @Input() specificCaseModalName: boolean;
 
   @Input() dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'files', // files | image | media
@@ -84,6 +85,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public saveSpinnerVisibility: boolean = false;
   public saveAddNewSpinnerVisibility: boolean = false;
   public deleteSpinnerVisibility: boolean = false;
+  public resendEmailSpinnerVisibility: boolean = false;
 
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
@@ -142,13 +144,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.saveAddNewSpinnerVisibility = data.status;
             break;
           }
+          case 'resend email': {
+            console.log(data.status);
+            this.resendEmailSpinnerVisibility = data.status;
+            break;
+          }
           default: {
             this.saveSpinnerVisibility = data.status;
             break;
           }
         }
 
-        if (data.action !== 'save and add new') {
+        if (!['save and add new', 'resend email'].includes(data.action)) {
           if (this.timeout) {
             clearTimeout(this.timeout);
           }
@@ -215,6 +222,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'save and add new': {
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
+      case 'resend email': {
         this.action.emit({ action: action, bool: false });
         break;
       }

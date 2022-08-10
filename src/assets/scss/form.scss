@@ -627,18 +627,6 @@
     }
   }
 }
-//---------------- CDL, Issue & Exp Date Modal----------------
-.cdl-issue-exp-date {
-  display: grid;
-  grid-template-columns: 1fr repeat(2, 122px);
-  grid-template-rows: 26px;
-  -moz-column-gap: 12px;
-  column-gap: 12px;
-  align-items: center;
-  margin: 0px;
-  margin-top: 26px;
-  margin-bottom: 32px;
-}
 
 //---------------- Drug, Type, Reason Modal----------------
 .drug-type-reason-date {

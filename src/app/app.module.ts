@@ -9,7 +9,7 @@ import {
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
@@ -27,6 +27,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     NavigationSubrouteCardComponent,
     NavigationModalsComponent,
     NavigationUserProfileComponent,
-    NavigationUserCompanyComponent
+    NavigationUserCompanyComponent,
   ],
   imports: [
     BrowserModule,
@@ -60,6 +61,11 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
   ],
   providers: [
     GoogleMapsAPIWrapper,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true,
+    },
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>

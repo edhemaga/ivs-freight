@@ -48,13 +48,32 @@
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete"
+          *ngIf="!disableDelete && !resendEmail"
           (click)="onAction('delete')"
           class="modal-delete-btn"
           ngbAutofocus
           type="button"
         >
           Delete
+        </button>
+
+        <!-- Resend Email -->
+        <button
+          *ngIf="resendEmail"
+          (click)="onAction('resend email')"
+          class="modal-resend-email-btn"
+          ngbAutofocus
+          type="button"
+        >
+          {{
+            resendEmailSpinnerVisibility
+              ? "Sending"
+              : "Resend Application
+          Email"
+          }}
+          <div *ngIf="resendEmailSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
 
         <!-- Deactivated -->

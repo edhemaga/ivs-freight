@@ -1,0 +1,71 @@
+<app-ta-modal
+  [modalTitle]="editData?.type !== 'edit' ? 'Add Applicant' : 'Edit Applicant'"
+  [editData]="editData"
+  [editName]="editData?.id"
+  [saveAndAddNew]="editData?.type !== 'edit'"
+  [resendEmail]="editData?.type === 'edit'"
+  [isModalValid]="applicantForm.valid"
+  (action)="onModalAction($event)"
+>
+  <form [formGroup]="applicantForm" class="form-container">
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="firstName"
+          [inputConfig]="{
+            name: 'First name',
+            type: 'text',
+            label: 'First Name',
+            isRequired: true,
+            textTransform: 'capitalize',
+            autoFocus: editData?.type === 'edit' ? false : true
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="lastName"
+          [inputConfig]="{
+            name: 'Last name',
+            type: 'text',
+            label: 'Last Name',
+            isRequired: true,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <div class="row last-row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="phone"
+          [inputConfig]="{
+            name: 'Phone',
+            type: 'text',
+            label: 'Phone',
+            isRequired: true,
+            placeholderIcon: 'phone',
+            mask: '(000) 000-0000'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="email"
+          [inputConfig]="{
+            name: 'Email',
+            type: 'text',
+            label: 'Email',
+            isRequired: true,
+            placeholderIcon: 'email'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+    <!-- Note -->
+    <app-ta-input-note
+      formControlName="note"
+      [isVisibleNote]="applicantForm.get('note').value"
+    ></app-ta-input-note>
+  </form>
+</app-ta-modal>
