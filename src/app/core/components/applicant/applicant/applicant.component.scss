@@ -187,6 +187,58 @@
         }
       }
 
+      &.step-active-feedback {
+        pointer-events: none !important;
+
+        .bullet {
+          background: $bw6-2 !important;
+
+          &::before {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+          }
+
+          p {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+
+        .step-text {
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: $bw6-2 !important;
+        }
+      }
+
+      &.step-active-feedback-incorrect {
+        pointer-events: none !important;
+
+        .bullet {
+          background: $ta-red-2 !important;
+
+          &::before {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+          }
+
+          p {
+            display: inline-flex !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+        }
+
+        .step-text {
+          visibility: visible !important;
+          opacity: 1 !important;
+          color: $ta-red-2 !important;
+        }
+      }
+
       &.completed-step {
         .bullet {
           background: $ta-blue-3;
@@ -282,6 +334,10 @@
           background: $ta-red-4;
 
           &::before {
+            background: url(/assets/svg/applicant/invalid-review-x.svg);
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
             display: inline-block;
             visibility: visible;
             opacity: 1;
@@ -319,6 +375,150 @@
         .step-text {
           visibility: hidden;
           opacity: 0;
+        }
+      }
+
+      &.completed-step-feedback {
+        .bullet {
+          background: $bw-9;
+
+          &::before {
+            display: inline-block;
+            visibility: visible;
+            opacity: 1;
+          }
+
+          p {
+            display: none;
+            visibility: hidden;
+            opacity: 0;
+          }
+
+          &:hover {
+            background: $bw4;
+
+            &::before {
+              display: none;
+              visibility: hidden;
+              opacity: 0;
+            }
+
+            p {
+              display: inline-flex;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          &:hover + .step-text {
+            visibility: visible;
+            opacity: 1;
+            color: $bw6-2;
+          }
+        }
+
+        .step-text {
+          visibility: visible;
+          opacity: 1;
+          color: $bw5;
+        }
+      }
+
+      &.completed-step-feedback-incorrect {
+        .bullet {
+          background: $ta-red-4;
+
+          &::before {
+            background: url(/assets/svg/applicant/invalid-review-x.svg);
+            background-repeat: no-repeat;
+            width: 20px;
+            height: 20px;
+            display: inline-block;
+            visibility: visible;
+            opacity: 1;
+          }
+
+          p {
+            display: none;
+            visibility: hidden;
+            opacity: 0;
+          }
+
+          &:hover {
+            background: $ta-red;
+
+            &::before {
+              display: none;
+              visibility: hidden;
+              opacity: 0;
+            }
+
+            p {
+              display: inline-flex;
+              visibility: visible;
+              opacity: 1;
+            }
+          }
+
+          &:hover + .step-text {
+            visibility: visible;
+            opacity: 1;
+            color: $ta-red;
+          }
+        }
+
+        .step-text {
+          visibility: visible;
+          opacity: 1;
+          color: $ta-red-4;
+        }
+      }
+
+      &.completed-step-feedback-sent-to-review {
+        .bullet {
+          background: $bw-9 !important;
+
+          &::before {
+            width: 19px;
+            height: 20px;
+            background: url(/assets/svg/applicant/double-check.svg);
+            display: inline-block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+          }
+
+          p {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+          }
+
+          &:hover {
+            background: $bw4 !important;
+
+            &::before {
+              display: none !important;
+              visibility: hidden !important;
+              opacity: 0 !important;
+            }
+
+            p {
+              display: inline-flex !important;
+              visibility: visible !important;
+              opacity: 1 !important;
+            }
+          }
+
+          &:hover + .step-text {
+            visibility: visible !important;
+            opacity: 1 !important;
+            color: $bw4 !important;
+          }
+        }
+
+        .step-text {
+          visibility: hidden !important;
+          opacity: 0 !important;
         }
       }
     }
