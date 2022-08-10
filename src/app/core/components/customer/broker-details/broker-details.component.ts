@@ -26,9 +26,10 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService,
     private sumArr: SumArraysPipe
-  ) {}
+  ) { }
 
   ngOnInit(): void {
+
     this.initTableOptions();
     this.detailsPageService.pageDetailChangeId$
       .pipe(untilDestroyed(this))
@@ -206,5 +207,5 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 }
