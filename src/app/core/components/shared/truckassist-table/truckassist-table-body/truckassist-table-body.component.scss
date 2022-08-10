@@ -796,6 +796,23 @@ table {
               }
             }
 
+            .finish-order-action {
+              width: 98px;
+              height: 24px;
+              display: flex;
+              border-radius: 2px;
+              background: #6d82c7;
+              color: #ffffff;
+              font-size: 11px;
+              font-weight: 800;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              cursor: pointer;
+            }
+
             // SERVICE
             .service-container {
               width: 100%;
@@ -1057,6 +1074,16 @@ table {
       .border-inactive {
         border-right: 4px solid #e5e5e5;
         border-left: 4px solid #e5e5e5;
+      }
+    }
+
+    // Repair Order Row
+    .row-repair-order {
+      background: #fff3e0;
+
+      .border-inactive {
+        border-right: 4px solid #fff3e0;
+        border-left: 4px solid #fff3e0;
       }
     }
 

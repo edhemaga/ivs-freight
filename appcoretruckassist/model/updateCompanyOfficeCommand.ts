@@ -21,6 +21,7 @@ export interface UpdateCompanyOfficeCommand {
     name?: string | null;
     email?: string | null;
     phone?: string | null;
+    extensionPhone?: string | null;
     address?: AddressEntity;
     rent?: number | null;
     payPeriod?: PayPeriod;

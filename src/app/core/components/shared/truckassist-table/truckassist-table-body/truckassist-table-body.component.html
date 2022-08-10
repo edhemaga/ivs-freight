@@ -6,14 +6,16 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i && !row.actionAnimation && !row.isRepairOrder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="pined-tr-container"
       >
@@ -412,9 +414,18 @@
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
               <span
+                *ngIf="!row.isRepairOrder"
                 class="table-total"
                 [innerHtml]="row[column.field] ? row[column.field] : ''"
               ></span>
+
+              <div
+                class="finish-order-action"
+                (click)="onFinishOrder(row)"
+                *ngIf="row.isRepairOrder"
+              >
+                Finish Order
+              </div>
             </div>
 
             <!-- COMPACT TEXT -->
@@ -913,14 +924,16 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i && !row.actionAnimation && !row.isRepairOrder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="not-pined-tr-container"
       >
@@ -1324,9 +1337,18 @@
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
               <span
+                *ngIf="!row.isRepairOrder"
                 class="table-total"
                 [innerHtml]="row[column.field] ? row[column.field] : ''"
               ></span>
+
+              <div
+                class="finish-order-action"
+                (click)="onFinishOrder(row)"
+                *ngIf="row.isRepairOrder"
+              >
+                Finish Order
+              </div>
             </div>
 
             <!-- SERVICE COLUMN-->
@@ -1760,14 +1782,16 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i && !row.actionAnimation && !row.isRepairOrder,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="actions-tr-container"
       >
