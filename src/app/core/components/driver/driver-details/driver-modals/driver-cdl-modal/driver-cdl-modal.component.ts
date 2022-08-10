@@ -36,7 +36,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public canadaStates: any[] = [];
   public usStates: any[] = [];
   public classTypes: any[] = [];
-  public countryTypes: any[] = [];
+
   public stateTypes: any[] = [];
   public endorsements: any[] = [];
   public restrictions: any[] = [];
@@ -44,7 +44,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public selectedRestrictions: any[] = [];
   public selectedEndorsment: any[] = [];
   public selectedClassType: any = null;
-  public selectedCountryType: any = null;
+
   public selectedStateType: any = null;
 
   public documents: any[] = [];
@@ -64,7 +64,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
     this.getCdlDropdowns();
-    this.countryStateChange();
     this.getDriverById(this.editData.id);
 
     if (this.editData.type === 'edit-licence') {
@@ -78,8 +77,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       classType: [null, Validators.required],
-      countryType: [null, Validators.required],
-      stateId: [null],
+      stateId: [null, Validators.required],
       restrictions: [null],
       endorsements: [null],
       note: [null],
@@ -126,16 +124,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         this.selectedClassType = event;
         break;
       }
-      case 'country': {
-        this.selectedCountryType = event;
-
-        if (this.selectedCountryType.name.toLowerCase() === 'us') {
-          this.stateTypes = this.usStates;
-        } else {
-          this.stateTypes = this.canadaStates;
-        }
-        break;
-      }
       case 'state': {
         this.selectedStateType = event;
         break;
@@ -152,22 +140,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
-  }
-
-  private countryStateChange() {
-    this.cdlForm
-      .get('countryType')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.inputService.changeValidators(this.cdlForm.get('stateId'));
-        } else {
-          this.inputService.changeValidators(
-            this.cdlForm.get('stateId'),
-            false
-          );
-        }
-      });
   }
 
   private getCdlDropdowns() {
@@ -229,7 +201,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
-            // countryType: res.countryType.name,
             stateId: res.state.stateName,
             restrictions: null,
             endorsements: null,
@@ -238,7 +209,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
-          // this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
         },
         error: () => {
@@ -257,7 +227,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
-      countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)
@@ -293,7 +262,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
       classType: this.selectedClassType.name,
-      countryType: this.selectedCountryType.name,
       stateId: this.selectedStateType.id,
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)

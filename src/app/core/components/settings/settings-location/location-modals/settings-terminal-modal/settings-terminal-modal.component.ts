@@ -551,8 +551,11 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
-          this.selectedDay =
-            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+          this.selectedDay = res.payPeriod
+            ? res.payPeriod.name === 'Monthly'
+              ? res.monthlyDay
+              : res.weeklyDay
+            : null;
 
           this.parkingSlots[0] = { id: 1, value: res.terminalParkingSlot };
           this.parkingSlots[1] = { id: 2, value: res.terminalFullParkingSlot };
