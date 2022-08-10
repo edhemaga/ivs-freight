@@ -21,7 +21,6 @@ import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
 import {
   closeAnimationAction,
-  tableSearch,
 } from 'src/app/core/utils/methods.globals';
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
 import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
@@ -355,7 +354,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       return this.repairTrucks?.length ? this.repairTrucks : [];
     } else if (dataType === 'inactive') {
       this.repairTrailers = this.repairTrailerQuery.getAll();
-
       return this.repairTrailers?.length ? this.repairTrailers : [];
     } else if (dataType === 'repair-shop') {
       this.repairShops = this.shopQuery.getAll();
@@ -396,9 +394,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.columns = td.gridColumns;
 
     if (td.data.length) {
-      console.log('Tab Data');
-      console.log(td.data);
-
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: any, index: number) => {
@@ -410,6 +405,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           return this.mapShopData(data);
         }
       });
+
+      console.log('View Data');
+      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {
@@ -425,6 +423,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     return {
       ...data,
       isSelected: false,
+      isRepairOrder: data?.repairType?.name === 'Order',
       textUnit: data?.truck?.truckNumber ? data.truck.truckNumber : '',
       textMaintenanceDate: data?.date
         ? this.datePipe.transform(data.date, 'MM/dd/yy')
@@ -441,6 +440,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     return {
       ...data,
       isSelected: false,
+      isRepairOrder: data?.repairType?.name === 'Order',
       textUnit: data?.trailer?.trailerNumber ? data.trailer.trailerNumber : '',
       textMaintenanceDate: data?.date
         ? this.datePipe.transform(data.date, 'MM/dd/yy')
@@ -588,10 +588,14 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(untilDestroyed(this))
           .subscribe();
       }
+    }else if(event.type === 'finish-order'){
+      console.log('Radi se finish order akcija');
+      console.log(event);
     }
   }
 
   ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
     this.tableService.sendCurrentSwitchOptionSelected(null);
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

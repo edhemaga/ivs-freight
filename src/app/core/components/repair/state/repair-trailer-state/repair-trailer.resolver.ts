@@ -27,8 +27,8 @@ export class RepairTrailerResolver implements Resolve<RepairTrailerState> {
           localStorage.setItem(
             'repairTruckTrailerTableCount',
             JSON.stringify({
-              repairTrucks: /* driverPagination.truckCount */ 0,
-              repairTrailers: /* driverPagination.trailerCount */ 0,
+              repairTrucks: repairTrailerPagination.truckCount,
+              repairTrailers: repairTrailerPagination.trailerCount,
             })
           );
           

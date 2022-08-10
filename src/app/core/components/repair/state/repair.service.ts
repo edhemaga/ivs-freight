@@ -21,6 +21,9 @@ import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
 import { RepairTrailerStore } from './repair-trailer-state/repair-trailer.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopStore } from './shop-state/shop.store';
+import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
+import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
+import { ShopQuery } from './shop-state/shop.query';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +34,10 @@ export class RepairTService {
     private shopServices: RepairShopService,
     private repairTruckStore: RepairTruckStore,
     private repairTrailerStore: RepairTrailerStore,
+    private repairTruckQuery: RepairTruckQuery,
+    private repairTrailerQuery: RepairTrailerQuery,
     private shopStore: ShopStore,
+    private shopQuery: ShopQuery,
     private tableService: TruckassistTableService
   ) {}
 
@@ -182,6 +188,14 @@ export class RepairTService {
     );
   }
 
+  // Delete Repair List
+  public deleteRepairList(
+    repairsToDelete: any[],
+    selectedTab: string
+  ): Observable<any> {
+    return;
+  }
+
   // <----------------------- Repair Shop -------------------->
   public addRepairShop(
     data: CreateRepairShopCommand
@@ -311,6 +325,43 @@ export class RepairTService {
         });
       })
     );
+  }
+
+  // Delete Shop List
+  public deleteShopList(
+    shopToDelete: any[],
+    selectedTab: string
+  ): Observable<any> {
+    let deleteOnBack = shopToDelete.map((shop: any) => {
+      return shop.id;
+    });
+
+    return;
+
+    /* return this.shopServices.api(deleteOnBack).pipe(
+      tap(() => {
+        let storeShops = this.shopQuery.getAll();
+
+        storeShops.map((shop: any) => {
+          deleteOnBack.map((d) => {
+            if (d === shop.id) {
+              this.shopStore.remove(({ id }) => id === shop.id);
+            }
+          });
+        });
+
+        const shopCount = JSON.parse(
+          localStorage.getItem('repairShopTableCount')
+        );
+
+        localStorage.setItem(
+          'repairShopTableCount',
+          JSON.stringify({
+            repairShops: shopCount.repairShops,
+          })
+        );
+      })
+    ); */
   }
 
   public getRepairShopModalDropdowns(): Observable<RepairShopModalResponse> {

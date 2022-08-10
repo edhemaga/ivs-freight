@@ -300,6 +300,14 @@ export class TruckassistTableBodyComponent
     this.tooltip.close();
   }
 
+  // Finish Order
+  onFinishOrder(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'finish-order',
+    });
+  }
+
   // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendRowsSelected([]);
