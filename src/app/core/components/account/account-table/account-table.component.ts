@@ -102,6 +102,73 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       });
 
+    // Account Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // Add Account
+        if (res.animation === 'add') {
+          this.viewData.push(this.mapAccountData(res.data));
+
+          this.viewData = this.viewData.map((account: any) => {
+            if (account.id === res.id) {
+              account.actionAnimation = 'add';
+            }
+
+            return account;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount();
+        }
+        // Update Account
+        else if (res.animation === 'update') {
+          const updatedAccount = this.mapAccountData(res.data);
+
+          this.viewData = this.viewData.map((account: any) => {
+            if (account.id === res.id) {
+              account = updatedAccount;
+              account.actionAnimation = 'update';
+            }
+
+            return account;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // Delete Account
+        else if (res.animation === 'delete') {
+          let accountIndex: number;
+
+          this.viewData = this.viewData.map((account: any, index: number) => {
+            if (account.id === res.id) {
+              account.actionAnimation = 'delete';
+              accountIndex = index;
+            }
+
+            return account;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(accountIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+
+          this.updateDataCount();
+        }
+      });
+
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
       .pipe(takeUntil(this.destroy$))
@@ -132,73 +199,6 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.tableService.sendRowsSelected([]);
               this.tableService.sendResetSelectedColumns(true);
             });
-        }
-      });
-
-    // Account Actions
-    this.tableService.currentActionAnimation
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        // Add Account
-        if (res.animation === 'add') {
-          this.viewData.push(this.mapAccountData(res.data));
-
-          this.viewData = this.viewData.map((owner: any) => {
-            if (owner.id === res.id) {
-              owner.actionAnimation = 'add';
-            }
-
-            return owner;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000);
-
-          this.updateDataCount();
-        }
-        // Update Owner
-        else if (res.animation === 'update') {
-          const updatedOwner = this.mapAccountData(res.data);
-
-          this.viewData = this.viewData.map((owner: any) => {
-            if (owner.id === res.id) {
-              owner = updatedOwner;
-              owner.actionAnimation = 'update';
-            }
-
-            return owner;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000);
-        }
-        // Delete Owner
-        else if (res.animation === 'delete') {
-          let accountIndex: number;
-
-          this.viewData = this.viewData.map((account: any, index: number) => {
-            if (account.id === res.id) {
-              account.actionAnimation = 'delete';
-              accountIndex = index;
-            }
-
-            return account;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(accountIndex, 1);
-            clearInterval(inetval);
-          }, 1000);
-
-          this.updateDataCount();
         }
       });
   }
@@ -366,7 +366,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
     } else if (event.type === 'delete-account') {
-      this.accountService.deleteCompanyAccountById(event.id).subscribe();
+      this.accountService.deleteCompanyAccountById(event.id).pipe(takeUntil(this.destroy$)).subscribe();
     }
   }
 
@@ -374,5 +374,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
