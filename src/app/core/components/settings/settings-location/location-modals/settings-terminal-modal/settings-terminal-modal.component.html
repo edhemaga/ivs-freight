@@ -492,6 +492,7 @@
                 type: 'text',
                 label: 'Day',
                 isDropdown: true,
+                isDisabled: !terminalForm.get('payPeriod').value,
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="

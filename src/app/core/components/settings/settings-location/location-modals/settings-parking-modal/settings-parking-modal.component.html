@@ -229,6 +229,7 @@
                   type: 'text',
                   label: 'Day',
                   isDropdown: true,
+                  isDisabled: !parkingForm.get('payPeriod').value,
                   dropdownWidthClass: 'w-col-148'
                 }"
                 [options]="

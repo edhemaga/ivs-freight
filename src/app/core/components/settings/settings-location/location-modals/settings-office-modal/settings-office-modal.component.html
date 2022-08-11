@@ -264,6 +264,7 @@
                 type: 'text',
                 label: 'Day',
                 isDropdown: true,
+                isDisabled: !officeForm.get('payPeriod').value,
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="
