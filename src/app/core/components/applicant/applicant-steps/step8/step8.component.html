@@ -6,7 +6,12 @@
   <!-- INFO -->
 
   <div class="d-flex justify-content-center align-items-center info-container">
-    <p class="m-0 text-center ta-font-regular">
+    <p
+      class="m-0 text-center ta-font-regular"
+      [ngStyle]="{
+        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+      }"
+    >
       Section 40.25(j) of the Federal Motor Carrier Safety Regulations, requires
       each motor carrier to inquire to prospective drivers and prospective
       drivers are required to respond to the information in the question below.
@@ -19,7 +24,14 @@
     class="d-flex flex-column align-items-center question-container"
     [formGroup]="drugTestForm"
   >
-    <p class="m-0 text-center ta-font-regular">
+    <p
+      class="m-0 text-center ta-font-regular"
+      [ngClass]="
+        selectedMode === 'FEEDBACK_MODE'
+          ? 'question-title question-title-feedback'
+          : 'question-title'
+      "
+    >
       {{ question.title }} <span>*</span>
     </p>
 
@@ -164,7 +176,12 @@
         <div
           class="d-flex justify-content-center align-items-center sap-info-container"
         >
-          <p class="m-0 ta-font-regular">
+          <p
+            class="m-0 ta-font-regular"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
+          >
             In addition, if the answer to the above question is YES, please list
             the name and contact information for the Substance Abuse
             Professional (SAP) who completes you evaluation:
@@ -303,7 +320,11 @@
             [label]="
               'I certify that the information provided on this document is true and correct.'
             "
-            [customClass]="'bold-12'"
+            [customClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'applicant-feedback'
+                : 'bold-12'
+            "
           >
           </app-ta-checkbox>
         </div>

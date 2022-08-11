@@ -34,21 +34,23 @@
             </div>
           </div>
 
-          <app-ta-upload-files
-            *ngIf="
-              selectedMode === 'APPLICANT_MODE' ||
-              selectedMode === 'FEEDBACK_MODE'
-            "
-            [files]="documents"
-            [size]="'medium'"
-            [hasNumberOfPages]="true"
-            (onFileEvent)="onFilesAction($event)"
-          ></app-ta-upload-files>
+          <div class="line-container">
+            <app-ta-upload-files
+              *ngIf="
+                selectedMode === 'APPLICANT_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
+              [files]="documents"
+              [size]="'medium'"
+              [hasNumberOfPages]="true"
+              (onFileEvent)="onFilesAction($event)"
+            ></app-ta-upload-files>
 
-          <div
-            class="d-flex review-documents-container line-container"
-            *ngIf="selectedMode === 'REVIEW_MODE'"
-          >
+            <div
+              class="d-flex review-documents-container"
+              *ngIf="selectedMode === 'REVIEW_MODE'"
+            ></div>
+
             <!-- REVIEW AND FEEDBACK -->
 
             <div

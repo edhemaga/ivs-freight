@@ -78,6 +78,7 @@
           }"
           [name]="'Fatalities #'"
           [type]="'applicant'"
+          [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
       </div>
 
@@ -95,6 +96,7 @@
           }"
           [name]="'Inj. #'"
           [type]="'applicant'"
+          [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
       </div>
     </div>
@@ -103,8 +105,20 @@
       class="d-flex align-items-center justify-content-between group hazmat-spill-group"
     >
       <div class="title-box">
-        <p class="m-0 ta-font-regular">
-          Hazmat spill <span class="required-star">*</span>
+        <p
+          class="m-0 ta-font-regular"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
+          Hazmat spill
+          <span
+            class="required-star"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#ff5d5d'
+            }"
+            >*</span
+          >
         </p>
       </div>
       <div class="radios-box">
@@ -188,7 +202,7 @@
       [ngClass]="{
         disabled: accidentForm.invalid
       }"
-      *ngIf="!isEditing"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
     >
       <svg-icon
         class="plus-icon"

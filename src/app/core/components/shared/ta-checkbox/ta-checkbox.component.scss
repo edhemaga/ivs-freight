@@ -27,7 +27,7 @@
 
     /* Create the mark/indicator (hidden when not checked) */
     &::after {
-      content: "";
+      content: '';
       position: absolute;
       display: none;
       left: 4px;
@@ -207,6 +207,36 @@
       font-weight: 400;
       font-size: 14px;
       color: #6c6c6c;
+    }
+  }
+
+  &.applicant-feedback {
+    /* 
+    pointer-events: none !important; */
+
+    .ta-checkbox:checked ~ .ta-checkbox-label {
+      color: #919191 !important;
+    }
+
+    .ta-checkbox-label {
+      font-weight: 700 !important;
+      font-size: 12px !important;
+      color: #919191 !important;
+    }
+  }
+
+  &.applicant-disclosure-release-feedback {
+    /* 
+    pointer-events: none !important; */
+
+    .ta-checkbox:checked ~ .ta-checkbox-label {
+      color: #919191 !important;
+    }
+
+    .ta-checkbox-label {
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      color: #919191 !important;
     }
   }
 }

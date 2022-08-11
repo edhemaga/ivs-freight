@@ -12,7 +12,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./mvr-authorization.component.scss'],
 })
 export class MvrAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;

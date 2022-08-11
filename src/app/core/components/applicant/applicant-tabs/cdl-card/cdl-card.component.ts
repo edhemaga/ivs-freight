@@ -11,7 +11,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./cdl-card.component.scss'],
 })
 export class CdlCardComponent implements OnInit {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public cdlCardForm: FormGroup;
 

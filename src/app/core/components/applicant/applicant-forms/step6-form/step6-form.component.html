@@ -80,7 +80,7 @@
       [ngClass]="{
         disabled: contactForm.invalid
       }"
-      *ngIf="!isEditing"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
       (click)="onAddContact()"
     >
       <svg-icon

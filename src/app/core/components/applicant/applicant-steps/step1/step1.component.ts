@@ -29,7 +29,7 @@ import { ApplicantListsService } from './../../state/services/applicant-lists.se
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public personalInfoForm: FormGroup;
 
