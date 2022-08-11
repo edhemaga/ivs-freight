@@ -6,49 +6,114 @@ class="user-icon"
 [popoverClass]="'filterpopovermain'"
 autoClose="outside"
 [container]="'body'"
-[ngClass]="{ 'active-options': t2?.isOpen() }"
+[ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' }"
 >
     <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
     <svg-icon [src]=" icon | taSvg: 'common'"></svg-icon>
+    <div *ngIf="selectedUser.length > 0" class="active-filter-num">{{selectedUser.length}}</div>
+    <div *ngIf="selectedUser.length > 0 || selectedTimeValue != '' " 
+        class="active-filter-num clear-filter" 
+        ngbTooltip
+        mainTooltip="Clear"
+        position="bottom"
+        tooltipBackground="#6C6C6C"
+        (click)="clearAll($event)"
+        (mouseover)="hideOtherToolTips($event)"
+        (mouseleave)="backOtherToolTips($event)">
+        <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
+    </div>
 </div>
 
 <ng-template #filterPopover>
-    <div *ngIf="type == 'userFilter'" class="filter-holder">
-        <div class="filter-header">
+    <div *ngIf="type == 'userFilter' || type == 'departmentFilter' " class="filter-holder" [class.department-filter]="type == 'departmentFilter'" >
+        <div class="filter-header" *ngIf="!expandSearch">
             <div class="user-filter-box">{{selectedUser.length}}</div>
-            <div class="user-title-text">User Filter</div>
-            <div class="close" (click)="t2.close()">
-                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+            <div class="user-title-text"> {{type == 'userFilter' ? 'User Filter' : 'Department Filter' }} </div>
+            <div class="search-icon-holder" *ngIf="type == 'userFilter' " (click)="showSearch()">
+                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
             </div>
         </div>
+        <div class="filter-header search-input-header " *ngIf="expandSearch" [formGroup]="searchForm">
+            <app-ta-input
+                class="input-form-holder"
+                formControlName="search"
+                [inputConfig]="{
+                    name: 'search',
+                    type: 'text',
+                    label: 'Search User',
+                    placeholderIcon: 'ic_search',
+                    customClass: 'filter-search-input',
+                    placeholderInsteadOfLabel: true,
+                    blackInput: true
+                }"
+            ></app-ta-input>
+          
+                <div 
+                    ngbTooltip
+                    mainTooltip="Close"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="showSearch('hide')" 
+                    class="close-input-search">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+        </div>
         <div class="border-filter"></div>
-        <div class="search-holder">
+       <!-- <div class="search-holder">
             <input (keyup)="filterUser($event)" class="search-user-holder" type="text" placeholder="Search User"/>
             <div class="search-icons">
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
             </div>
         </div>
-        <div class="border-filter"></div>
+        <div class="border-filter border-second-margin"></div>
+        -->
         <div class="selected-user-holder">
-            <div *ngFor="let item of selectedUser; let indx=index" class="selected-user-frame">{{item.name}}
-                <div class="selected-icon">
-                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+            <div *ngFor="let item of selectedUser; let indx=index" class="user-main-holder">    
+                <div class="user-profile-img" *ngIf="type == 'userFilter' ">
+                    <app-profile-images
+                    [indx]="indx"
+                    [size]="'small'"
+                    [type]="'user'"
+                    [name]="item.name"
+                    ></app-profile-images> 
                 </div>
-                <div 
-                    ngbTooltip
-                    mainTooltip="Remove User"
-                    position="top"
-                    tooltipBackground="#6C6C6C"
-                    (click)="removeFromSelectedUser(item, indx)" 
-                    class="icon-delete">
-                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                <div class="selected-user-frame">{{item.name}}
+                    <div class="selected-icon">
+                        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                    </div>
+                    <div 
+                        ngbTooltip
+                        mainTooltip="{{type == 'userFilter' ? 'Remove User' : 'Remove' }}"
+                        position="top"
+                        tooltipBackground="#6C6C6C"
+                        (click)="removeFromSelectedUser(item, indx)" 
+                        class="icon-delete">
+                        <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                    </div>
                 </div>
-            </div>
+            </div>    
         </div>
-        <div *ngIf="selectedUser.length > 0" class="border-filter"></div>
-        <div class="user-holder">
+        <div *ngIf="selectedUser.length > 0" class="border-filter border-thrird-margin"></div>
+        <div class="user-holder" *ngIf="type == 'userFilter' " >
             <div *ngFor="let item of unselectedUser; let indx=index" class="user-frame-holder">
-                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-frame">{{item.name}}</div>
+                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-profile-img">
+                        <app-profile-images
+                        [indx]="indx"
+                        [size]="'small'"
+                        [type]="'user'"
+                        [name]="item.name"
+                        ></app-profile-images> 
+                    </div>
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
+            </div>            
+        </div>
+        <div class="user-holder" *ngIf="type == 'departmentFilter' ">
+            <div *ngFor="let item of departmentArray; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
             </div>
             
         </div>
@@ -59,44 +124,253 @@ autoClose="outside"
         </div>
     </div>
     <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
-        <div class="time-header">Time Filter
-            <div class="close" (click)="t2.close()">
-                <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+        <div class="time-header">Time Filter</div>
+        <div class="border-filter"></div>
+        <div class="time-items-holder">
+            <div class="time-items" [class.active]="selectedTimeValue == 'Today' " (click)="setTimeValue('Today')" >Today
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'Yesterday' " (click)="setTimeValue('Yesterday')" >Yesterday
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
             </div>
         </div>
         <div class="border-filter"></div>
         <div class="time-items-holder">
-            <div class="time-items">Today</div>
-            <div class="time-items">Yesterday</div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'This week' " (click)="setTimeValue('This week')">This week
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'Last week' " (click)="setTimeValue('Last week')" >Last week
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '1 week' " (click)="setTimeValue('1 week')">1 week
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
         <div class="time-items-holder">
-            <div class="time-items">This week</div>
-            <div class="time-items">Last week</div>
-            <div class="time-items">1 week</div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'This month' " (click)="setTimeValue('This month')">This month
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'Last month' " (click)="setTimeValue('Last month')">Last month
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '1 month' " (click)="setTimeValue('1 month')">1 month
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '3 months' " (click)="setTimeValue('3 months')">3 months
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
         <div class="time-items-holder">
-            <div class="time-items">This month</div>
-            <div class="time-items">Last month</div>
-            <div class="time-items">1 month</div>
-            <div class="time-items">3 months</div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'This quarter' " (click)="setTimeValue('This quarter')">This quarter
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'Last quarter' " (click)="setTimeValue('Last quarter')">Last quarter 
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
         <div class="time-items-holder">
-            <div class="time-items">This quarter</div>
-            <div class="time-items">Last quarter </div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'This year' " (click)="setTimeValue('This year')">This year
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '1 year' " (click)="setTimeValue('1 year')">1 year
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '2020' " (click)="setTimeValue('2020')">2020
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
+            <div class="time-items" [class.active]="selectedTimeValue == '2019' " (click)="setTimeValue('2019')">2019
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)"
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
         <div class="time-items-holder">
-            <div class="time-items">This year</div>
-            <div class="time-items">1 year</div>
-            <div class="time-items">2020</div>
-            <div class="time-items">2019</div>
+            <div class="time-items" [class.active]="selectedTimeValue == 'Custom' " (click)="setTimeValue('Custom')">Custom
+                <div class="selected-icon">
+                    <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                </div>
+                <div 
+                    ngbTooltip
+                    mainTooltip="Remove"
+                    position="top"
+                    tooltipBackground="#6C6C6C"
+                    (click)="removeTimeValue($event)" 
+                    class="icon-delete">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
-        <div class="time-items-holder">
-            <div class="time-items">Custom</div>
+        <div class="buttons-holder">
+            <div (click)="clearAll()" class="button-clear" [class.active]="selectedTimeValue != '' ">Clear All</div>
+            <div class="button-set" [class.active]="selectedTimeValue != ''">Set</div>
         </div>
     </div>
     <div *ngIf="type == 'dispatcherFilter'" class="dispatcher-holder">
@@ -163,4 +437,44 @@ autoClose="outside"
             <div class="filter-button-set" [class.active]="selectedDispatcher.length > 0">Set</div>
         </div>
     </div>
+
+    <!-- <div *ngIf="type == 'departmentFilter'" class="filter-holder department-filter">
+        <div class="filter-header">
+            <div class="user-filter-box">{{selectedUser.length}}</div>
+            <div class="user-title-text">Department Filter</div>
+        </div>
+        <div class="border-filter"></div>
+        <div class="selected-user-holder">
+            <div *ngFor="let item of selectedUser; let indx=index" class="user-main-holder">    
+                <div class="selected-user-frame">{{item.name}}
+                    <div class="selected-icon">
+                        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
+                    </div>
+                    <div 
+                        ngbTooltip
+                        mainTooltip="Remove User"
+                        position="top"
+                        tooltipBackground="#6C6C6C"
+                        (click)="removeFromSelectedUser(item, indx)" 
+                        class="icon-delete">
+                        <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                    </div>
+                </div>
+            </div>    
+        </div>
+        <div *ngIf="selectedUser.length > 0" class="border-filter border-thrird-margin"></div>
+        <div class="user-holder">
+            <div *ngFor="let item of departmentArray; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
+            </div>
+            
+        </div>
+        <div class="border-filter"></div>
+        <div class="buttons-holder">
+            <div (click)="clearAll()" class="button-clear" [class.active]="selectedUser.length > 0">Clear All</div>
+            <div class="button-set" [class.active]="selectedUser.length > 0">Set</div>
+        </div>
+    </div> -->
 </ng-template>
