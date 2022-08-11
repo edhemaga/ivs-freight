@@ -86,6 +86,17 @@
   }
 
   .form-section {
+    .line-container {
+      position: relative;
+
+      .review-feedback-container {
+        position: absolute;
+        top: 0;
+        right: -435px;
+        width: 429px;
+      }
+    }
+
     .group {
       margin-bottom: 32px;
       margin-right: 12px;
@@ -103,6 +114,7 @@
 
     .phone-group {
       width: 228px;
+      margin-right: 0;
     }
 
     .address-group {
@@ -111,6 +123,7 @@
 
     .unit-group {
       width: 123px;
+      margin-right: 0;
     }
 
     .sap-info-container {
@@ -141,6 +154,7 @@
     .sap-unit-group {
       width: 123px;
       margin-bottom: 12px !important;
+      margin-right: 0;
     }
   }
 }

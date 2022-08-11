@@ -5,10 +5,12 @@
   [isModalValid]="officeForm.valid"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+  <app-ta-tab-switch
     [tabs]="tabs"
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="officeForm"
@@ -27,119 +29,108 @@
           <div class="divider"></div>
           <div
             class="checkbox-card-header"
-            [ngClass]="{ pointer: officeForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
+            [ngClass]="{ pointer: officeForm.get('isOwner').value }"
           >
             <app-ta-checkbox
-              formControlName="companyOwned"
+              formControlName="isOwner"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
-            <svg-icon
-              class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{ visible: !officeForm.get('companyOwned')?.value }"
-            ></svg-icon>
           </div>
-          <div
-            class="checkbox-card-body"
-            [ngClass]="{ 'active-20': !officeForm.get('companyOwned').value }"
-          >
-            <div *ngIf="!officeForm.get('companyOwned').value">
-              <div class="row">
-                <div class="col-12">
-                  <app-ta-input
-                    formControlName="officeName"
-                    [inputConfig]="{
-                      name: 'Office Name',
-                      type: 'text',
-                      label: 'Office Name',
-                      isRequired: true,
-                      textTransform: 'capitalize',
-                      autoFocus: editData?.type === 'edit' ? false : true
-                    }"
-                  ></app-ta-input>
-                </div>
+          <div class="checkbox-card-body active-20">
+            <div class="row">
+              <div class="col-12">
+                <app-ta-input
+                  formControlName="name"
+                  [inputConfig]="{
+                    name: 'Office Name',
+                    type: 'text',
+                    label: 'Office Name',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    autoFocus: editData?.type === 'edit' ? false : true
+                  }"
+                ></app-ta-input>
               </div>
-              <div class="row">
-                <div class="col-10">
-                  <app-ta-input-address
-                    formControlName="address"
-                    [inputConfig]="{
-                      name: 'Address',
-                      type: 'text',
-                      label: 'Address, City, State Zip',
-                      isRequired: true,
-                      placeholderIcon: 'address',
-                      textTransform: 'capitalize'
-                    }"
-                    [activeAddress]="selectedAddress"
-                    (selectedAddress)="onHandleAddress($event)"
-                  ></app-ta-input-address>
-                </div>
-                <div class="col-2">
-                  <app-ta-input
-                    formControlName="addressUnit"
-                    [inputConfig]="{
-                      name: 'Address Unit',
-                      type: 'text',
-                      label: 'Unit #',
-                      maxLength: 6
-                    }"
-                  ></app-ta-input>
-                </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <app-ta-input-address
+                  formControlName="address"
+                  [inputConfig]="{
+                    name: 'Address',
+                    type: 'text',
+                    label: 'Address, City, State Zip',
+                    isRequired: true,
+                    placeholderIcon: 'address',
+                    textTransform: 'capitalize'
+                  }"
+                  [activeAddress]="selectedAddress"
+                  (selectedAddress)="onHandleAddress($event)"
+                ></app-ta-input-address>
               </div>
-              <div
-                class="phone-ext-email-small-modal last-row"
-                [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
-              >
-                <div class="phone-extension">
-                  <div class="phone-field">
-                    <app-ta-input
-                      formControlName="phone"
-                      [inputConfig]="{
-                        name: 'Phone',
-                        type: 'text',
-                        label: 'Phone',
-                        isRequired: true,
-                        placeholderIcon: 'phone',
-                        mask: '(000) 000-0000'
-                      }"
-                    ></app-ta-input>
-                  </div>
-                  <div
-                    class="extension-field"
-                    *ngIf="!isPhoneExtExist"
-                    (click)="isPhoneExtExist = !isPhoneExtExist"
-                    ngbTooltip
-                    mainTooltip="Add Extension"
-                    position="top"
-                    tooltipBackground="#6c6c6c"
-                  >
-                    <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
-                  </div>
+              <div class="col-2">
+                <app-ta-input
+                  formControlName="addressUnit"
+                  [inputConfig]="{
+                    name: 'Address Unit',
+                    type: 'text',
+                    label: 'Unit #',
+                    maxLength: 6
+                  }"
+                ></app-ta-input>
+              </div>
+            </div>
+            <div
+              class="phone-ext-email-small-modal last-row"
+              [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
+            >
+              <div class="phone-extension">
+                <div class="phone-field">
                   <app-ta-input
-                    *ngIf="isPhoneExtExist"
-                    formControlName="phoneExtension"
+                    formControlName="phone"
                     [inputConfig]="{
-                      name: 'Phone Extension',
+                      name: 'Phone',
                       type: 'text',
-                      label: 'Ext.',
-                      maxLength: 3,
-                      placeholderIcon: 'phone-extension'
+                      label: 'Phone',
+                      isRequired: true,
+                      placeholderIcon: 'phone',
+                      mask: '(000) 000-0000'
                     }"
                   ></app-ta-input>
                 </div>
-                <div class="email-field">
-                  <app-ta-input
-                    formControlName="email"
-                    [inputConfig]="{
-                      name: 'Email',
-                      type: 'text',
-                      label: 'Email',
-                      placeholderIcon: 'email'
-                    }"
-                  ></app-ta-input>
+                <div
+                  class="extension-field"
+                  *ngIf="!isPhoneExtExist"
+                  (click)="isPhoneExtExist = !isPhoneExtExist"
+                  ngbTooltip
+                  mainTooltip="Add Extension"
+                  position="top"
+                  tooltipBackground="#6c6c6c"
+                >
+                  <svg-icon src="assets/svg/common/ic_plus.svg"></svg-icon>
                 </div>
+                <app-ta-input
+                  *ngIf="isPhoneExtExist"
+                  formControlName="extensionPhone"
+                  [inputConfig]="{
+                    name: 'Phone Extension',
+                    type: 'text',
+                    label: 'Ext.',
+                    maxLength: 3,
+                    placeholderIcon: 'phone-extension'
+                  }"
+                ></app-ta-input>
+              </div>
+              <div class="email-field">
+                <app-ta-input
+                  formControlName="email"
+                  [inputConfig]="{
+                    name: 'Email',
+                    type: 'text',
+                    label: 'Email',
+                    placeholderIcon: 'email'
+                  }"
+                ></app-ta-input>
               </div>
             </div>
           </div>
@@ -149,7 +140,7 @@
           [hasCounter]="
             departmentContacts.length ? departmentContacts.length : '0'
           "
-          [cardName]="'Contact'"
+          [cardName]="'Department Contact'"
           [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
           [hasArrow]="true"
           [hasBodyData]="departmentContacts.length"
@@ -167,7 +158,7 @@
               <p>DEPARTMENT <span>*</span></p>
               <p>PHONE <span>*</span></p>
               <p>EXT</p>
-              <p>EMAIL</p>
+              <p>EMAIL <span>*</span></p>
             </div>
             <div
               *ngFor="
@@ -184,7 +175,7 @@
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'
                   }"
-                  [options]="[]"
+                  [options]="departments"
                   [activeItem]="selectedDepartmentFormArray[ind]"
                   (selectedItem)="onSelectContactDepartment($event, ind)"
                 ></app-ta-input-dropdown>
@@ -260,14 +251,14 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
+              [options]="payPeriods"
               [activeItem]="selectedPayPeriod"
               (selectedItem)="onSelectDropdown($event, 'pay-period')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-4 no-p-left">
             <app-ta-input-dropdown
-              formControlName="day"
+              formControlName="monthlyDay"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -275,7 +266,9 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
+              [options]="
+                selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
+              "
               [activeItem]="selectedDay"
               (selectedItem)="onSelectDropdown($event, 'day')"
             ></app-ta-input-dropdown>

@@ -152,7 +152,6 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: !trailerForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="companyOwned"
@@ -388,6 +387,7 @@
                 type: 'text',
                 label: 'Mileage',
                 maxLength: 10,
+                placeholderText: 'mi',
                 thousandSeparator: true
               }"
             ></app-ta-input>

@@ -12,6 +12,7 @@
 import { InspectionResponse } from './inspectionResponse';
 import { TitleResponse } from './titleResponse';
 import { TruckMakeResponse } from './truckMakeResponse';
+import { EnumValue } from './enumValue';
 import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
@@ -36,10 +37,13 @@ export interface TruckResponse {
     commission?: number | null;
     note?: string | null;
     status?: number;
+    purchaseDate?: string | null;
+    purchasePrice?: number | null;
     truckGrossWeight?: TruckGrossWeightResponse;
     emptyWeight?: number | null;
     truckEngineType?: TruckEngineTypeResponse;
     tireSize?: TireSizeResponse;
+    shifter?: EnumValue;
     axles?: number | null;
     insurancePolicy?: string | null;
     mileage?: number | null;

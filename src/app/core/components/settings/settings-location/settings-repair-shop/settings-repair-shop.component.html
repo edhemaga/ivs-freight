@@ -16,33 +16,43 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'repairshop', type: 'add' })"
+        (click)="onAction({ modalName: 'repairshop' })"
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of repairShopData; let i =index; trackBy: identity"
+      *ngFor="let item of repairShopData; let i = index; trackBy: identity"
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
       [paddingDots]="'11px 0px 0px 12px'"
-
     >
       <div class="settings-body-items">
-        <div *ngIf="item.phone" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+        <div
+          *ngIf="item.phone"
+          class="single-item"
+          (click)="
+            onAction({ modalName: 'repairshop', type: { type: 'edit', id: 1 } })
+          "
+        >
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-          
         </div>
         <div *ngIf="item.email" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
         </div>
         <div *ngIf="item.address" class="single-item">
           <svg-icon
-          class="company-icons"
+            class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span>{{ item.address }}</span>

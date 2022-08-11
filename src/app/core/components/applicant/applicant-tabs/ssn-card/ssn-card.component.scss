@@ -55,6 +55,17 @@
     width: 616px;
     margin-bottom: 22px;
 
+    .line-container {
+      position: relative;
+
+      .review-feedback-container {
+        position: absolute;
+        top: 0;
+        right: -435px;
+        width: 429px;
+      }
+    }
+
     .files-header {
       border-top: 0.2px solid $ta-light-grey-4;
       border-radius: 1px;
@@ -84,6 +95,11 @@
           margin-left: 4px !important;
         }
       }
+    }
+
+    .review-documents-container {
+      max-width: 616px;
+      width: 100%;
     }
   }
 

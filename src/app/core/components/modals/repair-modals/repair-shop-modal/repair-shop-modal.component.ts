@@ -70,10 +70,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.getRepairShopModalDropdowns();
 
     if (this.editData) {
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editRepairShopById(this.editData.id);
     }
 
@@ -177,6 +173,25 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         this.createOpenHour(day, isDay, dayOfWeek, startTime, endTime)
       );
     }
+  }
+
+  public openHourDayAction(event: boolean, index: number) {
+    this.openHours
+      .at(index)
+      .get('isDay')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        if (!value) {
+          this.openHours
+            .at(index)
+            .get('startTime')
+            .patchValue(moment('8:00:00 AM', 'HH:mm:SS A').toDate());
+          this.openHours
+            .at(index)
+            .get('endTime')
+            .patchValue(moment('8:00:00 AM', 'HH:mm:SS A').toDate());
+        }
+      });
   }
 
   public removeOpenHour(id: number) {
@@ -423,7 +438,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   private deleteRepairShopById(id: number) {
     this.shopService
-      .deleteRepairById(id)
+      .deleteRepairShopById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

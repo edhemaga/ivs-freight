@@ -1,6 +1,6 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { Component, OnInit } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
+import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',
@@ -128,13 +128,14 @@ export class SettingsTerminalComponent implements OnInit {
   public departmentPhone: boolean[] = [];
   public departmentEmail: boolean[] = [];
   constructor(
-    private settingsStoreService: SettingsStoreService,
+    private settingsLocationService: SettingsLocationService,
     private clipboar: Clipboard
   ) {}
 
   ngOnInit() {}
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+
+  public onAction(modal: { modalName: string; type: string }) {
+    this.settingsLocationService.onModalAction(modal);
   }
 
   public identityTerminalData(index: number, item: any): number {

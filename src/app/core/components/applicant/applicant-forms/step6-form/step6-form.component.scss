@@ -1,6 +1,17 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
+  .line-container {
+    position: relative;
+
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
   .group {
     margin-right: 12px;
 
@@ -23,6 +34,7 @@
   .relationship-group {
     width: 166px;
     margin-bottom: 22px;
+    margin-right: 0;
   }
 
   .btn-container {

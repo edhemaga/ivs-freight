@@ -108,6 +108,7 @@
           <div class="d-flex">
             <div class="employer-group">
               <app-ta-input
+                *ngIf="!hasMultiplePreviousEmployers"
                 formControlName="previousEmployer"
                 [inputConfig]="{
                   name: 'Employer',
@@ -117,6 +118,22 @@
                   isDisabled: true
                 }"
               ></app-ta-input>
+
+              <app-ta-input-dropdown
+                *ngIf="hasMultiplePreviousEmployers"
+                formControlName="previousEmployer"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Previous Employer',
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-applicant-previous-employer'
+                }"
+                [options]="previousEmployersList"
+                [activeItem]="selectedEmployer"
+                (selectedItem)="handleInputSelect($event, 'PREVIOUS-EMPLOYER')"
+              ></app-ta-input-dropdown>
             </div>
           </div>
 
@@ -272,7 +289,9 @@
                     }"
                     [options]="sphReceivedByList"
                     [activeItem]="selectedSphReceivedBy"
-                    (selectedItem)="handleInputSelect($event)"
+                    (selectedItem)="
+                      handleInputSelect($event, 'SPH-RECEIVED-BY')
+                    "
                   ></app-ta-input-dropdown>
                 </div>
               </div>

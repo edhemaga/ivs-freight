@@ -16,13 +16,17 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'office', type: 'add' })"
+        (click)="onAction({ modalName: 'office' })"
       ></svg-icon>
     </div>
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of officeData; let i=index; trackBy: identityOfficeData"
+      *ngFor="
+        let item of officeData;
+        let i = index;
+        trackBy: identityOfficeData
+      "
       [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
@@ -30,13 +34,27 @@
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
-        <div *ngIf="item.phone" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+        <div
+          *ngIf="item.phone"
+          class="single-item"
+          (click)="
+            onAction({
+              modalName: 'office',
+              type: { type: 'edit', id: 4 }
+            })
+          "
+        >
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-         
         </div>
         <div *ngIf="item.email" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_email.svg"></svg-icon>
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
         </div>
         <div *ngIf="item.address" class="single-item">
@@ -48,7 +66,11 @@
         </div>
       </div>
       <app-ta-custom-card
-        *ngFor="let dep of item.departments; let i=index; trackBy: identityOfficeData"
+        *ngFor="
+          let dep of item.departments;
+          let i = index;
+          trackBy: identityOfficeData
+        "
         [cardName]="dep.name"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
@@ -58,11 +80,10 @@
         <div class="office-template-data">
           <div class="office-template-item">
             <svg-icon
-            class="company-icons" 
+              class="company-icons"
               src="assets/svg/common/ic_phone.svg"
             ></svg-icon>
             <app-ta-copy [copyValue]="dep?.phone"> </app-ta-copy>
-          
           </div>
           <div class="office-template-item">
             <svg-icon
@@ -73,11 +94,10 @@
           </div>
           <div class="office-template-item office-template-email">
             <svg-icon
-              class="company-icons" 
+              class="company-icons"
               src="assets/svg/common/ic_email.svg"
             ></svg-icon>
             <app-ta-copy [copyValue]="dep?.email"> </app-ta-copy>
-            
           </div>
         </div>
       </app-ta-custom-card>

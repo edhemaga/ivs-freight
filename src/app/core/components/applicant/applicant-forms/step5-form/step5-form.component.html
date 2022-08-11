@@ -1,5 +1,5 @@
 <div class="d-flex flex-column step-form" [formGroup]="violationsForm">
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group date-group">
       <app-ta-input
         formControlName="violationDate"
@@ -9,8 +9,11 @@
           label: 'Date',
           placeholderIcon: 'date',
           isRequired: true,
-          customClass: 'datetimeclass'
+          customClass: 'datetimeclass',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 10)"
       ></app-ta-input>
     </div>
     <div class="group truck-type-group">
@@ -23,8 +26,11 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-t-type'
+          dropdownWidthClass: 'w-col-192',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 10)"
         [options]="truckType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
@@ -39,15 +45,41 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 2, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
     </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        formControlName="firstRowReview"
+        [displayAnnotationButton]="
+          openAnnotationArray[10].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[10].displayAnnotationTextArea
+        "
+        [lineIndex]="10"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
+    </div>
   </div>
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="description-group">
       <app-ta-input
         formControlName="violationDescription"
@@ -56,9 +88,35 @@
           type: 'text',
           label: 'Description of violation',
           textTransform: 'capitalize',
-          isRequired: true
+          isRequired: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 11)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        formControlName="secondRowReview"
+        [displayAnnotationButton]="
+          openAnnotationArray[11].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[11].displayAnnotationTextArea
+        "
+        [lineIndex]="11"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
@@ -88,7 +146,7 @@
     </button>
 
     <div
-      class="d-flex align-items-center mx-auto justify-content-center btn-container"
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
       *ngIf="isEditing"
     >
       <button

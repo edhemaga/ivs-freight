@@ -1,4 +1,10 @@
-import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -14,7 +20,7 @@ import { SphFormAccidentModel } from './../../../../../state/model/accident.mode
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
 })
-export class Step2Component implements OnInit {
+export class Step2Component implements OnInit, AfterViewInit {
   @ViewChildren('cmp') components: QueryList<any>;
 
   public accidentHistoryForm: FormGroup;
@@ -29,7 +35,6 @@ export class Step2Component implements OnInit {
   public selectedAccidentIndex: number;
 
   public isEditing: boolean = false;
-  public isAccidentEdited: boolean = false;
 
   public helperIndex: number = 2;
 
@@ -196,8 +201,6 @@ export class Step2Component implements OnInit {
 
     this.helperIndex = index;
 
-    this.isAccidentEdited = false;
-
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
 
@@ -241,10 +244,12 @@ export class Step2Component implements OnInit {
   }
 
   public saveEditedAccident(event: any): void {
+    this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
     this.accidentArray[this.selectedAccidentIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
   }
 }

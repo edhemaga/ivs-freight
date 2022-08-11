@@ -108,10 +108,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.getRepairDropdowns();
 
     if (this.editData?.type.includes('edit')) {
-      this.editData = {
-        ...this.editData,
-        id: 3,
-      };
+      console.log('Edit repair');
+      console.log(this.editData);
       this.editRepairById(this.editData.id);
     }
 
@@ -184,21 +182,29 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     return this.repairOrderForm.get('items') as FormArray;
   }
 
-  private createItems(id: number): FormGroup {
+  private createItems(data?: {
+    id: number;
+    description?: any;
+    price?: any;
+    quantity?: any;
+    subtotal?: any;
+    pmTruckId?: any;
+    pmTrailerId?: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [id],
-      description: [null],
-      price: [null],
-      quantity: [null],
-      subtotal: [null],
-      pmTruckId: [null],
-      pmTrailerId: [null],
+      id: [data?.id ? data.id : null],
+      description: [data?.description ? data.description : null],
+      price: [data?.price ? data.price : null],
+      quantity: [data?.quantity ? data.quantity : null],
+      subtotal: [data?.subtotal ? data.subtotal : null],
+      pmTruckId: [data?.pmTruckId ? data.pmTruckId : null],
+      pmTrailerId: [data?.pmTrailerId ? data.pmTrailerId : null],
     });
   }
 
   public addItems(event: { check: boolean; action: string }) {
     if (event.check) {
-      this.items.push(this.createItems(++this.itemsCounter));
+      this.items.push(this.createItems({ id: ++this.itemsCounter }));
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
         id: null,
@@ -292,8 +298,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         checked: item.id == event.id,
       };
     });
-    console.log(event);
-    console.log(this.typeOfRepair);
 
     if (this.repairOrderForm.get('unitType')?.value === 'Truck') {
       this.pmOptions = this.pmTrucks;
@@ -565,7 +569,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   private deleteRepair(id: number) {
     this.repairService
-      .deleteRepairById(id)
+      .deleteRepairById(
+        id,
+        this.editData.type === 'edit-trailer' ? 'inactive' : 'active'
+      )
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -602,7 +609,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               : null,
             date: convertDateFromBackend(res.date),
             invoice: res.invoice,
-            repairShopId: res.id,
+            repairShopId: res.repairShop.id,
             items: [],
             note: res.note,
           });
@@ -622,9 +629,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          if (res.id) {
+          if (res.repairShop.id) {
             this.repairService
-              .getRepairShopById(res.id)
+              .getRepairShopById(res.repairShop.id)
               .pipe(untilDestroyed(this))
               .subscribe({
                 next: (res: RepairShopResponse) => {
@@ -659,7 +666,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           if (res.items.length) {
             for (const iterator of res.items) {
               this.items.push(
-                this.formBuilder.group({
+                this.createItems({
                   id: iterator.id,
                   description: iterator.description,
                   price: iterator.price,

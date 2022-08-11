@@ -1,9 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
-import { isFormValueEqual } from '../../state/utils/utils';
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
@@ -16,7 +14,6 @@ import {
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step3',
@@ -24,11 +21,9 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
   styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant | undefined;
-
-  private subscription: Subscription;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
@@ -75,24 +70,9 @@ export class Step3Component implements OnInit, OnDestroy {
     },
   ];
 
-  public canadaStates: any[] = [];
-  public usStates: any[] = [];
-
-  public stateTypes: any[] = [];
-  public countryTypes: any[] = [];
-  public classTypes: any[] = [];
-  public endorsmentsList: any[] = [];
-  public restrictionsList: any[] = [];
-
   public selectedLicenseIndex: number;
-  public selectedCountryType: any = null;
-  public selectedStateType: any = null;
-  public selectedClassType: any = null;
-  public selectedEndorsments: any = null;
-  public selectedRestrictions: any = null;
 
   public isEditing: boolean = false;
-  public isLicenseEdited: boolean = false;
 
   public answerChoices: AnswerChoices[] = [
     {
@@ -113,6 +93,56 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public helperIndex: number = 2;
 
+  public formValuesToPatch: any;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      lineIndex: 14,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+
   //
 
   /*  public licenseArray: License[] = []; */
@@ -123,8 +153,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -141,54 +170,27 @@ export class Step3Component implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.licenseForm = this.formBuilder.group({
-      license: [null, Validators.required],
-      countryType: [null, Validators.required],
-      stateId: [null, Validators.required],
-      classType: [null, Validators.required],
-      expDate: [null, Validators.required],
-      endorsments: [null],
-      restrictions: [null],
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
     });
 
     this.permitForm = this.formBuilder.group({
       permit: [null, Validators.required],
       permitExplain: [null],
+      fifthRowReview: [null],
     });
   }
 
   public handleInputSelect(event: any, action: string): void {
     switch (action) {
-      case InputSwitchActions.COUNTRY_TYPE:
-        this.selectedCountryType = event;
-
-        this.inputService.changeValidators(
-          this.licenseForm.get('stateId'),
-          false
-        );
-
-        if (this.selectedCountryType.name.toLowerCase() === 'us') {
-          this.stateTypes = this.usStates;
-        } else {
-          this.stateTypes = this.canadaStates;
-        }
-
-        break;
-      case InputSwitchActions.STATE_TYPE:
-        this.selectedStateType = event;
-
-        break;
-      case InputSwitchActions.CLASS_TYPE:
-        this.selectedClassType = event;
-
-        break;
-      case InputSwitchActions.ENDORSMENTS:
-        this.selectedEndorsments = event;
-
-        break;
-      case InputSwitchActions.RESTRICTIONS:
-        this.selectedRestrictions = event;
-
-        break;
       case InputSwitchActions.PERMIT:
         const selectedCheckbox = event.find(
           (radio: { checked: boolean }) => radio.checked
@@ -213,43 +215,6 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
-  public onAddLicense(): void {
-    if (this.licenseForm.invalid) {
-      this.inputService.markInvalid(this.licenseForm);
-      return;
-    }
-
-    this.helperIndex = 2;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    /* const licenseForm = this.licenseForm.value;
-    const license = new License();
-
-    license.license = licenseForm.license;
-    license.countryType = licenseForm.countryType;
-    license.stateId = licenseForm.stateId;
-    license.classType = licenseForm.classType;
-    license.expDate = licenseForm.expDate;
-
-    license.endorsments = licenseForm.endorsments
-      .map((item: any) => {
-        return item['name'];
-      })
-      .join(',');
-
-    license.restrictions = licenseForm.restrictions
-      .map((item: any) => {
-        return item['name'];
-      })
-      .join(',');
-
-    this.licenseArray.push(license);
-
-    this.licenseForm.reset();
-    this.editLicense = -1; */
-  }
-
   public onDeleteLicense(index: number): void {
     if (this.isEditing) {
       return;
@@ -265,8 +230,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isLicenseEdited = false;
-
     this.isEditing = true;
     this.licenseArray[index].isEditingLicense = true;
 
@@ -274,66 +237,104 @@ export class Step3Component implements OnInit, OnDestroy {
 
     const selectedLicense = this.licenseArray[index];
 
-    this.licenseForm.patchValue({
-      license: selectedLicense.license,
-      countryType: selectedLicense.countryType,
-      stateId: selectedLicense.stateId,
-      classType: selectedLicense.classType,
-      expDate: selectedLicense.expDate,
-      endorsments: selectedLicense.endorsments,
-      restrictions: selectedLicense.restrictions,
-    });
+    this.formValuesToPatch = selectedLicense;
+  }
 
-    this.subscription = this.licenseForm.valueChanges.subscribe(
-      (newFormValue) => {
-        if (isFormValueEqual(selectedLicense, newFormValue)) {
-          this.isLicenseEdited = false;
-        } else {
-          this.isLicenseEdited = true;
+  public getLicenseFormValues(event: any): void {
+    this.licenseArray = [...this.licenseArray, event];
+
+    this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
+  }
+
+  public cancelLicenseEditing(event: any): void {
+    this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+  }
+
+  public saveEditedLicense(event: any): void {
+    this.isEditing = false;
+    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
+
+    this.licenseArray[this.selectedLicenseIndex] = event;
+
+    this.helperIndex = 2;
+    this.selectedLicenseIndex = -1;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
         }
       }
-    );
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
   }
 
-  public onSaveEditedLicense(): void {
-    if (this.licenseForm.invalid) {
-      this.inputService.markInvalid(this.licenseForm);
-      return;
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
     }
-
-    if (!this.isLicenseEdited) {
-      return;
-    }
-
-    this.licenseArray[this.selectedLicenseIndex] = this.licenseForm.value;
-
-    this.isEditing = false;
-    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-    this.isLicenseEdited = false;
-
-    this.helperIndex = 2;
-
-    this.licenseForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
-  }
-
-  public onCancelEditLicense(): void {
-    this.isEditing = false;
-    this.licenseArray[this.selectedLicenseIndex].isEditingLicense = false;
-
-    this.isLicenseEdited = false;
-
-    this.helperIndex = 2;
-
-    this.licenseForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
   }
 
   public onSubmitForm(): void {
