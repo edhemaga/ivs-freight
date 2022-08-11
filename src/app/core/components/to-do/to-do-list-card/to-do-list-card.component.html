@@ -44,7 +44,46 @@
             class="box-icons"
           >
           <app-filter [type]="'departmentFilter'" [icon]="'tab'"> </app-filter>
-           <!-- <svg-icon src="assets/svg/detail-cards/tab.svg"></svg-icon> -->
+          </div>
+          <div class="border-right"></div>
+          <div
+            class="box-icons"
+            ngbTooltip
+            mainTooltip="Status Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+          >
+            <app-filter [type]="'statusFilter'" [subType]="'pendingStatus'" [icon]="'broker-half-circle'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="PM Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+            <app-filter [type]="'pmFilter'" [icon]="'default_pm'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Category Repair Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'categoryRepairFilter'" [icon]="'key-repair'"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Category Fuel Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'categoryFuelFilter'" [icon]="'funnel'"> </app-filter>
           </div>
           <div class="border-right"></div>
         </div>

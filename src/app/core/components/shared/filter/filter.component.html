@@ -25,11 +25,15 @@ autoClose="outside"
 </div>
 
 <ng-template #filterPopover>
-    <div *ngIf="type == 'userFilter' || type == 'departmentFilter' " class="filter-holder" [class.department-filter]="type == 'departmentFilter'" >
+    <div *ngIf="type == 'userFilter' || type == 'departmentFilter' || type == 'statusFilter' || type == 'pmFilter' || type == 'categoryFuelFilter' || type == 'categoryRepairFilter' " class="filter-holder" [class.department-filter]="type == 'departmentFilter' || type == 'categoryFuelFilter' " [class.status-filter]="type == 'statusFilter'" [class.pm-filter]="type == 'pmFilter' || type == 'categoryRepairFilter' " >
         <div class="filter-header" *ngIf="!expandSearch">
             <div class="user-filter-box">{{selectedUser.length}}</div>
-            <div class="user-title-text"> {{type == 'userFilter' ? 'User Filter' : 'Department Filter' }} </div>
-            <div class="search-icon-holder" *ngIf="type == 'userFilter' " (click)="showSearch()">
+            <div class="user-title-text" *ngIf="type == 'userFilter' ">User Filter</div>
+            <div class="user-title-text" *ngIf="type == 'departmentFilter' ">Department Filter</div>
+            <div class="user-title-text" *ngIf="type == 'statusFilter' ">Status Filter</div> 
+            <div class="user-title-text" *ngIf="type == 'pmFilter' ">PM Filter</div> 
+            <div class="user-title-text" *ngIf="type == 'categoryFuelFilter' || type == 'categoryRepairFilter' ">Category Filter</div> 
+            <div class="search-icon-holder" *ngIf="type == 'userFilter' || type == 'statusFilter' " (click)="showSearch()">
                 <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
             </div>
         </div>
@@ -40,7 +44,7 @@ autoClose="outside"
                 [inputConfig]="{
                     name: 'search',
                     type: 'text',
-                    label: 'Search User',
+                    label: 'Search',
                     placeholderIcon: 'ic_search',
                     customClass: 'filter-search-input',
                     placeholderInsteadOfLabel: true,
@@ -49,6 +53,7 @@ autoClose="outside"
             ></app-ta-input>
           
                 <div 
+                    *ngIf="searchInputValue.length == 0"
                     ngbTooltip
                     mainTooltip="Close"
                     position="top"
@@ -59,14 +64,6 @@ autoClose="outside"
                 </div>
         </div>
         <div class="border-filter"></div>
-       <!-- <div class="search-holder">
-            <input (keyup)="filterUser($event)" class="search-user-holder" type="text" placeholder="Search User"/>
-            <div class="search-icons">
-                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-            </div>
-        </div>
-        <div class="border-filter border-second-margin"></div>
-        -->
         <div class="selected-user-holder">
             <div *ngFor="let item of selectedUser; let indx=index" class="user-main-holder">    
                 <div class="user-profile-img" *ngIf="type == 'userFilter' ">
@@ -76,6 +73,10 @@ autoClose="outside"
                     [type]="'user'"
                     [name]="item.name"
                     ></app-profile-images> 
+                </div>
+                <div class="user-profile-img" *ngIf="type == 'statusFilter' " [ngStyle]="{backgroundColor: item.color}"></div>
+                <div class="user-profile-img selected-filter-icon" *ngIf="type == 'pmFilter' || type == 'categoryRepairFilter' ">
+                    <svg-icon src="{{item.icon}}"></svg-icon>
                 </div>
                 <div class="selected-user-frame">{{item.name}}
                     <div class="selected-icon">
@@ -96,7 +97,7 @@ autoClose="outside"
         <div *ngIf="selectedUser.length > 0" class="border-filter border-thrird-margin"></div>
         <div class="user-holder" *ngIf="type == 'userFilter' " >
             <div *ngFor="let item of unselectedUser; let indx=index" class="user-frame-holder">
-                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
                     <div class="user-profile-img">
                         <app-profile-images
                         [indx]="indx"
@@ -111,11 +112,67 @@ autoClose="outside"
         </div>
         <div class="user-holder" *ngIf="type == 'departmentFilter' ">
             <div *ngFor="let item of departmentArray; let indx=index" class="user-frame-holder">
-                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
+            </div> 
+        </div>
+        <div class="user-holder" *ngIf="type == 'statusFilter' ">
+            <div class="status-data-main-holder" *ngIf="subType == 'pendingStatus' || subType == 'all' "> 
+                <div *ngFor="let item of pendingStatusArray; let indx=index" class="user-frame-holder">
+                    <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'pending')" class="user-main-holder">
+                        <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"
+                            ></div>
+                        <div class="user-frame">{{item.name}}</div> 
+                    </div>
+                </div>
+            </div>  
+            <div class="border-filter" *ngIf="subType == 'all' "></div> 
+            <div class="status-data-main-holder" *ngIf="subType == 'activeStatus' || subType == 'all' ">  
+                <div *ngFor="let item of activeStatusArray; let indx=index" class="user-frame-holder">
+                    <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'active')" class="user-main-holder">
+                        <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"></div>
+                        <div class="user-frame">{{item.name}}</div> 
+                    </div>
+                </div>
+            </div>
+            <div class="border-filter" *ngIf="subType == 'all' "></div>
+            <div class="status-data-main-holder" *ngIf="subType == 'closedStatus' || subType == 'all' ">  
+                <div *ngFor="let item of closedStatusArray; let indx=index" class="user-frame-holder">
+                    <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'closed')" class="user-main-holder">
+                        <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"
+                            ></div>
+                        <div class="user-frame">{{item.name}}</div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="user-holder" *ngIf="type == 'pmFilter' " >
+            <div *ngFor="let item of pmFilterArray; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-profile-img">
+                        <svg-icon src="{{item.icon}}"></svg-icon>
+                    </div> 
                     <div class="user-frame">{{item.name}}</div> 
                 </div>
             </div>
-            
+        </div>
+        <div class="user-holder" *ngIf="type == 'categoryFuelFilter' ">
+            <div *ngFor="let item of categoryFuelArray; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
+            </div> 
+        </div>
+        <div class="user-holder" *ngIf="type == 'categoryRepairFilter' " >
+            <div *ngFor="let item of categoryRepairArray; let indx=index" class="user-frame-holder">
+                <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
+                    <div class="user-profile-img">
+                        <svg-icon src="{{item.icon}}"></svg-icon>
+                    </div> 
+                    <div class="user-frame">{{item.name}}</div> 
+                </div>
+            </div>
         </div>
         <div class="border-filter"></div>
         <div class="buttons-holder">
