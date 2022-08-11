@@ -141,12 +141,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Office
       officeChecked: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
-      officeExtensionPhone: [null],
+      officeExtPhone: [null],
       officeEmail: [null, emailRegex],
       // Parking
       parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
-      parkingExtensionPhone: [null],
+      parkingExtPhone: [null],
       parkingEmail: [null, emailRegex],
 
       terminalParkingSlot: [null],
@@ -156,7 +156,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Warehouse
       warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
-      warehouseExtensionPhone: [null],
+      warehouseExtPhone: [null],
       warehouseEmail: [null, emailRegex],
       // Fuel stattion
       fuelStationChecked: [false],
@@ -514,17 +514,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '321',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             // Office
             officeChecked: res.officeChecked,
             officePhone: res.officePhone,
-            officeExtensionPhone: '321',
+            officeExtPhone: res.officeExtPhone,
             officeEmail: res.officeEmail,
             // Parking
             parkingChecked: res.parkingChecked,
             parkingPhone: res.parkingPhone,
-            parkingExtensionPhone: '321',
+            parkingExtPhone: res.parkingExtPhone,
             parkingEmail: res.parkingEmail,
 
             terminalParkingSlot: res.terminalParkingSlot,
@@ -534,7 +534,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             // Warehouse
             warehouseChecked: res.warehouseChecked,
             warehousePhone: res.warehousePhone,
-            warehouseExtensionPhone: '321',
+            warehouseExtPhone: res.warehouseExtPhone,
             warehouseEmail: res.warehouseEmail,
             // Fuel stattion
             fuelStationChecked: res.fuelStationChecked,

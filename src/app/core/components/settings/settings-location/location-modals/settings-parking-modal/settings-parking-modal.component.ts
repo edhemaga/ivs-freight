@@ -438,7 +438,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '131',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             parkingSlot: res.parkingSlot,
             fullParkingSlot: res.fullParkingSlot,
