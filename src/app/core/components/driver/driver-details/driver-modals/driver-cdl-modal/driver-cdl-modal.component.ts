@@ -33,8 +33,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public modalName: string = null;
 
-  public canadaStates: any[] = [];
-  public usStates: any[] = [];
   public classTypes: any[] = [];
 
   public stateTypes: any[] = [];
@@ -148,22 +146,14 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
-          // this.canadaStates = res.canadaStates.map((item) => {
-          //   return {
-          //     id: item.id,
-          //     name: item.stateShortName,
-          //     stateName: item.stateName,
-          //   };
-          // });
-          // this.usStates = res.usStates.map((item) => {
-          //   return {
-          //     id: item.id,
-          //     name: item.stateShortName,
-          //     stateName: item.stateName,
-          //   };
-          // });
+          this.stateTypes = res.states.map((item) => {
+            return {
+              id: item.id,
+              name: item.stateShortName,
+              stateName: item.stateName,
+            };
+          });
           this.classTypes = res.classTypes;
-          // this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
         },
@@ -226,8 +216,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
-      classType: this.selectedClassType.name,
-      stateId: this.selectedStateType.id,
+      classType: this.selectedClassType ? this.selectedClassType.name : null,
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)
         : [],
@@ -261,8 +251,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       ...this.cdlForm.value,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
-      classType: this.selectedClassType.name,
-      stateId: this.selectedStateType.id,
+      classType: this.selectedClassType ? this.selectedClassType.name : null,
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
       restrictions: this.selectedRestrictions
         ? this.selectedRestrictions.map((item) => item.id)
         : [],
