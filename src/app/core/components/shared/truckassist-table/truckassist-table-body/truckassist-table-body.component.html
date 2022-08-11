@@ -632,11 +632,11 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row.labelColor }"
+                [ngStyle]="{ background: row[column.field].color }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row.labelName ? row.labelName : ''"
+                [innerHtml]="row[column.field].name ? row[column.field].name : ''"
               ></span>
             </div>
 
@@ -1513,11 +1513,11 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row.labelColor }"
+                [ngStyle]="{ background: row[column.field].color }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row.labelName ? row.labelName : ''"
+                [innerHtml]="row[column.field].name ? row[column.field].name : ''"
               ></span>
             </div>
 

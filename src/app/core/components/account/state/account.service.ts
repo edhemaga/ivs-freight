@@ -123,11 +123,13 @@ export class AccountTService {
     return this.accountService.apiCompanyaccountListDelete(deleteOnBack).pipe(
       tap(() => {
         let storeAccounts = this.accountQuery.getAll();
+        let countDeleted = 0;
 
         storeAccounts.map((account: any) => {
           deleteOnBack.map((d) => {
             if (d === account.id) {
               this.accountStore.remove(({ id }) => id === account.id);
+              countDeleted++;
             }
           });
         });
@@ -135,7 +137,7 @@ export class AccountTService {
         localStorage.setItem(
           'accountTableCount',
           JSON.stringify({
-            account: storeAccounts.length
+            account: storeAccounts.length - countDeleted
           })
         );
       })
@@ -164,7 +166,7 @@ export class AccountTService {
           id: accountId,
         });
       })
-    );;
+    );
   }
 
   // Get Account Modal
