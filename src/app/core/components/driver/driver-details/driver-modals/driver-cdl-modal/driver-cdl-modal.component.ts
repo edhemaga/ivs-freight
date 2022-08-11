@@ -148,20 +148,20 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
-          this.canadaStates = res.canadaStates.map((item) => {
-            return {
-              id: item.id,
-              name: item.stateShortName,
-              stateName: item.stateName,
-            };
-          });
-          this.usStates = res.usStates.map((item) => {
-            return {
-              id: item.id,
-              name: item.stateShortName,
-              stateName: item.stateName,
-            };
-          });
+          // this.canadaStates = res.canadaStates.map((item) => {
+          //   return {
+          //     id: item.id,
+          //     name: item.stateShortName,
+          //     stateName: item.stateName,
+          //   };
+          // });
+          // this.usStates = res.usStates.map((item) => {
+          //   return {
+          //     id: item.id,
+          //     name: item.stateShortName,
+          //     stateName: item.stateName,
+          //   };
+          // });
           this.classTypes = res.classTypes;
           // this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
