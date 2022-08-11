@@ -1,6 +1,8 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit' ? 'Add New Registration' : 'Edit Registration'
+    editData?.type !== 'edit-registration'
+      ? 'Add New Registration'
+      : 'Edit Registration'
   "
   [editData]="editData"
   [editName]="

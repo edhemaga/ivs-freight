@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add New Title' : 'Edit Title'"
+  [modalTitle]="
+    editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
+  "
   [editData]="editData"
   [editName]="
     editData?.modal === 'trailer'
