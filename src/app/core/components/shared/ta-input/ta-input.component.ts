@@ -241,8 +241,7 @@ export class TaInputComponent
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
-      console.log(this.selectionInput, "this.selectionInput");
-      const elem = this.selectionInput == -1 ? this.span1.nativeElement.parentNode : this.span1.nativeElement;
+      const elem = this.selectionInput == -1 ? this.holder1.nativeElement : this.span1.nativeElement;
 
       this.preventBlur = true;
       elem.focus();
@@ -273,7 +272,6 @@ export class TaInputComponent
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
           if (!this.getSuperControl.value) {
-            console.log("WHAT IS DATETIME PICKER");
             this.inputConfig.type = 'text';
             this.blurOnDateTime();
           }
@@ -909,8 +907,7 @@ export class TaInputComponent
     if(!isNaN(pastedDate.getTime())){
       this.setTimeDateInput(pastedDate);
       this.selectSpanByTabIndex(this.selectionInput); 
-      this.showDateInput = true;
-      this.focusInput = true;
+     
     }
   }
 
@@ -983,18 +980,22 @@ export class TaInputComponent
   setSelection(e) {
     e.preventDefault();
     e.stopPropagation();
-    console.log("dds");
     const element = e.target;
     this.focusInput = true;
-    this.selectionInput = parseInt(element.getAttribute('tabindex'));
+    console.log("SET SELECTION");
+    console.log(this.selectionInput);
+    const selectionInput = parseInt(element.getAttribute('tabindex'));
+
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
-      if( this.selectionInput == -1 ){
-        this.showDateTimePlaceholder();
-      }else{
+      this.selectionInput = selectionInput;
         this.setSpanSelection(element);
-      }
+      // if( this.selectionInput == -1 ){
+      //   this.showDateTimePlaceholder();
+      // }else{
+        
+      // }
     } else {
       if( this.selectionInput == -1 ){
         this.span1.nativeElement.focus();
@@ -1017,14 +1018,13 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
-    console.log("SHOW INPTU PLACEHOLDER");
     
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;
 
     this.holder1.nativeElement.focus();
-    this.setSpanSelection(this.span1.nativeElement.parentNode);
+    this.setSpanSelection(this.holder1.nativeElement);
   }
 
   changeSelection(e, noPreventDefault = false): void {
@@ -1034,7 +1034,6 @@ export class TaInputComponent
       e.stopPropagation();
     }
     
-    console.log(e.keyCode);
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -1052,7 +1051,6 @@ export class TaInputComponent
           this.selectSpanByTabIndex(this.selectionInput);
         }
       } else if (e.keyCode == 39 || e.keyCode == 9) {
-        console.log(e.keyCode);
         if (this.selectionInput != 2 && !e.shiftKey) {
           this.selectionInput = this.selectionInput + 1;
           this.selectSpanByTabIndex(this.selectionInput);
@@ -1063,20 +1061,25 @@ export class TaInputComponent
               if(allInputs[indx + 1]){
                 allInputs[indx + 1].focus();
               }
+              this.selectionInput = -1;
               return;
             }
           });
         } else if (e.shiftKey && e.keyCode == 9 && this.selectionInput != 0) {
+          if( this.selectionInput == -1 ){
+            this.selectionInput = 3;
+          }
           this.selectionInput = this.selectionInput - 1;
           this.selectSpanByTabIndex(this.selectionInput);
-        } else {
-          // let allInputs = document.querySelectorAll('input');
-          // [...(allInputs as any)].map((item, indx) => {
-          //   if (item === this.input.nativeElement) {
-          //     allInputs[indx - 1].focus();
-          //     return;
-          //   }
-          // });
+        } else if (e.shiftKey && e.keyCode == 9 && this.selectionInput == 0) {
+          let allInputs = document.querySelectorAll('input');
+          [...(allInputs as any)].map((item, indx) => {
+            if (item === this.input.nativeElement) {
+              allInputs[indx - 1].focus();
+              this.selectionInput = -1;
+              return;
+            }
+          });
         }
       } else if (e.keyCode == 38) {
         this.setDateTimeModel('up');
@@ -1221,10 +1224,11 @@ export class TaInputComponent
         this.setSpanSelection(this.span2.nativeElement);
         break;
       case 2: 
+      case 3:
         this.setSpanSelection(this.span3.nativeElement);
         break;
       default:
-        this.setSpanSelection(this.span1.nativeElement.parentNode);
+        this.setSpanSelection(this.holder1.nativeElement);
     }
   }
 
@@ -1414,13 +1418,11 @@ export class TaInputComponent
         ) {
           this.calendarService.dateChanged.next(this.dateTimeInputDate);
         } else {
-          console.log("AFTER WRONG TIME");
           this.span1.nativeElement.innerHTML = 'mm';
           this.span2.nativeElement.innerHTML = 'dd';
           this.span3.nativeElement.innerHTML = 'yy';
-          this.showDateInput = false;
           this.dateTimeInputDate = new Date();
-
+          this.showDateInput = false;
         }
       } else {
         if (
@@ -1431,14 +1433,15 @@ export class TaInputComponent
         } else {
           this.span1.nativeElement.innerHTML = 'HH';
           this.span2.nativeElement.innerHTML = 'MM';
-          this.showDateInput = false;
           this.dateTimeInputDate = new Date();
+          this.showDateInput = false;
         }
       }
+
       clearTimeout(this.dateTimeMainTimer);
       this.focusInput = false;
       this.selectionInput = -1;
       this.refChange.detectChanges(); 
-    }, 300);
+    }, 100);
   }
 }
