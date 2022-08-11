@@ -9,18 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ClassType } from './classType';
+import { EnumValue } from './enumValue';
 
 
-export interface EditCdlCommand { 
-    id?: number;
-    cdlNumber?: string | null;
-    issueDate?: string;
-    expDate?: string;
-    classType?: ClassType;
-    restrictions?: Array<number> | null;
-    endorsements?: Array<number> | null;
-    stateId?: number;
-    note?: string | null;
+export interface EventModalResponse { 
+    eventType?: Array<EnumValue> | null;
+    recurence?: Array<EnumValue> | null;
+    timesRepeat?: Array<EnumValue> | null;
 }
 

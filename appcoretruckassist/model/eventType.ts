@@ -9,18 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ClassType } from './classType';
 
 
-export interface EditCdlCommand { 
-    id?: number;
-    cdlNumber?: string | null;
-    issueDate?: string;
-    expDate?: string;
-    classType?: ClassType;
-    restrictions?: Array<number> | null;
-    endorsements?: Array<number> | null;
-    stateId?: number;
-    note?: string | null;
-}
+export type EventType = 'Important' | 'Company' | 'Personal' | 'Holiday';
+
+export const EventType = {
+    Important: 'Important' as EventType,
+    Company: 'Company' as EventType,
+    Personal: 'Personal' as EventType,
+    Holiday: 'Holiday' as EventType
+};
 
