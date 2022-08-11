@@ -385,7 +385,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '321',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
             payPeriod: res.payPeriod.name,

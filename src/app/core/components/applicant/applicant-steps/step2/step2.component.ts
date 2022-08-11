@@ -1,33 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-import {
-  phoneRegex,
-  emailRegex,
-} from '../../../shared/ta-input/ta-input.regex-validations';
-
-import { isFormValueEqual } from '../../state/utils/utils';
-
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import {
   WorkHistory,
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
-import { Address } from '../../state/model/address.model';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { ReasonForLeaving } from '../../state/model/reason-for-leaving.model';
-import { TruckType } from '../../state/model/truck-type.model';
-import { TrailerType } from '../../state/model/trailer-type.model';
-
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @UntilDestroy()
 @Component({
@@ -39,9 +23,6 @@ export class Step2Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant;
-  public applicantId: string = '0';
-
-  private subscription: Subscription;
 
   public workExperienceForm: FormGroup;
   public workExperienceArray: WorkHistoryModel[] = [
@@ -52,8 +33,48 @@ export class Step2Component implements OnInit, OnDestroy {
       fromDate: '01/01/01',
       toDate: '02/02/02',
       employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      employerAddressUnit: '1',
+      isDrivingPosition: true,
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: false,
+      fmCSA: false,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -72,8 +93,18 @@ export class Step2Component implements OnInit, OnDestroy {
       fromDate: '01/01/01',
       toDate: '02/02/02',
       employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -92,8 +123,18 @@ export class Step2Component implements OnInit, OnDestroy {
       fromDate: '01/01/01',
       toDate: '02/02/02',
       employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
       employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       employerAddressUnit: '1',
       isDrivingPosition: false,
       truckType: null,
@@ -102,109 +143,62 @@ export class Step2Component implements OnInit, OnDestroy {
       cfrPart: null,
       fmCSA: null,
       reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: 'Chicago, IL, USA',
-      employerAddressUnit: '1',
-      isDrivingPosition: false,
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
+      accountForPeriod: 'Dada',
       isEditingWorkHistory: false,
     },
   ];
 
   public selectedWorkExperienceIndex: number;
-  public selectedAddress: Address = null;
-  public selectedTruckType: any = null;
-  public selectedTrailerType: any = null;
-  public selectedTrailerLength: any = null;
-  public selectedReasonForLeaving: any = null;
-
-  public truckType: TruckType[] = [];
-  public trailerType: TrailerType[] = [];
-  public trailerLengthType: any[] = [];
 
   public isEditing: boolean = false;
-  public isWorkExperienceEdited: boolean = false;
-  public isTruckSelected: boolean = false;
-
-  public questions: ApplicantQuestion[] = [
-    {
-      title: 'CFR Part 40?',
-      formControlName: 'cfrPart',
-      answerChoices: [
-        {
-          id: 1,
-          label: 'YES',
-          value: 'cfrPartYes',
-          name: 'cfrPartYes',
-          checked: false,
-          index: 0,
-        },
-        {
-          id: 2,
-          label: 'NO',
-          value: 'cfrPartNo',
-          name: 'cfrPartNo',
-          checked: false,
-          index: 0,
-        },
-      ],
-    },
-    {
-      title: 'FMCSA Regulated',
-      formControlName: 'fmCSA',
-      answerChoices: [
-        {
-          id: 3,
-          label: 'YES',
-          value: 'fmcsaYes',
-          name: 'fmcsaYes',
-          checked: false,
-          index: 1,
-        },
-        {
-          id: 4,
-          label: 'NO',
-          value: 'fmcsaNo',
-          name: 'fmcsaNo',
-          checked: false,
-          index: 1,
-        },
-      ],
-    },
-  ];
 
   public helperIndex: number = 2;
 
-  //
+  public formValuesToPatch: any;
 
-  /* public workExperienceArray: WorkHistory[]; */
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
+
+  //
 
   public selectedItemIndex: number = -1;
 
-  public reasonsForLeaving: ReasonForLeaving[] = [
-    { id: 1, name: 'Better opportunity' },
-    { id: 2, name: 'Illness' },
-    { id: 3, name: 'Company went out of business' },
-    { id: 4, name: 'Fired or terminated' },
-    { id: 5, name: 'Family obligations' },
-    { id: 6, name: 'Other' },
-  ];
+  /* public workExperienceArray: WorkHistory[]; */
 
   // public get showAddNew(): boolean {
   //   /* return this.workHistories?.length &&
@@ -214,16 +208,10 @@ export class Step2Component implements OnInit, OnDestroy {
   //   return true;
   // }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private router: Router,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.createForm();
-    this.isDriverPosition();
     /*     this.isNoExperience(); */
 
     const applicantUser = localStorage.getItem('applicant_user');
@@ -237,185 +225,19 @@ export class Step2Component implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.workExperienceForm = this.formBuilder.group({
-      employer: [null, Validators.required],
-      jobDescription: [null, Validators.required],
-      fromDate: [null, Validators.required],
-      toDate: [null, Validators.required],
-      employerPhone: [null, [Validators.required, phoneRegex]],
-      employerEmail: [null, [Validators.required, emailRegex]],
-      employerFax: [null, phoneRegex],
-      employerAddress: [null, Validators.required],
-      employerAddressUnit: [null, Validators.maxLength(6)],
-      isDrivingPosition: [false],
-      truckType: [null],
-      trailerType: [null],
-      trailerLength: [null],
-      cfrPart: [null],
-      fmCSA: [null],
-      reasonForLeaving: [null, Validators.required],
-      accountForPeriod: [null],
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
+
       noWorkExperience: [false],
     });
-  }
-
-  public handleInputSelect(event: any, action: string): void {
-    switch (action) {
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.workExperienceForm
-            .get('employerAddress')
-            .setErrors({ invalid: true });
-        }
-
-        break;
-      case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
-
-        break;
-      case InputSwitchActions.TRAILER_TYPE:
-        this.selectedTrailerType = event;
-
-        break;
-      case InputSwitchActions.TRAILER_LENGTH:
-        this.selectedTrailerLength = event;
-
-        break;
-      case InputSwitchActions.ANSWER_CHOICE:
-        const selectedCheckbox = event.find(
-          (radio: { checked: boolean }) => radio.checked
-        );
-
-        const selectedFormControlName =
-          this.questions[selectedCheckbox.index].formControlName;
-
-        if (selectedCheckbox.label === 'YES') {
-          this.workExperienceForm.get(selectedFormControlName).patchValue(true);
-        } else {
-          this.workExperienceForm
-            .get(selectedFormControlName)
-            .patchValue(false);
-        }
-
-        break;
-      case InputSwitchActions.REASON_FOR_LEAVING:
-        this.selectedReasonForLeaving = event;
-
-        break;
-      default:
-        break;
-    }
-  }
-
-  private isDriverPosition(): void {
-    this.workExperienceForm
-      .get('isDrivingPosition')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('truckType'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('trailerType'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('trailerLength'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('cfrPart'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('fmCSA'),
-            false
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('truckType')
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('trailerType')
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('trailerLength')
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('cfrPart')
-          );
-          this.inputService.changeValidators(
-            this.workExperienceForm.get('fmCSA')
-          );
-        }
-      });
-  }
-
-  public onAddSecondOrLastEmployer(): void {
-    if (this.workExperienceForm.invalid) {
-      this.inputService.markInvalid(this.workExperienceForm);
-      return;
-    }
-
-    this.helperIndex = 2;
-
-    const { noWorkExperience, ...workExperienceForm } =
-      this.workExperienceForm.value;
-
-    const saveData: WorkHistoryModel = {
-      ...workExperienceForm,
-      isEditingWorkHistory: false,
-      applicantId: this.applicantId,
-    };
-
-    this.workExperienceArray = [...this.workExperienceArray, saveData];
-
-    this.workExperienceForm.reset();
-
-    this.selectedReasonForLeaving = null;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    /*   const workExperienceForm = this.workExperienceForm.value;
-    const workExperience = new WorkHistory();
- */
-
-    /* workExperience.id = this.workExperienceForm[this.selectedItemIndex].id;
-    workExperience.applicantId = this.applicant?.id ? this.applicant?.id : null;
-    workExperience.employer = workExperienceForm.employer;
-    workExperience.jobDescription = workExperienceForm.jobDescription;
-    workExperience.fromDate = workExperienceForm.fromDate;
-    workExperience.toDate = workExperienceForm.toDate;
-    workExperience.employerPhone = workExperienceForm.phone;
-    workExperience.employerEmail = workExperienceForm.email;
-    workExperience.employerAddress = workExperienceForm.address;
-    workExperience.employerAddressUnit = workExperienceForm.addressUnit;
-    workExperience.truckType = workExperienceForm.truckType;
-    workExperience.trailerType = workExperienceForm.trailerType;
-    workExperience.trailerLength = workExperienceForm.trailerLength;
-    workExperience.cfrPart = workExperienceForm.cfrPart;
-    workExperience.fmCSA = workExperienceForm.fmCSA;
-    workExperience.reasonForLeaving = workExperienceForm.reasonForLeaving;
-    workExperience.accountForPeriod = workExperienceForm.accountForPeriod;
-    workExperience.isDrivingPosition = workExperienceForm.isDrivingPosition;
-    workExperience.isExpanded = false;
-    workExperience.isDeleted = false;
-    workExperience.isCompleted = true;
- */
-    /*  this.apppEntityServices.WorkHistoryService.upsert(workExperience).subscribe(
-            (response) => {
-              this.notification.success(
-                'Work Experience has been deleted!',
-                'Success'
-              );
-            },
-            (error) => {
-              this.shared.handleError(error);
-            }
-          ); */
   }
 
   public onDeleteWorkExperience(index: number): void {
@@ -433,8 +255,6 @@ export class Step2Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isWorkExperienceEdited = false;
-
     this.isEditing = true;
     this.workExperienceArray[index].isEditingWorkHistory = true;
 
@@ -442,84 +262,108 @@ export class Step2Component implements OnInit, OnDestroy {
 
     const selectedWorkExperience = this.workExperienceArray[index];
 
-    this.workExperienceForm.patchValue({
-      employer: selectedWorkExperience.employer,
-      jobDescription: selectedWorkExperience.jobDescription,
-      fromDate: selectedWorkExperience.fromDate,
-      toDate: selectedWorkExperience.toDate,
-      employerPhone: selectedWorkExperience.employerPhone,
-      employerEmail: selectedWorkExperience.employerEmail,
-      employerAddress: selectedWorkExperience.employerAddress,
-      employerAddressUnit: selectedWorkExperience.employerAddressUnit,
-      isDrivingPosition: selectedWorkExperience.isDrivingPosition,
-      truckType: selectedWorkExperience.truckType,
-      trailerType: selectedWorkExperience.trailerType,
-      trailerLength: selectedWorkExperience.trailerLength,
-      cfrPart: selectedWorkExperience.cfrPart,
-      fmCSA: selectedWorkExperience.fmCSA,
-      reasonForLeaving: selectedWorkExperience.reasonForLeaving,
-      accountForPeriod: selectedWorkExperience.accountForPeriod,
-    });
+    this.formValuesToPatch = selectedWorkExperience;
+  }
 
-    this.subscription = this.workExperienceForm.valueChanges.subscribe(
-      (newFormValue) => {
-        if (isFormValueEqual(selectedWorkExperience, newFormValue)) {
-          this.isWorkExperienceEdited = false;
-        } else {
-          this.isWorkExperienceEdited = true;
+  public getWorkExperienceFormValues(event: any): void {
+    this.workExperienceArray = [...this.workExperienceArray, event];
+
+    this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
+  }
+
+  public cancelWorkExperienceEditing(event: any): void {
+    this.isEditing = false;
+    this.workExperienceArray[
+      this.selectedWorkExperienceIndex
+    ].isEditingWorkHistory = false;
+
+    this.helperIndex = 2;
+    this.selectedWorkExperienceIndex = -1;
+  }
+
+  public saveEditedWorkExperience(event: any): void {
+    this.isEditing = false;
+    this.workExperienceArray[
+      this.selectedWorkExperienceIndex
+    ].isEditingWorkHistory = false;
+
+    this.workExperienceArray[this.selectedWorkExperienceIndex] = event;
+
+    this.helperIndex = 2;
+    this.selectedWorkExperienceIndex = -1;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
         }
       }
-    );
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
   }
 
-  public onSaveEditedWorkExperience(): void {
-    if (this.workExperienceForm.invalid) {
-      this.inputService.markInvalid(this.workExperienceForm);
-      return;
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
     }
-
-    if (!this.isWorkExperienceEdited) {
-      return;
-    }
-
-    this.workExperienceArray[this.selectedWorkExperienceIndex] =
-      this.workExperienceForm.value;
-
-    this.isEditing = false;
-    this.workExperienceArray[
-      this.selectedWorkExperienceIndex
-    ].isEditingWorkHistory = false;
-
-    this.isWorkExperienceEdited = false;
-
-    this.helperIndex = 2;
-
-    this.workExperienceForm.reset();
-
-    this.selectedReasonForLeaving = null;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
-  }
-
-  public onCancelEditWorkExperience(): void {
-    this.isEditing = false;
-    this.workExperienceArray[
-      this.selectedWorkExperienceIndex
-    ].isEditingWorkHistory = false;
-
-    this.isWorkExperienceEdited = false;
-
-    this.helperIndex = 2;
-
-    this.workExperienceForm.reset();
-
-    this.selectedReasonForLeaving = null;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
   }
 
   /* private isNoExperience(): void {

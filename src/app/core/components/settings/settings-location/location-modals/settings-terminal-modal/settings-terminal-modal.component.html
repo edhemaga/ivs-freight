@@ -193,7 +193,7 @@
                   </div>
                   <app-ta-input
                     *ngIf="isOfficePhoneExtExist"
-                    formControlName="officeExtensionPhone"
+                    formControlName="officeExtPhone"
                     [inputConfig]="{
                       name: 'Phone Extension',
                       type: 'text',
@@ -276,7 +276,7 @@
                   </div>
                   <app-ta-input
                     *ngIf="isParkingPhoneExtExist"
-                    formControlName="parkingExtensionPhone"
+                    formControlName="parkingExtPhone"
                     [inputConfig]="{
                       name: 'Phone Extension',
                       type: 'text',
@@ -411,7 +411,7 @@
                   </div>
                   <app-ta-input
                     *ngIf="isWarehousePhoneExtExist"
-                    formControlName="warehouseExtensionPhone"
+                    formControlName="warehouseExtPhone"
                     [inputConfig]="{
                       name: 'Phone Extension',
                       type: 'text',
@@ -492,6 +492,7 @@
                 type: 'text',
                 label: 'Day',
                 isDropdown: true,
+                isDisabled: !terminalForm.get('payPeriod').value,
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="

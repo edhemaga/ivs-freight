@@ -763,16 +763,23 @@
             <div
               *ngIf="['Solo', 'Combined'].includes(selectedFleetType)"
               class="permile-fields"
+              [ngClass]="{
+                'permile-fields-same-rate': this.companyForm.get(
+                  'driverOwnerHasLoadedEmptyMiles'
+                ).value
+              }"
             >
               <p>DEF. SOLO DRIVER</p>
               <app-ta-input
+                *ngIf="
+                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   id: 'Per Mile Solo Empty',
                   name: 'Per Mile',
                   type: 'text',
                   label: 'Empty Mi',
-                  isRequired: true,
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
@@ -781,13 +788,32 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="
+                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   id: 'Per Mile Solo Loaded',
                   name: 'Per Mile',
                   type: 'text',
                   label: 'Loaded Mi',
-                  isRequired: true,
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                *ngIf="
+                  this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
+                formControlName="perMileSolo"
+                [inputConfig]="{
+                  id: 'Per Mile Solo Same',
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
@@ -813,15 +839,23 @@
             <div
               *ngIf="['Team', 'Combined'].includes(selectedFleetType)"
               class="permile-fields"
+              [ngClass]="{
+                'permile-fields-same-rate': this.companyForm.get(
+                  'driverOwnerHasLoadedEmptyMiles'
+                ).value
+              }"
             >
               <p>DEF. TEAM DRIVER</p>
               <app-ta-input
+                *ngIf="
+                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   id: 'Per Mile Team Empty',
                   name: 'Per Mile',
                   type: 'text',
-                  label: 'Per Mi',
+                  label: 'Empty Mi',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
@@ -830,12 +864,32 @@
                 }"
               ></app-ta-input>
               <app-ta-input
+                *ngIf="
+                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   id: 'Per Mile Team Loaded',
                   name: 'Per Mile',
                   type: 'text',
                   label: 'Loaded Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                *ngIf="
+                  this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
+                "
+                formControlName="perMileTeam"
+                [inputConfig]="{
+                  id: 'Per Mile Team Same',
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Per Mile',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
@@ -877,7 +931,7 @@
                   [sliderName]="'Def. Solo Driver Commission'"
                   [sliderOptions]="driverCommissionOptions"
                   [startedValue]="
-                    companyForm.get('driverSoloDefaultCommission')?.value
+                    companyForm.get('driverSoloDefaultCommission').value
                   "
                   [customClass]="'custom-slider-with-percentage'"
                   (onUserValueChange)="
@@ -897,7 +951,7 @@
                   [sliderName]="'Def. Team Driver Commission'"
                   [sliderOptions]="driverCommissionOptions"
                   [startedValue]="
-                    companyForm.get('driverTeamDefaultCommission')?.value
+                    companyForm.get('driverTeamDefaultCommission').value
                   "
                   [customClass]="'custom-slider-with-percentage'"
                   (onUserValueChange)="

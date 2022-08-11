@@ -197,6 +197,7 @@
                 type: 'text',
                 label: 'Day',
                 isDropdown: true,
+                isDisabled: !repairShopForm.get('payPeriod').value,
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="

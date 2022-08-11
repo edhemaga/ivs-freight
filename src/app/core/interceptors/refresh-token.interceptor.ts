@@ -26,7 +26,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     let authReq = request;
 
-    if (this.user.token) {
+    if (this.user) {
       authReq = request.clone({
         setHeaders: {
           Authorization: `Bearer ${this.user.token}`,
@@ -65,7 +65,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
               }),
               catchError((err: HttpErrorResponse) => {
                 console.log('ERROR REFRESH TOKEN ', err.status);
-                if (err.status.toString().startsWith('4')) {
+                if (err.status === 401) {
                   this.authStoreService.accountLogut();
                   this.refresh = false;
                 }

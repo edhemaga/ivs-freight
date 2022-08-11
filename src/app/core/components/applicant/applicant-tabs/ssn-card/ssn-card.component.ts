@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
@@ -8,15 +11,82 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./ssn-card.component.scss'],
 })
 export class SsnCardComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
+
+  public ssnCardForm: FormGroup;
 
   public documents: any[] = [];
 
-  constructor() {}
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
 
-  ngOnInit(): void {}
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.createForm();
+  }
+
+  private createForm(): void {
+    this.ssnCardForm = this.formBuilder.group({
+      firstRowReview: [null],
+    });
+  }
 
   public onFilesAction(event: any): void {
     this.documents = event.files;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (event) {
+      selectedInputsLine.lineInputs[inputIndex] = true;
+
+      if (!selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = true;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    }
+
+    if (!event) {
+      selectedInputsLine.lineInputs[inputIndex] = false;
+
+      const lineInputItems = selectedInputsLine.lineInputs;
+      const isAnyInputInLineIncorrect = anyInputInLineIncorrect(lineInputItems);
+
+      if (!isAnyInputInLineIncorrect) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 }

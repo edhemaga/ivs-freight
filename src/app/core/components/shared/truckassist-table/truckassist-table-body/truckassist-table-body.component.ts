@@ -53,6 +53,7 @@ export class TruckassistTableBodyComponent
   checkForScrollTimeout: any;
   viewDataEmpty: number;
   viewDataTimeOut: any;
+  rowData: any;
 
   constructor(
     private router: Router,
@@ -279,7 +280,7 @@ export class TruckassistTableBodyComponent
   }
 
   /* Toggle Dropdown */
-  toggleDropdown(tooltip: any, id: number) {
+  toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
       tooltip.close();
@@ -287,17 +288,27 @@ export class TruckassistTableBodyComponent
       tooltip.open({ data: this.dropContent });
     }
 
-    this.dropDownActive = tooltip.isOpen() ? id : -1;
+    this.dropDownActive = tooltip.isOpen() ? row.id : -1;
+    this.rowData = row;
   }
 
   /* Dropdown Actions */
   onDropAction(action: any) {
     this.bodyActions.emit({
       id: this.dropDownActive,
+      data: this.rowData,
       type: action.name,
     });
 
     this.tooltip.close();
+  }
+
+  // Finish Order
+  onFinishOrder(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'finish-order',
+    });
   }
 
   // --------------------------------ON DESTROY---------------------------------

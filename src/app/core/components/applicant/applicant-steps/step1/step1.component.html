@@ -123,7 +123,7 @@
               placeholderIcon: 'date',
               isRequired: true,
               customClass: 'datetimeclass',
-              incorrectInput: true
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="false"
             (incorrectEvent)="incorrectInput($event, 2, 0)"
@@ -324,8 +324,11 @@
                           label: 'Address, City, State Zip',
                           isRequired: true,
                           placeholderIcon: 'address',
-                          textTransform: 'capitalize'
+                          textTransform: 'capitalize',
+                          incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
+                        [incorrectValue]="false"
+                        (incorrectEvent)="incorrectInput($event, 0, i + 2)"
                         (selectedAddress)="
                           handleInputSelect($event, 'PREVIOUS-ADDRESS', i)
                         "
@@ -339,8 +342,11 @@
                           name: 'Address Unit',
                           type: 'text',
                           label: 'Unit #',
-                          maxLength: 6
+                          maxLength: 6,
+                          incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
+                        [incorrectValue]="false"
+                        (incorrectEvent)="incorrectInput($event, 1, i + 2)"
                       ></app-ta-input>
                     </div>
 
@@ -416,96 +422,111 @@
                   </div>
                 </div>
 
-                <div
-                  class="d-flex align-items-center info-container"
-                  *ngIf="
-                    !isEditingArray[i]?.isEditing &&
-                    !isEditingArray[i]?.isEditingAddress
-                  "
-                >
+                <div class="d-flex align-items-center info-btn-container">
                   <div
-                    class="d-flex align-items-center text-truncate address-container"
+                    class="d-flex align-items-center info-container"
+                    *ngIf="
+                      !isEditingArray[i]?.isEditing &&
+                      !isEditingArray[i]?.isEditingAddress
+                    "
                   >
-                    <svg-icon
-                      class="address-icon"
-                      src="assets/svg/common/ic_address.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                    ></svg-icon>
-
-                    <div class="d-flex pipe"></div>
-
-                    <p class="m-0 ta-font-regular">
-                      {{ address.value?.address }}
-                    </p>
-                  </div>
-
-                  <div class="d-flex align-items-center address-unit-container">
-                    <p
-                      class="d-inline-block text-truncate m-0 ta-font-regular"
-                      style="max-width: 300px"
-                    >
-                      {{ address.value?.addressUnit }}
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  class="d-flex align-items-center btn-container"
-                  *ngIf="!isEditingArray[i]?.isEditing"
-                >
-                  <div
-                    ngbTooltip
-                    mainTooltip="Edit"
-                    tooltipBackground="#6C6C6C"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="edit-icon"
-                      src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                      (click)="onEditNewAddress(i)"
-                    ></svg-icon>
-                  </div>
-
-                  <div
-                    ngbTooltip
-                    mainTooltip="Delete"
-                    tooltipBackground="#EF5350"
-                    position="top"
-                  >
-                    <svg-icon
-                      class="delete-icon"
-                      src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                      [svgStyle]="{
-                        'width.px': 18,
-                        'height.px': 18
-                      }"
-                      (click)="onRemoveNewAddress(i)"
-                    ></svg-icon>
-                  </div>
-
-                  <div *ngIf="selectedMode === 'REVIEW_MODE'">
                     <div
-                      ngbTooltip
-                      mainTooltip="Mark Incorrect"
-                      tooltipBackground="#F44336"
-                      position="top"
+                      class="d-flex align-items-center text-truncate address-container"
                     >
                       <svg-icon
-                        class="review-icon"
-                        src="assets/svg/ic_x.svg"
+                        class="address-icon"
+                        src="assets/svg/common/ic_address.svg"
                         [svgStyle]="{
                           'width.px': 18,
                           'height.px': 18
                         }"
-                        (click)="incorrectInput($event, 0, i + 2, 'card')"
                       ></svg-icon>
+
+                      <div class="d-flex pipe"></div>
+
+                      <p class="m-0 ta-font-regular">
+                        {{ address.value?.address }}
+                      </p>
+                    </div>
+
+                    <div
+                      class="d-flex align-items-center address-unit-container"
+                    >
+                      <p
+                        class="d-inline-block text-truncate m-0 ta-font-regular"
+                        style="max-width: 300px"
+                      >
+                        {{ address.value?.addressUnit }}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div
+                    class="d-flex align-items-center btn-container"
+                    [ngClass]="{
+                      active: selectedMode === 'REVIEW_MODE'
+                    }"
+                    *ngIf="!isEditingArray[i]?.isEditing"
+                  >
+                    <div
+                      ngbTooltip
+                      mainTooltip="Edit"
+                      tooltipBackground="#6C6C6C"
+                      position="top"
+                    >
+                      <svg-icon
+                        class="edit-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                        [svgStyle]="{
+                          'width.px': 18,
+                          'height.px': 18
+                        }"
+                        (click)="onEditNewAddress(i)"
+                      ></svg-icon>
+                    </div>
+
+                    <div
+                      ngbTooltip
+                      mainTooltip="Delete"
+                      tooltipBackground="#EF5350"
+                      position="top"
+                    >
+                      <svg-icon
+                        class="delete-icon"
+                        src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                        [svgStyle]="{
+                          'width.px': 18,
+                          'height.px': 18
+                        }"
+                        (click)="onRemoveNewAddress(i)"
+                      ></svg-icon>
+                    </div>
+
+                    <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                      <div
+                        class="review-icon-box"
+                        ngbTooltip
+                        mainTooltip="Mark Incorrect"
+                        tooltipBackground="#F44336"
+                        position="top"
+                      >
+                        <svg-icon
+                          class="review-icon"
+                          [ngClass]="{
+                            active:
+                              openAnnotationArray[i + 2]
+                                .displayAnnotationButton ||
+                              openAnnotationArray[i + 2]
+                                .displayAnnotationTextArea
+                          }"
+                          src="assets/svg/ic_x.svg"
+                          [svgStyle]="{
+                            'width.px': 18,
+                            'height.px': 18
+                          }"
+                          (click)="incorrectInput($event, 0, i + 2, 'card')"
+                        ></svg-icon>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -519,7 +540,8 @@
                     selectedMode === 'FEEDBACK_MODE'
                   "
                 >
-                  <!-- <app-applicant-review-feedback
+                  <app-applicant-review-feedback
+                    [formControlName]="'cardReview' + (i + 1)"
                     [displayAnnotationButton]="
                       openAnnotationArray[i + 2].displayAnnotationButton
                     "
@@ -531,12 +553,13 @@
                     [feedbackText]="
                       'Check the routing number one more time (one number missing)!!!'
                     "
-                    [cardsLength]="2"
+                    [cardsLength]="previousAddresses?.controls.length"
+                    [cardsType]="'addresses'"
                     [cardIndex]="i + 2"
                     (annotationBtnClickEvent)="
                       getAnnotationBtnClickValue($event)
                     "
-                  ></app-applicant-review-feedback> -->
+                  ></app-applicant-review-feedback>
                 </div>
               </div>
             </div>
@@ -606,8 +629,11 @@
               type: 'text',
               label: 'Bank Name',
               isDropdown: true,
-              dropdownWidthClass: 'w-col-416'
+              dropdownWidthClass: 'w-col-416',
+              incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
+            [incorrectValue]="false"
+            (incorrectEvent)="incorrectInput($event, 1, 7)"
             [options]="banksDropdownList"
             (selectedItem)="handleInputSelect($event, 'BANK')"
           ></app-ta-input-dropdown>
@@ -621,7 +647,8 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <!-- <app-applicant-review-feedback
+          <app-applicant-review-feedback
+            formControlName="thirdRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[7].displayAnnotationButton
             "
@@ -634,7 +661,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback> -->
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -684,7 +711,8 @@
             selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
           "
         >
-          <!-- <app-applicant-review-feedback
+          <app-applicant-review-feedback
+            formControlName="fourthRowReview"
             [displayAnnotationButton]="
               openAnnotationArray[8].displayAnnotationButton
             "
@@ -697,7 +725,7 @@
               'Check the routing number one more time (one number missing)!!!'
             "
             (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-          ></app-applicant-review-feedback> -->
+          ></app-applicant-review-feedback>
         </div>
       </div>
 
@@ -786,7 +814,8 @@
                   selectedMode === 'FEEDBACK_MODE'
                 "
               >
-                <!-- <app-applicant-review-feedback
+                <app-applicant-review-feedback
+                  [formControlName]="'questionReview' + (i + 1)"
                   [displayAnnotationButton]="
                     openAnnotationArray[i + 9].displayAnnotationButton
                   "
@@ -799,7 +828,7 @@
                     'Check the routing number one more time (one number missing)!!!'
                   "
                   (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-                ></app-applicant-review-feedback> -->
+                ></app-applicant-review-feedback>
               </div>
             </div>
           </div>
@@ -819,10 +848,3 @@
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-<!--
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>
- -->

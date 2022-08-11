@@ -23,6 +23,12 @@
                   reviewStoreArr[i].isReviewed &&
                   reviewStoreArr[i].hasIncorrectAnswer
                 ? 'step-active-review-incorrect'
+                : selectedMode === 'FEEDBACK_MODE' &&
+                  !feedbackStoreArr[i].hasIncorrectAnswer
+                ? 'step-active-feedback'
+                : selectedMode === 'FEEDBACK_MODE' &&
+                  feedbackStoreArr[i].hasIncorrectAnswer
+                ? 'step-active-feedback-incorrect'
                 : 'step-active'
             "
             [ngClass]="{
@@ -35,7 +41,16 @@
               'completed-step-review-incorrect':
                 selectedMode === 'REVIEW_MODE' &&
                 reviewStoreArr[i].isReviewed &&
-                reviewStoreArr[i].hasIncorrectAnswer
+                reviewStoreArr[i].hasIncorrectAnswer,
+              'completed-step-feedback':
+                selectedMode === 'FEEDBACK_MODE' &&
+                !feedbackStoreArr[i].hasIncorrectAnswer,
+              'completed-step-feedback-incorrect':
+                selectedMode === 'FEEDBACK_MODE' &&
+                feedbackStoreArr[i].hasIncorrectAnswer,
+              'completed-step-feedback-sent-to-review':
+                selectedMode === 'FEEDBACK_MODE' &&
+                feedbackStoreArr[i].sentToReview
             }"
           >
             <div
@@ -55,7 +70,6 @@
             </p>
           </div>
         </div>
-
         <router-outlet></router-outlet>
       </div>
 

@@ -38,8 +38,42 @@
           textTransform: 'capitalize',
           blackInput: true,
           hideRequiredCheck: true,
-          placeholder: cardsLength > 1 ? 'Write Annotation' : '',
-          placeholderInsteadOfLabel: cardsLength > 1 && cardIndex !== 2,
+          placeholder:
+            (cardsLength > 1 && cardsType === 'addresses' && cardIndex !== 2) ||
+            (cardsLength > 1 &&
+              cardsType === 'workExperience' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'cdlInformation' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'accidentRecord' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'trafficViolations' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'educationContacts' &&
+              cardIndex !== 0)
+              ? 'Write Annotation'
+              : '',
+          placeholderInsteadOfLabel:
+            (cardsLength > 1 && cardsType === 'addresses' && cardIndex !== 2) ||
+            (cardsLength > 1 &&
+              cardsType === 'workExperience' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'cdlInformation' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'accidentRecord' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'trafficViolations' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'educationContacts' &&
+              cardIndex !== 0),
           autoFocus: true
         }"
       ></app-ta-input>
@@ -51,6 +85,7 @@
       tooltipBackground="#6C6C6C"
       position="top"
       class="close-icon-container"
+      *ngIf="displayAnnotationTextArea"
     >
       <svg-icon
         class="close-icon"
