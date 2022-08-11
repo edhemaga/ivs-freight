@@ -431,12 +431,17 @@
 
   <!-- DateTime Picker -->
   <div
+    #holder1
     class="date_time_holder input-control"
     *ngIf="
       inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
     "
     [class.active]="showDateInput"
+    tabindex="-1"
     (click)="showDateTimePlaceholder()"
+    (paste)="onDatePaste($event)"
+    (blur)="onBlur()"
+    (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
       'invalid-focus-in':
@@ -451,7 +456,6 @@
       class="main"
       tabindex="0"
       (focus)="onFocus()"
-      (paste)="onDatePaste($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
@@ -468,7 +472,6 @@
       tabindex="1"
       (focus)="onFocus()"
       (click)="setSelection($event)"
-      (paste)="onDatePaste($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
@@ -481,7 +484,6 @@
     <span
       #span3
       class="main"
-      (paste)="onDatePaste($event)"
       tabindex="2"
       (focus)="onFocus()"
       (click)="setSelection($event)"
