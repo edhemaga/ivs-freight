@@ -133,15 +133,6 @@ export class TaInputAddressComponent
       this.getSuperControl.setErrors({ invalid: true });
       this.selectedAddress.emit({ address: null, valid: false });
     }
-    console.log(
-      'Same active and super control ',
-      this.activeAddress?.address === this.getSuperControl.value
-    );
-    console.log('INVALID ', this.invalidAddress);
-    console.log('FOCUS ', this.focusInput);
-    console.log('BLACK INPUT ', this.inputConfig.blackInput);
-    console.log('SUPER CONTROL ', this.getSuperControl.value);
-    console.log('ACTIVE ADDRESS ', this.activeAddress?.address);
 
     // Input Commands
     if (this.inputConfig.commands?.active) {

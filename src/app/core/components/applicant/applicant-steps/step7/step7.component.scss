@@ -223,6 +223,17 @@
       }
     }
 
+    .line-container {
+      position: relative;
+
+      .review-feedback-container {
+        position: absolute;
+        top: 0;
+        right: -435px;
+        width: 429px;
+      }
+    }
+
     .date-location-container {
       width: 616px;
       margin: 0 auto;
@@ -233,6 +244,7 @@
 
       .location-group {
         width: 431px;
+        margin-right: 0;
       }
     }
 

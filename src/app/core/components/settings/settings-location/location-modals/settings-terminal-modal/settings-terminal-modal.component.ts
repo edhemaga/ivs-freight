@@ -2,16 +2,27 @@ import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validat
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Address } from 'src/app/core/components/shared/model/address';
-import { AddressEntity } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  CompanyOfficeModalResponse,
+  CreateTerminalCommand,
+  TerminalResponse,
+  UpdateTerminalCommand,
+} from 'appcoretruckassist';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { calculateParkingSlot } from 'src/app/core/utils/methods.calculations';
+import {
+  calculateParkingSlot,
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from 'src/app/core/utils/methods.calculations';
 import { debounceTime } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 
 @UntilDestroy()
 @Component({
@@ -40,16 +51,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public gateBtns = [
     {
       id: 511,
-      label: 'Yes',
-      value: 'yes',
-      name: 'gate',
+      name: 'Yes',
       checked: false,
     },
     {
       id: 522,
-      label: 'No',
-      value: 'no',
-      name: 'gate',
+      name: 'No',
       checked: false,
     },
   ];
@@ -57,16 +64,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public cameraBtns = [
     {
       id: 533,
-      label: 'Yes',
-      value: 'yes',
-      name: 'camera',
+      name: 'Yes',
       checked: false,
     },
     {
       id: 544,
-      label: 'No',
-      value: 'no',
-      name: 'camera',
+      name: 'No',
       checked: false,
     },
   ];
@@ -88,7 +91,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   };
 
   public selectedAddress: Address | AddressEntity = null;
+
+  public payPeriods: any[] = [];
   public selectedPayPeriod: any = null;
+
+  public weeklyDays: any[] = [];
+  public monthlyDays: any[] = [];
   public selectedDay: any = null;
 
   public isTerminalPhoneExtExist: boolean = false;
@@ -104,53 +112,59 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
-    private formService: FormService
+    private formService: FormService,
+    private settingsLocationService: SettingsLocationService
   ) {}
 
   ngOnInit() {
     this.createForm();
     this.parkingSlot();
     this.fullParkingSlot();
+    this.openCloseCheckboxCard();
+    this.getModalDropdowns();
+
+    if (this.editData?.type === 'edit') {
+      this.editTerminalById(this.editData.id);
+    }
   }
 
   private createForm() {
     this.terminalForm = this.formBuilder.group({
       // Terminal
-      companyOwned: [false],
-      terminalName: [null, Validators.required],
+      isOwner: [false],
+      name: [null, Validators.required],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
-      terminalPhone: [null, [Validators.required, phoneRegex]],
-      terminalPhoneExtension: [null],
-      terminalEmail: [null, emailRegex],
+      phone: [null, [Validators.required, phoneRegex]],
+      extensionPhone: [null],
+      email: [null, emailRegex],
       // Office
-      office: [true],
+      officeChecked: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
-      officePhoneExtension: [null],
+      officeExtensionPhone: [null],
       officeEmail: [null, emailRegex],
       // Parking
-      parking: [true],
+      parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
-      parkingPhoneExtension: [null],
+      parkingExtensionPhone: [null],
       parkingEmail: [null, emailRegex],
-      parkingSlot: [null],
-      fullParkingSlot: [null],
-      gate: [false],
-      securityCamera: [false],
+
+      terminalParkingSlot: [null],
+      terminalFullParkingSlot: [null],
+      gate: [true],
+      securityCamera: [true],
       // Warehouse
-      warehouse: [true],
+      warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
-      warehousePhoneExtension: [null],
+      warehouseExtensionPhone: [null],
       warehouseEmail: [null, emailRegex],
       // Fuel stattion
-      fuelStation: [true],
-      fuelStationPhone: [null, [Validators.required, phoneRegex]],
-      fuelStationPhoneExtension: [null],
-      fuelStationEmail: [null, emailRegex],
+      fuelStationChecked: [false],
       // Additional tab
       rent: [null],
       payPeriod: [null],
-      day: [null],
+      weeklyDay: [null],
+      monthlyDay: [null],
     });
 
     // this.formService.checkFormChange(this.terminalForm);
@@ -182,7 +196,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.terminalForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.type === 'edit') {
           this.updateTerminal(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -202,97 +216,20 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openCloseCheckboxCard(event: any, action: string) {
-    switch (action) {
-      case 'companyOwned': {
-        if (this.terminalForm.get('companyOwned').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('companyOwned').setValue(false);
-        }
-        this.isCheckedCompanyOwned();
-        break;
-      }
-      case 'office': {
-        if (this.terminalForm.get('office').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('office').setValue(false);
-        }
-        this.isCheckedOffice();
-        break;
-      }
-      case 'parking': {
-        if (this.terminalForm.get('parking').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('parking').setValue(false);
-        }
-        this.isCheckedParking();
-        break;
-      }
-      case 'warehouse': {
-        if (this.terminalForm.get('warehouse').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('warehouse').setValue(false);
-        }
-        this.isCheckedWarehouse();
-        break;
-      }
-      case 'fuelStation': {
-        if (this.terminalForm.get('fuelStation').value) {
-          event.preventDefault();
-          event.stopPropagation();
-          this.terminalForm.get('fuelStation').setValue(false);
-        }
-        this.isCheckedFuelStation();
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
+  public openCloseCheckboxCard() {
+    this.isCheckedOffice();
 
-  public isCheckedCompanyOwned() {
-    this.terminalForm
-      .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputService.changeValidators(
-            this.terminalForm.get('terminalName')
-          );
-          this.inputService.changeValidators(this.terminalForm.get('address'));
-          this.inputService.changeValidators(
-            this.terminalForm.get('terminalPhone'),
-            true,
-            [phoneRegex]
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.terminalForm.get('terminalName'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.terminalForm.get('address'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.terminalForm.get('terminalPhone'),
-            false
-          );
-        }
-      });
+    this.isCheckedParking();
+
+    this.isCheckedWarehouse();
   }
 
   public isCheckedOffice() {
     this.terminalForm
-      .get('office')
+      .get('officeChecked')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if (!value) {
+        if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('officePhone'),
             true,
@@ -309,10 +246,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   public isCheckedParking() {
     this.terminalForm
-      .get('parking')
+      .get('parkingChecked')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if (!value) {
+        if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('parkingPhone'),
             true,
@@ -329,10 +266,10 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   public isCheckedWarehouse() {
     this.terminalForm
-      .get('warehouse')
+      .get('warehouseChecked')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
-        if (!value) {
+        if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('warehousePhone'),
             true,
@@ -341,26 +278,6 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
         } else {
           this.inputService.changeValidators(
             this.terminalForm.get('warehousePhone'),
-            false
-          );
-        }
-      });
-  }
-
-  public isCheckedFuelStation() {
-    this.terminalForm
-      .get('fuelStation')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputService.changeValidators(
-            this.terminalForm.get('fuelStationPhone'),
-            true,
-            [phoneRegex]
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.terminalForm.get('fuelStationPhone'),
             false
           );
         }
@@ -377,20 +294,28 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public onAction(event: any, action: string) {
     switch (action) {
       case 'gate': {
-        this.gateBtns = [...event];
-        this.gateBtns.forEach((item) => {
-          if (item.checked) {
-            this.terminalForm.get('gate').patchValue(item.label);
-          }
+        this.gateBtns = this.gateBtns.map((item) => {
+          event.name === 'No'
+            ? this.terminalForm.get('gate').patchValue(false)
+            : this.terminalForm.get('gate').patchValue(true);
+
+          return {
+            ...item,
+            checked: item.id === event.id,
+          };
         });
         break;
       }
       case 'camera': {
-        this.cameraBtns = [...event];
-        this.cameraBtns.forEach((item) => {
-          if (item.checked) {
-            this.terminalForm.get('securityCamera').patchValue(item.label);
-          }
+        this.cameraBtns = this.cameraBtns.map((item) => {
+          event.name === 'No'
+            ? this.terminalForm.get('securityCamera').patchValue(false)
+            : this.terminalForm.get('securityCamera').patchValue(true);
+
+          return {
+            ...item,
+            checked: item.id === event.id,
+          };
         });
         break;
       }
@@ -402,26 +327,26 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   private parkingSlot() {
     this.terminalForm
-      .get('parkingSlot')
+      .get('terminalParkingSlot')
       .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[0].value = calculateParkingSlot(
           value,
-          this.terminalForm.get('parkingSlot')
+          this.terminalForm.get('terminalParkingSlot')
         );
       });
   }
 
   private fullParkingSlot() {
     this.terminalForm
-      .get('fullParkingSlot')
+      .get('terminalFullParkingSlot')
       .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[1].value = calculateParkingSlot(
           value,
-          this.terminalForm.get('fullParkingSlot')
+          this.terminalForm.get('terminalFullParkingSlot')
         );
       });
   }
@@ -442,11 +367,236 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private updateTerminal(id: number) {}
+  private updateTerminal(id: number) {
+    const { address, addressUnit, rent, ...form } = this.terminalForm.value;
 
-  private addTerminal() {}
+    const newData: UpdateTerminalCommand = {
+      id: id,
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
+      monthlyDay:
+        this.selectedPayPeriod?.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      weeklyDay:
+        this.selectedPayPeriod?.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      terminalParkingCount: this.parkingSlots.length
+        ? this.parkingSlots[0].value
+          ? this.parkingSlots[0].value
+          : 0 + this.parkingSlots[1].value
+          ? this.parkingSlots[1].value
+          : 0
+        : 0,
+      terminalParkingSlotCount: this.parkingSlots.length
+        ? this.parkingSlots[0].value
+        : 0,
+      fullTerminalParkingSlotCount: this.parkingSlots.length
+        ? this.parkingSlots[1].value
+        : 0,
+    };
 
-  private deleteTerminalById(id: number) {}
+    this.settingsLocationService
+      .updateCompanyTerminal(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly updated company terminal',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update company terminal.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private addTerminal() {
+    const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+
+    const newData: CreateTerminalCommand = {
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
+      monthlyDay:
+        this.selectedPayPeriod?.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      weeklyDay:
+        this.selectedPayPeriod?.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      terminalParkingCount: this.parkingSlots.length
+        ? this.parkingSlots[0].value
+          ? this.parkingSlots[0].value
+          : 0 + this.parkingSlots[1].value
+          ? this.parkingSlots[1].value
+          : 0
+        : 0,
+      terminalParkingSlotCount: this.parkingSlots.length
+        ? this.parkingSlots[0].value
+        : 0,
+      fullTerminalParkingSlotCount: this.parkingSlots.length
+        ? this.parkingSlots[1].value
+        : 0,
+    };
+
+    this.settingsLocationService
+      .addCompanyTerminal(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly added company terminal',
+            'Success'
+          );
+          this.modalService.setModalSpinner({ action: null, status: false });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't add company terminal.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteTerminalById(id: number) {
+    this.settingsLocationService
+      .deleteCompanyTerminalById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly deleted company terminal.',
+            'Success'
+          );
+          this.modalService.setModalSpinner({
+            action: 'delete',
+            status: false,
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete company terminal.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private editTerminalById(id: number) {
+    this.settingsLocationService
+      .getCompanyTerminalById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TerminalResponse) => {
+          this.terminalForm.patchValue({
+            isOwner: res.isOwner,
+            name: res.name,
+            address: res.address.address,
+            addressUnit: res.address.addressUnit,
+            phone: res.phone,
+            extensionPhone: '321',
+            email: res.email,
+            // Office
+            officeChecked: res.officeChecked,
+            officePhone: res.officePhone,
+            officeExtensionPhone: '321',
+            officeEmail: res.officeEmail,
+            // Parking
+            parkingChecked: res.parkingChecked,
+            parkingPhone: res.parkingPhone,
+            parkingExtensionPhone: '321',
+            parkingEmail: res.parkingEmail,
+
+            terminalParkingSlot: res.terminalParkingSlot,
+            terminalFullParkingSlot: res.terminalFullParkingSlot,
+            gate: res.gate,
+            securityCamera: res.securityCamera,
+            // Warehouse
+            warehouseChecked: res.warehouseChecked,
+            warehousePhone: res.warehousePhone,
+            warehouseExtensionPhone: '321',
+            warehouseEmail: res.warehouseEmail,
+            // Fuel stattion
+            fuelStationChecked: res.fuelStationChecked,
+            // Additional tab
+            rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
+            payPeriod: res.payPeriod ? res.payPeriod.name : null,
+            monthlyDay: res.payPeriod?.name
+              ? res.payPeriod.name === 'Monthly'
+                ? res.monthlyDay.name
+                : res.weeklyDay.name
+              : null,
+          });
+
+          this.selectedAddress = res.address;
+          this.selectedPayPeriod = res.payPeriod;
+
+          this.selectedDay =
+            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+
+          this.parkingSlots[0] = { id: 1, value: res.terminalParkingSlot };
+          this.parkingSlots[1] = { id: 2, value: res.terminalFullParkingSlot };
+
+          if (res.gate) {
+            this.gateBtns[0].checked = true;
+            this.gateBtns[1].checked = false;
+          } else {
+            this.gateBtns[0].checked = false;
+            this.gateBtns[1].checked = true;
+          }
+
+          if (res.securityCamera) {
+            this.cameraBtns[0].checked = true;
+            this.cameraBtns[1].checked = false;
+          } else {
+            this.cameraBtns[0].checked = false;
+            this.cameraBtns[1].checked = true;
+          }
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load company terminal.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private getModalDropdowns() {
+    this.settingsLocationService
+      .getModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: CompanyOfficeModalResponse) => {
+          this.monthlyDays = res.payPeriodMonthly;
+          this.payPeriods = res.payPeriod;
+          this.weeklyDays = res.dayOfWeek;
+        },
+        error: () => {
+          this.notificationService.error("Can't load modal dropdowns", 'Error');
+        },
+      });
+  }
 
   ngOnDestroy() {}
 }

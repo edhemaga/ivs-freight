@@ -436,6 +436,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.mapDriverData(data);
       });
 
+      console.log('Driver Data');
+      console.log(this.viewData);
+
       // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);
@@ -460,10 +463,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? this.imageBase64Service.sanitizer(data.avatar)
         : '',
       textDOB: data.dateOfBirth
-        ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
+        ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
         : '',
       textHired: data.hired
-        ? this.datePipe.transform(data.hired, 'dd/MM/yy')
+        ? this.datePipe.transform(data.hired, 'MM/dd/yy')
         : '',
       textCDL: data?.cdlNumber
         ? data.cdlNumber

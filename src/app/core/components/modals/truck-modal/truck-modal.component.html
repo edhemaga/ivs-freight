@@ -137,7 +137,6 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: truckForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="companyOwned"
@@ -250,7 +249,7 @@
                 type: 'text',
                 label: 'Empty Weight',
                 maxLength: 6,
-                placeholderText: 'Ibs.',
+                placeholderText: 'ibs',
                 thousandSeparator: true
               }"
             ></app-ta-input>

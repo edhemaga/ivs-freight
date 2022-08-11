@@ -70,8 +70,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     if (this.editData.type === 'edit-licence') {
       this.getCdlById();
     }
-
-    console.log('editData', this.editData);
   }
 
   private createForm() {
@@ -193,8 +191,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             };
           });
           this.classTypes = res.classTypes;
-          console.log('classTypes', this.classTypes);
-          this.countryTypes = res.countryTypes;
+          // this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;
         },
@@ -232,7 +229,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             classType: res.classType.name,
-            countryType: res.countryType.name,
+            // countryType: res.countryType.name,
             stateId: res.state.stateName,
             restrictions: null,
             endorsements: null,
@@ -241,7 +238,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.selectedEndorsment = res.cdlEndorsements;
           this.selectedRestrictions = res.cdlRestrictions;
           this.selectedClassType = res.classType;
-          this.selectedCountryType = res.countryType;
+          // this.selectedCountryType = res.countryType;
           this.selectedStateType = res.state;
         },
         error: () => {
@@ -252,10 +249,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public updateCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
-
-    console.log('editData updateCdl', this.editData);
-    console.log('editData updateCdl issueDate', issueDate);
-    console.log('editData updateCdl expDate', expDate);
 
     const newData: EditCdlCommand = {
       driverId: this.editData.id,
@@ -293,10 +286,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
   public addCdl() {
     const { issueDate, expDate } = this.cdlForm.value;
-
-    console.log('editData addCdl', this.editData);
-    console.log('editData addCdl issueDate', issueDate);
-    console.log('editData addCdl expDate', expDate);
 
     const newData: CreateCdlCommand = {
       driverId: this.editData.id,

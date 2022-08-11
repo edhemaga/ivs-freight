@@ -164,6 +164,10 @@
 
           <div
             class="d-flex align-items-center justify-content-center"
+            *ngIf="
+              selectedMode === 'APPLICANT_MODE' ||
+              selectedMode === 'FEEDBACK_MODE'
+            "
             [ngStyle]="{
               'margin-bottom': !dontHaveMvrForm.get('dontHaveMvr').value
                 ? '22px'
@@ -182,11 +186,26 @@
             </app-ta-checkbox>
           </div>
 
+          <!-- REQUESTED MVR -->
+
+          <div
+            class="d-flex align-items-center justify-content-center requested-mvr-feedback-box"
+            *ngIf="
+              selectedMode === 'FEEDBACK_MODE' &&
+              dontHaveMvrForm.get('dontHaveMvr').value
+            "
+          >
+            <p class="m-0 ta-font-semi-bold">
+              Driver requested MVR from prospective employer
+            </p>
+          </div>
+
           <!-- FILES CONTAINER -->
 
           <div
             class="d-flex flex-column files-container"
             *ngIf="!dontHaveMvrForm.get('dontHaveMvr').value"
+            [formGroup]="mvrAuthorizationForm"
           >
             <div class="d-flex align-items-center files-header">
               <div
@@ -200,10 +219,46 @@
             </div>
 
             <app-ta-upload-files
+              *ngIf="
+                selectedMode === 'APPLICANT_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
               [files]="documents"
               [size]="'medium'"
+              [hasNumberOfPages]="true"
               (onFileEvent)="onFilesAction($event)"
             ></app-ta-upload-files>
+
+            <div
+              class="d-flex review-documents-container line-container"
+              *ngIf="selectedMode === 'REVIEW_MODE'"
+            >
+              <!-- REVIEW AND FEEDBACK -->
+
+              <div
+                class="review-feedback-container"
+                *ngIf="
+                  selectedMode === 'REVIEW_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
+                "
+              >
+                <app-applicant-review-feedback
+                  formControlName="firstRowReview"
+                  [displayAnnotationButton]="
+                    openAnnotationArray[0].displayAnnotationButton
+                  "
+                  [displayAnnotationTextArea]="
+                    openAnnotationArray[0].displayAnnotationTextArea
+                  "
+                  [lineIndex]="0"
+                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                  [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                  "
+                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                ></app-applicant-review-feedback>
+              </div>
+            </div>
           </div>
 
           <!-- LICENSE CHECK CHECKBOX -->
@@ -229,10 +284,20 @@
 
           <!-- SIGNATURE PAD -->
 
-          <div class="d-flex flex-column signature-pad-container">
+          <div
+            class="d-flex signature-pad-container"
+            *ngIf="selectedMode === 'APPLICANT_MODE'"
+          >
             <app-applicant-signature-pad
               (signatureEmitter)="onSignatureAction($event)"
             ></app-applicant-signature-pad>
+          </div>
+
+          <div
+            class="d-flex justify-content-center align-items-center signature-image-container"
+            *ngIf="selectedMode !== 'APPLICANT_MODE'"
+          >
+            <img src="" alt="signature" />
           </div>
         </form>
       </div>

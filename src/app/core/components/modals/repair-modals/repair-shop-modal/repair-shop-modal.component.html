@@ -163,6 +163,7 @@
                 [customClass]="'medium'"
                 [name]="openHour.get('dayLabel').value"
                 [label]="openHour.get('dayLabel').value"
+                (formArrayAction)="openHourDayAction($event, ind)"
               ></app-ta-checkbox>
               <!-- Time Picker -->
               <app-ta-input

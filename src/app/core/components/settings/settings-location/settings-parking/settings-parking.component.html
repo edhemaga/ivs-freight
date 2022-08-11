@@ -15,7 +15,7 @@
       <svg-icon
         src="assets/svg/common/ic_plus.svg"
         class="settings-plus-button"
-        (click)="onAction({ modalName: 'parking', type: 'add' })"
+        (click)="onAction({ modalName: 'parking' })"
       ></svg-icon>
     </div>
   </div>
@@ -27,22 +27,31 @@
       [hasFooter]="false"
       [haveHeaderText]="true"
       [paddingDots]="'11px 0px 0px 12px'"
-
     >
       <div class="settings-body-items">
-        <div *ngIf="item.phone" class="single-item">
-          <svg-icon class="company-icons" src="assets/svg/common/ic_phone.svg"></svg-icon>
+        <div
+          *ngIf="item.phone"
+          class="single-item"
+          (click)="
+            onAction({ modalName: 'parking', type: { type: 'edit', id: 1 } })
+          "
+        >
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.phone"> </app-ta-copy>
-         
         </div>
         <div *ngIf="item.email" class="single-item">
-          <svg-icon class="company-icons"  src="assets/svg/common/ic_email.svg"></svg-icon>
+          <svg-icon
+            class="company-icons"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
-        
         </div>
         <div *ngIf="item.address" class="single-item">
           <svg-icon
-          class="company-icons" 
+            class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
           <span>{{ item.address }}</span>
