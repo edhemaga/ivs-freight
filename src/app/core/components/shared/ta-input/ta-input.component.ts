@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   EventEmitter,
@@ -40,7 +39,7 @@ import { TaInputResetService } from './ta-input-reset.service';
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
@@ -99,17 +98,6 @@ export class TaInputComponent
     private thousandSeparatorPipe: TaThousandSeparatorPipe
   ) {
     this.superControl.valueAccessor = this;
-  }
-
-  ngAfterViewInit() {
-    if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
-    ) {
-      if (this.getSuperControl.value) {
-        this.setTimeDateInput(this.getSuperControl.value);
-      }
-    }
   }
 
   ngOnInit(): void {
@@ -199,8 +187,17 @@ export class TaInputComponent
   }
 
   public writeValue(obj: any): void {
-    this.input.nativeElement.value = obj;
-    this.changeInput.emit(this.input.nativeElement.value);
+    this.changeInput.emit(obj);
+    if (
+      this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker'
+    ) {
+      if (obj) {
+        this.setTimeDateInput(obj);
+      }
+    } else {
+      this.input.nativeElement.value = obj;
+    }
   }
 
   public registerOnChange(fn: any): void {

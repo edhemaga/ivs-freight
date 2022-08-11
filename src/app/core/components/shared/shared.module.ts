@@ -104,6 +104,7 @@ import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
+import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -179,6 +180,7 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
+    TtTitleModalComponent,
 
     //----------------------------
     MapListComponent,
@@ -327,6 +329,7 @@ export function playerFactory() {
     LoadModalComponent,
     TaUploadFilesComponent,
     TaTimePeriodComponent,
+    TtTitleModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

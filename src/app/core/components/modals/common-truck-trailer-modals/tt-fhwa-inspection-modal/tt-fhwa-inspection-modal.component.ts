@@ -45,9 +45,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-
+    console.log(this.editData);
     if (this.editData.type === 'edit-inspection') {
-      this.getInspectionById();
+      this.editInspectionById();
     }
   }
 
@@ -92,12 +92,13 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getInspectionById() {
+  private editInspectionById() {
     this.commonTruckTrailerService
       .getInspectionById(this.editData.file_id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: InspectionResponse) => {
+          console.log(res);
           this.fhwaInspectionForm.patchValue({
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
@@ -108,9 +109,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   }
 
   private updateInspection() {
-    const { issueDate } = this.fhwaInspectionForm.value;
+    const { issueDate, ...form } = this.fhwaInspectionForm.value;
     const newData: UpdateInspectionCommand = {
-      ...this.fhwaInspectionForm.value,
+      ...form,
       issueDate: convertDateToBackend(issueDate),
       id: this.editData.file_id,
     };
@@ -139,9 +140,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   }
 
   private addInspection() {
-    const { issueDate } = this.fhwaInspectionForm.value;
+    const { issueDate, ...form } = this.fhwaInspectionForm.value;
     const newData: CreateInspectionCommand = {
-      ...this.fhwaInspectionForm.value,
+      ...form,
       issueDate: convertDateToBackend(issueDate),
       truckId: this.editData.modal === 'truck' ? this.editData.id : null,
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,

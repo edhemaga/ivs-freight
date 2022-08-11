@@ -332,6 +332,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
               active: item.active,
             };
           });
+
+          if (res.phoneExt) {
+            this.isPhoneExtExist = true;
+          }
         },
         error: () => {
           this.notificationService.error(

@@ -27,7 +27,6 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
-import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 
 @NgModule({
   declarations: [
@@ -61,11 +60,6 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
   ],
   providers: [
     GoogleMapsAPIWrapper,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: RefreshTokenInterceptor,
-      multi: true,
-    },
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
