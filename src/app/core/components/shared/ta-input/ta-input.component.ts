@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -43,7 +42,7 @@ import { TaInputResetService } from './ta-input-reset.service';
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, AfterViewInit, ControlValueAccessor
+  implements OnInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
@@ -105,8 +104,6 @@ export class TaInputComponent
   ) {
     this.superControl.valueAccessor = this;
   }
-
-  ngAfterViewInit() {}
 
   ngOnInit(): void {
     if (
@@ -196,7 +193,6 @@ export class TaInputComponent
 
   public writeValue(obj: any): void {
     this.changeInput.emit(obj);
-
     if (
       this.inputConfig.name === 'datepicker' ||
       this.inputConfig.name === 'timepicker'
@@ -204,7 +200,7 @@ export class TaInputComponent
       if (obj) {
         this.setTimeDateInput(obj);
       }
-    }else{
+    } else {
       this.input.nativeElement.value = obj;
     }
   }

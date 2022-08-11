@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.truckNumber"
   [isModalValid]="truckForm.valid"
   (action)="onModalAction($event)"
 >

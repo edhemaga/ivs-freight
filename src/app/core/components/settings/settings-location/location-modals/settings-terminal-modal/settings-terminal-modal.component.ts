@@ -575,6 +575,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             this.cameraBtns[0].checked = false;
             this.cameraBtns[1].checked = true;
           }
+
+          if (res.extensionPhone) {
+            this.isTerminalPhoneExtExist = true;
+          }
+
+          if (res.officeExtPhone) {
+            this.isOfficePhoneExtExist = true;
+          }
+
+          if (res.parkingExtPhone) {
+            this.isParkingPhoneExtExist = true;
+          }
+
+          if (res.warehouseExtPhone) {
+            this.isWarehousePhoneExtExist = true;
+          }
         },
         error: () => {
           this.notificationService.error(

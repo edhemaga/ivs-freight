@@ -9,18 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { ClassType } from './classType';
+import { EventType } from './eventType';
 
 
-export interface EditCdlCommand { 
-    id?: number;
-    cdlNumber?: string | null;
-    issueDate?: string;
-    expDate?: string;
-    classType?: ClassType;
-    restrictions?: Array<number> | null;
-    endorsements?: Array<number> | null;
-    stateId?: number;
-    note?: string | null;
+export interface CreateEventCommand { 
+    eventTitle?: string | null;
+    startDate?: string;
+    endDate?: string;
+    eventType?: EventType;
+    description?: string | null;
+    allDay?: boolean;
+    weekendDays?: boolean;
+    repeat?: boolean;
+    rrule?: string | null;
 }
 

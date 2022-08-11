@@ -402,6 +402,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
           this.selectedDay =
             res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
 
+          if (res.extensionPhone) {
+            this.isPhoneExtExist = true;
+          }
+
           for (let index = 0; index < res.departmentContacts.length; index++) {
             this.departmentContacts.push(
               this.createDepartmentContacts({

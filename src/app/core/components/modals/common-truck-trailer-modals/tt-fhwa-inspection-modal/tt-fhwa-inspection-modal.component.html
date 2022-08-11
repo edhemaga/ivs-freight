@@ -1,10 +1,16 @@
 <app-ta-modal
   [modalTitle]="
     editData?.type !== 'edit'
-      ? 'Add new FHWA Inspection'
-      : 'Edit new FHWA Inspection'
+      ? 'Add New FHWA Inspection'
+      : 'Edit FHWA Inspection'
   "
   [editData]="editData"
+  [editName]="
+    editData?.modal === 'trailer'
+      ? 'Trailer ' + editData?.payload?.trailerNumber
+      : 'Truck ' + editData?.payload?.truckNumber
+  "
+  [specificCaseModalName]="true"
   [isModalValid]="fhwaInspectionForm.valid"
   (action)="onModalAction($event)"
 >

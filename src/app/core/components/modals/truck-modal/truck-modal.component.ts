@@ -112,7 +112,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.isCompanyOwned();
     this.getTruckDropdowns();
     this.vinDecoder();
-
+    console.log(this.editData);
     if (this.editData) {
       this.editTruckById(this.editData.id);
     }

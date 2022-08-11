@@ -480,6 +480,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             this.cameraBtns[0].checked = false;
             this.cameraBtns[1].checked = true;
           }
+
+          if (res.extensionPhone) {
+            this.isPhoneExtExist = true;
+          }
         },
         error: () => {
           this.notificationService.error(
