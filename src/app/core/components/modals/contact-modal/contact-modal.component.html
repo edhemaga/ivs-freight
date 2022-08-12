@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Contact' : 'Edit Contact'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.name"
   [isModalValid]="contactForm.valid"
   [dropZoneConfig]="dropZoneConfig"
   (action)="onModalAction($event)"
@@ -77,6 +77,7 @@
             name: 'Phone',
             type: 'text',
             label: 'Phone',
+            isRequired: true,
             placeholderIcon: 'phone',
             mask: '(000) 000-0000'
           }"
@@ -89,6 +90,7 @@
             name: 'Email',
             type: 'text',
             label: 'Email',
+            isRequired: true,
             placeholderIcon: 'email'
           }"
         ></app-ta-input>
