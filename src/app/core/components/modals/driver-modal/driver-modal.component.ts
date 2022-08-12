@@ -808,12 +808,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       solo: {
         emptyMile: this.driverForm.get('soloDriver').value
           ? soloEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloEmptyMile)
+            ? parseFloat(soloEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('soloDriver').value
           ? soloLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloLoadedMile)
+            ? parseFloat(soloLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('soloDriver').value
@@ -825,12 +825,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       team: {
         emptyMile: this.driverForm.get('teamDriver').value
           ? teamEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamEmptyMile)
+            ? parseFloat(teamEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('teamDriver').value
           ? teamLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamLoadedMile)
+            ? parseFloat(teamLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('teamDriver').value
@@ -960,12 +960,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       solo: {
         emptyMile: this.driverForm.get('soloDriver').value
           ? soloEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloEmptyMile)
+            ? parseFloat(soloEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('soloDriver').value
           ? soloLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloLoadedMile)
+            ? parseFloat(soloLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('soloDriver').value
@@ -977,12 +977,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       team: {
         emptyMile: this.driverForm.get('teamDriver').value
           ? teamEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamEmptyMile)
+            ? parseFloat(teamEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('teamDriver').value
           ? teamLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamLoadedMile)
+            ? parseFloat(teamLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('teamDriver').value

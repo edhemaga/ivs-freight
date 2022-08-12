@@ -198,11 +198,10 @@ export class TaInputComponent
       this.inputConfig.name === 'timepicker'
     ) {
       if (obj) {
-        console.log("WHAT IS THIS");
-        console.log(obj);
-        setTimeout(() => {
+        const timeout = setTimeout(() => {
           this.setTimeDateInput(obj);
-        }, 300)
+          clearTimeout(timeout);
+        }, 300);
       }
     } else {
       this.input.nativeElement.value = obj;

@@ -105,6 +105,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public parkingName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -452,7 +454,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 : res.weeklyDay.name
               : null,
           });
-
+          this.parkingName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
