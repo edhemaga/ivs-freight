@@ -281,7 +281,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -456,6 +456,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       ...data,
       isSelected: false,
+      isOwner: data?.owner ? data.owner : false,
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
@@ -588,7 +589,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       '#FCDAF0',
       '#E7E1DF',
       '#E3E3E3',
-    ]; 
+    ];
 
     this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 
@@ -760,7 +761,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
           },
         });
-    }else if(event.type === 'show-more'){
+    } else if (event.type === 'show-more') {
       this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery);

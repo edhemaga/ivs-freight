@@ -52,7 +52,8 @@
             'width.px':
               column.resizable && !locked
                 ? column.width - 55
-                : column.width - 20
+                : column.width - 20,
+            'min-width.px': rezaizeing ? column.width : 'unset'
           }"
           [ngClass]="{
             'sort-active': column.sortDirection !== '' && column.sortDirection,
