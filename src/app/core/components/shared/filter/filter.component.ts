@@ -326,6 +326,298 @@ categoryRepairArray: any[] = [
   },
 ]
 
+truckArray: any[] = [
+  {
+    id: 1,
+    name: '12345',
+  },
+  {
+    id: 2,
+    name: '231C1',
+  },
+  {
+    id: 3,
+    name: '111A2',
+  },
+  {
+    id: 4,
+    name: '245A5',
+  },
+  {
+    id: 5,
+    name: '5AC21',
+  },
+  {
+    id: 6,
+    name: '44A56',
+  },
+  {
+    id: 7,
+    name: '625C1',
+  },
+  {
+    id: 8,
+    name: '441C1',
+  },
+  {
+    id: 9,
+    name: '1231C',
+  },
+]
+
+trailerArray: any[] = [
+  {
+    id: 1,
+    name: 'TRAILER',
+  },
+  {
+    id: 2,
+    name: 'TRAILER1',
+  },
+  {
+    id: 3,
+    name: 'TRAILER2',
+  },
+  {
+    id: 4,
+    name: 'TRAILER2',
+  },
+  {
+    id: 5,
+    name: 'TRAILER3',
+  },
+  {
+    id: 6,
+    name: 'TRAILER4',
+  },
+  {
+    id: 7,
+    name: 'TRAILER',
+  },
+  {
+    id: 8,
+    name: 'TRAILER',
+  },
+  {
+    id: 9,
+    name: 'TRAILER',
+  },
+]
+
+fuelStopArray: any[] = [
+  {
+    id: 1,
+    name: '7-11 Store',
+  },
+  {
+    id: 2,
+    name: 'Pilot Travel Stop',
+  },
+  {
+    id: 3,
+    name: 'RR HICKORY HILLS',
+  },
+  {
+    id: 4,
+    name: 'Sheetz',
+  },
+  {
+    id: 5,
+    name: 'QUIK TRIP',
+  },
+  {
+    id: 6,
+    name: 'Corner Store Gas',
+  },
+  {
+    id: 7,
+    name: 'Fuel Proposition',
+  },
+  {
+    id: 8,
+    name: 'Behemoth Gas Station',
+  },
+]
+
+brokerArray: any[] = [
+  {
+    id: 1,
+    name: 'R2 Logistics',
+  },
+  {
+    id: 2,
+    name: 'Webiz Conference',
+  },
+  {
+    id: 3,
+    name: 'Anthym Logistics, LLC',
+  },
+  {
+    id: 4,
+    name: 'LOGY Supply chain',
+  },
+  {
+    id: 5,
+    name: 'Everyone on time safelyaaaaa',
+  },
+  {
+    id: 6,
+    name: 'R2 Logistics',
+  },
+  {
+    id: 7,
+    name: 'LOGY Supply chain',
+  },
+  {
+    id: 8,
+    name: 'LOGY Supply chain 2',
+  },
+]
+
+driverArray: any[] = [
+  {
+    id: 1,
+    name: 'Angelo Trotter',
+    image: ''
+  },
+  {
+    id: 2,
+    name: 'Aleksandra Djordjevic',
+    image: ''
+  },
+  {
+    id: 3,
+    name: 'Alex Midleman',
+    image: ''
+  },
+  {
+    id: 4,
+    name: 'Ben Dover',
+    image: ''
+  },
+  {
+    id: 5,
+    name: 'Carlos Huanito',
+    image: ''
+  },
+  {
+    id: 6,
+    name: 'Chirs Griffin',
+    image: ''
+  },
+  {
+    id: 7,
+    name: 'Erica Forman',
+    image: ''
+  },
+  {
+    id: 8,
+    name: 'Glan Danzig',
+    image: ''
+  },
+]
+
+truckTypeArray: any[] = [
+  {
+    id: 1,
+    name: 'Semi Truck',
+    icon: 'assets/svg/common/semi-truck.svg',
+  },
+  {
+    id: 2,
+    name: 'Semi Sleeper',
+    icon: 'assets/svg/common/trucks/ic_truck_semi-wSleeper.svg',
+  },
+  {
+    id: 3,
+    name: 'Box Truck',
+    icon: 'assets/svg/common/trucks/ic_truck_box-truck.svg',
+  },
+  {
+    id: 4,
+    name: 'Cargo Van',
+    icon: 'assets/svg/common/trucks/ic_truck_cargo-van.svg',
+  },
+  {
+    id: 5,
+    name: 'Tow Truck',
+    icon: 'assets/svg/common/trucks/ic_truck_tow-truck.svg',
+  },
+  {
+    id: 6,
+    name: 'Car Hauler',
+    icon: 'assets/svg/common/trucks/ic_truck_car-hauler.svg',
+  },
+  {
+    id: 7,
+    name: 'Spotter',
+    icon: 'assets/svg/common/trucks/ic_truck_spotter.svg',
+  },
+]
+
+
+trailerTypeArray: any[] = [
+  {
+    id: 1,
+    name: 'Reefer',
+    icon: 'assets/svg/common/trailers/ic_trailer_reefer.svg', 
+  },
+  {
+    id: 2,
+    name: 'Dry Van',
+    icon: 'assets/svg/common/trailers/ic_trailer_dryvan.svg', 
+  },
+  {
+    id: 3,
+    name: 'Side Kit',
+    icon: 'assets/svg/common/trailers/ic_trailer_side-kit.svg', 
+  },
+  {
+    id: 4,
+    name: 'Conestoga',
+    icon: 'assets/svg/common/trailers/ic_trailer_conestoga.svg', 
+  },
+  {
+    id: 5,
+    name: 'Dumper',
+    icon: 'assets/svg/common/trailers/ic_trailer_dumper.svg', 
+  },
+  {
+    id: 6,
+    name: 'Container',
+    icon: 'assets/svg/common/trailers/ic_trailer_container.svg', 
+  },
+  {
+    id: 7,
+    name: 'Tanker',
+    icon: 'assets/svg/common/trailers/ic_trailer_tanker-liquid.svg', 
+  },
+  {
+    id: 8,
+    name: 'Car Hauler',
+    icon: 'assets/svg/common/trailers/ic_trailer_carhauler.svg', 
+  },
+  {
+    id: 9,
+    name: 'Flat Bed',
+    icon: 'assets/svg/common/trailers/ic_trailer_flatbed.svg', 
+  },
+  {
+    id: 10,
+    name: 'Low Boy/RGN',
+    icon: 'assets/svg/truckassist-table/trailer/low-boy-RGN.svg', 
+  },
+  {
+    id: 11,
+    name: 'Chassis',
+    icon: 'assets/svg/common/trailers/ic_trailer_chassis.svg', 
+  },
+  {
+    id: 12,
+    name: 'Step Deck',
+    icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg', 
+  },
+]
 
    selectedDispatcher: any[] = [];
    selectedTimeValue: any = '';
@@ -336,6 +628,12 @@ categoryRepairArray: any[] = [
    @Input() type: string = 'userFilter';
    @Input() icon: string = 'user';
    @Input() subType: string = 'pendingStatus';
+   @Input() searchState: boolean = false;
+   @Input() filterTitle: string = '';
+   @Input() defFilterHolder: boolean = false;
+   @Input() noLeftIcon: boolean = false;
+   @Input() leftSideIcon: boolean = false;
+   @Input() largeLeftIcon: boolean = false;
 
    constructor(
     private formBuilder: FormBuilder,
@@ -388,7 +686,61 @@ categoryRepairArray: any[] = [
                   }
                   return item;
                 });
+            }
+          else if ( this.type == 'truckFilter' )
+            {
+                this.truckArray.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+            }
+          else if ( this.type == 'fuelStopFilter' )
+            {
+                this.fuelStopArray.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+            } 
+          
+          else if ( this.type == 'trailerFilter' )
+            {
+                this.trailerArray.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+            }
+
+          else if ( this.type == 'brokerFilter' )
+            {
+                this.brokerArray.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+            }
+            
+          else if ( this.type == 'driverFilter' )
+            {
+                this.driverArray.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
             }  
+            
           
         }
       else  
@@ -417,6 +769,43 @@ categoryRepairArray: any[] = [
                 {
                   this.closedStatusArray[i].hidden = false;            
                 } 
+            }
+          else if ( this.type == 'truckFilter' )
+            {
+              for ( var i = 0; i < this.truckArray.length; i++ )
+                {
+                  this.truckArray[i].hidden = false;            
+                }
+            }
+          else if ( this.type == 'trailerFilter' )
+            {
+              for ( var i = 0; i < this.trailerArray.length; i++ )
+                {
+                  this.trailerArray[i].hidden = false;            
+                }
+            }
+          else if ( this.type == 'fuelStopFilter' )
+            {
+              for ( var i = 0; i < this.fuelStopArray.length; i++ )
+                {
+                  this.fuelStopArray[i].hidden = false;            
+                }
+            }
+            
+          else if ( this.type == 'brokerFilter' )
+            {
+              for ( var i = 0; i < this.brokerArray.length; i++ )
+                {
+                  this.brokerArray[i].hidden = false;            
+                }
+            }  
+
+          else if ( this.type == 'driverFilter' )
+            {
+              for ( var i = 0; i < this.driverArray.length; i++ )
+                {
+                  this.driverArray[i].hidden = false;            
+                }
             }  
           
           
@@ -460,11 +849,39 @@ categoryRepairArray: any[] = [
     else if ( this.type == 'categoryRepairFilter' )   
       {
         mainArray = this.categoryRepairArray;
-      }   
-    else 
+      }  
+    else if ( this.type == 'truckFilter' )   
+      {
+        mainArray = this.truckArray;
+      } 
+    else if ( this.type == 'trailerFilter' )
+      {
+        mainArray = this.trailerArray;
+      }
+    else if ( this.type == 'fuelStopFilter' )
+      {
+        mainArray = this.fuelStopArray;
+      }
+    else if ( this.type == 'brokerFilter' )
+      {
+        mainArray = this.brokerArray;
+      }
+    else if ( this.type == 'driverFilter' )
+      {
+        mainArray = this.driverArray;
+      }
+    else if ( this.type == 'truckTypeFilter' )
+      {
+        mainArray = this.truckTypeArray; 
+      }                
+    else if ( this.type == 'userFilter' )
       {
         mainArray = this.unselectedUser;
       }
+    else if ( this.type == 'trailerTypeFilter' )
+      {
+        mainArray = this.trailerTypeArray;
+      }  
       
     mainArray[indx].isSelected = true;
       
@@ -549,7 +966,84 @@ categoryRepairArray: any[] = [
               
             }
       }
-     else 
+     else if ( this.type == 'truckFilter' )  
+      {
+        for ( var i = 0; i < this.truckArray.length; i++ )
+            {
+              if (this.truckArray[i].id == id )
+                {
+                  this.truckArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'trailerFilter' )  
+      {
+        for ( var i = 0; i < this.trailerArray.length; i++ )
+            {
+              if (this.trailerArray[i].id == id )
+                {
+                  this.trailerArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'fuelStopFilter' )  
+      {
+        for ( var i = 0; i < this.fuelStopArray.length; i++ )
+            {
+              if (this.fuelStopArray[i].id == id )
+                {
+                  this.fuelStopArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'brokerFilter' )  
+      {
+        for ( var i = 0; i < this.brokerArray.length; i++ )
+            {
+              if (this.brokerArray[i].id == id )
+                {
+                  this.brokerArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'driverFilter' )  
+      {
+        for ( var i = 0; i < this.driverArray.length; i++ )
+            {
+              if (this.driverArray[i].id == id )
+                {
+                  this.driverArray[i].isSelected = false; 
+                }
+              
+            }
+      } 
+     else if ( this.type == 'truckTypeFilter' )  
+      {
+        for ( var i = 0; i < this.truckTypeArray.length; i++ )
+            {
+              if (this.truckTypeArray[i].id == id )
+                {
+                  this.truckTypeArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'trailerTypeFilter' )  
+      {
+        for ( var i = 0; i < this.trailerTypeArray.length; i++ )
+            {
+              if (this.trailerTypeArray[i].id == id )
+                {
+                  this.trailerTypeArray[i].isSelected = false; 
+                }
+              
+            }
+      }
+     else if ( this.type == 'userFilter' )
       {
         for ( var i = 0; i < this.unselectedUser.length; i++ )
             {
@@ -625,8 +1119,43 @@ categoryRepairArray: any[] = [
               {
                   this.categoryRepairArray[i].isSelected = false;
               }
-          }   
-        else 
+          }
+        else if ( this.type == 'truckFilter' )  
+          {
+            for ( var i = 0; i < this.truckArray.length; i++ )
+                {                 
+                  this.truckArray[i].isSelected = false;  
+                }
+          }
+        else if ( this.type == 'trailerFilter' )  
+          {
+            for ( var i = 0; i < this.trailerArray.length; i++ )
+                {
+                  this.trailerArray[i].isSelected = false;  
+                }
+          }
+        else if ( this.type == 'brokerFilter' )  
+          {
+            for ( var i = 0; i < this.brokerArray.length; i++ )
+                {
+                  this.brokerArray[i].isSelected = false;  
+                }
+          }
+        else if ( this.type == 'driverFilter' )  
+          {
+            for ( var i = 0; i < this.driverArray.length; i++ )
+                {
+                  this.driverArray[i].isSelected = false;  
+                }
+          }
+        else if ( this.type == 'truckTypeFilter' )  
+          {
+            for ( var i = 0; i < this.truckTypeArray.length; i++ )
+                {
+                  this.truckTypeArray[i].isSelected = false;  
+                }
+          }           
+        else if ( this.type == 'userFilter' )
           {
             for ( var i = 0; i < this.unselectedUser.length; i++ )
               {

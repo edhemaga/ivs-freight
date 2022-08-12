@@ -33,7 +33,7 @@
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-            <app-filter [type]="'userFilter'"> </app-filter>
+            <app-filter [type]="'userFilter'" [searchState]="true" [filterTitle]="'User Filter'" [defFilterHolder]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
           <div
@@ -43,7 +43,7 @@
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-          <app-filter [type]="'departmentFilter'" [icon]="'tab'"> </app-filter>
+          <app-filter [type]="'departmentFilter'" [icon]="'tab'" [filterTitle]="'Department Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
           <div
@@ -53,7 +53,7 @@
             position="bottom"
             tooltipBackground="#6C6C6C"
           >
-            <app-filter [type]="'statusFilter'" [subType]="'pendingStatus'" [icon]="'broker-half-circle'"> </app-filter>
+            <app-filter [type]="'statusFilter'" [subType]="'pendingStatus'" [icon]="'broker-half-circle'" [filterTitle]="'Status Filter'" [defFilterHolder]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
           <div
@@ -63,7 +63,7 @@
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-            <app-filter [type]="'pmFilter'" [icon]="'default_pm'"> </app-filter>
+            <app-filter [type]="'pmFilter'" [icon]="'default_pm'" [filterTitle]="'PM Filter'" [defFilterHolder]="true" [leftSideIcon]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
           <div
@@ -73,7 +73,7 @@
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-          <app-filter [type]="'categoryRepairFilter'" [icon]="'key-repair'"> </app-filter>
+          <app-filter [type]="'categoryRepairFilter'" [icon]="'key-repair'" [filterTitle]="'Category Filter'" [defFilterHolder]="true" [leftSideIcon]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
           <div
@@ -83,7 +83,77 @@
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-          <app-filter [type]="'categoryFuelFilter'" [icon]="'funnel'"> </app-filter>
+          <app-filter [type]="'categoryFuelFilter'" [icon]="'funnel'" [filterTitle]="'Category Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Truck Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'truckFilter'" [icon]="'truck'" [searchState]="true" [filterTitle]="'Truck Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Trailer Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'trailerFilter'" [icon]="'trailer'" [searchState]="true" [filterTitle]="'Trailer Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Trailer Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'fuelStopFilter'" [icon]="'fuel'" [searchState]="true" [filterTitle]="'Fuel Stop Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Trailer Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'brokerFilter'" [icon]="'broker_filter'" [searchState]="true" [filterTitle]="'Broker Filter'" [defFilterHolder]="true" [noLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Driver Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'driverFilter'" [icon]="'steering-wheel'" [searchState]="true" [filterTitle]="'Driver Filter'" [defFilterHolder]="true" [leftSideIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Truck Type Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'truckTypeFilter'" [icon]="'truck'" [filterTitle]="'Truck Type Filter'" [defFilterHolder]="true" [leftSideIcon]="true" [largeLeftIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Trailer Type Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'trailerTypeFilter'" [icon]="'trailer'" [filterTitle]="'Trailer Type Filter'" [defFilterHolder]="true" [leftSideIcon]="true" [largeLeftIcon]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
         </div>

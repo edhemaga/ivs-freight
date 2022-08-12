@@ -630,7 +630,7 @@
 
     .user-holder{
         height: auto;
-        max-height: none;
+        max-height: 300px !important;
     }
 }
 
@@ -684,6 +684,66 @@
                 path{
                     fill: #AAAAAA;
                 }
+            }
+        }
+    }
+}
+
+.truck-icon-holder{
+
+    .selected-user-frame{
+        padding-left: 72px !important;
+    }
+
+    .user-frame{
+        padding-left: 6px !important;
+    }
+
+    .type-icon{
+        display: flex;
+        position: absolute;
+        left: -46px;
+        top: 5px;
+        height: 16px;
+        width: 44px;
+
+        svg-icon{
+        
+            svg{
+                height: 16px;
+                width: 44px;
+
+                path{
+                    fill: #919191;
+                }
+            }
+        }
+    }
+
+    .user-main-holder{
+        &:hover{
+            .user-frame{
+                padding-left: 56px !important;
+                transition: 0.3s;
+            }
+
+            .type-icon{
+                left: 6px;
+                transition: 0.3s;
+            }
+        }
+    }
+
+    .user-holder{
+        height: auto;
+        max-height: 236px !important;
+    }
+
+    .selected-filter-icon{
+        svg-icon{
+            svg{
+                height: 16px !important;
+                width: 44px !important;
             }
         }
     }
