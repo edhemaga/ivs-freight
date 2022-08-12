@@ -41,6 +41,7 @@
                 :first-child {
                     width: 26px !important;
                     height: 50px !important;
+                    box-shadow: none !important;
 
                     .gm-control-active {
                         width: 26px !important;
@@ -49,14 +50,6 @@
                         img {
                             width: 12px !important;
                             height: 12px !important;
-                        }
-
-                        img:nth-child(1) {
-                            display: none;
-                        }
-                        
-                        img:nth-child(4) {
-                            display: block;
                         }
 
                         &:hover {
@@ -842,6 +835,54 @@
     svg {
         rect {
             fill: #FEC107;
+        }
+    }
+}
+
+
+
+.map-zoom-controls {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+
+    z-index: 1;
+
+    .map-zoom-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        height: 50px;
+        width: 26px;
+
+        background: #fff;
+        border-radius: 3px;
+
+        .map-zoom-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 25px;
+            width: 26px;
+
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: #AAAAAA;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #3c3c3c;
+                    }
+                }
+            }
         }
     }
 }

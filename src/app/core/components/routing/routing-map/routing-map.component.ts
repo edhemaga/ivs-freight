@@ -30,7 +30,7 @@ export class RoutingMapComponent implements OnInit {
   public mapZoom: number = 1;
   
   public addressForm: FormGroup;
-  public addressFlag: string = 'empty';
+  public addressFlag: string = 'Empty';
 
   public selectedAddress: AddressEntity = null;
 
@@ -122,6 +122,7 @@ export class RoutingMapComponent implements OnInit {
       'hidden': false,
       'expanded': false,
       'fullAddressView': false,
+      'routeType': 'Practical',
       'stops': [
         {
           'address': 'Gary, IN 30055',
@@ -171,6 +172,7 @@ export class RoutingMapComponent implements OnInit {
       'hidden': false,
       'expanded': false,
       'fullAddressView': true,
+      'routeType': 'Practical',
       'stops': [
         {
           'address': 'Gary, IN 30055',
@@ -280,6 +282,17 @@ export class RoutingMapComponent implements OnInit {
     '#A1887F'
   ];
 
+  public routeFocusColors: any[] = [
+    '#596FE8',
+    '#FD952D',
+    '#ED445E',
+    '#2FA558',
+    '#7F39AA',
+    '#38BDEB',
+    '#F276EF',
+    '#8D6E63'
+  ];
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -375,6 +388,8 @@ export class RoutingMapComponent implements OnInit {
     if ( event.action == 'confirm' && event.address ) {
       console.log('onHandleAddress event', event);
 
+      console.log('addressFlag', this.addressFlag);
+
       route.stops.push(
         {
           'address': event.address.address,
@@ -383,7 +398,7 @@ export class RoutingMapComponent implements OnInit {
           'total': '60.6',
           'time': '01:15',
           'totalTime': '01:15',
-          'empty': this.addressFlag == 'empty' ? true : false,
+          'empty': this.addressFlag == 'Empty' ? true : false,
           'lat': 32.469674,
           'long': -90.50994
         }
@@ -547,6 +562,29 @@ export class RoutingMapComponent implements OnInit {
   onToolBarAction(event: any) {
     console.log('onToolBarAction', event);
 
+    var routeForm = event.data;
+
+    if ( routeForm.get('routeName').value && routeForm.get('routeName').value.length ) {
+      const lastId = Math.max(...this.routes.map(item => item.id));
+
+      this.addressInputs.push(this.formBuilder.group({
+        address: []
+      }));
+
+      console.log('routeType', routeForm.get('routeType').value);
+      var newRoute = {
+          'id': lastId+1,
+          'name': routeForm.get('routeName').value,
+          'hidden': false,
+          'expanded': false,
+          'fullAddressView': false,
+          'routeType': routeForm.get('routeType').value,
+          'stops': []
+      };
+
+      this.routes.push(newRoute);
+    }
+
     // // Add Call
     // if (event.action === 'open-modal') {
     //   // Add Broker Call Modal
@@ -592,24 +630,32 @@ export class RoutingMapComponent implements OnInit {
         length: this.routes.length,
         gridNameTitle: 'Routing'
       },
-      // {
-      //   title: 'Map 2',
-      //   field: 'map2',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 3',
-      //   field: 'map3',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 4',
-      //   field: 'map4',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
+      {
+        title: 'Map 2',
+        field: 'map2',
+        length: 0,
+        gridNameTitle: 'Routing'
+      },
+      {
+        title: 'Map 3',
+        field: 'map3',
+        length: 0,
+        gridNameTitle: 'Routing'
+      },
+      {
+        title: 'Map 4',
+        field: 'map4',
+        length: 0,
+        gridNameTitle: 'Routing'
+      },
     ];
+  }
+
+  zoomMap(zoom) {
+    if ( zoom == 'minus' && this.mapZoom > 0 ) {
+      this.mapZoom--;
+    } else if ( this.mapZoom < 21 ) {
+      this.mapZoom++;
+    }
   }
 }

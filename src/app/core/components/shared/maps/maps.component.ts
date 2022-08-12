@@ -265,4 +265,12 @@ export class MapsComponent implements OnInit {
     //this.closePopover();
   }
 
+  zoomMap(zoom) {
+    if ( zoom == 'minus' && this.mapZoom > 0 ) {
+      this.mapZoom--;
+    } else if ( this.mapZoom < 21 ) {
+      this.mapZoom++;
+    }
+  }
+
 }

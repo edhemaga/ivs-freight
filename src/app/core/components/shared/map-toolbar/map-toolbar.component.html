@@ -1,0 +1,509 @@
+<div
+  class="toolbar-container"
+>
+  <!-- LIST NAME -->
+  <div
+    class="list-name"
+    *ngIf="listName && !options.toolbarActions.hideListName"
+  >
+    {{ listName }}
+  </div>
+
+  <!-- TABS -->
+  <div
+    *ngFor="let data of tableData"
+    class="tab-container"
+    [ngClass]="{
+      'tab-inactive': selectedTab !== data.field,
+      'tab-active': selectedTab === data.field
+    }"
+    (click)="onSelectTab(data)"
+  >
+    <div class="tab">
+      <div class="data-count">{{ data.length }}</div>
+      <div class="tab-title">{{ data.title }}</div>
+    </div>
+  </div>
+
+  <!-- VIEW MODE SELECT -->
+  <div class="view-mode-container" *ngIf="!options.toolbarActions.hideViewMode">
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'List'
+      }"
+      (click)="changeModeView('List')"
+    >
+      List
+    </div>
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'Card'
+      }"
+      (click)="changeModeView('Card')"
+    >
+      Card
+    </div>
+    <div
+      class="mode"
+      [ngClass]="{
+        'mode-active': options.toolbarActions.viewModeActive == 'Map'
+      }"
+      (click)="changeModeView('Map')"
+      *ngIf="options.toolbarActions.showMapView"
+    >
+      Map
+    </div>
+  </div>
+
+  <!-- BORDER -->
+  <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
+    <div class="border"></div>
+  </div>
+
+  <!-- SEARCH -->
+  <!-- <app-truckassist-search
+    [selectedTabData]="activeTableData"
+  ></app-truckassist-search> -->
+
+  <!-- BORDER -->
+  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
+    <div class="border"></div>
+  </div>
+
+  <!-- LOCATION FILTER -->
+  <div
+    class="location-filter-container"
+    *ngIf="!options.toolbarActions.hideLocationFilter"
+  >
+    <svg-icon
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+      [src]="'assets/svg/truckassist-table/location-icon.svg'"
+    ></svg-icon>
+  </div>
+
+  <!-- TABLE ACTIONS -->
+  <div class="table-actions">
+    <div class="actions-container">
+      <!-- Activation -->
+      <div *ngIf="tableRowsSelected.length" class="action-div">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+          [src]="'assets/svg/truckassist-table/activation-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
+      </div>
+
+      <!-- Delete -->
+      <div
+        *ngIf="tableRowsSelected.length"
+        (click)="deleteSelectedRows()"
+        class="action-div"
+      >
+        <svg-icon
+          [svgStyle]="{ 'width.px': 16, 'height.px': 18 }"
+          [src]="'assets/svg/truckassist-table/trash-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
+      </div>
+
+      <!-- Print -->
+      <div *ngIf="tableRowsSelected.length" class="action-div">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+          [src]="'assets/svg/truckassist-table/print-icon.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container" *ngIf="tableRowsSelected.length">
+        <div class="border"></div>
+      </div>
+
+      <!-- Route Stop Picker -->
+      <div class="action-div" (click)="onToolBarAction('open-stop-picker')">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+          [src]="'assets/svg/common/ic_route_stop_picker.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container">
+        <div class="border"></div>
+      </div>
+
+      <!-- Route Compare -->
+      <div class="action-div" (click)="onToolBarAction('open-route-compare')">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+          [src]="'assets/svg/common/ic_route_compare.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container">
+        <div class="border"></div>
+      </div>
+
+      <!-- Route Keyboard Controls -->
+      <div class="action-div" (click)="onToolBarAction('open-keyboard-controls')">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+          [src]="'assets/svg/common/ic_route_keyboard.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container">
+        <div class="border"></div>
+      </div>
+
+      <!-- Route Info -->
+      <div class="action-div" (click)="onToolBarAction('open-route-info')">
+        <svg-icon
+          [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+          [src]="'assets/svg/common/ic_route_info.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <div class="border-container">
+        <div class="border"></div>
+      </div>
+
+      <!-- Route Settings -->
+      <div 
+        class="action-div"
+        #op="ngbPopover"
+        (click)="onShowMapSettings(op)"
+        [autoClose]="true"
+        [ngbPopover]="mapSettingsPopover"
+        [placement]="'bottom-right'"
+        [autoClose]="'outside'"
+        popoverClass="map-settings-popover"
+        [ngClass]="{ 'active-options-maps': mapSettingsPopupOpen }"
+        triggers="manual"
+        (hidden)="mapSettingsPopupOpen = false"
+      >
+        <svg-icon
+          [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
+          [src]="'assets/svg/common/ic_route_settings.svg'"
+        ></svg-icon>
+      </div>
+
+      <!-- BORDER -->
+      <!-- <div class="border-container">
+        <div class="border"></div>
+      </div> -->
+
+      <!-- Options -->
+      <!-- <div
+        #op="ngbPopover"
+        (click)="onShowOptions(op)"
+        [autoClose]="true"
+        [ngbPopover]="optionsPopover"
+        [placement]="'bottom-right'"
+        [autoClose]="'outside'"
+        popoverClass="toolbar-options-popover"
+        [ngClass]="{ 'active-options': optionsPopupOpen }"
+        triggers="manual"
+        (hidden)="optionsPopupOpen = false"
+        class="action-div"
+      >
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
+          [src]="'assets/svg/truckassist-table/burger-icon.svg'"
+        ></svg-icon>
+      </div> -->
+    </div>
+  </div>
+
+  <!-- OPEN MAP LAYERS BUTTON -->
+  <div
+    class="general-pm-open-container map-layers-container"
+    (click)="onToolBarAction('open-layers')"
+  >
+    <svg-icon
+      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+      [src]="'assets/svg/common/ic_route_layers.svg'"
+    ></svg-icon>
+  </div>
+
+  <!-- OPEN MODAL BUTTON -->
+  <div 
+    class="modal-open-container"
+    #op2="ngbPopover"
+    (click)="onShowRoutePopover(op2)"
+    [autoClose]="true"
+    [ngbPopover]="addRoutePopover"
+    [placement]="'bottom-right'"
+    [autoClose]="false"
+    popoverClass="map-settings-popover add-route-popover"
+    [ngClass]="{ 'active-options-maps': addRoutePopupOpen }"
+    triggers="manual"
+    (hidden)="addRoutePopupOpen = false">
+    <svg-icon
+      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
+      [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+    ></svg-icon>
+  </div>
+</div>
+
+<ng-template #optionsPopover let-data="data" data-toggle="popover">
+  <div class="options-container">
+    <div
+      (click)="onOptions(option)"
+      [ngClass]="{ 'active-option': option.active }"
+      *ngFor="let option of optionsPopupContent"
+      class="options"
+    >
+      <div class="icon">
+        <svg-icon
+          [svgStyle]="{ 'width.px': option.width, 'height.px': option.height }"
+          [src]="option.svgPath"
+        ></svg-icon>
+      </div>
+
+      <div class="text">{{ option.text }}</div>
+
+      <div
+        class="additional-drop-icon"
+        *ngIf="option.additionalDropIcon && option.active"
+      >
+        <svg-icon
+          [svgStyle]="{
+            'width.px': option.additionalDropIcon.width,
+            'height.px': option.additionalDropIcon.height
+          }"
+          [src]="option.additionalDropIcon.path"
+        ></svg-icon>
+      </div>
+    </div>
+
+    <div class="columns-options" *ngIf="optionsPopupContent[4].active">
+      <div (click)="onToaggleColumn(column, i)" class="column" *ngFor="let column of columns; let i = index">
+        <div class="checkbox" *ngIf="!column.isPined && i > 1">
+          <input
+            [checked]="!column.hidden"
+            class="columns-options-checkbox"
+            id="checkbox{{ i }}"
+            type="checkbox"
+          />
+          <label class="columns-options-label" for="checkbox{{ i }}"></label>
+        </div>
+
+        <div class="not-allowed-action" *ngIf="column.isPined || i < 2">
+          <svg-icon
+            [svgStyle]="{
+              'width.px': 14,
+              'height.px': 14
+            }"
+            [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
+          ></svg-icon>
+        </div>
+
+        <div class="column-text" [ngClass]="{'selectable-text': !column.isPined}">
+          {{ column.name !== "" ? column.name : column.title }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #mapSettingsPopover let-data="data" data-toggle="popover">
+    <div class="map-settings-container">
+      <div class="map-settings-title">Map Settings</div>
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content">
+        <div class="map-settings-input-container" [formGroup]="mapForm">
+            <!-- <div class="map-settings-input-title">Map Name <span class="input-required">*</span></div> -->
+            <!-- <input type="text" class="map-settings-input" placeholder="Map Name" /> -->
+            <app-ta-input
+              formControlName="mapName"
+              [inputConfig]="{
+                name: 'name',
+                type: 'text',
+                label: 'Map Name',
+                isRequired: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+        </div>
+
+        <app-ta-tab-switch
+            [tabs]="distanceTabs"
+            (switchClicked)="onTabChange($event, 'Distance-tab')"
+            [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
+        <app-ta-tab-switch
+            [tabs]="addressTabs"
+            (switchClicked)="onTabChange($event, 'Address-tab')"
+            [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
+        <app-ta-tab-switch
+            [tabs]="borderTabs"
+            (switchClicked)="onTabChange($event, 'Border-tab')"
+            [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
+      </div>
+      
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content buttons-container">
+        <div class="map-settings-button">
+            <div class="map-settings-button-text">Reset</div>
+        </div>
+        <div class="map-settings-button">
+            <div class="map-settings-button-text">Set</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #addRoutePopover let-data="data" data-toggle="popover">
+    <div class="map-settings-container" [formGroup]="routeForm">
+      <div class="map-settings-title">Route Settings</div>
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content mg-22">
+        <div class="map-settings-input-container">
+            <!-- <div class="map-settings-input-title">Map Name <span class="input-required">*</span></div> -->
+            <!-- <input type="text" class="map-settings-input" placeholder="Map Name" /> -->
+            <app-ta-input
+              formControlName="routeName"
+              [inputConfig]="{
+                name: 'name',
+                type: 'text',
+                label: 'Name',
+                isRequired: true,
+                blackInput: true
+              }"
+            ></app-ta-input>
+        </div>
+
+        <app-ta-tab-switch
+            [tabs]="routeTabs"
+            (switchClicked)="onTabChange($event, 'Distance-tab')"
+            [type]="'type2-modal-popup'"
+        >
+        </app-ta-tab-switch>
+
+        <app-ta-input-dropdown
+          formControlName="truckId"
+          [template]="'svgtext-template'"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Truck Unit',
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-216 truck-trailer-dropdown'
+          }"
+          [options]="truckType"
+          [activeItem]="selectedTruckType"
+          (selectedItem)="onSelectDropdown($event, 'truck')"
+        ></app-ta-input-dropdown>
+      </div>
+      
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content checkbox-container">
+        <div
+          class="checkbox-card-header"
+          [ngClass]="{ pointer: routeForm.get('duration').value }"
+          (click)="openCloseCheckboxCard($event)"
+        >
+          <app-ta-checkbox
+            formControlName="duration"
+            [label]="'Duration'"
+          ></app-ta-checkbox>
+          <svg-icon
+            class="checkbox-card-header-arrow"
+            src="assets/svg/common/ic_arrow_down_updated.svg"
+            [ngClass]="{ visible: !routeForm.get('duration').value }"
+          ></svg-icon>
+        </div>
+
+        <div class="duration-time-input" *ngIf="routeForm.get('duration').value">
+          <app-ta-input
+            formControlName="durationTime"
+            [inputConfig]="{
+              name: 'timepicker',
+              type: 'text',
+              label: 'Stop Time',
+              isRequired: true,
+              placeholderIcon: 'time',
+              customClass: 'datetimeclass'
+            }"
+          ></app-ta-input>
+        </div>
+      </div>
+
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content checkbox-container">
+        <div
+          class="checkbox-card-header"
+          [ngClass]="{ pointer: routeForm.get('fuelCost').value }"
+          (click)="openCloseCheckboxCardFuel($event)"
+        >
+          <app-ta-checkbox
+            formControlName="fuelCost"
+            [label]="'Fuel Cost'"
+          ></app-ta-checkbox>
+          <svg-icon
+            class="checkbox-card-header-arrow"
+            src="assets/svg/common/ic_arrow_down_updated.svg"
+            [ngClass]="{ visible: !routeForm.get('fuelCost').value }"
+          ></svg-icon>
+        </div>
+
+        <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value">
+          <app-ta-input
+            formControlName="fuelMpg"
+            [inputConfig]="{
+              name: 'name',
+              type: 'text',
+              label: 'Miles Per Gallon',
+              isRequired: true
+            }"
+          ></app-ta-input>
+        </div>
+        <div class="duration-time-input mg-top-32" *ngIf="routeForm.get('fuelCost').value">
+          <app-ta-input
+            formControlName="fuelPrice"
+            [inputConfig]="{
+              name: 'name',
+              type: 'text',
+              label: 'Price Per Gallon',
+              isRequired: true
+            }"
+          ></app-ta-input>
+        </div>
+      </div>
+
+      <div class="map-settings-divider"></div>
+
+      <div class="map-settings-content buttons-container">
+        <div class="map-settings-button" [ngStyle]="{'opacity': '0', 'pointer-events': 'none'}">
+            <div class="map-settings-button-text">Reset</div>
+        </div>
+        <div class="map-settings-button" [ngClass]="{ 'modal-save-btn': routeForm.get('routeName').value }" (click)="onToolBarAction('addRoute')">
+            <div class="map-settings-button-text">Save Changes</div>
+        </div>
+      </div>
+    </div>
+  </ng-template>

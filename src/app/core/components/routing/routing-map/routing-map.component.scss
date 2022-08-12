@@ -31,6 +31,17 @@
             &:last-child {
                 margin-bottom: 0px;
             }
+
+            .route-card-scroll {
+                width: fit-content;
+                max-height: 100%;
+                margin-right: -116px;
+                padding-right: 116px;
+                padding-bottom: 40px;
+
+                overflow-y: auto;
+                pointer-events: all;
+            }
         }
     }
 }
@@ -597,6 +608,7 @@
     &.circle-marker {
         top: 0px!important;
         left: 53%;
+        cursor: pointer;
     }
 }
 

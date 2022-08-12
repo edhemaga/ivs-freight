@@ -1,0 +1,27 @@
+.toolbar-container {
+    .table-actions {
+        margin-right: 4px !important;
+
+        .actions-container {
+            .action-div {
+                //width: 28px !important;
+
+                &.active-options-maps {
+                    svg {
+                        path {
+                            fill: #6C6C6C!important;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .general-pm-open-container {
+        margin-right: 4px !important;
+    }
+
+    .border-container {
+        width: 2px !important;
+    }
+}
