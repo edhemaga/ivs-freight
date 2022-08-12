@@ -140,7 +140,9 @@
             saveSpinnerVisibility
               ? "Saving"
               : editData?.type?.includes("edit")
-              ? "Save Changes"
+              ? editData?.type?.includes("fo")
+                ? "Save"
+                : "Save Changes"
               : "Save"
           }}
           <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
