@@ -144,8 +144,6 @@ export class Step7Component implements OnInit, OnDestroy {
       intendToWorkAnotherEmployer: [null, Validators.required],
       isValidAnotherEmployer: [null, Validators.requiredTrue],
 
-      number: [null],
-
       hosArray: this.formBuilder.array([]),
 
       firstRowReview: [null],

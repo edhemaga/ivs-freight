@@ -10,7 +10,12 @@
           Authorization to Obtain Motor Vehicle Record
         </h1>
 
-        <h2 class="m-0 text-center subtitle ta-font-bold">
+        <h2
+          class="m-0 text-center subtitle ta-font-bold"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           The undersigned does hereby acknowledge and certify as follows
         </h2>
 
@@ -29,16 +34,24 @@
               [label]="
                 '1. Certifies that the undersigned is an employee, or has applied to become an employee of the below named'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: mvrAuthorizationForm.get('isConsentRelease').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isConsentRelease').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isConsentRelease')"
             >
@@ -57,16 +70,24 @@
               [label]="
                 '2. That the undersigned authorizes his or her driving record to be periodically obtained and reviewed for the'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: mvrAuthorizationForm.get('isPeriodicallyObtained').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isPeriodicallyObtained').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isPeriodicallyObtained')"
             >
@@ -83,16 +104,24 @@
               [label]="
                 '3. That all information presented in this form is true and correct. The undersigned makes this certification and'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: mvrAuthorizationForm.get('isInformationCorrect').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  mvrAuthorizationForm.get('isInformationCorrect').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isInformationCorrect')"
             >
@@ -106,8 +135,19 @@
 
           <div
             class="d-flex flex-column justify-content-center license-view-container"
+            [ngStyle]="{
+              'margin-bottom':
+                selectedMode === 'APPLICANT_MODE' ? '32px' : '22px'
+            }"
           >
-            <div class="d-flex align-items-center title-container">
+            <div
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'title-container title-container-feedback'
+                  : 'title-container'
+              "
+            >
               <div class="d-flex align-items-center driver-title-box">
                 <p class="m-0 ta-font-bold">DRIVER NAME</p>
               </div>
@@ -125,7 +165,14 @@
               </div>
             </div>
 
-            <div class="d-flex align-items-center license-info-container">
+            <div
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'license-info-container license-info-container-feedback'
+                  : 'license-info-container'
+              "
+            >
               <div class="d-flex align-items-center driver-box">
                 <p class="m-0 ta-font-regular">
                   <!--  {{ license.name }} -->
@@ -166,12 +213,17 @@
             class="d-flex align-items-center justify-content-center"
             *ngIf="
               selectedMode === 'APPLICANT_MODE' ||
-              selectedMode === 'FEEDBACK_MODE'
+              selectedMode === 'FEEDBACK_MODE' ||
+              (selectedMode === 'REVIEW_MODE' &&
+                dontHaveMvrForm.get('dontHaveMvr').value)
             "
             [ngStyle]="{
               'margin-bottom': !dontHaveMvrForm.get('dontHaveMvr').value
                 ? '22px'
-                : '12px'
+                : selectedMode === 'REVIEW_MODE' &&
+                  dontHaveMvrForm.get('dontHaveMvr').value
+                ? '12px'
+                : '0'
             }"
             [formGroup]="dontHaveMvrForm"
           >
@@ -181,7 +233,11 @@
               [label]="
                 'Dont have MVR? Request a driving record from your prospective employer'
               "
-              [customClass]="'bold-12'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-feedback'
+                  : 'bold-12'
+              "
             >
             </app-ta-checkbox>
           </div>
@@ -191,7 +247,7 @@
           <div
             class="d-flex align-items-center justify-content-center requested-mvr-feedback-box"
             *ngIf="
-              selectedMode === 'FEEDBACK_MODE' &&
+              selectedMode === 'REVIEW_MODE' &&
               dontHaveMvrForm.get('dontHaveMvr').value
             "
           >
@@ -279,7 +335,11 @@
               [label]="
                 'I further certify that the above license is the only one I hold.'
               "
-              [customClass]="'bold-12'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-feedback'
+                  : 'bold-12'
+              "
             >
             </app-ta-checkbox>
           </div>

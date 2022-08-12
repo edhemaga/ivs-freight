@@ -10,7 +10,12 @@
           Medical Examiner's Certificate
         </h1>
 
-        <h2 class="m-0 text-center subtitle ta-font-bold">
+        <h2
+          class="m-0 text-center subtitle ta-font-bold"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           Please fill fields and upload the examiner's certificate example as
           proof of validation.
         </h2>

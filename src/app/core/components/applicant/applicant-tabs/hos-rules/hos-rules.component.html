@@ -12,6 +12,9 @@
 
         <div
           class="d-flex flex-column text-center align-items-center justify-content-center info-container"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
         >
           <p class="m-0 ta-font-regular">
             <span class="ta-font-bold">Hours of Service (HOS)</span> are

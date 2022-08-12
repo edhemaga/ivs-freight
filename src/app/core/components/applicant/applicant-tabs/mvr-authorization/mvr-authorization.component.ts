@@ -12,7 +12,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./mvr-authorization.component.scss'],
 })
 export class MvrAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public mvrAuthorizationForm: FormGroup;
   public dontHaveMvrForm: FormGroup;
@@ -57,6 +57,10 @@ export class MvrAuthorizationComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.CONSENT_RELEASE:
         this.mvrAuthorizationForm.patchValue({
