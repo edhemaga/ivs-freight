@@ -1,12 +1,17 @@
 <app-ta-modal
   [modalTitle]="
-    !editData?.type?.includes('edit') ? 'Add Repair' : 'Edit Repair'
+    !editData?.type?.includes('edit')
+      ? 'Add Repair'
+      : editData?.type?.includes('fo')
+      ? 'Finish Order'
+      : 'Edit Repair'
   "
   [editData]="editData"
   [editName]="editData?.data?.textUnit"
   [isModalValid]="repairOrderForm.valid"
-  [tabChange]="headerTabs"
+  [tabChange]="editData?.type?.includes('edit-fo') ? null : headerTabs"
   [tabChangePosition]="'right'"
+  [disableDelete]="editData?.type?.includes('edit-fo')"
   [customClass]="'modal-container-L'"
   (onTabHeaderChange)="onModalHeaderTabChange($event)"
   (action)="onModalAction($event)"
