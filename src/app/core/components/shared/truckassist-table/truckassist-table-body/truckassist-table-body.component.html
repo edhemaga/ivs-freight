@@ -632,11 +632,17 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row[column.field].color }"
+                [ngStyle]="{
+                  background: row[column.field]?.color
+                    ? row[column.field].color
+                    : 'unset'
+                }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row[column.field].name ? row[column.field].name : ''"
+                [innerHtml]="
+                  row[column.field]?.name ? row[column.field].name : ''
+                "
               ></span>
             </div>
 
@@ -1513,11 +1519,17 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row[column.field].color }"
+                [ngStyle]="{
+                  background: row[column.field]?.color
+                    ? row[column.field].color
+                    : 'unset'
+                }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row[column.field].name ? row[column.field].name : ''"
+                [innerHtml]="
+                  row[column.field]?.name ? row[column.field].name : ''
+                "
               ></span>
             </div>
 
@@ -1908,7 +1920,11 @@
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
-  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
+  <div
+    class="show-more"
+    (clcik)="onShowMore()"
+    *ngIf="viewData.length < activeTableData.length"
+  >
     SHOW MORE
   </div>
 </div>
