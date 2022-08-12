@@ -10,7 +10,7 @@ import {
   monthsValidRegex,
   perStopValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
@@ -33,7 +33,7 @@ import { Options } from '@angular-slider/ngx-slider';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { SettingsStoreService } from '../../../state/settings.service';
+import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 
@@ -91,6 +91,20 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       name: 'LTL',
       checked: false,
     },
+  ];
+
+  public fleetTypeBtns: any[] = [
+    {
+      id: 1,
+      name: 'Solo',
+      checked: true,
+    },
+    {
+      id: 2,
+      name: 'Team',
+      checked: false,
+    },
+    { id: 3, name: 'Combined', checked: false },
   ];
 
   public driverCommissionOptions: Options = {
@@ -192,19 +206,22 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public selectedOtherPayPeriod: any = null;
   public selectedOtherEndingIn: any = null;
 
+  public selectedFleetType: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
     private notificationService: NotificationService,
     private formService: FormService,
-    private settingsService: SettingsStoreService,
+    private settingsCompanyService: SettingsCompanyService,
     private bankVerificationService: BankVerificationService
   ) {}
 
   ngOnInit(): void {
     this.checkForCompany();
-    this.onPrefferedLoadCheck({ id: 1 });
+    this.onPrefferedLoadCheck({ name: 'FTL' });
+    this.onFleetTypeCheck({ id: 1 });
     this.getModalDropdowns();
     this.validateMiles();
   }
@@ -284,6 +301,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       starting: [null, Validators.required],
       sufix: [null],
       autoInvoicing: [false],
+      fleetType: ['Solo'],
       preferredLoadType: ['FTL'],
       factorByDefault: [false],
       customerPayTerm: [null, daysValidRegex],
@@ -415,13 +433,28 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('departmentContacts') as FormArray;
   }
 
-  private createDepartmentContacts(): FormGroup {
+  private createDepartmentContacts(data?: {
+    id: any;
+    departmentId: any;
+    phone: any;
+    extensionPhone: any;
+    email: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      departmentId: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null],
-      email: [null, [Validators.required, emailRegex]],
+      id: [data?.id ? data.id : 0],
+      departmentId: [
+        data?.departmentId ? data?.departmentId : null,
+        Validators.required,
+      ],
+      phone: [
+        data?.phone ? data?.phone : null,
+        [Validators.required, phoneRegex],
+      ],
+      extensionPhone: [data?.extensionPhone ? data?.extensionPhone : null],
+      email: [
+        data?.email ? data?.email : null,
+        [Validators.required, emailRegex],
+      ],
     });
   }
 
@@ -484,12 +517,17 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('bankAccounts') as FormArray;
   }
 
-  private createBankAccount(): FormGroup {
+  private createBankAccount(data?: {
+    id: any;
+    bankId: any;
+    routing: any;
+    account: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      id: [0],
-      bankId: [null],
-      routing: [null],
-      account: [null],
+      id: [data?.id ? data.id : 0],
+      bankId: [data?.bankId ? data.bankId : null],
+      routing: [data?.routing ? data.routing : null],
+      account: [data?.account ? data.account : null],
     });
   }
 
@@ -528,12 +566,25 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     return this.companyForm.get('bankCards') as FormArray;
   }
 
-  private createBankCard(): FormGroup {
+  private createBankCard(data?: {
+    id: any;
+    nickname: any;
+    card: any;
+    cvc: any;
+    expireDate: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      nickname: [null],
-      card: [null, [Validators.minLength(16), Validators.maxLength(16)]],
-      cvc: [null, [Validators.minLength(3), Validators.maxLength(3)]],
-      expireDate: [null],
+      id: [data?.id ? data.id : 0],
+      nickname: [data?.nickname ? data.nickname : null],
+      card: [
+        data?.card ? data.card : null,
+        [Validators.minLength(16), Validators.maxLength(16)],
+      ],
+      cvc: [
+        data?.cvc ? data.cvc : null,
+        [Validators.minLength(3), Validators.maxLength(3)],
+      ],
+      expireDate: [data?.expireDate ? data.expireDate : null],
     });
   }
 
@@ -728,7 +779,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public onPrefferedLoadCheck(event: any) {
     this.prefferedLoadBtns = this.prefferedLoadBtns.map((item) => {
-      if (item.id === event.id) {
+      if (item.name === event.name) {
         this.companyForm.get('preferredLoadType').patchValue(item.name);
       }
       return {
@@ -738,8 +789,23 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
   }
 
+  public onFleetTypeCheck(event: any) {
+    this.fleetTypeBtns = this.fleetTypeBtns.map((item) => {
+      if (item.id === event.id) {
+        this.companyForm.get('fleetType').patchValue(item.name);
+      }
+      if (item.id === event.id) {
+        this.selectedFleetType = item.name;
+      }
+      return {
+        ...item,
+        checked: item.id === event.id,
+      };
+    });
+  }
+
   private getModalDropdowns() {
-    this.settingsService
+    this.settingsCompanyService
       .getCompanyModal()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -886,7 +952,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .addCompanyDivision(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -944,7 +1010,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
         this.departmentContacts.push(
-          this.formBuilder.group({
+          this.createDepartmentContacts({
             id: department.id,
             departmentId: department.department.name,
             phone: department.phone,
@@ -963,7 +1029,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         index++
       ) {
         this.bankAccounts.push(
-          this.formBuilder.group({
+          this.createBankAccount({
             id: this.editData.company.bankAccounts[index].id,
             bankId: this.editData.company.bankAccounts[index].bank.name,
             routing: this.editData.company.bankAccounts[index].routing,
@@ -983,7 +1049,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.bankCards.length) {
       for (const card of this.editData.company.bankCards) {
         this.bankCards.push(
-          this.formBuilder.group({
+          this.createBankCard({
             id: card.id,
             nickname: card.nickname,
             card: card.card,
@@ -1104,7 +1170,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .updateCompanyDivision(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1125,7 +1191,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   public deleteCompanyDivisionById(id: number) {
-    this.settingsService
+    this.settingsCompanyService
       .deleteCompanyDivisionById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1336,22 +1402,38 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       departmentId: 10,
       payPeriod: this.selectedDriverPayPeriod.id,
       endingIn: this.selectedDriverEndingIn.id,
-      soloEmptyMile: this.companyForm.get('soloEmptyMile').value,
-      soloLoadedMile: this.companyForm.get('soloLoadedMile').value,
-      soloPerStop: this.companyForm.get('soloPerStop').value
-        ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
+      soloEmptyMile: ['Solo', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloEmptyMile').value
         : null,
-      teamEmptyMile: this.companyForm.get('teamEmptyMile').value,
-      teamLoadedMile: this.companyForm.get('teamLoadedMile').value,
-      teamPerStop: this.companyForm.get('teamPerStop').value
-        ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
+      soloLoadedMile: ['Solo', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloLoadedMile').value
         : null,
-      defaultSoloDriverCommission: this.companyForm.get(
-        'driverSoloDefaultCommission'
-      ).value,
-      defaultTeamDriverCommission: this.companyForm.get(
-        'driverTeamDefaultCommission'
-      ).value,
+      soloPerStop: ['Solo', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('soloPerStop').value
+          ? convertThousanSepInNumber(this.companyForm.get('soloPerStop').value)
+          : null
+        : null,
+      teamEmptyMile: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamEmptyMile').value
+        : null,
+      teamLoadedMile: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamLoadedMile').value
+        : null,
+      teamPerStop: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? this.companyForm.get('teamPerStop').value
+          ? convertThousanSepInNumber(this.companyForm.get('teamPerStop').value)
+          : null
+        : null,
+      defaultSoloDriverCommission: ['Solo', 'Combined'].includes(
+        this.selectedFleetType
+      )
+        ? this.companyForm.get('driverSoloDefaultCommission').value
+        : null,
+      defaultTeamDriverCommission: ['Team', 'Combined'].includes(
+        this.selectedFleetType
+      )
+        ? this.companyForm.get('driverTeamDefaultCommission').value
+        : null,
       defaultOwnerCommission: this.companyForm.get('ownerDefaultCommission')
         .value,
       loadedAndEmptySameRate: this.companyForm.get(
@@ -1379,7 +1461,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       payrolls,
     };
 
-    this.settingsService
+    this.settingsCompanyService
       .updateCompany(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -1437,10 +1519,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       starting: this.editData.company.additionalInfo.starting,
       sufix: this.editData.company.additionalInfo.sufix,
       autoInvoicing: this.editData.company.additionalInfo.autoInvoicing,
-      preferredLoadType:
-        this.editData.company.additionalInfo.preferredLoadType === 1
-          ? 'FTL'
-          : 'LTL',
+      preferredLoadType: this.editData.company.additionalInfo.preferredLoadType,
       factorByDefault: this.editData.company.additionalInfo.factorByDefault,
       customerPayTerm: this.editData.company.additionalInfo.customerPayTerm,
       customerCredit: this.editData.company.additionalInfo.customerCredit,
@@ -1470,16 +1549,24 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         ? this.editData.company.currency
         : null;
 
-    this.onPrefferedLoadCheck(
-      this.editData.company.additionalInfo.preferredLoadType === 1
-        ? { id: 1 }
-        : { id: 2 }
+    this.onPrefferedLoadCheck({
+      id:
+        this.editData.company.additionalInfo.preferredLoadType === 'FTL'
+          ? 1
+          : 2,
+      name: this.editData.company.additionalInfo.preferredLoadType,
+    });
+
+    this.selectedFleetType = this.editData.company.additionalInfo.fleetType;
+
+    this.onFleetTypeCheck(
+      this.fleetTypeBtns.find((item) => item.name === this.selectedFleetType)
     );
 
     if (this.editData.company.departmentContacts.length) {
       for (const department of this.editData.company.departmentContacts) {
         this.departmentContacts.push(
-          this.formBuilder.group({
+          this.createDepartmentContacts({
             id: department.id,
             departmentId: department.department.name,
             phone: department.phone,
@@ -1498,7 +1585,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         index++
       ) {
         this.bankAccounts.push(
-          this.formBuilder.group({
+          this.createBankAccount({
             id: this.editData.company.bankAccounts[index].id,
             bankId: this.editData.company.bankAccounts[index].bank.name,
             routing: this.editData.company.bankAccounts[index].routing,
@@ -1518,7 +1605,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     if (this.editData.company.bankCards.length) {
       for (const card of this.editData.company.bankCards) {
         this.bankCards.push(
-          this.formBuilder.group({
+          this.createBankCard({
             id: card.id,
             nickname: card.nickname,
             card: card.card,
@@ -1732,6 +1819,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
                   ? convertNumberInThousandSep(payroll.teamPerStop)
                   : null
               );
+
+            this.companyForm
+              .get('driverOwnerHasLoadedEmptyMiles')
+              .patchValue(payroll.loadedAndEmptySameRate);
 
             this.companyForm
               .get('driverSoloDefaultCommission')

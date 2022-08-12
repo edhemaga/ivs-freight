@@ -201,14 +201,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
     if (event.valid) this.selectedAddress = event.address;
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.userForm.get('isIncludePayroll').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.userForm.get('isIncludePayroll').setValue(false);
-    }
-  }
-
   private onBankSelected(): void {
     this.userForm
       .get('bankId')

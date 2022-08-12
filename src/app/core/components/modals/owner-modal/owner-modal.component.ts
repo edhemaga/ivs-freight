@@ -328,8 +328,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: OwnerResponse) => {
-          console.log('editOwnerById');
-          console.log(res);
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
 
           this.ownerForm.patchValue({

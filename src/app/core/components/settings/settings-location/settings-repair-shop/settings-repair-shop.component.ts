@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { Component, OnInit } from '@angular/core';
+import { SettingsLocationService } from '../../state/location-state/settings-location.service';
 @Component({
   selector: 'app-settings-repair-shop',
   templateUrl: './settings-repair-shop.component.html',
@@ -131,12 +131,12 @@ export class SettingsRepairShopComponent implements OnInit {
     },
   ];
 
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(private settingsLocationService: SettingsLocationService) {}
 
   ngOnInit() {}
 
-  public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+  public onAction(modal: { modalName: string; type: string }) {
+    this.settingsLocationService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

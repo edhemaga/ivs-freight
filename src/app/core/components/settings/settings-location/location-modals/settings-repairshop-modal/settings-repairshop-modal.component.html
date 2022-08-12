@@ -7,10 +7,12 @@
   [isModalValid]="repairShopForm.valid"
   (action)="onModalAction($event)"
 >
-  <app-tab-switcher
-    (switchClicked)="tabChange($event)"
+  <app-ta-tab-switch
     [tabs]="tabs"
-  ></app-tab-switcher>
+    (switchClicked)="tabChange($event)"
+    [type]="'type1-modal-popup'"
+  >
+  </app-ta-tab-switch>
 
   <form
     [formGroup]="repairShopForm"
@@ -30,31 +32,18 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: repairShopForm.get('companyOwned').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="companyOwned"
               [label]="'Company Owned'"
             ></app-ta-checkbox>
-            <svg-icon
-              class="checkbox-card-header-arrow"
-              src="assets/svg/common/ic_arrow_down_updated.svg"
-              [ngClass]="{
-                visible: !repairShopForm.get('companyOwned')?.value
-              }"
-            ></svg-icon>
           </div>
-          <div
-            class="checkbox-card-body"
-            [ngClass]="{
-              'active-20': !repairShopForm.get('companyOwned').value
-            }"
-          >
-            <div *ngIf="!repairShopForm.get('companyOwned').value">
+          <div class="checkbox-card-body active-20">
+            <div>
               <div class="row">
                 <div class="col-12">
                   <app-ta-input
-                    formControlName="shopName"
+                    formControlName="name"
                     [inputConfig]="{
                       name: 'Shop Name',
                       type: 'text',
@@ -107,6 +96,7 @@
                         type: 'text',
                         label: 'Phone',
                         placeholderIcon: 'phone',
+                        isRequired: true,
                         mask: '(000) 000-0000'
                       }"
                     ></app-ta-input>
@@ -124,7 +114,7 @@
                   </div>
                   <app-ta-input
                     *ngIf="isPhoneExtExist"
-                    formControlName="phoneExtension"
+                    formControlName="phoneExt"
                     [inputConfig]="{
                       name: 'Phone Extension',
                       type: 'text',
@@ -163,7 +153,7 @@
               (click)="repair.active = !repair.active"
             >
               <svg-icon src="{{ repair.svg }}"></svg-icon>
-              <p>{{ repair.name }}</p>
+              <p>{{ repair.serviceType }}</p>
             </div>
           </div>
         </app-ta-custom-card>
@@ -194,14 +184,14 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
+              [options]="payPeriods"
               [activeItem]="selectedPayPeriod"
               (selectedItem)="onSelectDropdown($event, 'pay-period')"
             ></app-ta-input-dropdown>
           </div>
           <div class="col-4 no-p-left">
             <app-ta-input-dropdown
-              formControlName="day"
+              formControlName="monthlyDay"
               [inputConfig]="{
                 name: 'Input Dropdown',
                 type: 'text',
@@ -209,7 +199,9 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-148'
               }"
-              [options]="[]"
+              [options]="
+                selectedDay?.name === 'Weekly' ? weeklyDays : monthlyDays
+              "
               [activeItem]="selectedDay"
               (selectedItem)="onSelectDropdown($event, 'day')"
             ></app-ta-input-dropdown>

@@ -31,6 +31,8 @@ export interface TrailerResponse {
     trailerLength?: TrailerLengthResponse;
     color?: ColorResponse;
     status?: number;
+    purchaseDate?: string | null;
+    purchasePrice?: number | null;
     axles?: number | null;
     tireSize?: TireSizeResponse;
     suspension?: EnumValue;

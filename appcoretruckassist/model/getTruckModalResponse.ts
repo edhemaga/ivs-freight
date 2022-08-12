@@ -28,7 +28,9 @@ export interface GetTruckModalResponse {
     owners?: Array<OwnerShortResponse> | null;
     truckGrossWeights?: Array<TruckGrossWeightResponse> | null;
     truckEngineTypes?: Array<TruckEngineTypeResponse> | null;
-    countryTypes?: Array<EnumValue> | null;
-    states?: Array<StateResponse> | null;
+    country?: EnumValue;
+    usStates?: Array<StateResponse> | null;
+    canadaStates?: Array<StateResponse> | null;
+    shifters?: Array<EnumValue> | null;
 }
 

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { SettingsStoreService } from '../../state/settings.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 
 @Component({
   selector: 'app-settings-nodata',
@@ -11,7 +11,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 export class SettingsNodataComponent implements OnInit {
   @Input() public showComponent: boolean;
   constructor(
-    private settingsService: SettingsStoreService,
+    private settingsCompanyService: SettingsCompanyService,
     private route: ActivatedRoute
   ) {}
 
@@ -24,7 +24,7 @@ export class SettingsNodataComponent implements OnInit {
 
   public openModal() {
     this.showComponent = !this.showComponent;
-    this.settingsService.onModalAction({
+    this.settingsCompanyService.onModalAction({
       modalName: 'basic',
       type: this.companyData?.divisions.length
         ? 'edit-company'

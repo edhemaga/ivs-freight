@@ -10,7 +10,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./psp-authorization.component.scss'],
 })
 export class PspAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public pspAuthorizationForm: FormGroup;
 

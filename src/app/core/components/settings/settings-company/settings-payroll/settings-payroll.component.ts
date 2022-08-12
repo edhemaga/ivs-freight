@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { SettingsStoreService } from '../../state/settings.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 
 @Component({
   selector: 'app-settings-payroll',
@@ -9,7 +9,7 @@ import { SettingsStoreService } from '../../state/settings.service';
 export class SettingsPayrollComponent implements OnChanges {
   @Input() public payrollData: any;
 
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(private settingsCompanyService: SettingsCompanyService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -23,6 +23,6 @@ export class SettingsPayrollComponent implements OnChanges {
     return item.id;
   }
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsCompanyService.onModalAction(modal);
   }
 }

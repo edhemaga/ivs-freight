@@ -1,4 +1,8 @@
 import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from 'src/app/core/utils/methods.calculations';
+import {
   phoneRegex,
   emailRegex,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
@@ -6,12 +10,19 @@ import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { AddressEntity } from 'appcoretruckassist';
+import {
+  AddressEntity,
+  CreateRepairShopCommand,
+  RepairShopModalResponse,
+  RepairShopResponse,
+  UpdateRepairShopCommand,
+} from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { RepairTService } from 'src/app/core/components/repair/state/repair.service';
 
 @UntilDestroy()
 @Component({
@@ -44,61 +55,17 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   };
 
   public selectedAddress: AddressEntity = null;
+
+  public payPeriods: any[] = [];
   public selectedPayPeriod: any = null;
+
+  public weeklyDays: any[] = [];
+  public monthlyDays: any[] = [];
   public selectedDay: any = null;
 
   public isPhoneExtExist: boolean = false;
 
-  public services: any[] = [
-    {
-      id: 1,
-      name: 'Truck',
-      svg: 'assets/svg/common/repair-services/ic_truck.svg',
-      active: false,
-    },
-    {
-      id: 2,
-      name: 'Trailer',
-      svg: 'assets/svg/common/repair-services/ic_trailer.svg',
-      active: false,
-    },
-    {
-      id: 3,
-      name: 'Mobile',
-      svg: 'assets/svg/common/repair-services/ic_mobile.svg',
-      active: false,
-    },
-    {
-      id: 4,
-      name: 'Shop',
-      svg: 'assets/svg/common/repair-services/ic_shop.svg',
-      active: false,
-    },
-    {
-      id: 5,
-      name: 'Towing',
-      svg: 'assets/svg/common/repair-services/ic_towing.svg',
-      active: false,
-    },
-    {
-      id: 6,
-      name: 'Parts',
-      svg: 'assets/svg/common/repair-services/ic_parts.svg',
-      active: false,
-    },
-    {
-      id: 7,
-      name: 'Tire',
-      svg: 'assets/svg/common/repair-services/ic_tire.svg',
-      active: false,
-    },
-    {
-      id: 8,
-      name: 'Dealer',
-      svg: 'assets/svg/common/repair-services/ic_dealer.svg',
-      active: false,
-    },
-  ];
+  public services: any[] = [];
 
   public isDirty: boolean;
 
@@ -107,26 +74,32 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private modalService: ModalService,
     private formService: FormService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private repairService: RepairTService
   ) {}
 
   ngOnInit() {
     this.createForm();
-    this.isCheckedCompanyOwned();
+    this.getModalDropdowns();
+
+    if (this.editData?.type === 'edit') {
+      this.editRepairShopById(this.editData.id);
+    }
   }
 
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
-      shopName: [null, Validators.required],
+      name: [null, Validators.required],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, phoneRegex],
-      phoneExtension: [null],
+      phone: [null, [Validators.required, phoneRegex]],
+      phoneExt: [null],
       email: [null, emailRegex],
       rent: [null],
       payPeriod: [null],
-      day: [null],
+      weeklyDay: [null],
+      monthlyDay: [null],
     });
 
     // this.formService.checkFormChange(this.repairShopForm);
@@ -158,7 +131,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.repairShopForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.type === 'edit') {
           this.updateRepariShop(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -168,10 +141,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'delete': {
-        if (this.editData) {
-          this.deleteRepairShopById(this.editData.id);
-          this.modalService.setModalSpinner({ action: 'delete', status: true });
-        }
+        this.deleteRepairShopById(this.editData.id);
+        this.modalService.setModalSpinner({ action: 'delete', status: true });
         break;
       }
       default: {
@@ -184,6 +155,9 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'pay-period': {
         this.selectedPayPeriod = event;
+        this.repairShopForm.get('weeklyDay').patchValue(null);
+        this.repairShopForm.get('monthlyDay').patchValue(null);
+        this.selectedDay = null;
       }
       case 'day': {
         this.selectedDay = event;
@@ -202,57 +176,198 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     if (event.valid) this.selectedAddress = event.address;
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.repairShopForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.repairShopForm.get('companyOwned').setValue(false);
-    }
-  }
-
-  public isCheckedCompanyOwned() {
-    this.repairShopForm
-      .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputService.changeValidators(
-            this.repairShopForm.get('shopName')
-          );
-          this.inputService.changeValidators(
-            this.repairShopForm.get('address')
-          );
-          this.inputService.changeValidators(
-            this.repairShopForm.get('phone'),
-            true,
-            [phoneRegex]
-          );
-        } else {
-          this.inputService.changeValidators(
-            this.repairShopForm.get('shopName'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.repairShopForm.get('address'),
-            false
-          );
-          this.inputService.changeValidators(
-            this.repairShopForm.get('phone'),
-            false
-          );
-        }
-      });
-  }
-
   public identity(index: number, item: any): number {
     return item.id;
   }
 
-  private updateRepariShop(id: number) {}
+  private updateRepariShop(id: number) {
+    const { address, addressUnit, rent, ...form } = this.repairShopForm.value;
 
-  private addRepairShop() {}
+    const newData: UpdateRepairShopCommand = {
+      id: id,
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
+      monthlyDay:
+        this.selectedPayPeriod?.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      weeklyDay:
+        this.selectedPayPeriod?.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
+    };
 
-  private deleteRepairShopById(id: number) {}
+    this.repairService
+      .updateRepairShop(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly updated company repair shop.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't update company repair shop.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private addRepairShop() {
+    const { address, addressUnit, rent, ...form } = this.repairShopForm.value;
+
+    const newData: CreateRepairShopCommand = {
+      ...form,
+      address: { ...this.selectedAddress, addressUnit: addressUnit },
+      rent: rent ? convertThousanSepInNumber(rent) : null,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
+      monthlyDay:
+        this.selectedPayPeriod?.name === 'Monthly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      weeklyDay:
+        this.selectedPayPeriod?.name === 'Weekly'
+          ? this.selectedDay
+            ? this.selectedDay.id
+            : null
+          : null,
+      serviceTypes: this.services.map((item) => {
+        return {
+          serviceType: item.serviceType,
+          active: item.active,
+        };
+      }),
+    };
+
+    this.repairService
+      .addRepairShop(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly added company repair shop.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't add company repair shop.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private deleteRepairShopById(id: number) {
+    this.repairService
+      .deleteRepairShopById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly deleted company repair shop.',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't delete company repair shop.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private editRepairShopById(id: number) {
+    this.repairService
+      .getRepairShopById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RepairShopResponse) => {
+          this.repairShopForm.patchValue({
+            companyOwned: res.companyOwned,
+            name: res.name,
+            address: res.address.address,
+            addressUnit: res.address.addressUnit,
+            phone: res.phone,
+            phoneExt: res.phoneExt,
+            email: res.email,
+            rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
+            payPeriod: res.payPeriod ? res.payPeriod.name : null,
+            monthlyDay: res.payPeriod?.name
+              ? res.payPeriod.name === 'Monthly'
+                ? res.monthlyDay.name
+                : res.weeklyDay.name
+              : null,
+          });
+
+          this.selectedAddress = res.address;
+          this.selectedPayPeriod = res.payPeriod;
+
+          this.selectedDay =
+            res.payPeriod?.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
+              active: item.active,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load company repair shop.",
+            'Error'
+          );
+        },
+      });
+  }
+
+  private getModalDropdowns() {
+    this.repairService
+      .getRepairShopModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RepairShopModalResponse) => {
+          this.payPeriods = res.payPeriods;
+          this.monthlyDays = res.monthlyDays;
+          this.weeklyDays = res.daysOfWeek;
+          this.services = res.serviceTypes.map((item) => {
+            return {
+              id: item.serviceType.id,
+              serviceType: item.serviceType.name,
+              svg: `assets/svg/common/repair-services/${item.logoName}`,
+              active: false,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load modal dropdowns.",
+            'Error'
+          );
+        },
+      });
+  }
 
   ngOnDestroy(): void {}
 }

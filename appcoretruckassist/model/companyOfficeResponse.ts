@@ -16,14 +16,16 @@ import { AddressEntity } from './addressEntity';
 
 export interface CompanyOfficeResponse { 
     id?: number;
-    ownerType?: EnumValue;
+    isOwner?: boolean;
     name?: string | null;
     email?: string | null;
     phone?: string | null;
+    extensionPhone?: string | null;
     address?: AddressEntity;
-    dayOfWeek?: EnumValue;
     rent?: number | null;
     monthlyDay?: EnumValue;
+    payPeriod?: EnumValue;
+    weeklyDay?: EnumValue;
     departmentContacts?: Array<CompanyOfficeDepartmentContactResponse> | null;
     createdAt?: string;
     updatedAt?: string;

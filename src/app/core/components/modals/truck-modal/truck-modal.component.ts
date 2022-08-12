@@ -41,7 +41,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
-  @ViewChild('appNote', {static: false}) public appNote: any;
+  @ViewChild('appNote', { static: false }) public appNote: any;
 
   public truckForm: FormGroup;
   public truckType: any[] = [];
@@ -211,7 +211,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.truckForm.controls['note'].setValue(this.appNote.value);
-            console.log(this.appNote.value, 'addtruck 111');
+
             this.addTruck();
             this.modalService.setModalSpinner({ action: null, status: true });
           }
@@ -240,14 +240,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           );
         }
       });
-  }
-
-  public openCloseCheckboxCard(event: any) {
-    if (this.truckForm.get('companyOwned').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.truckForm.get('companyOwned').setValue(false);
-    }
   }
 
   public getTruckDropdowns() {
@@ -287,7 +279,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   public addTruck() {
-    console.log(this.truckForm, 'addtruck 222');
     const newData: CreateTruckCommand = {
       ...this.truckForm.value,
       truckTypeId: this.selectedTruckType ? this.selectedTruckType.id : null,
@@ -317,7 +308,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         : null,
       year: parseInt(this.truckForm.get('year').value),
     };
-    
+
     let truckNum = this.truckForm.get('truckNumber').value;
 
     console.log(newData, 'addtruck 333');
