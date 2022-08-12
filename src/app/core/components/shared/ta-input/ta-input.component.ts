@@ -48,7 +48,7 @@ export class TaInputComponent
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
   @ViewChild('span3', { static: false }) span3: ElementRef;
-  @ViewChild('holder1', { static: false}) holder1: ElementRef;
+  @ViewChild('holder1', { static: false }) holder1: ElementRef;
   @ViewChild('t2') t2: any;
   @ViewChild(NgbPopover)
   private ngbMainPopover: NgbPopover;
@@ -198,7 +198,7 @@ export class TaInputComponent
       this.inputConfig.name === 'timepicker'
     ) {
       if (obj) {
-        this.setTimeDateInput(obj);
+        // this.setTimeDateInput(obj);
       }
     } else {
       this.input.nativeElement.value = obj;
@@ -237,7 +237,10 @@ export class TaInputComponent
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
-      const elem = this.selectionInput == -1 ? this.holder1.nativeElement : this.span1.nativeElement;
+      const elem =
+        this.selectionInput == -1
+          ? this.holder1.nativeElement
+          : this.span1.nativeElement;
 
       this.preventBlur = true;
       elem.focus();
@@ -255,7 +258,7 @@ export class TaInputComponent
   }
 
   public onBlur(): void {
-    if(this.preventBlur) {
+    if (this.preventBlur) {
       this.preventBlur = false;
       return;
     }
@@ -900,10 +903,9 @@ export class TaInputComponent
     e.preventDefault();
     const pasteText = e.clipboardData.getData('text');
     const pastedDate = new Date(pasteText);
-    if(!isNaN(pastedDate.getTime())){
+    if (!isNaN(pastedDate.getTime())) {
       this.setTimeDateInput(pastedDate);
-      this.selectSpanByTabIndex(this.selectionInput); 
-     
+      this.selectSpanByTabIndex(this.selectionInput);
     }
   }
 
@@ -978,22 +980,21 @@ export class TaInputComponent
     e.stopPropagation();
     const element = e.target;
     this.focusInput = true;
-    console.log("SET SELECTION");
+    console.log('SET SELECTION');
     console.log(this.selectionInput);
     const selectionInput = parseInt(element.getAttribute('tabindex'));
-
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
-        this.setSpanSelection(element);
+      this.setSpanSelection(element);
       // if( this.selectionInput == -1 ){
       //   this.showDateTimePlaceholder();
       // }else{
-        
+
       // }
     } else {
-      if( this.selectionInput == -1 ){
+      if (this.selectionInput == -1) {
         this.span1.nativeElement.focus();
         this.selectionInput = 0;
         this.setSpanSelection(this.span1.nativeElement);
@@ -1014,7 +1015,6 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
-    
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;
@@ -1024,12 +1024,11 @@ export class TaInputComponent
   }
 
   changeSelection(e, noPreventDefault = false): void {
-
-    if(!noPreventDefault){
+    if (!noPreventDefault) {
       e.preventDefault();
       e.stopPropagation();
     }
-    
+
     if (
       e.keyCode == 37 ||
       e.keyCode == 38 ||
@@ -1054,7 +1053,7 @@ export class TaInputComponent
           let allInputs = document.querySelectorAll('input');
           [...(allInputs as any)].map((item, indx) => {
             if (item === this.input.nativeElement) {
-              if(allInputs[indx + 1]){
+              if (allInputs[indx + 1]) {
                 allInputs[indx + 1].focus();
               }
               this.selectionInput = -1;
@@ -1062,7 +1061,7 @@ export class TaInputComponent
             }
           });
         } else if (e.shiftKey && e.keyCode == 9 && this.selectionInput != 0) {
-          if( this.selectionInput == -1 ){
+          if (this.selectionInput == -1) {
             this.selectionInput = 3;
           }
           this.selectionInput = this.selectionInput - 1;
@@ -1083,14 +1082,14 @@ export class TaInputComponent
         this.setDateTimeModel('down');
       }
     } else if (!this.isNumber(e)) {
-      if(!noPreventDefault){
+      if (!noPreventDefault) {
         e.preventDefault();
       }
     } else {
-      if(!noPreventDefault){
+      if (!noPreventDefault) {
         e.preventDefault();
       }
-      if( this.selectionInput == -1 ){
+      if (this.selectionInput == -1) {
         this.selectionInput = 0;
       }
       this.handleKeyboardInputs(e);
@@ -1219,7 +1218,7 @@ export class TaInputComponent
       case 1:
         this.setSpanSelection(this.span2.nativeElement);
         break;
-      case 2: 
+      case 2:
       case 3:
         this.setSpanSelection(this.span3.nativeElement);
         break;
@@ -1437,7 +1436,7 @@ export class TaInputComponent
       clearTimeout(this.dateTimeMainTimer);
       this.focusInput = false;
       this.selectionInput = -1;
-      this.refChange.detectChanges(); 
+      this.refChange.detectChanges();
     }, 100);
   }
 }
