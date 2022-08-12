@@ -456,6 +456,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       ...data,
       isSelected: false,
+      isOwner: data?.owner ? data.owner : false,
       textAddress: data.address.address ? data.address.address : '',
       textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
