@@ -6,7 +6,12 @@
   <div
     class="d-flex flex-column justify-content-center align-items-center instructions-container"
   >
-    <p class="m-0 text-center ta-font-regular">
+    <p
+      class="m-0 text-center ta-font-regular"
+      [ngStyle]="{
+        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+      }"
+    >
       <span class="ta-font-bold">Instructions:</span> Motor Carriers when using
       a driver for the first time shall obtain from the driver a signed
       statement giving the total time on-duty during the immediately preceding 7
@@ -15,7 +20,12 @@
       Carrier Safety Regulations.
     </p>
 
-    <p class="m-0 text-center ta-font-regular">
+    <p
+      class="m-0 text-center ta-font-regular"
+      [ngStyle]="{
+        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+      }"
+    >
       <span class="ta-font-bold">NOTE:</span> Hours for any compensated work
       during the preceding 7 days, including work for a non-motor carrier
       entity, must be recorded on this form.
@@ -48,10 +58,16 @@
                   [ngStyle]="{
                     width: first ? '35px' : '46px',
                     'justify-content': first ? 'start' : 'center',
-                    'margin-right': first ? '27px' : last ? '0' : '35px'
+                    'margin-right': first ? '27px' : last ? '0' : '36px'
                   }"
                 >
-                  <p class="m-0 ta-font-bold">
+                  <p
+                    class="m-0 ta-font-bold"
+                    [ngStyle]="{
+                      color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#B7B7B7' : '#919191'
+                    }"
+                  >
                     {{ day }}
                   </p>
                 </div>
@@ -74,11 +90,17 @@
                   [ngStyle]="{
                     width: first ? '35px' : '46px',
                     'justify-content': first ? 'start' : 'center',
-                    'margin-right': first ? '27px' : last ? '0' : '35px',
+                    'margin-right': first ? '27px' : last ? '0' : '36px',
                     'font-size': first ? '14px' : '12px'
                   }"
                 >
-                  <p [ngClass]="['date-para' + i, 'm-0 ta-font-bold']">
+                  <p
+                    [ngClass]="['date-para' + i, 'm-0 ta-font-bold']"
+                    [ngStyle]="{
+                      color:
+                        selectedMode === 'FEEDBACK_MODE' ? '#B7B7B7' : '#919191'
+                    }"
+                  >
                     {{ date }}
                   </p>
                 </div>
@@ -89,7 +111,16 @@
             <div class="d-flex align-items-center input-container">
               <td>
                 <div class="d-flex align-items-center hos-title-group">
-                  <p class="m-0 ta-font-bold">HOS <span>*</span></p>
+                  <p
+                    class="m-0 ta-font-bold"
+                    [ngClass]="
+                      selectedMode === 'FEEDBACK_MODE'
+                        ? 'hos-title hos-title-feedback'
+                        : 'hos-title'
+                    "
+                  >
+                    HOS <span>*</span>
+                  </p>
                 </div>
               </td>
               <td
@@ -122,7 +153,13 @@
           </tr>
           <tr>
             <div class="d-flex total-container">
-              <p class="m-0 ta-font-bold">
+              <p
+                class="m-0 ta-font-bold"
+                [ngStyle]="{
+                  color:
+                    selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#6d82c7'
+                }"
+              >
                 Total Hours: {{ totalHours | sumArrays }}
               </p>
             </div>
@@ -141,15 +178,19 @@
           [label]="
             'I hereby certify that the information given above is correct to the best of my Knowledge '
           "
-          [customClass]="'bold-12'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-bold"
           [ngStyle]="{
-            color: sevenDaysHosForm.get('isValidHos').value
-              ? '#6c6c6c'
-              : '#919191'
+            color:
+              !sevenDaysHosForm.get('isValidHos').value ||
+              selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isValidHos')"
         >
@@ -157,7 +198,12 @@
         </p>
       </div>
 
-      <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
+      <h3
+        class="m-0 step-subtitle noselect text-center ta-font-bold"
+        [ngStyle]="{
+          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+        }"
+      >
         Date released from work and location?
       </h3>
 
@@ -230,7 +276,12 @@
       <div
         class="d-flex justify-content-center align-items-center instructions-bottom-container"
       >
-        <p class="m-0 text-center ta-font-regular">
+        <p
+          class="m-0 text-center ta-font-regular"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           <span class="ta-font-bold">Instructions:</span> When employed by motor
           carrier, a driver must report to the motor carrier all on-duty time
           working for other employers. The definition of on-duty time found in
@@ -254,7 +305,14 @@
           "
         >
           <div [ngClass]="['title-box' + i, 'title-box']">
-            <p class="m-0 ta-font-regular">
+            <p
+              class="m-0 ta-font-regular"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'question-title question-title-feedback'
+                  : 'question-title'
+              "
+            >
               {{ question.title }}
               <span class="required-star">*</span>
             </p>
@@ -280,15 +338,19 @@
           [label]="
             'I hereby certify that the information given above is true and I understand that once I begin'
           "
-          [customClass]="'bold-12'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-bold"
           [ngStyle]="{
-            color: sevenDaysHosForm.get('isValidAnotherEmployer').value
-              ? '#6c6c6c'
-              : '#919191'
+            color:
+              !sevenDaysHosForm.get('isValidAnotherEmployer').value ||
+              selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isValidAnotherEmployer')"
         >

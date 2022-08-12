@@ -10,7 +10,12 @@
           PSP Online Service Authorization
         </h1>
 
-        <h2 class="m-0 text-center subtitle ta-font-bold">
+        <h2
+          class="m-0 text-center subtitle ta-font-bold"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           The below disclosure and authorization language is for mandatory use
           by all<br />
           account holders
@@ -20,6 +25,9 @@
 
         <div
           class="d-flex flex-column justify-content-center align-items-center text-center info-container"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
         >
           <p class="m-0 ta-font-regular">
             In connection with your application for employment with
@@ -71,7 +79,12 @@
             the crash and safety information has the capability to correct any
             safety data that appears to be incorrect. You may challenge the
             accuracy of the data by submitting a request to
-            <a href="https://dataqs.fmcsa.dot.gov" target="_blank"
+            <a
+              href="https://dataqs.fmcsa.dot.gov"
+              target="_blank"
+              [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#536bc2'
+              }"
               >https://dataqs.fmcsa.dot.gov</a
             >. If you challenge crash or inspection information reported by a
             State, FMCSA cannot change or correct this data. Your request will
@@ -109,16 +122,32 @@
               [label]="
                 'Please confirm that you have read and understood the content of this notice'
               "
-              [customClass]="'bold-12'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-feedback'
+                  : 'bold-12'
+              "
             >
             </app-ta-checkbox>
           </div>
 
           <!-- AUTHORIZATION TITLE -->
 
-          <h2 class="m-0 text-center ta-font-bold">AUTHORIZATION</h2>
+          <h2
+            class="m-0 text-center ta-font-bold"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
+          >
+            AUTHORIZATION
+          </h2>
 
-          <h3 class="m-0 text-center ta-font-regular">
+          <h3
+            class="m-0 text-center ta-font-regular"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
+          >
             If you agree that the Prospective Employer may obtain such
             background reports, please read the<br />
             following and sign below
@@ -133,16 +162,24 @@
               [label]="
                 'I authorize JD FREIGHT (“Prospective Employer”) to access the FMCSA Pre-Employment Screening Program (PSP)'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: pspAuthorizationForm.get('isAuthorize').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  pspAuthorizationForm.get('isAuthorize').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isAuthorize')"
             >
@@ -166,16 +203,24 @@
               [label]="
                 'I further understand that neither the Prospective Employer nor the FMCSA contractor supplying the crash and'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: pspAuthorizationForm.get('isFurtherUnderstand').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  pspAuthorizationForm.get('isFurtherUnderstand').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isFurtherUnderstand')"
             >
@@ -200,16 +245,24 @@
               [label]="
                 'I understand that any crash or inspection in which I was involved will display on my PSP report. Since the PSP'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: pspAuthorizationForm.get('isPspReport').value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  pspAuthorizationForm.get('isPspReport').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="handleCheckboxParagraphClick('isPspReport')"
             >
@@ -232,17 +285,24 @@
               [label]="
                 'I have read the above Disclosure Regarding Background Reports provided to me by Prospective Employer and'
               "
-              [customClass]="'disclosure-release'"
+              [customClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-disclosure-release-feedback'
+                  : 'disclosure-release'
+              "
             >
             </app-ta-checkbox>
 
             <p
               class="m-0 text-center ta-font-regular"
               [ngStyle]="{
-                color: pspAuthorizationForm.get('isDisclosureRegardingReport')
-                  .value
-                  ? '#3c3c3c'
-                  : '#6c6c6c'
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  pspAuthorizationForm.get('isDisclosureRegardingReport').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
               }"
               (click)="
                 handleCheckboxParagraphClick('isDisclosureRegardingReport')
@@ -261,7 +321,12 @@
           <div
             class="d-flex align-items-center justify-content-center text-center notice-info-container"
           >
-            <p class="m-0 ta-font-regular">
+            <p
+              class="m-0 ta-font-regular"
+              [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+              }"
+            >
               <span class="ta-font-bold">NOTICE:</span> This form is made
               available to monthly account holders by NIC on behalf of the U.S.
               Department of Transportation, Federal Motor Carrier Safety
@@ -280,7 +345,12 @@
           <div
             class="d-flex align-items-center justify-content-center text-center notice-info-container"
           >
-            <p class="m-0 ta-font-regular">
+            <p
+              class="m-0 ta-font-regular"
+              [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+              }"
+            >
               <span class="ta-font-bold">NOTICE:</span> The prospective
               employment concept referenced in this form contemplates the
               definition of “employee” contained at 49 C.F.R. 383.5.
@@ -292,7 +362,14 @@
           <div
             class="d-flex flex-column justify-content-center applicant-card-container"
           >
-            <div class="d-flex align-items-center title-container">
+            <div
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'title-container title-container-feedback'
+                  : 'title-container'
+              "
+            >
               <div class="d-flex align-items-center name-title-box">
                 <p class="m-0 ta-font-bold">APPLICANT NAME</p>
               </div>
@@ -305,7 +382,12 @@
             </div>
 
             <div
-              class="d-flex align-items-center applicant-card-info-container"
+              class="d-flex align-items-center"
+              [ngClass]="
+                selectedMode === 'FEEDBACK_MODE'
+                  ? 'applicant-card-info-container applicant-card-info-container-feedback'
+                  : 'applicant-card-info-container'
+              "
             >
               <div class="d-flex align-items-center driver-box">
                 <p class="m-0 ta-font-regular">

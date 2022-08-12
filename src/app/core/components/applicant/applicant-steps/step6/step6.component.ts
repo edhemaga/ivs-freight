@@ -18,7 +18,7 @@ import {
   styleUrls: ['./step6.component.scss'],
 })
 export class Step6Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant | undefined;
 
@@ -296,6 +296,22 @@ export class Step6Component implements OnInit, OnDestroy {
     this.educationForm
       .get(selectedFormControlName)
       .patchValue(selectedCheckbox.label);
+  }
+
+  public onSchoolGradeClick(gradeIndex: number): void {
+    if (this.selectedMode !== 'APPLICANT_MODE') {
+      return;
+    }
+
+    this.selectedGrade = gradeIndex;
+    this.selectedCollegeGrade = -1;
+  }
+
+  public onCollegeGradeClick(gradeIndex: number): void {
+    if (this.selectedMode !== 'APPLICANT_MODE') {
+      return;
+    }
+    this.selectedCollegeGrade = gradeIndex;
   }
 
   public onDeleteContact(index: number): void {

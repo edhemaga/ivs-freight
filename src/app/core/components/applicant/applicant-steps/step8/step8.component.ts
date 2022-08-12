@@ -15,7 +15,7 @@ import { DrugAndAlcohol } from '../../state/model/drug-and-alchocol.model';
   styleUrls: ['./step8.component.scss'],
 })
 export class Step8Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 

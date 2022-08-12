@@ -1,22 +1,18 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { ReviewFeedbackService } from '../../state/services/review-feedback.service';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { DisclosureRelease } from '../../state/model/disclosure-release.model';
 
-import { getDisclosureReleaseReviewFeedbackData } from '../../state/utils/review-feedback-data/step10';
-
 @Component({
   selector: 'app-step10',
   templateUrl: './step10.component.html',
   styleUrls: ['./step10.component.scss'],
 })
-export class Step10Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+export class Step10Component implements OnInit {
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant | undefined;
 
@@ -24,13 +20,7 @@ export class Step10Component implements OnInit, OnDestroy {
 
   public disclosureReleaseInfo: DisclosureRelease | undefined;
 
-  public reviewFeedback: any[] = getDisclosureReleaseReviewFeedbackData();
-  private countOfReview: number = 0;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private reviewFeedbackService: ReviewFeedbackService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -54,6 +44,10 @@ export class Step10Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.FIRST_DISCLOSURE:
         this.disclosureReleaseForm.patchValue({
@@ -149,17 +143,4 @@ export class Step10Component implements OnInit, OnDestroy {
       this.onSubmitForm();
     }
   }
-
-  public onSubmitReview(data: any): void {
-    this.reviewFeedback[data.index] = data.reviewFeedbackData;
-
-    this.countOfReview++;
-    if (this.countOfReview === 6 && !data.firstLoad) {
-      /* TODO: Send data to backend and move to next step */
-    } else if (data.firstLoad) {
-      this.countOfReview = 0;
-    }
-  }
-
-  ngOnDestroy(): void {}
 }

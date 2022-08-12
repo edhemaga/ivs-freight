@@ -11,7 +11,7 @@ import { DriverRights } from '../../state/model/driver-rights.model';
   styleUrls: ['./step9.component.scss'],
 })
 export class Step9Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 

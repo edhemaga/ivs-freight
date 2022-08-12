@@ -17,7 +17,7 @@ import {
   styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
@@ -194,6 +194,10 @@ export class Step5Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string) {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     if (type === 'notBeenConvicted') {
       this.notBeenConvictedForm.patchValue({
         notBeenConvicted:

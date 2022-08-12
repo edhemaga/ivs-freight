@@ -19,7 +19,7 @@ import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
   styleUrls: ['./step7.component.scss'],
 })
 export class Step7Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
@@ -144,8 +144,6 @@ export class Step7Component implements OnInit, OnDestroy {
       intendToWorkAnotherEmployer: [null, Validators.required],
       isValidAnotherEmployer: [null, Validators.requiredTrue],
 
-      number: [null],
-
       hosArray: this.formBuilder.array([]),
 
       firstRowReview: [null],
@@ -155,6 +153,10 @@ export class Step7Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string) {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.VALID_HOS:
         this.sevenDaysHosForm.patchValue({

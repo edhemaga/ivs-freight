@@ -8,7 +8,12 @@
 
         <h1 class="m-0 text-center title ta-font-bold">Upload SSN</h1>
 
-        <h2 class="m-0 text-center subtitle ta-font-regular">
+        <h2
+          class="m-0 text-center subtitle ta-font-regular"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           Your identification document will help us to validate your
           identity.<br />
           <span class="ta-font-bold">
@@ -34,21 +39,23 @@
             </div>
           </div>
 
-          <app-ta-upload-files
-            *ngIf="
-              selectedMode === 'APPLICANT_MODE' ||
-              selectedMode === 'FEEDBACK_MODE'
-            "
-            [files]="documents"
-            [size]="'medium'"
-            [hasNumberOfPages]="true"
-            (onFileEvent)="onFilesAction($event)"
-          ></app-ta-upload-files>
+          <div class="line-container">
+            <app-ta-upload-files
+              *ngIf="
+                selectedMode === 'APPLICANT_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
+              [files]="documents"
+              [size]="'medium'"
+              [hasNumberOfPages]="true"
+              (onFileEvent)="onFilesAction($event)"
+            ></app-ta-upload-files>
 
-          <div
-            class="d-flex review-documents-container line-container"
-            *ngIf="selectedMode === 'REVIEW_MODE'"
-          >
+            <div
+              class="d-flex review-documents-container"
+              *ngIf="selectedMode === 'REVIEW_MODE'"
+            ></div>
+
             <!-- REVIEW AND FEEDBACK -->
 
             <div
@@ -82,10 +89,30 @@
         <div
           class="d-flex justify-content-center align-items-center privacy-container"
         >
-          <p class="m-0 ta-font-regular text-center">
+          <p
+            class="m-0 ta-font-regular text-center"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+            }"
+          >
             By continuing, you are agreeing to our
-            <a class="ta-font-bold" href="#">Terms of Service</a><br />
-            and <a class="ta-font-bold" href="#">Privacy Policy</a>
+            <a
+              class="ta-font-bold"
+              href="#"
+              [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+              }"
+              >Terms of Service</a
+            ><br />
+            and
+            <a
+              class="ta-font-bold"
+              href="#"
+              [ngStyle]="{
+                color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+              }"
+              >Privacy Policy</a
+            >
           </p>
         </div>
       </div>
