@@ -44,7 +44,7 @@
                 isRequired: editData.type === 'new-division' ? true : false,
                 isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize',
-                autoFocus: editData?.type === 'edit-company' ? false : true
+                autoFocus: editData?.type !== 'edit-company' ? true : false
               }"
             ></app-ta-input>
           </div>
@@ -701,6 +701,7 @@
         <!-- Truck Assist -->
         <div class="custom-checkbox-card">
           <div class="divider"></div>
+          {{ companyForm.get("loadedAndEmptySameRate").value }}
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: companyForm.get('useACHPayout').value }"
@@ -769,32 +770,13 @@
               class="permile-fields"
               [ngClass]="{
                 'permile-fields-same-rate': this.companyForm.get(
-                  'driverOwnerHasLoadedEmptyMiles'
+                  'loadedAndEmptySameRate'
                 ).value
               }"
             >
               <p>DEF. SOLO DRIVER</p>
               <app-ta-input
-                *ngIf="
-                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
-                formControlName="soloEmptyMile"
-                [inputConfig]="{
-                  id: 'Solo Empty Mile',
-                  name: 'Per Mile',
-                  type: 'text',
-                  label: 'Empty Mi',
-                  placeholderIcon: 'dollar',
-                  customClass: 'dollar-placeholderIcon',
-                  min: 0,
-                  max: 10,
-                  maxLength: 4
-                }"
-              ></app-ta-input>
-              <app-ta-input
-                *ngIf="
-                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
+                *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   id: 'Solo Loaded Mile',
@@ -809,9 +791,22 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="
-                  this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
+                *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
+                formControlName="soloEmptyMile"
+                [inputConfig]="{
+                  id: 'Solo Empty Mile',
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Empty Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                *ngIf="this.companyForm.get('loadedAndEmptySameRate').value"
                 formControlName="perMileSolo"
                 [inputConfig]="{
                   id: 'Solo Per Mile',
@@ -845,32 +840,13 @@
               class="permile-fields"
               [ngClass]="{
                 'permile-fields-same-rate': this.companyForm.get(
-                  'driverOwnerHasLoadedEmptyMiles'
+                  'loadedAndEmptySameRate'
                 ).value
               }"
             >
               <p>DEF. TEAM DRIVER</p>
               <app-ta-input
-                *ngIf="
-                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
-                formControlName="teamEmptyMile"
-                [inputConfig]="{
-                  id: 'Team Empty Mile',
-                  name: 'Per Mile',
-                  type: 'text',
-                  label: 'Empty Mi',
-                  placeholderIcon: 'dollar',
-                  customClass: 'dollar-placeholderIcon',
-                  min: 0,
-                  max: 10,
-                  maxLength: 4
-                }"
-              ></app-ta-input>
-              <app-ta-input
-                *ngIf="
-                  !this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
+                *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   id: 'Team Loaded Mile',
@@ -885,9 +861,22 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="
-                  this.companyForm.get('driverOwnerHasLoadedEmptyMiles').value
-                "
+                *ngIf="!this.companyForm.get('loadedAndEmptySameRate').value"
+                formControlName="teamEmptyMile"
+                [inputConfig]="{
+                  id: 'Team Empty Mile',
+                  name: 'Per Mile',
+                  type: 'text',
+                  label: 'Empty Mi',
+                  placeholderIcon: 'dollar',
+                  customClass: 'dollar-placeholderIcon',
+                  min: 0,
+                  max: 10,
+                  maxLength: 4
+                }"
+              ></app-ta-input>
+              <app-ta-input
+                *ngIf="this.companyForm.get('loadedAndEmptySameRate').value"
                 formControlName="perMileTeam"
                 [inputConfig]="{
                   id: 'Team Per Mile',
@@ -904,7 +893,7 @@
               <app-ta-input
                 formControlName="teamPerStop"
                 [inputConfig]="{
-                  id: 'Team Per Mile',
+                  id: 'Team Per Stop',
                   name: 'Per Stop',
                   label: 'Per Stop',
                   type: 'text',
@@ -919,7 +908,7 @@
           </div>
           <div class="custom-p-modal-container">
             <app-ta-checkbox
-              formControlName="driverOwnerHasLoadedEmptyMiles"
+              formControlName="loadedAndEmptySameRate"
               [label]="'Loaded and empty miles have same rate'"
               [name]="'LoadedEmptyMiles'"
               [customClass]="'medium'"

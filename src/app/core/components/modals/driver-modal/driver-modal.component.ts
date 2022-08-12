@@ -1066,12 +1066,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             payType: res.payType ? res.payType.name : null,
             useTruckAssistAch: res.useTruckAssistAch,
             soloEmptyMile: res.solo ? res.solo.emptyMile : null,
-            soloLoadedMile: res.solo ? res.solo.loadedMile : null,
             soloPerStop: res.solo.perStop
               ? convertNumberInThousandSep(res.solo.perStop)
               : null,
             teamEmptyMile: res.team ? res.team.emptyMile : null,
-            teamLoadedMile: res.team ? res.team.loadedMile : null,
             teamPerStop: res.team.perStop
               ? convertNumberInThousandSep(res.team.perStop)
               : null,
@@ -1112,6 +1110,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll: res.payroll.pushNotification,
             smsNotificationPayroll: res.payroll.smsNotification,
           });
+
+          this.driverForm
+            .get('soloLoadedMile')
+            .patchValue(res.team.loadedMile, { emitEvent: false });
+          this.driverForm
+            .get('teamLoadedMile')
+            .patchValue(res.team.loadedMile, { emitEvent: false });
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);

@@ -34,7 +34,7 @@
                 label: 'Bussines Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: editData?.type === 'edit' ? false : true
+                autoFocus: editData?.type !== 'edit' ? true : false
               }"
             ></app-ta-input>
           </div>

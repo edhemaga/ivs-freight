@@ -27,7 +27,7 @@
                 isRequired: true,
                 textTransform: 'capitalize',
                 maxLength: 8,
-                autoFocus: editData?.type === 'edit' ? false : true
+                autoFocus: editData?.type !== 'edit' ? true : false
               }"
             ></app-ta-input>
           </div>

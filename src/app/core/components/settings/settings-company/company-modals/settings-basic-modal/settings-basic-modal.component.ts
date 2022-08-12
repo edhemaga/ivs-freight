@@ -309,7 +309,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       truckInspectionMonths: [12, [Validators.required, monthsValidRegex]],
       trailerInspectionMonths: [12, [Validators.required, monthsValidRegex]],
       //------------------ Payroll Tab
-      useACHPayout: [true],
+      useACHPayout: [false],
       // Driver & Owner
       driveOwnerPayPeriod: ['Weekly', Validators.required],
       driverOwnerEndingIn: ['Monday', Validators.required],
@@ -324,7 +324,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       teamPerStop: [null, perStopValidation],
       perMileTeam: [null, mileValidation],
 
-      driverOwnerHasLoadedEmptyMiles: [false],
+      loadedAndEmptySameRate: [false],
       driverSoloDefaultCommission: [25],
       driverTeamDefaultCommission: [25],
       ownerDefaultCommission: [15],
@@ -722,6 +722,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           this.companyForm.get('soloLoadedMile').setErrors({ invalid: true });
         } else {
           this.companyForm.get('soloLoadedMile').setErrors(null);
+          this.companyForm.get('soloEmptyMile').patchValue(value);
         }
       });
 
@@ -755,6 +756,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           this.companyForm.get('teamLoadedMile').setErrors({ invalid: true });
         } else {
           this.companyForm.get('teamLoadedMile').setErrors(null);
+          this.companyForm.get('teamEmptyMile').patchValue(value);
         }
       });
 
@@ -810,50 +812,25 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  public onSamePerMileCheck() {
+  private onSamePerMileCheck() {
     this.companyForm
-      .get('driverOwnerHasLoadedEmptyMiles')
+      .get('loadedAndEmptySameRate')
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((val) => {
         if (val) {
-          if (this.selectedFleetType === 'Solo') {
+          if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
             if (this.companyForm.get('soloEmptyMile').value) {
               this.companyForm
                 .get('perMileSolo')
                 .patchValue(this.companyForm.get('soloEmptyMile').value);
-              this.companyForm.get('soloEmptyMile').patchValue(null);
-              this.companyForm.get('soloLoadedMile').patchValue(null);
-            } else {
-              this.companyForm.get('perMileSolo').patchValue(null);
             }
-          } else if (this.selectedFleetType === 'Team') {
+          }
+
+          if (['Team', 'Combined'].includes(this.selectedFleetType)) {
             if (this.companyForm.get('teamEmptyMile').value) {
               this.companyForm
                 .get('perMileTeam')
                 .patchValue(this.companyForm.get('teamEmptyMile').value);
-              this.companyForm.get('teamEmptyMile').patchValue(null);
-              this.companyForm.get('teamLoadedMile').patchValue(null);
-            } else {
-              this.companyForm.get('perMileTeam').patchValue(null);
-            }
-          } else {
-            if (this.companyForm.get('soloEmptyMile').value) {
-              this.companyForm
-                .get('perMileSolo')
-                .patchValue(this.companyForm.get('soloEmptyMile').value);
-              this.companyForm.get('soloEmptyMile').patchValue(null);
-              this.companyForm.get('soloLoadedMile').patchValue(null);
-            } else {
-              this.companyForm.get('perMileSolo').patchValue(null);
-            }
-            if (this.companyForm.get('teamEmptyMile').value) {
-              this.companyForm
-                .get('perMileTeam')
-                .patchValue(this.companyForm.get('teamEmptyMile').value);
-              this.companyForm.get('teamEmptyMile').patchValue(null);
-              this.companyForm.get('teamLoadedMile').patchValue(null);
-            } else {
-              this.companyForm.get('perMileTeam').patchValue(null);
             }
           }
         }
@@ -935,7 +912,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
-      driverOwnerHasLoadedEmptyMiles,
+      loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
@@ -1151,7 +1128,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       teamEmptyMile,
       teamLoadedMile,
       teamPerStop,
-      driverOwnerHasLoadedEmptyMiles,
+      loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
@@ -1293,7 +1270,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       teamLoadedMile,
       teamPerStop,
       perMileTeam,
-      driverOwnerHasLoadedEmptyMiles,
+      loadedAndEmptySameRate,
       driverSoloDefaultCommission,
       driverTeamDefaultCommission,
       ownerDefaultCommission,
@@ -1443,12 +1420,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       payPeriod: this.selectedDriverPayPeriod.id,
       endingIn: this.selectedDriverEndingIn.id,
       solo: {
-        emptyMile: !driverOwnerHasLoadedEmptyMiles
+        emptyMile: !loadedAndEmptySameRate
           ? ['Solo', 'Combined'].includes(this.selectedFleetType)
             ? parseFloat(soloEmptyMile)
             : null
           : null,
-        loadedMile: !driverOwnerHasLoadedEmptyMiles.value
+        loadedMile: !loadedAndEmptySameRate
           ? ['Solo', 'Combined'].includes(this.selectedFleetType)
             ? parseFloat(soloLoadedMile)
             : null
@@ -1460,12 +1437,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
           : null,
       },
       team: {
-        emptyMile: !driverOwnerHasLoadedEmptyMiles
+        emptyMile: !loadedAndEmptySameRate
           ? ['Team', 'Combined'].includes(this.selectedFleetType)
             ? parseFloat(teamEmptyMile)
             : null
           : null,
-        loadedMile: !driverOwnerHasLoadedEmptyMiles
+        loadedMile: !loadedAndEmptySameRate
           ? ['Team', 'Combined'].includes(this.selectedFleetType)
             ? parseFloat(teamLoadedMile)
             : null
@@ -1476,14 +1453,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             : null
           : null,
       },
-      perMileSolo: driverOwnerHasLoadedEmptyMiles
-        ? perMileSolo
-          ? parseFloat(perMileSolo)
+      perMileSolo: ['Solo', 'Combined'].includes(this.selectedFleetType)
+        ? loadedAndEmptySameRate
+          ? perMileSolo
+            ? parseFloat(perMileSolo)
+            : null
           : null
         : null,
-      perMileTeam: driverOwnerHasLoadedEmptyMiles
-        ? perMileTeam
-          ? parseFloat(perMileTeam)
+      perMileTeam: ['Team', 'Combined'].includes(this.selectedFleetType)
+        ? loadedAndEmptySameRate
+          ? perMileTeam
+            ? parseFloat(perMileTeam)
+            : null
           : null
         : null,
 
@@ -1498,7 +1479,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         ? driverTeamDefaultCommission
         : null,
       defaultOwnerCommission: ownerDefaultCommission,
-      loadedAndEmptySameRate: driverOwnerHasLoadedEmptyMiles,
+      loadedAndEmptySameRate: loadedAndEmptySameRate,
     };
 
     console.log(this.selectedFleetType);
@@ -1858,44 +1839,44 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
             this.companyForm
               .get('soloEmptyMile')
-              .setValue(payroll.solo.emptyMile);
+              .patchValue(payroll.solo.emptyMile);
             this.companyForm
               .get('soloLoadedMile')
-              .setValue(payroll.solo.loadedMile);
+              .patchValue(payroll.solo.loadedMile, { emitEvent: false });
             this.companyForm
               .get('soloPerStop')
-              .setValue(
+              .patchValue(
                 payroll.solo.perStop
                   ? convertNumberInThousandSep(payroll.solo.perStop)
                   : null
               );
-            this.companyForm.get('perMileSolo').setValue(payroll.perMileSolo);
+            this.companyForm.get('perMileSolo').patchValue(payroll.perMileSolo);
 
             this.companyForm
               .get('teamEmptyMile')
-              .setValue(payroll.team.emptyMile);
+              .patchValue(payroll.team.emptyMile);
             this.companyForm
               .get('teamLoadedMile')
-              .setValue(payroll.team.loadedMile);
+              .patchValue(payroll.team.loadedMile, { emitEvent: false });
             this.companyForm
               .get('teamPerStop')
-              .setValue(
+              .patchValue(
                 payroll.team.perStop
                   ? convertNumberInThousandSep(payroll.team.perStop)
                   : null
               );
-            this.companyForm.get('perMileTeam').setValue(payroll.perMileTeam);
+            this.companyForm.get('perMileTeam').patchValue(payroll.perMileTeam);
 
             this.companyForm
-              .get('driverOwnerHasLoadedEmptyMiles')
-              .setValue(payroll.loadedAndEmptySameRate);
+              .get('loadedAndEmptySameRate')
+              .patchValue(payroll.loadedAndEmptySameRate, { emitEvent: false });
 
             this.companyForm
               .get('driverSoloDefaultCommission')
-              .setValue(payroll.defaultSoloDriverCommission);
+              .patchValue(payroll.defaultSoloDriverCommission);
             this.companyForm
               .get('driverTeamDefaultCommission')
-              .setValue(payroll.defaultTeamDriverCommission);
+              .patchValue(payroll.defaultTeamDriverCommission);
 
             this.companyForm
               .get('ownerDefaultCommission')

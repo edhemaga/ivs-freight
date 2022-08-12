@@ -17,7 +17,8 @@
             type: 'text',
             label: 'Shop Name',
             isRequired: true,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            autoFocus: editData?.type !== 'edit' ? true : false
           }"
         ></app-ta-input>
       </div>
