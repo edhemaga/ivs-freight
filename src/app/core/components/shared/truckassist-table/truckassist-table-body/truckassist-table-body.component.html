@@ -1908,7 +1908,7 @@
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
-  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
+  <div class="show-more" (clcik)="onShowMore()" *ngIf="viewData.length < activeTableData.length">
     SHOW MORE
   </div>
 </div>
