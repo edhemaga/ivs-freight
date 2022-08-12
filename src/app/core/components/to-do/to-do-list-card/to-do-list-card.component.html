@@ -156,6 +156,16 @@
           <app-filter [type]="'trailerTypeFilter'" [icon]="'trailer'" [filterTitle]="'Trailer Type Filter'" [defFilterHolder]="true" [leftSideIcon]="true" [largeLeftIcon]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Money Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'moneyFilter'" [icon]="'dollar'" [filterTitle]="'Money Filter'" [moneyFilter]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
         </div>
         <div class="toolbar-icons-frame">
           <div class="border-right"></div>

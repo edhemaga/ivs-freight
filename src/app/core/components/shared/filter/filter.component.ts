@@ -634,6 +634,7 @@ trailerTypeArray: any[] = [
    @Input() noLeftIcon: boolean = false;
    @Input() leftSideIcon: boolean = false;
    @Input() largeLeftIcon: boolean = false;
+   @Input() moneyFilter: boolean = false;
 
    constructor(
     private formBuilder: FormBuilder,

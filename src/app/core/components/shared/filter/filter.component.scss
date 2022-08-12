@@ -749,6 +749,19 @@
     }
 }
 
+.money-filter{
+    padding: 8px;
+    width: 300px;
+
+    .money-top-border-magin{
+        margin: 8px 0px 25px 0px;
+    }
+
+    .money-bottom-border-magin{
+        margin: 25px 0px 8px 0px;
+    }
+}
+
 .time-filter-holder{
     padding: 8px 8px 12px 8px;
     width: 260px;

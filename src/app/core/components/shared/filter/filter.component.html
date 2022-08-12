@@ -562,43 +562,16 @@ autoClose="outside"
         </div>
     </div>
 
-    <!-- <div *ngIf="type == 'departmentFilter'" class="filter-holder department-filter">
+    <div *ngIf="moneyFilter" class="filter-holder money-filter">
         <div class="filter-header">
-            <div class="user-filter-box">{{selectedUser.length}}</div>
-            <div class="user-title-text">Department Filter</div>
+            <div class="user-title-text">Money Filter</div>
         </div>
-        <div class="border-filter"></div>
-        <div class="selected-user-holder">
-            <div *ngFor="let item of selectedUser; let indx=index" class="user-main-holder">    
-                <div class="selected-user-frame">{{item.name}}
-                    <div class="selected-icon">
-                        <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-                    </div>
-                    <div 
-                        ngbTooltip
-                        mainTooltip="Remove User"
-                        position="top"
-                        tooltipBackground="#6C6C6C"
-                        (click)="removeFromSelectedUser(item, indx)" 
-                        class="icon-delete">
-                        <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-                    </div>
-                </div>
-            </div>    
-        </div>
-        <div *ngIf="selectedUser.length > 0" class="border-filter border-thrird-margin"></div>
-        <div class="user-holder">
-            <div *ngFor="let item of departmentArray; let indx=index" class="user-frame-holder">
-                <div *ngIf="!item.hidden" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
-                </div>
-            </div>
-            
-        </div>
-        <div class="border-filter"></div>
+        <div class="border-filter money-top-border-magin"></div>
+    
+        <div class="border-filter money-bottom-border-magin"></div>
         <div class="buttons-holder">
             <div (click)="clearAll()" class="button-clear" [class.active]="selectedUser.length > 0">Clear All</div>
             <div class="button-set" [class.active]="selectedUser.length > 0">Set</div>
         </div>
-    </div> -->
+    </div>
 </ng-template>
