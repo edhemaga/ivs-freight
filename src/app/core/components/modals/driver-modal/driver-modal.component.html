@@ -185,11 +185,11 @@
                   this.driverForm.get('teamDriver').value)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+              [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
             >
               <p>SOLO</p>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -204,7 +204,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -220,7 +220,7 @@
               ></app-ta-input>
 
               <app-ta-input
-                *ngIf="milesSameRate"
+                *ngIf="hasMilesSameRate"
                 formControlName="perMileSolo"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -256,11 +256,11 @@
                   this.driverForm.get('teamDriver').value)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+              [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
             >
               <p>TEAM</p>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -275,7 +275,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -285,12 +285,13 @@
                   isRequired: true,
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
 
               <app-ta-input
-                *ngIf="milesSameRate"
+                *ngIf="hasMilesSameRate"
                 formControlName="perMileTeam"
                 [inputConfig]="{
                   name: 'Per Mile',

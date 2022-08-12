@@ -149,7 +149,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public disabledEmptyLoadedMile: boolean = false;
 
   // Delete when back coming
-  public milesSameRate: boolean = true;
+  public hasMilesSameRate: boolean = true;
   public fleetType: string = 'Solo';
 
   constructor(
@@ -259,7 +259,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required, emailRegex]],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
-      dateOfBirth: [null, [Validators.required]],
+      dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
       bankId: [null],
@@ -308,6 +308,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
+
+    this.driverForm.valueChanges.subscribe((val) => {
+      console.log(val);
+    });
   }
 
   public get offDutyLocations(): FormArray {
@@ -696,6 +700,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
+          this.fleetType = data.fleetType;
+          this.hasMilesSameRate = data.loadedAndEmptySameRate;
+
+          if (this.fleetType === 'Combined') {
+            this.driverForm.get('soloDriver').patchValue(true);
+            this.driverForm.get('teamDriver').patchValue(true);
+          }
         },
         error: (err) => {
           this.notificationService.error(
