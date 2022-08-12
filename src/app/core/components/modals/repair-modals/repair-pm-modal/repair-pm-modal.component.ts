@@ -44,7 +44,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-
+    console.log(this.editData);
     if (this.editData?.action?.includes('unit-pm')) {
       this.editData = {
         ...this.editData,
@@ -304,6 +304,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: PMTruckListResponse) => {
+          console.log(res);
           res.pagination.data.forEach((item, index) => {
             const data = {
               id: item.id,

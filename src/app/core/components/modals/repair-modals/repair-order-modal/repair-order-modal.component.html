@@ -3,7 +3,7 @@
     !editData?.type?.includes('edit') ? 'Add Repair' : 'Edit Repair'
   "
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.textUnit"
   [isModalValid]="repairOrderForm.valid"
   [tabChange]="headerTabs"
   [tabChangePosition]="'right'"
@@ -34,7 +34,7 @@
           isDropdown: true,
           isRequired: true,
           dropdownWidthClass:
-            selectedHeaderTab === 2 ? 'w-col-291' : 'w-col-129'
+            selectedHeaderTab === 2 ? 'w-col-251' : 'w-col-129'
         }"
         [options]="labelsUnit"
         [activeItem]="selectedUnit"

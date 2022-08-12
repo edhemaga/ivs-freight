@@ -137,6 +137,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       this.inputService.changeValidators(this.ownerForm.get('ssn'), true, [
         ssnNumberRegex,
       ]);
+
+      this.tabs = this.tabs.map((item) => {
+        return {
+          ...item,
+          checked: item.id === event.id,
+        };
+      });
     }
   }
 

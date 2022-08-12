@@ -108,8 +108,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.getRepairDropdowns();
 
     if (this.editData?.type.includes('edit')) {
-      console.log('Edit repair');
-      console.log(this.editData);
       this.editRepairById(this.editData.id);
     }
 

@@ -130,7 +130,7 @@
   //---------------- Driver Modal ------------------------------------
   .driver-modal-first-row {
     display: grid;
-    grid-template-columns: repeat(2, 226px) 140px;
+    grid-template-columns: repeat(2, 224px) 144px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -860,7 +860,7 @@
 //---------------- Repair Modal Bill ----------------
 .repair-modal-bill-first-row {
   display: grid;
-  grid-template-columns: 114px 129px 140px 105px 150px;
+  grid-template-columns: 114px 129px 125px 145px 125px;
   align-items: center;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
@@ -871,7 +871,7 @@
 //---------------- Repair Modal Order ----------------
 .repair-modal-order-first-row {
   display: grid;
-  grid-template-columns: 114px 291px 140px 105px;
+  grid-template-columns: 114px 251px 140px 145px;
   align-items: center;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;

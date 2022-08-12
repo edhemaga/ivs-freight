@@ -3,8 +3,8 @@
   [editData]="editData"
   [editName]="
     editData?.action.includes('unit-pm')
-      ? 'Unit'.concat(' ', editData?.id)
-      : editData?.id
+      ? 'Unit'.concat(' ', editData?.data?.textUnit)
+      : null
   "
   [disableDelete]="true"
   [isModalValid]="PMform.valid"
