@@ -22,6 +22,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { ContactTService } from '../../contacts/state/contact.service';
 
 @UntilDestroy()
 @Component({
@@ -82,6 +83,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private contactModalService: ContactModalService,
     private notificationService: NotificationService,
     private uploadFileService: TaUploadFileService,
+    private contactService: ContactTService,
     private formService: FormService
   ) {}
 
@@ -181,7 +183,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   private getContactLabelsAndDepartments() {
-    this.contactModalService
+    this.contactService
       .companyContactLabelsAndDeparments()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -200,7 +202,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   private editCompanyContact(id: number) {
-    this.contactModalService
+    this.contactService
       .getCompanyContactById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -250,7 +252,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
-    this.contactModalService
+    this.contactService
       .addCompanyContact(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -291,7 +293,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       address: this.selectedAddress?.address ? this.selectedAddress : null,
     };
 
-    this.contactModalService
+    this.contactService
       .updateCompanyContact(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -312,7 +314,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   public deleteCompanyContactById(id: number): void {
-    this.contactModalService
+    this.contactService
       .deleteCompanyContactById(id)
       .pipe(untilDestroyed(this))
       .subscribe({

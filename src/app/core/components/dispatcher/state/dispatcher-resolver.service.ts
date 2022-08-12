@@ -13,20 +13,20 @@ import { catchError, map, tap } from 'rxjs/operators';
 export class DispatcherResolverService implements Resolve<any> {
   constructor(private dispatcherStoreService: DispatcherStoreService, private dashboardQuery: DispatcherQuery) {}
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-      if( this.dashboardQuery.modalList?.dispatchers.length ){
-        return this.dashboardQuery.modalList;
-      }else{
-        const dispatchList = this.dispatcherStoreService.getDispatchboardList();
-        const modalList = this.dispatcherStoreService.getDispatcherList();
+      // if( this.dashboardQuery.modalList?.dispatchers.length ){
+      //   return this.dashboardQuery.modalList;
+      // }else{
+      //   const dispatchList = this.dispatcherStoreService.getDispatchboardList();
+      //   const modalList = this.dispatcherStoreService.getDispatcherList();
 
-        let join = forkJoin([modalList, dispatchList]).pipe(map((list) => {
-          this.dispatcherStoreService.dispatcherData = list;
+      //   let join = forkJoin([modalList, dispatchList]).pipe(map((list) => {
+      //     this.dispatcherStoreService.dispatcherData = list;
           
-          return list;
-        }));
+      //     return list;
+      //   }));
        
-        return join;
-      }
+      //   return join;
+      // }
       return of(true)
   }
 }
