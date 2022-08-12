@@ -175,7 +175,7 @@ export class CustomerTableComponent
                   response.map((r: any) => {
                     if (data.id === r.id) {
                       console.log(data);
-                      if ( brokerName == '' )
+                      if ( !brokerName )
                         {
                           brokerName = data.businessName;
                         }
@@ -205,7 +205,7 @@ export class CustomerTableComponent
               response.map((r: any) => {
                 if (data.id === r.id) {
                   console.log(data);
-                  if ( shipperName == '' )
+                  if ( !shipperName )
                     {
                       shipperName = data.businessName;
                     }
@@ -533,19 +533,16 @@ export class CustomerTableComponent
     // Edit Call
 
     let businessName = '';
-    this.viewData.map((data: any) => {
-      if (data.id === event.id) {
-        if ( businessName == '' )
-          {
-            businessName = data.businessName;
-          }
-        else {
-          businessName = businessName + ', ' + data.businessName;
-        }  
-        
+   
+    if ( !businessName )
+      {
+        businessName = event.data.businessName;
       }
-    });
-
+    else 
+      {
+        businessName = businessName + ', ' + event.data.businessName;
+      }  
+      
     if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
       if (this.selectedTab === 'active') {

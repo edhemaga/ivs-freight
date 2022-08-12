@@ -162,11 +162,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // Delete Selected Rows
-    let trailerNumber = '';
-    let trailersText = 'Trailer ';
+    
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
+
+        let trailerNumber = '';
+        let trailersText = 'Trailer ';
+
         if (response.length) {
           this.trailerService
             .deleteTrailerList(response)
@@ -473,13 +476,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onTableBodyActions(event: any) {
 
-    let trailerNum = '';
-    this.viewData.map((data: any) => {
-      if ( data.id == event.id )
-        {
-          trailerNum = data.trailerNumber;
-        }
-    });
+    let trailerNum = event.data.trailerNumber;  
 
     switch (event.type) {
       case 'edit-trailer': {

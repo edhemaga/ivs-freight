@@ -671,13 +671,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-
-    let driverFullName = '';
-    this.viewData.map((driver: any) => {
-      if (driver.id === event.id) {
-        driverFullName = driver.firstName + ' ' + driver.lastName;
-      }
-    });
+    
+    let driverFullName = event.data.firstName + ' ' + event.data.lastName;
 
     if (event.type === 'edit') {
       this.modalService.openModal(
