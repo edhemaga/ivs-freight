@@ -35,6 +35,8 @@ export interface UpdateDriverCommand {
     team: PerMileEntity;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     ownerId?: number | null;
     isOwner?: boolean;
     ownerType?: OwnerType;
