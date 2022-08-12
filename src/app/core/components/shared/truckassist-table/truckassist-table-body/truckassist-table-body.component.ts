@@ -27,7 +27,8 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableBodyComponent
-  implements OnInit, OnChanges, AfterViewInit, OnDestroy {
+  implements OnInit, OnChanges, AfterViewInit, OnDestroy
+{
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
@@ -53,13 +54,16 @@ export class TruckassistTableBodyComponent
   checkForScrollTimeout: any;
   viewDataEmpty: number;
   viewDataTimeOut: any;
+  rowData: any;
 
   constructor(
     private router: Router,
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef,
     private sharedService: SharedService
-  ) { }
+  ) {}
+
+  // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
 
@@ -122,6 +126,7 @@ export class TruckassistTableBodyComponent
     });
   }
 
+  // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
       clearTimeout(this.viewDataTimeOut);
@@ -160,7 +165,7 @@ export class TruckassistTableBodyComponent
     if (
       !changes?.selectedTab?.firstChange &&
       changes?.selectedTab?.currentValue !==
-      changes?.selectedTab?.previousValue &&
+        changes?.selectedTab?.previousValue &&
       changes?.selectedTab
     ) {
       this.selectedTab = changes.selectedTab.currentValue;
@@ -169,11 +174,13 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     this.sharedService.emitUpdateScrollHeight.emit(true);
     this.getNotPinedMaxWidth();
   }
 
+  // Lisiner For Scrolling Of Not Pined Section Of Table
   @HostListener('window:scroll', ['$event'])
   onScroll(event: any) {
     if (event.target.className === 'not-pined-tr') {
@@ -181,6 +188,16 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // Get Tab Table Data For Selected Tab
+  getSelectedTabTableData() {
+    if (this.tableData?.length) {
+      this.activeTableData = this.tableData.find(
+        (t) => t.field === this.selectedTab
+      );
+    }
+  }
+
+  // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
@@ -196,14 +213,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  getSelectedTabTableData() {
-    if (this.tableData?.length) {
-      this.activeTableData = this.tableData.find(
-        (t) => t.field === this.selectedTab
-      );
-    }
-  }
-
+  // Check If Scroll Exists On Not Pined Section Of Table
   checkForScroll() {
     const div = document.getElementById('scroll-container');
     const pinedColumns = document.querySelector('.pined-tr');
@@ -226,21 +236,20 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // Truck By For List
   trackByFn(index) {
     return index;
   }
 
+  // Go To Details Page
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
     this.router.navigate([link]);
   }
 
-  saveNote(note: string, row: any) {
-    alert('Treba da se odradi servis za slanje note-a');
-  }
-
-  public onSelectItem(event: any, index: number): void {
+  // Select Row
+  onSelectItem(event: any, index: number): void {
     this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
     if (event.isSelected) {
@@ -258,17 +267,13 @@ export class TruckassistTableBodyComponent
     this.tableService.sendRowsSelected(this.mySelection);
   }
 
-  onShowAttachments(data: any) {
-    alert('Treba da se odradi servis i componenta za Attachments');
-  }
-
-  onShowItemDrop(index: number) { }
-
+  // Show Password In Row
   onShowPassword(index: number) {
     this.loadingPassword = index;
   }
 
   // --------------------------------DROPDOWN---------------------------------
+
   /* Set Dropdown Content */
   setDropContent() {
     if (this.options.actions.length) {
@@ -279,7 +284,7 @@ export class TruckassistTableBodyComponent
   }
 
   /* Toggle Dropdown */
-  toggleDropdown(tooltip: any, id: number) {
+  toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
       tooltip.close();
@@ -287,21 +292,54 @@ export class TruckassistTableBodyComponent
       tooltip.open({ data: this.dropContent });
     }
 
-    this.dropDownActive = tooltip.isOpen() ? id : -1;
+    this.dropDownActive = tooltip.isOpen() ? row.id : -1;
+    this.rowData = row;
   }
 
   /* Dropdown Actions */
   onDropAction(action: any) {
     this.bodyActions.emit({
       id: this.dropDownActive,
+      data: this.rowData,
       type: action.name,
     });
 
     this.tooltip.close();
   }
 
+  // -------------------------------- Finish Order ---------------------------------
+  
+  // Finish Order
+  onFinishOrder(row: any) {
+    this.bodyActions.emit({
+      data: row,
+      type: 'finish-order',
+    });
+  }
+
+  // -------------------------------- Show More Data ---------------------------------
+  // Show More Data
+  onShowMore() {
+    this.bodyActions.emit({
+      type: 'show-more',
+    });
+  }
+
   // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendRowsSelected([]);
+  }
+
+  // --------------------------------TODO---------------------------------
+  onShowAttachments(data: any) {
+    alert('Treba da se odradi');
+  }
+
+  onShowItemDrop(index: number) {
+    alert('Treba da se odradi');
+  }
+
+  saveNote(note: string, row: any) {
+    alert('Treba da se odradi');
   }
 }

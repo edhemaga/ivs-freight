@@ -4,11 +4,10 @@ import {
   OnInit,
   OnDestroy,
   ViewEncapsulation,
-  ChangeDetectorRef,
   ViewChild,
+  AfterViewInit,
 } from '@angular/core';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
 import {
   getRepairsShopColumnDefinition,
   getRepairTrailerColumnDefinition,
@@ -20,6 +19,16 @@ import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
+import {
+  closeAnimationAction,
+} from 'src/app/core/utils/methods.globals';
+import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
+import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
+import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
+import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
+import { DatePipe } from '@angular/common';
+import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { RepairTService } from '../state/repair.service';
 
 @UntilDestroy()
 @Component({
@@ -30,8 +39,9 @@ import { ShopState } from '../state/shop-state/shop.store';
     '../../../../../assets/scss/maps.scss',
   ],
   encapsulation: ViewEncapsulation.None,
+  providers: [TaThousandSeparatorPipe],
 })
-export class RepairTableComponent implements OnInit, OnDestroy {
+export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
@@ -39,29 +49,27 @@ export class RepairTableComponent implements OnInit, OnDestroy {
   public viewData: any[] = [];
   public columns: any[] = [];
   public selectedTab = 'active';
-
-  public sortTypes: any[] = [];
-  public sortDirection: string = 'asc';
-  public activeSortType: any = {};
-  public sortBy: any;
-  public searchValue: string = '';
-  public locationFilterOn: boolean = false;
+  public repairTrucks: RepairTruckState[] = [];
+  public repairTrailers: RepairTrailerState[] = [];
   public repairShops: ShopState[] = [];
-
   resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
     public router: Router,
-    private ref: ChangeDetectorRef,
     private shopQuery: ShopQuery,
-    private mapsService: MapsService
+    private repairTruckQuery: RepairTruckQuery,
+    private repairTrailerQuery: RepairTrailerQuery,
+    private repairService: RepairTService,
+    public datePipe: DatePipe,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getRepairData();
+    this.sendRepairData();
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -85,27 +93,154 @@ export class RepairTableComponent implements OnInit, OnDestroy {
         }
       });
 
-    this.sortTypes = [
-      { name: 'Business Name', id: 1, sortName: 'name' },
-      { name: 'Location', id: 2, sortName: 'location', isHidden: true },
-      { name: 'Favorites', id: 8, sortName: 'favorites' },
-      { name: 'Available', id: 9, sortName: 'available' },
-      { name: 'Rating', id: 3, sortName: 'rating' },
-      { name: 'Date Added', id: 4, sortName: 'createdAt' },
-      { name: 'Last Used Date', id: 5, sortName: 'updatedAt' },
-      { name: 'Orders', id: 6, sortName: 'orders' },
-      { name: 'Total Cost', id: 7, sortName: 'cost' },
-    ];
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
 
-    this.activeSortType = this.sortTypes[0];
+            return c;
+          });
+        }
+      });
 
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(untilDestroyed(this))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          /* const searchEvent = tableSearch(
+            res,
+            this.backFilterQuery,
+            this.selectedTab
+          );
+
+          if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query);
+            } else if (searchEvent.action === 'store') {
+              this.sendRepairData();
+            }
+          } */
+        }
+      });
+
+    // Repair Actions
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        // On Add Repair
+        if (res.animation === 'add' && this.selectedTab === res.tab) {
+          this.viewData.push(
+            res.tab === 'active'
+              ? this.mapTruckData(res.data)
+              : res.tab === 'inctive'
+              ? this.mapTrailerData(res.data)
+              : this.mapShopData(res.data)
+          );
+
+          this.viewData = this.viewData.map((repair: any) => {
+            if (repair.id === res.id) {
+              repair.actionAnimation = 'add';
+            }
+
+            return repair;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // On Update Repair
+        else if (res.animation === 'update' && this.selectedTab === res.tab) {
+          const updatedRepair =
+            res.tab === 'active'
+              ? this.mapTruckData(res.data)
+              : res.tab === 'inctive'
+              ? this.mapTrailerData(res.data)
+              : this.mapShopData(res.data);
+
+          this.viewData = this.viewData.map((repair: any) => {
+            if (repair.id === res.id) {
+              repair = updatedRepair;
+              repair.actionAnimation = 'update';
+            }
+
+            return repair;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        }
+        // On Delete Repair
+        else if (res.animation === 'delete' && this.selectedTab === res.tab) {
+          let repairIndex: number;
+
+          this.viewData = this.viewData.map((repair: any, index: number) => {
+            if (repair.id === res.id) {
+              repair.actionAnimation = 'delete';
+              repairIndex = index;
+            }
+
+            return repair;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(repairIndex, 1);
+            clearInterval(inetval);
+          }, 1000);
+        }
+      });
   }
 
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  // Observ Table Container
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
+  }
+
+  // Repair Table Options
   public initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
@@ -149,46 +284,58 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getRepairData() {
-    this.sendRepairData();
-  }
-
+  // Send Repair Data
   sendRepairData() {
-    this.repairShops = this.shopQuery.getAll().length
-      ? this.shopQuery.getAll()
-      : [];
+    this.initTableOptions();
+
+    const repairTruckTrailerCount = JSON.parse(
+      localStorage.getItem('repairTruckTrailerTableCount')
+    );
+
+    const repairShopCount = JSON.parse(
+      localStorage.getItem('repairShopTableCount')
+    );
+
+    const repairTruckData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const repairTrailerData =
+      this.selectedTab === 'inactive' ? this.getTabData('inactive') : [];
+
+    const repairShopData =
+      this.selectedTab === 'repair-shop' ? this.getTabData('repair-shop') : [];
 
     this.tableData = [
       {
         title: 'Truck',
         field: 'active',
-        length: 8,
-        data: this.getDumyData(8, 'truck'),
+        length: repairTruckTrailerCount.repairTrucks,
+        data: repairTruckData,
         extended: false,
         selectTab: true,
-        gridNameTitle: 'Truck',
+        gridNameTitle: 'Repair',
         stateName: 'repair_trucks',
         gridColumns: this.getGridColumns('repair_trucks', this.resetColumns),
       },
       {
         title: 'Trailer',
         field: 'inactive',
-        length: 15,
-        data: this.getDumyData(15, 'trailer'),
+        length: repairTruckTrailerCount.repairTrailers,
+        data: repairTrailerData,
         extended: false,
         selectTab: true,
-        gridNameTitle: 'Trailer',
+        gridNameTitle: 'Repair',
         stateName: 'repair_trailers',
         gridColumns: this.getGridColumns('repair_trailers', this.resetColumns),
       },
       {
         title: 'Shop',
         field: 'repair-shop',
-        length: 25,
-        data: this.repairShops,
+        length: repairShopCount.repairShops,
+        data: repairShopData,
         extended: false,
         checkPinned: true,
-        gridNameTitle: 'Shop',
+        gridNameTitle: 'Repair',
         stateName: 'repair_shops',
         gridColumns: this.getGridColumns('repair_shops', this.resetColumns),
       },
@@ -199,12 +346,37 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     this.setRepairData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+  // Get Tab Data From Store Or Via Api
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.repairTrucks = this.repairTruckQuery.getAll();
 
-    if (userState && userState.columns.length && !resetColumns) {
+      return this.repairTrucks?.length ? this.repairTrucks : [];
+    } else if (dataType === 'inactive') {
+      this.repairTrailers = this.repairTrailerQuery.getAll();
+      return this.repairTrailers?.length ? this.repairTrailers : [];
+    } else if (dataType === 'repair-shop') {
+      this.repairShops = this.shopQuery.getAll();
+
+      return this.repairShops?.length ? this.repairShops : [];
+    }
+  }
+
+  // Get Repair Columns
+  getGridColumns(stateName: string, resetColumns: boolean) {
+    /*  const userState: any = JSON.parse(
+      localStorage.getItem(stateName + '_user_columns_state')
+    ); */
+
+    if (stateName === 'repair_trucks') {
+      return getRepairTruckColumnDefinition();
+    } else if (stateName === 'repair_trailers') {
+      return getRepairTrailerColumnDefinition();
+    } else if (stateName === 'repair_shops') {
+      return getRepairsShopColumnDefinition();
+    }
+
+    /* if (userState && userState.columns.length && !resetColumns) {
       return userState.columns;
     } else {
       if (stateName === 'repair_trucks') {
@@ -214,354 +386,102 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       } else if (stateName === 'repair_shops') {
         return getRepairsShopColumnDefinition();
       }
-    }
+    } */
   }
 
+  // Set Repair Data
   setRepairData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      return {
-        ...data,
-        isSelected: false,
-        textDbaName: '',
-        textAddress: data?.address
-          ? data.address.city + ', ' + data.address.state
-          : '',
-        mcNumber: '',
-        loadCount: '',
-        total: '',
-      };
-    });
-  }
+    if (td.data.length) {
+      this.viewData = td.data;
 
-  getDumyData(numberOfCopy: number, dataType: string) {
-    let dataTruck: any[] = [
-      {
-        id: 273,
-        companyId: 1,
-        repairShopId: 783,
-        repairShopName: 'TA TRUCK GRAND BAY, AL',
-        truckId: 187,
-        truckNumber: '0408',
-        trailerId: null,
-        trailerNumber: null,
-        categoryId: 1,
-        category: 'truck',
-        maintenanceDate: '05/28/20',
-        mileage: 0,
-        invoiceNo: '054250977',
-        total: 0,
-        doc: {
-          unit: '0408',
-          items: [
-            {
-              id: null,
-              item: 'Mechanical hourly labor',
-              price: '$59.50',
-              quantity: 1,
-              subtotal: null,
-            },
-            {
-              id: null,
-              item: 'Shop supply environmental fee',
-              price: '$3.57',
-              quantity: 1,
-              subtotal: null,
-            },
-            {
-              id: null,
-              item: 'Tax',
-              price: '$0.20',
-              quantity: 1,
-              subtotal: null,
-            },
-          ],
-          total: '$63.27',
-          types: [
-            {
-              id: 'mobile',
-              name: 'Mobile',
-              checked: false,
-            },
-            {
-              id: 'shop',
-              name: 'Shop',
-              checked: false,
-            },
-            {
-              id: 'towing',
-              name: 'Towing',
-              checked: false,
-            },
-            {
-              id: 'parts',
-              name: 'Parts',
-              checked: false,
-            },
-            {
-              id: 'tire',
-              name: 'Tire',
-              checked: false,
-            },
-            {
-              id: 'dealer',
-              name: 'Dealer',
-              checked: false,
-            },
-          ],
-          millage: '',
-          repairShop: {
-            id: 783,
-            name: 'TA TRUCK GRAND BAY, AL',
-            contact: {
-              email: null,
-              phone: '2518656175',
-              address: '9201 Grand Bay Wilmer Rd, Grand Bay, AL 36541, USA',
-            },
-          },
-          attachments: [
-            {
-              url: 'https://nyc3.digitaloceanspaces.com/space.truckasssist/uploads/0/0/1/maintenance/273/0d81e528f4774cc4bd2af080ceb2c1161620664708-0408 5.28.20.pdf',
-              fileName: '0408 5.28.20.pdf',
-              fileItemGuid: '0d81e528-f477-4cc4-bd2a-f080ceb2c116',
-            },
-          ],
-          additionalData: {
-            note: 'Test<div><br></div>',
-          },
-        },
-        createdAt: '2021-01-26T20:31:46',
-        updatedAt: '2022-01-06T17:55:39',
-        guid: '04a7a835-f9ab-4af4-aa72-33023e47e684',
-        textUnit: '0408',
-        textMillage: '',
-        textRepairShopName: 'TA TRUCK GRAND BAY, AL',
-        textTotal: '$63.27',
-        descriptionItems:
-          'Mechanical hourly labor<div class="description-dot"></div>Shop supply environmental fee<div class="description-dot"></div>Tax',
-        description:
-          'Mechanical hourly labor<span class="description-dot"></span>Shop supply environmental fee<span class="description-dot"></span>Tax',
-        isSelected: false,
-      },
-    ];
-    let dataTrailer: any[] = [
-      {
-        id: 108,
-        companyId: 1,
-        repairShopId: 140,
-        repairShopName: 'IVS TRUCK REPAIR, INC.',
-        truckId: null,
-        truckNumber: null,
-        trailerId: 59,
-        trailerNumber: 'R17042',
-        categoryId: 2,
-        category: 'trailer',
-        maintenanceDate: '03/09/20',
-        mileage: 0,
-        invoiceNo: '2188',
-        total: 0,
-        doc: {
-          unit: 'R17042',
-          items: [
-            {
-              id: null,
-              item: 'Horizontal e track',
-              price: '$27.5',
-              quantity: 10,
-              subtotal: null,
-            },
-            {
-              id: null,
-              item: 'Shop supply ',
-              price: '$35',
-              quantity: 1,
-              subtotal: null,
-            },
-            {
-              id: null,
-              item: 'Total labor ',
-              price: '$80',
-              quantity: 1,
-              subtotal: null,
-            },
-          ],
-          total: '$390.00',
-          types: [
-            {
-              id: 'mobile',
-              name: 'Mobile',
-              checked: false,
-            },
-            {
-              id: 'shop',
-              name: 'Shop',
-              checked: true,
-            },
-            {
-              id: 'towing',
-              name: 'Towing',
-              checked: false,
-            },
-            {
-              id: 'parts',
-              name: 'Parts',
-              checked: true,
-            },
-            {
-              id: 'tire',
-              name: 'Tire',
-              checked: false,
-            },
-            {
-              id: 'dealer',
-              name: 'Dealer',
-              checked: false,
-            },
-          ],
-          millage: '',
-          repairShop: {
-            id: 140,
-            name: 'IVS TRUCK REPAIR, INC.',
-            contact: {
-              email: 'nicolas@ivstruckrepair.com',
-              phone: '(708) 880-4117',
-              address: '9720 Industrial Dr, Bridgeview, IL 60455, USA',
-            },
-          },
-          attachments: [],
-          additionalData: {
-            note: '',
-          },
-        },
-        createdAt: '2021-01-20T16:53:01',
-        updatedAt: '2021-08-17T17:24:10',
-        guid: '9dd9b4d2-000b-4d21-8246-e1bcba642f22',
-        textUnit: 'R17042',
-        textMillage: '',
-        textRepairShopName: 'IVS TRUCK REPAIR, INC.',
-        textTotal: '$390.00',
-        descriptionItems:
-          'Horizontal e track<div class="description-dot"></div>Shop supply<div class="description-dot"></div>Total labor',
-        description:
-          'Horizontal e track<span class="description-dot"></span>Shop supply<span class="description-dot"></span>Total labor',
-      },
-    ];
-    let dataShop: any[] = [
-      {
-        id: 140,
-        companyId: null,
-        repairShopId: null,
-        name: 'IVS TRUCK REPAIR, INC.',
-        status: 1,
-        pinned: 1,
-        address: null,
-        street: null,
-        city: null,
-        state: null,
-        country: null,
-        zip: null,
-        longitude: -87.8063395,
-        latitude: 41.7147018,
-        email: null,
-        phone: null,
-        upCount: 2,
-        downCount: 1,
-        thumbUp: 259,
-        thumbDown: null,
-        commentList: null,
-        doc: {
-          email: 'nicolas@ivstruckrepair.com',
-          phone: '(708) 880-4117',
-          types: [
-            {
-              id: 'truck',
-              name: 'Truck',
-              checked: true,
-            },
-            {
-              id: 'trailer',
-              name: 'Trailer',
-              checked: false,
-            },
-            {
-              id: 'mobile',
-              name: 'Mobile',
-              checked: false,
-            },
-            {
-              id: 'shop',
-              name: 'Shop',
-              checked: true,
-            },
-            {
-              id: 'towing',
-              name: 'Towing',
-              checked: false,
-            },
-            {
-              id: 'parts',
-              name: 'Parts',
-              checked: false,
-            },
-            {
-              id: 'tire',
-              name: 'Tire',
-              checked: false,
-            },
-            {
-              id: 'dealer',
-              name: 'Dealer',
-              checked: false,
-            },
-          ],
-          address: {
-            city: 'Bridgeview',
-            state: 'Illinois',
-            address: '9720 Industrial Dr, Bridgeview, IL 60455, USA',
-            country: 'US',
-            zipCode: '60455',
-            stateShortName: 'IL',
-          },
-          addressUnit: '',
-          additionalData: {
-            note: 'tes',
-          },
-        },
-        up: null,
-        down: null,
-        latestComment: null,
-        repairCount: 183,
-        total: '$300,798.86',
-        guid: '9d3a3754-3616-4940-b92a-9366fc43a5b4',
-        textPhone: '(708) 880-4117',
-        textEmail: 'nicolas@ivstruckrepair.com',
-        textAddress: '9720 Industrial Dr, Bridgeview, IL 60455, USA',
-      },
-    ];
+      this.viewData = this.viewData.map((data: any, index: number) => {
+        if (this.selectedTab === 'active') {
+          return this.mapTruckData(data);
+        } else if (this.selectedTab === 'inactive') {
+          return this.mapTrailerData(data);
+        } else {
+          return this.mapShopData(data);
+        }
+      });
 
-    let data: any[] = [];
+      console.log('View Data');
+      console.log(this.viewData);
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      if (dataType === 'truck') {
-        data.push(dataTruck[0]);
-      } else if (dataType === 'trailer') {
-        data.push(dataTrailer[0]);
-      } else {
-        data.push(dataShop[0]);
-      }
+      // For Testing
+      // for (let i = 0; i < 300; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    } else {
+      this.viewData = [];
     }
-
-    return data;
   }
 
+  // Map Truck Data
+  mapTruckData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      isRepairOrder: data?.repairType?.name === 'Order',
+      textUnit: data?.truck?.truckNumber ? data.truck.truckNumber : '',
+      textMaintenanceDate: data?.date
+        ? this.datePipe.transform(data.date, 'MM/dd/yy')
+        : '',
+      textRepairShopName: data?.repairShop?.name ? data.repairShop.name : '',
+      textTotal: data?.total
+        ? '$ ' + this.thousandSeparator.transform(data.total)
+        : '',
+    };
+  }
+
+  // Map Trailer Data
+  mapTrailerData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      isRepairOrder: data?.repairType?.name === 'Order',
+      textUnit: data?.trailer?.trailerNumber ? data.trailer.trailerNumber : '',
+      textMaintenanceDate: data?.date
+        ? this.datePipe.transform(data.date, 'MM/dd/yy')
+        : '',
+      textRepairShopName: data?.repairShop?.name ? data.repairShop.name : '',
+      textTotal: data?.total
+        ? '$ ' + this.thousandSeparator.transform(data.total)
+        : '',
+    };
+  }
+
+  // Map Shop Data
+  mapShopData(data: any) {
+    return {
+      ...data,
+      isSelected: false,
+      textAddress: data?.address?.address ? data.address.address : '',
+    };
+  }
+
+  // Update Data Count
+  updateDataCount() {
+    const repairTruckTrailerCount = JSON.parse(
+      localStorage.getItem('repairTruckTrailerTableCount')
+    );
+    const repairShopCount = JSON.parse(
+      localStorage.getItem('repairShopTableCount')
+    );
+
+    this.tableData[0].length = repairTruckTrailerCount.repairTrucks;
+    this.tableData[1].length = repairTruckTrailerCount.repairTrailers;
+    this.tableData[2].length = repairShopCount.repairShops;
+  }
+
+  // Table Toolbar Actions
   onToolBarAction(event: any) {
     switch (event.action) {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
-        this.setRepairData(event.tabData);
-        this.initTableOptions();
+
+        this.sendRepairData();
         break;
       }
       case 'open-modal': {
@@ -601,6 +521,7 @@ export class RepairTableComponent implements OnInit, OnDestroy {
       }
       case 'view-mode': {
         this.tableOptions.toolbarActions.viewModeActive = event.mode;
+
         if (event.mode == 'Map') {
           //this.mapsComponent.markersDropAnimation();
         }
@@ -612,71 +533,71 @@ export class RepairTableComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
-    switch (this.selectedTab) {
-      case 'active': {
-        this.modalService.openModal(
-          RepairOrderModalComponent,
-          { size: 'large' },
-          { ...event, type: 'edit-truck' }
-        );
-        break;
-      }
-      case 'inactive': {
-        this.modalService.openModal(
-          RepairOrderModalComponent,
-          { size: 'large' },
-          { ...event, type: 'edit-trailer' }
-        );
-        break;
-      }
-      default: {
-        this.modalService.openModal(
-          RepairShopModalComponent,
-          { size: 'small' },
-          event
-        );
-        break;
+  // Table Head Actions
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendRepairData();
       }
     }
   }
 
+  // Table Body Actions
+  onTableBodyActions(event: any) {
+    if (event.type === 'edit') {
+      switch (this.selectedTab) {
+        case 'active': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event, type: 'edit-truck' }
+          );
+          break;
+        }
+        case 'inactive': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event, type: 'edit-trailer' }
+          );
+          break;
+        }
+        default: {
+          this.modalService.openModal(
+            RepairShopModalComponent,
+            { size: 'small' },
+            event
+          );
+          break;
+        }
+      }
+    } else if (event.type === 'delete-repair') {
+      if (this.selectedTab !== 'repair-shop') {
+        this.repairService
+          .deleteRepairById(event.id, this.selectedTab)
+          .pipe(untilDestroyed(this))
+          .subscribe();
+      } else {
+        this.repairService
+          .deleteRepairShopById(event.id)
+          .pipe(untilDestroyed(this))
+          .subscribe();
+      }
+    }else if(event.type === 'finish-order'){
+      console.log('Radi se finish order akcija');
+      console.log(event);
+    }
+  }
+
   ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
     this.tableService.sendCurrentSwitchOptionSelected(null);
-  }
-
-  changeSortDirection(direction) {
-    this.sortDirection = direction;
-
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
-
-    //this.sortShippers();
-  }
-
-  changeSortCategory(item, column) {
-    this.activeSortType = item;
-
-    this.sortBy = this.sortDirection
-      ? this.activeSortType.sortName +
-        (this.sortDirection[0]?.toUpperCase() +
-          this.sortDirection?.substr(1).toLowerCase())
-      : '';
-
-    //this.sortShippers();
-  }
-
-  searchShops(value) {
-    this.searchValue = value;
-    //if ( this.searchValue.length > 3 ) {
-    //this.sortShippers();
-    //}
-  }
-
-  selectItem(id) {
-    this.mapsComponent.clickedMarker(id);
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

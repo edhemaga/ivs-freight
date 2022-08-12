@@ -70,10 +70,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.getRepairShopModalDropdowns();
 
     if (this.editData) {
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editRepairShopById(this.editData.id);
     }
 
@@ -442,7 +438,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   private deleteRepairShopById(id: number) {
     this.shopService
-      .deleteRepairById(id)
+      .deleteRepairShopById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

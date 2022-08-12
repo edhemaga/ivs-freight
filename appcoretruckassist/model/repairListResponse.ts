@@ -14,5 +14,7 @@ import { RepairResponsePagination } from './repairResponsePagination';
 
 export interface RepairListResponse { 
     pagination?: RepairResponsePagination;
+    truckCount?: number | null;
+    trailerCount?: number | null;
 }
 

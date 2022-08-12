@@ -436,6 +436,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         return this.mapDriverData(data);
       });
 
+      console.log('Driver Data');
+      console.log(this.viewData);
+
       // For Testing
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);
@@ -460,10 +463,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? this.imageBase64Service.sanitizer(data.avatar)
         : '',
       textDOB: data.dateOfBirth
-        ? this.datePipe.transform(data.dateOfBirth, 'dd/MM/yy')
+        ? this.datePipe.transform(data.dateOfBirth, 'MM/dd/yy')
         : '',
       textHired: data.hired
-        ? this.datePipe.transform(data.hired, 'dd/MM/yy')
+        ? this.datePipe.transform(data.hired, 'MM/dd/yy')
         : '',
       textCDL: data?.cdlNumber
         ? data.cdlNumber
@@ -585,7 +588,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       '#FCDAF0',
       '#E7E1DF',
       '#E3E3E3',
-    ];
+    ]; 
 
     this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
 
@@ -757,6 +760,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             );
           },
         });
+    }else if(event.type === 'show-more'){
+      this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+      this.backFilterQuery.pageIndex++;
+      this.driverBackFilter(this.backFilterQuery);
     }
   }
 
