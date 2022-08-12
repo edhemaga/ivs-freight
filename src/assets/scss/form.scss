@@ -304,24 +304,21 @@
 
   //---------------- Pay Type DRIVER ----------------
   .custom-row-paytype-driver {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 167px) 98px 105px;
+    align-items: center;
+    -moz-column-gap: 22px;
+    column-gap: 22px;
+    padding: 0px 6px;
     margin-bottom: 32px;
 
-    .checkbox-paytype-driver {
-      display: flex;
-      grid-gap: 22px;
-      align-items: center;
-      gap: 22px;
-      padding-left: 6px;
-
-      .paytype-driver {
-        width: 422px;
-      }
+    &.custom-row-paytype-driver-disabled {
+      grid-template-columns: repeat(2, 167px) 119px 107px;
+      column-gap: 12px;
     }
 
-    .checkbox-paytype-driver-disabled {
-      gap: 12px;
+    &.fleet-type {
+      grid-template-columns: 1fr 414px;
     }
   }
 
@@ -344,6 +341,10 @@
       max-height: 600px !important;
       margin-top: 30px;
       transition: all 0.3s ease-in-out;
+    }
+
+    &.paytype-commission-single {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -377,10 +378,24 @@
         font-size: 14px;
         font-weight: 600;
         color: #6c6c6c;
+
+        &::-moz-selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: #6c6c6c;
+          background-color: rgb(108, 108, 108, 0.2);
+        }
       }
 
       &:nth-last-child(1) {
         margin-bottom: 10px;
+      }
+
+      &.permile-fields-same-rate {
+        grid-template-columns: auto repeat(2, 265px);
       }
     }
   }
@@ -743,14 +758,16 @@
   margin: 32px 0px;
 }
 //---------------- Preferred Load Company Additional  ----------------
-.preferred-load-company-additional {
+.preferred-load-fleet-type-additional {
   display: grid;
-  grid-template-columns: 275px 145px 1fr;
+  grid-template-columns: 243px 1fr;
   margin: 32px 0px;
   padding-left: 6px;
   align-items: center;
+  -moz-column-gap: 22px;
+  column-gap: 22px;
 
-  .preffered-field-one {
+  .preffered-field {
     display: flex;
     align-items: center;
     gap: 6px;
@@ -759,7 +776,25 @@
       font-size: 14px;
       font-weight: 500;
       color: #919191;
+
+      &::-moz-selection {
+        color: #919191;
+        background-color: rgb(145, 145, 145, 0.2);
+      }
+
+      &::selection {
+        color: #919191;
+        background-color: rgb(145, 145, 145, 0.2);
+      }
     }
+  }
+
+  .preffered-field-second {
+    display: grid;
+    grid-template-columns: 74px 265px;
+    -moz-column-gap: 6px;
+    column-gap: 6px;
+    align-items: center;
   }
 }
 //---------------- Violation Report, Inspection Level, HM Inspection Type  ----------------

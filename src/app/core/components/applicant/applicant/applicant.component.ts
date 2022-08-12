@@ -9,7 +9,7 @@ import { INavigation } from '../state/model/navigation.model';
   styleUrls: ['./applicant.component.scss'],
 })
 export class ApplicantComponent implements OnInit {
-  public selectedMode = SelectedMode.FEEDBACK;
+  public selectedMode = SelectedMode.REVIEW;
 
   public menuItems: INavigation[] = [
     {
@@ -95,6 +95,20 @@ export class ApplicantComponent implements OnInit {
     { id: 8, isReviewed: true, hasIncorrectAnswer: false },
     { id: 9, isReviewed: true, hasIncorrectAnswer: false },
     { id: 10, isReviewed: false, hasIncorrectAnswer: false },
+  ];
+
+  feedbackStoreArr = [
+    { id: 0, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 1, hasIncorrectAnswer: true, sentToReview: false },
+    { id: 2, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 3, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 4, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 5, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 6, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: false },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: true },
+    { id: 7, hasIncorrectAnswer: false, sentToReview: true },
   ];
 
   constructor() {}

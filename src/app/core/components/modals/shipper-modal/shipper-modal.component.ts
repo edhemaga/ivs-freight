@@ -263,13 +263,25 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     return this.shipperForm.get('shipperContacts') as FormArray;
   }
 
-  private createShipperContacts(): FormGroup {
+  private createShipperContacts(data?: {
+    fullName: any;
+    departmentId: any;
+    phone: any;
+    phoneExt: any;
+    email: any;
+  }): FormGroup {
     return this.formBuilder.group({
-      fullName: [null, Validators.required],
-      departmentId: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      phoneExt: [null],
-      email: [null, emailRegex],
+      fullName: [data?.fullName ? data.fullName : null, Validators.required],
+      departmentId: [
+        data?.departmentId ? data.departmentId : null,
+        Validators.required,
+      ],
+      phone: [
+        data?.phone ? data.phone : null,
+        [Validators.required, phoneRegex],
+      ],
+      phoneExt: [data?.phoneExt ? data.phoneExt : null],
+      email: [data?.email ? data.email : null, emailRegex],
     });
   }
 
@@ -640,7 +652,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           if (reasponse.shipperContacts.length) {
             for (const contact of reasponse.shipperContacts) {
               this.shipperContacts.push(
-                this.formBuilder.group({
+                this.createShipperContacts({
                   fullName: contact.fullName,
                   departmentId: contact.department
                     ? contact.department.name

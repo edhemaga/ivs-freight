@@ -24,6 +24,9 @@ import { TrailerInactiveResolver } from './core/components/trailer/state/trailer
 import { OwnerActiveResolver } from './core/components/owner/state/owner-active-state/owner-active.resolver';
 import { OwnerInactiveResolver } from './core/components/owner/state/owner-inactive-state/owner-inactive.resolver';
 import { AccountResolver } from './core/components/account/state/account-state/account.resolver';
+import { RepairTruckResolver } from './core/components/repair/state/repair-truck-state/repair-truck.resolver';
+import { RepairTrailerResolver } from './core/components/repair/state/repair-trailer-state/repair-trailer.resolver';
+import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -131,7 +134,11 @@ const routes: Routes = [
         (m) => m.RepairModule
       ),
     canActivate: [AuthGuard],
-    resolve: { shop: ShopResolver },
+    resolve: {
+      repairTruck: RepairTruckResolver,
+      repairTrailer: RepairTrailerResolver,
+      repairShop: ShopResolver,
+    },
   },
   {
     path: 'pm',
@@ -175,6 +182,9 @@ const routes: Routes = [
         (m) => m.ContactsModule
       ),
     canActivate: [AuthGuard],
+    resolve: {
+      contact: ContactResolver,
+    },
   },
   {
     path: 'routing',

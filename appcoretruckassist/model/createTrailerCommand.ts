@@ -23,6 +23,8 @@ export interface CreateTrailerCommand {
     trailerLengthId?: number;
     ownerId?: number | null;
     note?: string | null;
+    purchaseDate?: string | null;
+    purchasePrice?: number | null;
     axles?: number | null;
     suspension?: number | null;
     tireSizeId?: number | null;

@@ -1,9 +1,9 @@
 import {
   Component,
+  EventEmitter,
   Input,
-  OnChanges,
+  Output,
   Self,
-  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
@@ -14,7 +14,7 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
   styleUrls: ['./ta-checkbox.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
+export class TaCheckboxComponent implements ControlValueAccessor {
   @Input() label: string;
   @Input() required: boolean = false;
   @Input() invalid: boolean = false;
@@ -23,17 +23,13 @@ export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name
   @Input() customClass: string;
 
+  @Output() formArrayAction: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
+
+  private formArrayCheck: boolean = false;
+
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes.getSuperControl?.currentValue !=
-      changes.getSuperControl?.previousValue
-    ) {
-      this.getSuperControl.patchValue(changes.getSuperControl?.currentValue);
-    }
   }
 
   get getSuperControl() {
@@ -49,4 +45,9 @@ export class TaCheckboxComponent implements OnChanges, ControlValueAccessor {
   public onChange(event: any): void {}
 
   public registerOnTouched(fn: any): void {}
+
+  public onAction() {
+    this.formArrayCheck = !this.formArrayCheck;
+    this.formArrayAction.emit(this.formArrayCheck);
+  }
 }

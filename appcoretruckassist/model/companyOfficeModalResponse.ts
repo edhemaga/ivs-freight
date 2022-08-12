@@ -14,7 +14,6 @@ import { DepartmentResponse } from './departmentResponse';
 
 
 export interface CompanyOfficeModalResponse { 
-    ownerType?: Array<EnumValue> | null;
     payPeriod?: Array<EnumValue> | null;
     dayOfWeek?: Array<EnumValue> | null;
     payPeriodMonthly?: Array<EnumValue> | null;

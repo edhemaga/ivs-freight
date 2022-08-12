@@ -1,24 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
-import { isFormValueEqual } from '../../state/utils/utils';
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import { Address } from '../../state/model/address.model';
 import {
   Accident,
   AccidentInfo,
   AccidentModel,
 } from '../../state/model/accident.model';
-import { AnswerChoices } from '../../state/model/applicant-question.model';
-import { TruckType } from '../../state/model/truck-type.model';
-
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 @Component({
   selector: 'app-step4',
@@ -26,93 +17,139 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
   styleUrls: ['./step4.component.scss'],
 })
 export class Step4Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.REVIEW;
 
   public applicant: Applicant | undefined;
-
-  private subscription: Subscription;
 
   public accidentForm: FormGroup;
   public accidentArray: AccidentModel[] = [
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
     {
       accidentDate: '01/09/12',
-      accidentLocation: 'Nw 27th Ave, Ocala, 23450 FL, USA',
+      accidentLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
       accidentState: 'AL',
       fatalities: 1,
       injuries: 1,
       hazmatSpill: 'YES',
       truckType: 'Truck',
-      accidentDescription: 'Lorem ipsum dolor sir ametiblablabla',
+      accidentDescription: 'Lorem Ipsum Dolor Sir Ametiblablabla',
       isEditingAccident: false,
     },
   ];
 
   public selectedAccidentIndex: number;
-  public selectedAddress: Address = null;
-  public selectedTruckType: any = null;
-
-  public truckType: TruckType[] = [];
 
   public isEditing: boolean = false;
-  public isAccidentEdited: boolean = false;
-
-  public totalFatalities: number = 0;
-  public totalInjuries: number = 0;
-
-  public answerChoices: AnswerChoices[] = [
-    {
-      id: 1,
-      label: 'YES',
-      value: 'hazmatYes',
-      name: 'hazmatYes',
-      checked: false,
-    },
-    {
-      id: 2,
-      label: 'NO',
-      value: 'hazmatNo',
-      name: 'hazmatNo',
-      checked: false,
-    },
-  ];
-
-  public fatalitiesCounter: number = 0;
-  public injuriesCounter: number = 0;
 
   public helperIndex: number = 2;
+
+  public formValuesToPatch: any;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
 
   //
 
@@ -122,11 +159,7 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public editAccident: number = -1;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private inputService: TaInputService,
-    private inputResetService: TaInputResetService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -143,78 +176,18 @@ export class Step4Component implements OnInit, OnDestroy {
   public createForm(): void {
     this.accidentForm = this.formBuilder.group({
       hasPastAccident: [false],
-      accidentLocation: [null, Validators.required],
-      accidentDate: [null, Validators.required],
-      hazmatSpill: [null, Validators.required],
-      truckType: [null, Validators.required],
-      accidentDescription: [null, Validators.required],
+
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
     });
-  }
-
-  public handleInputSelect(event: any, action: string): void {
-    switch (action) {
-      case InputSwitchActions.HAZMAT_SPILL:
-        const selectedCheckbox = event.find(
-          (radio: { checked: boolean }) => radio.checked
-        );
-
-        this.accidentForm.get('hazmatSpill').patchValue(selectedCheckbox.label);
-
-        break;
-      case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
-
-        break;
-      case InputSwitchActions.ADDRESS:
-        this.selectedAddress = event.address;
-
-        if (!event.valid) {
-          this.accidentForm
-            .get('accidentLocation')
-            .setErrors({ invalid: true });
-        }
-
-        break;
-      default:
-        break;
-    }
-  }
-
-  public onIncrementDecrementCounter(event: any, type: string) {
-    if (type === 'fatalities') {
-      this.fatalitiesCounter = event;
-    }
-
-    if (type === 'injuries') {
-      this.injuriesCounter = event;
-    }
-  }
-
-  public onAddAccident(): void {
-    if (this.accidentForm.invalid) {
-      this.inputService.markInvalid(this.accidentForm);
-      return;
-    }
-
-    this.helperIndex = 2;
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    /*  const accidentForm = this.accidentForm.value;
-    const accident: Accident = new Accident();
-
-    accident.accidentDate = accidentForm.accidentDate;
-    accident.accidentLocation = accidentForm.accidentLocation;
-    accident.hazmatSpill = accidentForm.hazmatSpill;
-    accident.fatalities = accidentForm.fatalities;
-    accident.injuries = accidentForm.injuries;
-    accident.truckType = accidentForm.truckType;
-    accident.accidentDescription = accidentForm.accidentDescription;
-
-    this.accidentArray.push(accident);
-
-    this.accidentForm.reset();
-    this.editAccident = -1; */
   }
 
   public onDeleteAccident(index: number): void {
@@ -232,8 +205,6 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isAccidentEdited = false;
-
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
 
@@ -241,73 +212,104 @@ export class Step4Component implements OnInit, OnDestroy {
 
     const selectedAccident = this.accidentArray[index];
 
-    this.accidentForm.patchValue({
-      accidentLocation: selectedAccident.accidentLocation,
-      accidentDate: selectedAccident.accidentDate,
-      hazmatSpill: selectedAccident.hazmatSpill,
-      truckType: selectedAccident.truckType,
-      accidentDescription: selectedAccident.accidentDescription,
-    });
+    this.formValuesToPatch = selectedAccident;
+  }
 
-    this.fatalitiesCounter = selectedAccident.fatalities;
-    this.injuriesCounter = selectedAccident.injuries;
+  public getAccidentFormValues(event: any): void {
+    this.accidentArray = [...this.accidentArray, event];
 
-    this.subscription = this.accidentForm.valueChanges.subscribe(
-      (newFormValue) => {
-        if (isFormValueEqual(selectedAccident, newFormValue)) {
-          this.isAccidentEdited = false;
-        } else {
-          this.isAccidentEdited = true;
+    this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
+  }
+
+  public cancelAccidentEditing(event: any): void {
+    this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+    this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
+  }
+
+  public saveEditedAccident(event: any): void {
+    this.isEditing = false;
+    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
+
+    this.accidentArray[this.selectedAccidentIndex] = event;
+
+    this.helperIndex = 2;
+    this.selectedAccidentIndex = -1;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
         }
       }
-    );
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
   }
 
-  public onSaveEditedAccident(): void {
-    if (this.accidentForm.invalid) {
-      this.inputService.markInvalid(this.accidentForm);
-      return;
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
     }
-
-    if (!this.isAccidentEdited) {
-      return;
-    }
-
-    this.accidentArray[this.selectedAccidentIndex] = this.accidentForm.value;
-
-    this.isEditing = false;
-    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
-
-    this.isAccidentEdited = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
-
-    this.helperIndex = 2;
-
-    this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
-  }
-
-  public onCancelEditAccident(): void {
-    this.isEditing = false;
-    this.accidentArray[this.selectedAccidentIndex].isEditingAccident = false;
-
-    this.isAccidentEdited = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
-
-    this.helperIndex = 2;
-
-    this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
-
-    this.subscription.unsubscribe();
   }
 
   private formFilling(): void {

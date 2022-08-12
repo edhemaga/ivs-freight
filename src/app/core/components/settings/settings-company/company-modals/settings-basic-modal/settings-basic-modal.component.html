@@ -584,8 +584,8 @@
                 ></app-ta-input>
               </div>
             </div>
-            <div class="preferred-load-company-additional">
-              <div class="preffered-field-one">
+            <div class="preferred-load-fleet-type-additional">
+              <div class="preffered-field">
                 <span class="r-text">Preferred Load Type</span>
                 <app-ta-tab-switch
                   [tabs]="prefferedLoadBtns"
@@ -594,24 +594,17 @@
                 >
                 </app-ta-tab-switch>
               </div>
-              <div class="preffered-field">
-                <app-ta-checkbox
-                  formControlName="autoInvoicing"
-                  [label]="'Auto Invoicing'"
-                  [name]="'AutoInvoicing'"
-                  [customClass]="'medium'"
-                ></app-ta-checkbox>
-              </div>
-              <div class="preffered-field">
-                <app-ta-checkbox
-                  formControlName="factorByDefault"
-                  [label]="'Factor By Default'"
-                  [name]="'FactorByDefault'"
-                  [customClass]="'medium'"
-                ></app-ta-checkbox>
+              <div class="preffered-field preffered-field-second">
+                <span class="r-text">Fleet Type</span>
+                <app-ta-tab-switch
+                  [tabs]="fleetTypeBtns"
+                  (switchClicked)="onFleetTypeCheck($event)"
+                  [type]="'type2-modal-popup'"
+                >
+                </app-ta-tab-switch>
               </div>
             </div>
-            <div class="row last-row">
+            <div class="row">
               <div class="col-6">
                 <app-ta-input
                   formControlName="customerPayTerm"
@@ -635,6 +628,25 @@
                     thousandSeparator: true
                   }"
                 ></app-ta-input>
+              </div>
+            </div>
+            <div class="row last-row" [ngStyle]="{ 'padding-left': '6px' }">
+              <div class="col-3">
+                <app-ta-checkbox
+                  formControlName="autoInvoicing"
+                  [label]="'Auto Invoicing'"
+                  [name]="'AutoInvoicing'"
+                  [customClass]="'medium'"
+                ></app-ta-checkbox>
+              </div>
+
+              <div class="col-3">
+                <app-ta-checkbox
+                  formControlName="factorByDefault"
+                  [label]="'Factor By Default'"
+                  [name]="'FactorByDefault'"
+                  [customClass]="'medium'"
+                ></app-ta-checkbox>
               </div>
             </div>
           </app-ta-custom-card>
@@ -748,7 +760,10 @@
             </div>
           </div>
           <div class="paytype-permile active">
-            <div class="permile-fields">
+            <div
+              *ngIf="['Solo', 'Combined'].includes(selectedFleetType)"
+              class="permile-fields"
+            >
               <p>DEF. SOLO DRIVER</p>
               <app-ta-input
                 formControlName="soloEmptyMile"
@@ -795,7 +810,10 @@
                 }"
               ></app-ta-input>
             </div>
-            <div class="permile-fields">
+            <div
+              *ngIf="['Team', 'Combined'].includes(selectedFleetType)"
+              class="permile-fields"
+            >
               <p>DEF. TEAM DRIVER</p>
               <app-ta-input
                 formControlName="teamEmptyMile"
@@ -849,7 +867,12 @@
               [customClass]="'medium'"
             ></app-ta-checkbox>
             <div class="row row-mt-8 last-row">
-              <div class="col-4">
+              <div
+                *ngIf="['Solo', 'Combined'].includes(selectedFleetType)"
+                class="{{
+                  ['Solo'].includes(selectedFleetType) ? 'col-6' : 'col-4'
+                }}"
+              >
                 <app-ta-ngx-slider
                   [sliderName]="'Def. Solo Driver Commission'"
                   [sliderOptions]="driverCommissionOptions"
@@ -864,7 +887,12 @@
                   "
                 ></app-ta-ngx-slider>
               </div>
-              <div class="col-4">
+              <div
+                *ngIf="['Team', 'Combined'].includes(selectedFleetType)"
+                class="{{
+                  ['Team'].includes(selectedFleetType) ? 'col-6' : 'col-4'
+                }}"
+              >
                 <app-ta-ngx-slider
                   [sliderName]="'Def. Team Driver Commission'"
                   [sliderOptions]="driverCommissionOptions"
@@ -879,7 +907,13 @@
                   "
                 ></app-ta-ngx-slider>
               </div>
-              <div class="col-4">
+              <div
+                class="{{
+                  ['Team', 'Solo'].includes(selectedFleetType)
+                    ? 'col-6'
+                    : 'col-4'
+                }}"
+              >
                 <app-ta-ngx-slider
                   [sliderName]="'Default Owner Commission'"
                   [sliderOptions]="ownerCommissionOptions"

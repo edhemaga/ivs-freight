@@ -1,5 +1,5 @@
 <div class="d-flex flex-column step-form" [formGroup]="contactForm">
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group name-group">
       <app-ta-input
         formControlName="contactName"
@@ -8,8 +8,11 @@
           type: 'text',
           label: 'Name',
           isRequired: true,
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 15)"
       ></app-ta-input>
     </div>
     <div class="group phone-group">
@@ -21,8 +24,11 @@
           label: 'Phone',
           isRequired: true,
           placeholderIcon: 'phone',
-          mask: '(000) 000-0000'
+          mask: '(000) 000-0000',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 15)"
       ></app-ta-input>
     </div>
     <div class="group relationship-group">
@@ -33,9 +39,35 @@
           type: 'text',
           label: 'Relationship',
           textTransform: 'capitalize',
-          isRequired: true
+          isRequired: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 2, 15)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        formControlName="firstRowReview"
+        [displayAnnotationButton]="
+          openAnnotationArray[15].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[15].displayAnnotationTextArea
+        "
+        [lineIndex]="15"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 

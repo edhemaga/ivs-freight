@@ -9,6 +9,8 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FleetType } from './fleetType';
+import { PreferredLoadType } from './preferredLoadType';
 
 
 export interface CompanyAdditionalInfo { 
@@ -16,7 +18,8 @@ export interface CompanyAdditionalInfo {
     starting?: string | null;
     sufix?: string | null;
     autoInvoicing?: boolean | null;
-    preferredLoadType?: number | null;
+    preferredLoadType?: PreferredLoadType;
+    fleetType?: FleetType;
     factorByDefault?: boolean | null;
     customerPayTerm?: string | null;
     customerCredit?: string | null;

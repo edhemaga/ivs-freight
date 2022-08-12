@@ -23,7 +23,8 @@ export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
   @Input() isFeedback: boolean = false;
   @Input() feedbackText: string;
   @Input() cardsLength?: number;
-  @Input() cardIndex: number;
+  @Input() cardIndex?: number;
+  @Input() cardsType?: string;
 
   @Output() annotationBtnClickEvent: EventEmitter<{
     lineIndex: number;
@@ -49,13 +50,16 @@ export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
         lineIndex: this.lineIndex,
         type: 'open',
       });
+
       this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
     } else {
       this.annotationBtnClickEvent.emit({
         lineIndex: this.lineIndex,
         type: 'close',
       });
+
       this.getSuperControl.patchValue(null);
+
       this.inputRef.focusInput = false;
     }
   }
