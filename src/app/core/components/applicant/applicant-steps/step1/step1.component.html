@@ -610,7 +610,12 @@
       <div
         class="d-flex form-input-container line-container"
         [ngStyle]="{
-          'margin-top': selectedMode === 'APPLICANT_MODE' ? 0 : '32px'
+          'margin-top':
+            selectedMode !== 'APPLICANT_MODE' ||
+            (selectedMode === 'APPLICANT_MODE' &&
+              previousAddresses.controls.length === 5)
+              ? '32px'
+              : 0
         }"
       >
         <div class="group ssn-group">
