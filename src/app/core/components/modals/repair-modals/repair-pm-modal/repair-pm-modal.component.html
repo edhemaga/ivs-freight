@@ -24,7 +24,9 @@
       [isCommentData]="true"
       [isCardOpen]="defaultPMs.length"
       [hasScrollBody]="defaultPMs.length > 18"
-      (onActionEvent)="addPMs(null, 'new-pm')"
+      (onActionEvent)="
+        addPMs(null, 'new-pm', editData?.header === 'Truck' ? 5000 : 1)
+      "
     >
       <!-- Default PMs -->
       <div
@@ -36,7 +38,7 @@
           <p></p>
           <p>TITLE</p>
           <p>
-            {{ editData?.header?.includes("Truck") ? "mileage" : "MONTHS" }}
+            {{ editData?.header?.includes("Truck") ? "MILEAGE" : "MONTHS" }}
           </p>
         </div>
         <div
@@ -49,7 +51,7 @@
           <div [formGroupName]="ind" class="common-fake-table-card">
             <app-ta-checkbox
               formControlName="isChecked"
-              [name]="ind"
+              [name]="ind + 'default'"
               [customClass]="'regular'"
               [disabled]="
                 editData?.header?.includes('Truck') ? ind < 4 : ind < 1
@@ -63,7 +65,7 @@
               formControlName="mileage"
               [inputConfig]="{
                 name: editData?.header?.includes('Truck')
-                  ? 'mileage'
+                  ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
                 blackInput: true,
@@ -82,7 +84,6 @@
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"
-              (change)="onMilesMonthChange(ind, editData?.header, 'old')"
             ></app-ta-input>
           </div>
         </div>
@@ -101,7 +102,7 @@
           <div [formGroupName]="ind" class="common-fake-table-card">
             <app-ta-checkbox
               formControlName="isChecked"
-              [name]="ind"
+              [name]="ind + 'new'"
               [customClass]="'regular'"
               [svg]="pm.get('svg').value"
               [label]="pm.get('value').value"
@@ -129,7 +130,7 @@
               formControlName="mileage"
               [inputConfig]="{
                 name: editData?.header?.includes('Truck')
-                  ? 'mileage'
+                  ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
                 blackInput: true,
@@ -148,10 +149,10 @@
                 thousandSeparator: true,
                 maxLength: editData?.header?.includes('Truck') ? 999999999 : 2
               }"
-              (change)="onMilesMonthChange(ind, editData?.header, 'new')"
             ></app-ta-input>
 
             <div
+              *ngIf="editData.type === 'new'"
               ngbTooltip
               mainTooltip="Delete"
               position="top"

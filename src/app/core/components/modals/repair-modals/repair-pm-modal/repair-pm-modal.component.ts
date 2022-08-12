@@ -44,7 +44,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    console.log(this.editData);
+
     if (this.editData?.action?.includes('unit-pm')) {
       this.editData = {
         ...this.editData,
@@ -96,8 +96,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   private createNewPMs(
-    id: number = null,
-    isChecked: boolean = false,
+    id: number,
+    isChecked: boolean,
     svg: string,
     title: string,
     mileage: string,
@@ -124,10 +124,12 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       mileage: string;
       status: any;
     },
-    event: any
+    event: string,
+    defaultValue?: number
   ) {
+    // This if check if new item added or already new items exist, because of 'custom-svg'
     if (event === 'new-pm') {
-      if (data) {
+      if (data?.id) {
         this.newPMs.push(
           this.createNewPMs(
             data.id,
@@ -145,8 +147,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             null,
             true,
             'assets/svg/common/repair-pm/ic_custom_pm.svg',
-            '',
-            convertNumberInThousandSep(5000),
+            null,
+            convertNumberInThousandSep(defaultValue),
             null,
             false
           )
@@ -196,6 +198,18 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onChangeValueNewPM(ind: number) {
+    this.newPMs
+      .at(ind)
+      .get('value')
+      .valueChanges.pipe(debounceTime(2000), untilDestroyed(this))
+      .subscribe((value) => {
+        if (value) {
+          this.newPMs.at(ind).get('hidden').patchValue(true);
+        }
+      });
+  }
+
   public onModalAction(data: { action: string; bool: boolean }) {
     switch (data.action) {
       case 'close': {
@@ -236,7 +250,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           case 'edit': {
             switch (this.editData.header) {
               case 'Truck': {
-                this.addPMTruckUnit();
+                this.addUpdatePMTruckUnit();
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
@@ -244,7 +258,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 break;
               }
               case 'Trailer': {
-                this.addPMTrailerUnit();
+                this.addUpdatePMTrailerUnit();
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
@@ -286,6 +300,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.mileage),
               status: item.status,
             };
+
             this.addPMs(
               data,
               item.logoName.includes('custom') ? 'new-pm' : null
@@ -304,7 +319,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: PMTruckListResponse) => {
-          console.log(res);
+          console.log(res.pagination.data);
           res.pagination.data.forEach((item, index) => {
             const data = {
               id: item.id,
@@ -314,6 +329,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.mileage),
               status: item.status.name,
             };
+
             this.addPMs(
               data,
               item.logoName.includes('custom') ? 'new-pm' : null
@@ -344,6 +360,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.months),
               status: item.status.name,
             };
+
             this.addPMs(
               data,
               item.logoName.includes('custom') ? 'new-pm' : null
@@ -371,6 +388,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               mileage: convertNumberInThousandSep(item.months),
               status: item.status,
             };
+
             this.addPMs(
               data,
               item.logoName.includes('custom') ? 'new-pm' : null
@@ -402,9 +420,9 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 : 'Inactive',
           };
         }),
-        ...this.newPMs.controls.map((item) => {
+        ...this.newPMs.controls.map((item: any) => {
           return {
-            id: null,
+            id: item.get('id').value,
             title: item.get('value').value,
             mileage: convertThousanSepInNumber(item.get('mileage').value),
             status: item.get('isChecked').value ? 'Active' : 'Inactive',
@@ -452,9 +470,9 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 : 'Inactive',
           };
         }),
-        ...this.newPMs.controls.map((item) => {
+        ...this.newPMs.controls.map((item: any) => {
           return {
-            id: null,
+            id: item.get('id').value,
             title: item.get('value').value,
             months: convertThousanSepInNumber(item.get('mileage').value),
             status: item.get('isChecked').value ? 'Active' : 'Inactive',
@@ -486,7 +504,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private addPMTruckUnit() {
+  private addUpdatePMTruckUnit() {
     const newData: UpdatePMTruckUnitListCommand = {
       truckId: this.editData.id,
       pmTrucks: [
@@ -498,6 +516,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         }),
       ],
     };
+    console.log(newData);
     this.pmTService
       .addUpdatePMTruckUnit(newData)
       .pipe(untilDestroyed(this))
@@ -521,7 +540,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private addPMTrailerUnit() {
+  private addUpdatePMTrailerUnit() {
     const newData: UpdatePMTrailerUnitListCommand = {
       trailerId: this.editData.id,
       pmTrailers: [
@@ -531,15 +550,9 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             months: convertThousanSepInNumber(item.get('mileage').value),
           };
         }),
-        ...this.newPMs.controls.map((item) => {
-          return {
-            id: null,
-            months: convertThousanSepInNumber(item.get('mileage').value),
-          };
-        }),
       ],
     };
-
+    console.log(newData);
     this.pmTService
       .addUpdatePMTrailerUnit(newData)
       .pipe(untilDestroyed(this))
@@ -561,90 +574,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           );
         },
       });
-  }
-
-  public onChangeValueNewPM(ind: number) {
-    this.newPMs
-      .at(ind)
-      .get('value')
-      .valueChanges.pipe(debounceTime(2000), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.newPMs.at(ind).get('hidden').patchValue(true);
-        }
-      });
-  }
-
-  public onMilesMonthChange(ind: number, type: string, oldNew: string) {
-    switch (type) {
-      case 'Truck': {
-        if (oldNew === 'old') {
-          this.defaultPMs
-            .at(ind)
-            .get('mileage')
-            .valueChanges.pipe(untilDestroyed(this))
-            .subscribe((value) => {
-              if (!value || value < 1000) {
-                this.defaultPMs
-                  .at(ind)
-                  .get('mileage')
-                  .patchValue(convertNumberInThousandSep(1000));
-              }
-            });
-        }
-
-        if (this.newPMs.length && oldNew === 'new') {
-          this.newPMs
-            .at(ind)
-            .get('mileage')
-            .valueChanges.pipe(untilDestroyed(this))
-            .subscribe((value) => {
-              if (!value || value < 1000) {
-                this.newPMs
-                  .at(ind)
-                  .get('mileage')
-                  .patchValue(convertNumberInThousandSep(1000));
-              }
-            });
-        }
-        break;
-      }
-      case 'Trailer': {
-        if (oldNew === 'old') {
-          this.defaultPMs
-            .at(ind)
-            .get('mileage')
-            .valueChanges.pipe(untilDestroyed(this))
-            .subscribe((value) => {
-              if (!value || value == 0) {
-                this.defaultPMs
-                  .at(ind)
-                  .get('mileage')
-                  .patchValue(convertNumberInThousandSep(1));
-              }
-            });
-        }
-
-        if (this.newPMs.length && oldNew === 'new') {
-          this.newPMs
-            .at(ind)
-            .get('mileage')
-            .valueChanges.pipe(untilDestroyed(this))
-            .subscribe((value) => {
-              if (!value || value == 0) {
-                this.newPMs
-                  .at(ind)
-                  .get('mileage')
-                  .patchValue(convertNumberInThousandSep(1));
-              }
-            });
-        }
-        break;
-      }
-      default: {
-        break;
-      }
-    }
   }
 
   private getPMList() {
