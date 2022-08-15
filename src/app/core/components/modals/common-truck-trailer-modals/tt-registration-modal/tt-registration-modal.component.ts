@@ -193,7 +193,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             licensePlate: res.licensePlate,
-            stateId: res.state ? res.state.stateName : null,
+            stateId: res.state ? res.state.stateShortName : null,
             note: res.note,
           });
 
