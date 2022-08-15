@@ -120,11 +120,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return trailer;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
         } else if (res.animation === 'update') {
           this.viewData = this.viewData.map((trailer: any) => {
             if (trailer.id === res.id) {
@@ -151,6 +155,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return trailer;
           });
+
+          this.updateDataCount();
 
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -179,6 +185,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 return trailer;
               });
+
+              this.updateDataCount();
 
               this.notificationService.success(
                 'Trailers successfully deleted',
@@ -387,6 +395,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  updateDataCount() {
+    const truckCount = JSON.parse(localStorage.getItem('trailerTableCount'));
+
+    this.tableData[0].length = truckCount.active;
+    this.tableData[1].length = truckCount.inactive;
+  }
+
   getTabData(dataType: string) {
     if (dataType === 'active') {
       this.trailerActive = this.trailerActiveQuery.getAll();
@@ -536,6 +551,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 return trailer;
               });
+
+              this.updateDataCount();
 
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
