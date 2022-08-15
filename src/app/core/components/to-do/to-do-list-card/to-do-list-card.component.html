@@ -158,12 +158,32 @@
           <div class="border-right"></div>
           <div
             ngbTooltip
+            mainTooltip="State Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'stateFilter'" [icon]="'state'" [filterTitle]="'State Filter'" [searchState]="true" [defFilterHolder]="true" [leftSideIcon]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
             mainTooltip="Money Filter"
             position="bottom"
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-          <app-filter [type]="'moneyFilter'" [icon]="'dollar'" [filterTitle]="'Money Filter'" [moneyFilter]="true"> </app-filter>
+          <app-filter [type]="'moneyFilter'" [icon]="'dollar'" [filterTitle]="'Money Filter'" [moneyFilter]="true"  [fuelType]="false"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Money Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'ViolationFilter'" [icon]="'inpsection_violation'" [filterTitle]="'Violation Filter'" [swipeFilter]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
         </div>

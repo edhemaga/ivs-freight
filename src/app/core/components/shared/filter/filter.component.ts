@@ -619,11 +619,340 @@ trailerTypeArray: any[] = [
   },
 ]
 
+usaStates: any[] = [
+  {
+    id: 1,
+    name: 'Alabama',
+    short: 'AL',
+  },
+  {
+    id: 2,
+    name: 'Alaska',
+    short: 'AK',
+  },
+  {
+    id: 3,
+    name: 'American Samoa',
+    short: 'AS',
+  },
+  {
+    id: 4,
+    name: 'Arizona',
+    short: 'AZ',
+  },
+  {
+    id: 5,
+    name: 'Arkansas',
+    short: 'AR',
+  },
+  {
+    id: 6,
+    name: 'California',
+    short: 'CA',
+  },
+  {
+    id: 7,
+    name: 'Colorado',
+    short: 'CO',
+  },
+  {
+    id: 8,
+    name: 'Connecticut',
+    short: 'CT',
+  },
+  {
+    id: 9,
+    name: 'Delaware',
+    short: 'DE',
+  },
+  {
+    id: 10,
+    name: 'District Of Columbia',
+    short: 'DC',
+  },
+  {
+    id: 11,
+    name: 'Federated States Of Micronesia',
+    short: 'FM',
+  },
+  {
+    id: 12,
+    name: 'Florida',
+    short: 'FL',
+  },
+  {
+    id: 13,
+    name: 'Georgia',
+    short: 'GA',
+  },{
+    id: 14,
+    name: 'Guam',
+    short: 'GU',
+  },
+  {
+    id: 15,
+    name: 'Hawaii',
+    short: 'HI',
+  },
+
+  {
+    id: 16,
+    name: 'Idaho',
+    short: 'ID',
+  },
+  {
+    id: 17,
+    name: 'Illinois',
+    short: 'IL',
+  },
+  {
+    id: 18,
+    name: 'Indiana',
+    short: 'IN',
+  },
+  {
+    id: 19,
+    name: 'Iowa',
+    short: 'IA',
+  },
+  {
+    id: 20,
+    name: 'Kansas',
+    short: 'KS',
+  },
+  {
+    id: 21,
+    name: 'Kentucky',
+    short: 'KY',
+  },
+  {
+    id: 22,
+    name: 'Louisiana',
+    short: 'LA',
+  },
+  {
+    id: 23,
+    name: 'Maine',
+    short: 'ME',
+  },
+  {
+    id: 24,
+    name: 'Marshall Islands',
+    short: 'MH',
+  },
+  {
+    id: 25,
+    name: 'Maryland',
+    short: 'MD',
+  },
+  {
+    id: 26,
+    name: 'Massachusetts',
+    short: 'MA',
+  },
+  {
+    id: 27,
+    name: 'Michigan',
+    short: 'MI',
+  },
+  {
+    id: 28,
+    name: 'Minnesota',
+    short: 'MN',
+  },
+  {
+    id: 29,
+    name: 'Mississippi',
+    short: 'MS',
+  },
+  {
+    id: 30,
+    name: 'Missouri',
+    short: 'MO',
+  },
+  {
+    id: 31,
+    name: 'Montana',
+    short: 'MT',
+  },
+  {
+    id: 32,
+    name: 'Nebraska',
+    short: 'NE',
+  },
+  {
+    id: 33,
+    name: 'Nevada',
+    short: 'NV',
+  },
+  {
+    id: 34,
+    name: 'New Hampshire',
+    short: 'NH',
+  },
+  {
+    id: 35,
+    name: 'New Jersey',
+    short: 'NJ',
+  },
+  {
+    id: 36,
+    name: 'New Mexico',
+    short: 'NM',
+  },
+  {
+    id: 37,
+    name: 'New York',
+    short: 'NY',
+  },
+  {
+    id: 38,
+    name: 'North Carolina',
+    short: 'NC',
+  },
+  {
+    id: 39,
+    name: 'North Dakota',
+    short: 'ND',
+  },
+  {
+    id: 40,
+    name: 'Mississippi',
+    short: 'MS',
+  },
+  {
+    id: 41,
+    name: 'Northern Mariana Islands',
+    short: 'MP',
+  },
+  {
+    id: 42,
+    name: 'Ohio',
+    short: 'OH',
+  },
+  {
+    id: 43,
+    name: 'Oklahoma',
+    short: 'OK',
+  },
+  {
+    id: 44,
+    name: 'Oregon',
+    short: 'OR',
+  },
+  {
+    id: 45,
+    name: 'Palau',
+    short: 'PW',
+  },
+  {
+    id: 46,
+    name: 'Pennsylvania',
+    short: 'PA',
+  },
+  {
+    id: 47,
+    name: 'Puerto Rico',
+    short: 'PR',
+  },
+  {
+    id: 48,
+    name: 'Rhode Island',
+    short: 'RI',
+  },
+  {
+    id: 49,
+    name: 'South Carolina',
+    short: 'SC',
+  },
+  {
+    id: 50,
+    name: 'South Dakota',
+    short: 'SD',
+  },
+  {
+    id: 51,
+    name: 'Tennessee',
+    short: 'TN',
+  },
+  {
+    id: 52,
+    name: 'Texas',
+    short: 'TX',
+  },
+  {
+    id: 53,
+    name: 'Utah',
+    short: 'UT',
+  },
+  {
+    id: 54,
+    name: 'Vermont',
+    short: 'VT',
+  },
+  {
+    id: 55,
+    name: 'Virgin Islands',
+    short: 'VI',
+  },
+  {
+    id: 56,
+    name: 'Virginia',
+    short: 'VA',
+  },
+  {
+    id: 57,
+    name: 'Washington',
+    short: 'WA',
+  },
+  {
+    id: 58,
+    name: 'West Virginia',
+    short: 'WV',
+  },
+  {
+    id: 59,
+    name: 'Wisconsin',
+    short: 'WI',
+  },
+  {
+    id: 60,
+    name: 'Wyoming',
+    short: 'WY',
+  },
+
+];
+
+canadaStates: any[] = [
+  {
+    id: 1,
+    name: 'British Columbia',
+    short: 'BC',
+  },
+  {
+    id: 2,
+    name: 'State 1',
+    short: 'S1',
+  },
+  {
+    id: 3,
+    name: 'STATE 2',
+    short: 'S2',
+  },
+]
+
    selectedDispatcher: any[] = [];
    selectedTimeValue: any = '';
    expandSearch: boolean = false;
    searchInputValue: any = '';
+   showPart1: any = true;
+   showPart2: any = true;
+   showPart3: any = true;
    public searchForm!: FormGroup;
+   public moneyForm!: FormGroup;
+   rangeValue: any = 0;
+   usaSelectedStates: any[] = [];
+   canadaSelectedStates: any[] = [];
 
    @Input() type: string = 'userFilter';
    @Input() icon: string = 'user';
@@ -635,6 +964,8 @@ trailerTypeArray: any[] = [
    @Input() leftSideIcon: boolean = false;
    @Input() largeLeftIcon: boolean = false;
    @Input() moneyFilter: boolean = false;
+   @Input() fuelType: boolean = false;
+   @Input() swipeFilter: boolean = false;
 
    constructor(
     private formBuilder: FormBuilder,
@@ -644,6 +975,15 @@ trailerTypeArray: any[] = [
 
     this.searchForm = this.formBuilder.group({
       search: ''
+    });
+
+    this.moneyForm = this.formBuilder.group({
+      invoiceFrom: '',
+      invoiceTo: '',
+      availableFrom: '',
+      availableTo: '',
+      revenueFrom: '',
+      revenueTo: '',
     });
 
     this.searchForm.valueChanges.subscribe((changes) => {
@@ -741,7 +1081,26 @@ trailerTypeArray: any[] = [
                   return item;
                 });
             }  
-            
+           
+          else if ( this.type == 'stateFilter' )
+            {
+                this.usaStates.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+
+                this.canadaStates.filter(item => {
+                  item.hidden = true;
+                  if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
+                    item.hidden = false;
+                  }
+                  return item;
+                });
+
+            }  
           
         }
       else  
@@ -809,6 +1168,18 @@ trailerTypeArray: any[] = [
                 }
             }  
           
+          else if ( this.type == 'stateFilter' )
+            {
+              for ( var i = 0; i < this.usaStates.length; i++ )
+                {
+                  this.usaStates[i].hidden = false;            
+                }
+
+              for ( var i = 0; i < this.canadaStates.length; i++ )
+                {
+                  this.canadaStates[i].hidden = false;            
+                }
+            }
           
           this.searchInputValue = ''; 
         } 
@@ -882,16 +1253,54 @@ trailerTypeArray: any[] = [
     else if ( this.type == 'trailerTypeFilter' )
       {
         mainArray = this.trailerTypeArray;
-      }  
+      }
+    else if ( this.type == 'stateFilter' )
+      {
+        if ( subType == 'canada' )
+          {
+            mainArray = this.canadaStates;
+          }
+        else
+          {
+            mainArray = this.usaStates;
+          }  
+      }    
       
     mainArray[indx].isSelected = true;
       
-    this.selectedUser.push(item);
+    if ( this.type == 'stateFilter' )
+      {
+        if ( subType == 'canada' )
+          {
+            this.canadaSelectedStates.push(item);
+          }
+        else 
+          {
+            this.usaSelectedStates.push(item);
+          }  
+      }
+    else 
+      {
+        this.selectedUser.push(item);
+      }  
+   
   }
 
-  removeFromSelectedUser(item, indx){
+  removeFromSelectedUser(item, indx, subType?){
     this.selectedUser.splice(indx, 1);
     
+    if ( this.type == 'stateFilter' )
+      {
+        if ( subType == 'canada' )
+          {
+            this.canadaSelectedStates.splice(indx, 1);
+          }
+        else 
+          {
+            this.usaSelectedStates.splice(indx, 1);
+          }  
+      }
+
     let id = item.id;
   
     if ( this.type == 'departmentFilter' )
@@ -1054,7 +1463,32 @@ trailerTypeArray: any[] = [
                 }
               
             }
-      } 
+      }
+      else if ( this.type == 'stateFilter' )
+      {
+        if ( subType == 'canada' )
+          {
+            for ( var i = 0; i < this.canadaStates.length; i++ )
+              {
+                if (this.canadaStates[i].id == id )
+                  {
+                    this.canadaStates[i].isSelected = false;
+                  }
+                
+              }
+          }
+        else
+          {
+            for ( var i = 0; i < this.usaStates.length; i++ )
+              {
+                if (this.usaStates[i].id == id )
+                  {
+                    this.usaStates[i].isSelected = false;
+                  }
+                
+              }
+          }  
+      }   
    
   }
 
@@ -1075,6 +1509,8 @@ trailerTypeArray: any[] = [
       {
         this.unselectedUser = [...this.unselectedUser, ...this.selectedUser];
         this.selectedUser = [];
+        this.usaSelectedStates = [];
+        this.canadaSelectedStates = [];
 
         if ( this.type == 'departmentFilter' )
           {
@@ -1162,7 +1598,19 @@ trailerTypeArray: any[] = [
               {
                 this.unselectedUser[i].isSelected = false;
               }
-          }  
+          } 
+        else if ( this.type == 'stateFilter' )
+          {
+            for ( var i = 0; i < this.usaStates.length; i++ )
+              {
+                this.usaStates[i].isSelected = false;
+              }
+
+            for ( var i = 0; i < this.canadaStates.length; i++ )
+              {
+                this.canadaStates[i].isSelected = false;
+              }  
+          }   
       }  
 
    
@@ -1238,6 +1686,22 @@ trailerTypeArray: any[] = [
         this.expandSearch = true;
       } 
     
+  }
+
+  hideFormPart(mod){
+    if ( mod == 'part1' )
+      {
+        this.showPart1 = !this.showPart1;
+      }
+    else if ( mod == 'part2' )
+      {
+        this.showPart2 = !this.showPart2;
+      }
+    else 
+      {
+        this.showPart3 = !this.showPart3;
+      }  
+
   }
 
 }

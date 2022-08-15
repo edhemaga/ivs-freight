@@ -758,7 +758,207 @@
     }
 
     .money-bottom-border-magin{
-        margin: 25px 0px 8px 0px;
+        margin: 22px 0px 8px 0px;
+    }
+
+    .money-main-holder{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .money-value-holder{
+            width: 132px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: #F3F3F3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600; 
+            color: #AAAAAA;
+            line-height: 28px;
+        
+            input{
+                height: 32px;
+            }
+        }
+    }
+
+    .buttons-holder{
+        padding: 0px;
+        .button-clear{
+            width: 132px; 
+        }
+        
+        .button-set{
+            width: 132px;
+        }
+    }
+    
+    .single-form-holder{
+        width: 100%;
+    }
+
+    .form-header{
+        position: relative;
+        width: 100%;
+        padding-left: 4px;
+        margin-bottom: 26px;
+
+        .form-name{
+            font-size: 14px;
+            font-weight: 800;
+            color: #6C6C6C;
+        }
+        
+        .hide-money-form{
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            height: 13px;
+            width: 13px;
+
+            cursor: pointer;
+
+            svg-icon{
+                height: 8px;
+                width: 13px; 
+                svg{   
+                    height: 8px;
+                    width: 13px;      
+                    path{
+                        fill: #B7B7B7;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.state-filter{
+    .selected-user-frame{
+        padding-left: 40px !important;
+    }
+
+    .user-frame{
+        padding-left: 40px !important;
+    }
+
+    .state-name-holder{
+        padding-bottom: 10px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #AAAAAA;
+    }
+
+    .holder-bottom-margin{
+        margin-bottom: 10px;
+    }
+    
+    .state-short-holder{
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        width: 28px !important;
+        height: 18px;
+
+        background-color: #F3F3F3;
+        border-radius: 1px;
+
+        font-size: 11px;
+        font-weight: 800;
+        color: #6C6C6C;
+
+        &.active{
+            color: #536BC2;
+        }
+    }
+    
+    .states-selected{
+        width: 100%;
+    }
+}
+
+.multiMoneyForm{
+    .money-top-border-magin{
+        margin: 8px 0px 6px 0px;
+    }
+
+    .money-bottom-border-magin{
+        margin: 22px 0px 12px 0px;
+    }
+
+    .form-border{
+        margin: 22px 0px 8px 0px;
+    }
+
+    .multi-form-holder{
+        width: 100%;
+    }
+
+    .hiddenFormTitle{
+        margin-bottom: 6px;
+    }
+
+    .hiddenFormBorder{
+        margin: 0px 0px 8px 0px;
+    }
+}
+
+.swipe-filter{
+    padding: 8px;
+    width: 300px;
+
+    .top-border-margin{
+        margin: 8px 0px 8px 0px;
+    }
+    
+    .buttons-holder{
+        padding: 0px;
+        .button-clear{
+            width: 132px; 
+        }
+        
+        .button-set{
+            width: 132px;
+        }
+    }
+
+    .filter-middle-holder{
+        width: 100%;
+
+        .rangeInput{
+                -webkit-appearance: none;
+                width: 100%;
+                height: 6px;
+                background: #F7F7F7;
+                outline: none;
+                border-radius: 2px;
+                cursor: pointer;
+
+            &::-webkit-slider-thumb { 
+                -webkit-appearance: none;
+                appearance: none;
+                width: 36px;
+                height: 24px;
+                background: #FFFFFF;
+                
+                box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+                border-radius: 2px;
+
+                cursor: pointer;
+
+                }  
+                
+            &::-moz-range-thumb {
+                    width: 25px; /* Set a specific slider handle width */
+                    height: 25px; /* Slider handle height */
+                    background: #04AA6D; /* Green background */
+                    cursor: pointer; /* Cursor on hover */
+                  }                
+        }
     }
 }
 
