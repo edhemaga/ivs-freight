@@ -16,7 +16,6 @@ export class ShopResolver implements Resolve<ShopState> {
   ) {}
 
   resolve(): Observable<ShopState | boolean> {
-    console.log('Poziva se ShopResolver')
     return this.repairService
       .getRepairShopList(1, undefined, undefined, 1, 25)
       .pipe(

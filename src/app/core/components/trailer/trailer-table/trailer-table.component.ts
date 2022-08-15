@@ -453,7 +453,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
-      this.setTrailerData(event.tabData);
+      this.sendTrailerData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }

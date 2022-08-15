@@ -396,10 +396,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   mapTruckData(data: any) {
     return {
       ...data,
-      textCommission: '15%',
-      textGrossWeight: 'G - 60,001 - 61,000 lbs.',
-      textPurchasePrice: '100$',
-      textPurchaseDate: '12/03/22',
+      textCommission: data?.commission ? data?.commission + '%' : '',
+      textGrossWeight: 'Nije povezano',
+      textPurchasePrice: 'Nije povezano',
+      textPurchaseDate: 'Nije povezano',
       textYear: data.year ? data.year : '',
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
@@ -490,7 +490,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
-      this.setTruckData(event.tabData);
+      this.sendTruckData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }

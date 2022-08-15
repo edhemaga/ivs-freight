@@ -391,7 +391,9 @@ table {
 
             // STATE COLUMN
             .table-state {
-              width: 28px;
+              width: fit-content;
+              padding: 0 2px;
+              min-width: 28px;
               height: 18px;
               border-radius: 2px;
               background: #f3f3f3;
