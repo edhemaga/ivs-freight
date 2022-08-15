@@ -77,6 +77,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getOwnerDropdowns();
+    this.onBankSelected();
 
     if (this.editData) {
       this.editOwnerById(this.editData.id);
@@ -185,18 +186,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public onSelectBank(event: any): void {
     this.selectedBank = event;
-
-    if (this.selectedBank) {
-      this.onBankSelected();
-    }
   }
 
   public onSaveNewBank(bank: any) {
     this.selectedBank = bank;
-
-    if (this.selectedBank) {
-      this.onBankSelected();
-    }
 
     this.bankVerificationService
       .createBank({ name: bank.name })
@@ -359,8 +352,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.tabChange(
             this.tabs.find((item) => item.id === res.ownerType.id)
           );
-
-          this.onBankSelected();
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');

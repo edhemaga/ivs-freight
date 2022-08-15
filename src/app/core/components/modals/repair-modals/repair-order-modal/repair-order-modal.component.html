@@ -17,13 +17,7 @@
   (action)="onModalAction($event)"
 >
   <form [formGroup]="repairOrderForm" class="form-container">
-    <div
-      [ngClass]="
-        selectedHeaderTab === 1
-          ? 'repair-modal-bill-first-row'
-          : 'repair-modal-order-first-row'
-      "
-    >
+    <div class="repair-modal-bill-first-row">
       <app-ta-tab-switch
         [tabs]="typeOfRepair"
         (switchClicked)="onTypeOfRepair($event)"
@@ -38,8 +32,7 @@
           label: 'Unit',
           isDropdown: true,
           isRequired: true,
-          dropdownWidthClass:
-            selectedHeaderTab === 2 ? 'w-col-251' : 'w-col-129'
+          dropdownWidthClass: 'w-col-129'
         }"
         [options]="labelsUnit"
         [activeItem]="selectedUnit"
@@ -52,6 +45,7 @@
           type: 'text',
           label: 'Odometer',
           isRequired: selectedPM[selectedPMIndex]?.id,
+          isDisabled: selectedHeaderTab !== 1,
           thousandSeparator: true
         }"
       ></app-ta-input>
@@ -64,16 +58,17 @@
           label: 'Date',
           placeholderIcon: 'date',
           isRequired: true,
+          isDisabled: selectedHeaderTab !== 1,
           customClass: 'datetimeclass'
         }"
       ></app-ta-input>
       <app-ta-input
-        *ngIf="selectedHeaderTab === 1"
         formControlName="invoice"
         [inputConfig]="{
           name: 'Invoice',
           type: 'text',
           label: 'Invoice',
+          isDisabled: selectedHeaderTab !== 1,
           textTransform: 'capitalize'
         }"
       ></app-ta-input>

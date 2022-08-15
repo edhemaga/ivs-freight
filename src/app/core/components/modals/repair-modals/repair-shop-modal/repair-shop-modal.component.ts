@@ -68,6 +68,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairShopModalDropdowns();
+    this.onBankSelected();
 
     if (this.editData) {
       this.editRepairShopById(this.editData.id);
@@ -224,9 +225,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
-        if (this.selectedBank) {
-          this.onBankSelected();
-        }
+
         break;
       }
       default: {
@@ -320,8 +319,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
               moment(el.endTime, 'HH:mm:SS A').toDate()
             );
           });
-
-          this.onBankSelected();
         },
         error: () => {
           this.notificationService.error(
