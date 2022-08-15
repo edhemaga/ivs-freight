@@ -276,13 +276,13 @@
 
     <div
       class="d-flex flex-column justify-content-center equipment-container"
-      *ngIf="anotherClassOfEquipmentArray?.length"
-      formGroupName="anotherClassOfEquipmentForm"
+      *ngIf="classOfEquipmentArray?.length"
+      formGroupName="classOfEquipmentCards"
     >
       <div
         class="d-flex flex-column"
         *ngFor="
-          let classOfEquipment of anotherClassOfEquipmentArray;
+          let classOfEquipment of classOfEquipmentArray;
           let i = index;
           trackBy: trackByIdentity
         "
@@ -290,7 +290,7 @@
         <div
           class="d-flex align-items-center title-container"
           *ngIf="
-            (anotherClassOfEquipmentArray.length > 0 &&
+            (classOfEquipmentArray.length > 1 &&
               helperIndex !== 0 &&
               i === 0) ||
             (helperIndex === 0 && i === 1) ||
@@ -449,111 +449,17 @@
               [lineIndex]="i + 10"
               [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
               [feedbackText]="'Check the number'"
-              [cardsLength]="anotherClassOfEquipmentArray.length"
+              [cardsLength]="classOfEquipmentArray.length"
               [cardsType]="'classOfEquipment'"
               [cardIndex]="i"
               (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
             ></app-applicant-review-feedback>
           </div>
         </div>
-
-        <div
-          class="d-flex flex-column equipment-view-form"
-          *ngIf="classOfEquipment.isEditingClassOfEquipment"
-        >
-          edituje
-          <div class="d-flex line-container">
-            <div class="group vehicle-type-group">
-              <app-ta-input-dropdown
-                formControlName="vehicleType"
-                [template]="'svgtext-template'"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Vehicle type',
-                  isRequired: true,
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-251',
-                  incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="false"
-                (incorrectEvent)="incorrectInput($event, 0, 24)"
-                [options]="vehicleType"
-                (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
-              ></app-ta-input-dropdown>
-            </div>
-            <div class="group trailer-type-group">
-              <app-ta-input-dropdown
-                formControlName="trailerType"
-                [template]="'svgtext-template'"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Trailer Type',
-                  isDisabled: !isTruckSelected,
-                  isRequired: isTruckSelected,
-                  isDropdown: true,
-                  dropdownWidthClass: 'w-col-211',
-                  incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="false"
-                (incorrectEvent)="incorrectInput($event, 1, 24)"
-                [options]="trailerType"
-                (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
-              ></app-ta-input-dropdown>
-            </div>
-            <div class="group length-group">
-              <app-ta-input-dropdown
-                formControlName="trailerLength"
-                [inputConfig]="{
-                  name: 'Input Dropdown',
-                  type: 'text',
-                  label: 'Length',
-                  isDropdown: true,
-                  isDisabled: !isTruckSelected,
-                  isRequired: isTruckSelected,
-                  dropdownWidthClass: 'w-col-130',
-                  incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="false"
-                (incorrectEvent)="incorrectInput($event, 2, 24)"
-                [options]="trailerLengthType"
-                (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
-              ></app-ta-input-dropdown>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
-
-            <div
-              class="review-feedback-container"
-              *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
-            >
-              <app-applicant-review-feedback
-                formControlName="fifthRowReview"
-                [displayAnnotationButton]="
-                  openAnnotationArray[24].displayAnnotationButton
-                "
-                [displayAnnotationTextArea]="
-                  openAnnotationArray[24].displayAnnotationTextArea
-                "
-                [lineIndex]="24"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                  'Check the routing number one more time (one number missing)!!!'
-                "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-              ></app-applicant-review-feedback>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    <div class="d-flex line-container" *ngIf="!isEditingClassOfEquipment">
-      ne edituje
+    <div class="d-flex line-container" [formGroup]="classOfEquipmentForm">
       <div class="group vehicle-type-group">
         <app-ta-input-dropdown
           formControlName="vehicleType"
@@ -643,16 +549,20 @@
 
     <div
       class="d-flex justify-content-center align-items-center another-class-group"
-      *ngIf="selectedMode === 'APPLICANT_MODE'"
     >
       <button
         type="button"
         class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+        [ngClass]="{
+          disabled: classOfEquipmentForm.invalid
+        }"
+        [ngStyle]="{ 'margin-bottom': isEditingClassOfEquipment ? 0 : '22px' }"
+        (click)="onAddClassOfEquipment()"
+        *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditingClassOfEquipment"
       >
         <svg-icon
           class="plus-icon"
-          src="assets/svg/common/ic_plus.svg
-  "
+          src="assets/svg/common/ic_plus.svg"
           [svgStyle]="{
             'width.px': 18,
             'height.px': 18
@@ -661,6 +571,29 @@
 
         Add Another Class Of Equipment
       </button>
+
+      <div
+        class="d-flex align-items-center justify-content-center btn-container"
+        *ngIf="isEditingClassOfEquipment"
+      >
+        <button
+          type="button"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn cancel-btn"
+          (click)="onCancelEditClassOfEquipment()"
+        >
+          Cancel
+        </button>
+        <button
+          type="button"
+          class="d-flex justify-content-center align-items-center ta-font-bold add-btn save-btn"
+          [ngClass]="{
+            disabled: !isWorkExperienceEdited
+          }"
+          (click)="onSaveEditedClassOfEquipment()"
+        >
+          Save Changes
+        </button>
+      </div>
     </div>
 
     <!-- QUESTIONS -->

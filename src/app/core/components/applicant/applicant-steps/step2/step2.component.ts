@@ -54,7 +54,7 @@ export class Step2Component implements OnInit, OnDestroy {
           vehicleType: 'Semi Sleeper',
           trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
           trailerType: 'Dumper',
-          trailerLength: '1',
+          trailerLength: 1,
           isEditingClassOfEquipment: false,
         },
         {
@@ -113,7 +113,7 @@ export class Step2Component implements OnInit, OnDestroy {
           vehicleType: 'Semi Sleeper',
           trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
           trailerType: 'Dumper',
-          trailerLength: '45',
+          trailerLength: 45,
           isEditingClassOfEquipment: false,
         },
       ],
@@ -154,7 +154,7 @@ export class Step2Component implements OnInit, OnDestroy {
           vehicleType: 'Semi Sleeper',
           trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
           trailerType: 'Dumper',
-          trailerLength: '45',
+          trailerLength: 33,
           isEditingClassOfEquipment: false,
         },
         {
