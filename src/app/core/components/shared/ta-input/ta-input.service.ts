@@ -61,14 +61,18 @@ export class TaInputService {
   public changeValidators(
     formControl: AbstractControl,
     hasValidation: boolean = true,
-    validators: any[] = []
+    validators: any[] = [],
+    reset: boolean = true
   ): void {
     const validation = [Validators.required, ...validators];
     if (hasValidation) {
       formControl.setValidators(validation);
     } else {
       formControl.clearValidators();
-      formControl.reset();
+
+      if (reset) {
+        formControl.reset();
+      }
     }
     formControl.updateValueAndValidity();
   }

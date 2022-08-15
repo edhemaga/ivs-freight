@@ -78,13 +78,14 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-      touchedInput &&
-      getSuperControl.value &&
-      getSuperControl.invalid &&
-      !focusInput &&
-      !inputConfig.incorrectInput &&
-      !inputConfig.blackInput &&
-      !inputConfig.isDropdown
+      (touchedInput &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        !inputConfig.incorrectInput &&
+        !inputConfig.blackInput &&
+        !inputConfig.isDropdown) ||
+      inputConfig.dangerMark
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"

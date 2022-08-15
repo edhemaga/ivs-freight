@@ -130,7 +130,7 @@
   //---------------- Driver Modal ------------------------------------
   .driver-modal-first-row {
     display: grid;
-    grid-template-columns: repeat(2, 215px) 162px;
+    grid-template-columns: repeat(2, 224px) 144px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -334,13 +334,9 @@
     padding-left: 6px;
     padding-right: 1px;
     margin-bottom: 30px;
-    max-height: 0px;
-    overflow: hidden;
 
-    &.active {
-      max-height: 600px !important;
-      margin-top: 30px;
-      transition: all 0.3s ease-in-out;
+    .paytype-field {
+      height: 20px;
     }
 
     &.paytype-commission-single {
@@ -860,7 +856,7 @@
 //---------------- Repair Modal Bill ----------------
 .repair-modal-bill-first-row {
   display: grid;
-  grid-template-columns: 114px 129px 140px 105px 150px;
+  grid-template-columns: 114px 129px 125px 145px 125px;
   align-items: center;
   grid-template-rows: 26px;
   -moz-column-gap: 12px;
@@ -868,16 +864,6 @@
   margin-bottom: 32px;
 }
 
-//---------------- Repair Modal Order ----------------
-.repair-modal-order-first-row {
-  display: grid;
-  grid-template-columns: 114px 291px 140px 105px;
-  align-items: center;
-  grid-template-rows: 26px;
-  -moz-column-gap: 12px;
-  column-gap: 12px;
-  margin-bottom: 32px;
-}
 //---------------- Load FTL Page ----------------
 .load-ftl-first-row {
   display: grid;

@@ -3,7 +3,7 @@
     editData?.type !== 'edit' ? 'Add Repair Shop' : 'Edit Repair Shop'
   "
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="repairShopName"
   [isModalValid]="repairShopForm.valid"
   (action)="onModalAction($event)"
 >
@@ -50,7 +50,7 @@
                       label: 'Shop Name',
                       isRequired: true,
                       textTransform: 'capitalize',
-                      autoFocus: editData?.type === 'edit' ? false : true
+                      autoFocus: editData?.type !== 'edit' ? true : false
                     }"
                   ></app-ta-input>
                 </div>

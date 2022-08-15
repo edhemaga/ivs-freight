@@ -16,6 +16,8 @@ export interface CreateTitleCommand {
     trailerId?: number | null;
     number?: string | null;
     note?: string | null;
+    stateId?: number;
+    purchaseDate?: string;
     issueDate?: string;
 }
 

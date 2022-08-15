@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Terminal' : 'Edit Terminal'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="terminalName"
   [isModalValid]="terminalForm.valid"
   (action)="onModalAction($event)"
 >
@@ -47,7 +47,7 @@
                     label: 'Terminal Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type === 'edit' ? false : true
+                    autoFocus: editData?.type !== 'edit' ? true : false
                   }"
                 ></app-ta-input>
               </div>

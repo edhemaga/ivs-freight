@@ -1,5 +1,5 @@
 import { FormArray } from '@angular/forms';
-import { concatMap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -149,7 +149,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public disabledEmptyLoadedMile: boolean = false;
 
   // Delete when back coming
-  public milesSameRate: boolean = true;
+  public hasMilesSameRate: boolean = true;
   public fleetType: string = 'Solo';
 
   constructor(
@@ -171,13 +171,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.getDriverDropdowns();
     this.validateMiles();
     this.isCheckedOwner();
-
+    this.onIncludePayroll();
     this.handlingPayrollFleetType();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
-    } else {
-      this.onIncludePayroll();
     }
   }
 
@@ -259,7 +257,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       email: [null, [Validators.required, emailRegex]],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
-      dateOfBirth: [null, [Validators.required]],
+      dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
       bankId: [null],
@@ -308,6 +306,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
+
+    this.driverForm.valueChanges.subscribe((val) => {
+      console.log(val);
+    });
   }
 
   public get offDutyLocations(): FormArray {
@@ -696,6 +698,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
           this.labelsPayType = data.payTypes;
+          this.fleetType = data.fleetType;
+          this.hasMilesSameRate = data.loadedAndEmptySameRate;
+
+          if (this.fleetType === 'Combined') {
+            this.driverForm.get('soloDriver').patchValue(true);
+            this.driverForm.get('teamDriver').patchValue(true);
+          }
         },
         error: (err) => {
           this.notificationService.error(
@@ -808,12 +817,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       solo: {
         emptyMile: this.driverForm.get('soloDriver').value
           ? soloEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloEmptyMile)
+            ? parseFloat(soloEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('soloDriver').value
           ? soloLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloLoadedMile)
+            ? parseFloat(soloLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('soloDriver').value
@@ -825,12 +834,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       team: {
         emptyMile: this.driverForm.get('teamDriver').value
           ? teamEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamEmptyMile)
+            ? parseFloat(teamEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('teamDriver').value
           ? teamLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamLoadedMile)
+            ? parseFloat(teamLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('teamDriver').value
@@ -960,12 +969,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       solo: {
         emptyMile: this.driverForm.get('soloDriver').value
           ? soloEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloEmptyMile)
+            ? parseFloat(soloEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('soloDriver').value
           ? soloLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(soloLoadedMile)
+            ? parseFloat(soloLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('soloDriver').value
@@ -977,12 +986,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       team: {
         emptyMile: this.driverForm.get('teamDriver').value
           ? teamEmptyMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamEmptyMile)
+            ? parseFloat(teamEmptyMile)
             : null
           : null,
         loadedMile: this.driverForm.get('teamDriver').value
           ? teamLoadedMile && this.selectedPayType?.id
-            ? convertThousanSepInNumber(teamLoadedMile)
+            ? parseFloat(teamLoadedMile)
             : null
           : null,
         perStop: this.driverForm.get('teamDriver').value
@@ -1055,12 +1064,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             payType: res.payType ? res.payType.name : null,
             useTruckAssistAch: res.useTruckAssistAch,
             soloEmptyMile: res.solo ? res.solo.emptyMile : null,
-            soloLoadedMile: res.solo ? res.solo.loadedMile : null,
             soloPerStop: res.solo.perStop
               ? convertNumberInThousandSep(res.solo.perStop)
               : null,
             teamEmptyMile: res.team ? res.team.emptyMile : null,
-            teamLoadedMile: res.team ? res.team.loadedMile : null,
             teamPerStop: res.team.perStop
               ? convertNumberInThousandSep(res.team.perStop)
               : null,
@@ -1101,6 +1108,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             pushNotificationPayroll: res.payroll.pushNotification,
             smsNotificationPayroll: res.payroll.smsNotification,
           });
+
+          this.driverForm
+            .get('soloLoadedMile')
+            .patchValue(res.team.loadedMile, { emitEvent: false });
+          this.driverForm
+            .get('teamLoadedMile')
+            .patchValue(res.team.loadedMile, { emitEvent: false });
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);

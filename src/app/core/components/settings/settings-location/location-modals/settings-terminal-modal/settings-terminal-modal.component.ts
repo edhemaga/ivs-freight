@@ -107,6 +107,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public terminalName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -547,7 +549,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 : res.weeklyDay.name
               : null,
           });
-
+          this.terminalName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 

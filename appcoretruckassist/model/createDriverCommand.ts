@@ -32,6 +32,8 @@ export interface CreateDriverCommand {
     useTruckAssistAch?: boolean;
     solo: PerMileEntity;
     team: PerMileEntity;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
     isOwner?: boolean;

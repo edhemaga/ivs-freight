@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Parking' : 'Edit Parking'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="parkingName"
   [isModalValid]="parkingForm.valid"
   (action)="onModalAction($event)"
 >
@@ -39,7 +39,7 @@
                     label: 'Parking Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type === 'edit' ? false : true
+                    autoFocus: editData?.type !== 'edit' ? true : false
                   }"
                 ></app-ta-input>
               </div>

@@ -108,6 +108,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
+    this.onBankSelected();
 
     if (this.editData) {
       // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
@@ -241,10 +242,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
   public onSaveNewBank(bank: any) {
     this.selectedBank = bank;
 
-    if (this.selectedBank) {
-      this.onBankSelected();
-    }
-
     this.bankVerificationService
       .createBank({ name: bank.name })
       .pipe(untilDestroyed(this))
@@ -271,9 +268,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private deleteUserById(id: number) {}
 
-  private editUserById(id: number) {
-    this.onBankSelected();
-  }
+  private editUserById(id: number) {}
 
   private getUserDropdowns() {}
 

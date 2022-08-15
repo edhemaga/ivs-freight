@@ -272,6 +272,7 @@ model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
 model/refreshTokenCommand.ts
+model/registrationModalResponse.ts
 model/registrationResponse.ts
 model/renewCdlCommand.ts
 model/repairByUnitResponse.ts
@@ -338,6 +339,7 @@ model/timeOnly.ts
 model/timeSpan.ts
 model/timeType.ts
 model/tireSizeResponse.ts
+model/titleModalResponse.ts
 model/titleResponse.ts
 model/todoListResponse.ts
 model/todoModalResponse.ts

@@ -1,14 +1,28 @@
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { CommonTruckTrailerService } from '../common-truck-trailer.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import {
+  CreateTitleCommand,
+  TitleModalResponse,
+  TitleResponse,
+  UpdateTitleCommand,
+} from 'appcoretruckassist';
+import {
+  convertDateFromBackend,
+  convertDateToBackend,
+} from 'src/app/core/utils/methods.calculations';
 
+@UntilDestroy()
 @Component({
   selector: 'app-tt-title-modal',
   templateUrl: './tt-title-modal.component.html',
   styleUrls: ['./tt-title-modal.component.scss'],
 })
-export class TtTitleModalComponent implements OnInit {
+export class TtTitleModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
 
   public ttTitleForm: FormGroup;
@@ -21,20 +35,23 @@ export class TtTitleModalComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private notificationService: NotificationService,
+    private commonTruckTrailerService: CommonTruckTrailerService
   ) {}
 
   ngOnInit() {
     this.createForm();
+    this.getModalDropdowns();
 
     if (this.editData.type === 'edit-title') {
-      this.editTitleById();
+      this.editTitleById(this.editData.file_id);
     }
   }
 
   private createForm() {
     this.ttTitleForm = this.formBuilder.group({
-      titleNo: [null, Validators.required],
+      number: [null, Validators.required],
       stateId: [null, Validators.required],
       purchaseDate: [null, Validators.required],
       issueDate: [null, Validators.required],
@@ -54,7 +71,7 @@ export class TtTitleModalComponent implements OnInit {
           this.inputService.markInvalid(this.ttTitleForm);
           return;
         }
-        if (this.editData.type === 'edit-inspection') {
+        if (this.editData.type === 'edit-title') {
           this.updateTitle();
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -84,9 +101,110 @@ export class TtTitleModalComponent implements OnInit {
     this.documents = event.files;
   }
 
-  private addTitle() {}
+  private addTitle() {
+    const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+    const newData: CreateTitleCommand = {
+      ...form,
+      issueDate: convertDateToBackend(issueDate),
+      purchaseDate: convertDateToBackend(purchaseDate),
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
+      trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
+      truckId: this.editData.modal === 'truck' ? this.editData.id : null,
+    };
 
-  private updateTitle() {}
+    this.commonTruckTrailerService
+      .addTitle(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Successfuly added new title!',
+            'Success'
+          );
+        },
+        error: () => {
+          this.notificationService.error("Can't add new title!", 'Error');
+        },
+      });
+  }
 
-  private editTitleById() {}
+  private updateTitle() {
+    const { issueDate, purchaseDate, ...form } = this.ttTitleForm.value;
+    const newData: UpdateTitleCommand = {
+      id: this.editData.file_id,
+      ...form,
+      issueDate: convertDateToBackend(issueDate),
+      purchaseDate: convertDateToBackend(purchaseDate),
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
+    };
+
+    this.commonTruckTrailerService
+      .updateTitle(newData)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Title successfully updated.',
+            'Success:'
+          );
+          this.modalService.setModalSpinner({
+            action: null,
+            status: false,
+          });
+        },
+        error: () => {
+          this.notificationService.error("Title can't be updated.", 'Error:');
+        },
+      });
+  }
+
+  private editTitleById(id: number) {
+    this.commonTruckTrailerService
+      .getTitleById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TitleResponse) => {
+          this.ttTitleForm.patchValue({
+            number: res.number,
+            stateId: res.state ? res.state.stateShortName : null,
+            purchaseDate: res.purchaseDate
+              ? convertDateFromBackend(res.purchaseDate)
+              : null,
+            issueDate: res.issueDate
+              ? convertDateFromBackend(res.issueDate)
+              : null,
+            note: res.note,
+          });
+          this.selectedStateType = res.state;
+        },
+        error: () => {
+          this.notificationService.error("Title can't be load.", 'Error:');
+        },
+      });
+  }
+
+  private getModalDropdowns() {
+    this.commonTruckTrailerService
+      .getTitleModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: TitleModalResponse) => {
+          this.stateTypes = res.states.map((item) => {
+            return {
+              id: item.id,
+              name: item.stateShortName,
+              stateName: item.stateName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load title modal dropdowns!",
+            'Error'
+          );
+        },
+      });
+  }
+
+  ngOnDestroy() {}
 }

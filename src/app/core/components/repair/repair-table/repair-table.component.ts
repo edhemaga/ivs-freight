@@ -19,9 +19,7 @@ import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
-import {
-  closeAnimationAction,
-} from 'src/app/core/utils/methods.globals';
+import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
 import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
 import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
@@ -588,9 +586,28 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(untilDestroyed(this))
           .subscribe();
       }
-    }else if(event.type === 'finish-order'){
-      console.log('Radi se finish order akcija');
-      console.log(event);
+    } else if (event.type === 'finish-order') {
+      switch (this.selectedTab) {
+        case 'active': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event.data, type: 'edit-fo-truck' }
+          );
+          break;
+        }
+        case 'inactive': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event.data, type: 'edit-fo-trailer' }
+          );
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     }
   }
 

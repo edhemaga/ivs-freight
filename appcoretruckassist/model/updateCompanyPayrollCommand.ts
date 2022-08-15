@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PerMileEntity } from './perMileEntity';
 
 
 export interface UpdateCompanyPayrollCommand { 
@@ -18,14 +19,10 @@ export interface UpdateCompanyPayrollCommand {
     endingIn?: number;
     defaultBase?: number | null;
     defaultCommission?: number | null;
-    soloMileagePay?: number | null;
-    soloEmptyMile?: number | null;
-    soloLoadedMile?: number | null;
-    soloPerStop?: number | null;
-    teamEmptyMile?: number | null;
-    teamLoadedMile?: number | null;
-    teamMileagePay?: number | null;
-    teamPerStop?: number | null;
+    solo?: PerMileEntity;
+    team?: PerMileEntity;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     loadedAndEmptySameRate?: boolean | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;
