@@ -15,6 +15,7 @@ import {
   UpdateInspectionCommand,
   UpdateRegistrationCommand,
   UpdateTitleCommand,
+  RegistrationModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateInspectionResponse } from 'appcoretruckassist/model/createInspectionResponse';
 import { CreateRegistrationResponse } from 'appcoretruckassist/model/createRegistrationResponse';
@@ -128,6 +129,10 @@ export class CommonTruckTrailerService {
 
   public deleteRegistrationById(id: number): Observable<any> {
     return this.registrationService.apiRegistrationIdDelete(id);
+  }
+
+  public getRegistrationModalDropdowns(): Observable<RegistrationModalResponse> {
+    return this.registrationService.apiRegistrationModalGet();
   }
 
   // Inspection

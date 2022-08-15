@@ -5,10 +5,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
   CreateRegistrationCommand,
+  RegistrationModalResponse,
   RegistrationResponse,
   UpdateRegistrationCommand,
 } from 'appcoretruckassist';
-import moment from 'moment';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -49,7 +49,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-
+    this.getModalDropdowns();
     if (this.editData.type === 'edit-registration') {
       this.editRegistrationById();
     }
@@ -110,6 +110,10 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
   }
 
   private updateRegistration() {
@@ -189,7 +193,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             licensePlate: res.licensePlate,
-            stateId: res.state.id,
+            stateId: res.state ? res.state.stateName : null,
             note: res.note,
           });
 
@@ -201,8 +205,27 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onFilesEvent(event: any) {
-    this.documents = event.files;
+  private getModalDropdowns() {
+    this.commonTruckTrailerService
+      .getRegistrationModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RegistrationModalResponse) => {
+          this.stateTypes = res.states.map((item) => {
+            return {
+              id: item.id,
+              name: item.stateShortName,
+              stateName: item.stateName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't get registration dropdowns!",
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {}

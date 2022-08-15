@@ -334,13 +334,9 @@
     padding-left: 6px;
     padding-right: 1px;
     margin-bottom: 30px;
-    max-height: 0px;
-    overflow: hidden;
 
-    &.active {
-      max-height: 600px !important;
-      margin-top: 30px;
-      transition: all 0.3s ease-in-out;
+    .paytype-field {
+      height: 20px;
     }
 
     &.paytype-commission-single {
