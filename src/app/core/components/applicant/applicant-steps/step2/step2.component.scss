@@ -40,6 +40,27 @@
     }
   }
 
+  .top-section-feedback {
+    margin-top: 12px;
+    width: 820px;
+
+    p {
+      color: $bw5;
+      font-size: 14px;
+      line-height: 22px;
+
+      &::-moz-selection {
+        color: $bw5;
+        background: rgb(145, 145, 145, 0.2);
+      }
+
+      &::selection {
+        color: $bw5;
+        background: rgb(145, 145, 145, 0.2);
+      }
+    }
+  }
+
   .mid-section {
     margin-top: 22px;
 
@@ -56,6 +77,20 @@
       &::selection {
         color: $bw6-2;
         background: rgb(108, 108, 108, 0.2);
+      }
+    }
+
+    .step-subtitle-feedback {
+      color: $bw5;
+
+      &::-moz-selection {
+        color: $bw5;
+        background: rgb(145, 145, 145, 0.2);
+      }
+
+      &::selection {
+        color: $bw5;
+        background: rgb(145, 145, 145, 0.2);
       }
     }
   }
@@ -297,10 +332,6 @@
     .history-panel-form {
       margin: 32px auto 0 auto;
     }
-  }
-
-  .work-experience-group {
-    margin-top: 12px !important;
   }
 }
 

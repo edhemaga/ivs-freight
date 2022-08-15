@@ -151,12 +151,63 @@
       .question-title-box {
         margin-right: 12px;
 
-        p {
+        .question-title {
           color: $bw6-2;
           font-size: 14px;
+          line-height: 18px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
 
           span {
             color: $progress-danger;
+
+            &::-moz-selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+
+            &::selection {
+              color: $bw6-2;
+              background: rgb(108, 108, 108, 0.2);
+            }
+          }
+        }
+
+        .question-title-feedback {
+          color: $bw5;
+          font-size: 14px;
+          line-height: 18px;
+
+          &::-moz-selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          span {
+            color: $bw5;
+
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
           }
         }
       }
@@ -181,9 +232,8 @@
   }
 
   .btn-container {
-    margin-top: 22px;
-
     .add-btn {
+      margin-top: 22px;
       height: 26px;
       padding: 4px 8px;
       border: none;
@@ -248,6 +298,7 @@
       margin-bottom: 32px;
 
       .add-btn {
+        margin-top: 0;
         height: 26px;
         padding: 4px 8px;
         border: none;

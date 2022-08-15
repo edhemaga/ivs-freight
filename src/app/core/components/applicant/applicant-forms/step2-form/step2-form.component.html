@@ -260,7 +260,9 @@
       formControlName="isDrivingPosition"
       [name]="'isDrivingPosition'"
       [label]="'Was this a driving position?'"
-      [customClass]="'bold-14'"
+      [customClass]="
+        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      "
     ></app-ta-checkbox>
   </div>
 
@@ -360,6 +362,7 @@
 
     <div
       class="d-flex justify-content-center align-items-center another-class-group"
+      *ngIf="selectedMode === 'APPLICANT_MODE'"
     >
       <button
         type="button"
@@ -391,7 +394,15 @@
         "
       >
         <div class="question-title-box">
-          <p class="m-0 noselect ta-font-regular">
+          <p
+            class="m-0 noselect ta-font-regular"
+            class="m-0 ta-font-regular"
+            [ngClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'question-title-feedback'
+                : 'question-title'
+            "
+          >
             {{ question.title }} <span>*</span>
           </p>
         </div>
@@ -507,7 +518,7 @@
         disabled: workExperienceForm.invalid
       }"
       (click)="onAddSecondOrLastEmployer()"
-      *ngIf="!isEditing"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
     >
       <svg-icon
         class="plus-icon"

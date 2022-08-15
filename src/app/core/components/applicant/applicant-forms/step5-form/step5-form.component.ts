@@ -31,7 +31,7 @@ export class Step5FormComponent implements OnInit {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.REVIEW;
+  public selectedMode = SelectedMode.FEEDBACK;
 
   public violationsForm: FormGroup;
 

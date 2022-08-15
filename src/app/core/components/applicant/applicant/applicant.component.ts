@@ -84,16 +84,16 @@ export class ApplicantComponent implements OnInit {
   ];
 
   reviewStoreArr = [
-    { id: 0, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 1, isReviewed: true, hasIncorrectAnswer: true },
-    { id: 2, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 3, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 4, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 5, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 6, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 7, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 8, isReviewed: true, hasIncorrectAnswer: false },
-    { id: 9, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 0, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 1, isReviewed: true, hasIncorrectAnswer: false },
+    { id: 2, isReviewed: true, hasIncorrectAnswer: true },
+    { id: 3, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 4, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 5, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 6, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 7, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 8, isReviewed: false, hasIncorrectAnswer: false },
+    { id: 9, isReviewed: false, hasIncorrectAnswer: false },
     { id: 10, isReviewed: false, hasIncorrectAnswer: false },
   ];
 

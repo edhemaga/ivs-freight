@@ -27,6 +27,8 @@ import { AccountResolver } from './core/components/account/state/account-state/a
 import { RepairTruckResolver } from './core/components/repair/state/repair-truck-state/repair-truck.resolver';
 import { RepairTrailerResolver } from './core/components/repair/state/repair-trailer-state/repair-trailer.resolver';
 import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
+import { pmTrailerResolver } from './core/components/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
+import { pmTruckResolver } from './core/components/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -147,6 +149,10 @@ const routes: Routes = [
         (m) => m.PmTruckTrailerModule
       ),
     canActivate: [AuthGuard],
+    resolve: {
+      pmTrailer: pmTrailerResolver,
+      pmTruck: pmTruckResolver,
+    },
   },
   {
     path: 'fuel',

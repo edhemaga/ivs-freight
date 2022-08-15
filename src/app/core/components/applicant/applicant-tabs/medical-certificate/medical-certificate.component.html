@@ -10,7 +10,12 @@
           Medical Examiner's Certificate
         </h1>
 
-        <h2 class="m-0 text-center subtitle ta-font-bold">
+        <h2
+          class="m-0 text-center subtitle ta-font-bold"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
           Please fill fields and upload the examiner's certificate example as
           proof of validation.
         </h2>
@@ -97,21 +102,23 @@
             </div>
           </div>
 
-          <app-ta-upload-files
-            *ngIf="
-              selectedMode === 'APPLICANT_MODE' ||
-              selectedMode === 'FEEDBACK_MODE'
-            "
-            [files]="documents"
-            [size]="'medium'"
-            [hasNumberOfPages]="true"
-            (onFileEvent)="onFilesAction($event)"
-          ></app-ta-upload-files>
+          <div class="line-container">
+            <app-ta-upload-files
+              *ngIf="
+                selectedMode === 'APPLICANT_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
+              [files]="documents"
+              [size]="'medium'"
+              [hasNumberOfPages]="true"
+              (onFileEvent)="onFilesAction($event)"
+            ></app-ta-upload-files>
 
-          <div
-            class="d-flex review-documents-container line-container"
-            *ngIf="selectedMode === 'REVIEW_MODE'"
-          >
+            <div
+              class="d-flex review-documents-container"
+              *ngIf="selectedMode === 'REVIEW_MODE'"
+            ></div>
+
             <!-- REVIEW AND FEEDBACK -->
 
             <div

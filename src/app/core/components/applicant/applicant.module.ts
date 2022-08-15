@@ -11,10 +11,10 @@ import { ReviewFeedbackService } from './state/services/review-feedback.service'
 import { ApplicantComponent } from './applicant/applicant.component';
 import { ApplicantHeaderComponent } from './applicant-header/applicant-header.component';
 import { ApplicantFooterComponent } from './applicant-footer/applicant-footer.component';
-import { ApplicantNextStepComponent } from './applicant-next-step/applicant-next-step.component';
 import { ApplicantReviewFeedbackComponent } from './applicant-review-feedback/applicant-review-feedback.component';
 import { ApplicantSignaturePadComponent } from './applicant-signature-pad/applicant-signature-pad.component';
 import { ApplicantWelcomeScreenComponent } from './applicant-welcome-screen/applicant-welcome-screen.component';
+import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 import { ApplicantNextBackBtnComponent } from './applicant-next-back-btn/applicant-next-back-btn.component';
 
 import { Step1Component } from './applicant-steps/step1/step1.component';
@@ -37,14 +37,12 @@ import { Step2FormComponent } from './applicant-forms/step2-form/step2-form.comp
 
 import { SharedModule } from '../shared/shared.module';
 import { AngularSignaturePadModule } from '@almothafar/angular-signature-pad';
-import { ApplicantEndScreenComponent } from './applicant-end-screen/applicant-end-screen.component';
 
 @NgModule({
   declarations: [
     ApplicantComponent,
     ApplicantHeaderComponent,
     ApplicantFooterComponent,
-    ApplicantNextStepComponent,
     ApplicantReviewFeedbackComponent,
     ApplicantSignaturePadComponent,
     ApplicantNextBackBtnComponent,
