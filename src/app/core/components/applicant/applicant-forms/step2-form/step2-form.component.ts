@@ -11,6 +11,8 @@ import {
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import { Subscription } from 'rxjs';
 
 import {
@@ -29,12 +31,14 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../state/model/trailer-type.model';
-import { TruckType } from '../../state/model/truck-type.model';
+import { VehicleType } from '../../state/model/vehicle-type.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { WorkHistoryModel } from '../../state/model/work-history.model';
+import {
+  AnotherClassOfEquipmentModel,
+  WorkHistoryModel,
+} from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -63,29 +67,35 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
 
   public workExperienceForm: FormGroup;
 
-  public isTruckSelected: boolean = false;
+  public anotherClassOfEquipmentArray: AnotherClassOfEquipmentModel[] = [];
 
+  public isEditingClassOfEquipment: boolean = false;
+  public isTruckSelected: boolean = false;
   public isWorkExperienceEdited?: boolean;
+
   public editingCardAddress: any;
 
   public selectedAddress: AddressEntity;
-  public selectedTruckType: any = null;
+  public selectedVehicleType: any = null;
   public selectedTrailerType: any = null;
   public selectedTrailerLength: any = null;
   public selectedReasonForLeaving: any = null;
+  public selectedClassOfEquipmentIndex: number;
 
-  public truckType: TruckType[] = [];
+  public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
   public trailerLengthType: any[] = [];
 
   private cfrPartRadios: any;
   private fmcsaRadios: any;
+
+  public helperIndex: number = 2;
 
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },
@@ -159,11 +169,36 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     {},
     {},
     {},
-    {},
-    {},
-    {},
-    {},
-    {},
+    {
+      lineIndex: 10,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 11,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 12,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 13,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 14,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
     {
       lineIndex: 15,
       lineInputs: [false],
@@ -172,25 +207,25 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     },
     {
       lineIndex: 16,
-      lineInputs: [false, false, false],
+      lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
     {
       lineIndex: 17,
-      lineInputs: [false, false, false],
+      lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
     {
       lineIndex: 18,
-      lineInputs: [false, false],
+      lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
     {
       lineIndex: 19,
-      lineInputs: [false, false, false],
+      lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
@@ -202,6 +237,36 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     },
     {
       lineIndex: 21,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 22,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 23,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 24,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 25,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 26,
       lineInputs: [false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
@@ -217,10 +282,10 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.createForm();
 
+    this.isDriverPosition();
+
     if (this.formValuesToPatch) {
       this.patchForm();
-
-      this.isDriverPosition();
 
       this.subscription = this.workExperienceForm.valueChanges.subscribe(
         (updatedFormValues) => {
@@ -269,7 +334,23 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       employerAddress: [null, Validators.required],
       employerAddressUnit: [null, Validators.maxLength(6)],
       isDrivingPosition: [false],
-      truckType: [null],
+      anotherClassOfEquipmentForm: this.formBuilder.group({
+        vehicleType: [null],
+        trailerType: [null],
+        trailerLength: [null],
+
+        cardReview1: [null],
+        cardReview2: [null],
+        cardReview3: [null],
+        cardReview4: [null],
+        cardReview5: [null],
+        cardReview6: [null],
+        cardReview7: [null],
+        cardReview8: [null],
+        cardReview9: [null],
+        cardReview10: [null],
+      }),
+      vehicleType: [null],
       trailerType: [null],
       trailerLength: [null],
       cfrPart: [null],
@@ -288,6 +369,21 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   }
 
   public patchForm(): void {
+    const lastItemInClassOfEquipmentArray =
+      this.formValuesToPatch.classesOfEquipment[
+        this.formValuesToPatch.classesOfEquipment.length - 1
+      ];
+
+    const restOfTheItemsInClassOfEquipmentArray = [
+      ...this.formValuesToPatch.classesOfEquipment,
+    ];
+
+    restOfTheItemsInClassOfEquipmentArray.pop();
+
+    this.anotherClassOfEquipmentArray = [
+      ...restOfTheItemsInClassOfEquipmentArray,
+    ];
+
     this.workExperienceForm.patchValue({
       employer: this.formValuesToPatch.employer,
       jobDescription: this.formValuesToPatch.jobDescription,
@@ -299,9 +395,11 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       employerAddress: this.formValuesToPatch.employerAddress.address,
       employerAddressUnit: this.formValuesToPatch.employerAddressUnit,
       isDrivingPosition: this.formValuesToPatch.isDrivingPosition,
-      truckType: this.formValuesToPatch.truckType,
-      trailerType: this.formValuesToPatch.trailerType,
-      trailerLength: this.formValuesToPatch.trailerLength,
+      anotherClassOfEquipmentForm: this.formBuilder.group({
+        vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
+        trailerType: lastItemInClassOfEquipmentArray.trailerType,
+        trailerLength: lastItemInClassOfEquipmentArray.trailerLength,
+      }),
       cfrPart: this.formValuesToPatch.cfrPart,
       fmCSA: this.formValuesToPatch.fmCSA,
       reasonForLeaving: this.formValuesToPatch.reasonForLeaving,
@@ -335,7 +433,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(
-            this.workExperienceForm.get('truckType'),
+            this.workExperienceForm.get('vehicleType'),
             false
           );
           this.inputService.changeValidators(
@@ -356,7 +454,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
           );
         } else {
           this.inputService.changeValidators(
-            this.workExperienceForm.get('truckType')
+            this.workExperienceForm.get('vehicleType')
           );
           this.inputService.changeValidators(
             this.workExperienceForm.get('trailerType')
@@ -387,7 +485,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
         break;
       case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
+        this.selectedVehicleType = event;
 
         break;
       case InputSwitchActions.TRAILER_TYPE:
@@ -432,6 +530,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     const {
       employerAddress,
+      anotherClassOfEquipmentForm,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -445,12 +544,15 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     const saveData: WorkHistoryModel = {
       ...workExperienceForm,
       employerAddress: this.selectedAddress,
+      classesOfEquipment: [...this.anotherClassOfEquipmentArray],
       isEditingWorkHistory: false,
     };
 
     this.formValuesEmitter.emit(saveData);
 
     this.selectedReasonForLeaving = null;
+
+    this.anotherClassOfEquipmentArray = [];
 
     this.workExperienceForm.reset();
 
@@ -570,6 +672,35 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public onDeleteClassOfEquipment(index: number): void {
+    if (this.isEditingClassOfEquipment) {
+      return;
+    }
+
+    this.anotherClassOfEquipmentArray.splice(index, 1);
+  }
+
+  public onEditClassOfEquipment(index: number): void {
+    if (this.isEditingClassOfEquipment) {
+      return;
+    }
+
+    this.helperIndex = index;
+
+    this.isEditingClassOfEquipment = true;
+    this.anotherClassOfEquipmentArray[index].isEditingClassOfEquipment = true;
+
+    this.selectedClassOfEquipmentIndex = index;
+
+    const selectedClassOfEquipment = this.anotherClassOfEquipmentArray[index];
+
+    this.workExperienceForm['controls'].anotherClassOfEquipment.patchValue({
+      vehicleType: selectedClassOfEquipment.vehicleType,
+      trailerType: selectedClassOfEquipment.trailerType,
+      trailerLength: selectedClassOfEquipment.trailerLength,
+    });
   }
 
   ngOnDestroy(): void {}

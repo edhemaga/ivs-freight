@@ -20,7 +20,7 @@ import {
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant;
 
@@ -47,6 +47,35 @@ export class Step2Component implements OnInit, OnDestroy {
       },
       employerAddressUnit: '1',
       isDrivingPosition: true,
+      classesOfEquipment: [
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
+          vehicleType: 'Semi Sleeper',
+          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
+          trailerType: 'Dumper',
+          trailerLength: '1',
+          isEditingClassOfEquipment: false,
+        },
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
+          vehicleType: 'Cargo Van',
+          trailerIconSrc: null,
+          trailerType: null,
+          trailerLength: 2,
+          isEditingClassOfEquipment: false,
+        },
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
+          vehicleType: 'Cargo Van',
+          trailerIconSrc: null,
+          trailerType: null,
+          trailerLength: 3,
+          isEditingClassOfEquipment: false,
+        },
+      ],
       truckType: null,
       trailerType: null,
       trailerLength: null,
@@ -76,7 +105,68 @@ export class Step2Component implements OnInit, OnDestroy {
         zipCode: '',
       },
       employerAddressUnit: '1',
-      isDrivingPosition: false,
+      isDrivingPosition: true,
+      classesOfEquipment: [
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
+          vehicleType: 'Semi Sleeper',
+          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
+          trailerType: 'Dumper',
+          trailerLength: '45',
+          isEditingClassOfEquipment: false,
+        },
+      ],
+      truckType: null,
+      trailerType: null,
+      trailerLength: null,
+      cfrPart: null,
+      fmCSA: null,
+      reasonForLeaving: 'Illness',
+      accountForPeriod: null,
+      isEditingWorkHistory: false,
+    },
+    {
+      applicantId: '1',
+      employer: 'Kvelail',
+      jobDescription: 'Developer',
+      fromDate: '01/01/01',
+      toDate: '02/02/02',
+      employerPhone: '(621) 123-4567',
+      employerFax: '(621) 123-4567',
+      employerEmail: 'aasd@asd.com',
+      employerAddress: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      employerAddressUnit: '1',
+      isDrivingPosition: true,
+      classesOfEquipment: [
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
+          vehicleType: 'Semi Sleeper',
+          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
+          trailerType: 'Dumper',
+          trailerLength: '45',
+          isEditingClassOfEquipment: false,
+        },
+        {
+          vehicleIconSrc:
+            'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
+          vehicleType: 'Cargo Van',
+          trailerIconSrc: null,
+          trailerType: null,
+          trailerLength: null,
+          isEditingClassOfEquipment: false,
+        },
+      ],
       truckType: null,
       trailerType: null,
       trailerLength: null,
@@ -107,36 +197,7 @@ export class Step2Component implements OnInit, OnDestroy {
       },
       employerAddressUnit: '1',
       isDrivingPosition: false,
-      truckType: null,
-      trailerType: null,
-      trailerLength: null,
-      cfrPart: null,
-      fmCSA: null,
-      reasonForLeaving: 'Illness',
-      accountForPeriod: null,
-      isEditingWorkHistory: false,
-    },
-    {
-      applicantId: '1',
-      employer: 'Kvelail',
-      jobDescription: 'Developer',
-      fromDate: '01/01/01',
-      toDate: '02/02/02',
-      employerPhone: '(621) 123-4567',
-      employerFax: '(621) 123-4567',
-      employerEmail: 'aasd@asd.com',
-      employerAddress: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      employerAddressUnit: '1',
-      isDrivingPosition: false,
+      classesOfEquipment: [],
       truckType: null,
       trailerType: null,
       trailerLength: null,

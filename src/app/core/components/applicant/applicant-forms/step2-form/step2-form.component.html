@@ -15,7 +15,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 15)"
+        (incorrectEvent)="incorrectInput($event, 0, 20)"
       ></app-ta-input>
     </div>
 
@@ -28,12 +28,12 @@
       <app-applicant-review-feedback
         formControlName="firstRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[15].displayAnnotationButton
+          openAnnotationArray[20].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[15].displayAnnotationTextArea
+          openAnnotationArray[20].displayAnnotationTextArea
         "
-        [lineIndex]="15"
+        [lineIndex]="20"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'
@@ -58,7 +58,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 16)"
+        (incorrectEvent)="incorrectInput($event, 0, 21)"
       ></app-ta-input>
     </div>
     <div class="group date-group">
@@ -74,7 +74,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 16)"
+        (incorrectEvent)="incorrectInput($event, 1, 21)"
       ></app-ta-input>
     </div>
     <div class="group date-group date-to-group">
@@ -90,7 +90,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 2, 16)"
+        (incorrectEvent)="incorrectInput($event, 2, 21)"
       ></app-ta-input>
     </div>
 
@@ -103,12 +103,12 @@
       <app-applicant-review-feedback
         formControlName="secondRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[16].displayAnnotationButton
+          openAnnotationArray[21].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[16].displayAnnotationTextArea
+          openAnnotationArray[21].displayAnnotationTextArea
         "
-        [lineIndex]="16"
+        [lineIndex]="21"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'
@@ -134,7 +134,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 17)"
+        (incorrectEvent)="incorrectInput($event, 0, 22)"
       ></app-ta-input>
     </div>
     <div class="group email-group">
@@ -149,7 +149,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 17)"
+        (incorrectEvent)="incorrectInput($event, 1, 22)"
       ></app-ta-input>
     </div>
     <div class="group fax-group">
@@ -163,7 +163,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 2, 17)"
+        (incorrectEvent)="incorrectInput($event, 2, 22)"
       ></app-ta-input>
     </div>
 
@@ -176,12 +176,12 @@
       <app-applicant-review-feedback
         formControlName="thirdRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[17].displayAnnotationButton
+          openAnnotationArray[22].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[17].displayAnnotationTextArea
+          openAnnotationArray[22].displayAnnotationTextArea
         "
-        [lineIndex]="17"
+        [lineIndex]="22"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'
@@ -207,7 +207,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 18)"
+        (incorrectEvent)="incorrectInput($event, 0, 23)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
@@ -223,7 +223,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 1, 18)"
+        (incorrectEvent)="incorrectInput($event, 1, 23)"
       ></app-ta-input>
     </div>
 
@@ -236,12 +236,12 @@
       <app-applicant-review-feedback
         formControlName="fourthRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[18].displayAnnotationButton
+          openAnnotationArray[23].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[18].displayAnnotationTextArea
+          openAnnotationArray[23].displayAnnotationTextArea
         "
-        [lineIndex]="18"
+        [lineIndex]="23"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'
@@ -272,10 +272,291 @@
     class="d-flex flex-column"
     *ngIf="workExperienceForm.get('isDrivingPosition').value"
   >
-    <div class="d-flex line-container">
+    <!-- CREATED ANOTHER CLASS OF EQUIPMENT DATA -->
+
+    <div
+      class="d-flex flex-column justify-content-center equipment-container"
+      *ngIf="anotherClassOfEquipmentArray?.length"
+      formGroupName="anotherClassOfEquipmentForm"
+    >
+      <div
+        class="d-flex flex-column"
+        *ngFor="
+          let classOfEquipment of anotherClassOfEquipmentArray;
+          let i = index;
+          trackBy: trackByIdentity
+        "
+      >
+        <div
+          class="d-flex align-items-center title-container"
+          *ngIf="
+            (anotherClassOfEquipmentArray.length > 0 &&
+              helperIndex !== 0 &&
+              i === 0) ||
+            (helperIndex === 0 && i === 1) ||
+            (i === helperIndex + 1 && selectedClassOfEquipmentIndex > -1)
+          "
+        >
+          <div class="d-flex align-items-center vehicle-title-box">
+            <p class="m-0 ta-font-bold">VEHICLE TYPE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center trailer-title-box">
+            <p class="m-0 ta-font-bold">TRAILER TYPE <span>*</span></p>
+          </div>
+          <div class="d-flex align-items-center length-title-box">
+            <p class="m-0 ta-font-bold">LENGTH <span>*</span></p>
+          </div>
+        </div>
+
+        <div
+          class="d-flex align-items-center equipment-info-container line-container"
+          *ngIf="!classOfEquipment.isEditingClassOfEquipment"
+        >
+          <div class="d-flex align-items-center info-btn-container">
+            <div class="d-flex align-items-center vehicle-box">
+              <svg-icon
+                class="icon"
+                [src]="classOfEquipment.vehicleIconSrc"
+              ></svg-icon>
+
+              <p class="m-0 ta-font-regular">
+                {{ classOfEquipment.vehicleType }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center trailer-box">
+              <svg-icon
+                class="icon"
+                [src]="classOfEquipment.trailerIconSrc"
+              ></svg-icon>
+
+              <p class="m-0 ta-font-regular">
+                {{ classOfEquipment.trailerType }}
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center length-box"
+              [ngStyle]="{
+                width: selectedMode === 'APPLICANT_MODE' ? '79px' : '60px'
+              }"
+            >
+              <p class="m-0 ta-font-regular">
+                {{ classOfEquipment.trailerLength }} ft
+              </p>
+            </div>
+
+            <div
+              class="d-flex align-items-center btn-container"
+              [ngClass]="{
+                active: selectedMode === 'REVIEW_MODE'
+              }"
+            >
+              <div
+                ngbTooltip
+                mainTooltip="Edit"
+                tooltipBackground="#6C6C6C"
+                position="top"
+              >
+                <svg-icon
+                  class="edit-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onEditClassOfEquipment(i)"
+                ></svg-icon>
+              </div>
+
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
+                tooltipBackground="#EF5350"
+                position="top"
+              >
+                <svg-icon
+                  class="delete-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onDeleteClassOfEquipment(i)"
+                ></svg-icon>
+              </div>
+
+              <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                <div
+                  class="review-icon-box"
+                  ngbTooltip
+                  mainTooltip="Mark Incorrect"
+                  tooltipBackground="#F44336"
+                  position="top"
+                >
+                  <svg-icon
+                    class="review-icon"
+                    [ngClass]="{
+                      active:
+                        openAnnotationArray[i + 10].displayAnnotationButton ||
+                        openAnnotationArray[i + 10].displayAnnotationTextArea
+                    }"
+                    src="assets/svg/ic_x.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    (click)="incorrectInput($event, 0, i + 10, 'card')"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                <div
+                  class="feedback-icon-box"
+                  ngbTooltip
+                  mainTooltip="Marked Incorrect"
+                  tooltipBackground="#F44336"
+                  position="top"
+                >
+                  <svg-icon
+                    class="feedback-icon"
+                    src="assets/svg/common/ic_danger.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                  ></svg-icon>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div
+            class="review-feedback-container"
+            *ngIf="
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+            "
+          >
+            <app-applicant-review-feedback
+              [formControlName]="'cardReview' + (i + 1)"
+              [displayAnnotationButton]="
+                openAnnotationArray[i + 10].displayAnnotationButton
+              "
+              [displayAnnotationTextArea]="
+                openAnnotationArray[i + 10].displayAnnotationTextArea
+              "
+              [lineIndex]="i + 10"
+              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+              [feedbackText]="'Check the number'"
+              [cardsLength]="anotherClassOfEquipmentArray.length"
+              [cardsType]="'classOfEquipment'"
+              [cardIndex]="i"
+              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
+          </div>
+        </div>
+
+        <div
+          class="d-flex flex-column equipment-view-form"
+          *ngIf="classOfEquipment.isEditingClassOfEquipment"
+        >
+          edituje
+          <div class="d-flex line-container">
+            <div class="group vehicle-type-group">
+              <app-ta-input-dropdown
+                formControlName="vehicleType"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Vehicle type',
+                  isRequired: true,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-251',
+                  incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="false"
+                (incorrectEvent)="incorrectInput($event, 0, 24)"
+                [options]="vehicleType"
+                (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="group trailer-type-group">
+              <app-ta-input-dropdown
+                formControlName="trailerType"
+                [template]="'svgtext-template'"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Trailer Type',
+                  isDisabled: !isTruckSelected,
+                  isRequired: isTruckSelected,
+                  isDropdown: true,
+                  dropdownWidthClass: 'w-col-211',
+                  incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="false"
+                (incorrectEvent)="incorrectInput($event, 1, 24)"
+                [options]="trailerType"
+                (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
+              ></app-ta-input-dropdown>
+            </div>
+            <div class="group length-group">
+              <app-ta-input-dropdown
+                formControlName="trailerLength"
+                [inputConfig]="{
+                  name: 'Input Dropdown',
+                  type: 'text',
+                  label: 'Length',
+                  isDropdown: true,
+                  isDisabled: !isTruckSelected,
+                  isRequired: isTruckSelected,
+                  dropdownWidthClass: 'w-col-130',
+                  incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="false"
+                (incorrectEvent)="incorrectInput($event, 2, 24)"
+                [options]="trailerLengthType"
+                (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
+              ></app-ta-input-dropdown>
+            </div>
+
+            <!-- REVIEW AND FEEDBACK -->
+
+            <div
+              class="review-feedback-container"
+              *ngIf="
+                selectedMode === 'REVIEW_MODE' ||
+                selectedMode === 'FEEDBACK_MODE'
+              "
+            >
+              <app-applicant-review-feedback
+                formControlName="fifthRowReview"
+                [displayAnnotationButton]="
+                  openAnnotationArray[24].displayAnnotationButton
+                "
+                [displayAnnotationTextArea]="
+                  openAnnotationArray[24].displayAnnotationTextArea
+                "
+                [lineIndex]="24"
+                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                [feedbackText]="
+                  'Check the routing number one more time (one number missing)!!!'
+                "
+                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+              ></app-applicant-review-feedback>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex line-container" *ngIf="!isEditingClassOfEquipment">
+      ne edituje
       <div class="group vehicle-type-group">
         <app-ta-input-dropdown
-          formControlName="truckType"
+          formControlName="vehicleType"
           [template]="'svgtext-template'"
           [inputConfig]="{
             name: 'Input Dropdown',
@@ -287,8 +568,8 @@
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 0, 19)"
-          [options]="truckType"
+          (incorrectEvent)="incorrectInput($event, 0, 24)"
+          [options]="vehicleType"
           (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
         ></app-ta-input-dropdown>
       </div>
@@ -307,7 +588,7 @@
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 1, 19)"
+          (incorrectEvent)="incorrectInput($event, 1, 24)"
           [options]="trailerType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-TYPE')"
         ></app-ta-input-dropdown>
@@ -326,7 +607,7 @@
             incorrectInput: selectedMode === 'REVIEW_MODE'
           }"
           [incorrectValue]="false"
-          (incorrectEvent)="incorrectInput($event, 2, 19)"
+          (incorrectEvent)="incorrectInput($event, 2, 24)"
           [options]="trailerLengthType"
           (selectedItem)="handleInputSelect($event, 'TRAILER-LENGTH')"
         ></app-ta-input-dropdown>
@@ -343,12 +624,12 @@
         <app-applicant-review-feedback
           formControlName="fifthRowReview"
           [displayAnnotationButton]="
-            openAnnotationArray[19].displayAnnotationButton
+            openAnnotationArray[24].displayAnnotationButton
           "
           [displayAnnotationTextArea]="
-            openAnnotationArray[19].displayAnnotationTextArea
+            openAnnotationArray[24].displayAnnotationTextArea
           "
-          [lineIndex]="19"
+          [lineIndex]="24"
           [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
           [feedbackText]="
             'Check the routing number one more time (one number missing)!!!'
@@ -435,7 +716,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 20)"
+        (incorrectEvent)="incorrectInput($event, 0, 25)"
         [options]="reasonsForLeaving"
         [activeItem]="selectedReasonForLeaving"
         (selectedItem)="handleInputSelect($event, 'REASON-FOR-LEAVING')"
@@ -451,12 +732,12 @@
       <app-applicant-review-feedback
         formControlName="sixthRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[20].displayAnnotationButton
+          openAnnotationArray[25].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[20].displayAnnotationTextArea
+          openAnnotationArray[25].displayAnnotationTextArea
         "
-        [lineIndex]="20"
+        [lineIndex]="25"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'
@@ -480,7 +761,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
-        (incorrectEvent)="incorrectInput($event, 0, 21)"
+        (incorrectEvent)="incorrectInput($event, 0, 26)"
       ></app-ta-input>
     </div>
 
@@ -493,12 +774,12 @@
       <app-applicant-review-feedback
         formControlName="seventhRowReview"
         [displayAnnotationButton]="
-          openAnnotationArray[21].displayAnnotationButton
+          openAnnotationArray[26].displayAnnotationButton
         "
         [displayAnnotationTextArea]="
-          openAnnotationArray[21].displayAnnotationTextArea
+          openAnnotationArray[26].displayAnnotationTextArea
         "
-        [lineIndex]="21"
+        [lineIndex]="26"
         [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
         [feedbackText]="
           'Check the routing number one more time (one number missing)!!!'

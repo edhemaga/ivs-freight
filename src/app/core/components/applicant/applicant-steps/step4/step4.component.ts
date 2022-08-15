@@ -17,7 +17,7 @@ import {
   styleUrls: ['./step4.component.scss'],
 })
 export class Step4Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public applicant: Applicant | undefined;
 

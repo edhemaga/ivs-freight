@@ -17,7 +17,7 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { TruckType } from '../../state/model/truck-type.model';
+import { VehicleType } from '../../state/model/vehicle-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AddressEntity } from 'appcoretruckassist';
@@ -51,12 +51,12 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
   public accidentForm: FormGroup;
 
   public selectedAddress: AddressEntity;
-  public selectedTruckType: any = null;
+  public selectedVehicleType: any = null;
 
   public isAccidentEdited: boolean;
   public editingCardAddress: any;
 
-  public truckType: TruckType[] = [];
+  public vehicleType: VehicleType[] = [];
   public answerChoices: AnswerChoices[] = [
     {
       id: 1,
@@ -155,7 +155,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       fatalities: [0],
       injuries: [0],
       hazmatSpill: [null, Validators.required],
-      truckType: [null, Validators.required],
+      vehicleType: [null, Validators.required],
       accidentDescription: [null, Validators.required],
 
       firstRowReview: [null],
@@ -170,7 +170,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
       injuries: this.formValuesToPatch.injuries,
-      truckType: this.formValuesToPatch.truckType,
+      vehicleType: this.formValuesToPatch.vehicleType,
       accidentDescription: this.formValuesToPatch.accidentDescription,
     });
 
@@ -196,7 +196,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
 
         break;
       case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
+        this.selectedVehicleType = event;
 
         break;
       case InputSwitchActions.ADDRESS:
