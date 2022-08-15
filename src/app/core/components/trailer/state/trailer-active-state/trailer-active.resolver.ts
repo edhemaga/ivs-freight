@@ -15,29 +15,21 @@ export class TrailerActiveResolver implements Resolve<TrailerActiveState> {
     private trailerStore: TrailerActiveStore
   ) {}
   resolve(): Observable<TrailerActiveState | boolean> {
-   /*  return of(true); */
-
-    if (this.trailerStore.getValue().ids?.length) {
-      return of(true);
-    } else {
-      return this.trailerService
-        .getTrailers(1, 1, 25)
-        .pipe(
-          catchError(() => {
-            return of('No active trailer...');
-          }),
-          tap((trailerPagination: TrailerListResponse) => {
-            localStorage.setItem(
-              'trailerTableCount',
-              JSON.stringify({
-                active: trailerPagination.activeCount,
-                inactive: trailerPagination.inactiveCount,
-              })
-            );
-
-            this.trailerStore.set(trailerPagination.pagination.data);
+    return this.trailerService.getTrailers(1, 1, 25).pipe(
+      catchError(() => {
+        return of('No active trailer...');
+      }),
+      tap((trailerPagination: TrailerListResponse) => {
+        localStorage.setItem(
+          'trailerTableCount',
+          JSON.stringify({
+            active: trailerPagination.activeCount,
+            inactive: trailerPagination.inactiveCount,
           })
         );
-    }
+
+        this.trailerStore.set(trailerPagination.pagination.data);
+      })
+    );
   }
 }
