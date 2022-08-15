@@ -9,15 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { StateResponse } from './stateResponse';
 
 
-export interface CreateRegistrationCommand { 
-    truckId?: number | null;
-    trailerId?: number | null;
-    licensePlate?: string | null;
-    stateId?: number;
-    issueDate?: string;
-    expDate?: string;
-    note?: string | null;
+export interface RegistrationModalResponse { 
+    states?: Array<StateResponse> | null;
 }
 
