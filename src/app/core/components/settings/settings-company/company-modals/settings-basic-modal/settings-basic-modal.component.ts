@@ -1315,6 +1315,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ...form,
       timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
       currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+      address: {
+        ...this.selectedAddress,
+        addressUnit: addressUnit,
+      },
       companyType: this.selectedCompanyData
         ? this.selectedCompanyData.id
         : null,
@@ -1482,9 +1486,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       loadedAndEmptySameRate: loadedAndEmptySameRate,
     };
 
-    console.log(this.selectedFleetType);
-    console.log(driverOwnerPayroll);
-
     const payrolls: any = [
       accountingPayroll,
       dispatchPayroll,
@@ -1504,8 +1505,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       bankCards,
       payrolls,
     };
-    console.log('UPDATE COMAPNY');
-    console.log(newData);
+
     this.settingsCompanyService
       .updateCompany(newData)
       .pipe(untilDestroyed(this))
@@ -1524,7 +1524,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }
 
   private editCompany() {
-    console.log('EDIT COMAPNY');
     console.log(this.editData);
     this.companyForm.patchValue({
       // -------------------- Basic Tab
@@ -1829,7 +1828,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             break;
           }
           case 10: {
-            console.log(payroll);
             this.companyForm
               .get('driveOwnerPayPeriod')
               .patchValue(payroll.payPeriod.name);

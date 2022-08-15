@@ -641,7 +641,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          if (res.repairShop.id) {
+          if (res.repairShop?.id) {
             this.repairService
               .getRepairShopById(res.repairShop.id)
               .pipe(untilDestroyed(this))

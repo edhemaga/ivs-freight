@@ -149,7 +149,6 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                isDisabled: editData.type === 'edit-company',
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAddress"
@@ -163,7 +162,6 @@
                 name: 'Address Unit',
                 type: 'text',
                 label: 'Unit No.',
-                isDisabled: editData.type === 'edit-company',
                 maxLength: 6
               }"
             ></app-ta-input>
