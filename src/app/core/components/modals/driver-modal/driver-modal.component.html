@@ -176,13 +176,15 @@
           <div
             class="paytype-permile"
             [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
-            *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
+            *ngIf="
+              selectedPayType?.name.toLowerCase() === 'per mile' &&
+              !driverForm.get('isOwner').value
+            "
           >
             <div
               *ngIf="
                 this.driverForm.get('soloDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Solo'].includes(fleetType)
               "
               class="permile-fields"
               [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
@@ -252,8 +254,7 @@
             <div
               *ngIf="
                 this.driverForm.get('teamDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Team'].includes(fleetType)
               "
               class="permile-fields"
               [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
@@ -325,21 +326,24 @@
           <!-- Pay Type Commission -->
           <div
             class="paytype-commission"
-            *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
+            *ngIf="
+              selectedPayType?.name.toLowerCase() === 'commission' &&
+              !driverForm.get('isOwner').value
+            "
             [ngClass]="{
               'paytype-commission-single':
                 (this.driverForm.get('soloDriver').value &&
                   !this.driverForm.get('teamDriver').value) ||
                 (!this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value),
+                  this.driverForm.get('teamDriver').value) ||
+                ['Solo', 'Team'].includes(fleetType),
               active: selectedPayType?.name.toLowerCase() === 'commission'
             }"
           >
             <div
               *ngIf="
                 this.driverForm.get('soloDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Solo'].includes(fleetType)
               "
               class="paytype-field"
             >
@@ -358,8 +362,7 @@
             <div
               *ngIf="
                 this.driverForm.get('teamDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Team'].includes(fleetType)
               "
               class="paytype-field"
             >
