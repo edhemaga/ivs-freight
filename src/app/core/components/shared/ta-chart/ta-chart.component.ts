@@ -225,6 +225,7 @@ export class TaChartComponent implements OnInit {
                   : 0,
               fontColor: '#AAAAAA',
               fontSize: 11,
+              fontFamily: "Montserrat",
               padding: 10,
               callback: (value: any) => {
                 if (
@@ -287,6 +288,7 @@ export class TaChartComponent implements OnInit {
                   ? this.axesProperties['verticalRightAxes']['minValue']
                   : 0,
               fontColor: '#AAAAAA',
+              fontFamily: "Montserrat",
               fontSize: 11,
               padding: -4,
               callback: function (value: any) {
@@ -350,6 +352,8 @@ export class TaChartComponent implements OnInit {
                   ? 'rgba(0, 0, 0, 0)'
                   : '#AAAAAA',
               fontSize: 11,
+              fontFamily: "Montserrat",
+              fontStyle: "bold",
               autoSkip: false,
               maxRotation: 0,
               minRotation: 0,

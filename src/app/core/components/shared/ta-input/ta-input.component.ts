@@ -70,6 +70,7 @@ export class TaInputComponent
   public isVisiblePasswordEye: boolean = false;
 
   public showDateInput: boolean = false;
+  public showDateTimeInputOnFocus: boolean = false;
   public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
@@ -182,7 +183,7 @@ export class TaInputComponent
 
     this.span1.nativeElement.innerHTML = dateFormat[0];
     this.span2.nativeElement.innerHTML = dateFormat[1];
-    this.span3.nativeElement.innerHTML = dateFormat[2];
+    this.span3.nativeElement.innerHTML = dateFormat[2]; 
     this.dateTimeInputDate = new Date(date);
     this.showDateInput = true;
   }
@@ -198,8 +199,6 @@ export class TaInputComponent
       this.inputConfig.name === 'timepicker'
     ) {
       if (obj) {
-        console.log("WHAT IS THIS");
-        console.log(obj);
         setTimeout(() => {
           this.setTimeDateInput(obj);
         }, 300)
@@ -223,7 +222,14 @@ export class TaInputComponent
 
   preventBlur: boolean = false;
 
-  public onFocus(): void {
+
+  public onFocusElem(){
+    //console.log("FOCUS ON DIV");
+  }
+
+  public onFocus(e?): void {
+    console.log("FOCUS", e);
+
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -241,6 +247,7 @@ export class TaInputComponent
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
+      this.showDateTimeInputOnFocus = true;
       const elem =
         this.selectionInput == -1
           ? this.holder1.nativeElement
@@ -262,16 +269,20 @@ export class TaInputComponent
   }
 
   public onBlur(): void {
+    console.log("ON BLURRR", this.preventBlur);
     if (this.preventBlur) {
       this.preventBlur = false;
       return;
     }
+
+    
     // Dropdown
     if (this.inputConfig.isDropdown) {
       if (
         this.inputConfig.name === 'datepicker' ||
         this.inputConfig.name === 'timepicker'
       ) {
+        this.showDateTimeInputOnFocus = false;
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
           if (!this.getSuperControl.value) {
@@ -984,13 +995,12 @@ export class TaInputComponent
     e.stopPropagation();
     const element = e.target;
     this.focusInput = true;
-    console.log('SET SELECTION');
-    console.log(this.selectionInput);
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
+      //element.focus();
       this.setSpanSelection(element);
       // if( this.selectionInput == -1 ){
       //   this.showDateTimePlaceholder();
@@ -1397,7 +1407,7 @@ export class TaInputComponent
 
   onPopoverHidden() {
     this.focusInput = false;
-    this.blurOnDateTime();
+    if(!this.showDateTimeInputOnFocus) this.blurOnDateTime();
   }
 
   closePopover() {
