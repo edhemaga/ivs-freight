@@ -1,5 +1,5 @@
 import { FormArray } from '@angular/forms';
-import { concatMap, debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -171,13 +171,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.getDriverDropdowns();
     this.validateMiles();
     this.isCheckedOwner();
-
+    this.onIncludePayroll();
     this.handlingPayrollFleetType();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
-    } else {
-      this.onIncludePayroll();
     }
   }
 
