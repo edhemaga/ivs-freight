@@ -69,7 +69,10 @@
   ></app-truckassist-search>
 
   <!-- BORDER -->
-  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
+  <div
+    class="border-container"
+    *ngIf="!options.toolbarActions.hideLocationFilter"
+  >
     <div class="border"></div>
   </div>
 
@@ -205,8 +208,12 @@
     </div>
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
-      <div (click)="onToaggleColumn(column, i)" class="column" *ngFor="let column of columns; let i = index">
-        <div class="checkbox" *ngIf="!column.isPined && i > 1">
+      <div
+        (click)="onToaggleColumn(column, i)"
+        class="column"
+        *ngFor="let column of columnsOptions; let i = index"
+      >
+        <div class="checkbox" *ngIf="!column.isPined">
           <input
             [checked]="!column.hidden"
             class="columns-options-checkbox"
@@ -216,7 +223,7 @@
           <label class="columns-options-label" for="checkbox{{ i }}"></label>
         </div>
 
-        <div class="not-allowed-action" *ngIf="column.isPined || i < 2">
+        <div class="not-allowed-action" *ngIf="column.isPined">
           <svg-icon
             [svgStyle]="{
               'width.px': 14,
@@ -226,7 +233,10 @@
           ></svg-icon>
         </div>
 
-        <div class="column-text" [ngClass]="{'selectable-text': !column.isPined}">
+        <div
+          class="column-text"
+          [ngClass]="{ 'selectable-text': !column.isPined }"
+        >
           {{ column.name !== "" ? column.name : column.title }}
         </div>
       </div>

@@ -396,7 +396,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textCommission: '15%',
       textGrossWeight: 'G - 60,001 - 61,000 lbs.',
       textPurchasePrice: '100$',
-      textPurchaseDate: '03/12/22',
+      textPurchaseDate: '12/03/22',
       textYear: data.year ? data.year : '',
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
