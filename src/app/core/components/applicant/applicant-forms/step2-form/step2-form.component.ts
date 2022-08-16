@@ -123,12 +123,16 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public helperClassOfEquipmentArray: AnotherClassOfEquipmentModel[] = [];
+
   public isEditingClassOfEquipment: boolean = false;
   public isTruckSelected: boolean = false;
   public isWorkExperienceEdited: boolean;
   public isClassOfEquipmentEdited: boolean;
 
   public editingCardAddress: any;
+  public previousFormValuesOnEdit: any;
+  public previousClassOfEquipmentCardsListOnEdit: any;
 
   public selectedAddress: AddressEntity;
   public selectedVehicleType: any = null;
@@ -417,19 +421,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   }
 
   public patchForm(): void {
-    const lastItemInClassOfEquipmentArray =
-      this.formValuesToPatch.classesOfEquipment[
-        this.formValuesToPatch.classesOfEquipment.length - 1
-      ];
-
-    const restOfTheItemsInClassOfEquipmentArray = [
-      ...this.formValuesToPatch.classesOfEquipment,
-    ];
-
-    restOfTheItemsInClassOfEquipmentArray.pop();
-
-    this.classOfEquipmentArray = [...restOfTheItemsInClassOfEquipmentArray];
-
     this.workExperienceForm.patchValue({
       employer: this.formValuesToPatch.employer,
       jobDescription: this.formValuesToPatch.jobDescription,
@@ -464,6 +455,22 @@ export class Step2FormComponent implements OnInit, OnDestroy {
           this.fmcsaRadios[1].checked = true;
         }
       }, 1);
+
+      const lastItemInClassOfEquipmentArray =
+        this.formValuesToPatch.classesOfEquipment[
+          this.formValuesToPatch.classesOfEquipment.length - 1
+        ];
+
+      const restOfTheItemsInClassOfEquipmentArray = [
+        ...this.formValuesToPatch.classesOfEquipment,
+      ];
+
+      restOfTheItemsInClassOfEquipmentArray.pop();
+
+      this.classOfEquipmentArray = [...restOfTheItemsInClassOfEquipmentArray];
+      this.helperClassOfEquipmentArray = [
+        ...this.formValuesToPatch.classesOfEquipment,
+      ];
 
       this.classOfEquipmentForm.patchValue({
         vehicleType: lastItemInClassOfEquipmentArray.vehicleType,
@@ -630,8 +637,28 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const lastItemInHelperClassOfEquipmentArray =
+      this.helperClassOfEquipmentArray[
+        this.helperClassOfEquipmentArray.length - 1
+      ];
+    const classOfEquipmentForm = this.classOfEquipmentForm.value;
+
+    if (
+      lastItemInHelperClassOfEquipmentArray.vehicleType !==
+        classOfEquipmentForm.vehicleType ||
+      lastItemInHelperClassOfEquipmentArray.trailerType !==
+        classOfEquipmentForm.trailerType ||
+      lastItemInHelperClassOfEquipmentArray.trailerLength !==
+        classOfEquipmentForm.trailerLength
+    ) {
+      this.helperClassOfEquipmentArray[
+        this.helperClassOfEquipmentArray.length - 1
+      ] = classOfEquipmentForm;
+    }
+
     const {
       employerAddress,
+      classOfEquipmentCards,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -647,6 +674,9 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       employerAddress: this.selectedAddress
         ? this.selectedAddress
         : this.editingCardAddress,
+      classesOfEquipment: this.isEditing
+        ? [...this.helperClassOfEquipmentArray]
+        : [...this.classOfEquipmentArray],
       isEditingWorkHistory: false,
     };
 
@@ -734,7 +764,13 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       isEditingClassOfEquipment: false,
     };
 
-    this.classOfEquipmentArray = [...this.classOfEquipmentArray, saveData];
+    if (this.isEditing) {
+      this.classOfEquipmentArray = [...this.classOfEquipmentArray, saveData];
+
+      this.helperClassOfEquipmentArray = this.classOfEquipmentArray;
+    } else {
+      this.classOfEquipmentArray = [...this.classOfEquipmentArray, saveData];
+    }
 
     this.helperIndex = 2;
 
@@ -756,12 +792,20 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    if (this.isEditing) {
+      this.previousFormValuesOnEdit = this.classOfEquipmentForm.value;
+
+      this.previousClassOfEquipmentCardsListOnEdit =
+        this.helperClassOfEquipmentArray;
+    } else {
+      this.previousClassOfEquipmentCardsListOnEdit = this.classOfEquipmentArray;
+    }
+
     this.helperIndex = index;
+    this.selectedClassOfEquipmentIndex = index;
 
     this.isEditingClassOfEquipment = true;
     this.classOfEquipmentArray[index].isEditingClassOfEquipment = true;
-
-    this.selectedClassOfEquipmentIndex = index;
 
     const selectedClassOfEquipment = this.classOfEquipmentArray[index];
 
@@ -813,11 +857,21 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.isClassOfEquipmentEdited = false;
 
+    this.classOfEquipmentArray = this.previousClassOfEquipmentCardsListOnEdit;
+
     this.classOfEquipmentForm.reset();
 
     this.inputResetService.resetInputSubject.next(true);
 
     this.classOfEquipmentSubscription.unsubscribe();
+
+    if (this.isEditing) {
+      this.classOfEquipmentForm.patchValue({
+        vehicleType: this.previousFormValuesOnEdit.vehicleType,
+        trailerType: this.previousFormValuesOnEdit.trailerType,
+        trailerLength: this.previousFormValuesOnEdit.trailerLength,
+      });
+    }
   }
 
   public onSaveEditedClassOfEquipment(): void {
@@ -837,12 +891,19 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       isEditingClassOfEquipment: false,
     };
 
+    if (this.isEditing) {
+      this.helperClassOfEquipmentArray[this.selectedClassOfEquipmentIndex] =
+        saveData;
+    } else {
+      this.classOfEquipmentArray[this.selectedClassOfEquipmentIndex] = saveData;
+    }
+
+    this.classOfEquipmentArray[this.selectedClassOfEquipmentIndex] = saveData;
+
     this.isEditingClassOfEquipment = false;
     this.classOfEquipmentArray[
       this.selectedClassOfEquipmentIndex
     ].isEditingClassOfEquipment = false;
-
-    this.classOfEquipmentArray[this.selectedClassOfEquipmentIndex] = saveData;
 
     this.helperIndex = 2;
     this.selectedClassOfEquipmentIndex = -1;
@@ -854,6 +915,14 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     this.inputResetService.resetInputSubject.next(true);
 
     this.classOfEquipmentSubscription.unsubscribe();
+
+    if (this.isEditing) {
+      this.classOfEquipmentForm.patchValue({
+        vehicleType: this.previousFormValuesOnEdit.vehicleType,
+        trailerType: this.previousFormValuesOnEdit.trailerType,
+        trailerLength: this.previousFormValuesOnEdit.trailerLength,
+      });
+    }
   }
 
   ngOnDestroy(): void {}

@@ -23,9 +23,9 @@ export interface WorkHistoryModel {
 }
 
 export interface AnotherClassOfEquipmentModel {
-  vehicleIconSrc: string;
+  vehicleIconSrc?: string;
   vehicleType: string;
-  trailerIconSrc: string;
+  trailerIconSrc?: string;
   trailerType: string;
   trailerLength: number;
   isEditingClassOfEquipment: boolean;

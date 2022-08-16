@@ -70,8 +70,8 @@ export class Step2Component implements OnInit, OnDestroy {
           vehicleIconSrc:
             'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
           vehicleType: 'Cargo Van',
-          trailerIconSrc: null,
-          trailerType: null,
+          trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
+          trailerType: 'Dumper',
           trailerLength: 3,
           isEditingClassOfEquipment: false,
         },
