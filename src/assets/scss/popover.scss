@@ -666,8 +666,22 @@
               pointer-events: all;
               transition: all 0.3s ease-in-out;
 
+              &:hover {
+                background-color: #536bc2;
+              }
+
               .map-settings-button-text {
                 color: #fff;
+              }
+            }
+
+            &.reset-button {
+              pointer-events: all;
+              cursor: pointer;
+
+              &:hover {
+                color: #6C6C6C;
+                background-color: #eeeeee;
               }
             }
 

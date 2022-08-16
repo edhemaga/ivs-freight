@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -17,6 +17,7 @@ declare var google: any;
   encapsulation: ViewEncapsulation.None
 })
 export class RoutingMapComponent implements OnInit {
+  @ViewChild('mapToolbar') mapToolbar: any;
 
   public agmMap: any;
   public styles = AppConst.GOOGLE_MAP_STYLES;
@@ -49,6 +50,7 @@ export class RoutingMapComponent implements OnInit {
   }
 
   selectedTab: string = 'map1';
+  selectedMapIndex: number = 0;
   tableOptions: any = {};
 
   tableData: any[] = [];
@@ -123,6 +125,10 @@ export class RoutingMapComponent implements OnInit {
       'expanded': false,
       'fullAddressView': false,
       'routeType': 'Practical',
+      'truckId': '',
+      'stopTime': '',
+      'mpg': '',
+      'fuelPrice': '',
       'stops': [
         {
           'address': 'Gary, IN 30055',
@@ -172,7 +178,11 @@ export class RoutingMapComponent implements OnInit {
       'hidden': false,
       'expanded': false,
       'fullAddressView': true,
-      'routeType': 'Practical',
+      'routeType': 'Shortest',
+      'truckId': '',
+      'stopTime': '',
+      'mpg': '',
+      'fuelPrice': '',
       'stops': [
         {
           'address': 'Gary, IN 30055',
@@ -293,9 +303,15 @@ export class RoutingMapComponent implements OnInit {
     '#8D6E63'
   ];
 
+  focusedRouteIndex: number = null;
+  stopPickerActive: boolean = false;
+  stopPickerLocation: any = {};
+  stopJustAdded: boolean = false;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
+    private ref: ChangeDetectorRef,
   ) { }
 
   ngOnInit(): void {
@@ -343,7 +359,7 @@ export class RoutingMapComponent implements OnInit {
 
   showHideRoute(route) {
     route.hidden = !route.hidden;
-    if ( route.isFocused ) { route.isFocused = false; }
+    if ( route.isFocused ) { route.isFocused = false; this.focusedRouteIndex = null; }
   }
 
   resizeCard(route) {
@@ -354,6 +370,8 @@ export class RoutingMapComponent implements OnInit {
     route.stops.splice(index, 1);
 
     this.checkFullAddressView(route);
+
+    this.ref.detectChanges();
   }
 
   mapClick(event) {
@@ -367,6 +385,58 @@ export class RoutingMapComponent implements OnInit {
   getMapInstance(map) {
     this.agmMap = map;
     console.log('getMapInstance', this.agmMap);
+    var mainthis = this;
+
+    map.addListener('click', (e) => {
+      console.log(e);
+      if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
+
+      if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
+        var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+        var request = {
+          location: coords,
+          radius: 50000,
+          type: 'locality'
+        };
+        
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, (results, status) => {
+          console.log('search', results, status);
+
+          if ( status == 'OK' && results.length && results[0].place_id ) {
+            let placeId = results[0].place_id;
+
+            service.getDetails({
+              placeId: placeId
+              }, function (result, status) {
+                console.log(result);
+                mainthis.stopPickerLocation = {
+                  'address': result.formatted_address,
+                  'lat': result.geometry.location.lat(),
+                  'long': result.geometry.location.lng(),
+                  'empty': null
+                };
+
+                console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
+
+                mainthis.ref.detectChanges();
+              });
+          }
+        });
+      }
+    });
+  }
+
+  mapPlacesSearch(results, status) {
+    console.log('mapPlacesSearch', results);
+    console.log('mapPlacesSearch', status);
+
+    let placeService = new google.maps.places.PlacesService(this.agmMap);
+    placeService.getDetails({
+      placeId: results[0].place_id
+      }, function (result, status) {
+        console.log(result);
+      });
   }
 
   // public onHandleAddress(event: {
@@ -448,15 +518,15 @@ export class RoutingMapComponent implements OnInit {
 
         let distance: number;
         /* Chack if miles or km */
-        // if (this.appTaSwitchData[0].data[0].checked) {
-        //   distance =
-        //     google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) *
-        //     0.000621371;
-        // } else {
+        if (this.tableData[this.selectedMapIndex].distanceUnit == 'mi') {
+          distance =
+            google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) *
+            0.000621371;
+        } else {
           distance =
             google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) /
             1000.0;
-        // }
+        }
 
         this.routes[i].stops[j].leg = distance;
         this.routes[i].stops[j].total =
@@ -482,6 +552,9 @@ export class RoutingMapComponent implements OnInit {
       this.clearRouteStops(event.id);
     } else if (event.type === 'delete') {
       this.deleteRoute(event.id);
+    } else if ( event.type === 'open-settings' ) {
+      let route = this.getRouteById(event.id);
+      this.mapToolbar.editRoute(route);
     }
   }
 
@@ -548,10 +621,18 @@ export class RoutingMapComponent implements OnInit {
   }
   
   focusRoute(i) {
+    this.stopPickerLocation = {};
+
     this.routes.map((route, index) => {
       if ( index == i ) {
         if ( !route.hidden ) {
           route.isFocused = !route.isFocused;
+
+          if ( route.isFocused ) { 
+            this.focusedRouteIndex = i;
+          } else {
+            this.focusedRouteIndex = null;
+          }
         }
       } else {
         route.isFocused = false;
@@ -562,16 +643,15 @@ export class RoutingMapComponent implements OnInit {
   onToolBarAction(event: any) {
     console.log('onToolBarAction', event);
 
-    var routeForm = event.data;
+    if ( event.action == 'add-route' ) {
+      var routeForm = event.data;
 
-    if ( routeForm.get('routeName').value && routeForm.get('routeName').value.length ) {
       const lastId = Math.max(...this.routes.map(item => item.id));
 
       this.addressInputs.push(this.formBuilder.group({
         address: []
       }));
-
-      console.log('routeType', routeForm.get('routeType').value);
+      
       var newRoute = {
           'id': lastId+1,
           'name': routeForm.get('routeName').value,
@@ -579,10 +659,71 @@ export class RoutingMapComponent implements OnInit {
           'expanded': false,
           'fullAddressView': false,
           'routeType': routeForm.get('routeType').value,
+          'truckId': routeForm.get('truckId').value ? routeForm.get('truckId').value : '',
+          'stopTime': routeForm.get('durationTime').value ? routeForm.get('durationTime').value : '',
+          'mpg': routeForm.get('fuelMpg').value ? routeForm.get('fuelMpg').value : '',
+          'fuelPrice': routeForm.get('fuelPrice').value ? routeForm.get('fuelPrice').value : '',
           'stops': []
       };
 
       this.routes.push(newRoute);
+    } else if ( event.action == 'edit-route' ) {
+      var routeForm = event.data.form;
+      let route = this.getRouteById(event.data.editId);
+
+      route.name = routeForm.get('routeName').value;
+      route.routeType = routeForm.get('routeType').value;
+      route.truckId = routeForm.get('truckId').value;
+      route.stopTime = routeForm.get('durationTime').value;
+      route.mpg = routeForm.get('fuelMpg').value;
+      route.fuelPrice = routeForm.get('fuelPrice').value;
+      
+      // = {
+      //   'id': route.id,
+      //   'name': routeForm.get('routeName').value,
+      //   'hidden': false,
+      //   'expanded': false,
+      //   'fullAddressView': route.fullAddressView,
+      //   'routeType': routeForm.get('routeType').value,
+      //   'truckId': routeForm.get('truckId').value ? routeForm.get('truckId').value : '',
+      //   'stopTime': routeForm.get('durationTime').value ? routeForm.get('durationTime').value : '',
+      //   'mpg': routeForm.get('fuelMpg').value ? routeForm.get('fuelMpg').value : '',
+      //   'fuelPrice': routeForm.get('fuelPrice').value ? routeForm.get('fuelPrice').value : '',
+      //   'stops': route.stops
+      // };
+
+      this.ref.detectChanges();
+    } else if ( event.action == 'map-settings' ) {
+      console.log('onToolbarAction map-settings');
+
+      var mapForm = event.data;
+
+      var distanceUnitChanged = false;
+      if ( this.tableData[this.selectedMapIndex].distanceUnit != mapForm.get('distanceUnit').value ) distanceUnitChanged = true;
+
+      this.tableData[this.selectedMapIndex].title = mapForm.get('mapName').value;
+      this.tableData[this.selectedMapIndex].distanceUnit = mapForm.get('distanceUnit').value;
+      this.tableData[this.selectedMapIndex].addressType = mapForm.get('addressType').value;
+      this.tableData[this.selectedMapIndex].borderType = mapForm.get('borderType').value;
+
+      if ( distanceUnitChanged ) {
+        this.routes.map((item, index) => {
+          console.log('routes.map', index);
+          this.calculateDistanceBetweenStops(index);
+        });
+      }
+
+    } else if ( event.action == 'open-stop-picker' ) {
+      console.log('onToolbarAction open-stop-picker');
+      this.stopPickerActive = !this.stopPickerActive;
+    } else if ( event.action == 'open-route-compare' ) {
+      console.log('onToolbarAction open-route-compare');
+    } else if ( event.action == 'open-keyboard-controls' ) {
+      console.log('onToolbarAction open-keyboard-controls');
+    } else if ( event.action == 'open-route-info' ) {
+      console.log('onToolbarAction open-route-info');
+    } else if ( event.action == 'open-layers' ) {
+      console.log('onToolbarAction open-layers');
     }
 
     // // Add Call
@@ -628,26 +769,29 @@ export class RoutingMapComponent implements OnInit {
         title: 'Map 1',
         field: 'map1',
         length: this.routes.length,
-        gridNameTitle: 'Routing'
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city' // city or address
       },
-      {
-        title: 'Map 2',
-        field: 'map2',
-        length: 0,
-        gridNameTitle: 'Routing'
-      },
-      {
-        title: 'Map 3',
-        field: 'map3',
-        length: 0,
-        gridNameTitle: 'Routing'
-      },
-      {
-        title: 'Map 4',
-        field: 'map4',
-        length: 0,
-        gridNameTitle: 'Routing'
-      },
+      // {
+      //   title: 'Map 2',
+      //   field: 'map2',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
+      // {
+      //   title: 'Map 3',
+      //   field: 'map3',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
+      // {
+      //   title: 'Map 4',
+      //   field: 'map4',
+      //   length: 0,
+      //   gridNameTitle: 'Routing'
+      // },
     ];
   }
 
@@ -656,6 +800,43 @@ export class RoutingMapComponent implements OnInit {
       this.mapZoom--;
     } else if ( this.mapZoom < 21 ) {
       this.mapZoom++;
+    }
+  }
+
+  addNewStop(loadType) {
+    console.log('addNewStop', loadType, this.focusedRouteIndex);
+    this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
+
+    if ( this.stopPickerLocation.editIndex ) {
+      this.routes[this.focusedRouteIndex].stops[this.stopPickerLocation.editIndex].empty = this.stopPickerLocation.empty;
+    } else {
+      this.routes[this.focusedRouteIndex].stops.push({
+        'address': this.stopPickerLocation.address,
+        'fullAddress': false,
+        'leg': '0',
+        'total': '0',
+        'time': '0',
+        'totalTime': '0',
+        'empty': this.stopPickerLocation.empty,
+        'lat': this.stopPickerLocation.lat,
+        'long': this.stopPickerLocation.long
+      });
+
+      this.calculateDistanceBetweenStops(this.focusedRouteIndex);
+    }
+
+    //this.focusedRouteIndex = null;
+    this.stopPickerLocation = {};
+    //this.stopPickerActive = false;
+    this.stopJustAdded = true;
+
+    this.ref.detectChanges();
+  }
+
+  stopMarkerClick(route, stopIndex) {
+    if ( this.focusedRouteIndex && this.stopPickerActive) {
+      this.stopPickerLocation = route.stops[stopIndex];
+      this.stopPickerLocation.editIndex = stopIndex;
     }
   }
 }

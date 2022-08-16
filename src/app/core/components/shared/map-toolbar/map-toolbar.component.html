@@ -130,7 +130,7 @@
       </div>
 
       <!-- Route Stop Picker -->
-      <div class="action-div" (click)="onToolBarAction('open-stop-picker')">
+      <div class="action-div" [ngClass]="{ 'action-active': stopPickerActive }" (click)="onToolBarAction('open-stop-picker')">
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/ic_route_stop_picker.svg'"
@@ -244,7 +244,6 @@
     class="modal-open-container"
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
-    [autoClose]="true"
     [ngbPopover]="addRoutePopover"
     [placement]="'bottom-right'"
     [autoClose]="false"
@@ -332,7 +331,7 @@
             <app-ta-input
               formControlName="mapName"
               [inputConfig]="{
-                name: 'name',
+                name: 'ssn',
                 type: 'text',
                 label: 'Map Name',
                 isRequired: true,
@@ -364,10 +363,14 @@
       <div class="map-settings-divider"></div>
 
       <div class="map-settings-content buttons-container">
-        <div class="map-settings-button">
+        <div class="map-settings-button reset-button" (click)="resetMapForm()">
             <div class="map-settings-button-text">Reset</div>
         </div>
-        <div class="map-settings-button">
+        <div 
+          class="map-settings-button" 
+          [ngClass]="{ 'modal-save-btn': mapForm.valid && mapFormChanged }" 
+          (click)="onToolBarAction('map-settings')"
+        >
             <div class="map-settings-button-text">Set</div>
         </div>
       </div>
@@ -386,7 +389,7 @@
             <app-ta-input
               formControlName="routeName"
               [inputConfig]="{
-                name: 'name',
+                name: 'ssn',
                 type: 'text',
                 label: 'Name',
                 isRequired: true,
@@ -397,7 +400,7 @@
 
         <app-ta-tab-switch
             [tabs]="routeTabs"
-            (switchClicked)="onTabChange($event, 'Distance-tab')"
+            (switchClicked)="onTabChange($event, 'Route-tab')"
             [type]="'type2-modal-popup'"
         >
         </app-ta-tab-switch>
@@ -424,16 +427,16 @@
         <div
           class="checkbox-card-header"
           [ngClass]="{ pointer: routeForm.get('duration').value }"
-          (click)="openCloseCheckboxCard($event)"
         >
           <app-ta-checkbox
             formControlName="duration"
             [label]="'Duration'"
+            [name]="'ta-checkbox-1'"
           ></app-ta-checkbox>
           <svg-icon
             class="checkbox-card-header-arrow"
             src="assets/svg/common/ic_arrow_down_updated.svg"
-            [ngClass]="{ visible: !routeForm.get('duration').value }"
+            [ngClass]="{ visible: routeForm.get('duration').value }"
           ></svg-icon>
         </div>
 
@@ -458,16 +461,16 @@
         <div
           class="checkbox-card-header"
           [ngClass]="{ pointer: routeForm.get('fuelCost').value }"
-          (click)="openCloseCheckboxCardFuel($event)"
         >
           <app-ta-checkbox
             formControlName="fuelCost"
             [label]="'Fuel Cost'"
+            [name]="'ta-checkbox-2'"
           ></app-ta-checkbox>
           <svg-icon
             class="checkbox-card-header-arrow"
             src="assets/svg/common/ic_arrow_down_updated.svg"
-            [ngClass]="{ visible: !routeForm.get('fuelCost').value }"
+            [ngClass]="{ visible: routeForm.get('fuelCost').value }"
           ></svg-icon>
         </div>
 
@@ -475,9 +478,10 @@
           <app-ta-input
             formControlName="fuelMpg"
             [inputConfig]="{
-              name: 'name',
-              type: 'text',
+              name: 'ssn',
+              type: 'number',
               label: 'Miles Per Gallon',
+              placeholderIcon: 'mileage',
               isRequired: true
             }"
           ></app-ta-input>
@@ -486,9 +490,10 @@
           <app-ta-input
             formControlName="fuelPrice"
             [inputConfig]="{
-              name: 'name',
-              type: 'text',
+              name: 'ssn',
+              type: 'number',
               label: 'Price Per Gallon',
+              placeholderIcon: 'dollar',
               isRequired: true
             }"
           ></app-ta-input>
@@ -501,7 +506,11 @@
         <div class="map-settings-button" [ngStyle]="{'opacity': '0', 'pointer-events': 'none'}">
             <div class="map-settings-button-text">Reset</div>
         </div>
-        <div class="map-settings-button" [ngClass]="{ 'modal-save-btn': routeForm.get('routeName').value }" (click)="onToolBarAction('addRoute')">
+        <div 
+          class="map-settings-button" 
+          [ngClass]="{ 'modal-save-btn': routeForm.valid }" 
+          (click)="onToolBarAction(routeToEdit?.id ? 'edit-route' : 'add-route')"
+        >
             <div class="map-settings-button-text">Save Changes</div>
         </div>
       </div>

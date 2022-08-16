@@ -37,7 +37,7 @@
                 max-height: 100%;
                 margin-right: -116px;
                 padding-right: 116px;
-                padding-bottom: 40px;
+                padding-bottom: 113px;
 
                 overflow-y: auto;
                 pointer-events: all;
@@ -179,6 +179,8 @@
         }
 
         .route-card-icon {
+            display: flex;
+            
             svg {
                 path {
                     fill: #AAAAAA;
@@ -201,6 +203,7 @@
             padding: 2px 6px;
             border-radius: 2px;
             user-select: none;
+            margin-left: 6px;
         }
 
         .route-card-header-divider {
@@ -614,4 +617,91 @@
 
 .si-pointer-bottom, .si-close-button {
     display: none!important;
+}
+
+.stop-picker-window {
+    position: absolute;
+    top: -37px;
+    left: 16px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    width: 164px;
+    height: 30px;
+    padding: 4px 28px 4px 4px;
+
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: $box-shadow;
+
+    pointer-events: all;
+
+    .stop-picker-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        width: 62px;
+        height: 18px;
+
+        background: #DADADA;
+
+        border-radius: 1px;
+        cursor: pointer;
+
+        transition: 0.2s;
+
+        .stop-picker-button-text {
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 14px;
+            text-transform: uppercase;
+        }
+
+        &:hover {
+            width: 66px;
+            height: 22px;
+
+            background: #B7B7B7;
+        }
+
+        &.active {
+            background: #919191;
+        }
+    }
+}
+
+.stop-picker-address {
+    position: absolute;
+    top: -31px;
+    left: 50%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 18px;
+    padding: 2px 6px;
+    
+    border-radius: 2px;
+
+    pointer-events: all;
+
+    transform: translateX(26px);
+
+    .stop-picker-address-text {
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 22px;
+        color: #fff;
+    }
+}
+
+.marker-icon {
+    &.selected-marker {
+        transform: translate(-50%, -35%) scale(2) !important;
+    }
 }

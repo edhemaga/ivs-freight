@@ -6,7 +6,25 @@
             .action-div {
                 //width: 28px !important;
 
-                &.active-options-maps {
+                &.action-active {
+                    svg-icon {
+                        background-color: #6D82C7;
+                        border-radius: 2px;
+
+                        svg {
+                            path {
+                                fill: #fff!important;
+                            }
+                        }
+
+                        &:hover {
+                            background: #536bc2;
+                            transition: 0.25s;
+                        }
+                    }
+                }
+
+                &:hover, &.active-options-maps {
                     svg {
                         path {
                             fill: #6C6C6C!important;
@@ -19,6 +37,14 @@
 
     .general-pm-open-container {
         margin-right: 4px !important;
+
+        &:hover {
+            svg {
+                path {
+                    fill: #6C6C6C!important;
+                }
+            }
+        }
     }
 
     .border-container {
