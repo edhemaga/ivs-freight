@@ -21,6 +21,7 @@ import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
 import {
   closeAnimationAction,
+  tableSearch,
 } from 'src/app/core/utils/methods.globals';
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
 import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
@@ -29,6 +30,7 @@ import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer
 import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { RepairTService } from '../state/repair.service';
+import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
 
 @UntilDestroy()
 @Component({
@@ -55,6 +57,34 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  backFilterQuery = {
+    repairShopId: undefined,
+    repairType: undefined,
+    unitType: 1,
+    dateFrom: undefined,
+    dateTo: undefined,
+    isPM: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
+
+  shopFilterQuery = {
+    active: 1,
+    pinned: undefined,
+    companyOwned: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -128,19 +158,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          /* const searchEvent = tableSearch(
+          const searchEvent = tableSearch(
             res,
-            this.backFilterQuery,
-            this.selectedTab
+            this.selectedTab !== 'repair-shop'
+              ? this.backFilterQuery
+              : this.shopFilterQuery
           );
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              if (this.selectedTab !== 'repair-shop') {
+                this.backFilterQuery.unitType =
+                  this.selectedTab === 'active' ? 1 : 2;
+
+                this.repairBackFilter(this.backFilterQuery);
+              } else {
+                this.shopBackFilter(this.shopFilterQuery);
+              }
             } else if (searchEvent.action === 'store') {
               this.sendRepairData();
             }
-          } */
+          }
         }
       });
 
@@ -246,7 +284,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: this.selectedTab === 'repair-shop' ? false : true,
         showMapView: this.selectedTab === 'repair-shop' ? true : false,
         viewModeActive: 'List',
       },
@@ -461,6 +498,86 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
+  // Repair Back Filters
+  repairBackFilter(filter: {
+    repairShopId?: number | undefined;
+    repairType?: number | undefined;
+    unitType?: number | undefined;
+    dateFrom?: string | undefined;
+    dateTo?: string | undefined;
+    isPM?: number | undefined;
+    pageIndex?: number;
+    pageSize?: number;
+    companyId?: number | undefined;
+    sort?: string | undefined;
+    searchOne?: string | undefined;
+    searchTwo?: string | undefined;
+    searchThree?: string | undefined;
+  }) {
+    this.repairService
+      .getRepairList(
+        filter.repairShopId,
+        filter.repairType,
+        filter.unitType,
+        filter.dateFrom,
+        filter.dateTo,
+        filter.isPM,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe((repair: RepairListResponse) => {
+        this.viewData = repair.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return filter.unitType === 1
+            ? this.mapTruckData(data)
+            : this.mapTrailerData(data);
+        });
+      });
+  }
+
+  // Shop Back Filters
+  shopBackFilter(filter: {
+    active?: number;
+    pinned?: boolean;
+    companyOwned?: boolean;
+    pageIndex?: number;
+    pageSize?: number;
+    companyId?: number;
+    sort?: string;
+    searchOne?: string | undefined;
+    searchTwo?: string | undefined;
+    searchThree?: string | undefined;
+  }) {
+    this.repairService
+      .getRepairShopList(
+        filter.active,
+        filter.pinned,
+        filter.companyOwned,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(untilDestroyed(this))
+      .subscribe((shop: RepairShopListResponse) => {
+        this.viewData = shop.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return this.mapShopData(data);
+        });
+      });
+  }
+
   // Update Data Count
   updateDataCount() {
     const repairTruckTrailerCount = JSON.parse(
@@ -537,10 +654,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
-        this.driverBackFilter(this.backFilterQuery); */
+        if (this.selectedTab !== 'repair-shop') {
+          this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
+
+          this.repairBackFilter(this.backFilterQuery);
+        } else {
+          this.shopBackFilter(this.shopFilterQuery);
+        }
       } else {
         this.sendRepairData();
       }
@@ -588,7 +710,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(untilDestroyed(this))
           .subscribe();
       }
-    }else if(event.type === 'finish-order'){
+    } else if (event.type === 'finish-order') {
       console.log('Radi se finish order akcija');
       console.log(event);
     }

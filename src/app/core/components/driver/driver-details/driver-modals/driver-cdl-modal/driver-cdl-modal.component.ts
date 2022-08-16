@@ -176,7 +176,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
-          this.canadaStates = res.canadaStates.map((item) => {
+          /* this.canadaStates = res.canadaStates.map((item) => {
             return {
               id: item.id,
               name: item.stateShortName,
@@ -189,7 +189,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
               name: item.stateShortName,
               stateName: item.stateName,
             };
-          });
+          }); */
           this.classTypes = res.classTypes;
           // this.countryTypes = res.countryTypes;
           this.endorsements = res.endorsements;
