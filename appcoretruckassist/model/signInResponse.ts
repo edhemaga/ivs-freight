@@ -22,5 +22,6 @@ export interface SignInResponse {
     avatar?: string | null;
     driverId?: number | null;
     companies?: Array<CompanyShortResponse> | null;
+    refreshToken?: string | null;
 }
 

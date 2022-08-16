@@ -4,12 +4,16 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
-import { isFormValueEqual } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
 
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { TruckType } from '../../state/model/truck-type.model';
 import { Address } from '../../state/model/address.model';
 import { ViolationModel } from '../../state/model/violations.model';
@@ -21,20 +25,55 @@ import { ViolationModel } from '../../state/model/violations.model';
 })
 export class Step5FormComponent implements OnInit {
   @Input() isEditing: boolean;
-  @Input() truckType: TruckType[];
   @Input() formValuesToPatch?: any;
-  @Input() isViolationEdited?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
+  public selectedMode = SelectedMode.FEEDBACK;
+
   public violationsForm: FormGroup;
+
+  public isViolationEdited: boolean;
+  public editingCardAddress: any;
 
   private subscription: Subscription;
 
   public selectedTruckType: any = null;
   public selectedAddress: Address = null;
+
+  public truckType: TruckType[] = [];
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      lineIndex: 10,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 11,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -49,11 +88,21 @@ export class Step5FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.violationsForm.valueChanges.subscribe(
-        (newFormValue) => {
-          const { isEditingViolation, ...previousFormValues } =
-            this.formValuesToPatch;
+        (updatedFormValues) => {
+          const {
+            violationLocation,
+            isEditingViolation,
+            ...previousFormValues
+          } = this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          previousFormValues.violationLocation = violationLocation.address;
+
+          this.editingCardAddress = violationLocation;
+
+          const { firstRowReview, secondRowReview, ...newFormValues } =
+            updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isViolationEdited = false;
           } else {
             this.isViolationEdited = true;
@@ -69,6 +118,9 @@ export class Step5FormComponent implements OnInit {
       truckType: [null, Validators.required],
       violationLocation: [null, Validators.required],
       violationDescription: [null, Validators.required],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
     });
   }
 
@@ -76,7 +128,7 @@ export class Step5FormComponent implements OnInit {
     this.violationsForm.patchValue({
       violationDate: this.formValuesToPatch.violationDate,
       truckType: this.formValuesToPatch.truckType,
-      violationLocation: this.formValuesToPatch.violationLocation,
+      violationLocation: this.formValuesToPatch.violationLocation.address,
       violationDescription: this.formValuesToPatch.violationDescription,
     });
   }
@@ -108,10 +160,12 @@ export class Step5FormComponent implements OnInit {
       return;
     }
 
-    /*  const violationForm = this.violationsForm.value;
+    /*  const {violationLocation, firstRowReview,
+      secondRowReview,...violationsForm} = this.violationsForm.value;
 
    const saveData: ViolationModel = {
-      ...violationForm,
+      ...violationsForm,
+      violationLocation: this.selectedAddress,
       isEditingViolation: false,
     };
 
@@ -132,10 +186,14 @@ export class Step5FormComponent implements OnInit {
       return;
     }
 
-    const violationForm = this.violationsForm.value;
+    const { firstRowReview, secondRowReview, ...violationsForm } =
+      this.violationsForm.value;
 
     const saveData: ViolationModel = {
-      ...violationForm,
+      ...violationsForm,
+      violationLocation: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
       isEditingViolation: false,
     };
 
@@ -160,5 +218,63 @@ export class Step5FormComponent implements OnInit {
     this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 }

@@ -6,14 +6,19 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i &&
+            !row.actionAnimation &&
+            !row.isRepairOrder &&
+            !row.isSelected,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="pined-tr-container"
       >
@@ -412,9 +417,18 @@
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
               <span
+                *ngIf="!row.isRepairOrder"
                 class="table-total"
                 [innerHtml]="row[column.field] ? row[column.field] : ''"
               ></span>
+
+              <div
+                class="finish-order-action"
+                (click)="onFinishOrder(row)"
+                *ngIf="row.isRepairOrder"
+              >
+                Finish Order
+              </div>
             </div>
 
             <!-- COMPACT TEXT -->
@@ -621,11 +635,17 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row.labelColor }"
+                [ngStyle]="{
+                  background: row[column.field]?.color
+                    ? row[column.field].color
+                    : 'unset'
+                }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row.labelName ? row.labelName : ''"
+                [innerHtml]="
+                  row[column.field]?.name ? row[column.field].name : ''
+                "
               ></span>
             </div>
 
@@ -677,6 +697,7 @@
               }"
             >
               <svg
+                *ngIf="row[column.field]"
                 xmlns="http://www.w3.org/2000/svg"
                 width="18"
                 height="18"
@@ -685,11 +706,18 @@
                 <path
                   d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
                   transform="translate(-16 -6.014)"
-                  [ngStyle]="{ fill: row[column.field] }"
+                  [ngStyle]="{
+                    fill: row[column.field],
+                    filter:
+                      row.color === '#F9F9F9'
+                        ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
+                        : 'unset'
+                  }"
                 />
               </svg>
 
               <div
+                *ngIf="row[column.field]"
                 [ngStyle]="{
                   width: column.width - 18 + 'px'
                 }"
@@ -820,7 +848,7 @@
               }"
               class="td-content"
             >
-              <div class="table-state">
+              <div *ngIf="row[column.field]" class="table-state">
                 {{ row[column.field] ? row[column.field] : "" }}
               </div>
             </div>
@@ -846,22 +874,22 @@
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
+                    'bg-expired-container':
+                      row[column.field].percentage === 100,
                     'bg-sliver-container':
                       row[column.field].percentage >= 25 &&
-                      row[column.field].percentage <= 100,
+                      row[column.field].percentage < 100,
                     'bg-orange-container':
                       row[column.field].percentage >= 5 &&
                       row[column.field].percentage < 25,
                     'bg-danger-container':
-                      row[column.field].percentage >= 0 &&
-                      row[column.field].percentage < 5
+                      row[column.field].percentage > 0 &&
+                      row[column.field].percentage < 5,
+                    'bg-inactive-container': !row[column.field].percentage
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-muted':
-                        row[column.field].percentage >= 50 &&
-                        row[column.field].percentage <= 100,
                       'bg-progress-sliver':
                         row[column.field].percentage >= 25 &&
                         row[column.field].percentage < 50,
@@ -869,11 +897,15 @@
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
                       'bg-progress-danger':
-                        row[column.field].percentage >= 0 &&
+                        row[column.field].percentage > 0 &&
                         row[column.field].percentage < 5
                     }"
                     [ngStyle]="{ width: row[column.field].percentage + '%' }"
                     class="table-progress-bar"
+                    *ngIf="
+                      row[column.field].percentage > 0 &&
+                      row[column.field].percentage < 100
+                    "
                   ></div>
                 </div>
 
@@ -883,8 +915,23 @@
                   [ngStyle]="{
                     width: column.width - 30 + 'px'
                   }"
+                  *ngIf="
+                    row[column.field].percentage > 0 &&
+                    row[column.field].percentage < 100
+                  "
                 >
                   in {{ row[column.field].expirationDays }} days
+                </div>
+
+                <!-- Progres Text Expired-->
+                <div
+                  class="table-progress-text"
+                  [ngStyle]="{
+                    width: column.width - 30 + 'px'
+                  }"
+                  *ngIf="row[column.field].percentage === 100"
+                >
+                  {{ row[column.field].expirationDays }} days ago
                 </div>
               </div>
             </div>
@@ -913,14 +960,19 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i &&
+            !row.actionAnimation &&
+            !row.isRepairOrder &&
+            !row.isSelected,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="not-pined-tr-container"
       >
@@ -1324,9 +1376,18 @@
               <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
             highlightingWords) : '' " -->
               <span
+                *ngIf="!row.isRepairOrder"
                 class="table-total"
                 [innerHtml]="row[column.field] ? row[column.field] : ''"
               ></span>
+
+              <div
+                class="finish-order-action"
+                (click)="onFinishOrder(row)"
+                *ngIf="row.isRepairOrder"
+              >
+                Finish Order
+              </div>
             </div>
 
             <!-- SERVICE COLUMN-->
@@ -1472,11 +1533,17 @@
             >
               <div
                 class="table-lable"
-                [ngStyle]="{ background: row.labelColor }"
+                [ngStyle]="{
+                  background: row[column.field]?.color
+                    ? row[column.field].color
+                    : 'unset'
+                }"
               ></div>
               <span
                 class="table-lable-text"
-                [innerHtml]="row.labelName ? row.labelName : ''"
+                [innerHtml]="
+                  row[column.field]?.name ? row[column.field].name : ''
+                "
               ></span>
             </div>
 
@@ -1534,14 +1601,22 @@
                 width="18"
                 height="18"
                 viewBox="0 0 11.638 16.2"
+                *ngIf="row[column.field]"
               >
                 <path
                   d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
                   transform="translate(-16 -6.014)"
-                  [ngStyle]="{ fill: row[column.field] }"
+                  [ngStyle]="{
+                    fill: row[column.field],
+                    filter:
+                      row.color === '#F9F9F9'
+                        ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
+                        : 'unset'
+                  }"
                 />
               </svg>
               <div
+                *ngIf="row[column.field]"
                 [ngStyle]="{
                   width: column.width - 18 + 'px'
                 }"
@@ -1672,7 +1747,7 @@
               }"
               class="td-content"
             >
-              <div class="table-state">
+              <div *ngIf="row[column.field]" class="table-state">
                 {{ row[column.field] ? row[column.field] : "" }}
               </div>
             </div>
@@ -1698,22 +1773,22 @@
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
+                    'bg-expired-container':
+                      row[column.field].percentage === 100,
                     'bg-sliver-container':
                       row[column.field].percentage >= 25 &&
-                      row[column.field].percentage <= 100,
+                      row[column.field].percentage < 100,
                     'bg-orange-container':
                       row[column.field].percentage >= 5 &&
                       row[column.field].percentage < 25,
                     'bg-danger-container':
-                      row[column.field].percentage >= 0 &&
-                      row[column.field].percentage < 5
+                      row[column.field].percentage > 0 &&
+                      row[column.field].percentage < 5,
+                    'bg-inactive-container': !row[column.field].percentage
                   }"
                 >
                   <div
                     [ngClass]="{
-                      'bg-progress-muted':
-                        row[column.field].percentage >= 50 &&
-                        row[column.field].percentage <= 100,
                       'bg-progress-sliver':
                         row[column.field].percentage >= 25 &&
                         row[column.field].percentage < 50,
@@ -1721,11 +1796,15 @@
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
                       'bg-progress-danger':
-                        row[column.field].percentage >= 0 &&
+                        row[column.field].percentage > 0 &&
                         row[column.field].percentage < 5
                     }"
                     [ngStyle]="{ width: row[column.field].percentage + '%' }"
                     class="table-progress-bar"
+                    *ngIf="
+                      row[column.field].percentage > 0 &&
+                      row[column.field].percentage < 100
+                    "
                   ></div>
                 </div>
 
@@ -1735,8 +1814,23 @@
                   [ngStyle]="{
                     width: column.width - 30 + 'px'
                   }"
+                  *ngIf="
+                    row[column.field].percentage > 0 &&
+                    row[column.field].percentage < 100
+                  "
                 >
                   in {{ row[column.field].expirationDays }} days
+                </div>
+
+                <!-- Progres Text Expired-->
+                <div
+                  class="table-progress-text"
+                  [ngStyle]="{
+                    width: column.width - 30 + 'px'
+                  }"
+                  *ngIf="row[column.field].percentage === 100"
+                >
+                  {{ row[column.field].expirationDays }} days ago
                 </div>
               </div>
             </div>
@@ -1760,14 +1854,19 @@
         [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
         *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
         [ngClass]="{
-          'regular-columns-hover': hoverActive === i && !row.actionAnimation,
+          'regular-columns-hover':
+            hoverActive === i &&
+            !row.actionAnimation &&
+            !row.isRepairOrder &&
+            !row.isSelected,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
           'muted-row':
             !row.active && !row['status'] && !options.disabledMutedStyle,
           'delete-animation': row.actionAnimation === 'delete',
           'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update'
+          'update-animation': row.actionAnimation === 'update',
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation
         }"
         class="actions-tr-container"
       >
@@ -1819,7 +1918,7 @@
             >
               <div
                 #t2="ngbPopover"
-                (click)="toggleDropdown(t2, row.id)"
+                (click)="toggleDropdown(t2, row)"
                 [autoClose]="true"
                 [ngbPopover]="dropdownPopover"
                 [placement]="'bottom-right'"
@@ -1846,7 +1945,11 @@
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
-  <div class="show-more" *ngIf="viewData.length < activeTableData.length">
+  <div
+    class="show-more"
+    (clcik)="onShowMore()"
+    *ngIf="viewData.length < activeTableData.length"
+  >
     SHOW MORE
   </div>
 </div>

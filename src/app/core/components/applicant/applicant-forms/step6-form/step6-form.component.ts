@@ -4,7 +4,10 @@ import { Subscription } from 'rxjs';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { isFormValueEqual } from '../../state/utils/utils';
+import {
+  anyInputInLineIncorrect,
+  isFormValueEqual,
+} from '../../state/utils/utils';
 
 import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -12,6 +15,7 @@ import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.ser
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import { ContactModel } from '../../state/model/education.model';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
 
 @Component({
   selector: 'app-step6-form',
@@ -20,16 +24,78 @@ import { ContactModel } from '../../state/model/education.model';
 })
 export class Step6FormComponent implements OnInit {
   @Input() isEditing: boolean;
-  @Input() isContactEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
+  public selectedMode: string = SelectedMode.FEEDBACK;
+
   public contactForm: FormGroup;
 
   public subscription: Subscription;
+
+  public isContactEdited: boolean;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 4,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 5,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {
+      lineIndex: 15,
+      lineInputs: [false, false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -44,11 +110,13 @@ export class Step6FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.contactForm.valueChanges.subscribe(
-        (newFormValue) => {
+        (updatedFormValues) => {
           const { isEditingContact, ...previousFormValues } =
             this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          const { firstRowReview, ...newFormValues } = updatedFormValues;
+
+          if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isContactEdited = false;
           } else {
             this.isContactEdited = true;
@@ -63,6 +131,8 @@ export class Step6FormComponent implements OnInit {
       contactName: [null, Validators.required],
       contactPhone: [null, [Validators.required, phoneRegex]],
       contactRelationship: [null, Validators.required],
+
+      firstRowReview: [null],
     });
   }
 
@@ -80,7 +150,7 @@ export class Step6FormComponent implements OnInit {
       return;
     }
 
-    const contactForm = this.contactForm.value;
+    const { firstRowReview, ...contactForm } = this.contactForm.value;
 
     const saveData: ContactModel = {
       ...contactForm,
@@ -104,7 +174,7 @@ export class Step6FormComponent implements OnInit {
       return;
     }
 
-    const contactForm = this.contactForm.value;
+    const { firstRowReview, ...contactForm } = this.contactForm.value;
 
     const saveData: ContactModel = {
       ...contactForm,
@@ -132,5 +202,63 @@ export class Step6FormComponent implements OnInit {
     this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 }

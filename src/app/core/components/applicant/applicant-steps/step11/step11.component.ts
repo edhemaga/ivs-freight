@@ -12,7 +12,7 @@ import { Authorization } from '../../state/model/authorization.model';
   styleUrls: ['./step11.component.scss'],
 })
 export class Step11Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
@@ -44,6 +44,10 @@ export class Step11Component implements OnInit, OnDestroy {
   }
 
   public handleCheckboxParagraphClick(type: string) {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.FIRST_AUTHORIZATION:
         this.authorizationForm.patchValue({

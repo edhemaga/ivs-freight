@@ -7,18 +7,20 @@ import {
   NgZone,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
 import moment from 'moment';
 
 import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
 import { CompanyInfoModel } from '../state/model/company.model';
-import { SphReceivedBy } from '../state/model/sph-received-by.model';
+import { IdNameList } from '../state/model/lists.model';
 
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
-import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
 @UntilDestroy()
 @Component({
@@ -47,11 +49,20 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
 
   public selectedDocumentsTab: number = 1;
   public selectedRequestsTab: number = 1;
-  public selectedSphReceivedBy: { id: number; name: string };
+  public selectedSphReceivedBy: IdNameList;
+  public selectedEmployer: IdNameList;
 
   public isDocumentsCardOpen: boolean = true;
+  public hasMultiplePreviousEmployers: boolean = true;
 
-  public documentsBoxTabs: { id: number; name: string }[] = [
+  public documents: any[] = [];
+
+  public requestsBoxObserver: any;
+  public documentsBoxObserver: any;
+  public requestsBoxHeight: number;
+  public documentsBoxHeight: number;
+
+  public documentsBoxTabs: IdNameList[] = [
     {
       id: 1,
       name: 'CDL',
@@ -70,7 +81,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public requestsBoxTabs: { id: number; name: string }[] = [
+  public requestsBoxTabs: IdNameList[] = [
     {
       id: 1,
       name: 'SPH',
@@ -85,7 +96,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     },
   ];
 
-  public sphReceivedByList: SphReceivedBy[] = [
+  public sphReceivedByList: IdNameList[] = [
     { id: 1, name: 'Fax' },
     { id: 2, name: 'Mail' },
     { id: 3, name: 'E-Mail' },
@@ -93,15 +104,16 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     { id: 5, name: 'Other' },
   ];
 
-  public documents: any[] = [];
-
-  public requestsBoxHeight: number;
-  public documentsBoxHeight: number;
+  public previousEmployersList: IdNameList[] = [
+    { id: 1, name: 'JD FREIGHT' },
+    { id: 2, name: 'Dogma Brewery Logistics' },
+  ];
 
   constructor(
     private formBuilder: FormBuilder,
     private zone: NgZone,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -125,7 +137,7 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.sphTabForm = this.formBuilder.group({
-      previousEmployer: ['Dogma Brewery Logistic'],
+      previousEmployer: ['JD Freight'],
       applicantName: ['Aleksandar Djordjevic'],
 
       requests: this.formBuilder.array([]),
@@ -135,8 +147,20 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     });
   }
 
-  public handleInputSelect(event: any): void {
-    this.selectedSphReceivedBy = event;
+  public handleInputSelect(event: any, type: string): void {
+    switch (type) {
+      case InputSwitchActions.PREVIOUS_EMPLOYER:
+        this.selectedEmployer = event;
+
+        break;
+      case InputSwitchActions.SPH_RECEIVED_BY:
+        this.selectedSphReceivedBy = event;
+
+        break;
+
+      default:
+        break;
+    }
   }
 
   private createNewRequest(): FormGroup {
@@ -237,27 +261,36 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
+  public onSphReceivedCardAction(event: { check: boolean; action: string }) {
+    if (event.action === 'Open SPH') {
+      this.router.navigate([`/sph-form`]);
+    }
+
+    if (event.action === 'download') {
+    }
+  }
+
   public getRequestsBoxHeight(): void {
-    const observer = new ResizeObserver((entries) => {
+    this.requestsBoxObserver = new ResizeObserver((entries) => {
       this.zone.run(() => {
         this.requestsBoxHeight = entries[0].contentRect.height;
       });
     });
 
     setTimeout(() => {
-      observer.observe(this.requestsBox.nativeElement);
+      this.requestsBoxObserver.observe(this.requestsBox.nativeElement);
     }, 1);
   }
 
   public getDocumentsBoxHeight(): void {
-    const observer = new ResizeObserver((entries) => {
+    this.documentsBoxObserver = new ResizeObserver((entries) => {
       this.zone.run(() => {
         this.documentsBoxHeight = entries[0].contentRect.height;
       });
     });
 
     setTimeout(() => {
-      observer.observe(this.documentsBox.nativeElement);
+      this.documentsBoxObserver.observe(this.documentsBox.nativeElement);
     }, 1);
   }
 
@@ -269,10 +302,8 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onAction(event: { check: boolean; action: string }) {
-    console.log(event);
-    // TODO: Implement your logic for download documents
+  ngOnDestroy(): void {
+    this.requestsBoxObserver.unobserve(this.requestsBox.nativeElement);
+    this.documentsBoxObserver.unobserve(this.documentsBox.nativeElement);
   }
-
-  ngOnDestroy(): void {}
 }

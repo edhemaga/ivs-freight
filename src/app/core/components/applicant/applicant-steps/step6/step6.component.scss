@@ -54,7 +54,6 @@
       font-size: 14px;
       background: $bw2;
       color: $bw6-2;
-      cursor: pointer;
 
       p {
         user-select: none;
@@ -83,6 +82,16 @@
       background: $ta-blue-3;
       color: $white;
     }
+
+    .grade-review {
+      background: $ta-light-blue !important;
+      color: $white !important;
+    }
+
+    .feedback-review {
+      background: $ta-blue-3 !important;
+      color: $white !important;
+    }
   }
 
   .college-title {
@@ -107,6 +116,17 @@
     .bottom-questions-container {
       width: 616px;
 
+      .line-container {
+        position: relative;
+
+        .review-feedback-container {
+          position: absolute;
+          top: 0;
+          right: -435px;
+          width: 429px;
+        }
+      }
+
       .question-container {
         width: 616px;
         margin-bottom: 12px;
@@ -116,7 +136,7 @@
         }
 
         .title-box {
-          p {
+          .question-title {
             color: $bw6-2;
             font-size: 14px;
             line-height: 18px;
@@ -145,6 +165,34 @@
               }
             }
           }
+
+          .question-title-feedback {
+            color: $bw5;
+
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            .required-star {
+              color: $bw5;
+
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+            }
+          }
         }
 
         .title-box1 {
@@ -166,6 +214,7 @@
         .explain-container {
           width: 616px;
           margin-top: 12px;
+          margin-right: 0;
         }
       }
     }
@@ -194,6 +243,10 @@
       }
     }
 
+    .date-to-group {
+      margin-right: 0;
+    }
+
     .contact-form {
       margin-top: 10px;
 
@@ -215,6 +268,17 @@
       .contacts-view-container {
         width: 616px;
         margin-bottom: 32px;
+
+        .line-container {
+          position: relative;
+
+          .review-feedback-container {
+            position: absolute;
+            top: 0;
+            right: -435px;
+            width: 429px;
+          }
+        }
 
         .title-container {
           width: 100%;
@@ -260,14 +324,30 @@
           font-size: 14px;
           transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-          &:hover {
-            background: $bw2;
-            color: $ta-light-grey-3;
-          }
+          .info-btn-container {
+            &:hover {
+              background: $ta-light-grey-4;
+              color: $ta-light-grey-3;
+            }
 
-          &:hover .btn-container {
-            opacity: 1;
-            visibility: visible !important;
+            &:hover .btn-container {
+              opacity: 1;
+              visibility: visible !important;
+            }
+
+            &:hover .btn-container.active {
+              .edit-icon,
+              .delete-icon {
+                display: none !important;
+              }
+
+              .review-icon-box {
+                .review-icon {
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                }
+              }
+            }
           }
 
           .name-box,
@@ -293,6 +373,10 @@
             }
           }
 
+          .review-icon-box {
+            margin-left: 43px;
+          }
+
           .btn-container {
             width: 42px;
             margin-left: auto !important;
@@ -300,8 +384,32 @@
             opacity: 0;
             transition: opacity 0.2s ease-in-out;
 
+            &.active {
+              visibility: visible !important;
+              opacity: 1 !important;
+
+              .edit-icon,
+              .delete-icon,
+              .review-icon {
+                visibility: hidden !important;
+                opacity: 0 !important;
+                user-select: none !important;
+
+                &.edit-icon,
+                &.delete-icon {
+                  display: none !important;
+                }
+
+                &.review-icon.active {
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                }
+              }
+            }
+
             .edit-icon,
-            .delete-icon {
+            .delete-icon,
+            .review-icon {
               cursor: pointer;
 
               &:hover {
@@ -318,10 +426,48 @@
                   fill: $bw4;
                 }
               }
-            }
 
-            .edit-icon {
-              margin-right: 6px;
+              &.edit-icon {
+                margin-right: 6px;
+              }
+
+              &.review-icon {
+                svg {
+                  path {
+                    transition: fill 0.3s ease-in-out;
+                    fill: $ta-red-2 !important;
+                  }
+
+                  rect {
+                    transition: fill 0.3s ease-in-out;
+                    fill: $ta-light-grey-4 !important;
+                  }
+                }
+
+                &:hover {
+                  svg {
+                    path {
+                      fill: $white !important;
+                    }
+
+                    rect {
+                      fill: $ta-red-2 !important;
+                    }
+                  }
+                }
+
+                &.active {
+                  svg {
+                    path {
+                      fill: $white !important;
+                    }
+
+                    rect {
+                      fill: $ta-red-3 !important;
+                    }
+                  }
+                }
+              }
             }
           }
         }

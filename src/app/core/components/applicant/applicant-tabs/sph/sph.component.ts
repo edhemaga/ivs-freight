@@ -14,7 +14,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./sph.component.scss'],
 })
 export class SphComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public sphForm: FormGroup;
 
@@ -37,6 +37,10 @@ export class SphComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.IS_TESTED:
         this.sphForm.patchValue({

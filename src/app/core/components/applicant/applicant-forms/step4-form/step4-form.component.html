@@ -1,5 +1,5 @@
-<div class="d-flex flex-column step-form" [formGroup]="form">
-  <div class="d-flex">
+<div class="d-flex flex-column step-form" [formGroup]="accidentForm">
+  <div class="d-flex line-container">
     <div class="group location-group">
       <app-ta-input-address
         formControlName="accidentLocation"
@@ -10,8 +10,11 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          autoFocus: true
+          autoFocus: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 10)"
         [activeAddress]="selectedAddress"
         (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
       ></app-ta-input-address>
@@ -25,9 +28,35 @@
           label: 'Date',
           placeholderIcon: 'date',
           isRequired: true,
-          customClass: 'datetimeclass'
+          customClass: 'datetimeclass',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 10)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        formControlName="firstRowReview"
+        [displayAnnotationButton]="
+          openAnnotationArray[10].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[10].displayAnnotationTextArea
+        "
+        [lineIndex]="10"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
     </div>
   </div>
 
@@ -37,7 +66,7 @@
     <div class="d-flex align-items-center fatalities-injuries-group">
       <div class="d-flex align-items-center fatalities-group">
         <app-ta-input-arrows
-          [formControl]="fatalitiesControl"
+          formControlName="fatalities"
           [inputConfig]="{
             name: 'FatalInjuries',
             type: 'text',
@@ -49,12 +78,13 @@
           }"
           [name]="'Fatalities #'"
           [type]="'applicant'"
+          [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
       </div>
 
       <div class="d-flex align-items-center injuries-group">
         <app-ta-input-arrows
-          [formControl]="injuriesControl"
+          formControlName="injuries"
           [inputConfig]="{
             name: 'FatalInjuries',
             type: 'text',
@@ -66,6 +96,7 @@
           }"
           [name]="'Inj. #'"
           [type]="'applicant'"
+          [selectedMode]="selectedMode"
         ></app-ta-input-arrows>
       </div>
     </div>
@@ -74,8 +105,20 @@
       class="d-flex align-items-center justify-content-between group hazmat-spill-group"
     >
       <div class="title-box">
-        <p class="m-0 ta-font-regular">
-          Hazmat spill <span class="required-star">*</span>
+        <p
+          class="m-0 ta-font-regular"
+          [ngStyle]="{
+            color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+          }"
+        >
+          Hazmat spill
+          <span
+            class="required-star"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#ff5d5d'
+            }"
+            >*</span
+          >
         </p>
       </div>
       <div class="radios-box">
@@ -89,7 +132,7 @@
 
   <!-- TRUCK TYPE, DESCRIPTION -->
 
-  <div class="d-flex">
+  <div class="d-flex line-container">
     <div class="group truck-type-group">
       <app-ta-input-dropdown
         formControlName="truckType"
@@ -100,8 +143,11 @@
           label: 'Vehicle type',
           isRequired: true,
           isDropdown: true,
-          dropdownWidthClass: 'w-col-applicant-t-type'
+          dropdownWidthClass: 'w-col-applicant-t-type',
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 0, 11)"
         [options]="truckType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
@@ -114,9 +160,84 @@
           type: 'text',
           label: 'Description',
           textTransform: 'capitalize',
-          isRequired: true
+          isRequired: true,
+          incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [incorrectValue]="false"
+        (incorrectEvent)="incorrectInput($event, 1, 11)"
       ></app-ta-input>
+    </div>
+
+    <!-- REVIEW AND FEEDBACK -->
+
+    <div
+      class="review-feedback-container"
+      *ngIf="selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'"
+    >
+      <app-applicant-review-feedback
+        formControlName="secondRowReview"
+        [displayAnnotationButton]="
+          openAnnotationArray[11].displayAnnotationButton
+        "
+        [displayAnnotationTextArea]="
+          openAnnotationArray[11].displayAnnotationTextArea
+        "
+        [lineIndex]="11"
+        [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+        [feedbackText]="
+          'Check the routing number one more time (one number missing)!!!'
+        "
+        (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+      ></app-applicant-review-feedback>
+    </div>
+  </div>
+
+  <!-- ADD ANOTHER ACCIDENT -->
+
+  <div class="d-flex justify-content-center align-items-center btn-container">
+    <button
+      type="button"
+      class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
+      (click)="onAddAccident()"
+      [ngClass]="{
+        disabled: accidentForm.invalid
+      }"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
+    >
+      <svg-icon
+        class="plus-icon"
+        src="assets/svg/common/ic_plus.svg
+  "
+        [svgStyle]="{
+          'width.px': 18,
+          'height.px': 18
+        }"
+      ></svg-icon>
+
+      Add Another Accident
+    </button>
+
+    <div
+      class="d-flex align-items-center mx-auto justify-content-center btn-container-inside"
+      *ngIf="isEditing"
+    >
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
+        (click)="onCancelEditAccident()"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
+        [ngClass]="{
+          disabled: !isAccidentEdited
+        }"
+        (click)="onSaveEditedAccident()"
+      >
+        Save Changes
+      </button>
     </div>
   </div>
 </div>

@@ -12,7 +12,9 @@
 import { UpdateCompanyPayrollCommand } from './updateCompanyPayrollCommand';
 import { UpdateBankCardCommand } from './updateBankCardCommand';
 import { UpdateDepartmentContactCommand } from './updateDepartmentContactCommand';
+import { FleetType } from './fleetType';
 import { UpdateBankAccountCommand } from './updateBankAccountCommand';
+import { PreferredLoadType } from './preferredLoadType';
 
 
 export interface UpdateCompanyCommand { 
@@ -33,7 +35,8 @@ export interface UpdateCompanyCommand {
     starting?: string | null;
     sufix?: string | null;
     autoInvoicing?: boolean | null;
-    preferredLoadType?: number | null;
+    preferredLoadType?: PreferredLoadType;
+    fleetType?: FleetType;
     factorByDefault?: boolean | null;
     customerPayTerm?: string | null;
     customerCredit?: string | null;

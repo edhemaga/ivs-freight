@@ -19,6 +19,7 @@ export interface ParkingResponse {
     name?: string | null;
     email?: string | null;
     phone?: string | null;
+    extensionPhone?: string | null;
     address?: AddressEntity;
     gate?: boolean | null;
     securityCamera?: boolean | null;

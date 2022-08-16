@@ -4,7 +4,12 @@
   <!-- TOP SECTION -->
 
   <div class="d-flex justify-content-center text-center top-section">
-    <p class="m-0 ta-font-bold">
+    <p
+      class="m-0 ta-font-bold"
+      [ngStyle]="{
+        color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+      }"
+    >
       Please list all motor vehicle collisions in which you were involved<br />
       (both commercial and private vehicle) during the past 3 years prior to the
       application date.
@@ -21,7 +26,9 @@
       formControlName="hasPastAccident"
       [name]="'hasPastAccident'"
       [label]="'No accidents for past 3 years'"
-      [customClass]="'bold-12'"
+      [customClass]="
+        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      "
     ></app-ta-checkbox>
   </div>
 
@@ -34,6 +41,7 @@
     <div
       class="d-flex flex-column justify-content-center accident-view-container"
       *ngIf="accidentArray.length"
+      [formGroup]="accidentForm"
     >
       <div
         class="d-flex flex-column"
@@ -47,7 +55,8 @@
           class="d-flex align-items-center title-container"
           *ngIf="
             (accidentArray.length > 1 && helperIndex !== 0 && i === 0) ||
-            (helperIndex === 0 && i === 1)
+            (helperIndex === 0 && i === 1) ||
+            (i === helperIndex + 1 && selectedAccidentIndex > -1)
           "
         >
           <div class="d-flex align-items-center date-title-box">
@@ -71,80 +80,138 @@
         </div>
 
         <div
-          class="d-flex align-items-center accident-info-container"
+          class="d-flex align-items-center accident-info-container line-container"
           *ngIf="!accident.isEditingAccident"
         >
-          <div class="d-flex align-items-center date-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.accidentDate }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center state-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.accidentState }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center fatalities-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.fatalities }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center injuries-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.injuries }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center hazmat-box">
-            <p class="m-0 ta-font-regular">
-              {{ accident.hazmatSpill }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center description-box">
-            <p
-              class="m-0 ta-font-regular d-inline-block text-truncate"
-              style="max-width: 207px"
-              ngbTooltip
-              [mainTooltip]="accident.accidentDescription"
-              tooltipBackground="#6C6C6C"
-              position="bottom-left"
-            >
-              {{ accident.accidentDescription }}
-            </p>
-          </div>
-          <div class="d-flex align-items-center btn-container">
-            <div
-              ngbTooltip
-              mainTooltip="Edit"
-              tooltipBackground="#6C6C6C"
-              position="top"
-            >
-              <svg-icon
-                class="edit-icon"
-                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                (click)="onEditAccident(i)"
-              ></svg-icon>
+          <div class="d-flex align-items-center info-btn-container">
+            <div class="d-flex align-items-center date-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.accidentDate }}
+              </p>
             </div>
+            <div class="d-flex align-items-center state-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.accidentState }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center fatalities-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.fatalities }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center injuries-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.injuries }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center hazmat-box">
+              <p class="m-0 ta-font-regular">
+                {{ accident.hazmatSpill }}
+              </p>
+            </div>
+            <div class="d-flex align-items-center description-box">
+              <p
+                class="m-0 ta-font-regular d-inline-block text-truncate"
+                style="max-width: 207px"
+                ngbTooltip
+                [mainTooltip]="accident.accidentDescription"
+                tooltipBackground="#6C6C6C"
+                position="bottom-left"
+              >
+                {{ accident.accidentDescription }}
+              </p>
+            </div>
+            <div
+              class="d-flex align-items-center btn-container"
+              [ngClass]="{
+                active: selectedMode === 'REVIEW_MODE'
+              }"
+            >
+              <div
+                ngbTooltip
+                mainTooltip="Edit"
+                tooltipBackground="#6C6C6C"
+                position="top"
+              >
+                <svg-icon
+                  class="edit-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onEditAccident(i)"
+                ></svg-icon>
+              </div>
 
-            <div
-              ngbTooltip
-              mainTooltip="Delete"
-              tooltipBackground="#EF5350"
-              position="top"
-            >
-              <svg-icon
-                class="delete-icon"
-                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                [svgStyle]="{
-                  'width.px': 18,
-                  'height.px': 18
-                }"
-                (click)="onDeleteAccident(i)"
-              ></svg-icon>
+              <div
+                ngbTooltip
+                mainTooltip="Delete"
+                tooltipBackground="#EF5350"
+                position="top"
+              >
+                <svg-icon
+                  class="delete-icon"
+                  src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+                  [svgStyle]="{
+                    'width.px': 18,
+                    'height.px': 18
+                  }"
+                  (click)="onDeleteAccident(i)"
+                ></svg-icon>
+              </div>
+
+              <div *ngIf="selectedMode === 'REVIEW_MODE'">
+                <div
+                  class="review-icon-box"
+                  ngbTooltip
+                  mainTooltip="Mark Incorrect"
+                  tooltipBackground="#F44336"
+                  position="top"
+                >
+                  <svg-icon
+                    class="review-icon"
+                    [ngClass]="{
+                      active:
+                        openAnnotationArray[i].displayAnnotationButton ||
+                        openAnnotationArray[i].displayAnnotationTextArea
+                    }"
+                    src="assets/svg/ic_x.svg"
+                    [svgStyle]="{
+                      'width.px': 18,
+                      'height.px': 18
+                    }"
+                    (click)="incorrectInput($event, 0, i, 'card')"
+                  ></svg-icon>
+                </div>
+              </div>
             </div>
+          </div>
+
+          <!-- REVIEW AND FEEDBACK -->
+
+          <div
+            class="review-feedback-container"
+            *ngIf="
+              selectedMode === 'REVIEW_MODE' || selectedMode === 'FEEDBACK_MODE'
+            "
+          >
+            <app-applicant-review-feedback
+              [formControlName]="'cardReview' + (i + 1)"
+              [displayAnnotationButton]="
+                openAnnotationArray[i].displayAnnotationButton
+              "
+              [displayAnnotationTextArea]="
+                openAnnotationArray[i].displayAnnotationTextArea
+              "
+              [lineIndex]="i"
+              [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+              [feedbackText]="'Check the number'"
+              [cardsLength]="accidentArray.length"
+              [cardsType]="'accidentRecord'"
+              [cardIndex]="i"
+              (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+            ></app-applicant-review-feedback>
           </div>
         </div>
 
@@ -153,36 +220,12 @@
           *ngIf="accident.isEditingAccident"
         >
           <app-step4-form
-            [form]="accidentForm"
-            [handleInputSelect]="handleInputSelect"
-            [onIncrementDecrementCounter]="onIncrementDecrementCounter"
-            [truckType]="truckType"
-            [fatalitiesCounter]="fatalitiesCounter"
-            [injuriesCounter]="injuriesCounter"
-            [answerChoices]="answerChoices"
+            [isEditing]="isEditing"
+            [formValuesToPatch]="formValuesToPatch"
+            (cancelFormEditingEmitter)="cancelAccidentEditing($event)"
+            (formValuesEmitter)="getAccidentFormValues($event)"
+            (saveFormEditingEmitter)="saveEditedAccident($event)"
           ></app-step4-form>
-
-          <div
-            class="d-flex align-items-center mx-auto justify-content-center btn-container"
-          >
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn cancel-btn"
-              (click)="onCancelEditAccident()"
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              class="d-flex justify-content-center align-items-center ta-font-semi-bold add-btn save-btn"
-              [ngClass]="{
-                disabled: !isAccidentEdited
-              }"
-              (click)="onSaveEditedAccident()"
-            >
-              Save Changes
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -191,43 +234,10 @@
 
     <form *ngIf="!isEditing">
       <app-step4-form
-        [form]="accidentForm"
-        [handleInputSelect]="handleInputSelect"
-        [onIncrementDecrementCounter]="onIncrementDecrementCounter"
-        [truckType]="truckType"
-        [fatalitiesCounter]="fatalitiesCounter"
-        [injuriesCounter]="injuriesCounter"
-        [answerChoices]="answerChoices"
+        [isEditing]="isEditing"
+        (formValuesEmitter)="getAccidentFormValues($event)"
       ></app-step4-form>
     </form>
-
-    <!-- ADD ANOTHER ACCIDENT -->
-
-    <div
-      class="d-flex justify-content-center align-items-center add-more-accident-container"
-    >
-      <button
-        type="button"
-        class="d-flex justify-content-center align-items-center ta-font-bold add-btn"
-        (click)="onAddAccident()"
-        [ngClass]="{
-          disabled: accidentForm.invalid
-        }"
-        *ngIf="!isEditing"
-      >
-        <svg-icon
-          class="plus-icon"
-          src="assets/svg/common/ic_plus.svg
-      "
-          [svgStyle]="{
-            'width.px': 18,
-            'height.px': 18
-          }"
-        ></svg-icon>
-
-        Add Another Accident
-      </button>
-    </div>
   </div>
 </div>
 
@@ -246,9 +256,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>

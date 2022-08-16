@@ -1,5 +1,7 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center noselect ta-font-bold">Authorization</h1>
+  <h1 class="m-0 step-title text-center noselect ta-font-bold">
+    Authorization
+  </h1>
 
   <!-- FORM SECTION -->
 
@@ -14,15 +16,23 @@
           [label]="
             'I hereby authorize this company to release all records of employment, including assessments of my job previous '
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: authorizationForm.get('isFirstAuthorization').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              authorizationForm.get('isFirstAuthorization').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isFirstAuthorization')"
         >
@@ -40,7 +50,12 @@
 
       <!-- MUST READ -->
 
-      <h3 class="m-0 step-subtitle noselect text-center ta-font-bold">
+      <h3
+        class="m-0 step-subtitle noselect text-center ta-font-bold"
+        [ngStyle]="{
+          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+        }"
+      >
         Must be read and signed by the applicant
       </h3>
 
@@ -53,15 +68,23 @@
           [label]="
             'I authorize the carrier to make such inquiries and investigations of my personal, employment, driving, '
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: authorizationForm.get('isSecondAuthorization').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              authorizationForm.get('isSecondAuthorization').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isSecondAuthorization')"
         >
@@ -84,15 +107,23 @@
           [label]="
             'In the event of employment, I understand that false or misleading information given in my application or '
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: authorizationForm.get('isThirdAuthorization').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              authorizationForm.get('isThirdAuthorization').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isThirdAuthorization')"
         >
@@ -113,15 +144,23 @@
           [label]="
             'This certifies that I completed this application, and that all entries on it and information in it are true and '
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: authorizationForm.get('isFourthAuthorization').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              authorizationForm.get('isFourthAuthorization').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isFourthAuthorization')"
         >
@@ -131,10 +170,20 @@
 
       <!-- SIGNATURE PAD -->
 
-      <div class="d-flex flex-column signature-pad-container">
+      <div
+        class="d-flex signature-pad-container"
+        *ngIf="selectedMode === 'APPLICANT_MODE'"
+      >
         <app-applicant-signature-pad
           (signatureEmitter)="onSignatureAction($event)"
         ></app-applicant-signature-pad>
+      </div>
+
+      <div
+        class="d-flex justify-content-center align-items-center signature-image-container"
+        *ngIf="selectedMode !== 'APPLICANT_MODE'"
+      >
+        <img src="" alt="signature" />
       </div>
     </form>
   </div>
@@ -158,9 +207,3 @@
 >
   <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
 </div>
-
-<!-- CONFIRM ALL REVIEW -->
-
-<app-applicant-confirm-all-review
-  *ngIf="selectedMode === 'REVIEW_MODE'"
-></app-applicant-confirm-all-review>

@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import { TruckType } from '../../state/model/truck-type.model';
 import {
   Violation,
   ViolationInfo,
@@ -16,10 +17,11 @@ import {
   styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
+  public violationsForm: FormGroup;
   public trafficViolationsForm: FormGroup;
   public notBeenConvictedForm: FormGroup;
   public onlyOneHoldLicenseForm: FormGroup;
@@ -29,43 +31,114 @@ export class Step5Component implements OnInit, OnDestroy {
     {
       violationDate: '01/20/19',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '02/20/20',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '03/20/21',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
     {
       violationDate: '04/20/21',
       truckType: 'Cargo Van',
-      violationLocation: 'Chicago, IL 25002',
-      violationDescription: 'Lorem ipsum dolor sit ametblabla',
+      violationLocation: {
+        address: 'Chicago, IL, USA',
+        city: 'Chicago',
+        country: 'US',
+        state: 'IL',
+        stateShortName: 'IL',
+        street: '',
+        streetNumber: '',
+        zipCode: '',
+      },
+      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
       isEditingViolation: false,
     },
   ];
 
   public isEditing: boolean = false;
-  public isViolationEdited: boolean = false;
-
-  public truckType: TruckType[] = [];
 
   public selectedViolationIndex: number;
 
   public helperIndex: number = 2;
 
   public formValuesToPatch: any;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
 
   //
 
@@ -105,9 +178,26 @@ export class Step5Component implements OnInit, OnDestroy {
     this.certifyForm = this.formBuilder.group({
       certify: [false, Validators.required],
     });
+
+    this.violationsForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
+    });
   }
 
   public handleCheckboxParagraphClick(type: string) {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     if (type === 'notBeenConvicted') {
       this.notBeenConvictedForm.patchValue({
         notBeenConvicted:
@@ -137,8 +227,6 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isViolationEdited = false;
-
     this.isEditing = true;
     this.violationsArray[index].isEditingViolation = true;
 
@@ -153,14 +241,32 @@ export class Step5Component implements OnInit, OnDestroy {
     this.violationsArray = [...this.violationsArray, event];
 
     this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public saveEditedViolation(event: any): void {
+    this.isEditing = false;
+    this.violationsArray[this.selectedViolationIndex].isEditingViolation =
+      false;
+
     this.violationsArray[this.selectedViolationIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedViolationIndex = -1;
   }
 
   public cancelViolationEditing(event: any): void {
@@ -170,6 +276,64 @@ export class Step5Component implements OnInit, OnDestroy {
 
     this.helperIndex = 2;
     this.selectedViolationIndex = -1;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 
   private formFilling(): void {

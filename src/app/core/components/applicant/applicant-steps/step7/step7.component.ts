@@ -1,13 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 @UntilDestroy()
 @Component({
@@ -16,7 +19,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   styleUrls: ['./step7.component.scss'],
 })
 export class Step7Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
@@ -104,6 +107,20 @@ export class Step7Component implements OnInit, OnDestroy {
   public totalHours: { id: number; value: number }[] = [];
   public totalHoursCounter: number = 0;
 
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -127,15 +144,19 @@ export class Step7Component implements OnInit, OnDestroy {
       intendToWorkAnotherEmployer: [null, Validators.required],
       isValidAnotherEmployer: [null, Validators.requiredTrue],
 
-      number: [null],
-
       hosArray: this.formBuilder.array([]),
+
+      firstRowReview: [null],
     });
 
     this.createSevenDaysHos();
   }
 
   public handleCheckboxParagraphClick(type: string) {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.VALID_HOS:
         this.sevenDaysHosForm.patchValue({
@@ -203,6 +224,75 @@ export class Step7Component implements OnInit, OnDestroy {
     });
   }
 
+  public countTotalHours(index: number): void {
+    this.hosArray
+      .at(index)
+      .get('hos')
+      .valueChanges.pipe(untilDestroyed(this))
+      .subscribe((value) => {
+        this.totalHours = [...this.totalHours];
+        this.totalHours[index].value = +value;
+      });
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
+  }
+
   private formFilling(): void {
     if (this.sevenDaysHosInfo?.hosData?.length) {
       this.sevenDaysHosForm.patchValue({
@@ -223,17 +313,6 @@ export class Step7Component implements OnInit, OnDestroy {
 
         this.countTotal(); */
     }
-  }
-
-  public countTotalHours(index: number): void {
-    this.hosArray
-      .at(index)
-      .get('hos')
-      .valueChanges.pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        this.totalHours = [...this.totalHours];
-        this.totalHours[index].value = +value;
-      });
   }
 
   public onSubmitForm(): void {

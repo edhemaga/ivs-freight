@@ -94,18 +94,9 @@
       margin-bottom: 32px;
       width: 616px;
 
-      position: relative;
-
       &:nth-child(3),
       &:nth-child(5) {
         margin-bottom: 22px;
-      }
-
-      .review-feedback {
-        height: 26px;
-        position: absolute;
-        right: -6px;
-        top: 0;
       }
 
       .group {
@@ -171,30 +162,6 @@
       .dets-container {
         width: 616px;
 
-        &:hover
-          .right-container
-          .info-container
-          .address-container
-          .address-icon {
-          svg {
-            path {
-              fill: $ta-light-blue;
-            }
-          }
-        }
-
-        &:hover .right-container .info-container .address-container,
-        &:hover .right-container .info-container .address-unit-container {
-          p {
-            color: $ta-light-grey-3;
-          }
-        }
-
-        &:hover .right-container .btn-container {
-          opacity: 1;
-          visibility: visible !important;
-        }
-
         .title-container {
           .address-title-container {
             width: 174px;
@@ -231,106 +198,174 @@
           height: 26px;
           border-radius: 2px;
 
-          .info-container {
-            .address-container {
-              width: 480px;
-              margin-right: 12px;
-
-              .address-icon {
-                svg {
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $ta-blue-3;
-                  }
-                }
-              }
-
-              .pipe {
-                width: 1px;
-                height: 14px;
-                margin: 2px 6px;
-                background-color: $ta-gray-02;
-              }
-
-              p {
-                text-transform: uppercase;
-                font-size: 14px;
-                color: $bw6-2;
-                transition: color 0.2s ease-in-out;
-              }
-            }
-
-            .address-unit-container {
-              width: 42px;
-              margin-right: 6px;
-
-              p {
-                text-transform: uppercase;
-                font-size: 14px;
-                color: $bw6-2;
-                transition: color 0.2s ease-in-out;
-              }
-            }
-          }
-
-          .btn-container {
-            width: 64px;
-            visibility: hidden !important;
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
-
-            .edit-icon,
-            .delete-icon,
-            .review-icon {
-              cursor: pointer;
-
-              &:hover {
-                svg {
-                  path {
-                    transition: fill 0.2s ease-in-out;
-                    fill: $bw6-2;
-                  }
-                }
-              }
-
+          .info-btn-container {
+            &:hover .info-container .address-container .address-icon {
               svg {
                 path {
-                  fill: $bw4;
+                  fill: $ta-light-blue;
+                }
+              }
+            }
+
+            &:hover .info-container .address-container,
+            &:hover .info-container .address-unit-container {
+              p {
+                color: $ta-light-grey-3;
+              }
+            }
+
+            &:hover .info-container + .btn-container {
+              opacity: 1 !important;
+              visibility: visible !important;
+            }
+
+            &:hover .info-container + .btn-container.active {
+              .edit-icon,
+              .delete-icon {
+                display: none;
+              }
+
+              .review-icon-box {
+                .review-icon {
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                }
+              }
+            }
+
+            .info-container {
+              .address-container {
+                width: 480px;
+                margin-right: 12px;
+
+                .address-icon {
+                  svg {
+                    path {
+                      transition: fill 0.2s ease-in-out;
+                      fill: $ta-blue-3;
+                    }
+                  }
+                }
+
+                .pipe {
+                  width: 1px;
+                  height: 14px;
+                  margin: 2px 6px;
+                  background-color: $ta-gray-02;
+                }
+
+                p {
+                  text-transform: uppercase;
+                  font-size: 14px;
+                  color: $bw6-2;
+                  transition: color 0.2s ease-in-out;
                 }
               }
 
-              &.edit-icon,
-              &.delete-icon {
-                margin-right: 4px;
+              .address-unit-container {
+                width: 42px;
+                margin-right: 6px;
+
+                p {
+                  text-transform: uppercase;
+                  font-size: 14px;
+                  color: $bw6-2;
+                  transition: color 0.2s ease-in-out;
+                }
               }
+            }
 
-              &.review-icon {
-                svg {
-                  transform: scale(1);
-                  transition: transform 0.3s ease-in-out;
+            .review-icon-box {
+              margin-left: 44px;
+            }
 
-                  path {
-                    fill: $ta-red-2;
-                    transition: fill 0.3s ease-in-out;
+            .btn-container {
+              width: 64px;
+              visibility: hidden !important;
+              opacity: 0;
+              transition: opacity 0.2s ease-in-out;
+
+              &.active {
+                visibility: visible !important;
+                opacity: 1 !important;
+
+                .edit-icon,
+                .delete-icon,
+                .review-icon {
+                  visibility: hidden !important;
+                  opacity: 0 !important;
+                  user-select: none !important;
+
+                  &.edit-icon,
+                  &.delete-icon {
+                    display: none !important;
                   }
 
-                  rect {
-                    fill: $ta-light-grey-4;
-                    transition: fill 0.3s ease-in-out;
+                  &.review-icon.active {
+                    visibility: visible !important;
+                    opacity: 1 !important;
                   }
                 }
+              }
+
+              .edit-icon,
+              .delete-icon,
+              .review-icon {
+                cursor: pointer;
 
                 &:hover {
                   svg {
-                    transform: scale(1.2);
-
                     path {
-                      fill: $white;
+                      transition: fill 0.2s ease-in-out;
+                      fill: $bw6-2;
+                    }
+                  }
+                }
+
+                svg {
+                  path {
+                    fill: $bw4;
+                  }
+                }
+
+                &.edit-icon {
+                  margin-right: 4px;
+                }
+
+                &.review-icon {
+                  svg {
+                    path {
                       transition: fill 0.3s ease-in-out;
+                      fill: $ta-red-2 !important;
                     }
 
                     rect {
-                      fill: $ta-red-3;
+                      transition: fill 0.3s ease-in-out;
+                      fill: $bw2 !important;
+                    }
+                  }
+
+                  &:hover {
+                    svg {
+                      path {
+                        fill: $white !important;
+                      }
+
+                      rect {
+                        fill: $ta-red-2 !important;
+                      }
+                    }
+                  }
+
+                  &.active {
+                    svg {
+                      path {
+                        fill: $white !important;
+                      }
+
+                      rect {
+                        fill: $ta-red-3 !important;
+                      }
                     }
                   }
                 }
@@ -533,19 +568,49 @@
           color: $bw6-2;
           background: rgb(108, 108, 108, 0.2);
         }
+
+        .required-star {
+          color: $progress-danger;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+        }
       }
 
-      .required-star {
-        color: $progress-danger;
+      .question-title-feedback {
+        color: $bw5;
+        font-size: 14px;
+        line-height: 18px;
 
         &::-moz-selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
         }
 
         &::selection {
-          color: $bw6-2;
-          background: rgb(108, 108, 108, 0.2);
+          color: $bw5;
+          background: rgb(145, 145, 145, 0.2);
+        }
+
+        .required-star {
+          color: $bw5;
+
+          &::-moz-selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
         }
       }
 

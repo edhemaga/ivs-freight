@@ -1,11 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormArray,
-  FormControl,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -35,7 +29,7 @@ import { ApplicantListsService } from './../../state/services/applicant-lists.se
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public personalInfoForm: FormGroup;
 
@@ -86,7 +80,7 @@ export class Step1Component implements OnInit, OnDestroy {
     {},
     {
       lineIndex: 7,
-      lineInputs: [false],
+      lineInputs: [false, false],
       displayAnnotationButton: false,
       displayAnnotationTextArea: false,
     },
@@ -133,6 +127,7 @@ export class Step1Component implements OnInit, OnDestroy {
       displayAnnotationTextArea: false,
     },
   ];
+  public cardReviewIndex: number = 0;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -302,10 +297,8 @@ export class Step1Component implements OnInit, OnDestroy {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       dateOfBirth: [null, Validators.required],
-      firstRowReview: [null],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex]],
-      secondRowReview: [null],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       ssn: [null, [Validators.required, ssnNumberRegex]],
@@ -324,6 +317,18 @@ export class Step1Component implements OnInit, OnDestroy {
       felonyExplain: [null, Validators.required],
       misdemeanorExplain: [null, Validators.required],
       drunkDrivingExplain: [null, Validators.required],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
+      thirdRowReview: [null],
+      fourthRowReview: [null],
+
+      questionReview1: [null],
+      questionReview2: [null],
+      questionReview3: [null],
+      questionReview4: [null],
+      questionReview5: [null],
+      questionReview6: [null],
 
       previousAddresses: this.formBuilder.array([]),
     });
@@ -404,9 +409,12 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   private createNewAddress(): FormGroup {
+    this.cardReviewIndex++;
+
     return this.formBuilder.group({
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
+      [`cardReview${this.cardReviewIndex}`]: [null],
     });
   }
 
@@ -424,6 +432,21 @@ export class Step1Component implements OnInit, OnDestroy {
         isFirstAddress: true,
       },
     ];
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public onAddNewAddress(): void {
@@ -603,7 +626,7 @@ export class Step1Component implements OnInit, OnDestroy {
     event: any,
     inputIndex: number,
     lineIndex: number,
-    type: string
+    type?: string
   ): void {
     const selectedInputsLine = this.openAnnotationArray.find(
       (item) => item.lineIndex === lineIndex
@@ -645,7 +668,7 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public getAnnotationBtnClickValue(event: any, type: string): void {
+  public getAnnotationBtnClickValue(event: any): void {
     if (event.type === 'open') {
       this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =

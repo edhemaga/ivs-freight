@@ -59,33 +59,48 @@
     .license-view-container {
       width: 616px;
       margin-top: 10px;
-      margin-bottom: 32px;
 
       .title-container {
         width: 100%;
         margin-bottom: 6px;
         padding-left: 6px;
 
+        p {
+          color: $bw5;
+          font-size: 12px;
+
+          &::-moz-selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+        }
+
+        &-feedback {
+          p {
+            color: $bw4;
+
+            &::-moz-selection {
+              color: $bw4;
+              background: rgb(183, 183, 183, 0.2);
+            }
+
+            &::selection {
+              color: $bw4;
+              background: rgb(183, 183, 183, 0.2);
+            }
+          }
+        }
+
         .driver-title-box,
         .license-title-box,
         .state-title-box,
         .class-title-box,
         .date-title-box {
-          p {
-            color: $bw5;
-            font-size: 12px;
-
-            &::-moz-selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-
-            &::selection {
-              color: $bw5;
-              background: rgb(145, 145, 145, 0.2);
-            }
-          }
-
           &.driver-title-box {
             width: 91px;
             margin-right: 127px;
@@ -116,13 +131,13 @@
         width: 100%;
         height: 26px;
         padding: 4px 6px;
-        background-color: $ta-light-grey-4;
+        background: $ta-light-grey-4;
         border-radius: 2px;
         text-transform: uppercase;
-        color: $bw6-2;
         font-size: 14px;
 
         p {
+          color: $bw6-2;
           height: 18px;
 
           &::-moz-selection {
@@ -133,6 +148,24 @@
           &::selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
+          }
+        }
+
+        &-feedback {
+          background: $ta-light-grey-7;
+
+          p {
+            color: $bw5;
+
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
           }
         }
 
@@ -172,8 +205,43 @@
       }
     }
 
+    .requested-mvr-feedback-box {
+      width: 616px;
+      height: 26px;
+      background: $ta-light-blue;
+      border-radius: 2px;
+      margin-bottom: 12px;
+
+      p {
+        color: $white;
+        font-size: 14px;
+        line-height: 18px;
+
+        &::-moz-selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+
+        &::selection {
+          color: $white;
+          background: rgb(255, 255, 255, 0.2);
+        }
+      }
+    }
+
     .files-container {
       width: 616px;
+
+      .line-container {
+        position: relative;
+
+        .review-feedback-container {
+          position: absolute;
+          top: 0;
+          right: -435px;
+          width: 429px;
+        }
+      }
 
       .files-header {
         border-top: 0.2px solid $ta-light-grey-4;
@@ -204,6 +272,11 @@
             margin-left: 4px !important;
           }
         }
+      }
+
+      .review-documents-container {
+        max-width: 616px;
+        width: 100%;
       }
     }
 

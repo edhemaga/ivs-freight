@@ -391,7 +391,9 @@ table {
 
             // STATE COLUMN
             .table-state {
-              width: 28px;
+              width: fit-content;
+              padding: 0 2px;
+              min-width: 28px;
               height: 18px;
               border-radius: 2px;
               background: #f3f3f3;
@@ -556,6 +558,11 @@ table {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+
+              &::selection {
+                color: #6c6c6c;
+                background: #6c6c6c20;
+              }
             }
 
             // SVG COLUMN
@@ -794,6 +801,23 @@ table {
                 color: #6c6c6c;
                 background: #6c6c6c20;
               }
+            }
+
+            .finish-order-action {
+              width: 98px;
+              height: 24px;
+              display: flex;
+              border-radius: 2px;
+              background: #6d82c7;
+              color: #ffffff;
+              font-size: 11px;
+              font-weight: 800;
+              align-items: center;
+              justify-content: center;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              cursor: pointer;
             }
 
             // SERVICE
@@ -1060,6 +1084,16 @@ table {
       }
     }
 
+    // Repair Order Row
+    .row-repair-order {
+      background: #fff3e0;
+
+      .border-inactive {
+        border-right: 4px solid #fff3e0;
+        border-left: 4px solid #fff3e0;
+      }
+    }
+
     // Borders
     .not-pined-border-left,
     .not-pined-border-right {
@@ -1142,6 +1176,7 @@ table {
   margin-top: -10px;
   display: flex;
   align-items: center;
+  margin-bottom: 20px;
 
   .showing,
   .show-more {
@@ -1194,6 +1229,14 @@ table {
 
 .bg-sliver-container {
   background: #dadada;
+}
+
+.bg-expired-container {
+  background: #e57373;
+}
+
+.bg-inactive-container {
+  background: #e5e5e5;
 }
 
 .bg-progress-orange {

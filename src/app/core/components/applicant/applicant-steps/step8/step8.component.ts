@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
@@ -13,7 +15,7 @@ import { DrugAndAlcohol } from '../../state/model/drug-and-alchocol.model';
   styleUrls: ['./step8.component.scss'],
 })
 export class Step8Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 
@@ -47,6 +49,38 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public drugAndAlcoholInfo: DrugAndAlcohol | undefined;
 
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+  ];
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
@@ -74,6 +108,11 @@ export class Step8Component implements OnInit, OnDestroy {
       sapAddress: [null, Validators.required],
       sapAddressUnit: [null, Validators.maxLength(6)],
       isAgreement: [null, Validators.requiredTrue],
+
+      firstRowReview: [null],
+      secondRowReview: [null],
+      thirdRowReview: [null],
+      fourthRowReview: [null],
     });
   }
 
@@ -120,6 +159,64 @@ export class Step8Component implements OnInit, OnDestroy {
 
       default:
         break;
+    }
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
     }
   }
 

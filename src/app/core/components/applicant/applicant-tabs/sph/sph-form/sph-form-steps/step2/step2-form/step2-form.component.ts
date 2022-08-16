@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -6,12 +7,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
 
@@ -32,12 +28,11 @@ import { SphFormAccidentModel } from 'src/app/core/components/applicant/state/mo
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit {
+export class SphStep2FormComponent implements OnInit, AfterViewInit {
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
-  @Input() isAccidentEdited?: boolean;
   @Input() formValuesToPatch?: any;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
@@ -47,12 +42,12 @@ export class SphStep2FormComponent implements OnInit {
   public accidentForm: FormGroup;
   public accidentArray: SphFormAccidentModel[] = [];
 
+  public isAccidentEdited?: boolean;
+  public editingCardAddress: any;
+
   public subscription: Subscription;
 
   public selectedAddress: Address = null;
-
-  public injuriesCounter: number = 0;
-  public fatalitiesCounter: number = 0;
 
   public hazmatSpillRadios: any;
 
@@ -73,9 +68,6 @@ export class SphStep2FormComponent implements OnInit {
     },
   ];
 
-  public fatalitiesControl: FormControl = new FormControl(0);
-  public injuriesControl: FormControl = new FormControl(0);
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -89,15 +81,19 @@ export class SphStep2FormComponent implements OnInit {
       this.patchForm();
 
       this.subscription = this.accidentForm.valueChanges.subscribe(
-        (newFormValue) => {
+        (updatedFormValues) => {
           const {
-            address,
+            accidentLocation,
             accidentState,
             isEditingAccident,
             ...previousFormValues
           } = this.formValuesToPatch;
 
-          if (isFormValueEqual(previousFormValues, newFormValue)) {
+          previousFormValues.accidentLocation = accidentLocation.address;
+
+          this.editingCardAddress = accidentLocation;
+
+          if (isFormValueEqual(previousFormValues, updatedFormValues)) {
             this.isAccidentEdited = false;
           } else {
             this.isAccidentEdited = true;
@@ -117,8 +113,8 @@ export class SphStep2FormComponent implements OnInit {
       accidentLocation: [null, Validators.required],
       accidentDescription: [null, Validators.required],
       hazmatSpill: [null, Validators.required],
-      injuries: [null],
-      fatalities: [null],
+      injuries: [0],
+      fatalities: [0],
     });
   }
 
@@ -150,34 +146,15 @@ export class SphStep2FormComponent implements OnInit {
     }
   }
 
-  public onIncrementDecrementCounter(event: any, type: string) {
-    if (type === 'fatalities') {
-      this.fatalitiesCounter = event;
-      this.accidentForm.patchValue({
-        fatalities: event,
-      });
-    }
-
-    if (type === 'injuries') {
-      this.injuriesCounter = event;
-      this.accidentForm.patchValue({
-        injuries: event,
-      });
-    }
-  }
-
   public patchForm(): void {
     this.accidentForm.patchValue({
       accidentDate: this.formValuesToPatch.accidentDate,
-      accidentLocation: this.formValuesToPatch.accidentLocation,
+      accidentLocation: this.formValuesToPatch.accidentLocation.address,
       accidentDescription: this.formValuesToPatch.accidentDescription,
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
       injuries: this.formValuesToPatch.injuries,
     });
-
-    this.injuriesCounter = this.formValuesToPatch.injuries;
-    this.fatalitiesCounter = this.formValuesToPatch.fatalities;
 
     setTimeout(() => {
       const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
@@ -196,14 +173,12 @@ export class SphStep2FormComponent implements OnInit {
       return;
     }
 
-    const { address, ...registerForm } = this.accidentForm.value;
+    const { accidentLocation, ...registerForm } = this.accidentForm.value;
 
     const saveData: SphFormAccidentModel = {
       ...registerForm,
-      address: this.selectedAddress,
+      accidentLocation: this.selectedAddress,
       accidentState: this.selectedAddress.state,
-      injuries: this.injuriesCounter,
-      fatalities: this.fatalitiesCounter,
       isEditingAccident: false,
     };
 
@@ -211,9 +186,6 @@ export class SphStep2FormComponent implements OnInit {
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.injuriesCounter = 0;
-    this.fatalitiesCounter = 0;
 
     this.accidentForm.reset();
 
@@ -230,23 +202,25 @@ export class SphStep2FormComponent implements OnInit {
       return;
     }
 
-    const { address, ...registerForm } = this.accidentForm.value;
+    const { address, accidentState, ...registerForm } = this.accidentForm.value;
 
     const saveData: SphFormAccidentModel = {
       ...registerForm,
-      address: this.selectedAddress,
-      accidentState: this.selectedAddress.state,
-      injuries: this.injuriesCounter,
-      fatalities: this.fatalitiesCounter,
+      accidentLocation: this.selectedAddress
+        ? this.selectedAddress
+        : this.editingCardAddress,
+      accidentState: this.selectedAddress
+        ? this.selectedAddress.state
+        : this.editingCardAddress.state,
       isEditingAccident: false,
     };
+
+    this.hazmatSpillRadios[0].checked = false;
+    this.hazmatSpillRadios[1].checked = false;
 
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isAccidentEdited = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
 
     this.accidentForm.reset();
 
@@ -262,9 +236,6 @@ export class SphStep2FormComponent implements OnInit {
 
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
-
-    this.fatalitiesCounter = 0;
-    this.injuriesCounter = 0;
 
     this.accidentForm.reset();
 

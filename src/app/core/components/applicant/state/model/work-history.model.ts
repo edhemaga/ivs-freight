@@ -7,7 +7,8 @@ export interface WorkHistoryModel {
   toDate: string;
   employerPhone: string;
   employerEmail: string;
-  employerAddress: string;
+  employerFax: string;
+  employerAddress: any;
   employerAddressUnit: string;
   isDrivingPosition: boolean;
   truckType?: string;

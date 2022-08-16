@@ -20,12 +20,15 @@ export interface UpdateTerminalCommand {
     name?: string | null;
     address?: AddressEntity;
     phone?: string | null;
+    extensionPhone?: string | null;
     email?: string | null;
     officeChecked?: boolean;
     officePhone?: string | null;
+    officeExtPhone?: string | null;
     officeEmail?: string | null;
     parkingChecked?: boolean;
     parkingPhone?: string | null;
+    parkingExtPhone?: string | null;
     parkingEmail?: string | null;
     terminalParkingSlot?: string | null;
     terminalFullParkingSlot?: string | null;
@@ -33,6 +36,7 @@ export interface UpdateTerminalCommand {
     securityCamera?: boolean | null;
     warehouseChecked?: boolean;
     warehousePhone?: string | null;
+    warehouseExtPhone?: string | null;
     warehouseEmail?: string | null;
     fuelStationChecked?: boolean;
     rent?: number | null;

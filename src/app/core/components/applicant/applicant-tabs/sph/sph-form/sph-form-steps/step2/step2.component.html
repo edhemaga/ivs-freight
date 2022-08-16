@@ -100,7 +100,7 @@
             <div
               class="d-flex align-items-center justify-content-between w-100"
             >
-              <div Class=" title-box">
+              <div Class="title-box">
                 <p class="m-0 ta-font-regular">
                   {{ question.title }}
                   <span class="required-star">*</span>
@@ -425,7 +425,6 @@
           >
             <app-sph-step2-form
               [isEditing]="isEditing"
-              [isAccidentEdited]="isAccidentEdited"
               [formValuesToPatch]="formValuesToPatch"
               (formValuesEmitter)="getAccidentFormValues($event)"
               (cancelFormEditingEmitter)="cancelAccidentEditing($event)"

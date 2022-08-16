@@ -63,13 +63,22 @@
         margin-bottom: 6px;
         padding-left: 6px;
 
-        .license-title-box,
-        .state-title-box,
-        .class-title-box,
-        .date-title-box {
-          p {
+        p {
+          color: $bw5;
+          font-size: 12px;
+
+          &::-moz-selection {
             color: $bw5;
-            font-size: 12px;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          &::selection {
+            color: $bw5;
+            background: rgb(145, 145, 145, 0.2);
+          }
+
+          span {
+            color: $progress-danger;
 
             &::-moz-selection {
               color: $bw5;
@@ -80,22 +89,44 @@
               color: $bw5;
               background: rgb(145, 145, 145, 0.2);
             }
+          }
+        }
+
+        &-feedback {
+          p {
+            color: $bw4;
+            font-size: 12px;
+
+            &::-moz-selection {
+              color: $bw4;
+              background: rgb(183, 183, 183, 0.2);
+            }
+
+            &::selection {
+              color: $bw4;
+              background: rgb(183, 183, 183, 0.2);
+            }
 
             span {
-              color: $progress-danger;
+              color: $bw4;
 
               &::-moz-selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2);
               }
 
               &::selection {
-                color: $bw5;
-                background: rgb(145, 145, 145, 0.2);
+                color: $bw4;
+                background: rgb(183, 183, 183, 0.2);
               }
             }
           }
+        }
 
+        .license-title-box,
+        .state-title-box,
+        .class-title-box,
+        .date-title-box {
           &.license-title-box {
             width: 84px;
             margin-right: 116px;
@@ -121,20 +152,24 @@
         width: 100%;
         height: 26px;
         padding: 4px 6px;
-        background-color: $ta-light-grey-4;
+        background: $ta-light-grey-4;
         border-radius: 2px;
         margin-bottom: 2px;
         text-transform: uppercase;
-        color: $bw6-2;
         font-size: 14px;
         transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
         &:hover {
           background: $bw2;
-          color: $ta-light-grey-3;
+
+          p {
+            color: $ta-light-grey-3;
+          }
         }
 
         p {
+          color: $bw6-2;
+
           &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
@@ -143,6 +178,32 @@
           &::selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
+          }
+        }
+
+        &-feedback {
+          background: $ta-light-grey-7;
+
+          &:hover {
+            background: $ta-light-grey-7;
+
+            p {
+              color: $bw5;
+            }
+          }
+
+          p {
+            color: $bw5;
+
+            &::-moz-selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
+
+            &::selection {
+              color: $bw5;
+              background: rgb(145, 145, 145, 0.2);
+            }
           }
         }
 
@@ -187,6 +248,17 @@
 
     .violations-view-container {
       width: 616px;
+
+      .line-container {
+        position: relative;
+
+        .review-feedback-container {
+          position: absolute;
+          top: 0;
+          right: -435px;
+          width: 429px;
+        }
+      }
 
       .title-container {
         width: 100%;
@@ -253,27 +325,34 @@
         margin-bottom: 2px;
         padding: 4px 6px;
         border-radius: 2px;
-        background: $bw1;
+        background: $ta-light-grey-4;
         color: $bw6-2;
         transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
 
-        &:hover {
-          background: $bw2;
-          color: $ta-light-grey-3;
-        }
+        .info-btn-container {
+          &:hover {
+            background: $ta-light-grey-4;
+            color: $ta-light-grey-3;
+          }
 
-        &:hover > .date-box > .icon-box > .date-icon,
-        &:hover > .location-box > .icon-box > .location-icon {
-          svg {
-            path {
-              fill: $ta-light-blue !important;
+          &:hover .btn-container {
+            opacity: 1;
+            visibility: visible !important;
+          }
+
+          &:hover .btn-container.active {
+            .edit-icon,
+            .delete-icon {
+              display: none !important;
+            }
+
+            .review-icon-box {
+              .review-icon {
+                visibility: visible !important;
+                opacity: 1 !important;
+              }
             }
           }
-        }
-
-        &:hover > .btn-container {
-          visibility: visible !important;
-          opacity: 1 !important;
         }
 
         p {
@@ -318,6 +397,10 @@
           }
         }
 
+        .review-icon-box {
+          margin-left: 25px;
+        }
+
         .btn-container {
           width: 42px;
           margin-left: auto !important;
@@ -325,8 +408,32 @@
           opacity: 0;
           transition: opacity 0.2s ease-in-out;
 
+          &.active {
+            visibility: visible !important;
+            opacity: 1 !important;
+
+            .edit-icon,
+            .delete-icon,
+            .review-icon {
+              visibility: hidden !important;
+              opacity: 0 !important;
+              user-select: none !important;
+
+              &.edit-icon,
+              &.delete-icon {
+                display: none !important;
+              }
+
+              &.review-icon.active {
+                visibility: visible !important;
+                opacity: 1 !important;
+              }
+            }
+          }
+
           .edit-icon,
-          .delete-icon {
+          .delete-icon,
+          .review-icon {
             cursor: pointer;
 
             &:hover {
@@ -343,10 +450,48 @@
                 fill: $bw4;
               }
             }
-          }
 
-          .edit-icon {
-            margin-right: 6px;
+            &.edit-icon {
+              margin-right: 6px;
+            }
+
+            &.review-icon {
+              svg {
+                path {
+                  transition: fill 0.3s ease-in-out;
+                  fill: $ta-red-2 !important;
+                }
+
+                rect {
+                  transition: fill 0.3s ease-in-out;
+                  fill: $ta-light-grey-4 !important;
+                }
+              }
+
+              &:hover {
+                svg {
+                  path {
+                    fill: $white !important;
+                  }
+
+                  rect {
+                    fill: $ta-red-2 !important;
+                  }
+                }
+              }
+
+              &.active {
+                svg {
+                  path {
+                    fill: $white !important;
+                  }
+
+                  rect {
+                    fill: $ta-red-3 !important;
+                  }
+                }
+              }
+            }
           }
         }
       }

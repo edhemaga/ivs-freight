@@ -82,17 +82,12 @@ export const calculateParkingSlot = (
 
 //------------------------------- DATE TO BACKEND -------------------------------
 export const convertDateToBackend = (date: string) => {
-  console.log('convertDateToBackend original date', date);
-  console.log(
-    'convertDateToBackend converted date',
-    moment(new Date(date)).toISOString()
-  );
   return moment(new Date(date)).toISOString();
 };
 
 //------------------------------- DATE FROM BACKEND -------------------------------
 export const convertDateFromBackend = (date: string) => {
-  return moment(new Date(date)).format('DD-MM-YYYY');
+  return moment(new Date(date)).format('MM-DD-YYYY');
 };
 
 //------------------------------- Convert thousand separator in number -------------------------------

@@ -74,9 +74,11 @@ export class TruckassistTableToolbarComponent
   maxToolbarWidth: number = 0;
   inactiveTimeOutInterval: any;
   timeOutToaggleColumn: any;
+  columnsOptions: any[] = [];
 
   constructor(private tableService: TruckassistTableService) {}
 
+  // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.getSelectedTabTableData();
 
@@ -110,6 +112,7 @@ export class TruckassistTableToolbarComponent
       });
   }
 
+  // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.options?.firstChange && changes?.options) {
       this.options = changes.options.currentValue;
@@ -143,6 +146,7 @@ export class TruckassistTableToolbarComponent
     }
   }
 
+  // Get Toolbar Width
   getToolbarWidth() {
     const tableContainer = document.querySelector('.table-container');
 
@@ -155,9 +159,12 @@ export class TruckassistTableToolbarComponent
     }
   }
 
+  // Set Toolbar Width
   setToolbarWidth() {
     let columnsSumWidth = 0,
       hasMinWidth = false;
+
+    this.columnsOptions = [];
 
     this.columns.map((c) => {
       if (!c.hidden) {
@@ -167,11 +174,21 @@ export class TruckassistTableToolbarComponent
       if (c.minWidth) {
         hasMinWidth = true;
       }
+
+      if (
+        c.ngTemplate !== 'checkbox' &&
+        c.ngTemplate !== 'attachments' &&
+        c.ngTemplate !== 'note' &&
+        c.ngTemplate !== 'actions'
+      ) {
+        this.columnsOptions.push(c);
+      }
     });
 
     this.toolbarWidth = hasMinWidth ? columnsSumWidth + 12 + 'px' : 100 + '%';
   }
 
+  // Select Tab
   onSelectTab(selectedTabData: any) {
     this.toolBarAction.emit({
       action: 'tab-selected',
@@ -179,12 +196,14 @@ export class TruckassistTableToolbarComponent
     });
   }
 
+  // Toolbar Action
   onToolBarAction(actionType: string) {
     this.toolBarAction.emit({
       action: actionType,
     });
   }
 
+  // Chnage View Mode
   changeModeView(modeView: string) {
     this.toolBarAction.emit({
       action: 'view-mode',
@@ -192,10 +211,12 @@ export class TruckassistTableToolbarComponent
     });
   }
 
+  // Delete Selected Rows
   deleteSelectedRows() {
     this.tableService.sendDeleteSelectedRows(this.tableRowsSelected);
   }
 
+  // Get Tab Data For Selected Tab
   getSelectedTabTableData() {
     if (this.tableData.length) {
       this.activeTableData = this.tableData.find(
@@ -204,6 +225,7 @@ export class TruckassistTableToolbarComponent
     }
   }
 
+  // Show Toolbar Options Popup
   onShowOptions(optionsPopup: any) {
     this.optionsPopup = optionsPopup;
 
@@ -217,6 +239,7 @@ export class TruckassistTableToolbarComponent
     this.optionsPopupContent[4].active = false;
   }
 
+  //  On Toolbar Option Actions
   onOptions(action: any) {
     if (action.text === 'Unlock table' || action.text === 'Lock table') {
       this.tableLocked = !this.tableLocked;
@@ -251,12 +274,16 @@ export class TruckassistTableToolbarComponent
     }
   }
 
+  // Reset Inactivity Timer
   resetInactivityTimer() {
     clearTimeout(this.inactiveTimeOutInterval);
 
-    this.setInactivityTimer();
+    setTimeout(() => {
+      this.setInactivityTimer();
+    }, 100);
   }
 
+  // Set Inactivity Timer
   setInactivityTimer() {
     this.inactiveTimeOutInterval = setTimeout(() => {
       this.tableLocked = true;
@@ -271,23 +298,23 @@ export class TruckassistTableToolbarComponent
     }, 60000);
   }
 
+  // Toaggle Column
   onToaggleColumn(column: any, index: number) {
     clearTimeout(this.timeOutToaggleColumn);
-    
+
     this.timeOutToaggleColumn = setTimeout(() => {
       if (!column.isPined) {
         column.hidden = !column.hidden;
-  
-        this.resetInactivityTimer();
-  
+
         this.tableService.sendToaggleColumn({
           column: column,
           index: index,
         });
       }
-    }, 10)
+    }, 10);
   }
 
+  // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendUnlockTable({});
     this.tableService.sendToaggleColumn(null);

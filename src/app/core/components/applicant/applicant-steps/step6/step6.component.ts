@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { anyInputInLineIncorrect } from '../../state/utils/utils';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { Applicant } from '../../state/model/applicant.model';
@@ -21,6 +23,7 @@ export class Step6Component implements OnInit, OnDestroy {
   public applicant: Applicant | undefined;
 
   public educationForm: FormGroup;
+  public contactForm: FormGroup;
 
   public contactsArray: ContactModel[] = [];
 
@@ -167,11 +170,63 @@ export class Step6Component implements OnInit, OnDestroy {
   public highlightGrade: number = -1;
 
   public isEditing: boolean = false;
-  public isContactEdited: boolean = false;
 
   public helperIndex: number = 2;
 
   public formValuesToPatch: any;
+
+  public openAnnotationArray: {
+    lineIndex?: number;
+    lineInputs?: boolean[];
+    displayAnnotationButton?: boolean;
+    displayAnnotationTextArea?: boolean;
+  }[] = [
+    {
+      lineIndex: 0,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 1,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 2,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 3,
+      lineInputs: [false, false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 4,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {
+      lineIndex: 5,
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    },
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ];
 
   //
 
@@ -208,6 +263,25 @@ export class Step6Component implements OnInit, OnDestroy {
       driverForCompanyToExplain: [null, Validators.required],
       unableForJob: [null, Validators.required],
       unableForJobExplain: [null, Validators.required],
+
+      questionReview1: [null],
+      questionReview2: [null],
+      questionReview3: [null],
+      questionReview4: [null],
+      questionReview5: [null],
+    });
+
+    this.contactForm = this.formBuilder.group({
+      cardReview1: [null],
+      cardReview2: [null],
+      cardReview3: [null],
+      cardReview4: [null],
+      cardReview5: [null],
+      cardReview6: [null],
+      cardReview7: [null],
+      cardReview8: [null],
+      cardReview9: [null],
+      cardReview10: [null],
     });
   }
 
@@ -224,10 +298,20 @@ export class Step6Component implements OnInit, OnDestroy {
       .patchValue(selectedCheckbox.label);
   }
 
-  public getContactFormValues(event: any): void {
-    this.contactsArray = [...this.contactsArray, event];
+  public onSchoolGradeClick(gradeIndex: number): void {
+    if (this.selectedMode !== 'APPLICANT_MODE') {
+      return;
+    }
 
-    this.helperIndex = 2;
+    this.selectedGrade = gradeIndex;
+    this.selectedCollegeGrade = -1;
+  }
+
+  public onCollegeGradeClick(gradeIndex: number): void {
+    if (this.selectedMode !== 'APPLICANT_MODE') {
+      return;
+    }
+    this.selectedCollegeGrade = gradeIndex;
   }
 
   public onDeleteContact(index: number): void {
@@ -245,8 +329,6 @@ export class Step6Component implements OnInit, OnDestroy {
 
     this.helperIndex = index;
 
-    this.isContactEdited = false;
-
     this.isEditing = true;
     this.contactsArray[index].isEditingContact = true;
 
@@ -255,6 +337,27 @@ export class Step6Component implements OnInit, OnDestroy {
     const selectedContact = this.contactsArray[index];
 
     this.formValuesToPatch = selectedContact;
+  }
+
+  public getContactFormValues(event: any): void {
+    this.contactsArray = [...this.contactsArray, event];
+
+    this.helperIndex = 2;
+
+    const firstEmptyObjectInList = this.openAnnotationArray.find(
+      (item) => Object.keys(item).length === 0
+    );
+
+    const indexOfFirstEmptyObjectInList = this.openAnnotationArray.indexOf(
+      firstEmptyObjectInList
+    );
+
+    this.openAnnotationArray[indexOfFirstEmptyObjectInList] = {
+      lineIndex: this.openAnnotationArray.indexOf(firstEmptyObjectInList),
+      lineInputs: [false],
+      displayAnnotationButton: false,
+      displayAnnotationTextArea: false,
+    };
   }
 
   public cancelContactEditing(event: any): void {
@@ -266,11 +369,71 @@ export class Step6Component implements OnInit, OnDestroy {
   }
 
   public saveEditedContact(event: any): void {
+    this.isEditing = false;
+    this.contactsArray[this.selectedContactIndex].isEditingContact = false;
+
     this.contactsArray[this.selectedContactIndex] = event;
 
-    this.isEditing = false;
-
     this.helperIndex = 2;
+    this.selectedContactIndex = -1;
+  }
+
+  public incorrectInput(
+    event: any,
+    inputIndex: number,
+    lineIndex: number,
+    type?: string
+  ): void {
+    const selectedInputsLine = this.openAnnotationArray.find(
+      (item) => item.lineIndex === lineIndex
+    );
+
+    if (type === 'card') {
+      selectedInputsLine.lineInputs[inputIndex] =
+        !selectedInputsLine.lineInputs[inputIndex];
+
+      selectedInputsLine.displayAnnotationButton =
+        !selectedInputsLine.displayAnnotationButton;
+
+      if (selectedInputsLine.displayAnnotationTextArea) {
+        selectedInputsLine.displayAnnotationButton = false;
+        selectedInputsLine.displayAnnotationTextArea = false;
+      }
+    } else {
+      if (event) {
+        selectedInputsLine.lineInputs[inputIndex] = true;
+
+        if (!selectedInputsLine.displayAnnotationTextArea) {
+          selectedInputsLine.displayAnnotationButton = true;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+
+      if (!event) {
+        selectedInputsLine.lineInputs[inputIndex] = false;
+
+        const lineInputItems = selectedInputsLine.lineInputs;
+        const isAnyInputInLineIncorrect =
+          anyInputInLineIncorrect(lineInputItems);
+
+        if (!isAnyInputInLineIncorrect) {
+          selectedInputsLine.displayAnnotationButton = false;
+          selectedInputsLine.displayAnnotationTextArea = false;
+        }
+      }
+    }
+  }
+
+  public getAnnotationBtnClickValue(event: any): void {
+    if (event.type === 'open') {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = false;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        true;
+    } else {
+      this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
+      this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
+        false;
+    }
   }
 
   private formFIlling(): void {

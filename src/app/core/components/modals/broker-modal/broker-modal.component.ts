@@ -185,7 +185,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       mcNumber: [null, Validators.maxLength(8)],
       ein: [null, [einNumberRegex]],
       email: [null, [emailRegex]],
-      phone: [null, phoneRegex],
+      phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
       physicalAddress: [null, Validators.required],
       physicalAddressUnit: [null],
@@ -223,13 +223,31 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     return this.brokerForm.get('brokerContacts') as FormArray;
   }
 
-  private createBrokerContacts(): FormGroup {
+  private createBrokerContacts(data?: {
+    contactName: string;
+    departmentId: string;
+    phone: string;
+    extensionPhone: string;
+    email: string;
+  }): FormGroup {
     return this.formBuilder.group({
-      contactName: [null, Validators.required],
-      departmentId: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null, Validators.maxLength(3)],
-      email: [null, emailRegex],
+      contactName: [
+        data?.contactName ? data.contactName : null,
+        Validators.required,
+      ],
+      departmentId: [
+        data?.departmentId ? data.departmentId : null,
+        Validators.required,
+      ],
+      phone: [
+        data?.phone ? data.phone : null,
+        [Validators.required, phoneRegex],
+      ],
+      extensionPhone: [
+        data?.extensionPhone ? data.extensionPhone : null,
+        Validators.maxLength(3),
+      ],
+      email: [data?.email ? data.email : null, emailRegex],
     });
   }
 
@@ -929,7 +947,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           if (reasponse.brokerContacts) {
             for (const contact of reasponse.brokerContacts) {
               this.brokerContacts.push(
-                this.formBuilder.group({
+                this.createBrokerContacts({
                   contactName: contact.contactName,
                   departmentId: contact.department.name,
                   phone: contact.phone,
@@ -937,6 +955,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                   email: contact.email,
                 })
               );
+              // this.brokerContacts.push(
+              //   this.formBuilder.group({
+              //     contactName: contact.contactName,
+              //     departmentId: contact.department.name,
+              //     phone: contact.phone,
+              //     extensionPhone: contact.extensionPhone,
+              //     email: contact.email,
+              //   })
+              // );
               this.selectedContractDepartmentFormArray.push(contact.department);
             }
           }

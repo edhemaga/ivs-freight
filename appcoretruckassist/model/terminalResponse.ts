@@ -19,12 +19,15 @@ export interface TerminalResponse {
     name?: string | null;
     email?: string | null;
     phone?: string | null;
+    extensionPhone?: string | null;
     address?: AddressEntity;
     officeChecked?: boolean;
     officePhone?: string | null;
+    officeExtPhone?: string | null;
     officeEmail?: string | null;
     parkingChecked?: boolean;
     parkingPhone?: string | null;
+    parkingExtPhone?: string | null;
     parkingEmail?: string | null;
     terminalParkingSlot?: string | null;
     terminalFullParkingSlot?: string | null;
@@ -32,6 +35,7 @@ export interface TerminalResponse {
     securityCamera?: boolean | null;
     warehouseChecked?: boolean;
     warehousePhone?: string | null;
+    warehouseExtPhone?: string | null;
     warehouseEmail?: string | null;
     fuelStationChecked?: boolean;
     rent?: number | null;

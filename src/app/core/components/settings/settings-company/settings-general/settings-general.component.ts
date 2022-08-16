@@ -1,4 +1,4 @@
-import { SettingsStoreService } from './../../state/settings.service';
+import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import {
   Component,
   EventEmitter,
@@ -37,7 +37,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   public companyDivision: boolean = false;
   public hasArrow: boolean;
 
-  constructor(private settingsStoreService: SettingsStoreService) {}
+  constructor(private settingsCompanyService: SettingsCompanyService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.companyData?.currentValue?.divisions.length < 1) {
@@ -74,7 +74,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
-    this.settingsStoreService.onModalAction(modal);
+    this.settingsCompanyService.onModalAction(modal);
   }
 
   public identity(index: number, item: any): number {

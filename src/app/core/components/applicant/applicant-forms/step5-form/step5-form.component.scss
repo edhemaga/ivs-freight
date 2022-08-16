@@ -1,6 +1,17 @@
 @import 'src/theme/variables.scss';
 
 .step-form {
+  .line-container {
+    position: relative;
+
+    .review-feedback-container {
+      position: absolute;
+      top: 0;
+      right: -435px;
+      width: 429px;
+    }
+  }
+
   .group {
     margin-bottom: 32px;
     margin-right: 12px;
@@ -21,17 +32,18 @@
 
   .location-group {
     width: 255px;
+    margin-right: 0;
   }
 
   .description-group {
     width: 616px;
     margin-bottom: 22px;
+    margin-right: 0;
   }
 
   .btn-container {
-    margin-bottom: 22px;
-
     .add-btn {
+      margin-bottom: 22px;
       height: 26px;
       padding: 4px 8px;
       border: none;
@@ -91,7 +103,7 @@
       }
     }
 
-    .btn-container {
+    .btn-container-inside {
       .add-btn {
         height: 26px;
         padding: 4px 8px;
