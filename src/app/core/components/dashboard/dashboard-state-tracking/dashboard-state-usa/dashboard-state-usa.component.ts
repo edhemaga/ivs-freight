@@ -8,6 +8,8 @@ import {Component, Input, OnInit} from '@angular/core';
 export class DashboardStateUsaComponent implements OnInit {
   @Input() statesColor: any;
   hoveredItem: any;
+  hoveredContry: string = "";
+  hoveredContryLetter: string = "";
 
   constructor() {
   }
@@ -15,8 +17,10 @@ export class DashboardStateUsaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  setPopoverData(country: string): void {
+  setPopoverData(country: string, countryLetters?: string): void {
     this.hoveredItem = this.statesColor[country];
+    this.hoveredContry = `#${country}`;
+    this.hoveredContryLetter = `#${countryLetters}`;
   }
 
 }
