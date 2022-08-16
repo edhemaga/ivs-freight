@@ -17,6 +17,7 @@ api/companyUser.service.ts
 api/dispatch.service.ts
 api/driver.service.ts
 api/employmentHistory.service.ts
+api/event.service.ts
 api/geolocation.service.ts
 api/inspection.service.ts
 api/load.service.ts
@@ -102,7 +103,6 @@ model/companyUserResponse.ts
 model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
-model/countryType.ts
 model/createBankCommand.ts
 model/createBrokerCommand.ts
 model/createCdlCommand.ts
@@ -116,6 +116,7 @@ model/createCompanyUserCommand.ts
 model/createDispatchCommand.ts
 model/createDivisionCompanyCommand.ts
 model/createDriverCommand.ts
+model/createEventCommand.ts
 model/createInspectionCommand.ts
 model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
@@ -170,6 +171,9 @@ model/editTestCommand.ts
 model/employmentHistoryResponse.ts
 model/entityTypeReview.ts
 model/enumValue.ts
+model/eventModalResponse.ts
+model/eventResponse.ts
+model/eventType.ts
 model/factoringCompany.ts
 model/fleetType.ts
 model/forgotPasswordCommand.ts
@@ -268,6 +272,7 @@ model/ratingSetResponse.ts
 model/reSendSignUpUserCommand.ts
 model/reSendVerifyDriverCommand.ts
 model/refreshTokenCommand.ts
+model/registrationModalResponse.ts
 model/registrationResponse.ts
 model/renewCdlCommand.ts
 model/repairByUnitResponse.ts
@@ -334,6 +339,7 @@ model/timeOnly.ts
 model/timeSpan.ts
 model/timeType.ts
 model/tireSizeResponse.ts
+model/titleModalResponse.ts
 model/titleResponse.ts
 model/todoListResponse.ts
 model/todoModalResponse.ts
@@ -382,6 +388,7 @@ model/updateDispatchStatusCommand.ts
 model/updateDivisionCompanyCommand.ts
 model/updateDriverCommand.ts
 model/updateEmploymentHistoryCommand.ts
+model/updateEventCommand.ts
 model/updateFactoringCompanyCommand.ts
 model/updateInspectionCommand.ts
 model/updateInsurancePolicyAddonCommand.ts
