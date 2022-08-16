@@ -37,19 +37,12 @@ export class ShipperTService {
           next: (shipper: ShipperResponse | any) => {
             this.shipperStore.add(shipper);
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              tab: 'shipper',
-              data: shipper,
-              id: shipper.id,
-            });
-
             const brokerShipperCount = JSON.parse(
               localStorage.getItem('brokerShipperTableCount')
             );
-    
+
             brokerShipperCount.shipper++;
-    
+
             localStorage.setItem(
               'brokerShipperTableCount',
               JSON.stringify({
@@ -57,6 +50,13 @@ export class ShipperTService {
                 shipper: brokerShipperCount.shipper,
               })
             );
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              tab: 'shipper',
+              data: shipper,
+              id: shipper.id,
+            });
 
             subShipper.unsubscribe();
           },
@@ -114,7 +114,17 @@ export class ShipperTService {
     search1?: string,
     search2?: string
   ): Observable<ShipperListResponse> {
-    return this.shipperService.apiShipperListGet(ban, dnu, pageIndex, pageSize, companyId, sort, search, search1, search2);
+    return this.shipperService.apiShipperListGet(
+      ban,
+      dnu,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   // Get Shipper By Id
@@ -180,7 +190,7 @@ export class ShipperTService {
   public getShipperDropdowns(): Observable<ShipperModalResponse> {
     return this.shipperService.apiShipperModalGet();
   }
-  
+
   public getShipperMap(): Observable<any> {
     return this.shipperService.apiShipperMapGet();
   }

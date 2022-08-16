@@ -22,7 +22,7 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface CompanyResponse { 
-    id?: number;
+    id?: number | null;
     name?: string | null;
     usDot?: string | null;
     ein?: string | null;

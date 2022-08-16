@@ -9,15 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
-export interface CreateRegistrationCommand { 
-    truckId?: number | null;
-    trailerId?: number | null;
-    licensePlate?: string | null;
-    stateId?: number;
-    issueDate?: string;
-    expDate?: string;
-    note?: string | null;
+export interface EventModalResponse { 
+    eventType?: Array<EnumValue> | null;
+    recurence?: Array<EnumValue> | null;
+    timesRepeat?: Array<EnumValue> | null;
 }
 

@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { StateResponse } from './stateResponse';
 
 
 export interface TitleResponse { 
     id?: number;
     number?: string | null;
     note?: string | null;
+    state?: StateResponse;
+    purchaseDate?: string;
     issueDate?: string;
 }
 

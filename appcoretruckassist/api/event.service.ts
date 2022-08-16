@@ -17,12 +17,12 @@ import { HttpClient, HttpHeaders, HttpParams,
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
-import { CreateRegistrationCommand } from '../model/models';
+import { CreateEventCommand } from '../model/models';
 import { CreateResponse } from '../model/models';
+import { EventModalResponse } from '../model/models';
+import { EventResponse } from '../model/models';
 import { ProblemDetails } from '../model/models';
-import { RegistrationModalResponse } from '../model/models';
-import { RegistrationResponse } from '../model/models';
-import { UpdateRegistrationCommand } from '../model/models';
+import { UpdateEventCommand } from '../model/models';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -32,7 +32,7 @@ import { Configuration }                                     from '../configurat
 @Injectable({
   providedIn: 'root'
 })
-export class RegistrationService {
+export class EventService {
 
     protected basePath = 'http://localhost';
     public defaultHeaders = new HttpHeaders();
@@ -94,12 +94,12 @@ export class RegistrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiRegistrationIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiRegistrationIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiRegistrationIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiEventIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiEventIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiEventIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiRegistrationIdDelete.');
+            throw new Error('Required parameter id was null or undefined when calling apiEventIdDelete.');
         }
 
         let headers = this.defaultHeaders;
@@ -131,7 +131,7 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/registration/${encodeURIComponent(String(id))}`,
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/Event/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -147,12 +147,12 @@ export class RegistrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RegistrationResponse>;
-    public apiRegistrationIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RegistrationResponse>>;
-    public apiRegistrationIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RegistrationResponse>>;
-    public apiRegistrationIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<EventResponse>;
+    public apiEventIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<EventResponse>>;
+    public apiEventIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<EventResponse>>;
+    public apiEventIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiRegistrationIdGet.');
+            throw new Error('Required parameter id was null or undefined when calling apiEventIdGet.');
         }
 
         let headers = this.defaultHeaders;
@@ -184,7 +184,7 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<RegistrationResponse>(`${this.configuration.basePath}/api/registration/${encodeURIComponent(String(id))}`,
+        return this.httpClient.get<EventResponse>(`${this.configuration.basePath}/api/Event/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -196,24 +196,54 @@ export class RegistrationService {
     }
 
     /**
-     * @param truckId 
-     * @param trailerId 
+     * @param eventSpecParamsCompanyUserId 
+     * @param eventSpecParamsPageIndex 
+     * @param eventSpecParamsPageSize 
+     * @param eventSpecParamsCompanyId 
+     * @param eventSpecParamsSort 
+     * @param eventSpecParamsSearch 
+     * @param eventSpecParamsSearch1 
+     * @param eventSpecParamsSearch2 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationListGet(truckId?: number, trailerId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<RegistrationResponse>>;
-    public apiRegistrationListGet(truckId?: number, trailerId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<RegistrationResponse>>>;
-    public apiRegistrationListGet(truckId?: number, trailerId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<RegistrationResponse>>>;
-    public apiRegistrationListGet(truckId?: number, trailerId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<EventResponse>>;
+    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<EventResponse>>>;
+    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<EventResponse>>>;
+    public apiEventListGet(eventSpecParamsCompanyUserId?: number, eventSpecParamsPageIndex?: number, eventSpecParamsPageSize?: number, eventSpecParamsCompanyId?: number, eventSpecParamsSort?: string, eventSpecParamsSearch?: string, eventSpecParamsSearch1?: string, eventSpecParamsSearch2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (truckId !== undefined && truckId !== null) {
+        if (eventSpecParamsCompanyUserId !== undefined && eventSpecParamsCompanyUserId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>truckId, 'TruckId');
+            <any>eventSpecParamsCompanyUserId, 'EventSpecParams.CompanyUserId');
         }
-        if (trailerId !== undefined && trailerId !== null) {
+        if (eventSpecParamsPageIndex !== undefined && eventSpecParamsPageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
-            <any>trailerId, 'TrailerId');
+            <any>eventSpecParamsPageIndex, 'EventSpecParams.PageIndex');
+        }
+        if (eventSpecParamsPageSize !== undefined && eventSpecParamsPageSize !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsPageSize, 'EventSpecParams.PageSize');
+        }
+        if (eventSpecParamsCompanyId !== undefined && eventSpecParamsCompanyId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsCompanyId, 'EventSpecParams.CompanyId');
+        }
+        if (eventSpecParamsSort !== undefined && eventSpecParamsSort !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsSort, 'EventSpecParams.Sort');
+        }
+        if (eventSpecParamsSearch !== undefined && eventSpecParamsSearch !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsSearch, 'EventSpecParams.Search');
+        }
+        if (eventSpecParamsSearch1 !== undefined && eventSpecParamsSearch1 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsSearch1, 'EventSpecParams.Search1');
+        }
+        if (eventSpecParamsSearch2 !== undefined && eventSpecParamsSearch2 !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>eventSpecParamsSearch2, 'EventSpecParams.Search2');
         }
 
         let headers = this.defaultHeaders;
@@ -245,7 +275,7 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<Array<RegistrationResponse>>(`${this.configuration.basePath}/api/registration/list`,
+        return this.httpClient.get<Array<EventResponse>>(`${this.configuration.basePath}/api/Event/list`,
             {
                 params: queryParameters,
                 responseType: <any>responseType,
@@ -261,10 +291,10 @@ export class RegistrationService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<RegistrationModalResponse>;
-    public apiRegistrationModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<RegistrationModalResponse>>;
-    public apiRegistrationModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<RegistrationModalResponse>>;
-    public apiRegistrationModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<EventModalResponse>;
+    public apiEventModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<EventModalResponse>>;
+    public apiEventModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<EventModalResponse>>;
+    public apiEventModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -295,7 +325,7 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<RegistrationModalResponse>(`${this.configuration.basePath}/api/registration/modal`,
+        return this.httpClient.get<EventModalResponse>(`${this.configuration.basePath}/api/Event/modal`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -307,14 +337,14 @@ export class RegistrationService {
     }
 
     /**
-     * @param createRegistrationCommand 
+     * @param createEventCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
-    public apiRegistrationPost(createRegistrationCommand?: CreateRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventPost(createEventCommand?: CreateEventCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<CreateResponse>;
+    public apiEventPost(createEventCommand?: CreateEventCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<CreateResponse>>;
+    public apiEventPost(createEventCommand?: CreateEventCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<CreateResponse>>;
+    public apiEventPost(createEventCommand?: CreateEventCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -356,8 +386,8 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/registration`,
-            createRegistrationCommand,
+        return this.httpClient.post<CreateResponse>(`${this.configuration.basePath}/api/Event`,
+            createEventCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -369,14 +399,14 @@ export class RegistrationService {
     }
 
     /**
-     * @param updateRegistrationCommand 
+     * @param updateEventCommand 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
-    public apiRegistrationPut(updateRegistrationCommand?: UpdateRegistrationCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiEventPut(updateEventCommand?: UpdateEventCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<object>;
+    public apiEventPut(updateEventCommand?: UpdateEventCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<object>>;
+    public apiEventPut(updateEventCommand?: UpdateEventCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<object>>;
+    public apiEventPut(updateEventCommand?: UpdateEventCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let headers = this.defaultHeaders;
 
@@ -418,8 +448,8 @@ export class RegistrationService {
             responseType = 'text';
         }
 
-        return this.httpClient.put<object>(`${this.configuration.basePath}/api/registration`,
-            updateRegistrationCommand,
+        return this.httpClient.put<object>(`${this.configuration.basePath}/api/Event`,
+            updateEventCommand,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
