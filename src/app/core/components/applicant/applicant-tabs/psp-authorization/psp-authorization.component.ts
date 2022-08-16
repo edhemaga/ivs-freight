@@ -10,7 +10,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
   styleUrls: ['./psp-authorization.component.scss'],
 })
 export class PspAuthorizationComponent implements OnInit {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public pspAuthorizationForm: FormGroup;
 
@@ -33,6 +33,10 @@ export class PspAuthorizationComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.IS_AUTHORIZE:
         this.pspAuthorizationForm.patchValue({

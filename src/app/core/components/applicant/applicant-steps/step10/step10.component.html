@@ -16,16 +16,24 @@
           [label]="
             '1. Because I must drive as an essential function of my employment or potential employment, I hereby give'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isFirstDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isFirstDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isFirstDisclosure')"
         >
@@ -34,16 +42,6 @@
           Credit Reporting Act (FCRA) and the Federal Driver’s Privacy
           Protection Act (DPPA).
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="0"
-            [reviewFeedbackData]="reviewFeedback[0]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
       <div
@@ -55,31 +53,29 @@
           [label]="
             '2. I acknowledge and understand that my driving record is a consumer report that contains public record'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isSecondDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isSecondDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isSecondDisclosure')"
         >
           information.
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="1"
-            [reviewFeedbackData]="reviewFeedback[1]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
       <div
@@ -91,31 +87,29 @@
           [label]="
             '3. I authorize, without reservation any party or agency contacted by JD FREIGHT Inc. to furnish JD FREIGHT Inc.'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isThirdDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isThirdDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isThirdDisclosure')"
         >
           a copy of my state driving record.
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="2"
-            [reviewFeedbackData]="reviewFeedback[2]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
       <div
@@ -127,31 +121,29 @@
           [label]="
             '4. I understand that I have the right to request a copy of my driving record and to know the source or sources of'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isFourthDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isFourthDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isFourthDisclosure')"
         >
           my driving record, for a two-year period preceding my request.
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="3"
-            [reviewFeedbackData]="reviewFeedback[3]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
       <div
@@ -163,32 +155,30 @@
           [label]="
             '5. This authorization shall remain on file by JD FREIGHT Inc. for the duration of my and will serve as ongoing'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isFifthDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isFifthDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isFifthDisclosure')"
         >
           authorization for JD FREIGHT Inc. to procure my state driving record
           at any time during my employment period.
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="4"
-            [reviewFeedbackData]="reviewFeedback[4]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
       <div
@@ -200,35 +190,38 @@
           [label]="
             '6. I understand that JD FREIGHT Inc. may take adverse action affecting my employment, based on information'
           "
-          [customClass]="'disclosure-release'"
+          [customClass]="
+            selectedMode === 'FEEDBACK_MODE'
+              ? 'applicant-disclosure-release-feedback'
+              : 'disclosure-release'
+          "
         >
         </app-ta-checkbox>
 
         <p
           class="m-0 text-center ta-font-regular"
           [ngStyle]="{
-            color: disclosureReleaseForm.get('isSixthDisclosure').value
-              ? '#3c3c3c'
-              : '#6c6c6c'
+            color:
+              selectedMode !== 'FEEDBACK_MODE' &&
+              disclosureReleaseForm.get('isSixthDisclosure').value
+                ? '#3c3c3c'
+                : selectedMode === 'FEEDBACK_MODE'
+                ? '#919191'
+                : '#6c6c6c'
           }"
           (click)="handleCheckboxParagraphClick('isSixthDisclosure')"
         >
           in my driving record.If such adverse action is taken, I acknowledge
           that my rights are as follows:
         </p>
-
-        <!-- REVIEW AND FEEDBACK -->
-
-        <div class="review-feedback" *ngIf="selectedMode === 'REVIEW_MODE'">
-          <app-applicant-review-feedback
-            [index]="5"
-            [reviewFeedbackData]="reviewFeedback[5]"
-            (sendReview)="onSubmitReview($event)"
-          ></app-applicant-review-feedback>
-        </div>
       </div>
 
-      <div class="d-flex flex-column align-items-center text-center group-text">
+      <div
+        class="d-flex flex-column align-items-center text-center group-text"
+        [ngStyle]="{
+          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+        }"
+      >
         <p class="m-0 ta-font-regular">
           - Employer must notify me in writing of any such adverse action
         </p>

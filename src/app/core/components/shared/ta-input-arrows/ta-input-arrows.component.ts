@@ -12,6 +12,7 @@ export class TaInputArrowsComponent implements ControlValueAccessor {
   @Input() type: string; // 'applicant'
   @Input() required: boolean;
   @Input() inputConfig: ITaInput;
+  @Input() selectedMode?: string;
 
   constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;

@@ -21,7 +21,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
   styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
 

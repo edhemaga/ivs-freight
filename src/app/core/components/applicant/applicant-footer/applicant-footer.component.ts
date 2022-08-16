@@ -7,6 +7,7 @@ import {
   NgZone,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
@@ -111,7 +112,8 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private zone: NgZone,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -259,6 +261,15 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
+  public onSphReceivedCardAction(event: { check: boolean; action: string }) {
+    if (event.action === 'Open SPH') {
+      this.router.navigate([`/sph-form`]);
+    }
+
+    if (event.action === 'download') {
+    }
+  }
+
   public getRequestsBoxHeight(): void {
     this.requestsBoxObserver = new ResizeObserver((entries) => {
       this.zone.run(() => {
@@ -289,11 +300,6 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.companyInfo = data.companyInfo;
       });
-  }
-
-  public onAction(event: { check: boolean; action: string }) {
-    console.log(event);
-    // TODO: Implement your logic for download documents
   }
 
   ngOnDestroy(): void {

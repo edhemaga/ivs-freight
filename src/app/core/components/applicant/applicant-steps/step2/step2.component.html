@@ -1,9 +1,14 @@
 <div class="d-flex flex-column align-items-center step-container">
-  <h1 class="step-title text-center ta-font-bold">Work Experience</h1>
+  <h1 class="m-0 step-title text-center ta-font-bold">Work Experience</h1>
 
   <!-- TOP SECTION -->
 
-  <div class="d-flex justify-content-center text-center top-section">
+  <div
+    class="d-flex justify-content-center text-center"
+    [ngClass]="
+      selectedMode === 'FEEDBACK_MODE' ? 'top-section-feedback' : 'top-section'
+    "
+  >
     <p class="m-0 ta-font-regular">
       In accordance with 391.21 & .23 of the Federal Motor Carrier Safety
       Regulations (FMCSR), an applicant must list all<br />previous work
@@ -21,7 +26,14 @@
       'margin-bottom': workExperienceArray.length ? '22px' : '32px'
     }"
   >
-    <h5 class="m-0 step-subtitle ta-font-bold">
+    <h5
+      class="m-0 ta-font-bold"
+      [ngClass]="
+        selectedMode === 'FEEDBACK_MODE'
+          ? 'step-subtitle step-subtitle-feedback'
+          : 'step-subtitle'
+      "
+    >
       Please list starting with most recent employer, use add employer link if
       needed
     </h5>
@@ -219,13 +231,18 @@
   <div
     class="d-flex justify-content-center work-experience-group"
     [formGroup]="workExperienceForm"
+    [ngStyle]="{
+      'margin-top': selectedMode !== 'APPLICANT_MODE' ? '22px' : '12px'
+    }"
     *ngIf="!isEditing"
   >
     <app-ta-checkbox
       formControlName="noWorkExperience"
       [name]="'noWorkExperience'"
       [label]="'I don’t have work experience'"
-      [customClass]="'bold-12'"
+      [customClass]="
+        selectedMode === 'FEEDBACK_MODE' ? 'applicant-feedback' : 'bold-12'
+      "
     ></app-ta-checkbox>
   </div>
 </div>

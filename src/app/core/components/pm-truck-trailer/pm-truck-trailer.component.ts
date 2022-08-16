@@ -43,12 +43,12 @@ export class PmTruckTrailerComponent implements OnInit {
       });
   }
 
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        viewModeActive: 'List',
         showGeneralPmBtn: true,
       },
       config: {
@@ -86,7 +86,7 @@ export class PmTruckTrailerComponent implements OnInit {
         data: this.getDumyData(8, 'truck'),
         extended: false,
         selectTab: true,
-        gridNameTitle: 'Truck',
+        gridNameTitle: 'PM',
         stateName: 'pm_trucks',
         gridColumns: this.getGridColumns('pm_trucks', this.resetColumns),
       },
@@ -97,7 +97,7 @@ export class PmTruckTrailerComponent implements OnInit {
         data: this.getDumyData(15, 'trailer'),
         extended: false,
         selectTab: true,
-        gridNameTitle: 'Trailer',
+        gridNameTitle: 'PM',
         stateName: 'pm_trailers',
         gridColumns: this.getGridColumns('pm_trailers', this.resetColumns),
       },

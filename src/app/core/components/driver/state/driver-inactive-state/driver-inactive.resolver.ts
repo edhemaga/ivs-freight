@@ -18,29 +18,21 @@ export class DriverInactiveResolver implements Resolve<DriversInactiveState> {
     private driversStore: DriversInactiveStore
   ) {}
   resolve(): Observable<DriversInactiveState | boolean> {
-   /*  return of(true); */
-
-    if (this.driversStore.getValue().ids?.length) {
-      return of(true);
-    } else {
-      return this.driverService
-        .getDrivers(0, 1, 25)
-        .pipe(
-          catchError(() => {
-            return of('No drivers data...');
-          }),
-          tap((driverPagination: DriverListResponse) => {
-            localStorage.setItem(
-              'driverTableCount',
-              JSON.stringify({
-                active: driverPagination.activeCount,
-                inactive: driverPagination.inactiveCount,
-              })
-            );
-
-            this.driversStore.set(driverPagination.pagination.data);
+    return this.driverService.getDrivers(0, 1, 25).pipe(
+      catchError(() => {
+        return of('No drivers data...');
+      }),
+      tap((driverPagination: DriverListResponse) => {
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverPagination.activeCount,
+            inactive: driverPagination.inactiveCount,
           })
         );
-    }
+
+        this.driversStore.set(driverPagination.pagination.data);
+      })
+    );
   }
 }
