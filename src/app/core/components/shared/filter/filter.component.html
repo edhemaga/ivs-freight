@@ -6,13 +6,13 @@ class="user-icon"
 [popoverClass]="'filterpopovermain'"
 autoClose="outside"
 [container]="'body'"
-[ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length }"
+[ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length || rangeValue > 0 }"
 >
     <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
     <svg-icon [src]=" icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">{{selectedUser.length}}</div>
     <div *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0" class="active-filter-num">{{usaSelectedStates.length + canadaSelectedStates.length}}</div> 
-    <div *ngIf="selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0" 
+    <div *ngIf="selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0 || rangeValue > 0 " 
         class="active-filter-num clear-filter" 
         ngbTooltip
         mainTooltip="Clear"
@@ -763,13 +763,86 @@ autoClose="outside"
             <div class="user-title-text">{{filterTitle}}</div>
         </div>
         <div class="border-filter top-border-margin"></div>
-        <div class="filter-middle-holder">
-            <input type="range" min="0" max="10" class="rangeInput" value="{{rangeValue}}"/>
+        <div class="filter-middle-holder" [class.emptySliderState]="rangeValue == 0"> 
+            <app-ta-ngx-slider
+                [sliderOptions]="sliderData"
+                [startedValue]="rangeValue"
+                [customClass]="'custom-slider-filter'"
+                (onUserValueChange)="setRangeValue($event)"
+              ></app-ta-ngx-slider>
         </div>
         <div class="border-filter top-border-margin"></div>
         <div class="buttons-holder">
-            <div (click)="clearAll()" class="button-clear" [class.active]="selectedUser.length > 0">Clear All</div>
-            <div class="button-set" [class.active]="selectedUser.length > 0">Set</div>
+            <div (click)="clearAll()" class="button-clear" [class.active]="rangeValue > 0">Clear All</div>
+            <div class="button-set" [class.active]="rangeValue > 0">Set</div>
+        </div>
+    </div>
+    <div *ngIf="locationDefType" class="filter-holder location-filter">
+        <div class="filter-header">
+            <div class="user-title-text">{{filterTitle}}</div>
+        </div>
+        <div class="border-filter top-border-margin"></div>
+        <div class="filter-middle-holder" [formGroup]="locationForm" *ngIf="type == 'locationFilter' ">
+            <app-ta-input-address
+                formControlName="address"
+                [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Location',
+                placeholderIcon: 'address',
+                textTransform: 'capitalize',
+                incorrectInput: selectedMode === 'REVIEW_MODE'
+                }"
+                [incorrectValue]="false"
+                (incorrectEvent)="incorrectInput($event, 0, 18)"
+                [activeAddress]="selectedAddress"
+                (selectedAddress)="handleInputSelect($event)"
+            ></app-ta-input-address>
+        </div>
+        <div class="filter-middle-holder" *ngIf="type == 'locationFilter' ">
+            <app-ta-ngx-slider
+                [sliderOptions]="locationSliderData"
+                [startedValue]="rangeValue"
+                [customClass]="'custom-slider-filter'"
+                (onUserValueChange)="setRangeValue($event)"
+              ></app-ta-ngx-slider>
+        </div>
+        <div class="money-main-holder" *ngIf="type == 'payFilter' " [formGroup]="payForm">
+            <div class="money-value-holder" >
+                <app-ta-input
+                    formControlName="payFrom"
+                    [inputConfig]="{
+                    name: 'ssn',
+                    type: 'number',
+                    label: 'From',
+                    placeholderIcon: 'dollar'
+                    }"
+                ></app-ta-input>
+            </div>
+            <div class="money-value-holder">
+                <app-ta-input
+                formControlName="payTo"
+                [inputConfig]="{
+                name: 'ssn',
+                type: 'number',
+                label: 'To',
+                placeholderIcon: 'dollar'
+                }"
+            ></app-ta-input>
+            </div>
+        </div>
+        <div class="filter-middle-holder" [formGroup]="payForm" *ngIf="type == 'payFilter' ">
+            <!-- <app-ta-ngx-slider
+                [sliderOptions]="paySliderData"
+                [startedValue]="rangeValue"
+                [customClass]="'custom-slider-filter'"
+                (onUserValueChange)="setRangeValue($event)"
+              ></app-ta-ngx-slider> -->
+        </div>
+        <div class="border-filter bottom-border-margin"></div>
+        <div class="buttons-holder">
+            <div (click)="clearAll()" class="button-clear" [class.active]="rangeValue > 0">Clear All</div>
+            <div class="button-set" [class.active]="rangeValue > 0">Set</div>
         </div>
     </div>
 </ng-template>

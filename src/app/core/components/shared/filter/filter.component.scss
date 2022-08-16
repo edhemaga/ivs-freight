@@ -80,8 +80,8 @@
 
             svg-icon{
                 svg{
-                    height: 6px;
-                    width: 6px;
+                    height: 6px !important;
+                    width: 6px !important; 
                     path{
                         fill: #FFFFFF;
                     }
@@ -109,7 +109,7 @@
 }
 .filter-holder{
     width: 260px;
-    padding: 5px 8px 8px 8px;
+    padding: 7px 6px 6px 6px;
     border-radius: 3px;
     background-color: #fff;
     box-shadow: 0 0 4px #00000026;
@@ -121,7 +121,7 @@
     .filter-header{
         position: relative;
         width: 100%;
-        //padding: 8px 0px 8px 6px;
+        padding-left: 1px;
         box-sizing: border-box;
         display: flex;
         justify-content: flex-start;
@@ -158,7 +158,7 @@
             justify-content: center;
             align-items: center;
             top: 3px;
-            right: 0px;
+            right: 3px;
             cursor: pointer;
 
             svg-icon{
@@ -418,33 +418,27 @@
                 position: absolute;
                 width: 18px;
                 height: 18px;
+                border-radius: 1px;
+                background-color: #EF9A9A;
                 display: none;
                 justify-content: center;
                 align-items: center;
-                top: 4px;
+                top: 4.5px;
                 right: 4px;
 
                 svg-icon{
                     svg{
                         display: flex;
-                        width: 12.38px;
-                        height: 12.38px;
+                        width: 9.63px;
+                        height: 9.63px;
 
                         path{
-                            fill: #919191;
+                            fill: #EEEEEE;
                         }
                     }
                 }
 
-                &:hover{
-                    cursor: pointer;
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 1px;
-                    background-color: #6C6C6C;
-                    top: 2px;
-                    right: 2px;
-
+                &:hover{              
                     svg-icon{
                         svg{
                             path{
@@ -750,8 +744,12 @@
 }
 
 .money-filter{
-    padding: 8px;
+    padding: 10px 6px 6px 6px;
     width: 300px;
+
+    .filter-header{
+        padding-left: 4px;
+    }
 
     .money-top-border-magin{
         margin: 8px 0px 25px 0px;
@@ -908,8 +906,12 @@
 }
 
 .swipe-filter{
-    padding: 8px;
+    padding: 10px 6px 6px 6px;
     width: 300px;
+
+    .filter-header{
+        padding-left: 4px;
+    }
 
     .top-border-margin{
         margin: 8px 0px 8px 0px;
@@ -928,36 +930,147 @@
 
     .filter-middle-holder{
         width: 100%;
+    
+        .ta-ngx-slider,
+        .custom-slider-commission {
 
-        .rangeInput{
-                -webkit-appearance: none;
-                width: 100%;
+            margin-top: 8px;
+            margin-bottom: 22px;
+
+            .ngx-slider {
+
                 height: 6px;
-                background: #F7F7F7;
-                outline: none;
-                border-radius: 2px;
-                cursor: pointer;
 
-            &::-webkit-slider-thumb { 
-                -webkit-appearance: none;
-                appearance: none;
-                width: 36px;
-                height: 24px;
-                background: #FFFFFF;
+                .ngx-slider-pointer{
+                    display: none;
+                }
+
+                .ngx-slider-selection{
+                    background-color: #6C6C6C !important;
+                }
+
+                .ngx-slider-bubble {
+                    cursor: pointer;
+                    color: #6C6C6C !important;
+                    font-size: 12px !important;
+                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                    background-color: #ffffff;
+                    font-weight: bold !important;
+                    position: absolute;
+                    top: -9.5px;
+                    width: 36px;
+                    height: 24px;
+                    z-index: 1;
+                    text-align: center;
+                    padding-left: 4px;
+
+                    border-radius: 2px;
+                    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+                    &::after {
+                    content: "+";
+                    }
+                }
+            }
+        }
+      
+        &.emptySliderState{
+            .ta-ngx-slider,
+            .custom-slider-commission {
+                .ngx-slider {
+                    .ngx-slider-bubble {
+                        &::after {
+                            content: "";
+                            }
+                    }
+                }
                 
-                box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-                border-radius: 2px;
+            }
+            
+        }
+    }
+}
 
-                cursor: pointer;
+.location-filter{
+    padding: 8px;
+    width: 300px;
 
-                }  
-                
-            &::-moz-range-thumb {
-                    width: 25px; /* Set a specific slider handle width */
-                    height: 25px; /* Slider handle height */
-                    background: #04AA6D; /* Green background */
-                    cursor: pointer; /* Cursor on hover */
-                  }                
+    .bottom-border-margin
+    {
+        margin: 12px 0px;
+    }
+
+    .filter-middle-holder{
+        padding-top: 10px;
+        width: 100%;
+
+        .ta-ngx-slider,
+        .custom-slider-commission {
+
+            margin-top: 8px;
+            margin-bottom: 22px;
+
+            .ngx-slider {
+
+                height: 6px;
+
+                .ngx-slider-pointer{
+                    display: none;
+                }
+
+                .ngx-slider-selection{
+                    background-color: #6C6C6C !important;
+                }
+
+                .ngx-slider-bubble {
+                    cursor: pointer;
+                    color: #6C6C6C !important;
+                    font-size: 12px !important;
+                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                    background-color: #ffffff;
+                    font-weight: bold !important;
+                    position: absolute;
+                    top: -9.5px;
+                    width: 58px;
+                    height: 24px;
+                    z-index: 1;
+                    text-align: center;
+                    padding-left: 4px;
+
+                    border-radius: 2px;
+                    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+
+                    &::after {
+                    content: " mi";
+                    }
+                }
+            }
+        }
+        
+    }
+
+    .money-main-holder{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        .money-value-holder{
+            width: 132px;
+            height: 32px;
+            border-radius: 2px;
+            background-color: #F3F3F3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+            font-weight: 600; 
+            color: #AAAAAA;
+            line-height: 28px;
+        
+            input{
+                height: 32px;
+            }
         }
     }
 }
@@ -1097,6 +1210,7 @@
                 width: 18px;
                 height: 18px;
                 display: none;
+                background-color: #EF9A9A;
                 justify-content: center;
                 align-items: center;
                 top: 4px;
@@ -1105,24 +1219,16 @@
                 svg-icon{
                     svg{
                         display: flex;
-                        width: 12.38px;
-                        height: 12.38px;
+                        width: 9.63px;
+                        height: 9.63px;
 
                         path{
-                            fill: #919191;
+                            fill: #EEEEEE;
                         }
                     }
                 }
 
                 &:hover{
-                    cursor: pointer;
-                    width: 24px;
-                    height: 24px;
-                    border-radius: 1px;
-                    background-color: #6C6C6C;
-                    top: 2px;
-                    right: 2px;
-
                     svg-icon{
                         svg{
                             path{
@@ -1622,5 +1728,9 @@
         }
     }
 
+}
+
+.pac-container{
+    z-index: 1070;
 }
 

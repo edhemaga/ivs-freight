@@ -178,12 +178,52 @@
           <div class="border-right"></div>
           <div
             ngbTooltip
-            mainTooltip="Money Filter"
+            mainTooltip="Violation Filter"
             position="bottom"
             tooltipBackground="#6C6C6C"
             class="box-icons"
           >
-          <app-filter [type]="'ViolationFilter'" [icon]="'inpsection_violation'" [filterTitle]="'Violation Filter'" [swipeFilter]="true"> </app-filter>
+          <app-filter [type]="'violationFilter'" [icon]="'inpsection_violation'" [filterTitle]="'Violation Filter'" [swipeFilter]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Injury Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'injuryFilter'" [icon]="'injury'" [filterTitle]="'Injury Filter'" [swipeFilter]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Fatality Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'fatalityFilter'" [icon]="'fatality'" [filterTitle]="'Fatality Filter'" [swipeFilter]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Location Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'locationFilter'" [icon]="'location_filter'" [filterTitle]="'Location Filter'" [locationDefType]="true"> </app-filter>
+          </div>
+          <div class="border-right"></div>
+          <div
+            ngbTooltip
+            mainTooltip="Pay Filter"
+            position="bottom"
+            tooltipBackground="#6C6C6C"
+            class="box-icons"
+          >
+          <app-filter [type]="'payFilter'" [icon]="'dollar'" [filterTitle]="'Pay Filter'" [locationDefType]="true"> </app-filter>
           </div>
           <div class="border-right"></div>
         </div>

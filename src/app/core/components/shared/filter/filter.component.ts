@@ -1,15 +1,20 @@
 import { filter } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Options } from '@angular-slider/ngx-slider';
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  providers: [NgbDropdownConfig]
+  providers: [NgbDropdownConfig],
+  encapsulation: ViewEncapsulation.None,
 })
 export class FilterComponent implements OnInit {
+
+
+  @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [
     {
@@ -950,9 +955,38 @@ canadaStates: any[] = [
    showPart3: any = true;
    public searchForm!: FormGroup;
    public moneyForm!: FormGroup;
+   public locationForm!: FormGroup;
+   public payForm!: FormGroup;
    rangeValue: any = 0;
    usaSelectedStates: any[] = [];
    canadaSelectedStates: any[] = [];
+   locationState: any = '';
+
+
+  public sliderData: Options = {
+    floor: 0,
+    ceil: 10,
+    step: 0,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  }; 
+
+  public locationSliderData: Options = {
+    floor: 0,
+    ceil: 10000,
+    step: 0,
+    showSelectionBar: true,
+    hideLimitLabels: true,
+  }; 
+
+  public paySliderData: Options = {
+    floor: 0,
+    ceil: 10000,
+    step: 0,
+    showSelectionBar: true,
+    hideLimitLabels: false,
+  }; 
+
 
    @Input() type: string = 'userFilter';
    @Input() icon: string = 'user';
@@ -966,6 +1000,7 @@ canadaStates: any[] = [
    @Input() moneyFilter: boolean = false;
    @Input() fuelType: boolean = false;
    @Input() swipeFilter: boolean = false;
+   @Input() locationDefType: boolean = false;
 
    constructor(
     private formBuilder: FormBuilder,
@@ -985,6 +1020,19 @@ canadaStates: any[] = [
       revenueFrom: '',
       revenueTo: '',
     });
+
+    this.locationForm = this.formBuilder.group({
+      address: ''
+    });
+
+    this.payForm = this.formBuilder.group({
+      payFrom: '',
+      payTo: '', 
+    });
+
+    this.locationForm.valueChanges.subscribe((changes) => {
+      console.log('---changes', changes);
+    })
 
     this.searchForm.valueChanges.subscribe((changes) => {
       if (changes.search)
@@ -1610,7 +1658,18 @@ canadaStates: any[] = [
               {
                 this.canadaStates[i].isSelected = false;
               }  
+          }
+        else if ( this.type == 'injuryFilter' || this.type == 'fatalityFilter' || this.type == 'violationFilter' )
+          {
+            this.rangeValue = 0;
           }   
+        else if ( this.type == 'locationFilter' )
+          {
+            this.rangeValue = 0;
+            this.locationForm.setValue({
+              address: ''
+            });
+          }    
       }  
 
    
@@ -1704,4 +1763,14 @@ canadaStates: any[] = [
 
   }
 
+  setRangeValue(mod){
+    this.rangeValue = mod;
+  }
+
+  handleInputSelect(e){
+    console.log(e);
+    this.rangeValue = 3000;
+    this.locationState = e.address.address;
+    //e.stopPropagation();
+  }
 }
