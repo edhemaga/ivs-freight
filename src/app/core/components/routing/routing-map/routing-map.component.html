@@ -17,9 +17,19 @@
                     class="route-info-card" 
                     cdkDrag 
                     *ngFor="let route of routes; let i = index;" 
+                    (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
                     [ngClass]="{ 
                         'route-hidden': route.hidden, 
                         'expanded-card': route.expanded
+                    }"
+                    [ngStyle]="{ 
+                        'width': 
+                            route.expanded && route.fullAddressView && route.fuelPrice ? '674px' :
+                            route.expanded && !route.fullAddressView && route.fuelPrice ? '594px' :
+                            route.expanded && route.fullAddressView ? '522px' : 
+                            route.expanded ? '442px' : 
+                            route.fullAddressView ? '402px' : 
+                            '322px'
                     }">
                     <div class="route-info-header">
                         <div class="header-content-container">
@@ -30,7 +40,6 @@
                             ngbTooltip
                             [mainTooltip]="'Route Reorder'"
                             position="right"
-                            (click)="focusRoute(i)"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" *ngIf="!route.hidden">
                                     <g id="Drag" transform="translate(-935.139 -1357)" opacity="0.7">
@@ -46,7 +55,7 @@
                                 [mainTooltip]="route.hidden ? 'Show Route' : 'Hide Route'"
                                 position="right"
                                 [ngClass]="{ 'gray-text': route.hidden }"
-                                (click)="showHideRoute(route)">
+                                (click)="showHideRoute($event, route)">
                                 {{ route.name }}
                             </div>
                             <div class="route-type-text mg-left-12" *ngIf="route.truckId && route.expanded">Unit: <span class="marker-bold-text">{{ route.truckId }}</span></div>
@@ -73,7 +82,7 @@
                         </div>
                         <div 
                             class="show-more"
-                            (click)="showMoreOptions(route)">
+                            (click)="showMoreOptions($event, route)">
                             <app-details-page-dropdown
                                 [customClassDropDown]="'drop-down-route'"
                                 [options]="dropdownActions"
@@ -100,7 +109,8 @@
                             *ngFor="let stop of route.stops; let b = index;" 
                             cdkDrag 
                             cdkDragBoundary=".route-card-content"
-                            [ngClass]="{ 'focused-route': route.isFocused }">
+                            [ngClass]="{ 'focused-route': route.isFocused, 'selected-stop': stop.isSelected }"
+                            (click)="focusStop($event, i, b)">
                             <div 
                                 class="focused-route-number-background" 
                                 [ngStyle]="{ backgroundColor: routeFocusColors[i] }"
@@ -110,7 +120,7 @@
                                 src="assets/svg/truckassist-table/dropdown/content/delete.svg"
                                 class="delete-button"
                                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
-                                (click)="deleteRouteStop(route, b)"
+                                (click)="deleteRouteStop($event, route, b)"
                             ></svg-icon>
                             <div class="delete-button drag-arrows">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
@@ -124,9 +134,9 @@
                             <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: route.isFocused ? '#fff' : routeColors[i] }">{{ b + 1 }}</div>
                             <div class="route-row-location marker-like-text" [ngClass]="{ 'full-address': route.fullAddressView }">{{ stop.fullAddress ? stop.fullAddress : stop.address }}</div>
                             <div class="route-row-leg shorter-leg-text marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded">{{ b === 0 ? 'Leg t' : stop.time }}</div>
-                            <div class="route-row-leg shorter-leg-text marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded && route.fuelPrice">{{ b === 0 ? 'Leg $' :  '$' + route.fuelPrice }}</div>
-                            <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }" *ngIf="route.expanded && route.fuelPrice">{{ b === 0 ? 'Total $' : '$' + route.fuelPrice }}</div>
                             <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }" *ngIf="route.expanded">{{ b === 0 ? 'Total t' : stop.totalTime }}</div>
+                            <div class="route-row-leg shorter-leg-text marker-like-text" [ngStyle]="{ 'width': '56px' }" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded && route.fuelPrice">{{ b === 0 ? 'Leg $' :  '$' + route.fuelPrice }}</div>
+                            <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ 'width': '60px', color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }" *ngIf="route.expanded && route.fuelPrice">{{ b === 0 ? 'Total $' : '$' + route.fuelPrice }}</div>
                             <div class="route-row-leg marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }">{{ b === 0 && route.expanded ? 'Leg ' + tableData[selectedMapIndex].distanceUnit : b === 0 && !route.expanded ? 'Leg' : (stop.leg) }}</div>
                             <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }">{{ b === 0 && route.expanded ? 'Total ' + tableData[selectedMapIndex].distanceUnit : b === 0 && !route.expanded ? 'Total' : (stop.total) }}</div>
                         </div>
@@ -184,7 +194,7 @@
                         </div>
                     </div>
                     <div class="selected-route" *ngIf="route.isFocused" [ngStyle]="{ backgroundColor: routeFocusColors[i] }"></div>
-                    <div class="route-card-resize-button" (click)="resizeCard(route)" *ngIf="!route.hidden">
+                    <div class="route-card-resize-button" (click)="resizeCard($event, route)" *ngIf="!route.hidden">
                         <svg-icon
                             src="assets/svg/common/fill_arrow_down.svg"
                             class="map-list-resize-svg"
@@ -249,7 +259,12 @@
                                 [pointer]="false"
                             >
                                 <ng-template>
-                                    <div class="marker-container marker-icon" *ngIf="route.isFocused" (click)="stopMarkerClick(route, j)">
+                                    <div 
+                                        class="marker-container marker-icon" 
+                                        [ngClass]="{ 'selected-marker': route.stops[j].isSelected }" 
+                                        *ngIf="route.isFocused" 
+                                        (click)="stopMarkerClick($event, i, j)"
+                                    >
                                         <svg 
                                             [tooltipBackground]="routeFocusColors[i]"
                                             ngbTooltip
@@ -308,14 +323,14 @@
                     </div>
                     <div *ngFor="let e of [].constructor(route.stops.length-1); let j = index">
                         <agm-direction
-                            [renderOptions]="{ polylineOptions: { strokeColor: route.isFocused ? routeFocusColors[i] : routeColors[i], strokeWeight: 6 }, suppressMarkers: true }"
+                            [renderOptions]="{ polylineOptions: { strokeColor: route.isFocused ? routeFocusColors[i] : routeColors[i], strokeWeight: 6, zIndex: 1 }, suppressMarkers: true }"
                             [optimizeWaypoints]="false"
                             [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
                             [destination]="{ lat: route.stops[j+1].lat, lng: route.stops[j+1].long }"
                         ></agm-direction>
                         <agm-direction
                             *ngIf="route.stops[j+1].empty"
-                            [renderOptions]="{ polylineOptions: { strokeColor: '#fff', strokeWeight: 3 }, suppressMarkers: true }"
+                            [renderOptions]="{ polylineOptions: { strokeColor: '#fff', strokeWeight: 3, zIndex: 2 }, suppressMarkers: true }"
                             [optimizeWaypoints]="false"
                             [origin]="{ lat: route.stops[j].lat, lng: route.stops[j].long }"
                             [destination]="{ lat: route.stops[j+1].lat, lng: route.stops[j+1].long }"
@@ -345,7 +360,7 @@
                     [pointer]="false"
                 >
                     <ng-template>
-                        <div class="marker-container marker-icon" [ngClass]="{ 'selected-marker' : stopPickerLocation.address }">
+                        <div class="marker-container marker-icon" [ngClass]="'selected-marker'">
                             <svg 
                                 xmlns="http://www.w3.org/2000/svg" 
                                 xmlns:xlink="http://www.w3.org/1999/xlink" 

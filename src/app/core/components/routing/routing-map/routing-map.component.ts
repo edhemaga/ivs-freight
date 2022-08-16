@@ -308,6 +308,10 @@ export class RoutingMapComponent implements OnInit {
   stopPickerLocation: any = {};
   stopJustAdded: boolean = false;
 
+  directionsDisplay = new google.maps.DirectionsRenderer();
+  directionsService = new google.maps.DirectionsService();
+  placesService: any;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -357,16 +361,25 @@ export class RoutingMapComponent implements OnInit {
     this.calculateDistanceBetweenStops(index);
   }
 
-  showHideRoute(route) {
+  showHideRoute(event, route) {
+    event.stopPropagation();
+    event.preventDefault();
+
     route.hidden = !route.hidden;
     if ( route.isFocused ) { route.isFocused = false; this.focusedRouteIndex = null; }
   }
 
-  resizeCard(route) {
+  resizeCard(event, route) {
+    event.stopPropagation();
+    event.preventDefault();
+
     route.expanded = !route.expanded;
   }
 
-  deleteRouteStop(route, index) {
+  deleteRouteStop(event, route, index) {
+    event.stopPropagation();
+    event.preventDefault();
+
     route.stops.splice(index, 1);
 
     this.checkFullAddressView(route);
@@ -387,8 +400,9 @@ export class RoutingMapComponent implements OnInit {
     console.log('getMapInstance', this.agmMap);
     var mainthis = this;
 
+    mainthis.placesService = new google.maps.places.PlacesService(map);
+
     map.addListener('click', (e) => {
-      console.log(e);
       if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
 
       if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
@@ -397,16 +411,15 @@ export class RoutingMapComponent implements OnInit {
           location: coords,
           radius: 50000,
           type: 'locality'
-        };
+        }
         
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, (results, status) => {
+        mainthis.placesService.nearbySearch(request, (results, status) => {
           console.log('search', results, status);
 
           if ( status == 'OK' && results.length && results[0].place_id ) {
             let placeId = results[0].place_id;
 
-            service.getDetails({
+            mainthis.placesService.getDetails({
               placeId: placeId
               }, function (result, status) {
                 console.log(result);
@@ -431,8 +444,7 @@ export class RoutingMapComponent implements OnInit {
     console.log('mapPlacesSearch', results);
     console.log('mapPlacesSearch', status);
 
-    let placeService = new google.maps.places.PlacesService(this.agmMap);
-    placeService.getDetails({
+    this.placesService.getDetails({
       placeId: results[0].place_id
       }, function (result, status) {
         console.log(result);
@@ -460,22 +472,36 @@ export class RoutingMapComponent implements OnInit {
 
       console.log('addressFlag', this.addressFlag);
 
-      route.stops.push(
-        {
-          'address': event.address.address,
-          'fullAddress': event.address.street ? event.address.address : false,
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': this.addressFlag == 'Empty' ? true : false,
-          'lat': 32.469674,
-          'long': -90.50994
-        }
-      );
+      var request = {
+        query: event.address.address,
+        fields: ['formatted_address', 'place_id', 'name', 'geometry'],
+      };
 
-      this.calculateDistanceBetweenStops(index);
-      this.checkFullAddressView(route);
+      var mainthis = this;
+
+      mainthis.placesService.findPlaceFromQuery(request, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          console.log(results);
+
+          route.stops.push(
+            {
+              'address': event.address.address,
+              'fullAddress': event.address.street ? event.address.address : false,
+              'leg': '60.6',
+              'total': '60.6',
+              'time': '01:15',
+              'totalTime': '01:15',
+              'empty': mainthis.addressFlag == 'Empty' ? true : false,
+              'lat': results[0].geometry.location.lat(),
+              'long': results[0].geometry.location.lng()
+            }
+          );
+    
+          mainthis.calculateDistanceBetweenStops(index);
+          mainthis.checkFullAddressView(route);
+          mainthis.ref.detectChanges();
+        }
+      });
     }
   }
 
@@ -558,7 +584,10 @@ export class RoutingMapComponent implements OnInit {
     }
   }
 
-  showMoreOptions(route) {
+  showMoreOptions(event, route) {
+    event.stopPropagation();
+    event.preventDefault();
+
     route.dropdownOpen = !route.dropdownOpen;
     console.log('showMoreOptions', route.dropdownOpen);
   }
@@ -716,6 +745,7 @@ export class RoutingMapComponent implements OnInit {
     } else if ( event.action == 'open-stop-picker' ) {
       console.log('onToolbarAction open-stop-picker');
       this.stopPickerActive = !this.stopPickerActive;
+      this.stopPickerLocation = {};
     } else if ( event.action == 'open-route-compare' ) {
       console.log('onToolbarAction open-route-compare');
     } else if ( event.action == 'open-keyboard-controls' ) {
@@ -833,10 +863,31 @@ export class RoutingMapComponent implements OnInit {
     this.ref.detectChanges();
   }
 
-  stopMarkerClick(route, stopIndex) {
+  stopMarkerClick(event, routeIndex, stopIndex) {
     if ( this.focusedRouteIndex && this.stopPickerActive) {
-      this.stopPickerLocation = route.stops[stopIndex];
+      this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
       this.stopPickerLocation.editIndex = stopIndex;
+    } else {
+      this.focusStop(event, routeIndex, stopIndex);
     }
+  }
+
+  focusStop(event, routeIndex, stopIndex) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    var route = this.routes[routeIndex];
+
+    if ( !route.isFocused ) {
+      this.focusRoute(routeIndex);
+    }
+    
+    route.stops.map((item, index) => {
+      if ( index == stopIndex ) {
+        item.isSelected = !item.isSelected;
+      } else {
+        item.isSelected = false;
+      }
+    });
   }
 }

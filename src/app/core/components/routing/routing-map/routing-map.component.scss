@@ -64,6 +64,7 @@
     transition: 0.2s;
 
     pointer-events: all;
+    cursor: pointer;
 
     .cdk-drop-list-dragging .selected-route {
         opacity: 0.2;
@@ -257,7 +258,7 @@
         }
     }
 
-    &:hover {
+    &:hover, &.selected-stop {
         background: #F3F3F3;
         cursor: grab;
 
@@ -693,14 +694,25 @@
     transform: translateX(26px);
 
     .stop-picker-address-text {
+        display: -webkit-box;
+
         font-size: 11px;
         font-weight: 700;
         line-height: 22px;
         color: #fff;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
     }
 }
 
 .marker-icon {
+    svg {
+        outline: none;
+    }
+
     &.selected-marker {
         transform: translate(-50%, -35%) scale(2) !important;
     }
