@@ -32,7 +32,7 @@
               label: 'First Name',
               isRequired: true,
               textTransform: 'capitalize',
-              autoFocus: editData?.type === 'edit' ? false : true
+              autoFocus: editData?.type !== 'edit' ? true : false
             }"
           ></app-ta-input>
           <app-ta-input
@@ -176,20 +176,24 @@
           <div
             class="paytype-permile"
             [class.active]="selectedPayType?.name.toLowerCase() === 'per mile'"
-            *ngIf="selectedPayType?.name.toLowerCase() === 'per mile'"
+            *ngIf="
+              selectedPayType?.name.toLowerCase() === 'per mile' &&
+              !driverForm.get('isOwner').value
+            "
           >
             <div
               *ngIf="
                 this.driverForm.get('soloDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Solo'].includes(fleetType)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+              [ngClass]="{
+                'permile-fields-same-rate': hasMilesSameRate
+              }"
             >
               <p>SOLO</p>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="soloLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -204,7 +208,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="soloEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -220,7 +224,7 @@
               ></app-ta-input>
 
               <app-ta-input
-                *ngIf="milesSameRate"
+                *ngIf="hasMilesSameRate"
                 formControlName="perMileSolo"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -252,15 +256,16 @@
             <div
               *ngIf="
                 this.driverForm.get('teamDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Team'].includes(fleetType)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': milesSameRate }"
+              [ngClass]="{
+                'permile-fields-same-rate': hasMilesSameRate
+              }"
             >
               <p>TEAM</p>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="teamLoadedMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -275,7 +280,7 @@
                 }"
               ></app-ta-input>
               <app-ta-input
-                *ngIf="!milesSameRate"
+                *ngIf="!hasMilesSameRate"
                 formControlName="teamEmptyMile"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -285,12 +290,13 @@
                   isRequired: true,
                   customClass: 'dollar-placeholderIcon',
                   min: 0,
-                  max: 10
+                  max: 10,
+                  maxLength: 4
                 }"
               ></app-ta-input>
 
               <app-ta-input
-                *ngIf="milesSameRate"
+                *ngIf="hasMilesSameRate"
                 formControlName="perMileTeam"
                 [inputConfig]="{
                   name: 'Per Mile',
@@ -324,21 +330,24 @@
           <!-- Pay Type Commission -->
           <div
             class="paytype-commission"
-            *ngIf="selectedPayType?.name.toLowerCase() === 'commission'"
+            *ngIf="
+              selectedPayType?.name.toLowerCase() === 'commission' &&
+              !driverForm.get('isOwner').value
+            "
             [ngClass]="{
               'paytype-commission-single':
                 (this.driverForm.get('soloDriver').value &&
                   !this.driverForm.get('teamDriver').value) ||
                 (!this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value),
+                  this.driverForm.get('teamDriver').value) ||
+                ['Solo', 'Team'].includes(fleetType),
               active: selectedPayType?.name.toLowerCase() === 'commission'
             }"
           >
             <div
               *ngIf="
                 this.driverForm.get('soloDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Solo'].includes(fleetType)
               "
               class="paytype-field"
             >
@@ -357,8 +366,7 @@
             <div
               *ngIf="
                 this.driverForm.get('teamDriver').value ||
-                (this.driverForm.get('soloDriver').value &&
-                  this.driverForm.get('teamDriver').value)
+                ['Team'].includes(fleetType)
               "
               class="paytype-field"
             >

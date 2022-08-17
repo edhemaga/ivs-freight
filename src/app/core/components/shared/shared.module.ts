@@ -103,6 +103,8 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
+import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
+import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -155,6 +157,7 @@ export function playerFactory() {
     TaUploadFilesComponent,
 
     // Modals Components
+    ApplicantModalComponent,
     TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
@@ -177,6 +180,7 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
+    TtTitleModalComponent,
 
     //----------------------------
     MapListComponent,
@@ -187,7 +191,7 @@ export function playerFactory() {
     MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
-    TaCopyComponent
+    TaCopyComponent,
   ],
   imports: [
     CommonModule,
@@ -298,7 +302,9 @@ export function playerFactory() {
     TaInputAddressComponent,
     DirectivesModule,
     TaUploadFilesComponent,
+
     // Modals Components
+    ApplicantModalComponent,
     TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
@@ -322,7 +328,8 @@ export function playerFactory() {
     ProfileUpdateModalComponent,
     LoadModalComponent,
     TaUploadFilesComponent,
-    TaTimePeriodComponent
+    TaTimePeriodComponent,
+    TtTitleModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -10,15 +10,14 @@ import {
   TitleResponse,
   TitleService,
   TruckResponse,
-  TruckService,
   TrailerResponse,
   UpdateInspectionCommand,
   UpdateRegistrationCommand,
   UpdateTitleCommand,
+  RegistrationModalResponse,
+  TitleModalResponse,
 } from 'appcoretruckassist';
-/* import { CreateInspectionResponse } from 'appcoretruckassist/model/createInspectionResponse';
-import { CreateRegistrationResponse } from 'appcoretruckassist/model/createRegistrationResponse';
-import { CreateTitleResponse } from 'appcoretruckassist/model/createTitleResponse'; */
+
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckTService } from '../../truck/state/truck.service';
@@ -42,11 +41,9 @@ export class CommonTruckTrailerService {
     private titleService: TitleService,
     private truckService: TruckTService,
     private tableService: TruckassistTableService,
-    /* private trailerStore: TrailerStore, */
     private trailerService: TrailerTService
   ) {}
 
-  /* Observable<CreateRegistrationResponse> */
   // Registration
   public addRegistration(
     data: CreateRegistrationCommand,
@@ -130,6 +127,10 @@ export class CommonTruckTrailerService {
     return this.registrationService.apiRegistrationIdDelete(id);
   }
 
+  public getRegistrationModalDropdowns(): Observable<RegistrationModalResponse> {
+    return this.registrationService.apiRegistrationModalGet();
+  }
+
   // Inspection
   public deleteInspectionById(id: number): Observable<any> {
     return this.inspectionService.apiInspectionIdDelete(id);
@@ -139,7 +140,6 @@ export class CommonTruckTrailerService {
     return this.inspectionService.apiInspectionIdGet(id);
   }
 
-  /* Observable<CreateInspectionResponse> */
   public addInspection(
     data: CreateInspectionCommand,
     tabSelected?: string
@@ -219,12 +219,15 @@ export class CommonTruckTrailerService {
     return this.titleService.apiTitleIdGet(id);
   }
 
-  /*  Observable<CreateTitleResponse> */
   public addTitle(data: CreateTitleCommand): Observable<any> {
     return this.titleService.apiTitlePost(data);
   }
 
-  public updateITitle(data: UpdateTitleCommand): Observable<object> {
+  public updateTitle(data: UpdateTitleCommand): Observable<object> {
     return this.titleService.apiTitlePut(data);
+  }
+
+  public getTitleModalDropdowns(): Observable<TitleModalResponse> {
+    return this.titleService.apiTitleModalGet();
   }
 }

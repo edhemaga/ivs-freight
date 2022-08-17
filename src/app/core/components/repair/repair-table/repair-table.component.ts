@@ -711,8 +711,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           .subscribe();
       }
     } else if (event.type === 'finish-order') {
-      console.log('Radi se finish order akcija');
-      console.log(event);
+      switch (this.selectedTab) {
+        case 'active': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event.data, type: 'edit-fo-truck' }
+          );
+          break;
+        }
+        case 'inactive': {
+          this.modalService.openModal(
+            RepairOrderModalComponent,
+            { size: 'large' },
+            { ...event.data, type: 'edit-fo-trailer' }
+          );
+          break;
+        }
+        default: {
+          break;
+        }
+      }
     }
   }
 

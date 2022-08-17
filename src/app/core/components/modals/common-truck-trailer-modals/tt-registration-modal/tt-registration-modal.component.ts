@@ -5,10 +5,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 
 import {
   CreateRegistrationCommand,
+  RegistrationModalResponse,
   RegistrationResponse,
   UpdateRegistrationCommand,
 } from 'appcoretruckassist';
-import moment from 'moment';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
@@ -35,6 +35,9 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public stateTypes: any[] = [];
+  public selectedStateType: any = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private commonTruckTrailerService: CommonTruckTrailerService,
@@ -46,17 +49,18 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-
+    this.getModalDropdowns();
     if (this.editData.type === 'edit-registration') {
-      this.getRegistrationById();
+      this.editRegistrationById();
     }
   }
 
   private createForm() {
     this.registrationForm = this.formBuilder.group({
-      issueDate: [null, Validators.required],
-      expDate: [null],
       licensePlate: [null, Validators.required],
+      stateId: [null, Validators.required],
+      issueDate: [null, Validators.required],
+      expDate: [null, Validators.required],
       note: [null],
     });
 
@@ -96,13 +100,30 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     }
   }
 
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'state': {
+        this.selectedStateType = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public onFilesEvent(event: any) {
+    this.documents = event.files;
+  }
+
   private updateRegistration() {
-    const { issueDate, expDate } = this.registrationForm.value;
+    const { issueDate, expDate, ...form } = this.registrationForm.value;
     const newData: UpdateRegistrationCommand = {
       id: this.editData.file_id,
-      ...this.registrationForm.value,
+      ...form,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
     };
 
     this.commonTruckTrailerService
@@ -129,11 +150,12 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   }
 
   private addRegistration() {
-    const { issueDate, expDate } = this.registrationForm.value;
+    const { issueDate, expDate, ...form } = this.registrationForm.value;
     const newData: CreateRegistrationCommand = {
-      ...this.registrationForm.value,
+      ...form,
       issueDate: convertDateToBackend(issueDate),
       expDate: convertDateToBackend(expDate),
+      stateId: this.selectedStateType ? this.selectedStateType.id : null,
       trailerId: this.editData.modal === 'trailer' ? this.editData.id : null,
       truckId: this.editData.modal === 'truck' ? this.editData.id : null,
     };
@@ -161,7 +183,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getRegistrationById() {
+  private editRegistrationById() {
     this.commonTruckTrailerService
       .getRegistrationById(this.editData.file_id)
       .pipe(untilDestroyed(this))
@@ -171,8 +193,11 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             issueDate: convertDateFromBackend(res.issueDate),
             expDate: convertDateFromBackend(res.expDate),
             licensePlate: res.licensePlate,
+            stateId: res.state ? res.state.stateShortName : null,
             note: res.note,
           });
+
+          this.selectedStateType = res.state;
         },
         error: () => {
           this.notificationService.error("Can't get registration.", 'Error:');
@@ -180,8 +205,27 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onFilesEvent(event: any) {
-    this.documents = event.files;
+  private getModalDropdowns() {
+    this.commonTruckTrailerService
+      .getRegistrationModalDropdowns()
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: RegistrationModalResponse) => {
+          this.stateTypes = res.states.map((item) => {
+            return {
+              id: item.id,
+              name: item.stateShortName,
+              stateName: item.stateName,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't get registration dropdowns!",
+            'Error'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {}

@@ -196,6 +196,7 @@ export class TaInputDropdownComponent
               ? this.getSuperControl.value
               : this.activeItem?.name,
           };
+
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
 

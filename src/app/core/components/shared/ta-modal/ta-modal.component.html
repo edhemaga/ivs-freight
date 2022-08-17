@@ -1,4 +1,4 @@
-<div cdkDrag class="modal-container {{ customClass }}">
+<div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
   <div [ngClass]="{ 'load-modal-content': customClass?.includes('load') }">
     <div cdkDragHandle class="modal-header">
       <div class="modal-header-leftside">
@@ -48,13 +48,30 @@
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete"
+          *ngIf="!disableDelete && !resendEmail"
           (click)="onAction('delete')"
           class="modal-delete-btn"
-          ngbAutofocus
           type="button"
         >
           Delete
+        </button>
+
+        <!-- Resend Email -->
+        <button
+          *ngIf="resendEmail"
+          (click)="onAction('resend email')"
+          class="modal-resend-email-btn"
+          type="button"
+        >
+          {{
+            resendEmailSpinnerVisibility
+              ? "Sending"
+              : "Resend Application
+          Email"
+          }}
+          <div *ngIf="resendEmailSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
 
         <!-- Deactivated -->
@@ -62,7 +79,6 @@
           *ngIf="editData?.disableButton"
           (click)="onAction('deactivate')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
         >
           {{ isDeactivated ? "Activate" : "Deactivate" }}
@@ -73,18 +89,11 @@
           *ngIf="editData?.dnuButton"
           (click)="onAction('dnu')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
-          [appTooltip]="'Do Not Use List'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#6C6C6C'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="147"
-          [tatooltipvisible]="!isDNU"
+          ngbTooltip
+          mainTooltip="Do Not Use List"
+          tooltipBackground="#6c6c6c"
+          position="top"
         >
           {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
         </button>
@@ -94,18 +103,11 @@
           *ngIf="editData?.bfbButton"
           (click)="onAction('bfb')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
-          [appTooltip]="'Banned from Broker List'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#6C6C6C'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="114"
-          [tatooltipvisible]="!isBFB"
+          ngbTooltip
+          mainTooltip="Banned from Broker List"
+          tooltipBackground="#6c6c6c"
+          position="top"
         >
           {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
         </button>
@@ -119,7 +121,6 @@
           (click)="onAction('save and add new')"
           class="modal-save-btn modal-save-btn-add-new"
           [ngClass]="{ valid: isModalValid }"
-          ngbAutofocus
           type="button"
         >
           {{ saveAddNewSpinnerVisibility ? "Saving" : "Save and Add New" }}
@@ -133,14 +134,15 @@
           (click)="onAction('save')"
           class="modal-save-btn"
           [ngClass]="{ valid: isModalValid }"
-          ngbAutofocus
           type="button"
         >
           {{
             saveSpinnerVisibility
               ? "Saving"
               : editData?.type?.includes("edit")
-              ? "Save Changes"
+              ? editData?.type?.includes("fo")
+                ? "Save"
+                : "Save Changes"
               : "Save"
           }}
           <div *ngIf="saveSpinnerVisibility" class="modal-spinner">

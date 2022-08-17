@@ -78,13 +78,14 @@
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="
-      !inputConfig.isDropdown &&
-      touchedInput &&
-      getSuperControl.value &&
-      getSuperControl.invalid &&
-      !focusInput &&
-      !inputConfig.incorrectInput &&
-      !inputConfig.blackInput
+      (touchedInput &&
+        getSuperControl.value &&
+        getSuperControl.invalid &&
+        !focusInput &&
+        !inputConfig.incorrectInput &&
+        !inputConfig.blackInput &&
+        !inputConfig.isDropdown) ||
+      inputConfig.dangerMark
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
     src="assets/svg/common/ic_danger.svg"
@@ -431,12 +432,17 @@
 
   <!-- DateTime Picker -->
   <div
+    #holder1
     class="date_time_holder input-control"
     *ngIf="
       inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
     "
     [class.active]="showDateInput"
+    tabindex="-1"
     (click)="showDateTimePlaceholder()"
+    (paste)="onDatePaste($event)"
+    (blur)="onBlur()"
+    (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
       'invalid-focus-in':
@@ -451,7 +457,6 @@
       class="main"
       tabindex="0"
       (focus)="onFocus()"
-      (paste)="onDatePaste($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
@@ -468,7 +473,6 @@
       tabindex="1"
       (focus)="onFocus()"
       (click)="setSelection($event)"
-      (paste)="onDatePaste($event)"
       (keydown)="changeSelection($event)"
       (blur)="onBlur()"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
@@ -481,7 +485,6 @@
     <span
       #span3
       class="main"
-      (paste)="onDatePaste($event)"
       tabindex="2"
       (focus)="onFocus()"
       (click)="setSelection($event)"

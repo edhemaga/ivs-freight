@@ -1,8 +1,6 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit-registration'
-      ? 'Add New Registration'
-      : 'Edit Registration'
+    editData?.type !== 'edit-title' ? 'Add New Title' : 'Edit Title'
   "
   [editData]="editData"
   [editName]="
@@ -11,21 +9,21 @@
       : 'Truck ' + editData?.payload?.truckNumber
   "
   [specificCaseModalName]="true"
-  [isModalValid]="registrationForm.valid"
+  [isModalValid]="ttTitleForm.valid"
   (action)="onModalAction($event)"
 >
-  <form [formGroup]="registrationForm" class="form-container">
+  <form [formGroup]="ttTitleForm" class="form-container">
     <div class="row">
       <div class="col-6">
         <app-ta-input
-          formControlName="licensePlate"
+          formControlName="number"
           [inputConfig]="{
-            name: 'License plate',
+            name: 'Title Number',
             type: 'text',
-            label: 'License plate',
+            label: 'Title No.',
             isRequired: true,
-            autoFocus: editData?.type !== 'edit' ? true : false,
-            textTransform: 'capitalize'
+            textTransform: 'capitalize',
+            autoFocus: editData?.type !== 'edit' ? true : false
           }"
         ></app-ta-input>
       </div>
@@ -49,11 +47,11 @@
     <div class="row last-row">
       <div class="col-6">
         <app-ta-input
-          formControlName="issueDate"
+          formControlName="purchaseDate"
           [inputConfig]="{
             name: 'datepicker',
             type: 'text',
-            label: 'Issue Date',
+            label: 'Purchase Date',
             placeholderIcon: 'date',
             isDropdown: true,
             isRequired: true,
@@ -63,12 +61,12 @@
       </div>
       <div class="col-6">
         <app-ta-input
-          formControlName="expDate"
+          formControlName="issueDate"
           [inputConfig]="{
             name: 'datepicker',
             type: 'text',
             isDropdown: true,
-            label: 'Expiry Date',
+            label: 'Issue Date',
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass'
@@ -91,7 +89,7 @@
 
     <app-ta-input-note
       formControlName="note"
-      [isVisibleNote]="registrationForm.get('note').value"
+      [isVisibleNote]="ttTitleForm.get('note').value"
     ></app-ta-input-note>
   </form>
 </app-ta-modal>
