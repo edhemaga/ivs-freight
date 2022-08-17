@@ -92,6 +92,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public payrollCompany: any;
 
+  public loadingOwnerEin: boolean = false;
+
   public logoOptions: Options = {
     floor: 0.1,
     ceil: 1.5,
@@ -172,7 +174,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getDriverDropdowns();
     this.onIncludePayroll();
-    this.isCheckedOwner();
     this.onPayTypeSelected();
     this.onTwicTypeSelected();
     this.onBankSelected();
@@ -180,6 +181,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editDriverById(this.editData.id);
     }
+
+    this.isCheckedOwner();
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
@@ -378,7 +381,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.driverForm.get('routing'),
           this.driverForm.get('account')
         );
@@ -545,16 +548,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     fleetType: string,
     dropdownsInit: boolean = false
   ) {
-    if (dropdownsInit) {
-      this.driverForm.get('teamDriver').patchValue(true);
-      this.driverForm.get('soloDriver').patchValue(true);
-    }
     if (fleetType === 'Combined') {
+      if (dropdownsInit) {
+        this.driverForm.get('teamDriver').patchValue(true);
+        this.driverForm.get('soloDriver').patchValue(true);
+      }
+
       this.driverForm
         .get('soloDriver')
         .valueChanges.pipe(untilDestroyed(this))
         .subscribe((val) => {
-          if (!val) {
+          if (!val && !this.driverForm.get('isOwner').value) {
             this.driverForm.get('teamDriver').patchValue(true);
             this.inputService.changeValidators(
               this.driverForm.get('soloEmptyMile'),
@@ -571,7 +575,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         .get('teamDriver')
         .valueChanges.pipe(untilDestroyed(this))
         .subscribe((val) => {
-          if (!val) {
+          if (!val && !this.driverForm.get('isOwner').value) {
             this.driverForm.get('soloDriver').patchValue(true);
             this.inputService.changeValidators(
               this.driverForm.get('teamEmptyMile'),
@@ -687,6 +691,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
+        if (!event) {
+          this.driverForm.get('bankId').patchValue(null);
+        }
         break;
       }
       case 'paytype': {
@@ -713,6 +720,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private isCheckedOwner() {
+    console.log('POZIVA SE IS OWNER ', this.driverForm.get('isOwner').value);
     this.driverForm
       .get('isOwner')
       .valueChanges.pipe(untilDestroyed(this))
@@ -740,6 +748,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             false
           );
           this.inputService.changeValidators(
+            this.driverForm.get('soloPerMile'),
+            false
+          );
+          this.inputService.changeValidators(
             this.driverForm.get('teamEmptyMile'),
             false
           );
@@ -752,6 +764,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             false
           );
           this.inputService.changeValidators(
+            this.driverForm.get('teamPerMile'),
+            false
+          );
+          this.inputService.changeValidators(
             this.driverForm.get('commissionSolo'),
             false
           );
@@ -759,16 +775,26 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.driverForm.get('commissionTeam'),
             false
           );
+          this.inputService.changeValidators(
+            this.driverForm.get('bankId'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('routing'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.driverForm.get('account'),
+            false
+          );
+          this.driverForm.get('soloDriver').patchValue(false);
+          this.driverForm.get('teamDriver').patchValue(false);
+          this.driverForm.get('useTruckAssistAch').patchValue(false);
+          this.selectedBank = null;
+          this.selectedPayType = null;
         } else {
           this.disablePayType = false;
           this.inputService.changeValidators(this.driverForm.get('payType'));
-          this.driverForm.get('payType').patchValue(null);
-          this.driverForm
-            .get('commissionTeam')
-            .patchValue(this.payrollCompany.team.commissionTeam);
-          this.driverForm
-            .get('commissionSolo')
-            .patchValue(this.payrollCompany.solo.commissionSolo);
         }
       });
   }
@@ -780,20 +806,17 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private einNumberChange() {
     this.driverForm
       .get('ein')
-      .valueChanges.pipe(
-        debounceTime(3000),
-        distinctUntilChanged(),
-        untilDestroyed(this)
-      )
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         if (value) {
+          this.loadingOwnerEin = true;
           this.driverTService
             .checkOwnerEinNumber(value)
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {
                 this.owner = res?.name ? res : null;
-
+                this.loadingOwnerEin = false;
                 if (this.owner?.name) {
                   this.driverForm
                     .get('bussinesName')
@@ -807,6 +830,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 );
               },
             });
+        } else {
+          this.driverForm.get('bussinesName').patchValue(null);
         }
       });
   }
@@ -1522,6 +1547,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             commissionSolo: res.commissionSolo,
             commissionTeam: res.commissionTeam,
             ownerId: res.owner ? res.owner.id : null,
+            useTruckAssistAch: res.useTruckAssistAch,
+            isOwner: res.owner ? true : false,
             ownerType: res.owner
               ? res.owner?.ownerType?.name
                 ? res.owner?.ownerType?.name.includes('Proprietor')
@@ -1545,9 +1572,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
             note: res.note,
             avatar: res.avatar,
+
             twic: res.twic,
             twicExpDate: convertDateFromBackend(res.twicExpDate),
             fuelCard: res.fuelCard,
+
             mailNotificationGeneral: res.general.mailNotification,
             pushNotificationGeneral: res.general.pushNotification,
             smsNotificationGeneral: res.general.smsNotification,
@@ -1564,14 +1593,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm
             .get('teamLoadedMile')
             .patchValue(res.team.loadedMile, { emitEvent: false });
-
-          this.driverForm
-            .get('isOwner')
-            .patchValue(res.owner ? true : false, { emitEvent: false });
-
-          this.driverForm
-            .get('useTruckAssistAch')
-            .patchValue(res.useTruckAssistAch, { emitEvent: false });
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
@@ -1607,26 +1628,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
           if (res.owner) {
             if (this.driverForm.get('ein').value) {
-              this.driverTService
-                .checkOwnerEinNumber(this.driverForm.get('ein').value)
-                .pipe(untilDestroyed(this))
-                .subscribe({
-                  next: (res: CheckOwnerSsnEinResponse) => {
-                    this.owner = res?.name ? res : null;
-
-                    if (this.owner?.name) {
-                      this.driverForm
-                        .get('bussinesName')
-                        .patchValue(this.owner.name);
-                    }
-                  },
-                  error: () => {
-                    this.notificationService.error(
-                      "Owner can't be loaded.",
-                      'Error:'
-                    );
-                  },
-                });
+              this.einNumberChange();
             }
 
             const activeOwnerTab = this.ownerTabs
