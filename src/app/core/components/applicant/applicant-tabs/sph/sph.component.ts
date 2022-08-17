@@ -67,4 +67,9 @@ export class SphComponent implements OnInit {
       'sph-applicant-backdrop'
     );
   }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+  }
 }

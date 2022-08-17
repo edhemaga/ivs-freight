@@ -1,8 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
-
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import {
   anyInputInLineIncorrect,
@@ -32,9 +31,9 @@ export class Step6FormComponent implements OnInit {
 
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public contactForm: FormGroup;
-
   public subscription: Subscription;
+
+  public contactForm: FormGroup;
 
   public isContactEdited: boolean;
 

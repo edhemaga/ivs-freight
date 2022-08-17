@@ -19,9 +19,8 @@ import {
 export class Step4Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
 
-  public applicant: Applicant | undefined;
-
   public accidentForm: FormGroup;
+
   public accidentArray: AccidentModel[] = [
     {
       accidentDate: '01/09/12',
@@ -107,9 +106,9 @@ export class Step4Component implements OnInit, OnDestroy {
 
   public selectedAccidentIndex: number;
 
-  public isEditing: boolean = false;
-
   public helperIndex: number = 2;
+
+  public isEditing: boolean = false;
 
   public formValuesToPatch: any;
 
@@ -151,24 +150,18 @@ export class Step4Component implements OnInit, OnDestroy {
     {},
   ];
 
-  //
+  /* public applicant: Applicant | undefined; */
 
   /* public accidentArray: Accident[] = []; */
 
-  public accidentInfo: AccidentInfo | undefined;
+  /* public accidentInfo: AccidentInfo | undefined; */
 
-  public editAccident: number = -1;
+  /* public editAccident: number = -1; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -204,11 +197,10 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
+    this.selectedAccidentIndex = index;
 
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
-
-    this.selectedAccidentIndex = index;
 
     const selectedAccident = this.accidentArray[index];
 
@@ -312,8 +304,16 @@ export class Step4Component implements OnInit, OnDestroy {
     }
   }
 
-  private formFilling(): void {
-    /*   this.accidentForm.patchValue({
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
+      this.accidentForm.patchValue({
       hasPastAccident: [
         this.accidentInfo?.hasPastAccident,
         Validators.required,
@@ -322,11 +322,11 @@ export class Step4Component implements OnInit, OnDestroy {
 
     this.accidentArray = this.accidentInfo?.accidents
       ? this.accidentInfo?.accidents
-      : []; */
-  }
+      : [];
+  } */
 
-  public onSubmitForm(): void {
-    /* this.shared.clearNotifications();
+  /* public onSubmitForm(): void {
+    this.shared.clearNotifications();
 
         let isValid = true;
 
@@ -347,16 +347,16 @@ export class Step4Component implements OnInit, OnDestroy {
             if (!isValid) {
                 return false;
             }
-        } */
-    /*   const accidentInfoData = new AccidentInfo(this.accidentInfo);
+        }
+      const accidentInfoData = new AccidentInfo(this.accidentInfo);
 
     accidentInfoData.accidents = this.accidentArray;
     accidentInfoData.applicantId = this.applicant?.id;
     accidentInfoData.hasPastAccident = this.accidentForm.value.hasPastAccident;
     accidentInfoData.isCompleted = true;
     accidentInfoData.isDeleted = false;
- */
-    /* REDUX
+
+    // REDUX
         this.apppEntityServices.AccidentService.upsert(
           accidentInfoData
         ).subscribe(
@@ -366,16 +366,10 @@ export class Step4Component implements OnInit, OnDestroy {
           (error) => {
             this.shared.handleError(error);
           }
-        ); */
-  }
+        );
+  } */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

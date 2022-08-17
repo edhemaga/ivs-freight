@@ -40,9 +40,11 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
   public accidentForm: FormGroup;
+
   public accidentArray: SphFormAccidentModel[] = [];
 
   public isAccidentEdited?: boolean;
+
   public editingCardAddress: any;
 
   public subscription: Subscription;
@@ -167,7 +169,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
     }, 1);
   }
 
-  public onAddAnotherAccident() {
+  public onAddAnotherAccident(): void {
     if (this.accidentForm.invalid) {
       this.inputService.markInvalid(this.accidentForm);
       return;

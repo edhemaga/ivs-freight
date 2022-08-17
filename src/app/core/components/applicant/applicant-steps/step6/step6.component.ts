@@ -20,8 +20,6 @@ import {
 export class Step6Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public educationForm: FormGroup;
   public contactForm: FormGroup;
 
@@ -42,6 +40,18 @@ export class Step6Component implements OnInit, OnDestroy {
     '12',
   ];
   public collegeGrades: string[] = ['1', '2', '3', '4'];
+
+  public helperIndex: number = 2;
+  public selectedContactIndex: number;
+
+  public selectedGrade: number = -1;
+  public selectedCollegeGrade: number = -1;
+
+  public highlightGrade: number = -1;
+
+  public isEditing: boolean = false;
+
+  public formValuesToPatch: any;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -163,18 +173,6 @@ export class Step6Component implements OnInit, OnDestroy {
     },
   ];
 
-  public selectedGrade: number = -1;
-  public selectedCollegeGrade: number = -1;
-  public selectedContactIndex: number;
-
-  public highlightGrade: number = -1;
-
-  public isEditing: boolean = false;
-
-  public helperIndex: number = 2;
-
-  public formValuesToPatch: any;
-
   public openAnnotationArray: {
     lineIndex?: number;
     lineInputs?: boolean[];
@@ -228,24 +226,18 @@ export class Step6Component implements OnInit, OnDestroy {
     {},
   ];
 
-  //
+  /* public applicant: Applicant | undefined; */
 
-  /*  public contactsFormArray: Contact[] | undefined = [];
-   */
-  public educationInfo: Education | undefined;
+  /* public contactsFormArray: Contact[] | undefined = []; */
 
-  public editContact: number = -1;
+  /* public educationInfo: Education | undefined; */
+
+  /* public editContact: number = -1; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -311,6 +303,7 @@ export class Step6Component implements OnInit, OnDestroy {
     if (this.selectedMode !== 'APPLICANT_MODE') {
       return;
     }
+
     this.selectedCollegeGrade = gradeIndex;
   }
 
@@ -328,11 +321,10 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
+    this.selectedContactIndex = index;
 
     this.isEditing = true;
     this.contactsArray[index].isEditingContact = true;
-
-    this.selectedContactIndex = index;
 
     const selectedContact = this.contactsArray[index];
 
@@ -436,7 +428,15 @@ export class Step6Component implements OnInit, OnDestroy {
     }
   }
 
-  private formFIlling(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFIlling(): void {
     this.selectedGrade = this.educationInfo?.grade
       ? this.educationInfo?.grade
       : 0;
@@ -456,63 +456,63 @@ export class Step6Component implements OnInit, OnDestroy {
         this.educationInfo?.knowledgeOfSafetyRegulationsExplain,
     });
 
-    // if (this.specialTraining) {
-    //     this.educationForm.controls['specialTrainingExplain'].setValidators(
-    //         Validators.required
-    //     );
-    // } else {
-    //     this.educationForm.controls['specialTrainingExplain'].setValidators(
-    //         []
-    //     );
-    // }
+    if (this.specialTraining) {
+        this.educationForm.controls['specialTrainingExplain'].setValidators(
+            Validators.required
+        );
+    } else {
+        this.educationForm.controls['specialTrainingExplain'].setValidators(
+            []
+        );
+    }
 
-    // if (this.otherTraining) {
-    //     this.educationForm.controls['otherTrainingExplain'].setValidators(
-    //         Validators.required
-    //     );
-    // } else {
-    //     this.educationForm.controls['otherTrainingExplain'].setValidators(
-    //         []
-    //     );
-    // }
+    if (this.otherTraining) {
+        this.educationForm.controls['otherTrainingExplain'].setValidators(
+            Validators.required
+        );
+    } else {
+        this.educationForm.controls['otherTrainingExplain'].setValidators(
+            []
+        );
+    }
 
-    // if (this.knowledgeOfSafetyRegulations) {
-    //     this.educationForm.controls[
-    //         'knowledgeOfSafetyRegulationsExplain'
-    //     ].setValidators(Validators.required);
-    // } else {
-    //     this.educationForm.controls[
-    //         'knowledgeOfSafetyRegulationsExplain'
-    //     ].setValidators([]);
-    // }
+    if (this.knowledgeOfSafetyRegulations) {
+        this.educationForm.controls[
+            'knowledgeOfSafetyRegulationsExplain'
+        ].setValidators(Validators.required);
+    } else {
+        this.educationForm.controls[
+            'knowledgeOfSafetyRegulationsExplain'
+        ].setValidators([]);
+    }
 
-    // this.educationForm.controls[
-    //     'specialTrainingExplain'
-    // ].updateValueAndValidity();
+    this.educationForm.controls[
+        'specialTrainingExplain'
+    ].updateValueAndValidity();
 
-    // this.educationForm.controls[
-    //     'otherTrainingExplain'
-    // ].updateValueAndValidity();
+    this.educationForm.controls[
+        'otherTrainingExplain'
+    ].updateValueAndValidity();
 
-    // this.educationForm.controls[
-    //     'knowledgeOfSafetyRegulationsExplain'
-    // ].updateValueAndValidity();
+    this.educationForm.controls[
+        'knowledgeOfSafetyRegulationsExplain'
+    ].updateValueAndValidity();
 
-    /*   this.contactsFormArray = this.educationInfo?.contacts; */
+      this.contactsFormArray = this.educationInfo?.contacts;
 
-    // this.generalForm = this.fb.group({
-    //     when: since
-    //         ? new NgbDate(
-    //               since.getFullYear(),
-    //               since.getMonth() + 1,
-    //               since.getDate()
-    //           )
-    //         : undefined,
-    // });
-  }
+    this.generalForm = this.fb.group({
+        when: since
+            ? new NgbDate(
+                  since.getFullYear(),
+                  since.getMonth() + 1,
+                  since.getDate()
+              )
+            : undefined,
+    });
+  } */
 
-  public onSubmitForm(): void {
-    /*  this.shared.clearNotifications();
+  /* public onSubmitForm(): void {
+     this.shared.clearNotifications();
 
         let isValid = true;
 
@@ -553,8 +553,8 @@ export class Step6Component implements OnInit, OnDestroy {
 
         if (!isValid) {
             return false;
-        } */
-    /*    const educationForm = this.educationForm.value;
+        }
+       const educationForm = this.educationForm.value;
     const education = new Education(this.educationInfo);
 
     education.applicantId = this.applicant?.id;
@@ -577,24 +577,18 @@ export class Step6Component implements OnInit, OnDestroy {
     education.unableForJob = educationForm.unableForJob;
 
     education.isCompleted = true;
- */
-    /*    this.apppEntityServices.EducationService.upsert(education).subscribe(
+
+       this.apppEntityServices.EducationService.upsert(education).subscribe(
             () => {
                 this.notification.success('Education is updated');
             },
             (error: any) => {
                 this.shared.handleError(error);
             }
-        ); */
-  }
+        );
+  } */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

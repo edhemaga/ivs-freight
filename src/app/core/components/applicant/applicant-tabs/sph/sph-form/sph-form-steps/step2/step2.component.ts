@@ -24,6 +24,7 @@ export class Step2Component implements OnInit, AfterViewInit {
   @ViewChildren('cmp') components: QueryList<any>;
 
   public accidentHistoryForm: FormGroup;
+
   public accidentArray: SphFormAccidentModel[] = [
     {
       accidentDate: '01/01/01',
@@ -43,11 +44,11 @@ export class Step2Component implements OnInit, AfterViewInit {
   public selectedVehicleType: any = null;
   public selectedTrailerType: any = null;
   public selectedReasonForLeaving: any = null;
+
   public selectedAccidentIndex: number;
+  public helperIndex: number = 2;
 
   public isEditing: boolean = false;
-
-  public helperIndex: number = 2;
 
   public workForCompanyRadios: any;
 
@@ -211,11 +212,10 @@ export class Step2Component implements OnInit, AfterViewInit {
     }
 
     this.helperIndex = index;
+    this.selectedAccidentIndex = index;
 
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
-
-    this.selectedAccidentIndex = index;
 
     const selectedAccident = this.accidentArray[index];
 
@@ -262,5 +262,13 @@ export class Step2Component implements OnInit, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
   }
 }

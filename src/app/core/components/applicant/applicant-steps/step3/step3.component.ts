@@ -23,10 +23,9 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 export class Step3Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
+
   public licenseArray: LicenseModel[] = [
     {
       license: 'd263-540-92-166-0',
@@ -72,7 +71,11 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public selectedLicenseIndex: number;
 
+  public helperIndex: number = 2;
+
   public isEditing: boolean = false;
+
+  public formValuesToPatch: any;
 
   public answerChoices: AnswerChoices[] = [
     {
@@ -90,10 +93,6 @@ export class Step3Component implements OnInit, OnDestroy {
       checked: false,
     },
   ];
-
-  public helperIndex: number = 2;
-
-  public formValuesToPatch: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -143,13 +142,11 @@ export class Step3Component implements OnInit, OnDestroy {
     },
   ];
 
-  //
+  /* public applicant: Applicant | undefined; */
 
-  /*  public licenseArray: License[] = []; */
+  /* public licenseArray: License[] = []; */
 
-  public editLicense: number = -1;
-
-  public cdlInformation: CDLInformation | undefined;
+  /* public cdlInformation: CDLInformation | undefined; */
 
   constructor(
     private formBuilder: FormBuilder,
@@ -158,12 +155,6 @@ export class Step3Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -196,7 +187,7 @@ export class Step3Component implements OnInit, OnDestroy {
           (radio: { checked: boolean }) => radio.checked
         );
 
-        if (selectedCheckbox.label === 'Yes') {
+        if (selectedCheckbox.label === 'YES') {
           this.inputService.changeValidators(
             this.permitForm.get('permitExplain')
           );
@@ -229,11 +220,10 @@ export class Step3Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
+    this.selectedLicenseIndex = index;
 
     this.isEditing = true;
     this.licenseArray[index].isEditingLicense = true;
-
-    this.selectedLicenseIndex = index;
 
     const selectedLicense = this.licenseArray[index];
 
@@ -337,8 +327,16 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
-  public onSubmitForm(): void {
-    /* this.shared.clearNotifications();
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* public onSubmitForm(): void {
+    this.shared.clearNotifications();
 
         let isValid = true;
 
@@ -369,35 +367,30 @@ export class Step3Component implements OnInit, OnDestroy {
 
         if (!isValid) {
             return false;
-        } */
-    /*  const cdlInfo: CDLInformation = {
+        }
+
+     const cdlInfo: CDLInformation = {
       id: this.cdlInformation?.id ? this.cdlInformation?.id : undefined,
       applicantId: this.applicant?.id,
       licences: this.licenseArray,
       permit: this.licenseForm.get('permit').value,
       explain: this.licenseForm.get('permitExplain').value,
     };
- */
-    // REDUX
-    // this.apppEntityServices.CDLInformationService.upsert(
-    //   cdlInfo
-    // ).subscribe(
-    //   (response) => {
-    //     this.notification.success('CDL is updated');
-    //   },
-    //   (error) => {
-    //     this.shared.handleError(error);
-    //   }
-    // );
-  }
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
+    //REDUX
+    this.apppEntityServices.CDLInformationService.upsert(
+      cdlInfo
+    ).subscribe(
+      (response) => {
+        this.notification.success('CDL is updated');
+      },
+      (error) => {
+        this.shared.handleError(error);
+      }
+    );
+  } */
 
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

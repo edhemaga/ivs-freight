@@ -22,9 +22,8 @@ import {
 export class Step2Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.APPLICANT;
 
-  public applicant: Applicant;
-
   public workExperienceForm: FormGroup;
+
   public workExperienceArray: WorkHistoryModel[] = [
     {
       applicantId: '1',
@@ -211,9 +210,9 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public selectedWorkExperienceIndex: number;
 
-  public isEditing: boolean = false;
-
   public helperIndex: number = 2;
+
+  public isEditing: boolean = false;
 
   public formValuesToPatch: any;
 
@@ -255,9 +254,9 @@ export class Step2Component implements OnInit, OnDestroy {
     {},
   ];
 
-  //
+  /* public applicant: Applicant | undefined; */
 
-  public selectedItemIndex: number = -1;
+  /* public selectedItemIndex: number = -1; */
 
   /* public workExperienceArray: WorkHistory[]; */
 
@@ -273,13 +272,8 @@ export class Step2Component implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+
     /*     this.isNoExperience(); */
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -315,11 +309,10 @@ export class Step2Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
+    this.selectedWorkExperienceIndex = index;
 
     this.isEditing = true;
     this.workExperienceArray[index].isEditingWorkHistory = true;
-
-    this.selectedWorkExperienceIndex = index;
 
     const selectedWorkExperience = this.workExperienceArray[index];
 
@@ -462,11 +455,40 @@ export class Step2Component implements OnInit, OnDestroy {
       });
   } */
 
-  /*   public hideForm(): void {
-    if (this.workExperienceArray?.length) {
-      this.workExperienceArray[this.selectedItemIndex].isExpanded = false;
-      this.selectedItemIndex = -1;
-    }
+  /* public onStepAction(event: any): void {
+    if (event.action === 'back-step') {
+      this.router.navigateByUrl(`/applicant/${this.applicant.id}/1`);
+    }  else if (event.action === 'next-step') {
+            if (this.showAddNew) {
+                if (this.workExperienceForm.get('noWorkExperience').value) {
+                    if (this.workExperienceArray?.length) {
+                        this.workExperienceArray.forEach(element => {
+                            element.isDeleted = true;
+                            element.applicantId = this.applicant.id;
+                            this.apppEntityServices.workHistoryService
+                                .upsert(element)
+                                .subscribe(
+                                    response => {
+                                        this.notification.success(
+                                            'Work Experience has been deleted!',
+                                            'Success'
+                                        );
+                                    },
+                                    error => {
+                                        this.shared.handleError(error);
+                                    }
+                                );
+                        });
+                    }
+                } else {
+                    this.router.navigateByUrl(
+                        `/applicant/${this.applicant.id}/3`
+                    );
+                }
+            } else {
+                this.onAddWorkExperience();
+            }
+        }
   } */
 
   /* private formFilling(index: number): void {
@@ -548,49 +570,12 @@ export class Step2Component implements OnInit, OnDestroy {
     }
   } */
 
-  /*  public onSubmitForm(): void {
+  /* public onSubmitForm(): void {
     this.onAddWorkExperience();
   }
  */
-  public goBack(): void {
-    this.router.navigateByUrl(`/applicant/${this.applicant.id}/1`);
-  }
 
-  public onStepAction(event: any): void {
-    if (event.action === 'back-step') {
-      this.goBack();
-    } /*  else if (event.action === 'next-step') {
-            if (this.showAddNew) {
-                if (this.workExperienceForm.get('noWorkExperience').value) {
-                    if (this.workExperienceArray?.length) {
-                        this.workExperienceArray.forEach(element => {
-                            element.isDeleted = true;
-                            element.applicantId = this.applicant.id;
-                            this.apppEntityServices.workHistoryService
-                                .upsert(element)
-                                .subscribe(
-                                    response => {
-                                        this.notification.success(
-                                            'Work Experience has been deleted!',
-                                            'Success'
-                                        );
-                                    },
-                                    error => {
-                                        this.shared.handleError(error);
-                                    }
-                                );
-                        });
-                    }
-                } else {
-                    this.router.navigateByUrl(
-                        `/applicant/${this.applicant.id}/3`
-                    );
-                }
-            } else {
-                this.onAddWorkExperience();
-            }
-        } */
-  }
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

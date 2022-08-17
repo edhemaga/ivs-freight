@@ -9,7 +9,6 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
@@ -42,8 +41,6 @@ export class Step1Component implements OnInit, OnDestroy {
   public isLastInputDeleted: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
-  public helperIndex: number = 2;
-
   public isEditingArray: {
     id: number;
     isEditing: boolean;
@@ -51,6 +48,8 @@ export class Step1Component implements OnInit, OnDestroy {
     isFirstAddress: boolean;
   }[] = [];
   public isEditingId: number = -1;
+
+  public helperIndex: number = 2;
 
   public previousAddressOnEdit: string;
   public previousAddressUnitOnEdit: string;
@@ -301,6 +300,7 @@ export class Step1Component implements OnInit, OnDestroy {
       email: [null, [Validators.required, emailRegex]],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
+      previousAddresses: this.formBuilder.array([]),
       ssn: [null, [Validators.required, ssnNumberRegex]],
       bankId: [null],
       accountNumber: [null, accountBankRegex],
@@ -329,8 +329,6 @@ export class Step1Component implements OnInit, OnDestroy {
       questionReview4: [null],
       questionReview5: [null],
       questionReview6: [null],
-
-      previousAddresses: this.formBuilder.array([]),
     });
   }
 
@@ -450,10 +448,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public onAddNewAddress(): void {
-    this.isEditingMiddlePositionAddress = false;
-
-    this.helperIndex = 2;
-
     if (
       this.previousAddresses.controls.length &&
       !this.isLastAddedPreviousAddressValid &&
@@ -461,6 +455,10 @@ export class Step1Component implements OnInit, OnDestroy {
     ) {
       return;
     }
+
+    this.isEditingMiddlePositionAddress = false;
+
+    this.helperIndex = 2;
 
     this.isLastInputDeleted = false;
 
@@ -614,14 +612,6 @@ export class Step1Component implements OnInit, OnDestroy {
     this.helperIndex = 2;
   }
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-    }
-
-    if (event.action === 'back-step') {
-    }
-  }
-
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -677,6 +667,11 @@ export class Step1Component implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationButton = true;
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
+    }
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
     }
   }
 

@@ -29,9 +29,6 @@ export class SphModalComponent implements OnInit {
   public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
 
-  public injuriesCounter: number = 0;
-  public fatalitiesCounter: number = 0;
-
   public fatalitiesControl: FormControl = new FormControl(0);
   public injuriesControl: FormControl = new FormControl(0);
 

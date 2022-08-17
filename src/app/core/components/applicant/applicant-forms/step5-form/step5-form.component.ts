@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -33,12 +32,13 @@ export class Step5FormComponent implements OnInit {
 
   public selectedMode = SelectedMode.FEEDBACK;
 
+  private subscription: Subscription;
+
   public violationsForm: FormGroup;
 
   public isViolationEdited: boolean;
-  public editingCardAddress: any;
 
-  private subscription: Subscription;
+  public editingCardAddress: any;
 
   public selectedVehicleType: any = null;
   public selectedAddress: Address = null;

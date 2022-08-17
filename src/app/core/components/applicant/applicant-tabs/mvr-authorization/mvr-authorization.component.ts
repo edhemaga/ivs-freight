@@ -140,4 +140,11 @@ export class MvrAuthorizationComponent implements OnInit {
         false;
     }
   }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+  }
+
+  public onSubmitReview(data: any): void {}
 }

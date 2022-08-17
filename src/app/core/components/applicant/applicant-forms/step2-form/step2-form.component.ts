@@ -8,7 +8,6 @@ import {
   QueryList,
   ViewChildren,
 } from '@angular/core';
-
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -122,7 +121,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       isEditingClassOfEquipment: false,
     },
   ];
-
   public helperClassOfEquipmentArray: AnotherClassOfEquipmentModel[] = [];
 
   public isEditingClassOfEquipment: boolean = false;
@@ -139,7 +137,9 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   public selectedTrailerType: any = null;
   public selectedTrailerLength: any = null;
   public selectedReasonForLeaving: any = null;
+
   public selectedClassOfEquipmentIndex: number;
+  public helperIndex: number = 2;
 
   public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
@@ -147,8 +147,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
   private cfrPartRadios: any;
   private fmcsaRadios: any;
-
-  public helperIndex: number = 2;
 
   public reasonsForLeaving: ReasonForLeaving[] = [
     { id: 1, name: 'Better opportunity' },

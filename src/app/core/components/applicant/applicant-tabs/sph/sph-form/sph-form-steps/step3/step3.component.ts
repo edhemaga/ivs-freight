@@ -227,4 +227,12 @@ export class Step3Component implements OnInit {
         break;
     }
   }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
 }

@@ -21,12 +21,34 @@ import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
 export class Step7Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public sevenDaysHosForm: FormGroup;
-  public sevenDaysHosInfo: SevenDaysHos | undefined;
 
   public selectedAddress: Address = null;
+
+  public sevenDaysHosDaysData: string[] = [
+    'Day',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+  ];
+
+  public sevenDaysHosDateData: string[] = [
+    'Date',
+    '01/22/21',
+    '01/21/21',
+    '01/20/21',
+    '01/19/21',
+    '01/18/21',
+    '01/17/21',
+    '01/16/21',
+  ];
+
+  public totalHours: { id: number; value: number }[] = [];
+  public totalHoursCounter: number = 0;
 
   public questions: ApplicantQuestion[] = [
     {
@@ -76,37 +98,6 @@ export class Step7Component implements OnInit, OnDestroy {
     },
   ];
 
-  public sevenDaysHosDaysData: string[] = [
-    'Day',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-  ];
-
-  public sevenDaysHosDateData: string[] = [
-    'Date',
-    '01/22/21',
-    '01/21/21',
-    '01/20/21',
-    '01/19/21',
-    '01/18/21',
-    '01/17/21',
-    '01/16/21',
-  ];
-
-  public hosArrayData!: FormArray;
-
-  public get hosArray(): FormArray {
-    return this.sevenDaysHosForm.get('hosArray') as FormArray;
-  }
-
-  public totalHours: { id: number; value: number }[] = [];
-  public totalHoursCounter: number = 0;
-
   public openAnnotationArray: {
     lineIndex?: number;
     lineInputs?: boolean[];
@@ -121,22 +112,27 @@ export class Step7Component implements OnInit, OnDestroy {
     },
   ];
 
+  /* public applicant: Applicant | undefined; */
+
+  /* public sevenDaysHosInfo: SevenDaysHos | undefined; */
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    const applicantUser = localStorage.getItem('applicant_user');
+    this.createSevenDaysHos();
+  }
 
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
+  public get hosArray(): FormArray {
+    return this.sevenDaysHosForm.get('hosArray') as FormArray;
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
 
   public createForm(): void {
     this.sevenDaysHosForm = this.formBuilder.group({
+      hosArray: this.formBuilder.array([]),
       isValidHos: [false, Validators.requiredTrue],
       startDate: [null, Validators.required],
       address: [null, Validators.required],
@@ -144,15 +140,11 @@ export class Step7Component implements OnInit, OnDestroy {
       intendToWorkAnotherEmployer: [null, Validators.required],
       isValidAnotherEmployer: [null, Validators.requiredTrue],
 
-      hosArray: this.formBuilder.array([]),
-
       firstRowReview: [null],
     });
-
-    this.createSevenDaysHos();
   }
 
-  public handleCheckboxParagraphClick(type: string) {
+  public handleCheckboxParagraphClick(type: string): void {
     if (this.selectedMode === 'FEEDBACK_MODE') {
       return;
     }
@@ -293,7 +285,15 @@ export class Step7Component implements OnInit, OnDestroy {
     }
   }
 
-  private formFilling(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
     if (this.sevenDaysHosInfo?.hosData?.length) {
       this.sevenDaysHosForm.patchValue({
         isValidHos: this.sevenDaysHosInfo?.isValidHos,
@@ -307,16 +307,16 @@ export class Step7Component implements OnInit, OnDestroy {
 
       this.hosArray.clear();
 
-      /*  this.sevenDaysHosInfo?.hosData.forEach(s => {
+       this.sevenDaysHosInfo?.hosData.forEach(s => {
           this.hosArray.push(this.createHos(s?.value, s.id))
         });
 
-        this.countTotal(); */
+        this.countTotal();
     }
-  }
+  } */
 
-  public onSubmitForm(): void {
-    /*  this.shared.clearNotifications();
+  /* public onSubmitForm(): void {
+     this.shared.clearNotifications();
 
         let isValid = true;
 
@@ -338,7 +338,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
         if (!isValid) {
             return false;
-        } */
+        }
 
     const sevenDaysHosForm = this.sevenDaysHosForm.value;
     const sevenDaysHos = new SevenDaysHos(this.sevenDaysHosInfo);
@@ -355,7 +355,7 @@ export class Step7Component implements OnInit, OnDestroy {
       sevenDaysHosForm.isValidAnotherEmployer;
     sevenDaysHos.hosData = [];
 
-    /*  this.hosArray.controls.forEach(
+     this.hosArray.controls.forEach(
             (control: AbstractControl, key: number) => {
                 sevendayshos.hosData.push({
                     id: control.value?.id ? control.value.id : undefined,
@@ -364,9 +364,9 @@ export class Step7Component implements OnInit, OnDestroy {
                     isCompleted: true,
                 });
             }
-        ); */
+        );
 
-    /* this.apppEntityServices.SevenDaysHosService.upsert(
+    this.apppEntityServices.SevenDaysHosService.upsert(
             sevendayshos
         ).subscribe(
             () => {
@@ -375,16 +375,10 @@ export class Step7Component implements OnInit, OnDestroy {
             (error: any) => {
                 this.shared.handleError(error);
             }
-        ); */
-  }
+        ); 
+  } */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

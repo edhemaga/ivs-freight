@@ -7,7 +7,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription } from 'rxjs';
@@ -21,10 +20,11 @@ import { VehicleType } from '../../state/model/vehicle-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AddressEntity } from 'appcoretruckassist';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
@@ -54,9 +54,13 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
   public selectedVehicleType: any = null;
 
   public isAccidentEdited: boolean;
+
   public editingCardAddress: any;
 
   public vehicleType: VehicleType[] = [];
+
+  public hazmatSpillRadios: any;
+
   public answerChoices: AnswerChoices[] = [
     {
       id: 1,
@@ -73,8 +77,6 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
       checked: false,
     },
   ];
-
-  public hazmatSpillRadios: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
