@@ -43,7 +43,6 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Input() customClass: string = null;
   @Output() saveNoteValue = new EventEmitter();
   @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
-  @ViewChild('noteBody', { static: true }) noteBody: ElementRef;
 
   constructor(@Self() public superControl: NgControl, private sharedService: SharedService) {
     this.superControl.valueAccessor = this;

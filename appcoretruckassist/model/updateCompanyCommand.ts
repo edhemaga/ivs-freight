@@ -14,6 +14,7 @@ import { UpdateBankCardCommand } from './updateBankCardCommand';
 import { UpdateDepartmentContactCommand } from './updateDepartmentContactCommand';
 import { FleetType } from './fleetType';
 import { UpdateBankAccountCommand } from './updateBankAccountCommand';
+import { AddressEntity } from './addressEntity';
 import { PreferredLoadType } from './preferredLoadType';
 
 
@@ -31,6 +32,7 @@ export interface UpdateCompanyCommand {
     currency?: number;
     companyType?: number | null;
     dateOfIncorporation?: string | null;
+    address?: AddressEntity;
     prefix?: string | null;
     starting?: string | null;
     sufix?: string | null;

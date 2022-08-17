@@ -16,7 +16,7 @@ export interface UpdateRegistrationCommand {
     stateId?: number;
     licensePlate?: string | null;
     issueDate?: string;
-    expDate?: string | null;
+    expDate?: string;
     note?: string | null;
 }
 

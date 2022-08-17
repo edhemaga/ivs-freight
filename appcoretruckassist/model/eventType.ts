@@ -11,13 +11,12 @@
  */
 
 
-export interface CreateRegistrationCommand { 
-    truckId?: number | null;
-    trailerId?: number | null;
-    licensePlate?: string | null;
-    stateId?: number;
-    issueDate?: string;
-    expDate?: string;
-    note?: string | null;
-}
+export type EventType = 'Important' | 'Company' | 'Personal' | 'Holiday';
+
+export const EventType = {
+    Important: 'Important' as EventType,
+    Company: 'Company' as EventType,
+    Personal: 'Personal' as EventType,
+    Holiday: 'Holiday' as EventType
+};
 

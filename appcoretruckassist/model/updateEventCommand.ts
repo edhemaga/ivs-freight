@@ -9,15 +9,19 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EventType } from './eventType';
 
 
-export interface CreateRegistrationCommand { 
-    truckId?: number | null;
-    trailerId?: number | null;
-    licensePlate?: string | null;
-    stateId?: number;
-    issueDate?: string;
-    expDate?: string;
-    note?: string | null;
+export interface UpdateEventCommand { 
+    id?: number;
+    eventTitle?: string | null;
+    startDate?: string;
+    endDate?: string;
+    eventType?: EventType;
+    description?: string | null;
+    allDay?: boolean;
+    weekendDays?: boolean;
+    repeat?: boolean;
+    rrule?: string | null;
 }
 

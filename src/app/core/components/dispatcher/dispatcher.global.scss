@@ -1501,6 +1501,10 @@
     padding: 2px;
     background-color: #fff;
     border-radius: 2px;
+
+    &.empty_field{
+      background-color: transparent;
+    }
   }
 
   .full_location_name {
@@ -1899,22 +1903,22 @@
   height: 34px;
 }
 
-.dispatch-dropdown.ng-select.ng-select-opened {
-  position: relative;
-  top: 0 !important;
-  left: 50%;
-  box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
-  background-color: $white;
-  z-index: 10;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-  transition: none !important;
-  transform: translateX(-50%);
+// .dispatch-dropdown.ng-select.ng-select-opened {
+//   position: relative;
+//   top: 0 !important;
+//   left: 50%;
+//   box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.15) !important;
+//   background-color: $white;
+//   z-index: 10;
+//   border-top-left-radius: 3px;
+//   border-top-right-radius: 3px;
+//   transition: none !important;
+//   transform: translateX(-50%);
 
-  .disp_selected {
-    background-color: #fff;
-  }
-}
+//   .disp_selected {
+//     background-color: #fff;
+//   }
+// }
 
 .dispatch-dropdown.ng-select {
   position: relative;

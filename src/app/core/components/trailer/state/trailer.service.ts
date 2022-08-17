@@ -203,7 +203,9 @@ export class TrailerTService {
               /* Remove Data From Store */
               tabSelected === 'active'
                 ? this.trailerActiveStore.remove(({ id }) => id === trailerId)
-                : this.trailerInactiveStore.remove(({ id }) => id === trailerId);
+                : this.trailerInactiveStore.remove(
+                    ({ id }) => id === trailerId
+                  );
 
               /* Add Data To New Store */
               tabSelected === 'active'

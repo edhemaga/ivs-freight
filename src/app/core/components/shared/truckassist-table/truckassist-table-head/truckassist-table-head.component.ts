@@ -189,7 +189,8 @@ export class TruckassistTableHeadComponent
       column.field &&
       column.sortable &&
       this.locked &&
-      this.viewData.length > 1
+      this.viewData.length > 1 &&
+      column.sortName
     ) {
       this.options.config.sortBy = column.field;
       this.options.config.sortDirection =
@@ -215,6 +216,12 @@ export class TruckassistTableHeadComponent
       this.headActions.emit({ action: 'sort', direction: directionSort });
 
       this.changeDetectorRef.detectChanges();
+    }else if(!column.sortable){
+      alert('Kolona nije podesena u konfig tabele da bude sortable')
+    }else if(this.viewData.length <= 1){
+      alert('U tabeli ima samo jedan podatak, sort se nece zbog toga odraditi');
+    }else if(!column.sortName){
+      alert('Nije postavljen sortName za ovu kolonu')
     }
   }
 

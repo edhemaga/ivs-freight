@@ -17,10 +17,8 @@ import { StateResponse } from './stateResponse';
 
 export interface GetCdlModalResponse { 
     classTypes?: Array<EnumValue> | null;
-    country?: EnumValue;
     endorsements?: Array<CdlEndorsementResponse> | null;
     restrictions?: Array<CdlRestrictionResponse> | null;
-    usStates?: Array<StateResponse> | null;
-    canadaStates?: Array<StateResponse> | null;
+    states?: Array<StateResponse> | null;
 }
 
