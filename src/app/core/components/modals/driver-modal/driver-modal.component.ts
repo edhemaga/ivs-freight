@@ -806,9 +806,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private einNumberChange() {
     this.driverForm
       .get('ein')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(
+        debounceTime(2000),
+        distinctUntilChanged(),
+        untilDestroyed(this)
+      )
       .subscribe((value) => {
-        if (value) {
+        if (value.length === 10) {
           this.loadingOwnerEin = true;
           this.driverTService
             .checkOwnerEinNumber(value)
@@ -1198,8 +1202,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
       fleetType: this.fleetType,
-      soloDriver: this.fleetType === 'Combined' ? soloDriver : false,
-      teamDriver: this.fleetType === 'Combined' ? teamDriver : false,
+      soloDriver: !this.driverForm.get('isOwner').value
+        ? this.fleetType === 'Combined'
+          ? soloDriver
+          : false
+        : null,
+      teamDriver: !this.driverForm.get('isOwner').value
+        ? this.fleetType === 'Combined'
+          ? teamDriver
+          : false
+        : null,
     };
 
     this.driverTService
@@ -1494,8 +1506,16 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
       offDutyLocations: this.premmapedOffDutyLocation(),
       fleetType: this.fleetType,
-      soloDriver: this.fleetType === 'Combined' ? soloDriver : false,
-      teamDriver: this.fleetType === 'Combined' ? teamDriver : false,
+      soloDriver: !this.driverForm.get('isOwner').value
+        ? this.fleetType === 'Combined'
+          ? soloDriver
+          : false
+        : null,
+      teamDriver: !this.driverForm.get('isOwner').value
+        ? this.fleetType === 'Combined'
+          ? teamDriver
+          : false
+        : null,
     };
 
     this.driverTService

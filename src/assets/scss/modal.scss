@@ -101,6 +101,11 @@ ngb-modal-window[aria-hidden="true"] {
           display: flex;
           align-items: center;
           gap: 12px;
+
+          &.confirmation-modal {
+            flex: 1;
+            gap: 6px;
+          }
         }
 
         .modal-header-tab-change-reorder {
@@ -144,6 +149,12 @@ ngb-modal-window[aria-hidden="true"] {
               }
             }
           }
+        }
+
+        .modal-header-svg {
+          width: 18px;
+          height: 18px;
+          line-height: 16px;
         }
 
         .edit-name {
@@ -216,7 +227,8 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-deactivate-btn,
-        .modal-resend-email-btn {
+        .modal-resend-email-btn,
+        .modal-cancel-btn {
           position: relative;
           min-width: 128px;
           height: 32px;
@@ -277,6 +289,15 @@ ngb-modal-window[aria-hidden="true"] {
               background-color: #536bc2;
             }
           }
+        }
+
+        .modal-confirmation-btn {
+          min-width: 150px;
+        }
+
+        .modal-cancel-btn {
+          width: 110px;
+          min-width: 110px;
         }
 
         .modal-save-btn-add-new {
