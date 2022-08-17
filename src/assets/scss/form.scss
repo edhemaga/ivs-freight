@@ -309,7 +309,7 @@
     align-items: center;
     -moz-column-gap: 22px;
     column-gap: 22px;
-    padding: 0px 6px;
+    padding-left: 6px;
     margin-bottom: 32px;
 
     &.custom-row-paytype-driver-disabled {
@@ -341,6 +341,7 @@
 
     &.paytype-commission-single {
       grid-template-columns: 1fr;
+      margin-bottom: 40px;
     }
   }
 
@@ -384,10 +385,6 @@
           color: #6c6c6c;
           background-color: rgb(108, 108, 108, 0.2);
         }
-      }
-
-      &:nth-last-child(1) {
-        margin-bottom: 10px;
       }
 
       &.permile-fields-same-rate {

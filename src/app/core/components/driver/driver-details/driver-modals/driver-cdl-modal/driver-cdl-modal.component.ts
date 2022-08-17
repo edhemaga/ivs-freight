@@ -152,7 +152,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
               name: item.stateShortName,
               stateName: item.stateName,
             };
-          }); */
+          });
           this.classTypes = res.classTypes;
           this.endorsements = res.endorsements;
           this.restrictions = res.restrictions;

@@ -187,7 +187,9 @@
                 ['Solo'].includes(fleetType)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
+              [ngClass]="{
+                'permile-fields-same-rate': hasMilesSameRate
+              }"
             >
               <p>SOLO</p>
               <app-ta-input
@@ -257,7 +259,9 @@
                 ['Team'].includes(fleetType)
               "
               class="permile-fields"
-              [ngClass]="{ 'permile-fields-same-rate': hasMilesSameRate }"
+              [ngClass]="{
+                'permile-fields-same-rate': hasMilesSameRate
+              }"
             >
               <p>TEAM</p>
               <app-ta-input
