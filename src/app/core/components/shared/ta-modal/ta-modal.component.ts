@@ -254,6 +254,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
           action: action,
           bool: this.isDeactivated,
         });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'activate': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'dnu': {
@@ -268,6 +273,18 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'hire': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'archive': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'ban': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }

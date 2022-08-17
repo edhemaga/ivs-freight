@@ -7,7 +7,10 @@ export interface Confirmation {
   id: number;
   data: any;
   template: string; // driver, broker, shipper.....
-  type: string; // delete, move, archive, hire, activate, deactivate
+  // TYPE:  delete, hire, activate, deactivate, info
+  // if type is info => subtype: archive, ban, dnu, otherwise subtype = null
+  type: string;
+  subType: string; // archive, ban-list, dnu
   image: boolean; // has image or not
 }
 @Component({
@@ -25,6 +28,7 @@ export class ConfirmationModalComponent {
   ) {}
 
   public onModalAction(data: any) {
+    console.log(data);
     this.confirmationDataSubject.sendConfirmationData(data);
     this.ngbActiveModal.close();
   }

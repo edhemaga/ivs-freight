@@ -746,7 +746,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(
         ConfirmationModalComponent,
         { size: 'small' },
-        { ...event, template: 'driver', type: 'delete', image: true }
+        {
+          ...event,
+          template: 'driver',
+          type: 'delete',
+          subType: null,
+          image: true,
+        }
       );
     } else if (event.type === 'show-more') {
       this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
