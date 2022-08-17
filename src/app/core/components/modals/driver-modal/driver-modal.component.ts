@@ -1554,12 +1554,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             account: res.account,
             routing: res.routing,
             payType: res.payType ? res.payType.name : null,
-            soloEmptyMile: res.solo ? res.solo.emptyMile : null,
             soloPerStop: res.solo.perStop
               ? convertNumberInThousandSep(res.solo.perStop)
               : null,
             soloDriver: res.soloDriver,
-            teamEmptyMile: res.team ? res.team.emptyMile : null,
             teamPerStop: res.team.perStop
               ? convertNumberInThousandSep(res.team.perStop)
               : null,
@@ -1613,6 +1611,14 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm
             .get('teamLoadedMile')
             .patchValue(res.team.loadedMile, { emitEvent: false });
+
+          this.driverForm
+            .get('soloEmptyMile')
+            .patchValue(res.solo.emptyMile, { emitEvent: false });
+
+          this.driverForm
+            .get('teamEmptyMile')
+            .patchValue(res.team.emptyMile, { emitEvent: false });
 
           res.firstName =
             res.firstName.charAt(0).toUpperCase() + res.firstName.slice(1);
