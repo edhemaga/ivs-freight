@@ -183,7 +183,9 @@
           >
             <div
               *ngIf="
-                this.driverForm.get('soloDriver').value || fleetType === 'Solo'
+                (this.driverForm.get('soloDriver').value &&
+                  fleetType === 'Combined') ||
+                fleetType === 'Solo'
               "
               class="permile-fields"
               [ngClass]="{
@@ -254,7 +256,9 @@
             </div>
             <div
               *ngIf="
-                this.driverForm.get('teamDriver').value || fleetType === 'Team'
+                (this.driverForm.get('teamDriver').value &&
+                  fleetType === 'Combined') ||
+                fleetType === 'Team'
               "
               class="permile-fields"
               [ngClass]="{
@@ -344,8 +348,9 @@
           >
             <div
               *ngIf="
-                this.driverForm.get('soloDriver').value ||
-                ['Solo'].includes(fleetType)
+                (this.driverForm.get('soloDriver').value &&
+                  fleetType === 'Combined') ||
+                fleetType === 'Solo'
               "
               class="paytype-field"
             >
@@ -363,8 +368,9 @@
             </div>
             <div
               *ngIf="
-                this.driverForm.get('teamDriver').value ||
-                ['Team'].includes(fleetType)
+                (this.driverForm.get('teamDriver').value &&
+                  fleetType === 'Combined') ||
+                fleetType === 'Team'
               "
               class="paytype-field"
             >
