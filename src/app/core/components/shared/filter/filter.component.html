@@ -6,13 +6,13 @@ class="user-icon"
 [popoverClass]="'filterpopovermain'"
 autoClose="outside"
 [container]="'body'"
-[ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length || rangeValue > 0 }"
+[ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length || rangeValue > 0 || moneyFilterStatus }"
 >
     <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
     <svg-icon [src]=" icon | taSvg: 'common'"></svg-icon>
     <div *ngIf="selectedUser.length > 0" class="active-filter-num">{{selectedUser.length}}</div>
     <div *ngIf="canadaSelectedStates.length > 0 || usaSelectedStates.length > 0" class="active-filter-num">{{usaSelectedStates.length + canadaSelectedStates.length}}</div> 
-    <div *ngIf="selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0 || rangeValue > 0 " 
+    <div *ngIf="selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0 || rangeValue > 0 || moneyFilterStatus" 
         class="active-filter-num clear-filter" 
         ngbTooltip
         mainTooltip="Clear"
@@ -84,7 +84,8 @@ autoClose="outside"
                 <div class="user-profile-img selected-filter-icon" *ngIf="leftSideIcon">
                     <svg-icon src="{{item.icon}}"></svg-icon>
                 </div>
-                <div class="selected-user-frame">{{item.name}}
+                <div class="selected-user-frame">
+                    <div class="selected-name-text">{{item.name}}</div>
                     <div class="selected-icon">
                         <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
                     </div>
@@ -105,7 +106,8 @@ autoClose="outside"
                 <div class="state-name-holder">UNITED STATES</div>
                 <div *ngFor="let item of usaSelectedStates; let indx=index" class="user-main-holder holder-bottom-margin">    
                     <div class="user-profile-img state-short-holder active"> {{item.short}} </div>              
-                    <div class="selected-user-frame">{{item.name}}
+                    <div class="selected-user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
                         <div class="selected-icon">
                             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
                         </div>
@@ -125,7 +127,8 @@ autoClose="outside"
                 <div class="state-name-holder">CANADA</div>
                 <div *ngFor="let item of canadaSelectedStates; let indx=index" class="user-main-holder">    
                     <div class="user-profile-img state-short-holder active"> {{item.short}} </div>              
-                    <div class="selected-user-frame">{{item.name}}
+                    <div class="selected-user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
                         <div class="selected-icon">
                             <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
                         </div>
@@ -155,14 +158,20 @@ autoClose="outside"
                         [name]="item.name"
                         ></app-profile-images> 
                     </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>            
         </div>
         <div class="user-holder" *ngIf="type == 'departmentFilter' ">
             <div *ngFor="let item of departmentArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">
+                            <div class="selected-name-text">{{item.name}}</div>
+                        </div>
+                    </div> 
                 </div>
             </div> 
         </div>
@@ -172,7 +181,9 @@ autoClose="outside"
                     <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'pending')" class="user-main-holder">
                         <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"
                             ></div>
-                        <div class="user-frame">{{item.name}}</div> 
+                        <div class="user-frame">
+                            <div class="selected-name-text">{{item.name}}</div>
+                        </div> 
                     </div>
                 </div>
             </div>  
@@ -181,7 +192,9 @@ autoClose="outside"
                 <div *ngFor="let item of activeStatusArray; let indx=index" class="user-frame-holder">
                     <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'active')" class="user-main-holder">
                         <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"></div>
-                        <div class="user-frame">{{item.name}}</div> 
+                        <div class="user-frame">
+                            <div class="selected-name-text">{{item.name}}</div>
+                        </div> 
                     </div>
                 </div>
             </div>
@@ -191,7 +204,9 @@ autoClose="outside"
                     <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'closed')" class="user-main-holder">
                         <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"
                             ></div>
-                        <div class="user-frame">{{item.name}}</div> 
+                        <div class="user-frame">
+                            <div class="selected-name-text">{{item.name}}</div>
+                        </div> 
                     </div>
                 </div>
             </div>
@@ -202,14 +217,18 @@ autoClose="outside"
                     <div class="user-profile-img">
                         <svg-icon src="{{item.icon}}"></svg-icon>
                     </div> 
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>
         </div>
         <div class="user-holder" *ngIf="type == 'categoryFuelFilter' ">
             <div *ngFor="let item of categoryFuelArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
@@ -219,35 +238,45 @@ autoClose="outside"
                     <div class="user-profile-img">
                         <svg-icon src="{{item.icon}}"></svg-icon>
                     </div> 
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>
         </div>
         <div class="user-holder" *ngIf="type == 'truckFilter' ">
             <div *ngFor="let item of truckArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
         <div class="user-holder" *ngIf="type == 'trailerFilter' ">
             <div *ngFor="let item of trailerArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
         <div class="user-holder" *ngIf="type == 'fuelStopFilter' ">
             <div *ngFor="let item of fuelStopArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
         <div class="user-holder" *ngIf="type == 'brokerFilter' ">
             <div *ngFor="let item of brokerArray; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
@@ -262,7 +291,9 @@ autoClose="outside"
                             [name]="item.name"
                         ></app-profile-images> 
                     </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>            
         </div>
@@ -272,7 +303,9 @@ autoClose="outside"
                     <div class="type-icon">
                         <svg-icon src="{{item.icon}}"></svg-icon>
                     </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
@@ -282,7 +315,9 @@ autoClose="outside"
                     <div class="type-icon">
                         <svg-icon src="{{item.icon}}"></svg-icon>
                     </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div> 
         </div>
@@ -291,14 +326,18 @@ autoClose="outside"
             <div *ngFor="let item of usaStates; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
                     <div class="user-profile-img state-short-holder"> {{item.short}} </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>
             <div class="state-name-holder">CANADA</div>   
             <div *ngFor="let item of canadaStates; let indx=index" class="user-frame-holder">
                 <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'canada')" class="user-main-holder">
                     <div class="user-profile-img state-short-holder"> {{item.short}} </div>
-                    <div class="user-frame">{{item.name}}</div> 
+                    <div class="user-frame">
+                        <div class="selected-name-text">{{item.name}}</div>
+                    </div> 
                 </div>
             </div>         
         </div>
@@ -629,10 +668,11 @@ autoClose="outside"
         </div>
         <div class="border-filter money-top-border-magin"></div>
         <div class="single-form-holder" *ngIf="subType != 'all' ">
+            <div class="clear-money-form" *ngIf="moneyForm.value.singleFrom && moneyForm.value.singleTo " (click)="clearForm('singleForm')">CLEAR</div>
             <div class="money-main-holder" >
                 <div class="money-value-holder" >
                     <app-ta-input
-                        formControlName="invoiceFrom"
+                        formControlName="singleFrom"
                         [inputConfig]="{
                         name: 'ssn',
                         type: 'number',
@@ -641,9 +681,9 @@ autoClose="outside"
                         }"
                     ></app-ta-input>
                 </div>
-                <div class="money-value-holder">
+                <div class="money-value-holder" [class.errorForm]="singleFormError" >
                     <app-ta-input
-                    formControlName="invoiceTo"
+                    formControlName="singleTo"
                     [inputConfig]="{
                     name: 'ssn',
                     type: 'number',
@@ -651,6 +691,7 @@ autoClose="outside"
                     placeholderIcon: 'dollar'
                     }"
                 ></app-ta-input>
+                    <div class="invalid-message" *ngIf="singleFormError">Invalid</div> 
                 </div>
             </div>
         </div>
@@ -658,14 +699,15 @@ autoClose="outside"
             <div class="form-header" [class.hiddenFormTitle]="!showPart1" >
                 <div class="form-name" *ngIf="!fuelType" >Invoice Ageing</div>
                 <div class="form-name" *ngIf="fuelType" >Last Price</div>
-                <div class="hide-money-form" (click)="hideFormPart('part1')">
+                <div class="clear-money-form" *ngIf="moneyForm.value.multiFromFirstFrom && moneyForm.value.multiFromFirstTo " (click)="clearForm('multiFromFirst')">CLEAR</div>
+                <div class="hide-money-form" [ngClass]="{ svg_rotate: !showPart1, rotate_back: showPart1  }" (click)="hideFormPart('part1')">
                     <svg-icon src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
                 </div>
             </div>
             <div class="money-main-holder" *ngIf="showPart1">
-                <div class="money-value-holder" >
+                <div class="money-value-holder"  >
                     <app-ta-input
-                        formControlName="invoiceFrom"
+                        formControlName="multiFromFirstFrom"
                         [inputConfig]="{
                         name: 'ssn',
                         type: 'number',
@@ -674,9 +716,9 @@ autoClose="outside"
                         }"
                     ></app-ta-input>
                 </div>
-                <div class="money-value-holder">
+                <div class="money-value-holder" [class.errorForm]="multiFormFirstError">
                     <app-ta-input
-                    formControlName="invoiceTo"
+                    formControlName="multiFromFirstTo"
                     [inputConfig]="{
                     name: 'ssn',
                     type: 'number',
@@ -684,20 +726,22 @@ autoClose="outside"
                     placeholderIcon: 'dollar'
                     }"
                 ></app-ta-input>
+                <div class="invalid-message" *ngIf="multiFormFirstError">Invalid</div> 
                 </div>
             </div>
             <div class="border-filter money-bottom-border-magin form-border" [class.hiddenFormBorder]="!showPart1"></div>
             <div class="form-header" [class.hiddenFormTitle]="!showPart2" >
                 <div class="form-name" *ngIf="!fuelType" >Available Credit</div>
                 <div class="form-name" *ngIf="fuelType" >Price Per Gallon</div>
-                <div class="hide-money-form" (click)="hideFormPart('part2')">
+                <div class="clear-money-form" *ngIf="moneyForm.value.multiFormSecondFrom && moneyForm.value.multiFormSecondTo " (click)="clearForm('multiFormSecond')">CLEAR</div>
+                <div class="hide-money-form" [ngClass]="{ svg_rotate: !showPart2, rotate_back: showPart2  }" (click)="hideFormPart('part2')">
                     <svg-icon src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
                 </div>
             </div>
             <div class="money-main-holder" *ngIf="showPart2">
                 <div class="money-value-holder" >
                     <app-ta-input
-                        formControlName="availableFrom"
+                        formControlName="multiFormSecondFrom"
                         [inputConfig]="{
                         name: 'ssn',
                         type: 'number',
@@ -706,9 +750,9 @@ autoClose="outside"
                         }"
                     ></app-ta-input>
                 </div>
-                <div class="money-value-holder">
+                <div class="money-value-holder" [class.errorForm]="multiFormSecondError">
                     <app-ta-input
-                    formControlName="availableTo"
+                    formControlName="multiFormSecondTo"
                     [inputConfig]="{
                     name: 'ssn',
                     type: 'number',
@@ -716,20 +760,22 @@ autoClose="outside"
                     placeholderIcon: 'dollar'
                     }"
                 ></app-ta-input>
+                <div class="invalid-message" *ngIf="multiFormSecondError">Invalid</div> 
                 </div>
             </div>
             <div class="border-filter money-bottom-border-magin form-border" [class.hiddenFormBorder]="!showPart2"></div>
             <div class="form-header" [class.hiddenFormTitle]="!showPart3" >
                 <div class="form-name" *ngIf="!fuelType" >Revenue</div>
                 <div class="form-name" *ngIf="fuelType" >Total Cost</div>
-                <div class="hide-money-form" (click)="hideFormPart('part3')">
+                <div class="clear-money-form" *ngIf="moneyForm.value.multiFormThirdFrom && moneyForm.value.multiFormThirdTo " (click)="clearForm('multiFormThird')">CLEAR</div>
+                <div class="hide-money-form" [ngClass]="{ svg_rotate: !showPart3, rotate_back: showPart3  }" (click)="hideFormPart('part3')">
                     <svg-icon src="assets/svg/common/calendar/arrow-left.svg"></svg-icon>
                 </div>
             </div>
             <div class="money-main-holder" *ngIf="showPart3">
                 <div class="money-value-holder" >
                     <app-ta-input
-                        formControlName="revenueFrom"
+                        formControlName="multiFormThirdFrom"
                         [inputConfig]="{
                         name: 'ssn',
                         type: 'number',
@@ -738,9 +784,9 @@ autoClose="outside"
                         }"
                     ></app-ta-input>
                 </div>
-                <div class="money-value-holder">
+                <div class="money-value-holder" [class.errorForm]="multiFormThirdError">
                     <app-ta-input
-                    formControlName="revenueTo"
+                    formControlName="multiFormThirdTo"
                     [inputConfig]="{
                     name: 'ssn',
                     type: 'number',
@@ -748,6 +794,7 @@ autoClose="outside"
                     placeholderIcon: 'dollar'
                     }"
                 ></app-ta-input>
+                <div class="invalid-message" *ngIf="multiFormThirdError">Invalid</div> 
                 </div>
             </div>
 

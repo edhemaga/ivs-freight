@@ -284,7 +284,7 @@
         width: 100%;
         height: 2px;
         border-radius: 1px;
-        margin: 5px 0px 8px 0px;
+        margin: 5px 0px 6px 0px;
         background-color: #F3F3F3;
     }
 
@@ -518,7 +518,7 @@
                 color: #6C6C6C;
                 line-height: 18px;
                 margin-bottom: 2px;
-    
+                
                 &::-moz-selection {
                     background: #6C6C6C33;
                     color: #6C6C6C;
@@ -551,7 +551,7 @@
 
     .buttons-holder{
         width: 100%;
-        padding: 0px 4px 0px 4px;
+        padding: 0px;
         box-sizing: border-box;
         display: flex;
         justify-content: space-between;
@@ -559,8 +559,8 @@
         user-select: none;
 
         .button-clear{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -585,8 +585,8 @@
         }
 
         .button-set{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -610,6 +610,13 @@
             }
         }
     }
+
+    .selected-name-text{
+        width: 90%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+     }
 }
 
 .department-filter{
@@ -752,24 +759,25 @@
     }
 
     .money-top-border-magin{
-        margin: 8px 0px 25px 0px;
+        //margin: 8px 0px 25px 0px;
     }
 
     .money-bottom-border-magin{
-        margin: 22px 0px 8px 0px;
+        //margin: 22px 0px 8px 0px;
     }
 
     .money-main-holder{
+        position: relative;
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
 
         .money-value-holder{
-            width: 132px;
-            height: 32px;
+            position: relative;
+            width: 141px;
+            height: 26px;
             border-radius: 2px;
-            background-color: #F3F3F3;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -778,8 +786,33 @@
             color: #AAAAAA;
             line-height: 28px;
         
-            input{
-                height: 32px;
+            .input-custom-group{
+
+                .input-control{
+                    height: 26px !important;
+                }
+            }                 
+
+           .invalid-message{
+                position: absolute;
+                top: 18px;
+                right: 12px;
+                font-size: 11px;
+                color: #EF5350;
+           } 
+        }
+
+        .errorForm{
+            .input-custom-group{
+                .input-icon{
+                   
+                    svg{   
+                             
+                        path{
+                            fill: #EF5350 !important;
+                        }
+                    }
+                }                     
             }
         }
     }
@@ -787,16 +820,23 @@
     .buttons-holder{
         padding: 0px;
         .button-clear{
-            width: 132px; 
+            width: 141px; 
         }
         
         .button-set{
-            width: 132px;
+            width: 141px;
         }
     }
     
     .single-form-holder{
+        position: relative;
+        padding: 19px 0px 13px 0px;
         width: 100%;
+
+        .clear-money-form{
+            top: -4px;
+            right: 0px;
+        }
     }
 
     .form-header{
@@ -832,6 +872,44 @@
                 }
             }
         }
+
+        .svg_rotate {
+            svg {
+              transform: rotate(180deg);
+              transition: all 0.2s ease-in-out;
+            }
+          }
+
+        .rotate_back {
+            svg {
+              transform: rotate(0deg);
+              transition: all 0.2s ease-in-out;
+            }
+          } 
+    }
+
+    .clear-money-form{
+        position: absolute;
+        right: 28px;
+        top: 0px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 20px;
+        width: 54px;
+
+        color: #6C6C6C;
+        font-size: 11px;
+        font-weight: bold;
+
+        background-color: #F3F3F3;
+        border-radius: 2px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #6C6C6C;
+            color: #FFFFFF;
+        }
     }
 }
 
@@ -857,8 +935,8 @@
     
     .state-short-holder{
         display: flex;
-        text-align: center;
         justify-content: center;
+        align-items: center;
         width: 28px !important;
         height: 18px;
 
@@ -920,11 +998,11 @@
     .buttons-holder{
         padding: 0px;
         .button-clear{
-            width: 132px; 
+            width: 141px; 
         }
         
         .button-set{
-            width: 132px;
+            width: 141px;
         }
     }
 
@@ -992,12 +1070,22 @@
 }
 
 .location-filter{
-    padding: 8px;
+    padding: 10px 6px 6px 6px;
     width: 300px;
 
-    .bottom-border-margin
-    {
+    .bottom-border-margin{
         margin: 12px 0px;
+    }
+
+    .buttons-holder{
+        padding: 0px;
+    }
+    .button-clear{
+        width: 141px !important;
+    }
+
+    .button-set{
+        width: 141px !important;
     }
 
     .filter-middle-holder{
@@ -1054,12 +1142,13 @@
         justify-content: space-between;
         align-items: center;
         width: 100%;
+        padding-top: 22px;
 
         .money-value-holder{
-            width: 132px;
-            height: 32px;
+            width: 141px;
+            height: 26px;
             border-radius: 2px;
-            background-color: #F3F3F3;
+            
             display: flex;
             justify-content: center;
             align-items: center;
@@ -1068,9 +1157,6 @@
             color: #AAAAAA;
             line-height: 28px;
         
-            input{
-                height: 32px;
-            }
         }
     }
 }
@@ -1266,7 +1352,7 @@
 
     .buttons-holder{
         width: 100%;
-        padding: 0px 4px 0px 4px;
+        padding: 0px;
         box-sizing: border-box;
         display: flex;
         justify-content: space-between;
@@ -1274,8 +1360,8 @@
         user-select: none;
 
         .button-clear{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -1300,8 +1386,8 @@
         }
 
         .button-set{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -1680,8 +1766,8 @@
         user-select: none;
 
         .filter-button-clear{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -1704,8 +1790,8 @@
         }
 
         .filter-button-set{
-            width: 112px;
-            height: 32px;
+            width: 121px;
+            height: 28px;
             border-radius: 2px;
             background-color: #F3F3F3;
             display: flex;
@@ -1732,5 +1818,9 @@
 
 .pac-container{
     z-index: 1070;
+}
+
+.popover-body{
+    border-radius: 3px;
 }
 

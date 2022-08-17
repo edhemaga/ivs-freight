@@ -463,7 +463,7 @@ brokerArray: any[] = [
   },
   {
     id: 5,
-    name: 'Everyone on time safelyaaaaa',
+    name: 'Everyone on time safelyaaaasdasd asdsad asdadaaa',
   },
   {
     id: 6,
@@ -961,6 +961,11 @@ canadaStates: any[] = [
    usaSelectedStates: any[] = [];
    canadaSelectedStates: any[] = [];
    locationState: any = '';
+   singleFormError: any = '';
+   multiFormFirstError: any = '';
+   multiFormSecondError: any = '';
+   multiFormThirdError: any = '';
+   moneyFilterStatus: any = false;
 
 
   public sliderData: Options = {
@@ -1013,12 +1018,14 @@ canadaStates: any[] = [
     });
 
     this.moneyForm = this.formBuilder.group({
-      invoiceFrom: '',
-      invoiceTo: '',
-      availableFrom: '',
-      availableTo: '',
-      revenueFrom: '',
-      revenueTo: '',
+      singleFrom: '',
+      singleTo: '',
+      multiFromFirstFrom: '',
+      multiFromFirstTo: '',
+      multiFormSecondFrom: '',
+      multiFormSecondTo: '',
+      multiFormThirdFrom: '',
+      multiFormThirdTo: '',
     });
 
     this.locationForm = this.formBuilder.group({
@@ -1029,9 +1036,103 @@ canadaStates: any[] = [
       payFrom: '',
       payTo: '', 
     });
+    
+    this.moneyForm.valueChanges.subscribe((changes) => {
+      
+      if ( changes.singleFrom || changes.singleTo )
+        {
+          if ( changes.singleTo )
+            {
+              let to = parseInt(changes.singleTo);
+              let from = parseInt(changes.singleFrom);
+              if ( from > to || from == to )
+                {
+                  this.singleFormError = true;
+                }
+              else
+                {
+                  this.singleFormError = false;
+                }  
+            }
+          else
+            {
+              this.singleFormError = false;
+            }  
+          
+        }
 
-    this.locationForm.valueChanges.subscribe((changes) => {
-      console.log('---changes', changes);
+      if ( changes.multiFromFirstFrom || changes.multiFromFirstTo )
+        {
+          if ( changes.multiFromFirstTo )
+            {
+              let to = parseInt(changes.multiFromFirstTo);
+              let from = parseInt(changes.multiFromFirstFrom);
+
+              if ( from > to || from == to )
+                {
+                  this.multiFormFirstError = true;
+                }
+              else
+                {
+                  this.multiFormFirstError = false;
+                }  
+            }
+          else
+            {
+              this.multiFormFirstError = false;
+            }  
+          
+        }
+
+      if ( changes.multiFormSecondFrom || changes.multiFormSecondTo )
+        {
+          if ( changes.multiFormSecondTo )
+            {
+              let to = parseInt(changes.multiFormSecondTo);
+              let from = parseInt(changes.multiFormSecondFrom);
+
+              if ( from > to || from == to )
+                {
+                  this.multiFormSecondError = true;
+                }
+              else
+                {
+                  this.multiFormSecondError = false;
+                }  
+            }
+          else
+            {
+              this.multiFormSecondError = false;
+            }  
+        }
+      
+      if ( changes.multiFormThirdFrom || changes.multiFormThirdTo )
+        {
+          if ( changes.multiFormThirdTo )
+            {
+              let to = parseInt(changes.multiFormThirdTo);
+              let from = parseInt(changes.multiFormThirdFrom);
+              if ( from > to || from == to )
+                {
+                  this.multiFormThirdError = true;
+                }
+              else
+                {
+                  this.multiFormThirdError = false;
+                }  
+            }
+          else
+            {
+              this.multiFormThirdError = false;
+            }  
+        }  
+
+
+        if ( changes.singleFrom && changes.singleTo && !this.singleFormError )
+          {
+            this.moneyFilterStatus = true;
+          }
+
     })
 
     this.searchForm.valueChanges.subscribe((changes) => {
@@ -1772,5 +1873,66 @@ canadaStates: any[] = [
     this.rangeValue = 3000;
     this.locationState = e.address.address;
     //e.stopPropagation();
+  }
+
+  clearForm(mod){
+    if ( mod == 'singleForm' )
+      {
+        this.moneyForm.setValue({
+          singleFrom: '',
+          singleTo: '',
+          multiFromFirstFrom: this.moneyForm.value.multiFromFirstFrom,
+          multiFromFirstTo: this.moneyForm.value.multiFromFirstTo,
+          multiFormSecondFrom: this.moneyForm.value.multiFormSecondFrom,
+          multiFormSecondTo: this.moneyForm.value.multiFormSecondTo,
+          multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
+          multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
+        });
+        this.singleFormError = false;
+      }
+    else if ( mod == 'multiFromFirst' )
+      {
+        this.moneyForm.setValue({
+          singleFrom: this.moneyForm.value.singleFrom,
+          singleTo: this.moneyForm.value.singleTo,
+          multiFromFirstFrom: '',
+          multiFromFirstTo: '',
+          multiFormSecondFrom: this.moneyForm.value.multiFormSecondFrom,
+          multiFormSecondTo: this.moneyForm.value.multiFormSecondTo,
+          multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
+          multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
+        });
+        this.multiFormFirstError = false;
+      } 
+    else if ( mod == 'multiFormSecond' )
+      {
+        this.moneyForm.setValue({
+          singleFrom: this.moneyForm.value.singleFrom,
+          singleTo: this.moneyForm.value.singleTo,
+          multiFromFirstFrom: this.moneyForm.value.multiFromFirstFrom,
+          multiFromFirstTo: this.moneyForm.value.multiFromFirstTo,
+          multiFormSecondFrom: '',
+          multiFormSecondTo: '',
+          multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
+          multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
+        });
+        this.multiFormSecondError = false;
+      } 
+    else if ( mod == 'multiFormThird' )
+      {
+        this.moneyForm.setValue({
+          singleFrom: this.moneyForm.value.singleFrom,
+          singleTo: this.moneyForm.value.singleTo,
+          multiFromFirstFrom: this.moneyForm.value.multiFromFirstFrom,
+          multiFromFirstTo: this.moneyForm.value.multiFromFirstTo,
+          multiFormSecondFrom: this.moneyForm.value.multiFormSecondFrom,
+          multiFormSecondTo: this.moneyForm.value.multiFormSecondTo,
+          multiFormThirdFrom: '',
+          multiFormThirdTo: '',
+        });
+        this.multiFormThirdError = false;
+      }     
+
+    
   }
 }
