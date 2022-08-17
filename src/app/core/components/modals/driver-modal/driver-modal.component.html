@@ -183,8 +183,7 @@
           >
             <div
               *ngIf="
-                this.driverForm.get('soloDriver').value ||
-                ['Solo'].includes(fleetType)
+                this.driverForm.get('soloDriver').value || fleetType === 'Solo'
               "
               class="permile-fields"
               [ngClass]="{
@@ -255,8 +254,7 @@
             </div>
             <div
               *ngIf="
-                this.driverForm.get('teamDriver').value ||
-                ['Team'].includes(fleetType)
+                this.driverForm.get('teamDriver').value || fleetType === 'Team'
               "
               class="permile-fields"
               [ngClass]="{
@@ -484,7 +482,12 @@
                       type: 'text',
                       label: 'EIN #',
                       isRequired: true,
-                      mask: '00-0000000'
+                      mask: '00-0000000',
+                      loadingSpinner: {
+                        size: 'small',
+                        color: 'white',
+                        isLoading: loadingOwnerEin
+                      }
                     }"
                   ></app-ta-input>
                 </div>
