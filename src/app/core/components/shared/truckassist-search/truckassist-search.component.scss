@@ -53,6 +53,11 @@
         color: #ffffff;
         font-size: 14px;
         font-weight: 400;
+
+        &::selection {
+          color: #ffffff;
+          background: #ffffff20;
+        }
       }
 
       /* Chrome, Firefox, Opera, Safari 10.1+ */

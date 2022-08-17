@@ -11,7 +11,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./medical-certificate.component.scss'],
 })
 export class MedicalCertificateComponent implements OnInit {
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public medicalCertificateForm: FormGroup;
 

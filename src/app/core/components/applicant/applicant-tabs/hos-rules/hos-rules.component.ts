@@ -9,7 +9,7 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./hos-rules.component.scss'],
 })
 export class HosRulesComponent implements OnInit {
-  public selectedMode: string = SelectedMode.APPLICANT;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public hosRulesForm: FormGroup;
 

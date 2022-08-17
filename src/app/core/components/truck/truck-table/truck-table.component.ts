@@ -232,10 +232,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          
           const searchEvent = tableSearch(
             res,
-            this.backFilterQuery,
-            this.selectedTab
+            this.backFilterQuery
           );
 
           if (searchEvent) {
@@ -384,6 +385,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.mapTruckData(data);
     });
 
+    console.log('Truck Data');
+    console.log(this.viewData)
+
     /* For Testing */
     /* for(let i = 0; i < 500; i++){
       this.viewData.push(this.viewData[0])
@@ -393,10 +397,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   mapTruckData(data: any) {
     return {
       ...data,
-      textCommission: '15%',
-      textGrossWeight: 'G - 60,001 - 61,000 lbs.',
-      textPurchasePrice: '100$',
-      textPurchaseDate: '03/12/22',
+      textCommission: data?.commission ? data?.commission + '%' : '',
+      textGrossWeight: 'Nije povezano',
+      textPurchasePrice: 'Nije povezano',
+      textPurchaseDate: 'Nije povezano',
       textYear: data.year ? data.year : '',
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
@@ -487,7 +491,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
-      this.setTruckData(event.tabData);
+      this.sendTruckData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
@@ -506,7 +510,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
+  onTableBodyActions(event: any) {
     switch (event.type) {
       case 'edit-truck': {
         this.modalService.openModal(

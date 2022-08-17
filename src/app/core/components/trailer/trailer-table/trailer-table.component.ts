@@ -120,11 +120,15 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             return trailer;
           });
 
+          this.updateDataCount();
+
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
 
             clearInterval(inetval);
           }, 1000);
+        } else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          this.updateDataCount();
         } else if (res.animation === 'update') {
           this.viewData = this.viewData.map((trailer: any) => {
             if (trailer.id === res.id) {
@@ -151,6 +155,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             return trailer;
           });
+
+          this.updateDataCount();
 
           const inetval = setInterval(() => {
             this.viewData = closeAnimationAction(false, this.viewData);
@@ -180,6 +186,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 return trailer;
               });
 
+              this.updateDataCount();
+
               this.notificationService.success(
                 'Trailers successfully deleted',
                 'Success:'
@@ -202,11 +210,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
@@ -387,6 +393,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  updateDataCount() {
+    const truckCount = JSON.parse(localStorage.getItem('trailerTableCount'));
+
+    this.tableData[0].length = truckCount.active;
+    this.tableData[1].length = truckCount.inactive;
+  }
+
   getTabData(dataType: string) {
     if (dataType === 'active') {
       this.trailerActive = this.trailerActiveQuery.getAll();
@@ -438,7 +451,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
-      this.setTrailerData(event.tabData);
+      this.sendTrailerData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
@@ -536,6 +549,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 return trailer;
               });
+
+              this.updateDataCount();
 
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);

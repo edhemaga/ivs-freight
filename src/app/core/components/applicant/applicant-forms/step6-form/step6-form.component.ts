@@ -30,7 +30,7 @@ export class Step6FormComponent implements OnInit {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public contactForm: FormGroup;
 

@@ -15,7 +15,14 @@
         <div
           class="d-flex flex-column justify-content-center applicant-card-container"
         >
-          <div class="d-flex align-items-center title-container">
+          <div
+            class="d-flex align-items-center"
+            [ngClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'title-container title-container-feedback'
+                : 'title-container'
+            "
+          >
             <div class="d-flex align-items-center name-title-box">
               <p class="m-0 ta-font-bold">APPLICANT NAME</p>
             </div>
@@ -27,7 +34,14 @@
             </div>
           </div>
 
-          <div class="d-flex align-items-center applicant-card-info-container">
+          <div
+            class="d-flex align-items-center"
+            [ngClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'applicant-card-info-container applicant-card-info-container-feedback'
+                : 'applicant-card-info-container'
+            "
+          >
             <div class="d-flex align-items-center driver-box">
               <p class="m-0 ta-font-regular">
                 <!--  {{ license.name }} -->
@@ -61,14 +75,30 @@
             [label]="
               'Hereby authorize my previous employer to release and forward the information requested'
             "
-            [customClass]="'bold-12'"
+            [customClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'applicant-feedback'
+                : 'bold-12'
+            "
           >
           </app-ta-checkbox>
-
+          <!-- [ngStyle]="{
+                color:
+                  selectedMode !== 'FEEDBACK_MODE' &&
+                  pspAuthorizationForm.get('isDisclosureRegardingReport').value
+                    ? '#3c3c3c'
+                    : selectedMode === 'FEEDBACK_MODE'
+                    ? '#919191'
+                    : '#6c6c6c'
+              }" -->
           <p
             class="m-0 text-center ta-font-bold"
             [ngStyle]="{
-              color: sphForm.get('isTested').value ? '#6c6c6c' : '#919191'
+              color:
+                selectedMode !== 'FEEDBACK_MODE' &&
+                sphForm.get('isTested').value
+                  ? '#6c6c6c'
+                  : '#919191'
             }"
             (click)="handleCheckboxParagraphClick('isTested')"
           >
@@ -86,6 +116,9 @@
           <button
             type="button"
             class="d-flex align-items-center justify-content-center ta-font-semi-bold review-btn"
+            [ngStyle]="{
+              color: selectedMode === 'FEEDBACK_MODE' ? '#97A8DC' : '#6D82C7'
+            }"
             (click)="handleReviewSectionsClick()"
           >
             Review other sections of this form
@@ -122,7 +155,11 @@
             [label]="
               'Please confirm that you have read and understood the content of this notice'
             "
-            [customClass]="'bold-12'"
+            [customClass]="
+              selectedMode === 'FEEDBACK_MODE'
+                ? 'applicant-feedback'
+                : 'bold-12'
+            "
           >
           </app-ta-checkbox>
         </div>
