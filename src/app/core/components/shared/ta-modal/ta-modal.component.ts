@@ -50,6 +50,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
+  @Input() confirmationData: any;
+  @Input() headerSvg: string;
   @Input() saveAndAddNew: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
@@ -59,6 +61,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() isDNU: boolean;
   @Input() isBFB: boolean;
   @Input() resendEmail: boolean;
+  @Input() map: boolean;
+  @Input() topDivider: boolean = true;
+  @Input() bottomDivider: boolean = false;
 
   @Input() specificCaseModalName: boolean;
 
@@ -77,6 +82,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
     action: string;
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
+
+  @Output() confirmationAction: EventEmitter<{
+    data: any;
+  }> = new EventEmitter<{ data: any }>(null);
 
   @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -145,7 +154,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
             break;
           }
           case 'resend email': {
-            console.log(data.status);
             this.resendEmailSpinnerVisibility = data.status;
             break;
           }
@@ -260,6 +268,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       default: {
