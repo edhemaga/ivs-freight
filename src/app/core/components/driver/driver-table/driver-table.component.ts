@@ -749,7 +749,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         {
           ...event,
           template: 'driver',
-          type: 'info',
+          type: 'delete',
           subType: null,
           image: true,
         }
