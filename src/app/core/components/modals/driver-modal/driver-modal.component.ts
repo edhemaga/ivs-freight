@@ -381,7 +381,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.driverForm.get('routing'),
           this.driverForm.get('account')
         );
@@ -691,6 +691,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
+        if (!event) {
+          this.driverForm.get('bankId').patchValue(null);
+        }
         break;
       }
       case 'paytype': {
