@@ -1,5 +1,15 @@
 <app-ta-modal
-  [modalTitle]="'Delete Confirmation'"
+  [modalTitle]="
+    (editData?.type === 'info'
+      ? editData?.subType === 'archive'
+        ? editData?.subType?.substring(0, 1).toUpperCase() +
+          editData?.subType?.substring(1)
+        : 'Move'
+      : editData?.type?.substring(0, 1).toUpperCase() +
+        editData?.type?.substring(1)) +
+    ' ' +
+    'Confirmation'
+  "
   [customClass]="'modal-container-XS'"
   [bottomDivider]="true"
   [headerSvg]="editData?.type"
