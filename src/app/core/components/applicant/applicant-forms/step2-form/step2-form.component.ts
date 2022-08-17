@@ -912,8 +912,8 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.classOfEquipmentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
+    /* this.inputResetService.resetInputSubject.next(true);
+     */
     this.classOfEquipmentSubscription.unsubscribe();
 
     if (this.isEditing) {
