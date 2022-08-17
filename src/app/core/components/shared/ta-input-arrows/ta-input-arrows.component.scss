@@ -1,14 +1,14 @@
-@import "src/theme/variables.scss";
+@import 'src/theme/variables.scss';
 
 .ta-input-arrows-container {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 12px;
 
   p {
     font-size: 14px;
     line-height: 18px;
+    margin-right: 12px !important;
     color: $bw6-2;
     user-select: none !important;
     position: relative;
@@ -26,6 +26,7 @@
     height: 18px;
     position: relative;
     bottom: 1px;
+    margin-right: 6px;
 
     .minus-icon,
     .plus-icon {
