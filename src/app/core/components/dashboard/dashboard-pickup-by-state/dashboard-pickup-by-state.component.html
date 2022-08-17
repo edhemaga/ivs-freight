@@ -67,6 +67,12 @@
                   {{ item.id }}
                 </div>
                 <div
+                  class="dashboard-pickup-body-state-list-remove"
+                  (click)="removeFromStateList($event, indx, item)"
+                >
+                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
+                <div
                   class="dashboard-pickup-body-state-list-circle"
                   [ngStyle]="{
                     'background-color': '#' + pickupCircleColor[indx]
@@ -82,12 +88,6 @@
                 </div>
                 <div class="dashboard-pickup-body-state-list-percent">
                   {{ item.percent }}
-                </div>
-                <div
-                  class="dashboard-pickup-body-state-list-remove"
-                  (click)="removeFromStateList($event, indx, item)"
-                >
-                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
                 </div>
               </div>
             </div>

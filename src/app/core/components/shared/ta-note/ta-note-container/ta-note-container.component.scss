@@ -8,6 +8,10 @@
       padding: 0px 5px 0px 4px;
     }
 
+    &.opened_parking_editor{
+      justify-content: end;
+    }
+
     .font_editor{
       display: flex;
 
@@ -102,6 +106,12 @@
           opacity: 1;
         }
 
+        &.parking_tooltip{
+          width: 100%;
+          display: flex;
+          justify-content: end;
+        }
+
         &:hover {
           opacity: 1;
           background-color: #EEEEEE;
@@ -115,7 +125,7 @@
           width: 16px;
           height: 16px;
           background-color: #6c6c6c;
-          border-radius: 3px;
+          border-radius: 2px;
           cursor: pointer;
         }
 
@@ -123,7 +133,7 @@
           display: flex;
           align-items: center;
           background-color: #f7f7f7;
-          border-radius: 3px;
+          border-radius: 1px;
           // box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.15) !important;
           z-index: 10;
           // &:after {
@@ -138,7 +148,6 @@
             align-items: center;
             width: 16px;
             height: 16px;
-            border-radius: 3px;
             margin: 0 1px;
             cursor: pointer;
 
@@ -180,6 +189,10 @@
         }
       }
 
+      &.opened_text_color{
+        border-radius: 1px;
+      }
+
       .color_picker_arrow{
         position: absolute;
         z-index: 11;
@@ -188,12 +201,12 @@
             transform: scaleX(-1);
         }
         &.active{
-          right: 9px;
+          right: 10px;
         }
         svg-icon{
             svg{
                 display: flex;
-                width: 9px;
+                width: 6px;
                 height: 10px;
 
                 path{
