@@ -1,0 +1,87 @@
+.confirmation-modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  padding: 22px 6px;
+
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .confirmation-header {
+    font-size: 14px;
+    font-weight: 500;
+    color: #6c6c6c;
+
+    &::-moz-selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
+
+    &::selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
+  }
+
+  .confirmation-body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+
+    .confirmation-img {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      width: 30px;
+      height: 34px;
+      border-radius: 2px;
+      object-fit: fill;
+    }
+
+    .confirmation-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+
+      .confirmation-text-1 {
+        font-size: 14px;
+        font-weight: 700;
+        line-height: 18px;
+        color: #6c6c6c;
+
+        &::-moz-selection {
+          background-color: rgb(108, 108, 108, 0.2);
+          color: #6c6c6c;
+        }
+
+        &::selection {
+          background-color: rgb(108, 108, 108, 0.2);
+          color: #6c6c6c;
+        }
+      }
+
+      .confirmation-text-2 {
+        font-size: 11px;
+        font-weight: 500;
+        line-height: 14px;
+        color: #6c6c6c;
+
+        &::-moz-selection {
+          background-color: rgb(108, 108, 108, 0.2);
+          color: #6c6c6c;
+        }
+
+        &::selection {
+          background-color: rgb(108, 108, 108, 0.2);
+          color: #6c6c6c;
+        }
+      }
+    }
+  }
+}

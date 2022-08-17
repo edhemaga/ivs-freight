@@ -68,12 +68,16 @@ export class TaInputService {
     if (hasValidation) {
       formControl.setValidators(validation);
     } else {
-      formControl.clearValidators();
+      if (formControl && formControl.hasValidator(Validators.required)) {
+        formControl.clearValidators();
+      }
 
-      if (reset) {
+      if (reset && formControl) {
         formControl.reset();
       }
     }
-    formControl.updateValueAndValidity();
+    if (formControl) {
+      formControl.updateValueAndValidity();
+    }
   }
 }
