@@ -353,6 +353,12 @@ export class CustomerTableComponent
     return {
       ...data,
       isSelected: false,
+      textInvAgeing: {
+        bfb: 0,
+        dnu: 0,
+        amount: 'Nije Povezano'
+      },
+      textContact: data?.brokerContacts?.length ? data.brokerContacts.length : 0,
       textAddress: data?.mainAddress
         ? data.mainAddress.city + ', ' + data.mainAddress.state
         : '',
@@ -370,6 +376,7 @@ export class CustomerTableComponent
     return {
       ...data,
       isSelected: false,
+      textContact: data?.shipperContacts?.length ?  data.shipperContacts.length : 0,
       textDbaName: '',
       textAddress: data?.address
         ? data.address.city + ', ' + data.address.state

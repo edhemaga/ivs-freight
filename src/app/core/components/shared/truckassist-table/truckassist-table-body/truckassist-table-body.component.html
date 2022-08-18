@@ -255,6 +255,32 @@
               </div>
             </div>
 
+            <!-- INV. AGEING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'inv-ageing' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="inv-ageing-container">
+                <div class="bfb-container">{{ row[column.field].bfb }}</div>
+                <div class="dnu-container">{{ row[column.field].dnu }}</div>
+                <div
+                  class="inv-ageing-text"
+                  [ngStyle]="{
+                    width: column.width - 42 + 'px'
+                  }"
+                >
+                  {{ row[column.field].amount }}
+                </div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1153,6 +1179,50 @@
               </div>
             </div>
 
+            <!-- INV. AGEING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'inv-ageing' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="inv-ageing-container">
+                <div class="bfb-container">{{ row[column.field].bfb }}</div>
+                <div class="dnu-container">{{ row[column.field].dnu }}</div>
+                <div
+                  class="inv-ageing-text"
+                  [ngStyle]="{
+                    width: column.width - 42 + 'px'
+                  }"
+                >
+                  {{ row[column.field].amount }}
+                </div>
+              </div>
+            </div>
+
+            <!-- CONTACT COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'contact' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="contact-container" *ngIf="row[column.field]">
+                <div class="contact-count">{{ row[column.field] }}</div>
+                <div class="contact-avatar"></div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1938,11 +2008,7 @@
 </table>
 
 <!-- [ngStyle]="{ 'width.px': showMoreContainerWidth }" -->
-<div
-  class="show-more-container"
-  *ngIf="viewData.length"
-  
->
+<div class="show-more-container" *ngIf="viewData.length">
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>

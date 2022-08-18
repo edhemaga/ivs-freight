@@ -205,6 +205,104 @@ table {
               }
             }
 
+            // INV. AGEING COLUMN
+            .inv-ageing-container {
+              width: fit-content;
+              height: 18px;
+              display: flex;
+              .bfb-container,
+              .dnu-container {
+                cursor: pointer;
+                min-width: 18px;
+                width: fit-content;
+                height: 18px;
+                padding: 2px;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: bold;
+
+                &::selection {
+                  color: #ffffff;
+                  background: #ffffff20;
+                }
+              }
+
+              .bfb-container {
+                margin-right: 2px;
+                border-radius: 2px 0 0 2px;
+                background: #6d82c7;
+
+                &:hover {
+                  background: #536bc2;
+                  transition: 0.25s;
+                }
+              }
+
+              .dnu-container {
+                margin-right: 4px;
+                border-radius: 0 2px 2px 0;
+                background: #e57373;
+
+                &:hover {
+                  background: #ef5350;
+                  transition: 0.25s;
+                }
+              }
+
+              .inv-ageing-text {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: 18px;
+                line-height: 18px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // CONTACT COLUMN
+            .contact-container{
+              width: fit-content;
+              height: 18px;
+              display: flex;
+
+              .contact-count{
+                width: fit-content;
+                min-width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #F3F3F3;
+                color:  #919191;
+                margin-right: 2px;
+                font-size: 11px;
+                font-weight: bold;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .contact-avatar{
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg");
+              }
+            }
+
             // VL COLUMN
             .active-vl-count,
             .zero-vl-count {
@@ -1069,6 +1167,16 @@ table {
         .table-checkbox-label {
           background-color: #aaaaaa !important;
         }
+
+        .contact-container{
+          .contact-count{
+            background: #FFFFFF !important;
+          }
+
+          .contact-avatar{
+            background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
+          }
+        }
       }
     }
 
@@ -1076,6 +1184,22 @@ table {
     .selected-row {
       .columns-container {
         background: #e5e5e5;
+
+        .contact-container{
+          .contact-count{
+            background: #F3F3F3 !important;
+            color: #6C6C6C !important;
+
+            &::selection {
+              color: #6c6c6c !important;
+              background: #6c6c6c20 !important;
+            }
+          }
+
+          .contact-avatar{
+            background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg") !important;
+          }
+        }
       }
 
       .border-inactive {
