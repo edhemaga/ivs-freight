@@ -278,6 +278,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }
+      case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
       case 'hire': {
         this.confirmationAction.emit(this.confirmationData);
         break;
