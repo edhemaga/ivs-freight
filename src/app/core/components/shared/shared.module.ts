@@ -103,6 +103,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
+import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -187,7 +188,8 @@ export function playerFactory() {
     MapsComponent,
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
-    TaCopyComponent
+    TaCopyComponent,
+    AutoclosePopoverComponent
   ],
   imports: [
     CommonModule,
@@ -322,7 +324,8 @@ export function playerFactory() {
     ProfileUpdateModalComponent,
     LoadModalComponent,
     TaUploadFilesComponent,
-    TaTimePeriodComponent
+    TaTimePeriodComponent,
+    AutoclosePopoverComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
