@@ -90,7 +90,7 @@
 
         .marker-info-text {
             &:hover {
-                color: #6C6C6C !important;
+                //color: #6C6C6C !important;
             }
         }
     }
@@ -258,7 +258,15 @@
         }
     }
 
-    &:hover, &.selected-stop {
+    &.selected-stop {
+        background: #F3F3F3;
+        
+        .focused-route-number-background {
+            display: flex;
+        }
+    }
+
+    &:hover {
         background: #F3F3F3;
         cursor: grab;
 
@@ -611,8 +619,9 @@
 
     &.circle-marker {
         top: 0px!important;
-        left: 53%;
+        left: 50%;
         cursor: pointer;
+        transform: translateX(-50%);
     }
 }
 
@@ -693,6 +702,12 @@
 
     transform: translateX(26px);
 
+    &.smaller-marker-address {
+        top: -17px;
+
+        transform: translateX(15px);
+    }
+
     .stop-picker-address-text {
         display: -webkit-box;
 
@@ -709,6 +724,8 @@
 }
 
 .marker-icon {
+    transition: none !important;
+
     svg {
         outline: none;
     }
@@ -716,4 +733,12 @@
     &.selected-marker {
         transform: translate(-50%, -35%) scale(2) !important;
     }
+}
+
+.stop-picker-cursor {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+
+    z-index: 999;
 }

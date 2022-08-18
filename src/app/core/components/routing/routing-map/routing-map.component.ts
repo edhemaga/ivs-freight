@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
 import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
@@ -18,6 +18,19 @@ declare var google: any;
 })
 export class RoutingMapComponent implements OnInit {
   @ViewChild('mapToolbar') mapToolbar: any;
+
+  @HostListener('mousemove', ['$event']) onMouseOver(event) {
+    if ( this.stopPickerActive && this.focusedRouteIndex != null ) {
+      let stopPickerCursor: HTMLElement = document.querySelector('#stopPickerCursor');
+
+      if ( stopPickerCursor ) {
+        stopPickerCursor.style.top = (event.pageY+15)+'px';
+        stopPickerCursor.style.left = (event.pageX+10)+'px';
+      }
+    }
+  }
+
+  mapHover: boolean = false;
 
   public agmMap: any;
   public styles = AppConst.GOOGLE_MAP_STYLES;
@@ -665,6 +678,10 @@ export class RoutingMapComponent implements OnInit {
         }
       } else {
         route.isFocused = false;
+
+        route.stops.map((stop) => {
+          if ( stop.isSelected ) stop.isSelected = false;
+        });
       }
     });
   }
@@ -746,6 +763,11 @@ export class RoutingMapComponent implements OnInit {
       console.log('onToolbarAction open-stop-picker');
       this.stopPickerActive = !this.stopPickerActive;
       this.stopPickerLocation = {};
+      if ( this.stopPickerActive ) {
+        this.agmMap.setOptions({draggableCursor:'pointer'});
+      } else {
+        this.agmMap.setOptions({draggableCursor:''});
+      }
     } else if ( event.action == 'open-route-compare' ) {
       console.log('onToolbarAction open-route-compare');
     } else if ( event.action == 'open-keyboard-controls' ) {
@@ -870,6 +892,8 @@ export class RoutingMapComponent implements OnInit {
     } else {
       this.focusStop(event, routeIndex, stopIndex);
     }
+
+    this.ref.detectChanges();
   }
 
   focusStop(event, routeIndex, stopIndex) {

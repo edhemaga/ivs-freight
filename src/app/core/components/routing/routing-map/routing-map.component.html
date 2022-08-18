@@ -54,7 +54,9 @@
                                 ngbTooltip
                                 [mainTooltip]="route.hidden ? 'Show Route' : 'Hide Route'"
                                 position="right"
-                                [ngClass]="{ 'gray-text': route.hidden }"
+                                [ngStyle]="{ color: route.hidden && route.hover ? routeColors[i] : route.hidden ? '#B7B7B7' : '#6c6c6c' }"
+                                (mouseover)="route.hover = true"
+                                (mouseleave)="route.hover = false"
                                 (click)="showHideRoute($event, route)">
                                 {{ route.name }}
                             </div>
@@ -113,8 +115,8 @@
                             (click)="focusStop($event, i, b)">
                             <div 
                                 class="focused-route-number-background" 
-                                [ngStyle]="{ backgroundColor: routeFocusColors[i] }"
-                                *ngIf="route.isFocused"
+                                [ngStyle]="{ backgroundColor: routeFocusColors[i]+'B3' }"
+                                *ngIf="route.isFocused || stop.isSelected"
                             ></div>
                             <svg-icon
                                 src="assets/svg/truckassist-table/dropdown/content/delete.svg"
@@ -194,7 +196,7 @@
                         </div>
                     </div>
                     <div class="selected-route" *ngIf="route.isFocused" [ngStyle]="{ backgroundColor: routeFocusColors[i] }"></div>
-                    <div class="route-card-resize-button" (click)="resizeCard($event, route)" *ngIf="!route.hidden">
+                    <div class="route-card-resize-button" (click)="resizeCard($event, route)" *ngIf="!route.hidden && route.showResize">
                         <svg-icon
                             src="assets/svg/common/fill_arrow_down.svg"
                             class="map-list-resize-svg"
@@ -234,7 +236,9 @@
             [keyboardShortcuts]="false"
             [zoomControl]="false"
             (zoomChange)="zoomChange($event)"
-            (mapReady)="getMapInstance($event)">
+            (mapReady)="getMapInstance($event)"
+            (mouseover)="mapHover = true"
+            (mouseleave)="mapHover = false">
 
             <div *ngFor="let route of routes; let i = index;">
                 <div *ngIf="route.stops?.length && !route.hidden">
@@ -260,14 +264,16 @@
                             >
                                 <ng-template>
                                     <div 
+                                        (mouseover)="route.stops[j].hovered = true" 
+                                        (mouseleave)="route.stops[j].hovered = false"   
                                         class="marker-container marker-icon" 
-                                        [ngClass]="{ 'selected-marker': route.stops[j].isSelected }" 
                                         *ngIf="route.isFocused" 
                                         (click)="stopMarkerClick($event, i, j)"
                                     >
-                                        <svg 
+                                        <svg
                                             [tooltipBackground]="routeFocusColors[i]"
                                             ngbTooltip
+                                            [disableTooltip]="true"
                                             [mainTooltip]="route.stops[j].address"
                                             position="right" 
                                             xmlns="http://www.w3.org/2000/svg" 
@@ -288,10 +294,10 @@
                                             <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
                                             </g>
                                             <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" [ngStyle]="{ fill: routeFocusColors[i] }" />
-                                            <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ j+1 }}</tspan></text>
+                                            <text x="50%" y="48.5%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ j+1 }}</tspan></text>
                                         </svg>
                                     </div>
-                                    <div class="marker-container circle-marker">
+                                    <div class="marker-container circle-marker" (click)="stopMarkerClick($event, i, j)">
                                         <svg 
                                             *ngIf="j == 0 || j == route.stops.length-1" 
                                             (mouseover)="route.stops[j].hovered = true" 
@@ -316,6 +322,13 @@
                                               <circle id="Ellipse_6246" data-name="Ellipse 6246" cx="4" cy="4" r="4" transform="translate(1113 983)" fill="#fff"/>
                                             </g>
                                         </svg>
+                                    </div>
+                                    <div 
+                                        class="stop-picker-address smaller-marker-address" 
+                                        [ngStyle]="{ backgroundColor: routeFocusColors[i] }" 
+                                        *ngIf="route.isFocused && (route.stops[j].isSelected || route.stops[j].hovered)"
+                                    >
+                                        <div class="stop-picker-address-text">{{ route.stops[j].address }}</div>
                                     </div>
                                 </ng-template>
                             </agm-snazzy-info-window>
@@ -360,43 +373,66 @@
                     [pointer]="false"
                 >
                     <ng-template>
-                        <div class="marker-container marker-icon" [ngClass]="'selected-marker'">
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                width="34" 
-                                height="37" 
-                                viewBox="0 0 34 37">
-                                <defs>
-                                <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
-                                    <feOffset input="SourceAlpha"/>
-                                    <feGaussianBlur stdDeviation="2" result="blur"/>
-                                    <feFlood flood-opacity="0.149"/>
-                                    <feComposite operator="in" in2="blur"/>
-                                    <feComposite in="SourceGraphic"/>
-                                </filter>
-                                </defs>
-                                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
-                                <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
-                                </g>
-                                <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" [ngStyle]="{ fill: routeFocusColors[focusedRouteIndex] }" />
-                                <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ stopPickerLocation.editIndex ? stopPickerLocation.editIndex+1 : routes[focusedRouteIndex].stops.length + 1 }}</tspan></text>
-                            </svg>
-                        </div>
-                        <div class="stop-picker-window">
-                            <div class="stop-picker-button" (click)="addNewStop('empty')" [ngClass]="{ 'active': stopPickerLocation.empty == true }">
-                                <div class="stop-picker-button-text">Empty</div>
+                        <div>
+                            <div class="marker-container marker-icon ">
+                                <svg 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    xmlns:xlink="http://www.w3.org/1999/xlink" 
+                                    width="34" 
+                                    height="37" 
+                                    viewBox="0 0 34 37">
+                                    <defs>
+                                    <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
+                                        <feOffset input="SourceAlpha"/>
+                                        <feGaussianBlur stdDeviation="2" result="blur"/>
+                                        <feFlood flood-opacity="0.149"/>
+                                        <feComposite operator="in" in2="blur"/>
+                                        <feComposite in="SourceGraphic"/>
+                                    </filter>
+                                    </defs>
+                                    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
+                                    <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
+                                    </g>
+                                    <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" [ngStyle]="{ fill: routeFocusColors[focusedRouteIndex] }" />
+                                    <text x="50%" y="48.5%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ stopPickerLocation.editIndex ? stopPickerLocation.editIndex+1 : routes[focusedRouteIndex].stops.length + 1 }}</tspan></text>
+                                </svg>
                             </div>
-                            <div class="stop-picker-button" (click)="addNewStop('loaded')" [ngClass]="{ 'active': stopPickerLocation.empty == false }">
-                                <div class="stop-picker-button-text">Loaded</div>
+                            <div class="stop-picker-window">
+                                <div class="stop-picker-button" (click)="addNewStop('empty')" [ngClass]="{ 'active': stopPickerLocation.empty == true }">
+                                    <div class="stop-picker-button-text">Empty</div>
+                                </div>
+                                <div class="stop-picker-button" (click)="addNewStop('loaded')" [ngClass]="{ 'active': stopPickerLocation.empty == false }">
+                                    <div class="stop-picker-button-text">Loaded</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="stop-picker-address" [ngStyle]="{ backgroundColor: routeFocusColors[focusedRouteIndex] }">
-                            <div class="stop-picker-address-text">{{ stopPickerLocation.address }}</div>
+                            <div class="stop-picker-address" [ngStyle]="{ backgroundColor: routeFocusColors[focusedRouteIndex] }">
+                                <div class="stop-picker-address-text">{{ stopPickerLocation.address }}</div>
+                            </div>
                         </div>
                     </ng-template>
                 </agm-snazzy-info-window>
             </agm-marker>
         </agm-map>
+
+        <div id="stopPickerCursor" class="stop-picker-cursor" *ngIf="stopPickerActive && focusedRouteIndex && mapHover">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="34" height="34" viewBox="0 0 34 34">
+                <defs>
+                  <filter id="Ellipse_9150" x="0" y="0" width="34" height="34" filterUnits="userSpaceOnUse">
+                    <feOffset input="SourceAlpha"/>
+                    <feGaussianBlur stdDeviation="2" result="blur"/>
+                    <feFlood flood-opacity="0.149"/>
+                    <feComposite operator="in" in2="blur"/>
+                    <feComposite in="SourceGraphic"/>
+                  </filter>
+                </defs>
+                <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Ellipse_9150)">
+                  <circle id="Ellipse_9150-2" data-name="Ellipse 9150" cx="11" cy="11" r="11" transform="translate(6 6)" fill="#fff"/>
+                </g>
+                <circle id="Ellipse_9149" data-name="Ellipse 9149" cx="9" cy="9" r="9" transform="translate(8 8)" fill="#fd952d"/>
+                <text id="_6" data-name="6" transform="translate(17 21.5)" fill="#fff" font-size="12" font-family="Montserrat-Bold, Montserrat" font-weight="700">
+                    <tspan x="-3.822" y="0"> {{ routes[focusedRouteIndex].stops.length + 1 }} </tspan>
+                </text>
+            </svg>
+        </div>
     </div>
   </div>
