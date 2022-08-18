@@ -186,6 +186,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public onSelectBank(event: any): void {
     this.selectedBank = event;
+    if (!event) {
+      this.ownerForm.get('bankId').patchValue(null);
+    }
   }
 
   public onSaveNewBank(bank: any) {
@@ -211,13 +214,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onBankSelected(): void {
+  private onBankSelected() {
     this.ownerForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.ownerForm.get('routingNumber'),
           this.ownerForm.get('accountNumber')
         );

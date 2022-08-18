@@ -50,6 +50,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
+  @Input() confirmationData: any;
+  @Input() headerSvg: string;
   @Input() saveAndAddNew: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
@@ -59,6 +61,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() isDNU: boolean;
   @Input() isBFB: boolean;
   @Input() resendEmail: boolean;
+  @Input() map: boolean;
+  @Input() topDivider: boolean = true;
+  @Input() bottomDivider: boolean = false;
 
   @Input() specificCaseModalName: boolean;
 
@@ -77,6 +82,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
     action: string;
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
+
+  @Output() confirmationAction: EventEmitter<{
+    data: any;
+  }> = new EventEmitter<{ data: any }>(null);
 
   @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -145,7 +154,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
             break;
           }
           case 'resend email': {
-            console.log(data.status);
             this.resendEmailSpinnerVisibility = data.status;
             break;
           }
@@ -246,20 +254,40 @@ export class TaModalComponent implements OnInit, OnDestroy {
           action: action,
           bool: this.isDeactivated,
         });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'activate': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'dnu': {
         this.isDNU = !this.isDNU;
         this.action.emit({ action: action, bool: this.isDNU });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
         this.action.emit({ action: action, bool: this.isBFB });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'hire': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'archive': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       default: {
