@@ -80,7 +80,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.sendDriverData();
 
-    // Delete
+    // Confirmation Subscribe
     this.confirmationService.confirmationData$
       .pipe(untilDestroyed(this))
       .subscribe({

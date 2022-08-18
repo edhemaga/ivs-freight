@@ -70,7 +70,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.sendTrailerData();
 
-    // Delete
+    // Confirmation Subscribe
     this.confirmationService.confirmationData$
       .pipe(untilDestroyed(this))
       .subscribe({
