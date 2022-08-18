@@ -18,6 +18,11 @@ import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive
 import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -56,11 +61,37 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private truckInactiveQuery: TruckInactiveQuery,
     private truckService: TruckTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.sendTruckData();
+
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              this.deleteTruckById(res.id);
+              break;
+            }
+            case 'activate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -233,11 +264,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-          
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery
-          );
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
@@ -386,7 +414,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     console.log('Truck Data');
-    console.log(this.viewData)
+    console.log(this.viewData);
 
     /* For Testing */
     /* for(let i = 0; i < 500; i++){
@@ -511,6 +539,14 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onTableBodyActions(event: any) {
+    const mappedEvent = {
+      ...event,
+      data: {
+        ...event.data,
+        number: event.data?.truckNumber,
+        avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
+      },
+    };
     switch (event.type) {
       case 'edit-truck': {
         this.modalService.openModal(
@@ -615,6 +651,62 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private changeTruckStatus(id: number) {
+    this.truckService
+      .changeTruckStatus(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Truck successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteTruckById(id: number) {
+    this.truckService
+      .deleteTruckById(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Truck successfully deleted',
+            'Success:'
+          );
+
+          this.viewData = this.viewData.map((truck: any) => {
+            if (truck.id === id) {
+              truck.actionAnimation = 'delete';
+            }
+
+            return truck;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(true, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {

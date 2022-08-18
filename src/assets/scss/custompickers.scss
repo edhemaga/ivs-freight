@@ -428,6 +428,11 @@
       .year_hold {
         margin-right: 5px;
         text-transform: uppercase;
+        color: #6C6C6C;
+
+        &:hover{
+          color: #919191;
+        }
 
         cursor: pointer;
       }

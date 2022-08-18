@@ -1,0 +1,16 @@
+<div
+    #t2="ngbPopover"
+    [ngbPopover]="customPopover"
+    [placement]="['bottom-right']"
+    [popoverClass]="'custompopovermain'"
+    triggers="'manual'"
+    [autoClose]="false"
+    [disablePopover]="!item.custom"
+    (click)="switchTab($event, t2)"
+  >
+    <ng-content select="[mainContent]"></ng-content>
+  </div>
+  <!--- comment -->
+  <ng-template #customPopover let-data="data">
+    <ng-content select="[popoverContent]"></ng-content>
+  </ng-template>

@@ -1,3 +1,4 @@
+import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TrailerListResponse } from 'appcoretruckassist';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -19,6 +20,10 @@ import { TrailerActiveState } from '../state/trailer-active-state/trailer-active
 import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerTService } from '../state/trailer.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -58,11 +63,37 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private trailerInactiveQuery: TrailerInactiveQuery,
     private trailerService: TrailerTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.sendTrailerData();
+
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              this.deleteTrailerById(res.id);
+              break;
+            }
+            case 'activate': {
+              this.changeTrailerStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeTrailerStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -594,6 +625,64 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
     }
+  }
+
+  private changeTrailerStatus(id: number) {
+    this.trailerService
+      .changeTrailerStatus(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Trailer successfully changed status',
+            'Success:'
+          );
+
+          this.sendTrailerData();
+        },
+        error: () => {
+          this.notificationService.error(
+            `Trailer with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteTrailerById(id: number) {
+    this.trailerService
+      .deleteTrailerById(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Trailer successfully deleted',
+            'Success:'
+          );
+
+          this.viewData = this.viewData.map((trailer: any) => {
+            if (trailer.id === id) {
+              trailer.actionAnimation = 'delete';
+            }
+
+            return trailer;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(true, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Trailer with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {

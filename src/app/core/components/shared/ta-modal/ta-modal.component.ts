@@ -264,15 +264,21 @@ export class TaModalComponent implements OnInit, OnDestroy {
       case 'dnu': {
         this.isDNU = !this.isDNU;
         this.action.emit({ action: action, bool: this.isDNU });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
         this.action.emit({ action: action, bool: this.isBFB });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'multiple delete': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }
@@ -281,10 +287,6 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'archive': {
-        this.confirmationAction.emit(this.confirmationData);
-        break;
-      }
-      case 'ban': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }

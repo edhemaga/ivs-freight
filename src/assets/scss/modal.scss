@@ -120,6 +120,7 @@ ngb-modal-window[aria-hidden="true"] {
           font-weight: 800;
           color: #6c6c6c;
           line-height: 18px;
+          padding-top: 1px;
         }
 
         .modal-header-tab-change {
@@ -170,10 +171,13 @@ ngb-modal-window[aria-hidden="true"] {
 
         .modal-close {
           position: relative;
-          bottom: 2px;
           left: 4px;
+          transition: all 0.3s ease-in;
+          svg {
+            width: 24px;
+            height: 24px;
+          }
           &:hover {
-            transition: all 0.3s ease-in;
             cursor: pointer;
             svg {
               path {
@@ -218,9 +222,9 @@ ngb-modal-window[aria-hidden="true"] {
           -ms-user-select: none;
           user-select: none;
           line-height: 18px;
+          transition: all 0.3s ease-in-out;
 
           &:hover {
-            transition: all 0.3s ease-in-out;
             color: #ffffff;
             background-color: #ef5350;
           }
@@ -248,9 +252,9 @@ ngb-modal-window[aria-hidden="true"] {
           user-select: none;
           line-height: 18px;
           padding: 0 20px;
+          transition: all 0.3s ease-in-out;
 
           &:hover {
-            transition: all 0.3s ease-in-out;
             color: #ffffff;
             background-color: #6c6c6c;
           }
@@ -276,19 +280,22 @@ ngb-modal-window[aria-hidden="true"] {
           pointer-events: none;
           line-height: 18px;
           position: relative;
+          transition: all 0.3s ease-in-out;
 
           &.valid {
             background-color: #6d82c7;
             color: #ffffff;
             pointer-events: all;
-            transition: all 0.3s ease-in-out;
 
             &:hover {
-              transition: all 0.3s ease-in-out;
               color: #ffffff;
               background-color: #536bc2;
             }
           }
+        }
+
+        .modal-save-btn-add-new {
+          min-width: 182px !important;
         }
 
         .modal-confirmation-btn {
@@ -305,8 +312,9 @@ ngb-modal-window[aria-hidden="true"] {
           color: #f3f3f3;
         }
 
-        .modal-save-btn-add-new {
-          min-width: 182px !important;
+        .modal-red-btn {
+          background-color: #e57373;
+          color: #f3f3f3;
         }
       }
     }
