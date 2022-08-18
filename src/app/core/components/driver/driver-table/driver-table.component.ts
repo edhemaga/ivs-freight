@@ -703,6 +703,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    const mappedEvent = {
+      ...event,
+      data: {
+        ...event.data,
+        name: event.data?.fullName,
+      },
+    };
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -745,7 +752,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ConfirmationModalComponent,
         { size: 'small' },
         {
-          ...event,
+          ...mappedEvent,
           template: 'driver',
           type: event.data.status === 1 ? 'deactivate' : 'activate',
           image: true,
@@ -756,7 +763,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ConfirmationModalComponent,
         { size: 'small' },
         {
-          ...event,
+          ...mappedEvent,
           template: 'driver',
           type: 'delete',
           image: true,
