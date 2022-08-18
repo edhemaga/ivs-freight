@@ -1,0 +1,110 @@
+<app-ta-modal
+  [modalTitle]="
+    (editData?.type === 'info'
+      ? editData?.subType === 'archive'
+        ? editData?.subType?.substring(0, 1).toUpperCase() +
+          editData?.subType?.substring(1)
+        : 'Move'
+      : editData?.type?.substring(0, 1).toUpperCase() +
+        editData?.type?.substring(1)) +
+    ' ' +
+    'Confirmation'
+  "
+  [customClass]="'modal-container-XS'"
+  [bottomDivider]="true"
+  [headerSvg]="editData?.type"
+  [confirmationData]="editData"
+  (confirmationAction)="onModalAction($event)"
+>
+  <div class="confirmation-modal">
+    <!-- Rating Header -->
+    <p
+      *ngIf="editData.rating && editData?.type === 'delete'"
+      class="confirmation-header"
+    >
+      Are you sure you want to delete rating for this {{ editData?.template }}?
+    </p>
+
+    <!-- Info Header -->
+    <p
+      *ngIf="editData.subTypeStatus && editData?.type === 'info'"
+      class="confirmation-header"
+    >
+      Are you sure you want to {{ editData?.subTypeStatus }} this
+      {{ editData?.template }}
+      {{ editData?.subTypeStatus === "move" ? "to" : "from" }}
+      {{
+        editData?.subType === "archive"
+          ? "archive"
+          : editData?.subType === "dnu"
+          ? "do not use list"
+          : "ban list"
+      }}?
+    </p>
+
+    <!-- Normal Header -->
+    <p
+      *ngIf="!editData.rating && !editData.subTypeStatus"
+      class="confirmation-header"
+    >
+      Are you sure you want to
+      {{ editData?.type === "info" ? editData?.subType : editData?.type }} this
+      {{ editData?.template }}?
+    </p>
+
+    <div class="confirmation-body">
+      <!-- Svg -->
+      <svg-icon
+        class="confirmation-svg"
+        *ngIf="editData?.svg && editData?.data?.avatar"
+        [src]="editData?.data?.avatar"
+      ></svg-icon>
+      <!-- Image -->
+      <img
+        *ngIf="editData?.image && editData?.data?.avatar"
+        [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
+        [alt]="editData?.data?.fullName?.substring(0, 1)"
+        class="confirmation-img"
+      />
+      <!-- Initial name, if avatar not upload -->
+      <div
+        *ngIf="editData?.image && !editData?.data?.avatar"
+        class="no-profile-image"
+      >
+        <app-profile-images
+          [indx]="0"
+          [size]="'confirmation'"
+          [name]="editData?.data?.fullName"
+        >
+        </app-profile-images>
+      </div>
+      <!---------------------------------------------- Different templates for body --------------------------------------------->
+      <!-- Driver, Owner -->
+      <div
+        *ngIf="['driver', 'owner'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+        <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
+      </div>
+      <!-- Truck, Trailer -->
+      <div
+        *ngIf="['truck', 'trailer'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">Unit {{ editData?.data?.number }}</p>
+        <p class="confirmation-text-2">VIN: {{ editData?.data?.vin }}</p>
+      </div>
+      <!-- Shipper, Repair Shop -->
+      <div
+        *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
+        <p class="confirmation-text-2">
+          Address: {{ editData?.data?.address?.address }}
+        </p>
+      </div>
+    </div>
+  </div>
+</app-ta-modal>

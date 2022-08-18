@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Shipper' : 'Edit Shipper'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.businessName"
   [isModalValid]="shipperForm.valid"
   [customClass]="'modal-container-M'"
   (action)="onModalAction($event)"
@@ -34,7 +34,7 @@
                 label: 'Bussines Name',
                 isRequired: true,
                 textTransform: 'capitalize',
-                autoFocus: editData?.type === 'edit' ? false : true
+                autoFocus: editData?.type !== 'edit' ? true : false
               }"
             ></app-ta-input>
           </div>

@@ -2,13 +2,11 @@ import { HttpParams } from '@angular/common/http';
 
 export function tableSearch(
   res: any,
-  backFilterQuery: any,
-  selectedTab: string
+  backFilterQuery: any
 ): any {
   // On Typing
   if (!res.doReset && !res.isChipDelete && !res.chipAdded) {
     backFilterQuery[res.chip] = res.search;
-    backFilterQuery.active = selectedTab === 'active' ? 1 : 0;
 
     return {
       query: backFilterQuery,

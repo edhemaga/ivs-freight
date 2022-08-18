@@ -178,9 +178,7 @@ export class TruckTService {
     return this.truckService.apiTruckStatusIdPut(truckId, 'response').pipe(
       tap(() => {
         /* Get Table Tab Count */
-        const truckCount = JSON.parse(
-          localStorage.getItem('truckTableCount')
-        );
+        const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
 
         /* Get Data From Store To Update */
         let truckToUpdate =

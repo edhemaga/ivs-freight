@@ -69,6 +69,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public repairShopName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -317,7 +319,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
                 : res.weeklyDay.name
               : null,
           });
-
+          this.repairShopName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
@@ -332,6 +334,10 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
               active: item.active,
             };
           });
+
+          if (res.phoneExt) {
+            this.isPhoneExtExist = true;
+          }
         },
         error: () => {
           this.notificationService.error(

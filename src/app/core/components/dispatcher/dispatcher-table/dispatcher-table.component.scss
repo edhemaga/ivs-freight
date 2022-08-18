@@ -339,6 +339,7 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
   }
 
   .dispatch-list {
+    position: relative;
     // border: solid 1px #ccc;
     min-height: 32px;
     height: 32px !important;
@@ -399,12 +400,12 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
     position: absolute;
     width: 100%;
     left: 0;
-    background: #fff;
+    //background: #fff;
     min-height: 32px;
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
     opacity: 1;
     //outline: 1px dashed #ffffff;
-    box-shadow: 0 0 4px rgba(0, 0, 0, .15) inset;
+    //box-shadow: 0 0 4px rgba(0, 0, 0, .15) inset;
     outline-offset: -3px;
     border-radius: 3px;
     cursor: grabbing;

@@ -17,6 +17,7 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { ActivatedRoute } from '@angular/router';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -32,8 +33,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   public dataEdit: any;
   public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
-  public trailer_active_id: number =
-    +this.activeted_route.snapshot.params['id'];
+
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
   constructor(
     private modalService: ModalService,
@@ -95,43 +95,6 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return item.id;
-  }
-
-  public optionsEvent(any: any, action: string) {
-    switch (action) {
-      case 'edit-registration': {
-        this.modalService.openModal(
-          TtRegistrationModalComponent,
-          { size: 'small' },
-          {
-            id: this.trailer.id,
-            file_id: any.id,
-            type: action,
-            modal: 'trailer',
-          }
-        );
-        break;
-      }
-      case 'edit-inspection': {
-        this.modalService.openModal(
-          TtFhwaInspectionModalComponent,
-          { size: 'small' },
-          {
-            id: this.trailer.id,
-            file_id: any.id,
-            type: action,
-            modal: 'trailer',
-          }
-        );
-        break;
-      }
-      case 'edit-title': {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
   }
 
   public getTrailerDropdown() {

@@ -134,7 +134,7 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url('../..//assets/svg/common/ic_confirm.svg');
+            content: url("../..//assets/svg/common/ic_confirm.svg");
             width: 14px;
             height: 10px;
           }
@@ -143,7 +143,7 @@
         &.last-active {
           position: relative;
           &::before {
-            content: '';
+            content: "";
             position: absolute;
             bottom: 0;
             left: 0;
@@ -302,6 +302,10 @@
         width: 403px;
       }
 
+      &.w-col-402 {
+        width: 402px;
+      }
+
       &.w-col-details-366 {
         width: 366px;
       }
@@ -336,6 +340,14 @@
 
       &.w-col-256 {
         width: 256px;
+      }
+
+      &.w-col-251 {
+        width: 251px;
+      }
+
+      &.w-col-245 {
+        width: 245px;
       }
 
       &.w-col-228 {
@@ -407,6 +419,10 @@
         width: 148px;
       }
 
+      &.w-col-145 {
+        width: 145px;
+      }
+
       &.w-col-140 {
         width: 140px;
       }
@@ -437,6 +453,10 @@
 
       &.w-col-114 {
         width: 114px;
+      }
+
+      &.w-col-109 {
+        width: 109px;
       }
 
       &.w-col-108 {
@@ -594,7 +614,7 @@
                 &::after {
                   position: absolute;
                   right: 3px;
-                  content: url('../..//assets/svg/common/ic_confirm.svg');
+                  content: url("../..//assets/svg/common/ic_confirm.svg");
                   width: 14px;
                   height: 10px;
                 }
@@ -696,7 +716,7 @@
           font-weight: 600;
 
           &::before {
-            content: '';
+            content: "";
             height: 2px;
             width: 162px;
             background-color: #f3f3f3;

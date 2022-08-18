@@ -278,7 +278,9 @@ export class TruckassistTableToolbarComponent
   resetInactivityTimer() {
     clearTimeout(this.inactiveTimeOutInterval);
 
-    this.setInactivityTimer();
+    setTimeout(() => {
+      this.setInactivityTimer();
+    }, 100);
   }
 
   // Set Inactivity Timer
@@ -303,8 +305,6 @@ export class TruckassistTableToolbarComponent
     this.timeOutToaggleColumn = setTimeout(() => {
       if (!column.isPined) {
         column.hidden = !column.hidden;
-
-        this.resetInactivityTimer();
 
         this.tableService.sendToaggleColumn({
           column: column,

@@ -1,14 +1,53 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit' ? 'Add new registration' : 'Edit new registration'
+    editData?.type !== 'edit-registration'
+      ? 'Add New Registration'
+      : 'Edit Registration'
   "
   [editData]="editData"
+  [editName]="
+    editData?.modal === 'trailer'
+      ? 'Trailer ' + editData?.payload?.trailerNumber
+      : 'Truck ' + editData?.payload?.truckNumber
+  "
+  [specificCaseModalName]="true"
   [isModalValid]="registrationForm.valid"
   (action)="onModalAction($event)"
 >
   <form [formGroup]="registrationForm" class="form-container">
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="licensePlate"
+          [inputConfig]="{
+            name: 'License plate',
+            type: 'text',
+            label: 'License plate',
+            isRequired: true,
+            autoFocus: editData?.type !== 'edit' ? true : false,
+            textTransform: 'capitalize'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="stateId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'State',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-228'
+          }"
+          [options]="stateTypes"
+          [activeItem]="selectedStateType"
+          (selectedItem)="onSelectDropdown($event, 'state')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
     <div class="row last-row">
-      <div class="col-4">
+      <div class="col-6">
         <app-ta-input
           formControlName="issueDate"
           [inputConfig]="{
@@ -22,7 +61,7 @@
           }"
         ></app-ta-input>
       </div>
-      <div class="col-4">
+      <div class="col-6">
         <app-ta-input
           formControlName="expDate"
           [inputConfig]="{
@@ -31,19 +70,8 @@
             isDropdown: true,
             label: 'Expiry Date',
             placeholderIcon: 'date',
-            customClass: 'datetimeclass'
-          }"
-        ></app-ta-input>
-      </div>
-      <div class="col-4 no-p-left">
-        <app-ta-input
-          formControlName="licensePlate"
-          [inputConfig]="{
-            name: 'License plate',
-            type: 'text',
-            label: 'License plate',
             isRequired: true,
-            textTransform: 'capitalize'
+            customClass: 'datetimeclass'
           }"
         ></app-ta-input>
       </div>
