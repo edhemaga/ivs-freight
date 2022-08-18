@@ -11,7 +11,10 @@ import {
   OnChanges,
   SimpleChanges,
   ChangeDetectorRef,
+  ViewChildren,
+  QueryList,
 } from '@angular/core';
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 
 @Component({
   selector: 'app-ta-tab-switch',
@@ -19,6 +22,8 @@ import {
   styleUrls: ['./ta-tab-switch.component.scss'],
 })
 export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
+  @ViewChildren('popoverHolder')
+  autoCloseComponent: QueryList<AutoclosePopoverComponent>;
   @Input() tabs: any[];
   @Input() type: string = '';
   @Output() switchClicked = new EventEmitter<any>();
@@ -67,7 +72,7 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     });
   }
 
-  clearFields(){
+  clearFields() {
     this.date1.reset();
     this.date1.updateValueAndValidity();
     this.date2.reset();
@@ -90,9 +95,9 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
 
   public setSwitchActive(tabs) {
     const selectedIndex = tabs.findIndex((item) => item.checked);
-  
+
     this.indexSwitch = selectedIndex == -1 ? 0 : selectedIndex;
-    
+
     this.hoverStyle = this.getElementOffset(
       this.elem.nativeElement.children[0].children[this.indexSwitch]
     );
@@ -100,27 +105,33 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     this.det.detectChanges();
   }
 
-  switchTab(e, indx, item, t2) {
+  switchTab(e, indx, item) {
+    e.stopPropagation();
+    console.log(e);
     this.indexSwitch = indx;
 
     this.tabs.map((item) => (item.checked = false));
     item.checked = true;
     this.hoverStyle = this.getElementOffset(e.target);
     this.switchClicked.emit(item);
-    t2.open();
-    this.tooltip = t2;
   }
 
   getElementOffset(item) {
-    const parentItem = item.parentNode.getBoundingClientRect();
-    const elementItem = item.getBoundingClientRect();
+    const parentElement = item.closest('.tab-switch-holder');
+    const selectedElement = item.closest('.tab-switch-items-holder');
+
+    const parentItem = parentElement.getBoundingClientRect();
+    const elementItem = selectedElement.getBoundingClientRect();
+
     return {
       x: elementItem.x - parentItem.x,
       width: elementItem.width,
     };
   }
 
-  closeCustomPopover() {
-    this.tooltip.close();
-  }
+  closeCustomPopover = (e) => {
+    e.stopPropagation();
+    const closeComponentArray = this.autoCloseComponent.toArray().reverse();
+    closeComponentArray[0].tooltip.close();
+  };
 }
