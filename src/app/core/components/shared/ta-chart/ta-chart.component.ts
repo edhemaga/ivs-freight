@@ -866,7 +866,7 @@ export class TaChartComponent implements OnInit {
     this.setChartOptions();
   }
 
-  updateTime(ev: any) {
+  updateTime(ev: any, period?: string) {
     let range = 0,
       type,
       value = [],
@@ -876,10 +876,9 @@ export class TaChartComponent implements OnInit {
       removeIndex = 0,
       rangeIndicator = 20,
       periodFormat = 0,
-      periodIndex = 0,
-      period = '';
+      periodIndex = 0
 
-    switch (ev['name']) {
+    switch (ev) {
       case 'All Time':
         range = 25;
         type = 'M';
@@ -959,15 +958,15 @@ export class TaChartComponent implements OnInit {
         weekDaySep[1] = '';
       }
       if (
-        ev['name'] == 'WTD' ||
-        ev['name'] == 'MTD' ||
-        (ev['name'] == 'YTD' && period == 'Weekly')
+        ev == 'WTD' ||
+        ev == 'MTD' ||
+        (ev == 'YTD' && period == 'Weekly')
       ) {
         this.chart.chart.config.data.labels.push([
           weekDaySep[0],
           weekDaySep[1],
         ]);
-      } else if (ev['name'] == 'Today') {
+      } else if (ev == 'Today') {
         this.chart.chart.config.data.labels.push(
           weekDaySep[0] + ' ' + weekDaySep[1]
         );

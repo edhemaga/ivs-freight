@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-ta-time-period',
@@ -7,6 +7,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 })
 export class TaTimePeriodComponent implements OnInit {
   @ViewChild('t2') t2: any;
+  @Output() selectTimePeriod = new EventEmitter<any>();
   periodTitle: string = "Monthly";
   periodSwitchItems: any[] = [];
   todayPeriodSwitchItems: any = [
@@ -87,11 +88,11 @@ export class TaTimePeriodComponent implements OnInit {
       return item;
     })
     item.active = true;
+    this.selectTimePeriod.emit(this.periodTitle);
     this.t2.close();
   }
 
   changeTimePeriod(period){
-    console.log(period);
     switch (period){
       case 'All Time':
         this.periodSwitchItems = this.allTimePeriodSwitchItems;

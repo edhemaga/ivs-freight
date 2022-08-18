@@ -16,7 +16,7 @@ export class DashboardPickupByStateComponent implements OnInit {
       {
         defaultConfig: {
           type: 'bar',
-          data: [12, 18, 13, 17, 13],
+          data: [12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
           borderColor: '#919191',
@@ -29,7 +29,7 @@ export class DashboardPickupByStateComponent implements OnInit {
       {
         defaultConfig: {
           type: 'bar',
-          data: [8, 10, 9, 16, 17],
+          data: [8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
           borderColor: '#CCCCCC',
@@ -81,6 +81,8 @@ export class DashboardPickupByStateComponent implements OnInit {
   stateSwitchTabsType4: any[] = [];
 
   pickupSwitch: any[] = [];
+
+  currentSwitchTab: string = 'WTD';
 
   pickupStateList: any[] = [
     {
@@ -211,7 +213,8 @@ export class DashboardPickupByStateComponent implements OnInit {
         name: 'Today'
       },
       {
-        name: 'WTD'
+        name: 'WTD',
+        checked: true
       },
       {
         name: 'MTD'
@@ -229,8 +232,14 @@ export class DashboardPickupByStateComponent implements OnInit {
     ];
   }
 
+  ngAfterViewInit(): void {
+    this.timePeriod.changeTimePeriod('WTD');
+  }
+
   changeStateSwitchTabs(ev){
     this.timePeriod.changeTimePeriod(ev['name']);
+    this.currentSwitchTab = ev['name'];
+    this.statesBarChart.updateTime(ev['name']);
   }
 
   selectStateCompare(item, indx){
@@ -301,6 +310,10 @@ export class DashboardPickupByStateComponent implements OnInit {
     if ( this.statesBarChart ){
       this.statesBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareColor);
     }
+  }
+
+  selectTimePeriod(period){
+    this.statesBarChart.updateTime(this.currentSwitchTab, period);
   }
 
 }

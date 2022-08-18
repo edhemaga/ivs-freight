@@ -409,6 +409,8 @@ export class DashboardPerformanceComponent implements OnInit {
     }
   };
 
+  currentSwitchTab: string = 'MTD';
+
   constructor() { }
 
   ngOnInit(): void {
@@ -424,7 +426,8 @@ export class DashboardPerformanceComponent implements OnInit {
       },
       {
         id: 3,
-        name: 'MTD'
+        name: 'MTD',
+        checked: true
       },
       {
         id: 4,
@@ -442,7 +445,12 @@ export class DashboardPerformanceComponent implements OnInit {
     ];
   }
 
+  ngAfterViewInit(): void {
+    this.timePeriod.changeTimePeriod('MTD');
+  }
+
   changeDashboardTabs(ev){
+    this.currentSwitchTab = ev['name'];
     this.timePeriod.changeTimePeriod(ev['name']);
   }
 
@@ -471,5 +479,9 @@ export class DashboardPerformanceComponent implements OnInit {
 
   hoverFocusCard(type: string, color: any){
     this.topChart.changeChartFillProperty(type, color);
+  }
+
+  selectTimePeriod(period){
+    this.topChart.updateTime(this.currentSwitchTab, period);
   }
 }

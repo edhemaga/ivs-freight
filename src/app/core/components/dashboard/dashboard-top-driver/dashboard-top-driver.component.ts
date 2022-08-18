@@ -13,6 +13,7 @@ export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('t3') t3: any;
 
   topTenTitle: string = "Driver";
+  currentSwitchTab: string = 'All Time';
 
   selectedDrivers: any[] = [];
 
@@ -314,7 +315,8 @@ export class DashboardTopDriverComponent implements OnInit {
         name: 'YTD'
       },
       {
-        name: 'All Time'
+        name: 'All Time',
+        checked: true
       },
       {
         name: 'Custom',
@@ -323,9 +325,14 @@ export class DashboardTopDriverComponent implements OnInit {
     ];
   }
 
+  ngAfterViewInit(): void {
+    this.timePeriod.changeTimePeriod('All Time');
+  }
+
   changeDriverSwitchTabs(ev){
     this.timePeriod.changeTimePeriod(ev['name']);
-    this.topDriverBarChart.updateTime(ev);
+    this.currentSwitchTab = ev['name'];
+    this.topDriverBarChart.updateTime(ev['name']);
   }
 
   removeDriverFromList(e: Event,indx, item){
@@ -417,5 +424,9 @@ export class DashboardTopDriverComponent implements OnInit {
     if ( this.topDriverBarChart ){
       this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareHoverColor);
     }
+  }
+
+  selectTimePeriod(period){
+    this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
   }
 }

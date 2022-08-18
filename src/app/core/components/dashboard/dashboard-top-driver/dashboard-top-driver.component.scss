@@ -421,6 +421,9 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     border-radius: 1px;
                     background-color: #F3F3F3;
 
+                    &.list_line_hidden{
+                        opacity: 0;
+                    }
     
                 }
 
