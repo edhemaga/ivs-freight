@@ -10,14 +10,14 @@ export class NotificationService {
   }
 
   public success(message: string, title?: string) {
-    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
     this.toastr.success(newMsg, title, {
       progressBar: false, 
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
       tapToDismiss: false,
       easeTime: 0,
-      timeOut: 3000,
+      timeOut: 300000,
       extendedTimeOut: 3000,
       enableHtml: true,
       toastClass: 'ngx-toastr myAnimationClass',
@@ -29,13 +29,13 @@ export class NotificationService {
   }
 
   public error(message: string, title?: string) {
-    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    let newMsg = ' '+message+' <div class="closeToastrBtn retryButton"></div> <div class="closeToastrBtn" (click)="clickOnClose"></div>';
     this.toastr.error(newMsg, title, {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
       easeTime: 0,
-      timeOut: 3000,
+      timeOut: 300000,
       extendedTimeOut: 3000,
       toastClass: 'ngx-toastr myAnimationClass',
     }).onShown.subscribe((show) => { 
@@ -47,13 +47,13 @@ export class NotificationService {
   }
 
   public warning(message: string, title?: string) {
-    let newMsg = ' '+message+' <div type="button" class="closeToastrBtn" (click)="clickOnClose"></div>';
+    let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
     this.toastr.warning(newMsg, title, {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
       easeTime: 0,
-      timeOut: 3000,
+      timeOut: 300000,
       extendedTimeOut: 3000,
       toastClass: 'ngx-toastr myAnimationClass',
     }).onShown.subscribe((show) => { 
