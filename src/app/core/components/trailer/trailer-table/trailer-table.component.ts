@@ -243,11 +243,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
+          this.backFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.trailerBackFilter(searchEvent.query);
+              this.trailerBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendTrailerData();
             }
@@ -443,16 +445,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  trailerBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  trailerBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.trailerService
       .getTrailers(
         filter.active,
@@ -465,12 +471,27 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchThree
       )
       .pipe(untilDestroyed(this))
-      .subscribe((trucks: TrailerListResponse) => {
-        this.viewData = trucks.pagination.data;
+      .subscribe((trailer: TrailerListResponse) => {
+        if (!isShowMore) {
+          this.viewData = trailer.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapTrailerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapTrailerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              trailer.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          trailer.pagination.data.map((data: any) => {
+            newData.push(this.mapTrailerData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -481,6 +502,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendTrailerData();
     } else if (event.action === 'view-mode') {
@@ -493,6 +516,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
 
         this.trailerBackFilter(this.backFilterQuery);
       } else {
@@ -511,6 +535,12 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     };
     switch (event.type) {
+      case 'show-more': {
+        this.backFilterQuery.pageIndex++;
+
+        this.trailerBackFilter(this.backFilterQuery, false, true);
+        break;
+      }
       case 'edit-trailer': {
         this.modalService.openModal(
           TrailerModalComponent,

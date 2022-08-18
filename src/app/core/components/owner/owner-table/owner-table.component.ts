@@ -105,15 +105,13 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
 
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery
-          );
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.ownerBackFilter(searchEvent.query);
+              this.ownerBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendOwnerData();
             }
@@ -376,17 +374,21 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Owner Back Filter
-  ownerBackFilter(filter: {
-    active: number;
-    companyOwnerId: number | undefined;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  ownerBackFilter(
+    filter: {
+      active: number;
+      companyOwnerId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.ownerService
       .getOwner(
         filter.active,
@@ -401,11 +403,26 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((owners: GetOwnerListResponse) => {
-        this.viewData = owners.pagination.data;
+        if (!isShowMore) {
+          this.viewData = owners.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapOwnerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapOwnerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              owners.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          owners.pagination.data.map((data: any) => {
+            newData.push(this.mapOwnerData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -414,6 +431,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(OwnerModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendOwnerData();
     } else if (event.action === 'view-mode') {
@@ -425,6 +444,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (event.action === 'sort') {
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 
         this.ownerBackFilter(this.backFilterQuery);
@@ -435,7 +455,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onTableBodyActions(event: any) {
-    if (event.type === 'edit-owner') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.ownerBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-owner') {
       this.modalService.openModal(
         OwnerModalComponent,
         { size: 'small' },

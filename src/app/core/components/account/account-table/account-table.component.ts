@@ -97,11 +97,13 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.accountBackFilter(searchEvent.query);
+              this.accountBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendAccountData();
             }
@@ -339,16 +341,20 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   // Account Back Filter
-  accountBackFilter(filter: {
-    labelId: number | undefined;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  accountBackFilter(
+    filter: {
+      labelId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.accountService
       .getAccounts(
         filter.labelId,
@@ -362,11 +368,25 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((account: any) => {
-        this.viewData = account.pagination.data;
+        if (!isShowMore) {
+          this.viewData = account.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapAccountData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapAccountData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[0].length = account.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          account.pagination.data.map((data: any) => {
+            newData.push(this.mapAccountData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -375,6 +395,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(AccountModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
+
       this.setAccountData(event.tabData);
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
@@ -386,6 +409,8 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
 
+        this.backFilterQuery.pageIndex = 1;
+
         this.accountBackFilter(this.backFilterQuery);
       } else {
         this.sendAccountData();
@@ -394,7 +419,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit-account') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.accountBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-account') {
       this.modalService.openModal(
         AccountModalComponent,
         { size: 'small' },

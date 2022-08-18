@@ -197,14 +197,13 @@ export class CustomerTableComponent
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery
-          );
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.brokerAndShipperBackFilter(searchEvent.query);
+              this.brokerAndShipperBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendCustomerData();
             }
@@ -392,17 +391,21 @@ export class CustomerTableComponent
   }
 
   // Broker And Shipper Back Filter Query
-  brokerAndShipperBackFilter(filter: {
-    ban: number | undefined;
-    dnu: number | undefined;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  brokerAndShipperBackFilter(
+    filter: {
+      ban: number | undefined;
+      dnu: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     // Broker Api Call
     if (this.selectedTab === 'active') {
       this.brokerService
@@ -419,11 +422,25 @@ export class CustomerTableComponent
         )
         .pipe(untilDestroyed(this))
         .subscribe((brokers: GetBrokerListResponse) => {
-          this.viewData = brokers.pagination.data;
+          if (!isShowMore) {
+            this.viewData = brokers.pagination.data;
 
-          this.viewData = this.viewData.map((data: any) => {
-            return this.mapBrokerData(data);
-          });
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapBrokerData(data);
+            });
+
+            if (isSearch) {
+              this.tableData[0].length = brokers.pagination.count;
+            }
+          } else {
+            let newData = [...this.viewData];
+
+            brokers.pagination.data.map((data: any) => {
+              newData.push(this.mapBrokerData(data));
+            });
+
+            this.viewData = [...newData];
+          }
         });
     }
     // Shipper Api Call
@@ -442,11 +459,25 @@ export class CustomerTableComponent
         )
         .pipe(untilDestroyed(this))
         .subscribe((shippers: ShipperListResponse) => {
-          this.viewData = shippers.pagination.data;
+          if (!isShowMore) {
+            this.viewData = shippers.pagination.data;
 
-          this.viewData = this.viewData.map((data: any) => {
-            return this.mapShipperData(data);
-          });
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapShipperData(data);
+            });
+
+            if (isSearch) {
+              this.tableData[1].length = shippers.pagination.count;
+            }
+          } else {
+            let newData = [...this.viewData];
+
+            shippers.pagination.data.map((data: any) => {
+              newData.push(this.mapBrokerData(data));
+            });
+
+            this.viewData = [...newData];
+          }
         });
     }
   }
@@ -468,6 +499,8 @@ export class CustomerTableComponent
     else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
+      this.backFilterQuery.pageIndex = 1;
+
       this.sendCustomerData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
@@ -480,6 +513,8 @@ export class CustomerTableComponent
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
 
+        this.backFilterQuery.pageIndex = 1;
+
         this.brokerAndShipperBackFilter(this.backFilterQuery);
       } else {
         this.sendCustomerData();
@@ -490,7 +525,11 @@ export class CustomerTableComponent
   // Table Body Actions
   onTableBodyActions(event: any) {
     // Edit Call
-    if (event.type === 'edit-cutomer-or-shipper') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.brokerAndShipperBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
       if (this.selectedTab === 'active') {
         this.modalService.openModal(

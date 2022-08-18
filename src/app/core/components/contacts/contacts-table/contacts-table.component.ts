@@ -99,11 +99,13 @@ export class ContactsTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.contactBackFilter(searchEvent.query);
+              this.contactBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendContactData();
             }
@@ -351,16 +353,20 @@ export class ContactsTableComponent
   }
 
   // Contact Back Filter
-  contactBackFilter(filter: {
-    labelId: number | undefined;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  contactBackFilter(
+    filter: {
+      labelId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.contactService
       .getContacts(
         filter.labelId,
@@ -374,11 +380,25 @@ export class ContactsTableComponent
       )
       .pipe(takeUntil(this.destroy$))
       .subscribe((contact: GetCompanyContactListResponse) => {
-        this.viewData = contact.pagination.data;
+        if (!isShowMore) {
+          this.viewData = contact.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapContactData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapContactData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[0].length = contact.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          contact.pagination.data.map((data: any) => {
+            newData.push(this.mapContactData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -388,6 +408,9 @@ export class ContactsTableComponent
       this.modalService.openModal(ContactModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
+
       this.setContactData(event.tabData);
     }
   }
@@ -398,6 +421,8 @@ export class ContactsTableComponent
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
 
+        this.backFilterQuery.pageIndex = 1;
+
         this.contactBackFilter(this.backFilterQuery);
       } else {
         this.sendContactData();
@@ -407,8 +432,11 @@ export class ContactsTableComponent
 
   // On Body Actions
   onTableBodyActions(event: any) {
-    console.log(event);
-    if (event.type === 'edit-contact') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.contactBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-contact') {
       this.modalService.openModal(
         ContactModalComponent,
         { size: 'small' },

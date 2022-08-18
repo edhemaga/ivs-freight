@@ -1937,17 +1937,18 @@
   </tbody>
 </table>
 
+<!-- [ngStyle]="{ 'width.px': showMoreContainerWidth }" -->
 <div
   class="show-more-container"
   *ngIf="viewData.length"
-  [ngStyle]="{ 'width.px': showMoreContainerWidth }"
+  
 >
   <div class="showing">
     {{ viewData.length }} OF {{ activeTableData.length }} SHOWING
   </div>
   <div
     class="show-more"
-    (clcik)="onShowMore()"
+    (click)="onShowMore()"
     *ngIf="viewData.length < activeTableData.length"
   >
     SHOW MORE
