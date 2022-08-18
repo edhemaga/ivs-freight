@@ -22,7 +22,18 @@
   ></app-ta-input>
 
   <ng-template #taInputDropdownPopover>
-    <div class="ta-label-options" [ngClass]="{ scroll: colors.length > 5 }">
+    <div
+      class="ta-label-options"
+      [ngStyle]="{
+        width:
+          inputConfig?.dropdownWidthClass
+            ?.split('-')
+            .slice(2)
+            .join('-')
+            .trim() + 'px'
+      }"
+      [ngClass]="{ scroll: colors.length > 5 }"
+    >
       <div
         class="ta-label-option"
         *ngFor="let label of colors; trackBy: identity"
@@ -31,15 +42,10 @@
         <svg-icon
           class="ta-label-option-svg"
           src="assets/svg/common/ic_dynamic_label.svg"
-          [svgStyle]="{ fill: label?.code ? label?.code : '#b7b7b7' }"
+          [svgStyle]="{ fill: label?.code ? label.code : '#b7b7b7' }"
         ></svg-icon>
         <div class="ta-label-vertical-divider"></div>
-        <div class="d-flex justify-content-between flex-fill">
-          <p class="ta-label-option-name">{{ label.name }}</p>
-          <div class="ta-label-option-count">
-            {{ label.count }}
-          </div>
-        </div>
+        <p class="ta-label-option-name">{{ label.name }}</p>
       </div>
     </div>
   </ng-template>
