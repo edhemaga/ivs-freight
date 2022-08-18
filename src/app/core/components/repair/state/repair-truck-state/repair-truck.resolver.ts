@@ -16,7 +16,6 @@ export class RepairTruckResolver implements Resolve<RepairTruckState> {
   ) {}
 
   resolve(): Observable<RepairTruckState | boolean> {
-    console.log('Poziva se RepairTruckResolver')
     return this.repairService
       .getRepairList(undefined, undefined, 1, undefined, undefined, undefined, 1, 25)
       .pipe(

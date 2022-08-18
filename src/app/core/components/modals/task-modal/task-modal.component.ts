@@ -52,6 +52,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public taskName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -366,6 +368,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             companyUserIds: null,
             note: res.note,
           });
+          this.taskName = res.title;
           this.selectedDepartments = res.departments;
           this.selectedCompanyUsers = res.todoUsers.map((item) => {
             return {

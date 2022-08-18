@@ -55,6 +55,7 @@ export class TruckassistTableHeadComponent
     private changeDetectorRef: ChangeDetectorRef
   ) { }
 
+  // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.setVisibleColumns();
 
@@ -91,6 +92,7 @@ export class TruckassistTableHeadComponent
     }, 10);
   }
 
+  // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges) {
     if (changes?.columns && !changes?.columns?.firstChange) {
       this.columns = changes.columns.currentValue;
@@ -118,6 +120,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
+  // Set Visible Column
   setVisibleColumns(getNotPinedMaxWidth?: boolean) {
     this.visibleColumns = [];
     this.pinedColumns = [];
@@ -164,6 +167,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
+  // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
@@ -185,7 +189,8 @@ export class TruckassistTableHeadComponent
       column.field &&
       column.sortable &&
       this.locked &&
-      this.viewData.length > 1
+      this.viewData.length > 1 &&
+      column.sortName
     ) {
       this.options.config.sortBy = column.field;
       this.options.config.sortDirection =
@@ -211,6 +216,12 @@ export class TruckassistTableHeadComponent
       this.headActions.emit({ action: 'sort', direction: directionSort });
 
       this.changeDetectorRef.detectChanges();
+    }else if(!column.sortable){
+      alert('Kolona nije podesena u konfig tabele da bude sortable')
+    }else if(this.viewData.length <= 1){
+      alert('U tabeli ima samo jedan podatak, sort se nece zbog toga odraditi');
+    }else if(!column.sortName){
+      alert('Nije postavljen sortName za ovu kolonu')
     }
   }
 
@@ -219,6 +230,7 @@ export class TruckassistTableHeadComponent
     this.reordering = true;
   }
 
+  // Reorder
   onReorder(event: CdkDragDrop<any>) {
     let previousIndex: number = null,
       currentIndex: number = null;
@@ -242,6 +254,7 @@ export class TruckassistTableHeadComponent
     this.setVisibleColumns();
   }
 
+  // Reorder End
   onReorderEnd() {
     this.reordering = false;
   }
@@ -272,7 +285,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
-  // Select
+  // Open Row Select Popup
   onSelectedOptions(selectedPopover: any) {
     this.optionsPopup = selectedPopover;
 
@@ -283,6 +296,7 @@ export class TruckassistTableHeadComponent
     }
   }
 
+  // On Select Option From Select Popup
   onSelect(action: string) {
     this.tableService.sendSelectOrDeselect(action);
   }
@@ -311,6 +325,7 @@ export class TruckassistTableHeadComponent
     this.changeDetectorRef.detectChanges();
   }
 
+  // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
     this.tableService.sendColumnsOrder({});
     this.tableService.sendColumnWidth({});

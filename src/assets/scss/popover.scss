@@ -364,9 +364,13 @@
             display: flex;
             justify-content: center;
             align-self: center;
+
+            svg-icon {
+              display: flex;
+            }
           }
 
-          .selectable-text{
+          .selectable-text {
             cursor: pointer;
           }
 
@@ -375,13 +379,14 @@
             font-weight: 400;
             color: #b7b7b7;
             justify-content: unset !important;
-            width: 90px;
+            align-self: center;
+            width: fit-content;
+            height: fit-content;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
             margin: 0;
-            display: flex;
-            align-items: center;
+            max-width: 100px;
           }
 
           &:hover {

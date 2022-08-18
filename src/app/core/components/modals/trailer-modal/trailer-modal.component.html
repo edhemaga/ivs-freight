@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Trailer' : 'Edit Trailer'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.trailerNumber"
   [isModalValid]="trailerForm.valid"
   (action)="onModalAction($event)"
 >
@@ -27,7 +27,7 @@
                 isRequired: true,
                 textTransform: 'capitalize',
                 maxLength: 8,
-                autoFocus: editData?.type === 'edit' ? false : true
+                autoFocus: editData?.type !== 'edit' ? true : false
               }"
             ></app-ta-input>
           </div>

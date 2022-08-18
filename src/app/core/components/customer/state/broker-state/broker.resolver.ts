@@ -15,25 +15,21 @@ export class BrokerResolver implements Resolve<BrokerState> {
     private brokerStore: BrokerStore
   ) {}
   resolve(): Observable<BrokerState | boolean> {
-    if (this.brokerStore.getValue().ids?.length) {
-      return of(true);
-    } else {
-      return this.brokerService.getBrokerList(null, null, 1, 25).pipe(
-        catchError(() => {
-          return of('No brokers data...');
-        }),
-        tap((brokerPagination: GetBrokerListResponse) => {
-          localStorage.setItem(
-            'brokerShipperTableCount',
-            JSON.stringify({
-              broker: brokerPagination.count,
-              shipper: brokerPagination.shipperCount,
-            })
-          );
+    return this.brokerService.getBrokerList(null, null, 1, 25).pipe(
+      catchError(() => {
+        return of('No brokers data...');
+      }),
+      tap((brokerPagination: GetBrokerListResponse) => {
+        localStorage.setItem(
+          'brokerShipperTableCount',
+          JSON.stringify({
+            broker: brokerPagination.count,
+            shipper: brokerPagination.shipperCount,
+          })
+        );
 
-          this.brokerStore.set(brokerPagination.pagination.data);
-        })
-      );
-    }
+        this.brokerStore.set(brokerPagination.pagination.data);
+      })
+    );
   }
 }

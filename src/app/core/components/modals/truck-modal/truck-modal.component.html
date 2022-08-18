@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Truck' : 'Edit Truck'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="editData?.data?.truckNumber"
   [isModalValid]="truckForm.valid"
   (action)="onModalAction($event)"
 >
@@ -27,7 +27,7 @@
                 isRequired: true,
                 textTransform: 'capitalize',
                 maxLength: 6,
-                autoFocus: editData?.type === 'edit' ? false : true
+                autoFocus: editData?.type !== 'edit' ? true : false
               }"
             ></app-ta-input>
           </div>
@@ -304,7 +304,7 @@
                 isDropdown: true,
                 dropdownWidthClass: 'w-col-118'
               }"
-              [options]="shifter"
+              [options]="shifters"
               [activeItem]="selectedShifter"
               (selectedItem)="onSelectDropdown($event, 'shifter')"
             ></app-ta-input-dropdown>

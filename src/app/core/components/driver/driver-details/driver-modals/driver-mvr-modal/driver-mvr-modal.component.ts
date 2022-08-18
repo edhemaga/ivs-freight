@@ -125,7 +125,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     };
 
     this.mvrService
-      .addMvr(newData)
+      .updateMvr(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

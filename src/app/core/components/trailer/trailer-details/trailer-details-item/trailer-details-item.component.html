@@ -26,7 +26,9 @@
               ? 'assets/svg/truckassist-table/note/Note.svg'
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
-          (dropActions)="optionsEvent($event, 'edit-registration')"
+          (dropActions)="
+            optionsEvent($event, trailers.data, 'edit-registration')
+          "
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -97,7 +99,7 @@
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
           [expDateClose]="fhwa.issueDate | setFutureYear"
-          (dropActions)="optionsEvent($event, 'edit-inspection')"
+          (dropActions)="optionsEvent($event, trailers.data, 'edit-inspection')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -152,7 +154,7 @@
               ? 'assets/svg/truckassist-table/note/Note.svg'
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
-          (dropActions)="optionsEvent($event, 'edit-inspection')"
+          (dropActions)="optionsEvent($event, trailers.data, 'edit-title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">

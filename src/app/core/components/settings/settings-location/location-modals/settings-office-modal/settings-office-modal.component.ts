@@ -63,6 +63,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public officeName: string = null;
+
   public tabs: any[] = [
     {
       id: 1,
@@ -250,7 +252,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       id: id,
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      payPeriod: this.selectedPayPeriod.id,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
       monthlyDay:
         this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
@@ -303,7 +305,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     let newData: CreateCompanyOfficeCommand = {
       ...form,
       address: { ...this.selectedAddress, addressUnit: addressUnit },
-      payPeriod: this.selectedPayPeriod.id,
+      payPeriod: this.selectedPayPeriod ? this.selectedPayPeriod.id : null,
       monthlyDay:
         this.selectedPayPeriod?.name === 'Monthly'
           ? this.selectedDay
@@ -385,22 +387,29 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '321',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             rent: res.rent ? convertNumberInThousandSep(res.rent) : null,
-            payPeriod: res.payPeriod.name,
+            payPeriod: res.payPeriod ? res.payPeriod.name : null,
             monthlyDay: res.payPeriod?.name
               ? res.payPeriod.name === 'Monthly'
                 ? res.monthlyDay.name
                 : res.weeklyDay.name
               : null,
           });
-
+          this.officeName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
-          this.selectedDay =
-            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+          this.selectedDay = res.payPeriod
+            ? res.payPeriod.name === 'Monthly'
+              ? res.monthlyDay
+              : res.weeklyDay
+            : null;
+
+          if (res.extensionPhone) {
+            this.isPhoneExtExist = true;
+          }
 
           for (let index = 0; index < res.departmentContacts.length; index++) {
             this.departmentContacts.push(

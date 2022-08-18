@@ -1,6 +1,6 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Task' : 'Edit Task'"
-  [editName]="editData?.id"
+  [editName]="taskName"
   [editData]="editData"
   [isModalValid]="taskForm.valid"
   (action)="onModalAction($event)"
@@ -16,7 +16,7 @@
             label: 'Title',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type === 'edit' ? false : true
+            autoFocus: editData?.type !== 'edit' ? true : false
           }"
         ></app-ta-input>
       </div>

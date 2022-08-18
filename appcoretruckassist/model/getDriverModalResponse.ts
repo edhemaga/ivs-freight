@@ -11,17 +11,21 @@
  */
 import { BankResponse } from './bankResponse';
 import { EnumValue } from './enumValue';
+import { FleetType } from './fleetType';
+import { PerMileEntity } from './perMileEntity';
 
 
 export interface GetDriverModalResponse { 
     banks?: Array<BankResponse> | null;
     payTypes?: Array<EnumValue> | null;
-    cldRestrictions?: Array<EnumValue> | null;
-    cdlEndorsments?: Array<EnumValue> | null;
-    testType?: Array<EnumValue> | null;
-    testReason?: Array<EnumValue> | null;
-    testClass?: Array<EnumValue> | null;
-    country?: Array<EnumValue> | null;
     mvrExpiration?: number;
+    fleetType?: FleetType;
+    loadedAndEmptySameRate?: boolean | null;
+    solo?: PerMileEntity;
+    team?: PerMileEntity;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
+    defaultSoloDriverCommission?: number | null;
+    defaultTeamDriverCommission?: number | null;
 }
 

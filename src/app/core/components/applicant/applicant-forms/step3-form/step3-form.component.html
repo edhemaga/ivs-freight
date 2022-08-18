@@ -236,7 +236,10 @@
   <!-- ADD MORE LICENSES -->
 
   <div class="d-flex align-items-center btn-container">
-    <h4 class="text-center m-0 ta-font-bold" *ngIf="!isEditing">
+    <h4
+      class="text-center m-0 ta-font-bold"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
+    >
       List any additional license(s) held in past 3 years
     </h4>
 
@@ -247,7 +250,7 @@
       [ngClass]="{
         disabled: licenseForm.invalid
       }"
-      *ngIf="!isEditing"
+      *ngIf="selectedMode === 'APPLICANT_MODE' && !isEditing"
     >
       <svg-icon
         class="plus-icon"

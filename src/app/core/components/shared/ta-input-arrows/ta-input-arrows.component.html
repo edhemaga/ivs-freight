@@ -1,6 +1,9 @@
 <div class="ta-input-arrows-container">
   <p
     class="m-0 ta-font-regular"
+    [ngStyle]="{
+      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6c6c6c'
+    }"
     [ngClass]="{ 'ta-font-medium': type === 'truck-modal' || 'driver-modal' }"
   >
     {{ name }} <span *ngIf="required">*</span>
@@ -38,7 +41,6 @@
       'truck-fhwa-container': type === 'truck-modal'
     }"
   >
-    <!-- {{ counter }} -->
     <app-ta-input
       [formControl]="getSuperControl"
       [inputConfig]="inputConfig"

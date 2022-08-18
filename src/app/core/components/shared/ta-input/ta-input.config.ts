@@ -22,6 +22,7 @@ export interface ITaInput {
   blackInput?: boolean; // has only black background && input clear, no validations
   blueInputColor?: boolean; // some inputs has blue color on focus out
   incorrectInput?: boolean;
+  dangerMark?: boolean;
   autoFocus?: boolean;
   hideClear?: boolean;
   hideRequiredCheck?: boolean;

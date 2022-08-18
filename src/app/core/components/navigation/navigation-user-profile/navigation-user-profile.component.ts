@@ -13,7 +13,6 @@ import { Router } from '@angular/router';
 import { debounceTime, Subject } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
-import { SignInResponse, UserResponse } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
 import { TaUserService } from 'src/app/core/services/user/user.service';
