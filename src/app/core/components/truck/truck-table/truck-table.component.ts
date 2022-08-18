@@ -18,6 +18,11 @@ import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive
 import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -56,11 +61,37 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private truckInactiveQuery: TruckInactiveQuery,
     private truckService: TruckTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.sendTruckData();
+
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              this.deleteTruckById(res.id);
+              break;
+            }
+            case 'activate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -232,11 +263,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
@@ -384,6 +413,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.mapTruckData(data);
     });
 
+    console.log('Truck Data');
+    console.log(this.viewData);
+
     /* For Testing */
     /* for(let i = 0; i < 500; i++){
       this.viewData.push(this.viewData[0])
@@ -393,10 +425,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   mapTruckData(data: any) {
     return {
       ...data,
-      textCommission: '15%',
-      textGrossWeight: 'G - 60,001 - 61,000 lbs.',
-      textPurchasePrice: '100$',
-      textPurchaseDate: '03/12/22',
+      textCommission: data?.commission ? data?.commission + '%' : '',
+      textGrossWeight: 'Nije povezano',
+      textPurchasePrice: 'Nije povezano',
+      textPurchaseDate: 'Nije povezano',
       textYear: data.year ? data.year : '',
       textMake: data?.truckMake?.name ? data.truckMake.name : '',
       textModel: data?.model ? data.model : '',
@@ -487,7 +519,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
-      this.setTruckData(event.tabData);
+      this.sendTruckData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
@@ -506,7 +538,15 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
+  onTableBodyActions(event: any) {
+    const mappedEvent = {
+      ...event,
+      data: {
+        ...event.data,
+        number: event.data?.truckNumber,
+        avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
+      },
+    };
     switch (event.type) {
       case 'edit-truck': {
         this.modalService.openModal(
@@ -546,65 +586,91 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'activate-item': {
-        this.truckService
-          .changeTruckStatus(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                `Truck successfully Change Status`,
-                'Success:'
-              );
-            },
-            error: () => {
-              this.notificationService.error(
-                `Truck with id: ${event.id}, status couldn't be changed`,
-                'Error:'
-              );
-            },
-          });
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'truck',
+            type: event.data.status === 1 ? 'deactivate' : 'activate',
+            svg: true,
+          }
+        );
         break;
       }
       case 'delete-item': {
-        this.truckService
-          .deleteTruckById(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                'Truck successfully deleted',
-                'Success:'
-              );
-
-              this.viewData = this.viewData.map((truck: any) => {
-                if (truck.id === event.id) {
-                  truck.actionAnimation = 'delete';
-                }
-
-                return truck;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 1000);
-            },
-            error: () => {
-              this.notificationService.error(
-                `Truck with id: ${event.id} couldn't be deleted`,
-                'Error:'
-              );
-            },
-          });
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'truck',
+            type: 'delete',
+            svg: true,
+          }
+        );
         break;
       }
       default: {
         break;
       }
     }
+  }
+
+  private changeTruckStatus(id: number) {
+    this.truckService
+      .changeTruckStatus(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Truck successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteTruckById(id: number) {
+    this.truckService
+      .deleteTruckById(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Truck successfully deleted',
+            'Success:'
+          );
+
+          this.viewData = this.viewData.map((truck: any) => {
+            if (truck.id === id) {
+              truck.actionAnimation = 'delete';
+            }
+
+            return truck;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(true, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {

@@ -196,7 +196,7 @@ export class TaInputDropdownComponent
               ? this.getSuperControl.value
               : this.activeItem?.name,
           };
-
+          this.selectedItem.emit(this.activeItem);
           this.getSuperControl.setValue(null);
           this.popoverRef.close();
 
@@ -365,7 +365,7 @@ export class TaInputDropdownComponent
   public onClearSearch(): void {
     this.options = this.originalOptions;
     this.activeItem = null;
-    this.getSuperControl.setValue(null);
+    this.getSuperControl.patchValue(null);
     this.inputConfig = {
       ...this.inputConfig,
       placeholder: '',

@@ -45,14 +45,14 @@
         <!-- Title -->
         <div
           *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
-          (click)="sortHeaderClick(column)"
           class="th-title"
           (click)="sortHeaderClick(column)"
           [ngStyle]="{
             'width.px':
               column.resizable && !locked
                 ? column.width - 55
-                : column.width - 20
+                : column.width - 20,
+            'min-width.px': rezaizeing ? column.width : 'unset'
           }"
           [ngClass]="{
             'sort-active': column.sortDirection !== '' && column.sortDirection,
@@ -170,7 +170,6 @@
           <!-- Title -->
           <div
             *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
-            (click)="sortHeaderClick(column)"
             class="th-title"
             (click)="sortHeaderClick(column)"
             [ngStyle]="{

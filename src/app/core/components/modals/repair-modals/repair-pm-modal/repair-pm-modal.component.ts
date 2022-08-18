@@ -618,7 +618,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   private deleteTruckPMList(id: number) {
     this.pmTService
-      .deletePMTruckList(id)
+      .deletePMTruckById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
@@ -638,7 +638,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   private deleteTrailerPMList(id: number) {
     this.pmTService
-      .deletePMTrailerList(id)
+      .deletePMTrailerById(id)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {

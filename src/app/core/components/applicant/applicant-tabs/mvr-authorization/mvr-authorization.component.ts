@@ -57,6 +57,10 @@ export class MvrAuthorizationComponent implements OnInit {
   }
 
   public handleCheckboxParagraphClick(type: string): void {
+    if (this.selectedMode === 'FEEDBACK_MODE') {
+      return;
+    }
+
     switch (type) {
       case InputSwitchActions.CONSENT_RELEASE:
         this.mvrAuthorizationForm.patchValue({

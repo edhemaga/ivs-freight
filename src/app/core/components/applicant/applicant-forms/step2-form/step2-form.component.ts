@@ -47,8 +47,12 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     if (content) {
       const radioButtonsArray = content.toArray();
 
-      this.cfrPartRadios = radioButtonsArray[0].buttons;
-      this.fmcsaRadios = radioButtonsArray[1].buttons;
+      this.cfrPartRadios = radioButtonsArray[0]
+        ? radioButtonsArray[0].buttons
+        : null;
+      this.fmcsaRadios = radioButtonsArray[1]
+        ? radioButtonsArray[1].buttons
+        : null;
     }
   }
 
@@ -59,7 +63,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  public selectedMode: string = SelectedMode.FEEDBACK;
 
   public subscription: Subscription;
 

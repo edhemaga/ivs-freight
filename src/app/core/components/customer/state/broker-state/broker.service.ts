@@ -36,12 +36,6 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(res.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.add(broker);
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              tab: 'broker',
-              data: broker,
-              id: broker.id,
-            });
 
             const brokerShipperCount = JSON.parse(
               localStorage.getItem('brokerShipperTableCount')
@@ -56,6 +50,13 @@ export class BrokerTService {
                 shipper: brokerShipperCount.shipper,
               })
             );
+
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              tab: 'broker',
+              data: broker,
+              id: broker.id,
+            });
 
             subBroker.unsubscribe();
           },
@@ -114,7 +115,17 @@ export class BrokerTService {
     search1?: string,
     search2?: string
   ): Observable<GetBrokerListResponse> {
-    return this.brokerService.apiBrokerListGet(ban, dnu, pageIndex, pageSize, companyId, sort, search, search1, search2);
+    return this.brokerService.apiBrokerListGet(
+      ban,
+      dnu,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   // Get Broker By ID

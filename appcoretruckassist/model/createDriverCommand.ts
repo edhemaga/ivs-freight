@@ -11,6 +11,7 @@
  */
 import { CreateOffDutyLocationCommand } from './createOffDutyLocationCommand';
 import { OwnerType } from './ownerType';
+import { FleetType } from './fleetType';
 import { PerMileEntity } from './perMileEntity';
 import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
@@ -32,6 +33,9 @@ export interface CreateDriverCommand {
     useTruckAssistAch?: boolean;
     solo: PerMileEntity;
     team: PerMileEntity;
+    fleetType?: FleetType;
+    soloDriver?: boolean | null;
+    teamDriver?: boolean | null;
     perMileSolo?: number | null;
     perMileTeam?: number | null;
     commissionSolo?: number | null;

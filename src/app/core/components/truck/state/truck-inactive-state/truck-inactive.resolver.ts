@@ -15,29 +15,21 @@ export class TruckInactiveResolver implements Resolve<TruckInactiveState> {
     private truckStore: TruckInactiveStore
   ) {}
   resolve(): Observable<TruckInactiveState | boolean> {
-   /*  return of(true); */
-
-    if (this.truckStore.getValue().ids?.length) {
-      return of(true);
-    } else {
-      return this.truckService
-        .getTruckList(0, 1, 25)
-        .pipe(
-          catchError(() => {
-            return of('No active trucks...');
-          }),
-          tap((truckPagination: TruckListResponse) => {
-            localStorage.setItem(
-              'truckTableCount',
-              JSON.stringify({
-                active: truckPagination.activeCount,
-                inactive: truckPagination.inactiveCount,
-              })
-            );
-
-            this.truckStore.set(truckPagination.pagination.data);
+    return this.truckService.getTruckList(0, 1, 25).pipe(
+      catchError(() => {
+        return of('No active trucks...');
+      }),
+      tap((truckPagination: TruckListResponse) => {
+        localStorage.setItem(
+          'truckTableCount',
+          JSON.stringify({
+            active: truckPagination.activeCount,
+            inactive: truckPagination.inactiveCount,
           })
         );
-    }
+
+        this.truckStore.set(truckPagination.pagination.data);
+      })
+    );
   }
 }

@@ -15,29 +15,21 @@ export class OwnerInactiveResolver implements Resolve<OwnerInactiveState> {
     private ownerStore: OwnerInactiveStore
   ) {}
   resolve(): Observable<OwnerInactiveState | boolean> {
-    /* return of(true); */
-    
-    if (this.ownerStore.getValue().ids?.length) {
-      return of(true);
-    } else {
-      return this.ownerService
-        .getOwner(0, null, 1, 25)
-        .pipe(
-          catchError(() => {
-            return of('No owner data...');
-          }),
-          tap((ownerPagination: GetOwnerListResponse) => {
-            localStorage.setItem(
-              'ownerTableCount',
-              JSON.stringify({
-                active: ownerPagination.activeCount,
-                inactive: ownerPagination.inactiveCount,
-              })
-            );
-
-            this.ownerStore.set(ownerPagination.pagination.data);
+    return this.ownerService.getOwner(0, null, 1, 25).pipe(
+      catchError(() => {
+        return of('No owner data...');
+      }),
+      tap((ownerPagination: GetOwnerListResponse) => {
+        localStorage.setItem(
+          'ownerTableCount',
+          JSON.stringify({
+            active: ownerPagination.activeCount,
+            inactive: ownerPagination.inactiveCount,
           })
         );
-    }
+
+        this.ownerStore.set(ownerPagination.pagination.data);
+      })
+    );
   }
 }

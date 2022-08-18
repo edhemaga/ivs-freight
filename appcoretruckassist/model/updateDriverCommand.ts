@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { OwnerType } from './ownerType';
+import { FleetType } from './fleetType';
 import { PerMileEntity } from './perMileEntity';
 import { UpdateOffDutyLocationCommand } from './updateOffDutyLocationCommand';
 import { NotificationEntity } from './notificationEntity';
@@ -33,6 +34,9 @@ export interface UpdateDriverCommand {
     useTruckAssistAch?: boolean;
     solo: PerMileEntity;
     team: PerMileEntity;
+    fleetType?: FleetType;
+    soloDriver?: boolean | null;
+    teamDriver?: boolean | null;
     commissionSolo?: number | null;
     commissionTeam?: number | null;
     perMileSolo?: number | null;

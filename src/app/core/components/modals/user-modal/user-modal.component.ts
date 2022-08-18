@@ -208,7 +208,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.userForm.get('routingNumber'),
           this.userForm.get('accountNumber')
         );
@@ -231,6 +231,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
       }
       case 'bank': {
         this.selectedBank = event;
+        if (!event) {
+          this.userForm.get('bankId').patchValue(null);
+        }
         break;
       }
       default: {

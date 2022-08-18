@@ -1,7 +1,12 @@
 <div class="d-flex flex-column align-items-center step-container">
   <h1 class="m-0 step-title text-center ta-font-bold">Education</h1>
 
-  <h3 class="m-0 step-subtitle text-center ta-font-bold">
+  <h3
+    class="m-0 step-subtitle text-center ta-font-bold"
+    [ngStyle]="{
+      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+    }"
+  >
     Please select the highest grade completed:
   </h3>
 
@@ -12,11 +17,24 @@
       class="d-flex justify-content-center align-items-center grade"
       (mouseover)="highlightGrade = i"
       (mouseleave)="highlightGrade = -1"
-      (click)="selectedGrade = i"
+      (click)="onSchoolGradeClick(i)"
       [ngClass]="{
-        'grade-hovered': i <= highlightGrade,
-        'grade-selected': selectedGrade === i,
-        'all-before-selected': i < selectedGrade
+        'grade-hovered':
+          selectedMode === 'APPLICANT_MODE' && i <= highlightGrade,
+        'grade-selected':
+          selectedMode === 'APPLICANT_MODE' && selectedGrade === i,
+        'all-before-selected':
+          (selectedMode === 'APPLICANT_MODE' && i < selectedGrade) ||
+          (selectedMode === 'APPLICANT_MODE' && selectedCollegeGrade > -1),
+        'grade-review':
+          (selectedMode === 'REVIEW_MODE' && i <= selectedGrade) ||
+          (selectedMode === 'REVIEW_MODE' && selectedCollegeGrade > -1),
+        'feedback-review':
+          (selectedMode === 'FEEDBACK_MODE' && i <= selectedGrade) ||
+          (selectedMode === 'FEEDBACK_MODE' && selectedCollegeGrade > -1)
+      }"
+      [ngStyle]="{
+        cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
       }"
       *ngFor="
         let grade of schoolGrades;
@@ -28,7 +46,14 @@
     </div>
   </div>
 
-  <p class="m-0 college-title">COLLEGE:</p>
+  <p
+    class="m-0 college-title"
+    [ngStyle]="{
+      color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
+    }"
+  >
+    COLLEGE:
+  </p>
 
   <!-- SELECT COLLAGE GRADE -->
 
@@ -39,11 +64,21 @@
       class="d-flex justify-content-center align-items-center grade"
       (mouseover)="highlightCollegeGrade = i"
       (mouseleave)="highlightCollegeGrade = -1"
-      (click)="selectedCollegeGrade = i"
+      (click)="onCollegeGradeClick(i)"
       [ngClass]="{
-        'grade-hovered': i <= highlightCollegeGrade,
-        'grade-selected': selectedCollegeGrade === i,
-        'all-before-selected': i < selectedCollegeGrade
+        'grade-hovered':
+          selectedMode === 'APPLICANT_MODE' && i <= highlightCollegeGrade,
+        'grade-selected':
+          selectedMode === 'APPLICANT_MODE' && selectedCollegeGrade === i,
+        'all-before-selected':
+          selectedMode === 'APPLICANT_MODE' && i < selectedCollegeGrade,
+        'grade-review':
+          selectedMode === 'REVIEW_MODE' && i <= selectedCollegeGrade,
+        'feedback-review':
+          selectedMode === 'FEEDBACK_MODE' && i <= selectedCollegeGrade
+      }"
+      [ngStyle]="{
+        cursor: selectedMode === 'APPLICANT_MODE' ? 'pointer' : 'auto'
       }"
       *ngFor="
         let grade of collegeGrades;
@@ -72,7 +107,14 @@
         >
           <div class="d-flex align-items-center justify-content-between">
             <div [ngClass]="['title-box' + i, 'title-box']">
-              <p class="m-0 ta-font-regular">
+              <p
+                class="m-0 ta-font-regular"
+                [ngClass]="
+                  selectedMode === 'FEEDBACK_MODE'
+                    ? 'question-title question-title-feedback'
+                    : 'question-title'
+                "
+              >
                 {{ question.title }}
                 <span class="required-star">*</span>
               </p>
@@ -173,7 +215,14 @@
               class="d-flex align-items-center justify-content-between w-100"
             >
               <div [ngClass]="['title-box' + i, 'title-box']">
-                <p class="m-0 ta-font-regular">
+                <p
+                  class="m-0 ta-font-regular"
+                  [ngClass]="
+                    selectedMode === 'FEEDBACK_MODE'
+                      ? 'question-title question-title-feedback'
+                      : 'question-title'
+                  "
+                >
                   {{ question.title }}
                   <span class="required-star">*</span>
                 </p>
@@ -342,7 +391,8 @@
       <h3
         class="contact-title text-center ta-font-bold"
         [ngStyle]="{
-          'margin-bottom': contactsArray.length ? '22px' : '32px'
+          'margin-bottom': contactsArray.length ? '22px' : '32px',
+          color: selectedMode === 'FEEDBACK_MODE' ? '#919191' : '#6C6C6C'
         }"
       >
         In case of emergency, contact:
@@ -366,9 +416,8 @@
           <div
             class="d-flex align-items-center title-container"
             *ngIf="
-              (contactsArray.length > 1 && helperIndex !== 0 && i === 0) ||
+              (contactsArray.length > 0 && helperIndex !== 0 && i === 0) ||
               (helperIndex === 0 && i === 1) ||
-              (helperIndex !== 0 && i > helperIndex) ||
               (i === helperIndex + 1 && selectedContactIndex > -1)
             "
           >
