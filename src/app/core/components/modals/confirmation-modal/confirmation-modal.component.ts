@@ -1,5 +1,5 @@
 import { ImageBase64Service } from './../../../utils/base64.image';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ConfirmationService } from './confirmation.service';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
@@ -19,7 +19,7 @@ export interface Confirmation {
   templateUrl: './confirmation-modal.component.html',
   styleUrls: ['./confirmation-modal.component.scss'],
 })
-export class ConfirmationModalComponent implements OnInit {
+export class ConfirmationModalComponent {
   @Input() editData: Confirmation;
 
   constructor(
@@ -27,10 +27,6 @@ export class ConfirmationModalComponent implements OnInit {
     private ngbActiveModal: NgbActiveModal,
     private confirmationDataSubject: ConfirmationService
   ) {}
-
-  ngOnInit() {
-    console.log(this.editData);
-  }
 
   public onModalAction(data: any) {
     this.confirmationDataSubject.sendConfirmationData(data);
