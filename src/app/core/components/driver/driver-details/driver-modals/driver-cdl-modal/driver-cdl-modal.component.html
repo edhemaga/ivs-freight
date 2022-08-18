@@ -1,7 +1,5 @@
 <app-ta-modal
-  [modalTitle]="
-    editData?.type !== 'edit-licence' ? 'Add Licence' : 'Edit Licence'
-  "
+  [modalTitle]="editData?.type !== 'edit-licence' ? 'Add CDL' : 'Edit CDL'"
   [editData]="editData"
   [editName]="modalName"
   [isModalValid]="cdlForm.valid"
@@ -9,45 +7,21 @@
   (action)="onModalAction($event)"
 >
   <form [formGroup]="cdlForm" class="form-container">
-    <div class="cdl-issue-exp-date">
-      <app-ta-input
-        formControlName="cdlNumber"
-        [inputConfig]="{
-          name: 'CDL Number',
-          type: 'text',
-          label: 'CDL #',
-          isRequired: true,
-          textTransform: 'capitalize',
-          autoFocus: editData?.type === 'edit' ? false : true
-        }"
-      ></app-ta-input>
-      <app-ta-input
-        formControlName="issueDate"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          isDropdown: true,
-          label: 'Issue Date',
-          placeholderIcon: 'date',
-          isRequired: true,
-          customClass: 'datetimeclass'
-        }"
-      ></app-ta-input>
-      <app-ta-input
-        formControlName="expDate"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          label: 'Exp. Date',
-          isDropdown: true,
-          placeholderIcon: 'date',
-          isRequired: true,
-          customClass: 'datetimeclass'
-        }"
-      ></app-ta-input>
-    </div>
     <div class="row">
-      <div class="col-4">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="cdlNumber"
+          [inputConfig]="{
+            name: 'CDL Number',
+            type: 'text',
+            label: 'CDL No.',
+            isRequired: true,
+            textTransform: 'capitalize',
+            autoFocus: editData?.type === 'edit' ? false : true
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-3">
         <app-ta-input-dropdown
           formControlName="classType"
           [inputConfig]="{
@@ -56,45 +30,58 @@
             label: 'Class',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-136'
+            dropdownWidthClass: 'w-col-109'
           }"
           [options]="classTypes"
           [activeItem]="selectedClassType"
           (selectedItem)="onSelectDropdown($event, 'class')"
         ></app-ta-input-dropdown>
       </div>
-      <div class="col-4">
-        <app-ta-input-dropdown
-          formControlName="countryType"
-          [inputConfig]="{
-            name: 'Input Dropdown',
-            type: 'text',
-            label: 'Country',
-            isRequired: true,
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-148'
-          }"
-          [options]="countryTypes"
-          [activeItem]="selectedCountryType"
-          (selectedItem)="onSelectDropdown($event, 'country')"
-        ></app-ta-input-dropdown>
-      </div>
-      <div class="col-4 no-p-left">
+      <div class="col-3 no-p-left">
         <app-ta-input-dropdown
           formControlName="stateId"
           [inputConfig]="{
             name: 'Input Dropdown',
             type: 'text',
             label: 'State',
-            isRequired: cdlForm.get('countryType').value,
-            isDisabled: !cdlForm.get('countryType').value,
+            isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-148'
+            dropdownWidthClass: 'w-col-109'
           }"
           [options]="stateTypes"
           [activeItem]="selectedStateType"
           (selectedItem)="onSelectDropdown($event, 'state')"
         ></app-ta-input-dropdown>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input
+          formControlName="issueDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            isDropdown: true,
+            label: 'Issue Date',
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input
+          formControlName="expDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Exp. Date',
+            isDropdown: true,
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
       </div>
     </div>
     <div class="row">
@@ -125,7 +112,7 @@
             name: 'Input Dropdown',
             type: 'text',
             isDropdown: true,
-            label: 'Endorsements',
+            label: 'Endorsement',
             multiselectDropdown: true,
             dropdownWidthClass: 'w-col-455'
           }"

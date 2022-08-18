@@ -95,6 +95,18 @@
     }
   }
 
+  &.modal-container-XS {
+    width: 360px;
+
+    .divider {
+      width: 335px;
+    }
+
+    .confirmation-modal-body {
+      padding: 22px 6px;
+    }
+  }
+
   &.modal-container-M {
     width: 640px;
 
@@ -107,7 +119,7 @@
     width: 710px;
 
     .divider {
-      width: 686px;
+      width: 685px;
     }
   }
 
@@ -159,7 +171,7 @@
   .modal-spinner {
     position: absolute;
     bottom: 7px;
-    right: 12px;
+    right: 8px;
   }
 
   //   Ovveride global settings for row > columns

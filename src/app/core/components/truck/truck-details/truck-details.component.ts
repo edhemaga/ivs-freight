@@ -19,6 +19,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -35,7 +36,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   inspectionLength: number;
   titleLength: number;
   public data: any;
-  public truckId: number = null;
+
   constructor(
     private truckTService: TruckTService,
     private notificationService: NotificationService,
@@ -148,12 +149,18 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(action: string): void {
+    const truck = this.activated_route.snapshot.data.truck;
     switch (action.toLowerCase()) {
       case 'registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
-          { id: this.truckId, type: 'add-registration', modal: 'truck' }
+          {
+            id: truck.id,
+            payload: truck,
+            type: 'add-registration',
+            modal: 'truck',
+          }
         );
         break;
       }
@@ -161,7 +168,20 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           TtFhwaInspectionModalComponent,
           { size: 'small' },
-          { id: this.truckId, type: 'add-inspection', modal: 'truck' }
+          {
+            id: truck.id,
+            payload: truck,
+            type: 'add-inspection',
+            modal: 'truck',
+          }
+        );
+        break;
+      }
+      case 'title': {
+        this.modalService.openModal(
+          TtTitleModalComponent,
+          { size: 'small' },
+          { id: truck.id, payload: truck, type: 'add-title', modal: 'truck' }
         );
         break;
       }
@@ -207,11 +227,10 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         length: 1,
       },
     ];
-
-    this.truckId = data?.id ? data.id : null;
   }
 
   public onTrackActions(event: any) {
+    const truck = this.activated_route.snapshot.data.truck;
     switch (event.type) {
       case 'edit': {
         this.modalService.openModal(
@@ -221,7 +240,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
             ...event,
             type: 'edit',
             disableButton: true,
-            id: this.truckId,
+            id: truck.id,
           }
         );
         break;

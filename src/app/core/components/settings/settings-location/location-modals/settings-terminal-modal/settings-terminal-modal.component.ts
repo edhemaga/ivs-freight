@@ -107,6 +107,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public terminalName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -141,12 +143,12 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Office
       officeChecked: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
-      officeExtensionPhone: [null],
+      officeExtPhone: [null],
       officeEmail: [null, emailRegex],
       // Parking
       parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
-      parkingExtensionPhone: [null],
+      parkingExtPhone: [null],
       parkingEmail: [null, emailRegex],
 
       terminalParkingSlot: [null],
@@ -156,7 +158,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Warehouse
       warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
-      warehouseExtensionPhone: [null],
+      warehouseExtPhone: [null],
       warehouseEmail: [null, emailRegex],
       // Fuel stattion
       fuelStationChecked: [false],
@@ -514,17 +516,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '321',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             // Office
             officeChecked: res.officeChecked,
             officePhone: res.officePhone,
-            officeExtensionPhone: '321',
+            officeExtPhone: res.officeExtPhone,
             officeEmail: res.officeEmail,
             // Parking
             parkingChecked: res.parkingChecked,
             parkingPhone: res.parkingPhone,
-            parkingExtensionPhone: '321',
+            parkingExtPhone: res.parkingExtPhone,
             parkingEmail: res.parkingEmail,
 
             terminalParkingSlot: res.terminalParkingSlot,
@@ -534,7 +536,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
             // Warehouse
             warehouseChecked: res.warehouseChecked,
             warehousePhone: res.warehousePhone,
-            warehouseExtensionPhone: '321',
+            warehouseExtPhone: res.warehouseExtPhone,
             warehouseEmail: res.warehouseEmail,
             // Fuel stattion
             fuelStationChecked: res.fuelStationChecked,
@@ -547,12 +549,15 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
                 : res.weeklyDay.name
               : null,
           });
-
+          this.terminalName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
-          this.selectedDay =
-            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+          this.selectedDay = res.payPeriod
+            ? res.payPeriod.name === 'Monthly'
+              ? res.monthlyDay
+              : res.weeklyDay
+            : null;
 
           this.parkingSlots[0] = { id: 1, value: res.terminalParkingSlot };
           this.parkingSlots[1] = { id: 2, value: res.terminalFullParkingSlot };
@@ -571,6 +576,22 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           } else {
             this.cameraBtns[0].checked = false;
             this.cameraBtns[1].checked = true;
+          }
+
+          if (res.extensionPhone) {
+            this.isTerminalPhoneExtExist = true;
+          }
+
+          if (res.officeExtPhone) {
+            this.isOfficePhoneExtExist = true;
+          }
+
+          if (res.parkingExtPhone) {
+            this.isParkingPhoneExtExist = true;
+          }
+
+          if (res.warehouseExtPhone) {
+            this.isWarehousePhoneExtExist = true;
           }
         },
         error: () => {

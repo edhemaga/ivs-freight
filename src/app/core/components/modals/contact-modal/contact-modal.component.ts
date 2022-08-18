@@ -92,18 +92,13 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.getContactLabelsAndDepartments();
     this.companyContactColorLabels();
     this.followSharedCheckbox();
-
+    console.log(this.editData);
     const timeout = setTimeout(() => {
       this.uploadFileService.visibilityDropZone(true);
       clearTimeout(timeout);
     }, 300);
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editCompanyContact(this.editData.id);
     }
   }
@@ -112,8 +107,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       companyContactLabelId: [null],
-      phone: [null, [phoneRegex]],
-      email: [null, [emailRegex]],
+      phone: [null, [phoneRegex, Validators.required]],
+      email: [null, [emailRegex, Validators.required]],
       address: [null],
       addressUnit: [null, [Validators.maxLength(6)]],
       shared: [true],
@@ -212,7 +207,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             companyContactLabelId: res.companyContactLabel
               ? res.companyContactLabel.name
               : null,
-            avatar: null,
+            avatar: res.avatar,
             phone: res.phone,
             email: res.email,
             address: res.address ? res.address.address : null,

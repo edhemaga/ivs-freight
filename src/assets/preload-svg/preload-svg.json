@@ -281,8 +281,8 @@
 			"iconPath": "/assets/svg/common/trailers/ic_trailer_tanker-liquid.svg"
 		},
     {
-			"iconName": "ic_trailer_tanker-dryBulk.svg",
-			"iconPath": "/assets/svg/common/trailers/ic_trailer_tanker-dryBulk.svg"
+			"iconName": "ic_trailer-tanker-dryBulk.svg",
+			"iconPath": "/assets/svg/common/trailers/ic_trailer-tanker-dryBulk.svg"
 		},
     {
 			"iconName": "ic_truck_box-truck.svg",

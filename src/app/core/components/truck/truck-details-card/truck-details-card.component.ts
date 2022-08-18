@@ -18,6 +18,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 /* import { TruckQuery } from '../state/truck.query'; */
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -38,7 +39,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public dataEdit: any;
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
-  public truck_active_id: number = +this.activeted_route.snapshot.params['id'];
+
   public truck_list: any[] = this.truckMinimalListQuery.getAll();
 
   payrollChartConfig: any = {
@@ -550,42 +551,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
-  public optionsEvent(any: any, action: string) {
-    switch (action) {
-      case 'edit-registration': {
-        this.modalService.openModal(
-          TtRegistrationModalComponent,
-          { size: 'small' },
-          {
-            id: this.truck.id,
-            file_id: any.id,
-            type: action,
-            modal: 'truck',
-          }
-        );
-        break;
-      }
-      case 'edit-inspection': {
-        this.modalService.openModal(
-          TtFhwaInspectionModalComponent,
-          { size: 'small' },
-          {
-            id: this.truck.id,
-            file_id: any.id,
-            type: action,
-            modal: 'truck',
-          }
-        );
-        break;
-      }
-      case 'edit-title': {
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return index;

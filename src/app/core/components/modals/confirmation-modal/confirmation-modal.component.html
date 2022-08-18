@@ -1,0 +1,53 @@
+<app-ta-modal
+  [modalTitle]="
+    (editData?.type === 'info'
+      ? editData?.subType === 'archive'
+        ? editData?.subType?.substring(0, 1).toUpperCase() +
+          editData?.subType?.substring(1)
+        : 'Move'
+      : editData?.type?.substring(0, 1).toUpperCase() +
+        editData?.type?.substring(1)) +
+    ' ' +
+    'Confirmation'
+  "
+  [customClass]="'modal-container-XS'"
+  [bottomDivider]="true"
+  [headerSvg]="editData?.type"
+  [confirmationData]="editData"
+  (confirmationAction)="onModalAction($event)"
+>
+  <div class="confirmation-modal">
+    <p class="confirmation-header">
+      Are you sure you want to delete this {{ editData?.template }}?
+    </p>
+    <div class="confirmation-body">
+      <img
+        *ngIf="editData?.image && editData?.data?.avatar"
+        [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
+        [alt]="editData?.data?.fullName?.substring(0, 1)"
+        class="confirmation-img"
+      />
+
+      <div
+        *ngIf="editData?.image && !editData?.data?.avatar"
+        class="no-profile-image"
+      >
+        <app-profile-images
+          [indx]="0"
+          [size]="'confirmation'"
+          [name]="editData?.data?.fullName"
+        >
+        </app-profile-images>
+      </div>
+      <div [ngSwitch]="editData?.template">
+        <div *ngSwitchCase="'driver'">
+          <div class="confirmation-info">
+            <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
+            <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
+          </div>
+        </div>
+        <div *ngSwitchDefault></div>
+      </div>
+    </div>
+  </div>
+</app-ta-modal>
