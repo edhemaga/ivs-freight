@@ -32,6 +32,13 @@
     align-items: center;
     gap: 6px;
 
+    .confirmation-svg {
+      svg {
+        width: 77px;
+        height: 28px;
+      }
+    }
+
     .confirmation-img {
       -webkit-user-select: none;
       -moz-user-select: none;
