@@ -254,20 +254,39 @@ export class TaModalComponent implements OnInit, OnDestroy {
           action: action,
           bool: this.isDeactivated,
         });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'activate': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'dnu': {
         this.isDNU = !this.isDNU;
         this.action.emit({ action: action, bool: this.isDNU });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
         this.action.emit({ action: action, bool: this.isBFB });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'hire': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'archive': {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }

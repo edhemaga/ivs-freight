@@ -186,12 +186,86 @@
       </button>
       <!-- Delete -->
       <button
-        *ngIf="!disableDelete && !resendEmail"
-        (click)="onAction('delete')"
-        class="modal-delete-btn modal-confirmation-btn"
+        *ngIf="['delete', 'multiple delete'].includes(confirmationData?.type)"
+        (click)="
+          onAction(confirmationData?.data ? 'delete' : 'multiple delete')
+        "
+        class="modal-delete-btn modal-red-btn modal-confirmation-btn"
         type="button"
       >
         Delete
+      </button>
+      <!-- Activate -->
+      <button
+        *ngIf="confirmationData?.type === 'activate'"
+        (click)="onAction('activate')"
+        class="modal-save-btn valid modal-confirmation-btn"
+        type="button"
+      >
+        Activate
+        {{
+          confirmationData?.template.substring(0, 1).toUpperCase() +
+            confirmationData?.template.substring(1)
+        }}
+      </button>
+      <!-- Deactivate -->
+      <button
+        *ngIf="confirmationData?.type === 'deactivate'"
+        (click)="onAction('deactivate')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        Deactivate
+        {{ confirmationData?.template }}
+      </button>
+      <!-- Hire -->
+      <button
+        *ngIf="confirmationData?.type === 'hire'"
+        (click)="onAction('hire')"
+        class="modal-save-btn active valid modal-confirmation-btn"
+        type="button"
+      >
+        Hire
+      </button>
+      <!-- Archive -->
+      <button
+        *ngIf="confirmationData?.subType === 'archive'"
+        (click)="onAction('archive')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus
+            ? "Remove from archive"
+            : "Archive" + " " + confirmationData?.template
+        }}
+      </button>
+      <!-- DNU -->
+      <button
+        *ngIf="confirmationData?.subType === 'dnu'"
+        (click)="onAction('dnu')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} DNU
+      </button>
+      <!-- DNU -->
+      <button
+        *ngIf="confirmationData?.subType === 'ban list'"
+        (click)="onAction('bfb')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} Ban
+        List
       </button>
     </div>
 
