@@ -84,8 +84,16 @@
         *ngIf="['driver', 'owner'].includes(editData?.template)"
         class="confirmation-info"
       >
-        <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
+        <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
         <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
+      </div>
+      <!-- Truck, Trailer -->
+      <div
+        *ngIf="['truck', 'trailer'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">Unit {{ editData?.data?.number }}</p>
+        <p class="confirmation-text-2">VIN: {{ editData?.data?.vin }}</p>
       </div>
       <!-- Shipper, Repair Shop -->
       <div
@@ -96,14 +104,6 @@
         <p class="confirmation-text-2">
           Address: {{ editData?.data?.address?.address }}
         </p>
-      </div>
-      <!-- Truck, Trailer -->
-      <div
-        *ngIf="['truck', 'trailer'].includes(editData?.template)"
-        class="confirmation-info"
-      >
-        <p class="confirmation-text-1">Unit {{ editData?.data?.number }}</p>
-        <p class="confirmation-text-2">VIN: {{ editData?.data?.vin }}</p>
       </div>
     </div>
   </div>
