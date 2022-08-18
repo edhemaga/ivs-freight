@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { CompanyAccountResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
@@ -29,6 +30,16 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   accounts: AccountState[] = [];
+  backFilterQuery = {
+    labelId: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -86,19 +97,15 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
-          /* const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.accountBackFilter(searchEvent.query);
             } else if (searchEvent.action === 'store') {
               this.sendAccountData();
             }
-          } */
+          }
         }
       });
 
@@ -331,6 +338,38 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  // Account Back Filter
+  accountBackFilter(filter: {
+    labelId: number | undefined;
+    pageIndex: number;
+    pageSize: number;
+    companyId: number | undefined;
+    sort: string | undefined;
+    searchOne: string | undefined;
+    searchTwo: string | undefined;
+    searchThree: string | undefined;
+  }) {
+    this.accountService
+      .getAccounts(
+        filter.labelId,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((account: any) => {
+        this.viewData = account.pagination.data;
+
+        this.viewData = this.viewData.map((data: any) => {
+          return this.mapAccountData(data);
+        });
+      });
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(AccountModalComponent, { size: 'small' });
@@ -345,10 +384,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        /* this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
-        this.driverBackFilter(this.backFilterQuery); */
+        this.accountBackFilter(this.backFilterQuery);
       } else {
         this.sendAccountData();
       }
@@ -366,7 +404,10 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
     } else if (event.type === 'delete-account') {
-      this.accountService.deleteCompanyAccountById(event.id).pipe(takeUntil(this.destroy$)).subscribe();
+      this.accountService
+        .deleteCompanyAccountById(event.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
     }
   }
 

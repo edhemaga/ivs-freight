@@ -133,7 +133,7 @@ export function getToolsAccountsColumnDefinition() {
       filter: '',
       isNumeric: true,
       index: 5,
-      sortable: true,
+      sortable: false,
       isActionColumn: false,
       isSelectColumn: false,
       avatar: null,
