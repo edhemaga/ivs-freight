@@ -748,7 +748,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           ...event,
           template: 'driver',
           type: event.data.status === 1 ? 'deactivate' : 'activate',
-          subType: null,
           image: true,
         }
       );
@@ -760,7 +759,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           ...event,
           template: 'driver',
           type: 'delete',
-          subType: null,
           image: true,
         }
       );

@@ -556,8 +556,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...mappedEvent,
             template: 'trailer',
             type: event.data.status === 1 ? 'deactivate' : 'activate',
-            subType: null,
-            image: false,
             svg: true,
           }
         );
@@ -571,8 +569,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...mappedEvent,
             template: 'trailer',
             type: 'delete',
-            subType: null,
-            image: false,
             svg: true,
           }
         );
