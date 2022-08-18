@@ -36,8 +36,12 @@
       </div>
       <div class="details-header-data">
         <div class="details-header-data-item">
-          <svg-icon class="icons-details" src="assets/svg/common/vin.svg"></svg-icon>
-          <app-ta-copy [textFontSize]="'18px'" [copyValue]="trailer?.vin"> </app-ta-copy>
+          <svg-icon
+            class="icons-details"
+            src="assets/svg/common/vin.svg"
+          ></svg-icon>
+          <app-ta-copy [textFontSize]="'18px'" [copyValue]="trailer?.vin">
+          </app-ta-copy>
         </div>
         <div class="details-header-data-item second">
           <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
@@ -211,14 +215,18 @@
           <div [@showHideCardBody]="toggleOwner ? 'true' : 'false'">
             <div class="wrapper-owner-items">
               <div class="owner-items">
-                <svg-icon class="icons-details" src="assets/svg/common/ic_phone.svg"></svg-icon>
+                <svg-icon
+                  class="icons-details"
+                  src="assets/svg/common/ic_phone.svg"
+                ></svg-icon>
                 <app-ta-copy [copyValue]="trailer?.owner?.phone"> </app-ta-copy>
-              
               </div>
               <div class="owner-items">
-                <svg-icon class="icons-details" src="assets/svg/common/ic_email.svg"></svg-icon>
+                <svg-icon
+                  class="icons-details"
+                  src="assets/svg/common/ic_email.svg"
+                ></svg-icon>
                 <app-ta-copy [copyValue]="trailer?.owner?.email"> </app-ta-copy>
-              
               </div>
               <div class="owner-items">
                 <svg-icon src="assets/svg/common/ic_address.svg"></svg-icon>
@@ -344,7 +352,6 @@
               [options]="dataEdit"
               [expDateClose]="reg.expDate | formatDateP"
               [optionsId]="reg.id"
-              (dropActions)="optionsEvent($event, 'edit-registration')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -419,7 +426,6 @@
               [cardNameCommon]="fhwa.issueDate | formatDateP"
               [optionsId]="fhwa.id"
               (resizePage)="toggleResizePage(i)"
-              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -482,7 +488,6 @@
               [cardNameCommon]="title.number"
               [options]="dataEdit"
               [optionsId]="title.id"
-              (dropActions)="optionsEvent($event, 'edit-inspection')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">

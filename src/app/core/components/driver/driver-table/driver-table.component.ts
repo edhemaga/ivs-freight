@@ -26,6 +26,11 @@ import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @UntilDestroy()
 @Component({
@@ -68,11 +73,21 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private notificationService: NotificationService,
     private nameInitialsPipe: NameInitialsPipe,
     private thousandSeparator: TaThousandSeparatorPipe,
-    private imageBase64Service: ImageBase64Service
+    private imageBase64Service: ImageBase64Service,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnInit(): void {
     this.sendDriverData();
+
+    // Delete
+    this.confirmationService.confirmationData$
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          this.deleteDriverById(res.id);
+        },
+      });
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -120,11 +135,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          this.mapingIndex = 0;
+
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
@@ -728,44 +743,58 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           },
         });
     } else if (event.type === 'delete-item') {
-      this.driverTService
-        .deleteDriverById(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              'Driver successfully deleted',
-              'Success:'
-            );
-
-            this.viewData = this.viewData.map((driver: any) => {
-              if (driver.id === event.id) {
-                driver.actionAnimation = 'delete';
-              }
-
-              return driver;
-            });
-
-            this.updateDataCount();
-
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(true, this.viewData);
-
-              clearInterval(inetval);
-            }, 1000);
-          },
-          error: () => {
-            this.notificationService.error(
-              `Driver with id: ${event.id} couldn't be deleted`,
-              'Error:'
-            );
-          },
-        });
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          template: 'driver',
+          type: 'delete',
+          subType: null,
+          image: true,
+        }
+      );
     } else if (event.type === 'show-more') {
       this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery);
     }
+  }
+
+  private deleteDriverById(id: number) {
+    this.driverTService
+      .deleteDriverById(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Driver successfully deleted',
+            'Success:'
+          );
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === id) {
+              driver.actionAnimation = 'delete';
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(true, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        },
+        error: () => {
+          this.notificationService.error(
+            `Driver with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
   }
 
   ngOnDestroy(): void {

@@ -108,20 +108,23 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.getRepairDropdowns();
 
     if (this.editData?.type.includes('edit')) {
-      console.log('Edit repair');
-      console.log(this.editData);
       this.editRepairById(this.editData.id);
     }
 
-    if (this.editData?.type.includes('truck')) {
-      this.onTypeOfRepair(
-        this.typeOfRepair.find((item) => item.name === 'Truck')
-      );
-    } else {
-      this.onTypeOfRepair(
-        this.typeOfRepair.find((item) => item.name === 'Trailer')
-      );
-    }
+    const timeout = setTimeout(() => {
+      if (this.editData?.type.includes('truck')) {
+        this.onTypeOfRepair(
+          this.typeOfRepair.find((item) => item.name === 'Truck'),
+          'true'
+        );
+      } else {
+        this.onTypeOfRepair(
+          this.typeOfRepair.find((item) => item.name === 'Trailer'),
+          'true'
+        );
+      }
+      clearTimeout(timeout);
+    }, 400);
   }
 
   private createForm() {
@@ -158,8 +161,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           return;
         }
         if (this.editData.type.includes('edit')) {
-          this.updateRepair(this.editData.id);
-          this.modalService.setModalSpinner({ action: null, status: true });
+          if (this.editData.type.includes('fo')) {
+            this.finishOrder(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          } else {
+            this.updateRepair(this.editData.id);
+            this.modalService.setModalSpinner({ action: null, status: true });
+          }
         } else {
           this.addRepair();
           this.modalService.setModalSpinner({ action: null, status: true });
@@ -299,7 +307,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       };
     });
 
-    if (this.repairOrderForm.get('unitType')?.value === 'Truck') {
+    if (this.repairOrderForm.get('unitType').value === 'Truck') {
       this.pmOptions = this.pmTrucks;
       this.labelsUnit = this.unitTrucks;
     } else {
@@ -393,6 +401,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
+
           // PM Trailers
           this.pmTrailers = res.pmTrailers.map((item) => {
             return {
@@ -410,6 +419,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               title: 'Add New',
             });
           }
+
           // Unit Trucks
           this.unitTrucks = this.labelsUnit = res.trucks.map((item) => {
             return {
@@ -417,6 +427,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               name: item.truckNumber,
             };
           });
+
           // Unit Trailers
           this.unitTrailers = res.trailers.map((item) => {
             return {
@@ -424,6 +435,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               name: item.trailerNumber,
             };
           });
+
           // Services
           this.services = res.serviceTypes.map((item) => {
             return {
@@ -598,8 +610,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: RepairResponse) => {
           this.repairOrderForm.patchValue({
-            repairType: res.repairType.name,
-            unitType: res.unitType.name,
+            repairType: res.repairType ? res.repairType.name : null,
+            unitType: res.unitType ? res.unitType.name : null,
             unit:
               res.unitType.name === 'Truck'
                 ? res.truck.truckNumber
@@ -609,11 +621,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               : null,
             date: convertDateFromBackend(res.date),
             invoice: res.invoice,
-            repairShopId: res.repairShop.id,
+            repairShopId: res.repairShop ? res.repairShop.id : null,
             items: [],
             note: res.note,
           });
-
+          console.log(res);
           // Truck/Trailer Unit number
           this.selectedUnit =
             res.unitType.name === 'Truck' ? res.truck : res.trailer;
@@ -629,7 +641,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
 
           // Repair Shop
-          if (res.repairShop.id) {
+          if (res.repairShop?.id) {
             this.repairService
               .getRepairShopById(res.repairShop.id)
               .pipe(untilDestroyed(this))
@@ -710,6 +722,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Repair can't be loaded.", 'Error');
         },
       });
+  }
+
+  private finishOrder(id: number) {
+    alert(`Finish Order ${id} - wait backend`);
   }
 
   private premmapedItems() {

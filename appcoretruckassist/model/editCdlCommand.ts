@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { CountryType } from './countryType';
 import { ClassType } from './classType';
 
 
@@ -19,7 +18,6 @@ export interface EditCdlCommand {
     issueDate?: string;
     expDate?: string;
     classType?: ClassType;
-    countryType?: CountryType;
     restrictions?: Array<number> | null;
     endorsements?: Array<number> | null;
     stateId?: number;

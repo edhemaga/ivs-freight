@@ -45,7 +45,6 @@
         <!-- Title -->
         <div
           *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
-          (click)="sortHeaderClick(column)"
           class="th-title"
           (click)="sortHeaderClick(column)"
           [ngStyle]="{
@@ -171,7 +170,6 @@
           <!-- Title -->
           <div
             *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
-            (click)="sortHeaderClick(column)"
             class="th-title"
             (click)="sortHeaderClick(column)"
             [ngStyle]="{

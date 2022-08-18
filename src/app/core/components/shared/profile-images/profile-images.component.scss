@@ -1,71 +1,77 @@
-.profile-image-holder{
+.profile-image-holder {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  flex-direction: column;
+
+  .small-medium-holder {
     display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
 
-    .small-medium-holder{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
+    .profile-image-small {
+      width: 18px;
+      height: 20px;
+      border-radius: 2px;
+      background-color: #dae0f1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 7px;
+      font-weight: 800;
+      color: #6d82c7;
+      line-height: 20px;
+      user-select: none;
 
-        .profile-image-small{
-            width: 18px;
-            height: 20px;
-            border-radius: 2px;
-            background-color: #DAE0F1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 7px;
-            font-weight: 800;
-            color: #6D82C7;
-            line-height: 20px;
-            user-select: none;
-
-            &.small{
-                &:hover{
-                    cursor: pointer;
-                    transform: scale(1.5);
-                    transition: all 0.3s;
-                }
-            }
-
-            &.medium{
-                width: 28px;
-                height: 30px;
-                font-size: 11px;
-
-                &.round{
-                    height: 28px;
-                }
-            }
-
-            &.round{
-                border-radius: 100%;
-                height: 18px;
-            }
+      &.small {
+        &:hover {
+          cursor: pointer;
+          transform: scale(1.5);
+          transition: all 0.3s;
         }
+      }
+
+      &.medium {
+        width: 28px;
+        height: 30px;
+        font-size: 11px;
+
+        &.round {
+          height: 28px;
+        }
+      }
+
+      &.confirmation {
+        width: 30px;
+        height: 34px;
+        font-size: 11px;
+      }
+
+      &.round {
+        border-radius: 100%;
+        height: 18px;
+      }
+    }
+  }
+
+  .profile-image-large {
+    width: 74px;
+    height: 82px;
+    border-radius: 2px;
+
+    svg {
+      width: 74px;
+      height: 82px;
+      display: flex;
     }
 
-    .profile-image-large{
-        width: 74px;
-        height: 82px;
-        border-radius: 2px;
-
-        svg{
-            width: 74px;
-            height: 82px;
-            display: flex;
-        }
-
-        &.round{
-            height: 74px;
-            border-radius: 100%;
-            svg{
-                height: 74px;
-                border-radius: 100%;
-            }
-        }
+    &.round {
+      height: 74px;
+      border-radius: 100%;
+      svg {
+        height: 74px;
+        border-radius: 100%;
+      }
     }
+  }
 }

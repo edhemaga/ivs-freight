@@ -16,7 +16,7 @@ export interface RegistrationResponse {
     id?: number;
     state?: StateResponse;
     issueDate?: string;
-    expDate?: string | null;
+    expDate?: string;
     licensePlate?: string | null;
     note?: string | null;
 }

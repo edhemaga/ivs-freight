@@ -1780,7 +1780,6 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
 
   public hoverPhoneEmailMain(indx: number) {
     this.gridData[indx].isPhone = !this.gridData[indx].isPhone;
-    //this.hoverPhoneEmail.emit();
   }
 
   @HostListener('document:click', ['$event'])

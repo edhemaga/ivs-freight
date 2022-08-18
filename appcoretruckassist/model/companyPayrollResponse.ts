@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { EnumValue } from './enumValue';
+import { PerMileEntity } from './perMileEntity';
 import { DepartmentResponse } from './departmentResponse';
 
 
@@ -20,14 +21,10 @@ export interface CompanyPayrollResponse {
     endingIn?: EnumValue;
     defaultBase?: number | null;
     defaultCommission?: number | null;
-    soloMileagePay?: number | null;
-    soloEmptyMile?: number | null;
-    soloLoadedMile?: number | null;
-    soloPerStop?: number | null;
-    teamEmptyMile?: number | null;
-    teamLoadedMile?: number | null;
-    teamMileagePay?: number | null;
-    teamPerStop?: number | null;
+    solo?: PerMileEntity;
+    team?: PerMileEntity;
+    perMileSolo?: number | null;
+    perMileTeam?: number | null;
     loadedAndEmptySameRate?: boolean | null;
     defaultSoloDriverCommission?: number | null;
     defaultTeamDriverCommission?: number | null;

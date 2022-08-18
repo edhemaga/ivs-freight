@@ -15,6 +15,8 @@ export interface UpdateTitleCommand {
     id?: number;
     number?: string | null;
     note?: string | null;
+    stateId?: number;
+    purchaseDate?: string;
     issueDate?: string;
 }
 

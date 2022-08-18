@@ -232,10 +232,11 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          
           const searchEvent = tableSearch(
             res,
-            this.backFilterQuery,
-            this.selectedTab
+            this.backFilterQuery
           );
 
           if (searchEvent) {
@@ -509,7 +510,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
+  onTableBodyActions(event: any) {
     switch (event.type) {
       case 'edit-truck': {
         this.modalService.openModal(

@@ -199,8 +199,7 @@ export class CustomerTableComponent
         if (res) {
           const searchEvent = tableSearch(
             res,
-            this.backFilterQuery,
-            this.selectedTab
+            this.backFilterQuery
           );
 
           if (searchEvent) {
@@ -294,7 +293,7 @@ export class CustomerTableComponent
       {
         title: 'Broker',
         field: 'active',
-        length: brokerShipperCount?.broker ? brokerShipperCount.broker : 0,
+        length: brokerShipperCount.broker,
         data: this.brokers,
         extended: false,
         isCustomer: true,
@@ -305,7 +304,7 @@ export class CustomerTableComponent
       {
         title: 'Shipper',
         field: 'inactive',
-        length: brokerShipperCount?.shipper ? brokerShipperCount.shipper : 0,
+        length: brokerShipperCount.shipper,
         data: this.shipper,
         extended: false,
         isCustomer: true,
