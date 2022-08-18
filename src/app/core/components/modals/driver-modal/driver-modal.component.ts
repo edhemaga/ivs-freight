@@ -1226,8 +1226,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            `Driver "${driverFullName}" added`,
-            'Success'
+            `${driverFullName}`,
+            'CREATED DRIVER'
           );
 
           this.modalService.setModalSpinner({
