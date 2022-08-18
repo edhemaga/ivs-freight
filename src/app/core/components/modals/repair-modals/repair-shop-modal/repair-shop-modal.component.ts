@@ -68,6 +68,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairShopModalDropdowns();
+    this.onBankSelected();
 
     if (this.editData) {
       this.editRepairShopById(this.editData.id);
@@ -224,8 +225,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
-        if (this.selectedBank) {
-          this.onBankSelected();
+        if (!event) {
+          this.repairShopForm.get('bankId').patchValue(null);
         }
         break;
       }
@@ -237,10 +238,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   public onSaveNewBank(bank: any) {
     this.selectedBank = bank;
-
-    if (this.selectedBank) {
-      this.onBankSelected();
-    }
 
     this.bankVerificationService
       .createBank({ name: bank.name })
@@ -268,7 +265,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.repairShopForm.get('routing'),
           this.repairShopForm.get('account')
         );
@@ -320,8 +317,6 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
               moment(el.endTime, 'HH:mm:SS A').toDate()
             );
           });
-
-          this.onBankSelected();
         },
         error: () => {
           this.notificationService.error(

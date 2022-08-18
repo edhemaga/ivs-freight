@@ -105,6 +105,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
   public isDirty: boolean;
 
+  public parkingName: string = null;
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -438,7 +440,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             address: res.address.address,
             addressUnit: res.address.addressUnit,
             phone: res.phone,
-            extensionPhone: '131',
+            extensionPhone: res.extensionPhone,
             email: res.email,
             parkingSlot: res.parkingSlot,
             fullParkingSlot: res.fullParkingSlot,
@@ -452,12 +454,15 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 : res.weeklyDay.name
               : null,
           });
-
+          this.parkingName = res.name;
           this.selectedAddress = res.address;
           this.selectedPayPeriod = res.payPeriod;
 
-          this.selectedDay =
-            res.payPeriod.name === 'Monthly' ? res.monthlyDay : res.weeklyDay;
+          this.selectedDay = res.payPeriod
+            ? res.payPeriod.name === 'Monthly'
+              ? res.monthlyDay
+              : res.weeklyDay
+            : null;
 
           this.parkingSlots[0] = { id: 1, value: res.parkingSlot };
           this.parkingSlots[1] = { id: 2, value: res.fullParkingSlot };
@@ -476,6 +481,10 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
           } else {
             this.cameraBtns[0].checked = false;
             this.cameraBtns[1].checked = true;
+          }
+
+          if (res.extensionPhone) {
+            this.isPhoneExtExist = true;
           }
         },
         error: () => {

@@ -13,6 +13,7 @@ import { TtRegistrationModalComponent } from '../../../modals/common-truck-trail
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TruckResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
   selector: 'app-truck-details-item',
@@ -98,15 +99,16 @@ export class TruckDetailsItemComponent implements OnInit {
     this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
 
-  public optionsEvent(any: any, action: string) {
+  public optionsEvent(file: any, data: any, action: string) {
     switch (action) {
       case 'edit-registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: this.truck.id,
-            file_id: any.id,
+            id: data.id,
+            payload: data,
+            file_id: file.id,
             type: action,
             modal: 'truck',
           }
@@ -118,8 +120,9 @@ export class TruckDetailsItemComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: this.truck.id,
-            file_id: any.id,
+            id: data.id,
+            payload: data,
+            file_id: file.id,
             type: action,
             modal: 'truck',
           }
@@ -127,6 +130,17 @@ export class TruckDetailsItemComponent implements OnInit {
         break;
       }
       case 'edit-title': {
+        this.modalService.openModal(
+          TtTitleModalComponent,
+          { size: 'small' },
+          {
+            id: data.id,
+            payload: data,
+            file_id: file.id,
+            type: action,
+            modal: 'truck',
+          }
+        );
         break;
       }
       default: {

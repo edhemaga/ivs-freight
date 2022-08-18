@@ -77,6 +77,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getOwnerDropdowns();
+    this.onBankSelected();
 
     if (this.editData) {
       this.editOwnerById(this.editData.id);
@@ -137,6 +138,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       this.inputService.changeValidators(this.ownerForm.get('ssn'), true, [
         ssnNumberRegex,
       ]);
+
+      this.tabs = this.tabs.map((item) => {
+        return {
+          ...item,
+          checked: item.id === event.id,
+        };
+      });
     }
   }
 
@@ -178,18 +186,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   public onSelectBank(event: any): void {
     this.selectedBank = event;
-
-    if (this.selectedBank) {
-      this.onBankSelected();
+    if (!event) {
+      this.ownerForm.get('bankId').patchValue(null);
     }
   }
 
   public onSaveNewBank(bank: any) {
     this.selectedBank = bank;
-
-    if (this.selectedBank) {
-      this.onBankSelected();
-    }
 
     this.bankVerificationService
       .createBank({ name: bank.name })
@@ -211,13 +214,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onBankSelected(): void {
+  private onBankSelected() {
     this.ownerForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(untilDestroyed(this))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
-          value,
+          this.selectedBank ? this.selectedBank.name : value,
           this.ownerForm.get('routingNumber'),
           this.ownerForm.get('accountNumber')
         );
@@ -352,8 +355,6 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.tabChange(
             this.tabs.find((item) => item.id === res.ownerType.id)
           );
-
-          this.onBankSelected();
         },
         error: () => {
           this.notificationService.error("Owner can't be loaded.", 'Error:');

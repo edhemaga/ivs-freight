@@ -7,48 +7,57 @@
   (action)="onModalAction($event)"
 >
   <form [formGroup]="drugForm" class="form-container">
-    <div class="drug-type-reason-date">
-      <app-ta-input-dropdown
-        formControlName="testType"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Type',
-          isRequired: true,
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-140'
-        }"
-        [options]="testTypes"
-        [activeItem]="selectedTestType"
-        (selectedItem)="onSelectDropdown($event, 'test')"
-      ></app-ta-input-dropdown>
-      <app-ta-input-dropdown
-        formControlName="testReasonId"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Reason',
-          isRequired: true,
-          isDropdown: true,
-          isDisabled: !drugForm.get('testType').value,
-          dropdownWidthClass: 'w-col-168'
-        }"
-        [options]="reasonTypes"
-        [activeItem]="reasonTypes"
-        (selectedItem)="onSelectDropdown($event, 'reason')"
-      ></app-ta-input-dropdown>
-      <app-ta-input
-        formControlName="testingDate"
-        [inputConfig]="{
-          name: 'datepicker',
-          type: 'text',
-          label: 'Issue Date',
-          isDropdown: true,
-          placeholderIcon: 'date',
-          isRequired: true,
-          customClass: 'datetimeclass'
-        }"
-      ></app-ta-input>
+    <div class="row">
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="testType"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Type',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-140'
+          }"
+          [options]="testTypes"
+          [activeItem]="selectedTestType"
+          (selectedItem)="onSelectDropdown($event, 'test')"
+        ></app-ta-input-dropdown>
+      </div>
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="testReasonId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'Reason',
+            isRequired: true,
+            isDropdown: true,
+            isDisabled: !drugForm.get('testType').value,
+            dropdownWidthClass: 'w-col-168'
+          }"
+          [options]="reasonTypes"
+          [activeItem]="reasonTypes"
+          (selectedItem)="onSelectDropdown($event, 'reason')"
+        ></app-ta-input-dropdown>
+      </div>
+    </div>
+
+    <div class="row last-row">
+      <div class="col-12">
+        <app-ta-input
+          formControlName="testingDate"
+          [inputConfig]="{
+            name: 'datepicker',
+            type: 'text',
+            label: 'Issue Date',
+            isDropdown: true,
+            placeholderIcon: 'date',
+            isRequired: true,
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
     </div>
 
     <div class="ta-card-body-overflow-none">

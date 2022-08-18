@@ -1,7 +1,12 @@
-<div cdkDrag class="modal-container {{ customClass }}">
+<div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
   <div [ngClass]="{ 'load-modal-content': customClass?.includes('load') }">
+    <!-- Modal Header -->
     <div cdkDragHandle class="modal-header">
-      <div class="modal-header-leftside">
+      <div
+        class="modal-header-leftside"
+        [ngClass]="{ 'confirmation-modal': confirmationData }"
+      >
+        <!-- Haeder tabs -->
         <div
           *ngIf="tabChange"
           class="modal-header-tab-change"
@@ -15,7 +20,17 @@
             [type]="'type2-modal-popup'"
           ></app-ta-tab-switch>
         </div>
+        <!-- Header svg -->
+        <svg-icon
+          *ngIf="headerSvg"
+          src="assets/svg/common/confirmation/ic_confirmation_{{
+            headerSvg
+          }}.svg"
+          class="modal-header-svg"
+        ></svg-icon>
+        <!-- Header title -->
         <h5 class="modal-title">{{ modalTitle }}</h5>
+        <!-- Header name -->
         <h5
           class="edit-name"
           *ngIf="
@@ -26,18 +41,25 @@
           {{ editName }}
         </h5>
       </div>
+      <!-- Header close -->
       <svg-icon
         class="modal-close"
         src="assets/svg/common/ic_x.svg"
         (click)="onAction('close')"
       ></svg-icon>
     </div>
-    <div class="divider"></div>
+    <!-- Divider top -->
+    <div *ngIf="topDivider" class="divider"></div>
+    <!-- Modal body -->
     <div class="modal-body">
+      <!-- Modal content -->
       <ng-content></ng-content>
+      <!-- Divider bottom -->
+      <div *ngIf="bottomDivider" class="divider"></div>
     </div>
+    <!-- Modal footer Normal -->
     <div
-      *ngIf="!disableFooter"
+      *ngIf="!disableFooter && !confirmationData"
       class="modal-footer"
       [ngClass]="{ 'mutliple-buttons': editData?.type?.includes('edit') }"
     >
@@ -48,13 +70,30 @@
       >
         <!-- Delete -->
         <button
-          *ngIf="!disableDelete"
+          *ngIf="!disableDelete && !resendEmail"
           (click)="onAction('delete')"
           class="modal-delete-btn"
-          ngbAutofocus
           type="button"
         >
           Delete
+        </button>
+
+        <!-- Resend Email -->
+        <button
+          *ngIf="resendEmail"
+          (click)="onAction('resend email')"
+          class="modal-resend-email-btn"
+          type="button"
+        >
+          {{
+            resendEmailSpinnerVisibility
+              ? "Sending"
+              : "Resend Application
+          Email"
+          }}
+          <div *ngIf="resendEmailSpinnerVisibility" class="modal-spinner">
+            <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+          </div>
         </button>
 
         <!-- Deactivated -->
@@ -62,7 +101,6 @@
           *ngIf="editData?.disableButton"
           (click)="onAction('deactivate')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
         >
           {{ isDeactivated ? "Activate" : "Deactivate" }}
@@ -73,18 +111,11 @@
           *ngIf="editData?.dnuButton"
           (click)="onAction('dnu')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
-          [appTooltip]="'Do Not Use List'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#6C6C6C'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="147"
-          [tatooltipvisible]="!isDNU"
+          ngbTooltip
+          mainTooltip="Do Not Use List"
+          tooltipBackground="#6c6c6c"
+          position="top"
         >
           {{ isDNU ? "Remove from DNU" : "Move to DNU" }}
         </button>
@@ -94,18 +125,11 @@
           *ngIf="editData?.bfbButton"
           (click)="onAction('bfb')"
           class="modal-deactivate-btn"
-          ngbAutofocus
           type="button"
-          [appTooltip]="'Banned from Broker List'"
-          [position]="'top-middle'"
-          [tooltipBackground]="'#6C6C6C'"
-          [tooltipColor]="'#FFFFFF'"
-          [zIndex]="900"
-          [borderRadius]="'2px'"
-          [fontWeight]="'bold'"
-          [fontSize]="'11px'"
-          [customPosition]="114"
-          [tatooltipvisible]="!isBFB"
+          ngbTooltip
+          mainTooltip="Banned from Broker List"
+          tooltipBackground="#6c6c6c"
+          position="top"
         >
           {{ isBFB ? "Remove from BFB" : "Move to BFB" }}
         </button>
@@ -119,7 +143,6 @@
           (click)="onAction('save and add new')"
           class="modal-save-btn modal-save-btn-add-new"
           [ngClass]="{ valid: isModalValid }"
-          ngbAutofocus
           type="button"
         >
           {{ saveAddNewSpinnerVisibility ? "Saving" : "Save and Add New" }}
@@ -133,14 +156,15 @@
           (click)="onAction('save')"
           class="modal-save-btn"
           [ngClass]="{ valid: isModalValid }"
-          ngbAutofocus
           type="button"
         >
           {{
             saveSpinnerVisibility
               ? "Saving"
               : editData?.type?.includes("edit")
-              ? "Save Changes"
+              ? editData?.type?.includes("fo")
+                ? "Save"
+                : "Save Changes"
               : "Save"
           }}
           <div *ngIf="saveSpinnerVisibility" class="modal-spinner">
@@ -150,7 +174,102 @@
       </div>
     </div>
 
-    <!-- DropZone -->
+    <!-- Modal Footer Confirmation Modal -->
+    <div *ngIf="confirmationData" class="modal-footer mutliple-buttons">
+      <!-- Cancel -->
+      <button
+        (click)="onAction('close')"
+        class="modal-cancel-btn"
+        type="button"
+      >
+        Cancel
+      </button>
+      <!-- Delete -->
+      <button
+        *ngIf="['delete', 'multiple delete'].includes(confirmationData?.type)"
+        (click)="
+          onAction(confirmationData?.data ? 'delete' : 'multiple delete')
+        "
+        class="modal-delete-btn modal-red-btn modal-confirmation-btn"
+        type="button"
+      >
+        Delete
+      </button>
+      <!-- Activate -->
+      <button
+        *ngIf="confirmationData?.type === 'activate'"
+        (click)="onAction('activate')"
+        class="modal-save-btn valid modal-confirmation-btn"
+        type="button"
+      >
+        Activate
+        {{
+          confirmationData?.template.substring(0, 1).toUpperCase() +
+            confirmationData?.template.substring(1)
+        }}
+      </button>
+      <!-- Deactivate -->
+      <button
+        *ngIf="confirmationData?.type === 'deactivate'"
+        (click)="onAction('deactivate')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        Deactivate
+        {{ confirmationData?.template }}
+      </button>
+      <!-- Hire -->
+      <button
+        *ngIf="confirmationData?.type === 'hire'"
+        (click)="onAction('hire')"
+        class="modal-save-btn active valid modal-confirmation-btn"
+        type="button"
+      >
+        Hire
+      </button>
+      <!-- Archive -->
+      <button
+        *ngIf="confirmationData?.subType === 'archive'"
+        (click)="onAction('archive')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus
+            ? "Remove from archive"
+            : "Archive" + " " + confirmationData?.template
+        }}
+      </button>
+      <!-- DNU -->
+      <button
+        *ngIf="confirmationData?.subType === 'dnu'"
+        (click)="onAction('dnu')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} DNU
+      </button>
+      <!-- DNU -->
+      <button
+        *ngIf="confirmationData?.subType === 'ban list'"
+        (click)="onAction('bfb')"
+        class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
+        type="button"
+      >
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} Ban
+        List
+      </button>
+    </div>
+
+    <!-- Modal DropZone -->
     <div
       class="drop-zone-active"
       [class.drop-zone-active-hovered]="hoverZone"
@@ -166,5 +285,11 @@
       ></app-ta-upload-dropzone>
     </div>
   </div>
-  <div *ngIf="customClass?.includes('load')" class="load-modal-map">MAPA</div>
+  <!-- Modal Map -->
+  <div
+    *ngIf="map"
+    [ngClass]="{ 'load-modal-map': customClass?.includes('load') }"
+  >
+    MAPA
+  </div>
 </div>

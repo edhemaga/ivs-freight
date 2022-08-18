@@ -11,6 +11,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -206,13 +207,18 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
   }
   public onModalAction(action: string): void {
-    const truck_id = this.activated_route.snapshot.paramMap.get('id');
+    const trailer = this.activated_route.snapshot.data.trailer;
     switch (action.toLowerCase()) {
       case 'registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
-          { id: truck_id, type: 'add-registration', modal: 'trailer' }
+          {
+            id: trailer.id,
+            payload: trailer,
+            type: 'add-registration',
+            modal: 'trailer',
+          }
         );
         break;
       }
@@ -220,7 +226,25 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         this.modalService.openModal(
           TtFhwaInspectionModalComponent,
           { size: 'small' },
-          { id: truck_id, type: 'add-inspection', modal: 'trailer' }
+          {
+            id: trailer.id,
+            payload: trailer,
+            type: 'add-inspection',
+            modal: 'trailer',
+          }
+        );
+        break;
+      }
+      case 'title': {
+        this.modalService.openModal(
+          TtTitleModalComponent,
+          { size: 'small' },
+          {
+            id: trailer.id,
+            payload: trailer,
+            type: 'add-title',
+            modal: 'trailer',
+          }
         );
         break;
       }

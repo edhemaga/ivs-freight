@@ -1,7 +1,7 @@
 <app-ta-modal
   [modalTitle]="editData?.type !== 'edit' ? 'Add Office' : 'Edit Office'"
   [editData]="editData"
-  [editName]="editData?.id"
+  [editName]="officeName"
   [isModalValid]="officeForm.valid"
   (action)="onModalAction($event)"
 >
@@ -47,7 +47,7 @@
                     label: 'Office Name',
                     isRequired: true,
                     textTransform: 'capitalize',
-                    autoFocus: editData?.type === 'edit' ? false : true
+                    autoFocus: editData?.type !== 'edit' ? true : false
                   }"
                 ></app-ta-input>
               </div>
@@ -264,6 +264,7 @@
                 type: 'text',
                 label: 'Day',
                 isDropdown: true,
+                isDisabled: !officeForm.get('payPeriod').value,
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="

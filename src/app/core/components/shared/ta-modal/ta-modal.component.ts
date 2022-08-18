@@ -50,16 +50,22 @@ export class TaModalComponent implements OnInit, OnDestroy {
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
+  @Input() confirmationData: any;
+  @Input() headerSvg: string;
   @Input() saveAndAddNew: boolean;
   @Input() customClass: string;
   @Input() isModalValid: boolean;
-  @Input() disableFooter: boolean = false;
-  @Input() disableDelete: boolean = false;
-  @Input() isDeactivated: boolean = false;
-  @Input() isDNU: boolean = false;
-  @Input() isBFB: boolean = false;
+  @Input() disableFooter: boolean;
+  @Input() disableDelete: boolean;
+  @Input() isDeactivated: boolean;
+  @Input() isDNU: boolean;
+  @Input() isBFB: boolean;
+  @Input() resendEmail: boolean;
+  @Input() map: boolean;
+  @Input() topDivider: boolean = true;
+  @Input() bottomDivider: boolean = false;
 
-  @Input() specificCaseModalName: boolean = false;
+  @Input() specificCaseModalName: boolean;
 
   @Input() dropZoneConfig: DropZoneConfig = {
     dropZoneType: 'files', // files | image | media
@@ -77,6 +83,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
     bool: boolean;
   }> = new EventEmitter<{ action: string; bool: boolean }>(null);
 
+  @Output() confirmationAction: EventEmitter<{
+    data: any;
+  }> = new EventEmitter<{ data: any }>(null);
+
   @Output() onTabHeaderChange: EventEmitter<any> = new EventEmitter<any>();
 
   private timeout = null;
@@ -84,6 +94,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
   public saveSpinnerVisibility: boolean = false;
   public saveAddNewSpinnerVisibility: boolean = false;
   public deleteSpinnerVisibility: boolean = false;
+  public resendEmailSpinnerVisibility: boolean = false;
 
   // Drag & Drop properties
   public isDropZoneVisible: boolean = false;
@@ -142,13 +153,17 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.saveAddNewSpinnerVisibility = data.status;
             break;
           }
+          case 'resend email': {
+            this.resendEmailSpinnerVisibility = data.status;
+            break;
+          }
           default: {
             this.saveSpinnerVisibility = data.status;
             break;
           }
         }
 
-        if (data.action !== 'save and add new') {
+        if (!['save and add new', 'resend email'].includes(data.action)) {
           if (this.timeout) {
             clearTimeout(this.timeout);
           }
@@ -218,6 +233,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.action.emit({ action: action, bool: false });
         break;
       }
+      case 'resend email': {
+        this.action.emit({ action: action, bool: false });
+        break;
+      }
       case 'close': {
         this.action.emit({ action: action, bool: false });
         $('.pac-container').remove();
@@ -235,20 +254,40 @@ export class TaModalComponent implements OnInit, OnDestroy {
           action: action,
           bool: this.isDeactivated,
         });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'activate': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'dnu': {
         this.isDNU = !this.isDNU;
         this.action.emit({ action: action, bool: this.isDNU });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'bfb': {
         this.isBFB = !this.isBFB;
         this.action.emit({ action: action, bool: this.isBFB });
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       case 'delete': {
         this.action.emit({ action: action, bool: false });
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'multiple delete': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'hire': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
+      case 'archive': {
+        this.confirmationAction.emit(this.confirmationData);
         break;
       }
       default: {

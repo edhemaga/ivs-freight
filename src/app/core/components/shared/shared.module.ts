@@ -104,6 +104,9 @@ import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
+import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
+import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -156,6 +159,7 @@ export function playerFactory() {
     TaUploadFilesComponent,
 
     // Modals Components
+    ApplicantModalComponent,
     TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
@@ -178,6 +182,8 @@ export function playerFactory() {
     RepairOrderModalComponent,
     ProfileUpdateModalComponent,
     LoadModalComponent,
+    TtTitleModalComponent,
+    ConfirmationModalComponent,
 
     //----------------------------
     MapListComponent,
@@ -300,7 +306,9 @@ export function playerFactory() {
     TaInputAddressComponent,
     DirectivesModule,
     TaUploadFilesComponent,
+
     // Modals Components
+    ApplicantModalComponent,
     TaModalComponent,
     DriverModalComponent,
     TruckModalComponent,
@@ -325,7 +333,9 @@ export function playerFactory() {
     LoadModalComponent,
     TaUploadFilesComponent,
     TaTimePeriodComponent,
-    AutoclosePopoverComponent
+    AutoclosePopoverComponent,
+    TtTitleModalComponent,
+    ConfirmationModalComponent
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

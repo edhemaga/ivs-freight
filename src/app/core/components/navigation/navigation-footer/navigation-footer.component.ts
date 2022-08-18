@@ -16,7 +16,6 @@ import { debounceTime, Subject } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import { navigation_route_animation } from '../navigation.animation';
-import { SignInResponse } from 'appcoretruckassist';
 import { TaUserService } from 'src/app/core/services/user/user.service';
 
 @UntilDestroy()
@@ -84,7 +83,6 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     this.userService.updateUserProfile$
       .pipe(debounceTime(1000), untilDestroyed(this))
       .subscribe((val: boolean) => {
-        console.log('SUBSCRIBE ', val);
         if (val) {
           this.loggedUser = JSON.parse(localStorage.getItem('user'));
 

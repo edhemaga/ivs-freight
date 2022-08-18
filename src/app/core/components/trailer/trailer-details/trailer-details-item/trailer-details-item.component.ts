@@ -7,6 +7,7 @@ import { TtRegistrationModalComponent } from '../../../modals/common-truck-trail
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
 @Component({
   selector: 'app-trailer-details-item',
@@ -77,15 +78,16 @@ export class TrailerDetailsItemComponent implements OnInit {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  public optionsEvent(any: any, action: string) {
+  public optionsEvent(file: any, data: any, action: string) {
     switch (action) {
       case 'edit-registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
           { size: 'small' },
           {
-            id: this.trailerData.trailer.id,
-            file_id: any.id,
+            id: data.id,
+            payload: data,
+            file_id: file.id,
             type: action,
             modal: 'trailer',
           }
@@ -97,8 +99,9 @@ export class TrailerDetailsItemComponent implements OnInit {
           TtFhwaInspectionModalComponent,
           { size: 'small' },
           {
-            id: this.trailerData.trailer.id,
-            file_id: any.id,
+            id: data.id,
+            payload: data,
+            file_id: file.id,
             type: action,
             modal: 'trailer',
           }
@@ -106,6 +109,17 @@ export class TrailerDetailsItemComponent implements OnInit {
         break;
       }
       case 'edit-title': {
+        this.modalService.openModal(
+          TtTitleModalComponent,
+          { size: 'small' },
+          {
+            id: data.id,
+            payload: data,
+            file_id: file.id,
+            type: action,
+            modal: 'trailer',
+          }
+        );
         break;
       }
       default: {
