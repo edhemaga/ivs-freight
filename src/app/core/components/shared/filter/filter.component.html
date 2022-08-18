@@ -801,8 +801,8 @@ autoClose="outside"
         </div>
         <div class="border-filter money-bottom-border-magin form-border" [class.hiddenFormBorder]="!showPart3"></div>
         <div class="buttons-holder">
-            <div (click)="clearAll()" class="button-clear" [class.active]="selectedUser.length > 0">Clear All</div>
-            <div class="button-set" [class.active]="selectedUser.length > 0">Set</div>
+            <div (click)="clearAll()" class="button-clear" [class.active]="moneyFilterStatus">Clear All</div>
+            <div class="button-set" [class.active]="moneyFilterStatus">Set</div>
         </div>
     </div>
     <div *ngIf="swipeFilter" class="filter-holder swipe-filter">

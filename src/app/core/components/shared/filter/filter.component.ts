@@ -1128,10 +1128,54 @@ canadaStates: any[] = [
         }  
 
 
-        if ( changes.singleFrom && changes.singleTo && !this.singleFormError )
+        if ( this.subType != 'all' )
           {
-            this.moneyFilterStatus = true;
+            if ( changes.singleFrom && changes.singleTo && !this.singleFormError )
+              {
+                this.moneyFilterStatus = true;
+              }
+            else 
+              {
+                this.moneyFilterStatus = false;
+              }
           }
+        else 
+          {
+            if ( changes.multiFromFirstFrom && changes.multiFromFirstTo && !this.multiFormFirstError )
+              {
+                this.moneyFilterStatus = true;
+              }
+            else if ( changes.multiFormSecondFrom && changes.multiFormSecondTo && !this.multiFormSecondError )
+              {
+                this.moneyFilterStatus = true;
+              }
+            else if ( changes.multiFormThirdFrom && changes.multiFormThirdTo && !this.multiFormThirdError )
+              {
+                this.moneyFilterStatus = true;
+              }
+            else
+              {
+                this.moneyFilterStatus = false;
+              }   
+              
+              if ( this.multiFormFirstError )
+                {
+                  this.moneyFilterStatus = false;
+                }
+               
+              if ( this.multiFormSecondError )
+                {
+                  this.moneyFilterStatus = false;
+                }
+                
+              if ( this.multiFormThirdError )
+                {
+                  this.moneyFilterStatus = false;
+                }  
+
+          }    
+
+          
 
     })
 
@@ -1770,7 +1814,18 @@ canadaStates: any[] = [
             this.locationForm.setValue({
               address: ''
             });
-          }    
+          } 
+        else if ( this.type == 'moneyFilter' )
+          {
+            if ( this.subType != 'all' )
+              {
+                  this.clearForm('singleForm');
+              }
+             else 
+              {
+                this.clearForm('clearAll');
+              } 
+          }     
       }  
 
    
@@ -1878,6 +1933,8 @@ canadaStates: any[] = [
   clearForm(mod){
     if ( mod == 'singleForm' )
       {
+        this.singleFormError = false;
+        this.moneyFilterStatus = false;
         this.moneyForm.setValue({
           singleFrom: '',
           singleTo: '',
@@ -1888,10 +1945,11 @@ canadaStates: any[] = [
           multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
           multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
         });
-        this.singleFormError = false;
+       
       }
     else if ( mod == 'multiFromFirst' )
       {
+        this.multiFormFirstError = false;
         this.moneyForm.setValue({
           singleFrom: this.moneyForm.value.singleFrom,
           singleTo: this.moneyForm.value.singleTo,
@@ -1902,10 +1960,11 @@ canadaStates: any[] = [
           multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
           multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
         });
-        this.multiFormFirstError = false;
+        
       } 
     else if ( mod == 'multiFormSecond' )
       {
+        this.multiFormSecondError = false;
         this.moneyForm.setValue({
           singleFrom: this.moneyForm.value.singleFrom,
           singleTo: this.moneyForm.value.singleTo,
@@ -1916,10 +1975,11 @@ canadaStates: any[] = [
           multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
           multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
         });
-        this.multiFormSecondError = false;
+        
       } 
     else if ( mod == 'multiFormThird' )
       {
+        this.multiFormThirdError = false;
         this.moneyForm.setValue({
           singleFrom: this.moneyForm.value.singleFrom,
           singleTo: this.moneyForm.value.singleTo,
@@ -1930,9 +1990,24 @@ canadaStates: any[] = [
           multiFormThirdFrom: '',
           multiFormThirdTo: '',
         });
-        this.multiFormThirdError = false;
+        
       }     
-
+    else if ( mod == 'clearAll' )
+      {
+        this.multiFormFirstError = false;
+        this.multiFormSecondError = false;
+        this.multiFormThirdError = false;
+        this.moneyForm.setValue({
+          singleFrom: '',
+          singleTo: '',
+          multiFromFirstFrom: '',
+          multiFromFirstTo: '',
+          multiFormSecondFrom: '',
+          multiFormSecondTo: '',
+          multiFormThirdFrom: '',
+          multiFormThirdTo: '',
+        });
+      }
     
   }
 }
