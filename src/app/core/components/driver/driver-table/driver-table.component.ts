@@ -85,7 +85,23 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: Confirmation) => {
-          this.deleteDriverById(res.id);
+          switch (res.type) {
+            case 'delete': {
+              this.deleteDriverById(res.id);
+              break;
+            }
+            case 'activate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
         },
       });
 
@@ -725,23 +741,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
-      this.driverTService
-        .changeDriverStatus(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              `Driver successfully Change Status`,
-              'Success:'
-            );
-          },
-          error: () => {
-            this.notificationService.error(
-              `Driver with id: ${event.id}, status couldn't be changed`,
-              'Error:'
-            );
-          },
-        });
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          template: 'driver',
+          type: event.data.status === 1 ? 'deactivate' : 'activate',
+          subType: null,
+          image: true,
+        }
+      );
     } else if (event.type === 'delete-item') {
       this.modalService.openModal(
         ConfirmationModalComponent,
@@ -759,6 +769,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery);
     }
+  }
+
+  private changeDriverStatus(id: number) {
+    this.driverTService
+      .changeDriverStatus(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Driver successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Driver with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
   }
 
   private deleteDriverById(id: number) {

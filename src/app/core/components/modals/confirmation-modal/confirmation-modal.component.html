@@ -18,16 +18,25 @@
 >
   <div class="confirmation-modal">
     <p class="confirmation-header">
-      Are you sure you want to delete this {{ editData?.template }}?
+      Are you sure you want to
+      {{ editData?.type === "info" ? editData?.subType : editData?.type }} this
+      {{ editData?.template }}?
     </p>
     <div class="confirmation-body">
+      <!-- Svg -->
+      <svg-icon
+        class="confirmation-svg"
+        *ngIf="editData?.svg && editData?.data?.avatar"
+        [src]="editData?.data?.avatar"
+      ></svg-icon>
+      <!-- Image -->
       <img
         *ngIf="editData?.image && editData?.data?.avatar"
         [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
         [alt]="editData?.data?.fullName?.substring(0, 1)"
         class="confirmation-img"
       />
-
+      <!-- Initial name, if avatar not upload -->
       <div
         *ngIf="editData?.image && !editData?.data?.avatar"
         class="no-profile-image"
@@ -39,14 +48,32 @@
         >
         </app-profile-images>
       </div>
-      <div [ngSwitch]="editData?.template">
-        <div *ngSwitchCase="'driver'">
-          <div class="confirmation-info">
-            <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
-            <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
-          </div>
-        </div>
-        <div *ngSwitchDefault></div>
+      <!---------------------------------------------- Different templates for body --------------------------------------------->
+      <!-- Driver, Owner -->
+      <div
+        *ngIf="['driver', 'owner'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
+        <p class="confirmation-text-2">SSN: {{ editData?.data?.ssn }}</p>
+      </div>
+      <!-- Shipper, Repair Shop -->
+      <div
+        *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
+        <p class="confirmation-text-2">
+          Address: {{ editData?.data?.address?.address }}
+        </p>
+      </div>
+      <!-- Truck, Trailer -->
+      <div
+        *ngIf="['truck', 'trailer'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1">Unit {{ editData?.data?.number }}</p>
+        <p class="confirmation-text-2">VIN: {{ editData?.data?.vin }}</p>
       </div>
     </div>
   </div>
