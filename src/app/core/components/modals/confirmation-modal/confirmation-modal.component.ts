@@ -10,7 +10,7 @@ export interface Confirmation {
   // TYPE:  delete, hire, activate, deactivate, info
   // if type is info => subtype: archive, ban, dnu, otherwise subtype = null
   type: string;
-  subType: string; // archive, ban-list, dnu
+  subType?: string; // archive, ban-list, dnu
   image?: boolean; // has image or not
   svg?: boolean; // has svg or not
 }

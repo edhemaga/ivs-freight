@@ -593,8 +593,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...mappedEvent,
             template: 'truck',
             type: event.data.status === 1 ? 'deactivate' : 'activate',
-            subType: null,
-            image: false,
             svg: true,
           }
         );
@@ -608,8 +606,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             ...mappedEvent,
             template: 'truck',
             type: 'delete',
-            subType: null,
-            image: false,
             svg: true,
           }
         );
