@@ -89,11 +89,27 @@
         &:hover{
           background-color: #F44336;
         }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #C3362B;
+          }
+        }
       }
      
     .toast-success {
         background-color: #26A690;
         background-image: none;
+
+        &:hover{
+          background-color: #00967E;
+        }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #007865;
+          }
+        }
       }  
 
     .toast-info {
@@ -136,8 +152,7 @@
       opacity: 0.7;
       border-radius: 3px;
       &:hover{
-      
-        background-color: #F44336;
+        
         opacity: 1;
       }
    }
@@ -146,12 +161,6 @@
       right: 35px;
       background-image: url("../../assets/svg/common/ic_retry_white.svg"); 
       background-size: 13.69px 16.2px; 
-
-      &:hover{
-
-        background-color: #F44336;
-        opacity: 1;
-      }
    }
 
    .closeAnimationBtn {
