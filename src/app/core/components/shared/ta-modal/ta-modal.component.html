@@ -188,7 +188,7 @@
       <button
         *ngIf="confirmationData?.type === 'delete'"
         (click)="onAction('delete')"
-        class="modal-delete-btn modal-confirmation-btn"
+        class="modal-delete-btn modal-red-btn modal-confirmation-btn"
         type="button"
       >
         Delete
@@ -232,8 +232,11 @@
         class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
         type="button"
       >
-        Archive
-        {{ confirmationData?.template }}
+        {{
+          confirmationData?.subTypeStatus
+            ? "Remove from archive"
+            : "Archive" + " " + confirmationData?.template
+        }}
       </button>
       <!-- DNU -->
       <button
@@ -242,16 +245,25 @@
         class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
         type="button"
       >
-        Move to DNU
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} DNU
       </button>
       <!-- DNU -->
       <button
-        *ngIf="confirmationData?.subType === 'ban'"
-        (click)="onAction('ban-list')"
+        *ngIf="confirmationData?.subType === 'ban list'"
+        (click)="onAction('bfb')"
         class="modal-deactivate-btn modal-gray-btn modal-confirmation-btn"
         type="button"
       >
-        Move to Ban List
+        {{
+          confirmationData?.subTypeStatus?.substring(0, 1).toUpperCase() +
+            confirmationData?.subTypeStatus?.substring(1)
+        }}
+        {{ confirmationData?.subTypeStatus === "move" ? "to" : "from" }} Ban
+        List
       </button>
     </div>
 

@@ -6,13 +6,13 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export interface Confirmation {
   id: number;
   data: any;
-  template: string; // driver, broker, shipper.....
-  // TYPE:  delete, hire, activate, deactivate, info
-  // if type is info => subtype: archive, ban, dnu, otherwise subtype = null
-  type: string;
-  subType?: string; // archive, ban-list, dnu
+  template: string; // examples: driver, broker, shipper.....
+  type: string | 'delete' | 'hire' | 'activate' | 'deactivate' | 'info'; // if type is info => subtype: archive | ban list | dnu;
+  subType?: string | 'archive' | 'ban list' | 'dnu'; // if subType set, must set and subTypeStatus
+  subTypeStatus?: string | 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List'
   image?: boolean; // has image or not
   svg?: boolean; // has svg or not
+  rating?: boolean; // has rating or not
 }
 @Component({
   selector: 'app-confirmation-modal',

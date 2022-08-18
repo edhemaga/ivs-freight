@@ -17,11 +17,41 @@
   (confirmationAction)="onModalAction($event)"
 >
   <div class="confirmation-modal">
-    <p class="confirmation-header">
+    <!-- Rating Header -->
+    <p
+      *ngIf="editData.rating && editData?.type === 'delete'"
+      class="confirmation-header"
+    >
+      Are you sure you want to delete rating for this {{ editData?.template }}?
+    </p>
+
+    <!-- Info Header -->
+    <p
+      *ngIf="editData.subTypeStatus && editData?.type === 'info'"
+      class="confirmation-header"
+    >
+      Are you sure you want to {{ editData?.subTypeStatus }} this
+      {{ editData?.template }}
+      {{ editData?.subTypeStatus === "move" ? "to" : "from" }}
+      {{
+        editData?.subType === "archive"
+          ? "archive"
+          : editData?.subType === "dnu"
+          ? "do not use list"
+          : "ban list"
+      }}?
+    </p>
+
+    <!-- Normal Header -->
+    <p
+      *ngIf="!editData.rating && !editData.subTypeStatus"
+      class="confirmation-header"
+    >
       Are you sure you want to
       {{ editData?.type === "info" ? editData?.subType : editData?.type }} this
       {{ editData?.template }}?
     </p>
+
     <div class="confirmation-body">
       <!-- Svg -->
       <svg-icon
@@ -62,7 +92,7 @@
         *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
         class="confirmation-info"
       >
-        <p class="confirmation-text-1">{{ editData?.data?.fullName }}</p>
+        <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
         <p class="confirmation-text-2">
           Address: {{ editData?.data?.address?.address }}
         </p>
