@@ -160,12 +160,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapingIndex = 0;
 
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
 
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.driverBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendDriverData();
             }
@@ -629,16 +630,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableData[2].length = driverCount.inactive;
   }
 
-  driverBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  driverBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.driverTService
       .getDrivers(
         filter.active,
@@ -652,11 +657,31 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .pipe(untilDestroyed(this))
       .subscribe((drivers: DriverListResponse) => {
-        this.viewData = drivers.pagination.data;
+        if (!isShowMore) {
+          this.viewData = drivers.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapDriverData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapDriverData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[
+              this.selectedTab === 'active'
+                ? 1
+                : this.selectedTab === 'inactive'
+                ? 2
+                : 0
+            ].length = drivers.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          drivers.pagination.data.map((data: any) => {
+            newData.push(this.mapDriverData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -672,6 +697,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
 
+      this.backFilterQuery.pageIndex = 1;
+
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
@@ -685,6 +712,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 
         this.driverBackFilter(this.backFilterQuery);
@@ -702,7 +730,12 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         name: event.data?.fullName,
       },
     };
-    if (event.type === 'edit') {
+
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.driverBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
         { size: 'medium' },
