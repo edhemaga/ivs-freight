@@ -36,12 +36,7 @@ export class ConfirmationModalComponent {
     private confirmationDataSubject: ConfirmationService
   ) {}
 
-  ngOnInit() {
-    console.log(this.editData);
-  }
-
   public onModalAction(data: any) {
-    console.log(data);
     this.confirmationDataSubject.sendConfirmationData(data);
     this.ngbActiveModal.close();
   }
