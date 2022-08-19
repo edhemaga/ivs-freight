@@ -54,7 +54,8 @@ export class TaInputDropdownComponent
   @Input() incorrectValue: boolean;
 
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
-  @Output() saveNewItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() saveItem: EventEmitter<{ data: any; action: string }> =
+    new EventEmitter<{ data: any; action: string }>();
   @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
   @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -382,7 +383,19 @@ export class TaInputDropdownComponent
     this.originalOptions = [...this.originalOptions, newItem];
     this.options = this.originalOptions;
     this.activeItem = newItem;
-    this.saveNewItem.emit(newItem);
+    this.saveItem.emit({ data: newItem, action: 'new' });
+  }
+
+  public updateItem(): void {
+    this.activeItem = {
+      id: this.inputConfig.dropdownLabelId,
+      name: this.getSuperControl.value,
+    };
+
+    this.saveItem.emit({
+      data: this.activeItem,
+      action: 'edit',
+    });
   }
 
   public onAddNewEvent() {
@@ -450,11 +463,17 @@ export class TaInputDropdownComponent
       .addClass(cssClass);
   }
 
-  public onCommandInput(event: string) {
-    if (event === 'confirm') {
+  public commandEvent(event: { action: string; mode: string }) {
+    console.log('DROPDOWN ACTION ', event);
+    if (event.action === 'confirm' && event.mode === 'new') {
       this.addNewItem();
+    } else if (event.action === 'confirm' && event.mode === 'edit') {
+      this.updateItem();
     } else {
-      this.getSuperControl.patchValue(null);
+      this.saveItem.emit({
+        data: null,
+        action: 'cancel',
+      });
     }
 
     this.inputConfig = {

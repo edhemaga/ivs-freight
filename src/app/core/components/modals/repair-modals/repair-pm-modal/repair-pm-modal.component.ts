@@ -514,6 +514,12 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             mileage: convertThousanSepInNumber(item.get('mileage').value),
           };
         }),
+        ...this.newPMs.controls.map((item, index) => {
+          return {
+            id: item.get('id').value,
+            mileage: convertThousanSepInNumber(item.get('mileage').value),
+          };
+        }),
       ],
     };
     console.log(newData);
@@ -550,9 +556,15 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             months: convertThousanSepInNumber(item.get('mileage').value),
           };
         }),
+        ...this.newPMs.controls.map((item, index) => {
+          return {
+            id: item.get('id').value,
+            months: convertThousanSepInNumber(item.get('mileage').value),
+          };
+        }),
       ],
     };
-    console.log(newData);
+
     this.pmTService
       .addUpdatePMTrailerUnit(newData)
       .pipe(untilDestroyed(this))
