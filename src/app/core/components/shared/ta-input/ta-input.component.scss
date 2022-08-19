@@ -272,7 +272,6 @@
   }
 
   //--------------- end ---------------
-
   @import "./scss/ta-input.label.scss";
   @import "./scss/ta-input.input.scss";
   @import "./scss/ta-input.requiredcheck.scss";
@@ -288,5 +287,6 @@
   @import "./scss/ta-input.commands.scss";
   @import "./scss/ta-input.labelcounter.scss";
   @import "./scss/ta-input.spinner.scss";
-  @import "./scss//ta-input.addressflag.scss";
+  @import "./scss/ta-input.addressflag.scss";
+  @import "./scss/ta-input.editlabel.scss";
 }

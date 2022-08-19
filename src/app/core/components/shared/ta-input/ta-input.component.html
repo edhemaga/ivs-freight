@@ -75,6 +75,14 @@
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
 
+  <!-- Input Edit -->
+  <svg-icon
+    *ngIf="inputConfig.dropdownLabelColorSelected"
+    src="assets/svg/ic_spec_input_pen.svg"
+    class="input-edit-pen"
+    (click)="onEditInput($event)"
+  ></svg-icon>
+
   <!-- Input Invalid Danger Mark -->
   <svg-icon
     *ngIf="

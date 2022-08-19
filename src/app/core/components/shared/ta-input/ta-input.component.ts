@@ -358,6 +358,8 @@ export class TaInputComponent
     }
   }
 
+  public onEditInput(event: any) {}
+
   public resetDateTimeInputs() {
     if (this.inputConfig.name === 'datepicker') {
       this.span1.nativeElement.innerHTML = 'mm';
