@@ -1,7 +1,11 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { GetCompanyContactListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { closeAnimationAction } from 'src/app/core/utils/methods.globals';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from 'src/app/core/utils/methods.globals';
 import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -28,6 +32,16 @@ export class ContactsTableComponent
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   contacts: ContactState[] = [];
+  backFilterQuery = {
+    labelId: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -84,21 +98,19 @@ export class ContactsTableComponent
     this.tableService.currentSearchTableData
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-        /* if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+        if (res) {
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.contactBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendContactData();
             }
           }
-        } */
+        }
       });
 
     // Contact Actions
@@ -168,38 +180,38 @@ export class ContactsTableComponent
         }
       });
 
-      // Delete Selected Rows
+    // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((response: any[]) => {
-      if (response.length) {
-        this.contactService
-          .deleteAccountList(response)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe(() => {
-            this.viewData = this.viewData.map((contact: any) => {
-              response.map((r: any) => {
-                if (contact.id === r.id) {
-                  contact.actionAnimation = 'delete';
-                }
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          this.contactService
+            .deleteAccountList(response)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+              this.viewData = this.viewData.map((contact: any) => {
+                response.map((r: any) => {
+                  if (contact.id === r.id) {
+                    contact.actionAnimation = 'delete';
+                  }
+                });
+
+                return contact;
               });
 
-              return contact;
+              this.updateDataCount();
+
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
+
+              this.tableService.sendRowsSelected([]);
+              this.tableService.sendResetSelectedColumns(true);
             });
-
-            this.updateDataCount();
-
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(true, this.viewData);
-
-              clearInterval(inetval);
-            }, 1000);
-
-            this.tableService.sendRowsSelected([]);
-            this.tableService.sendResetSelectedColumns(true);
-          });
-      }
-    });
+        }
+      });
   }
 
   ngAfterViewInit(): void {
@@ -340,20 +352,91 @@ export class ContactsTableComponent
     };
   }
 
+  // Contact Back Filter
+  contactBackFilter(
+    filter: {
+      labelId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
+    this.contactService
+      .getContacts(
+        filter.labelId,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((contact: GetCompanyContactListResponse) => {
+        if (!isShowMore) {
+          this.viewData = contact.pagination.data;
+
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapContactData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[0].length = contact.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          contact.pagination.data.map((data: any) => {
+            newData.push(this.mapContactData(data));
+          });
+
+          this.viewData = [...newData];
+        }
+      });
+  }
+
   // On Toolbar Actions
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(ContactModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
+
       this.setContactData(event.tabData);
+    }
+  }
+
+  // On Head Actions
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      if (event.direction) {
+        this.backFilterQuery.sort = event.direction;
+
+        this.backFilterQuery.pageIndex = 1;
+
+        this.contactBackFilter(this.backFilterQuery);
+      } else {
+        this.sendContactData();
+      }
     }
   }
 
   // On Body Actions
   onTableBodyActions(event: any) {
-    console.log(event);
-    if (event.type === 'edit-contact') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.contactBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-contact') {
       this.modalService.openModal(
         ContactModalComponent,
         { size: 'small' },
@@ -367,20 +450,6 @@ export class ContactsTableComponent
         .deleteCompanyContactById(event.id)
         .pipe(takeUntil(this.destroy$))
         .subscribe();
-    }
-  }
-
-  // On Head Actions
-  onTableHeadActions(event: any) {
-    if (event.action === 'sort') {
-      if (event.direction) {
-        /* this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
-        this.backFilterQuery.sort = event.direction;
-
-        this.driverBackFilter(this.backFilterQuery); */
-      } else {
-        this.sendContactData();
-      }
     }
   }
 

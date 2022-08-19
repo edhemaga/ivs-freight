@@ -137,7 +137,7 @@ export function getRepairTruckColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'item-drop',
+      ngTemplate: '',
       title: 'Description',
       field: 'descriptionItems',
       name: 'Description',
@@ -398,7 +398,7 @@ export function getRepairTrailerColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'item-drop',
+      ngTemplate: '',
       title: 'Description',
       field: 'descriptionItems',
       name: 'Description',
@@ -638,7 +638,7 @@ export function getRepairsShopColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'service',
+      ngTemplate: '',
       title: 'Services',
       field: '',
       name: 'Services',
@@ -663,7 +663,7 @@ export function getRepairsShopColumnDefinition() {
       showPin: true,
     },
     {
-      ngTemplate: 'rating',
+      ngTemplate: '',
       title: 'Rating',
       field: '',
       name: 'Rating',

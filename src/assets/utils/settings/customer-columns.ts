@@ -95,7 +95,7 @@ export function getBrokerColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'inv-ageing',
       title: 'Inv. Ageing',
       field: 'textInvAgeing',
       name: 'Inv. Ageing',
@@ -189,7 +189,7 @@ export function getBrokerColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'rating',
+      ngTemplate: '',
       title: 'Rating',
       field: '',
       name: 'Rating',
@@ -215,7 +215,7 @@ export function getBrokerColumnDefinition() {
       class: 'overflow-unset',
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'contact',
       title: 'Contact',
       field: 'textContact',
       name: 'Contact',
@@ -689,7 +689,7 @@ export function getShipperColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'rating',
+      ngTemplate: '',
       title: 'Rating',
       field: '',
       name: 'Rating',
@@ -715,9 +715,9 @@ export function getShipperColumnDefinition() {
       class: 'overflow-unset',
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'contact',
       title: 'Contact',
-      field: 'contactCount',
+      field: 'textContact',
       name: 'Contact',
       sortName: 'contact',
       hidden: false,

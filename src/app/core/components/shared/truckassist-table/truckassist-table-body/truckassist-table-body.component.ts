@@ -129,6 +129,9 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
+      console.log('ngOnChanges viewData');
+      console.log(changes);
+
       clearTimeout(this.viewDataTimeOut);
 
       this.viewData = changes.viewData.currentValue;
@@ -136,10 +139,15 @@ export class TruckassistTableBodyComponent
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
           this.getNotPinedMaxWidth();
+          this.getSelectedTabTableData();
         }, 10);
       }
 
       this.viewDataEmpty = this.viewData.length;
+    }
+
+    if (!changes?.tableData?.firstChange && changes?.tableData) {
+      this.getSelectedTabTableData();
     }
 
     if (
@@ -308,7 +316,7 @@ export class TruckassistTableBodyComponent
   }
 
   // -------------------------------- Finish Order ---------------------------------
-  
+
   // Finish Order
   onFinishOrder(row: any) {
     this.bodyActions.emit({
