@@ -306,8 +306,7 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
-            active: option.id === activeItem?.id
+            'add-new': options.length === 1 && options[0].name === 'Add New'
           }"
           (click)="onActiveItem(option)"
         >

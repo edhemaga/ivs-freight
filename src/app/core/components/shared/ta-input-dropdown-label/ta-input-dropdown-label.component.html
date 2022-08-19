@@ -37,16 +37,21 @@
     >
       <div
         class="ta-label-option"
-        *ngFor="let label of colors; trackBy: identity"
+        *ngFor="let color of colors; trackBy: identity"
         (click)="onSelectColorLabel($event, label)"
       >
         <svg-icon
           class="ta-label-option-svg"
           src="assets/svg/common/ic_dynamic_label.svg"
-          [svgStyle]="{ fill: label?.code ? label.code : '#b7b7b7' }"
+          [svgStyle]="{ fill: color?.code ? color.code : '#b7b7b7' }"
         ></svg-icon>
         <div class="ta-label-vertical-divider"></div>
-        <p class="ta-label-option-name">{{ label.name }}</p>
+        <div class="d-flex justify-content-between flex-fill">
+          <p class="ta-label-option-name">{{ color.name }}</p>
+          <div class="ta-label-option-count">
+            {{ color.count }}
+          </div>
+        </div>
       </div>
     </div>
   </ng-template>

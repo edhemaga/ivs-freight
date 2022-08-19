@@ -3,8 +3,8 @@
   [ngClass]="{
     'hover-focus-out':
       !focusInput &&
-      !inputConfig.isDropdownLabel &&
-      !inputConfig.dropdownLabelSelected,
+      !inputConfig.dropdownLabel &&
+      !inputConfig.dropdownLabelColorSelected,
     invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -16,8 +16,8 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput &&
-      !inputConfig.dropdownLabelSelected &&
-      !inputConfig.isDropdownLabel,
+      !inputConfig.dropdownLabelColorSelected &&
+      !inputConfig.dropdownLabel,
     valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid-empty-dropdown':
       inputConfig.isRequired &&
@@ -169,7 +169,7 @@
         !inputConfig.multiSelectDropdownActive) ||
       ((inputConfig.name === 'datepicker' ||
         inputConfig.name === 'timepicker' ||
-        inputConfig.isDropdownLabel) &&
+        inputConfig.dropdownLabel) &&
         !inputConfig.incorrectInput)
     "
     [ngClass]="{
@@ -177,7 +177,7 @@
         (!inputConfig.isDisabled && focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       valid:
-        (!inputConfig.isDropdownLabel &&
+        (!inputConfig.dropdownLabel &&
           getSuperControl.value &&
           getSuperControl.valid &&
           focusInput) ||
@@ -191,7 +191,7 @@
         getSuperControl.invalid &&
         touchedInput &&
         !focusInput,
-      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
+      'dropdown-label-active': inputConfig.dropdownLabel && focusInput
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
@@ -265,9 +265,9 @@
     *ngIf="inputConfig.placeholderIcon"
     [svgStyle]="{
       fill:
-        inputConfig.isDropdownLabel || inputConfig.dropdownLabelSelected
-          ? inputConfig.dropdownLabelSelected?.code
-            ? inputConfig.dropdownLabelSelected.code
+        inputConfig.dropdownLabel || inputConfig.dropdownLabelColorSelected
+          ? inputConfig.dropdownLabelColorSelected?.code
+            ? inputConfig.dropdownLabelColorSelected.code
             : '#b7b7b7'
           : null
     }"
@@ -275,21 +275,21 @@
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'default-svg-color':
-        !inputConfig.dropdownLabelSelected && !inputConfig.isDropdownLabel,
+        !inputConfig.dropdownLabelColorSelected && !inputConfig.dropdownLabel,
       'valid-required-in':
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel &&
+        !inputConfig.dropdownLabelColorSelected &&
+        !inputConfig.dropdownLabel &&
         !inputConfig.blackInput &&
         !inputConfig.commands?.active,
       'valid-required-out':
         getSuperControl.value &&
         getSuperControl.valid &&
         !focusInput &&
-        !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel,
+        !inputConfig.dropdownLabelColorSelected &&
+        !inputConfig.dropdownLabel,
       'invalid-required-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -332,13 +332,15 @@
   <!-- Input Label Counter -->
   <p
     *ngIf="
-      inputConfig.dropdownLabelSelected && getSuperControl.value && !focusInput
+      inputConfig.dropdownLabelColorSelected &&
+      getSuperControl.value &&
+      !focusInput
     "
     [style.top]="'5px'"
     [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
     class="input-label-counter"
   >
-    {{ inputConfig.dropdownLabelSelected.count }}
+    {{ inputConfig.dropdownLabelColorSelected.count }}
   </p>
 
   <!-- Input Control -->
@@ -404,7 +406,7 @@
         inputConfig.multiSelectDropdownActive && focusInput,
       'blue-input-color':
         inputConfig.blueInputColor && !focusInput && getSuperControl.value,
-      'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
+      'dropdown-label-active': inputConfig.dropdownLabel && isVisibleCommands,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keypress)="manipulateWithInput($event)"

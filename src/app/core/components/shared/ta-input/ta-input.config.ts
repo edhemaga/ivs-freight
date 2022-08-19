@@ -70,8 +70,8 @@ export interface ITaInput {
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
 
   // Label dropdown
-  isDropdownLabel?: boolean;
-  dropdownLabelSelected?: any;
+  dropdownLabel?: boolean;
+  dropdownLabelColorSelected?: any;
 
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;

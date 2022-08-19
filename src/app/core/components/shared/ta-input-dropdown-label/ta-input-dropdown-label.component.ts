@@ -58,7 +58,8 @@ export class TaInputDropdownLabelComponent
         placeholderIcon: this.inputConfig.placeholderIcon,
         dropdownWidthClass: this.inputConfig.dropdownWidthClass,
         isDropdown: true,
-        dropdownLabelSelected: changes.selectedLabel.currentValue,
+        blackInput: true,
+        dropdownLabelColorSelected: changes.selectedLabel.currentValue,
       };
     }
   }
@@ -82,15 +83,16 @@ export class TaInputDropdownLabelComponent
 
     if (this.selectedLabel?.name !== 'Add New') {
       this.pickExistLabel.emit(this.selectedLabel);
+      this.newLabel.patchValue(this.getSuperControl.value);
     } else {
       const timeout = setTimeout(() => {
         this.inputRef.setInputCursorAtTheEnd(
           this.inputRef.input.nativeElement,
-          100
+          120
         );
         this.t2Ref.open();
         clearTimeout(timeout);
-      }, 100);
+      }, 120);
     }
   }
 
@@ -105,13 +107,13 @@ export class TaInputDropdownLabelComponent
       this.inputRef.focusInput = true;
       this.inputRef.setInputCursorAtTheEnd(
         this.inputRef.input.nativeElement,
-        100
+        30
       );
       clearTimeout(timeout);
-    }, 50);
+    }, 30);
     this.dropdownConfig = {
       ...this.dropdownConfig,
-      dropdownLabelSelected: color,
+      dropdownLabelColorSelected: color,
     };
 
     this.selectedColorLabel.emit(color);
