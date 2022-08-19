@@ -1,0 +1,227 @@
+.overlay-container{
+
+    .toast-bottom-left {
+        bottom: 12px;
+        left: 68px;
+      }
+
+    .ngx-toastr {
+        animation-name: ngx-toastr, myAnimationClass;
+        animation-delay: 0s, 288.85s;
+        animation-duration: 0.15s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+      }
+      
+    @keyframes ngx-toastr {
+        from {
+          top: 100px; 
+        }
+        to {
+          top: 0px;
+        }
+      }  
+    .toast-container{
+      width: 280px;
+      height: 48px;
+    } 
+    .toast-container .ngx-toastr {
+        position: relative;
+        overflow: hidden;
+        margin: 0 0 6px;
+        padding: 8px 8px;
+        width: 280px;
+        height: 48px;
+
+        border-radius: 3px;
+        background-position: 13px 13px;
+        background-repeat: no-repeat;
+        background-size: 17px;
+        box-shadow: none !important; 
+
+        color: #FFFFFF;
+        font-family: "Montserrat", sans-serif;
+
+        .toast-close-button{
+            top: -8px;
+            right: -4px;
+
+            font-size: 26px;
+            opacity: 0.7;
+
+            &:hover{
+                opacity: 1;
+                color: #FFFFFF;
+            }
+
+            &:active{
+              animation-name: myAnimationClass;
+              animation-delay: 0s;
+              animation-duration: 0.15s;
+              animation-iteration-count: 1; 
+              animation-fill-mode: forwards;
+            }
+        }
+
+        &:hover {
+          animation-play-state: paused; 
+        }
+      }
+
+      @keyframes myAnimationClass {
+        from {
+          opacity: 1;
+          transform: scale(1);
+          
+        }
+        to {
+          opacity: 0;
+          transform: scale(0.7);
+        }
+      }
+      
+
+
+    .toast-error {
+        background-color: #EF5350;
+        background-image: none;
+
+        &:hover{
+          background-color: #F44336;
+        }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #C3362B;
+          }
+        }
+      }
+     
+    .toast-success {
+        background-color: #26A690;
+        background-image: none;
+
+        &:hover{
+          background-color: #00967E;
+        }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #007865;
+          }
+        }
+      }  
+
+    .toast-info {
+        background-color: #AAAAAA;
+        background-image: none;
+      }
+     
+    .toast-warning {
+        background-color: #FFA726;
+        background-image: none;
+      } 
+    
+    .retryClassColor{
+      background-color: #424242 !important;
+
+      .closeToastrBtn{
+        &:hover{
+          background-color: #2E2E2E;
+        }
+      }
+
+      .toast-title{
+        color: #6F9EE0;
+        opacity: 1;
+      }
+
+      .hideClass{
+        display: none;
+      }
+
+      .loaderClass{
+        
+        /* background-image: url("../../assets/svg/truckassist-table/loading-spinner.svg"); */
+        background-image: none;
+        &:hover{
+          background-color: #424242;
+        }
+      }
+
+      .loading-spinner {
+        position: absolute;
+        right: 6px;
+        bottom: 3px;
+      }
+    }  
+
+    .toast-title{
+        font-size: 11px;
+        font-weight: bold;
+        line-height: 14px;
+        color: #FFF;
+        opacity: 0.7;
+    }
+      
+    .toast-message{
+        font-size: 14px; 
+        color: #FFFFFF;
+        line-height: 18px;
+    }
+    
+    .closeToastrBtn{
+      position: absolute;
+      top: 8px;
+      right: 8px;
+
+      height: 32px;
+      width: 32px;
+
+      background-image: url("../../assets/svg/truckassist-table/x_white.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 12.38px 12.38px;
+
+      opacity: 0.7;
+      border-radius: 2px;
+      &:hover{
+        
+        opacity: 1;
+      }
+   }
+
+   .retryButton{
+      right: 35px;
+      background-image: url("../../assets/svg/common/ic_retry_white.svg"); 
+      background-size: 13.69px 16.2px; 
+   }
+
+   .closeAnimationBtn {
+    animation-name: closeAnimationMain;
+    animation-delay: 0s;
+    animation-duration: 0.15s; 
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes closeAnimationMain {
+    from {
+      opacity: 1;
+      transform: scale(1);
+      
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.7); 
+    }
+  }
+
+  .pausedAnimation{
+    -webkit-animation-play-state:paused;
+    -moz-animation-play-state:paused;
+    -o-animation-play-state:paused; 
+    animation-play-state:paused;
+  }
+
+}
