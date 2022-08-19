@@ -281,6 +281,24 @@
               </div>
             </div>
 
+            <!-- CONTACT COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'contact' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="contact-container" *ngIf="row[column.field]">
+                <div class="contact-count">{{ row[column.field] }}</div>
+                <div class="contact-avatar"></div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
