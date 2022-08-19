@@ -1,0 +1,38 @@
+.input-edit-pen {
+  position: absolute;
+  right: 50px;
+  top: 0px;
+  display: none;
+  z-index: 10;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+
+  .input-pen {
+    svg {
+      width: 18px !important;
+      height: 18px !important;
+      overflow: visible;
+      path {
+        fill: #eeeeee;
+      }
+      rect {
+        transition: transform 0.3s;
+        transform: scale(1);
+        transform-origin: center;
+        fill: #b7b7b7;
+      }
+    }
+
+    &:hover {
+      svg {
+        overflow: visible;
+        rect {
+          transform: scale(1.2);
+          transform-origin: center;
+          transition: transform 0.3s;
+          fill: #6c6c6c;
+        }
+      }
+    }
+  }
+}
