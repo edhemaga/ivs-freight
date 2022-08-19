@@ -197,20 +197,6 @@
     (click)="toggleDropdownOptions()"
   ></svg-icon>
 
-  <!-- Dropdown Label Selected Name -->
-  <p
-    *ngIf="inputConfig.isDropdownLabel && focusInput"
-    class="ta-input-label-selected-item"
-  >
-    {{ inputConfig.dropdownLabelSelected?.name }}
-  </p>
-
-  <!-- Dropdown Label Divider -->
-  <div
-    *ngIf="inputConfig.isDropdownLabel && focusInput"
-    class="ta-input-label-vertical-divider"
-  ></div>
-
   <!-- Input Commands -->
   <div
     *ngIf="inputConfig.commands?.active && isVisibleCommands"

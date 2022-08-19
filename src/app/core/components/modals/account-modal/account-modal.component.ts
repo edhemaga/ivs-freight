@@ -16,7 +16,6 @@ import {
   CreateResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-import { AccountModalService } from './account-modal.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -53,7 +52,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private accountModalService: AccountModalService,
     private notificationService: NotificationService,
     private modalService: ModalService,
     private accountService: AccountTService,
@@ -135,7 +133,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private companyAccountColorLabels() {
-    this.accountModalService
+    this.accountService
       .companyAccountLabelsColorList()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -291,8 +289,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
 
-    this.accountModalService
-      .addCompanyLabel({
+    this.accountService
+      .addCompanyAccountLabel({
         name: data.label,
         colorId: this.selectedAccountColor.id,
       })

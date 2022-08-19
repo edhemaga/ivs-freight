@@ -47,48 +47,23 @@ export class TaInputDropdownLabelComponent
     this.superControl.valueAccessor = this;
   }
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.selectedLabel?.currentValue) {
+    if (
+      changes.selectedLabel?.previousValue !==
+      changes.selectedLabel?.currentValue
+    ) {
       this.dropdownConfig = {
         name: 'Input Dropdown',
         type: 'text',
-        label: 'Label',
-        placeholder: 'Label Name',
-        placeholderIcon: 'ic_dynamic_label',
-        dropdownWidthClass: 'w-col-455',
+        label: this.inputConfig.label,
+        placeholderIcon: this.inputConfig.placeholderIcon,
+        dropdownWidthClass: this.inputConfig.dropdownWidthClass,
         isDropdown: true,
         dropdownLabelSelected: changes.selectedLabel.currentValue,
       };
     }
   }
 
-  ngOnInit() {
-    // Dropdown Labels
-    this.getSuperControl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputConfig = {
-            ...this.inputConfig,
-            placeholder: 'Label Name',
-          };
-        } else {
-          this.inputConfig = {
-            ...this.inputConfig,
-            placeholder: null,
-          };
-        }
-      });
-
-    this.dropdownConfig = {
-      name: 'Input Dropdown',
-      type: 'text',
-      label: 'Label',
-      placeholder: 'Label Name',
-      placeholderIcon: 'ic_dynamic_label',
-      dropdownWidthClass: 'w-col-455',
-      isDropdown: true,
-    };
-  }
+  ngOnInit() {}
 
   get getSuperControl() {
     return this.superControl.control;

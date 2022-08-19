@@ -388,7 +388,7 @@ export class TaInputDropdownComponent
 
   public updateItem(): void {
     this.activeItem = {
-      id: this.inputConfig.dropdownLabelId,
+      id: 1, //this.inputConfig.dropdownLabelId,
       name: this.getSuperControl.value,
     };
 

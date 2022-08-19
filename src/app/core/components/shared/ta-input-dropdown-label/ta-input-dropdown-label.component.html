@@ -2,6 +2,7 @@
   *ngIf="selectedLabel?.id !== 7655"
   [formControl]="getSuperControl"
   [inputConfig]="dropdownConfig"
+  [template]="'labels'"
   [options]="options"
   [canAddNew]="true"
   [isOpenSomethingElse]="true"
@@ -11,14 +12,14 @@
 
 <div *ngIf="selectedLabel?.id === 7655">
   <app-ta-input
+    #t2="ngbPopover"
+    popoverClass="ta-input-dropdown-label"
     [formControl]="newLabel"
     [inputConfig]="inputConfig"
-    (commandEvent)="onLabelNameEvent($event)"
-    #t2="ngbPopover"
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
-    popoverClass="ta-input-dropdown-label"
     [container]="'body'"
+    (commandEvent)="onLabelNameEvent($event)"
   ></app-ta-input>
 
   <ng-template #taInputDropdownPopover>

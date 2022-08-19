@@ -302,19 +302,21 @@
         <div
           *ngFor="let option of options; trackBy: identity"
           class="dropdown-option labels-template"
-          (click)="onActiveItem(option)"
-        >
-          <!--    [ngClass]="{
-            'disabled': option?.disabled,
+          [ngClass]="{
+            disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            'active': option.id === activeItem?.id,
-          }" -->
-          <div class="labels-template-left-side">
-            <!-- [ngClass]="{
-              active: option.id === activeItem?.id,
-            }" -->
+            active: option.id === activeItem?.id
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <div
+            class="labels-template-left-side"
+            [ngClass]="{
+              active: option.id === activeItem?.id
+            }"
+          >
             <svg-icon
               class="labels-template-logo"
               src="assets/svg/common/ic_dynamic_label.svg"
@@ -330,7 +332,9 @@
                   | taHighlight: [{ index: 45632, text: getSuperControl.value }]
               "
             ></div>
-            <div class="labels-template-counter">{{ option.count }}</div>
+            <div class="labels-template-counter">
+              {{ option.count }}
+            </div>
           </div>
         </div>
       </div>
