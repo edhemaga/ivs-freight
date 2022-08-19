@@ -162,14 +162,35 @@ export class CustomerTableComponent
         // Multiple Delete
         if (response.length) {
           // Delete Broker List
+
           if (this.selectedTab === 'active') {
             this.brokerService
               .deleteBrokerList(response)
               .pipe(untilDestroyed(this))
               .subscribe(() => {
+
+                let brokerName = '';
+                let brokerText = 'Broker ';
+                this.viewData.map((data: any) => {
+                  response.map((r: any) => {
+                    if (data.id === r.id) {
+                      console.log(data);
+                      if ( !brokerName )
+                        {
+                          brokerName = data.businessName;
+                        }
+                      else 
+                        {
+                          brokerName = brokerName + ', ' + data.businessName;
+                          brokerText = 'Brokers ';
+                        } 
+                    }
+                  }); });
+
+
                 this.notificationService.success(
-                  'Brokers successfully deleted',
-                  'Success:'
+                  `${brokerText} "${brokerName}" deleted`,
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -177,13 +198,32 @@ export class CustomerTableComponent
           }
           // Delete Shipper List
           else {
+
+            let shipperName = '';
+            let shipText = 'Shipper ';
+             this.viewData.map((data: any) => {
+              response.map((r: any) => {
+                if (data.id === r.id) {
+                  console.log(data);
+                  if ( !shipperName )
+                    {
+                      shipperName = data.businessName;
+                    }
+                   else 
+                    {
+                      shipperName = shipperName + ', ' + data.businessName;
+                      shipText = 'Shippers ';
+                    } 
+                }
+              }); });
+
             this.shipperService
               .deleteShipperList(response)
               .pipe(untilDestroyed(this))
               .subscribe(() => {
                 this.notificationService.success(
-                  'Shippers successfully deleted',
-                  'Success:'
+                  `${shipText} "${shipperName}" deleted `,
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -532,6 +572,17 @@ export class CustomerTableComponent
   // Table Body Actions
   onTableBodyActions(event: any) {
     // Edit Call
+    let businessName = '';
+   
+    if ( !businessName )
+      {
+        businessName = event.data.businessName;
+      }
+    else 
+      {
+        businessName = businessName + ', ' + event.data.businessName;
+      }  
+      
     if (event.type === 'show-more') {
       this.backFilterQuery.pageIndex++;
 
@@ -572,16 +623,16 @@ export class CustomerTableComponent
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Broker successfully deleted',
-                'Success:'
+                `Broker "${businessName}" deleted`, 
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Broker "${businessName}" `, 
+                'Error'
               );
             },
           });
@@ -594,21 +645,23 @@ export class CustomerTableComponent
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Shipper successfully deleted',
-                'Success:'
+                `Shipper "${businessName}" deleted`,
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Shipper "${businessName}" `,
+                'Error'
               );
             },
           });
       }
     }
+
+    //businessName = '';
   }
 
   // Add Shipper Or Broker To Viewdata
