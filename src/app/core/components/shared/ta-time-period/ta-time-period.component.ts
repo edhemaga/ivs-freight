@@ -51,14 +51,14 @@ export class TaTimePeriodComponent implements OnInit {
 
   yearPeriodSwitchItems: any = [
     {
-      name: 'Weekly',
-      active: true
+      name: 'Weekly'
     },
     {
       name: 'Semi-Monthly',
     },
     {
-      name: 'Monthly'
+      name: 'Monthly',
+      active: true
     }
   ];
 

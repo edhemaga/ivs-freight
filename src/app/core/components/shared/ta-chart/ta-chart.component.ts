@@ -890,15 +890,15 @@ export class TaChartComponent implements OnInit {
         format = 'D ddd';
         indicator = moment().clone().startOf('isoWeek');
 
-        if (period == '6 Hours') {
+        if (period == '6 Hours' || period == 'Semi-Daily') {
           range =
             moment().day() == 1
               ? moment().hour() + 1
-              : moment().day() - 1 * 24 + moment().hour() + 1;
+              : (moment().day() - 1) * 24 + moment().hour() + 1;
           type = 'hours';
           format = 'hh A';
           indicator = moment().clone().startOf('isoWeek');
-          periodFormat = 6;
+          periodFormat = period == '6 Hours' ? 6 : 12;
         }
         break;
       case 'MTD':
@@ -906,19 +906,19 @@ export class TaChartComponent implements OnInit {
         type = 'days';
         format = 'D ddd';
         indicator = moment().clone().startOf('month');
-        periodFormat = period == 'Weekly' ? 7 : 0;
+        periodFormat = period == 'Weekly' ? 7 : period == 'Semi-Weekly' ? 3 : 0;
         break;
       case 'YTD':
         range = moment().month() + 1;
         type = 'M';
         format = 'MMM';
         indicator = moment().clone().startOf('year');
-        if (period == 'Weekly') {
+        if (period == 'Weekly' || period == 'Semi-Monthly') {
           range = moment().dayOfYear();
           type = 'days';
           format = 'D MMM';
           indicator = moment().clone().startOf('year');
-          periodFormat = 7;
+          periodFormat = period == 'Weekly' ? 7 : 15;
         }
         break;
       case 'Today':
@@ -949,7 +949,11 @@ export class TaChartComponent implements OnInit {
     });
 
     value.map((item, i) => {
-      item = item.format(format).toUpperCase();
+      let timePeriodCheck = moment(item).format('LT').split(' ')[1];
+      let finalFormat = format;
+      finalFormat = period == 'Semi-Daily' && timePeriodCheck == 'AM' ? 'DD MMM' : format;
+
+      item = item.format(finalFormat).toUpperCase();
       let weekDaySep = item.split(' ');
       removeIndex++;
       if (value.length > rangeIndicator && removeIndex == removeEvery) {
@@ -957,19 +961,20 @@ export class TaChartComponent implements OnInit {
         weekDaySep[0] = '';
         weekDaySep[1] = '';
       }
-      if (
+      if (ev == 'Today' ) {
+        this.chart.chart.config.data.labels.push(
+          weekDaySep[0] + ' ' + weekDaySep[1]
+        );
+      }
+      else if (
         ev == 'WTD' ||
         ev == 'MTD' ||
-        (ev == 'YTD' && period == 'Weekly')
+        (ev == 'YTD' && (period == 'Weekly' || period == 'Semi-Monthly'))
       ) {
         this.chart.chart.config.data.labels.push([
           weekDaySep[0],
           weekDaySep[1],
         ]);
-      } else if (ev == 'Today') {
-        this.chart.chart.config.data.labels.push(
-          weekDaySep[0] + ' ' + weekDaySep[1]
-        );
       } else {
         let insertData =
           weekDaySep?.length > 1 && weekDaySep[0] == 'JAN'
