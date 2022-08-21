@@ -199,9 +199,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // Delete Selected Rows
+    
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
+
+        let trailerNumber = '';
+        let trailersText = 'Trailer ';
+
         if (response.length) {
           this.trailerService
             .deleteTrailerList(response)
@@ -211,6 +216,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 response.map((r: any) => {
                   if (trailer.id === r.id) {
                     trailer.actionAnimation = 'delete';
+                    
+
+                    if ( trailerNumber == '' )
+                      {
+                        trailerNumber = trailer.trailerNumber
+                      }
+                    else 
+                      {
+                        trailerNumber = trailerNumber + ', ' +  trailer.trailerNumber;
+                        trailersText = 'Trailers ';
+                      }
                   }
                 });
 
@@ -220,10 +236,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.updateDataCount();
 
               this.notificationService.success(
-                'Trailers successfully deleted',
-                'Success:'
+                `${trailersText} "${trailerNumber}" deleted`,
+                'Success'
               );
-
+              
+              trailerNumber = '';
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
 
@@ -243,11 +260,13 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
 
+          this.backFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.trailerBackFilter(searchEvent.query);
+              this.trailerBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendTrailerData();
             }
@@ -443,16 +462,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  trailerBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  trailerBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.trailerService
       .getTrailers(
         filter.active,
@@ -465,12 +488,27 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchThree
       )
       .pipe(untilDestroyed(this))
-      .subscribe((trucks: TrailerListResponse) => {
-        this.viewData = trucks.pagination.data;
+      .subscribe((trailer: TrailerListResponse) => {
+        if (!isShowMore) {
+          this.viewData = trailer.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapTrailerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapTrailerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              trailer.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          trailer.pagination.data.map((data: any) => {
+            newData.push(this.mapTrailerData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -481,6 +519,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendTrailerData();
     } else if (event.action === 'view-mode') {
@@ -493,6 +533,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
 
         this.trailerBackFilter(this.backFilterQuery);
       } else {
@@ -502,6 +543,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    let trailerNum = event.data.trailerNumber;  
+
     const mappedEvent = {
       ...event,
       data: {
@@ -510,7 +553,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
       },
     };
+
     switch (event.type) {
+      case 'show-more': {
+        this.backFilterQuery.pageIndex++;
+
+        this.trailerBackFilter(this.backFilterQuery, false, true);
+        break;
+      }
       case 'edit-trailer': {
         this.modalService.openModal(
           TrailerModalComponent,
@@ -549,6 +599,59 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'activate-item': {
+        this.trailerService
+          .changeTrailerStatus(event.id, this.selectedTab)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                `Trailer "${trailerNum}" Activated`,
+                'Success'
+              );
+
+              this.sendTrailerData();
+            },
+            error: () => {
+              this.notificationService.error(
+                `Trailer with id: ${event.id}, status couldn't be changed`,
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      case 'delete-item': {
+        this.trailerService
+          .deleteTrailerById(event.id, this.selectedTab)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                `Trailer "${trailerNum}" deleted`,
+                'Success'
+              );
+
+              this.viewData = this.viewData.map((trailer: any) => {
+                if (trailer.id === event.id) {
+                  trailer.actionAnimation = 'delete';
+                }
+
+                return trailer;
+              });
+
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+
+                clearInterval(inetval);
+              }, 1000);
+            },
+            error: () => {
+              this.notificationService.error(
+                `Failed to delete Trailer "${trailerNum}"`,
+                'Error'
+              );
+            },
+          });
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },

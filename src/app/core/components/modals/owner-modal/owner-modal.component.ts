@@ -256,34 +256,32 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Owner successfully updated.',
-            'Success:'
+            `Changes saved for "${bussinesName}"`,
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Owner can't be updated.", 'Error:');
+          this.notificationService.error(`Failed to save changes for "${bussinesName}"`, 'Error');
         },
       });
   }
 
   private deleteOwnerById(id: number) {
+    let bussinesName = this.ownerForm.get('bussinesName')?.value;
     this.ownerModalService
       .deleteOwnerById(id, this.editData.selectedTab)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            'Owner successfully deleted.',
-            'Success:'
-          );
+          this.notificationService.success(`"${bussinesName}" deleted` , 'Success');
           this.modalService.setModalSpinner({
             action: 'delete',
             status: false,
           });
         },
         error: () => {
-          this.notificationService.error("Owner can't be deleted.", 'Error:');
+          this.notificationService.error(`Failed to delete "${bussinesName}"`, 'Error');
         },
       });
   }
@@ -316,13 +314,13 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Owner successfully added.',
-            'Success:'
+            `"${bussinesName}" added`,
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Owner can't be added.", 'Error:');
+          this.notificationService.error(`Failed to add "${bussinesName}"`, 'Error');
         },
       });
   }
@@ -357,7 +355,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error("Owner can't be loaded.", 'Error:');
+          this.notificationService.error("Owner can't be loaded", 'Error');
         },
       });
   }
@@ -372,8 +370,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error(
-            "Owner's dropdowns can't be loaded.",
-            'Error:'
+            "Owner's dropdowns can't be loaded",
+            'Error'
           );
         },
       });

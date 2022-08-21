@@ -23,7 +23,7 @@ export function getToolsAccountsColumnDefinition() {
       resizable: false,
     },
     {
-      ngTemplate: 'text',
+      ngTemplate: '',
       title: 'Name',
       field: 'name',
       name: 'Name',
@@ -97,7 +97,7 @@ export function getToolsAccountsColumnDefinition() {
       imageHover: null,
     },
     {
-      ngTemplate: 'password',
+      ngTemplate: '',
       title: 'Password',
       field: '',
       name: 'Password',
@@ -121,7 +121,7 @@ export function getToolsAccountsColumnDefinition() {
       password: true,
     },
     {
-      ngTemplate: 'label',
+      ngTemplate: '',
       title: 'Label',
       field: 'labelId',
       name: 'Label',
@@ -133,7 +133,7 @@ export function getToolsAccountsColumnDefinition() {
       filter: '',
       isNumeric: true,
       index: 5,
-      sortable: true,
+      sortable: false,
       isActionColumn: false,
       isSelectColumn: false,
       avatar: null,

@@ -188,7 +188,7 @@ export function getTrailerColumnDefinition() {
     },
     /*  ngTemplate: 'svg', */
     {
-      ngTemplate: 'text',
+      ngTemplate: '',
       title: 'Type',
       field: 'svgIcon',
       name: 'Type',

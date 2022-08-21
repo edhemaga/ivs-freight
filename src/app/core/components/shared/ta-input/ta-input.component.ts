@@ -203,6 +203,9 @@ export class TaInputComponent
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
+      }else{
+        this.input.nativeElement.value = obj;
+        this.resetDateTimeInputs();
       }
     } else {
       this.input.nativeElement.value = obj;
@@ -360,14 +363,16 @@ export class TaInputComponent
   public onEditInput(event: any) {}
 
   public resetDateTimeInputs() {
-    if (this.inputConfig.name === 'datepicker') {
-      this.span1.nativeElement.innerHTML = 'mm';
-      this.span2.nativeElement.innerHTML = 'dd';
-      this.span3.nativeElement.innerHTML = 'yy';
-    } else if (this.inputConfig.name === 'timepicker') {
-      this.span1.nativeElement.innerHTML = 'HH';
-      this.span2.nativeElement.innerHTML = 'MM';
-      this.span3.nativeElement.innerHTML = 'AM';
+    if(this.span1){
+      if (this.inputConfig.name === 'datepicker') {
+        this.span1.nativeElement.innerHTML = 'mm';
+        this.span2.nativeElement.innerHTML = 'dd';
+        this.span3.nativeElement.innerHTML = 'yy';
+      } else if (this.inputConfig.name === 'timepicker') {
+        this.span1.nativeElement.innerHTML = 'HH';
+        this.span2.nativeElement.innerHTML = 'MM';
+        this.span3.nativeElement.innerHTML = 'AM';
+      }
     }
 
     this.focusInput = false;
