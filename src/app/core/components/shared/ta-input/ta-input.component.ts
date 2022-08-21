@@ -80,6 +80,7 @@ export class TaInputComponent
 
   // Date Timer
   private dateTimeMainTimer: any;
+  private preventBlur: boolean = false;
 
   // Capslock input
   public capsLockOn: boolean = false;
@@ -219,8 +220,6 @@ export class TaInputComponent
   public setDisabledState?(isDisabled: boolean): void {
     this.inputConfig.isDisabled = isDisabled;
   }
-
-  preventBlur: boolean = false;
 
   public onFocus(): void {
     // Password
