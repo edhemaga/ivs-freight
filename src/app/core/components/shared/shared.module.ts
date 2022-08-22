@@ -107,6 +107,7 @@ import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
+import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -195,7 +196,8 @@ export function playerFactory() {
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
     TaCopyComponent,
-    AutoclosePopoverComponent
+    AutoclosePopoverComponent,
+    CustomToastMessagesComponent
   ],
   imports: [
     CommonModule,
