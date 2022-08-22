@@ -1,6 +1,8 @@
 <!-- <overlay-scrollbars></overlay-scrollbars> -->
 
-<app-custom-scrollbar>
+<app-custom-scrollbar
+  [testCount]="seconds"
+>
   <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
   <div id="top" class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}">
     <router-outlet></router-outlet>
