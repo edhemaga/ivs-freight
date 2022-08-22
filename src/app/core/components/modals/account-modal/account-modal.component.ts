@@ -41,8 +41,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public colors: any[] = [];
   public selectedAccountColor: any;
 
-  public newlyAccountLabelId: any = null;
-
   public isDirty: boolean;
 
   constructor(
@@ -181,9 +179,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.newlyAccountLabelId
-        ? this.newlyAccountLabelId
-        : this.selectedAccountLabel
+      companyAccountLabelId: this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -212,9 +208,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.newlyAccountLabelId
-        ? this.newlyAccountLabelId
-        : this.selectedAccountLabel
+      companyAccountLabelId: this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
@@ -339,11 +333,15 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: (res: CreateResponse) => {
-              this.newlyAccountLabelId = res.id;
               this.notificationService.success(
                 'Successfully add account label.',
                 'Success:'
               );
+
+              this.selectedAccountLabel = {
+                ...this.selectedAccountLabel,
+                id: res.id,
+              };
 
               this.accountService
                 .companyAccountModal()
