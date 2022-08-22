@@ -929,6 +929,16 @@ export class TaChartComponent implements OnInit {
         rangeIndicator = 10;
         periodFormat = period == '3 Hours' ? 3 : period == '6 Hours' ? 6 : 0;
         break;
+      case 'Custom Set':
+        const momentStart = moment(period[0], 'MM-DD-YYYY');
+        const momentEnd = moment(period[1], 'MM-DD-YYYY');
+        type = 'days';
+        format = 'D MMM';
+        const fromDate = moment(period[0])
+        const toDate = moment(period[1])
+        const diff = toDate.diff(fromDate, type)
+        indicator = fromDate;
+        range = diff + 1;
     }
 
     for (let a = 0; a < range; a++) {
@@ -969,6 +979,7 @@ export class TaChartComponent implements OnInit {
       else if (
         ev == 'WTD' ||
         ev == 'MTD' ||
+        ev == 'Custom Set' ||
         (ev == 'YTD' && (period == 'Weekly' || period == 'Semi-Monthly'))
       ) {
         this.chart.chart.config.data.labels.push([

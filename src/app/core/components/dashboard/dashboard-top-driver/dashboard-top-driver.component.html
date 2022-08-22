@@ -33,8 +33,10 @@
       <div class="dashboard-top-driver-header-toolbar-items-holder">
         <div class="dashboard-top-driver-header-toolbar-switch-right">
           <app-ta-tab-switch
+            #tabSwitch
             [tabs]="driverTopSwitch"
             (switchClicked)="changeDriverSwitchTabs($event)"
+            (saveCustomRange)="saveCustomRange($event)"
           >
           </app-ta-tab-switch>
         </div>

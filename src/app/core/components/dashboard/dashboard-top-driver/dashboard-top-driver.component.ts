@@ -9,6 +9,7 @@ export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
   @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
   @ViewChild('timePeriod', {static: false}) public timePeriod: any;
+  @ViewChild('tabSwitch', {static: false}) public tabSwitch: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
@@ -332,7 +333,13 @@ export class DashboardTopDriverComponent implements OnInit {
   changeDriverSwitchTabs(ev){
     this.timePeriod.changeTimePeriod(ev['name']);
     this.currentSwitchTab = ev['name'];
+    if ( ev['name'] == 'Custom' ) { return false; }
     this.topDriverBarChart.updateTime(ev['name']);
+  }
+
+  saveCustomRange(ev){
+    this.timePeriod.changeCustomTime(ev);
+    this.topDriverBarChart.updateTime('Custom Set', ev);
   }
 
   removeDriverFromList(e: Event,indx, item){

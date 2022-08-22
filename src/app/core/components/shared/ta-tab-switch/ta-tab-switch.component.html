@@ -53,7 +53,7 @@
                 <div class="custom-popover-border"></div>
                 <div class="custom-popover-button-holder">
                     <div class="custom-popover-button-clear" [class.active]="data1Valid || data2Valid" (click)="clearFields()">Clear All</div>
-                    <div class="custom-popover-button-clear custom-popover-button-set" [class.active]="data1Valid && data2Valid">Set</div>
+                    <div class="custom-popover-button-clear custom-popover-button-set" [class.active]="data1Valid && data2Valid" (click)="setCustomRange($event)">Set</div>
                 </div>
             </div>
         </div>

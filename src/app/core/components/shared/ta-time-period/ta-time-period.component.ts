@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import moment from 'moment';
 
 @Component({
   selector: 'app-ta-time-period',
@@ -75,6 +76,45 @@ export class TaTimePeriodComponent implements OnInit {
     }
   ];
 
+  monthHalfPeriodSwitchItems: any = [
+    {
+      name: 'Daily',
+      active: true
+    },
+    {
+      name: 'Semi-Weekly',
+    },
+    {
+      name: 'Weekly'
+    }
+  ];
+
+  oneYearPeriodSwitchItems: any = [
+    {
+      name: 'Weekly'
+    },
+    {
+      name: 'Monthly',
+      active: true
+    },
+    {
+      name: 'Quarterly'
+    }
+  ];
+
+  moreYearPeriodSwitchItems: any = [
+    {
+      name: 'Monthly',
+      active: true
+    },
+    {
+      name: 'Quarterly'
+    },
+    {
+      name: 'Yearly'
+    }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
@@ -115,7 +155,38 @@ export class TaTimePeriodComponent implements OnInit {
       if( item.active ){
         this.periodTitle = item.name;
       }
-    })
+    });
+  }
+
+  changeCustomTime(period){
+    const fromDate = moment(period[0]);
+    const toDate = moment(period[1]);
+    const diff = toDate.diff(fromDate, 'days') + 1;
+
+    if(diff <= 2){
+      this.periodSwitchItems = this.todayPeriodSwitchItems;
+    }
+    else if(diff > 2 && diff <= 14){
+      this.periodSwitchItems = this.weekPeriodSwitchItems;
+    }
+    else if(diff > 14 && diff <= 60){
+      this.periodSwitchItems = this.monthHalfPeriodSwitchItems;
+    }
+    else if(diff > 60 && diff <= 366){
+      this.periodSwitchItems = this.yearPeriodSwitchItems;
+    }
+    else if(diff > 366 && diff <= 732){
+      this.periodSwitchItems = this.oneYearPeriodSwitchItems;
+    }
+    else if(diff > 732){
+      this.periodSwitchItems = this.moreYearPeriodSwitchItems;
+    }
+
+    this.periodSwitchItems.map((item) => {
+      if( item.active ){
+        this.periodTitle = item.name;
+      }
+    });
   }
 
 }
