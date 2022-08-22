@@ -368,12 +368,12 @@ export class TaInputDropdownComponent
         }, 500);
         return;
       } else {
-        this.selectedItem.emit(option);
-      }
-
-      if (this.inputConfig.dropdownLabel) {
-        this.selectedLabelMode.emit('Color');
-        this.inputConfig.commands.active = true;
+        if (this.inputConfig.dropdownLabel) {
+          this.selectedLabelMode.emit('Color');
+          this.inputConfig.commands.active = true;
+        } else {
+          this.selectedItem.emit(option);
+        }
       }
     } else {
       if (!this.inputConfig.dropdownLabel) {
@@ -437,16 +437,19 @@ export class TaInputDropdownComponent
   }
 
   public addNewItem(): void {
-    const newItem = {
+    this.activeItem = {
       id: uuidv4(),
       name: this.getSuperControl.value,
     };
-
-    this.originalOptions = [...this.originalOptions, newItem];
+    console.log('ADD NEW ITEM ', { data: this.activeItem, action: 'new' });
+    this.originalOptions = [...this.originalOptions, this.activeItem];
     this.options = this.originalOptions;
-    this.activeItem = newItem;
-    this.saveItem.emit({ data: newItem, action: 'new' });
-    this.selectedLabelMode.emit('Label');
+
+    this.saveItem.emit({ data: this.activeItem, action: 'new' });
+
+    if (this.inputConfig.dropdownLabel) {
+      this.selectedLabelMode.emit('Label');
+    }
   }
 
   public updateItem(): void {

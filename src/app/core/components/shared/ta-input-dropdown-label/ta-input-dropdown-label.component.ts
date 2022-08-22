@@ -76,6 +76,10 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     if (event.action === 'edit') {
       this.saveLabel.emit({ data: event.data, action: event.action });
     }
+
+    if (event.action === 'new') {
+      this.saveLabel.emit({ data: event.data, action: event.action });
+    }
   }
 
   public identity(index: number, item: any): number {

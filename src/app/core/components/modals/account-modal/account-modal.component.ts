@@ -312,102 +312,68 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           });
         break;
       }
+      case 'new': {
+        console.log(data);
+        this.selectedAccountLabel = {
+          id: data.data.id,
+          name: data.data.name,
+          code: this.selectedAccountColor
+            ? this.selectedAccountColor.code
+            : this.colors[this.colors.length - 1].code,
+          count: 0,
+          colorId: this.selectedAccountColor
+            ? this.selectedAccountColor.id
+            : this.colors[this.colors.length - 1].id,
+          color: this.selectedAccountColor
+            ? this.selectedAccountColor.name
+            : this.colors[this.colors.length - 1].name,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        this.accountService
+          .addCompanyAccountLabel({
+            name: this.selectedAccountLabel.name,
+            colorId: this.selectedAccountLabel.colorId,
+          })
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: CreateResponse) => {
+              this.newlyAccountLabelId = res.id;
+              this.notificationService.success(
+                'Successfully add account label.',
+                'Success:'
+              );
+
+              this.accountService
+                .companyAccountModal()
+                .pipe(untilDestroyed(this))
+                .subscribe({
+                  next: (res: CompanyAccountModalResponse) => {
+                    this.accountLabels = res.labels;
+                    console.log(this.accountLabels);
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get account label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't add account label.",
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
       default: {
         break;
       }
     }
-    // switch (data.action) {
-    //   case 'new': {
-    //     this.selectedAccountLabel = {
-    //       id: uuidv4(),
-    //       name: data.data.name,
-    //       code: this.selectedAccountColor.code,
-    //       count: this.selectedAccountColor.count,
-    //       createdAt: new Date().toISOString(),
-    //       updatedAt: new Date().toISOString(),
-    //     };
-
-    //     this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
-
-    //     this.accountService
-    //       .addCompanyAccountLabel({
-    //         name: this.selectedAccountLabel.name,
-    //         colorId: this.selectedAccountColor.id,
-    //       })
-    //       .pipe(untilDestroyed(this))
-    //       .subscribe({
-    //         next: (res: CreateResponse) => {
-    //           this.newlyAccountLabelId = res.id;
-    //           this.notificationService.success(
-    //             'Successfully add account label.',
-    //             'Success:'
-    //           );
-    //         },
-    //         error: () => {
-    //           this.notificationService.error(
-    //             "Can't add account label.",
-    //             'Error:'
-    //           );
-    //         },
-    //       });
-    //     break;
-    //   }
-    //   case 'edit': {
-    //     this.selectedAccountLabel = {
-    //       id: data.data.id,
-    //       name: data.data.name,
-    //       code: this.selectedAccountColor.code,
-    //       count: this.selectedAccountColor.count,
-    //       createdAt: new Date().toISOString(),
-    //       updatedAt: new Date().toISOString(),
-    //     };
-    //     const updatedIndex = this.accountLabels.findIndex(
-    //       (item) => item.id === data.data.id
-    //     );
-    //     this.accountLabels[updatedIndex] = this.selectedAccountLabel;
-
-    //     this.accountService
-    //       .updateCompanyAccountLabel({
-    //         id: data.data.id,
-    //         name: data.data.name,
-    //         colorId: this.selectedAccountColor.id,
-    //       })
-    //       .pipe(untilDestroyed(this))
-    //       .subscribe({
-    //         next: () => {
-    //           this.notificationService.success(
-    //             'Successfuly update label',
-    //             'Success'
-    //           );
-
-    //           this.accountService
-    //             .companyAccountModal()
-    //             .pipe(untilDestroyed(this))
-    //             .subscribe({
-    //               next: (res: CompanyAccountModalResponse) => {
-    //                 this.accountLabels = res.labels;
-    //               },
-    //               error: () => {
-    //                 this.notificationService.error(
-    //                   "Can't get account label list.",
-    //                   'Error'
-    //                 );
-    //               },
-    //             });
-    //         },
-    //         error: () => {
-    //           this.notificationService.error(
-    //             "Can't update exist label",
-    //             'Error'
-    //           );
-    //         },
-    //       });
-    //     break;
-    //   }
-    //   default: {
-    //     break;
-    //   }
-    // }
   }
 
   ngOnDestroy(): void {}
