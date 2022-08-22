@@ -129,9 +129,6 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
-      console.log('ngOnChanges viewData');
-      console.log(changes);
-
       clearTimeout(this.viewDataTimeOut);
 
       this.viewData = changes.viewData.currentValue;
