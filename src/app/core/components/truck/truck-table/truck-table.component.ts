@@ -264,12 +264,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
 
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.truckBackFilter(searchEvent.query);
+              this.truckBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendTruckData();
             }
@@ -296,7 +297,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -394,7 +395,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setTruckData(td);
   }
 
-  private getGridColumns(stateName: string, resetColumns: boolean): any[] {
+  getGridColumns(stateName: string, resetColumns: boolean): any[] {
     const userState: any = JSON.parse(
       localStorage.getItem(stateName + '_user_columns_state')
     );
@@ -482,16 +483,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  truckBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  truckBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.truckService
       .getTruckList(
         filter.active,
@@ -505,11 +510,26 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .pipe(untilDestroyed(this))
       .subscribe((trucks: TruckListResponse) => {
-        this.viewData = trucks.pagination.data;
+        if (!isShowMore) {
+          this.viewData = trucks.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapTruckData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapTruckData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              trucks.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          trucks.pagination.data.map((data: any) => {
+            newData.push(this.mapTruckData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -518,6 +538,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(TruckModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendTruckData();
     } else if (event.action === 'view-mode') {
@@ -529,6 +551,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (event.action === 'sort') {
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 
         this.truckBackFilter(this.backFilterQuery);
@@ -547,7 +570,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
       },
     };
+    let truckNum = event.data?.truckNumber;
     switch (event.type) {
+      case 'show-more': {
+        this.backFilterQuery.pageIndex++;
+        this.truckBackFilter(this.backFilterQuery, false, true);
+        break;
+      }
       case 'edit-truck': {
         this.modalService.openModal(
           TruckModalComponent,
@@ -611,30 +640,13 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: () => {
-
-              let truckNum = '';
-
-              this.viewData = this.viewData.map((truck: any) => {
-                if (truck.id === event.id) {
-                  truck.actionAnimation = 'delete';
-                  truckNum = truck.truckNumber;
-                }
-
-                return truck;
-              });
-
               this.notificationService.success(
                 `Truck "${truckNum}" deleted`,
                 'Success'
               );
-
-              
-
               this.updateDataCount();
-
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
-
                 clearInterval(inetval);
               }, 1000);
             },
@@ -645,6 +657,29 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
               );
             },
           });
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'truck',
+            type: event.data.status === 1 ? 'deactivate' : 'activate',
+            svg: true,
+          }
+        );
+        break;
+      }
+      case 'delete-item': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            ...mappedEvent,
+            template: 'truck',
+            type: 'delete',
+            svg: true,
+          }
+        );
         break;
       }
       default: {
@@ -653,7 +688,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private changeTruckStatus(id: number) {
+  changeTruckStatus(id: number) {
     this.truckService
       .changeTruckStatus(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -673,7 +708,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private deleteTruckById(id: number) {
+  deleteTruckById(id: number) {
     this.truckService
       .deleteTruckById(id, this.selectedTab)
       .pipe(untilDestroyed(this))

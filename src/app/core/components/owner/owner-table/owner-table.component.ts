@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { GetOwnerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -34,6 +35,17 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   resizeObserver: ResizeObserver;
   public ownerActive: OwnerActiveState[] = [];
   public ownerInactive: OwnerInactiveState[] = [];
+  backFilterQuery = {
+    active: 1,
+    companyOwnerId: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -92,19 +104,18 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
-          /* const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.ownerBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendOwnerData();
             }
-          } */
+          }
         }
       });
 
@@ -362,11 +373,66 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  // Owner Back Filter
+  ownerBackFilter(
+    filter: {
+      active: number;
+      companyOwnerId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
+    this.ownerService
+      .getOwner(
+        filter.active,
+        filter.companyOwnerId,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((owners: GetOwnerListResponse) => {
+        if (!isShowMore) {
+          this.viewData = owners.pagination.data;
+
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapOwnerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              owners.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          owners.pagination.data.map((data: any) => {
+            newData.push(this.mapOwnerData(data));
+          });
+
+          this.viewData = [...newData];
+        }
+      });
+  }
+
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(OwnerModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendOwnerData();
     } else if (event.action === 'view-mode') {
@@ -377,10 +443,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        /*   this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 
-        this.driverBackFilter(this.backFilterQuery); */
+        this.ownerBackFilter(this.backFilterQuery);
       } else {
         this.sendOwnerData();
       }
@@ -388,7 +455,11 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onTableBodyActions(event: any) {
-    if (event.type === 'edit-owner') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.ownerBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-owner') {
       this.modalService.openModal(
         OwnerModalComponent,
         { size: 'small' },

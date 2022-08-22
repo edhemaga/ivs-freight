@@ -2,7 +2,7 @@
 
     .toast-bottom-left {
         bottom: 12px;
-        left: 60px;
+        left: 68px;
       }
 
     .ngx-toastr {
@@ -21,15 +21,19 @@
           top: 0px;
         }
       }  
-
+    .toast-container{
+      width: 280px;
+      height: 48px;
+    } 
     .toast-container .ngx-toastr {
         position: relative;
         overflow: hidden;
         margin: 0 0 6px;
-        padding: 12px 12px;
-        width: 540px;
+        padding: 8px 8px;
+        width: 280px;
+        height: 48px;
 
-        border-radius: 5px;
+        border-radius: 3px;
         background-position: 13px 13px;
         background-repeat: no-repeat;
         background-size: 17px;
@@ -80,55 +84,117 @@
 
     .toast-error {
         background-color: #EF5350;
-        background-image: url("../../assets/svg/common/ic_danger_white.svg");
+        background-image: none;
+
+        &:hover{
+          background-color: #F44336;
+        }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #C3362B;
+          }
+        }
       }
      
     .toast-success {
         background-color: #26A690;
-        background-image: url("../../assets/svg/common/confirm-circle_white.svg");
+        background-image: none;
+
+        &:hover{
+          background-color: #00967E;
+        }
+
+        .closeToastrBtn{
+          &:hover{
+            background-color: #007865;
+          }
+        }
       }  
 
     .toast-info {
         background-color: #AAAAAA;
-        background-image: url("../../assets/svg/common/ic_info_white.svg");
+        background-image: none;
       }
      
     .toast-warning {
         background-color: #FFA726;
-        background-image: url("../../assets/svg/common/ic_clock_white.svg");
+        background-image: none;
       } 
-     
-    .toast-title{
-        padding-left: 24px;
-        padding-bottom: 9px;
+    
+    .retryClassColor{
+      background-color: #424242 !important;
 
-        font-size: 14px;
+      .closeToastrBtn{
+        &:hover{
+          background-color: #2E2E2E;
+        }
+      }
+
+      .toast-title{
+        color: #6F9EE0;
+        opacity: 1;
+      }
+
+      .hideClass{
+        display: none;
+      }
+
+      .loaderClass{
+        
+        /* background-image: url("../../assets/svg/truckassist-table/loading-spinner.svg"); */
+        background-image: none;
+        &:hover{
+          background-color: #424242;
+        }
+      }
+
+      .loading-spinner {
+        position: absolute;
+        right: 6px;
+        bottom: 3px;
+      }
+    }  
+
+    .toast-title{
+        font-size: 11px;
         font-weight: bold;
+        line-height: 14px;
+        color: #FFF;
+        opacity: 0.7;
     }
       
     .toast-message{
-        
         font-size: 14px; 
+        color: #FFFFFF;
+        line-height: 18px;
     }
     
     .closeToastrBtn{
       position: absolute;
-      top: 8.5px;
-      right: 8.5px;
+      top: 8px;
+      right: 8px;
 
-      height: 11px;
-      width: 11px;
+      height: 32px;
+      width: 32px;
 
       background-image: url("../../assets/svg/truckassist-table/x_white.svg");
       background-position: center;
       background-repeat: no-repeat;
-      background-size: 100%;
+      background-size: 12.38px 12.38px;
 
       opacity: 0.7;
-
+      border-radius: 2px;
       &:hover{
+        
         opacity: 1;
       }
+   }
+
+   .retryButton{
+      right: 35px;
+      background-image: url("../../assets/svg/common/ic_retry_white.svg"); 
+      background-size: 13.69px 16.2px; 
    }
 
    .closeAnimationBtn {

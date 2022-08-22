@@ -1,8 +1,5 @@
 <!-- <overlay-scrollbars></overlay-scrollbars> -->
-
-<app-custom-scrollbar
-  [testCount]="seconds"
->
+<app-custom-scrollbar>
   <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
   <div id="top" class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}">
     <router-outlet></router-outlet>
@@ -22,5 +19,4 @@
     <br />
     <h4>Minimum screen width requirement: 1280px.</h4>
   </div>
-
 </app-custom-scrollbar>
