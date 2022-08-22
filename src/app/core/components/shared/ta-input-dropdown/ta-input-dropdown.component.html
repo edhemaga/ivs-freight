@@ -103,6 +103,13 @@
     [placement]="['bottom-left']"
     [container]="'body'"
     [incorrectValue]="incorrectValue"
+    [selectedDropdownLabelColor]="
+      inputConfig.dropdownLabel
+        ? activeItemColor
+          ? activeItemColor
+          : activeItem
+        : null
+    "
     (commandEvent)="commandEvent($event)"
     (incorrectEvent)="onIncorrectInput($event)"
   ></app-ta-input>
@@ -173,7 +180,8 @@
             [ngClass]="{
               active: option.id === activeItem?.id,
               'hide-hover-icons':
-                inputConfig.customClass === 'truck-trailer-dropdown'
+                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                !['No Results', 'Add New'].includes(option.name)
             }"
             [src]="option.logoName"
           ></svg-icon>
@@ -182,7 +190,8 @@
             [ngClass]="{
               'truck-text': option.subFolder === 'trucks',
               'move-hover-text':
-                inputConfig.customClass === 'truck-trailer-dropdown'
+                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                !['No Results', 'Add New'].includes(option.name)
             }"
             [innerHtml]="
               option.name
@@ -306,15 +315,15 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New'
+            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'active-label':
+              option.id === activeItem?.id && labelMode === 'Label'
           }"
           (click)="onActiveItem(option)"
         >
           <div
+            *ngIf="!['No Results', 'Add New'].includes(option.name)"
             class="labels-template-left-side"
-            [ngClass]="{
-              active: option.id === activeItem?.id
-            }"
           >
             <svg-icon
               class="labels-template-logo"
@@ -326,12 +335,18 @@
           <div class="labels-template-right-side">
             <div
               class="labels-template-text"
+              [ngClass]="{
+                'add-new': options.length === 1 && options[0].name === 'Add New'
+              }"
               [innerHtml]="
                 option.name
                   | taHighlight: [{ index: 45632, text: getSuperControl.value }]
               "
             ></div>
-            <div class="labels-template-counter">
+            <div
+              *ngIf="!['No Results', 'Add New'].includes(option.name)"
+              class="labels-template-counter"
+            >
               {{ option.count }}
             </div>
           </div>

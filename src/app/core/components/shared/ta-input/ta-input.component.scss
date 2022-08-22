@@ -42,6 +42,14 @@
     }
   }
 
+  &.dropdown-label-active {
+    &:hover {
+      .input-edit-pen {
+        display: inline-block;
+      }
+    }
+  }
+
   &.invalid {
     &:hover {
       transition: all 0.3s ease-in-out;

@@ -37,15 +37,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   public accountLabels: any[] = [];
   public selectedAccountLabel: any = null;
-  public sendAccountLabelId: any = null;
 
   public colors: any[] = [];
-  public selectedAccountColor: any = {
-    id: 1,
-    name: 'No Color',
-    code: null,
-    count: 0,
-  };
+  public selectedAccountColor: any;
+
+  public newlyAccountLabelId: any = null;
 
   public isDirty: boolean;
 
@@ -128,6 +124,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: CompanyAccountModalResponse) => {
           this.accountLabels = res.labels;
+          console.log('INIT ACCOUNT MODAL: ', this.accountLabels);
         },
       });
   }
@@ -139,6 +136,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: Array<AccountColorResponse>) => {
           this.colors = res;
+          console.log('INIT ACCOUNT MODAL COLORS: ', this.colors);
         },
         error: () => {
           this.notificationService.error(
@@ -166,6 +164,11 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedAccountLabel = res.companyAccountLabel;
+          this.selectedAccountColor = {
+            id: res.companyAccountLabel.colorId,
+            name: res.companyAccountLabel.color,
+            code: res.companyAccountLabel.code,
+          };
         },
         error: (err) => {
           this.notificationService.error("Can't get account.", 'Error:');
@@ -178,8 +181,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.sendAccountLabelId
-        ? this.sendAccountLabelId
+      companyAccountLabelId: this.newlyAccountLabelId
+        ? this.newlyAccountLabelId
         : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
@@ -209,8 +212,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.sendAccountLabelId
-        ? this.sendAccountLabelId
+      companyAccountLabelId: this.newlyAccountLabelId
+        ? this.newlyAccountLabelId
         : this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
@@ -265,48 +268,146 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     this.selectedAccountColor = event;
   }
 
-  public onSaveLabel(data: { action: string; label: string }) {
-    if (data.action === 'cancel') {
-      this.selectedAccountLabel = {
-        name: data.label,
-        code: this.selectedAccountColor.code,
-        count: this.selectedAccountColor.count
-          ? this.selectedAccountColor.count
-          : null,
-        createdAt: null,
-        updatedAt: null,
-      };
-      return;
+  public onSaveLabel(data: { data: any; action: string }) {
+    console.log('SAVE LABEL: ', data);
+    switch (data.action) {
+      case 'edit': {
+        this.selectedAccountLabel = data.data;
+        this.accountService
+          .updateCompanyAccountLabel({
+            id: this.selectedAccountLabel.id,
+            name: this.selectedAccountLabel.name,
+            colorId: this.selectedAccountLabel.colorId,
+          })
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly update label',
+                'Success'
+              );
+
+              this.accountService
+                .companyAccountModal()
+                .pipe(untilDestroyed(this))
+                .subscribe({
+                  next: (res: CompanyAccountModalResponse) => {
+                    this.accountLabels = res.labels;
+                    console.log(this.accountLabels);
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get account label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't update exist label",
+                'Error'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
     }
-    this.selectedAccountLabel = {
-      id: uuidv4(),
-      name: data.label,
-      code: this.selectedAccountColor.code,
-      count: this.selectedAccountColor.count,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
+    // switch (data.action) {
+    //   case 'new': {
+    //     this.selectedAccountLabel = {
+    //       id: uuidv4(),
+    //       name: data.data.name,
+    //       code: this.selectedAccountColor.code,
+    //       count: this.selectedAccountColor.count,
+    //       createdAt: new Date().toISOString(),
+    //       updatedAt: new Date().toISOString(),
+    //     };
 
-    this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
+    //     this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
 
-    this.accountService
-      .addCompanyAccountLabel({
-        name: data.label,
-        colorId: this.selectedAccountColor.id,
-      })
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: CreateResponse) => {
-          this.sendAccountLabelId = res.id;
-          this.notificationService.success(
-            'Successfully add account label.',
-            'Success:'
-          );
-        },
-        error: () => {
-          this.notificationService.error("Can't add account label.", 'Error:');
-        },
-      });
+    //     this.accountService
+    //       .addCompanyAccountLabel({
+    //         name: this.selectedAccountLabel.name,
+    //         colorId: this.selectedAccountColor.id,
+    //       })
+    //       .pipe(untilDestroyed(this))
+    //       .subscribe({
+    //         next: (res: CreateResponse) => {
+    //           this.newlyAccountLabelId = res.id;
+    //           this.notificationService.success(
+    //             'Successfully add account label.',
+    //             'Success:'
+    //           );
+    //         },
+    //         error: () => {
+    //           this.notificationService.error(
+    //             "Can't add account label.",
+    //             'Error:'
+    //           );
+    //         },
+    //       });
+    //     break;
+    //   }
+    //   case 'edit': {
+    //     this.selectedAccountLabel = {
+    //       id: data.data.id,
+    //       name: data.data.name,
+    //       code: this.selectedAccountColor.code,
+    //       count: this.selectedAccountColor.count,
+    //       createdAt: new Date().toISOString(),
+    //       updatedAt: new Date().toISOString(),
+    //     };
+    //     const updatedIndex = this.accountLabels.findIndex(
+    //       (item) => item.id === data.data.id
+    //     );
+    //     this.accountLabels[updatedIndex] = this.selectedAccountLabel;
+
+    //     this.accountService
+    //       .updateCompanyAccountLabel({
+    //         id: data.data.id,
+    //         name: data.data.name,
+    //         colorId: this.selectedAccountColor.id,
+    //       })
+    //       .pipe(untilDestroyed(this))
+    //       .subscribe({
+    //         next: () => {
+    //           this.notificationService.success(
+    //             'Successfuly update label',
+    //             'Success'
+    //           );
+
+    //           this.accountService
+    //             .companyAccountModal()
+    //             .pipe(untilDestroyed(this))
+    //             .subscribe({
+    //               next: (res: CompanyAccountModalResponse) => {
+    //                 this.accountLabels = res.labels;
+    //               },
+    //               error: () => {
+    //                 this.notificationService.error(
+    //                   "Can't get account label list.",
+    //                   'Error'
+    //                 );
+    //               },
+    //             });
+    //         },
+    //         error: () => {
+    //           this.notificationService.error(
+    //             "Can't update exist label",
+    //             'Error'
+    //           );
+    //         },
+    //       });
+    //     break;
+    //   }
+    //   default: {
+    //     break;
+    //   }
+    // }
   }
 
   ngOnDestroy(): void {}

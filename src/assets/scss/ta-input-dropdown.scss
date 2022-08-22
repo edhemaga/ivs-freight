@@ -104,14 +104,21 @@
         &.add-new {
           color: #536bc2;
           font-weight: 600;
+          transition: all 0.3s ease-in-out;
 
           &:hover {
             color: #3551b7;
+          }
+
+          .labels-template-text {
+            color: #536bc2;
+            font-weight: 600 !important;
             transition: all 0.3s ease-in-out;
           }
         }
 
-        &.active {
+        &.active,
+        &.active-label {
           color: #536bc2;
           position: relative;
 
@@ -134,9 +141,15 @@
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url("../..//assets/svg/common/ic_confirm.svg");
+            content: url("../../assets/svg/common/ic_confirm.svg");
             width: 14px;
             height: 10px;
+          }
+        }
+
+        &.active-label {
+          &::after {
+            right: 35px;
           }
         }
 
@@ -273,6 +286,10 @@
 
             .labels-template-text {
               color: #3c3c3c;
+
+              &.add-new {
+                color: #3551b7;
+              }
             }
 
             .labels-template-counter {

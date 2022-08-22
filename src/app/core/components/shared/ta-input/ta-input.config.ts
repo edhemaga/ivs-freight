@@ -71,7 +71,6 @@ export interface ITaInput {
 
   // Label dropdown
   dropdownLabel?: boolean;
-  dropdownLabelColorSelected?: any;
 
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;

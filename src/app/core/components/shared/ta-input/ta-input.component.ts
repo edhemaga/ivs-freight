@@ -4,12 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Self,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
@@ -50,17 +48,17 @@ export class TaInputComponent
   @ViewChild('span3', { static: false }) span3: ElementRef;
   @ViewChild('holder1', { static: false }) holder1: ElementRef;
   @ViewChild('t2') t2: any;
-  @ViewChild(NgbPopover)
-  private ngbMainPopover: NgbPopover;
+  @ViewChild(NgbPopover) ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
   @Input() incorrectValue: boolean;
+  @Input() selectedDropdownLabelColor: any;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
-  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+  @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
   public focusInput: boolean = false;
@@ -70,7 +68,6 @@ export class TaInputComponent
   public isVisiblePasswordEye: boolean = false;
 
   public showDateInput: boolean = false;
-  public showDateTimeInputOnFocus: boolean = false;
   public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
@@ -92,7 +89,8 @@ export class TaInputComponent
   // Number of points
   public numberOfPoints: number = 0;
 
-  // Applicant incorrect
+  // Edit Input
+  public editInputMode: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -121,7 +119,10 @@ export class TaInputComponent
     }
 
     // Dropdown add mode
-    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
+    if (
+      (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
+      !this.inputConfig.isDisabled
+    ) {
       this.inputService.dropdownAddMode$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -204,9 +205,6 @@ export class TaInputComponent
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
-      } else {
-        this.input.nativeElement.value = obj;
-        this.resetDateTimeInputs();
       }
     } else {
       this.input.nativeElement.value = obj;
@@ -243,7 +241,6 @@ export class TaInputComponent
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
-      this.showDateTimeInputOnFocus = true;
       const elem =
         this.selectionInput == -1
           ? this.holder1.nativeElement
@@ -265,17 +262,21 @@ export class TaInputComponent
   }
 
   public onBlur(): void {
+    console.log('Input - onBlur - editMode: ', this.editInputMode);
+    if (this.editInputMode) {
+      this.getSuperControl.setErrors({ invalid: true });
+      return;
+    }
     if (this.preventBlur) {
       this.preventBlur = false;
       return;
     }
     // Dropdown
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
         this.inputConfig.name === 'datepicker' ||
         this.inputConfig.name === 'timepicker'
       ) {
-        this.showDateTimeInputOnFocus = false;
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
           if (!this.getSuperControl.value) {
@@ -363,8 +364,6 @@ export class TaInputComponent
     }
   }
 
-  public onEditInput(event: any) {}
-
   public resetDateTimeInputs() {
     if (this.inputConfig.name === 'datepicker') {
       this.span1.nativeElement.innerHTML = 'mm';
@@ -418,7 +417,10 @@ export class TaInputComponent
   }
 
   public onKeyUp(event): void {
-    if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
+    if (
+      event.keyCode == 8 &&
+      !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
+    ) {
       this.numberOfSpaces = 0;
 
       if (!this.input.nativeElement.value) {
@@ -426,7 +428,7 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
@@ -473,6 +475,21 @@ export class TaInputComponent
     }
   }
 
+  public onEditInput(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.editInputMode = true;
+    this.inputConfig.commands.active = true;
+    this.focusInput = true;
+    this.setInputCursorAtTheEnd(this.input.nativeElement);
+    this.getSuperControl.setErrors({ required: true });
+    this.commandEvent.emit({
+      data: this.getSuperControl.value,
+      action: 'Edit Input',
+    });
+  }
+
   public onCommands(event: Event, type: string, action: string) {
     event.stopPropagation();
     event.preventDefault();
@@ -497,7 +514,7 @@ export class TaInputComponent
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 10000)
               );
-            } else {
+            } else if (value >= 1000) {
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 500)
               );
@@ -539,22 +556,41 @@ export class TaInputComponent
       case 'confirm-cancel': {
         switch (action) {
           case 'confirm': {
-            this.inputCommandEvent.emit('confirm');
+            this.commandEvent.emit({
+              data: this.getSuperControl.value,
+              action: 'confirm',
+              mode: this.editInputMode ? 'edit' : 'new',
+            });
             break;
           }
           case 'cancel': {
-            this.inputCommandEvent.emit('cancel');
+            this.commandEvent.emit({ action: 'cancel' });
             break;
           }
           default: {
             break;
           }
         }
+        this.getSuperControl.setErrors(null);
+        this.editInputMode = false;
+        this.inputConfig.commands.active = false;
+        this.onBlur();
         break;
       }
       default: {
         break;
       }
+    }
+  }
+
+  public onPlaceholderIconEvent(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.editInputMode) {
+      this.commandEvent.emit({
+        data: this.getSuperControl.value,
+        action: 'Edit Input',
+      });
     }
   }
 
@@ -990,18 +1026,13 @@ export class TaInputComponent
     e.stopPropagation();
     const element = e.target;
     this.focusInput = true;
+
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
-      //element.focus();
       this.setSpanSelection(element);
-      // if( this.selectionInput == -1 ){
-      //   this.showDateTimePlaceholder();
-      // }else{
-
-      // }
     } else {
       if (this.selectionInput == -1) {
         this.span1.nativeElement.focus();
@@ -1396,13 +1427,17 @@ export class TaInputComponent
   }
 
   onPopoverShown() {
-    this.focusInput = true;
-    this.showDateInput = true;
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = true;
+      this.showDateInput = true;
+    }
   }
 
   onPopoverHidden() {
-    this.focusInput = false;
-    this.blurOnDateTime();
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = false;
+      this.blurOnDateTime();
+    }
   }
 
   closePopover() {
