@@ -70,6 +70,7 @@ export class TaInputComponent
   public isVisiblePasswordEye: boolean = false;
 
   public showDateInput: boolean = false;
+  public showDateTimeInputOnFocus: boolean = false;
   public dateTimeInputDate: Date = new Date();
 
   public timeout = null;
@@ -203,7 +204,7 @@ export class TaInputComponent
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
-      }else{
+      } else {
         this.input.nativeElement.value = obj;
         this.resetDateTimeInputs();
       }
@@ -242,6 +243,7 @@ export class TaInputComponent
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
+      this.showDateTimeInputOnFocus = true;
       const elem =
         this.selectionInput == -1
           ? this.holder1.nativeElement
@@ -273,6 +275,7 @@ export class TaInputComponent
         this.inputConfig.name === 'datepicker' ||
         this.inputConfig.name === 'timepicker'
       ) {
+        this.showDateTimeInputOnFocus = false;
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
           if (!this.getSuperControl.value) {
@@ -363,16 +366,14 @@ export class TaInputComponent
   public onEditInput(event: any) {}
 
   public resetDateTimeInputs() {
-    if(this.span1){
-      if (this.inputConfig.name === 'datepicker') {
-        this.span1.nativeElement.innerHTML = 'mm';
-        this.span2.nativeElement.innerHTML = 'dd';
-        this.span3.nativeElement.innerHTML = 'yy';
-      } else if (this.inputConfig.name === 'timepicker') {
-        this.span1.nativeElement.innerHTML = 'HH';
-        this.span2.nativeElement.innerHTML = 'MM';
-        this.span3.nativeElement.innerHTML = 'AM';
-      }
+    if (this.inputConfig.name === 'datepicker') {
+      this.span1.nativeElement.innerHTML = 'mm';
+      this.span2.nativeElement.innerHTML = 'dd';
+      this.span3.nativeElement.innerHTML = 'yy';
+    } else if (this.inputConfig.name === 'timepicker') {
+      this.span1.nativeElement.innerHTML = 'HH';
+      this.span2.nativeElement.innerHTML = 'MM';
+      this.span3.nativeElement.innerHTML = 'AM';
     }
 
     this.focusInput = false;
@@ -989,13 +990,12 @@ export class TaInputComponent
     e.stopPropagation();
     const element = e.target;
     this.focusInput = true;
-    console.log('SET SELECTION');
-    console.log(this.selectionInput);
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
+      //element.focus();
       this.setSpanSelection(element);
       // if( this.selectionInput == -1 ){
       //   this.showDateTimePlaceholder();
