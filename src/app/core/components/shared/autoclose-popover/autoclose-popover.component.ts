@@ -1,4 +1,10 @@
-import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  Input,
+  OnInit,
+} from '@angular/core';
 
 @Component({
   selector: '[app-autoclose-popover]',
@@ -6,7 +12,9 @@ import { Component, ElementRef, HostListener, Input, OnInit } from '@angular/cor
   styleUrls: ['./autoclose-popover.component.scss'],
 })
 export class AutoclosePopoverComponent implements OnInit {
-  @Input() item: any;
+  @Input() isDisabled: boolean;
+  @Input() customClass: string;
+  @Input() placement: string = 'bottom-right';
   public tooltip: any;
   constructor(private eRef: ElementRef) {}
 
@@ -21,10 +29,13 @@ export class AutoclosePopoverComponent implements OnInit {
     this.tooltip.close();
   }
 
-
   @HostListener('document:click', ['$event'])
   clickout(event) {
-    if(this.eRef.nativeElement.contains(event.target) || event.target.closest(".datetime-dropdown-holder")) {
+    if (
+      this.eRef.nativeElement.contains(event.target) ||
+      event.target.closest('.datetime-dropdown-holder') ||
+      event.target.closest('.popover')
+    ) {
     } else {
       this.tooltip && this.tooltip.close();
     }

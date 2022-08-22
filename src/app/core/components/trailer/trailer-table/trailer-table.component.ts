@@ -199,11 +199,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // Delete Selected Rows
-    
+
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
-
         let trailerNumber = '';
         let trailersText = 'Trailer ';
 
@@ -216,17 +215,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 response.map((r: any) => {
                   if (trailer.id === r.id) {
                     trailer.actionAnimation = 'delete';
-                    
 
-                    if ( trailerNumber == '' )
-                      {
-                        trailerNumber = trailer.trailerNumber
-                      }
-                    else 
-                      {
-                        trailerNumber = trailerNumber + ', ' +  trailer.trailerNumber;
-                        trailersText = 'Trailers ';
-                      }
+                    if (trailerNumber == '') {
+                      trailerNumber = trailer.trailerNumber;
+                    } else {
+                      trailerNumber =
+                        trailerNumber + ', ' + trailer.trailerNumber;
+                      trailersText = 'Trailers ';
+                    }
                   }
                 });
 
@@ -239,7 +235,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 `${trailersText} "${trailerNumber}" deleted`,
                 'Success'
               );
-              
+
               trailerNumber = '';
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
@@ -543,8 +539,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    let trailerNum = event.data.trailerNumber;  
-
+    let trailerNum = event.data.trailerNumber;
     const mappedEvent = {
       ...event,
       data: {
@@ -553,11 +548,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trailers/${event.data?.trailerType?.logoName}`,
       },
     };
-
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;
-
         this.trailerBackFilter(this.backFilterQuery, false, true);
         break;
       }
@@ -608,7 +601,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 `Trailer "${trailerNum}" Activated`,
                 'Success'
               );
-
               this.sendTrailerData();
             },
             error: () => {
@@ -630,18 +622,14 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 `Trailer "${trailerNum}" deleted`,
                 'Success'
               );
-
               this.viewData = this.viewData.map((trailer: any) => {
                 if (trailer.id === event.id) {
                   trailer.actionAnimation = 'delete';
                 }
-
                 return trailer;
               });
-
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
-
                 clearInterval(inetval);
               }, 1000);
             },
