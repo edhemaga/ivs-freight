@@ -280,11 +280,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('repairShopId'),
         false
       );
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('date'),
+        false,
+        [],
+        true
+      );
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('invoice'),
+        false,
+        [],
+        true
+      );
       this.repairOrderForm.get('repairType').patchValue('Order');
     } else {
       this.inputService.changeValidators(
         this.repairOrderForm.get('repairShopId')
       );
+      this.inputService.changeValidators(this.repairOrderForm.get('date'));
       this.repairOrderForm.get('repairType').patchValue('Bill');
     }
 
