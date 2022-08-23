@@ -1,1 +1,13 @@
-<p>custom-toast-messages works!</p>
+<div class="main-toast-holder" [ngClass]="{ 'retryClass': retryStarted || retryHover }" >
+    <div class="toast-title">{{customTitle}}</div>
+    <div class="toast-message">{{message}}</div>
+    <div *ngIf="!retryStarted" class="closeToastrBtn retryButton" (click)="clickOnRetry()" (mouseenter)="hoverOnRetry()"  (mouseleave)="hoverOutRetry()">
+        <svg-icon src="assets/svg/common/ic_retry_white.svg"></svg-icon>
+    </div>
+    <div *ngIf="!retryStarted" class="closeToastrBtn closeIcon" >
+        <svg-icon src="assets/svg/common/ic_x.svg"></svg-icon>
+    </div>
+    <div *ngIf="retryStarted" class="animation-holder">
+        <app-ta-spinner [size]="'small'" [color]="'white'"></app-ta-spinner>
+    </div>
+</div>

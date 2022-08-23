@@ -27,6 +27,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 
 @NgModule({
   declarations: [
@@ -54,6 +55,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
       preventDuplicates: true,
       enableHtml: true,
       timeOut: 5000,
+      toastComponent: CustomToastMessagesComponent, // added custom toast! 
     }),
     NgIdleModule.forRoot(),
     ApiModule,

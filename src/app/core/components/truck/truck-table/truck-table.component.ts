@@ -570,7 +570,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
       },
     };
-
+    let truckNum = event.data?.truckNumber;
+    
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;
@@ -641,17 +642,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .pipe(untilDestroyed(this))
           .subscribe({
             next: () => {
-
-              let truckNum = '';
-
-              this.viewData = this.viewData.map((truck: any) => {
-                if (truck.id === event.id) {
-                  truck.actionAnimation = 'delete';
-                  truckNum = truck.truckNumber;
-                }
-
-                return truck;
-              });
 
               this.notificationService.success(
                 `Truck "${truckNum}" deleted`,
