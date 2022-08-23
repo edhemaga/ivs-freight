@@ -486,7 +486,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       isSelected: false,
       isOwner: data?.owner ? data.owner : false,
       textAddress: data.address.address ? data.address.address : '',
-      textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
+      textShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
       avatarImg: data?.avatar
         ? this.imageBase64Service.sanitizer(data.avatar)
@@ -588,6 +588,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  // Get Avatar Color
   getAvatarColors() {
     let textColors: string[] = [
       '#6D82C7',
