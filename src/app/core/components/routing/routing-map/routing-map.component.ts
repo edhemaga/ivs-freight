@@ -18,6 +18,7 @@ declare var google: any;
 })
 export class RoutingMapComponent implements OnInit {
   @ViewChild('mapToolbar') mapToolbar: any;
+  @ViewChild('t2') t2: any;
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
     if ( this.stopPickerActive && this.focusedRouteIndex != null ) {
@@ -131,167 +132,124 @@ export class RoutingMapComponent implements OnInit {
   ];
 
   public routes: any[] = [
-    {
-      'id': 1,
-      'name': 'Route 1',
-      'hidden': false,
-      'expanded': false,
-      'fullAddressView': false,
-      'routeType': 'Practical',
-      'truckId': '',
-      'stopTime': '',
-      'mpg': '',
-      'fuelPrice': '',
-      'stops': [
-        {
-          'address': 'Gary, IN 30055',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': true,
-          'lat': 41.601970,
-          'long': -87.349680
-        },
-        /*{
-          'address': 'Chicago, IL 65005',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': true,
-          'lat': 41.883230,
-          'long': -87.632400
-        },*/
-        {
-          'address': 'Philadelphia, PA 52320',
-          'leg': '45.2',
-          'total': '105.8',
-          'time': '00:23',
-          'totalTime': '01:38',
-          'empty': true,
-          'lat': 39.951060,
-          'long': -75.165620
-        },
-        {
-          'address': 'Nashville, KE 89600',
-          'leg': '168.8',
-          'total': '273.1',
-          'time': '00:37',
-          'totalTime': '02:05',
-          'empty': false,
-          'lat': 30.826909,
-          'long': -96.655749
-        },
-      ]
-    },
-    {
-      'id': 2,
-      'name': 'Route 2',
-      'hidden': false,
-      'expanded': false,
-      'fullAddressView': true,
-      'routeType': 'Shortest',
-      'truckId': '',
-      'stopTime': '',
-      'mpg': '',
-      'fuelPrice': '',
-      'stops': [
-        {
-          'address': 'Gary, IN 30055',
-          'fullAddress': '2371 W 150th Hwy W, Crouse, NC 28033',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': true,
-          'lat': 35.404478,
-          'long': -81.331493
-        },
-        /*{
-          'address': 'Chicago, IL 65005',
-          'fullAddress': '1525 Park Dr, Munster, IN 46321',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': false,
-          'lat': 41.5577897,
-          'long': -87.4925295
-        },*/
-        {
-          'address': 'Philadelphia, PA 52320',
-          'fullAddress': '32075 Arlington Dr, Franklin,  MI 48025',
-          'leg': '45.2',
-          'total': '105.8',
-          'time': '00:23',
-          'totalTime': '01:38',
-          'empty': true,
-          'lat': 42.526144,
-          'long': -83.20796
-        },
-        {
-          'address': 'Nashville, KE 89600',
-          'fullAddress': '2136 Warren H…, Hermanville, MS 39086',
-          'leg': '168.8',
-          'total': '273.1',
-          'time': '00:37',
-          'totalTime': '02:05',
-          'empty': false,
-          'lat': 32.469674,
-          'long': -90.50994
-        },
-      ]
-    },
-    /*{
-      'id': 3,
-      'name': 'Route 3',
-      'hidden': false,
-      'expanded': false,
-      'fullAddressView': false,
-      'stops': [
-        {
-          'address': 'Chicago, IL 65005',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': true,
-          'lat': 41.883230,
-          'long': -87.632400
-        },
-        {
-          'address': 'Gary, IN 30055',
-          'leg': '60.6',
-          'total': '60.6',
-          'time': '01:15',
-          'totalTime': '01:15',
-          'empty': true,
-          'lat': 41.601970,
-          'long': -87.349680
-        },
-        {
-          'address': 'Nashville, KE 89600',
-          'leg': '168.8',
-          'total': '273.1',
-          'time': '00:37',
-          'totalTime': '02:05',
-          'empty': true,
-          'lat': 30.826909,
-          'long': -96.655749
-        },
-        {
-          'address': 'Philadelphia, PA 52320',
-          'leg': '45.2',
-          'total': '105.8',
-          'time': '00:23',
-          'totalTime': '01:38',
-          'empty': true,
-          'lat': 39.951060,
-          'long': -75.165620
-        },
-      ]
-    },*/
+    // {
+    //   'id': 1,
+    //   'name': 'Route 1',
+    //   'hidden': false,
+    //   'expanded': false,
+    //   'routeType': 'Practical',
+    //   'truckId': '',
+    //   'stopTime': '',
+    //   'mpg': '',
+    //   'fuelPrice': '',
+    //   'stops': [
+    //     {
+    //       'address': 'Gary, IN 30055',
+    //       'leg': '60.6',
+    //       'total': '60.6',
+    //       'time': '01:15',
+    //       'totalTime': '01:15',
+    //       'empty': false,
+    //       'lat': 41.601970,
+    //       'long': -87.349680
+    //     },
+    //     {
+    //       'address': 'Chicago, IL 65005',
+    //       'leg': '60.6',
+    //       'total': '60.6',
+    //       'time': '01:15',
+    //       'totalTime': '01:15',
+    //       'empty': false,
+    //       'lat': 41.883230,
+    //       'long': -87.632400
+    //     },
+    //     {
+    //       'address': 'Philadelphia, PA 52320',
+    //       'leg': '45.2',
+    //       'total': '105.8',
+    //       'time': '00:23',
+    //       'totalTime': '01:38',
+    //       'empty': false,
+    //       'lat': 39.951060,
+    //       'long': -75.165620
+    //     },
+    //     {
+    //       'address': 'Nashville, KE 89600',
+    //       'leg': '168.8',
+    //       'total': '273.1',
+    //       'time': '00:37',
+    //       'totalTime': '02:05',
+    //       'empty': false,
+    //       'lat': 30.826909,
+    //       'long': -96.655749
+    //     },
+    //   ]
+    // },
+    // {
+    //   'id': 2,
+    //   'name': 'Route 2',
+    //   'hidden': false,
+    //   'expanded': false,
+    //   'routeType': 'Shortest',
+    //   'truckId': '',
+    //   'stopTime': '',
+    //   'mpg': '',
+    //   'fuelPrice': '',
+    //   'stops': [
+    //     {
+    //       'address': {
+    //         'address': "Gary, IN 30055",
+    //         'city': "Gary",
+    //         'country': "US",
+    //         'state': "IN",
+    //         'stateShortName': "IN",
+    //         'street': "",
+    //         'streetNumber': "",
+    //         'zipCode': ""
+    //       },
+    //       'leg': '60.6',
+    //       'total': '60.6',
+    //       'time': '01:15',
+    //       'totalTime': '01:15',
+    //       'empty': false,
+    //       'lat': 35.404478,
+    //       'long': -81.331493
+    //     },
+    //     {
+    //       'address': 'Chicago, IL 65005',
+    //       'fullAddress': '1525 Park Dr, Munster, IN 46321',
+    //       'leg': '60.6',
+    //       'total': '60.6',
+    //       'time': '01:15',
+    //       'totalTime': '01:15',
+    //       'empty': false,
+    //       'lat': 41.5577897,
+    //       'long': -87.4925295
+    //     },
+    //     {
+    //       'address': 'Philadelphia, PA 52320',
+    //       'fullAddress': '32075 Arlington Dr, Franklin,  MI 48025',
+    //       'leg': '45.2',
+    //       'total': '105.8',
+    //       'time': '00:23',
+    //       'totalTime': '01:38',
+    //       'empty': false,
+    //       'lat': 42.526144,
+    //       'long': -83.20796
+    //     },
+    //     {
+    //       'address': 'Nashville, KE 89600',
+    //       'fullAddress': '2136 Warren H…, Hermanville, MS 39086',
+    //       'leg': '168.8',
+    //       'total': '273.1',
+    //       'time': '00:37',
+    //       'totalTime': '02:05',
+    //       'empty': false,
+    //       'lat': 32.469674,
+    //       'long': -90.50994
+    //     },
+    //   ]
+    // }
   ];
 
   public routeColors: any[] = [
@@ -325,6 +283,90 @@ export class RoutingMapComponent implements OnInit {
   directionsService = new google.maps.DirectionsService();
   placesService: any;
 
+  routeProperties: any = {
+    'legTime': {
+      'expandedText': 'Leg t',
+      'value': 'time',
+      'expandedOnly': true,
+      'width': '40px',
+      'order': 1,
+      'class': 'route-row-leg marker-like-text'
+    },
+    'totalTime': {
+      'expandedText': 'Total t',
+      'value': 'totalTime',
+      'expandedOnly': true,
+      'width': '44px',
+      'order': 2,
+      'class': 'route-row-total marker-like-text marker-semibold-text',
+      'boldValue': true
+    },
+    'legPrice': {
+      'expandedText': 'Leg $',
+      'value': 'legPrice',
+      'expandedOnly': true,
+      'width': '56px',
+      'order': 3,
+      'class': 'route-row-leg marker-like-text'
+    },
+    'totalPrice': {
+      'expandedText': 'Total $',
+      'value': 'totalPrice',
+      'expandedOnly': true,
+      'width': '60px',
+      'order': 4,
+      'class': 'route-row-total marker-like-text marker-semibold-text',
+      'boldValue': true
+    },
+    'legDistance': {
+      'text': 'Leg',
+      'expandedText': 'Leg',
+      'value': 'leg',
+      'width': '44px',
+      'order': 5,
+      'class': 'route-row-leg marker-like-text',
+      'insertExpandedText': 'distanceUnit'
+    },
+    'emptyDistance': {
+      'expandedText': 'Empty',
+      'value': 'emptyDistance',
+      'expandedOnly': true,
+      'width': '46px',
+      'order': 6,
+      'class': 'route-row-total marker-like-text marker-semibold-text',
+      'boldValue': true,
+      'checkMainValue': 'hasEmptyMiles'
+    },
+    'loadedDistance': {
+      'expandedText': 'Loaded',
+      'value': 'loadedDistance',
+      'expandedOnly': true,
+      'width': '46px',
+      'order': 7,
+      'class': 'route-row-leg marker-like-text marker-semibold-text',
+      'boldValue': true,
+      'checkMainValue': 'hasEmptyMiles'
+    },
+    'totalDistance': {
+      'text': 'Total',
+      'expandedText': 'Total',
+      'value': 'total',
+      'width': '46.5px',
+      'order': 8,
+      'class': 'route-row-total marker-like-text marker-semibold-text m-0',
+      'insertExpandedText': 'distanceUnit',
+      'boldValue': true
+    }
+  };
+
+  renderBorderArray = [];
+  renderArray = [];
+  allRenderInArray = [];
+  delayRequest = 100;
+
+  tooltip: any;
+  dropDownActive: number = -1;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -342,7 +384,11 @@ export class RoutingMapComponent implements OnInit {
 
     this.routes.map((item, index) => {
       console.log('routes.map', index);
+
+      this.drawRoute(index);
+      
       this.calculateDistanceBetweenStops(index);
+      this.calculateRouteWidth(item);
     });
   }
 
@@ -371,7 +417,9 @@ export class RoutingMapComponent implements OnInit {
 
     console.log(dropArray, event.previousIndex, event.currentIndex);
     
+    this.drawRoute(1);
     this.calculateDistanceBetweenStops(index);
+    this.calculateRouteWidth(this.routes[index]);
   }
 
   showHideRoute(event, route) {
@@ -387,15 +435,23 @@ export class RoutingMapComponent implements OnInit {
     event.preventDefault();
 
     route.expanded = !route.expanded;
+    this.calculateRouteWidth(route);
+    setTimeout(() => {
+      route.expandFinished = !route.expandFinished;
+      this.ref.detectChanges();
+    }, 150);
   }
 
   deleteRouteStop(event, route, index) {
     event.stopPropagation();
     event.preventDefault();
 
+    const routeIndex = this.getRouteIndexById(route.id);
+
     route.stops.splice(index, 1);
 
-    this.checkFullAddressView(route);
+    this.calculateDistanceBetweenStops(routeIndex);
+    this.calculateRouteWidth(route);
 
     this.ref.detectChanges();
   }
@@ -415,42 +471,42 @@ export class RoutingMapComponent implements OnInit {
 
     mainthis.placesService = new google.maps.places.PlacesService(map);
 
-    map.addListener('click', (e) => {
-      if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
+    // map.addListener('click', (e) => {
+    //   if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
 
-      if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
-        var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
-        var request = {
-          location: coords,
-          radius: 50000,
-          type: 'locality'
-        }
+    //   if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
+    //     var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+    //     var request = {
+    //       location: coords,
+    //       radius: 50000,
+    //       type: 'locality'
+    //     }
         
-        mainthis.placesService.nearbySearch(request, (results, status) => {
-          console.log('search', results, status);
+    //     mainthis.placesService.nearbySearch(request, (results, status) => {
+    //       console.log('search', results, status);
 
-          if ( status == 'OK' && results.length && results[0].place_id ) {
-            let placeId = results[0].place_id;
+    //       if ( status == 'OK' && results.length && results[0].place_id ) {
+    //         let placeId = results[0].place_id;
 
-            mainthis.placesService.getDetails({
-              placeId: placeId
-              }, function (result, status) {
-                console.log(result);
-                mainthis.stopPickerLocation = {
-                  'address': result.formatted_address,
-                  'lat': result.geometry.location.lat(),
-                  'long': result.geometry.location.lng(),
-                  'empty': null
-                };
+    //         mainthis.placesService.getDetails({
+    //           placeId: placeId
+    //           }, function (result, status) {
+    //             console.log(result);
+    //             mainthis.stopPickerLocation = {
+    //               'address': result.formatted_address,
+    //               'lat': result.geometry.location.lat(),
+    //               'long': result.geometry.location.lng(),
+    //               'empty': null
+    //             };
 
-                console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
+    //             console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
 
-                mainthis.ref.detectChanges();
-              });
-          }
-        });
-      }
-    });
+    //             mainthis.ref.detectChanges();
+    //           });
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   mapPlacesSearch(results, status) {
@@ -498,8 +554,8 @@ export class RoutingMapComponent implements OnInit {
 
           route.stops.push(
             {
-              'address': event.address.address,
-              'fullAddress': event.address.street ? event.address.address : false,
+              'address': event.address,
+              'cityAddress': event.address.city + ', ' + event.address.state + ' ' + event.address.zipCode,
               'leg': '60.6',
               'total': '60.6',
               'time': '01:15',
@@ -511,26 +567,10 @@ export class RoutingMapComponent implements OnInit {
           );
     
           mainthis.calculateDistanceBetweenStops(index);
-          mainthis.checkFullAddressView(route);
+          mainthis.calculateRouteWidth(route);
           mainthis.ref.detectChanges();
         }
       });
-    }
-  }
-
-  checkFullAddressView(route) {
-    let fullAdressStops = 0;
-
-    route.stops.map((item)=> {
-      if ( item.fullAddress ) {
-        fullAdressStops++;
-      }
-    });
-
-    if ( fullAdressStops ) {
-      route.fullAddressView = true;
-    } else {
-      route.fullAddressView = false;
     }
   }
 
@@ -539,6 +579,19 @@ export class RoutingMapComponent implements OnInit {
     for (let j = 0; j < this.routes[i].stops.length; j++) {
       this.routes[i].stops[j].leg = 0;
       this.routes[i].stops[j].total = 0;
+
+      this.routes[i].stops[j].emptyDistance = 0;
+      this.routes[i].stops[j].loadedDistance = 0;
+
+      this.routes[i].hasEmptyMiles = false;
+      
+      if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
+        this.routes[i].stops[j].legPrice = 0;
+        this.routes[i].stops[j].totalPrice = 0;
+      } else {
+        this.routes[i].stops[j].legPrice = null;
+        this.routes[i].stops[j].totalPrice = null;
+      }
     }
     /* For  Calculate Distance*/
     for (let j = 1; j < this.routes[i].stops.length; j++) {
@@ -570,6 +623,28 @@ export class RoutingMapComponent implements OnInit {
         this.routes[i].stops[j].leg = distance;
         this.routes[i].stops[j].total =
           parseFloat(this.routes[i].stops[j - 1].total) + parseFloat(this.routes[i].stops[j].leg);
+
+        this.routes[i].stops[j].emptyDistance = parseFloat(this.routes[i].stops[j - 1].emptyDistance) + (this.routes[i].stops[j].empty ? distance : 0);
+        this.routes[i].stops[j].loadedDistance = parseFloat(this.routes[i].stops[j - 1].loadedDistance) + (!this.routes[i].stops[j].empty ? distance : 0);
+
+        if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
+          let distanceInMiles = 
+            this.tableData[this.selectedMapIndex].distanceUnit == 'mi' ? distance : 
+            distance / 1.609344;
+
+          let fuel = distanceInMiles / this.routes[i].mpg;
+          let tripCost = fuel * this.routes[i].fuelPrice;
+
+          let fuelShort = fuel.toFixed(1);
+          let tripCostShort = tripCost.toFixed(1);
+
+          console.log('fuel', fuelShort);
+          console.log('tripCost', tripCostShort);
+
+          this.routes[i].stops[j].legPrice = tripCostShort;
+          this.routes[i].stops[j].totalPrice =
+            parseFloat(this.routes[i].stops[j - 1].legPrice) + parseFloat(this.routes[i].stops[j].legPrice);
+        }
       }
     }
     for (let j = 1; j < this.routes[i].stops.length; j++) {
@@ -577,22 +652,42 @@ export class RoutingMapComponent implements OnInit {
       var stopTotal = parseFloat(this.routes[i].stops[j].total);
       this.routes[i].stops[j].leg = stopLeg.toFixed(1);
       this.routes[i].stops[j].total = stopTotal.toFixed(1);
+
+      var emptyLeg = parseFloat(this.routes[i].stops[j].emptyDistance);
+      var loadedLeg = parseFloat(this.routes[i].stops[j].loadedDistance);
+      this.routes[i].stops[j].emptyDistance = emptyLeg.toFixed(1);
+      this.routes[i].stops[j].loadedDistance = loadedLeg.toFixed(1);
+
+      if ( this.routes[i].stops[j].emptyDistance > 0 ) {
+        this.routes[i].hasEmptyMiles = true;
+      }
+
+      if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
+        var legCost = parseFloat(this.routes[i].stops[j].legPrice);
+        var totalCost = parseFloat(this.routes[i].stops[j].totalPrice);
+
+        this.routes[i].stops[j].legPrice = legCost.toFixed(1);
+        this.routes[i].stops[j].totalPrice = totalCost.toFixed(1);
+      }
     }
   }
 
-  callDropDownAction(event: any) {
-    console.log('callDropDownAction', event);
+  callDropDownAction(event, action: any) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    console.log('callDropDownAction', action);
     // Edit Call
-    if (event.type === 'duplicate-route') {
-      this.duplicateRoute(event.id);
-    } else if (event.type === 'reverse-route-stops') {
-      this.reverseRouteStops(event.id);
-    } else if (event.type === 'clear-route-stops') {
-      this.clearRouteStops(event.id);
-    } else if (event.type === 'delete') {
-      this.deleteRoute(event.id);
-    } else if ( event.type === 'open-settings' ) {
-      let route = this.getRouteById(event.id);
+    if (action.name === 'duplicate-route') {
+      this.duplicateRoute(this.dropDownActive);
+    } else if (action.name === 'reverse-route-stops') {
+      this.reverseRouteStops(this.dropDownActive);
+    } else if (action.name === 'clear-route-stops') {
+      this.clearRouteStops(this.dropDownActive);
+    } else if (action.name === 'delete') {
+      this.deleteRoute(this.dropDownActive);
+    } else if ( action.name === 'open-settings' ) {
+      let route = this.getRouteById(this.dropDownActive);
       this.mapToolbar.editRoute(route);
     }
   }
@@ -617,42 +712,57 @@ export class RoutingMapComponent implements OnInit {
 
       const newRoute = JSON.parse(JSON.stringify(route));
       newRoute.id = lastId+1;
+      newRoute.isFocused = false;
+      newRoute.expanded = false;
       
       this.routes.push(newRoute);
+      
+      this.tableData[this.selectedMapIndex].length = this.routes.length;
 
+      this.drawRoute(this.routes.length-1);
       this.calculateDistanceBetweenStops(this.routes.length-1);
+      this.calculateRouteWidth(this.routes.length-1);
     }
   }
 
   reverseRouteStops(id) {
     let route = this.getRouteById(id);
-    const routeIndex = this.routes.findIndex(route => {
-      return route.id === id;
-    });
+
+    const routeIndex = this.getRouteIndexById(id);
 
     if ( route && route.stops && route.stops.length ) {
       route.stops = route.stops.reverse();
 
+      this.drawRoute(routeIndex);
       this.calculateDistanceBetweenStops(routeIndex);
+      this.calculateRouteWidth(route);
     }
   }
 
   clearRouteStops(id) {
     let route = this.getRouteById(id);
+    const routeIndex = this.getRouteIndexById(id);
 
     if ( route && route.stops && route.stops.length ) {
       route.stops = [];
+
+      this.drawRoute(routeIndex);
     }
   }
 
   deleteRoute(id) {
-    const routeIndex = this.routes.findIndex(route => {
-      return route.id === id;
-    });
+    const routeIndex = this.getRouteIndexById(id);
 
     if ( routeIndex > -1 ) {
       this.routes.splice(routeIndex, 1);
+      // this.allRenderInArray[routeIndex].borderOfRoute.setMap(null);
+      // this.allRenderInArray[routeIndex].renderArrayItem.setMap(null);
+      // this.allRenderInArray[routeIndex].active = false;
+      // this.renderBorderArray.splice(routeIndex, 1);
+      // this.renderArray.splice(routeIndex, 1);
     }
+
+    this.tableData[this.selectedMapIndex].length = this.routes.length;
   }
 
   getRouteById(id) {
@@ -660,6 +770,14 @@ export class RoutingMapComponent implements OnInit {
         .filter((item) => item.id === id)[0];
 
     return route ? route : false;
+  }
+
+  getRouteIndexById(id) {
+    const routeIndex = this.routes.findIndex(route => {
+      return route.id === id;
+    });
+
+    return routeIndex;
   }
   
   focusRoute(i) {
@@ -692,7 +810,10 @@ export class RoutingMapComponent implements OnInit {
     if ( event.action == 'add-route' ) {
       var routeForm = event.data;
 
-      const lastId = Math.max(...this.routes.map(item => item.id));
+      let lastId = Math.max(...this.routes.map(item => item.id));
+      if ( !lastId || lastId < 1 ) {
+        lastId = 1;
+      }
 
       this.addressInputs.push(this.formBuilder.group({
         address: []
@@ -703,7 +824,6 @@ export class RoutingMapComponent implements OnInit {
           'name': routeForm.get('routeName').value,
           'hidden': false,
           'expanded': false,
-          'fullAddressView': false,
           'routeType': routeForm.get('routeType').value,
           'truckId': routeForm.get('truckId').value ? routeForm.get('truckId').value : '',
           'stopTime': routeForm.get('durationTime').value ? routeForm.get('durationTime').value : '',
@@ -713,6 +833,9 @@ export class RoutingMapComponent implements OnInit {
       };
 
       this.routes.push(newRoute);
+      this.calculateRouteWidth(this.routes[this.routes.length-1]);
+
+      this.tableData[this.selectedMapIndex].length = this.routes.length;
     } else if ( event.action == 'edit-route' ) {
       var routeForm = event.data.form;
       let route = this.getRouteById(event.data.editId);
@@ -723,6 +846,13 @@ export class RoutingMapComponent implements OnInit {
       route.stopTime = routeForm.get('durationTime').value;
       route.mpg = routeForm.get('fuelMpg').value;
       route.fuelPrice = routeForm.get('fuelPrice').value;
+
+      console.log('fuelPrice', route.fuelPrice);
+
+      const routeIndex = this.getRouteIndexById(event.data.editId);
+
+      this.calculateDistanceBetweenStops(routeIndex);
+      this.calculateRouteWidth(route);
       
       // = {
       //   'id': route.id,
@@ -756,6 +886,7 @@ export class RoutingMapComponent implements OnInit {
         this.routes.map((item, index) => {
           console.log('routes.map', index);
           this.calculateDistanceBetweenStops(index);
+          this.calculateRouteWidth(item);
         });
       }
 
@@ -864,7 +995,6 @@ export class RoutingMapComponent implements OnInit {
     } else {
       this.routes[this.focusedRouteIndex].stops.push({
         'address': this.stopPickerLocation.address,
-        'fullAddress': false,
         'leg': '0',
         'total': '0',
         'time': '0',
@@ -874,7 +1004,9 @@ export class RoutingMapComponent implements OnInit {
         'long': this.stopPickerLocation.long
       });
 
+      this.drawRoute(this.focusedRouteIndex);
       this.calculateDistanceBetweenStops(this.focusedRouteIndex);
+      this.calculateRouteWidth(this.routes[this.focusedRouteIndex]);
     }
 
     //this.focusedRouteIndex = null;
@@ -913,5 +1045,192 @@ export class RoutingMapComponent implements OnInit {
         item.isSelected = false;
       }
     });
+  }
+
+  sortKeys = (a, b) => {
+    return a.order > b.order ? -1 : 1;
+  };
+
+  drawRoute(i) {
+    return false;
+
+    var route = this.routes[i];
+
+    var routeOrigin = new google.maps.LatLng(route.stops[0].lat, route.stops[0].long);
+    var routeDestination = new google.maps.LatLng(route.stops[route.stops.length-1].lat, route.stops[route.stops.length-1].long);
+    
+    var routeWaypoints = [];
+
+    route.stops.map((item, index) => {
+      if ( index > 0 && index < route.stops.length-1 ) {
+        var waypointLatLng = new google.maps.LatLng(item.lat, item.long);
+
+        routeWaypoints.push({
+          location: waypointLatLng,
+          stopover: true
+        });
+      }
+    });
+
+    var routeRequest = {
+        origin: routeOrigin,
+        destination: routeDestination,
+        waypoints: routeWaypoints,
+        travelMode: "DRIVING"
+    };
+
+    this.directionsService.route(routeRequest, (result, status) => {
+      if (status == google.maps.DirectionsStatus.OK) {
+        const interval = setInterval(() => {
+          console.log('Response od directionsService');
+          console.log(result);
+
+          this.delaySubmitRequest(i, result);
+          clearInterval(interval);
+        }, this.delayRequest);
+      } else {
+        if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT) {
+          // this.toastr.warning(
+          //   `Over the requests limit in too short a period of time. OVER_QUERY_LIMIT`,
+          //   'Warning:'
+          // );
+          this.delayRequest++;
+          const interval = setInterval(() => {
+            this.drawRoute(i);
+            clearInterval(interval);
+          }, 1000);
+        } else {
+          //this.toastr.warning(`${status}`, 'Warning:');
+        }
+      }
+    });
+  }
+
+  delaySubmitRequest(i: number, result) {
+    /* Border Of Route */
+    this.renderBorderArray[i] = new google.maps.DirectionsRenderer();
+    this.renderBorderArray[i].setMap(this.agmMap);
+    this.renderBorderArray[i].setOptions({
+      preserveViewport: true,
+      suppressInfoWindows: false,
+      polylineOptions: {
+        strokeWeight: 6,
+        strokeOpacity: 1,
+        strokeColor: this.routeColors[i],
+        zIndex: i,
+      },
+      markerOptions: {
+        visible: false,
+      },
+    });
+    this.renderBorderArray[i].setDirections(result);
+
+    /* Route */
+    this.renderArray[i] = new google.maps.DirectionsRenderer();
+    this.renderArray[i].setMap(this.agmMap);
+    this.renderArray[i].setOptions({
+      preserveViewport: true,
+      suppressInfoWindows: false,
+      polylineOptions: {
+        strokeWeight: 3,
+        strokeOpacity: 1,
+        strokeColor: '#fff',
+        zIndex: i+1,
+      },
+      markerOptions: {
+        visible: false,
+      },
+    });
+    this.renderArray[i].setDirections(result);
+
+    this.allRenderInArray.push({
+      borderOfRoute: this.renderBorderArray[i],
+      renderArrayItem: this.renderArray[i],
+      color: this.routeColors[i],
+      routeDirectionsData: result,
+      active: true,
+    });
+
+    console.log('allRenderInArray');
+    console.log(this.allRenderInArray);
+
+    //this.nextRequest(i);
+  }
+
+  toggleDropdown(event, tooltip: any, route: any) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.tooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open({ data: this.dropdownActions });
+    }
+
+    this.dropDownActive = tooltip.isOpen() ? route.id : -1;
+
+    console.log('dropDownActive', route, this.dropDownActive);
+  }
+
+  hoverRoute(route) {
+    if ( route.hidden ) {
+      route.nameHover = true;
+      route.hover = false;
+    } else if ( (this.tooltip && this.tooltip.isOpen() && this.dropDownActive == route.id) ||
+                (!route.stops.length && !route.truckId && !route.stopTime && !route.mpg && !route.fuelPrice) ) {
+      route.hover = false;
+    } else {
+      route.hover = true;
+    }
+    
+    this.calculateRouteWidth(route);
+  }
+
+  leaveRouteHover(route) {
+    route.hover = false;
+    route.nameHover = false;
+    
+    this.calculateRouteWidth(route);
+  }
+
+  calculateRouteWidth(route) {
+    var widthNumber = 312;
+
+    if ( route.expanded ) {
+      if ( this.tableData[this.selectedMapIndex].addressType == 'address' ) {
+        if ( route.fuelPrice && route.hasEmptyMiles ) {
+          widthNumber = 792;
+        } else if ( route.fuelPrice && !route.hasEmptyMiles ) {
+          widthNumber = 664;
+        } else if ( !route.fuelPrice && route.hasEmptyMiles ) {
+          widthNumber = 640;
+        } else {
+          widthNumber = 512;
+        }
+      } else {
+        if ( route.fuelPrice && route.hasEmptyMiles ) {
+          widthNumber = 712;
+        } else if ( route.fuelPrice && !route.hasEmptyMiles ) {
+          widthNumber = 584;
+        } else if ( !route.fuelPrice && route.hasEmptyMiles ) {
+          widthNumber = 560;
+        } else {
+          widthNumber = 432;
+        }
+      }
+    } else {
+      if ( this.tableData[this.selectedMapIndex].addressType == 'address' ) {
+        widthNumber = 392;
+      } else {
+        widthNumber = 312;
+      }
+    }
+
+    if ( route.hover && (route.stops.length || route.truckId || route.stopTime || route.mpg || route.fuelPrice) ) {
+      widthNumber += 10;
+    }
+
+    route.width = widthNumber + 'px';
   }
 }
