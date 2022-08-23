@@ -71,6 +71,7 @@ export interface ITaInput {
 
   // Label dropdown
   dropdownLabel?: boolean;
+  dropdownLabelNew?: boolean;
 
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;

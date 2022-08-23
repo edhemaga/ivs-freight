@@ -122,7 +122,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: CompanyAccountModalResponse) => {
           this.accountLabels = res.labels;
-          console.log('INIT ACCOUNT MODAL: ', this.accountLabels);
         },
       });
   }
@@ -134,7 +133,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: Array<AccountColorResponse>) => {
           this.colors = res;
-          console.log('INIT ACCOUNT MODAL COLORS: ', this.colors);
         },
         error: () => {
           this.notificationService.error(
@@ -263,7 +261,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public onSaveLabel(data: { data: any; action: string }) {
-    console.log('SAVE LABEL: ', data);
     switch (data.action) {
       case 'edit': {
         this.selectedAccountLabel = data.data;
@@ -287,7 +284,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 .subscribe({
                   next: (res: CompanyAccountModalResponse) => {
                     this.accountLabels = res.labels;
-                    console.log(this.accountLabels);
                   },
                   error: () => {
                     this.notificationService.error(
@@ -307,7 +303,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'new': {
-        console.log(data);
         this.selectedAccountLabel = {
           id: data.data.id,
           name: data.data.name,
@@ -349,7 +344,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 .subscribe({
                   next: (res: CompanyAccountModalResponse) => {
                     this.accountLabels = res.labels;
-                    console.log(this.accountLabels);
                   },
                   error: () => {
                     this.notificationService.error(

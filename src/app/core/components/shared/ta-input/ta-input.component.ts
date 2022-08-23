@@ -262,7 +262,6 @@ export class TaInputComponent
   }
 
   public onBlur(): void {
-    console.log('Input - onBlur - editMode: ', this.editInputMode);
     if (this.editInputMode) {
       this.getSuperControl.setErrors({ invalid: true });
       return;
@@ -559,7 +558,7 @@ export class TaInputComponent
             this.commandEvent.emit({
               data: this.getSuperControl.value,
               action: 'confirm',
-              mode: this.editInputMode ? 'edit' : 'new',
+              mode: !this.inputConfig.dropdownLabelNew ? 'edit' : 'new',
             });
             break;
           }
@@ -573,6 +572,7 @@ export class TaInputComponent
         }
         this.getSuperControl.setErrors(null);
         this.editInputMode = false;
+        this.inputConfig.dropdownLabelNew;
         this.inputConfig.commands.active = false;
         this.onBlur();
         break;

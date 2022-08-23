@@ -51,13 +51,11 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
    * SELECT FROM ITEMS DROPDOWN
    */
   public onSelectDropdown(event: any, action: string) {
-    console.log('Label select dropdown: ', event, action, this.switchMode);
     if (this.switchMode === 'Color' && action === 'color') {
       this.pickColorLabel.emit(event);
     }
 
     if (this.switchMode === 'Label' && action === 'label') {
-      console.log('USO SAM');
       this.pickExistLabel.emit(event);
     }
   }
