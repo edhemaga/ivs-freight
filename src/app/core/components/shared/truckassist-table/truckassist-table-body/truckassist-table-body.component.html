@@ -324,6 +324,37 @@
               </div>
             </div>
 
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'description' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                *ngIf="row[column.field]"
+                [ngStyle]="{
+                  width: column.width - 5 + 'px'
+                }"
+                [ngClass]="{
+                  'active-description':
+                    activeDescriptionDropdown === row.id && t1.isOpen()
+                }"
+                class="description-container"
+                [innerHtml]="row[column.field]"
+                #t1="ngbPopover"
+                (click)="onShowDescriptionDropdown(t1, row)"
+                [ngbPopover]="descriptionPopover"
+                [placement]="'bottom-left'"
+                popoverClass="table-description-popover"
+                triggers="manual"
+              ></div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1314,12 +1345,12 @@
                 }"
                 [ngClass]="{
                   'active-description':
-                    activeDescriptionDropdown === i && t1.isOpen()
+                    activeDescriptionDropdown === row.id && t1.isOpen()
                 }"
                 class="description-container"
                 [innerHtml]="row[column.field]"
                 #t1="ngbPopover"
-                (click)="onShowDescriptionDropdown(t1, row, i)"
+                (click)="onShowDescriptionDropdown(t1, row)"
                 [ngbPopover]="descriptionPopover"
                 [placement]="'bottom-left'"
                 popoverClass="table-description-popover"
@@ -2149,12 +2180,46 @@
 <!-- DESCRIPTION -->
 <ng-template #descriptionPopover let-data="data">
   <div class="description-dropdown">
-    <div class="description-item">
-      <div class="item-index">1</div>
-      <div class="item-title">Transmission oil</div>
-      <div class="item-cost">$1,323.00</div>
-      <div class="number-of-items">1</div>
-      <div class="item-total-cost">$1,323.00</div>
+    <div
+      class="description-item"
+      [ngClass]="{ 'description-item-margin': i !== 0 }"
+      *ngFor="let item of data.descriptionItems; let i = index"
+    >
+      <div class="item-index">{{ i + 1 }}</div>
+      <div class="pm-item" *ngIf="item.pmDescription">
+        <svg-icon
+          [src]="
+            '../../../../../../assets/svg/common/repair-pm/' +
+            item.pmDescription.logoName
+          "
+          [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+        ></svg-icon>
+      </div>
+      <div
+        class="item-title"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+        [ngStyle]="{
+          'min-width.px': item.pmDescription ? 229 : 253,
+          'width.px': item.pmDescription ? 229 : 253
+        }"
+      >
+        {{ item.description }}
+      </div>
+      <div class="item-cost" [ngClass]="{ 'pm-style': item.pmDescription }">
+        {{ item.descriptionPrice }}
+      </div>
+      <div
+        class="number-of-items"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+      >
+        {{ item.quantity }}
+      </div>
+      <div
+        class="item-total-cost"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+      >
+        {{ item.descriptionTotalPrice }}
+      </div>
     </div>
     <div class="right-background"></div>
   </div>

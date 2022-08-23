@@ -479,6 +479,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
               '<div class="description-dot-container"><span class="description-dot"></span></div>'
             )
         : null,
+      descriptionItems: data?.items
+        ? data.items.map((item) => {
+            return {
+              ...item,
+              descriptionPrice: item?.price
+                ? '$' + this.thousandSeparator.transform(item.price)
+                : '',
+              descriptionTotalPrice: item?.subtotal
+                ? '$' + this.thousandSeparator.transform(item.subtotal)
+                : '',
+              pmDescription: item.pmTruck,
+            };
+          })
+        : null,
     };
   }
 
@@ -502,6 +516,20 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
             .join(
               '<div class="description-dot-container"><span class="description-dot"></span></div>'
             )
+        : null,
+      descriptionItems: data?.items
+        ? data.items.map((item) => {
+            return {
+              ...item,
+              descriptionPrice: item?.price
+                ? '$' + this.thousandSeparator.transform(item.price)
+                : '',
+              descriptionTotalPrice: item?.subtotal
+                ? '$' + this.thousandSeparator.transform(item.subtotal)
+                : '',
+              pmDescription: item.pmTrailer,
+            };
+          })
         : null,
     };
   }
