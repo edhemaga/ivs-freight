@@ -406,6 +406,7 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
+    if( this.inputConfig.isDisabled ){ return; }
     this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHide$.next(this.dropdownToggler);
