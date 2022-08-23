@@ -364,7 +364,8 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': options.length === 1 && options[0].name === 'Add New',
-            active: option.id === activeItem?.id
+            active: option.id === activeItem?.id,
+            'active-repair-truck-trailer': option?.status === 1
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="

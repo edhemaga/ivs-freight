@@ -118,7 +118,8 @@
         }
 
         &.active,
-        &.active-label {
+        &.active-label,
+        &.active-repair-truck-trailer {
           color: #536bc2;
           position: relative;
 
@@ -150,6 +151,12 @@
         &.active-label {
           &::after {
             right: 35px;
+          }
+        }
+
+        &.active-repair-truck-trailer {
+          &::after {
+            display: none;
           }
         }
 
