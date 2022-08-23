@@ -338,9 +338,12 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (td.data.length) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data: any, index: number) => {
+      this.viewData = this.viewData.map((data: any) => {
         return this.mapOwnerData(data);
       });
+
+      console.log('Owner Data');
+      console.log(this.viewData);
 
       // For Testing
       // for (let i = 0; i < 300; i++) {
@@ -358,6 +361,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textType: data?.ownerType?.name ? data.ownerType.name : '',
       textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
       textAddress: data?.address?.address ? data.address.address : '',
+      textBankName: data?.bank?.name ? data.bank.name : ''
     };
   }
 

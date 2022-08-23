@@ -225,7 +225,7 @@ export function getOwnerColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Bank Name',
-      field: 'bank',
+      field: 'textBankName',
       name: 'Bank Name',
       sortName: 'bankName',
       isComputed: false,
