@@ -337,6 +337,16 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       ...data,
       isSelected: false,
+      lable: data?.companyContactLabel
+        ? {
+            name: data?.companyContactLabel?.name
+              ? data.companyContactLabel.name
+              : '',
+            color: data?.companyContactLabel?.code
+              ? data.companyContactLabel.code
+              : '',
+          }
+        : null,
     };
   }
 

@@ -45,6 +45,10 @@ export function getOwnerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
+      link: {
+        routerLinkStart: '/owner/',
+        routerLinkEnd: '/details',
+      },
     },
     {
       ngTemplate: 'text',

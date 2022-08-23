@@ -403,6 +403,8 @@ export class CustomerTableComponent
       textTotal: data?.total
         ? '$' + this.thousandSeparator.transform(data.total)
         : '',
+      textUnpaid: 'Nije Povezano',
+      textOnetoTwentyDays: 'Nije Povezano',
     };
   }
 

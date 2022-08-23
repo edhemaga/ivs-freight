@@ -1,7 +1,9 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { GetCompanyContactListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
   closeAnimationAction,
   tableSearch,
@@ -17,6 +19,7 @@ import { ContactTService } from '../state/contact.service';
   selector: 'app-contacts-table',
   templateUrl: './contacts-table.component.html',
   styleUrls: ['./contacts-table.component.scss'],
+  providers: [NameInitialsPipe],
 })
 export class ContactsTableComponent
   implements OnInit, AfterViewInit, OnDestroy
@@ -42,12 +45,15 @@ export class ContactsTableComponent
     searchTwo: undefined,
     searchThree: undefined,
   };
+  mapingIndex: number = 0;
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
     private contactQuery: ContactQuery,
-    private contactService: ContactTService
+    private nameInitialsPipe: NameInitialsPipe,
+    private contactService: ContactTService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {
@@ -99,6 +105,8 @@ export class ContactsTableComponent
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
+          this.mapingIndex = 0;
+
           this.backFilterQuery.pageIndex = 1;
 
           const searchEvent = tableSearch(res, this.backFilterQuery);
@@ -139,7 +147,7 @@ export class ContactsTableComponent
         }
         // Update Contact
         else if (res.animation === 'update') {
-          const updatedContact = this.mapContactData(res.data);
+          const updatedContact = this.mapContactData(res.data, true);
 
           this.viewData = this.viewData.map((contact: any) => {
             if (contact.id === res.id) {
@@ -268,6 +276,8 @@ export class ContactsTableComponent
 
   // Send Contact Data
   sendContactData() {
+    this.mapingIndex = 0;
+
     this.initTableOptions();
 
     const contactCount = JSON.parse(localStorage.getItem('contactTableCount'));
@@ -308,15 +318,17 @@ export class ContactsTableComponent
 
   // Get Columns Definition
   getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+    return getToolsContactsColumnDefinition();
 
-    if (userState && userState.columns.length && !resetColumns) {
+    /* const userState: any = JSON.parse(
+      localStorage.getItem(stateName + '_user_columns_state')
+    ); */
+
+    /* if (userState && userState.columns.length && !resetColumns) {
       return userState.columns;
     } else {
       return getToolsContactsColumnDefinition();
-    }
+    } */
   }
 
   // Set Countact Data
@@ -343,12 +355,72 @@ export class ContactsTableComponent
   }
 
   // Map Contact Data
-  mapContactData(data: any) {
+  mapContactData(data: any, dontMapIndex?: boolean) {
+    if (!data?.avatar && !dontMapIndex) {
+      this.mapingIndex++;
+    }
+
     return {
       ...data,
       isSelected: false,
       textAddress: data?.address?.address ? data.address.address : '',
-      labelName: data?.companyContactLabel ? data.companyContactLabel : {},
+      textShortName: this.nameInitialsPipe.transform(data.name),
+      avatarColor: this.getAvatarColors(),
+      avatarImg: data?.avatar
+        ? this.imageBase64Service.sanitizer(data.avatar)
+        : '',
+      isShared: data.shared,
+      textShared: !data?.shared ? 'Only You' : 'Nije povezano',
+      lable: data?.companyContactLabel
+        ? {
+            name: data?.companyContactLabel?.name
+              ? data.companyContactLabel.name
+              : '',
+            color: data?.companyContactLabel?.code
+              ? data.companyContactLabel.code
+              : '',
+          }
+        : null,
+    };
+  }
+
+  // Get Avatar Color
+  getAvatarColors() {
+    let textColors: string[] = [
+      '#6D82C7',
+      '#4DB6A2',
+      '#E57373',
+      '#E3B00F',
+      '#BA68C8',
+      '#BEAB80',
+      '#81C784',
+      '#FF8A65',
+      '#64B5F6',
+      '#F26EC2',
+      '#A1887F',
+      '#919191',
+    ];
+
+    let backgroundColors: string[] = [
+      '#DAE0F1',
+      '#D2EDE8',
+      '#F9DCDC',
+      '#F8EBC2',
+      '#EED9F1',
+      '#EFEADF',
+      '#DFF1E0',
+      '#FFE2D8',
+      '#D8ECFD',
+      '#FCDAF0',
+      '#E7E1DF',
+      '#E3E3E3',
+    ];
+
+    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
+
+    return {
+      background: backgroundColors[this.mapingIndex],
+      color: textColors[this.mapingIndex],
     };
   }
 
@@ -407,11 +479,17 @@ export class ContactsTableComponent
     if (event.action === 'open-modal') {
       this.modalService.openModal(ContactModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
+      this.mapingIndex = 0;
+
       this.selectedTab = event.tabData.field;
 
       this.backFilterQuery.pageIndex = 1;
 
       this.setContactData(event.tabData);
+    } else if (event.action === 'view-mode') {
+      this.mapingIndex = 0;
+
+      this.tableOptions.toolbarActions.viewModeActive = event.mode;
     }
   }
 
@@ -419,6 +497,8 @@ export class ContactsTableComponent
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
+        this.mapingIndex = 0;
+
         this.backFilterQuery.sort = event.direction;
 
         this.backFilterQuery.pageIndex = 1;
