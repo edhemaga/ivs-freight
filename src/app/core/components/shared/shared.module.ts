@@ -105,6 +105,7 @@ import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
 import { MapToolbarComponent } from './map-toolbar/map-toolbar.component';
+import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
@@ -196,7 +197,8 @@ export function playerFactory() {
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
     TaCopyComponent,
-    MapToolbarComponent
+    MapToolbarComponent,
+    AutoclosePopoverComponent
   ],
   imports: [
     CommonModule,
@@ -337,6 +339,7 @@ export function playerFactory() {
     LoadModalComponent,
     TaUploadFilesComponent,
     TaTimePeriodComponent,
+    AutoclosePopoverComponent,
     TtTitleModalComponent,
     ConfirmationModalComponent
   ],

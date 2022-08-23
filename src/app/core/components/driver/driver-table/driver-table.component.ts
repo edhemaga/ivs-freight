@@ -80,12 +80,34 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.sendDriverData();
 
-    // Delete
+    // Confirmation Subscribe
     this.confirmationService.confirmationData$
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: Confirmation) => {
-          this.deleteDriverById(res.id);
+          switch (res.type) {
+            case 'delete': {
+              this.deleteDriverById(res.id);
+              break;
+            }
+            case 'activate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'multiple delete': {
+              console.log('MULTIPLE DELETE');
+              console.log(res.array);
+              this.multipleDeleteDrivers(res.array);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
         },
       });
 
@@ -138,12 +160,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
           this.mapingIndex = 0;
 
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1;
 
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.driverBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendDriverData();
             }
@@ -156,31 +179,17 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
-          this.driverTService
-            .deleteDriverList(response)
-            .pipe(untilDestroyed(this))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((driver: any) => {
-                response.map((r: any) => {
-                  if (driver.id === r.id) {
-                    driver.actionAnimation = 'delete';
-                  }
-                });
-
-                return driver;
-              });
-
-              this.updateDataCount();
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 1000);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: response,
+              template: 'driver',
+              type: 'multiple delete',
+              image: true,
+            }
+          );
         }
       });
 
@@ -621,16 +630,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableData[2].length = driverCount.inactive;
   }
 
-  driverBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  driverBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.driverTService
       .getDrivers(
         filter.active,
@@ -644,11 +657,31 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       )
       .pipe(untilDestroyed(this))
       .subscribe((drivers: DriverListResponse) => {
-        this.viewData = drivers.pagination.data;
+        if (!isShowMore) {
+          this.viewData = drivers.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapDriverData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapDriverData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[
+              this.selectedTab === 'active'
+                ? 1
+                : this.selectedTab === 'inactive'
+                ? 2
+                : 0
+            ].length = drivers.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          drivers.pagination.data.map((data: any) => {
+            newData.push(this.mapDriverData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -664,6 +697,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
 
+      this.backFilterQuery.pageIndex = 1;
+
       this.sendDriverData();
     } else if (event.action === 'view-mode') {
       this.mapingIndex = 0;
@@ -677,6 +712,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
         this.backFilterQuery.sort = event.direction;
 
         this.driverBackFilter(this.backFilterQuery);
@@ -687,7 +723,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit') {
+    let driverFullName = event.data.firstName + ' ' + event.data.lastName;
+    const mappedEvent = {
+      ...event,
+      data: {
+        ...event.data,
+        name: event.data?.fullName,
+      },
+    };
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+      this.driverBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
         { size: 'medium' },
@@ -725,32 +772,70 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
+      let successfullyMessage = `"${driverFullName}" ${
+        this.selectedTab == 'active' ? 'Deactivated' : 'Activated'
+      }`;
+      let errorullyMessage = `Failed to ${
+        this.selectedTab == 'active' ? 'Deactivate' : 'Activate'
+      } "${driverFullName}"`;
       this.driverTService
         .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
+            this.notificationService.success(successfullyMessage, 'Success');
+          },
+          error: () => {
+            this.notificationService.error(errorullyMessage, 'Error');
+          },
+        });
+    } else if (event.type === 'delete-item') {
+      this.driverTService
+        .deleteDriverById(event.id, this.selectedTab)
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: () => {
             this.notificationService.success(
-              `Driver successfully Change Status`,
-              'Success:'
+              `"${driverFullName}" deleted`,
+              'Success'
             );
+            this.viewData = this.viewData.map((driver: any) => {
+              if (driver.id === event.id) {
+                driver.actionAnimation = 'delete';
+              }
+              return driver;
+            });
+            this.updateDataCount();
+            const inetval = setInterval(() => {
+              this.viewData = closeAnimationAction(true, this.viewData);
+              clearInterval(inetval);
+            }, 1000);
           },
           error: () => {
             this.notificationService.error(
-              `Driver with id: ${event.id}, status couldn't be changed`,
-              'Error:'
+              `Failed to delete "${driverFullName}" `,
+              'Error'
             );
           },
         });
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'driver',
+          type: event.data.status === 1 ? 'deactivate' : 'activate',
+          image: true,
+        }
+      );
     } else if (event.type === 'delete-item') {
       this.modalService.openModal(
         ConfirmationModalComponent,
         { size: 'small' },
         {
-          ...event,
+          ...mappedEvent,
           template: 'driver',
           type: 'delete',
-          subType: null,
           image: true,
         }
       );
@@ -759,6 +844,26 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.backFilterQuery.pageIndex++;
       this.driverBackFilter(this.backFilterQuery);
     }
+  }
+
+  private changeDriverStatus(id: number) {
+    this.driverTService
+      .changeDriverStatus(id, this.selectedTab)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Driver successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Driver with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
   }
 
   private deleteDriverById(id: number) {
@@ -794,6 +899,34 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             'Error:'
           );
         },
+      });
+  }
+
+  private multipleDeleteDrivers(response: any[]) {
+    this.driverTService
+      .deleteDriverList(response)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.viewData = this.viewData.map((driver: any) => {
+          response.map((r: any) => {
+            if (driver.id === r.id) {
+              driver.actionAnimation = 'delete';
+            }
+          });
+
+          return driver;
+        });
+
+        this.updateDataCount();
+
+        const inetval = setInterval(() => {
+          this.viewData = closeAnimationAction(true, this.viewData);
+
+          clearInterval(inetval);
+        }, 1000);
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
       });
   }
 

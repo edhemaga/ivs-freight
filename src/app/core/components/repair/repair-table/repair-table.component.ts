@@ -158,6 +158,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.pageIndex = 1;
+          this.shopFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(
             res,
             this.selectedTab !== 'repair-shop'
@@ -171,9 +174,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.backFilterQuery.unitType =
                   this.selectedTab === 'active' ? 1 : 2;
 
-                this.repairBackFilter(this.backFilterQuery);
+                this.repairBackFilter(this.backFilterQuery, true);
               } else {
-                this.shopBackFilter(this.shopFilterQuery);
+                this.shopBackFilter(this.shopFilterQuery, true);
               }
             } else if (searchEvent.action === 'store') {
               this.sendRepairData();
@@ -499,21 +502,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   // Repair Back Filters
-  repairBackFilter(filter: {
-    repairShopId?: number | undefined;
-    repairType?: number | undefined;
-    unitType?: number | undefined;
-    dateFrom?: string | undefined;
-    dateTo?: string | undefined;
-    isPM?: number | undefined;
-    pageIndex?: number;
-    pageSize?: number;
-    companyId?: number | undefined;
-    sort?: string | undefined;
-    searchOne?: string | undefined;
-    searchTwo?: string | undefined;
-    searchThree?: string | undefined;
-  }) {
+  repairBackFilter(
+    filter: {
+      repairShopId?: number | undefined;
+      repairType?: number | undefined;
+      unitType?: number | undefined;
+      dateFrom?: string | undefined;
+      dateTo?: string | undefined;
+      isPM?: number | undefined;
+      pageIndex?: number;
+      pageSize?: number;
+      companyId?: number | undefined;
+      sort?: string | undefined;
+      searchOne?: string | undefined;
+      searchTwo?: string | undefined;
+      searchThree?: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.repairService
       .getRepairList(
         filter.repairShopId,
@@ -532,29 +539,52 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .pipe(untilDestroyed(this))
       .subscribe((repair: RepairListResponse) => {
-        this.viewData = repair.pagination.data;
+        if (!isShowMore) {
+          this.viewData = repair.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return filter.unitType === 1
-            ? this.mapTruckData(data)
-            : this.mapTrailerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return filter.unitType === 1
+              ? this.mapTruckData(data)
+              : this.mapTrailerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              repair.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          repair.pagination.data.map((data: any) => {
+            newData.push(
+              filter.unitType === 1
+                ? this.mapTruckData(data)
+                : this.mapTrailerData(data)
+            );
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
   // Shop Back Filters
-  shopBackFilter(filter: {
-    active?: number;
-    pinned?: boolean;
-    companyOwned?: boolean;
-    pageIndex?: number;
-    pageSize?: number;
-    companyId?: number;
-    sort?: string;
-    searchOne?: string | undefined;
-    searchTwo?: string | undefined;
-    searchThree?: string | undefined;
-  }) {
+  shopBackFilter(
+    filter: {
+      active?: number;
+      pinned?: boolean;
+      companyOwned?: boolean;
+      pageIndex?: number;
+      pageSize?: number;
+      companyId?: number;
+      sort?: string;
+      searchOne?: string | undefined;
+      searchTwo?: string | undefined;
+      searchThree?: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.repairService
       .getRepairShopList(
         filter.active,
@@ -570,11 +600,25 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       )
       .pipe(untilDestroyed(this))
       .subscribe((shop: RepairShopListResponse) => {
-        this.viewData = shop.pagination.data;
+        if (!isShowMore) {
+          this.viewData = shop.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapShopData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapShopData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[2].length = shop.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          shop.pagination.data.map((data: any) => {
+            newData.push(this.mapShopData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -597,6 +641,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     switch (event.action) {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
+
+        this.backFilterQuery.pageIndex = 1;
+        this.shopFilterQuery.pageIndex = 1;
 
         this.sendRepairData();
         break;
@@ -655,6 +702,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.action === 'sort') {
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
+        this.shopFilterQuery.pageIndex = 1;
 
         if (this.selectedTab !== 'repair-shop') {
           this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
@@ -671,7 +720,15 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
-    if (event.type === 'edit') {
+    if (event.type === 'show-more') {
+      this.selectedTab !== 'repair-shop'
+        ? this.backFilterQuery.pageIndex++
+        : this.shopFilterQuery.pageIndex++;
+
+      this.selectedTab !== 'repair-shop'
+        ? this.repairBackFilter(this.backFilterQuery, false, true)
+        : this.shopBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit') {
       switch (this.selectedTab) {
         case 'active': {
           this.modalService.openModal(

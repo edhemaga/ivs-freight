@@ -113,9 +113,7 @@ export class AccountTService {
   }
 
   // Delete Account List
-  public deleteAccountList(
-    accountsToDelete: any[]
-  ): Observable<any> {
+  public deleteAccountList(accountsToDelete: any[]): Observable<any> {
     let deleteOnBack = accountsToDelete.map((owner: any) => {
       return owner.id;
     });
@@ -137,7 +135,7 @@ export class AccountTService {
         localStorage.setItem(
           'accountTableCount',
           JSON.stringify({
-            account: storeAccounts.length - countDeleted
+            account: storeAccounts.length - countDeleted,
           })
         );
       })
@@ -150,7 +148,9 @@ export class AccountTService {
       tap(() => {
         this.accountStore.remove(({ id }) => id === accountId);
 
-        const accountCount = JSON.parse(localStorage.getItem('accountTableCount'));
+        const accountCount = JSON.parse(
+          localStorage.getItem('accountTableCount')
+        );
 
         accountCount.account--;
 
