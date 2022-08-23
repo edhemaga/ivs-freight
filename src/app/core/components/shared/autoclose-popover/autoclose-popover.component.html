@@ -1,12 +1,13 @@
-<div
+ <div
     #t2="ngbPopover"
     [ngbPopover]="customPopover"
-    [placement]="['bottom-right']"
-    [popoverClass]="'custompopovermain'"
+    [placement]="placement"
+    [popoverClass]="customClass"
     triggers="'manual'"
     [autoClose]="false"
-    [disablePopover]="!item.custom"
     (click)="switchTab($event, t2)"
+    [disablePopover]="isDisabled"
+    [container]="'body'"
   >
     <ng-content select="[mainContent]"></ng-content>
   </div>
