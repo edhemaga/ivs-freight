@@ -503,7 +503,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdls[0].cdlNumber
         : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
-      textBank: data.bank ? data.bank : '',
+      textBank: data?.bank?.name ? data.bank.name : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
