@@ -205,6 +205,9 @@ export class TaInputComponent
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
+      }else{
+        this.input.nativeElement.value = obj;
+        this.resetDateTimeInputs();
       }
     } else {
       this.input.nativeElement.value = obj;
