@@ -1314,7 +1314,12 @@
                 }"
                 class="description-container"
                 [innerHtml]="row[column.field]"
+                (click)="
+                  onShowDescriptionDropdown(row, column, i)
+                "
               ></div>
+
+              <div class="description-dropdown"></div>
             </div>
 
             <!-- LVL COLUMN -->

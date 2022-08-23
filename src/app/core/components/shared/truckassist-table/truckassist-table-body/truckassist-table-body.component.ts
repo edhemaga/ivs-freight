@@ -254,14 +254,14 @@ export class TruckassistTableBodyComponent
   }
 
   // Select Row
-  onSelectItem(event: any, index: number): void {
+  onSelectItem(rowData: any, index: number): void {
     this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-    if (event.isSelected) {
-      this.mySelection.push({ id: event.id });
+    if (rowData.isSelected) {
+      this.mySelection.push({ id: rowData.id, tableData: rowData });
     } else {
       const index = this.mySelection.findIndex(
-        (selection) => event.id === selection.id
+        (selection) => rowData.id === selection.id
       );
 
       if (index !== -1) {
@@ -279,7 +279,7 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------DROPDOWN---------------------------------
 
-  /* Set Dropdown Content */
+  // Set Dropdown Content
   setDropContent() {
     if (this.options.actions.length) {
       for (let i = 0; i < this.options.actions.length; i++) {
@@ -288,7 +288,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  /* Toggle Dropdown */
+  // Toggle Dropdown
   toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
@@ -299,6 +299,18 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+  }
+
+  // Show Description Dropdown
+  onShowDescriptionDropdown(
+    row: any,
+    column: any,
+    i: number
+  ) {
+    console.log('onShowDescriptionDropdown');
+    console.log(row);
+    console.log(column);
+    console.log(i);
   }
 
   /* Dropdown Actions */

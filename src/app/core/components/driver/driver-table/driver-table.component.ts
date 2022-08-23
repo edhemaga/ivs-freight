@@ -179,6 +179,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
+          console.log('Multiple Delete');
+          console.log(response);
+
           this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },

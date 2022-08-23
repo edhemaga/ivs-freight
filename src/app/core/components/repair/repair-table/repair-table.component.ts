@@ -472,11 +472,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       textTotal: data?.total
         ? '$ ' + this.thousandSeparator.transform(data.total)
         : '',
-      truckDescription: data?.items ? data.items
-        .map((item) => item.description?.trim())
-        .join(
-          '<div class="description-dot-container"><span class="description-dot"></span></div>'
-        ) : null,
+      truckDescription: data?.items
+        ? data.items
+            .map((item) => item.description?.trim())
+            .join(
+              '<div class="description-dot-container"><span class="description-dot"></span></div>'
+            )
+        : null,
     };
   }
 
