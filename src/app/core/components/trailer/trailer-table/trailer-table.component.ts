@@ -398,6 +398,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewData = this.viewData.map((data) => {
       return this.mapTrailerData(data);
     });
+
+    console.log('Trailer Data');
+    console.log(this.viewData);
   }
 
   mapTrailerData(data: any) {
@@ -409,6 +412,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
       textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
       textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+      trailerTypeIcon: data.trailerType.logoName,
+      trailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
       textEmptyWeight: data?.emptyWeight
         ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
         : '',

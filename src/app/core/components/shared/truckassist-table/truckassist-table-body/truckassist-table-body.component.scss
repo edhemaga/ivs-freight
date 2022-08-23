@@ -270,20 +270,20 @@ table {
             }
 
             // CONTACT COLUMN
-            .contact-container{
+            .contact-container {
               width: fit-content;
               height: 18px;
               display: flex;
 
-              .contact-count{
+              .contact-count {
                 width: fit-content;
                 min-width: 18px;
                 height: 18px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background: #F3F3F3;
-                color:  #919191;
+                background: #f3f3f3;
+                color: #919191;
                 margin-right: 2px;
                 font-size: 11px;
                 font-weight: bold;
@@ -294,12 +294,63 @@ table {
                 }
               }
 
-              .contact-avatar{
+              .contact-avatar {
                 width: 18px;
                 height: 18px;
                 background-repeat: no-repeat;
                 background-position: center;
                 background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg");
+              }
+            }
+
+            // WORK HOUR COLUMN
+            .work-hour-container {
+              width: fit-content;
+              height: 18px;
+              display: flex;
+
+              .work-hour-icon {
+                margin-right: 4px;
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("../../../../../../assets/svg/truckassist-table/customer/calendar.svg");
+              }
+
+              .work-hour-time {
+                color: #6c6c6c;
+                height: 18px;
+                line-height: 18px;
+                font-size: 14px;
+                font-weight: 400;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // DESCRIPTION COLUMN
+            .description-container {
+              cursor: pointer;
+              color: #6c6c6c;
+              font-size: 14px;
+              font-weight: 400;
+              height: 18px;
+              line-height: 18px;
+              display: flex;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+
+              &::selection {
+                color: #6c6c6c;
+                background: #6c6c6c20;
               }
             }
 
@@ -667,6 +718,11 @@ table {
             .truckassist-icon {
               svg-icon {
                 display: flex;
+                svg {
+                  path {
+                    fill: #aaaaaa;
+                  }
+                }
               }
 
               &:hover {
@@ -723,6 +779,111 @@ table {
                   svg {
                     path {
                       fill: #415fc1;
+                    }
+                  }
+                }
+
+                // TRAILERS
+                .ic_trailer_reefer {
+                  svg {
+                    path {
+                      fill: #ff5454;
+                    }
+                  }
+                }
+
+                .ic_trailer_dryvan {
+                  svg {
+                    path {
+                      fill: #6d82c7;
+                    }
+                  }
+                }
+
+                .ic_trailer_side-kit {
+                  svg {
+                    path {
+                      fill: #56ab62;
+                    }
+                  }
+                }
+
+                .ic_trailer_conestoga {
+                  svg {
+                    path {
+                      fill: #3c3c3c;
+                    }
+                  }
+                }
+
+                .ic_trailer_dumper {
+                  svg {
+                    path {
+                      fill: #6fdfe4;
+                    }
+                  }
+                }
+
+                .ic_trailer_container {
+                  svg {
+                    path {
+                      fill: #f89a3d;
+                    }
+                  }
+                }
+
+                .ic_trailer_tanker-liquid {
+                  svg {
+                    path {
+                      fill: #1e9df3;
+                    }
+                  }
+                }
+
+                .ic_trailer_carhauler {
+                  svg {
+                    path {
+                      fill: #59a5a5;
+                    }
+                  }
+                }
+
+                .ic_trailer_flatbed {
+                  svg {
+                    path {
+                      fill: #a468ff;
+                    }
+                  }
+                }
+
+                .ic_trailer_low-boy {
+                  svg {
+                    path {
+                      fill: #a34cb8;
+                    }
+                  }
+                }
+
+                .ic_trailer_chassis {
+                  svg {
+                    path {
+                      fill: #4a9a4f;
+                    }
+                  }
+                }
+
+                .ic_trailer_step-deck {
+                  svg {
+                    path {
+                      fill: #f3d542;
+                    }
+                  }
+                }
+
+                .ic_trailer-tanker-dryBulk {
+                  svg {
+                    path {
+                      fill: #f3f3f3;
                     }
                   }
                 }
@@ -924,8 +1085,8 @@ table {
               display: flex;
 
               .img-style {
-                width: 22px;
-                height: 22px;
+                width: 18px;
+                height: 18px;
               }
 
               .img-margin {
@@ -934,68 +1095,68 @@ table {
 
               /* Regular Type Icon */
               .truck {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_truck.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg");
               }
 
               .trailer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_trailer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg");
               }
 
               .mobile {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_mobile.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg");
               }
 
               .shop {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_shop.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg");
               }
 
               .towing {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_towing.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg");
               }
 
               .parts {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_parts.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg");
               }
 
               .tire {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_tire.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg");
               }
 
               .dealer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_dealer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg");
               }
 
               /* Active Type Icon */
               .truck-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Truck.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg");
               }
 
               .trailer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Trailer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg");
               }
 
               .mobile-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Mobile.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg");
               }
 
               .shop-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Shop.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg");
               }
 
               .towing-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Towing.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg");
               }
 
               .parts-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Parts.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg");
               }
 
               .tire-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Tire.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg");
               }
 
               .dealer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Dealer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg");
               }
             }
 
@@ -1168,12 +1329,12 @@ table {
           background-color: #aaaaaa !important;
         }
 
-        .contact-container{
-          .contact-count{
-            background: #FFFFFF !important;
+        .contact-container {
+          .contact-count {
+            background: #ffffff !important;
           }
 
-          .contact-avatar{
+          .contact-avatar {
             background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
           }
         }
@@ -1185,10 +1346,10 @@ table {
       .columns-container {
         background: #e5e5e5;
 
-        .contact-container{
-          .contact-count{
-            background: #F3F3F3 !important;
-            color: #6C6C6C !important;
+        .contact-container {
+          .contact-count {
+            background: #f3f3f3 !important;
+            color: #6c6c6c !important;
 
             &::selection {
               color: #6c6c6c !important;
@@ -1196,7 +1357,7 @@ table {
             }
           }
 
-          .contact-avatar{
+          .contact-avatar {
             background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg") !important;
           }
         }

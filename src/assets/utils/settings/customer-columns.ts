@@ -835,7 +835,7 @@ export function getShipperColumnDefinition() {
       grossColumn: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'work-hour',
       title: 'Ship. Work H.',
       field: 'textShipWorkHour',
       name: 'Ship. Work H.',
@@ -859,7 +859,7 @@ export function getShipperColumnDefinition() {
       grossColumn: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'work-hour',
       title: 'Rece. Work H.',
       field: 'textReceWorkHour',
       name: 'Rece. Work H.',
