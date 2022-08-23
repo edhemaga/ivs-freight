@@ -275,7 +275,7 @@
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
     [disablePopover]="
-      inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker'
+      (inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker') || inputConfig.isDisabled
     "
     [placement]="['left', 'left-top']"
     [popoverClass]="'datetimepopovermain'"
@@ -468,7 +468,7 @@
     #holder1
     class="date_time_holder input-control"
     *ngIf="
-      inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
+      (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker') && !inputConfig.isDisabled
     "
     [class.active]="showDateInput"
     tabindex="-1"
