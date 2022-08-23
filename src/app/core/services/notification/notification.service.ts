@@ -11,7 +11,6 @@ export class NotificationService {
   }
 
   public success(message: string, title?: string) {
-    //let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
     this.toastr.success(message, title, {
       progressBar: false, 
       progressAnimation: 'increasing',
@@ -21,7 +20,7 @@ export class NotificationService {
       timeOut: 3000,
       extendedTimeOut: 3000,
       enableHtml: true,
-      toastClass: 'showAnimationClass myAnimationClass',
+      toastClass: '',
     }).onShown.subscribe((show) => { 
       document.querySelector('.closeIcon')?.addEventListener('click',()=>{
         this.addCloseAnimation();
@@ -29,10 +28,10 @@ export class NotificationService {
     });
   }
 
-  public error(message: string, title?: string) {
-    let newMsg = ' '+message+' <div class="closeToastrBtn retryButton"></div> <div class="closeToastrBtn closeIcon" (click)="clickOnClose"></div>';
+  public error(message: string, title?: string, retryStatus?: boolean) {
     let mainTitle = title;
     let retryStarted = false;
+   
     this.toastr.error(message, title, {
       progressBar: false,
       progressAnimation: 'increasing',
@@ -42,7 +41,7 @@ export class NotificationService {
       extendedTimeOut: 3000,
       tapToDismiss: false,
       enableHtml: true,
-      toastClass: '',
+      toastClass: retryStatus ? 'showRetry' : '',
     }).onShown.subscribe((show) => { 
       document.querySelector('.closeIcon')?.addEventListener('click',()=>{
         
@@ -52,11 +51,14 @@ export class NotificationService {
           }
         
       })
+
+      document.querySelector('.retryButton')?.addEventListener('click',()=>{
+        console.log('--here--')
+      })
     });
   }
 
   public warning(message: string, title?: string) {
-    let newMsg = ' '+message+' <div class="closeToastrBtn" (click)="clickOnClose"></div>';
     this.toastr.warning(message, title, {
       progressBar: false,
       progressAnimation: 'increasing',
@@ -66,7 +68,7 @@ export class NotificationService {
       extendedTimeOut: 3000,
       tapToDismiss: false,
       enableHtml: true,
-      toastClass: 'showAnimationClass myAnimationClass',
+      toastClass: '',
     }).onShown.subscribe((show) => { 
       document.querySelector('.closeIcon')?.addEventListener('click',()=>{
         this.addCloseAnimation();

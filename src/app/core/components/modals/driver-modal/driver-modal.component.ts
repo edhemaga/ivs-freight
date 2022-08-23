@@ -997,9 +997,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.handlingPayrollFleetType(this.fleetType, true);
         },
         error: (err) => {
+          let retryStatus = false;
+          if ( err.status == 500 )
+            {
+              retryStatus = true;
+            }
           this.notificationService.error(
             "Driver's dropdowns can't be loaded.",
-            'Error:'
+            'Error:',
+            retryStatus,
           );
         },
       });

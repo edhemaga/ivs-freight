@@ -61,11 +61,17 @@
       }
      
     .toast-success {
-        background-color: #26A690;
+       
         background-image: none;
 
+        .main-toast-holder{
+          background-color: #26A690;
+        }
+
         &:hover{
-          background-color: #00967E;
+          .main-toast-holder{
+            background-color: #00967E;
+          }
         }
 
         .closeToastrBtn{
@@ -120,6 +126,16 @@
     -moz-animation-play-state:paused;
     -o-animation-play-state:paused; 
     animation-play-state:paused;
+  }
+
+  .showRetry{
+      .retryButton{
+          display: flex !important;
+      }
+
+      .toast-message{
+          width: 80% !important;
+      }
   }
 
 }

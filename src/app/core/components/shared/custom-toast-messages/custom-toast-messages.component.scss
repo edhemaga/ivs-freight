@@ -15,9 +15,14 @@
     }
 
     .toast-message{
+        width: 90%;
         font-size: 14px; 
         color: #FFFFFF;
         line-height: 18px;
+
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     .closeToastrBtn{
@@ -54,6 +59,7 @@
      }
 
     .retryButton{
+        display: none;
         right: 35px;
 
         svg {
@@ -89,3 +95,4 @@
         opacity: 1;
     }
 }
+
