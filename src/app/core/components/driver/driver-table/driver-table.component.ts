@@ -731,11 +731,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         name: event.data?.fullName,
       },
     };
-
-
     if (event.type === 'show-more') {
       this.backFilterQuery.pageIndex++;
-
       this.driverBackFilter(this.backFilterQuery, false, true);
     } else if (event.type === 'edit') {
       this.modalService.openModal(
@@ -775,28 +772,24 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
-      let successfullyMessage = `"${driverFullName}" ${ this.selectedTab == 'active' ? 'Deactivated' : 'Activated' }`
-      let errorullyMessage = `Failed to ${ this.selectedTab == 'active' ? 'Deactivate' : 'Activate' } "${driverFullName}"`; 
-
+      let successfullyMessage = `"${driverFullName}" ${
+        this.selectedTab == 'active' ? 'Deactivated' : 'Activated'
+      }`;
+      let errorullyMessage = `Failed to ${
+        this.selectedTab == 'active' ? 'Deactivate' : 'Activate'
+      } "${driverFullName}"`;
       this.driverTService
         .changeDriverStatus(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {
-            this.notificationService.success(
-              successfullyMessage,
-              'Success'
-            );
+            this.notificationService.success(successfullyMessage, 'Success');
           },
           error: () => {
-            this.notificationService.error(
-              errorullyMessage,
-              'Error'
-            );
+            this.notificationService.error(errorullyMessage, 'Error');
           },
         });
     } else if (event.type === 'delete-item') {
-
       this.driverTService
         .deleteDriverById(event.id, this.selectedTab)
         .pipe(untilDestroyed(this))
@@ -806,26 +799,21 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
               `"${driverFullName}" deleted`,
               'Success'
             );
-
             this.viewData = this.viewData.map((driver: any) => {
               if (driver.id === event.id) {
                 driver.actionAnimation = 'delete';
               }
-
               return driver;
             });
-
             this.updateDataCount();
-
             const inetval = setInterval(() => {
               this.viewData = closeAnimationAction(true, this.viewData);
-
               clearInterval(inetval);
             }, 1000);
           },
           error: () => {
             this.notificationService.error(
-              `Failed to delete "${driverFullName}" `, 
+              `Failed to delete "${driverFullName}" `,
               'Error'
             );
           },

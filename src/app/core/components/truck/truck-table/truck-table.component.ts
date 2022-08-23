@@ -571,11 +571,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     };
     let truckNum = event.data?.truckNumber;
-    
+
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;
-
         this.truckBackFilter(this.backFilterQuery, false, true);
         break;
       }
@@ -647,14 +646,9 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 `Truck "${truckNum}" deleted`,
                 'Success'
               );
-
-              
-
               this.updateDataCount();
-
               const inetval = setInterval(() => {
                 this.viewData = closeAnimationAction(true, this.viewData);
-
                 clearInterval(inetval);
               }, 1000);
             },
