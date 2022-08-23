@@ -338,17 +338,34 @@
     (click)="onPlaceholderIconEvent($event)"
   >
     <svg-icon
-      [svgStyle]="{
+      appHoverSvg
+      [fill]="
+        inputConfig.dropdownLabel || selectedDropdownLabelColor
+          ? selectedDropdownLabelColor?.code
+            ? selectedDropdownLabelColor.code
+            : '#b7b7b7'
+          : null
+      "
+      [fillHover]="
+        (inputConfig.dropdownLabel || selectedDropdownLabelColor) &&
+        editInputMode
+          ? selectedDropdownLabelColor?.hoverCode
+            ? selectedDropdownLabelColor.hoverCode
+            : null
+          : null
+      "
+      [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
+    ></svg-icon>
+  </div>
+
+  <!-- [svgStyle]="{
         fill:
           inputConfig.dropdownLabel || selectedDropdownLabelColor
             ? selectedDropdownLabelColor?.code
               ? selectedDropdownLabelColor.code
               : '#b7b7b7'
             : null
-      }"
-      [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
-    ></svg-icon>
-  </div>
+      }" -->
 
   <!-- Input Placeholder Text -->
   <svg-icon

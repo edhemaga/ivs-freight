@@ -328,7 +328,9 @@
             <svg-icon
               class="labels-template-logo"
               src="assets/svg/common/ic_dynamic_label.svg"
-              [svgStyle]="{ fill: option?.code ? option.code : '#b7b7b7' }"
+              appHoverSvg
+              [fill]="option?.code ? option.code : '#b7b7b7'"
+              [fillHover]="option?.hoverCode ? option.hoverCode : null"
             ></svg-icon>
             <div class="labels-template-vertical-divider"></div>
           </div>

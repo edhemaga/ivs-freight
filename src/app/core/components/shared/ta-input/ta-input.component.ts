@@ -234,6 +234,11 @@ export class TaInputComponent
       this.isVisibleCommands = true;
     }
 
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
+    }
+
     // Datepicker
     if (
       this.inputConfig.name === 'datepicker' ||
@@ -262,10 +267,18 @@ export class TaInputComponent
   }
 
   public onBlur(): void {
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel && !this.editInputMode) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
+    }
+
+    // Edit Input
     if (this.editInputMode) {
       this.getSuperControl.setErrors({ invalid: true });
       return;
     }
+
+    // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
       return;

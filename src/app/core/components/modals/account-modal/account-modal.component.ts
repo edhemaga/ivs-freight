@@ -160,11 +160,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             note: res.note,
           });
           this.selectedAccountLabel = res.companyAccountLabel;
-          this.selectedAccountColor = {
-            id: res.companyAccountLabel.colorId,
-            name: res.companyAccountLabel.color,
-            code: res.companyAccountLabel.code,
-          };
         },
         error: (err) => {
           this.notificationService.error("Can't get account.", 'Error:');
