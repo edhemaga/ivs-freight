@@ -105,9 +105,9 @@
     [incorrectValue]="incorrectValue"
     [selectedDropdownLabelColor]="
       inputConfig.dropdownLabel
-        ? activeItemColor
-          ? activeItemColor
-          : activeItem
+        ? activeItem
+          ? activeItem
+          : activeItemColor
         : null
     "
     (commandEvent)="commandEvent($event)"

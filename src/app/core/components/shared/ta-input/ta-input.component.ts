@@ -108,8 +108,8 @@ export class TaInputComponent
   ngOnInit(): void {
     if (
       (this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker')
-      && !this.inputConfig.isDisabled
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
@@ -199,15 +199,15 @@ export class TaInputComponent
     this.changeInput.emit(obj);
     if (
       (this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker')
-      && !this.inputConfig.isDisabled
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (obj) {
         const timeout = setTimeout(() => {
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
-      }else{
+      } else {
         this.input.nativeElement.value = obj;
         this.resetDateTimeInputs();
       }
@@ -228,9 +228,7 @@ export class TaInputComponent
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  public onFocus(e?: Event): void {
-
-    console.log("FOCUS", e?.target);
+  public onFocus(): void {
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -249,8 +247,8 @@ export class TaInputComponent
     // Datepicker
     if (
       (this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker')
-      && !this.inputConfig.isDisabled
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
@@ -286,9 +284,6 @@ export class TaInputComponent
       return;
     }
 
-    console.log("BLUR", e?.target)
-    console.log(this.preventBlur);
-
     // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
@@ -298,8 +293,8 @@ export class TaInputComponent
     if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
         (this.inputConfig.name === 'datepicker' ||
-        this.inputConfig.name === 'timepicker')
-        && !this.inputConfig.isDisabled
+          this.inputConfig.name === 'timepicker') &&
+        !this.inputConfig.isDisabled
       ) {
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
@@ -389,7 +384,7 @@ export class TaInputComponent
   }
 
   public resetDateTimeInputs() {
-    if(this.span1){
+    if (this.span1) {
       if (this.inputConfig.name === 'datepicker') {
         this.span1.nativeElement.innerHTML = 'mm';
         this.span2.nativeElement.innerHTML = 'dd';
@@ -406,7 +401,9 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
-    if( this.inputConfig.isDisabled ){ return; }
+    if (this.inputConfig.isDisabled) {
+      return;
+    }
     this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHide$.next(this.dropdownToggler);
@@ -418,8 +415,8 @@ export class TaInputComponent
     }
     if (
       (this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker')
-      && !this.inputConfig.isDisabled
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (this.t2) {
         this.t2.open();
@@ -618,7 +615,7 @@ export class TaInputComponent
     if (this.editInputMode) {
       this.commandEvent.emit({
         data: this.getSuperControl.value,
-        action: 'Edit Input',
+        action: 'Toggle Dropdown',
       });
     }
   }
@@ -1054,7 +1051,6 @@ export class TaInputComponent
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("SET SELECTION");
     const element = e.target;
     this.focusInput = true;
 
@@ -1086,7 +1082,6 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
-    console.log("FOCUS ON DIV");
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;

@@ -84,7 +84,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.getContactLabelsAndDepartments();
     this.companyContactColorLabels();
     this.followSharedCheckbox();
-    console.log(this.editData);
+
     const timeout = setTimeout(() => {
       this.uploadFileService.visibilityDropZone(true);
       clearTimeout(timeout);
@@ -371,6 +371,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onSelectColorLabel(event: any): void {
     this.selectedContactColor = event;
+    this.selectedContactLabel = {
+      ...this.selectedContactLabel,
+      colorId: this.selectedContactColor.id,
+      color: this.selectedContactColor.name,
+      code: this.selectedContactColor.code,
+    };
   }
 
   public onSaveLabel(data: { data: any; action: string }) {

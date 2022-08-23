@@ -248,11 +248,18 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public onPickExistLabel(event: any) {
+    console.log('pick exist label: ', event);
     this.selectedAccountLabel = event;
   }
 
   public onSelectColorLabel(event: any): void {
     this.selectedAccountColor = event;
+    this.selectedAccountLabel = {
+      ...this.selectedAccountLabel,
+      colorId: this.selectedAccountColor.id,
+      color: this.selectedAccountColor.name,
+      code: this.selectedAccountColor.code,
+    };
   }
 
   public onSaveLabel(data: { data: any; action: string }) {

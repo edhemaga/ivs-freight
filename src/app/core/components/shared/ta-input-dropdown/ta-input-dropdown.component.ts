@@ -410,6 +410,7 @@ export class TaInputDropdownComponent
 
         if (this.labelMode === 'Color') {
           this.activeItemColor = option;
+
           this.selectedItemColor.emit(this.activeItemColor);
         }
       }
@@ -438,6 +439,8 @@ export class TaInputDropdownComponent
   public commandEvent(event: { data: any; action: string; mode: string }) {
     if (event.action === 'Edit Input') {
       this.selectedLabelMode.emit('Color');
+    }
+    if (event.action === 'Toggle Dropdown') {
       this.popoverRef.toggle();
     }
     if (event.action === 'confirm' && event.mode === 'new') {
