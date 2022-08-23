@@ -474,7 +474,7 @@
     tabindex="-1"
     (click)="showDateTimePlaceholder()"
     (paste)="onDatePaste($event)"
-    (blur)="onBlur()"
+    (blur)="onBlur($event)"
     (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
@@ -489,10 +489,10 @@
       #span1
       class="main"
       tabindex="0"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
     <span
@@ -504,10 +504,10 @@
       #span2
       class="main"
       tabindex="1"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
     <span
@@ -519,10 +519,10 @@
       #span3
       class="main"
       tabindex="2"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
     ></span>
   </div>

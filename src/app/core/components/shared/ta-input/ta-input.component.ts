@@ -107,8 +107,9 @@ export class TaInputComponent
 
   ngOnInit(): void {
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker')
+      && !this.inputConfig.isDisabled
     ) {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
@@ -197,8 +198,9 @@ export class TaInputComponent
   public writeValue(obj: any): void {
     this.changeInput.emit(obj);
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker')
+      && !this.inputConfig.isDisabled
     ) {
       if (obj) {
         const timeout = setTimeout(() => {
@@ -226,7 +228,9 @@ export class TaInputComponent
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  public onFocus(): void {
+  public onFocus(e?: Event): void {
+
+    console.log("FOCUS", e?.target);
     // Password
     if (this.inputConfig.type === 'password') {
       this.isVisiblePasswordEye = true;
@@ -244,8 +248,9 @@ export class TaInputComponent
 
     // Datepicker
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker')
+      && !this.inputConfig.isDisabled
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
@@ -269,7 +274,7 @@ export class TaInputComponent
     this.focusInput = true;
   }
 
-  public onBlur(): void {
+  public onBlur(e?: Event): void {
     // DropDown Label
     if (this.inputConfig.dropdownLabel && !this.editInputMode) {
       this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
@@ -281,6 +286,9 @@ export class TaInputComponent
       return;
     }
 
+    console.log("BLUR", e?.target)
+    console.log(this.preventBlur);
+
     // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
@@ -289,8 +297,9 @@ export class TaInputComponent
     // Dropdown
     if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
-        this.inputConfig.name === 'datepicker' ||
-        this.inputConfig.name === 'timepicker'
+        (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker')
+        && !this.inputConfig.isDisabled
       ) {
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
@@ -407,8 +416,9 @@ export class TaInputComponent
       this.focusInput = true;
     }
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+      this.inputConfig.name === 'timepicker')
+      && !this.inputConfig.isDisabled
     ) {
       if (this.t2) {
         this.t2.open();
@@ -1042,6 +1052,8 @@ export class TaInputComponent
   setSelection(e) {
     e.preventDefault();
     e.stopPropagation();
+
+    console.log("SET SELECTION");
     const element = e.target;
     this.focusInput = true;
 
@@ -1073,6 +1085,7 @@ export class TaInputComponent
   }
 
   showDateTimePlaceholder() {
+    console.log("FOCUS ON DIV");
     this.showDateInput = true;
     this.focusInput = true;
     this.selectionInput = -1;
