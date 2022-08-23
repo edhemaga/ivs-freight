@@ -88,6 +88,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.changeTrailerStatus(res.id);
               break;
             }
+            case 'multiple delete': {
+              this.multipleDeleteTrailers(res.array);
+              break;
+            }
             default: {
               break;
             }
@@ -199,53 +203,31 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
 
     // Delete Selected Rows
-
     this.tableService.currentDeleteSelectedRows
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
-        let trailerNumber = '';
-        let trailersText = 'Trailer ';
-
         if (response.length) {
-          this.trailerService
-            .deleteTrailerList(response)
-            .pipe(untilDestroyed(this))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((trailer: any) => {
-                response.map((r: any) => {
-                  if (trailer.id === r.id) {
-                    trailer.actionAnimation = 'delete';
-
-                    if (trailerNumber == '') {
-                      trailerNumber = trailer.trailerNumber;
-                    } else {
-                      trailerNumber =
-                        trailerNumber + ', ' + trailer.trailerNumber;
-                      trailersText = 'Trailers ';
-                    }
-                  }
-                });
-
-                return trailer;
-              });
-
-              this.updateDataCount();
-
-              this.notificationService.success(
-                `${trailersText} "${trailerNumber}" deleted`,
-                'Success'
-              );
-
-              trailerNumber = '';
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 1000);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: {
+                ...item.tableData,
+                number: item.tableData?.trailerNumber,
+                avatar: `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
+              },
+            };
+          });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'trailer',
+              type: 'multiple delete',
+              svg: true,
+            }
+          );
         }
       });
 
@@ -683,6 +665,50 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             'Error:'
           );
         },
+      });
+  }
+
+  private multipleDeleteTrailers(response: any[]) {
+    this.trailerService
+      .deleteTrailerList(response)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        let trailerNumber = '';
+        let trailersText = 'Trailer ';
+
+        this.viewData = this.viewData.map((trailer: any) => {
+          response.map((id: any) => {
+            if (trailer.id === id) {
+              trailer.actionAnimation = 'delete';
+
+              if (trailerNumber == '') {
+                trailerNumber = trailer.trailerNumber;
+              } else {
+                trailerNumber = trailerNumber + ', ' + trailer.trailerNumber;
+                trailersText = 'Trailers ';
+              }
+            }
+          });
+
+          return trailer;
+        });
+
+        this.updateDataCount();
+
+        this.notificationService.success(
+          `${trailersText} "${trailerNumber}" deleted`,
+          'Success'
+        );
+
+        trailerNumber = '';
+        const inetval = setInterval(() => {
+          this.viewData = closeAnimationAction(true, this.viewData);
+
+          clearInterval(inetval);
+        }, 1000);
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
       });
   }
 

@@ -99,8 +99,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             }
             case 'multiple delete': {
-              console.log('MULTIPLE DELETE');
-              console.log(res.array);
               this.multipleDeleteDrivers(res.array);
               break;
             }
@@ -179,15 +177,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
-          console.log('Multiple Delete');
-          console.log(response);
-
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: { ...item.tableData, name: item.tableData?.fullName },
+            };
+          });
           this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },
             {
               data: null,
-              array: response,
+              array: mappedRes,
               template: 'driver',
               type: 'multiple delete',
               image: true,
@@ -726,7 +727,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    let driverFullName = event.data.firstName + ' ' + event.data.lastName;
     const mappedEvent = {
       ...event,
       data: {
@@ -865,8 +865,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(() => {
         this.viewData = this.viewData.map((driver: any) => {
-          response.map((r: any) => {
-            if (driver.id === r.id) {
+          response.map((id: any) => {
+            if (driver.id === id) {
               driver.actionAnimation = 'delete';
             }
           });

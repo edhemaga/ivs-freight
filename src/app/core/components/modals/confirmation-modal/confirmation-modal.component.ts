@@ -35,8 +35,25 @@ export class ConfirmationModalComponent {
     private confirmationDataSubject: ConfirmationService
   ) {}
 
+  ngOnInit() {
+    console.log(this.editData);
+  }
+
   public onModalAction(data: any) {
-    this.confirmationDataSubject.sendConfirmationData(data);
+    // Multiple Delete
+    if (this.editData.type === 'multiple delete') {
+      this.confirmationDataSubject.sendConfirmationData({
+        ...data,
+        array: data.array.map((item) => item.id),
+      });
+    }
+    // Single Delete
+    else {
+      this.confirmationDataSubject.sendConfirmationData(data);
+    }
+
     this.ngbActiveModal.close();
   }
+
+  public identity = (index: number, item: any): number => index;
 }

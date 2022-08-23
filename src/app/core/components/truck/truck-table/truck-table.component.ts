@@ -86,6 +86,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
               this.changeTruckStatus(res.id);
               break;
             }
+            case 'multiple delete': {
+              this.multipleDeleteTrucks(res.array);
+              break;
+            }
             default: {
               break;
             }
@@ -223,38 +227,27 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
-          this.truckService
-            .deleteTruckList(response)
-            .pipe(untilDestroyed(this))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((truck: any) => {
-                response.map((r: any) => {
-                  if (truck.id === r.id) {
-                    truck.actionAnimation = 'delete';
-                  }
-                });
-
-                return truck;
-              });
-
-              this.updateDataCount();
-
-              this.notificationService.success(
-                `${
-                  response.length > 1 ? 'Trucks' : 'Truck'
-                } successfully deleted`,
-                'Success:'
-              );
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 1000);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: {
+                ...item.tableData,
+                number: item.tableData?.truckNumber,
+                avatar: `assets/svg/common/trucks/${item.tableData?.truckType?.logoName}`,
+              },
+            };
+          });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'truck',
+              type: 'multiple delete',
+              svg: true,
+            }
+          );
         }
       });
 
@@ -646,7 +639,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  changeTruckStatus(id: number) {
+  private changeTruckStatus(id: number) {
     this.truckService
       .changeTruckStatus(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -666,7 +659,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  deleteTruckById(id: number) {
+  private deleteTruckById(id: number) {
     this.truckService
       .deleteTruckById(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -699,6 +692,39 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
             'Error:'
           );
         },
+      });
+  }
+
+  private multipleDeleteTrucks(response: any[]) {
+    this.truckService
+      .deleteTruckList(response)
+      .pipe(untilDestroyed(this))
+      .subscribe(() => {
+        this.viewData = this.viewData.map((truck: any) => {
+          response.map((id: any) => {
+            if (truck.id === id) {
+              truck.actionAnimation = 'delete';
+            }
+          });
+
+          return truck;
+        });
+
+        this.updateDataCount();
+
+        this.notificationService.success(
+          `${response.length > 1 ? 'Trucks' : 'Truck'} successfully deleted`,
+          'Success:'
+        );
+
+        const inetval = setInterval(() => {
+          this.viewData = closeAnimationAction(true, this.viewData);
+
+          clearInterval(inetval);
+        }, 1000);
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
       });
   }
 

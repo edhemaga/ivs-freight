@@ -5,6 +5,8 @@
         ? editData?.subType?.substring(0, 1).toUpperCase() +
           editData?.subType?.substring(1)
         : 'Move'
+      : editData?.type === 'multiple delete'
+      ? 'Delete'
       : editData?.type?.substring(0, 1).toUpperCase() +
         editData?.type?.substring(1)) +
     ' ' +
@@ -48,12 +50,23 @@
       class="confirmation-header"
     >
       Are you sure you want to
-      {{ editData?.type === "info" ? editData?.subType : editData?.type }} this
-      {{ editData?.template }}?
+      {{
+        editData?.type === "info"
+          ? editData?.subType
+          : editData?.type === "multiple delete"
+          ? "delete" + " " + editData.array.length
+          : editData.type
+      }}
+      {{ editData?.type === "multiple delete" ? null : "this" }}
+      {{
+        editData?.type === "multiple delete"
+          ? editData?.template + "s"
+          : editData?.template
+      }}?
     </p>
 
     <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
-    <div *ngIf="editData?.data" class="confirmation-body">
+    <div *ngIf="editData.data" class="confirmation-body">
       <!-- Svg -->
       <svg-icon
         class="confirmation-svg"
@@ -109,37 +122,40 @@
     </div>
 
     <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
-    <div *ngIf="!editData?.data" class="confirmation-body">
-      <div *ngFor="let item of editData.array">
+    <div *ngIf="editData.array.length" class="confirmation-array-body">
+      <div
+        *ngFor="let item of editData.array; trackBy: identity"
+        class="confirmation-body"
+      >
         <!-- Svg -->
         <svg-icon
           class="confirmation-svg"
-          *ngIf="item?.svg && item?.data?.avatar"
-          [src]="item?.item?.avatar"
+          *ngIf="editData?.svg && item?.data?.avatar"
+          [src]="item?.data?.avatar"
         ></svg-icon>
         <!-- Image -->
         <img
-          *ngIf="item?.image && item?.data?.avatar"
+          *ngIf="editData?.image && item?.data?.avatar"
           [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
           [alt]="item?.data?.name?.substring(0, 1)"
           class="confirmation-img"
         />
         <!-- Initial name, if avatar not upload -->
         <div
-          *ngIf="item?.image && !item?.data?.avatar"
+          *ngIf="editData?.image && !item?.data?.avatar"
           class="no-profile-image"
         >
           <app-profile-images
             [indx]="0"
             [size]="'confirmation'"
-            [name]="editData?.data?.name"
+            [name]="item?.data?.name"
           >
           </app-profile-images>
         </div>
         <!---------------------------------------------- Different templates for body --------------------------------------------->
         <!-- Driver, Owner -->
         <div
-          *ngIf="['driver', 'owner'].includes(item?.template)"
+          *ngIf="['driver', 'owner'].includes(editData?.template)"
           class="confirmation-info"
         >
           <p class="confirmation-text-1">{{ item?.data?.name }}</p>
@@ -147,7 +163,7 @@
         </div>
         <!-- Truck, Trailer -->
         <div
-          *ngIf="['truck', 'trailer'].includes(item?.template)"
+          *ngIf="['truck', 'trailer'].includes(editData?.template)"
           class="confirmation-info"
         >
           <p class="confirmation-text-1">Unit {{ item?.data?.number }}</p>
@@ -155,7 +171,7 @@
         </div>
         <!-- Shipper, Repair Shop -->
         <div
-          *ngIf="['shipper', 'repair shop'].includes(item?.template)"
+          *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
           class="confirmation-info"
         >
           <p class="confirmation-text-1">{{ item?.data?.name }}</p>
