@@ -1,11 +1,16 @@
 import { CompanyAccountService } from './../../../../../../appcoretruckassist/api/companyAccount.service';
 import { Injectable } from '@angular/core';
 import {
+  AccountColorResponse,
+  CompanyAccountLabelService,
   CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  CreateCompanyAccountLabelCommand,
   CreateResponse,
+  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
+  UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -20,7 +25,8 @@ export class AccountTService {
     private accountService: CompanyAccountService,
     private tableService: TruckassistTableService,
     private accountStore: AccountStore,
-    private accountQuery: AccountQuery
+    private accountQuery: AccountQuery,
+    private accountLabelService: CompanyAccountLabelService
   ) {}
 
   // Add Account
@@ -169,8 +175,31 @@ export class AccountTService {
     );
   }
 
-  // Get Account Modal
+  //--------------------- Get Account Modal ---------------------
   public companyAccountModal(): Observable<CompanyAccountModalResponse> {
     return this.accountService.apiCompanyaccountModalGet();
+  }
+
+  // --------------------- ACCOUNT LABEL ---------------------
+  public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
+    return this.accountLabelService.apiCompanyaccountlabelListGet();
+  }
+
+  public companyAccountLabelsColorList(): Observable<
+    Array<AccountColorResponse>
+  > {
+    return this.accountLabelService.apiCompanyaccountlabelColorListGet();
+  }
+
+  public addCompanyAccountLabel(
+    data: CreateCompanyAccountLabelCommand
+  ): Observable<CreateResponse> {
+    return this.accountLabelService.apiCompanyaccountlabelPost(data);
+  }
+
+  public updateCompanyAccountLabel(
+    data: UpdateCompanyAccountLabelCommand
+  ): Observable<any> {
+    return this.accountLabelService.apiCompanyaccountlabelPut(data);
   }
 }

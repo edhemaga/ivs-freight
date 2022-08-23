@@ -4,12 +4,10 @@ import {
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Self,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
@@ -50,17 +48,17 @@ export class TaInputComponent
   @ViewChild('span3', { static: false }) span3: ElementRef;
   @ViewChild('holder1', { static: false }) holder1: ElementRef;
   @ViewChild('t2') t2: any;
-  @ViewChild(NgbPopover)
-  private ngbMainPopover: NgbPopover;
+  @ViewChild(NgbPopover) ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
   @Input() incorrectValue: boolean;
+  @Input() selectedDropdownLabelColor: any;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
-  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+  @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
   public focusInput: boolean = false;
@@ -80,6 +78,7 @@ export class TaInputComponent
 
   // Date Timer
   private dateTimeMainTimer: any;
+  private preventBlur: boolean = false;
 
   // Capslock input
   public capsLockOn: boolean = false;
@@ -90,7 +89,8 @@ export class TaInputComponent
   // Number of points
   public numberOfPoints: number = 0;
 
-  // Applicant incorrect
+  // Edit Input
+  public editInputMode: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -107,8 +107,9 @@ export class TaInputComponent
 
   ngOnInit(): void {
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       this.calendarService.dateChanged
         .pipe(untilDestroyed(this))
@@ -119,7 +120,10 @@ export class TaInputComponent
     }
 
     // Dropdown add mode
-    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
+    if (
+      (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
+      !this.inputConfig.isDisabled
+    ) {
       this.inputService.dropdownAddMode$
         .pipe(untilDestroyed(this))
         .subscribe((action) => {
@@ -194,15 +198,16 @@ export class TaInputComponent
   public writeValue(obj: any): void {
     this.changeInput.emit(obj);
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (obj) {
         const timeout = setTimeout(() => {
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
-      }else{
+      } else {
         this.input.nativeElement.value = obj;
         this.resetDateTimeInputs();
       }
@@ -223,8 +228,6 @@ export class TaInputComponent
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  preventBlur: boolean = false;
-
   public onFocus(): void {
     // Password
     if (this.inputConfig.type === 'password') {
@@ -236,10 +239,16 @@ export class TaInputComponent
       this.isVisibleCommands = true;
     }
 
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
+    }
+
     // Datepicker
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
@@ -263,16 +272,29 @@ export class TaInputComponent
     this.focusInput = true;
   }
 
-  public onBlur(): void {
+  public onBlur(e?: Event): void {
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel && !this.editInputMode) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
+    }
+
+    // Edit Input
+    if (this.editInputMode) {
+      this.getSuperControl.setErrors({ invalid: true });
+      return;
+    }
+
+    // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
       return;
     }
     // Dropdown
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
-        this.inputConfig.name === 'datepicker' ||
-        this.inputConfig.name === 'timepicker'
+        (this.inputConfig.name === 'datepicker' ||
+          this.inputConfig.name === 'timepicker') &&
+        !this.inputConfig.isDisabled
       ) {
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
@@ -362,7 +384,7 @@ export class TaInputComponent
   }
 
   public resetDateTimeInputs() {
-    if(this.span1){
+    if (this.span1) {
       if (this.inputConfig.name === 'datepicker') {
         this.span1.nativeElement.innerHTML = 'mm';
         this.span2.nativeElement.innerHTML = 'dd';
@@ -379,6 +401,9 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
+    if (this.inputConfig.isDisabled) {
+      return;
+    }
     this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHide$.next(this.dropdownToggler);
@@ -389,8 +414,9 @@ export class TaInputComponent
       this.focusInput = true;
     }
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (this.t2) {
         this.t2.open();
@@ -416,7 +442,10 @@ export class TaInputComponent
   }
 
   public onKeyUp(event): void {
-    if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
+    if (
+      event.keyCode == 8 &&
+      !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
+    ) {
       this.numberOfSpaces = 0;
 
       if (!this.input.nativeElement.value) {
@@ -424,7 +453,7 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
@@ -471,6 +500,21 @@ export class TaInputComponent
     }
   }
 
+  public onEditInput(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.editInputMode = true;
+    this.inputConfig.commands.active = true;
+    this.focusInput = true;
+    this.setInputCursorAtTheEnd(this.input.nativeElement);
+    this.getSuperControl.setErrors({ required: true });
+    this.commandEvent.emit({
+      data: this.getSuperControl.value,
+      action: 'Edit Input',
+    });
+  }
+
   public onCommands(event: Event, type: string, action: string) {
     event.stopPropagation();
     event.preventDefault();
@@ -495,7 +539,7 @@ export class TaInputComponent
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 10000)
               );
-            } else {
+            } else if (value >= 1000) {
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 500)
               );
@@ -537,22 +581,42 @@ export class TaInputComponent
       case 'confirm-cancel': {
         switch (action) {
           case 'confirm': {
-            this.inputCommandEvent.emit('confirm');
+            this.commandEvent.emit({
+              data: this.getSuperControl.value,
+              action: 'confirm',
+              mode: !this.inputConfig.dropdownLabelNew ? 'edit' : 'new',
+            });
             break;
           }
           case 'cancel': {
-            this.inputCommandEvent.emit('cancel');
+            this.commandEvent.emit({ action: 'cancel' });
             break;
           }
           default: {
             break;
           }
         }
+        this.getSuperControl.setErrors(null);
+        this.editInputMode = false;
+        this.inputConfig.dropdownLabelNew;
+        this.inputConfig.commands.active = false;
+        this.onBlur();
         break;
       }
       default: {
         break;
       }
+    }
+  }
+
+  public onPlaceholderIconEvent(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.editInputMode) {
+      this.commandEvent.emit({
+        data: this.getSuperControl.value,
+        action: 'Toggle Dropdown',
+      });
     }
   }
 
@@ -986,21 +1050,16 @@ export class TaInputComponent
   setSelection(e) {
     e.preventDefault();
     e.stopPropagation();
+
     const element = e.target;
     this.focusInput = true;
-    console.log('SET SELECTION');
-    console.log(this.selectionInput);
+
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
       this.setSpanSelection(element);
-      // if( this.selectionInput == -1 ){
-      //   this.showDateTimePlaceholder();
-      // }else{
-
-      // }
     } else {
       if (this.selectionInput == -1) {
         this.span1.nativeElement.focus();
@@ -1395,13 +1454,17 @@ export class TaInputComponent
   }
 
   onPopoverShown() {
-    this.focusInput = true;
-    this.showDateInput = true;
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = true;
+      this.showDateInput = true;
+    }
   }
 
   onPopoverHidden() {
-    this.focusInput = false;
-    this.blurOnDateTime();
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = false;
+      this.blurOnDateTime();
+    }
   }
 
   closePopover() {

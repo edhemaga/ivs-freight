@@ -1,10 +1,10 @@
 <div
-  [ngClass]="{ disabled: disabled }"
+  [ngClass]="{ disabled: disabled || disabledStillCheckMark }"
   class="ta-checkbox-container {{ customClass }}"
 >
   <label for="{{ name }}" (click)="onAction()">
     <input
-      *ngIf="!disabled"
+      *ngIf="!disabled || disabledStillCheckMark"
       type="checkbox"
       class="ta-checkbox"
       name="{{ name }}"
@@ -13,12 +13,16 @@
       (change)="onChange($event.target.checked)"
     />
     <span
-      *ngIf="!disabled"
+      *ngIf="!disabled || (disabledStillCheckMark && getSuperControl.value)"
       class="ta-mark"
-      [ngClass]="{ invalid: invalid }"
+      [ngClass]="{
+        invalid: invalid,
+        disabled: disabledStillCheckMark
+      }"
     ></span>
+
     <svg-icon
-      *ngIf="disabled"
+      *ngIf="disabled && !disabledStillCheckMark"
       class="ta-checkbox-disabled"
       src="assets/svg/common/ic_disable.svg"
     ></svg-icon>

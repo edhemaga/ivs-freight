@@ -19,6 +19,7 @@ export class TaCheckboxComponent implements ControlValueAccessor {
   @Input() required: boolean = false;
   @Input() invalid: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() disabledStillCheckMark: boolean = false;
   @Input() svg: string;
   @Input() name: string = 'ta-checkbox'; // if have multiple checkboxes on same page, forward different name
   @Input() customClass: string;
