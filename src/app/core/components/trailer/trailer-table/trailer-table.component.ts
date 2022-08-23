@@ -597,54 +597,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'activate-item': {
-        this.trailerService
-          .changeTrailerStatus(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                `Trailer "${trailerNum}" Activated`,
-                'Success'
-              );
-              this.sendTrailerData();
-            },
-            error: () => {
-              this.notificationService.error(
-                `Trailer with id: ${event.id}, status couldn't be changed`,
-                'Error:'
-              );
-            },
-          });
-        break;
-      }
-      case 'delete-item': {
-        this.trailerService
-          .deleteTrailerById(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                `Trailer "${trailerNum}" deleted`,
-                'Success'
-              );
-              this.viewData = this.viewData.map((trailer: any) => {
-                if (trailer.id === event.id) {
-                  trailer.actionAnimation = 'delete';
-                }
-                return trailer;
-              });
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-                clearInterval(inetval);
-              }, 1000);
-            },
-            error: () => {
-              this.notificationService.error(
-                `Failed to delete Trailer "${trailerNum}"`,
-                'Error'
-              );
-            },
-          });
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
