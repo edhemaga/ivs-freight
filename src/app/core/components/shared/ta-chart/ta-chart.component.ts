@@ -1015,7 +1015,6 @@ export class TaChartComponent implements OnInit {
   showChartTooltip(value){
     this.animationDuration = 0;
     this.hoveringStatus = true;
-    console.log(this.chart.chart, 'chartttt');
     const canvas = this.chart.chart.canvas;
     const ctx = this.chart.chart.ctx;
     
