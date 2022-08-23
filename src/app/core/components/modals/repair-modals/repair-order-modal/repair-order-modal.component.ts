@@ -106,7 +106,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairDropdowns();
-
+    console.log('REPAIR');
+    console.log(this.editData);
     if (this.editData?.type.includes('edit')) {
       this.editRepairById(this.editData.id);
     }
@@ -739,10 +740,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 },
               });
           }
-
-          this.onModalHeaderTabChange(
-            this.headerTabs.find((item) => item.name === res.repairType.name)
-          );
+          if (!this.editData.type.includes('fo')) {
+            this.onModalHeaderTabChange(
+              this.headerTabs.find((item) => item.name === res.repairType.name)
+            );
+          }
 
           this.onTypeOfRepair(
             this.typeOfRepair.find((item) => item.name === res.unitType.name),
