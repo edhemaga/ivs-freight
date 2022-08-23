@@ -117,6 +117,30 @@
           }
         }
 
+        &.active-repair-truck-trailer {
+          color: #536bc2;
+          position: relative;
+
+          &:hover {
+            color: #3551b7;
+            transition: all 0.3s ease-in-out;
+          }
+
+          // Higlight text
+          .highlight-text-45632 {
+            background-color: transparent;
+
+            &:hover {
+              color: #3551b7 !important;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            display: none;
+          }
+        }
+
         &.active,
         &.active-label {
           color: #536bc2;
@@ -138,6 +162,7 @@
           }
 
           &::after {
+            display: inline-block;
             position: absolute;
             right: 4px;
             top: 2.5px;
