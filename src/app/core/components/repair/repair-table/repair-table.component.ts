@@ -472,6 +472,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       textTotal: data?.total
         ? '$ ' + this.thousandSeparator.transform(data.total)
         : '',
+      truckDescription: data?.items
+        ? data.items
+            .map((item) => item.description?.trim())
+            .join(
+              '<div class="description-dot-container"><span class="description-dot"></span></div>'
+            )
+        : null,
     };
   }
 
@@ -489,6 +496,13 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       textTotal: data?.total
         ? '$ ' + this.thousandSeparator.transform(data.total)
         : '',
+      trailerDescription: data?.items
+        ? data.items
+            .map((item) => item.description?.trim())
+            .join(
+              '<div class="description-dot-container"><span class="description-dot"></span></div>'
+            )
+        : null,
     };
   }
 
@@ -498,6 +512,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       ...data,
       isSelected: false,
       textAddress: data?.address?.address ? data.address.address : '',
+      shopServices: data?.serviceTypes ? data?.serviceTypes : null,
     };
   }
 

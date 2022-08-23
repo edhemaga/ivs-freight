@@ -6,7 +6,8 @@
     (click)="switchTab($event, indx, item)"
     #popoverHolder
     app-autoclose-popover
-    [item]="item"
+    [customClass]="'custompopovermain'"
+    [isDisabled]="!item.custom"
     >
         <div mainContent style="pointer-events: none;">
             {{item.name}}

@@ -570,11 +570,10 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         avatar: `assets/svg/common/trucks/${event.data?.truckType?.logoName}`,
       },
     };
-
+    let truckNum = event.data?.truckNumber;
     switch (event.type) {
       case 'show-more': {
         this.backFilterQuery.pageIndex++;
-
         this.truckBackFilter(this.backFilterQuery, false, true);
         break;
       }
@@ -616,6 +615,48 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         break;
       }
       case 'activate-item': {
+        this.truckService
+          .changeTruckStatus(event.id, this.selectedTab)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                `Status updated: Active`,
+                'Success'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                `Failed to update status`,
+                'Error'
+              );
+            },
+          });
+        break;
+      }
+      case 'delete-item': {
+        this.truckService
+          .deleteTruckById(event.id, this.selectedTab)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                `Truck "${truckNum}" deleted`,
+                'Success'
+              );
+              this.updateDataCount();
+              const inetval = setInterval(() => {
+                this.viewData = closeAnimationAction(true, this.viewData);
+                clearInterval(inetval);
+              }, 1000);
+            },
+            error: () => {
+              this.notificationService.error(
+                `Truck with id: ${event.id} couldn't be deleted`,
+                'Error:'
+              );
+            },
+          });
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
