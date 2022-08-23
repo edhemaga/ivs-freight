@@ -122,7 +122,7 @@
     </div>
 
     <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
-    <div *ngIf="editData.array.length" class="confirmation-array-body">
+    <div *ngIf="editData.array?.length" class="confirmation-array-body">
       <div
         *ngFor="let item of editData.array; trackBy: identity"
         class="confirmation-body"
