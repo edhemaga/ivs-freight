@@ -55,6 +55,8 @@ export class TruckassistTableBodyComponent
   viewDataEmpty: number;
   viewDataTimeOut: any;
   rowData: any;
+  activeDescriptionDropdown: number = -1;
+  descriptionTooltip: any;
 
   constructor(
     private router: Router,
@@ -303,14 +305,19 @@ export class TruckassistTableBodyComponent
 
   // Show Description Dropdown
   onShowDescriptionDropdown(
+    popup: any,
     row: any,
-    column: any,
     i: number
   ) {
-    console.log('onShowDescriptionDropdown');
-    console.log(row);
-    console.log(column);
-    console.log(i);
+    this.descriptionTooltip = popup;
+
+    if (popup.isOpen()) {
+      popup.close();
+    } else {
+      popup.open({ data: row });
+    }
+
+    this.activeDescriptionDropdown = popup.isOpen() ? i : -1;
   }
 
   /* Dropdown Actions */

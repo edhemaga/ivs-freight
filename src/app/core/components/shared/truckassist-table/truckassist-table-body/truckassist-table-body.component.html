@@ -1312,14 +1312,19 @@
                 [ngStyle]="{
                   width: column.width - 5 + 'px'
                 }"
+                [ngClass]="{
+                  'active-description':
+                    activeDescriptionDropdown === i && t1.isOpen()
+                }"
                 class="description-container"
                 [innerHtml]="row[column.field]"
-                (click)="
-                  onShowDescriptionDropdown(row, column, i)
-                "
+                #t1="ngbPopover"
+                (click)="onShowDescriptionDropdown(t1, row, i)"
+                [ngbPopover]="descriptionPopover"
+                [placement]="'bottom-left'"
+                popoverClass="table-description-popover"
+                triggers="manual"
               ></div>
-
-              <div class="description-dropdown"></div>
             </div>
 
             <!-- LVL COLUMN -->
@@ -2138,5 +2143,19 @@
       </div>
       <div class="dropdown-content-text">{{ action.title }}</div>
     </div>
+  </div>
+</ng-template>
+
+<!-- DESCRIPTION -->
+<ng-template #descriptionPopover let-data="data">
+  <div class="description-dropdown">
+    <div class="description-item">
+      <div class="item-index">1</div>
+      <div class="item-title">Transmission oil</div>
+      <div class="item-cost">$1,323.00</div>
+      <div class="number-of-items">1</div>
+      <div class="item-total-cost">$1,323.00</div>
+    </div>
+    <div class="right-background"></div>
   </div>
 </ng-template>
