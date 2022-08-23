@@ -1,4 +1,4 @@
-<table>
+<table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
     <!-- Pined -->
     <div class="pined-tr">
@@ -281,6 +281,49 @@
               </div>
             </div>
 
+            <!-- CONTACT COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'contact' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="contact-container" *ngIf="row[column.field]">
+                <div class="contact-count">{{ row[column.field] }}</div>
+                <div class="contact-avatar"></div>
+              </div>
+            </div>
+
+            <!-- WORK HOUR COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'work-hour' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="work-hour-container">
+                <div class="work-hour-icon"></div>
+                <div
+                  class="work-hour-time"
+                  [ngStyle]="{
+                    width: column.width - 22 + 'px'
+                  }"
+                >
+                  {{ row[column.field] }}
+                </div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -531,45 +574,49 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center" *ngIf="row.doc">
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
-                ></div>
+              <div class="service-container" *ngIf="row[column.field]">
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[1].checked ? 'trailer-active' : 'trailer'
+                    row[column.field][0].active ? 'truck-active' : 'truck'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[2].checked ? 'mobile-active' : 'mobile'
+                    row[column.field][1].active ? 'trailer-active' : 'trailer'
                   "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[3].checked ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[4].checked ? 'towing-active' : 'towing'
+                    row[column.field][2].active ? 'mobile-active' : 'mobile'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[5].checked ? 'parts-active' : 'parts'"
+                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[6].checked ? 'tire-active' : 'tire'"
+                  [class]="
+                    row[column.field][4].active ? 'towing-active' : 'towing'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="
+                    row[column.field][5].active ? 'parts-active' : 'parts'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
                 ></div>
                 <div
                   class="img-style"
                   [class]="
-                    row.doc.types[7].checked ? 'dealer-active' : 'dealer'
+                    row[column.field][7].active ? 'dealer-active' : 'dealer'
                   "
                 ></div>
               </div>
@@ -1223,6 +1270,63 @@
               </div>
             </div>
 
+            <!-- WORK HOUR COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'work-hour' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="work-hour-container">
+                <div class="work-hour-icon"></div>
+                <div
+                  class="work-hour-time"
+                  [ngStyle]="{
+                    width: column.width - 22 + 'px'
+                  }"
+                >
+                  {{ row[column.field] }}
+                </div>
+              </div>
+            </div>
+
+            <!-- DESCRIPTION COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'description' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                *ngIf="row[column.field]"
+                [ngStyle]="{
+                  width: column.width - 5 + 'px'
+                }"
+                [ngClass]="{
+                  'active-description':
+                    activeDescriptionDropdown === i && t1.isOpen()
+                }"
+                class="description-container"
+                [innerHtml]="row[column.field]"
+                #t1="ngbPopover"
+                (click)="onShowDescriptionDropdown(t1, row, i)"
+                [ngbPopover]="descriptionPopover"
+                [placement]="'bottom-left'"
+                popoverClass="table-description-popover"
+                triggers="manual"
+              ></div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1473,45 +1577,49 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center" *ngIf="row.doc">
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
-                ></div>
+              <div class="service-container" *ngIf="row[column.field]">
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[1].checked ? 'trailer-active' : 'trailer'
+                    row[column.field][0].active ? 'truck-active' : 'truck'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[2].checked ? 'mobile-active' : 'mobile'
+                    row[column.field][1].active ? 'trailer-active' : 'trailer'
                   "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[3].checked ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[4].checked ? 'towing-active' : 'towing'
+                    row[column.field][2].active ? 'mobile-active' : 'mobile'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[5].checked ? 'parts-active' : 'parts'"
+                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[6].checked ? 'tire-active' : 'tire'"
+                  [class]="
+                    row[column.field][4].active ? 'towing-active' : 'towing'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="
+                    row[column.field][5].active ? 'parts-active' : 'parts'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
                 ></div>
                 <div
                   class="img-style"
                   [class]="
-                    row.doc.types[7].checked ? 'dealer-active' : 'dealer'
+                    row[column.field][7].active ? 'dealer-active' : 'dealer'
                   "
                 ></div>
               </div>
@@ -2035,5 +2143,19 @@
       </div>
       <div class="dropdown-content-text">{{ action.title }}</div>
     </div>
+  </div>
+</ng-template>
+
+<!-- DESCRIPTION -->
+<ng-template #descriptionPopover let-data="data">
+  <div class="description-dropdown">
+    <div class="description-item">
+      <div class="item-index">1</div>
+      <div class="item-title">Transmission oil</div>
+      <div class="item-cost">$1,323.00</div>
+      <div class="number-of-items">1</div>
+      <div class="item-total-cost">$1,323.00</div>
+    </div>
+    <div class="right-background"></div>
   </div>
 </ng-template>

@@ -186,11 +186,10 @@ export function getTrailerColumnDefinition() {
       opacityIgnore: true,
       class: 'overflow-unset',
     },
-    /*  ngTemplate: 'svg', */
     {
-      ngTemplate: '',
+      ngTemplate: 'svg',
       title: 'Type',
-      field: 'svgIcon',
+      field: 'trailerTypeIcon',
       name: 'Type',
       headAlign: 'center',
       sortName: 'type',
@@ -211,10 +210,11 @@ export function getTrailerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      imageHover: {
-        url: 'assets/svg/truckassist-table/trailer/',
-        file: 'doc.additionalData.type.file',
-        class: 'doc.additionalData.type.class',
+      svgUrl: 'assets/svg/truckassist-table/trailer/',
+      classField: 'trailerTypeClass',
+      svgDimensions: {
+        width: 42,
+        height: 18
       },
       class: 'type-icon',
     },
