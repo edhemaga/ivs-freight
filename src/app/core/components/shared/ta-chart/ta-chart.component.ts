@@ -57,6 +57,8 @@ export class TaChartComponent implements OnInit {
   selectedDrivers: any = [];
   dataMaxRows: number = 6;
   hoverTimeDisplay: boolean = false;
+  hoveredItemTip: string[];
+  hoveredItemTipSave: any;
 
   constructor(private ref: ChangeDetectorRef) {}
 
@@ -95,13 +97,13 @@ export class TaChartComponent implements OnInit {
         : false,
       cutoutPercentage: 90,
       animation: {
-        duration: this.allowAnimation ? this.animationDuration : 0,
+        duration: this.chartConfig['allowAnimation'] ? this.animationDuration : 0,
       },
       onHover: (evt, elements) => {
         if (elements?.length) {
           this.hoveringStatus = true;
           this.animationDuration = 0;
-          if (elements[0]['_index'] != this.lastHoveredIndex) {
+          if ((elements[0]['_index'] != this.lastHoveredIndex) || this.lineChartType == 'doughnut') {
             this.lastHoveredIndex = elements[0]['_index'];
             if (this.legendAttributes?.length) {
               this.setChartLegendData(elements);
@@ -110,17 +112,17 @@ export class TaChartComponent implements OnInit {
               this.setHoverAnnotation(elements[0]['_index']);
             }
             if (this.gridHoverBackground) {
-              this.drawGridBackground(elements[0]['_index']);
+              //this.drawGridBackground(elements[0]['_index']);
             }
             if (this.lineChartType == 'doughnut' && this.driversList?.length) {
               this.hoverDoughnut(elements, 'object');
             }
           }
         } else {
-          this.hoveringStatus = false;
+          //this.hoveringStatus = false;
           this.ref.detectChanges();
-          this.showHoverData = false;
-          this.animationDuration = 1000;
+          //this.showHoverData = false;
+          if (!this.chartConfig['animationOnlyOnLoad']) { this.animationDuration = 1000; }
           if (this.chartConfig['onHoverAnnotation']) {
             this.setHoverAnnotation(null);
           }
@@ -165,7 +167,15 @@ export class TaChartComponent implements OnInit {
         ],
       },
       tooltips: {
-        enabled: this.chartConfig['tooltip'],
+        enabled: false,
+        mode: 'x-axis',
+        position: 'average',
+        intersect: false,
+        custom: (tooltipModel) => {
+          if (this.gridHoverBackground && tooltipModel?.dataPoints?.[0]) {
+            this.showChartTooltip(tooltipModel.dataPoints[0].index);
+          }
+        }
       },
       plugins: {
         datalabels: {
@@ -482,47 +492,50 @@ export class TaChartComponent implements OnInit {
     this.setChartOptions();
     let gridBeforeDraw = {
       beforeDraw: (chart) => {
-        if (this.hoveringStatus) {
+        if (this.hoveringStatus ) {
           const canvas = chart.chart.canvas;
           const ctx = chart.chart.ctx;
           const xAxis = chart.scales['x-axis-0'];
           let xPoint1 = 0;
           let xPoint2 = 0;
-          if (xAxis['_gridLineItems']) {
-            xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-            xPoint2 = xAxis['_gridLineItems'][0]['x2'];
 
-            const elWidth = xPoint1 - xPoint2;
-
-            if (
-              xAxis['_gridLineItems'][value] &&
-              this.chartConfig['hasHoverData']
-            ) {
-              this.updateHoverData(value);
-              let oversizedHover = false;
-
-              let clientWidth = this.hoverDataHolder
-                ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                : 0;
-
-              let xPos = this.chartConfig['offset']
-                ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                : xAxis['_gridLineItems'][value]['x2'];
-
+          setTimeout(() => {
+            if (xAxis['_gridLineItems']) {
+              xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+              xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+              const elWidth = xPoint1 - xPoint2;
+  
               if (
-                this.hoverDataHolder &&
-                this.hoverDataHolder.nativeElement &&
-                xPos + clientWidth > canvas.width
+                xAxis['_gridLineItems'][value] &&
+                this.chartConfig['hasHoverData']
               ) {
-                oversizedHover = true;
-              }
-              if (oversizedHover) {
-                this.hoverDataPosition = xPos - clientWidth - elWidth;
-              } else {
-                this.hoverDataPosition = xPos;
+                this.updateHoverData(value);
+                let oversizedHover = false;
+  
+                let clientWidth = this.hoverDataHolder
+                  ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+                  : 0;
+  
+                let xPos = this.chartConfig['offset']
+                  ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+                  : xAxis['_gridLineItems'][value]['x2'];
+  
+                if (
+                  this.hoverDataHolder &&
+                  this.hoverDataHolder.nativeElement &&
+                  xPos + clientWidth > canvas.width
+                ) {
+                  oversizedHover = true;
+                }
+                if (oversizedHover) {
+                  this.hoverDataPosition = xPos - clientWidth - elWidth;
+                } else {
+                  this.hoverDataPosition = xPos;
+                }
               }
             }
-          }
+          })
+          
           const gridWidth = xPoint1 - xPoint2;
           ctx.save();
           ctx.fillStyle = '#F3F3F3';
@@ -691,7 +704,7 @@ export class TaChartComponent implements OnInit {
 
   hoverDoughnut(elements: any, type?) {
     let driverDetails, dataIndex, showOthers;
-
+    this.animationDuration = 0;
     if (type == 'object' && elements && elements[0]) {
       driverDetails = this.driversList[elements[0]['_index']];
       dataIndex = elements[0]['_index'];
@@ -852,6 +865,7 @@ export class TaChartComponent implements OnInit {
   }
 
   hoverBarChart(hoveredData: any) {
+    this.animationDuration = 0;
     this.chart.chart.config.data.datasets.map((item, i) => {
       if (hoveredData == null || item['id'] == hoveredData['id']) {
         let color = item.backgroundColor;
@@ -867,6 +881,7 @@ export class TaChartComponent implements OnInit {
   }
 
   updateTime(ev: any, period?: string) {
+    this.animationDuration = 1000;
     let range = 0,
       type,
       value = [],
@@ -930,13 +945,11 @@ export class TaChartComponent implements OnInit {
         periodFormat = period == '3 Hours' ? 3 : period == '6 Hours' ? 6 : 0;
         break;
       case 'Custom Set':
-        const momentStart = moment(period[0], 'MM-DD-YYYY');
-        const momentEnd = moment(period[1], 'MM-DD-YYYY');
         type = 'days';
         format = 'D MMM';
-        const fromDate = moment(period[0])
-        const toDate = moment(period[1])
-        const diff = toDate.diff(fromDate, type)
+        const fromDate = moment(period[0]);
+        const toDate = moment(period[1]);
+        const diff = toDate.diff(fromDate, type);
         indicator = fromDate;
         range = diff + 1;
     }
@@ -995,6 +1008,59 @@ export class TaChartComponent implements OnInit {
         this.chart.chart.config.data.labels.push(insertData);
       }
     });
+    
     this.setChartOptions();
+  }
+
+  showChartTooltip(value){
+    this.animationDuration = 0;
+    this.hoveringStatus = true;
+    console.log(this.chart.chart, 'chartttt');
+    const canvas = this.chart.chart.canvas;
+    const ctx = this.chart.chart.ctx;
+    
+    let xPoint1 = 0;
+    let xPoint2 = 0;
+
+    setTimeout(() => {
+      const xAxis = this.chart.chart['scales']['x-axis-0'];
+      if (xAxis['_gridLineItems']) {
+        xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+        xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+        const elWidth = xPoint1 - xPoint2;
+
+        if (
+          xAxis['_gridLineItems'][value] &&
+          this.chartConfig['hasHoverData']
+        ) {
+          this.updateHoverData(value);
+          let oversizedHover = false;
+
+          let clientWidth = this.hoverDataHolder
+            ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+            : 0;
+
+          let xPos = this.chartConfig['offset']
+            ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+            : xAxis['_gridLineItems'][value]['x2'];
+
+          if (
+            this.hoverDataHolder &&
+            this.hoverDataHolder.nativeElement &&
+            xPos + clientWidth > canvas.width
+          ) {
+            oversizedHover = true;
+          }
+          if (oversizedHover) {
+            this.hoverDataPosition = xPos - clientWidth - elWidth;
+          } else {
+            this.hoverDataPosition = xPos;
+          }
+        }
+      }
+    })
+    
+    this.showHoverData = true;
+    this.ref.detectChanges();
   }
 }

@@ -58,12 +58,16 @@
     position="bottom"
     class="editor_buttons text_color"
     >
-       <div class="color_picker_arrow" [class.flip_arrow]="!showCollorPattern" [class.active]="showCollorPattern">
-        <svg-icon
-          src="assets/svg/truckassist-table/arrow-columns-drop.svg"
-        ></svg-icon>
-       </div>
-      <span [ngStyle]="{'background-color': selectedPaternColor}" *ngIf="!showCollorPattern" class="circle_span"></span>
+      <span [ngStyle]="{'background-color': selectedPaternColor}" *ngIf="!showCollorPattern" class="circle_span">
+        <div class="color_picker_arrow"
+          [class.flip_arrow]="showCollorPattern"
+          [class.active]="showCollorPattern"
+          >
+          <svg-icon
+            src="assets/svg/truckassist-table/arrow-columns-drop.svg"
+          ></svg-icon>
+          </div>
+      </span>
       <div *ngIf="showCollorPattern" class="colors_patter" id="colors_patter">
         <div
           (click)="executeEditor('foreColor', paternCol.color, indx)"
@@ -75,6 +79,17 @@
           position="bottom"
           class="editor_buttons text_color opened_text_color"
           >
+
+          <div class="color_picker_arrow"
+            [class.flip_arrow]="showCollorPattern"
+            [class.active]="showCollorPattern"
+            *ngIf="indx == containerColors?.length - 1"
+            >
+            <svg-icon
+              src="assets/svg/truckassist-table/arrow-columns-drop.svg"
+            ></svg-icon>
+           </div>
+
         </div>
       </div>
   </div>

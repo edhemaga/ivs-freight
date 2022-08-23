@@ -60,6 +60,7 @@ export class DashboardTopDriverComponent implements OnInit {
     dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
+    allowAnimation: true,
     offset: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
@@ -280,6 +281,7 @@ export class DashboardTopDriverComponent implements OnInit {
       removeChartMargin: true,
       dataLabels: [],
       driversList: drivers,
+      allowAnimation: true,
       noChartImage: 'assets/svg/common/no_data_pay.svg'
     };
 

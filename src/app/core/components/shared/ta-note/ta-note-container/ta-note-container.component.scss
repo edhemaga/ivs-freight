@@ -93,9 +93,10 @@
 
       &.text_color {
         position: relative;
-        width: auto;
+        transition: all 0.3s ease-in-out;
         border-radius: 2px;
         padding: 4px;
+        width: 24px;
 
         //background-image: url('../../../../assets/img/svgs/right.svg');
         background-repeat: no-repeat;
@@ -104,6 +105,7 @@
 
         &.no_opacity {
           opacity: 1;
+          width: 98px;
         }
 
         &.parking_tooltip{
@@ -122,6 +124,9 @@
         }
 
         .circle_span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           width: 16px;
           height: 16px;
           background-color: #6c6c6c;
@@ -196,12 +201,10 @@
       .color_picker_arrow{
         position: absolute;
         z-index: 11;
+        background-color: transparent !important;
 
         &.flip_arrow{
             transform: scaleX(-1);
-        }
-        &.active{
-          right: 10px;
         }
         svg-icon{
             svg{

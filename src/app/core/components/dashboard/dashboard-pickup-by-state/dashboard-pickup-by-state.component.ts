@@ -51,6 +51,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
+    allowAnimation: true,
     offset: true,
     dataLabels: [[20, 'MON'], [21, 'TUE'], [22, 'WED'], [23, 'THU'], [24, 'FRI']],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
