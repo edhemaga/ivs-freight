@@ -74,6 +74,18 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   next: HttpHandler;
 
   mainTitle: string = "";
+  method: string = "";
+  actionTitle: string = "";
+  actionType: string = "";
+
+  apiConfObj: any[] = [
+    {
+      'https://localhost:7226/api/driver' : 'DRIVER'
+    },
+    {
+      'https://localhost:7226/api/driver/modal' : 'DRIVER'
+    },
+  ]
   constructor(
     protected toastrService: ToastrService,
     public toastPackage: ToastPackage,
@@ -91,6 +103,29 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   createTitleBasedOnHttpRequest(){
     console.log(this.httpRequest);
+    console.log(this.httpRequest.method);
+    console.log(this.httpRequest.url);
+    let url = this.httpRequest.url;
+
+     
+    this.apiConfObj.map((item) => {
+      console.log(item);
+    })
+    
+    console.log(this.apiConfObj);
+   
+    if ( this.httpRequest.method == 'POST')
+      {
+        this.actionTitle = 'CREATE';
+        this.actionType = 'DRIVER';
+      }
+    else if ( this.httpRequest.method == 'GET')
+      {
+        this.actionTitle = 'LOAD';
+        this.actionType = 'DRIVER';
+      }  
+
+    this.message = 'Failed to laod drivers';  
   }
 
   closeToast(): void{
