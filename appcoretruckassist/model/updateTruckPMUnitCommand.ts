@@ -9,10 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PMStatus } from './pMStatus';
 
 
 export interface UpdateTruckPMUnitCommand { 
     id?: number;
     mileage?: number;
+    status?: PMStatus;
 }
 

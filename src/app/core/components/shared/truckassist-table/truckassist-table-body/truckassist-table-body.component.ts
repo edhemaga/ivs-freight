@@ -55,6 +55,8 @@ export class TruckassistTableBodyComponent
   viewDataEmpty: number;
   viewDataTimeOut: any;
   rowData: any;
+  activeDescriptionDropdown: number = -1;
+  descriptionTooltip: any;
 
   constructor(
     private router: Router,
@@ -129,9 +131,6 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
-      console.log('ngOnChanges viewData');
-      console.log(changes);
-
       clearTimeout(this.viewDataTimeOut);
 
       this.viewData = changes.viewData.currentValue;
@@ -257,14 +256,14 @@ export class TruckassistTableBodyComponent
   }
 
   // Select Row
-  onSelectItem(event: any, index: number): void {
+  onSelectItem(rowData: any, index: number): void {
     this.viewData[index].isSelected = !this.viewData[index].isSelected;
 
-    if (event.isSelected) {
-      this.mySelection.push({ id: event.id });
+    if (rowData.isSelected) {
+      this.mySelection.push({ id: rowData.id, tableData: rowData });
     } else {
       const index = this.mySelection.findIndex(
-        (selection) => event.id === selection.id
+        (selection) => rowData.id === selection.id
       );
 
       if (index !== -1) {
@@ -282,7 +281,7 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------DROPDOWN---------------------------------
 
-  /* Set Dropdown Content */
+  // Set Dropdown Content
   setDropContent() {
     if (this.options.actions.length) {
       for (let i = 0; i < this.options.actions.length; i++) {
@@ -291,7 +290,7 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  /* Toggle Dropdown */
+  // Toggle Dropdown
   toggleDropdown(tooltip: any, row: any) {
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
@@ -302,6 +301,22 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+  }
+
+  // Show Description Dropdown
+  onShowDescriptionDropdown(
+    popup: any,
+    row: any
+  ) {
+    this.descriptionTooltip = popup;
+
+    if (popup.isOpen()) {
+      popup.close();
+    } else {
+      popup.open({ data: row });
+    }
+
+    this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
   }
 
   /* Dropdown Actions */

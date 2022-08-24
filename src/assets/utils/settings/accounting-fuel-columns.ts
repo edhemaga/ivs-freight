@@ -172,7 +172,7 @@ export function getAccountingFuelColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: 'item-drop',
+      ngTemplate: '',
       title: 'Item',
       field: 'items',
       name: 'Item',

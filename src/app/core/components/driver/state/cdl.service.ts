@@ -68,12 +68,12 @@ export class CdlTService {
     );
   }
 
-  public updateCdl(data: EditCdlCommand): Observable<object> {
+  public updateCdl(data: any): Observable<object> {
     return this.cdlService.apiCdlPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.driverService.getDriverById(data.id).subscribe({
+        const subDriver = this.driverService.getDriverById(data.driverId).subscribe({
           next: (driver: DriverResponse | any) => {
-            this.driverStore.remove(({ id }) => id === data.id);
+            this.driverStore.remove(({ id }) => id === data.driverId);
 
             driver = {
               ...driver,

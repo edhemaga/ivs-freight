@@ -407,7 +407,7 @@
                 [options]="labelsBank"
                 [activeItem]="selectedBank"
                 (selectedItem)="onSelectDropdown($event, 'bank')"
-                (saveNewItem)="onSaveNewBank($event)"
+                (saveItem)="onSaveNewBank($event)"
               ></app-ta-input-dropdown>
             </div>
             <div class="bank-field">
@@ -530,6 +530,7 @@
           [isCardOpen]="offDutyLocations.length"
           [hasBodyData]="offDutyLocations.length"
           (onActionEvent)="addOffDutyLocation($event)"
+          [animationsDisabled]="false"
         >
           <div
             formArrayName="offDutyLocations"
@@ -590,6 +591,7 @@
             [hasCounter]="documents.length ? documents.length : '0'"
             [cardName]="'Document'"
             [isCardOpen]="documents.length"
+            [animationsDisabled]="false"
           >
             <app-ta-upload-files
               [files]="documents"
@@ -602,6 +604,7 @@
         <app-ta-custom-card
           [cardName]="'Emergency Contact'"
           [isCardOpen]="true"
+          [animationsDisabled]="false"
         >
           <div class="emergency-contact">
             <app-ta-input

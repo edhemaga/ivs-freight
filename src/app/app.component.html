@@ -1,13 +1,21 @@
 <!-- <overlay-scrollbars></overlay-scrollbars> -->
-
 <app-custom-scrollbar>
   <app-navigation *ngIf="!(currentPage | blockedContent)"> </app-navigation>
-  <div id="top" class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}">
+  <div
+    id="top"
+    class="{{ (currentPage | blockedContent) ? 'login-page' : 'content-page' }}"
+  >
     <router-outlet></router-outlet>
 
-    <div *ngIf="showScrollButton && currentPage !== 'login'" @scrollButtonAnimation class="content-scroll"
-      (click)="top()">
-      <svg-icon src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"></svg-icon>
+    <div
+      *ngIf="showScrollButton && currentPage !== 'login'"
+      @scrollButtonAnimation
+      class="content-scroll"
+      (click)="top()"
+    >
+      <svg-icon
+        src="assets/img/svgs/app-scroll-button/ic_truckassist_arrow_top.svg"
+      ></svg-icon>
     </div>
   </div>
 
@@ -20,5 +28,4 @@
     <br />
     <h4>Minimum screen width requirement: 1280px.</h4>
   </div>
-
 </app-custom-scrollbar>

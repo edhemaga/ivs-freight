@@ -104,14 +104,20 @@
         &.add-new {
           color: #536bc2;
           font-weight: 600;
+          transition: all 0.3s ease-in-out;
 
           &:hover {
             color: #3551b7;
+          }
+
+          .labels-template-text {
+            color: #536bc2;
+            font-weight: 600 !important;
             transition: all 0.3s ease-in-out;
           }
         }
 
-        &.active {
+        &.active-repair-truck-trailer {
           color: #536bc2;
           position: relative;
 
@@ -131,12 +137,44 @@
           }
 
           &::after {
+            display: none;
+          }
+        }
+
+        &.active,
+        &.active-label {
+          color: #536bc2;
+          position: relative;
+
+          &:hover {
+            color: #3551b7;
+            transition: all 0.3s ease-in-out;
+          }
+
+          // Higlight text
+          .highlight-text-45632 {
+            background-color: transparent;
+
+            &:hover {
+              color: #3551b7 !important;
+              transition: all 0.3s ease-in-out;
+            }
+          }
+
+          &::after {
+            display: inline-block;
             position: absolute;
             right: 4px;
             top: 2.5px;
-            content: url("../..//assets/svg/common/ic_confirm.svg");
+            content: url("../../assets/svg/common/ic_confirm.svg");
             width: 14px;
             height: 10px;
+          }
+        }
+
+        &.active-label {
+          &::after {
+            right: 35px;
           }
         }
 
@@ -217,6 +255,74 @@
           }
         }
 
+        //------------------------ Labels Template ------------------------
+        &.labels-template {
+          display: flex;
+          align-items: center;
+
+          .labels-template-left-side {
+            display: flex;
+            align-items: center;
+
+            .labels-template-logo {
+              svg {
+                width: 18px;
+                height: 18px;
+              }
+            }
+
+            .labels-template-vertical-divider {
+              width: 1px;
+              height: 14px;
+              background-color: #dadada;
+              content: "";
+              margin: 0 6px;
+            }
+          }
+
+          .labels-template-right-side {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .labels-template-text {
+              margin-right: 28px;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 18px;
+            }
+
+            .labels-template-counter {
+              width: 22px;
+              height: 16px;
+              border-radius: 20px;
+              background-color: #b7b7b7;
+              color: #ffffff;
+              text-align: center;
+              font-size: 11px;
+              font-weight: 500;
+              padding: 0 4.5px;
+            }
+          }
+
+          &:hover {
+            background-color: #f3f3f3;
+
+            .labels-template-text {
+              color: #3c3c3c;
+
+              &.add-new {
+                color: #3551b7;
+              }
+            }
+
+            .labels-template-counter {
+              background-color: #919191;
+            }
+          }
+        }
+
         //------------------------ Details Template ------------------------
         &.details-template {
           display: flex;
@@ -276,6 +382,10 @@
 
       &.w-col-512 {
         width: 512px;
+      }
+
+      &.w-col-456 {
+        width: 456px;
       }
 
       &.w-col-455 {

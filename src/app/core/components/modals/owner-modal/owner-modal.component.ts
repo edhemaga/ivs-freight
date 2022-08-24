@@ -191,11 +191,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSaveNewBank(bank: any) {
-    this.selectedBank = bank;
+  public onSaveNewBank(bank: { data: any; action: string }) {
+    this.selectedBank = bank.data;
 
     this.bankVerificationService
-      .createBank({ name: bank.name })
+      .createBank({ name: this.selectedBank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CreateResponse) => {
@@ -205,7 +205,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           );
           this.selectedBank = {
             id: res.id,
-            name: bank.name,
+            name: this.selectedBank.name,
           };
         },
         error: (err) => {

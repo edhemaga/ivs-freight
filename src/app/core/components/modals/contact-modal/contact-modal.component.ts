@@ -1,5 +1,4 @@
-import { ContactModalService } from './contact-modal.service';
-import { Component, Input, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -41,15 +40,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public contactLabels: any[] = [];
   public selectedContactLabel: any = null;
-  public sendContactLabelId: any = null;
 
   public colors: any[] = [];
-  public selectedContactColor: any = {
-    id: 1,
-    name: 'No Color',
-    code: null,
-    count: 0,
-  };
+  public selectedContactColor: any;
 
   public selectedAddress: any = null;
 
@@ -80,7 +73,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private modalService: ModalService,
-    private contactModalService: ContactModalService,
     private notificationService: NotificationService,
     private uploadFileService: TaUploadFileService,
     private contactService: ContactTService,
@@ -92,7 +84,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.getContactLabelsAndDepartments();
     this.companyContactColorLabels();
     this.followSharedCheckbox();
-    console.log(this.editData);
+
     const timeout = setTimeout(() => {
       this.uploadFileService.visibilityDropZone(true);
       clearTimeout(timeout);
@@ -179,7 +171,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private getContactLabelsAndDepartments() {
     this.contactService
-      .companyContactLabelsAndDeparments()
+      .getCompanyContactModal()
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CompanyContactModalResponse) => {
@@ -239,9 +231,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     const newData: CreateCompanyContactCommand = {
       ...form,
-      companyContactLabelId: this.sendContactLabelId
-        ? this.sendContactLabelId
-        : this.selectedContactLabel
+      companyContactLabelId: this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
       address: this.selectedAddress?.address ? this.selectedAddress : null,
@@ -280,9 +270,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     const newData: UpdateCompanyContactCommand = {
       id: id,
       ...form,
-      companyContactLabelId: this.sendContactLabelId
-        ? this.sendContactLabelId
-        : this.selectedContactLabel
+      companyContactLabelId: this.selectedContactLabel
         ? this.selectedContactLabel.id
         : null,
       address: this.selectedAddress?.address ? this.selectedAddress : null,
@@ -361,7 +349,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   }
 
   private companyContactColorLabels() {
-    this.contactModalService
+    this.contactService
       .companyContactLabelsColorList()
       .pipe(untilDestroyed(this))
       .subscribe({
@@ -383,51 +371,120 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   public onSelectColorLabel(event: any): void {
     this.selectedContactColor = event;
+    this.selectedContactLabel = {
+      ...this.selectedContactLabel,
+      colorId: this.selectedContactColor.id,
+      color: this.selectedContactColor.name,
+      code: this.selectedContactColor.code,
+    };
   }
 
-  public onSaveLabel(data: { action: string; label: string }) {
-    if (data.action === 'cancel') {
-      this.selectedContactLabel = {
-        name: data.label,
-        code: this.selectedContactColor.code,
-        count: this.selectedContactLabel.count
-          ? this.selectedContactLabel.count
-          : null,
-        createdAt: null,
-        updatedAt: null,
-      };
-      return;
+  public onSaveLabel(data: { data: any; action: string }) {
+    switch (data.action) {
+      case 'edit': {
+        this.selectedContactLabel = data.data;
+        this.contactService
+          .updateCompanyContactLabel({
+            id: this.selectedContactLabel.id,
+            name: this.selectedContactLabel.name,
+            colorId: this.selectedContactLabel.colorId,
+          })
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly update label',
+                'Success'
+              );
+
+              this.contactService
+                .getCompanyContactModal()
+                .pipe(untilDestroyed(this))
+                .subscribe({
+                  next: (res: CompanyContactModalResponse) => {
+                    this.contactLabels = res.labels;
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get account label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't update exist label",
+                'Error'
+              );
+            },
+          });
+        break;
+      }
+      case 'new': {
+        this.selectedContactLabel = {
+          id: data.data.id,
+          name: data.data.name,
+          code: this.selectedContactColor
+            ? this.selectedContactColor.code
+            : this.colors[this.colors.length - 1].code,
+          count: 0,
+          colorId: this.selectedContactColor
+            ? this.selectedContactColor.id
+            : this.colors[this.colors.length - 1].id,
+          color: this.selectedContactColor
+            ? this.selectedContactColor.name
+            : this.colors[this.colors.length - 1].name,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        this.contactService
+          .addCompanyContactLabel({
+            name: this.selectedContactLabel.name,
+            colorId: this.selectedContactLabel.colorId,
+          })
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: CreateResponse) => {
+              this.notificationService.success(
+                'Successfully add contact label.',
+                'Success:'
+              );
+
+              this.selectedContactLabel = {
+                ...this.selectedContactLabel,
+                id: res.id,
+              };
+
+              this.contactService
+                .getCompanyContactModal()
+                .pipe(untilDestroyed(this))
+                .subscribe({
+                  next: (res: CompanyContactModalResponse) => {
+                    this.contactLabels = res.labels;
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get contact label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't add account label.",
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
     }
-    this.selectedContactLabel = {
-      id: uuidv4(),
-      name: data.label,
-      code: this.selectedContactColor.code,
-      count: this.selectedContactColor.count,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    this.contactLabels = [...this.contactLabels, this.selectedContactLabel];
-
-    this.contactModalService
-      .addCompanyContactLabel({
-        name: data.label,
-        colorId: this.selectedContactColor.id,
-      })
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: CreateResponse) => {
-          this.sendContactLabelId = res.id;
-          this.notificationService.success(
-            'Successfully add contact label.',
-            'Success:'
-          );
-          this.getContactLabelsAndDepartments();
-        },
-        error: () => {
-          this.notificationService.error("Can't add contact label.", 'Error:');
-        },
-      });
   }
 
   ngOnDestroy(): void {}

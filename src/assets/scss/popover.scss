@@ -169,30 +169,7 @@
   }
 }
 
-// Details Dropdown Popup
-.details-dropdown-popover {
-  .popover-body {
-    z-index: 60;
-    .details-dropdown {
-      width: fit-content;
-      height: auto;
-      border-radius: 3px;
-      background: white;
-      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
-      padding: 2px;
-
-      .details-dropdown-content {
-        cursor: pointer;
-        width: 100%;
-        height: 26px;
-        border-radius: 2px;
-        display: flex;
-      }
-    }
-  }
-}
-
-// Options On Table Toolbar Popup
+// Table Toolbar Options Popup
 .toolbar-options-popover {
   box-shadow: none !important;
   background-color: transparent !important;
@@ -414,7 +391,7 @@
   }
 }
 
-// Selected On Table Head Popup
+// Table Head Selected Popup
 .selected-options-popover {
   top: 18px !important;
   left: -18px !important;
@@ -481,6 +458,199 @@
 
       .clear-selected {
         margin-top: 2px;
+      }
+    }
+  }
+}
+
+// Table Body Description Popover
+.table-description-popover {
+  .popover-body {
+    .description-dropdown {
+      position: absolute;
+      min-width: 554px;
+      margin-top: 9px;
+      height: fit-content;
+      overflow: hidden;
+      padding: 2px;
+      background: #ffffff;
+      border-radius: 3px;
+      box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
+      animation: descriptionDropdownAnimation 0.2s ease-in-out;
+
+      .description-item {
+        width: 100%;
+        height: 24px;
+        border-radius: 2px;
+        display: flex;
+        align-self: center;
+
+        &:hover {
+          background: #00000010;
+        }
+
+        .item-index,
+        .item-title {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+        }
+
+        .item-index {
+          min-width: 20px;
+          width: 20px;
+          height: 20px;
+          margin: 2px 12px 2px 3px;
+          justify-content: center;
+          color: #919191;
+          font-weight: 600;
+
+          &::selection {
+            color: #919191;
+            background: #91919120;
+          }
+        }
+
+        .pm-item {
+          width: 20px;
+          display: flex;
+          justify-content: center;
+          align-self: center;
+          margin-right: 6px;
+          svg-icon {
+            display: flex;
+            path {
+              fill: #6d82c7;
+            }
+          }
+        }
+
+        .pm-style {
+          color: #536bc2 !important;
+
+          &::selection {
+            color: #536bc2 !important;
+            background: #536bc220 !important;
+          }
+        }
+
+        .item-title {
+          color: #6c6c6c;
+          font-weight: 400;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          margin-right: 12px;
+
+          &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+          }
+        }
+
+        .item-cost {
+          min-width: 90px;
+          width: 90px;
+          display: flex;
+          justify-content: flex-end;
+          align-self: center;
+          color: #6c6c6c;
+          font-size: 14px;
+          font-weight: 400;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+          }
+        }
+
+        .number-of-items {
+          width: 30px;
+          min-width: 30px;
+          display: flex;
+          align-self: center;
+          justify-content: center;
+          font-size: 16px;
+          font-weight: 400;
+          color: #6c6c6c;
+          margin: 0px 18px;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+          }
+        }
+
+        .item-total-cost {
+          width: 81px;
+          min-width: 81px;
+          display: flex;
+          justify-content: flex-end;
+          align-self: center;
+          margin: 0px 10px 0px 3px;
+          color: #6c6c6c;
+          font-size: 14px;
+          font-weight: 600;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          &::selection {
+            color: #6c6c6c;
+            background: #6c6c6c20;
+          }
+        }
+      }
+
+      .description-item-margin {
+        margin-top: 2px;
+      }
+
+      .right-background {
+        position: absolute;
+        width: 96px;
+        height: 100%;
+        top: 0;
+        right: 0;
+        background: #00000010;
+      }
+    }
+
+    @keyframes descriptionDropdownAnimation {
+      from {
+        margin-top: -10px;
+      }
+      to {
+        margin-top: 9px;
+      }
+    }
+  }
+}
+
+// Details Dropdown Popup
+.details-dropdown-popover {
+  .popover-body {
+    z-index: 60;
+    .details-dropdown {
+      width: fit-content;
+      height: auto;
+      border-radius: 3px;
+      background: white;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+      padding: 2px;
+
+      .details-dropdown-content {
+        cursor: pointer;
+        width: 100%;
+        height: 26px;
+        border-radius: 2px;
+        display: flex;
       }
     }
   }

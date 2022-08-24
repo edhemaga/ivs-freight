@@ -26,6 +26,13 @@
     }
   }
 
+  .confirmation-array-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 12px;
+  }
+
   .confirmation-body {
     display: flex;
     flex-direction: row;
