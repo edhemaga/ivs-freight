@@ -38,9 +38,6 @@ export class TruckassistTableBodyComponent
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
-  loadingPassword: number = -1;
-  showPassword: any[] = [];
-  decryptedPassword: any[] = [];
   actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
   hoverActive: number = -1;
@@ -274,9 +271,16 @@ export class TruckassistTableBodyComponent
     this.tableService.sendRowsSelected(this.mySelection);
   }
 
-  // Show Password In Row
-  onShowPassword(index: number) {
-    this.loadingPassword = index;
+  // Show Password
+  onShowPassword(row: any, column: any) {
+    row[column.field].apiCallStarted = true;
+
+    setTimeout(() => {
+      row[column.field].apiCallStarted = false;
+      row[column.field].hiden = !row[column.field].hiden;
+
+      this.changeDetectorRef.detectChanges();
+    }, 1000);
   }
 
   // --------------------------------DROPDOWN---------------------------------
@@ -304,10 +308,7 @@ export class TruckassistTableBodyComponent
   }
 
   // Show Description Dropdown
-  onShowDescriptionDropdown(
-    popup: any,
-    row: any
-  ) {
+  onShowDescriptionDropdown(popup: any, row: any) {
     this.descriptionTooltip = popup;
 
     if (popup.isOpen()) {

@@ -693,29 +693,38 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->
@@ -1678,29 +1687,38 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->

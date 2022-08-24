@@ -1034,10 +1034,10 @@ table {
                 background-image: url("../../../../../../assets/svg/truckassist-table/shared.svg");
               }
 
-              .shared-text{
+              .shared-text {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6C6C6C;
+                color: #6c6c6c;
                 height: fit-content;
 
                 &::selection {
@@ -1048,23 +1048,22 @@ table {
             }
 
             // LABLE COLUMN
-            .lable-container{
+            .lable-container {
               cursor: pointer;
               display: flex;
               align-self: center;
 
-              svg{
+              svg {
                 margin-right: 4px;
                 height: 21px;
               }
 
-              .lable-name{
+              .lable-name {
                 font-size: 14px;
                 font-weight: 400;
                 height: fit-content;
-                color: #6C6C6C;
+                color: #6c6c6c;
 
-                
                 &::selection {
                   color: #6c6c6c;
                   background: #6c6c6c20;
@@ -1097,37 +1096,29 @@ table {
             }
 
             // PASSWORD
-            .table-password-icon {
-              margin-right: 6px;
-              &:hover {
-                path {
-                  fill: #6c6c6c;
-                }
-              }
-              position: relative;
-            }
-
-            .decrypted-password,
-            .crypted-password {
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            .decrypted-password {
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-            }
-
-            .crypted-password {
-              color: #6c6c6c;
-            }
-
-            .table-password-icon,
-            .table-active-password {
+            .password-icon {
               cursor: pointer;
+              width: 18px;
+              height: 18px;
+              background-repeat: no-repeat;
+              background-position: center;
+              margin-right: 4px;
+            }
+
+            .password-hidden {
+              background-image: url("../../../../../../assets/svg/truckassist-table/password-locked.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/show-password.svg");
+              }
+            }
+
+            .password-showing {
+              background-image: url("../../../../../../assets/svg/truckassist-table/showing-password.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/hide-password.svg");
+              }
             }
 
             .password-spiner {
@@ -1137,6 +1128,12 @@ table {
                 width: 24px;
                 height: 24px;
               }
+            }
+
+            .password-text-showing{
+              font-size: 14px;
+              font-weight: 400;
+              color: #6C6C6C;
             }
 
             // LABLE
@@ -1276,7 +1273,7 @@ table {
         }
 
         // SHARED COLUMN
-        .shared-container{
+        .shared-container {
           .lock-icon {
             background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock-select.svg") !important;
           }
@@ -1285,12 +1282,12 @@ table {
             background-image: url("../../../../../../assets/svg/truckassist-table/shared-select.svg") !important;
           }
 
-          .shared-text{
-            color: #3C3C3C !important;
+          .shared-text {
+            color: #3c3c3c !important;
 
             &::selection {
-              color: #3C3C3C !important;
-              background: #3C3C3C20 !important;
+              color: #3c3c3c !important;
+              background: #3c3c3c20 !important;
             }
           }
         }
