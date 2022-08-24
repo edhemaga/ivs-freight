@@ -541,6 +541,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       isSelected: false,
       textAddress: data?.address?.address ? data.address.address : '',
       shopServices: data?.serviceTypes ? data?.serviceTypes : null,
+      shopRaiting: {
+        hasLiked: false,
+        hasDislike: false,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0'
+      }
     };
   }
 
