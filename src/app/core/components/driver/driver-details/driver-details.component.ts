@@ -277,7 +277,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       );
     } else if (event.type === 'deactivate') {
       this.driverService
-        .changeDriverStatus(event.id, 'driver-details')
+        .changeDriverStatus(event.id, 'active')
         .pipe(untilDestroyed(this))
         .subscribe({
           next: () => {

@@ -61,6 +61,9 @@ export class DriverDetailsItemComponent
   public inactiveCdl: boolean;
   public test: boolean;
   public dataCdl: any;
+  public dataMvr: any;
+  public dataMedical: any;
+  public dataTest: any;
   constructor(
     private modalService: ModalService,
     private driverService: DriverTService,
@@ -211,6 +214,27 @@ export class DriverDetailsItemComponent
       .pipe(untilDestroyed(this))
       .subscribe((item) => (this.dataCdl = item));
   }
+
+  public getMedicalById(id: number) {
+    this.medicalService
+      .getMedicalById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataMedical = item));
+  }
+
+  public getMvrById(id: number) {
+    this.mvrService
+      .getMvrById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataMvr = item));
+  }
+
+  public getTestById(id: number) {
+    this.testService
+      .getTestById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataTest = item));
+  }
   public optionsEvent(any: any, action: string) {
     if (any.type === 'edit' && action === 'cdl') {
       this.dropActionName = 'edit-licence';
@@ -255,11 +279,18 @@ export class DriverDetailsItemComponent
         break;
       }
       case 'delete-medical': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            medicalIssued: this.dataMedical.issueDate,
+            medicalExpDate: this.dataMedical.expDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'medical',
             type: 'delete',
             image: false,
@@ -268,11 +299,18 @@ export class DriverDetailsItemComponent
         break;
       }
       case 'delete-mvr': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            ...this.dataMvr,
+            mvrIssueDate: this.dataMvr.issueDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'mvr',
             type: 'delete',
             image: false,
@@ -281,11 +319,19 @@ export class DriverDetailsItemComponent
         break;
       }
       case 'delete-test': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            testTypeName: this.dataTest.testType.name,
+            reasonName: this.dataTest.testReason.name,
+            issuedDataTest: this.dataTest.testingDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'test',
             type: 'delete',
             image: false,

@@ -120,16 +120,53 @@
         </p>
       </div>
 
-       <!-- CDL -->
-       <div
-       *ngIf="['cdl'].includes(editData?.template)"
-       class="confirmation-info"
-     >
-       <p class="confirmation-text-1 confirmation-flex"><span class="confirmation-state">{{ editData?.data?.state }}</span> {{editData?.data?.cdlNumber}}</p>
-       <p class="confirmation-text-2">
-         Expires: {{editData?.data.expDate | formatDateP}}
-       </p>
-     </div>
+      <!-- CDL -->
+      <div
+        *ngIf="['cdl'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1 confirmation-flex">
+          <span class="confirmation-state">{{ editData?.data?.state }}</span>
+          {{ editData?.data?.cdlNumber }}
+        </p>
+        <p class="confirmation-text-2">
+          Expires: {{ editData?.data.expDate | formatDateP }}
+        </p>
+      </div>
+
+      <!-- Medical, Mvr, Test -->
+      <div
+        *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'test'">
+          {{ editData?.data?.testTypeName }} Test ({{
+            editData?.data?.reasonName
+          }})
+        </p>
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'medical'">
+          Issued: {{ editData?.data?.medicalIssued | formatDateP }}
+        </p>
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
+          CDL: 
+        </p>
+        <p class="confirmation-text-2">
+          {{
+            editData?.template === "test" || editData?.template === "mvr"
+              ? "Issued"
+              : "Expires"
+          }}:
+          <span *ngIf="editData?.template === 'test'">{{
+            editData?.data.issuedDataTest | formatDateP
+          }}</span>
+          <span *ngIf="editData?.template === 'medical'">{{
+            editData?.data.medicalExpDate | formatDateP
+          }}</span>
+          <span  *ngIf="editData?.template === 'mvr'">{{
+            editData?.data.mvrIssueDate | formatDateP
+          }}</span>
+        </p>
+      </div>
     </div>
 
     <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->

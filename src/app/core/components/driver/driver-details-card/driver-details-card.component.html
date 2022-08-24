@@ -530,7 +530,6 @@
       >
         <div
           *ngIf="
-            !driver.emergencyContactRelationship ||
             !driver.emergencyContactName ||
             !driver.emergencyContactPhone
           "
@@ -540,7 +539,6 @@
         </div>
         <div
           *ngIf="
-            driver.emergencyContactRelationship &&
             driver.emergencyContactName &&
             driver.emergencyContactPhone
           "
@@ -548,7 +546,7 @@
         >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">
-              {{ driver?.emergencyContactRelationship }}
+              {{ driver?.emergencyContactRelationship ? driver.emergencyContactRelationship : 'Name' }}
             </div>
             <div class="purchase-template-item-value">
               {{ driver.emergencyContactName }}

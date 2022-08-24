@@ -211,6 +211,7 @@
           [cardNameCommon]="test?.testingDate | formatDateP"
           (resizePage)="toggleResizePage(i, 'test')"
           [optionsId]="test.id"
+          (dataDropDopwn)="getTestById(test.id)"
           (clickedCard)="getNameForDrop($event)"
           [cardDocumentCounter]="6"
           [weeklyWidth]="'18'"
@@ -297,6 +298,7 @@
           [cardNameCommon]="med?.issueDate | formatDateP"
           [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
+          (dataDropDopwn)="getMedicalById(med.id)"
           (clickedCard)="getNameForDrop($event)"
           [cardNameCurrent]="'medical'"
           [noteIcons]="
@@ -394,6 +396,7 @@
           [options]="dataDropDown"
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
+          (dataDropDopwn)="getMvrById(mvr.id)"
           [cardDocumentCounter]="6"
           [noteIcons]="
             mvr.note
