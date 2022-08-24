@@ -1037,8 +1037,18 @@ canadaStates: any[] = [
       payTo: '', 
     });
     
-    this.moneyForm.valueChanges.subscribe((changes) => {
+
+    this.locationForm.valueChanges.subscribe((changes) => {
       
+      if ( changes.address == null )
+        {
+          this.locationState = '';
+          this.rangeValue = 0;
+        }
+   
+    })
+
+    this.moneyForm.valueChanges.subscribe((changes) => { 
       if ( changes.singleFrom || changes.singleTo )
         {
           if ( changes.singleTo )
@@ -1174,9 +1184,6 @@ canadaStates: any[] = [
                 }  
 
           }    
-
-          
-
     })
 
     this.searchForm.valueChanges.subscribe((changes) => {
@@ -1187,7 +1194,7 @@ canadaStates: any[] = [
 
           if ( this.type == 'userFilter' )
             {
-                this.unselectedUser.filter(item => {
+                this.unselectedUser.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1197,7 +1204,7 @@ canadaStates: any[] = [
             }
           else if ( this.type == 'statusFilter' )
             {
-                this.pendingStatusArray.filter(item => {
+                this.pendingStatusArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1205,7 +1212,7 @@ canadaStates: any[] = [
                   return item;
                 });
 
-                this.activeStatusArray.filter(item => {
+                this.activeStatusArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1213,7 +1220,7 @@ canadaStates: any[] = [
                   return item;
                 });
 
-                this.closedStatusArray.filter(item => {
+                this.closedStatusArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1223,7 +1230,7 @@ canadaStates: any[] = [
             }
           else if ( this.type == 'truckFilter' )
             {
-                this.truckArray.filter(item => {
+                this.truckArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1233,7 +1240,7 @@ canadaStates: any[] = [
             }
           else if ( this.type == 'fuelStopFilter' )
             {
-                this.fuelStopArray.filter(item => {
+                this.fuelStopArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1244,7 +1251,7 @@ canadaStates: any[] = [
           
           else if ( this.type == 'trailerFilter' )
             {
-                this.trailerArray.filter(item => {
+                this.trailerArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1255,7 +1262,7 @@ canadaStates: any[] = [
 
           else if ( this.type == 'brokerFilter' )
             {
-                this.brokerArray.filter(item => {
+                this.brokerArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1266,7 +1273,7 @@ canadaStates: any[] = [
             
           else if ( this.type == 'driverFilter' )
             {
-                this.driverArray.filter(item => {
+                this.driverArray.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1277,7 +1284,7 @@ canadaStates: any[] = [
            
           else if ( this.type == 'stateFilter' )
             {
-                this.usaStates.filter(item => {
+                this.usaStates.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1285,7 +1292,7 @@ canadaStates: any[] = [
                   return item;
                 });
 
-                this.canadaStates.filter(item => {
+                this.canadaStates.map(item => {
                   item.hidden = true;
                   if(item.name.toLowerCase().includes(inputValue.toLowerCase())){
                     item.hidden = false;
@@ -1300,78 +1307,68 @@ canadaStates: any[] = [
         {
           if ( this.type == 'userFilter' )
             {
-              for ( var i = 0; i < this.unselectedUser.length; i++ )
-                {
-                  this.unselectedUser[i].hidden = false;            
-                }
+              this.unselectedUser.map(item => {
+                  item.hidden = false;
+                });     
             }
           
           else if ( this.type == 'statusFilter' )
             {
-              for ( var i = 0; i < this.pendingStatusArray.length; i++ )
-                {
-                  this.pendingStatusArray[i].hidden = false;            
-                }
-                
-              for ( var i = 0; i < this.activeStatusArray.length; i++ )
-                {
-                  this.activeStatusArray[i].hidden = false;            
-                }
-                
-              for ( var i = 0; i < this.closedStatusArray.length; i++ )
-                {
-                  this.closedStatusArray[i].hidden = false;            
-                } 
+              this.pendingStatusArray.map(item => {
+                  item.hidden = false;
+                });    
+              
+              this.activeStatusArray.map(item => {
+                  item.hidden = false;
+                });      
+
+              this.closedStatusArray.map(item => {
+                  item.hidden = false;
+                });    
             }
           else if ( this.type == 'truckFilter' )
             {
-              for ( var i = 0; i < this.truckArray.length; i++ )
-                {
-                  this.truckArray[i].hidden = false;            
-                }
+              this.truckArray.map(item => {
+                  item.hidden = false;
+                });   
             }
           else if ( this.type == 'trailerFilter' )
             {
-              for ( var i = 0; i < this.trailerArray.length; i++ )
-                {
-                  this.trailerArray[i].hidden = false;            
-                }
+              this.trailerArray.map(item => {
+                  item.hidden = false;
+                });   
             }
           else if ( this.type == 'fuelStopFilter' )
             {
-              for ( var i = 0; i < this.fuelStopArray.length; i++ )
-                {
-                  this.fuelStopArray[i].hidden = false;            
-                }
+              this.fuelStopArray.map(item => {
+                  item.hidden = false;
+                });  
             }
             
           else if ( this.type == 'brokerFilter' )
             {
-              for ( var i = 0; i < this.brokerArray.length; i++ )
-                {
-                  this.brokerArray[i].hidden = false;            
-                }
+              this.brokerArray.map(item => {
+                  item.hidden = false;
+                });  
             }  
 
           else if ( this.type == 'driverFilter' )
             {
-              for ( var i = 0; i < this.driverArray.length; i++ )
-                {
-                  this.driverArray[i].hidden = false;            
-                }
+              this.driverArray.map(item => {
+                  item.hidden = false;
+                });  
             }  
           
           else if ( this.type == 'stateFilter' )
             {
-              for ( var i = 0; i < this.usaStates.length; i++ )
-                {
-                  this.usaStates[i].hidden = false;            
-                }
+              this.usaStates.map(item => {
+                item.hidden = false;
+              });
+              
+              this.canadaStates.map(item => {
+                item.hidden = false;
+              });
 
-              for ( var i = 0; i < this.canadaStates.length; i++ )
-                {
-                  this.canadaStates[i].hidden = false;            
-                }
             }
           
           this.searchInputValue = ''; 
@@ -1498,14 +1495,12 @@ canadaStates: any[] = [
   
     if ( this.type == 'departmentFilter' )
         {
-          for ( var i = 0; i < this.departmentArray.length; i++ )
-            {
-              if (this.departmentArray[i].id == id )
+          this.departmentArray.map(item => {
+              if (item.id == id )
                 {
-                  this.departmentArray[i].isSelected = false;
+                  item.isSelected = false;
                 }
-              
-            }
+            });    
         }
      else if ( this.type == 'statusFilter' )
       {
@@ -1527,159 +1522,135 @@ canadaStates: any[] = [
             mainArray = this.closedStatusArray;
           }  
           
-          for ( var i = 0; i < mainArray.length; i++ )
-            {
-              if (mainArray[i].id == id )
+          mainArray.map(item => {
+              if (item.id == id )
                 {
-                  mainArray[i].isSelected = false;
+                  item.isSelected = false;
                 }
-              
-            }
+            });   
       } 
      else if ( this.type == 'pmFilter' ) 
-        {
-          for ( var i = 0; i < this.pmFilterArray.length; i++ )
-            {
-              if (this.pmFilterArray[i].id == id )
+        {       
+          this.pmFilterArray.map(item => {
+              if (item.id == id )
                 {
-                  this.pmFilterArray[i].isSelected = false;
+                  item.isSelected = false;
                 }
-              
-            }
+            });   
+
         }
        else if ( this.type == 'categoryFuelFilter' ) 
-        {
-          for ( var i = 0; i < this.categoryFuelArray.length; i++ )
-            {
-              if (this.categoryFuelArray[i].id == id )
+        {       
+          this.categoryFuelArray.map(item => {
+              if (item.id == id )
                 {
-                  this.categoryFuelArray[i].isSelected = false;
+                  item.isSelected = false;
                 }
-              
-            }
+            });  
+            
         }
      else if ( this.type == 'categoryRepairFilter' )    
       {
-        for ( var i = 0; i < this.categoryRepairArray.length; i++ )
-            {
-              if (this.categoryRepairArray[i].id == id )
+          this.categoryRepairArray.map(item => {
+              if (item.id == id )
                 {
-                  this.categoryRepairArray[i].isSelected = false;
+                  item.isSelected = false;
                 }
-              
-            }
+            });      
       }
      else if ( this.type == 'truckFilter' )  
       {
-        for ( var i = 0; i < this.truckArray.length; i++ )
-            {
-              if (this.truckArray[i].id == id )
+          this.truckArray.map(item => {
+              if (item.id == id )
                 {
-                  this.truckArray[i].isSelected = false; 
+                  item.isSelected = false;
                 }
-              
-            }
+            });   
       }
      else if ( this.type == 'trailerFilter' )  
       {
-        for ( var i = 0; i < this.trailerArray.length; i++ )
-            {
-              if (this.trailerArray[i].id == id )
-                {
-                  this.trailerArray[i].isSelected = false; 
-                }
-              
-            }
+          this.trailerArray.map(item => {
+            if (item.id == id )
+              {
+                item.isSelected = false;
+              }
+          });    
       }
      else if ( this.type == 'fuelStopFilter' )  
       {
-        for ( var i = 0; i < this.fuelStopArray.length; i++ )
-            {
-              if (this.fuelStopArray[i].id == id )
-                {
-                  this.fuelStopArray[i].isSelected = false; 
-                }
-              
-            }
+        this.fuelStopArray.map(item => {
+            if (item.id == id )
+              {
+                item.isSelected = false;
+              }
+          });      
+
       }
      else if ( this.type == 'brokerFilter' )  
       {
-        for ( var i = 0; i < this.brokerArray.length; i++ )
+        this.brokerArray.map(item => {
+          if (item.id == id )
             {
-              if (this.brokerArray[i].id == id )
-                {
-                  this.brokerArray[i].isSelected = false; 
-                }
-              
+              item.isSelected = false;
             }
+        });     
       }
      else if ( this.type == 'driverFilter' )  
       {
-        for ( var i = 0; i < this.driverArray.length; i++ )
-            {
-              if (this.driverArray[i].id == id )
-                {
-                  this.driverArray[i].isSelected = false; 
-                }
-              
-            }
+        this.driverArray.map(item => {
+            if (item.id == id )
+              {
+                item.isSelected = false;
+              }
+          });      
       } 
      else if ( this.type == 'truckTypeFilter' )  
       {
-        for ( var i = 0; i < this.truckTypeArray.length; i++ )
+        this.truckTypeArray.map(item => {
+          if (item.id == id )
             {
-              if (this.truckTypeArray[i].id == id )
-                {
-                  this.truckTypeArray[i].isSelected = false; 
-                }
-              
+              item.isSelected = false;
             }
+        });    
       }
      else if ( this.type == 'trailerTypeFilter' )  
       {
-        for ( var i = 0; i < this.trailerTypeArray.length; i++ )
+        this.trailerTypeArray.map(item => {
+          if (item.id == id )
             {
-              if (this.trailerTypeArray[i].id == id )
-                {
-                  this.trailerTypeArray[i].isSelected = false; 
-                }
-              
+              item.isSelected = false;
             }
+        });    
       }
      else if ( this.type == 'userFilter' )
       {
-        for ( var i = 0; i < this.unselectedUser.length; i++ )
+        this.unselectedUser.map(item => {
+          if (item.id == id )
             {
-              if (this.unselectedUser[i].id == id )
-                {
-                  this.unselectedUser[i].isSelected = false;
-                }
-              
+              item.isSelected = false;
             }
+        });    
+
       }
       else if ( this.type == 'stateFilter' )
       {
         if ( subType == 'canada' )
           {
-            for ( var i = 0; i < this.canadaStates.length; i++ )
-              {
-                if (this.canadaStates[i].id == id )
+              this.canadaStates.map(item => {
+                if (item.id == id )
                   {
-                    this.canadaStates[i].isSelected = false;
+                    item.isSelected = false;
                   }
-                
-              }
+              });    
           }
         else
           {
-            for ( var i = 0; i < this.usaStates.length; i++ )
-              {
-                if (this.usaStates[i].id == id )
+            this.usaStates.map(item => {
+                if (item.id == id )
                   {
-                    this.usaStates[i].isSelected = false;
+                    item.isSelected = false;
                   }
-                
-              }
+              });   
           }  
       }   
    
@@ -1707,102 +1678,88 @@ canadaStates: any[] = [
 
         if ( this.type == 'departmentFilter' )
           {
-            for ( var i = 0; i < this.departmentArray.length; i++ )
-              {
-                this.departmentArray[i].isSelected = false;
-              }
+            this.departmentArray.map(item => {
+                item.isSelected = false;
+              });   
           }
         else if ( this.type == 'statusFilter' ) 
-          {
-            for ( var i = 0; i < this.pendingStatusArray.length; i++ )
-              {
-                  this.pendingStatusArray[i].isSelected = false;
-              }
-
-            for ( var i = 0; i < this.activeStatusArray.length; i++ )
-              {
-                  this.activeStatusArray[i].isSelected = false;
-              }
+          {       
+            this.pendingStatusArray.map(item => {
+                item.isSelected = false;
+              });   
+            
+            this.activeStatusArray.map(item => {
+                item.isSelected = false;
+              });
               
-            for ( var i = 0; i < this.closedStatusArray.length; i++ )
-              {
-                  this.closedStatusArray[i].isSelected = false;
-              }  
+            this.closedStatusArray.map(item => {
+                item.isSelected = false;
+              });   
+              
           }
         else if ( this.type == 'pmFilter' )  
           {
-            for ( var i = 0; i < this.pmFilterArray.length; i++ )
-              {
-                  this.pmFilterArray[i].isSelected = false;
-              }
+            this.pmFilterArray.map(item => {
+                item.isSelected = false;
+              });    
           } 
         else if ( this.type == 'categoryFuelFilter' ) 
           {
-            for ( var i = 0; i < this.categoryFuelArray.length; i++ )
-              {
-                  this.categoryFuelArray[i].isSelected = false;
-              }
+            this.categoryFuelArray.map(item => {
+                item.isSelected = false;
+              });   
           } 
         else if ( this.type == 'categoryRepairFilter' ) 
-          {
-            for ( var i = 0; i < this.categoryRepairArray.length; i++ )
-              {
-                  this.categoryRepairArray[i].isSelected = false;
-              }
+          {   
+            this.categoryRepairArray.map(item => {
+                item.isSelected = false;
+              });   
           }
         else if ( this.type == 'truckFilter' )  
           {
-            for ( var i = 0; i < this.truckArray.length; i++ )
-                {                 
-                  this.truckArray[i].isSelected = false;  
-                }
+            this.truckArray.map(item => {
+                  item.isSelected = false;
+                });     
           }
         else if ( this.type == 'trailerFilter' )  
-          {
-            for ( var i = 0; i < this.trailerArray.length; i++ )
-                {
-                  this.trailerArray[i].isSelected = false;  
-                }
+          {          
+            this.trailerArray.map(item => {
+                item.isSelected = false;
+              });     
           }
         else if ( this.type == 'brokerFilter' )  
           {
-            for ( var i = 0; i < this.brokerArray.length; i++ )
-                {
-                  this.brokerArray[i].isSelected = false;  
-                }
+            this.brokerArray.map(item => {
+                item.isSelected = false;
+              });    
           }
         else if ( this.type == 'driverFilter' )  
           {
-            for ( var i = 0; i < this.driverArray.length; i++ )
-                {
-                  this.driverArray[i].isSelected = false;  
-                }
+            this.driverArray.map(item => {
+                item.isSelected = false;
+              });    
           }
         else if ( this.type == 'truckTypeFilter' )  
-          {
-            for ( var i = 0; i < this.truckTypeArray.length; i++ )
-                {
-                  this.truckTypeArray[i].isSelected = false;  
-                }
+          {           
+            this.truckTypeArray.map(item => {
+                item.isSelected = false;
+              });          
           }           
         else if ( this.type == 'userFilter' )
           {
-            for ( var i = 0; i < this.unselectedUser.length; i++ )
-              {
-                this.unselectedUser[i].isSelected = false;
-              }
+            this.unselectedUser.map(item => {
+                item.isSelected = false;
+              });        
           } 
         else if ( this.type == 'stateFilter' )
           {
-            for ( var i = 0; i < this.usaStates.length; i++ )
-              {
-                this.usaStates[i].isSelected = false;
-              }
-
-            for ( var i = 0; i < this.canadaStates.length; i++ )
-              {
-                this.canadaStates[i].isSelected = false;
-              }  
+            this.usaStates.map(item => {
+                item.isSelected = false;
+              }); 
+            
+            this.canadaStates.map(item => {
+                item.isSelected = false;
+              });  
           }
         else if ( this.type == 'injuryFilter' || this.type == 'fatalityFilter' || this.type == 'violationFilter' )
           {
@@ -1924,10 +1881,11 @@ canadaStates: any[] = [
   }
 
   handleInputSelect(e){
-    console.log(e);
-    this.rangeValue = 3000;
-    this.locationState = e.address.address;
-    //e.stopPropagation();
+    if ( e?.address?.address )
+      {
+        this.locationState = e.address.address;
+        this.rangeValue = 3000;
+      }
   }
 
   clearForm(mod){

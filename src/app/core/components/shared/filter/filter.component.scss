@@ -1145,6 +1145,7 @@
         padding-top: 22px;
 
         .money-value-holder{
+            position: relative;
             width: 141px;
             height: 26px;
             border-radius: 2px;
@@ -1156,7 +1157,35 @@
             font-weight: 600; 
             color: #AAAAAA;
             line-height: 28px;
-        
+            
+            .input-custom-group{
+
+                .input-control{
+                    height: 26px !important;
+                }
+            }                 
+
+            .invalid-message{
+                    position: absolute;
+                    top: 18px;
+                    right: 12px;
+                    font-size: 11px;
+                    color: #EF5350;
+            } 
+        }
+
+        .errorForm{
+            .input-custom-group{
+                .input-icon{
+                   
+                    svg{   
+                             
+                        path{
+                            fill: #EF5350 !important;
+                        }
+                    }
+                }                     
+            }
         }
     }
 }
@@ -1817,7 +1846,7 @@
 }
 
 .pac-container{
-    z-index: 1070;
+    z-index: 1071;
 }
 
 .popover-body{

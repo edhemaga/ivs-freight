@@ -851,10 +851,10 @@ app-autoclose-popover
                     (onUserValueChange)="setRangeValue($event)"
                   ></app-ta-ngx-slider>
             </div>
-            <div class="money-main-holder" *ngIf="type == 'payFilter' " [formGroup]="payForm">
+            <div class="money-main-holder" *ngIf="type == 'payFilter' " [formGroup]="moneyForm">
                 <div class="money-value-holder" >
                     <app-ta-input
-                        formControlName="payFrom"
+                        formControlName="singleFrom"
                         [inputConfig]="{
                         name: 'ssn',
                         type: 'number',
@@ -863,9 +863,9 @@ app-autoclose-popover
                         }"
                     ></app-ta-input>
                 </div>
-                <div class="money-value-holder">
+                <div class="money-value-holder" [class.errorForm]="singleFormError" >
                     <app-ta-input
-                    formControlName="payTo"
+                    formControlName="singleTo"
                     [inputConfig]="{
                     name: 'ssn',
                     type: 'number',
@@ -873,15 +873,16 @@ app-autoclose-popover
                     placeholderIcon: 'dollar'
                     }"
                 ></app-ta-input>
+                    <div class="invalid-message" *ngIf="singleFormError">Invalid</div> 
                 </div>
             </div>
             <div class="filter-middle-holder" [formGroup]="payForm" *ngIf="type == 'payFilter' ">
-                <!-- <app-ta-ngx-slider
+                <app-ta-ngx-slider
                     [sliderOptions]="paySliderData"
                     [startedValue]="rangeValue"
                     [customClass]="'custom-slider-filter'"
                     (onUserValueChange)="setRangeValue($event)"
-                  ></app-ta-ngx-slider> -->
+                  ></app-ta-ngx-slider>
             </div>
             <div class="border-filter bottom-border-margin"></div>
             <div class="buttons-holder">
