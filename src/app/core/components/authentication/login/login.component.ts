@@ -64,10 +64,11 @@ export class LoginComponent implements OnInit, OnDestroy {
           this.notification.success('Login is success', 'Success');
         },
         error: () => {
-          this.notification.error(
-            'Something went wrong. Please try again.',
-            'Error:'
-          );
+          console.log("AGAIN ERROR ON AUTH SERVICE");
+          // this.notification.error(
+          //   'Something went wrong. Please try again.',
+          //   'Error:'
+          // );
         },
       });
   }

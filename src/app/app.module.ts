@@ -28,6 +28,7 @@ import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
+import { AppInterceptor } from './app.inteceptor';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { CustomToastMessagesComponent } from './core/components/shared/custom-to
       deps: [UserLoggedService],
       multi: false,
     },
+    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
