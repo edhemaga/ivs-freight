@@ -13,7 +13,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule} from 'ngx-toastr';
+import {
+  ToastrModule,
+  ToastNoAnimation,
+  ToastNoAnimationModule,
+} from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -27,6 +31,7 @@ import { NavigationHeaderComponent } from './core/components/navigation/navigati
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 
 @NgModule({
   declarations: [
@@ -72,6 +77,7 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
       deps: [UserLoggedService],
       multi: false,
     },
+    EncryptionDecryptionService,
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

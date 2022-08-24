@@ -493,7 +493,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSaveNewBank(bank: {data: any, action: string}, index: number) {
+  public onSaveNewBank(bank: { data: any; action: string }, index: number) {
     this.selectedBankAccountFormArray[index] = event;
     this.isBankSelectedFormArray[index] = true;
     this.onBankSelected(index);
@@ -511,6 +511,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             id: res.id,
             name: bank.data.name,
           };
+          this.banks = [
+            ...this.banks,
+            this.selectedBankAccountFormArray[index],
+          ];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');

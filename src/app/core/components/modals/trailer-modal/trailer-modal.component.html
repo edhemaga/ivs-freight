@@ -178,8 +178,10 @@
                       label: 'Owner',
                       isDropdown: true,
                       isRequired: true,
-                      dropdownWidthClass: 'w-col-455'
+                      dropdownWidthClass: 'w-col-456'
                     }"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
                     [options]="ownerType"
                     [activeItem]="selectedOwner"
                     (selectedItem)="onSelectDropdown($event, 'owner')"
