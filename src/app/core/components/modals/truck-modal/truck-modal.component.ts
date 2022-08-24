@@ -315,7 +315,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   private populateStorageData(res: any) {
-    setTimeout(() => {
+    const timeout = setTimeout(() => {
       this.truckForm.patchValue({
         truckNumber: res.truckNumber,
         truckTypeId: res.truckTypeId,
@@ -336,6 +336,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         mileage: res.mileage,
         ipasEzpass: res.ipasEzpass,
       });
+      if (res.id) {
+        this.editData = { ...this.editData, id: res.id };
+      }
       this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
       this.selectedTruckType = res.selectedTruckType;
       this.selectedTruckMake = res.selectedTruckMake;
@@ -351,6 +354,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         name: 'deactivate',
         status: this.truckStatus,
       });
+
+      clearTimeout(timeout);
     }, 50);
   }
 
@@ -386,6 +391,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 selectedEngineType: this.selectedEngineType,
                 selectedTireSize: this.selectedTireSize,
                 truckStatus: this.truckStatus,
+                id: this.editData?.id,
               },
             },
             component: OwnerModalComponent,

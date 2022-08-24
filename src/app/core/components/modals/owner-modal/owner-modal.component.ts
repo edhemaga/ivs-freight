@@ -28,6 +28,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
+import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -187,6 +188,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             action: 'close',
             payload: { key: this.editData?.key, value: null },
             component: TruckModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        case 'trailer-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TrailerModalComponent,
             size: 'small',
           });
           break;
