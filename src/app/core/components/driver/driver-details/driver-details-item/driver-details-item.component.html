@@ -13,9 +13,10 @@
       <div>
         <app-ta-re-card
           *ngFor="let cdl of dataCDl; let i = index; trackBy: identity"
-          [options]="dataTest"
+          [options]="dataDropDown"
           [cardDocumentCounter]="6"
           [statusActive]="cdl.status"
+          (dataDropDopwn)="getCdlById(cdl.id)"
           (resizePage)="toggleResizePage(i, 'cdl')"
           [cardNameCommon]="cdl?.cdlNumber"
           [expDateClose]="cdl?.expDate | formatDateP"
@@ -33,7 +34,7 @@
           [weeklyWidth]="'28'"
           [stateTooltipName]="cdl.state.stateName"
           [shortName]="cdl.state.stateShortName"
-          (dropActions)="optionsEvent($event, 'edit-licence')"
+          (dropActions)="optionsEvent($event, 'cdl')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -130,7 +131,7 @@
                   </app-truckassist-progress-expiration>
                 </div>
                 <div
-                  *ngIf="cdl.dateDeactivated && cdl.showButton"
+                  *ngIf="cdl.dateDeactivated && cdl.showButton && cdl.status==0"
                   (click)="activateDeactiveCdl(cdl.id)"
                   class="activate-button"
                 >
@@ -206,11 +207,10 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataTest"
+          [options]="dataDropDown"
           [cardNameCommon]="test?.testingDate | formatDateP"
           (resizePage)="toggleResizePage(i, 'test')"
           [optionsId]="test.id"
-
           (clickedCard)="getNameForDrop($event)"
           [cardDocumentCounter]="6"
           [weeklyWidth]="'18'"
@@ -223,7 +223,7 @@
           [cardSecondName]="test?.testReason.name"
           [shortName]="test.testType.name[0]"
           [stateTooltipName]="test.testType.name + ' Test'"
-          (dropActions)="optionsEvent($event, 'edit-drug')"
+          (dropActions)="optionsEvent($event, 'test')"
         >
           <div [ngClass]="{ 'second-progress': toggler[i + 'test'] }"></div>
           <div class="cards-container">
@@ -293,7 +293,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataTest"
+          [options]="dataDropDown"
           [cardNameCommon]="med?.issueDate | formatDateP"
           [expDateClose]="med?.expDate | formatDateP"
           [optionsId]="med.id"
@@ -305,7 +305,7 @@
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
           (resizePage)="toggleResizePage(i, 'medical')"
-          (dropActions)="optionsEvent($event, 'edit-medical')"
+          (dropActions)="optionsEvent($event, 'medical')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -391,7 +391,7 @@
             let i = index;
             trackBy: identity
           "
-          [options]="dataTest"
+          [options]="dataDropDown"
           [cardNameCurrent]="'mvr'"
           (clickedCard)="getNameForDrop($event)"
           [cardDocumentCounter]="6"
@@ -404,7 +404,7 @@
           [cardNameCommon]="mvr?.issueDate | formatDateP"
           [expDateClose]="mvr?.expDate | formatDateP"
           [optionsId]="mvr.id"
-          (dropActions)="optionsEvent($event, 'edit-mvr')"
+          (dropActions)="optionsEvent($event, 'mvr')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">

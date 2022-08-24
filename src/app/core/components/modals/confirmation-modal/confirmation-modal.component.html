@@ -106,6 +106,17 @@
           Address: {{ editData?.data?.address?.address }}
         </p>
       </div>
+
+       <!-- CDL -->
+       <div
+       *ngIf="['cdl'].includes(editData?.template)"
+       class="confirmation-info"
+     >
+       <p class="confirmation-text-1 confirmation-flex"><span class="confirmation-state">{{ editData?.data?.state }}</span> {{editData?.data?.cdlNumber}}</p>
+       <p class="confirmation-text-2">
+         Expires: {{editData?.data.expDate | formatDateP}}
+       </p>
+     </div>
     </div>
 
     <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->

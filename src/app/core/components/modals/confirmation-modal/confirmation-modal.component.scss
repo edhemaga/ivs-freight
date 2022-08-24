@@ -91,4 +91,25 @@
       }
     }
   }
+  .confirmation-state {
+    padding: 0 5.7px;
+    background-color: #f3f3f3;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 800;
+    margin-right: 6px;
+    &::-moz-selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
+
+    &::selection {
+      background-color: rgb(108, 108, 108, 0.2);
+      color: #6c6c6c;
+    }
+  }
+  .confirmation-flex {
+    display: flex;
+    align-items: center;
+  }
 }
