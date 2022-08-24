@@ -283,6 +283,30 @@ export class TruckassistTableBodyComponent
     }, 1000);
   }
 
+  // RAITING
+  onLike(row: any, column: any) {
+    this.bodyActions.emit({
+      data: row,
+      type: 'raiting',
+      subType: row[column.field].hasLiked ? 'delete-like' : 'like',
+    });
+  }
+
+  onDislike(row: any, column: any) {
+    this.bodyActions.emit({
+      data: row,
+      type: 'raiting',
+      subType: row[column.field].hasLiked ? 'delete-dislike' : 'dislike',
+    });
+  }
+
+  onOpenReviews(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'open-reviews',
+    });
+  }
+
   // --------------------------------DROPDOWN---------------------------------
 
   // Set Dropdown Content

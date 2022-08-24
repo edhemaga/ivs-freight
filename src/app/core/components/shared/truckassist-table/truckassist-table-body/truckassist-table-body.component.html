@@ -478,23 +478,6 @@
               </div>
             </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -724,6 +707,49 @@
                 "
               >
                 {{ row[column.field].password }}
+              </div>
+            </div>
+
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row, column)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row, column)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
               </div>
             </div>
 
@@ -1385,6 +1411,49 @@
               </div>
             </div>
 
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row, column)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row, column)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1531,23 +1600,6 @@
                 ></svg-icon>
                 <span class="customer-name">{{ row[column.field] }}</span>
               </div>
-            </div>
-
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
             </div>
 
             <!-- TOTAL  COLUMN-->

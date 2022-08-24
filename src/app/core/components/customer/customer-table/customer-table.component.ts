@@ -369,9 +369,6 @@ export class CustomerTableComponent
     this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    console.log('Customer Data');
-    console.log(this.viewData);
-
     this.viewData = this.viewData.map((data: any) => {
       if (this.selectedTab === 'active') {
         return this.mapBrokerData(data);
@@ -379,6 +376,9 @@ export class CustomerTableComponent
         return this.mapShipperData(data);
       }
     });
+
+    console.log('Customer Data');
+    console.log(this.viewData);
   }
 
   // Map Broker Data
@@ -405,6 +405,12 @@ export class CustomerTableComponent
         : '',
       textUnpaid: 'Nije Povezano',
       textOnetoTwentyDays: 'Nije Povezano',
+      brokerRaiting: {
+        hasLiked: false,
+        hasDislike: false,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0'
+      }
     };
   }
 
@@ -425,6 +431,12 @@ export class CustomerTableComponent
       mcNumber: '',
       loadCount: '',
       total: '',
+      shipperRaiting: {
+        hasLiked: false,
+        hasDislike: false,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0'
+      }
     };
   }
 
@@ -572,6 +584,9 @@ export class CustomerTableComponent
 
   // Table Body Actions
   onTableBodyActions(event: any) {
+    console.log('onTableBodyActions');
+    console.log(event);
+
     // Edit Call
     let businessName = '';
 
