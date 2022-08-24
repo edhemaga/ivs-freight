@@ -133,7 +133,7 @@
       <div class="action-div" [ngClass]="{ 'action-active': stopPickerActive }" (click)="onToolBarAction('open-stop-picker')">
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
-          [src]="'assets/svg/common/ic_route_stop_picker.svg'"
+          [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
         ></svg-icon>
       </div>
 
@@ -146,7 +146,7 @@
       <div class="action-div" (click)="onToolBarAction('open-route-compare')">
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
-          [src]="'assets/svg/common/ic_route_compare.svg'"
+          [src]="'assets/svg/common/routing/ic_route_compare.svg'"
         ></svg-icon>
       </div>
 
@@ -159,7 +159,7 @@
       <div class="action-div" (click)="onToolBarAction('open-keyboard-controls')">
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
-          [src]="'assets/svg/common/ic_route_keyboard.svg'"
+          [src]="'assets/svg/common/routing/ic_route_keyboard.svg'"
         ></svg-icon>
       </div>
 
@@ -172,7 +172,7 @@
       <div class="action-div" (click)="onToolBarAction('open-route-info')">
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
-          [src]="'assets/svg/common/ic_route_info.svg'"
+          [src]="'assets/svg/common/routing/ic_route_info.svg'"
         ></svg-icon>
       </div>
 
@@ -197,7 +197,7 @@
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
-          [src]="'assets/svg/common/ic_route_settings.svg'"
+          [src]="'assets/svg/common/routing/ic_route_settings.svg'"
         ></svg-icon>
       </div>
 
@@ -231,11 +231,20 @@
   <!-- OPEN MAP LAYERS BUTTON -->
   <div
     class="general-pm-open-container map-layers-container"
-    (click)="onToolBarAction('open-layers')"
+    #op3="ngbPopover"
+    (click)="onShowLayersPopover(op3)"
+    [autoClose]="true"
+    [ngbPopover]="layersPopover"
+    [placement]="'bottom-right'"
+    [autoClose]="'outside'"
+    popoverClass="table-dropdown-popover layers-popover"
+    [ngClass]="{ 'active-options-maps': layersPopupOpen || isTollRoadsActive || isTimeZoneActive || isDopplerOn || trafficLayerShow }"
+    triggers="manual"
+    (hidden)="layersPopupOpen = false"
   >
     <svg-icon
       [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-      [src]="'assets/svg/common/ic_route_layers.svg'"
+      [src]="'assets/svg/common/routing/ic_route_layers.svg'"
     ></svg-icon>
   </div>
 
@@ -516,3 +525,148 @@
       </div>
     </div>
   </ng-template>
+
+  <ng-template #layersPopover>
+    <div class="table-dropdown">
+      <div
+        (click)="onToolBarAction('toggle-toll-roads')"
+        class="table-dropdown-content"
+        [ngClass]="{ 'active-option': isTollRoadsActive }"
+      >
+        <svg-icon
+          class="action-svg"
+          src="assets/svg/common/routing/ic_route_toll_roads.svg"
+          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+        ></svg-icon>
+        <div class="dropdown-content-text">Toll road</div>
+      </div>
+      <div
+        (click)="onToolBarAction('toggle-time-zones')"
+        class="table-dropdown-content"
+        [ngClass]="{ 'active-option': isTimeZoneActive }"
+      >
+        <svg-icon
+          class="action-svg"
+          src="assets/svg/common/routing/ic_route_timezones.svg"
+          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+        ></svg-icon>
+        <div class="dropdown-content-text">Time zones</div>
+      </div>
+      <div
+        (click)="onToolBarAction('toggle-radar')"
+        class="table-dropdown-content"
+        [ngClass]="{ 'active-option': isDopplerOn }"
+      >
+        <svg-icon
+          class="action-svg"
+          src="assets/svg/common/routing/ic_route_radar.svg"
+          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+        ></svg-icon>
+        <div class="dropdown-content-text">Doppler Radar</div>
+      </div>
+      <div
+        (click)="onToolBarAction('toggle-traffic')"
+        class="table-dropdown-content"
+        [ngClass]="{ 'active-option': trafficLayerShow }"
+      >
+        <svg-icon
+          class="action-svg"
+          src="assets/svg/common/routing/ic_route_traffic.svg"
+          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+        ></svg-icon>
+        <div class="dropdown-content-text">Traffic</div>
+      </div>
+    </div>
+  </ng-template>
+
+  <!-- Legends -->
+  <div class="legend-container" *ngIf="!layersPopup?.isOpen()">
+    <div class="doppler-conatiner">
+      <!-- <app-doppler-legend *ngIf="isDopplerOn"></app-doppler-legend> -->
+
+      <div class="doppler-legend" *ngIf="isDopplerOn">
+        <div class="doppler_header">
+          <span>Light</span>
+          <span>Heavy</span>
+        </div>
+        <div class="doplay_body">
+          <div class="quantity-text">
+            <p
+              appSelectionColor
+              class="light"
+              style="color: #b7b7b7;"
+            >Raining</p>
+            <div class="quantity-rain">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <div class="quantity-text">
+            <p
+              appSelectionColor
+              class="light"
+              style="color: #b7b7b7;"
+            >Sleeting</p>
+            <div class="quantity-rain-snow">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+          <div class="quantity-text">
+            <p
+              appSelectionColor
+              class="light"
+              style="color: #b7b7b7;"
+            >Snowing</p>
+            <div class="quantity-snow">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+        </div>
+      </div>      
+
+    </div>
+    <div [ngStyle]="{ 'margin-top': isDopplerOn ? '6px' : '0px' }" class="traffic-conatiner">
+      <!-- <app-traffic-legend *ngIf="trafficLayerShow"></app-traffic-legend> -->
+
+      <div class="truffic-container" *ngIf="trafficLayerShow">
+        <div class="truffic-title">
+          <div class="fast">Fast</div>
+          <div class="slow">Slow</div>
+        </div>
+        <div class="layers">
+          <div
+            *ngFor="let layer of trafficColors; let i = index"
+            [ngClass]="{ 'add-margin-right': i !== trafficColors.length - 1 }"
+            [ngStyle]="{ background: layer.color }"
+            class="layers-color"
+          ></div>
+        </div>
+      </div>      
+
+    </div>
+    <div
+      [ngStyle]="{ 'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px' }"
+      class="timezone-conatiner"
+    >
+      <!-- <app-timezone-legend *ngIf="isTimeZoneActive"></app-timezone-legend> -->
+
+      <div class="time-zone-container" *ngIf="isTimeZoneActive">
+        <div *ngFor="let timezone of timezones; let i = index" [ngClass]="{'add-margin': i !== 0}" class="time-zone">
+          <div [ngStyle]="{'background': timezone.color}" class="timezone-color"></div>
+          <div class="timezone-data">{{ timezone.text }}</div>
+        </div>
+      </div>      
+
+    </div>
+  </div>

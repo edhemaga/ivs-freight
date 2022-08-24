@@ -7,6 +7,10 @@
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [stopPickerActive]="stopPickerActive"
+        [isTollRoadsActive]="isTollRoadsActive"
+        [isTimeZoneActive]="isTimeZoneActive"
+        [isDopplerOn]="isDopplerOn"
+        [trafficLayerShow]="trafficLayerShow"
       ></app-map-toolbar>
     </div>
     
@@ -16,14 +20,14 @@
                 class="route-card-scroll" 
                 cdkDropList 
                 (cdkDropListDropped)="dropRoutes($event, routes)" 
-                [ngStyle]="{ 'padding-right': tooltip?.isOpen() ? '126px' : '13px' }"
+                [ngStyle]="{ 'padding-right': tooltip?.isOpen() ? '126px' : '13px', 'padding-bottom': tooltip?.isOpen() ? '113px' : '13px' }"
             >
                 <div 
                     class="route-info-card" 
                     cdkDrag 
                     *ngFor="let route of routes; let i = index;" 
                     (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
-                    (mouseover)="hoverRoute(route)"
+                    (mouseenter)="hoverRoute(route)"
                     (mouseleave)="leaveRouteHover(route)"
                     [ngClass]="{ 
                         'route-hidden': route.hidden, 
@@ -52,7 +56,7 @@
                                 </svg>
                                 <svg-icon
                                     [ngClass]="{ 'svg-hover': route.nameHover }"
-                                    [src]="!route.nameHover ? 'assets/svg/common/ic_route_hidden.svg' : 'assets/svg/common/ic_eye-visible.svg'"
+                                    [src]="!route.nameHover ? 'assets/svg/common/routing/ic_route_hidden.svg' : 'assets/svg/common/ic_eye-visible.svg'"
                                     [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                                     *ngIf="route.hidden"
                                 ></svg-icon>
@@ -61,7 +65,7 @@
                                 class="route-name marker-info-text marker-bold-text mg-left-8"
                                 [ngStyle]="{ color: route.nameHover ? routeFocusColors[i] : route.hidden ? '#B7B7B7' : '#6c6c6c' }"
                                 (click)="showHideRoute($event, route)"
-                                (mouseover)="route.nameHover = true"
+                                (mouseenter)="route.nameHover = true"
                                 (mouseleave)="route.nameHover = false">
                                 {{ route.name }}
 
@@ -291,7 +295,7 @@
             [zoomControl]="false"
             (zoomChange)="zoomChange($event)"
             (mapReady)="getMapInstance($event)"
-            (mouseover)="mapHover = true"
+            (mouseenter)="mapHover = true"
             (mouseleave)="mapHover = false">
 
             <div *ngFor="let route of routes; let i = index;">
@@ -318,7 +322,7 @@
                             >
                                 <ng-template>
                                     <div 
-                                        (mouseover)="route.stops[j].hovered = true" 
+                                        (mouseenter)="route.stops[j].hovered = true" 
                                         (mouseleave)="route.stops[j].hovered = false"   
                                         class="marker-container marker-icon" 
                                         *ngIf="route.isFocused" 
@@ -354,7 +358,7 @@
                                     <div class="marker-container circle-marker" (click)="stopMarkerClick($event, i, j)">
                                         <svg 
                                             *ngIf="j == 0 || j == route.stops.length-1" 
-                                            (mouseover)="route.stops[j].hovered = true" 
+                                            (mouseenter)="route.stops[j].hovered = true" 
                                             (mouseleave)="route.stops[j].hovered = false" 
                                             xmlns="http://www.w3.org/2000/svg" 
                                             width="12" 
@@ -365,7 +369,7 @@
                                         </svg>
                                         <svg 
                                             *ngIf="j > 0 && j < route.stops.length-1" 
-                                            (mouseover)="route.stops[j].hovered = true" 
+                                            (mouseenter)="route.stops[j].hovered = true" 
                                             (mouseleave)="route.stops[j].hovered = false" 
                                             xmlns="http://www.w3.org/2000/svg" 
                                             width="12" 
@@ -497,7 +501,7 @@
     <div class="table-dropdown">
       <div
         (click)="callDropDownAction($event, action)"
-        *ngFor="let action of dropdownActions"
+        *ngFor="let action of data"
         class="table-dropdown-content"
         [class]="action.class"
       >

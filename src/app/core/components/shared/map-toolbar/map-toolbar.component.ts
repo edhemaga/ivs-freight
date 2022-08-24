@@ -23,6 +23,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('op') mapSettingsPopup: any;
   @ViewChild('op2') addRoutePopup: any;
+  @ViewChild('op3') layersPopup: any;
 
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
@@ -31,9 +32,14 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   @Input() columns: any[];
   @Input() tableContainerWidth: number;
   @Input() stopPickerActive: boolean = false;
+  @Input() isTollRoadsActive: boolean = false;
+  @Input() isTimeZoneActive: boolean = false;
+  @Input() isDopplerOn: boolean = false;
+  @Input() trafficLayerShow: boolean = false;
   listName: string = '';
   mapSettingsPopupOpen: boolean = false;
   addRoutePopupOpen: boolean = false;
+  layersPopupOpen: boolean = false;
   tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
@@ -169,6 +175,16 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   routeFormChanged: boolean = false;
   
   routeToEdit: any = {};
+
+  trafficColors = [{color: '#30C862'}, {color: '#FFAD43'}, {color: '#FF4D4D'}, {color: '#B20000'}];
+  timezones = [
+    {color: '#FF4A4A', text: '-03:30 Greenwich Mean Time'},
+    {color: '#FFDD00', text: '-04:00 Eastern Daylight Time'},
+    {color: '#7BC57B', text: '-05:00 Central Daylight Time'},
+    {color: '#EEA649', text: '-06:00 Mountain Daylight Time'},
+    {color: '#3383EC', text: '-07:00 Pacific Daylight Time'},
+    {color: '#A851FF', text: '-08:00 Alaska Daylight Time'},
+  ];
   
   constructor(
     private formBuilder: FormBuilder,
@@ -325,6 +341,9 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     this.resetMapForm();
 
     this.routeToEdit = {};
+
+    this.layersPopup?.close();
+    this.layersPopupOpen = false;
     
     this.ref.detectChanges();
   }
@@ -370,6 +389,23 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.addRoutePopupOpen = addRoutePopup.isOpen();
     this.optionsPopupContent[4].active = false;
+  }
+
+  onShowLayersPopover(layersPopup: any) {
+    this.layersPopup = layersPopup;
+
+    if (layersPopup.isOpen()) {
+      layersPopup.close();
+    } else {
+      layersPopup.open({});
+    }
+
+    if ( this.addRoutePopup && this.addRoutePopup.isOpen() ) {
+      this.addRoutePopup.close();
+      this.routeToEdit = {};
+    }
+
+    this.layersPopupOpen = layersPopup.isOpen();
   }
 
   public onTabChange(event: any, type: string): void {

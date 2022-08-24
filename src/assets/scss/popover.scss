@@ -518,6 +518,68 @@
   margin-left: 30px !important;
 }
 
+.layers-popover {
+  margin: 5px 0px 0px 36px;
+
+  .popover-body {
+    .details-dropdown, .table-dropdown {
+      .table-dropdown-content {
+        margin-bottom: 1px;
+        transition: 0.25s;
+
+        &:last-child {
+          margin: 0px;
+        }
+
+        &:hover, &.active-option {
+          background: #536bc21A;
+
+          .action-svg {
+            svg {
+              path {
+                fill: #536bc2;
+
+                &#Path_10766 {
+                  fill: #fff !important;
+                }
+              }
+            }
+          }
+
+          .dropdown-content-text {
+            color:  #536bc2 !important;
+          }
+        }
+
+        .action-svg {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            path {
+              fill: #AAAAAA;
+              transition: 0.25s;
+
+              &#Path_10766 {
+                fill: #fff !important;
+              }
+            }
+
+            rect {
+              fill: none;
+            }
+          }
+        }
+
+        .dropdown-content-text {
+          color: #6C6C6C;
+        }
+      }
+    }
+  }
+}
+
 .drop-down-route {
   margin: 5px 0px 0px 12px;
 

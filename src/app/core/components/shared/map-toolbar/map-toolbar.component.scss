@@ -38,10 +38,11 @@
     .general-pm-open-container {
         margin-right: 4px !important;
 
-        &:hover {
+        &:hover, &.active-options-maps {
             svg {
                 path {
-                    fill: #6C6C6C!important;
+                    fill: #536bc2!important;
+                    transition: 0.25s;
                 }
             }
         }
@@ -51,3 +52,279 @@
         width: 2px !important;
     }
 }
+
+.legend-container {
+    width: auto;
+    height: auto;
+    position: absolute;
+    right: 18px;
+    top: 37px;
+}
+
+// Doppler Radar Legend
+.doppler-legend {
+    width: 191px;
+    height: 100%;
+  
+    /* padding: 6px; */
+  
+    .doppler_header {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8px;
+      height: 21px;
+      align-items: center;
+      margin-bottom: 2px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 2px;
+  
+      span {
+        font-size: 10px;
+        font-weight: bold;
+        color: #B7B7B7;
+        user-select: none;
+      }
+    }
+  
+    .doplay_body {
+      border-radius: 2px;
+      padding: 3px 8px 3px 8px;
+  
+      background: rgba(255, 255, 255, 0.7);
+  
+      .light {
+        font-size: 10px;
+        color: #B7B7B7;
+        font-weight: 600;
+      }
+  
+      .quantity-text {
+        margin-bottom: 4px;
+  
+        p {
+          margin: 0;
+        }
+      }
+  
+      .quantity-rain,
+      .quantity-rain-snow,
+      .quantity-snow {
+        height: 4px;
+        width: 100%;
+        border-radius: 1px;
+      }
+  
+      .quantity-rain {
+        //background-image: linear-gradient(to right, #ff5d5d, #ded840, #24c1a1);
+        display: flex;
+        justify-content: space-between;
+  
+        div {
+          width: 32px;
+          height: 4px;
+          border-radius: 2px;
+        }
+  
+        div:nth-child(1) {
+          background-color: #58B139;
+        }
+  
+        div:nth-child(2) {
+          background-color: #C7DF5C;
+        }
+  
+        div:nth-child(3) {
+          background-color: #FAC938;
+        }
+  
+        div:nth-child(4) {
+          background-color: #FDA330;
+        }
+  
+        div:nth-child(5) {
+          background-color: #FE514B;
+        }
+      }
+  
+      .quantity-rain-snow {
+        display: flex;
+        justify-content: space-between;
+  
+        div {
+          width: 32px;
+          height: 4px;
+          border-radius: 2px;
+        }
+  
+        div:nth-child(1) {
+          background-color: #FFC5E5e6;
+        }
+  
+        div:nth-child(2) {
+          background-color: #F2A2CFe6;
+        }
+  
+        div:nth-child(3) {
+          background-color: #E47DB8e6;
+        }
+  
+        div:nth-child(4) {
+          background-color: #D24E99e6;
+        }
+  
+        div:nth-child(5) {
+          background-color: #C1217De6;
+        }
+      }
+  
+      .quantity-snow {
+        display: flex;
+        justify-content: space-between;
+  
+        div {
+          width: 32px;
+          height: 4px;
+          border-radius: 2px;
+        }
+  
+        div:nth-child(1) {
+          background-color: #95C1F9e6;
+        }
+  
+        div:nth-child(2) {
+          background-color: #83B0E9e6;
+        }
+  
+        div:nth-child(3) {
+          background-color: #76A4DFe6;
+        }
+  
+        div:nth-child(4) {
+          background-color: #5D8DCAe6;
+        }
+  
+        div:nth-child(5) {
+          background-color: #4274B3e6;
+        }
+      }
+    }
+  
+    &:hover {
+      .doppler_header, .doplay_body {
+        background: rgba(255, 255, 255, 1);
+      }
+  
+      transition: 0.25s;
+    }
+  }  
+
+  // Traffic Legend
+  .truffic-container {
+    width: 191px;
+    height: 43px;
+    opacity: 0.7;
+  
+    &:hover {
+      opacity: 0.9;
+      //transform: 0.25s;
+    }
+  
+    .truffic-title,
+    .layers {
+      width: 100%;
+      border-radius: 2px;
+      background: white;
+      box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
+    }
+  
+    .truffic-title {
+      height: 21px;
+      margin-bottom: 2px;
+      padding: 6px;
+  
+      .fast,
+      .slow {
+        width: auto;
+        height: 100%;
+        text-align: center;
+        vertical-align: middle;
+        line-height: 9px;
+        font-size: 10px;
+        font-weight: bold;
+        color: #b7b7b7;
+      }
+  
+      .fast {
+        float: left;
+      }
+  
+      .slow {
+        float: right;
+      }
+    }
+  
+    .layers {
+      height: 20px;
+      padding: 8px 6px;
+      display: flex;
+  
+      .layers-color {
+        border-radius: 1px;
+        width: 42px;
+        height: 4px;
+      }
+    }
+  }
+  
+  /* NG CLASS */
+  .add-margin-right {
+    margin-right: 5px;
+  }  
+
+  // Time Zones Legend
+  .time-zone-container {
+    width: 191px;
+    height: auto;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    padding: 4px;
+    box-shadow: 0 0 4px 0 rgb(0 0 0 / 15%);
+  
+    &:hover {
+      background: rgba(255, 255, 255, 0.9);
+      //transform: 0.25s;
+    }
+  
+    .time-zone {
+      width: 100%;
+      height: 18px;
+      display: flex;
+      position: relative;
+  
+      .timezone-color {
+        width: 18px;
+        height: 100%;
+        border-radius: 3px;
+        opacity: 0.2;
+      }
+  
+      .timezone-data {
+        width: 179px;
+        height: 100%;
+        padding-left: 6px;
+        text-align: left;
+        vertical-align: middle;
+        line-height: 18px;
+        font-size: 10px;
+        font-weight: 600;
+        color: #B7B7B7;
+        padding-top: 1px;
+      }
+    }
+  }
+  
+  /* NG CLASS */
+  .add-margin {
+    margin-top: 8px;
+  }
+  

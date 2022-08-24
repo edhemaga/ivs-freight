@@ -7,8 +7,10 @@ import {
   AddressEntity
 } from 'appcoretruckassist';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import {imageMapType} from 'src/assets/utils/methods-global';
 
 declare var google: any;
+declare const geoXML3: any;
 
 @Component({
   selector: 'app-routing-map',
@@ -84,7 +86,9 @@ export class RoutingMapComponent implements OnInit {
       class: 'regular-text',
       contentType: 'report',
       show: true,
-      svg: 'assets/svg/common/ic_route_report.svg',
+      svg: 'assets/svg/common/routing/ic_route_report.svg',
+      showArrow: true,
+      openPopover: true
     },
     {
       title: 'Print',
@@ -100,7 +104,7 @@ export class RoutingMapComponent implements OnInit {
       class: 'regular-text',
       contentType: 'duplicate',
       show: true,
-      svg: 'assets/svg/common/ic_route_duplicate.svg',
+      svg: 'assets/svg/common/routing/ic_route_duplicate.svg',
     },
     {
       title: 'Reverse',
@@ -108,7 +112,7 @@ export class RoutingMapComponent implements OnInit {
       class: 'regular-text',
       contentType: 'reverse',
       show: true,
-      svg: 'assets/svg/common/ic_route_reverse.svg',
+      svg: 'assets/svg/common/routing/ic_route_reverse.svg',
     },
     {
       title: 'Clear All',
@@ -116,7 +120,7 @@ export class RoutingMapComponent implements OnInit {
       class: 'regular-text',
       contentType: 'clear',
       show: true,
-      svg: 'assets/svg/common/ic_route_clear.svg',
+      svg: 'assets/svg/common/routing/ic_route_clear.svg',
     },
     {
       title: 'Delete',
@@ -367,6 +371,33 @@ export class RoutingMapComponent implements OnInit {
   tooltip: any;
   dropDownActive: number = -1;
 
+  tollRoads: any = [];
+  isTollRoadsActive: boolean;
+  tollRoadsKml = [
+    {state: 'assets/kml/toll-roads/florida.kml'},
+    {state: 'assets/kml/toll-roads/Texas.kml'},
+    {state: 'assets/kml/toll-roads/California.kml'},
+  ];
+  
+  trafficLayer;
+  trafficLayerShow = false;
+  timeZones: any;
+  isTimeZoneActive: boolean;
+  kmlUrl = 'assets/kml/timezones.kml';
+  
+  tileNeXRad = [];
+  allNexrad = [
+    {nexrad: 'nexrad-n0q-900913'},
+    {nexrad: 'nexrad-n0q-900913-m05m'},
+    {nexrad: 'nexrad-n0q-900913-m10m'},
+    {nexrad: 'nexrad-n0q-900913-m15m'},
+    {nexrad: 'nexrad-n0q-900913-m20m'},
+    {nexrad: 'nexrad-n0q-900913-m25m'},
+    {nexrad: 'nexrad-n0q-900913-m30m'},
+  ];
+  isDopplerOn: boolean;
+  dopplerInterval: any;
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -383,8 +414,6 @@ export class RoutingMapComponent implements OnInit {
     this.initAddressFields();
 
     this.routes.map((item, index) => {
-      console.log('routes.map', index);
-
       this.drawRoute(index);
       
       this.calculateDistanceBetweenStops(index);
@@ -470,6 +499,26 @@ export class RoutingMapComponent implements OnInit {
     var mainthis = this;
 
     mainthis.placesService = new google.maps.places.PlacesService(map);
+
+    this.trafficLayer = new google.maps.TrafficLayer();
+
+    this.timeZones = new geoXML3.parser({
+      map: this.agmMap,
+      processStyles: false,
+      zoom: false,
+      singleInfoWindow: false,
+    });
+
+    for (let i = 0; i < this.tollRoadsKml.length; i++) {
+      this.tollRoads.push(
+        new geoXML3.parser({
+          map: this.agmMap,
+          processStyles: false,
+          zoom: false,
+          singleInfoWindow: false,
+        })
+      );
+    }
 
     // map.addListener('click', (e) => {
     //   if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
@@ -638,9 +687,6 @@ export class RoutingMapComponent implements OnInit {
           let fuelShort = fuel.toFixed(1);
           let tripCostShort = tripCost.toFixed(1);
 
-          console.log('fuel', fuelShort);
-          console.log('tripCost', tripCostShort);
-
           this.routes[i].stops[j].legPrice = tripCostShort;
           this.routes[i].stops[j].totalPrice =
             parseFloat(this.routes[i].stops[j - 1].legPrice) + parseFloat(this.routes[i].stops[j].legPrice);
@@ -714,6 +760,15 @@ export class RoutingMapComponent implements OnInit {
       newRoute.id = lastId+1;
       newRoute.isFocused = false;
       newRoute.expanded = false;
+      newRoute.expandFinished = false;
+      newRoute.hover = false;
+      newRoute.nameHover = false;
+      newRoute.stops.map((stop) => {
+        stop.isSelected = false;
+      });
+      //newRoute.width = '312px';
+
+      console.log(newRoute);
       
       this.routes.push(newRoute);
       
@@ -721,7 +776,7 @@ export class RoutingMapComponent implements OnInit {
 
       this.drawRoute(this.routes.length-1);
       this.calculateDistanceBetweenStops(this.routes.length-1);
-      this.calculateRouteWidth(this.routes.length-1);
+      this.calculateRouteWidth(this.routes[this.routes.length-1]);
     }
   }
 
@@ -847,8 +902,6 @@ export class RoutingMapComponent implements OnInit {
       route.mpg = routeForm.get('fuelMpg').value;
       route.fuelPrice = routeForm.get('fuelPrice').value;
 
-      console.log('fuelPrice', route.fuelPrice);
-
       const routeIndex = this.getRouteIndexById(event.data.editId);
 
       this.calculateDistanceBetweenStops(routeIndex);
@@ -884,7 +937,6 @@ export class RoutingMapComponent implements OnInit {
 
       if ( distanceUnitChanged ) {
         this.routes.map((item, index) => {
-          console.log('routes.map', index);
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
         });
@@ -907,8 +959,20 @@ export class RoutingMapComponent implements OnInit {
       console.log('onToolbarAction open-route-info');
     } else if ( event.action == 'open-layers' ) {
       console.log('onToolbarAction open-layers');
+    } else if ( event.action == 'toggle-toll-roads' ) {
+      console.log('onToolbarAction toggle-toll-roads');
+      this.toggleTollRoads();
+    } else if ( event.action == 'toggle-time-zones' ) {
+      console.log('onToolbarAction toggle-time-zones');
+      this.toggleTimeZones();
+    } else if ( event.action == 'toggle-radar' ) {
+      console.log('onToolbarAction toggle-radar');
+      this.toggleRadar();
+    } else if ( event.action == 'toggle-traffic' ) {
+      console.log('onToolbarAction toggle-traffic');
+      this.toggleTraffic();
     }
-
+    
     // // Add Call
     // if (event.action === 'open-modal') {
     //   // Add Broker Call Modal
@@ -1232,5 +1296,147 @@ export class RoutingMapComponent implements OnInit {
     }
 
     route.width = widthNumber + 'px';
+  }
+
+  toggleTollRoads() {
+    console.log('toggleTollRoads');
+
+    for (let i = 0; i < this.tollRoads.length; i++) {
+      if (this.tollRoads[i].docs.length) {
+        if (!this.isTollRoadsActive) {
+          this.tollRoads[i].showDocument();
+        } else {
+          this.tollRoads[i].hideDocument();
+        }
+      } else {
+        this.tollRoads[i].parse(this.tollRoadsKml[i].state);
+      }
+    }
+    this.isTollRoadsActive = !this.isTollRoadsActive;
+
+    this.turnOffOtherToolActions(false, true, true, true);
+  }
+
+  toggleTimeZones() {
+    console.log('toggleTimeZones');
+
+    if (this.timeZones.docs.length) {
+      if (!this.isTimeZoneActive) {
+        this.timeZones.showDocument();
+      } else {
+        this.timeZones.hideDocument();
+      }
+      this.isTimeZoneActive = !this.isTimeZoneActive;
+    } else {
+      this.timeZones.parse(this.kmlUrl);
+      this.isTimeZoneActive = true;
+    }
+
+    this.turnOffOtherToolActions(true, false, true, true);
+  }
+
+  toggleRadar() {
+    console.log('toggleRadar');
+
+    this.isDopplerOn = !this.isDopplerOn;
+    this.onToggleDoppler(this.isDopplerOn);
+
+    this.turnOffOtherToolActions(true, true, false, true);
+  }
+
+  /* On Off Doppler Radar */
+  onToggleDoppler(on: boolean) {
+    if (on) {
+      if (!this.tileNeXRad.length) {
+        for (const rad of this.allNexrad) {
+          this.tileNeXRad.push(imageMapType(rad));
+        }
+      }
+      for (const tile of this.tileNeXRad) {
+        this.agmMap.overlayMapTypes.push(tile);
+      }
+
+      for (let i = 0; i < this.agmMap.overlayMapTypes.getLength(); i++) {
+        this.agmMap.overlayMapTypes.getAt(i).setOpacity(0.6);
+      }
+
+      this.startAnimation(true);
+    } else {
+      this.startAnimation(false);
+      this.agmMap.overlayMapTypes.clear();
+    }
+  }
+
+  /* Animate For Doppler Radar */
+  public startAnimation(animationOn: boolean) {
+    let countIntervalTime = 0;
+    if (animationOn) {
+      let index = this.agmMap.overlayMapTypes.getLength() - 1;
+      this.dopplerInterval = window.setInterval(() => {
+        this.agmMap.overlayMapTypes.getAt(index).setOpacity(0.0);
+        index--;
+        if (index < 0) {
+          index = this.agmMap.overlayMapTypes.getLength() - 1;
+        }
+        this.agmMap.overlayMapTypes.getAt(index).setOpacity(0.6);
+        countIntervalTime++;
+        if (countIntervalTime === 700) {
+          clearInterval(this.dopplerInterval);
+          this.agmMap.overlayMapTypes.clear();
+          this.isDopplerOn = false;
+        }
+      }, 400);
+    } else {
+      clearInterval(this.dopplerInterval);
+    }
+  }
+
+  toggleTraffic() {
+    console.log('toggleTraffic');
+    this.trafficLayerShow = !this.trafficLayerShow;
+
+    const interval = setInterval(() => {
+      if (this.trafficLayerShow) {
+        this.trafficLayer.setMap(this.agmMap);
+        //localStorage.setItem('routingTraffic', JSON.stringify({show: true}));
+      } else {
+        this.trafficLayer.setMap(null);
+        //localStorage.setItem('routingTraffic', JSON.stringify({show: false}));
+      }
+      clearInterval(interval);
+    }, 200);
+    
+    this.turnOffOtherToolActions(true, true, true, false);
+  }
+
+  turnOffOtherToolActions(toll: boolean, timeZone: boolean, doppler: boolean, traffic: boolean) {
+    if (toll) {
+      for (let i = 0; i < this.tollRoads.length; i++) {
+        if (this.tollRoads[i].docs.length) {
+          this.tollRoads[i].hideDocument();
+        }
+      }
+      this.isTollRoadsActive = false;
+    }
+    if (timeZone) {
+      if (this.timeZones.docs.length) {
+        this.timeZones.hideDocument();
+        this.isTimeZoneActive = false;
+      }
+    }
+    if (doppler) {
+      this.isDopplerOn = false;
+      this.startAnimation(false);
+      this.agmMap.overlayMapTypes.clear();
+    }
+    if (traffic) {
+      this.trafficLayerShow = false;
+
+      const interval = setInterval(() => {
+        this.trafficLayer.setMap(null);
+        //localStorage.setItem('routingTraffic', JSON.stringify({show: false}));
+        clearInterval(interval);
+      }, 200);
+    }
   }
 }
