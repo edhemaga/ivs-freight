@@ -2,18 +2,14 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
   Self,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { ControlValueAccessor, NgControl, FormControl } from '@angular/forms';
+import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TaInputComponent } from '../ta-input/ta-input.component';
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { ITaInput } from '../ta-input/ta-input.config';
-import { TaInputService } from '../ta-input/ta-input.service';
 
 @UntilDestroy()
 @Component({
@@ -21,73 +17,26 @@ import { TaInputService } from '../ta-input/ta-input.service';
   templateUrl: './ta-input-dropdown-label.component.html',
   styleUrls: ['./ta-input-dropdown-label.component.scss'],
 })
-export class TaInputDropdownLabelComponent
-  implements OnChanges, ControlValueAccessor
-{
+export class TaInputDropdownLabelComponent implements ControlValueAccessor {
   @ViewChild('t2') t2Ref: NgbPopover;
-  @ViewChild(TaInputComponent) inputRef: TaInputComponent;
 
   @Input() options: any[] = [];
+  @Input() selectedLabel: any;
   @Input() colors: any[] = [];
+  @Input() selectedLabelColor: any;
+
   @Input() inputConfig: ITaInput;
-  @Input() selectedLabel: any = null;
 
-  @Output() selectedColorLabel: EventEmitter<any> = new EventEmitter<any>();
-  @Output() saveLabel: EventEmitter<{ action: string; label: string }> =
-    new EventEmitter<{ action: string; label: string }>();
   @Output() pickExistLabel: EventEmitter<any> = new EventEmitter<any>();
+  @Output() pickColorLabel: EventEmitter<any> = new EventEmitter<any>();
 
-  public newLabel: FormControl = new FormControl(null);
-  public dropdownConfig: ITaInput = null;
+  @Output() saveLabel: EventEmitter<{ data: any; action: string }> =
+    new EventEmitter<{ data: string; action: string }>();
 
-  constructor(
-    @Self() public superControl: NgControl,
-    private inputService: TaInputService
-  ) {
+  public switchMode: string = 'Label';
+
+  constructor(@Self() public superControl: NgControl) {
     this.superControl.valueAccessor = this;
-  }
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.selectedLabel?.currentValue) {
-      this.dropdownConfig = {
-        name: 'Input Dropdown',
-        type: 'text',
-        label: 'Label',
-        placeholder: 'Label Name',
-        placeholderIcon: 'ic_dynamic_label',
-        dropdownWidthClass: 'w-col-455',
-        isDropdown: true,
-        dropdownLabelSelected: changes.selectedLabel.currentValue,
-      };
-    }
-  }
-
-  ngOnInit() {
-    // Dropdown Labels
-    this.getSuperControl.valueChanges
-      .pipe(untilDestroyed(this))
-      .subscribe((value) => {
-        if (!value) {
-          this.inputConfig = {
-            ...this.inputConfig,
-            placeholder: 'Label Name',
-          };
-        } else {
-          this.inputConfig = {
-            ...this.inputConfig,
-            placeholder: null,
-          };
-        }
-      });
-
-    this.dropdownConfig = {
-      name: 'Input Dropdown',
-      type: 'text',
-      label: 'Label',
-      placeholder: 'Label Name',
-      placeholderIcon: 'ic_dynamic_label',
-      dropdownWidthClass: 'w-col-455',
-      isDropdown: true,
-    };
   }
 
   get getSuperControl() {
@@ -99,66 +48,36 @@ export class TaInputDropdownLabelComponent
   registerOnTouched(fn: any): void {}
 
   /**
-   *
    * SELECT FROM ITEMS DROPDOWN
    */
   public onSelectDropdown(event: any, action: string) {
-    this.selectedLabel = event;
+    if (this.switchMode === 'Color' && action === 'color') {
+      this.pickColorLabel.emit(event);
+    }
 
-    if (this.selectedLabel?.name !== 'Add New') {
-      this.pickExistLabel.emit(this.selectedLabel);
-    } else {
-      const timeout = setTimeout(() => {
-        this.inputRef.setInputCursorAtTheEnd(
-          this.inputRef.input.nativeElement,
-          100
-        );
-        this.t2Ref.open();
-        clearTimeout(timeout);
-      }, 100);
+    if (this.switchMode === 'Label' && action === 'label') {
+      this.pickExistLabel.emit(event);
     }
   }
 
   /**
-   *
-   * SELECT FROM COLOR DROPDOWN
+   * Select label mode
    */
-  public onSelectColorLabel(event: Event, color: any) {
-    event.preventDefault();
-    event.stopPropagation();
-    const timeout = setTimeout(() => {
-      this.inputRef.focusInput = true;
-      this.inputRef.setInputCursorAtTheEnd(
-        this.inputRef.input.nativeElement,
-        100
-      );
-      clearTimeout(timeout);
-    }, 50);
-    this.dropdownConfig = {
-      ...this.dropdownConfig,
-      dropdownLabelSelected: color,
-    };
-
-    this.selectedColorLabel.emit(color);
+  public onSelectLabelMode(event: string) {
+    this.switchMode = event;
   }
 
   /**
-   *
    * SAVE LABEL NAME
    */
-  public onLabelNameEvent(event: string) {
-    if (event === 'cancel') {
-      this.saveLabel.emit({
-        action: event,
-        label: this.getSuperControl.value,
-      });
-      this.newLabel.patchValue(null);
-      return;
+  public onSaveLabel(event: any) {
+    if (event.action === 'edit') {
+      this.saveLabel.emit({ data: event.data, action: event.action });
     }
 
-    this.saveLabel.emit({ action: event, label: this.newLabel.value });
-    this.getSuperControl.patchValue(this.newLabel.value);
-    this.newLabel.patchValue(null);
+    if (event.action === 'new') {
+      this.saveLabel.emit({ data: event.data, action: event.action });
+    }
   }
 
   public identity(index: number, item: any): number {

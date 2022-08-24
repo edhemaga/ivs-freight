@@ -168,25 +168,21 @@ export class CustomerTableComponent
               .deleteBrokerList(response)
               .pipe(untilDestroyed(this))
               .subscribe(() => {
-
                 let brokerName = '';
                 let brokerText = 'Broker ';
                 this.viewData.map((data: any) => {
                   response.map((r: any) => {
                     if (data.id === r.id) {
                       console.log(data);
-                      if ( !brokerName )
-                        {
-                          brokerName = data.businessName;
-                        }
-                      else 
-                        {
-                          brokerName = brokerName + ', ' + data.businessName;
-                          brokerText = 'Brokers ';
-                        } 
+                      if (!brokerName) {
+                        brokerName = data.businessName;
+                      } else {
+                        brokerName = brokerName + ', ' + data.businessName;
+                        brokerText = 'Brokers ';
+                      }
                     }
-                  }); });
-
+                  });
+                });
 
                 this.notificationService.success(
                   `${brokerText} "${brokerName}" deleted`,
@@ -198,24 +194,21 @@ export class CustomerTableComponent
           }
           // Delete Shipper List
           else {
-
             let shipperName = '';
             let shipText = 'Shipper ';
-             this.viewData.map((data: any) => {
+            this.viewData.map((data: any) => {
               response.map((r: any) => {
                 if (data.id === r.id) {
                   console.log(data);
-                  if ( !shipperName )
-                    {
-                      shipperName = data.businessName;
-                    }
-                   else 
-                    {
-                      shipperName = shipperName + ', ' + data.businessName;
-                      shipText = 'Shippers ';
-                    } 
+                  if (!shipperName) {
+                    shipperName = data.businessName;
+                  } else {
+                    shipperName = shipperName + ', ' + data.businessName;
+                    shipText = 'Shippers ';
+                  }
                 }
-              }); });
+              });
+            });
 
             this.shipperService
               .deleteShipperList(response)
@@ -396,9 +389,11 @@ export class CustomerTableComponent
       textInvAgeing: {
         bfb: 0,
         dnu: 0,
-        amount: 'Nije Povezano'
+        amount: 'Nije Povezano',
       },
-      textContact: data?.brokerContacts?.length ? data.brokerContacts.length : 0,
+      textContact: data?.brokerContacts?.length
+        ? data.brokerContacts.length
+        : 0,
       textAddress: data?.mainAddress
         ? data.mainAddress.city + ', ' + data.mainAddress.state
         : '',
@@ -408,6 +403,8 @@ export class CustomerTableComponent
       textTotal: data?.total
         ? '$' + this.thousandSeparator.transform(data.total)
         : '',
+      textUnpaid: 'Nije Povezano',
+      textOnetoTwentyDays: 'Nije Povezano',
     };
   }
 
@@ -416,7 +413,11 @@ export class CustomerTableComponent
     return {
       ...data,
       isSelected: false,
-      textContact: data?.shipperContacts?.length ?  data.shipperContacts.length : 0,
+      textShipWorkHour: 'Nije Povezano',
+      textReceWorkHour: 'Nije Povezano',
+      textContact: data?.shipperContacts?.length
+        ? data.shipperContacts.length
+        : 0,
       textDbaName: '',
       textAddress: data?.address
         ? data.address.city + ', ' + data.address.state
@@ -573,16 +574,13 @@ export class CustomerTableComponent
   onTableBodyActions(event: any) {
     // Edit Call
     let businessName = '';
-   
-    if ( !businessName )
-      {
-        businessName = event.data.businessName;
-      }
-    else 
-      {
-        businessName = businessName + ', ' + event.data.businessName;
-      }  
-      
+
+    if (!businessName) {
+      businessName = event.data.businessName;
+    } else {
+      businessName = businessName + ', ' + event.data.businessName;
+    }
+
     if (event.type === 'show-more') {
       this.backFilterQuery.pageIndex++;
 
@@ -623,7 +621,7 @@ export class CustomerTableComponent
           .subscribe({
             next: () => {
               this.notificationService.success(
-                `Broker "${businessName}" deleted`, 
+                `Broker "${businessName}" deleted`,
                 'Success'
               );
 
@@ -631,7 +629,7 @@ export class CustomerTableComponent
             },
             error: () => {
               this.notificationService.error(
-                `Failed to delete Broker "${businessName}" `, 
+                `Failed to delete Broker "${businessName}" `,
                 'Error'
               );
             },

@@ -31,15 +31,13 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
-            isDropdownLabel: true,
-            dropdownLabelSelected: selectedContactColor,
-            dropdownWidthClass: 'w-col-164',
+            dropdownLabel: true,
+            dropdownWidthClass: 'w-col-456',
             textTransform: 'capitalize',
             blackInput: true,
             commands: {
-              active: true,
+              active: false,
               type: 'confirm-cancel',
               firstCommand: {
                 popup: {
@@ -62,8 +60,9 @@
           [colors]="colors"
           [options]="contactLabels"
           [selectedLabel]="selectedContactLabel"
+          [selectedLabelColor]="selectedContactColor"
           (pickExistLabel)="onPickExistLabel($event)"
-          (selectedColorLabel)="onSelectColorLabel($event)"
+          (pickColorLabel)="onSelectColorLabel($event)"
           (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
@@ -153,7 +152,7 @@
                 [inputConfig]="{
                   name: 'Input Dropdown',
                   type: 'text',
-                  label: 'Share Contact',
+                  label: 'Department',
                   isDropdown: true,
                   isRequired: true,
                   dropdownWidthClass: 'w-col-455'

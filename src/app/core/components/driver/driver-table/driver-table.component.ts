@@ -99,8 +99,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             }
             case 'multiple delete': {
-              console.log('MULTIPLE DELETE');
-              console.log(res.array);
               this.multipleDeleteDrivers(res.array);
               break;
             }
@@ -179,12 +177,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: { ...item.tableData, name: item.tableData?.fullName },
+            };
+          });
           this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },
             {
               data: null,
-              array: response,
+              array: mappedRes,
               template: 'driver',
               type: 'multiple delete',
               image: true,
@@ -482,7 +486,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       isSelected: false,
       isOwner: data?.owner ? data.owner : false,
       textAddress: data.address.address ? data.address.address : '',
-      textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
+      textShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
       avatarImg: data?.avatar
         ? this.imageBase64Service.sanitizer(data.avatar)
@@ -499,7 +503,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdls[0].cdlNumber
         : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
-      textBank: data.bank ? data.bank : '',
+      textBank: data?.bank?.name ? data.bank.name : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
@@ -584,6 +588,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  // Get Avatar Color
   getAvatarColors() {
     let textColors: string[] = [
       '#6D82C7',
@@ -723,7 +728,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    let driverFullName = event.data.firstName + ' ' + event.data.lastName;
     const mappedEvent = {
       ...event,
       data: {
@@ -772,52 +776,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
-      let successfullyMessage = `"${driverFullName}" ${
-        this.selectedTab == 'active' ? 'Deactivated' : 'Activated'
-      }`;
-      let errorullyMessage = `Failed to ${
-        this.selectedTab == 'active' ? 'Deactivate' : 'Activate'
-      } "${driverFullName}"`;
-      this.driverTService
-        .changeDriverStatus(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(successfullyMessage, 'Success');
-          },
-          error: () => {
-            this.notificationService.error(errorullyMessage, 'Error');
-          },
-        });
-    } else if (event.type === 'delete-item') {
-      this.driverTService
-        .deleteDriverById(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              `"${driverFullName}" deleted`,
-              'Success'
-            );
-            this.viewData = this.viewData.map((driver: any) => {
-              if (driver.id === event.id) {
-                driver.actionAnimation = 'delete';
-              }
-              return driver;
-            });
-            this.updateDataCount();
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(true, this.viewData);
-              clearInterval(inetval);
-            }, 1000);
-          },
-          error: () => {
-            this.notificationService.error(
-              `Failed to delete "${driverFullName}" `,
-              'Error'
-            );
-          },
-        });
       this.modalService.openModal(
         ConfirmationModalComponent,
         { size: 'small' },
@@ -908,8 +866,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe(() => {
         this.viewData = this.viewData.map((driver: any) => {
-          response.map((r: any) => {
-            if (driver.id === r.id) {
+          response.map((id: any) => {
+            if (driver.id === id) {
               driver.actionAnimation = 'delete';
             }
           });

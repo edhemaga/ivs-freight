@@ -33,48 +33,70 @@
     margin-right: 12px;
   }
 
-  // TABS
-  .tab-container {
+  // ONE TAB
+  .one-tab-container {
+    min-width: 24px;
+    height: 24px;
     display: flex;
-    background: #ffffff;
-    padding: 2px;
-    height: 32px;
-    width: fit-content;
-    border-radius: 3px;
-    cursor: pointer;
-    margin-right: 6px;
+    justify-content: center;
+    align-self: center;
+    background: #aaaaaa;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 800;
+    border-radius: 2px;
+    margin-right: 12px;
+    line-height: 24px;
+  }
 
-    .tab {
-      height: 28px;
+  // TABS
+  .tab-wrapper {
+    width: fit-content;
+    height: fit-content;
+    margin-right: 6px;
+    display: flex;
+
+    .tab-container {
+      cursor: pointer;
+      display: flex;
+      background: #ffffff;
+      padding: 2px;
+      height: 32px;
       width: fit-content;
       border-radius: 3px;
-      padding: 2px;
-      display: flex;
 
-      .data-count,
-      .tab-title {
-        font-size: 14px;
-        font-weight: 800;
-        color: #919191;
-      }
-
-      .data-count {
-        height: 24px;
-        min-width: 24px;
-        border-radius: 2px;
-        background: #f3f3f3;
+      .tab {
+        height: 28px;
+        width: fit-content;
+        border-radius: 3px;
+        padding: 2px;
         display: flex;
-        padding: 3px 4px;
-        justify-content: center;
-        align-items: center;
-        margin-right: 4px;
-      }
 
-      .tab-title {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-right: 6px;
+        .data-count,
+        .tab-title {
+          font-size: 14px;
+          font-weight: 800;
+          color: #919191;
+        }
+
+        .data-count {
+          height: 24px;
+          min-width: 24px;
+          border-radius: 2px;
+          background: #f3f3f3;
+          display: flex;
+          padding: 3px 4px;
+          justify-content: center;
+          align-items: center;
+          margin-right: 4px;
+        }
+
+        .tab-title {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-right: 6px;
+        }
       }
     }
   }
@@ -87,7 +109,6 @@
     background: #ffffff;
     border-radius: 3px 0px 0px 3px;
     display: flex;
-    /* margin-right: 6px; */
 
     .mode {
       cursor: pointer;
@@ -103,7 +124,6 @@
       align-items: center;
 
       &:hover {
-        /* background: #F3F3F3 !important; */
         color: #6c6c6c !important;
         transition: 0.25s !important;
       }
@@ -142,7 +162,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /*  margin-right: 2px; */
       }
 
       .active-options {
@@ -224,6 +243,10 @@
 
 /* Ng Class */
 // Tabs
+.tab-margin {
+  margin-right: 4px;
+}
+
 .tab-inactive {
   &:hover {
     .tab {

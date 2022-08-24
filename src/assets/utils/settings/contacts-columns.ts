@@ -23,7 +23,7 @@ export function getToolsContactsColumnDefinition() {
       resizable: false,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'avatar',
       title: 'Name',
       field: 'name',
       name: 'Name',
@@ -34,6 +34,7 @@ export function getToolsContactsColumnDefinition() {
       minWidth: 129,
       filter: '',
       isNumeric: false,
+      isRound: true,
       index: 1,
       sortable: true,
       isActionColumn: false,
@@ -45,7 +46,10 @@ export function getToolsContactsColumnDefinition() {
       disabled: true,
       export: true,
       resizable: true,
-      linkField: null,
+      link: {
+        routerLinkStart: '/contact/',
+        routerLinkEnd: '/details',
+      },
     },
     {
       ngTemplate: 'text',
@@ -122,9 +126,9 @@ export function getToolsContactsColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'label',
       title: 'Label',
-      field: 'labelName',
+      field: 'lable',
       name: 'Label',
       sortName: 'labelName',
       isComputed: false,
@@ -148,7 +152,7 @@ export function getToolsContactsColumnDefinition() {
       showLabel: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'shared',
       title: 'Shared',
       field: 'textShared',
       name: 'Shared',

@@ -6,7 +6,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export interface Confirmation {
   template: string; // examples: driver, broker, shipper.....
   type:
-    | string
     | 'delete'
     | 'multiple delete'
     | 'hire'
@@ -16,8 +15,8 @@ export interface Confirmation {
   id?: number;
   data?: any;
   array?: any[];
-  subType?: string | 'archive' | 'ban list' | 'dnu'; // if subType set, must set and subTypeStatus
-  subTypeStatus?: string | 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List'
+  subType?: 'archive' | 'ban list' | 'dnu'; // if subType set, must set and subTypeStatus
+  subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List'
   image?: boolean; // has image or not
   svg?: boolean; // has svg or not
   rating?: boolean; // has rating or not
@@ -41,8 +40,20 @@ export class ConfirmationModalComponent {
   }
 
   public onModalAction(data: any) {
-    console.log(data);
-    this.confirmationDataSubject.sendConfirmationData(data);
+    // Multiple Delete
+    if (this.editData.type === 'multiple delete') {
+      this.confirmationDataSubject.sendConfirmationData({
+        ...data,
+        array: data.array.map((item) => item.id),
+      });
+    }
+    // Single Delete
+    else {
+      this.confirmationDataSubject.sendConfirmationData(data);
+    }
+
     this.ngbActiveModal.close();
   }
+
+  public identity = (index: number, item: any): number => index;
 }

@@ -223,6 +223,7 @@ model/loadTemplateListResponse.ts
 model/loadTemplateResponse.ts
 model/loadTemplateResponsePagination.ts
 model/loadType.ts
+model/loginMobileCommand.ts
 model/longLat.ts
 model/mapMarker.ts
 model/mapMarkerListResponse.ts

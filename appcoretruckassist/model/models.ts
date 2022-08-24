@@ -177,6 +177,7 @@ export * from './loadTemplateListResponse';
 export * from './loadTemplateResponse';
 export * from './loadTemplateResponsePagination';
 export * from './loadType';
+export * from './loginMobileCommand';
 export * from './longLat';
 export * from './mapMarker';
 export * from './mapMarkerListResponse';

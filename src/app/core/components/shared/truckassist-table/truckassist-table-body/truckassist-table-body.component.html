@@ -1,4 +1,4 @@
-<table>
+<table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
     <!-- Pined -->
     <div class="pined-tr">
@@ -115,13 +115,24 @@
               class="td-content"
             >
               <div class="avatar-container">
-                <div class="avatar-img" *ngIf="row.avatarImg">
+                <div
+                  class="avatar-img"
+                  [ngClass]="{
+                    'round-avatar': column.isRound,
+                    'regular-avatar': !column.isRound
+                  }"
+                  *ngIf="row.avatarImg"
+                >
                   <img alt="avatar" [src]="row.avatarImg" />
                 </div>
 
                 <div
                   class="avatar-no-img"
                   *ngIf="!row.avatarImg"
+                  [ngClass]="{
+                    'round-avatar': column.isRound,
+                    'regular-avatar': !column.isRound
+                  }"
                   [ngStyle]="{
                     'background-color': row.avatarColor?.background
                       ? row.avatarColor.background
@@ -131,7 +142,7 @@
                       : 'unset'
                   }"
                 >
-                  {{ row.textDriverShortName }}
+                  {{ row.textShortName }}
                 </div>
 
                 <img
@@ -281,6 +292,105 @@
               </div>
             </div>
 
+            <!-- CONTACT COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'contact' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="contact-container" *ngIf="row[column.field]">
+                <div class="contact-count">{{ row[column.field] }}</div>
+                <div class="contact-avatar"></div>
+              </div>
+            </div>
+
+            <!-- WORK HOUR COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'work-hour' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="work-hour-container">
+                <div class="work-hour-icon"></div>
+                <div
+                  class="work-hour-time"
+                  [ngStyle]="{
+                    width: column.width - 22 + 'px'
+                  }"
+                >
+                  {{ row[column.field] }}
+                </div>
+              </div>
+            </div>
+
+            <!-- DESCRIPTION COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'description' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                *ngIf="row[column.field]"
+                [ngStyle]="{
+                  width: column.width - 5 + 'px'
+                }"
+                [ngClass]="{
+                  'active-description':
+                    activeDescriptionDropdown === row.id && t1.isOpen()
+                }"
+                class="description-container"
+                [innerHtml]="row[column.field]"
+                #t1="ngbPopover"
+                (click)="onShowDescriptionDropdown(t1, row)"
+                [ngbPopover]="descriptionPopover"
+                [placement]="'bottom-left'"
+                popoverClass="table-description-popover"
+                triggers="manual"
+              ></div>
+            </div>
+
+            <!-- SHARED COLUMN-->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'shared' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="shared-container">
+                <div
+                  class="shared-icon"
+                  [ngClass]="{
+                    'lock-icon': !isShared,
+                    'shared-active-icon': isShared
+                  }"
+                ></div>
+                <div class="shared-text">{{ row[column.field] }}</div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -383,48 +493,6 @@
             >
               <!-- Ovde je komponenta -->
               <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
-            <!-- ITEM DROP COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'item-drop' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              (click)="onShowItemDrop(i)"
-            >
-              <!-- [innerHtml]="row[column.field] | taHighlight: highlightingWords" -->
-              <span class="table-item" [innerHtml]="row[column.field]"></span>
-
-              <div class="item-drop-container" *ngIf="showItemDrop === i">
-                <div class="item-title">
-                  <span class="count">#</span>
-                  <span class="item-name">Item</span>
-                  <span class="qty">Qty</span>
-                  <span class="price">Price</span>
-                  <span class="total">$4,866.23</span>
-                </div>
-                <div class="items-container">
-                  <div
-                    class="item-container"
-                    *ngFor="let item of row.fuelItems; let k = index"
-                  >
-                    <span class="count">{{ k + 1 }}</span>
-                    <span class="item-name">{{ item.category }}</span>
-                    <span class="qty">{{ item.qty }} gal.</span>
-                    <span class="price">${{ item.price }}</span>
-                    <span class="total">${{ item.subtotal }}</span>
-                    <div class="total-item-background"></div>
-                  </div>
-                  <div class="total-background"></div>
-                </div>
-              </div>
             </div>
 
             <!-- TOTAL  COLUMN-->
@@ -531,45 +599,49 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center" *ngIf="row.doc">
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
-                ></div>
+              <div class="service-container" *ngIf="row[column.field]">
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[1].checked ? 'trailer-active' : 'trailer'
+                    row[column.field][0].active ? 'truck-active' : 'truck'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[2].checked ? 'mobile-active' : 'mobile'
+                    row[column.field][1].active ? 'trailer-active' : 'trailer'
                   "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[3].checked ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[4].checked ? 'towing-active' : 'towing'
+                    row[column.field][2].active ? 'mobile-active' : 'mobile'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[5].checked ? 'parts-active' : 'parts'"
+                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[6].checked ? 'tire-active' : 'tire'"
+                  [class]="
+                    row[column.field][4].active ? 'towing-active' : 'towing'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="
+                    row[column.field][5].active ? 'parts-active' : 'parts'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
                 ></div>
                 <div
                   class="img-style"
                   [class]="
-                    row.doc.types[7].checked ? 'dealer-active' : 'dealer'
+                    row[column.field][7].active ? 'dealer-active' : 'dealer'
                   "
                 ></div>
               </div>
@@ -1223,6 +1295,87 @@
               </div>
             </div>
 
+            <!-- WORK HOUR COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'work-hour' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="work-hour-container">
+                <div class="work-hour-icon"></div>
+                <div
+                  class="work-hour-time"
+                  [ngStyle]="{
+                    width: column.width - 22 + 'px'
+                  }"
+                >
+                  {{ row[column.field] }}
+                </div>
+              </div>
+            </div>
+
+            <!-- DESCRIPTION COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'description' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div
+                *ngIf="row[column.field]"
+                [ngStyle]="{
+                  width: column.width - 5 + 'px'
+                }"
+                [ngClass]="{
+                  'active-description':
+                    activeDescriptionDropdown === row.id && t1.isOpen()
+                }"
+                class="description-container"
+                [innerHtml]="row[column.field]"
+                #t1="ngbPopover"
+                (click)="onShowDescriptionDropdown(t1, row)"
+                [ngbPopover]="descriptionPopover"
+                [placement]="'bottom-left'"
+                popoverClass="table-description-popover"
+                triggers="manual"
+              ></div>
+            </div>
+
+            <!-- SHARED COLUMN-->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'shared' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="shared-container">
+                <div
+                  class="shared-icon"
+                  [ngClass]="{
+                    'lock-icon': !isShared,
+                    'shared-active-icon': isShared
+                  }"
+                ></div>
+                <div class="shared-text">{{ row[column.field] }}</div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1388,48 +1541,6 @@
               <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
             </div>
 
-            <!-- ITEM DROP COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'item-drop' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              (click)="onShowItemDrop(i)"
-            >
-              <!-- [innerHtml]="row[column.field] | taHighlight: highlightingWords" -->
-              <span class="table-item" [innerHtml]="row[column.field]"></span>
-
-              <div class="item-drop-container" *ngIf="showItemDrop === i">
-                <div class="item-title">
-                  <span class="count">#</span>
-                  <span class="item-name">Item</span>
-                  <span class="qty">Qty</span>
-                  <span class="price">Price</span>
-                  <span class="total">$4,866.23</span>
-                </div>
-                <div class="items-container">
-                  <div
-                    class="item-container"
-                    *ngFor="let item of row.fuelItems; let k = index"
-                  >
-                    <span class="count">{{ k + 1 }}</span>
-                    <span class="item-name">{{ item.category }}</span>
-                    <span class="qty">{{ item.qty }} gal.</span>
-                    <span class="price">${{ item.price }}</span>
-                    <span class="total">${{ item.subtotal }}</span>
-                    <div class="total-item-background"></div>
-                  </div>
-                  <div class="total-background"></div>
-                </div>
-              </div>
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -1473,45 +1584,49 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div class="service-container set-center" *ngIf="row.doc">
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[0].checked ? 'truck-active' : 'truck'"
-                ></div>
+              <div class="service-container" *ngIf="row[column.field]">
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[1].checked ? 'trailer-active' : 'trailer'
+                    row[column.field][0].active ? 'truck-active' : 'truck'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[2].checked ? 'mobile-active' : 'mobile'
+                    row[column.field][1].active ? 'trailer-active' : 'trailer'
                   "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row.doc.types[3].checked ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
                   [class]="
-                    row.doc.types[4].checked ? 'towing-active' : 'towing'
+                    row[column.field][2].active ? 'mobile-active' : 'mobile'
                   "
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[5].checked ? 'parts-active' : 'parts'"
+                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
                 ></div>
                 <div
                   class="img-style img-margin"
-                  [class]="row.doc.types[6].checked ? 'tire-active' : 'tire'"
+                  [class]="
+                    row[column.field][4].active ? 'towing-active' : 'towing'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="
+                    row[column.field][5].active ? 'parts-active' : 'parts'
+                  "
+                ></div>
+                <div
+                  class="img-style img-margin"
+                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
                 ></div>
                 <div
                   class="img-style"
                   [class]="
-                    row.doc.types[7].checked ? 'dealer-active' : 'dealer'
+                    row[column.field][7].active ? 'dealer-active' : 'dealer'
                   "
                 ></div>
               </div>
@@ -1601,20 +1716,32 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <div
-                class="table-lable"
-                [ngStyle]="{
-                  background: row[column.field]?.color
-                    ? row[column.field].color
-                    : 'unset'
-                }"
-              ></div>
-              <span
-                class="table-lable-text"
-                [innerHtml]="
-                  row[column.field]?.name ? row[column.field].name : ''
-                "
-              ></span>
+              <div class="lable-container" *ngIf="row[column.field]">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                >
+                  <g transform="translate(-1084 -362)">
+                    <rect
+                      width="18"
+                      height="18"
+                      transform="translate(1084 362)"
+                      fill="#8a9aef"
+                      opacity="0"
+                    />
+                    <path
+                      d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z"
+                      transform="translate(1084.9 362.9)"
+                      [ngStyle]="{
+                        fill: row[column.field].color
+                      }"
+                    />
+                  </g>
+                </svg>
+                <div class="lable-name">{{ row[column.field].name }}</div>
+              </div>
             </div>
 
             <!-- TEXT COLUMN -->
@@ -2035,5 +2162,53 @@
       </div>
       <div class="dropdown-content-text">{{ action.title }}</div>
     </div>
+  </div>
+</ng-template>
+
+<!-- DESCRIPTION -->
+<ng-template #descriptionPopover let-data="data">
+  <div class="description-dropdown">
+    <div
+      class="description-item"
+      [ngClass]="{ 'description-item-margin': i !== 0 }"
+      *ngFor="let item of data.descriptionItems; let i = index"
+    >
+      <div class="item-index">{{ i + 1 }}</div>
+      <div class="pm-item" *ngIf="item.pmDescription">
+        <svg-icon
+          [src]="
+            '../../../../../../assets/svg/common/repair-pm/' +
+            item.pmDescription.logoName
+          "
+          [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
+        ></svg-icon>
+      </div>
+      <div
+        class="item-title"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+        [ngStyle]="{
+          'min-width.px': item.pmDescription ? 229 : 253,
+          'width.px': item.pmDescription ? 229 : 253
+        }"
+      >
+        {{ item.description }}
+      </div>
+      <div class="item-cost" [ngClass]="{ 'pm-style': item.pmDescription }">
+        {{ item.descriptionPrice }}
+      </div>
+      <div
+        class="number-of-items"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+      >
+        {{ item.quantity }}
+      </div>
+      <div
+        class="item-total-cost"
+        [ngClass]="{ 'pm-style': item.pmDescription }"
+      >
+        {{ item.descriptionTotalPrice }}
+      </div>
+    </div>
+    <div class="right-background"></div>
   </div>
 </ng-template>

@@ -10,19 +10,27 @@
     {{ listName }}
   </div>
 
+  <!-- ONE TAB -->
+  <div class="one-tab-container" *ngIf="tableData.length === 1">
+    {{ tableData[0].length }}
+  </div>
+
   <!-- TABS -->
-  <div
-    *ngFor="let data of tableData"
-    class="tab-container"
-    [ngClass]="{
-      'tab-inactive': selectedTab !== data.field,
-      'tab-active': selectedTab === data.field
-    }"
-    (click)="onSelectTab(data)"
-  >
-    <div class="tab">
-      <div class="data-count">{{ data.length }}</div>
-      <div class="tab-title">{{ data.title }}</div>
+  <div class="tab-wrapper" *ngIf="tableData.length > 1">
+    <div
+      *ngFor="let data of tableData; let i = index"
+      class="tab-container"
+      [ngClass]="{
+        'tab-inactive': selectedTab !== data.field,
+        'tab-active': selectedTab === data.field,
+        'tab-margin': i !== tableData.length - 1
+      }"
+      (click)="onSelectTab(data)"
+    >
+      <div class="tab">
+        <div class="data-count">{{ data.length }}</div>
+        <div class="tab-title">{{ data.title }}</div>
+      </div>
     </div>
   </div>
 
