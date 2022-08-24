@@ -359,7 +359,7 @@ export class TaInputDropdownComponent
           })
           .filter((item) => item.groups.length);
 
-        if (!this.options.length && !this.canAddNew) {
+        if (!this.options.length) {
           this.options.push({
             groups: [
               {
@@ -383,7 +383,7 @@ export class TaInputDropdownComponent
     // Add New
     else if (option.id === 7655) {
       if (this.canOpenModal) {
-        this.selectedItem.emit(option);
+        this.selectedItem.emit({ ...option, canOpenModal: true });
       } else {
         // DropDown label
         if (this.inputConfig.dropdownLabel) {

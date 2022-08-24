@@ -239,11 +239,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
       }
       case 'close': {
         this.action.emit({ action: action, bool: false });
-        $('.pac-container').remove();
-        this.timeout = setTimeout(() => {
-          this.ngbActiveModal.dismiss();
-          clearTimeout(this.timeout);
-        }, 50);
+        this.ngbActiveModal.dismiss();
         this.uploadFileService.visibilityDropZone(false);
         this.uploadFileService.uploadFiles(null);
         break;
@@ -294,6 +290,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+
+    $('.pac-container').remove();
   }
 
   public onFilesEvent(event: { files: UploadFile[]; action: string }) {

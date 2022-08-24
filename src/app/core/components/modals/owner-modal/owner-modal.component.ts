@@ -1,3 +1,5 @@
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TruckModalComponent } from './../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -15,7 +17,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
   einNumberRegex,
@@ -78,8 +79,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getOwnerDropdowns();
     this.onBankSelected();
-
-    if (this.editData) {
+    console.log('OWNER ', this.editData);
+    if (this.editData?.id) {
       this.editOwnerById(this.editData.id);
     }
   }
@@ -159,7 +160,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.id) {
           this.updateOwner(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -176,6 +177,23 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       }
       default: {
         break;
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'truck-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TruckModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }
