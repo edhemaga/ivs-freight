@@ -503,36 +503,6 @@ export class TaChartComponent implements OnInit {
             if (xAxis['_gridLineItems']) {
               xPoint1 = xAxis['_gridLineItems'][1]['x1'];
               xPoint2 = xAxis['_gridLineItems'][0]['x2'];
-              const elWidth = xPoint1 - xPoint2;
-  
-              if (
-                xAxis['_gridLineItems'][value] &&
-                this.chartConfig['hasHoverData']
-              ) {
-                this.updateHoverData(value);
-                let oversizedHover = false;
-  
-                let clientWidth = this.hoverDataHolder
-                  ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                  : 0;
-  
-                let xPos = this.chartConfig['offset']
-                  ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                  : xAxis['_gridLineItems'][value]['x2'];
-  
-                if (
-                  this.hoverDataHolder &&
-                  this.hoverDataHolder.nativeElement &&
-                  xPos + clientWidth > canvas.width
-                ) {
-                  oversizedHover = true;
-                }
-                if (oversizedHover) {
-                  this.hoverDataPosition = xPos - clientWidth - elWidth;
-                } else {
-                  this.hoverDataPosition = xPos;
-                }
-              }
             }
           })
           
