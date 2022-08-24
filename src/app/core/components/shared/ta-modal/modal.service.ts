@@ -58,6 +58,7 @@ export class ModalService {
           { size: data.size },
           { storageData: JSON.parse(sessionStorage.getItem(data.payload.key)) }
         );
+        sessionStorage.removeItem(data.payload.key);
       }
 
       clearTimeout(timeout);

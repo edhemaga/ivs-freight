@@ -79,7 +79,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.createForm();
     this.getOwnerDropdowns();
     this.onBankSelected();
-    console.log('OWNER ', this.editData);
+
     if (this.editData?.id) {
       this.editOwnerById(this.editData.id);
     }
