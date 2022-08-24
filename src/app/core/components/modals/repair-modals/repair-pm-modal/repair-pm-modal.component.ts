@@ -319,7 +319,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: PMTruckListResponse) => {
-          console.log(res.pagination.data);
           res.pagination.data.forEach((item, index) => {
             const data = {
               id: item.id,
@@ -335,6 +334,9 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               item.logoName.includes('custom') ? 'new-pm' : null
             );
           });
+
+          console.log(res.pagination.data);
+          console.log(this.defaultPMs, this.newPMs);
         },
         error: () => {
           this.notificationService.error(
@@ -512,11 +514,24 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           return {
             id: item.get('id').value,
             mileage: convertThousanSepInNumber(item.get('mileage').value),
+            status:
+              index < 4
+                ? item.get('status').value
+                : item.get('isChecked').value
+                ? 'Active'
+                : 'Inactive',
+          };
+        }),
+        ...this.newPMs.controls.map((item, index) => {
+          return {
+            id: item.get('id').value,
+            mileage: convertThousanSepInNumber(item.get('mileage').value),
+            status: item.get('isChecked').value ? 'Active' : 'Inactive',
           };
         }),
       ],
     };
-    console.log(newData);
+
     this.pmTService
       .addUpdatePMTruckUnit(newData)
       .pipe(untilDestroyed(this))
@@ -544,15 +559,28 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     const newData: UpdatePMTrailerUnitListCommand = {
       trailerId: this.editData.id,
       pmTrailers: [
-        ...this.defaultPMs.controls.map((item) => {
+        ...this.defaultPMs.controls.map((item, index) => {
           return {
             id: item.get('id').value,
             months: convertThousanSepInNumber(item.get('mileage').value),
+            status:
+              index < 1
+                ? item.get('status').value.name
+                : item.get('isChecked').value
+                ? 'Active'
+                : 'Inactive',
+          };
+        }),
+        ...this.newPMs.controls.map((item, index) => {
+          return {
+            id: item.get('id').value,
+            months: convertThousanSepInNumber(item.get('mileage').value),
+            status: item.get('isChecked').value ? 'Active' : 'Inactive',
           };
         }),
       ],
     };
-    console.log(newData);
+
     this.pmTService
       .addUpdatePMTrailerUnit(newData)
       .pipe(untilDestroyed(this))

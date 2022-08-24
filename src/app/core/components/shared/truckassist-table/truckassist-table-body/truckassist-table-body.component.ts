@@ -306,8 +306,7 @@ export class TruckassistTableBodyComponent
   // Show Description Dropdown
   onShowDescriptionDropdown(
     popup: any,
-    row: any,
-    i: number
+    row: any
   ) {
     this.descriptionTooltip = popup;
 
@@ -317,7 +316,7 @@ export class TruckassistTableBodyComponent
       popup.open({ data: row });
     }
 
-    this.activeDescriptionDropdown = popup.isOpen() ? i : -1;
+    this.activeDescriptionDropdown = popup.isOpen() ? row.id : -1;
   }
 
   /* Dropdown Actions */

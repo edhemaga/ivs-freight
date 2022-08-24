@@ -377,7 +377,7 @@ table {
             // AVATAR COLUMN
             .avatar-container {
               width: fit-content;
-              height: 20px;
+              height: fit-content;
               margin-right: 6px;
               display: flex;
               cursor: pointer;
@@ -388,22 +388,33 @@ table {
                 transition: 0.2s;
               }
 
-              .avatar-img {
+              .round-avatar {
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                overflow: hidden;
+              }
+
+              .regular-avatar {
+                border-radius: 2px;
                 width: 18px;
                 height: 20px;
+                overflow: hidden;
 
                 img {
-                  display: flex;
-                  width: 100%;
-                  height: 100%;
                   border-radius: 2px;
                 }
               }
 
+              .avatar-img {
+                img {
+                  display: flex;
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+
               .avatar-no-img {
-                width: 18px;
-                height: 20px;
-                border-radius: 2px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -890,167 +901,7 @@ table {
               }
             }
 
-            // ITEM DROP COLUMN
-            .table-item {
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-
-              display: flex;
-              white-space: pre;
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-              .description-dot {
-                width: 6px;
-                height: 6px;
-                margin: 8px 5px 0 5px;
-                border-radius: 50%;
-                background: #6c6c6c;
-              }
-            }
-
-            .item-drop-container {
-              width: 458px;
-              height: auto;
-              position: absolute;
-              top: 4px;
-              .item-title {
-                width: 100%;
-                height: 24px;
-                background: #6c6c6c;
-                padding: 0 20px 0 17px;
-                display: flex;
-                border-radius: 1px;
-                span {
-                  color: white;
-                  font-size: 14px;
-                  font-weight: 600;
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                }
-
-                .count {
-                  width: 10px;
-                  margin-right: 17px;
-                }
-
-                .item-name {
-                  width: 96px;
-                  margin-right: 22px;
-                }
-
-                .qty {
-                  width: 76px;
-                  margin-right: 12px;
-                }
-
-                .price {
-                  width: 86px;
-                  margin-right: 12px;
-                }
-
-                .total {
-                  width: 90px;
-                }
-
-                .qty,
-                .price,
-                .total {
-                  justify-content: right;
-                }
-              }
-
-              .items-container {
-                width: 100%;
-                height: auto;
-                border-radius: 1px;
-                margin-top: 4px;
-                background: white;
-                box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
-                position: relative;
-                padding: 2px;
-                .item-container {
-                  position: relative;
-                  z-index: 100;
-                  width: 100%;
-                  height: 24px;
-                  border-radius: 2px;
-                  padding: 0 16px 0 10px;
-                  display: flex;
-                  &:hover {
-                    background: #f7f7f7;
-
-                    .total-item-background {
-                      position: absolute;
-                      right: 0;
-                      width: 108px;
-                      height: 100%;
-                      top: 0;
-                      background: #eeeeee;
-                      border-top-right-radius: 2px;
-                      border-bottom-left-radius: 2px;
-                    }
-                  }
-
-                  span {
-                    color: #b7b7b7;
-                    font-size: 14px;
-                    font-weight: 400;
-                    display: flex;
-                    align-items: center;
-                  }
-
-                  .count {
-                    width: 20px;
-                    margin-right: 12px;
-                    justify-content: center;
-                  }
-
-                  .item-name {
-                    width: 96px;
-                    margin-right: 22px;
-                  }
-
-                  .qty {
-                    width: 76px;
-                    margin-right: 12px;
-                  }
-
-                  .price {
-                    width: 86px;
-                    margin-right: 12px;
-                  }
-
-                  .total {
-                    width: 94px;
-                    font-weight: 600 !important;
-                    color: #b7b7b7 !important;
-                    position: relative;
-                    z-index: 1000;
-                  }
-
-                  .qty,
-                  .price,
-                  .total {
-                    justify-content: right;
-                  }
-                }
-
-                .total-background {
-                  position: absolute;
-                  right: 0;
-                  width: 110px;
-                  height: 100%;
-                  top: 0;
-                  background: #f7f7f7;
-                }
-              }
-            }
-
-            // TOTAL TEXT
+            // TOTAL TEXT COLUMN
             .table-total {
               font-size: 14px;
               font-weight: 600;
@@ -1062,6 +913,7 @@ table {
               }
             }
 
+            // FINISH ORDER COLUMN
             .finish-order-action {
               width: 98px;
               height: 24px;
@@ -1079,7 +931,7 @@ table {
               cursor: pointer;
             }
 
-            // SERVICE
+            // SERVICE COLUMN
             .service-container {
               width: 100%;
               display: flex;
@@ -1157,6 +1009,66 @@ table {
 
               .dealer-active {
                 background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg");
+              }
+            }
+
+            // SHARED  COLUMN
+            .shared-container {
+              display: flex;
+              height: 18px;
+              width: fit-content;
+
+              .shared-icon {
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                margin-right: 6px;
+              }
+
+              .lock-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock.svg");
+              }
+
+              .shared-active-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/shared.svg");
+              }
+
+              .shared-text{
+                font-size: 14px;
+                font-weight: 400;
+                color: #6C6C6C;
+                height: fit-content;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // LABLE COLUMN
+            .lable-container{
+              cursor: pointer;
+              display: flex;
+              align-self: center;
+
+              svg{
+                margin-right: 4px;
+                height: 21px;
+              }
+
+              .lable-name{
+                font-size: 14px;
+                font-weight: 400;
+                height: fit-content;
+                color: #6C6C6C;
+
+                
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
             }
 
@@ -1346,6 +1258,7 @@ table {
       .columns-container {
         background: #e5e5e5;
 
+        // CONTACT COLUMN
         .contact-container {
           .contact-count {
             background: #f3f3f3 !important;
@@ -1359,6 +1272,26 @@ table {
 
           .contact-avatar {
             background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg") !important;
+          }
+        }
+
+        // SHARED COLUMN
+        .shared-container{
+          .lock-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock-select.svg") !important;
+          }
+
+          .shared-active-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/shared-select.svg") !important;
+          }
+
+          .shared-text{
+            color: #3C3C3C !important;
+
+            &::selection {
+              color: #3C3C3C !important;
+              background: #3C3C3C20 !important;
+            }
           }
         }
       }

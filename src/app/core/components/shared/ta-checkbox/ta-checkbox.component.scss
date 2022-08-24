@@ -27,7 +27,7 @@
 
     /* Create the mark/indicator (hidden when not checked) */
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       display: none;
       left: 4px;
@@ -44,6 +44,15 @@
       &:hover {
         transition: all 0.3s ease-in-out;
         background-color: #ef5350 !important;
+      }
+    }
+
+    &.disabled {
+      background-color: #97a8dc !important;
+
+      &:hover {
+        transition: all 0.3s ease-in-out;
+        background-color: #97a8dc !important;
       }
     }
   }
@@ -211,7 +220,7 @@
   }
 
   &.applicant-feedback {
-    /* 
+    /*
     pointer-events: none !important; */
 
     .ta-checkbox:checked ~ .ta-checkbox-label {
@@ -226,7 +235,7 @@
   }
 
   &.applicant-disclosure-release-feedback {
-    /* 
+    /*
     pointer-events: none !important; */
 
     .ta-checkbox:checked ~ .ta-checkbox-label {
