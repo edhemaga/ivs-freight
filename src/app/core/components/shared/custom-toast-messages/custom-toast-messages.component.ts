@@ -13,6 +13,7 @@ import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
         position: 'relative',
         top: '100px',
         opacity: 1,
+        transform: 'scale(1)',
       })),
       transition('inactive => active', animate('150ms ease-out', keyframes([ 
         style({
@@ -22,22 +23,39 @@ import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
           top: '0px',
         })
       ]))),
-      transition('active => removed', animate('150ms ease-out', keyframes([
+      
+      
+      transition(
+        'active => removed',
+        animate(
+          '1500ms ease-out',
+          keyframes([
+            style({
+              opacity: 1,
+            }),
+            style({
+              transform: 'scale(0.7)',
+              opacity: 0,
+            }),
+          ])
+        )
+      ),
+      
+      
+      /*
+      transition('active => removed', animate('1050ms ease-out', keyframes([
         style({
-          top: '100px',
+          opacity: 1,
+          transform: 'scale(1)',
         }),
         style({
-          top: '0px',
+          transform: 'scale(0.7)',
+          opacity: 0,
+          display: 'none',
         }),
       ]))),
-      transition('active => inactive', animate('150ms ease-out', keyframes([
-        style({
-          top: '100px',
-        }),
-        style({
-          top: '0px',
-        }),
-      ]))),
+      */
+
     ]),
   ],
   preserveWhitespaces: false,
