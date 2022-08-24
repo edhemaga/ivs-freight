@@ -478,23 +478,6 @@
               </div>
             </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -693,29 +676,81 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
+            </div>
+
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row, column)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row, column)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->
@@ -1376,6 +1411,49 @@
               </div>
             </div>
 
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row, column)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row, column)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1524,23 +1602,6 @@
               </div>
             </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -1678,29 +1739,38 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->

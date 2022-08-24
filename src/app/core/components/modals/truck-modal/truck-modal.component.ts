@@ -34,6 +34,8 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../../truck/state/truck.service';
+import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @UntilDestroy()
 @Component({
@@ -104,6 +106,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private formService: FormService,
+    private ngbActiveModal: NgbActiveModal,
     private vinDecoderService: VinDecoderService
   ) {}
 
@@ -112,9 +115,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     this.isCompanyOwned();
     this.getTruckDropdowns();
     this.vinDecoder();
-    console.log(this.editData);
-    if (this.editData) {
+
+    if (this.editData?.id) {
       this.editTruckById(this.editData.id);
+    }
+
+    if (this.editData?.storageData) {
+      this.populateStorageData(this.editData.storageData);
     }
   }
 
@@ -245,7 +252,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
       });
   }
- 
+
   public editTruckById(id: number) {
     this.truckModalService
       .getTruckById(id)
@@ -294,17 +301,62 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
+          this.truckStatus = res.status === 1 ? false : true;
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 1 ? false : true,
+            status: this.truckStatus,
           });
-          this.truckStatus = res.status === 1 ? false : true;
         },
         error: () => {
           this.notificationService.error("Cant't get truck.", 'Error:');
         },
       });
+  }
+
+  private populateStorageData(res: any) {
+    const timeout = setTimeout(() => {
+      this.truckForm.patchValue({
+        truckNumber: res.truckNumber,
+        truckTypeId: res.truckTypeId,
+        truckMakeId: res.truckMakeId,
+        model: res.model,
+        year: res.year,
+        colorId: res.colorId,
+        companyOwned: res.companyOwned,
+        ownerId: res.ownerId,
+        commission: res.commission,
+        note: res.note,
+        truckGrossWeightId: res.truckGrossWeightId,
+        emptyWeight: res.emptyWeight,
+        truckEngineTypeId: res.truckEngineTypeId,
+        tireSizeId: res.tireSizeId,
+        axles: res.axles,
+        insurancePolicy: res.insurancePolicy,
+        mileage: res.mileage,
+        ipasEzpass: res.ipasEzpass,
+      });
+      if (res.id) {
+        this.editData = { ...this.editData, id: res.id };
+      }
+      this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
+      this.selectedTruckType = res.selectedTruckType;
+      this.selectedTruckMake = res.selectedTruckMake;
+      this.selectedColor = res.selectedColor;
+      this.selectedOwner = res.selectedOwner;
+
+      this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
+      this.selectedEngineType = res.selectedEngineType;
+      this.selectedTireSize = res.selectedTireSize;
+      this.truckStatus = res.truckStatus;
+
+      this.modalService.changeModalStatus({
+        name: 'deactivate',
+        status: this.truckStatus,
+      });
+
+      clearTimeout(timeout);
+    }, 50);
   }
 
   public onSelectDropdown(event: any, action: string) {
@@ -322,7 +374,32 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'owner': {
-        this.selectedOwner = event;
+        if (event?.canOpenModal) {
+          this.ngbActiveModal.close();
+
+          this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+              key: 'truck-modal',
+              value: {
+                ...this.truckForm.value,
+                selectedTruckType: this.selectedTruckType,
+                selectedTruckMake: this.selectedTruckMake,
+                selectedColor: this.selectedColor,
+                selectedOwner: this.selectedOwner,
+                selectedTruckGrossWeight: this.selectedTruckGrossWeight,
+                selectedEngineType: this.selectedEngineType,
+                selectedTireSize: this.selectedTireSize,
+                truckStatus: this.truckStatus,
+                id: this.editData?.id,
+              },
+            },
+            component: OwnerModalComponent,
+            size: 'small',
+          });
+        } else {
+          this.selectedOwner = event;
+        }
         break;
       }
       case 'gross-weight': {
@@ -478,9 +555,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   public updateTruck(id: number) {
-    console.log('NOTE');
-    console.log(this.truckForm.get('note').value);
-
     const newData: UpdateTruckCommand = {
       id: id,
       ...this.truckForm.value,

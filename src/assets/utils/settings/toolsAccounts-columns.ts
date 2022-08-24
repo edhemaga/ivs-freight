@@ -100,9 +100,9 @@ export function getToolsAccountsColumnDefinition() {
       imageHover: null,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'password',
       title: 'Password',
-      field: '',
+      field: 'accountPassword',
       name: 'Password',
       isComputed: false,
       hidden: false,

@@ -1,33 +1,77 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
+import { EncryptionDecryptionService } from 'src/app/core/services/encryption-decryption/EncryptionDecryption.service';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
 })
 export class ModalService {
-  public modalStatusChange: Subject<{ name: string; status: boolean | null }> =
+  private modalStatusChange: Subject<{ name: string; status: boolean | null }> =
     new Subject<{ name: string; status: boolean }>();
 
-  public modalSpinner: Subject<{ action: string; status: boolean }> =
+  private modalSpinner: Subject<{ action: string; status: boolean }> =
     new Subject<{ action: string; status: boolean }>();
 
-  constructor(private ngbModal: NgbModal) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private encryptionDecryptionService: EncryptionDecryptionService
+  ) {}
 
+  // Getter
   public get modalSpinner$() {
     return this.modalSpinner.asObservable();
-  }
-
-  public setModalSpinner({ action: string, status: boolean }) {
-    this.modalSpinner.next({ action: string, status: boolean });
   }
 
   public get modalStatus$() {
     return this.modalStatusChange.asObservable();
   }
 
+  // Setter
+  public setModalSpinner({ action: string, status: boolean }) {
+    this.modalSpinner.next({ action: string, status: boolean });
+  }
+
   public changeModalStatus(data: { name: string; status: boolean | null }) {
     this.modalStatusChange.next({ name: data.name, status: data.status });
+  }
+
+  public setProjectionModal(data: {
+    action: string;
+    payload: { key: string; value: any };
+    component: any;
+    size: string;
+  }) {
+    const timeout = setTimeout(() => {
+      if (data.action === 'open') {
+        sessionStorage.setItem(
+          data.payload.key,
+          JSON.stringify(data.payload.value)
+        );
+
+        this.encryptionDecryptionService.setLocalStorage(
+          data.payload.key,
+          data.payload.value
+        );
+
+        this.openModal(
+          data.component,
+          { size: data.size },
+          { canOpenModal: true, key: data.payload.key }
+        );
+      }
+
+      if (data.action === 'close') {
+        this.openModal(
+          data.component,
+          { size: data.size },
+          { storageData: JSON.parse(sessionStorage.getItem(data.payload.key)) }
+        );
+        sessionStorage.removeItem(data.payload.key);
+      }
+
+      clearTimeout(timeout);
+    }, 250);
   }
 
   public openModal(
@@ -57,7 +101,7 @@ export class ModalService {
 
     (modal as any)._removeModalElements = () => {
       instance.windowClass = '';
-      setTimeout(fx, 250);
+      setTimeout(fx, 400);
     };
 
     return modal;
