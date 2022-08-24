@@ -207,6 +207,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             id: res.id,
             name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -262,7 +263,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to save changes for "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to save changes for "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -274,14 +278,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(`"${bussinesName}" deleted` , 'Success');
+          this.notificationService.success(
+            `"${bussinesName}" deleted`,
+            'Success'
+          );
           this.modalService.setModalSpinner({
             action: 'delete',
             status: false,
           });
         },
         error: () => {
-          this.notificationService.error(`Failed to delete "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to delete "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -320,7 +330,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to add "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to add "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }

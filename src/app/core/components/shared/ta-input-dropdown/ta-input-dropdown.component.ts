@@ -39,37 +39,36 @@ export class TaInputDropdownComponent
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
 
-  @Input() template: string;
+  @Input() template: string; // different templates for body rendering
 
   @Input() inputConfig: ITaInput;
-  @Input() canAddNew: boolean;
-  @Input() canOpenModal: boolean;
-  @Input() sort: string;
+  @Input() canAddNew: boolean; // add new item in options
+  @Input() canOpenModal: boolean; // open modal with Add New button
+  @Input() sort: string; // sort-template for different options
 
-  @Input() activeItem: any;
-  @Input() activeItemColor: any;
+  @Input() activeItem: any; // currently active item
+  @Input() activeItemColor: any; // currently active color in dropdown
 
-  @Input() labelMode: string;
+  @Input() labelMode: 'Label' | 'Color';
 
   @Input() options: any[] = []; // when send SVG, please premmaped object: add 'folder' | 'subfolder'
   @Input() preloadMultiselectItems: any[] = [];
 
-  @Input() isDetailsActive: boolean;
-  @Input() incorrectValue: boolean;
+  @Input() isDetailsPages: boolean; // only for details pages
+  @Input() incorrectValue: boolean; // applicant review option
 
   @Output() selectedItem: EventEmitter<any> = new EventEmitter<any>();
+  @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
+
   @Output() selectedItemColor: EventEmitter<any> = new EventEmitter<any>();
   @Output() selectedLabelMode: EventEmitter<any> = new EventEmitter<any>();
 
   @Output() saveItem: EventEmitter<{ data: any; action: string }> =
     new EventEmitter<{ data: any; action: string }>();
 
-  @Output() selectedItems: EventEmitter<any> = new EventEmitter<any>();
-
   @Output() incorrectEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public originalOptions: any[] = [];
-  private dropdownPosition: number = -1;
 
   // Multiselect dropdown options
   public multiselectItems: any[] = [];
@@ -79,6 +78,9 @@ export class TaInputDropdownComponent
 
   // Add mode
   public isInAddMode: boolean = false;
+
+  // Dropdown navigation with keyboard
+  private dropdownPosition: number = -1;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -90,17 +92,27 @@ export class TaInputDropdownComponent
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Options from backend
+    // Sorting backend options
     if (changes.options?.currentValue != changes.options?.previousValue) {
       switch (this.sort) {
         case 'active-drivers': {
           this.options = this.options.sort(
             (x, y) => Number(y.status) - Number(x.status)
           );
+
           this.originalOptions = [...this.options];
           break;
         }
         default: {
+          if (
+            this.canAddNew &&
+            !this.options.find((item) => item.id === 7655)
+          ) {
+            this.options.unshift({
+              id: 7655,
+              name: 'Add New',
+            });
+          }
           this.originalOptions = [...this.options];
           break;
         }
@@ -122,7 +134,7 @@ export class TaInputDropdownComponent
     }
 
     // Details Pages
-    if (this.template === 'details-template' && this.isDetailsActive) {
+    if (this.template === 'details-template' && this.isDetailsPages) {
       const timeout = setTimeout(() => {
         this.inputRef.setInputCursorAtTheEnd(this.inputRef.input.nativeElement);
         const option = this.options.find((item) => item.active);
@@ -139,6 +151,7 @@ export class TaInputDropdownComponent
   }
 
   ngOnInit(): void {
+    // Multiselect
     if (this.inputConfig.multiselectDropdown) {
       this.multiSelectLabel = this.inputConfig.label;
     }
@@ -159,10 +172,12 @@ export class TaInputDropdownComponent
       .subscribe((action: boolean) => {
         if (action) {
           this.popoverRef.close();
-
+          // label dropdown
           if (this.inputConfig.dropdownLabel) {
             this.clearDropdownLabel();
-          } else {
+          }
+          // normal dropdown
+          else {
             this.onClearSearch();
           }
         }
@@ -197,9 +212,11 @@ export class TaInputDropdownComponent
         }
 
         if (this.labelMode !== 'Color') {
+          // Focus Out
           if (!action) {
             this.popoverRef.open();
 
+            // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
               this.getSuperControl.setValue(this.activeItem.name);
               this.changeDetectionRef.detectChanges();
@@ -212,7 +229,10 @@ export class TaInputDropdownComponent
               }
             }
             this.popoverRef.close();
-          } else {
+          }
+          // Focus In
+          // remove 'value' and store in 'placeholder'
+          else {
             this.inputConfig = {
               ...this.inputConfig,
               placeholder: this.getSuperControl.value
@@ -231,6 +251,7 @@ export class TaInputDropdownComponent
           }
         }
 
+        // Details pages
         if (
           this.inputConfig.customClass?.includes('details-pages') &&
           !action
@@ -243,18 +264,21 @@ export class TaInputDropdownComponent
   private dropDownKeyboardNavigationEvent() {
     this.inputService.dropDownKeyNavigation$
       .pipe(untilDestroyed(this))
-      .subscribe((keyEvent) => {
-        if (keyEvent === 40) {
+      .subscribe((keyCode) => {
+        // Navigate down
+        if (keyCode === 40) {
           this.dropdownNavigation(1);
         }
-
-        if (keyEvent === 38) {
+        // Navigate up
+        if (keyCode === 38) {
           this.dropdownNavigation(-1);
         }
-
-        if (keyEvent === 13) {
+        // Press 'enter'
+        if (keyCode === 13) {
           const selectedItem = $('.dropdown-option-hovered').text().trim();
-          if (selectedItem !== 'Add New') {
+          if (selectedItem === 'Add New') {
+            this.addNewConfig();
+          } else {
             const existItem = this.options
               .map((item) => {
                 if (item.name) {
@@ -282,12 +306,10 @@ export class TaInputDropdownComponent
               this.inputService.dropDownItemSelectedOnEnter$.next(true);
             }
             this.popoverRef.close();
-          } else {
-            this.onAddNewEvent();
           }
         }
 
-        if (keyEvent === 9) {
+        if (keyCode === 9) {
           this.popoverRef.open();
         }
       });
@@ -310,17 +332,10 @@ export class TaInputDropdownComponent
                 .includes(searchText.toLowerCase())
         );
 
-        if (!this.options.length && !this.canAddNew) {
+        if (!this.options.length) {
           this.options.push({
             id: 7654,
             name: 'No Results',
-          });
-        }
-
-        if (!this.options.length && this.canAddNew) {
-          this.options.push({
-            id: 7655,
-            name: 'Add New',
           });
         }
       } else {
@@ -361,12 +376,15 @@ export class TaInputDropdownComponent
   }
 
   public onActiveItem(option: any): void {
+    // No Result
     if (option.id === 7654) {
-      // No Result
       return;
-    } else if (option.id === 7655) {
-      // Add New
-      if (!this.canOpenModal) {
+    }
+    // Add New
+    else if (option.id === 7655) {
+      if (this.canOpenModal) {
+        this.selectedItem.emit(option);
+      } else {
         // DropDown label
         if (this.inputConfig.dropdownLabel) {
           this.inputConfig.dropdownLabelNew = true;
@@ -379,28 +397,14 @@ export class TaInputDropdownComponent
         }
         // Normal Dropdown
         else {
-          this.onAddNewEvent();
-          this.isInAddMode = true;
-          const timeout = setTimeout(() => {
-            this.isInAddMode = false;
-            clearTimeout(timeout);
-          }, 500);
+          this.addNewConfig();
         }
       }
-      // Add Something Else (example: open new modal)
-      else {
-        this.selectedItem.emit(option);
-      }
-    } else {
-      // Normal Dropdown option selected
-      if (!this.inputConfig.dropdownLabel) {
-        this.activeItem = option;
-        this.getSuperControl.setValue(option.name);
-        this.options = this.originalOptions;
-        this.selectedItem.emit(option);
-      }
+    }
+    // Pick the item
+    else {
       // Dropdown labels option selected
-      else {
+      if (this.inputConfig.dropdownLabel) {
         if (this.labelMode === 'Label') {
           this.activeItem = option;
           this.getSuperControl.setValue(option.name);
@@ -413,6 +417,14 @@ export class TaInputDropdownComponent
 
           this.selectedItemColor.emit(this.activeItemColor);
         }
+      }
+
+      // Normal Dropdown option selected
+      else {
+        this.activeItem = option;
+        this.getSuperControl.setValue(option.name);
+        this.options = this.originalOptions;
+        this.selectedItem.emit(option);
       }
     }
   }
@@ -466,8 +478,8 @@ export class TaInputDropdownComponent
       name: this.getSuperControl.value,
     };
 
-    this.originalOptions = [...this.originalOptions, this.activeItem];
-    this.options = this.originalOptions;
+    // this.originalOptions = [...this.originalOptions, this.activeItem];
+    // this.options = this.originalOptions;
 
     this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
@@ -498,7 +510,7 @@ export class TaInputDropdownComponent
     this.selectedLabelMode.emit('Label');
   }
 
-  public onAddNewEvent() {
+  public addNewConfig() {
     this.inputConfig = {
       ...this.inputConfig,
       commands: {
@@ -523,12 +535,19 @@ export class TaInputDropdownComponent
       },
       placeholder: null,
     };
+
+    this.inputConfig.dropdownLabelNew = true; // share this config with label
     this.inputService.dropdownAddMode$.next(true);
     this.popoverRef.close();
+
+    this.isInAddMode = true;
+    const timeout = setTimeout(() => {
+      this.isInAddMode = false;
+      clearTimeout(timeout);
+    }, 500);
   }
 
   /**
-   *
    * Navigate through dropdown with keyboard arrows
    */
   private dropdownNavigation(step: number) {

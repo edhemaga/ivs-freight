@@ -82,7 +82,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       checked: false,
     },
   ];
-
+  public labelsBank: any[] = [];
   public departments: any[] = [];
   public offices: any[] = [];
 
@@ -258,6 +258,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
             id: res.id,
             name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
