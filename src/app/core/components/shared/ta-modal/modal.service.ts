@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
+import { EncryptionDecryptionService } from 'src/app/core/services/encryption-decryption/EncryptionDecryption.service';
 import { ModalOptions } from './modal.options';
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,10 @@ export class ModalService {
   private modalSpinner: Subject<{ action: string; status: boolean }> =
     new Subject<{ action: string; status: boolean }>();
 
-  constructor(private ngbModal: NgbModal) {}
+  constructor(
+    private ngbModal: NgbModal,
+    private encryptionDecryptionService: EncryptionDecryptionService
+  ) {}
 
   // Getter
   public get modalSpinner$() {
@@ -43,6 +47,11 @@ export class ModalService {
         sessionStorage.setItem(
           data.payload.key,
           JSON.stringify(data.payload.value)
+        );
+
+        this.encryptionDecryptionService.setLocalStorage(
+          data.payload.key,
+          data.payload.value
         );
 
         this.openModal(
