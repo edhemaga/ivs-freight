@@ -28,37 +28,20 @@ import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
       transition(
         'active => removed',
         animate(
-          '1500ms ease-out',
+          '150ms ease-out',
           keyframes([
             style({
               opacity: 1,
             }),
             style({
-              transform: 'scale(0.7)',
               opacity: 0,
             }),
           ])
         )
       ),
-      
-      
-      /*
-      transition('active => removed', animate('1050ms ease-out', keyframes([
-        style({
-          opacity: 1,
-          transform: 'scale(1)',
-        }),
-        style({
-          transform: 'scale(0.7)',
-          opacity: 0,
-          display: 'none',
-        }),
-      ]))),
-      */
-
     ]),
   ],
-  preserveWhitespaces: false,
+  
 })
 export class CustomToastMessagesComponent extends Toast implements OnInit {
 

@@ -16,9 +16,9 @@ export class NotificationService {
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
       tapToDismiss: false,
-      easeTime: 0,
       timeOut: 3000,
       extendedTimeOut: 3000,
+      easeTime: 150,
       enableHtml: true,
       toastClass: '',
     }).onShown.subscribe((show) => { 
@@ -36,8 +36,8 @@ export class NotificationService {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
-      easeTime: 0,
       timeOut: 3000,
+      easeTime: 150,
       extendedTimeOut: 3000,
       tapToDismiss: false,
       enableHtml: true,
@@ -63,12 +63,13 @@ export class NotificationService {
       progressBar: false,
       progressAnimation: 'increasing',
       positionClass: 'toast-bottom-left',
-      easeTime: 0,
+      easeTime: 150,
       timeOut: 3000,
       extendedTimeOut: 3000,
       tapToDismiss: false,
       enableHtml: true,
       toastClass: '',
+      
     }).onShown.subscribe((show) => { 
       document.querySelector('.closeIcon')?.addEventListener('click',()=>{
         this.addCloseAnimation();
