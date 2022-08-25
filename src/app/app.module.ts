@@ -13,7 +13,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule} from 'ngx-toastr';
+import {
+  ToastrModule,
+  ToastNoAnimation,
+  ToastNoAnimationModule,
+} from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -29,6 +33,7 @@ import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
+import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 
 @NgModule({
   declarations: [
@@ -75,7 +80,8 @@ import { AppInterceptor } from './app.inteceptor';
       deps: [UserLoggedService],
       multi: false,
     },
-    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
+    EncryptionDecryptionService,
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

@@ -189,9 +189,9 @@ export function getBrokerColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'rating',
       title: 'Rating',
-      field: '',
+      field: 'brokerRaiting',
       name: 'Rating',
       headAlign: 'center',
       hidden: false,
@@ -795,9 +795,9 @@ export function getShipperColumnDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'rating',
       title: 'Rating',
-      field: '',
+      field: 'shipperRaiting',
       name: 'Rating',
       hidden: false,
       headAlign: 'center',

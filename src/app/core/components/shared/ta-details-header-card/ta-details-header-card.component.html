@@ -44,7 +44,7 @@
         [options]="options"
         [sort]="sortOptions"
         [template]="'details-template'"
-        [isDetailsActive]="selectedDropdown"
+        [isDetailsPages]="selectedDropdown"
         (selectedItem)="onSelecItem($event)"
       >
       </app-ta-input-dropdown>
@@ -126,7 +126,7 @@
         }"
         [options]="optionsSecondInput"
         [template]="'details-template'"
-        [isDetailsActive]="selectedDropdownSecond"
+        [isDetailsPages]="selectedDropdownSecond"
         (selectedItem)="onSelectItem($event)"
       >
       </app-ta-input-dropdown>
