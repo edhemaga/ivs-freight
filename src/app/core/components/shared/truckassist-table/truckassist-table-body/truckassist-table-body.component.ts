@@ -18,6 +18,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { DashboardStrategy } from './dashboard_strategy';
 
 @UntilDestroy()
 @Component({
@@ -25,6 +27,12 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './truckassist-table-body.component.html',
   styleUrls: ['./truckassist-table-body.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: VIRTUAL_SCROLL_STRATEGY,
+      useClass: DashboardStrategy
+    }
+  ]
 })
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -36,6 +44,7 @@ export class TruckassistTableBodyComponent
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
+  pageHeight: number = window.innerHeight;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
   mySelection: any[] = [];
   showItemDrop: number = -1;
