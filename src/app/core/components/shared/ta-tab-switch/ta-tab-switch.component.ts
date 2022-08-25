@@ -27,6 +27,7 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() tabs: any[];
   @Input() type: string = '';
   @Output() switchClicked = new EventEmitter<any>();
+  @Output() saveCustomRange = new EventEmitter<any>();
   @ViewChild('t2') t2: any;
 
   public date1: FormControl = new FormControl();
@@ -79,6 +80,15 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
     this.date2.updateValueAndValidity();
   }
 
+  setCustomRange(e){
+    if (this.data1Valid && this.data2Valid){
+      let rangeData = [];
+      rangeData.push(this.data1Valid, this.data2Valid)
+      this.saveCustomRange.emit(rangeData);
+      this.closeCustomPopover(e);
+    }
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.tabs) {
       setTimeout(() => {
@@ -107,12 +117,16 @@ export class TaTabSwitchComponent implements OnInit, AfterViewInit, OnChanges {
 
   switchTab(e, indx, item) {
     e.stopPropagation();
-    console.log(e);
     this.indexSwitch = indx;
 
     this.tabs.map((item) => (item.checked = false));
     item.checked = true;
     this.hoverStyle = this.getElementOffset(e.target);
+    const closeComponentArray = this.autoCloseComponent.toArray().reverse();
+    
+    if(item.name != 'Custom' && closeComponentArray[0]?.tooltip?.isOpen()){
+      closeComponentArray[0].tooltip.close();
+    }
     this.switchClicked.emit(item);
   }
 
