@@ -816,10 +816,10 @@
 
       .option {
         position: relative;
-        margin-bottom: 2px;
-        padding: 3px 4px;
+        padding: 3px;
         height: 26px;
         font-size: 14px;
+        line-height: 18px;
         font-weight: 400;
         border-radius: 2px;
         white-space: nowrap;
@@ -844,14 +844,14 @@
           color: #536bc2;
           font-weight: 600;
 
-          &::before {
+          &::after {
             content: "";
             height: 2px;
-            width: 162px;
+            width: 100%;
             background-color: #f3f3f3;
             border-radius: 1px;
             position: absolute;
-            bottom: 26px;
+            bottom: 0px;
             left: 0px;
           }
         }

@@ -109,7 +109,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairDropdowns();
-    console.log(this.editData, this.selectedHeaderTab);
 
     if (this.editData?.storageData) {
       this.populateForm(this.editData?.storageData);
@@ -308,6 +307,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       );
       this.inputService.changeValidators(this.repairOrderForm.get('date'));
       this.repairOrderForm.get('repairType').patchValue('Bill');
+
+      if (this.selectedPMIndex) {
+        this.inputService.changeValidators(
+          this.repairOrderForm.get('odometer')
+        );
+      }
     }
 
     this.headerTabs = this.headerTabs.map((item) => {
@@ -372,6 +377,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items_array: this.items.value,
                 subtotal: this.subtotal,
                 selectedPM: this.selectedPM,
+                selectedPMIndex: this.selectedPMIndex,
               },
             },
             component:
@@ -404,6 +410,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 items_array: this.items.value,
                 subtotal: this.subtotal,
                 selectedPM: this.selectedPM,
+                selectedPMIndex: this.selectedPMIndex,
               },
             },
             component: RepairShopModalComponent,
@@ -471,7 +478,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             };
           });
           if (!this.pmTrucks.find((item) => item.title === 'Add New')) {
-            this.pmTrucks.push({
+            this.pmTrucks.unshift({
               id: this.pmTrucks.length + 1,
               logoName: null,
               mileage: null,
@@ -535,8 +542,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public onAction(action: any, index: number) {
     this.selectedPM[index] = action;
     this.selectedPMIndex = index;
-
-    if (this.selectedPM[index].title !== 'Add New') {
+    if (
+      this.selectedPM[index].title !== 'Add New' &&
+      this.selectedHeaderTab === 1
+    ) {
       this.inputService.changeValidators(this.repairOrderForm.get('odometer'));
     } else {
       this.inputService.changeValidators(
@@ -546,18 +555,28 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
     if (this.selectedPM[index].title === 'Add New') {
       this.ngbActiveModal.close();
-      const timeout = setTimeout(() => {
-        this.modalService.openModal(
-          RepairPmModalComponent,
-          { size: 'small' },
-          {
-            type: 'new',
-            header: this.repairOrderForm.get('unitType').value,
-            action: 'generic-pm',
-          }
-        );
-        clearTimeout(timeout);
-      }, 100);
+      this.modalService.setProjectionModal({
+        action: 'open',
+        payload: {
+          key: 'repair-modal',
+          value: {
+            ...this.repairOrderForm.value,
+            selectedUnit: this.selectedUnit,
+            services: this.services,
+            selectedRepairShop: this.selectedRepairShop,
+            headerTabs: this.headerTabs,
+            selectedHeaderTab: this.selectedHeaderTab,
+            typeOfRepair: this.typeOfRepair,
+            items_array: this.items.value,
+            subtotal: this.subtotal,
+            selectedPM: this.selectedPM,
+            selectedPMIndex: this.selectedPMIndex,
+          },
+        },
+        component: RepairPmModalComponent,
+        size: 'small',
+        type: this.repairOrderForm.get('unitType').value,
+      });
     }
     this.popoverRef.close();
   }
@@ -704,7 +723,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       };
     }
 
-    console.log(newData);
     this.repairService
       .updateRepair(newData)
       .pipe(untilDestroyed(this))
@@ -791,6 +809,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               pmTrailerId: iterator.pmTrailer,
             })
           );
+          this.selectedPMIndex = 0;
         }
       }
 
@@ -805,6 +824,19 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: RepairResponse) => {
+            if (!this.editData.type.includes('fo')) {
+              this.onModalHeaderTabChange(
+                this.headerTabs.find(
+                  (item) => item.name === res.repairType.name
+                )
+              );
+            }
+
+            this.onTypeOfRepair(
+              this.typeOfRepair.find((item) => item.name === res.unitType.name),
+              'edit-mode'
+            );
+
             this.repairOrderForm.patchValue({
               repairType: res.repairType ? res.repairType.name : null,
               unitType: res.unitType ? res.unitType.name : null,
@@ -812,11 +844,16 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 res.unitType.name === 'Truck'
                   ? res.truck.truckNumber
                   : res.trailer.trailerNumber,
-              odometer: res.odometer
-                ? convertNumberInThousandSep(res.odometer)
-                : null,
-              date: res.date ? convertDateFromBackend(res.date) : null,
-              invoice: res.invoice,
+              odometer:
+                res.odometer && res.date && this.selectedHeaderTab === 1
+                  ? convertNumberInThousandSep(res.odometer)
+                  : null,
+              date:
+                res.date && this.selectedHeaderTab === 1
+                  ? convertDateFromBackend(res.date)
+                  : null,
+              invoice:
+                res.date && this.selectedHeaderTab === 1 ? res.invoice : null,
               repairShopId: res.repairShop ? res.repairShop.id : null,
               items: [],
               note: res.note,
@@ -860,20 +897,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                   },
                 });
             }
-            if (!this.editData.type.includes('fo')) {
-              this.onModalHeaderTabChange(
-                this.headerTabs.find(
-                  (item) => item.name === res.repairType.name
-                )
-              );
-            }
 
-            this.onTypeOfRepair(
-              this.typeOfRepair.find((item) => item.name === res.unitType.name),
-              'edit-mode'
-            );
-            console.log('EDIT REAPIR');
-            console.log(res.items);
             // Repair Items
             if (res.items.length) {
               for (const iterator of res.items) {
@@ -892,6 +916,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     pmTrailerId: iterator.pmTrailer,
                   })
                 );
+                this.selectedPMIndex = 0;
+
+                if (this.selectedHeaderTab) {
+                  this.inputService.changeValidators(
+                    this.repairOrderForm.get('odometer')
+                  );
+                }
                 this.subtotal = [
                   ...this.subtotal,
                   {
@@ -927,7 +958,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           },
         });
       clearTimeout(timeout);
-    }, 50);
+    }, 100);
   }
 
   private premmapedItems() {

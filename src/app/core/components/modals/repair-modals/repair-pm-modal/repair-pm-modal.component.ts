@@ -19,6 +19,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { debounceTime } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+
   public PMform: FormGroup;
 
   public isDirty: boolean;
@@ -44,6 +46,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
+
+    console.log(this.editData);
 
     if (this.editData?.action?.includes('unit-pm')) {
       this.editData = {
@@ -281,6 +285,24 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
       default: {
         break;
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: this.editData?.type,
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }

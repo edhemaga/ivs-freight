@@ -33,7 +33,11 @@
           isDropdown: true,
           isRequired: true,
           dropdownWidthClass: 'w-col-129',
-          autoFocus: !editData?.type?.includes('edit') ? true : false
+          autoFocus:
+            !editData?.type?.includes('edit') &&
+            !repairOrderForm.get('unit').value
+              ? true
+              : false
         }"
         [canAddNew]="true"
         [canOpenModal]="true"
