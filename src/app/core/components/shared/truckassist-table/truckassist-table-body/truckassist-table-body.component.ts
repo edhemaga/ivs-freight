@@ -307,6 +307,22 @@ export class TruckassistTableBodyComponent
     });
   }
 
+  // HIRE
+  onHire(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'hire',
+    });
+  }
+
+  // FAVORITE
+  onFavorite(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'favorite',
+    });
+  }
+
   // --------------------------------DROPDOWN---------------------------------
 
   // Set Dropdown Content

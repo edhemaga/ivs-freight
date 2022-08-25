@@ -921,53 +921,6 @@
               </div>
             </div>
 
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
-                <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
-                >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
-              </div>
-            </div>
-
             <!-- STATE TEXT COLUMN -->
             <div
               *ngIf="
@@ -1954,53 +1907,6 @@
               </div>
             </div>
 
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
-                <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
-                >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
-              </div>
-            </div>
-
             <!-- STATE TEXT COLUMN -->
             <div
               *ngIf="
@@ -2032,16 +1938,30 @@
                 !column.isPined
               "
             >
+              <!-- Only For Applicant Status -->
+              <div
+                class="applicant-status-container"
+                [class]="row[column.field]"
+                *ngIf="
+                  row[column.field]?.isApplicant &&
+                  row[column.field]?.hideProgres &&
+                  row[column.field]?.class
+                "
+              >
+                <div class="status-icon" [class]="row[column.field].class"></div>
+              </div>
+
+              <!-- Progress -->
               <div
                 class="table-progress-cotnainer"
-                *ngIf="row[column.field]?.expirationDays"
+                *ngIf="row[column.field]?.expirationDays && !row[column.field]?.hideProgres"
               >
                 <!-- Progres Bar  -->
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
                     'bg-expired-container':
-                      row[column.field].percentage === 100,
+                      row[column.field].percentage === 0,
                     'bg-sliver-container':
                       row[column.field].percentage >= 25 &&
                       row[column.field].percentage < 100,
@@ -2051,14 +1971,13 @@
                     'bg-danger-container':
                       row[column.field].percentage > 0 &&
                       row[column.field].percentage < 5,
-                    'bg-inactive-container': !row[column.field].percentage
+                    'bg-inactive-container': row[column.field].percentage === 100
                   }"
                 >
                   <div
                     [ngClass]="{
                       'bg-progress-sliver':
-                        row[column.field].percentage >= 25 &&
-                        row[column.field].percentage < 50,
+                        row[column.field].percentage >= 25,
                       'bg-progress-orange':
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
@@ -2095,7 +2014,7 @@
                   [ngStyle]="{
                     width: column.width - 30 + 'px'
                   }"
-                  *ngIf="row[column.field].percentage === 100"
+                  *ngIf="row[column.field].percentage === 0"
                 >
                   {{ row[column.field].expirationDays }} days ago
                 </div>
@@ -2143,7 +2062,7 @@
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">
-            <!-- ATTACHMENTS COLUMN TEMPLATE -->
+            <!-- ATTACHMENTS COLUMN -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
               [ngStyle]="{
@@ -2157,7 +2076,41 @@
               </div>
             </div>
 
-            <!-- NOTE COLUMN TEMPLATE -->
+            <!-- HIRE COLUMN -->
+            <div
+              *ngIf="!column.hidden && column.ngTemplate === 'hire'"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
+              class="td-content"
+            >
+              <div
+                class="hire-icon"
+                (click)="onHire(row)"
+                *ngIf="row[column.field]"
+              ></div>
+            </div>
+
+            <!-- FAVORITE COLUMN -->
+            <div
+              *ngIf="!column.hidden && column.ngTemplate === 'favorite'"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
+              class="td-content"
+            >
+              <div
+                (click)="onFavorite(row)"
+                [ngClass]="{
+                  'is-favorite-icon': row[column.field],
+                  'not-favorite-icon': row[column.field]
+                }"
+              ></div>
+            </div>
+
+            <!-- NOTE COLUMN -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'note'"
               [ngStyle]="{
@@ -2167,14 +2120,9 @@
               class="td-content set-center"
             >
               <!-- Ovde je komponenta -->
-              <!-- <app-app-note
-                [note]="row?.note ? row.note : ''"
-                [note_expanded]="false"
-                [rowIndex]="i"
-              ></app-app-note> -->
             </div>
 
-            <!-- ACTIONS COLUMN TEMPLATE -->
+            <!-- ACTIONS COLUMN -->
             <div
               class="td-content set-center"
               *ngIf="!column.hidden && column.ngTemplate === 'actions'"
