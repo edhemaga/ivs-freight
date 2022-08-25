@@ -725,7 +725,7 @@
               <div class="raiting-container">
                 <div
                   class="raiting-icon"
-                  (click)="onLike(row, column)"
+                  (click)="onLike(row)"
                   [ngClass]="{
                     'did-like-icon': row[column.field].hasLiked,
                     'like-icon': !row[column.field].hasLiked
@@ -744,7 +744,7 @@
                 </div>
                 <div
                   class="raiting-icon"
-                  (click)="onDislike(row, column)"
+                  (click)="onDislike(row)"
                   [ngClass]="{
                     'did-dislike-icon': row[column.field].hasDislike,
                     'dislike-icon': !row[column.field].hasDislike
@@ -1426,7 +1426,7 @@
               <div class="raiting-container">
                 <div
                   class="raiting-icon"
-                  (click)="onLike(row, column)"
+                  (click)="onLike(row)"
                   [ngClass]="{
                     'did-like-icon': row[column.field].hasLiked,
                     'like-icon': !row[column.field].hasLiked
@@ -1445,7 +1445,7 @@
                 </div>
                 <div
                   class="raiting-icon"
-                  (click)="onDislike(row, column)"
+                  (click)="onDislike(row)"
                   [ngClass]="{
                     'did-dislike-icon': row[column.field].hasDislike,
                     'dislike-icon': !row[column.field].hasDislike
