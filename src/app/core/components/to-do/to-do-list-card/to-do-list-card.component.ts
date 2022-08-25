@@ -1,6 +1,6 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -9,6 +9,7 @@ import { DropResult } from 'ngx-smooth-dnd';
 import { applyDrag } from 'src/app/core/utils/methods.globals';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
+import { TodoQuery } from '../state/todo.query';
 
 @Component({
   selector: 'app-to-do-list-card',
@@ -27,6 +28,7 @@ export class ToDoListCardComponent implements OnInit {
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
   public dropdownOptions: any;
+  todoTest: Observable<any>;
 
 
   scene = {
@@ -138,11 +140,18 @@ export class ToDoListCardComponent implements OnInit {
     private modalService: ModalService,
     private sharedService: SharedService,
     private commentsService: CommentsService,
+    private todoQuery: TodoQuery
   ) { }
 
   ngOnInit(): void {
-    this.getTodoList();
+    //this.getTodoList();
     this.initTableOptions();
+    this.todoTest = this.todoQuery.selectTodoList$;
+    this.todoQuery.selectTodoList$.subscribe((resp) => {
+      console.log(this.todoTest, resp, 'queryUpdated')
+      this.updateTodosList(resp.pagination.data);
+    });
+    
   }
 
   dragStart = (e) => {
@@ -206,6 +215,7 @@ export class ToDoListCardComponent implements OnInit {
   }
 
   updateTodosList(resp, noReplace?: boolean) {
+    console.log(resp, 'respppp')
     this.toDoTasks = resp.filter((x, indx) => {
       if (x.status.name === TodoStatus.Todo) {
         if (!noReplace) {

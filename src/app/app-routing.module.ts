@@ -29,6 +29,7 @@ import { RepairTrailerResolver } from './core/components/repair/state/repair-tra
 import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
 import { pmTrailerResolver } from './core/components/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './core/components/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
+import { TodoResolverService } from './core/components/to-do/state/todo-resolver.service';
 
 const routes: Routes = [
   // Auth Routes
@@ -221,6 +222,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./core/components/to-do/to-do.module').then((m) => m.ToDoModule),
     canActivate: [AuthGuard],
+    resolve: { todo: TodoResolverService },
   },
   {
     path: 'applicant/welcome',

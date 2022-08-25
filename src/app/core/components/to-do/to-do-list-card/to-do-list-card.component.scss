@@ -1,5 +1,6 @@
-.todo-list-holder {
+@import 'src/theme/variables.scss';
 
+.todo-list-holder {
     .todo-tollbar{
         display: flex;
         .toolbar {
@@ -17,6 +18,16 @@
                 line-height: 32px;
                 padding-right: 12px;
                 box-sizing: border-box;
+
+                &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
+            
+                &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                }
             }
     
             .toolbar-menu-holder {
@@ -48,6 +59,16 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;
+
+                        &::-moz-selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
+                    
+                        &::selection {
+                            color: $bw6-2;
+                            background: rgb(108, 108, 108, 0.2);
+                        }
                     }
     
                     .border-right {
@@ -195,6 +216,16 @@
                     font-weight: 700;
                     color: #6C6C6C;
                     line-height: 18px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
                 }
 
                 .icons-frame {
@@ -279,6 +310,16 @@
                             color: #fff;
                             line-height: 13px;
                             top: 1px;
+
+                            &::-moz-selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
+                        
+                            &::selection {
+                                color: $bw6-2;
+                                background: rgb(108, 108, 108, 0.2);
+                            }
                         }
                     }
                 }
@@ -317,6 +358,16 @@
                     color: #919191;
                     line-height: 14px;
                     margin-right: 4px;
+
+                    &::-moz-selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
+                
+                    &::selection {
+                        color: $bw6-2;
+                        background: rgb(108, 108, 108, 0.2);
+                    }
                 }
 
                 .users {
@@ -431,6 +482,10 @@
                         background-color: #AAAAAA;
                     }
                 }
+            }
+
+            .todo_deadline_hold{
+                width: 100%;
             }
         }
 

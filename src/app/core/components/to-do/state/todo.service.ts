@@ -2,6 +2,7 @@ import { TodoService } from './../../../../../../appcoretruckassist/api/todo.ser
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { TodoStore } from './todo.store';
 import {
   CreateResponse,
   CreateTodoCommand,
@@ -15,7 +16,10 @@ import {
   providedIn: 'root',
 })
 export class TodoTService {
-  constructor(private todoService: TodoService) {}
+  constructor(
+    private todoService: TodoService,
+    private todoStore: TodoStore
+  ) {}
 
   public getTodoList(
     title?: string,
@@ -55,5 +59,12 @@ export class TodoTService {
 
   public getTodoDropdowns(): Observable<TodoModalResponse> {
     return this.todoService.apiTodoModalGet();
+  }
+
+  set setTodoList(response) {
+    this.todoStore.update((store) => ({
+      ...store,
+      todoList: response,
+    }));
   }
 }

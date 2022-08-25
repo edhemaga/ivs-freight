@@ -303,16 +303,13 @@
                   >
                   </app-ta-user-review>
                 </div>
-                <div class="list-items-frame">
-                  <div class="list-time">Deadline in 2 days</div>
-                  <div class="icons-frame">
-                    <div class="list-time time">12:00 AM</div>
-                    <div class="list-time">07/31/21</div>
-                  </div>
-                </div>
-                <div class="line-holder">
-                  <div class="line-left orange-line"></div>
-                  <div class="line-right dark-orange-line"></div>
+                <div class="todo_deadline_hold">
+                  <app-truckassist-progress-expiration
+                    [expireDate]="item.deadline | formatDateP"
+                    [startDate]="item.createdAt | formatDateP"
+                    [expiresSettings]="'details'"
+                  >
+                </app-truckassist-progress-expiration>
                 </div>
               </div>
             </smooth-dnd-draggable>
