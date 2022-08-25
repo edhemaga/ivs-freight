@@ -409,6 +409,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             id: res.id,
             name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
