@@ -29,6 +29,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
+  @Input() isTest: any;
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
