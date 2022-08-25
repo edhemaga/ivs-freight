@@ -2,7 +2,8 @@
     <div class="toast-title">
         <span *ngIf="toastrType == 'toast-success' && !retryBtnHovered && !retryStarted">CREATED</span>
         <span *ngIf="toastrType == 'toast-error' && !retryBtnHovered && !retryStarted">FAILED TO {{actionTitle}} {{actionType}}</span>
-        <span *ngIf="retryBtnHovered && !retryStarted">RETRY TO</span>
+        <span *ngIf="retryBtnHovered && !retryStarted">RETRY TO {{actionTitle}} {{actionType}}</span>
+        <span *ngIf="retryStarted">RETRY TO {{actionTitle}} {{actionType}}</span>
         {{mainTitle}}
     </div>
     <div class="toast-message">{{message}}</div>

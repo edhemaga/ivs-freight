@@ -80,11 +80,41 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   apiConfObj: any[] = [
     {
-      'https://localhost:7226/api/driver' : 'DRIVER'
+      'api': 'driver',
+      'value': 'DRIVER'
     },
     {
-      'https://localhost:7226/api/driver/modal' : 'DRIVER'
+      'api' : 'shipper',
+      'value' : 'SHIPPER'
     },
+    {
+      'api' : 'account/login',
+      'value' : 'LOGIN'
+    },
+    {
+      'api' : 'broker',
+      'value' : 'BROKER'
+    },
+    {
+      'api' : 'trailer',
+      'value' : 'TRAILER'
+    },
+    {
+      'api' : 'account/signupcompany',
+      'value' : 'COMPANY'
+    },
+    {
+      'api' : 'truck',
+      'value' : 'TRUCK'
+    },
+    {
+      'api' : 'owner',
+      'value' : 'OWNER'
+    },
+    {
+      'api' : 'companycontact',
+      'value' : 'CONTACT'
+    }
   ]
   constructor(
     protected toastrService: ToastrService,
@@ -101,34 +131,71 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     this.createTitleBasedOnHttpRequest();
   }
 
-  createTitleBasedOnHttpRequest(){
+  createTitleBasedOnHttpRequest() {
     console.log(this.httpRequest);
-    console.log(this.httpRequest.method);
-    console.log(this.httpRequest.url);
-    let url = this.httpRequest.url;
-
-     
-    this.apiConfObj.map((item) => {
-      console.log(item);
-    })
     
-    console.log(this.apiConfObj);
-   
-    if ( this.httpRequest.method == 'POST')
-      {
-        this.actionTitle = 'CREATE';
-        this.actionType = 'DRIVER';
-      }
-    else if ( this.httpRequest.method == 'GET')
-      {
-        this.actionTitle = 'LOAD';
-        this.actionType = 'DRIVER';
-      }  
 
-    this.message = 'Failed to laod drivers';  
+    let url = this.httpRequest.url.split('/api/');
+    let apiEndPoint = url[1];
+   
+    const item = this.apiConfObj.find((item) => item.api === apiEndPoint || apiEndPoint.indexOf(item.api) > -1 );
+    this.actionType = item ? item.value : '';
+    
+    console.log('---item--', item);
+  
+    if (this.httpRequest.method == 'POST') {
+      this.actionTitle =  this.actionType != 'LOGIN' ? 'CREATE' : '';
+    }
+    else if (this.httpRequest.method == 'GET') {
+      this.actionTitle = 'LOAD';
+    }
+
+    if ( this.actionType == 'DRIVER' ) {
+
+      let firstName = this.httpRequest.body?.firstName;
+      let lastName = this.httpRequest.body?.lastName;
+      if ( firstName &&  lastName ) {
+        this.message = lastName + ' ' + lastName; 
+      }
+
+    }
+
+    if ( this.actionType == 'SHIPPER' || this.actionType == 'BROKER' ) {
+      this.message = this.httpRequest.body?.businessName ? this.httpRequest.body.businessName : '';
+    }
+    
+    if ( this.actionType == 'LOGIN' ) {
+      this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
+    }
+
+    if ( this.actionType == 'TRAILER' ) {
+      this.message = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
+    }
+    
+    if ( this.actionType == 'COMPANY' ) {
+      this.message = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
+    }
+
+    if ( this.actionType == 'TRUCK' ) {
+      this.message = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+    }
+
+    if ( this.actionType == 'OWNER' || this.actionType == 'CONTACT' ) {
+      this.message = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+    }
+
+    if (this.actionType == 'DRIVER' && !this.message ) {
+      this.message = 'Failed to laod drivers';
+    }
+    
+    if (this.actionType == 'TRAILER' && !this.message ) {
+      this.message = 'Failed to laod trailers';
+    }
+    
+
   }
 
-  closeToast(): void{
+  closeToast(): void {
     this.toastPackage.toastRef.close();
   }
 
