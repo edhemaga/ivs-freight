@@ -1,5 +1,7 @@
 import { SumArraysPipe } from './../../../pipes/sum-arrays.pipe';
 import { card_component_animation } from './../../shared/animations/card-component.animations';
+import { dropActionNameDriver } from '../../../utils/function-drop.details-page';
+
 import {
   ChangeDetectorRef,
   Component,
@@ -83,6 +85,9 @@ export class DriverDetailsCardComponent
   public dropActionName: string = '';
   public driverOwner: boolean;
   public dataCdl: any;
+  public dataMvr: any;
+  public dataMedical: any;
+  public dataTestCard: any;
   barChartConfig: any = {
     dataProperties: [
       {
@@ -200,9 +205,9 @@ export class DriverDetailsCardComponent
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
-      this.note.patchValue(changes.driver.currentValue.note);
-      this.getExpireDate(changes.driver.currentValue);
-      this.getYearsAndDays(changes.driver.currentValue);
+      this.note.patchValue(changes?.driver?.currentValue?.note);
+      this.getExpireDate(changes?.driver?.currentValue);
+      this.getYearsAndDays(changes?.driver?.currentValue);
       this.widthOfProgress();
       this.getDriversDropdown();
     }
@@ -218,29 +223,32 @@ export class DriverDetailsCardComponent
   ngOnInit(): void {
     this.note.patchValue(this.driver.note);
     // Confirmation Subscribe
-    this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: Confirmation) => {
-          switch (res.type) {
-            case 'delete': {
-              if (res.template === 'cdl') {
-                this.deleteCdlByIdFunction(res.id);
-              } else if (res.template === 'medical') {
-                this.deleteMedicalByIdFunction(res.id);
-              } else if (res.template === 'mvr') {
-                this.deleteMvrByIdFunction(res.id);
-              } else if (res.template === 'test') {
-                this.deleteTestByIdFunction(res.id);
+    if (this.templateCard) {
+      this.confirmationService.confirmationData$
+        .pipe(untilDestroyed(this))
+        .subscribe({
+          next: (res: Confirmation) => {
+            console.log(res);
+            switch (res.type) {
+              case 'delete': {
+                if (res.template === 'cdl') {
+                  this.deleteCdlByIdFunction(res.id);
+                } else if (res.template === 'medical') {
+                  this.deleteMedicalByIdFunction(res.id);
+                } else if (res.template === 'mvr') {
+                  this.deleteMvrByIdFunction(res.id);
+                } else if (res.template === 'test') {
+                  this.deleteTestByIdFunction(res.id);
+                }
+                break;
               }
-              break;
+              default: {
+                break;
+              }
             }
-            default: {
-              break;
-            }
-          }
-        },
-      });
+          },
+        });
+    }
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
@@ -332,35 +340,50 @@ export class DriverDetailsCardComponent
   public changeTab(ev: any) {
     this.selectedTab = ev.id;
   }
-  public getCdlById(id: number) {
-    this.cdlService
-      .getCdlById(id)
-      .pipe(untilDestroyed(this))
-      .subscribe((item) => (this.dataCdl = item));
-  }
-  public optionsEvent(any: any, action: string) {
-    if (any.type === 'edit' && action === 'cdl') {
-      this.dropActionName = 'edit-licence';
-    } else if (any.type === 'delete-item' && action === 'cdl') {
-      this.dropActionName = 'delete-cdl';
-    }
-    if (any.type === 'edit' && action === 'test') {
-      this.dropActionName = 'edit-drug';
-    } else if (any.type === 'delete-item' && action === 'test') {
-      this.dropActionName = 'delete-test';
-    }
 
-    if (any.type === 'edit' && action === 'mvr') {
-      this.dropActionName = 'edit-mvr';
-    } else if (any.type === 'delete-item' && action === 'mvr') {
-      this.dropActionName = 'delete-mvr';
+  public optionsEvent(any: any, action: string) {
+    if (any.type === 'edit') {
+      switch (action) {
+        case 'cdl': {
+          this.dropActionName = 'edit-licence';
+          break;
+        }
+        case 'mvr': {
+          this.dropActionName = 'edit-mvr';
+          break;
+        }
+        case 'medical': {
+          this.dropActionName = 'edit-medical';
+          break;
+        }
+        case 'test': {
+          this.dropActionName = 'edit-drug';
+          break;
+        }
+      }
     }
-    if (any.type === 'edit' && action === 'medical') {
-      this.dropActionName = 'edit-medical';
-    } else if (any.type === 'delete-item' && action === 'medical') {
-      this.dropActionName = 'delete-medical';
+    if (any.type === 'delete-item') {
+      switch (action) {
+        case 'cdl': {
+          this.dropActionName = 'delete-cdl';
+          break;
+        }
+        case 'mvr': {
+          this.dropActionName = 'delete-mvr';
+          break;
+        }
+        case 'medical': {
+          this.dropActionName = 'delete-medical';
+          break;
+        }
+        case 'test': {
+          this.dropActionName = 'delete-test';
+          break;
+        }
+      }
     }
-    switch (this.dropActionName) {
+    const name = dropActionNameDriver(any, action);
+    switch (name) {
       case 'delete-cdl': {
         const mappedEvent = {
           ...any,
@@ -382,11 +405,18 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'delete-medical': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            medicalIssued: this.dataMedical.issueDate,
+            medicalExpDate: this.dataMedical.expDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'medical',
             type: 'delete',
             image: false,
@@ -395,11 +425,18 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'delete-mvr': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            ...this.dataMvr,
+            mvrIssueDate: this.dataMvr.issueDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'mvr',
             type: 'delete',
             image: false,
@@ -408,11 +445,19 @@ export class DriverDetailsCardComponent
         break;
       }
       case 'delete-test': {
+        const mappedEvent = {
+          ...any,
+          data: {
+            testTypeName: this.dataTestCard.testType.name,
+            reasonName: this.dataTestCard.testReason.name,
+            issuedDataTest: this.dataTestCard.testingDate,
+          },
+        };
         this.modalService.openModal(
           ConfirmationModalComponent,
           { size: 'small' },
           {
-            id: any.id,
+            ...mappedEvent,
             template: 'test',
             type: 'delete',
             image: false,
@@ -427,7 +472,7 @@ export class DriverDetailsCardComponent
           {
             file_id: any.id,
             id: this.driver.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -440,7 +485,7 @@ export class DriverDetailsCardComponent
           {
             file_id: any.id,
             id: this.driver.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -452,7 +497,7 @@ export class DriverDetailsCardComponent
           {
             file_id: any.id,
             id: this.driver.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -464,7 +509,7 @@ export class DriverDetailsCardComponent
           {
             file_id: any.id,
             id: this.driver.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -474,7 +519,33 @@ export class DriverDetailsCardComponent
       }
     }
   }
+  public getCdlById(id: number) {
+    this.cdlService
+      .getCdlById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataCdl = item));
+  }
 
+  public getMedicalById(id: number) {
+    this.medicalService
+      .getMedicalById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataMedical = item));
+  }
+
+  public getMvrById(id: number) {
+    this.mvrService
+      .getMvrById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataMvr = item));
+  }
+
+  public getTestById(id: number) {
+    this.testService
+      .getTestById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataTestCard = item));
+  }
   public deleteCdlByIdFunction(id: number) {
     this.cdlService
       .deleteCdlById(id)

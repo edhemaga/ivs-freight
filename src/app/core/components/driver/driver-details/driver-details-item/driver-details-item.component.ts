@@ -1,9 +1,8 @@
 import { DriverTService } from './../../state/driver.service';
-import { ActivatedRoute } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { dropActionNameDriver } from '../../../../utils/function-drop.details-page';
 import {
-  ChangeDetectionStrategy,
   Component,
   Input,
   OnChanges,
@@ -236,28 +235,8 @@ export class DriverDetailsItemComponent
       .subscribe((item) => (this.dataTest = item));
   }
   public optionsEvent(any: any, action: string) {
-    if (any.type === 'edit' && action === 'cdl') {
-      this.dropActionName = 'edit-licence';
-    } else if (any.type === 'delete-item' && action === 'cdl') {
-      this.dropActionName = 'delete-cdl';
-    }
-    if (any.type === 'edit' && action === 'test') {
-      this.dropActionName = 'edit-drug';
-    } else if (any.type === 'delete-item' && action === 'test') {
-      this.dropActionName = 'delete-test';
-    }
-
-    if (any.type === 'edit' && action === 'mvr') {
-      this.dropActionName = 'edit-mvr';
-    } else if (any.type === 'delete-item' && action === 'mvr') {
-      this.dropActionName = 'delete-mvr';
-    }
-    if (any.type === 'edit' && action === 'medical') {
-      this.dropActionName = 'edit-medical';
-    } else if (any.type === 'delete-item' && action === 'medical') {
-      this.dropActionName = 'delete-medical';
-    }
-    switch (this.dropActionName) {
+    const name = dropActionNameDriver(any, action);
+    switch (name) {
       case 'delete-cdl': {
         const mappedEvent = {
           ...any,
@@ -346,7 +325,7 @@ export class DriverDetailsItemComponent
           {
             file_id: any.id,
             id: this.drivers[0].data.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -359,7 +338,7 @@ export class DriverDetailsItemComponent
           {
             file_id: any.id,
             id: this.drivers[0].data.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -371,7 +350,7 @@ export class DriverDetailsItemComponent
           {
             file_id: any.id,
             id: this.drivers[0].data.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;
@@ -383,7 +362,7 @@ export class DriverDetailsItemComponent
           {
             file_id: any.id,
             id: this.drivers[0].data.id,
-            type: this.dropActionName,
+            type: name,
           }
         );
         break;

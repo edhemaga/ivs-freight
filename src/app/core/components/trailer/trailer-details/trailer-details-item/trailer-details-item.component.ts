@@ -1,5 +1,5 @@
 import { TrailerResponse } from './../../../../../../../appcoretruckassist/model/trailerResponse';
-import { ActivatedRoute } from '@angular/router';
+import { dropActionNameTrailerTruck } from '../../../../utils/function-drop.details-page';
 import {
   Component,
   Input,
@@ -122,23 +122,9 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     return item.id;
   }
   public optionsEvent(file: any, data: any, action: string) {
-    if (file.type === 'edit' && action === 'registration') {
-      this.dropActionName = 'edit-registration';
-    } else if (file.type === 'delete-item' && action === 'registration') {
-      this.dropActionName = 'delete-registration';
-    }
-    if (file.type === 'edit' && action === 'inspection') {
-      this.dropActionName = 'edit-inspection';
-    } else if (file.type === 'delete-item' && action === 'inspection') {
-      this.dropActionName = 'delete-inspection';
-    }
+    const name = dropActionNameTrailerTruck(file, action);
 
-    if (file.type === 'edit' && action === 'title') {
-      this.dropActionName = 'edit-title';
-    } else if (file.type === 'delete-item' && action === 'title') {
-      this.dropActionName = 'delete-title';
-    }
-    switch (this.dropActionName) {
+    switch (name) {
       case 'delete-inspection': {
         this.modalService.openModal(
           ConfirmationModalComponent,
@@ -186,7 +172,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );
@@ -200,7 +186,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );
@@ -214,7 +200,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );

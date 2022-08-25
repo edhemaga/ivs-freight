@@ -87,7 +87,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              this.deleteDriverById(res.id);
+              if (res.template === 'driver') {
+                this.deleteDriverById(res.id);
+              }
               break;
             }
             case 'activate': {

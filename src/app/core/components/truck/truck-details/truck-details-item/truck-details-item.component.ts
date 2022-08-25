@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { dropActionNameTrailerTruck } from '../../../../utils/function-drop.details-page';
 import {
   Component,
   Input,
@@ -133,23 +134,8 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   }
 
   public optionsEvent(file: any, data: any, action: string) {
-    if (file.type === 'edit' && action === 'registration') {
-      this.dropActionName = 'edit-registration';
-    } else if (file.type === 'delete-item' && action === 'registration') {
-      this.dropActionName = 'delete-registration';
-    }
-    if (file.type === 'edit' && action === 'inspection') {
-      this.dropActionName = 'edit-inspection';
-    } else if (file.type === 'delete-item' && action === 'inspection') {
-      this.dropActionName = 'delete-inspection';
-    }
-
-    if (file.type === 'edit' && action === 'title') {
-      this.dropActionName = 'edit-title';
-    } else if (file.type === 'delete-item' && action === 'title') {
-      this.dropActionName = 'delete-title';
-    }
-    switch (this.dropActionName) {
+    const name = dropActionNameTrailerTruck(file, action);
+    switch (name) {
       case 'delete-inspection': {
         this.modalService.openModal(
           ConfirmationModalComponent,
@@ -197,7 +183,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );
@@ -211,7 +197,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );
@@ -225,7 +211,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: this.dropActionName,
+            type: name,
             modal: 'trailer',
           }
         );
