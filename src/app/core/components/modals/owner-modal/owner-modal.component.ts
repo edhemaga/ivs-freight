@@ -1,3 +1,5 @@
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TruckModalComponent } from './../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
@@ -15,7 +17,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
   einNumberRegex,
@@ -27,6 +28,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
+import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -79,7 +81,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.getOwnerDropdowns();
     this.onBankSelected();
 
-    if (this.editData) {
+    if (this.editData?.id) {
       this.editOwnerById(this.editData.id);
     }
   }
@@ -159,7 +161,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.id) {
           this.updateOwner(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -176,6 +178,32 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       }
       default: {
         break;
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'truck-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TruckModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        case 'trailer-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TrailerModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }
@@ -207,6 +235,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
             id: res.id,
             name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -262,7 +291,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to save changes for "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to save changes for "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -274,14 +306,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(`"${bussinesName}" deleted` , 'Success');
+          this.notificationService.success(
+            `"${bussinesName}" deleted`,
+            'Success'
+          );
           this.modalService.setModalSpinner({
             action: 'delete',
             status: false,
           });
         },
         error: () => {
-          this.notificationService.error(`Failed to delete "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to delete "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -320,7 +358,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to add "${bussinesName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to add "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }

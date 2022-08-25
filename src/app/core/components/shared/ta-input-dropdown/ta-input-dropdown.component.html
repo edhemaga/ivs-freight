@@ -135,7 +135,7 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -165,7 +165,7 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
             active: option.id === activeItem?.id,
             trailerContainer: option.name === 'Container',
             semisleeper: option.name === 'Semi w/Sleeper',
@@ -277,7 +277,8 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            active: option?.active
+            active: option?.active,
+            'last-active': lastActiveMultiselectItem?.id === option.id
           }"
           (click)="onMultiselectSelect(option, 'multiselect-res-endors')"
           [innerHtml]="
@@ -315,7 +316,7 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
             'active-label':
               option.id === activeItem?.id && labelMode === 'Label'
           }"
@@ -338,7 +339,7 @@
             <div
               class="labels-template-text"
               [ngClass]="{
-                'add-new': options.length === 1 && options[0].name === 'Add New'
+                'add-new': option.name === 'Add New'
               }"
               [innerHtml]="
                 option.name
@@ -363,7 +364,7 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
             active: option.id === activeItem?.id,
             'active-repair-truck-trailer': option?.status === 1
           }"
