@@ -15,6 +15,7 @@ export interface AccountColorResponse {
     id?: number;
     name?: string | null;
     code?: string | null;
+    hoverCode?: string | null;
     count?: number;
 }
 
