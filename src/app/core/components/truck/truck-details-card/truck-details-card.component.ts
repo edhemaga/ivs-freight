@@ -95,6 +95,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     ],
     onHoverAnnotation: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     hoverTimeDisplay: true,
     noChartImage: 'assets/svg/common/yellow_no_data.svg',
   };
@@ -153,6 +155,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     onHoverAnnotation: true,
     hoverTimeDisplay: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     noChartImage: 'assets/svg/common/green_no_data.svg',
   };
 
@@ -208,6 +212,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     hoverTimeDisplay: true,
     stacked: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     noChartImage: 'assets/svg/common/stacked_no_data.svg',
   };
 
