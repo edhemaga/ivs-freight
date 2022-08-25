@@ -276,6 +276,8 @@ model/refreshTokenCommand.ts
 model/registrationModalResponse.ts
 model/registrationResponse.ts
 model/renewCdlCommand.ts
+model/reorderDispatchCommand.ts
+model/reorderDispatchesCommand.ts
 model/repairByUnitResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
@@ -331,6 +333,8 @@ model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
 model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
+model/switchDispatchCommand.ts
+model/switchDispatchesCommand.ts
 model/terminalListResponse.ts
 model/terminalResponse.ts
 model/terminalResponsePagination.ts

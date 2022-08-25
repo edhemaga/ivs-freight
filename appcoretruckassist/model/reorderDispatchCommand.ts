@@ -9,20 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchStatus } from './dispatchStatus';
-import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateDispatchCommand { 
+export interface ReorderDispatchCommand { 
     id?: number;
-    status?: DispatchStatus;
     order?: number;
-    truckId?: number | null;
-    trailerId?: number | null;
-    driverId?: number | null;
-    location?: AddressEntity;
-    hourOfService?: number | null;
-    note?: string | null;
-    loadIds?: Array<number> | null;
 }
 

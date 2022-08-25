@@ -41,7 +41,9 @@ export class ModalService {
     payload: { key: string; value: any };
     component: any;
     size: string;
+    type?: string;
   }) {
+    console.log('Projection modal: ', data);
     const timeout = setTimeout(() => {
       if (data.action === 'open') {
         sessionStorage.setItem(
@@ -49,15 +51,15 @@ export class ModalService {
           JSON.stringify(data.payload.value)
         );
 
-        this.encryptionDecryptionService.setLocalStorage(
-          data.payload.key,
-          data.payload.value
-        );
+        // this.encryptionDecryptionService.setLocalStorage(
+        //   data.payload.key,
+        //   data.payload.value
+        // );
 
         this.openModal(
           data.component,
           { size: data.size },
-          { canOpenModal: true, key: data.payload.key }
+          { canOpenModal: true, key: data.payload.key, type: data.type }
         );
       }
 
@@ -65,7 +67,10 @@ export class ModalService {
         this.openModal(
           data.component,
           { size: data.size },
-          { storageData: JSON.parse(sessionStorage.getItem(data.payload.key)) }
+          {
+            storageData: JSON.parse(sessionStorage.getItem(data.payload.key)),
+            type: data.type,
+          }
         );
         sessionStorage.removeItem(data.payload.key);
       }

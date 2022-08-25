@@ -105,6 +105,7 @@
           color: #536bc2;
           font-weight: 600;
           transition: all 0.3s ease-in-out;
+          position: relative;
 
           &:hover {
             color: #3551b7;
@@ -114,6 +115,19 @@
             color: #536bc2;
             font-weight: 600 !important;
             transition: all 0.3s ease-in-out;
+          }
+
+          &.add-new-divider {
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: 0;
+              left: 0px;
+              height: 2px;
+              width: 100%;
+              background-color: #f3f3f3;
+              border-radius: 1px;
+            }
           }
         }
 
@@ -184,7 +198,7 @@
             content: "";
             position: absolute;
             bottom: 0;
-            left: 0;
+            left: 0px;
             height: 2px;
             width: 100%;
             background-color: #f3f3f3;
@@ -514,6 +528,11 @@
 
       &.w-col-166 {
         width: 166px;
+      }
+
+      &.w-col-165 {
+        width: 165px;
+        max-height: 304px;
       }
 
       &.w-col-164 {

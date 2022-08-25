@@ -2,6 +2,7 @@ import { debounceTime } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -34,7 +35,7 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
-  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
@@ -147,6 +148,15 @@ export class TaInputDropdownComponent
         }, 150);
         clearTimeout(timeout);
       });
+    }
+  }
+
+  ngAfterViewInit() {
+    if (this.inputConfig.autoFocus) {
+      const timeout = setTimeout(() => {
+        this.popoverRef.open();
+        clearTimeout(timeout);
+      }, 450);
     }
   }
 

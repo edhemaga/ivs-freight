@@ -32,6 +32,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
+import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -222,6 +223,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         if (data.action === 'delete' && this.editData) {
           this.deleteTrailerById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: 'Trailer',
+          });
+          break;
+        }
+        default: {
+          break;
         }
       }
     }
@@ -560,7 +579,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               value: {
                 ...this.trailerForm.value,
                 selectedTrailerType: this.selectedTrailerType,
-                selectedTruckMake: this.selectedTrailerMake,
+                selectedTrailerMake: this.selectedTrailerMake,
                 selectedColor: this.selectedColor,
                 selectedTrailerLength: this.selectedTrailerLength,
                 selectedOwner: this.selectedOwner,

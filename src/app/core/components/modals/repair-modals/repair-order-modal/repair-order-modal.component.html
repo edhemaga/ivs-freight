@@ -32,8 +32,11 @@
           label: 'Unit',
           isDropdown: true,
           isRequired: true,
-          dropdownWidthClass: 'w-col-129'
+          dropdownWidthClass: 'w-col-129',
+          autoFocus: !editData?.type?.includes('edit') ? true : false
         }"
+        [canAddNew]="true"
+        [canOpenModal]="true"
         [options]="labelsUnit"
         [activeItem]="selectedUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
@@ -132,6 +135,8 @@
             isRequired: selectedHeaderTab === 1,
             dropdownWidthClass: 'w-col-686'
           }"
+          [canAddNew]="true"
+          [canOpenModal]="true"
           [options]="labelsRepairShop"
           [activeItem]="selectedRepairShop"
           (selectedItem)="onSelectDropDown($event, 'repair-shop')"

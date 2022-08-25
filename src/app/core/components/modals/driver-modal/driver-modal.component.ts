@@ -796,6 +796,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('soloDriver').patchValue(false);
           this.driverForm.get('teamDriver').patchValue(false);
           this.driverForm.get('useTruckAssistAch').patchValue(false);
+          this.isBankSelected = false;
           this.selectedBank = null;
           this.selectedPayType = null;
         } else {
@@ -812,16 +813,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private einNumberChange() {
     this.driverForm
       .get('ein')
-      .valueChanges.pipe(
-        debounceTime(2000),
-        distinctUntilChanged(),
-        untilDestroyed(this)
-      )
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value.length === 10) {
+        if (value?.length === 10) {
           this.loadingOwnerEin = true;
           this.driverTService
-            .checkOwnerEinNumber(value)
+            .checkOwnerEinNumber(value.toString())
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {
