@@ -47,8 +47,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
 
-    console.log(this.editData);
-
     if (this.editData?.action?.includes('unit-pm')) {
       this.editData = {
         ...this.editData,
@@ -356,9 +354,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               item.logoName.includes('custom') ? 'new-pm' : null
             );
           });
-
-          console.log(res.pagination.data);
-          console.log(this.defaultPMs, this.newPMs);
         },
         error: () => {
           this.notificationService.error(
@@ -627,41 +622,58 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   private getPMList() {
-    switch (this.editData.type) {
-      case 'new': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckList();
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerList();
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-        break;
+    // Global List
+    if (
+      this.editData.type === 'new' ||
+      ['Truck', 'Trailer'].includes(this.editData.type)
+    ) {
+      console.log('USO SAM U LISTU');
+      if (this.editData.type === 'Truck') {
+        this.editData = {
+          ...this.editData,
+          type: 'new',
+          header: 'Truck',
+          action: 'generic-pm',
+        };
       }
-      case 'edit': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckUnit(this.editData.id);
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerUnit(this.editData.id);
-            break;
-          }
-          default: {
-            break;
-          }
-        }
-        break;
+
+      if (this.editData.type === 'Trailer') {
+        this.editData = {
+          ...this.editData,
+          type: 'new',
+          header: 'Trailer',
+          action: 'generic-pm',
+        };
       }
-      default: {
-        break;
+
+      switch (this.editData.header) {
+        case 'Truck': {
+          this.getPMTruckList();
+          break;
+        }
+        case 'Trailer': {
+          this.getPMTrailerList();
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
+    // Per Unit list
+    else {
+      switch (this.editData.header) {
+        case 'Truck': {
+          this.getPMTruckUnit(this.editData.id);
+          break;
+        }
+        case 'Trailer': {
+          this.getPMTrailerUnit(this.editData.id);
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }

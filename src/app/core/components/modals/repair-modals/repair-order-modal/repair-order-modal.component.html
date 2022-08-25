@@ -184,7 +184,7 @@
               class="common-fake-table-card"
               [ngClass]="{
                 'card-item-active':
-                  !selectedPM[ind]?.logoName.includes('default_pm')
+                  !selectedPM[ind]?.logoName?.includes('default_pm')
               }"
             >
               <p>

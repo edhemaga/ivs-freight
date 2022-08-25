@@ -814,7 +814,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       }
 
       clearTimeout(timeout);
-    }, 50);
+    }, 200);
   }
 
   private editRepairById(id: number) {
@@ -918,7 +918,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 );
                 this.selectedPMIndex = 0;
 
-                if (this.selectedHeaderTab) {
+                if (this.selectedHeaderTab === 1) {
                   this.inputService.changeValidators(
                     this.repairOrderForm.get('odometer')
                   );
@@ -958,7 +958,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           },
         });
       clearTimeout(timeout);
-    }, 100);
+    }, 200);
   }
 
   private premmapedItems() {

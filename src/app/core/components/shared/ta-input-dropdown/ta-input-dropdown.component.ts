@@ -488,9 +488,6 @@ export class TaInputDropdownComponent
       name: this.getSuperControl.value,
     };
 
-    // this.originalOptions = [...this.originalOptions, this.activeItem];
-    // this.options = this.originalOptions;
-
     this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
     if (this.inputConfig.dropdownLabel) {
