@@ -250,6 +250,7 @@
     position: relative;
     display: flex;
     align-items: center;
+    height: 22px;
     padding: 4px;
     margin-bottom: 2px;
     border-radius: 2px;
@@ -315,8 +316,49 @@
 
         .route-row-location {
             &.add-new-stop {
+                &.input-color-1 {
+                    input {
+                        background-color: #596FE81A !important;
+                    }
+                }
+                &.input-color-2 {
+                    input {
+                        background-color: #FD952D1A !important;
+                    }
+                }
+                &.input-color-3 {
+                    input {
+                        background-color: #ED445E1A !important;
+                    }
+                }
+                &.input-color-4 {
+                    input {
+                        background-color: #2FA5581A !important;
+                    }
+                }
+                &.input-color-5 {
+                    input {
+                        background-color: #7F39AA1A !important;
+                    }
+                }
+                &.input-color-6 {
+                    input {
+                        background-color: #38BDEB1A !important;
+                    }
+                }
+                &.input-color-7 {
+                    input {
+                        background-color: #F276EF1A !important;
+                    }
+                }
+                &.input-color-8 {
+                    input {
+                        background-color: #8D6E631A !important;
+                    }
+                }
+
                 input {
-                    background-color: #F3F3F3 !important;
+                    //background-color: #F3F3F3 !important;
                 }
     
                 label {
@@ -407,6 +449,8 @@
         width: 14px;
         min-width: 14px;
         margin-right: 16px;
+
+        user-select: none;
 
         z-index: 2;
     }
@@ -637,6 +681,11 @@
         cursor: pointer;
         transform: translateX(-50%);
     }
+
+    &.stop-picker-icon {
+        top: -50px !important;
+        transform: translateX(-28px);
+    }
 }
 
 .si-pointer-bottom, .si-close-button {
@@ -720,6 +769,14 @@
         top: -17px;
 
         transform: translateX(15px);
+    }
+
+    &.stop-picker-delete {
+        left: auto;
+        right: 50%;
+
+        background: #EF5350 !important;
+        transform: translateX(-26px);
     }
 
     .stop-picker-address-text {

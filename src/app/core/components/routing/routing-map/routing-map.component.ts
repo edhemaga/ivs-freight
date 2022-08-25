@@ -286,6 +286,7 @@ export class RoutingMapComponent implements OnInit {
   directionsDisplay = new google.maps.DirectionsRenderer();
   directionsService = new google.maps.DirectionsService();
   placesService: any;
+  geocoder = new google.maps.Geocoder();
 
   routeProperties: any = {
     'legTime': {
@@ -520,42 +521,148 @@ export class RoutingMapComponent implements OnInit {
       );
     }
 
-    // map.addListener('click', (e) => {
-    //   if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
+    map.addListener('click', (e) => {
+      if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
 
-    //   if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
-    //     var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
-    //     var request = {
-    //       location: coords,
-    //       radius: 50000,
-    //       type: 'locality'
-    //     }
+      if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
+        mainthis.geocoder.geocode({
+          'latLng': e.latLng
+        }, function(results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            var sortedResults = results.sort((a, b) => {
+              return b.address_components.length - a.address_components.length;
+            });
+
+            var result = sortedResults[0];
+
+            if (result) {
+              //console.log('geocoder result', result);
+
+              // address:
+              //     address: "1220 E Hill St, Signal Hill, CA 90755, USA"
+              //     city: "Signal Hill"
+              //     country: "US"
+              //     state: "CA"
+              //     stateShortName: "CA"
+              //     street: "East Hill Street"
+              //     streetNumber: "1220"
+              //     zipCode: "90755"
+
+                var address = {
+                  address: "",
+                  city: "",
+                  country: "",
+                  state: "",
+                  stateShortName: "",
+                  street: "",
+                  streetNumber: "",
+                  zipCode: ""
+                };
+
+                result.address_components.map((item, index) => {
+                  if ( item.types.indexOf('locality') > -1 ) {
+                    address.city = item.long_name;
+                  } else if ( item.types.indexOf('country') > -1 ) {
+                    address.country = item.short_name;
+                  } else if ( item.types.indexOf('administrative_area_level_1') > -1 ) {
+                    address.state = item.short_name;
+                    address.stateShortName = item.short_name;
+                  } else if ( item.types.indexOf('route') > -1 ) {
+                    address.street = item.long_name;
+                  } else if ( item.types.indexOf('street_number') > -1 ) {
+                    address.streetNumber = item.short_name;
+                  } else if ( item.types.indexOf('postal_code') > -1 ) {
+                    address.zipCode = item.short_name;
+                  }
+                });
+
+                if ( result.formatted_address ) {
+                  address.address = result.formatted_address;
+                }
+
+                if ( address.city && address.zipCode ) {
+                  mainthis.stopPickerLocation = {
+                    'address': address,
+                    'cityAddress': address.city + ', ' + address.state + ' ' + address.zipCode,
+                    'lat': result.geometry.location.lat(),
+                    'long': result.geometry.location.lng(),
+                    'empty': null
+                  };
+
+                  console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
+  
+                  mainthis.ref.detectChanges();
+                }
+            }
+          }
+        });
+
+        // var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
+        // var request = {
+        //   location: coords,
+        //   radius: 50000,
+        //   type: ['address', 'postal_code']
+        // }
         
-    //     mainthis.placesService.nearbySearch(request, (results, status) => {
-    //       console.log('search', results, status);
+        // mainthis.placesService.nearbySearch(request, (results, status) => {
+        //   console.log('search', results, status);
 
-    //       if ( status == 'OK' && results.length && results[0].place_id ) {
-    //         let placeId = results[0].place_id;
+        //   if ( status == 'OK' && results.length && results[0].place_id ) {
+        //     let placeId = results[0].place_id;
 
-    //         mainthis.placesService.getDetails({
-    //           placeId: placeId
-    //           }, function (result, status) {
-    //             console.log(result);
-    //             mainthis.stopPickerLocation = {
-    //               'address': result.formatted_address,
-    //               'lat': result.geometry.location.lat(),
-    //               'long': result.geometry.location.lng(),
-    //               'empty': null
-    //             };
+        //     mainthis.placesService.getDetails({
+        //       placeId: placeId
+        //       }, function (result, status) {
+        //         console.log(result);
 
-    //             console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
+        //         // address:
+        //         //   address: "1220 E Hill St, Signal Hill, CA 90755, USA"
+        //         //   city: "Signal Hill"
+        //         //   country: "US"
+        //         //   state: "CA"
+        //         //   stateShortName: "CA"
+        //         //   street: "East Hill Street"
+        //         //   streetNumber: "1220"
+        //         //   zipCode: "90755"
 
-    //             mainthis.ref.detectChanges();
-    //           });
-    //       }
-    //     });
-    //   }
-    // });
+        //         var address = {
+        //           address: "",
+        //           city: "",
+        //           country: "",
+        //           state: "",
+        //           stateShortName: "",
+        //           street: "",
+        //           streetNumber: "",
+        //           zipCode: ""
+        //         };
+
+        //         result.addressComponents.map((item, index) => {
+        //           if ( item.types.indexOf('locality') > -1 ) {
+        //             address.city = item.longName;
+        //           } else if ( item.types.indexOf('country') > -1 ) {
+        //             address.country = item.shortName;
+        //           } else if ( item.types.indexOf('administrative_area_level_1') > -1 ) {
+        //             address.state = item.shortName;
+        //             address.stateShortName = item.shortName;
+        //           }
+        //         });
+
+        //         mainthis.stopPickerLocation = {
+        //           'address': result.formatted_address,
+        //           //'cityAddress': event.address.city + ', ' + event.address.state + ' ' + event.address.zipCode,
+        //           'lat': result.geometry.location.lat(),
+        //           'long': result.geometry.location.lng(),
+        //           'empty': null
+        //         };
+
+        //         console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
+
+        //         mainthis.ref.detectChanges();
+        //       });
+        //   }
+        // });
+      }
+    });
   }
 
   mapPlacesSearch(results, status) {
@@ -927,15 +1034,17 @@ export class RoutingMapComponent implements OnInit {
 
       var mapForm = event.data;
 
-      var distanceUnitChanged = false;
-      if ( this.tableData[this.selectedMapIndex].distanceUnit != mapForm.get('distanceUnit').value ) distanceUnitChanged = true;
+      var infoTypeChanged = false;
+      if ( this.tableData[this.selectedMapIndex].distanceUnit != mapForm.get('distanceUnit').value ) infoTypeChanged = true;
+      if ( this.tableData[this.selectedMapIndex].addressType != mapForm.get('addressType').value ) infoTypeChanged = true;
+      if ( this.tableData[this.selectedMapIndex].borderType != mapForm.get('borderType').value ) infoTypeChanged = true;
 
       this.tableData[this.selectedMapIndex].title = mapForm.get('mapName').value;
       this.tableData[this.selectedMapIndex].distanceUnit = mapForm.get('distanceUnit').value;
       this.tableData[this.selectedMapIndex].addressType = mapForm.get('addressType').value;
       this.tableData[this.selectedMapIndex].borderType = mapForm.get('borderType').value;
 
-      if ( distanceUnitChanged ) {
+      if ( infoTypeChanged ) {
         this.routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
@@ -1054,11 +1163,12 @@ export class RoutingMapComponent implements OnInit {
     console.log('addNewStop', loadType, this.focusedRouteIndex);
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
 
-    if ( this.stopPickerLocation.editIndex ) {
+    if ( this.stopPickerLocation.editIndex != null ) {
       this.routes[this.focusedRouteIndex].stops[this.stopPickerLocation.editIndex].empty = this.stopPickerLocation.empty;
     } else {
       this.routes[this.focusedRouteIndex].stops.push({
         'address': this.stopPickerLocation.address,
+        'cityAddress': this.stopPickerLocation.cityAddress,
         'leg': '0',
         'total': '0',
         'time': '0',
@@ -1082,7 +1192,7 @@ export class RoutingMapComponent implements OnInit {
   }
 
   stopMarkerClick(event, routeIndex, stopIndex) {
-    if ( this.focusedRouteIndex && this.stopPickerActive) {
+    if ( this.focusedRouteIndex != null && this.stopPickerActive) {
       this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
       this.stopPickerLocation.editIndex = stopIndex;
     } else {
@@ -1438,5 +1548,18 @@ export class RoutingMapComponent implements OnInit {
         clearInterval(interval);
       }, 200);
     }
+  }
+  
+  deleteStopPickerLocation(event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if ( this.stopPickerLocation.editIndex != null ) {
+      this.routes[this.focusedRouteIndex].stops.splice(this.stopPickerLocation.editIndex, 1);
+    }
+    
+    this.stopPickerLocation = {};
+
+    this.ref.detectChanges();
   }
 }

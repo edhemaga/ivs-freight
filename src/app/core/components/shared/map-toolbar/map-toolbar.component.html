@@ -10,18 +10,20 @@
   </div>
 
   <!-- TABS -->
-  <div
-    *ngFor="let data of tableData"
-    class="tab-container"
-    [ngClass]="{
-      'tab-inactive': selectedTab !== data.field,
-      'tab-active': selectedTab === data.field
-    }"
-    (click)="onSelectTab(data)"
-  >
-    <div class="tab">
-      <div class="data-count">{{ data.length }}</div>
-      <div class="tab-title">{{ data.title }}</div>
+  <div class="tab-wrapper">
+    <div
+      *ngFor="let data of tableData"
+      class="tab-container"
+      [ngClass]="{
+        'tab-inactive': selectedTab !== data.field,
+        'tab-active': selectedTab === data.field
+      }"
+      (click)="onSelectTab(data)"
+    >
+      <div class="tab">
+        <div class="data-count">{{ data.length }}</div>
+        <div class="tab-title">{{ data.title }}</div>
+      </div>
     </div>
   </div>
 
