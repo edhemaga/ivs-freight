@@ -113,6 +113,8 @@ export class DriverDetailsCardComponent
     chartWidth: '417',
     chartHeight: '130',
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     dataLabels: [
       '',
       'NOV',

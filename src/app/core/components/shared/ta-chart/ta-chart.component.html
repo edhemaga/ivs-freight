@@ -13,7 +13,7 @@
     </div>
   </div>
 </div>
-<div class="main_chart_container" [class.remove_chart_margin]="removeChartMargin" [class.add_inside]="hoveringStatus && hoverTimeDisplay">
+<div class="main_chart_container" (mouseleave)="showHoverData = false" [class.remove_chart_margin]="removeChartMargin" [class.add_inside]="hoveringStatus && hoverTimeDisplay">
   <div class="no_chart_data" *ngIf="noChartData">
     <svg-icon src={{noChartImage}}></svg-icon>
   </div>

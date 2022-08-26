@@ -148,7 +148,7 @@
   <div
     class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
     [@.disabled]="animationsDisabled"
-    [ngClass]="{ active: isCardOpen, scroll: hasScrollBody }"
+    [ngClass]="{ active: isCardOpen, scroll: hasScrollBody, unopened: !isCardOpen }"
   >
     <div
       [@showHideCardBody]="isCardOpen ? 'true' : 'false'"

@@ -28,6 +28,7 @@ import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 
 @UntilDestroy()
 @Component({
@@ -75,7 +76,8 @@ export class CustomerTableComponent
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit(): void {
@@ -405,12 +407,12 @@ export class CustomerTableComponent
         : '',
       textUnpaid: 'Nije Povezano',
       textOnetoTwentyDays: 'Nije Povezano',
-      brokerRaiting: {
-        hasLiked: false,
-        hasDislike: false,
+      raiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
         likeCount: data?.upCount ? data.upCount : '0',
-        dislikeCount: data?.downCount ? data.downCount : '0'
-      }
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
@@ -431,12 +433,12 @@ export class CustomerTableComponent
       mcNumber: '',
       loadCount: '',
       total: '',
-      shipperRaiting: {
-        hasLiked: false,
-        hasDislike: false,
+      raiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
         likeCount: data?.upCount ? data.upCount : '0',
-        dislikeCount: data?.downCount ? data.downCount : '0'
-      }
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
@@ -584,18 +586,12 @@ export class CustomerTableComponent
 
   // Table Body Actions
   onTableBodyActions(event: any) {
+    let businessName = '';
+
     console.log('onTableBodyActions');
     console.log(event);
 
     // Edit Call
-    let businessName = '';
-
-    if (!businessName) {
-      businessName = event.data.businessName;
-    } else {
-      businessName = businessName + ', ' + event.data.businessName;
-    }
-
     if (event.type === 'show-more') {
       this.backFilterQuery.pageIndex++;
 
@@ -628,6 +624,8 @@ export class CustomerTableComponent
     }
     // Delete Call
     else if (event.type === 'delete') {
+      businessName = this.getBusinessName(event, businessName);
+
       // Delete Broker Call
       if (this.selectedTab === 'active') {
         this.brokerService
@@ -652,6 +650,8 @@ export class CustomerTableComponent
       }
       // Delete Shipper Call
       else {
+        businessName = this.getBusinessName(event, businessName);
+
         this.shipperService
           .deleteShipperById(event.id)
           .pipe(untilDestroyed(this))
@@ -673,8 +673,48 @@ export class CustomerTableComponent
           });
       }
     }
+    // Raiting
+    else if (event.type === 'raiting') {
+      let raitingData = {
+        entityTypeRatingId: this.selectedTab === 'active' ? 1 : 3,
+        entityTypeId: event.data.id,
+        thumb: event.subType === 'like' ? 1 : -1,
+      };
 
-    //businessName = '';
+      this.reviewRatingService
+        .addRating(raitingData)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.viewData = this.viewData.map((data: any) => {
+            if (data.id === event.data.id) {
+              data.actionAnimation = 'update';
+              data.raiting = {
+                hasLiked: res.currentCompanyUserRating === 1,
+                hasDislike: res.currentCompanyUserRating === -1,
+                likeCount: res?.upCount ? res.upCount : '0',
+                dislikeCount: res?.downCount ? res.downCount : '0',
+              };
+            }
+
+            return data;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        });
+    }
+  }
+
+  // Get Business Name
+  getBusinessName(event: any, businessName: string) {
+    if (!businessName) {
+      return (businessName = event.data.businessName);
+    } else {
+      return (businessName = businessName + ', ' + event.data.businessName);
+    }
   }
 
   // Add Shipper Or Broker To Viewdata
