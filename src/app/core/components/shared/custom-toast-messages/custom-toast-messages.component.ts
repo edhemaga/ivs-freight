@@ -36,7 +36,7 @@ const routeSpecify = {
       transition(
         'inactive => active',
         animate(
-          '150ms ease-out',
+          '150ms ease-in',
           keyframes([
             style({
               top: '100px',
@@ -51,7 +51,7 @@ const routeSpecify = {
       transition(
         'active => removed',
         animate(
-          '150ms ease-out',
+          '150ms ease',
           keyframes([
             style({
               opacity: 1,

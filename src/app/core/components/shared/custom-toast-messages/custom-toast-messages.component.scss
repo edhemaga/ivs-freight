@@ -7,6 +7,9 @@
     pointer-events: all;
     font-family: 'Montserrat', sans-serif !important;
     margin-bottom: 10px;
+    user-select: none;
+
+    
 
     .toast-title{
         font-size: 11px;
@@ -21,10 +24,16 @@
         font-size: 14px; 
         color: #FFFFFF;
         line-height: 18px;
+        opacity: 0.7;
+        font-weight: 600;
 
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
+    }
+
+    .errorMessage{
+        width: 75%;
     }
 
     .closeToastrBtn{
@@ -39,7 +48,6 @@
         opacity: 0.7;
         border-radius: 2px;
         cursor: pointer;
-
         svg {
             path {
               fill: #FFFFFF;
@@ -62,7 +70,7 @@
 
     .retryButton{
        // display: none;
-        right: 35px;
+        right: 41px;
 
         svg {
             height: 16.2px;
@@ -79,6 +87,16 @@
         align-items: center;
         height: 32px;
         width: 32px;
+    }
+
+    &:hover{
+        .toast-title{
+            opacity: 1;
+        }
+
+        .toast-message{
+            opacity: 1;
+        }
     }
 }
 

@@ -9,7 +9,7 @@ const notificationOptions: Partial<IndividualConfig> = {
   tapToDismiss: false,
   timeOut: 3000,
   extendedTimeOut: 3000,
-  easeTime: 150,
+  easeTime: 100,
   enableHtml: true,
   toastClass: ''
 }
