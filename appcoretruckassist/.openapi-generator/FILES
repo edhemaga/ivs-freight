@@ -21,6 +21,7 @@ api/event.service.ts
 api/geolocation.service.ts
 api/inspection.service.ts
 api/load.service.ts
+api/map.service.ts
 api/medical.service.ts
 api/mvr.service.ts
 api/owner.service.ts
@@ -30,8 +31,10 @@ api/ratingReview.service.ts
 api/registration.service.ts
 api/repair.service.ts
 api/repairShop.service.ts
+api/route.service.ts
 api/routing.service.ts
 api/shipper.service.ts
+api/stop.service.ts
 api/terminal.service.ts
 api/test.service.ts
 api/title.service.ts
@@ -122,6 +125,7 @@ model/createInsurancePolicyAddonCommand.ts
 model/createInsurancePolicyCommand.ts
 model/createLoadCommand.ts
 model/createLoadTemplateCommand.ts
+model/createMapCommand.ts
 model/createMedicalCommand.ts
 model/createMvrCommand.ts
 model/createOffDutyLocationCommand.ts
@@ -133,6 +137,7 @@ model/createRepairCommand.ts
 model/createRepairShopCommand.ts
 model/createResponse.ts
 model/createReviewCommand.ts
+model/createRouteCommand.ts
 model/createShipperCommand.ts
 model/createTerminalCommand.ts
 model/createTestCommand.ts
@@ -186,8 +191,11 @@ model/getCompanyContactListResponse.ts
 model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
+model/getMapListResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
+model/getRouteListResponse.ts
+model/getStopListResponse.ts
 model/getTestModalResponse.ts
 model/getTrailerModalResponse.ts
 model/getTruckModalResponse.ts
@@ -227,6 +235,9 @@ model/loginMobileCommand.ts
 model/longLat.ts
 model/mapMarker.ts
 model/mapMarkerListResponse.ts
+model/mapMinimalResponse.ts
+model/mapMinimalResponsePagination.ts
+model/mapResponse.ts
 model/medicalResponse.ts
 model/models.ts
 model/multipleChangeBanFlagCommand.ts
@@ -304,6 +315,8 @@ model/repairUnitType.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
+model/routeResponse.ts
+model/routeResponsePagination.ts
 model/routingResponse.ts
 model/selectCompanyCommand.ts
 model/selectCompanyResponse.ts
@@ -333,6 +346,8 @@ model/statusSetMultipleBrokerCommand.ts
 model/statusSetMultipleCompanyUserCommand.ts
 model/statusSetMultipleDriverCommand.ts
 model/statusSetMultipleShipperCommand.ts
+model/stopResponse.ts
+model/stopResponsePagination.ts
 model/switchDispatchCommand.ts
 model/switchDispatchesCommand.ts
 model/terminalListResponse.ts
@@ -401,6 +416,7 @@ model/updateInsurancePolicyCommand.ts
 model/updateLoadCommand.ts
 model/updateLoadStatusCommand.ts
 model/updateLoadTemplateCommand.ts
+model/updateMapCommand.ts
 model/updateOffDutyLocationCommand.ts
 model/updateOwnerCommand.ts
 model/updateOwnerHistoryCommand.ts
@@ -415,7 +431,9 @@ model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
+model/updateRouteCommand.ts
 model/updateShipperCommand.ts
+model/updateStopCommand.ts
 model/updateTerminalCommand.ts
 model/updateTitleCommand.ts
 model/updateTodoCommand.ts
