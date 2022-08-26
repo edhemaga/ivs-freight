@@ -171,15 +171,16 @@ export class TaInputComponent
   }
 
   ngAfterViewInit() {
-    if (
-      this.inputConfig.autoFocus &&
-      ['datepicker,timepicker'].includes(this.inputConfig.name)
-    ) {
-      const timeout = setTimeout(() => {
-        this.t2.open();
-        clearTimeout(timeout);
-      }, 450);
-    }
+    const timeout = setTimeout(() => {
+      if (
+        this.inputConfig.autoFocus &&
+        ['datepicker', 'timepicker'].includes(this.inputConfig.name) &&
+        !this.getSuperControl.value
+      ) {
+        this.toggleDropdownOptions();
+      }
+      clearTimeout(timeout);
+    }, 600);
   }
 
   public setTimeDateInput(date) {

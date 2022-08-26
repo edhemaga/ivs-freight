@@ -774,7 +774,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     const timeout = setTimeout(() => {
       this.getRepairDropdowns();
 
-      setTimeout(() => {
+      const timeout2 = setTimeout(() => {
         this.repairOrderForm.patchValue({
           repairType: res.repairType,
           unitType: res.unitType,
@@ -821,6 +821,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.selectedPMIndex = 0;
           }
         }
+        clearTimeout(timeout2);
       }, 100);
 
       clearTimeout(timeout);

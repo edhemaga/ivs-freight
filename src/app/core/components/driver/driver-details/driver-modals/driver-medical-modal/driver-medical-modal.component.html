@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Medical' : 'Edit Medical'"
+  [modalTitle]="
+    editData?.type !== 'edit-medical' ? 'Add Medical' : 'Edit Medical'
+  "
   [editData]="editData"
   [editName]="modalName"
   [isModalValid]="medicalForm.valid"
@@ -19,7 +21,7 @@
             placeholderIcon: 'date',
             isRequired: true,
             customClass: 'datetimeclass',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit-medical' ? true : false
           }"
         ></app-ta-input>
       </div>

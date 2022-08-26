@@ -8,7 +8,7 @@
 >
   <form [formGroup]="mvrForm" class="form-container">
     <div class="row first-row last-row">
-      <div class="col-12">
+      <div class="col-6">
         <app-ta-input
           formControlName="issueDate"
           [inputConfig]="{
@@ -22,6 +22,22 @@
             autoFocus: editData?.type !== 'edit-mvr' ? true : false
           }"
         ></app-ta-input>
+      </div>
+      <div class="col-6">
+        <app-ta-input-dropdown
+          formControlName="cdlId"
+          [inputConfig]="{
+            name: 'Input Dropdown',
+            type: 'text',
+            label: 'CDL',
+            isRequired: true,
+            isDropdown: true,
+            dropdownWidthClass: 'w-col-229'
+          }"
+          [options]="cdls"
+          [activeItem]="selectedCdl"
+          (selectedItem)="onSelectDropdown($event, 'cdl')"
+        ></app-ta-input-dropdown>
       </div>
     </div>
     <div class="ta-card-body-overflow-none">

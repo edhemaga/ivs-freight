@@ -431,10 +431,22 @@ export class TaInputDropdownComponent
 
       // Normal Dropdown option selected
       else {
+        this.inputConfig = {
+          ...this.inputConfig,
+          blackInput: true,
+        };
         this.activeItem = option;
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
+
+        const timeout = setTimeout(() => {
+          this.inputConfig = {
+            ...this.inputConfig,
+            blackInput: false,
+          };
+          clearTimeout(timeout);
+        }, 50);
       }
     }
   }
