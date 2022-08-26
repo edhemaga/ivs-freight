@@ -164,13 +164,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
         }
 
         if (!['save and add new', 'resend email'].includes(data.action)) {
-          if (this.timeout) {
-            clearTimeout(this.timeout);
-          }
-          this.timeout = setTimeout(() => {
+          const timeout = setTimeout(() => {
+            $('.pac-container').remove();
             this.ngbActiveModal.close();
-            clearTimeout(this.timeout);
-          }, 1000);
+            clearTimeout(timeout);
+          }, 50);
         }
       });
   }
@@ -240,10 +238,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
       case 'close': {
         this.action.emit({ action: action, bool: false });
         $('.pac-container').remove();
-        this.timeout = setTimeout(() => {
-          this.ngbActiveModal.dismiss();
-          clearTimeout(this.timeout);
-        }, 50);
+        this.ngbActiveModal.dismiss();
         this.uploadFileService.visibilityDropZone(false);
         this.uploadFileService.uploadFiles(null);
         break;

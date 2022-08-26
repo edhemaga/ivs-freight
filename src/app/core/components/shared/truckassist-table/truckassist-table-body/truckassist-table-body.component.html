@@ -478,23 +478,6 @@
               </div>
             </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -693,29 +676,81 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
+            </div>
+
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->
@@ -883,53 +918,6 @@
               <div class="pickup-and-delivery-container">
                 <div class="delivery-count">{{ row.deliveryCount }}</div>
                 <div class="loaction">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
-                <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
-                >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
               </div>
             </div>
 
@@ -1376,6 +1364,49 @@
               </div>
             </div>
 
+            <!-- RAITING COLUMN -->
+            <div
+              class="td-content"
+              *ngIf="
+                !column.hidden &&
+                column.ngTemplate === 'rating' &&
+                !column.isPined
+              "
+              [ngStyle]="{
+                width: column.width + 'px'
+              }"
+            >
+              <div class="raiting-container">
+                <div
+                  class="raiting-icon"
+                  (click)="onLike(row)"
+                  [ngClass]="{
+                    'did-like-icon': row[column.field].hasLiked,
+                    'like-icon': !row[column.field].hasLiked
+                  }"
+                ></div>
+                <div
+                  class="raiting-counter-container"
+                  (click)="onOpenReviews(row)"
+                >
+                  <div class="raiting-counter like-counter">
+                    {{ row[column.field].likeCount }}
+                  </div>
+                  <div class="raiting-counter dislike-counter">
+                    {{ row[column.field].dislikeCount }}
+                  </div>
+                </div>
+                <div
+                  class="raiting-icon"
+                  (click)="onDislike(row)"
+                  [ngClass]="{
+                    'did-dislike-icon': row[column.field].hasDislike,
+                    'dislike-icon': !row[column.field].hasDislike
+                  }"
+                ></div>
+              </div>
+            </div>
+
             <!-- LVL COLUMN -->
             <div
               class="td-content set-center"
@@ -1524,23 +1555,6 @@
               </div>
             </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
             <!-- TOTAL  COLUMN-->
             <div
               class="td-content"
@@ -1678,29 +1692,38 @@
                 'min-width.px': column?.minWidth ? column.minWidth : 'unset'
               }"
             >
-              <svg-icon
-                class="table-password-icon"
+              <div
+                (click)="onShowPassword(row, column)"
+                *ngIf="!row[column.field].apiCallStarted"
+                class="password-icon"
                 [ngClass]="{
-                  'table-active-password': showPassword[i]
+                  'password-hidden': row[column.field].hiden,
+                  'password-showing': !row[column.field].hiden
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
+              ></div>
 
               <svg-icon
                 class="password-spiner"
-                *ngIf="loadingPassword === i"
+                *ngIf="row[column.field].apiCallStarted"
                 src="/assets/svg/truckassist-table/loading-spinner.svg"
               ></svg-icon>
+
+              <div
+                class="password-text-crypted"
+                *ngIf="
+                  row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+                [innerHtml]="row[column.field].hidemCharacters"
+              ></div>
+
+              <div
+                class="password-text-showing"
+                *ngIf="
+                  !row[column.field].hiden && !row[column.field].apiCallStarted
+                "
+              >
+                {{ row[column.field].password }}
+              </div>
             </div>
 
             <!-- LABLE COLUMN -->
@@ -1884,53 +1907,6 @@
               </div>
             </div>
 
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
-                <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
-                >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
-              </div>
-            </div>
-
             <!-- STATE TEXT COLUMN -->
             <div
               *ngIf="
@@ -1962,16 +1938,30 @@
                 !column.isPined
               "
             >
+              <!-- Only For Applicant Status -->
+              <div
+                class="applicant-status-container"
+                [class]="row[column.field]"
+                *ngIf="
+                  row[column.field]?.isApplicant &&
+                  row[column.field]?.hideProgres &&
+                  row[column.field]?.class
+                "
+              >
+                <div class="status-icon" [class]="row[column.field].class"></div>
+              </div>
+
+              <!-- Progress -->
               <div
                 class="table-progress-cotnainer"
-                *ngIf="row[column.field]?.expirationDays"
+                *ngIf="row[column.field]?.expirationDays && !row[column.field]?.hideProgres"
               >
                 <!-- Progres Bar  -->
                 <div
                   class="table-progress-bar-container"
                   [ngClass]="{
                     'bg-expired-container':
-                      row[column.field].percentage === 100,
+                      row[column.field].percentage === 0,
                     'bg-sliver-container':
                       row[column.field].percentage >= 25 &&
                       row[column.field].percentage < 100,
@@ -1981,14 +1971,13 @@
                     'bg-danger-container':
                       row[column.field].percentage > 0 &&
                       row[column.field].percentage < 5,
-                    'bg-inactive-container': !row[column.field].percentage
+                    'bg-inactive-container': row[column.field].percentage === 100
                   }"
                 >
                   <div
                     [ngClass]="{
                       'bg-progress-sliver':
-                        row[column.field].percentage >= 25 &&
-                        row[column.field].percentage < 50,
+                        row[column.field].percentage >= 25,
                       'bg-progress-orange':
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
@@ -2025,7 +2014,7 @@
                   [ngStyle]="{
                     width: column.width - 30 + 'px'
                   }"
-                  *ngIf="row[column.field].percentage === 100"
+                  *ngIf="row[column.field].percentage === 0"
                 >
                   {{ row[column.field].expirationDays }} days ago
                 </div>
@@ -2073,7 +2062,7 @@
           (mouseleave)="hoverActive = -1"
         >
           <td *ngFor="let column of columns">
-            <!-- ATTACHMENTS COLUMN TEMPLATE -->
+            <!-- ATTACHMENTS COLUMN -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
               [ngStyle]="{
@@ -2087,7 +2076,41 @@
               </div>
             </div>
 
-            <!-- NOTE COLUMN TEMPLATE -->
+            <!-- HIRE COLUMN -->
+            <div
+              *ngIf="!column.hidden && column.ngTemplate === 'hire'"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
+              class="td-content"
+            >
+              <div
+                class="hire-icon"
+                (click)="onHire(row)"
+                *ngIf="row[column.field]"
+              ></div>
+            </div>
+
+            <!-- FAVORITE COLUMN -->
+            <div
+              *ngIf="!column.hidden && column.ngTemplate === 'favorite'"
+              [ngStyle]="{
+                width: column.width + 'px',
+                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+              }"
+              class="td-content"
+            >
+              <div
+                (click)="onFavorite(row)"
+                [ngClass]="{
+                  'is-favorite-icon': row[column.field],
+                  'not-favorite-icon': row[column.field]
+                }"
+              ></div>
+            </div>
+
+            <!-- NOTE COLUMN -->
             <div
               *ngIf="!column.hidden && column.ngTemplate === 'note'"
               [ngStyle]="{
@@ -2097,14 +2120,9 @@
               class="td-content set-center"
             >
               <!-- Ovde je komponenta -->
-              <!-- <app-app-note
-                [note]="row?.note ? row.note : ''"
-                [note_expanded]="false"
-                [rowIndex]="i"
-              ></app-app-note> -->
             </div>
 
-            <!-- ACTIONS COLUMN TEMPLATE -->
+            <!-- ACTIONS COLUMN -->
             <div
               class="td-content set-center"
               *ngIf="!column.hidden && column.ngTemplate === 'actions'"

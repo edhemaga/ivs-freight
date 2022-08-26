@@ -31,6 +31,7 @@ import { DatePipe } from '@angular/common';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { RepairTService } from '../state/repair.service';
 import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
+import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 
 @UntilDestroy()
 @Component({
@@ -95,7 +96,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repairTrailerQuery: RepairTrailerQuery,
     private repairService: RepairTService,
     public datePipe: DatePipe,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit(): void {
@@ -541,6 +543,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       isSelected: false,
       textAddress: data?.address?.address ? data.address.address : '',
       shopServices: data?.serviceTypes ? data?.serviceTypes : null,
+      shopRaiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
@@ -763,6 +771,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
+    // Show More 
     if (event.type === 'show-more') {
       this.selectedTab !== 'repair-shop'
         ? this.backFilterQuery.pageIndex++
@@ -771,7 +780,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedTab !== 'repair-shop'
         ? this.repairBackFilter(this.backFilterQuery, false, true)
         : this.shopBackFilter(this.backFilterQuery, false, true);
-    } else if (event.type === 'edit') {
+    } 
+    // Edit
+    else if (event.type === 'edit') {
       switch (this.selectedTab) {
         case 'active': {
           this.modalService.openModal(
@@ -798,7 +809,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           break;
         }
       }
-    } else if (event.type === 'delete-repair') {
+    } 
+    // Delete
+    else if (event.type === 'delete-repair') {
       if (this.selectedTab !== 'repair-shop') {
         this.repairService
           .deleteRepairById(event.id, this.selectedTab)
@@ -810,7 +823,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           .pipe(untilDestroyed(this))
           .subscribe();
       }
-    } else if (event.type === 'finish-order') {
+    } 
+    // Finish Order
+    else if (event.type === 'finish-order') {
       switch (this.selectedTab) {
         case 'active': {
           this.modalService.openModal(
@@ -832,6 +847,39 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           break;
         }
       }
+    }
+    // Raiting
+    else if (event.type === 'raiting') {
+      let raitingData = {
+        entityTypeRatingId: 2,
+        entityTypeId: event.data.id,
+        thumb: event.subType === 'like' ? 1 : -1,
+      };
+
+      this.reviewRatingService
+        .addRating(raitingData)
+        .pipe(untilDestroyed(this))
+        .subscribe((res: any) => {
+          this.viewData = this.viewData.map((data: any) => {
+            if (data.id === event.data.id) {
+              data.actionAnimation = 'update';
+              data.shopRaiting = {
+                hasLiked: res.currentCompanyUserRating === 1,
+                hasDislike: res.currentCompanyUserRating === -1,
+                likeCount: res?.upCount ? res.upCount : '0',
+                dislikeCount: res?.downCount ? res.downCount : '0',
+              };
+            }
+
+            return data;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        });
     }
   }
 

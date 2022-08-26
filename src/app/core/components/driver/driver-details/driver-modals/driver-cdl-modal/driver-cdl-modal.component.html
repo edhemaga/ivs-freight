@@ -17,7 +17,7 @@
             label: 'CDL No.',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type === 'edit' ? false : true
+            autoFocus: editData?.type !== 'edit-licence' ? true : false
           }"
         ></app-ta-input>
       </div>
