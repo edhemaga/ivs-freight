@@ -822,10 +822,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           }
         }
         clearTimeout(timeout2);
-      }, 100);
+      }, 250);
 
       clearTimeout(timeout);
-    }, 200);
+    }, 400);
   }
 
   private editRepairById(id: number) {
