@@ -10,6 +10,7 @@ export class DashboardStateUsaComponent implements OnInit {
   hoveredItem: any;
   hoveredContry: string = "";
   hoveredContryLetter: string = "";
+  currentCountry: string = "";
 
   constructor() {
   }
@@ -18,9 +19,17 @@ export class DashboardStateUsaComponent implements OnInit {
   }
 
   setPopoverData(country: string, countryLetters?: string): void {
+    this.currentCountry = country;
     this.hoveredItem = this.statesColor[country];
     this.hoveredContry = `#${country}`;
     this.hoveredContryLetter = `#${countryLetters}`;
+  }
+
+  removePopoverData(){
+    this.currentCountry = '';
+    this.hoveredItem = null
+    this.hoveredContry = '';
+    this.hoveredContryLetter = '';
   }
 
 }

@@ -389,7 +389,7 @@ export class DashboardTopDriverComponent implements OnInit {
     this.t3.close();
   }
 
-  selectCompare(item, indx){
+  selectCompare(e, item, indx){
     const itemId: any = item.id;
     if(!(itemId in this.compareColor)){
       if( !this.savedColors.length ){
@@ -415,7 +415,9 @@ export class DashboardTopDriverComponent implements OnInit {
 
       this.hoverDriver(indx);
     }
-
+    else{
+      this.removeDriverFromList(e, indx, item)
+    }
   }
 
   hoverDriver(index: any){

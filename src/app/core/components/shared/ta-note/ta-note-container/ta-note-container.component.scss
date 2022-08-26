@@ -33,7 +33,7 @@
       cursor: pointer;
       
       .color_picker_arrow{
-        display: none;
+        display: none !important;
       }
 
       &.italic_text{
@@ -66,6 +66,11 @@
             fill: #919191;
           }
         }
+      }
+
+      &.text_color{
+        overflow: hidden;
+        justify-content: flex-end;
       }
 
       &:hover,
@@ -119,7 +124,7 @@
           background-color: #EEEEEE;
 
           .color_picker_arrow{
-            display: block;
+            display: flex !important;
           }
         }
 
@@ -137,7 +142,6 @@
         .colors_patter {
           display: flex;
           align-items: center;
-          background-color: #f7f7f7;
           border-radius: 1px;
           // box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.15) !important;
           z-index: 10;
@@ -196,6 +200,10 @@
 
       &.opened_text_color{
         border-radius: 1px;
+      }
+
+      &.hide_elements{
+        opacity: 0;
       }
 
       .color_picker_arrow{

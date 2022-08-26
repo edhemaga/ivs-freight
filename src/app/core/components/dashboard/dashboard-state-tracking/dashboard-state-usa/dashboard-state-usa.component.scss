@@ -1,5 +1,11 @@
 @import 'src/theme/variables.scss';
 
+.country_holder{
+  svg{
+    overflow: visible;
+  }
+}
+
 .hover_data_holder{
     // position: absolute;
     // top: 50%;
@@ -141,4 +147,11 @@
         stroke-linejoin: round;
         filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
     }
+  }
+
+  .country_state_letters{
+      stroke: #fff;
+      stroke-width: 1.5px;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 4px rgb(0 0 0 / 15%));
   }

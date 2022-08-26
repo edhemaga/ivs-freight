@@ -243,7 +243,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     this.statesBarChart.updateTime(ev['name']);
   }
 
-  selectStateCompare(item, indx){
+  selectStateCompare(e, item, indx){
     const itemId: any = item.id;
     if(!(itemId in this.compareColor)){
 
@@ -257,6 +257,9 @@ export class DashboardPickupByStateComponent implements OnInit {
       this.pickupStateList.splice(objectSize, 0, item);
 
       this.hoverState(indx);
+    }
+    else{
+      this.removeFromStateList(e, indx, item)
     }
   }
 

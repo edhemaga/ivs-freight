@@ -52,30 +52,19 @@
     (click)="showCollorPattern = !showCollorPattern"
     [class.no_opacity]="showCollorPattern"
     [class.parking_tooltip]="parking && showCollorPattern"
-    [tooltipBackground]="!showCollorPattern ? '#6C6C6C' : ''"
-    ngbTooltip
-    [mainTooltip]="!showCollorPattern ? 'Select color' : ''"
-    position="bottom"
     class="editor_buttons text_color"
     >
-      <span [ngStyle]="{'background-color': selectedPaternColor}" *ngIf="!showCollorPattern" class="circle_span">
-        <div class="color_picker_arrow"
-          [class.flip_arrow]="showCollorPattern"
-          [class.active]="showCollorPattern"
-          >
-          <svg-icon
-            src="assets/svg/truckassist-table/arrow-columns-drop.svg"
-          ></svg-icon>
-          </div>
+      <span [ngStyle]="{'background-color': selectedPaternColor}" class="circle_span">
       </span>
-      <div *ngIf="showCollorPattern" class="colors_patter" id="colors_patter">
+      <div class="colors_patter" id="colors_patter">
         <div
           (click)="executeEditor('foreColor', paternCol.color, indx)"
           *ngFor="let paternCol of containerColors; let indx = index"
           [style.backgroundColor]="paternCol.color"
+          [class.hide_elements]="indx != containerColors?.length - 1 && !showCollorPattern"
           [tooltipBackground]="'#6C6C6C'"
           ngbTooltip
-          [mainTooltip]="paternCol.name"
+          [mainTooltip]="indx == containerColors?.length - 1 && !showCollorPattern ? 'Select Color' : paternCol.name"
           position="bottom"
           class="editor_buttons text_color opened_text_color"
           >
