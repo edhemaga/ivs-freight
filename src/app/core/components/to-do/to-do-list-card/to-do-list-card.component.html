@@ -240,6 +240,7 @@
                         tooltipBackground="#6C6C6C"
                         class="icon-box"
                         [class.blue-icons]="item.linkActive"
+                        *ngIf="item.url"
                       >
                         <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
                       </div>

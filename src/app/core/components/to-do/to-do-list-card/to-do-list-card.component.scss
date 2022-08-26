@@ -59,16 +59,7 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;
-
-                        &::-moz-selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
-                    
-                        &::selection {
-                            color: $bw6-2;
-                            background: rgb(108, 108, 108, 0.2);
-                        }
+                        user-select: none;
                     }
     
                     .border-right {
