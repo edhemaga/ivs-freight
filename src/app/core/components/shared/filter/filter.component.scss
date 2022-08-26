@@ -143,6 +143,10 @@
         }
 
         .user-title-text{
+            display: flex;
+            align-items: center;
+
+            line-height: 18px;
             font-size: 18px;
             font-weight: 800;
             color: #6C6C6C;
@@ -192,13 +196,13 @@
             justify-content: center;
             align-items: center;
             top: 3px;
-            right: 0px;
+            right: 4px;
             cursor: pointer;
 
             svg-icon{
                 svg{
-                    width: 18px;
-                    height: 18px;
+                    width: 17.1px;
+                    height: 17.1px;
                     display: flex;
 
                     path{
@@ -362,6 +366,7 @@
         {
             position: relative;
             width: 100%;
+            height: 26px;
             &:hover{
                 cursor: pointer;
                 background-color: #F3F3F3;
@@ -370,8 +375,10 @@
             .user-profile-img{
                 position: absolute;
                 left: 6px;
-                top: 5px;
-                height: 18px;
+                top: 0px;
+                display: flex;
+                align-items: center;
+                height: 26px;
                 width: 18px;
             }
         }
@@ -533,9 +540,11 @@
             .user-profile-img{
                 position: absolute;
                 left: 6px;
-                top: 5px;
-                height: 18px;
+                top: 0px;
+                height: 26px;
                 width: 18px;
+                display: flex;
+                align-items: center;
             }
         }
 
@@ -612,7 +621,12 @@
     }
 
     .selected-name-text{
+        display: flex;
+        align-items: center;
+        
         width: 90%;
+        line-height: 26px;
+
         text-overflow: ellipsis;
         overflow: hidden;
         white-space: nowrap;
@@ -646,11 +660,17 @@
     }
 
     .user-profile-img{
-        top: 7px !important;
+        display: flex;
+        align-items: center;
+        top: 0px !important;
         left: 6px !important;
-        height: 12px !important;
-        width: 12px !important;  
-        border-radius: 100%;
+        height: 26px;
+
+        .status-circle{
+            height: 12px !important;
+            width: 12px !important;  
+            border-radius: 100%;
+        }
     }
 }
 
@@ -702,17 +722,18 @@
 
     .type-icon{
         display: flex;
+        align-items: center;
         position: absolute;
         left: -46px;
-        top: 5px;
-        height: 16px;
+        top: 0px;
+        height: 26px;
         width: 44px;
 
         svg-icon{
         
             svg{
-                height: 16px;
-                width: 44px;
+                height: 14.28px;
+                width: 42px;
 
                 path{
                     fill: #919191;
@@ -740,14 +761,37 @@
         max-height: 236px !important;
     }
 
-    .selected-filter-icon{
-        svg-icon{
-            svg{
-                height: 16px !important;
-                width: 44px !important;
+    .selected-user-holder{
+
+        .user-profile-img{
+            top: 0px !important;
+            display: flex;
+            align-items: center;
+            height: 26px !important;
+            width: 44px !important;
+        }
+
+        .selected-name-text{
+            display: flex;
+            align-items: center;
+            line-height: 26px;
+        }
+
+        .selected-filter-icon{
+            height: 18px;
+            width: 44px;
+    
+            svg-icon{
+                svg{
+                    height: 15.39px !important;
+                    width: 42px !important;
+                }
             }
         }
     }
+    
+
+    
 }
 
 .money-filter{
@@ -1020,30 +1064,37 @@
                 height: 6px;
 
                 .ngx-slider-pointer{
-                    display: none;
+                    width: 36px;
+                    height: 24px;
+                    box-shadow: none !important;
+                    border: none !important;
+                    outline: none !important;
                 }
-
+                
                 .ngx-slider-selection{
                     background-color: #6C6C6C !important;
                 }
 
                 .ngx-slider-bubble {
-                    cursor: pointer;
-                    color: #6C6C6C !important;
-                    font-size: 12px !important;
-                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
-                    background-color: #ffffff;
-                    font-weight: bold !important;
+
                     position: absolute;
                     top: -9.5px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
                     width: 36px;
                     height: 24px;
+                    
+                    color: #6C6C6C !important;
+                    font-size: 12px !important;
+                    
+                    background-color: #ffffff;
+                    font-weight: bold !important;
+                    
                     z-index: 1;
-                    text-align: center;
-                    padding-left: 4px;
-
                     border-radius: 2px;
-                    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                    cursor: pointer;
 
                     &::after {
                     content: "+";
@@ -1103,30 +1154,38 @@
                 height: 6px;
 
                 .ngx-slider-pointer{
-                    display: none;
+                    width: 58px;
+                    height: 24px;
+                    box-shadow: none !important;
+                    border: none !important;
+                    outline: none !important;
                 }
+                
 
                 .ngx-slider-selection{
                     background-color: #6C6C6C !important;
                 }
 
                 .ngx-slider-bubble {
-                    cursor: pointer;
-                    color: #6C6C6C !important;
-                    font-size: 12px !important;
-                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
-                    background-color: #ffffff;
-                    font-weight: bold !important;
+
                     position: absolute;
                     top: -9.5px;
                     width: 58px;
                     height: 24px;
-                    z-index: 1;
-                    text-align: center;
-                    padding-left: 4px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
 
+                    color: #6C6C6C !important;
+                    font-size: 12px !important;
+                    
+                    background-color: #ffffff;
+                    font-weight: bold !important;
+                   
                     border-radius: 2px;
-                    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+                    box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+                    z-index: 1;
+                    cursor: pointer;
 
                     &::after {
                     content: " mi";
@@ -1191,7 +1250,7 @@
 }
 
 .time-filter-holder{
-    padding: 8px 8px 12px 8px;
+    padding: 10px 6px 6px 6px;
     width: 260px;
     border-radius: 3px;
     background-color: #fff;
@@ -1206,10 +1265,10 @@
         width: 100%;
         //padding: 8px 0px 8px 8px;
         box-sizing: border-box;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 800;
         color: #6C6C6C;
-        line-height: 22px;
+        line-height: 18px;
         user-select: none;
 
         .close{
@@ -1251,12 +1310,16 @@
         width: 100%;
         height: 2px;
         border-radius: 1px;
-        margin: 8px 0px 8px 0px;
+        margin: 8px 0px 6px 0px;
         background-color: #F3F3F3;
     }
 
+    .time-data-border{
+        margin: 2px 0px 6px 0px;
+    }
+
     .time-items-holder{
-        padding: 0px 4px;
+        padding: 0px 0px;
         width: 100%;
         background-color: #fff;
         display: flex;
@@ -1270,7 +1333,6 @@
             position: relative;
             width: 100%;
             padding-left: 6px;
-            min-height: 26px;
             border-radius: 2px;
             display: flex;
             align-items: center;
@@ -1279,7 +1341,7 @@
             font-weight: 400;
             color: #6C6C6C;
             line-height: 26px;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
 
             &:hover{
                 cursor: pointer;
@@ -1300,18 +1362,18 @@
             .selected-icon{
                 position: absolute;
                 width: 18px;
-                height: 18px;
+                height: 26px;
                 display: none;
                 justify-content: center;
                 align-items: center;
-                top: 4px;
-                right: 4px;
+                top: 0px;
+                right: 6px;
 
                 svg-icon{
                     svg{
                         display: flex;
-                        width: 16.38px;
-                        height: 12.66px;
+                        width: 12.47px;
+                        height: 9.85px;
 
                         path{
                             fill: #97A8DC;

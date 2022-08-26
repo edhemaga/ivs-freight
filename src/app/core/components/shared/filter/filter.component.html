@@ -77,7 +77,9 @@ app-autoclose-popover
                         [name]="item.name"
                         ></app-profile-images> 
                     </div>
-                    <div class="user-profile-img" *ngIf="type == 'statusFilter' " [ngStyle]="{backgroundColor: item.color}"></div>
+                    <div class="user-profile-img" *ngIf="type == 'statusFilter' " >
+                        <div class="status-circle" [ngStyle]="{backgroundColor: item.color}"></div>
+                    </div>
                     <div class="user-profile-img selected-filter-icon" *ngIf="leftSideIcon">
                         <svg-icon src="{{item.icon}}"></svg-icon>
                     </div>
@@ -176,8 +178,9 @@ app-autoclose-popover
                 <div class="status-data-main-holder" *ngIf="subType == 'pendingStatus' || subType == 'all' "> 
                     <div *ngFor="let item of pendingStatusArray; let indx=index" class="user-frame-holder">
                         <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'pending')" class="user-main-holder">
-                            <div class="user-profile-img" [ngStyle]="{backgroundColor: item.color}"
-                                ></div>
+                            <div class="user-profile-img" *ngIf="type == 'statusFilter' " >
+                                <div class="status-circle" [ngStyle]="{backgroundColor: item.color}"></div>
+                            </div>
                             <div class="user-frame">
                                 <div class="selected-name-text">{{item.name}}</div>
                             </div> 
@@ -377,7 +380,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="time-items-holder">
                 <div class="time-items" [class.active]="selectedTimeValue == 'This week' " (click)="setTimeValue('This week')">This week
                     <div class="selected-icon">
@@ -422,7 +425,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="time-items-holder">
                 <div class="time-items" [class.active]="selectedTimeValue == 'This month' " (click)="setTimeValue('This month')">This month
                     <div class="selected-icon">
@@ -481,7 +484,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="time-items-holder">
                 <div class="time-items" [class.active]="selectedTimeValue == 'This quarter' " (click)="setTimeValue('This quarter')">This quarter
                     <div class="selected-icon">
@@ -512,7 +515,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="time-items-holder">
                 <div class="time-items" [class.active]="selectedTimeValue == 'This year' " (click)="setTimeValue('This year')">This year
                     <div class="selected-icon">
@@ -571,7 +574,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="time-items-holder">
                 <div class="time-items" [class.active]="selectedTimeValue == 'Custom' " (click)="setTimeValue('Custom')">Custom
                     <div class="selected-icon">
@@ -588,7 +591,7 @@ app-autoclose-popover
                     </div>
                 </div>
             </div>
-            <div class="border-filter"></div>
+            <div class="border-filter time-data-border"></div>
             <div class="buttons-holder">
                 <div (click)="clearAll()" class="button-clear" [class.active]="selectedTimeValue != '' ">Clear All</div>
                 <div class="button-set" [class.active]="selectedTimeValue != ''">Set</div>
@@ -802,7 +805,7 @@ app-autoclose-popover
                 <div class="button-set" [class.active]="moneyFilterStatus">Set</div>
             </div>
         </div>
-        <div *ngIf="swipeFilter" class="filter-holder swipe-filter">
+        <div *ngIf="swipeFilter" class="filter-holder swipe-filter" [formGroup]="sliderForm">
             <div class="filter-header">
                 <div class="user-title-text">{{filterTitle}}</div>
             </div>
@@ -812,6 +815,7 @@ app-autoclose-popover
                     [sliderOptions]="sliderData"
                     [startedValue]="rangeValue"
                     [customClass]="'custom-slider-filter'"
+                    [sliderTemplate]="'commission'"
                     (onUserValueChange)="setRangeValue($event)"
                   ></app-ta-ngx-slider>
             </div>

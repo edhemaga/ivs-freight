@@ -957,6 +957,7 @@ canadaStates: any[] = [
    public moneyForm!: FormGroup;
    public locationForm!: FormGroup;
    public payForm!: FormGroup;
+   public sliderForm!: FormGroup;
    rangeValue: any = 0;
    usaSelectedStates: any[] = [];
    canadaSelectedStates: any[] = [];
@@ -1015,6 +1016,10 @@ canadaStates: any[] = [
 
     this.searchForm = this.formBuilder.group({
       search: ''
+    });
+
+    this.sliderForm = this.formBuilder.group({
+      sliderValue: 0,
     });
 
     this.moneyForm = this.formBuilder.group({
