@@ -99,8 +99,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
               break;
             }
             case 'multiple delete': {
-              console.log('MULTIPLE DELETE');
-              console.log(res.array);
               this.multipleDeleteDrivers(res.array);
               break;
             }
@@ -179,15 +177,18 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
-          console.log('Multiple Delete');
-          console.log(response);
-
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: { ...item.tableData, name: item.tableData?.fullName },
+            };
+          });
           this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },
             {
               data: null,
-              array: response,
+              array: mappedRes,
               template: 'driver',
               type: 'multiple delete',
               image: true,
@@ -433,7 +434,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       return this.driversInactive?.length ? this.driversInactive : [];
     } else {
-      return [];
+      return [{}, {}, {}, {}, {}];
     }
   }
 
@@ -460,7 +461,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: any, index: number) => {
-        return this.mapDriverData(data);
+        return this.selectedTab === 'applicants'
+          ? this.mapApplicantsData(data, index)
+          : this.mapDriverData(data);
       });
 
       console.log('Driver Data');
@@ -485,7 +488,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       isSelected: false,
       isOwner: data?.owner ? data.owner : false,
       textAddress: data.address.address ? data.address.address : '',
-      textDriverShortName: this.nameInitialsPipe.transform(data.fullName),
+      textShortName: this.nameInitialsPipe.transform(data.fullName),
       avatarColor: this.getAvatarColors(),
       avatarImg: data?.avatar
         ? this.imageBase64Service.sanitizer(data.avatar)
@@ -502,26 +505,35 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         ? data.cdls[0].cdlNumber
         : '',
       textState: data.address.stateShortName ? data.address.stateShortName : '',
-      textBank: data.bank ? data.bank : '',
+      textBank: data?.bank?.name ? data.bank.name : '',
       textAccount: data.account ? data.account : '',
       textRouting: data.routing ? data.routing : '',
       tableCDLData: {
         expirationDays: data?.cdlExpirationDays
           ? this.thousandSeparator.transform(data.cdlExpirationDays)
           : null,
-        percentage: data?.cdlPercentage ? data.cdlPercentage : null,
+        percentage:
+          data?.cdlPercentage || data?.cdlPercentage === 0
+            ? 100 - data.cdlPercentage
+            : null,
       },
       tableMedicalData: {
         expirationDays: data?.medicalExpirationDays
           ? this.thousandSeparator.transform(data.medicalExpirationDays)
           : null,
-        percentage: data?.medicalPercentage ? data.medicalPercentage : null,
+        percentage:
+          data?.medicalPercentage || data?.medicalPercentage === 0
+            ? 100 - data.medicalPercentage
+            : null,
       },
       tableMvrData: {
         expirationDays: data?.mvrExpirationDays
           ? this.thousandSeparator.transform(data.mvrExpirationDays)
           : null,
-        percentage: data?.mvrPercentage ? data.mvrPercentage : null,
+        percentage:
+          data?.mvrPercentage || data?.mvrPercentage === 0
+            ? 100 - data.mvrPercentage
+            : null,
       },
       tableDrugOrAlcoholTest: null,
       textPayType: data?.payType?.name ? data.payType.name : '',
@@ -587,6 +599,88 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  mapApplicantsData(data: any, index: number) {
+    return {
+      fullName: 'Angelo Trotter',
+      invited: '04/04/44',
+      accepted: '04/04/44',
+      phone: '(325) 540-1157',
+      dob: '04/04/44',
+      email: 'angelo.T@gmail.com',
+      applicantProgress: {
+        app: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        mvr: {
+          status: 'In Progres',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        psp: {
+          status: 'Wrong',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        sph: {
+          status: 'No Started',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        hos: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        ssn: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+      },
+      // Complete, Done, Wrong, In Progres, Not Started
+      medical: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: this.thousandSeparator.transform('3233'),
+        percentage: 34,
+      },
+      cdl: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: this.thousandSeparator.transform('12'),
+        percentage: 10,
+      },
+      rev: 'Ready',
+      hire: true,
+      favorite: true,
+    };
+  }
+
+  // Get Avatar Color
   getAvatarColors() {
     let textColors: string[] = [
       '#6D82C7',
@@ -693,10 +787,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(DriverModalComponent, {
         size: 'medium',
       });
-    } else if (
-      event.action === 'tab-selected' &&
-      event.tabData.field !== 'applicants'
-    ) {
+    } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
 
@@ -725,8 +816,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
-    let driverFullName = event.data.firstName + ' ' + event.data.lastName;
+  onTableBodyActions(event: any) {
     const mappedEvent = {
       ...event,
       data: {
@@ -775,52 +865,6 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         { ...event }
       );
     } else if (event.type === 'activate-item') {
-      let successfullyMessage = `"${driverFullName}" ${
-        this.selectedTab == 'active' ? 'Deactivated' : 'Activated'
-      }`;
-      let errorullyMessage = `Failed to ${
-        this.selectedTab == 'active' ? 'Deactivate' : 'Activate'
-      } "${driverFullName}"`;
-      this.driverTService
-        .changeDriverStatus(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(successfullyMessage, 'Success');
-          },
-          error: () => {
-            this.notificationService.error(errorullyMessage, 'Error');
-          },
-        });
-    } else if (event.type === 'delete-item') {
-      this.driverTService
-        .deleteDriverById(event.id, this.selectedTab)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              `"${driverFullName}" deleted`,
-              'Success'
-            );
-            this.viewData = this.viewData.map((driver: any) => {
-              if (driver.id === event.id) {
-                driver.actionAnimation = 'delete';
-              }
-              return driver;
-            });
-            this.updateDataCount();
-            const inetval = setInterval(() => {
-              this.viewData = closeAnimationAction(true, this.viewData);
-              clearInterval(inetval);
-            }, 1000);
-          },
-          error: () => {
-            this.notificationService.error(
-              `Failed to delete "${driverFullName}" `,
-              'Error'
-            );
-          },
-        });
       this.modalService.openModal(
         ConfirmationModalComponent,
         { size: 'small' },
@@ -849,7 +893,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private changeDriverStatus(id: number) {
+  changeDriverStatus(id: number) {
     this.driverTService
       .changeDriverStatus(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -869,7 +913,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private deleteDriverById(id: number) {
+  deleteDriverById(id: number) {
     this.driverTService
       .deleteDriverById(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -905,14 +949,14 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private multipleDeleteDrivers(response: any[]) {
+  multipleDeleteDrivers(response: any[]) {
     this.driverTService
       .deleteDriverList(response)
       .pipe(untilDestroyed(this))
       .subscribe(() => {
         this.viewData = this.viewData.map((driver: any) => {
-          response.map((r: any) => {
-            if (driver.id === r.id) {
+          response.map((id: any) => {
+            if (driver.id === id) {
               driver.actionAnimation = 'delete';
             }
           });

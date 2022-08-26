@@ -30,15 +30,13 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
-            isDropdownLabel: true,
-            dropdownLabelSelected: selectedAccountColor,
-            dropdownWidthClass: 'w-col-164',
+            dropdownLabel: true,
+            dropdownWidthClass: 'w-col-456',
             textTransform: 'capitalize',
             blackInput: true,
             commands: {
-              active: true,
+              active: false,
               type: 'confirm-cancel',
               firstCommand: {
                 popup: {
@@ -61,8 +59,9 @@
           [colors]="colors"
           [options]="accountLabels"
           [selectedLabel]="selectedAccountLabel"
+          [selectedLabelColor]="selectedAccountColor"
           (pickExistLabel)="onPickExistLabel($event)"
-          (selectedColorLabel)="onSelectColorLabel($event)"
+          (pickColorLabel)="onSelectColorLabel($event)"
           (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>

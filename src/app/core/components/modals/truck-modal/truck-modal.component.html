@@ -169,6 +169,8 @@
                       dropdownWidthClass: 'w-col-216'
                     }"
                     [options]="ownerType"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
                     [activeItem]="selectedOwner"
                     (selectedItem)="onSelectDropdown($event, 'owner')"
                   ></app-ta-input-dropdown>

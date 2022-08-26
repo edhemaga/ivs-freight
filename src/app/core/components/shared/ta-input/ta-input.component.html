@@ -2,9 +2,7 @@
   class="input-custom-group"
   [ngClass]="{
     'hover-focus-out':
-      !focusInput &&
-      !inputConfig.isDropdownLabel &&
-      !inputConfig.dropdownLabelSelected,
+      !focusInput && !inputConfig.dropdownLabel && !selectedDropdownLabelColor,
     invalid: getSuperControl.value && getSuperControl.invalid && !focusInput,
     'invalid-empty-required':
       inputConfig.isRequired &&
@@ -16,8 +14,8 @@
       !getSuperControl.value &&
       getSuperControl.invalid &&
       focusInput &&
-      !inputConfig.dropdownLabelSelected &&
-      !inputConfig.isDropdownLabel,
+      !selectedDropdownLabelColor &&
+      !inputConfig.dropdownLabel,
     valid: getSuperControl.value && getSuperControl.valid && !focusInput,
     'invalid-empty-dropdown':
       inputConfig.isRequired &&
@@ -25,7 +23,8 @@
       getSuperControl.invalid &&
       inputConfig.isDropdown &&
       touchedInput &&
-      !focusInput
+      !focusInput,
+    'dropdown-label-active': selectedDropdownLabelColor && !editInputMode
   }"
 >
   <!-- Input Clear -->
@@ -64,7 +63,8 @@
         getSuperControl.value,
       'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
       'incorrect-input-enabled':
-        inputConfig.incorrectInput && getSuperControl.value && incorrectValue
+        inputConfig.incorrectInput && getSuperControl.value && incorrectValue,
+      'dropdown-label-position': selectedDropdownLabelColor
     }"
     ngbTooltip
     [mainTooltip]="inputConfig.incorrectInput ? 'Mark Incorrect' : 'Clear'"
@@ -73,6 +73,27 @@
     (click)="clearInput($event)"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
+  </div>
+
+  <!-- Input Edit -->
+  <div
+    *ngIf="
+      selectedDropdownLabelColor &&
+      !editInputMode &&
+      !focusInput &&
+      getSuperControl.value
+    "
+    class="input-edit-pen"
+    ngbTooltip
+    [mainTooltip]="'Edit'"
+    [tooltipBackground]="'#6c6c6c'"
+    position="top"
+    (click)="onEditInput($event)"
+  >
+    <svg-icon
+      src="assets/svg/ic_spec_input_pen.svg"
+      class="input-pen"
+    ></svg-icon>
   </div>
 
   <!-- Input Invalid Danger Mark -->
@@ -84,7 +105,8 @@
         !focusInput &&
         !inputConfig.incorrectInput &&
         !inputConfig.blackInput &&
-        !inputConfig.isDropdown) ||
+        !inputConfig.isDropdown &&
+        !inputConfig.dropdownLabel) ||
       inputConfig.dangerMark
     "
     class="input-invalid-danger-mark  {{ inputConfig.customClass }}"
@@ -105,7 +127,8 @@
       !inputConfig.blackInput &&
       !inputConfig.hideRequiredCheck &&
       !inputConfig.incorrectInput &&
-      !inputConfig?.loadingSpinner?.isLoading
+      !inputConfig?.loadingSpinner?.isLoading &&
+      !inputConfig.dropdownLabel
     "
     src="assets/svg/common/ic_confirm.svg"
   ></svg-icon>
@@ -164,12 +187,11 @@
   <svg-icon
     class="input-dropdown-arrow {{ inputConfig.customClass }}"
     *ngIf="
-      (inputConfig.isDropdown &&
+      ((inputConfig.isDropdown || inputConfig.dropdownLabel) &&
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive) ||
       ((inputConfig.name === 'datepicker' ||
-        inputConfig.name === 'timepicker' ||
-        inputConfig.isDropdownLabel) &&
+        inputConfig.name === 'timepicker') &&
         !inputConfig.incorrectInput)
     "
     [ngClass]="{
@@ -177,7 +199,7 @@
         (!inputConfig.isDisabled && focusInput) ||
         (inputConfig.multiSelectDropdownActive && focusInput),
       valid:
-        (!inputConfig.isDropdownLabel &&
+        (!inputConfig.dropdownLabel &&
           getSuperControl.value &&
           getSuperControl.valid &&
           focusInput) ||
@@ -190,26 +212,11 @@
         !getSuperControl.value &&
         getSuperControl.invalid &&
         touchedInput &&
-        !focusInput,
-      'dropdown-label-active': inputConfig.isDropdownLabel && focusInput
+        !focusInput
     }"
     src="assets/svg/common/ic_arrow_down_updated.svg"
     (click)="toggleDropdownOptions()"
   ></svg-icon>
-
-  <!-- Dropdown Label Selected Name -->
-  <p
-    *ngIf="inputConfig.isDropdownLabel && focusInput"
-    class="ta-input-label-selected-item"
-  >
-    {{ inputConfig.dropdownLabelSelected?.name }}
-  </p>
-
-  <!-- Dropdown Label Divider -->
-  <div
-    *ngIf="inputConfig.isDropdownLabel && focusInput"
-    class="ta-input-label-vertical-divider"
-  ></div>
 
   <!-- Input Commands -->
   <div
@@ -263,11 +270,12 @@
   </div>
 
   <!-- Input Icon Placeholder -->
-  <svg-icon
+  <div
+    *ngIf="inputConfig.placeholderIcon"
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
     [disablePopover]="
-      inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker'
+      (inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker') || inputConfig.isDisabled
     "
     [placement]="['left', 'left-top']"
     [popoverClass]="'datetimepopovermain'"
@@ -276,34 +284,25 @@
     (shown)="onPopoverShown()"
     (hidden)="onPopoverHidden()"
     class="input-icon {{ inputConfig.customClass }}"
-    *ngIf="inputConfig.placeholderIcon"
-    [svgStyle]="{
-      fill:
-        inputConfig.isDropdownLabel || inputConfig.dropdownLabelSelected
-          ? inputConfig.dropdownLabelSelected?.code
-            ? inputConfig.dropdownLabelSelected.code
-            : '#b7b7b7'
-          : null
-    }"
     [ngClass]="{
       'disabled-empty': !getSuperControl.value && inputConfig.isDisabled,
       'disabled-filled': getSuperControl.value && inputConfig.isDisabled,
       'default-svg-color':
-        !inputConfig.dropdownLabelSelected && !inputConfig.isDropdownLabel,
+        !selectedDropdownLabelColor && !inputConfig.dropdownLabel,
       'valid-required-in':
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel &&
+        !selectedDropdownLabelColor &&
+        !inputConfig.dropdownLabel &&
         !inputConfig.blackInput &&
         !inputConfig.commands?.active,
       'valid-required-out':
         getSuperControl.value &&
         getSuperControl.valid &&
         !focusInput &&
-        !inputConfig.dropdownLabelSelected &&
-        !inputConfig.isDropdownLabel,
+        !selectedDropdownLabelColor &&
+        !inputConfig.dropdownLabel,
       'invalid-required-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -328,10 +327,45 @@
         inputConfig.type === 'password' &&
         isVisiblePasswordEye &&
         getSuperControl.invalid &&
-        getSuperControl.value
+        getSuperControl.value,
+      'cursor-pointer': editInputMode
     }"
-    [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
-  ></svg-icon>
+    ngbTooltip
+    [mainTooltip]="'Change Color'"
+    [tooltipBackground]="'#6c6c6c'"
+    [disableTooltip]="!editInputMode"
+    position="bottom"
+    (click)="onPlaceholderIconEvent($event)"
+  >
+    <svg-icon
+      appHoverSvg
+      [fill]="
+        inputConfig.dropdownLabel || selectedDropdownLabelColor
+          ? selectedDropdownLabelColor?.code
+            ? selectedDropdownLabelColor.code
+            : '#b7b7b7'
+          : null
+      "
+      [fillHover]="
+        (inputConfig.dropdownLabel || selectedDropdownLabelColor) &&
+        editInputMode
+          ? selectedDropdownLabelColor?.hoverCode
+            ? selectedDropdownLabelColor.hoverCode
+            : null
+          : null
+      "
+      [src]="inputConfig.placeholderIcon?.toLowerCase() | taSvg: 'common'"
+    ></svg-icon>
+  </div>
+
+  <!-- [svgStyle]="{
+        fill:
+          inputConfig.dropdownLabel || selectedDropdownLabelColor
+            ? selectedDropdownLabelColor?.code
+              ? selectedDropdownLabelColor.code
+              : '#b7b7b7'
+            : null
+      }" -->
 
   <!-- Input Placeholder Text -->
   <svg-icon
@@ -345,14 +379,12 @@
 
   <!-- Input Label Counter -->
   <p
-    *ngIf="
-      inputConfig.dropdownLabelSelected && getSuperControl.value && !focusInput
-    "
+    *ngIf="selectedDropdownLabelColor && getSuperControl.value && !focusInput"
     [style.top]="'5px'"
     [style.left]="50 + getSuperControl?.value.toString().length * 8 + 'px'"
     class="input-label-counter"
   >
-    {{ inputConfig.dropdownLabelSelected.count }}
+    {{ selectedDropdownLabelColor.count }}
   </p>
 
   <!-- Input Control -->
@@ -418,7 +450,8 @@
         inputConfig.multiSelectDropdownActive && focusInput,
       'blue-input-color':
         inputConfig.blueInputColor && !focusInput && getSuperControl.value,
-      'dropdown-label-active': inputConfig.isDropdownLabel && isVisibleCommands,
+      'dropdown-label-active':
+        inputConfig.dropdownLabel && isVisibleCommands && this.editInputMode,
       'input-commands': inputConfig.commands?.active && isVisibleCommands
     }"
     (keypress)="manipulateWithInput($event)"
@@ -435,13 +468,13 @@
     #holder1
     class="date_time_holder input-control"
     *ngIf="
-      inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker'
+      (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker') && !inputConfig.isDisabled
     "
     [class.active]="showDateInput"
     tabindex="-1"
     (click)="showDateTimePlaceholder()"
     (paste)="onDatePaste($event)"
-    (blur)="onBlur()"
+    (blur)="onBlur($event)"
     (keydown)="changeSelection($event, true)"
     [ngClass]="{
       focused: focusInput,
@@ -456,10 +489,10 @@
       #span1
       class="main"
       tabindex="0"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'mm' : 'HH'"
     ></span>
     <span
@@ -471,10 +504,10 @@
       #span2
       class="main"
       tabindex="1"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'dd' : 'MM'"
     ></span>
     <span
@@ -486,10 +519,10 @@
       #span3
       class="main"
       tabindex="2"
-      (focus)="onFocus()"
+      (focus)="onFocus($event)"
       (click)="setSelection($event)"
       (keydown)="changeSelection($event)"
-      (blur)="onBlur()"
+      (blur)="onBlur($event)"
       [innerHTML]="inputConfig.name === 'datepicker' ? 'yy' : 'AM'"
     ></span>
   </div>

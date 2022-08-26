@@ -337,7 +337,34 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       ...data,
       isSelected: false,
+      lable: data?.companyAccountLabel
+        ? {
+            name: data?.companyAccountLabel?.name
+              ? data.companyAccountLabel.name
+              : '',
+            color: data?.companyAccountLabel?.code
+              ? data.companyAccountLabel.code
+              : '',
+          }
+        : null,
+      accountPassword: {
+        hiden: true,
+        apiCallStarted: false,
+        password: data?.password ? data.password : '',
+        hidemCharacters: this.getHidenCharacters(data),
+      },
     };
+  }
+
+  getHidenCharacters(data: any) {
+    let caracters: any = '';
+
+    for (let i = 0; i < data.password.length; i++) {
+      caracters +=
+        '<div class="password-characters-container"></div>';
+    }
+
+    return caracters;
   }
 
   // Account Back Filter

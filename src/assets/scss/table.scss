@@ -1,20 +1,45 @@
 // Table Body Global Scss
-.truckassist-table-body-style{
-    .description-container{
-        .description-dot-container {
-            min-width: 18px;
-            width: 18px;
-            height: 18px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+.truckassist-table-body-style {
+  // DESCRIPTION
+  .description-container {
+    .description-dot-container {
+      min-width: 18px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-            .description-dot {
-              width: 6px;
-              height: 6px;
-              border-radius: 50px;
-              background: #6c6c6c;
-            }
-          }
+      .description-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50px;
+        background: #6c6c6c;
+      }
     }
+  }
+
+  .active-description {
+    color: #536bc2 !important;
+    transition: 0.25s;
+
+    .description-dot {
+      background: #536bc2 !important;
+      transition: 0.25s;
+    }
+  }
+
+  // PASSWORD
+  .password-text-crypted{
+    display: flex;
+    align-self: center;
+
+    .password-characters-container{
+      width: 5px;
+      height: 5px;
+      background: #6C6C6C;
+      border-radius: 50%;
+      margin-right: 2px;
+    }
+  }
 }

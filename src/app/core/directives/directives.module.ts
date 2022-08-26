@@ -4,20 +4,24 @@ import { AutoFocusDirective } from './auto-focus.directive';
 import { InputFocusDirective } from './input-focus.directive';
 import { InputRestrictionDirective } from './input-restriction.directive';
 import { TextareaAutosizeDirective } from './TextareaAutosize.directive';
+import { HoverSvgDirective } from './hoverSvg.directive';
 
 @NgModule({
   declarations: [
-   // Directive
+    // Directive
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
     TextareaAutosizeDirective,
+    HoverSvgDirective,
   ],
   imports: [CommonModule],
   exports: [
     AutoFocusDirective,
     InputFocusDirective,
     InputRestrictionDirective,
-    TextareaAutosizeDirective],
+    TextareaAutosizeDirective,
+    HoverSvgDirective,
+  ],
 })
 export class DirectivesModule {}

@@ -106,7 +106,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.createForm();
     this.getRepairDropdowns();
-
+    console.log('REPAIR');
+    console.log(this.editData);
     if (this.editData?.type.includes('edit')) {
       this.editRepairById(this.editData.id);
     }
@@ -280,11 +281,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm.get('repairShopId'),
         false
       );
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('date'),
+        false,
+        [],
+        true
+      );
+      this.inputService.changeValidators(
+        this.repairOrderForm.get('invoice'),
+        false,
+        [],
+        true
+      );
       this.repairOrderForm.get('repairType').patchValue('Order');
     } else {
       this.inputService.changeValidators(
         this.repairOrderForm.get('repairShopId')
       );
+      this.inputService.changeValidators(this.repairOrderForm.get('date'));
       this.repairOrderForm.get('repairType').patchValue('Bill');
     }
 
@@ -384,6 +398,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
+          console.log('DROPDOWN ', res);
           // PM Trucks
           this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
             return {
@@ -423,7 +438,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           // Unit Trucks
           this.unitTrucks = this.labelsUnit = res.trucks.map((item) => {
             return {
-              id: item.id,
+              ...item,
               name: item.truckNumber,
             };
           });
@@ -431,7 +446,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           // Unit Trailers
           this.unitTrailers = res.trailers.map((item) => {
             return {
-              id: item.id,
+              ...item,
               name: item.trailerNumber,
             };
           });
@@ -484,34 +499,63 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   private addRepair() {
-    const { repairShopId, items, date, unit, odometer, ...form } =
+    const { repairShopId, items, date, unit, odometer, invoice, ...form } =
       this.repairOrderForm.value;
 
-    const newData: CreateRepairCommand = {
-      ...form,
-      date: convertDateToBackend(date),
-      truckId:
-        this.repairOrderForm.get('unitType').value === 'Truck'
-          ? this.selectedUnit.id
+    let newData: CreateRepairCommand = null;
+
+    if (this.selectedHeaderTab === 2) {
+      newData = {
+        ...form,
+        truckId:
+          this.repairOrderForm.get('unitType').value === 'Truck'
+            ? this.selectedUnit.id
+            : null,
+        trailerId:
+          this.repairOrderForm.get('unitType').value === 'Trailer'
+            ? this.selectedUnit.id
+            : null,
+        repairShopId: this.selectedRepairShop
+          ? this.selectedRepairShop.id
           : null,
-      trailerId:
-        this.repairOrderForm.get('unitType').value === 'Trailer'
-          ? this.selectedUnit.id
+        serviceTypes: this.services.map((item) => {
+          return {
+            serviceType: item.serviceType,
+            active: item.active,
+          };
+        }),
+        items: this.premmapedItems(),
+      };
+    } else {
+      newData = {
+        ...form,
+        date: convertDateToBackend(date),
+        truckId:
+          this.repairOrderForm.get('unitType').value === 'Truck'
+            ? this.selectedUnit.id
+            : null,
+        trailerId:
+          this.repairOrderForm.get('unitType').value === 'Trailer'
+            ? this.selectedUnit.id
+            : null,
+        repairShopId: this.selectedRepairShop
+          ? this.selectedRepairShop.id
           : null,
-      repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
-      odometer: odometer ? convertThousanSepInNumber(odometer) : null,
-      total:
-        this.repairOrderForm.get('repairType').value === 'Bill'
-          ? this.sumArrayPipe.transform(this.subtotal)
-          : null,
-      serviceTypes: this.services.map((item) => {
-        return {
-          serviceType: item.serviceType,
-          active: item.active,
-        };
-      }),
-      items: this.premmapedItems(),
-    };
+        odometer: odometer ? convertThousanSepInNumber(odometer) : null,
+        invoice: invoice,
+        total:
+          this.repairOrderForm.get('repairType').value === 'Bill'
+            ? this.sumArrayPipe.transform(this.subtotal)
+            : null,
+        serviceTypes: this.services.map((item) => {
+          return {
+            serviceType: item.serviceType,
+            active: item.active,
+          };
+        }),
+        items: this.premmapedItems(),
+      };
+    }
 
     this.repairService
       .addRepair(newData)
@@ -531,36 +575,68 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   private updateRepair(id: number) {
-    const { repairShopId, items, date, unit, odometer, ...form } =
+    const { repairShopId, items, date, unit, odometer, invoice, ...form } =
       this.repairOrderForm.value;
-    const newData: UpdateRepairCommand = {
-      id: id,
-      ...form,
-      date: convertDateToBackend(date),
-      truckId:
-        this.repairOrderForm.get('unitType').value === 'Truck'
-          ? this.selectedUnit.id
+    let newData: UpdateRepairCommand = null;
+
+    if (this.selectedHeaderTab === 2) {
+      newData = {
+        id: id,
+        ...form,
+        truckId:
+          this.repairOrderForm.get('unitType').value === 'Truck'
+            ? this.selectedUnit.id
+            : null,
+        trailerId:
+          this.repairOrderForm.get('unitType').value === 'Trailer'
+            ? this.selectedUnit.id
+            : null,
+        repairShopId: this.selectedRepairShop
+          ? this.selectedRepairShop.id
           : null,
-      trailerId:
-        this.repairOrderForm.get('unitType').value === 'Trailer'
-          ? this.selectedUnit.id
+        serviceTypes: this.services.map((item) => {
+          return {
+            serviceType: item.serviceType,
+            active: item.active,
+          };
+        }),
+        items: this.premmapedItems(),
+      };
+    } else {
+      newData = {
+        id: id,
+        ...form,
+        date: convertDateToBackend(date),
+        truckId:
+          this.repairOrderForm.get('unitType').value === 'Truck'
+            ? this.selectedUnit.id
+            : null,
+        trailerId:
+          this.repairOrderForm.get('unitType').value === 'Trailer'
+            ? this.selectedUnit.id
+            : null,
+        repairShopId: this.selectedRepairShop
+          ? this.selectedRepairShop.id
           : null,
-      repairShopId: this.selectedRepairShop ? this.selectedRepairShop.id : null,
-      odometer: odometer
-        ? convertThousanSepInNumber(this.repairOrderForm.get('odometer').value)
-        : null,
-      total:
-        this.repairOrderForm.get('repairType').value === 'Bill'
-          ? this.sumArrayPipe.transform(this.subtotal)
+        odometer: odometer
+          ? convertThousanSepInNumber(
+              this.repairOrderForm.get('odometer').value
+            )
           : null,
-      serviceTypes: this.services.map((item) => {
-        return {
-          serviceType: item.serviceType,
-          active: item.active,
-        };
-      }),
-      items: this.premmapedItems(),
-    };
+        total:
+          this.repairOrderForm.get('repairType').value === 'Bill'
+            ? this.sumArrayPipe.transform(this.subtotal)
+            : null,
+        invoice: invoice,
+        serviceTypes: this.services.map((item) => {
+          return {
+            serviceType: item.serviceType,
+            active: item.active,
+          };
+        }),
+        items: this.premmapedItems(),
+      };
+    }
 
     this.repairService
       .updateRepair(newData)
@@ -619,13 +695,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             odometer: res.odometer
               ? convertNumberInThousandSep(res.odometer)
               : null,
-            date: convertDateFromBackend(res.date),
+            date: res.date ? convertDateFromBackend(res.date) : null,
             invoice: res.invoice,
             repairShopId: res.repairShop ? res.repairShop.id : null,
             items: [],
             note: res.note,
           });
-          console.log(res);
+
           // Truck/Trailer Unit number
           this.selectedUnit =
             res.unitType.name === 'Truck' ? res.truck : res.trailer;
@@ -664,10 +740,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 },
               });
           }
-
-          this.onModalHeaderTabChange(
-            this.headerTabs.find((item) => item.name === res.repairType.name)
-          );
+          if (!this.editData.type.includes('fo')) {
+            this.onModalHeaderTabChange(
+              this.headerTabs.find((item) => item.name === res.repairType.name)
+            );
+          }
 
           this.onTypeOfRepair(
             this.typeOfRepair.find((item) => item.name === res.unitType.name),

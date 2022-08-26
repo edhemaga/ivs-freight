@@ -45,6 +45,10 @@ export function getOwnerColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
+      link: {
+        routerLinkStart: '/owner/',
+        routerLinkEnd: '/details',
+      },
     },
     {
       ngTemplate: 'text',
@@ -221,7 +225,7 @@ export function getOwnerColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Bank Name',
-      field: 'bank',
+      field: 'textBankName',
       name: 'Bank Name',
       sortName: 'bankName',
       isComputed: false,

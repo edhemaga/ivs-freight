@@ -16,6 +16,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
 import { PipesModule } from 'src/app/core/pipes/pipes.module';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
     AppNoteModule,
     ProfileImagesModule,
     PipesModule,
+    VirtualScrollerModule
   ],
   exports: [
     TruckassistTableBodyComponent,

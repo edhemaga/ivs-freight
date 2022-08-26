@@ -23,7 +23,7 @@ export function getToolsAccountsColumnDefinition() {
       resizable: false,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'nameLink',
       title: 'Name',
       field: 'name',
       name: 'Name',
@@ -45,7 +45,10 @@ export function getToolsAccountsColumnDefinition() {
       disabled: false,
       export: true,
       resizable: true,
-      linkField: null,
+      link: {
+        routerLinkStart: '/account/',
+        routerLinkEnd: '/details',
+      },
     },
     {
       ngTemplate: 'url',
@@ -97,9 +100,9 @@ export function getToolsAccountsColumnDefinition() {
       imageHover: null,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'password',
       title: 'Password',
-      field: '',
+      field: 'accountPassword',
       name: 'Password',
       isComputed: false,
       hidden: false,
@@ -121,9 +124,9 @@ export function getToolsAccountsColumnDefinition() {
       password: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'label',
       title: 'Label',
-      field: 'labelId',
+      field: 'lable',
       name: 'Label',
       sortName: 'labelName',
       isComputed: false,

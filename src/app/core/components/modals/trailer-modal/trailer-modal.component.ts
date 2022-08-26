@@ -30,6 +30,8 @@ import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -91,6 +93,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     private trailerModalService: TrailerTService,
     private notificationService: NotificationService,
     private modalService: ModalService,
+    private ngbActiveModal: NgbActiveModal,
     private formService: FormService,
     private vinDecoderService: VinDecoderService
   ) {}
@@ -101,8 +104,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     this.getTrailerDropdowns();
     this.vinDecoder();
 
-    if (this.editData) {
+    if (this.editData?.id) {
       this.editTrailerById(this.editData.id);
+    }
+
+    if (this.editData?.storageData) {
+      this.populateStorageData(this.editData.storageData);
     }
   }
 
@@ -163,14 +170,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
-
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     if (data.action === 'close') {
       this.trailerForm.reset();
     } else {
-     
-      let successMessage = `Trailer "${trailerUnit}" ${ !this.trailerStatus ? 'Deactivated' : 'Activated' } `;  
-      let errorMessage = `Failed to ${ !this.trailerStatus ? 'Deactivated' : 'Activated' } Trailer "${trailerUnit}" `;
+      let successMessage = `Trailer "${trailerUnit}" ${
+        !this.trailerStatus ? 'Deactivated' : 'Activated'
+      } `;
+      let errorMessage = `Failed to ${
+        !this.trailerStatus ? 'Deactivated' : 'Activated'
+      } Trailer "${trailerUnit}" `;
 
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
@@ -186,17 +195,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                   status: this.trailerStatus,
                 });
 
-                this.notificationService.success(
-                  successMessage,
-                  'Success'
-                );
+                this.notificationService.success(successMessage, 'Success');
               }
             },
             error: () => {
-              this.notificationService.error(
-                errorMessage,
-                'Error'
-              );
+              this.notificationService.error(errorMessage, 'Error');
             },
           });
       } else {
@@ -206,7 +209,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.inputService.markInvalid(this.trailerForm);
             return;
           }
-          if (this.editData) {
+          if (this.editData?.id) {
             this.updateTrailer(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
@@ -239,7 +242,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: GetTrailerModalResponse) => {
-          console.log(res.trailerTypes);
           this.trailerType = res.trailerTypes.map((item) => {
             return {
               ...item,
@@ -304,20 +306,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         ? convertThousanSepInNumber(this.trailerForm.get('volume').value)
         : null,
     };
-  
+
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .addTrailer(newData)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
-          this.notificationService.success(`Trailer "${trailerUnit} added"`, 
+          this.notificationService.success(
+            `Trailer "${trailerUnit} added"`,
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error(`Failed to add Trailer "${trailerUnit}"`, 'Error'),
+          this.notificationService.error(
+            `Failed to add Trailer "${trailerUnit}"`,
+            'Error'
+          ),
       });
   }
 
@@ -338,8 +344,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () =>
-          this.notificationService.error(`Failed to delete Trailer "${trailerUnit}"`
-          , 'Error'),
+          this.notificationService.error(
+            `Failed to delete Trailer "${trailerUnit}"`,
+            'Error'
+          ),
       });
   }
 
@@ -405,8 +413,60 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: true });
         },
         error: () =>
-          this.notificationService.error(`Failed to save changes for Trailer "${trailerUnit}"`, 'Error'),
+          this.notificationService.error(
+            `Failed to save changes for Trailer "${trailerUnit}"`,
+            'Error'
+          ),
       });
+  }
+
+  private populateStorageData(res) {
+    const timeout = setTimeout(() => {
+      this.trailerForm.patchValue({
+        companyOwned: res.companyOwned,
+        trailerNumber: res.trailerNumber,
+        trailerTypeId: res.trailerTypeId,
+        trailerMakeId: res.trailerMakeId,
+        model: res.model,
+        colorId: res.colorId,
+        year: res.year,
+        trailerLengthId: res.trailerLengthId,
+        ownerId: res.ownerId,
+        note: res.note,
+        axles: res.axles,
+        suspension: res.suspension,
+        tireSizeId: res.tireSizeId,
+        doorType: res.doorType,
+        reeferUnit: res.reeferUnit,
+        emptyWeight: res.emptyWeight,
+        mileage: res.mileage,
+        volume: res.volume,
+        insurancePolicy: res.insurancePolicy,
+      });
+
+      if (res.id) {
+        this.editData = { ...this.editData, id: res.id };
+      }
+
+      this.trailerForm.get('vin').patchValue(res.vin, { emitEvent: false });
+
+      this.selectedTrailerType = res.selectedTrailerType;
+      this.selectedTrailerMake = res.selectedTrailerMake;
+      this.selectedColor = res.selectedColor;
+      this.selectedTrailerLength = res.selectedTrailerLength;
+      this.selectedOwner = res.selectedOwner;
+      this.selectedSuspension = res.selectedSuspension;
+      this.selectedTireSize = res.selectedTireSize;
+      this.selectedDoorType = res.selectedDoorType;
+      this.selectedReeferType = res.selectedReeferType;
+      this.trailerStatus = res.trailerStatus;
+
+      this.modalService.changeModalStatus({
+        name: 'deactivate',
+        status: this.trailerStatus,
+      });
+      clearTimeout(timeout);
+    }, 50);
   }
 
   private editTrailerById(id: number): void {
@@ -458,12 +518,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
+          this.trailerStatus = res.status === 1 ? false : true;
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
-            status: res.status === 1 ? false : true,
+            status: this.trailerStatus,
           });
-          this.trailerStatus = res.status === 1 ? false : true;
         },
         error: (err) => {
           this.notificationService.error("Cant't get trailer.", 'Error:');
@@ -490,7 +550,34 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'owner': {
-        this.selectedOwner = event;
+        if (event?.canOpenModal) {
+          this.ngbActiveModal.close();
+
+          this.modalService.setProjectionModal({
+            action: 'open',
+            payload: {
+              key: 'trailer-modal',
+              value: {
+                ...this.trailerForm.value,
+                selectedTrailerType: this.selectedTrailerType,
+                selectedTruckMake: this.selectedTrailerMake,
+                selectedColor: this.selectedColor,
+                selectedTrailerLength: this.selectedTrailerLength,
+                selectedOwner: this.selectedOwner,
+                id: this.editData?.id,
+                selectedSuspension: this.selectedSuspension,
+                selectedTireSize: this.selectedTireSize,
+                selectedDoorType: this.selectedDoorType,
+                selectedReeferType: this.selectedReeferType,
+                trailerStatus: this.trailerStatus,
+              },
+            },
+            component: OwnerModalComponent,
+            size: 'small',
+          });
+        } else {
+          this.selectedOwner = event;
+        }
         break;
       }
       case 'reefer-unit': {

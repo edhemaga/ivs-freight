@@ -191,11 +191,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
     // Change Driver Status
 
-    let fullName = this.driverForm.get('firstName').value + ' ' + this.driverForm.get('lastName').value;
+    let fullName =
+      this.driverForm.get('firstName').value +
+      ' ' +
+      this.driverForm.get('lastName').value;
 
-    let successMessage = `"${fullName}" ${ data.action === 'deactivate' ? 'Deactivated' : 'Activated' }`
-    let errorMessage = `Failed to ${ data.action === 'deactivate' ? 'Deactivate' : 'Activate' } "${fullName}"`; 
-      
+    let successMessage = `"${fullName}" ${
+      data.action === 'deactivate' ? 'Deactivated' : 'Activated'
+    }`;
+    let errorMessage = `Failed to ${
+      data.action === 'deactivate' ? 'Deactivate' : 'Activate'
+    } "${fullName}"`;
+
     if (data.action === 'deactivate' && this.editData) {
       this.driverTService
         .changeDriverStatus(
@@ -213,10 +220,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
                 status: this.driverStatus,
               });
 
-              this.notificationService.success(
-                successMessage,
-                'Success'
-              );
+              this.notificationService.success(successMessage, 'Success');
 
               this.modalService.setModalSpinner({
                 action: null,
@@ -225,10 +229,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             }
           },
           error: () => {
-            this.notificationService.error(
-              errorMessage,
-              'Error'
-            );
+            this.notificationService.error(errorMessage, 'Error');
           },
         });
     } else if (data.action === 'save and add new') {
@@ -392,11 +393,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public onSaveNewBank(bank: any) {
-    this.selectedBank = bank;
-
+  public onSaveNewBank(bank: { data: any; action: string }) {
+    this.selectedBank = bank.data;
+    console.log(this.selectedBank);
     this.bankVerificationService
-      .createBank({ name: bank.name })
+      .createBank({ name: this.selectedBank.name })
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: CreateResponse) => {
@@ -406,8 +407,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           );
           this.selectedBank = {
             id: res.id,
-            name: bank.name,
+            name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -1217,7 +1219,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           : false
         : null,
     };
-    
+
     let driverFullName = newData.firstName + ' ' + newData.lastName;
 
     this.driverTService
@@ -1305,7 +1307,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           }
         },
         error: () =>
-          this.notificationService.error(`${driverFullName}`, 'FAILED TO CREATE DRIVER'),
+          this.notificationService.error(
+            `${driverFullName}`,
+            'FAILED TO CREATE DRIVER'
+          ),
       });
   }
 
@@ -1524,7 +1529,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
         : null,
     };
 
-    let driverFullName = this.driverForm.get('firstName').value + ' ' + this.driverForm.get('lastName').value;
+    let driverFullName =
+      this.driverForm.get('firstName').value +
+      ' ' +
+      this.driverForm.get('lastName').value;
 
     this.driverTService
       .updateDriver(newData)
@@ -1538,7 +1546,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
-          this.notificationService.error(`Failed to save changes for "${driverFullName}" `, 'Error'),
+          this.notificationService.error(
+            `Failed to save changes for "${driverFullName}" `,
+            'Error'
+          ),
       });
   }
 

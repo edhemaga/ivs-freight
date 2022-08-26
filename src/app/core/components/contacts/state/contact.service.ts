@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import {
+  CompanyContactLabelService,
   CompanyContactModalResponse,
   CompanyContactResponse,
   CompanyContactService,
+  ContactColorResponse,
   CreateCompanyContactCommand,
+  CreateCompanyContactLabelCommand,
   CreateResponse,
+  GetCompanyContactLabelListResponse,
   GetCompanyContactListResponse,
   UpdateCompanyContactCommand,
+  UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -21,7 +26,8 @@ export class ContactTService {
     private contactService: CompanyContactService,
     private contactStore: ContactStore,
     private contactQuery: ContactQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private companyLabelService: CompanyContactLabelService
   ) {}
 
   // Add Contact
@@ -82,7 +88,7 @@ export class ContactTService {
           },
         });
       })
-    );;
+    );
   }
 
   // Get Contact By Id
@@ -113,15 +119,13 @@ export class ContactTService {
     );
   }
 
-  // Get Contact Lables And Deparments
-  public companyContactLabelsAndDeparments(): Observable<CompanyContactModalResponse> {
+  // Company Contact Modal
+  public getCompanyContactModal(): Observable<CompanyContactModalResponse> {
     return this.contactService.apiCompanycontactModalGet();
   }
 
   // Delete Contact List
-  public deleteAccountList(
-    contactsToDelete: any[]
-  ): Observable<any> {
+  public deleteAccountList(contactsToDelete: any[]): Observable<any> {
     let deleteOnBack = contactsToDelete.map((owner: any) => {
       return owner.id;
     });
@@ -130,7 +134,7 @@ export class ContactTService {
       tap(() => {
         let storeContacts = this.contactQuery.getAll();
         let countDeleted = 0;
-        
+
         storeContacts.map((contact: any) => {
           deleteOnBack.map((d) => {
             if (d === contact.id) {
@@ -143,7 +147,7 @@ export class ContactTService {
         localStorage.setItem(
           'contactTableCount',
           JSON.stringify({
-            contact: storeContacts.length - countDeleted
+            contact: storeContacts.length - countDeleted,
           })
         );
       })
@@ -156,7 +160,9 @@ export class ContactTService {
       tap(() => {
         this.contactStore.remove(({ id }) => id === contactId);
 
-        const contactCount = JSON.parse(localStorage.getItem('contactTableCount'));
+        const contactCount = JSON.parse(
+          localStorage.getItem('contactTableCount')
+        );
 
         contactCount.contact--;
 
@@ -172,6 +178,29 @@ export class ContactTService {
           id: contactId,
         });
       })
-    );;
+    );
+  }
+
+  // --------------------- Contact LABEL ---------------------
+  public companyContactLabelsColorList(): Observable<
+    Array<ContactColorResponse>
+  > {
+    return this.companyLabelService.apiCompanycontactlabelColorListGet();
+  }
+
+  public companyContactLabelsList(): Observable<GetCompanyContactLabelListResponse> {
+    return this.companyLabelService.apiCompanycontactlabelListGet();
+  }
+
+  public addCompanyContactLabel(
+    data: CreateCompanyContactLabelCommand
+  ): Observable<CreateResponse> {
+    return this.companyLabelService.apiCompanycontactlabelPost(data);
+  }
+
+  public updateCompanyContactLabel(
+    data: UpdateCompanyContactLabelCommand
+  ): Observable<any> {
+    return this.companyLabelService.apiCompanycontactlabelPut(data);
   }
 }
