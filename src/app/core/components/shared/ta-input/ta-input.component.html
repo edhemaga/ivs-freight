@@ -42,8 +42,9 @@
         getSuperControl.value &&
         getSuperControl.valid &&
         focusInput &&
-        !inputConfig.customClass?.includes('repair-shop-oh') &&
-        !inputConfig.blackInput,
+        !inputConfig.customClass?.includes('repair-shop-open-hour') &&
+        !inputConfig.blackInput &&
+        inputConfig.type !== 'password',
       'invalid-focus-in':
         getSuperControl.value &&
         getSuperControl.invalid &&
@@ -52,15 +53,15 @@
         !inputConfig.blackInput,
       'dropdown-position':
         getSuperControl.value &&
-        inputConfig.isDropdown &&
+        (inputConfig.isDropdown || inputConfig.type === 'password') &&
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
       focus: focusInput,
-      'password-eye':
+      'visible-focus-password':
+        getSuperControl.value &&
         inputConfig.type === 'password' &&
-        isVisiblePasswordEye &&
-        getSuperControl.value,
+        isVisiblePasswordEye,
       'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
       'incorrect-input-enabled':
         inputConfig.incorrectInput && getSuperControl.value && incorrectValue,
@@ -172,7 +173,7 @@
     mainTooltip="{{ !togglePassword ? 'Show Password' : 'Hide Password' }}"
     tooltipBackground="#6c6c6c"
     position="top"
-    (click)="onTogglePassword()"
+    (click)="onTogglePassword($event)"
   >
     <svg-icon
       src="{{
@@ -275,7 +276,9 @@
     #t2="ngbPopover"
     [ngbPopover]="dateTimePopover"
     [disablePopover]="
-      (inputConfig.name !== 'datepicker' && inputConfig.name !== 'timepicker') || inputConfig.isDisabled
+      (inputConfig.name !== 'datepicker' &&
+        inputConfig.name !== 'timepicker') ||
+      inputConfig.isDisabled
     "
     [placement]="['left', 'left-top']"
     [popoverClass]="'datetimepopovermain'"
@@ -468,7 +471,9 @@
     #holder1
     class="date_time_holder input-control"
     *ngIf="
-      (inputConfig.name === 'datepicker' || inputConfig.name === 'timepicker') && !inputConfig.isDisabled
+      (inputConfig.name === 'datepicker' ||
+        inputConfig.name === 'timepicker') &&
+      !inputConfig.isDisabled
     "
     [class.active]="showDateInput"
     tabindex="-1"

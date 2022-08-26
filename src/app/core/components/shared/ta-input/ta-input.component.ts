@@ -437,7 +437,10 @@ export class TaInputComponent
     }
   }
 
-  public onTogglePassword(): void {
+  public onTogglePassword(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.togglePassword = !this.togglePassword;
     clearTimeout(this.timeout);
     this.setInputCursorAtTheEnd(this.input.nativeElement);

@@ -79,10 +79,6 @@
     }
   }
 
-  &.password-eye {
-    display: none !important;
-  }
-
   // If dropdown
   &.dropdown-position,
   &.dropdown-label-position,
@@ -149,7 +145,7 @@
   }
 
   &.focus {
-    &.repair-shop-oh {
+    &.repair-shop-open-hour {
       display: inline-block;
       svg {
         path {
@@ -168,5 +164,9 @@
         }
       }
     }
+  }
+
+  &.visible-focus-password {
+    display: inline-block !important;
   }
 }
