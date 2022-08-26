@@ -1,3 +1,4 @@
+import { environment } from './../../../environments/environment';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -7,13 +8,21 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { Observable, catchError, throwError, switchMap } from 'rxjs';
-import { AccountService, SignInResponse } from 'appcoretruckassist';
+import {
+  AccountService,
+  Configuration,
+  SignInResponse,
+} from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { UserLoggedService } from '../components/authentication/state/user-logged.service';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private configuration: Configuration
+  ) {}
 
   intercept(
     httpRequest: HttpRequest<any>,
@@ -32,6 +41,10 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 user.refreshToken = res.refreshToken;
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log('Refresh token: ', user);
+                this.configuration.credentials = {
+                  bearer: user.token,
+                };
+
                 return next.handle(httpRequest);
               }),
               catchError((err: HttpErrorResponse) => {
