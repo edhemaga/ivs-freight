@@ -148,7 +148,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           this.createNewPMs(
             null,
             true,
-            'assets/svg/common/repair-pm/ic_custom_pm.svg',
+            'assets/svg/common/repair-pm/ic_default_pm.svg',
             null,
             convertNumberInThousandSep(defaultValue),
             null,
@@ -294,7 +294,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             payload: { key: this.editData?.key, value: null },
             component: RepairOrderModalComponent,
             size: 'large',
-            type: this.editData?.type,
+            type: this.editData?.type2,
           });
           break;
         }
@@ -623,29 +623,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
   private getPMList() {
     // Global List
-    if (
-      this.editData.type === 'new' ||
-      ['Truck', 'Trailer'].includes(this.editData.type)
-    ) {
-      console.log('USO SAM U LISTU');
-      if (this.editData.type === 'Truck') {
-        this.editData = {
-          ...this.editData,
-          type: 'new',
-          header: 'Truck',
-          action: 'generic-pm',
-        };
-      }
-
-      if (this.editData.type === 'Trailer') {
-        this.editData = {
-          ...this.editData,
-          type: 'new',
-          header: 'Trailer',
-          action: 'generic-pm',
-        };
-      }
-
+    if (this.editData.type === 'new') {
       switch (this.editData.header) {
         case 'Truck': {
           this.getPMTruckList();
@@ -662,18 +640,41 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     }
     // Per Unit list
     else {
-      switch (this.editData.header) {
-        case 'Truck': {
-          this.getPMTruckUnit(this.editData.id);
-          break;
+      if (['Truck', 'Trailer'].includes(this.editData?.type)) {
+        const data = JSON.parse(sessionStorage.getItem(this.editData.key));
+
+        if (this.editData.type === 'Truck') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Truck',
+            action: 'unit-pm',
+          };
         }
-        case 'Trailer': {
-          this.getPMTrailerUnit(this.editData.id);
-          break;
+
+        if (this.editData.type === 'Trailer') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Trailer',
+            action: 'unit-pm',
+          };
         }
-        default: {
-          break;
-        }
+      }
+      if ([this.editData?.header, this.editData?.type].includes('Truck')) {
+        this.getPMTruckUnit(this.editData.id);
+      } else {
+        this.getPMTrailerUnit(this.editData.id);
       }
     }
   }

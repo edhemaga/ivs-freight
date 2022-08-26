@@ -108,10 +108,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.getRepairDropdowns();
 
     if (this.editData?.storageData) {
       this.populateForm(this.editData?.storageData);
+    } else {
+      this.getRepairDropdowns();
     }
 
     if (this.editData?.type?.includes('edit')) {
@@ -130,7 +131,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           );
         }
         clearTimeout(timeout);
-      }, 200);
+      }, 150);
     }
   }
 
@@ -218,7 +219,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
         id: null,
-        logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
+        logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
       });
     }
   }
@@ -351,7 +352,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.selectedPM = [];
     this.selectedPM.push({
       id: null,
-      logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
+      logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
     });
     this.selectedPMIndex = null;
   }
@@ -496,7 +497,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             };
           });
           if (!this.pmTrailers.find((item) => item.title === 'Add New')) {
-            this.pmTrailers.push({
+            this.pmTrailers.unshift({
               id: this.pmTrailers.length + 1,
               logoName: null,
               mileage: null,
@@ -531,7 +532,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               active: false,
             };
           });
-          this.labelsRepairShop = res.repairShops;
+          this.labelsRepairShop = [...res.repairShops];
         },
         error: () => {
           this.notificationService.error("Repair Dropdowns can't be loaded");
@@ -540,12 +541,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   public onAction(action: any, index: number) {
-    this.selectedPM[index] = action;
-    this.selectedPMIndex = index;
-    if (
-      this.selectedPM[index].title !== 'Add New' &&
-      this.selectedHeaderTab === 1
-    ) {
+    if (action.title !== 'Add New' && this.selectedHeaderTab === 1) {
+      this.selectedPM[index] = action;
+      this.selectedPMIndex = index;
       this.inputService.changeValidators(this.repairOrderForm.get('odometer'));
     } else {
       this.inputService.changeValidators(
@@ -553,7 +551,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         false
       );
     }
-    if (this.selectedPM[index].title === 'Add New') {
+    if (action.title === 'Add New') {
+      if (!this.editData?.id && !this.selectedUnit?.id) {
+        this.notificationService.warning(
+          'Please select first reapir unit!',
+          'Warning'
+        );
+        return;
+      }
       this.ngbActiveModal.close();
       this.modalService.setProjectionModal({
         action: 'open',
@@ -571,6 +576,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             subtotal: this.subtotal,
             selectedPM: this.selectedPM,
             selectedPMIndex: this.selectedPMIndex,
+            id: this.editData?.id ? this.editData.id : this.selectedUnit.id,
           },
         },
         component: RepairPmModalComponent,
@@ -766,199 +772,210 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   private populateForm(res: any) {
     const timeout = setTimeout(() => {
-      this.repairOrderForm.patchValue({
-        repairType: res.repairType,
-        unitType: res.unitType,
-        unit: res.unitType,
-        odometer: res.odometer,
-        date: res.date,
-        invoice: res.invoice,
-        repairShopId: res.repairShopId,
-        note: res.note,
-      });
+      this.getRepairDropdowns();
 
-      // Truck/Trailer Unit number
-      this.selectedUnit = res.selectedUnit;
+      setTimeout(() => {
+        this.repairOrderForm.patchValue({
+          repairType: res.repairType,
+          unitType: res.unitType,
+          unit: res.unit,
+          odometer: res.odometer,
+          date: res.date,
+          invoice: res.invoice,
+          repairShopId: res.repairShopId,
+          note: res.note,
+        });
 
-      // Repair Services
-      this.services = [...res.services];
+        // Truck/Trailer Unit number
+        this.selectedUnit = res.selectedUnit;
 
-      // Repair Shop
-      this.selectedRepairShop = res.selectedRepairShop;
+        // Repair Services
+        this.services = [...res.services];
 
-      this.headerTabs = [...res.headerTabs];
-      this.selectedHeaderTab = res.selectedHeaderTab;
+        // Repair Shop
+        this.selectedRepairShop = res.selectedRepairShop;
 
-      this.typeOfRepair = res.typeOfRepair;
+        this.headerTabs = [...res.headerTabs];
+        this.selectedHeaderTab = res.selectedHeaderTab;
 
-      // Items
-      this.subtotal = [...res.subtotal];
+        this.typeOfRepair = res.typeOfRepair;
 
-      this.selectedPM = [...res.selectedPM];
+        // Items
+        this.subtotal = [...res.subtotal];
 
-      if (res.items_array.length) {
-        for (const iterator of res.items_array) {
-          this.items.push(
-            this.createItems({
-              id: iterator.id,
-              description: iterator.description,
-              price: iterator.price,
-              quantity: iterator.quantity,
-              subtotal: iterator.subtotal,
-              pmTruckId: iterator.pmTruck,
-              pmTrailerId: iterator.pmTrailer,
-            })
-          );
-          this.selectedPMIndex = 0;
+        this.selectedPM = [...res.selectedPM];
+
+        if (res.items_array.length) {
+          for (const iterator of res.items_array) {
+            this.items.push(
+              this.createItems({
+                id: iterator.id,
+                description: iterator.description,
+                price: iterator.price,
+                quantity: iterator.quantity,
+                subtotal: iterator.subtotal,
+                pmTruckId: iterator.pmTruck,
+                pmTrailerId: iterator.pmTrailer,
+              })
+            );
+            this.selectedPMIndex = 0;
+          }
         }
-      }
+      }, 100);
 
       clearTimeout(timeout);
     }, 200);
   }
 
   private editRepairById(id: number) {
-    const timeout = setTimeout(() => {
-      this.repairService
-        .getRepairById(id)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: (res: RepairResponse) => {
-            if (!this.editData.type.includes('fo')) {
-              this.onModalHeaderTabChange(
-                this.headerTabs.find(
-                  (item) => item.name === res.repairType.name
-                )
-              );
-            }
-
-            this.onTypeOfRepair(
-              this.typeOfRepair.find((item) => item.name === res.unitType.name),
-              'edit-mode'
-            );
-
-            this.repairOrderForm.patchValue({
-              repairType: res.repairType ? res.repairType.name : null,
-              unitType: res.unitType ? res.unitType.name : null,
-              unit:
-                res.unitType.name === 'Truck'
-                  ? res.truck.truckNumber
-                  : res.trailer.trailerNumber,
-              odometer:
-                res.odometer && res.date && this.selectedHeaderTab === 1
-                  ? convertNumberInThousandSep(res.odometer)
-                  : null,
-              date:
-                res.date && this.selectedHeaderTab === 1
-                  ? convertDateFromBackend(res.date)
-                  : null,
-              invoice:
-                res.date && this.selectedHeaderTab === 1 ? res.invoice : null,
-              repairShopId: res.repairShop ? res.repairShop.id : null,
-              items: [],
-              note: res.note,
-            });
-
-            // Truck/Trailer Unit number
-            this.selectedUnit =
-              res.unitType.name === 'Truck' ? res.truck : res.trailer;
-
-            // Repair Services
-            this.services = res.serviceTypes.map((item) => {
-              return {
-                id: item.serviceType.id,
-                serviceType: item.serviceType.name,
-                svg: `assets/svg/common/repair-services/${item.logoName}`,
-                active: item.active,
-              };
-            });
-
-            // Repair Shop
-            if (res.repairShop?.id) {
-              this.repairService
-                .getRepairShopById(res.repairShop.id)
-                .pipe(untilDestroyed(this))
-                .subscribe({
-                  next: (res: RepairShopResponse) => {
-                    this.selectedRepairShop = {
-                      id: res.id,
-                      name: res.name,
-                      phone: res.phone,
-                      email: res.email,
-                      address: res.address.address,
-                      pinned: res.pinned,
-                    };
-                  },
-                  error: () => {
-                    this.notificationService.error(
-                      `Cant' get repair shop by ${this.selectedRepairShop.id}`,
-                      'Error'
-                    );
-                  },
-                });
-            }
-
-            // Repair Items
-            if (res.items.length) {
-              for (const iterator of res.items) {
-                this.items.push(
-                  this.createItems({
-                    id: iterator.id,
-                    description: iterator.description,
-                    price: iterator.price ? iterator.price : 0,
-                    quantity: iterator.price
-                      ? iterator.quantity
-                        ? iterator.quantity
-                        : 1
-                      : iterator.quantity,
-                    subtotal: iterator.subtotal ? iterator.subtotal : 0,
-                    pmTruckId: iterator.pmTruck,
-                    pmTrailerId: iterator.pmTrailer,
-                  })
+    if (id) {
+      const timeout = setTimeout(() => {
+        this.repairService
+          .getRepairById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: RepairResponse) => {
+              if (!this.editData.type.includes('fo')) {
+                this.onModalHeaderTabChange(
+                  this.headerTabs.find(
+                    (item) => item.name === res.repairType.name
+                  )
                 );
-                this.selectedPMIndex = 0;
+              }
 
-                if (this.selectedHeaderTab === 1) {
-                  this.inputService.changeValidators(
-                    this.repairOrderForm.get('odometer')
+              this.onTypeOfRepair(
+                this.typeOfRepair.find(
+                  (item) => item.name === res.unitType.name
+                ),
+                'edit-mode'
+              );
+
+              this.repairOrderForm.patchValue({
+                repairType: res.repairType ? res.repairType.name : null,
+                unitType: res.unitType ? res.unitType.name : null,
+                unit:
+                  res.unitType.name === 'Truck'
+                    ? res.truck.truckNumber
+                    : res.trailer.trailerNumber,
+                odometer:
+                  res.odometer && res.date && this.selectedHeaderTab === 1
+                    ? convertNumberInThousandSep(res.odometer)
+                    : null,
+                date:
+                  res.date && this.selectedHeaderTab === 1
+                    ? convertDateFromBackend(res.date)
+                    : null,
+                invoice:
+                  res.date && this.selectedHeaderTab === 1 ? res.invoice : null,
+                repairShopId: res.repairShop ? res.repairShop.id : null,
+                items: [],
+                note: res.note,
+              });
+
+              // Truck/Trailer Unit number
+              this.selectedUnit =
+                res.unitType.name === 'Truck' ? res.truck : res.trailer;
+
+              // Repair Services
+              this.services = res.serviceTypes.map((item) => {
+                return {
+                  id: item.serviceType.id,
+                  serviceType: item.serviceType.name,
+                  svg: `assets/svg/common/repair-services/${item.logoName}`,
+                  active: item.active,
+                };
+              });
+
+              // Repair Shop
+              if (res.repairShop?.id) {
+                this.repairService
+                  .getRepairShopById(res.repairShop.id)
+                  .pipe(untilDestroyed(this))
+                  .subscribe({
+                    next: (res: RepairShopResponse) => {
+                      this.selectedRepairShop = {
+                        id: res.id,
+                        name: res.name,
+                        phone: res.phone,
+                        email: res.email,
+                        address: res.address.address,
+                        pinned: res.pinned,
+                      };
+                    },
+                    error: () => {
+                      this.notificationService.error(
+                        `Cant' get repair shop by ${this.selectedRepairShop.id}`,
+                        'Error'
+                      );
+                    },
+                  });
+              }
+
+              // Repair Items
+              if (res.items.length) {
+                for (const iterator of res.items) {
+                  this.items.push(
+                    this.createItems({
+                      id: iterator.id,
+                      description: iterator.description,
+                      price: iterator.price ? iterator.price : 0,
+                      quantity: iterator.price
+                        ? iterator.quantity
+                          ? iterator.quantity
+                          : 1
+                        : iterator.quantity,
+                      subtotal: iterator.subtotal ? iterator.subtotal : 0,
+                      pmTruckId: iterator.pmTruck,
+                      pmTrailerId: iterator.pmTrailer,
+                    })
                   );
-                }
-                this.subtotal = [
-                  ...this.subtotal,
-                  {
-                    id: iterator.id,
-                    value: iterator.subtotal ? iterator.subtotal : 0,
-                  },
-                ];
+                  this.selectedPMIndex = 0;
 
-                if (res.unitType.name === 'Truck') {
-                  this.selectedPM.push({
-                    id: iterator.pmTruck ? iterator.pmTruck.id : null,
-                    logoName: `assets/svg/common/repair-pm/${
-                      iterator.pmTruck
-                        ? iterator.pmTruck.logoName
-                        : 'ic_custom_pm.svg'
-                    }`,
-                  });
-                } else {
-                  this.selectedPM.push({
-                    id: iterator.pmTrailer ? iterator.pmTrailer.id : null,
-                    logoName: `assets/svg/common/repair-pm/${
-                      iterator.pmTrailer
-                        ? iterator.pmTrailer.logoName
-                        : 'ic_custom_pm.svg'
-                    }`,
-                  });
+                  if (this.selectedHeaderTab === 1) {
+                    this.inputService.changeValidators(
+                      this.repairOrderForm.get('odometer')
+                    );
+                  }
+                  this.subtotal = [
+                    ...this.subtotal,
+                    {
+                      id: iterator.id,
+                      value: iterator.subtotal ? iterator.subtotal : 0,
+                    },
+                  ];
+
+                  if (res.unitType.name === 'Truck') {
+                    this.selectedPM.push({
+                      id: iterator.pmTruck ? iterator.pmTruck.id : null,
+                      logoName: `assets/svg/common/repair-pm/${
+                        iterator.pmTruck
+                          ? iterator.pmTruck.logoName
+                          : 'ic_default_pm.svg'
+                      }`,
+                    });
+                  } else {
+                    this.selectedPM.push({
+                      id: iterator.pmTrailer ? iterator.pmTrailer.id : null,
+                      logoName: `assets/svg/common/repair-pm/${
+                        iterator.pmTrailer
+                          ? iterator.pmTrailer.logoName
+                          : 'ic_default_pm.svg'
+                      }`,
+                    });
+                  }
                 }
               }
-            }
-          },
-          error: () => {
-            this.notificationService.error("Repair can't be loaded.", 'Error');
-          },
-        });
-      clearTimeout(timeout);
-    }, 200);
+            },
+            error: () => {
+              this.notificationService.error(
+                "Repair can't be loaded.",
+                'Error'
+              );
+            },
+          });
+        clearTimeout(timeout);
+      }, 200);
+    }
   }
 
   private premmapedItems() {

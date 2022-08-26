@@ -106,7 +106,7 @@ export class ModalService {
 
     (modal as any)._removeModalElements = () => {
       instance.windowClass = '';
-      setTimeout(fx, 400);
+      setTimeout(fx, 250);
     };
 
     return modal;

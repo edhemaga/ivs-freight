@@ -34,8 +34,7 @@
           isRequired: true,
           dropdownWidthClass: 'w-col-129',
           autoFocus:
-            !editData?.type?.includes('edit') &&
-            !repairOrderForm.get('unit').value
+            !editData?.type?.includes('edit') && !editData?.storageData?.unit
               ? true
               : false
         }"
@@ -200,7 +199,7 @@
                     textTransform: 'capitalize',
                     hideRequiredCheck: true,
                     blueInputColor:
-                      !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
+                      !selectedPM[ind]?.logoName?.includes('ic_default_pm'),
                     customClass: 'repair-m-pm'
                   }"
                 ></app-ta-input>
@@ -216,10 +215,16 @@
                     class="pm-svg"
                     [class.active]="
                       selectedPM.length
-                        ? !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                        ? !selectedPM[ind]?.logoName?.includes(
+                            'ic_default_pm'
+                          ) && selectedPM[ind]?.logoName
                         : false
                     "
-                    [src]="selectedPM[ind]?.logoName"
+                    [src]="
+                      selectedPM[ind]?.logoName
+                        ? selectedPM[ind]?.logoName
+                        : 'assets/svg/common/repair-pm/ic_default_pm.svg'
+                    "
                   ></svg-icon>
                 </div>
 
@@ -256,7 +261,7 @@
                   thousandSeparator: true,
                   hideRequiredCheck: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                 }"
                 (change)="onChange('price', ind)"
               ></app-ta-input>
@@ -270,7 +275,7 @@
                   textTransform: 'capitalize',
                   hideRequiredCheck: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_default_pm')
                 }"
                 (change)="onChange('quantity', ind)"
               ></app-ta-input>

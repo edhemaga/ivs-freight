@@ -97,8 +97,8 @@
 			"iconPath": "/assets/svg/common/repair-pm/ic_brake_chamber.svg"
 		},
     {
-			"iconName": "ic_custom_pm.svg",
-			"iconPath": "/assets/svg/common/repair-pm/ic_custom_pm.svg"
+			"iconName": "ic_default_pm.svg",
+			"iconPath": "/assets/svg/common/repair-pm/ic_default_pm.svg"
 		},
     {
 			"iconName": "ic_default_pm.svg",
