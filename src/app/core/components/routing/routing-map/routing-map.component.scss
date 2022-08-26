@@ -1,5 +1,16 @@
 @import "../../../../../theme/variables.scss";
 
+:root {
+    --route-color-1: #3074D3;
+    --route-color-2: #FFA726;
+    --route-color-3: #EF5350;
+    --route-color-4: #26A690;
+    --route-color-5: #AB47BC;
+    --route-color-6: #38BDEB;
+    --route-color-7: #F276EF;
+    --route-color-8: #8D6E63;
+  }
+
 .table-container {
     width: calc(100% - 74px);
     position: absolute;
@@ -300,6 +311,10 @@
                     }
                 }
             }
+
+            .focused-route-number-background {
+                display: flex;
+            }
         }
 
         .delete-button {
@@ -360,11 +375,52 @@
 
         &.plus-button {
             margin-right: 9px;
+
+            &.route-color-1 {
+                path {
+                    fill: var(--route-color-1);
+                }
+            }
+            &.route-color-2 {
+                path {
+                    fill: var(--route-color-2);
+                }
+            }
+            &.route-color-3 {
+                path {
+                    fill: var(--route-color-3);
+                }
+            }
+            &.route-color-4 {
+                path {
+                    fill: var(--route-color-4);
+                }
+            }
+            &.route-color-5 {
+                path {
+                    fill: var(--route-color-5);
+                }
+            }
+            &.route-color-6 {
+                path {
+                    fill: var(--route-color-6);
+                }
+            }
+            &.route-color-7 {
+                path {
+                    fill: var(--route-color-7);
+                }
+            }
+            &.route-color-8 {
+                path {
+                    fill: var(--route-color-8);
+                }
+            }
         }
 
         svg {
             path {
-                fill: #AAAAAA;
+                fill: #919191;
             }
         }
 
@@ -524,6 +580,31 @@
 
         .focused-route-number-background {
             display: flex;
+
+            &.route-color-1 {
+                background-color: var(--route-color-1) !important;
+            }
+            &.route-color-2 {
+                background-color: var(--route-color-2) !important;
+            }
+            &.route-color-3 {
+                background-color: var(--route-color-3) !important;
+            }
+            &.route-color-4 {
+                background-color: var(--route-color-4) !important;
+            }
+            &.route-color-5 {
+                background-color: var(--route-color-5) !important;
+            }
+            &.route-color-6 {
+                background-color: var(--route-color-6) !important;
+            }
+            &.route-color-7 {
+                background-color: var(--route-color-7) !important;
+            }
+            &.route-color-8 {
+                background-color: var(--route-color-8) !important;
+            }
         }
     }
   }

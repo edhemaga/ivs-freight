@@ -127,7 +127,7 @@
                             ></app-details-page-dropdown> -->
                         </div>
                     </div>
-                    <div class="route-card-content" cdkDropList (cdkDropListDropped)="dropStops($event, route.stops, i)">
+                    <div class="route-card-content" cdkDropList [cdkDropListDisabled]="route.stops.length < 2" (cdkDropListDropped)="dropStops($event, route.stops, i)">
                         <!-- <div class="route-card-row">
                             <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: routeColors[i] }">1</div>
                             <div class="route-row-location marker-like-text" [ngClass]="{ 'full-address': route.fullAddressView }">{{ route.startPoint.fullAddress ? route.startPoint.fullAddress : route.startPoint.address }}</div>
@@ -144,11 +144,13 @@
                             cdkDrag 
                             cdkDragBoundary=".route-card-content"
                             [ngClass]="{ 'focused-route': route.isFocused }"
+                            [ngStyle]="{ 'cursor': route.stops.length == 1 ? 'pointer': '' }"
                             (click)="focusStop($event, i, b)"
                         >
                             <div 
                                 class="focused-route-number-background" 
-                                [ngStyle]="{ backgroundColor: '#0000001A' }"
+                                [ngClass]="[ 'route-color-'+(i+1) ]"
+                                [ngStyle]="{ display: stop.deleteHover ? 'flex' : '', backgroundColor: stop.deleteHover ? '#00000033'  : '#0000001A' }"
                                 *ngIf="route.isFocused"
                             ></div>
                             <svg-icon
@@ -232,6 +234,7 @@
                             <svg-icon
                                 src="assets/svg/common/ic_plus.svg"
                                 class="delete-button plus-button"
+                                [ngClass]="[ 'route-color-'+(i+1) ]"
                                 [svgStyle]="{ 'width.px': 14, 'height.px': 14, fill: route.isFocused ? '#fff' : routeColors[i] }"
                             ></svg-icon>
                             <div class="route-row-number marker-like-text marker-bold-text"></div>

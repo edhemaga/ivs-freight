@@ -148,7 +148,17 @@ export class RoutingMapComponent implements OnInit {
     //   'fuelPrice': '',
     //   'stops': [
     //     {
-    //       'address': 'Gary, IN 30055',
+    //       'address': {
+    //         'address': "Gary, IN 30055",
+    //         'city': "Gary",
+    //         'country': "US",
+    //         'state': "IN",
+    //         'stateShortName': "IN",
+    //         'street': "",
+    //         'streetNumber': "",
+    //         'zipCode': "30055"
+    //       },
+    //       'cityAddress': 'Gary, IN 30055',
     //       'leg': '60.6',
     //       'total': '60.6',
     //       'time': '01:15',
@@ -158,7 +168,17 @@ export class RoutingMapComponent implements OnInit {
     //       'long': -87.349680
     //     },
     //     {
-    //       'address': 'Chicago, IL 65005',
+    //       'address': {
+    //         'address': "Chicago, IL 65005",
+    //         'city': "Chicago",
+    //         'country': "US",
+    //         'state': "IL",
+    //         'stateShortName': "IL",
+    //         'street': "",
+    //         'streetNumber': "",
+    //         'zipCode': "65005"
+    //       },
+    //       'cityAddress': 'Chicago, IL 65005',
     //       'leg': '60.6',
     //       'total': '60.6',
     //       'time': '01:15',
@@ -168,7 +188,17 @@ export class RoutingMapComponent implements OnInit {
     //       'long': -87.632400
     //     },
     //     {
-    //       'address': 'Philadelphia, PA 52320',
+    //       'address': {
+    //         'address': "Philadelphia, PA 52320",
+    //         'city': "Philadelphia",
+    //         'country': "US",
+    //         'state': "PA",
+    //         'stateShortName': "PA",
+    //         'street': "",
+    //         'streetNumber': "",
+    //         'zipCode': "52320"
+    //       },
+    //       'cityAddress': 'Philadelphia, PA 52320',
     //       'leg': '45.2',
     //       'total': '105.8',
     //       'time': '00:23',
@@ -178,7 +208,17 @@ export class RoutingMapComponent implements OnInit {
     //       'long': -75.165620
     //     },
     //     {
-    //       'address': 'Nashville, KE 89600',
+    //       'address': {
+    //         'address': "Nashville, KE 89600",
+    //         'city': "Nashville",
+    //         'country': "US",
+    //         'state': "KE",
+    //         'stateShortName': "KE",
+    //         'street': "",
+    //         'streetNumber': "",
+    //         'zipCode': "89600"
+    //       },
+    //       'cityAddress': 'Nashville, KE 89600',
     //       'leg': '168.8',
     //       'total': '273.1',
     //       'time': '00:37',
