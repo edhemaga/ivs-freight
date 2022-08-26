@@ -63,7 +63,7 @@
                             </div>
                             <div 
                                 class="route-name marker-info-text marker-bold-text mg-left-8"
-                                [ngStyle]="{ color: route.nameHover ? routeFocusColors[i] : route.hidden ? '#B7B7B7' : '#6c6c6c' }"
+                                [ngStyle]="{ color: route.nameHover ? routeFocusColors[i] : route.hidden ? '#B7B7B7' : '#3C3C3C' }"
                                 (click)="showHideRoute($event, route)"
                                 (mouseenter)="route.nameHover = true"
                                 (mouseleave)="route.nameHover = false">
@@ -143,22 +143,21 @@
                             *ngFor="let stop of route.stops; let b = index;" 
                             cdkDrag 
                             cdkDragBoundary=".route-card-content"
-                            [ngClass]="{ 'focused-route': route.isFocused, 'selected-stop': stop.isSelected }"
-                            [ngStyle]="{ background: (stop.hoverRow || stop.isSelected) ? routeFocusColors[i]+'1A' : '' }"   
+                            [ngClass]="{ 'focused-route': route.isFocused }"
                             (click)="focusStop($event, i, b)"
-                            (mouseenter)="stop.hoverRow = true"
-                            (mouseleave)="stop.hoverRow = false"
                         >
                             <div 
                                 class="focused-route-number-background" 
-                                [ngStyle]="{ display: (stop.isSelected || stop.hoverRow) ? 'flex' : 'none', backgroundColor: '#FFFFFF4D' }"
-                                *ngIf="route.isFocused || stop.isSelected || stop.hoverRow"
+                                [ngStyle]="{ backgroundColor: '#0000001A' }"
+                                *ngIf="route.isFocused"
                             ></div>
                             <svg-icon
                                 src="assets/svg/truckassist-table/dropdown/content/delete.svg"
                                 class="delete-button"
                                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                                 (click)="deleteRouteStop($event, route, b)"
+                                (mouseenter)="stop.deleteHover = true"
+                                (mouseleave)="stop.deleteHover = false"
                             ></svg-icon>
                             <div class="delete-button drag-arrows">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14">
@@ -168,9 +167,27 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="delete-stop-text">Delete</div>
                             <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: route.isFocused ? '#fff' : routeColors[i] }">{{ b + 1 }}</div>
-                            <div class="route-row-location marker-like-text" [ngClass]="{ 'full-address': tableData[selectedMapIndex].addressType == 'address' }">
+                            <div 
+                                class="delete-stop-text" 
+                                [ngStyle]="{
+                                    'width': !stop.deleteHover ? '0px' : '50px',
+                                    'min-width': !stop.deleteHover ? '0px' : '50px',
+                                    'padding': !stop.deleteHover ? '0px' : '2px 6px',
+                                    'opacity': stop.deleteHover ? '1' : '0'
+                                }"
+                            >
+                                Delete
+                            </div>
+                            <div 
+                                class="route-row-location marker-like-text" 
+                                [ngClass]="{ 'full-address': tableData[selectedMapIndex].addressType == 'address' }" 
+                                [ngStyle]="{ 
+                                    'font-weight': stop.isSelected ? '700' : '400',
+                                    'min-width': stop.deleteHover ? '90px': '',
+                                    'width': stop.deleteHover ? '90px': ''
+                                }"
+                            >
                                 {{ tableData[selectedMapIndex].addressType == 'address' && stop.address.address ? stop.address.address : stop.cityAddress }}
                             </div>
 
@@ -181,7 +198,8 @@
                                     [ngStyle]="{ 
                                         'width': item.value.width,
                                         'margin-right': '18px',
-                                        'color': (b == route.stops.length-1 && item.value.boldValue ) ? route.isFocused ? routeFocusColors[i] : routeColors[i] : ''
+                                        'color': (b == route.stops.length-1 && item.value.boldValue ) ? route.isFocused ? routeFocusColors[i] : routeColors[i] : '',
+                                        'font-weight': item.value.boldValue ? '800' : ''
                                     }"
                                     *ngIf="
                                         (item.value.checkMainValue && route[item.value.checkMainValue] || !item.value.checkMainValue) && 
@@ -205,15 +223,11 @@
                             class="route-card-row m-0" 
                             [formGroup]="$any(addressInputs)" 
                             [ngClass]="{ 'focused-route': route.isFocused }" 
-                            [ngStyle]="{ background: route.newRouteHover ? routeFocusColors[i]+'1A' : '' }"   
                             (click)="focusStop($event, i, b)"
-                            (mouseenter)="route.newRouteHover = true"
-                            (mouseleave)="route.newRouteHover = false"
                         >
                             <div 
                                 class="focused-route-number-background" 
-                                [ngStyle]="{ display: route.newRouteHover ? 'flex' : 'none', backgroundColor: '#FFFFFF4D' }"
-                                *ngIf="route.newRouteHover"
+                                [ngStyle]="{ backgroundColor: '#0000001A' }"
                             ></div>
                             <svg-icon
                                 src="assets/svg/common/ic_plus.svg"

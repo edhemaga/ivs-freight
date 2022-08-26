@@ -257,22 +257,25 @@ export class RoutingMapComponent implements OnInit {
   ];
 
   public routeColors: any[] = [
-    '#8A9AEF',
-    '#FDB46B',
-    '#F27B8E',
-    '#6DC089',
-    '#A574C3',
-    '#73D0F1',
-    '#F69FF3',
-    '#A1887F'
+    '#3074D3',
+    '#FFA726',
+    '#EF5350',
+    '#26A690',
+    '#AB47BC',
+    '#38BDEB',
+    '#F276EF',
+    '#8D6E63'
   ];
 
+  // '#8A9AEF', '#FDB46B', '#F27B8E', '#6DC089', '#A574C3', '#73D0F1', '#F69FF3', '#A1887F' - Old colors
+  // '#596FE8', '#FD952D', '#ED445E', '#2FA558', '#7F39AA', '#38BDEB', '#F276EF', '#8D6E63' - Old focus colors
+
   public routeFocusColors: any[] = [
-    '#596FE8',
-    '#FD952D',
-    '#ED445E',
-    '#2FA558',
-    '#7F39AA',
+    '#3074D3',
+    '#FFA726',
+    '#EF5350',
+    '#26A690',
+    '#AB47BC',
     '#38BDEB',
     '#F276EF',
     '#8D6E63'
@@ -1219,6 +1222,8 @@ export class RoutingMapComponent implements OnInit {
         item.isSelected = false;
       }
     });
+
+    this.ref.detectChanges();
   }
 
   sortKeys = (a, b) => {

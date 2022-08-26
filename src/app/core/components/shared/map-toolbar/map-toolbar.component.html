@@ -390,7 +390,7 @@
 
   <ng-template #addRoutePopover let-data="data" data-toggle="popover">
     <div class="map-settings-container" [formGroup]="routeForm">
-      <div class="map-settings-title">Route Settings</div>
+      <div class="map-settings-title">{{ routeToEdit?.id ? 'Route Settings' : 'Add New Route' }}</div>
       <div class="map-settings-divider"></div>
 
       <div class="map-settings-content mg-22">
@@ -522,7 +522,7 @@
           [ngClass]="{ 'modal-save-btn': routeForm.valid }" 
           (click)="onToolBarAction(routeToEdit?.id ? 'edit-route' : 'add-route')"
         >
-            <div class="map-settings-button-text">Save Changes</div>
+            <div class="map-settings-button-text">{{ routeToEdit?.id ? 'Save Changes' : 'Create' }}</div>
         </div>
       </div>
     </div>

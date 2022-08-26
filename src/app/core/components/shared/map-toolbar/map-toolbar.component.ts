@@ -268,8 +268,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createRouteForm() {
+    this.getSelectedTabTableData();
+
     this.routeForm = this.formBuilder.group({
-      routeName: [null, Validators.required],
+      routeName: ['Route 0'+(this.activeTableData.length+1), Validators.required],
       truckId: '',
       duration: false,
       durationTime: null,
@@ -579,6 +581,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   resetRouteForm() {
+    this.getSelectedTabTableData();
+
     if ( this.routeToEdit.id ) {
       this.routeForm.patchValue({
         routeName: this.routeToEdit.name,
@@ -592,7 +596,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       });
     } else {
       this.routeForm.patchValue({
-        routeName: null,
+        routeName: 'Route 0'+(this.activeTableData.length+1),
         truckId: '',
         duration: false,
         durationTime: null,

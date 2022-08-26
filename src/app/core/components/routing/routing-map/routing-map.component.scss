@@ -93,7 +93,7 @@
     }
 
     &.expanded-card {
-        max-width: 800px;
+        max-width: 802px;
 
         .route-card-row .route-row-location.add-new-stop .input-custom-group {
             grid-template-columns: 88% 1fr !important;
@@ -279,16 +279,16 @@
     }
 
     &:hover {
-        background: #F3F3F3;
+        background: #00000012;
         cursor: grab;
 
         &.focused-route {
-            background: #FFEBEE66;
+            background: #00000012;
 
             .delete-button {
                 svg {
                     path {
-                        fill: #FBD8DD;
+                        fill: #FFF;
                     }
                 }
 
@@ -316,49 +316,8 @@
 
         .route-row-location {
             &.add-new-stop {
-                &.input-color-1 {
-                    input {
-                        background-color: #596FE81A !important;
-                    }
-                }
-                &.input-color-2 {
-                    input {
-                        background-color: #FD952D1A !important;
-                    }
-                }
-                &.input-color-3 {
-                    input {
-                        background-color: #ED445E1A !important;
-                    }
-                }
-                &.input-color-4 {
-                    input {
-                        background-color: #2FA5581A !important;
-                    }
-                }
-                &.input-color-5 {
-                    input {
-                        background-color: #7F39AA1A !important;
-                    }
-                }
-                &.input-color-6 {
-                    input {
-                        background-color: #38BDEB1A !important;
-                    }
-                }
-                &.input-color-7 {
-                    input {
-                        background-color: #F276EF1A !important;
-                    }
-                }
-                &.input-color-8 {
-                    input {
-                        background-color: #8D6E631A !important;
-                    }
-                }
-
                 input {
-                    //background-color: #F3F3F3 !important;
+                    background-color: #00000000 !important;
                 }
     
                 label {
@@ -372,7 +331,7 @@
         padding-right: 0px;
 
         .route-row-number {
-            margin-right: 10px;
+            margin-right: 9px;
         }
 
         &:hover {
@@ -419,26 +378,35 @@
     }
 
     .delete-stop-text {
-        position: absolute;
-        top: 2px;
-        right: 2px;
-        display: none;
+        position: relative;
+        top: 0px;
+        left: -7px;
+        //display: none;
         justify-content: center;
         align-items: center;
 
-        width: 50px;
+        width: 0px;
+        min-width: 0px;
+        //width: 50px;
+        //min-width: 50px;
         height: 18px;
-        background: #EF5350;
+        padding: 2px 6px;
+        //background: #EF5350;
+        background: #424242;
         border-radius: 1px;
 
         font-size: 11px;
         line-height: 14px;
         color: #fff;
         font-weight: 700;
+
+        opacity: 0;
+        overflow: hidden;
+        transition: all 0.2s ease-in-out;
     }
 
     .delete-button:hover + .delete-stop-text {
-        display: flex!important;
+        //display: flex!important;
     }
     
     .route-row-number {
@@ -463,6 +431,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        transition: width 0.2s ease-in-out, min-width 0.2s ease-in-out;
 
         &.full-address {
             width: 220px;
@@ -512,6 +481,10 @@
         &:last-child {
             margin-right: 0px;
         }
+    }
+
+    .marker-like-text {
+        color: #424242;
     }
 }
 
