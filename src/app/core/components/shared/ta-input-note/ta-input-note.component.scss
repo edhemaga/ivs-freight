@@ -85,6 +85,7 @@
     overflow: hidden;
     padding: 0 6px;
     transition: height 0.3s ease-in-out;
+    cursor: text;
 
     &.unopened {
       height: 0px;

@@ -663,9 +663,9 @@ export function getRepairsShopColumnDefinition() {
       showPin: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'rating',
       title: 'Rating',
-      field: '',
+      field: 'shopRaiting',
       name: 'Rating',
       hidden: false,
       width: 150,

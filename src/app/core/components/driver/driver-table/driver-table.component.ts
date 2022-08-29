@@ -434,7 +434,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       return this.driversInactive?.length ? this.driversInactive : [];
     } else {
-      return [];
+      return [{}, {}, {}, {}, {}];
     }
   }
 
@@ -461,7 +461,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: any, index: number) => {
-        return this.mapDriverData(data);
+        return this.selectedTab === 'applicants'
+          ? this.mapApplicantsData(data, index)
+          : this.mapDriverData(data);
       });
 
       console.log('Driver Data');
@@ -510,19 +512,28 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         expirationDays: data?.cdlExpirationDays
           ? this.thousandSeparator.transform(data.cdlExpirationDays)
           : null,
-        percentage: data?.cdlPercentage ? data.cdlPercentage : null,
+        percentage:
+          data?.cdlPercentage || data?.cdlPercentage === 0
+            ? 100 - data.cdlPercentage
+            : null,
       },
       tableMedicalData: {
         expirationDays: data?.medicalExpirationDays
           ? this.thousandSeparator.transform(data.medicalExpirationDays)
           : null,
-        percentage: data?.medicalPercentage ? data.medicalPercentage : null,
+        percentage:
+          data?.medicalPercentage || data?.medicalPercentage === 0
+            ? 100 - data.medicalPercentage
+            : null,
       },
       tableMvrData: {
         expirationDays: data?.mvrExpirationDays
           ? this.thousandSeparator.transform(data.mvrExpirationDays)
           : null,
-        percentage: data?.mvrPercentage ? data.mvrPercentage : null,
+        percentage:
+          data?.mvrPercentage || data?.mvrPercentage === 0
+            ? 100 - data.mvrPercentage
+            : null,
       },
       tableDrugOrAlcoholTest: null,
       textPayType: data?.payType?.name ? data.payType.name : '',
@@ -585,6 +596,87 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
             : null,
         },
       ],
+    };
+  }
+
+  mapApplicantsData(data: any, index: number) {
+    return {
+      fullName: 'Angelo Trotter',
+      invited: '04/04/44',
+      accepted: '04/04/44',
+      phone: '(325) 540-1157',
+      dob: '04/04/44',
+      email: 'angelo.T@gmail.com',
+      applicantProgress: {
+        app: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        mvr: {
+          status: 'In Progres',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        psp: {
+          status: 'Wrong',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        sph: {
+          status: 'No Started',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        hos: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+        ssn: {
+          status: 'Done',
+          isApplicant: true,
+          expirationDays: this.thousandSeparator.transform('24'),
+          percentage: 34,
+        },
+      },
+      // Complete, Done, Wrong, In Progres, Not Started
+      medical: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: this.thousandSeparator.transform('3233'),
+        percentage: 34,
+      },
+      cdl: {
+        class:
+          index === 0
+            ? 'complete-icon'
+            : index === 1
+            ? 'done-icon'
+            : index === 2
+            ? 'wrong-icon'
+            : '',
+        hideProgres: index !== 3,
+        isApplicant: true,
+        expirationDays: this.thousandSeparator.transform('12'),
+        percentage: 10,
+      },
+      rev: 'Ready',
+      hire: true,
+      favorite: true,
     };
   }
 
@@ -695,10 +787,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(DriverModalComponent, {
         size: 'medium',
       });
-    } else if (
-      event.action === 'tab-selected' &&
-      event.tabData.field !== 'applicants'
-    ) {
+    } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
       this.mapingIndex = 0;
 
@@ -727,7 +816,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  public onTableBodyActions(event: any) {
+  onTableBodyActions(event: any) {
     const mappedEvent = {
       ...event,
       data: {
@@ -804,7 +893,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  private changeDriverStatus(id: number) {
+  changeDriverStatus(id: number) {
     this.driverTService
       .changeDriverStatus(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -824,7 +913,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private deleteDriverById(id: number) {
+  deleteDriverById(id: number) {
     this.driverTService
       .deleteDriverById(id, this.selectedTab)
       .pipe(untilDestroyed(this))
@@ -860,7 +949,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
-  private multipleDeleteDrivers(response: any[]) {
+  multipleDeleteDrivers(response: any[]) {
     this.driverTService
       .deleteDriverList(response)
       .pipe(untilDestroyed(this))

@@ -636,7 +636,7 @@ table {
               }
             }
 
-            // ATTACHMENTS COLUMN TEMPLATE
+            // ATTACHMENTS COLUMN
             .attachments-btn {
               width: 18px;
               height: 18px;
@@ -654,53 +654,43 @@ table {
               }
             }
 
-            // APPLICANT DONE CHECKBOX
-            .table-done-checkbox {
-              width: 26px;
-              height: 26px;
-              background: #eeeeee;
-              border-radius: 3px;
-              color: #6c6c6c;
+            // HIRE COLUMN
+            .hire-icon {
+              cursor: pointer;
+              width: 18px;
+              height: 18px;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant.svg");
 
-              .checkbox-content {
-                user-select: none;
-                font-size: 14px;
-                font-weight: 400;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg");
               }
             }
 
-            .done {
-              background: url("../../../../../../assets/svg/truckassist-table/done-checkbox/done-checkbox.svg");
+            // FAVORITE COLUMN
+            .not-favorite-icon,
+            .is-favorite-icon {
+              cursor: pointer;
+              width: 18px;
+              height: 18px;
               background-repeat: no-repeat;
               background-position: center;
             }
 
-            // APPLICANT REVIEW
-            .table-applicant-review {
-              width: 26px;
-              height: 26px;
-              background: #eeeeee;
-              border-radius: 3px;
-              .review {
-                width: 100%;
-                height: 100%;
-              }
+            .not-favorite-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/favorite.svg");
 
-              .review-ok {
-                background: url("../../../../../../assets/svg/truckassist-table/applicant-review/applicant-review-ok.svg");
-                background-position: center;
-                background-repeat: no-repeat;
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg");
               }
+            }
 
-              .review-bad {
-                background: url("../../../../../../assets/svg/truckassist-table/applicant-review/applicant-review-x.svg");
-                background-position: center;
-                background-repeat: no-repeat;
+            .is-favorite-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite-icon-hover.svg");
               }
             }
 
@@ -1034,10 +1024,10 @@ table {
                 background-image: url("../../../../../../assets/svg/truckassist-table/shared.svg");
               }
 
-              .shared-text{
+              .shared-text {
                 font-size: 14px;
                 font-weight: 400;
-                color: #6C6C6C;
+                color: #6c6c6c;
                 height: fit-content;
 
                 &::selection {
@@ -1048,23 +1038,22 @@ table {
             }
 
             // LABLE COLUMN
-            .lable-container{
+            .lable-container {
               cursor: pointer;
               display: flex;
               align-self: center;
 
-              svg{
+              svg {
                 margin-right: 4px;
                 height: 21px;
               }
 
-              .lable-name{
+              .lable-name {
                 font-size: 14px;
                 font-weight: 400;
                 height: fit-content;
-                color: #6C6C6C;
+                color: #6c6c6c;
 
-                
                 &::selection {
                   color: #6c6c6c;
                   background: #6c6c6c20;
@@ -1097,37 +1086,29 @@ table {
             }
 
             // PASSWORD
-            .table-password-icon {
-              margin-right: 6px;
-              &:hover {
-                path {
-                  fill: #6c6c6c;
-                }
-              }
-              position: relative;
-            }
-
-            .decrypted-password,
-            .crypted-password {
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            .decrypted-password {
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-            }
-
-            .crypted-password {
-              color: #6c6c6c;
-            }
-
-            .table-password-icon,
-            .table-active-password {
+            .password-icon {
               cursor: pointer;
+              width: 18px;
+              height: 18px;
+              background-repeat: no-repeat;
+              background-position: center;
+              margin-right: 4px;
+            }
+
+            .password-hidden {
+              background-image: url("../../../../../../assets/svg/truckassist-table/password-locked.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/show-password.svg");
+              }
+            }
+
+            .password-showing {
+              background-image: url("../../../../../../assets/svg/truckassist-table/showing-password.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/hide-password.svg");
+              }
             }
 
             .password-spiner {
@@ -1136,6 +1117,86 @@ table {
               svg {
                 width: 24px;
                 height: 24px;
+              }
+            }
+
+            .password-text-showing {
+              font-size: 14px;
+              font-weight: 400;
+              color: #6c6c6c;
+            }
+
+            // RAITING
+            .raiting-container {
+              display: flex;
+              width: fit-content;
+              height: 18px;
+              justify-self: center;
+
+              .raiting-icon {
+                cursor: pointer;
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+              }
+
+              .like-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/like.svg");
+                margin-right: 2px;
+              }
+
+              .did-like-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/has-like.svg");
+                margin-right: 2px;
+
+                &:hover {
+                  background-image: url("../../../../../../assets/svg/truckassist-table/has-like-icon-hover.svg");
+                }
+              }
+
+              .dislike-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dislike.svg");
+              }
+
+              .did-dislike-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike.svg");
+
+                &:hover {
+                  background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike-icon-hover.svg");
+                }
+              }
+
+              .raiting-counter-container {
+                display: flex;
+                cursor: pointer;
+
+                .raiting-counter {
+                  min-width: 18px;
+                  height: 18px;
+                  background: #f3f3f3;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  color: #919191;
+                  font-size: 11px;
+                  font-weight: bold;
+                  margin-right: 2px;
+                  padding: 0px 3px;
+
+                  &::selection {
+                    color: #919191;
+                    background: #91919120;
+                  }
+                }
+
+                .like-counter {
+                  border-radius: 2px 0px 0px 2px;
+                }
+
+                .dislike-counter {
+                  border-radius: 0px 2px 2px 0px;
+                }
               }
             }
 
@@ -1171,6 +1232,30 @@ table {
             }
 
             // PROGGRESS BAR
+            .applicant-status-container {
+              width: fit-content;
+              height: fit-content;
+
+              .status-icon {
+                width: 16px;
+                height: 16px;
+                background-repeat: no-repeat;
+                background-position: center;
+              }
+
+              .done-icon{
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon.svg");
+              }
+
+              .wrong-icon{
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg");
+              }
+
+              .complete-icon{
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon.svg");
+              }
+            }
+
             .table-progress-cotnainer {
               display: flex;
               align-items: center;
@@ -1250,6 +1335,35 @@ table {
             background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
           }
         }
+
+        .raiting-container {
+          .raiting-counter-container {
+            &:hover {
+              .raiting-counter {
+                color: #6c6c6c !important;
+              }
+            }
+            .raiting-counter {
+              background: #ffffff !important;
+            }
+          }
+
+          .like-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
+            }
+          }
+
+          .dislike-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
+            }
+          }
+        }
       }
     }
 
@@ -1276,7 +1390,7 @@ table {
         }
 
         // SHARED COLUMN
-        .shared-container{
+        .shared-container {
           .lock-icon {
             background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock-select.svg") !important;
           }
@@ -1285,13 +1399,78 @@ table {
             background-image: url("../../../../../../assets/svg/truckassist-table/shared-select.svg") !important;
           }
 
-          .shared-text{
-            color: #3C3C3C !important;
+          .shared-text {
+            color: #3c3c3c !important;
 
             &::selection {
-              color: #3C3C3C !important;
-              background: #3C3C3C20 !important;
+              color: #3c3c3c !important;
+              background: #3c3c3c20 !important;
             }
+          }
+        }
+
+        // RAITING
+        .raiting-container {
+          .raiting-counter-container {
+            &:hover {
+              .raiting-counter {
+                color: #3c3c3c !important;
+              }
+            }
+
+            .raiting-counter {
+              background: #f3f3f3 !important;
+              color: #6c6c6c !important;
+            }
+          }
+
+          .like-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
+            }
+          }
+
+          .dislike-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
+            }
+          }
+        }
+
+        // HIRE
+        .hire-icon {
+          background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg") !important;
+
+          &:hover {
+            background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-icon-hover.svg") !important;
+          }
+        }
+
+        // FAVORITE
+        .not-favorite-icon {
+          background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg") !important;
+
+          &:hover {
+            background-image: url("../../../../../../assets/svg/truckassist-table/favorite-icon-hover.svg") !important;
+          }
+        }
+
+        // PROGRESS
+        .applicant-status-container {
+          .done-icon{
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon-select-row.svg") !important;
+          }
+
+          .wrong-icon{
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg") !important;
+          }
+
+          .complete-icon{
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon-select-row.svg") !important;
           }
         }
       }
@@ -1439,14 +1618,8 @@ table {
 }
 
 // PROGRESS COLOR CLASSES
-.bg-progress-muted {
-  background: #b7b7b7;
-}
 
-.bg-progress-sliver {
-  background: #aaaaaa;
-}
-
+// Progress Container
 .bg-sliver-container {
   background: #dadada;
 }
@@ -1457,6 +1630,19 @@ table {
 
 .bg-inactive-container {
   background: #e5e5e5;
+}
+
+.bg-danger-container {
+  background: #ffe1e4;
+}
+
+// Progress Bar
+.bg-progress-muted {
+  background: #b7b7b7;
+}
+
+.bg-progress-sliver {
+  background: #aaaaaa;
 }
 
 .bg-progress-orange {
@@ -1471,9 +1657,6 @@ table {
   background: #e57373;
 }
 
-.bg-danger-container {
-  background: #ffe1e4;
-}
 
 // ACTION ANIMATION
 .add-animation {

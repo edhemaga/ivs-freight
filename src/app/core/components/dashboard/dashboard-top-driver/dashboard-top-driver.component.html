@@ -1,8 +1,7 @@
 <div class="dashboard-top-driver-holder">
   <div class="dashboard-top-driver-header-holder">
-    <div class="dashboard-top-driver-header-box-list">67</div>
     <div class="dashboard-top-driver-header-title-holder">
-      <div class="dashboard-top-driver-header-title">Top {{ topTenTitle }}</div>
+      <div class="dashboard-top-driver-header-title">Top {{ topTenTitle }} (67)</div>
       <div
         class="dashboard-top-driver-header-arrow-down"
         #t3="ngbPopover"
@@ -33,15 +32,21 @@
       <div class="dashboard-top-driver-header-toolbar-items-holder">
         <div class="dashboard-top-driver-header-toolbar-switch-right">
           <app-ta-tab-switch
+            #tabSwitch
             [tabs]="driverTopSwitch"
             (switchClicked)="changeDriverSwitchTabs($event)"
+            (saveCustomRange)="saveCustomRange($event)"
           >
           </app-ta-tab-switch>
         </div>
         <div
           class="dashboard-top-driver-header-toolbar-border different-margin"
         ></div>
-        <app-ta-time-period #timePeriod></app-ta-time-period>
+        <app-ta-time-period 
+          #timePeriod
+          (selectTimePeriod)="selectTimePeriod($event)"
+          >
+        </app-ta-time-period>
       </div>
     </div>
   </div>
@@ -61,6 +66,9 @@
                 <div class="dashboard-top-driver-body-list-id">
                   {{ item.id }}
                 </div>
+                <div class="dashboard-top-driver-body-list-remove" (click)="removeDriverFromList($event, indx, item)">
+                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+                </div>
                 <div
                   class="dashboard-top-driver-body-list-circle top-ten-{{
                     circleColor[indx]
@@ -77,12 +85,9 @@
                 <div class="dashboard-top-driver-body-list-percent">
                   {{ item.percent }}
                 </div>
-                <div class="dashboard-top-driver-body-list-remove" (click)="removeDriverFromList($event, indx, item)">
-                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-                </div>
               </div>
             </div>
-            <div class="dashboard-top-driver-body-list-border"></div>
+            <div class="dashboard-top-driver-body-list-border" [class.list_line_hidden]="!compareColor[item.id]"></div>
           </div>
         </div>
       </div>
