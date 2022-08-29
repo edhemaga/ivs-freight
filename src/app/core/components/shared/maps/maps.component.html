@@ -1,3 +1,20 @@
+<div class="map-zoom-controls">
+    <div class="map-zoom-container">
+        <div class="map-zoom-button" (click)="zoomMap('plus')">
+            <svg-icon
+                src="assets/svg/common/ic_plus.svg"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
+        <div class="map-zoom-button" (click)="zoomMap('minus')">
+            <svg-icon
+                src="assets/svg/common/ic_zoom_minus.svg"
+                [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
+            ></svg-icon>
+        </div>
+    </div>
+</div>
+
 <agm-map 
     [latitude]="mapLatitude"
     [longitude]="mapLongitude"
@@ -7,6 +24,7 @@
     [zoom]="mapZoom"
     [usePanning]="true"
     [keyboardShortcuts]="false"
+    [zoomControl]="false"
     (mapClick)="mapClick($event)"
     (zoomChange)="zoomChange($event)"
     (mapReady)="getMapInstance($event)">
@@ -125,5 +143,34 @@
             [circleDraggable]="false" 
             [editable]="false">
         </agm-circle>
+
+        <div *ngIf="mapType == 'routing'">
+            <agm-direction
+                [renderOptions]="{ polylineOptions: { strokeColor: routeColors[0], strokeWeight: 6 } }"
+                [origin]="{ lat: 43.651018, lng: -79.656982 }"
+                [destination]="{ lat: 38.150774, lng: -84.52006 }"
+            ></agm-direction>
+            <agm-direction
+                [renderOptions]="{ polylineOptions: { strokeColor: routeColors[1], strokeWeight: 6 } }"
+                [origin]="{ lat: 33.03676, lng: -97.279786 }"
+                [destination]="{ lat: 33.300185, lng: -87.071286 }"
+            ></agm-direction>
+            <agm-direction
+                [renderOptions]="{ polylineOptions: { strokeColor: routeColors[2], strokeWeight: 6 } }"
+                [origin]="{ lat: 40.7066568, lng: -74.0115875 }"
+                [destination]="{ lat: 34.638319, lng: -77.479674 }"
+            ></agm-direction>
+            <agm-direction
+                [renderOptions]="{ polylineOptions: { strokeColor: routeColors[3], strokeWeight: 6 } }"
+                [origin]="{ lat: 41.958733, lng: -87.869617 }"
+                [destination]="{ lat: 34.674519, lng: -92.400126 }"
+            ></agm-direction>
+            <!-- <agm-direction
+                [renderOptions]="{ polylineOptions: { strokeColor: '#fff', strokeWeight: 2 } }"
+                [origin]="{ lat: viewData[0].latitude, lng: viewData[0].longitude }"
+                [destination]="{ lat: viewData[3].latitude, lng: viewData[3].longitude }"
+            ></agm-direction> -->
+        </div>
+
         <!-- </agm-marker-cluster> -->
     </agm-map>

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28">
+  <rect id="Rectangle_79500" data-name="Rectangle 79500" width="28" height="28" rx="2" fill="#fff" opacity="0"/>
+  <g id="Routing_-_Compare" data-name="Routing - Compare" transform="translate(22775 10968)">
+    <rect id="Rectangle_6258" data-name="Rectangle 6258" width="18" height="18" transform="translate(-22770 -10963)" fill="#aaa" opacity="0"/>
+    <path id="Union_660" data-name="Union 660" d="M10.6,16.041,6.637,12.084h0a.541.541,0,0,1,0-.765L10.6,7.36a.541.541,0,0,1,.924.382v2.337h4.138a.539.539,0,0,1,.537.541v2.167a.54.54,0,0,1-.541.537H11.525v2.334a.541.541,0,0,1-.924.383Zm-5.766-7.2a.541.541,0,0,1-.16-.385V6.124H.541A.54.54,0,0,1,0,5.587V3.42a.54.54,0,0,1,.537-.541H4.675V.542A.541.541,0,0,1,5.6.16L9.563,4.12a.54.54,0,0,1,0,.764h0L5.6,8.842a.541.541,0,0,1-.765,0Z" transform="translate(-22769.1 -10962.1)" fill="#aaa"/>
+  </g>
+</svg>
