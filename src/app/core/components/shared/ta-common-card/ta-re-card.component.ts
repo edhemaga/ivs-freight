@@ -48,6 +48,8 @@ export class TaReCardComponent implements OnInit {
   @Input() statusActive: number;
   @Input() paddingDots: string = '11px 8px 0 12px';
   @Output() clickedCard = new EventEmitter<any>();
+  @Output() dataDropDopwn = new EventEmitter<any>();
+  public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
   public toggleDropDown: boolean;
@@ -65,6 +67,10 @@ export class TaReCardComponent implements OnInit {
     }
   }
 
+  public sendData(data: any) {
+    this.data = data;
+    this.dataDropDopwn.emit(data);
+  }
   public toggleCard(event: any) {
     event.preventDefault();
     event.stopPropagation();

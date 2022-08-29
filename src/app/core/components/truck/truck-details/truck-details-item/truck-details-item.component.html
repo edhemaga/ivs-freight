@@ -25,14 +25,14 @@
           "
           [expDateClose]="reg.expDate | formatDateP"
           [optionsId]="reg.id"
-          (dropActions)="optionsEvent($event, trucks.data, 'edit-registration')"
+          (dropActions)="optionsEvent($event, trucks.data, 'registration')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
+                  <div class="card-item-value">{{reg.state.stateShortName}}</div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -96,7 +96,7 @@
           (resizePage)="toggleResizePage(i, 'fhwa')"
           [expDateClose]="fhwa.issueDate | setFutureYear"
           [optionsId]="fhwa.id"
-          (dropActions)="optionsEvent($event, trucks.data, 'edit-inspection')"
+          (dropActions)="optionsEvent($event, trucks.data, 'inspection')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -152,14 +152,14 @@
           "
           [expDateClose]="'04/04/27' | formatDateP"
           [optionsId]="title.id"
-          (dropActions)="optionsEvent($event, trucks.data, 'edit-title')"
+          (dropActions)="optionsEvent($event, trucks.data, 'title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
+                  <div class="card-item-value">{{title?.state?.stateShortName}}</div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
