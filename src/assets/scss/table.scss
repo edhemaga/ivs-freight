@@ -1,5 +1,9 @@
 // Table Body Global Scss
 .truckassist-table-body-style {
+  cdk-virtual-scroll-viewport{
+    width: calc(100% - 92px);
+  }
+  
   // DESCRIPTION
   .description-container {
     .description-dot-container {

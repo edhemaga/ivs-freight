@@ -169,7 +169,7 @@ export class TruckassistTableHeadComponent
 
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
-    if (this.viewData.length) {
+    /* if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
       const actionColumns = document.querySelector('.actions');
@@ -180,7 +180,7 @@ export class TruckassistTableHeadComponent
         8;
 
       this.changeDetectorRef.detectChanges();
-    }
+    } */
   }
 
   // Sort

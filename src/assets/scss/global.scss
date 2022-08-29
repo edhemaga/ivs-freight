@@ -92,10 +92,10 @@ body{
 
 * {
   scrollbar-width: none !important; /* Firefox */
-/* 
+
   &::-webkit-scrollbar {
     width: 0px;
-  } */
+  }
 
   &::-webkit-scrollbar-thumb {
     background-color: rgba(145, 145, 145, 0.7);

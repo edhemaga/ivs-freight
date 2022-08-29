@@ -37,20 +37,22 @@ import { DashboardStrategy } from './dashboard_strategy';
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
-  @Input() isTest: any;
+  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
-  pageHeight: number = window.innerHeight;
-  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+
+  pinedColumns: any = [];
+  notPinedColumns: any = [];
+  actionsColumns: any = [];
   mySelection: any[] = [];
   showItemDrop: number = -1;
   actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
-  hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
   showMoreContainerWidth: number = 220;
@@ -64,6 +66,7 @@ export class TruckassistTableBodyComponent
   rowData: any;
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
+  pageHeight: number = window.innerHeight;
 
   constructor(
     private router: Router,
@@ -75,6 +78,10 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
+
+    if(this.viewDataEmpty){
+      this.getTableSections();
+    }
 
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -202,6 +209,43 @@ export class TruckassistTableBodyComponent
     }
   }
 
+  // Get Table Sections
+  getTableSections(){
+    console.log('getTableSections se poziva');
+    this.pinedColumns = [];
+    this.notPinedColumns = [];
+    this.actionsColumns = [];
+
+    this.columns.map((c: any) => {
+      // Pined
+      if(c.isPined && !c.isAction && !c.hidden){
+        this.pinedColumns.push(c);
+      }
+
+      // Not Pined
+      if(!c.isPined && !c.isAction && !c.hidden){
+        this.notPinedColumns.push(c);
+      }
+
+      // Actions
+      if(c.isAction && !c.hidden){
+        this.actionsColumns.push(c);
+      }
+    })
+
+    console.log('Columns')
+    console.log(this.columns);
+
+    console.log('Pined Columns')
+    console.log(this.pinedColumns);
+
+    console.log('Not Pined Columns');
+    console.log(this.notPinedColumns);
+
+    console.log('Actions');
+    console.log(this.actionsColumns);
+  }
+
   // Get Tab Table Data For Selected Tab
   getSelectedTabTableData() {
     if (this.tableData?.length) {
@@ -214,7 +258,7 @@ export class TruckassistTableBodyComponent
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
     if (this.viewData.length) {
-      const tableContainer = document.querySelector('.table-container');
+     /*  const tableContainer = document.querySelector('.table-container');
       const pinedColumns = document.querySelector('.pined-tr');
       const actionColumns = document.querySelector('.actions');
 
@@ -223,7 +267,7 @@ export class TruckassistTableBodyComponent
         (pinedColumns.clientWidth + actionColumns.clientWidth) -
         8;
 
-      this.checkForScroll();
+      this.checkForScroll(); */
     }
   }
 
