@@ -281,7 +281,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
             truckTypeId: res.truckType ? res.truckType.name : null,
-            truckMakeId: res.truckMake ? res.truckMake.name : null,
+            truckMakeId: res.truckMake ? ' ' : null,
             model: res.model,
             year: res.year,
             colorId: res.color ? res.color.name : null,
@@ -338,7 +338,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.truckForm.patchValue({
         truckNumber: res.truckNumber,
         truckTypeId: res.truckTypeId,
-        truckMakeId: res.truckMakeId,
+        truckMakeId: ' ',
         model: res.model,
         year: res.year,
         colorId: res.colorId,
@@ -458,7 +458,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  truckMakeId: res.truckMake?.name ? res.truckMake.name : null,
+                  truckMakeId: res.truckMake?.name ? ' ' : null,
                   truckEngineTypeId: res.engineType?.name
                     ? res.engineType.name
                     : null,

@@ -445,7 +445,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         companyOwned: res.companyOwned,
         trailerNumber: res.trailerNumber,
         trailerTypeId: res.trailerTypeId,
-        trailerMakeId: res.trailerMakeId,
+        trailerMakeId: ' ',
         model: res.model,
         colorId: res.colorId,
         year: res.year,
@@ -498,7 +498,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,
             trailerTypeId: res.trailerType ? res.trailerType.name : null,
-            trailerMakeId: res.trailerMake ? res.trailerMake.name : null,
+            trailerMakeId: res.trailerMake ? ' ' : null,
             model: res.model,
             colorId: res.color ? res.color.name : null,
             year: res.year,
@@ -538,6 +538,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
           this.trailerStatus = res.status === 1 ? false : true;
+
+          console.log('Trailer make: ', this.selectedColor);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
@@ -636,9 +638,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.trailerForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  trailerMakeId: res.trailerMake?.name
-                    ? res.trailerMake.name
-                    : null,
+                  trailerMakeId: res.trailerMake?.name ? ' ' : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;
