@@ -56,7 +56,7 @@
           <div
             *ngFor="let item of pickupStateList; let indx = index"
             class="dashboard-pickup-body-state-list-items-holder"
-            (click)="selectStateCompare(item, indx)"
+            (click)="selectStateCompare($event, item, indx)"
             (mouseenter)="hoverState(indx)"
             (mouseleave)="removeStateHover()"
           >

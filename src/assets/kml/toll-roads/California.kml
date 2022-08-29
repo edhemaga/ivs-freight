@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<!-- created by GmapGIS.com -->
+<Document><name>MynameKML file polygon </name><description>Some description</description><Style id="polyStyID_0"><LineStyle><color>FF0000FF</color><width>5</width></LineStyle><PolyStyle><color>660088ff</color></PolyStyle> </Style><Style id="polyStyID_1"><LineStyle><color>FF0000FF</color><width>5</width></LineStyle><PolyStyle><color>660088ff</color></PolyStyle> </Style><Placemark><name>Line</name><description><![CDATA[]]></description><styleUrl>#polyStyID_1</styleUrl><tessellate>1</tessellate><altitudeMode>clampToGround</altitudeMode><LineString><coordinates>
+-117.91048,33.68805,0.0
+-117.89841,33.68707,0.0
+-117.88485,33.6715,0.0
+-117.87901,33.66521,0.0
+-117.86356,33.65421,0.0
+-117.86167,33.65021,0.0
+-117.85978,33.64378,0.0
+-117.85797,33.63856,0.0
+-117.84975,33.63284,0.0
+-117.83867,33.62991,0.0
+-117.8285,33.62322,0.0
+-117.8227,33.62077,0.0
+-117.82013,33.61691,0.0
+-117.81549,33.6119,0.0
+-117.81309,33.61004,0.0
+-117.80502,33.60861,0.0
+-117.78786,33.60261,0.0
+-117.78271,33.60204,0.0
+-117.77533,33.59889,0.0
+-117.76932,33.59861,0.0
+-117.75627,33.59103,0.0
+-117.74357,33.58874,0.0
+-117.7331,33.58731,0.0
+-117.72709,33.58502,0.0
+-117.71885,33.5793,0.0
+-117.70786,33.5743,0.0
+-117.70086,33.56989,0.0
+-117.6955,33.56457,0.0
+-117.69087,33.55942,0.0
+-117.68439,33.55771,0.0
+-117.67662,33.55456,0.0
+-117.67439,33.54554,0.0
+-117.6737,33.53925,0.0
+</coordinates></LineString></Placemark><Placemark><name>Line</name><description><![CDATA[]]></description><styleUrl>#polyStyID_1</styleUrl><tessellate>1</tessellate><altitudeMode>clampToGround</altitudeMode><LineString><coordinates>
+-117.01598,32.69113,0.0
+-117.0092,32.68215,0.0
+-117.0053,32.6801,0.0
+-116.99714,32.68163,0.0
+-116.99089,32.68286,0.0
+-116.98706,32.6797,0.0
+-116.98534,32.67449,0.0
+-116.98397,32.66626,0.0
+-116.98225,32.66322,0.0
+-116.9771,32.66033,0.0
+-116.97247,32.65542,0.0
+-116.97041,32.64573,0.0
+-116.97041,32.63937,0.0
+-116.97161,32.6333,0.0
+-116.97109,32.62521,0.0
+-116.97075,32.61668,0.0
+</coordinates></LineString></Placemark></Document></kml>

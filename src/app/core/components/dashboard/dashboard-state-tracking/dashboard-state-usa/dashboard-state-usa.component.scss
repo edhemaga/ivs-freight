@@ -1,5 +1,11 @@
 @import 'src/theme/variables.scss';
 
+.country_holder{
+  svg{
+    overflow: visible;
+  }
+}
+
 .hover_data_holder{
     // position: absolute;
     // top: 50%;
@@ -135,10 +141,16 @@
 
   .country_state{
     &:hover{
-        //transform: translate(-155.109px, -61.303px) scale(1.2);
         stroke: #fff;
         stroke-width: 1.5px;
         stroke-linejoin: round;
-        filter: drop-shadow(0 0 4px rgb(0 0 0 / 30%))
+        filter: drop-shadow(0 0 2px rgb(0 0 0 / 7%));
     }
+  }
+
+  .country_state_letters{
+      stroke: #fff;
+      stroke-width: 1.5px;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 0 2px rgb(0 0 0 / 7%));
   }

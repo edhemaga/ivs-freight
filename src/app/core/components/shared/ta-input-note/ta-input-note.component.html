@@ -2,15 +2,15 @@
   <div *ngIf="isVisibleDivider" class="divider"></div>
   <div class="note-header"  [class.active]="_isVisibleNote">
     <div class="note-label"  (click)="openNote()">Note</div>
+    <div class="note_tools_container">
+      <app-ta-note-container
+      [isExpanded]="_isVisibleNote"
+      [range]="range"
+      [selectionTaken]="selectionTaken"
+      [value]="value"
+      ></app-ta-note-container>
+    </div>
     <div class="note_upper_hold">
-      <div class="note_tools_container">
-        <app-ta-note-container
-        [isExpanded]="_isVisibleNote"
-        [range]="range"
-        [selectionTaken]="selectionTaken"
-        [value]="value"
-        ></app-ta-note-container>
-      </div>
       <svg-icon
         *ngIf="isVisibleArrow"
         class="note-arrow"
