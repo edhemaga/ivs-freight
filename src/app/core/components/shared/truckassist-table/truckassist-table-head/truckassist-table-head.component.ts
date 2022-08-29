@@ -44,7 +44,9 @@ export class TruckassistTableHeadComponent
   optionsPopup: any;
   visibleColumns: any[] = [];
   pinedColumns: any[] = [];
+  pinedWidth: number = 0;
   notPinedColumns: any[] = [];
+  actionsWidth: number = 0;
   actionColumns: any[] = [];
   resizeHitLimit: number = -1;
   resizeIsPined: boolean;
@@ -126,6 +128,8 @@ export class TruckassistTableHeadComponent
     this.pinedColumns = [];
     this.notPinedColumns = [];
     this.actionColumns = [];
+    this.pinedWidth = 0;
+    this.actionsWidth = 0;
 
     this.columns.map((column, index) => {
       if (!column.hasOwnProperty('isPined')) {
@@ -143,8 +147,10 @@ export class TruckassistTableHeadComponent
 
     this.visibleColumns.map((v) => {
       /* Pined Columns */
-      if (v.isPined) {
+      if (v.isPined && !v.isAction) {
         this.pinedColumns.push(v);
+
+        this.pinedWidth += v.minWidth > v.width ? v.minWidth : v.width;
       }
 
       /* Not Pined Columns */
@@ -155,6 +161,8 @@ export class TruckassistTableHeadComponent
       /* Action  Columns */
       if (v.isAction) {
         this.actionColumns.push(v);
+
+        this.actionsWidth += v.minWidth > v.width ? v.minWidth : v.width;
       }
     });
 
@@ -169,18 +177,16 @@ export class TruckassistTableHeadComponent
 
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
-    /* if (this.viewData.length) {
+    if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
-      const pinedColumns = document.querySelector('.pined-tr');
-      const actionColumns = document.querySelector('.actions');
 
       this.notPinedMaxWidth =
         tableContainer.clientWidth -
-        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        (this.pinedWidth + this.actionsWidth) -
         8;
 
       this.changeDetectorRef.detectChanges();
-    } */
+    }
   }
 
   // Sort

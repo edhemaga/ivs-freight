@@ -85,6 +85,10 @@ table {
           display: flex;
         }
 
+        .not-pined-columns{
+          overflow: hidden;
+        }
+
         td {
           width: fit-content;
           padding: 0;
@@ -1483,37 +1487,17 @@ table {
       background: #fff3e0;
     }
 
-    .not-pined-border-left {
+    // Border Scroll Section
+    .border-scroll-section{
+      width: 4px;
+    }
+
+    .border-left {
       background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
     }
 
-    .not-pined-border-right {
+    .border-right {
       background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
-    }
-
-    .not-pined-tr {
-      overflow-y: hidden;
-      overflow-x: scroll;
-
-      scrollbar-width: none !important;
-
-      &::-webkit-scrollbar {
-        width: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: #cccccc;
-        border: 6px solid #eeeeee;
-        border-radius: 1px;
-      }
-
-      &::-webkit-scrollbar-track {
-        padding: 5px;
-        position: absolute;
-        right: -3rem;
-        top: -50rem;
-        background: transparent;
-      }
     }
   }
 }
@@ -1522,7 +1506,7 @@ table {
 .show-more-container {
   height: 18px;
   width: fit-content;
-  margin-top: -10px;
+  margin-top: 3px;
   display: flex;
   align-items: center;
   margin-bottom: 20px;

@@ -30,9 +30,9 @@ import { DashboardStrategy } from './dashboard_strategy';
   providers: [
     {
       provide: VIRTUAL_SCROLL_STRATEGY,
-      useClass: DashboardStrategy
-    }
-  ]
+      useClass: DashboardStrategy,
+    },
+  ],
 })
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
@@ -47,11 +47,12 @@ export class TruckassistTableBodyComponent
   @Input() tableContainerWidth: number;
 
   pinedColumns: any = [];
+  pinedWidth: number = 0;
   notPinedColumns: any = [];
   actionsColumns: any = [];
+  actionsWidth: number = 0;
   mySelection: any[] = [];
   showItemDrop: number = -1;
-  actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
@@ -79,7 +80,7 @@ export class TruckassistTableBodyComponent
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
 
-    if(this.viewDataEmpty){
+    if (this.viewDataEmpty) {
       this.getTableSections();
     }
 
@@ -120,8 +121,11 @@ export class TruckassistTableBodyComponent
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
 
+          this.getTableSections();
+
           this.changeDetectorRef.detectChanges();
 
+          console.log('Poziva se iz currentColumnsOrder');
           this.getNotPinedMaxWidth();
         }
       });
@@ -134,12 +138,6 @@ export class TruckassistTableBodyComponent
           this.mySelection = [];
         }
       });
-
-    this.columns.map((c) => {
-      if (c.isAction) {
-        this.actionsMinWidth += c.width;
-      }
-    });
   }
 
   // --------------------------------NgOnChanges---------------------------------
@@ -151,6 +149,7 @@ export class TruckassistTableBodyComponent
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
+          console.log('Poziva se iz ngOnChanges viewData');
           this.getNotPinedMaxWidth();
           this.getSelectedTabTableData();
         }, 10);
@@ -168,6 +167,7 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
+      console.log('Poziva se iz ngOnChanges tableContainerWidth');
       this.getNotPinedMaxWidth();
     }
 
@@ -178,7 +178,10 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
+      this.getTableSections();
+
       setTimeout(() => {
+        console.log('Poziva se iz ngOnChanges columns');
         this.getNotPinedMaxWidth();
       }, 10);
     }
@@ -198,6 +201,8 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     this.sharedService.emitUpdateScrollHeight.emit(true);
+
+    console.log('Poziva se iz ngAfterViewInit');
     this.getNotPinedMaxWidth();
   }
 
@@ -210,40 +215,34 @@ export class TruckassistTableBodyComponent
   }
 
   // Get Table Sections
-  getTableSections(){
-    console.log('getTableSections se poziva');
+  getTableSections() {
     this.pinedColumns = [];
     this.notPinedColumns = [];
     this.actionsColumns = [];
 
+    this.pinedWidth = 0;
+    this.actionsWidth = 0;
+
     this.columns.map((c: any) => {
       // Pined
-      if(c.isPined && !c.isAction && !c.hidden){
+      if (c.isPined && !c.isAction && !c.hidden) {
         this.pinedColumns.push(c);
+
+        this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
       }
 
       // Not Pined
-      if(!c.isPined && !c.isAction && !c.hidden){
+      if (!c.isPined && !c.isAction && !c.hidden) {
         this.notPinedColumns.push(c);
       }
 
       // Actions
-      if(c.isAction && !c.hidden){
+      if (c.isAction && !c.hidden) {
         this.actionsColumns.push(c);
+
+        this.actionsWidth += c.minWidth > c.width ? c.minWidth : c.width;
       }
-    })
-
-    console.log('Columns')
-    console.log(this.columns);
-
-    console.log('Pined Columns')
-    console.log(this.pinedColumns);
-
-    console.log('Not Pined Columns');
-    console.log(this.notPinedColumns);
-
-    console.log('Actions');
-    console.log(this.actionsColumns);
+    });
   }
 
   // Get Tab Table Data For Selected Tab
@@ -258,16 +257,14 @@ export class TruckassistTableBodyComponent
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
     if (this.viewData.length) {
-     /*  const tableContainer = document.querySelector('.table-container');
-      const pinedColumns = document.querySelector('.pined-tr');
-      const actionColumns = document.querySelector('.actions');
+      const tableContainer = document.querySelector('.table-container');
 
-      this.notPinedMaxWidth =
+       this.notPinedMaxWidth =
         tableContainer.clientWidth -
-        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        (this.pinedWidth + this.actionsWidth) -
         8;
 
-      this.checkForScroll(); */
+      /* this.checkForScroll(); */
     }
   }
 
@@ -354,7 +351,7 @@ export class TruckassistTableBodyComponent
     });
   }
 
-  onOpenReviews(row: any){
+  onOpenReviews(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'open-reviews',
@@ -362,7 +359,7 @@ export class TruckassistTableBodyComponent
   }
 
   // HIRE
-  onHire(row: any){
+  onHire(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'hire',
@@ -370,7 +367,7 @@ export class TruckassistTableBodyComponent
   }
 
   // FAVORITE
-  onFavorite(row: any){
+  onFavorite(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'favorite',

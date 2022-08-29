@@ -1,15 +1,5 @@
 <table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
-    <!-- Border For Not Pined -->
-    <!-- class="not-pined-border-left table-select-border" -->
-
-    <!-- Not Pined -->
-    <!-- 
-      class="not-pined-tr"
-      id="scroll-container"
-      (scroll)="onScroll($event)"
-      [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
-     -->
     <cdk-virtual-scroll-viewport
       [itemSize]="35"
       [ngStyle]="{ height: pageHeight - 84 + 'px' }"
@@ -34,9 +24,7 @@
             <td *ngFor="let column of pinedColumns">
               <!-- NO TEMPLATE -->
               <div
-                *ngIf="
-                  column.ngTemplate === ''
-                "
+                *ngIf="column.ngTemplate === ''"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width': column?.minWidth ? column.minWidth : 'unset'
@@ -48,9 +36,7 @@
 
               <!-- CHECKBOX TEMPLATE -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'checkbox'
-                "
+                *ngIf="column.ngTemplate === 'checkbox'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -72,9 +58,7 @@
 
               <!-- USER CHECKBOX TEMPLATE -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'user-checkbox'
-                "
+                *ngIf="column.ngTemplate === 'user-checkbox'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -106,9 +90,7 @@
 
               <!-- AVATAR COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'avatar'
-                "
+                *ngIf="column.ngTemplate === 'avatar'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -162,9 +144,7 @@
 
               <!-- USER AVATAR COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'user-avatar'
-                "
+                *ngIf="column.ngTemplate === 'user-avatar'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -188,9 +168,7 @@
               <!-- USER STATUS COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'user-status'
-                "
+                *ngIf="column.ngTemplate === 'user-status'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -202,9 +180,7 @@
               <!-- NAME LINK COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'nameLink'
-                "
+                *ngIf="column.ngTemplate === 'nameLink'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -223,9 +199,7 @@
               <!-- OOS COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'oos'
-                "
+                *ngIf="column.ngTemplate === 'oos'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -247,9 +221,7 @@
               <!-- VIOLATION STATE COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'violation-state'
-                "
+                *ngIf="column.ngTemplate === 'violation-state'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -262,9 +234,7 @@
               <!-- INV. AGEING COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'inv-ageing'
-                "
+                *ngIf="column.ngTemplate === 'inv-ageing'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -286,9 +256,7 @@
               <!-- CONTACT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'contact'
-                "
+                *ngIf="column.ngTemplate === 'contact'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -302,9 +270,7 @@
               <!-- WORK HOUR COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'work-hour'
-                "
+                *ngIf="column.ngTemplate === 'work-hour'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -325,9 +291,7 @@
               <!-- DESCRIPTION COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'description'
-                "
+                *ngIf="column.ngTemplate === 'description'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -355,9 +319,7 @@
               <!-- SHARED COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'shared'
-                "
+                *ngIf="column.ngTemplate === 'shared'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -377,9 +339,7 @@
               <!-- LVL COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'lvl'
-                "
+                *ngIf="column.ngTemplate === 'lvl'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -390,9 +350,7 @@
               <!-- CITATION COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'citation'
-                "
+                *ngIf="column.ngTemplate === 'citation'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -408,9 +366,7 @@
               <!-- VL COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'violation-count'
-                "
+                *ngIf="column.ngTemplate === 'violation-count'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -428,9 +384,7 @@
               <!-- CUSTOMER NAME COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'customer-name'
-                "
+                *ngIf="column.ngTemplate === 'customer-name'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -458,9 +412,7 @@
               <!-- TOTAL  COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'total'
-                "
+                *ngIf="column.ngTemplate === 'total'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -486,9 +438,7 @@
               <!-- COMPACT TEXT -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'compact-text'
-                "
+                *ngIf="column.ngTemplate === 'compact-text'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -545,9 +495,7 @@
               <!-- SERVICE COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'service'
-                "
+                *ngIf="column.ngTemplate === 'service'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -608,9 +556,7 @@
               <!-- PPG COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'ppg'
-                "
+                *ngIf="column.ngTemplate === 'ppg'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -623,9 +569,7 @@
               <!-- URL COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'url'
-                "
+                *ngIf="column.ngTemplate === 'url'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -641,9 +585,7 @@
               <!-- PASSWORD COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'password'
-                "
+                *ngIf="column.ngTemplate === 'password'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -687,9 +629,7 @@
               <!-- RAITING COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'rating'
-                "
+                *ngIf="column.ngTemplate === 'rating'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -728,9 +668,7 @@
               <!-- LABLE COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'label'
-                "
+                *ngIf="column.ngTemplate === 'label'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -755,9 +693,7 @@
               <!-- TEXT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'text'
-                "
+                *ngIf="column.ngTemplate === 'text'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -771,9 +707,7 @@
               <!-- SEMI BOLD TEXT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'semi-bold-text'
-                "
+                *ngIf="column.ngTemplate === 'semi-bold-text'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -787,9 +721,7 @@
               <!-- COLOR COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'color'
-                "
+                *ngIf="column.ngTemplate === 'color'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -829,9 +761,7 @@
               <!-- SVG COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'svg'
-                "
+                *ngIf="column.ngTemplate === 'svg'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -852,9 +782,7 @@
               <!-- PICKUP COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'pickup'
-                "
+                *ngIf="column.ngTemplate === 'pickup'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -869,9 +797,7 @@
               <!-- PICKUP COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'delivery'
-                "
+                *ngIf="column.ngTemplate === 'delivery'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -885,9 +811,7 @@
 
               <!-- STATE TEXT COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'textState'
-                "
+                *ngIf="column.ngTemplate === 'textState'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -906,9 +830,7 @@
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
-                *ngIf="
-                  column.ngTemplate === 'progress'
-                "
+                *ngIf="column.ngTemplate === 'progress'"
               >
                 <div
                   class="table-progress-cotnainer"
@@ -982,13 +904,22 @@
             </td>
           </div>
 
+          <!-- Border -->
+          <div
+            class="border-scroll-section"
+            [ngClass]="{ 'border-left': false }"
+          ></div>
+
+          <!-- class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)"-->
           <!-- NOT PINED -->
-          <div class="not-pined-columns">
+          <div
+            class="not-pined-columns"
+            [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
+          >
             <td class="not-pined-td" *ngFor="let column of notPinedColumns">
               <!-- NO TEMPLATE -->
               <div
-                *ngIf="column.ngTemplate === ''
-                "
+                *ngIf="column.ngTemplate === ''"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1000,9 +931,7 @@
 
               <!-- AVATAR COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'avatar'
-                "
+                *ngIf="column.ngTemplate === 'avatar'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1045,9 +974,7 @@
 
               <!-- USER AVATAR COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'user-avatar'
-                "
+                *ngIf="column.ngTemplate === 'user-avatar'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1071,9 +998,7 @@
               <!-- USER STATUS COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'user-status'
-                "
+                *ngIf="column.ngTemplate === 'user-status'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1085,9 +1010,7 @@
               <!-- NAME LINK COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'nameLink'
-                "
+                *ngIf="column.ngTemplate === 'nameLink'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1106,9 +1029,7 @@
               <!-- OOS COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'oos'
-                "
+                *ngIf="column.ngTemplate === 'oos'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1130,9 +1051,7 @@
               <!-- VIOLATION STATE COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'violation-state'
-                "
+                *ngIf="column.ngTemplate === 'violation-state'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1145,9 +1064,7 @@
               <!-- INV. AGEING COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'inv-ageing'
-                "
+                *ngIf="column.ngTemplate === 'inv-ageing'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1169,9 +1086,7 @@
               <!-- CONTACT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'contact'
-                "
+                *ngIf="column.ngTemplate === 'contact'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1185,9 +1100,7 @@
               <!-- WORK HOUR COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'work-hour'
-                "
+                *ngIf="column.ngTemplate === 'work-hour'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1208,9 +1121,7 @@
               <!-- DESCRIPTION COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'description'
-                "
+                *ngIf="column.ngTemplate === 'description'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1238,9 +1149,7 @@
               <!-- SHARED COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'shared'
-                "
+                *ngIf="column.ngTemplate === 'shared'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1260,9 +1169,7 @@
               <!-- RAITING COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'rating'
-                "
+                *ngIf="column.ngTemplate === 'rating'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1301,9 +1208,7 @@
               <!-- LVL COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'lvl'
-                "
+                *ngIf="column.ngTemplate === 'lvl'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1314,9 +1219,7 @@
               <!-- COMPACT TEXT -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'compact-text'
-                "
+                *ngIf="column.ngTemplate === 'compact-text'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1373,9 +1276,7 @@
               <!-- CITATION COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'citation'
-                "
+                *ngIf="column.ngTemplate === 'citation'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1391,9 +1292,7 @@
               <!-- VL COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'violation-count'
-                "
+                *ngIf="column.ngTemplate === 'violation-count'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
@@ -1411,9 +1310,7 @@
               <!-- CUSTOMER NAME COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'customer-name'
-                "
+                *ngIf="column.ngTemplate === 'customer-name'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1441,9 +1338,7 @@
               <!-- TOTAL  COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'total'
-                "
+                *ngIf="column.ngTemplate === 'total'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1469,9 +1364,7 @@
               <!-- SERVICE COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'service'
-                "
+                *ngIf="column.ngTemplate === 'service'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1532,9 +1425,7 @@
               <!-- PPG COLUMN-->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'ppg'
-                "
+                *ngIf="column.ngTemplate === 'ppg'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1547,9 +1438,7 @@
               <!-- URL COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'url'
-                "
+                *ngIf="column.ngTemplate === 'url'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1565,9 +1454,7 @@
               <!-- PASSWORD COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'password'
-                "
+                *ngIf="column.ngTemplate === 'password'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1611,9 +1498,7 @@
               <!-- LABLE COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'label'
-                "
+                *ngIf="column.ngTemplate === 'label'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1650,9 +1535,7 @@
               <!-- TEXT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'text'
-                "
+                *ngIf="column.ngTemplate === 'text'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1666,9 +1549,7 @@
               <!-- SEMI BOLD TEXT COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'semi-bold-text'
-                "
+                *ngIf="column.ngTemplate === 'semi-bold-text'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1682,9 +1563,7 @@
               <!-- COLOR COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'color'
-                "
+                *ngIf="column.ngTemplate === 'color'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1723,9 +1602,7 @@
               <!-- SVG COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'svg'
-                "
+                *ngIf="column.ngTemplate === 'svg'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1746,9 +1623,7 @@
               <!-- PICKUP COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'pickup'
-                "
+                *ngIf="column.ngTemplate === 'pickup'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1763,9 +1638,7 @@
               <!-- DELIVERY COLUMN -->
               <div
                 class="td-content"
-                *ngIf="
-                  column.ngTemplate === 'delivery'
-                "
+                *ngIf="column.ngTemplate === 'delivery'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1780,9 +1653,7 @@
               <!-- APPLICANT DONE CHECKBOX COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'applicantDoneCheckbox'
-                "
+                *ngIf="column.ngTemplate === 'applicantDoneCheckbox'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1801,9 +1672,7 @@
               <!-- APPLICANT REVIEW COLUMN -->
               <div
                 class="td-content set-center"
-                *ngIf="
-                  column.ngTemplate === 'applicantReview'
-                "
+                *ngIf="column.ngTemplate === 'applicantReview'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1822,9 +1691,7 @@
 
               <!-- STATE TEXT COLUMN -->
               <div
-                *ngIf="
-                  column.ngTemplate === 'textState'
-                "
+                *ngIf="column.ngTemplate === 'textState'"
                 [ngStyle]="{
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
@@ -1843,9 +1710,7 @@
                   width: column.width + 'px',
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
-                *ngIf="
-                  column.ngTemplate === 'progress'
-                "
+                *ngIf="column.ngTemplate === 'progress'"
               >
                 <div
                   class="table-progress-cotnainer"
@@ -1918,6 +1783,12 @@
               </div>
             </td>
           </div>
+
+          <!-- Border -->
+          <div
+            class="border-scroll-section"
+            [ngClass]="{ 'border-right': false }"
+          ></div>
 
           <!-- ACTIONS -->
           <div class="actions-columns">
@@ -1979,7 +1850,12 @@
                 }"
                 class="td-content set-center"
               >
-                <!-- Ovde je komponenta -->
+                <app-ta-note
+                  [note]="row[column.field] ? row[column.field] : ''"
+                  [openedAll]="false"
+                  [parking]="false"
+                >
+                </app-ta-note>
               </div>
 
               <!-- ACTIONS COLUMN -->
@@ -2011,9 +1887,6 @@
         </div>
       </tr>
     </cdk-virtual-scroll-viewport>
-
-    <!-- Border For Not Pined -->
-    <!-- class="not-pined-border-right table-select-border" -->
   </tbody>
 </table>
 
