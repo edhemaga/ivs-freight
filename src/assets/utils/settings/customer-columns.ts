@@ -191,7 +191,7 @@ export function getBrokerColumnDefinition() {
     {
       ngTemplate: 'rating',
       title: 'Rating',
-      field: 'brokerRaiting',
+      field: 'raiting',
       name: 'Rating',
       headAlign: 'center',
       hidden: false,
@@ -797,7 +797,7 @@ export function getShipperColumnDefinition() {
     {
       ngTemplate: 'rating',
       title: 'Rating',
-      field: 'shipperRaiting',
+      field: 'raiting',
       name: 'Rating',
       hidden: false,
       headAlign: 'center',

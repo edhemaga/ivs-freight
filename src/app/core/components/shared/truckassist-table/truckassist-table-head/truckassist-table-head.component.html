@@ -63,7 +63,7 @@
         </div>
 
         <!-- Icons -->
-        <div *ngIf="column?.headIconStyle" class="icons">
+        <div *ngIf="column?.headIconStyle" [ngClass]="{'icon-hover': column.ngTemplate !== 'hire'}" class="icons">
           <svg-icon
             [svgStyle]="{
               'width.px': column.headIconStyle.width,

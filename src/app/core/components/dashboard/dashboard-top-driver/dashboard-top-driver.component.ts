@@ -9,10 +9,12 @@ export class DashboardTopDriverComponent implements OnInit {
   @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
   @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
   @ViewChild('timePeriod', {static: false}) public timePeriod: any;
+  @ViewChild('tabSwitch', {static: false}) public tabSwitch: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
   topTenTitle: string = "Driver";
+  currentSwitchTab: string = 'All Time';
 
   selectedDrivers: any[] = [];
 
@@ -58,6 +60,7 @@ export class DashboardTopDriverComponent implements OnInit {
     dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
+    allowAnimation: true,
     offset: true,
     dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
     noChartImage: 'assets/svg/common/no_data_pay.svg'
@@ -278,6 +281,7 @@ export class DashboardTopDriverComponent implements OnInit {
       removeChartMargin: true,
       dataLabels: [],
       driversList: drivers,
+      allowAnimation: true,
       noChartImage: 'assets/svg/common/no_data_pay.svg'
     };
 
@@ -314,7 +318,8 @@ export class DashboardTopDriverComponent implements OnInit {
         name: 'YTD'
       },
       {
-        name: 'All Time'
+        name: 'All Time',
+        checked: true
       },
       {
         name: 'Custom',
@@ -323,9 +328,20 @@ export class DashboardTopDriverComponent implements OnInit {
     ];
   }
 
+  ngAfterViewInit(): void {
+    this.timePeriod.changeTimePeriod('All Time');
+  }
+
   changeDriverSwitchTabs(ev){
     this.timePeriod.changeTimePeriod(ev['name']);
-    this.topDriverBarChart.updateTime(ev);
+    this.currentSwitchTab = ev['name'];
+    if ( ev['name'] == 'Custom' ) { return false; }
+    this.topDriverBarChart.updateTime(ev['name']);
+  }
+
+  saveCustomRange(ev){
+    this.timePeriod.changeCustomTime(ev);
+    this.topDriverBarChart.updateTime('Custom Set', ev);
   }
 
   removeDriverFromList(e: Event,indx, item){
@@ -417,5 +433,9 @@ export class DashboardTopDriverComponent implements OnInit {
     if ( this.topDriverBarChart ){
       this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareHoverColor);
     }
+  }
+
+  selectTimePeriod(period){
+    this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
   }
 }

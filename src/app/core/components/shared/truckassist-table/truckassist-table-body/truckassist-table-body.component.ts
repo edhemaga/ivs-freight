@@ -284,19 +284,19 @@ export class TruckassistTableBodyComponent
   }
 
   // RAITING
-  onLike(row: any, column: any) {
+  onLike(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'raiting',
-      subType: row[column.field].hasLiked ? 'delete-like' : 'like',
+      subType: 'like',
     });
   }
 
-  onDislike(row: any, column: any) {
+  onDislike(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'raiting',
-      subType: row[column.field].hasLiked ? 'delete-dislike' : 'dislike',
+      subType: 'dislike',
     });
   }
 
@@ -304,6 +304,22 @@ export class TruckassistTableBodyComponent
     this.bodyActions.emit({
       data: row,
       type: 'open-reviews',
+    });
+  }
+
+  // HIRE
+  onHire(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'hire',
+    });
+  }
+
+  // FAVORITE
+  onFavorite(row: any){
+    this.bodyActions.emit({
+      data: row,
+      type: 'favorite',
     });
   }
 
