@@ -23,7 +23,7 @@
       line-height: 20px;
       user-select: none;
 
-      &.small {
+      &.small.show_hover_animation {
         &:hover {
           cursor: pointer;
           transform: scale(1.5);

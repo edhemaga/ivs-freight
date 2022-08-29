@@ -34,9 +34,8 @@
       <tbody>
         <tr
           class="item-holder example-box"
-          *ngFor="let item of data; let rowIndex = index"
-          [cdkDragDisabled]="item.truckNumber === null"
-          [cdkDragDisabled]="isBoardLocked || item.isEmpty || !item.truckNumber"
+          *ngFor="let item of dData.dispatches; let rowIndex = index"
+          [cdkDragDisabled]="isBoardLocked || item.isEmpty || !item.truck"
           cdkDrag
           cdkDragLockAxis="y"
           cdkDragPreviewContainer="parent"
@@ -48,39 +47,39 @@
                 [class.empty_row]="!item.truckNumber"
               >
                 <span
-                  *ngIf="item.truckNumber !== null"
+                  *ngIf="item.truck !== null"
                   @userTextAnimations
-                  [class.hasColor]="item.truckColor"
+                  [class.hasColor]="item.truck.truckColor"
                   [class.otherOpacityAdded]="statusOpenedIndex > -1"
                   [ngClass]="
-                    item.truckColor
-                      ? 'truck_' + item.truckColor.toLowerCase()
+                    item.truck.truckColor
+                      ? 'truck_' + item.truck.truckColor.toLowerCase()
                       : ''
                   "
                   class="drag-span"
                 >
                   <span
                     [innerHtml]="
-                      item.truckNumber | taHighlight: highlightingWords
+                      item.truck.truckNumber | taHighlight: highlightingWords
                     "
                     class="select_span"
                   >
                   </span>
                   <div
                     *ngIf="
-                      item.truckNumber !== null &&
+                      item.truck !== null &&
                       !isBoardLocked &&
                       item.pickup === null &&
                       item.delivery === null
                     "
                     [ngClass]="
-                      item.trailerColor &&
-                      'close_' + item.truckColor.toLowerCase()
+                      item.truck.truckColor &&
+                      'close_' + item.truck.truckColor.toLowerCase()
                     "
                     class="dispatcher-close cursor-pointer"
                   >
                     <svg-icon
-                      (click)="updateTruck(undefined, item)"
+                      (click)="updateTruck(undefined, item.truck)"
                       src="assets/svg/dispatchboard/close.svg"
                     >
                     </svg-icon>
@@ -90,7 +89,7 @@
               <button
                 (click)="showNextDropdown(rowIndex)"
                 *ngIf="
-                  item.truckNumber === null &&
+                  item.truck === null &&
                   !isBoardLocked &&
                   !item.enterNewAddress
                 "
@@ -140,7 +139,7 @@
             <div class="dispatch-list">
               <div
                 class="dispacher-card dispatch-box"
-                [class.empty_row]="!item.trailerNumber"
+                [class.empty_row]="!item.trailer"
               >
                 <!-- <div
                   *cdkDragPlaceholder
@@ -148,19 +147,19 @@
                   class="example-custom-placeholder"
                 ></div> -->
                 <span
-                  *ngIf="item.trailerNumber !== null"
+                  *ngIf="item.trailer !== null"
                   @userTextAnimations
                   [class.hasColor]="item.trailerColor"
                   [class.otherOpacityAdded]="statusOpenedIndex > -1"
                   [ngClass]="
-                    item.trailerColor &&
-                    'trailer_' + item.trailerColor.toLowerCase()
+                    item.trailer.trailerColor &&
+                    'trailer_' + item.trailer.trailerColor.toLowerCase()
                   "
                   class="drag-span"
                 >
                   <span
                     [innerHtml]="
-                      item.trailerNumber | taHighlight: highlightingWords
+                      item.trailer.trailerNumber | taHighlight: highlightingWords
                     "
                     [ngStyle]="{
                       color: statusOpenedIndex > -1 ? '' : '#919191'
@@ -172,13 +171,13 @@
                   <div
                     *ngIf="!isBoardLocked"
                     [ngClass]="
-                      item.trailerColor &&
-                      'close_' + item.trailerColor.toLowerCase()
+                      item.trailer.trailerColor &&
+                      'close_' + item.trailer.trailerColor.toLowerCase()
                     "
                     class="dispatcher-close cursor-pointer"
                   >
                     <svg-icon
-                      (click)="updateTrailer(undefined, item)"
+                      (click)="updateTrailer(undefined, item.trailer)"
                       src="assets/svg/dispatchboard/close.svg"
                     >
                     </svg-icon>
@@ -187,7 +186,7 @@
               </div>
               <button
                 (click)="showNextTrailerDropdown(rowIndex)"
-                *ngIf="item.trailerNumber === null && !isBoardLocked"
+                *ngIf="item.trailer === null && !isBoardLocked"
                 [class.active]="trailerSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
@@ -528,7 +527,7 @@
               placement="bottom"
               triggers="manual"
             >
-                <span
+                <!-- <span
                   *ngIf="item.driverName !== null && !item.isEmpty"
                   [ngClass]="
                     (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
@@ -550,7 +549,7 @@
                         : 'hosinactive'
                     }}"
                   ></svg-icon>
-                </span>
+                </span> -->
             </div>
           </td>
           <td class="empty-field">
@@ -605,5 +604,53 @@
         </tr>
       </tbody>
     </table>
+    <div class="k-grid-toolbar d-flex">
+      <div class="toolbar-container item_dispatch_head">
+        <div class="board_infos">
+          <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+            0
+            <!-- <span
+              [innerHTML]="infoCount.truckNumber == 1 ? 'TRUCK' : 'TRUCKS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span> -->
+            <span
+              [innerHTML]="'TRUCKS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span>
+          </div>
+          <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+            0
+            <!-- <span
+              [innerHTML]="infoCount.trailerNumber == 1 ? 'TRAILER' : 'TRAILERS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span> -->
+            <span
+              [innerHTML]="'TRAILERS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span>
+          </div>
+          <div appSelectionColor class="board_infos_count" style="color: #6c6c6c;">
+            0
+            <!-- <span
+              [innerHTML]="infoCount.driverNumber == 1 ? 'DRIVER' : 'DRIVERS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span> -->
+            <span
+              [innerHTML]="'DRIVERS'"
+              appSelectionColor
+              style="color: #6c6c6c;"
+            ></span>
+          </div>
+        </div>
+        <div appSelectionColor class="board_name" style="color: #6c6c6c;">
+          Some some
+        </div>
+      </div>
+    </div>
   </div>
 </div>

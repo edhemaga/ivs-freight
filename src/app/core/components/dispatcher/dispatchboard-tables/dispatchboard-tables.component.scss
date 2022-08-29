@@ -381,3 +381,40 @@ td.driver-field {
     }
   }
 }
+
+.k-grid-toolbar {
+  background-color: transparent !important;
+
+  .item_dispatch_head {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    .board_infos {
+      display: flex;
+      align-items: center;
+
+      .board_infos_count {
+        font-weight: bold;
+        color: #6c6c6c;
+        font-size: 12px;
+        padding-left: 10px;
+
+        &:first-child,
+        &:nth-child(2) {
+          width: 90px;
+          padding-left: 6px;
+        }
+      }
+    }
+
+    .board_name {
+      font-size: 12px;
+      font-weight: bold;
+      color: #6c6c6c;
+      text-transform: uppercase;
+    }
+  }
+}

@@ -2,6 +2,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { DispatchBoardResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -62,6 +63,9 @@ import { NgSelectComponent } from '@ng-select/ng-select';
   ],
 })
 export class DispatchboardTablesComponent implements OnInit {
+  @Input() dData: DispatchBoardResponse = {};
+
+
   @Input() gridData: any[] = [];
   @Input() isBoardLocked: boolean;
   @ViewChild('truckDropdown', { static: false })
@@ -139,6 +143,7 @@ export class DispatchboardTablesComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log("WHat is date", this.dData);
   }
 
 

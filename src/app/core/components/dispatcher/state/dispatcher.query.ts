@@ -4,13 +4,17 @@ import { Injectable } from '@angular/core';
 import { QueryEntity } from '@datorama/akita';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DispatcherQuery extends QueryEntity<DispatcherState> {
   modalList$ = this.select('modal');
   dispatchboardList$ = this.select('dispatchList');
 
-  get modalList(){
+  dispatchBoardListData$ = this.select(
+    (state) => state.dispatchList.pagination.data
+  );
+
+  get modalList() {
     return this.getValue().modal;
   }
 

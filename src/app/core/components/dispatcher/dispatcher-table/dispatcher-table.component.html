@@ -287,8 +287,9 @@
             </app-app-dispatcher-table-new>
           </div> -->
 
-          <app-dispatchboard-tables [isBoardLocked]="isBoardLocked"></app-dispatchboard-tables>
-          
+          <div class="dipsatch_groups" *ngFor="let item of dasbhoardTableList | async">
+            <app-dispatchboard-tables [dData]="item" [isBoardLocked]="isBoardLocked"></app-dispatchboard-tables>
+          </div>
         </div>
       </div>
     </div>

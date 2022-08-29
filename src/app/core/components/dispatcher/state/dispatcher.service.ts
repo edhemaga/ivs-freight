@@ -1,6 +1,6 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
-import { DispatchService } from 'appcoretruckassist';
+import { CreateDispatchCommand, DispatchService, UpdateDispatchBoardCommand } from 'appcoretruckassist';
 
 @Injectable({ providedIn: "root" })
 export class DispatcherStoreService {
@@ -14,6 +14,22 @@ export class DispatcherStoreService {
 
     getDispatchboardList(){
         return this.dispatchService.apiDispatchBoardListGet();
+    }
+
+    getDispatchboardById(id: number){
+        return this.dispatchService.apiDispatchBoardIdGet(id);
+    }
+
+    createDispatchBoard(createData: CreateDispatchCommand){
+        return this.dispatchService.apiDispatchPost(createData).subscribe(res => {
+            console.log("RESULT OF CREATING DISPATCHBOARD", res);
+        });
+    }
+
+    updateDispatchBoard(updateData: UpdateDispatchBoardCommand){
+        return this.dispatchService.apiDispatchBoardPut(updateData).subscribe( res => {
+            console.log("RESULT OF UPDATED DISPATCHBOARD", res);
+        });
     }
 
     set dispatcherData(list){

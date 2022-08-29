@@ -19,7 +19,7 @@ export class DispatcherDropdownComponent implements OnInit {
   @Output() changeVal = new EventEmitter();
   constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     if (this.selectValue == null) {
       this.selectValue = {
         id: 0,
