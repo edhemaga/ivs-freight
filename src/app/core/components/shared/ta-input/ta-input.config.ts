@@ -75,6 +75,7 @@ export interface ITaInput {
     template?: string; // truck, trailer...
     color?: string; // colors store in backe-end dynamicly
     class?: string; // colors store in front-end
+    remove?: boolean; // remove svg in focus mode and when user are typing
   };
 
   // Label dropdown

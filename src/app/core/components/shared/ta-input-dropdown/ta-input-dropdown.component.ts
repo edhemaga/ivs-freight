@@ -353,6 +353,20 @@ export class TaInputDropdownComponent
                 .includes(searchText.toLowerCase())
         );
 
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig.dropdownImageInput.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig.dropdownImageInput,
+              remove: true,
+            },
+          };
+        }
+
         if (!this.options.length) {
           this.options.push({
             id: 7654,
@@ -361,6 +375,20 @@ export class TaInputDropdownComponent
         }
       } else {
         this.options = this.originalOptions;
+
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig.dropdownImageInput.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig.dropdownImageInput,
+              remove: false,
+            },
+          };
+        }
       }
     }
     // Group Dropdown Items

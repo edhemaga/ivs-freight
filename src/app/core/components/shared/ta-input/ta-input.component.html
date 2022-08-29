@@ -400,7 +400,9 @@
       !(
         ['truck', 'trailer'].includes(
           inputConfig.dropdownImageInput?.template
-        ) && focusInput
+        ) &&
+        focusInput &&
+        inputConfig.dropdownImageInput?.remove
       )
     "
     [src]="inputConfig.dropdownImageInput?.url"
@@ -485,12 +487,12 @@
         inputConfig?.dropdownImageInput?.withText &&
         inputConfig?.dropdownImageInput?.url &&
         inputConfig?.dropdownImageInput?.template === 'truck' &&
-        !focusInput,
+        !inputConfig?.dropdownImageInput?.remove,
       'dropdown-input-image-trailer':
         inputConfig?.dropdownImageInput?.withText &&
         inputConfig?.dropdownImageInput?.url &&
         inputConfig?.dropdownImageInput?.template === 'trailer' &&
-        !focusInput,
+        !inputConfig?.dropdownImageInput?.remove,
       'dropdown-input-image-color':
         inputConfig?.dropdownImageInput?.withText &&
         inputConfig?.dropdownImageInput?.url &&
