@@ -168,5 +168,21 @@
 
   &.visible-focus-password {
     display: inline-block !important;
+    svg {
+      path {
+        fill: #6c6c6c !important;
+      }
+      rect {
+        fill: #b7b7b7 !important;
+      }
+    }
+
+    &:hover {
+      svg {
+        rect {
+          fill: #eeeeee !important;
+        }
+      }
+    }
   }
 }
