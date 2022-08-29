@@ -578,10 +578,7 @@ $top_state_color:'6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2
                     height: 2px;
                     border-radius: 1px;
                     background-color: #F3F3F3;
-
-                    &.list_line_hidden{
-                        opacity: 0;
-                    }
+                    opacity: 0;
                 }
 
                 &:last-child{

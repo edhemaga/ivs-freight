@@ -345,7 +345,8 @@ export class DashboardTopDriverComponent implements OnInit {
   }
 
   removeDriverFromList(e: Event,indx, item){
-    e.stopPropagation()
+    e.stopPropagation();
+    item.active = false;
     this.driverList.splice(indx, 1);
     let showDefault = false;
     if ( this.selectedDrivers?.length == 1 ) {
@@ -359,6 +360,16 @@ export class DashboardTopDriverComponent implements OnInit {
     }
     
     this.driverList.push(item);
+    let allDrivers = [...this.driverList];
+    let activeDrivers = allDrivers.filter((driver) => driver.active == true);
+    this.driverList = activeDrivers;
+    let inactiveDrivers = allDrivers.filter((driver) => !driver.active).sort((a, b) => {
+      return a.id - b.id;
+    });
+    inactiveDrivers.map((driver) => {
+      this.driverList.push(driver);
+    });
+
     this.savedColors.unshift(this.compareColor[item.id]);
     this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
     if ( this.selectedDrivers?.length == 0 ) {
@@ -389,7 +400,7 @@ export class DashboardTopDriverComponent implements OnInit {
     this.t3.close();
   }
 
-  selectCompare(item, indx){
+  selectCompare(e, item, indx){
     const itemId: any = item.id;
     if(!(itemId in this.compareColor)){
       if( !this.savedColors.length ){
@@ -398,6 +409,8 @@ export class DashboardTopDriverComponent implements OnInit {
         this.savedHoverColors = [...this.hoverCircleColor]; 
         this.hoverCircleColor = [];
       }
+
+      item.active = true;
   
       const firstInArray = this.savedColors.shift();
       const firstInArrayHover = this.savedHoverColors.shift();
@@ -415,7 +428,9 @@ export class DashboardTopDriverComponent implements OnInit {
 
       this.hoverDriver(indx);
     }
-
+    else{
+      this.removeDriverFromList(e, indx, item)
+    }
   }
 
   hoverDriver(index: any){

@@ -1165,8 +1165,9 @@
 
       &:hover:not(.active) {
         cursor: pointer;
-        background-color: #f3f3f3;
+        background-color: #f7f7f7;
         color: #3c3c3c;
+        border-radius: 1px;
       }
 
       &.active {
