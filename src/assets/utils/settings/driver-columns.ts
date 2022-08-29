@@ -1,6 +1,6 @@
 // DRIVER TABLE COLUMNS DEFINITION
 export function getDriverColumnsDefinition() { 
-  return [
+  return [ 
     {
       ngTemplate: 'checkbox',
       title: '',
