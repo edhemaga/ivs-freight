@@ -2,11 +2,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 
 @Component({
   selector: 'app-ta-details-header-card',
@@ -14,7 +17,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./ta-details-header-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaDetailsHeaderCardComponent implements OnInit {
+export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
   @Input() public cardDetailsName: string = '';
   @Input() public cardDetailsDate: any;
   @Input() public cardDetailsDateTerminated: string = null;
@@ -42,12 +45,36 @@ export class TaDetailsHeaderCardComponent implements OnInit {
 
   public selectedDropdown: boolean = false;
   public selectedDropdownSecond: boolean = false;
+  public hideLeftArrow: boolean;
+  public hideRightArrow: boolean;
+  public routeId: number;
+  constructor(private driverItemStore: DriversItemStore) {}
+  ngOnChanges(changes: SimpleChanges) {}
+  ngOnInit(): void {
+    // this.hideArrowOnStart();
+  }
 
-  constructor() {}
+  public hideArrowOnStart() {
+    let driverId;
+    let last = this.options.at(-1);
+    setTimeout(() => {
+      driverId = this.driverItemStore.getValue().ids[0];
+    }, 100);
+    let first = this.options.at(0);
 
-  ngOnInit(): void {}
-
+    if (first.id == driverId) {
+      this.hideLeftArrow = true;
+    } else {
+      this.hideLeftArrow = false;
+    }
+    if (last.id == driverId) {
+      this.hideRightArrow = true;
+    } else {
+      this.hideRightArrow = false;
+    }
+  }
   public onAction(action: string) {
+    this.hideArrowOnStart();
     this.changeEvent.emit(action);
   }
 

@@ -1,3 +1,5 @@
+import { TruckMinimalResponse } from './../../../../../../appcoretruckassist/model/truckMinimalResponse';
+import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 /* import { TruckQuery } from './../state/truck.query'; */
@@ -50,13 +52,13 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
+    this.initTableOptions(this.activated_route.snapshot.data.truck);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
       .subscribe((res: any) => {
         if (res.animation) {
           this.truckConf(res.data);
-
+          this.initTableOptions(res.data);
           this.cdRef.detectChanges();
         }
       });
@@ -73,6 +75,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         query.pipe(untilDestroyed(this)).subscribe({
           next: (res: TruckResponse) => {
             this.truckConf(res);
+            this.initTableOptions(res);
             if (this.router.url.includes('details')) {
               this.router.navigate([`/truck/${res.id}/details`]);
             }
@@ -95,7 +98,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     return index;
   }
   /**Function for dots in cards */
-  public initTableOptions(): void {
+  public initTableOptions(data: TruckMinimalResponse): void {
     this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -109,31 +112,27 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        // {
-        //   title: 'Send Message',
-        //   name: 'dm',
-        //   class: 'regular-text',
-        //   contentType: 'dm',
-        // },
-        // {
-        //   title: 'Print',
-        //   name: 'print',
-        //   class: 'regular-text',
-        //   contentType: 'print',
-        // },
-        // {
-        //   title: 'Deactivate',
-        //   name: 'deactivate',
-        //   class: 'regular-text',
-        //   contentType: 'deactivate',
-        // },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+
         {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
-
+        {
+          title: data.status == 0 ? 'Activate' : 'Deactivate',
+          name: data.status == 0 ? 'activate' : 'deactivate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          activate: data.status == 0 ? true : false,
+          deactivate: data.status == 1 ? true : false,
+          show: data.status == 1 || data.status == 0 ? true : false,
+        },
         {
           title: 'Delete',
           name: 'delete-item',

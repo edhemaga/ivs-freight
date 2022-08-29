@@ -37,7 +37,7 @@
           type: 'text',
           isDropdown: true,
           dropdownWidthClass:
-            statusInactive === 0 ? 'w-col-332' : 'w-col-details-366',
+            statusInactive === 0 ? 'w-col-details-366' : 'w-col-details-366',
           textTransform: 'capitalize',
           customClass: 'input-32 input-32-font-20 details-pages'
         }"
@@ -49,7 +49,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div *ngIf="!hasArrow && options.length > 1" class="arrows">
+    <div *ngIf="!hasArrow && options.length > 1 " class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"
@@ -57,10 +57,11 @@
         tooltipBackground="#6C6C6C"
         (click)="onAction('previous')"
       >
-        <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
+        <svg-icon  *ngIf="!hideLeftArrow " class="arrow-left" src="assets/svg/common/arrow-left.svg">
         </svg-icon>
       </span>
       <span
+      *ngIf="!hideRightArrow "
         tooltipBackground="#6C6C6C"
         ngbTooltip
         [mainTooltip]="tooltipNext"
@@ -68,6 +69,7 @@
         (click)="onAction('next')"
       >
         <svg-icon
+        *ngIf="!hideRightArrow"
           class="arrow-right"
           src="assets/svg/common/arrow-left.svg"
         ></svg-icon>

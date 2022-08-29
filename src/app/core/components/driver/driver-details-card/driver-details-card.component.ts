@@ -37,6 +37,7 @@ import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @UntilDestroy()
 @Component({
@@ -193,7 +194,6 @@ export class DriverDetailsCardComponent
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
-    private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
@@ -203,7 +203,8 @@ export class DriverDetailsCardComponent
     private mvrService: MvrTService,
     private testService: TestTService,
     private confirmationService: ConfirmationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dropDownService: DropDownService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -212,14 +213,17 @@ export class DriverDetailsCardComponent
       this.getYearsAndDays(changes?.driver?.currentValue);
       this.widthOfProgress();
       this.getDriversDropdown();
-    }
-    if (changes?.driver?.firstChange) {
-      if (this.templateCard == true) {
-        this.hideArrow = true;
-      } else {
-        this.hideArrow = false;
+      if (changes?.driver?.firstChange) {
+        if (this.templateCard == true) {
+          this.hideArrow = true;
+        } else {
+          this.hideArrow = false;
+        }
       }
     }
+    this.driverMinimalQuery
+      .selectAll()
+      .subscribe((item) => (this.driversList = item));
   }
 
   ngOnInit(): void {
@@ -230,7 +234,6 @@ export class DriverDetailsCardComponent
         .pipe(untilDestroyed(this))
         .subscribe({
           next: (res: Confirmation) => {
-            console.log(res);
             switch (res.type) {
               case 'delete': {
                 if (res.template === 'cdl') {
@@ -344,182 +347,16 @@ export class DriverDetailsCardComponent
   }
 
   public optionsEvent(any: any, action: string) {
-    if (any.type === 'edit') {
-      switch (action) {
-        case 'cdl': {
-          this.dropActionName = 'edit-licence';
-          break;
-        }
-        case 'mvr': {
-          this.dropActionName = 'edit-mvr';
-          break;
-        }
-        case 'medical': {
-          this.dropActionName = 'edit-medical';
-          break;
-        }
-        case 'test': {
-          this.dropActionName = 'edit-drug';
-          break;
-        }
-      }
-    }
-    if (any.type === 'delete-item') {
-      switch (action) {
-        case 'cdl': {
-          this.dropActionName = 'delete-cdl';
-          break;
-        }
-        case 'mvr': {
-          this.dropActionName = 'delete-mvr';
-          break;
-        }
-        case 'medical': {
-          this.dropActionName = 'delete-medical';
-          break;
-        }
-        case 'test': {
-          this.dropActionName = 'delete-test';
-          break;
-        }
-      }
-    }
     const name = dropActionNameDriver(any, action);
-    switch (name) {
-      case 'delete-cdl': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataCdl,
-            state: this.dataCdl.state.stateShortName,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'cdl',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-medical': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            medicalIssued: this.dataMedical.issueDate,
-            medicalExpDate: this.dataMedical.expDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'medical',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-mvr': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataMvr,
-            mvrIssueDate: this.dataMvr.issueDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'mvr',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-test': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            testTypeName: this.dataTestCard.testType.name,
-            reasonName: this.dataTestCard.testReason.name,
-            issuedDataTest: this.dataTestCard.testingDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'test',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'edit-licence': {
-        this.modalService.openModal(
-          DriverCdlModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-
-      case 'edit-drug': {
-        this.modalService.openModal(
-          DriverDrugAlcoholModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-medical': {
-        this.modalService.openModal(
-          DriverMedicalModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-mvr': {
-        this.modalService.openModal(
-          DriverMvrModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    this.dropDownService.dropActions(
+      any,
+      name,
+      this.dataCDl,
+      this.dataMvr,
+      this.dataMedical,
+      this.dataTest,
+      this.driver.id
+    );
   }
   public getCdlById(id: number) {
     this.cdlService
@@ -736,7 +573,7 @@ export class DriverDetailsCardComponent
   }
 
   public getExpireDate(data: DriverResponse) {
-    this.dataCDl = data.cdls.map((ele) => {
+    this.dataCDl = data?.cdls?.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {
         this.expDateCard = false;
       } else {
@@ -750,7 +587,6 @@ export class DriverDetailsCardComponent
   }
 
   public onModalAction(action: string): void {
-    console.log(action);
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }
@@ -798,16 +634,16 @@ export class DriverDetailsCardComponent
     let arrMinDate = [];
     let arrMaxDate = [];
     let dateDeactivate = [];
-    if (this.driver.employmentHistories) {
+    if (this.driver?.employmentHistories) {
       const sum = this.sumArr.transform(
-        this.driver.employmentHistories.map((item) => {
+        this.driver?.employmentHistories.map((item) => {
           return {
             id: item.id,
             value: item.duration.Years * 365.25 + item.duration.Days,
           };
         })
       );
-      this.dataProggress = this.driver.employmentHistories.map((element) => {
+      this.dataProggress = this.driver?.employmentHistories.map((element) => {
         let res = element.duration.Years * 365.25 + element.duration.Days;
         this.activePercentage = (res / sum) * 100;
         let dates = moment(element.startDate)
@@ -849,7 +685,7 @@ export class DriverDetailsCardComponent
   public getYearsAndDays(data: any) {
     let sum = 0;
     let sum2 = 0;
-    if (data.employmentHistories) {
+    if (data?.employmentHistories) {
       data.employmentHistories.forEach((element) => {
         sum += element.duration.Years;
         sum2 += element.duration.Days;

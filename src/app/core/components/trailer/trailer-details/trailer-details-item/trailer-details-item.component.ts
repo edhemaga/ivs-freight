@@ -23,6 +23,7 @@ import {
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 @UntilDestroy()
 @Component({
   selector: 'app-trailer-details-item',
@@ -39,7 +40,6 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   public titleNote: FormControl = new FormControl();
   public trailerData: any;
   public svgColorVar: string;
-  public dropActionName: string = '';
   public trailerName: string;
   public dataTest: any;
   public toggler: boolean[] = [];
@@ -47,8 +47,8 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     private tableService: TruckassistTableService,
     private confirmationService: ConfirmationService,
     private notificationService: NotificationService,
-    private modalService: ModalService,
-    private commonTrailerService: CommonTruckTrailerService
+    private commonTrailerService: CommonTruckTrailerService,
+    private dropDownService: DropDownService
   ) {}
 
   ngOnInit(): void {
@@ -123,93 +123,19 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   }
   public optionsEvent(file: any, data: any, action: string) {
     const name = dropActionNameTrailerTruck(file, action);
-
-    switch (name) {
-      case 'delete-inspection': {
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            id: file.id,
-            template: 'inspection',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-registration': {
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            id: file.id,
-            template: 'registration',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-title': {
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            id: file.id,
-            template: 'title',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'edit-registration': {
-        this.modalService.openModal(
-          TtRegistrationModalComponent,
-          { size: 'small' },
-          {
-            id: data.id,
-            payload: data,
-            file_id: file.id,
-            type: name,
-            modal: 'trailer',
-          }
-        );
-        break;
-      }
-      case 'edit-inspection': {
-        this.modalService.openModal(
-          TtFhwaInspectionModalComponent,
-          { size: 'small' },
-          {
-            id: data.id,
-            payload: data,
-            file_id: file.id,
-            type: name,
-            modal: 'trailer',
-          }
-        );
-        break;
-      }
-      case 'edit-title': {
-        this.modalService.openModal(
-          TtTitleModalComponent,
-          { size: 'small' },
-          {
-            id: data.id,
-            payload: data,
-            file_id: file.id,
-            type: name,
-            modal: 'trailer',
-          }
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    this.dropDownService.dropActions(
+      file,
+      name,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      data,
+      'trailer'
+    );
   }
   private deleteRegistrationByIdFunction(id: number) {
     this.commonTrailerService

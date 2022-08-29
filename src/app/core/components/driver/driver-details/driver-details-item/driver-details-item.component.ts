@@ -1,3 +1,4 @@
+import { DropDownService } from './../../../../services/details-page/drop-down.service';
 import { DriverTService } from './../../state/driver.service';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -15,18 +16,11 @@ import {
 
 import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
-import { DriverDrugAlcoholModalComponent } from '../driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { DriverMedicalModalComponent } from '../driver-modals/driver-medical-modal/driver-medical-modal.component';
-import { DriverMvrModalComponent } from '../driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { CdlTService } from '../../state/cdl.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import {
-  Confirmation,
-  ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
@@ -56,7 +50,6 @@ export class DriverDetailsItemComponent
   public templateName: boolean;
   public hasActiveCdl: boolean;
   public arrayOfActiveCdl: any[] = [];
-  public dropActionName: string = '';
   public inactiveCdl: boolean;
   public test: boolean;
   public dataCdl: any;
@@ -64,7 +57,6 @@ export class DriverDetailsItemComponent
   public dataMedical: any;
   public dataTest: any;
   constructor(
-    private modalService: ModalService,
     private driverService: DriverTService,
     private cdlService: CdlTService,
     private medicalService: MedicalTService,
@@ -72,7 +64,8 @@ export class DriverDetailsItemComponent
     private testService: TestTService,
     private confirmationService: ConfirmationService,
     private notificationService: NotificationService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private dropDownService: DropDownService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -114,10 +107,9 @@ export class DriverDetailsItemComponent
   public getExpireDate() {
     this.dataCDl = this.drivers[1]?.data?.cdls?.map((ele) => {
       let endDate = moment(ele.expDate);
-
       if (
         moment(ele.expDate).isBefore(moment()) ||
-        endDate.diff(moment(), 'years') <= 1
+        endDate.diff(moment(), 'days') <= 365
       ) {
         this.expDateCard = false;
       } else {
@@ -140,24 +132,10 @@ export class DriverDetailsItemComponent
     this.driverService.activateDeactiveCdl(id);
   }
   public getNameForDrop(name: string) {
-    switch (name) {
-      case 'cdl':
-        this.templateName = false;
-        this.initTableOptions();
-        this.getExpireDate();
-        break;
-      case 'test':
-        this.templateName = true;
-        this.initTableOptions();
-        break;
-      case 'medical':
-        this.templateName = true;
-        this.initTableOptions();
-        break;
-      case 'mvr':
-        this.templateName = true;
-        this.initTableOptions();
-        break;
+    this.templateName = name === 'cdl' ? false : true;
+    this.initTableOptions();
+    if (name === 'cdl') {
+      this.getExpireDate();
     }
   }
   /**Function for dots in cards */
@@ -236,141 +214,15 @@ export class DriverDetailsItemComponent
   }
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
-    switch (name) {
-      case 'delete-cdl': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataCdl,
-            state: this.dataCdl.state.stateShortName,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'cdl',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-medical': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            medicalIssued: this.dataMedical.issueDate,
-            medicalExpDate: this.dataMedical.expDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'medical',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-mvr': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataMvr,
-            mvrIssueDate: this.dataMvr.issueDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'mvr',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-test': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            testTypeName: this.dataTest.testType.name,
-            reasonName: this.dataTest.testReason.name,
-            issuedDataTest: this.dataTest.testingDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'test',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'edit-licence': {
-        this.modalService.openModal(
-          DriverCdlModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.drivers[0].data.id,
-            type: name,
-          }
-        );
-        break;
-      }
-
-      case 'edit-drug': {
-        this.modalService.openModal(
-          DriverDrugAlcoholModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.drivers[0].data.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-medical': {
-        this.modalService.openModal(
-          DriverMedicalModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.drivers[0].data.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-mvr': {
-        this.modalService.openModal(
-          DriverMvrModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.drivers[0].data.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    this.dropDownService.dropActions(
+      any,
+      name,
+      this.dataCDl,
+      this.dataMvr,
+      this.dataMedical,
+      this.dataTest,
+      this.drivers[0].data.id
+    );
   }
 
   public onButtonAction(data: { template: string; action: string }) {

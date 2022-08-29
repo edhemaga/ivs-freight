@@ -203,7 +203,7 @@
       <div>
         <app-ta-re-card
           *ngFor="
-            let test of driverItem.data.tests;
+            let test of driverItem?.data?.tests;
             let i = index;
             trackBy: identity
           "
@@ -290,7 +290,7 @@
       <div>
         <app-ta-re-card
           *ngFor="
-            let med of driverItem.data.medicals;
+            let med of driverItem?.data?.medicals;
             let i = index;
             trackBy: identity
           "
@@ -389,7 +389,7 @@
       <div>
         <app-ta-re-card
           *ngFor="
-            let mvr of driverItem.data.mvrs;
+            let mvr of driverItem?.data?.mvrs;
             let i = index;
             trackBy: identity
           "

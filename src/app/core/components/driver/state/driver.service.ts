@@ -19,11 +19,15 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from './driver-details-state/driver-details.store';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverTService {
+  public driversList: any = this.driverMinimalQuery.getAll();
+
   constructor(
     private driverService: DriverService,
     private driversActiveQuery: DriversActiveQuery,
@@ -33,7 +37,9 @@ export class DriverTService {
     private driverMinimimalListStore: DriversMinimalListStore,
     private cdlService: CdlService,
     private ownerService: OwnerService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private driverMinimalQuery: DriversMinimalListQuery,
+    private driverItemStore: DriversItemStore
   ) {}
 
   // Get Driver Minimal List
@@ -106,6 +112,66 @@ export class DriverTService {
               id: driver.id,
             });
 
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
+  }
+
+  //Delete Driver By Id Details page, treba ovo zbog tableAnimationService
+  public deleteDriverByIdDetails(
+    driverId: number,
+    tableSelectedTab?: string
+  ): Observable<any> {
+    return this.driverService.apiDriverIdDelete(driverId).pipe(
+      tap(() => {
+        let driverIdStore = this.driverItemStore.getValue().ids[0];
+        let currentIndex = this.driversList.findIndex(
+          (driverId) => driverId.id === driverIdStore
+        );
+        let last = this.driversList.at(-1);
+        if (last.id === this.driverItemStore.getValue().ids[0]) {
+          currentIndex = --currentIndex;
+        } else {
+          currentIndex = ++currentIndex;
+        }
+        let drivId = this.driversList[currentIndex].id;
+
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        if (tableSelectedTab === 'active') {
+          this.driverActiveStore.remove(({ id }) => id === driverId);
+
+          driverCount.active--;
+        } else if (tableSelectedTab === 'inactive') {
+          this.driverInactiveStore.remove(({ id }) => id === driverId);
+
+          driverCount.inactive--;
+        }
+
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverCount.active,
+            inactive: driverCount.inactive,
+          })
+        );
+
+        this.driverMinimimalListStore.remove(({ id }) => id === driverId);
+        const subDriver = this.getDriverById(drivId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+            this.tableService.sendActionAnimation({
+              animation: 'delete',
+              data: driver,
+              id: driver.id,
+            });
             subDriver.unsubscribe();
           },
         });
@@ -228,6 +294,79 @@ export class DriverTService {
     number: string
   ): Observable<CheckOwnerSsnEinResponse> {
     return this.ownerService.apiOwnerCheckSsnEinGet(number);
+  }
+
+  public changeDriverStatusDetails(
+    driverId: number,
+    tabSelected?: string
+  ): Observable<any> {
+    return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
+      tap(() => {
+        /* Get Table Tab Count */
+        const driverCount = JSON.parse(
+          localStorage.getItem('driverTableCount')
+        );
+
+        /* Get Data From Store To Update */
+        let driverToUpdate =
+          tabSelected === 'active'
+            ? this.driversActiveQuery.getAll({
+                filterBy: ({ id }) => id === driverId,
+              })
+            : this.driversInactiveQuery.getAll({
+                filterBy: ({ id }) => id === driverId,
+              });
+
+        /* Remove Data From Store */
+        tabSelected === 'active'
+          ? this.driverActiveStore.remove(({ id }) => id === driverId)
+          : this.driverInactiveStore.remove(({ id }) => id === driverId);
+
+        /* Add Data To New Store */
+        tabSelected === 'active'
+          ? this.driverInactiveStore.add({
+              ...driverToUpdate[0],
+              status: 0,
+            })
+          : this.driverActiveStore.add({
+              ...driverToUpdate[0],
+              status: 1,
+            });
+
+        /* Update Table Tab Count */
+        if (tabSelected === 'active') {
+          driverCount.active--;
+          driverCount.inactive++;
+        } else if (tabSelected === 'inactive') {
+          driverCount.active++;
+          driverCount.inactive--;
+        }
+
+        /* Send Table Tab Count To Local Storage */
+        localStorage.setItem(
+          'driverTableCount',
+          JSON.stringify({
+            active: driverCount.active,
+            inactive: driverCount.inactive,
+          })
+        );
+        const subDriver = this.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.tableService.sendActionAnimation({
+              animation: 'update-status',
+              data: driver,
+              id: driver.id,
+            });
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public changeDriverStatus(
