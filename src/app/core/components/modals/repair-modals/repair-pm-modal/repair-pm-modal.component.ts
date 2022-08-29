@@ -148,7 +148,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
           this.createNewPMs(
             null,
             true,
-            'assets/svg/common/repair-pm/ic_default_pm.svg',
+            'assets/svg/common/repair-pm/ic_custom_pm.svg',
             null,
             convertNumberInThousandSep(defaultValue),
             null,

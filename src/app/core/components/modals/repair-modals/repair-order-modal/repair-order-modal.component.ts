@@ -8,7 +8,14 @@ import {
   convertNumberInThousandSep,
 } from 'src/app/core/utils/methods.calculations';
 import { NotificationService } from './../../../../services/notification/notification.service';
-import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RepairTService } from '../../../repair/state/repair.service';
@@ -90,8 +97,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   public selectedPM: any[] = [];
   public selectedPMIndex: number;
   public pmOptions: any[] = []; // this array fill when truck/trailer switch change
-  private pmTrucks: any[] = [];
-  private pmTrailers: any[] = [];
 
   public isDirty: boolean;
 
@@ -103,6 +108,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private modalService: ModalService,
     private ngbActiveModal: NgbActiveModal,
     private sumArrayPipe: SumArraysPipe,
+    private cdRef: ChangeDetectorRef,
     private formService: FormService
   ) {}
 
@@ -219,7 +225,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.subtotal = [...this.subtotal, { id: this.itemsCounter, value: 0 }];
       this.selectedPM.push({
         id: null,
-        logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
+        logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
       });
     }
   }
@@ -335,14 +341,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       };
     });
 
-    if (this.repairOrderForm.get('unitType').value === 'Truck') {
-      this.pmOptions = this.pmTrucks;
-      this.labelsUnit = this.unitTrucks;
-    } else {
-      this.pmOptions = this.pmTrailers;
-      this.labelsUnit = this.unitTrailers;
-    }
-
     if (action) {
       return;
     }
@@ -352,7 +350,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.selectedPM = [];
     this.selectedPM.push({
       id: null,
-      logoName: 'assets/svg/common/repair-pm/ic_default_pm.svg',
+      logoName: 'assets/svg/common/repair-pm/ic_custom_pm.svg',
     });
     this.selectedPMIndex = null;
   }
@@ -390,6 +388,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           });
         } else {
           this.selectedUnit = event;
+          this.typeOfRepair.find((item) => item.checked).name === 'Truck'
+            ? this.getRepairDropdowns(this.selectedUnit?.id, null)
+            : this.getRepairDropdowns(null, this.selectedUnit?.id);
         }
         break;
       }
@@ -465,40 +466,36 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     return item.value;
   }
 
-  private getRepairDropdowns() {
+  private getRepairDropdowns(truckId?: number, trailerId?: number) {
     this.repairService
-      .getRepairModalDropdowns()
+      .getRepairModalDropdowns(truckId, trailerId)
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: RepairModalResponse) => {
+          console.log(res);
           // PM Trucks
-          this.pmTrucks = this.pmOptions = res.pmTrucks.map((item) => {
-            return {
-              ...item,
-              logoName: `assets/svg/common/repair-pm/${item.logoName}`,
-            };
-          });
-          if (!this.pmTrucks.find((item) => item.title === 'Add New')) {
-            this.pmTrucks.unshift({
-              id: this.pmTrucks.length + 1,
-              logoName: null,
-              mileage: null,
-              passedMileage: null,
-              status: null,
-              title: 'Add New',
+          if (res.pmTrucks?.length) {
+            this.pmOptions = res.pmTrucks.map((item) => {
+              return {
+                ...item,
+                logoName: item.logoName,
+              };
             });
           }
 
-          // PM Trailers
-          this.pmTrailers = res.pmTrailers.map((item) => {
-            return {
-              ...item,
-              logoName: `assets/svg/common/repair-pm/${item.logoName}`,
-            };
-          });
-          if (!this.pmTrailers.find((item) => item.title === 'Add New')) {
-            this.pmTrailers.unshift({
-              id: this.pmTrailers.length + 1,
+          if (res.pmTrailers?.length) {
+            // // PM Trailers
+            this.pmOptions = res.pmTrailers.map((item) => {
+              return {
+                ...item,
+                logoName: item.logoName,
+              };
+            });
+          }
+
+          if (!this.pmOptions.find((item) => item.title === 'Add New')) {
+            this.pmOptions.unshift({
+              id: this.pmOptions.length + 1,
               logoName: null,
               mileage: null,
               passedMileage: null,
@@ -533,6 +530,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             };
           });
           this.labelsRepairShop = [...res.repairShops];
+
+          this.cdRef.detectChanges();
         },
         error: () => {
           this.notificationService.error("Repair Dropdowns can't be loaded");
@@ -772,7 +771,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
   private populateForm(res: any) {
     const timeout = setTimeout(() => {
-      this.getRepairDropdowns();
+      res.typeOfRepair.find((item) => item.checked).name === 'Truck'
+        ? this.getRepairDropdowns(res.selectedUnit?.id, null)
+        : this.getRepairDropdowns(null, res.selectedUnit?.id);
 
       const timeout2 = setTimeout(() => {
         this.repairOrderForm.patchValue({
@@ -951,7 +952,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       logoName: `assets/svg/common/repair-pm/${
                         iterator.pmTruck
                           ? iterator.pmTruck.logoName
-                          : 'ic_default_pm.svg'
+                          : 'ic_custom_pm.svg'
                       }`,
                     });
                   } else {
@@ -960,7 +961,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                       logoName: `assets/svg/common/repair-pm/${
                         iterator.pmTrailer
                           ? iterator.pmTrailer.logoName
-                          : 'ic_default_pm.svg'
+                          : 'ic_custom_pm.svg'
                       }`,
                     });
                   }
