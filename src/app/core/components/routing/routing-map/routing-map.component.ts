@@ -135,166 +135,7 @@ export class RoutingMapComponent implements OnInit {
     },
   ];
 
-  public routes: any[] = [
-    // {
-    //   'id': 1,
-    //   'name': 'Route 1',
-    //   'hidden': false,
-    //   'expanded': false,
-    //   'routeType': 'Practical',
-    //   'truckId': '',
-    //   'stopTime': '',
-    //   'mpg': '',
-    //   'fuelPrice': '',
-    //   'stops': [
-    //     {
-    //       'address': {
-    //         'address': "Gary, IN 30055",
-    //         'city': "Gary",
-    //         'country': "US",
-    //         'state': "IN",
-    //         'stateShortName': "IN",
-    //         'street': "",
-    //         'streetNumber': "",
-    //         'zipCode': "30055"
-    //       },
-    //       'cityAddress': 'Gary, IN 30055',
-    //       'leg': '60.6',
-    //       'total': '60.6',
-    //       'time': '01:15',
-    //       'totalTime': '01:15',
-    //       'empty': false,
-    //       'lat': 41.601970,
-    //       'long': -87.349680
-    //     },
-    //     {
-    //       'address': {
-    //         'address': "Chicago, IL 65005",
-    //         'city': "Chicago",
-    //         'country': "US",
-    //         'state': "IL",
-    //         'stateShortName': "IL",
-    //         'street': "",
-    //         'streetNumber': "",
-    //         'zipCode': "65005"
-    //       },
-    //       'cityAddress': 'Chicago, IL 65005',
-    //       'leg': '60.6',
-    //       'total': '60.6',
-    //       'time': '01:15',
-    //       'totalTime': '01:15',
-    //       'empty': false,
-    //       'lat': 41.883230,
-    //       'long': -87.632400
-    //     },
-    //     {
-    //       'address': {
-    //         'address': "Philadelphia, PA 52320",
-    //         'city': "Philadelphia",
-    //         'country': "US",
-    //         'state': "PA",
-    //         'stateShortName': "PA",
-    //         'street': "",
-    //         'streetNumber': "",
-    //         'zipCode': "52320"
-    //       },
-    //       'cityAddress': 'Philadelphia, PA 52320',
-    //       'leg': '45.2',
-    //       'total': '105.8',
-    //       'time': '00:23',
-    //       'totalTime': '01:38',
-    //       'empty': false,
-    //       'lat': 39.951060,
-    //       'long': -75.165620
-    //     },
-    //     {
-    //       'address': {
-    //         'address': "Nashville, KE 89600",
-    //         'city': "Nashville",
-    //         'country': "US",
-    //         'state': "KE",
-    //         'stateShortName': "KE",
-    //         'street': "",
-    //         'streetNumber': "",
-    //         'zipCode': "89600"
-    //       },
-    //       'cityAddress': 'Nashville, KE 89600',
-    //       'leg': '168.8',
-    //       'total': '273.1',
-    //       'time': '00:37',
-    //       'totalTime': '02:05',
-    //       'empty': false,
-    //       'lat': 30.826909,
-    //       'long': -96.655749
-    //     },
-    //   ]
-    // },
-    // {
-    //   'id': 2,
-    //   'name': 'Route 2',
-    //   'hidden': false,
-    //   'expanded': false,
-    //   'routeType': 'Shortest',
-    //   'truckId': '',
-    //   'stopTime': '',
-    //   'mpg': '',
-    //   'fuelPrice': '',
-    //   'stops': [
-    //     {
-    //       'address': {
-    //         'address': "Gary, IN 30055",
-    //         'city': "Gary",
-    //         'country': "US",
-    //         'state': "IN",
-    //         'stateShortName': "IN",
-    //         'street': "",
-    //         'streetNumber': "",
-    //         'zipCode': ""
-    //       },
-    //       'leg': '60.6',
-    //       'total': '60.6',
-    //       'time': '01:15',
-    //       'totalTime': '01:15',
-    //       'empty': false,
-    //       'lat': 35.404478,
-    //       'long': -81.331493
-    //     },
-    //     {
-    //       'address': 'Chicago, IL 65005',
-    //       'fullAddress': '1525 Park Dr, Munster, IN 46321',
-    //       'leg': '60.6',
-    //       'total': '60.6',
-    //       'time': '01:15',
-    //       'totalTime': '01:15',
-    //       'empty': false,
-    //       'lat': 41.5577897,
-    //       'long': -87.4925295
-    //     },
-    //     {
-    //       'address': 'Philadelphia, PA 52320',
-    //       'fullAddress': '32075 Arlington Dr, Franklin,  MI 48025',
-    //       'leg': '45.2',
-    //       'total': '105.8',
-    //       'time': '00:23',
-    //       'totalTime': '01:38',
-    //       'empty': false,
-    //       'lat': 42.526144,
-    //       'long': -83.20796
-    //     },
-    //     {
-    //       'address': 'Nashville, KE 89600',
-    //       'fullAddress': '2136 Warren H…, Hermanville, MS 39086',
-    //       'leg': '168.8',
-    //       'total': '273.1',
-    //       'time': '00:37',
-    //       'totalTime': '02:05',
-    //       'empty': false,
-    //       'lat': 32.469674,
-    //       'long': -90.50994
-    //     },
-    //   ]
-    // }
-  ];
+  public routes: any[] = [];
 
   public routeColors: any[] = [
     '#3074D3',
@@ -306,9 +147,6 @@ export class RoutingMapComponent implements OnInit {
     '#F276EF',
     '#8D6E63'
   ];
-
-  // '#8A9AEF', '#FDB46B', '#F27B8E', '#6DC089', '#A574C3', '#73D0F1', '#F69FF3', '#A1887F' - Old colors
-  // '#596FE8', '#FD952D', '#ED445E', '#2FA558', '#7F39AA', '#38BDEB', '#F276EF', '#8D6E63' - Old focus colors
 
   public routeFocusColors: any[] = [
     '#3074D3',
@@ -458,8 +296,6 @@ export class RoutingMapComponent implements OnInit {
     this.initAddressFields();
 
     this.routes.map((item, index) => {
-      this.drawRoute(index);
-      
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(item);
     });
@@ -477,20 +313,13 @@ export class RoutingMapComponent implements OnInit {
     return this.addressInputs;
   }
 
-  onTableBodyActions(action) {
-    console.log('action', action);
-  }
-
   dropRoutes(event: CdkDragDrop<string[]>, dropArray) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
   }
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
-
-    console.log(dropArray, event.previousIndex, event.currentIndex);
     
-    this.drawRoute(1);
     this.calculateDistanceBetweenStops(index);
     this.calculateRouteWidth(this.routes[index]);
   }
@@ -539,7 +368,6 @@ export class RoutingMapComponent implements OnInit {
 
   getMapInstance(map) {
     this.agmMap = map;
-    console.log('getMapInstance', this.agmMap);
     var mainthis = this;
 
     mainthis.placesService = new google.maps.places.PlacesService(map);
@@ -581,16 +409,6 @@ export class RoutingMapComponent implements OnInit {
             if (result) {
               //console.log('geocoder result', result);
 
-              // address:
-              //     address: "1220 E Hill St, Signal Hill, CA 90755, USA"
-              //     city: "Signal Hill"
-              //     country: "US"
-              //     state: "CA"
-              //     stateShortName: "CA"
-              //     street: "East Hill Street"
-              //     streetNumber: "1220"
-              //     zipCode: "90755"
-
                 var address = {
                   address: "",
                   city: "",
@@ -631,103 +449,23 @@ export class RoutingMapComponent implements OnInit {
                     'long': result.geometry.location.lng(),
                     'empty': null
                   };
-
-                  console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
   
                   mainthis.ref.detectChanges();
                 }
             }
           }
         });
-
-        // var coords = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng());
-        // var request = {
-        //   location: coords,
-        //   radius: 50000,
-        //   type: ['address', 'postal_code']
-        // }
-        
-        // mainthis.placesService.nearbySearch(request, (results, status) => {
-        //   console.log('search', results, status);
-
-        //   if ( status == 'OK' && results.length && results[0].place_id ) {
-        //     let placeId = results[0].place_id;
-
-        //     mainthis.placesService.getDetails({
-        //       placeId: placeId
-        //       }, function (result, status) {
-        //         console.log(result);
-
-        //         // address:
-        //         //   address: "1220 E Hill St, Signal Hill, CA 90755, USA"
-        //         //   city: "Signal Hill"
-        //         //   country: "US"
-        //         //   state: "CA"
-        //         //   stateShortName: "CA"
-        //         //   street: "East Hill Street"
-        //         //   streetNumber: "1220"
-        //         //   zipCode: "90755"
-
-        //         var address = {
-        //           address: "",
-        //           city: "",
-        //           country: "",
-        //           state: "",
-        //           stateShortName: "",
-        //           street: "",
-        //           streetNumber: "",
-        //           zipCode: ""
-        //         };
-
-        //         result.addressComponents.map((item, index) => {
-        //           if ( item.types.indexOf('locality') > -1 ) {
-        //             address.city = item.longName;
-        //           } else if ( item.types.indexOf('country') > -1 ) {
-        //             address.country = item.shortName;
-        //           } else if ( item.types.indexOf('administrative_area_level_1') > -1 ) {
-        //             address.state = item.shortName;
-        //             address.stateShortName = item.shortName;
-        //           }
-        //         });
-
-        //         mainthis.stopPickerLocation = {
-        //           'address': result.formatted_address,
-        //           //'cityAddress': event.address.city + ', ' + event.address.state + ' ' + event.address.zipCode,
-        //           'lat': result.geometry.location.lat(),
-        //           'long': result.geometry.location.lng(),
-        //           'empty': null
-        //         };
-
-        //         console.log('stopPickerLocation', mainthis.stopPickerLocation, mainthis.focusedRouteIndex);
-
-        //         mainthis.ref.detectChanges();
-        //       });
-        //   }
-        // });
       }
     });
   }
 
   mapPlacesSearch(results, status) {
-    console.log('mapPlacesSearch', results);
-    console.log('mapPlacesSearch', status);
-
     this.placesService.getDetails({
       placeId: results[0].place_id
       }, function (result, status) {
         console.log(result);
       });
   }
-
-  // public onHandleAddress(event: {
-  //   address: AddressEntity | any;
-  //   valid: boolean;
-  // }): void {
-  //   console.log('onHandleAddress', event);
-  //   if (event.valid) {
-  //     this.selectedAddress = event.address;
-  //   }
-  // }
 
   public onHandleAddress(
     event: any,
@@ -736,10 +474,6 @@ export class RoutingMapComponent implements OnInit {
   ) {
     this.addressInputs.at(index).reset();
     if ( event.action == 'confirm' && event.address ) {
-      console.log('onHandleAddress event', event);
-
-      console.log('addressFlag', this.addressFlag);
-
       var request = {
         query: event.address.address,
         fields: ['formatted_address', 'place_id', 'name', 'geometry'],
@@ -749,7 +483,6 @@ export class RoutingMapComponent implements OnInit {
 
       mainthis.placesService.findPlaceFromQuery(request, function(results, status) {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
-          console.log(results);
 
           route.stops.push(
             {
@@ -872,7 +605,6 @@ export class RoutingMapComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
 
-    console.log('callDropDownAction', action);
     // Edit Call
     if (action.name === 'duplicate-route') {
       this.duplicateRoute(this.dropDownActive);
@@ -893,7 +625,6 @@ export class RoutingMapComponent implements OnInit {
     event.preventDefault();
 
     route.dropdownOpen = !route.dropdownOpen;
-    console.log('showMoreOptions', route.dropdownOpen);
   }
 
   duplicateRoute(id) {
@@ -917,14 +648,11 @@ export class RoutingMapComponent implements OnInit {
         stop.isSelected = false;
       });
       //newRoute.width = '312px';
-
-      console.log(newRoute);
       
       this.routes.push(newRoute);
       
       this.tableData[this.selectedMapIndex].length = this.routes.length;
 
-      this.drawRoute(this.routes.length-1);
       this.calculateDistanceBetweenStops(this.routes.length-1);
       this.calculateRouteWidth(this.routes[this.routes.length-1]);
     }
@@ -938,7 +666,6 @@ export class RoutingMapComponent implements OnInit {
     if ( route && route.stops && route.stops.length ) {
       route.stops = route.stops.reverse();
 
-      this.drawRoute(routeIndex);
       this.calculateDistanceBetweenStops(routeIndex);
       this.calculateRouteWidth(route);
     }
@@ -950,8 +677,6 @@ export class RoutingMapComponent implements OnInit {
 
     if ( route && route.stops && route.stops.length ) {
       route.stops = [];
-
-      this.drawRoute(routeIndex);
     }
   }
 
@@ -960,11 +685,6 @@ export class RoutingMapComponent implements OnInit {
 
     if ( routeIndex > -1 ) {
       this.routes.splice(routeIndex, 1);
-      // this.allRenderInArray[routeIndex].borderOfRoute.setMap(null);
-      // this.allRenderInArray[routeIndex].renderArrayItem.setMap(null);
-      // this.allRenderInArray[routeIndex].active = false;
-      // this.renderBorderArray.splice(routeIndex, 1);
-      // this.renderArray.splice(routeIndex, 1);
     }
 
     this.tableData[this.selectedMapIndex].length = this.routes.length;
@@ -1010,8 +730,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   onToolBarAction(event: any) {
-    console.log('onToolBarAction', event);
-
     if ( event.action == 'add-route' ) {
       var routeForm = event.data;
 
@@ -1056,25 +774,9 @@ export class RoutingMapComponent implements OnInit {
 
       this.calculateDistanceBetweenStops(routeIndex);
       this.calculateRouteWidth(route);
-      
-      // = {
-      //   'id': route.id,
-      //   'name': routeForm.get('routeName').value,
-      //   'hidden': false,
-      //   'expanded': false,
-      //   'fullAddressView': route.fullAddressView,
-      //   'routeType': routeForm.get('routeType').value,
-      //   'truckId': routeForm.get('truckId').value ? routeForm.get('truckId').value : '',
-      //   'stopTime': routeForm.get('durationTime').value ? routeForm.get('durationTime').value : '',
-      //   'mpg': routeForm.get('fuelMpg').value ? routeForm.get('fuelMpg').value : '',
-      //   'fuelPrice': routeForm.get('fuelPrice').value ? routeForm.get('fuelPrice').value : '',
-      //   'stops': route.stops
-      // };
 
       this.ref.detectChanges();
     } else if ( event.action == 'map-settings' ) {
-      console.log('onToolbarAction map-settings');
-
       var mapForm = event.data;
 
       var infoTypeChanged = false;
@@ -1095,7 +797,6 @@ export class RoutingMapComponent implements OnInit {
       }
 
     } else if ( event.action == 'open-stop-picker' ) {
-      console.log('onToolbarAction open-stop-picker');
       this.stopPickerActive = !this.stopPickerActive;
       this.stopPickerLocation = {};
       if ( this.stopPickerActive ) {
@@ -1112,38 +813,14 @@ export class RoutingMapComponent implements OnInit {
     } else if ( event.action == 'open-layers' ) {
       console.log('onToolbarAction open-layers');
     } else if ( event.action == 'toggle-toll-roads' ) {
-      console.log('onToolbarAction toggle-toll-roads');
       this.toggleTollRoads();
     } else if ( event.action == 'toggle-time-zones' ) {
-      console.log('onToolbarAction toggle-time-zones');
       this.toggleTimeZones();
     } else if ( event.action == 'toggle-radar' ) {
-      console.log('onToolbarAction toggle-radar');
       this.toggleRadar();
     } else if ( event.action == 'toggle-traffic' ) {
-      console.log('onToolbarAction toggle-traffic');
       this.toggleTraffic();
     }
-    
-    // // Add Call
-    // if (event.action === 'open-modal') {
-    //   // Add Broker Call Modal
-    //   if (this.selectedTab === 'active') {
-    //     this.modalService.openModal(BrokerModalComponent, { size: 'medium' });
-    //   }
-    //   // Add Shipper Call Modal
-    //   else {
-    //     this.modalService.openModal(ShipperModalComponent, { size: 'medium' });
-    //   }
-    // }
-    // // Switch Tab Call
-    // else if (event.action === 'tab-selected') {
-    //   this.selectedTab = event.tabData.field;
-
-    //   this.sendCustomerData();
-    // } else if (event.action === 'view-mode') {
-    //   this.tableOptions.toolbarActions.viewModeActive = event.mode;
-    // }
   }
 
   public initTableOptions(): void {
@@ -1203,7 +880,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   addNewStop(loadType) {
-    console.log('addNewStop', loadType, this.focusedRouteIndex);
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
 
     if ( this.stopPickerLocation.editIndex != null ) {
@@ -1221,14 +897,11 @@ export class RoutingMapComponent implements OnInit {
         'long': this.stopPickerLocation.long
       });
 
-      this.drawRoute(this.focusedRouteIndex);
       this.calculateDistanceBetweenStops(this.focusedRouteIndex);
       this.calculateRouteWidth(this.routes[this.focusedRouteIndex]);
     }
 
-    //this.focusedRouteIndex = null;
     this.stopPickerLocation = {};
-    //this.stopPickerActive = false;
     this.stopJustAdded = true;
 
     this.ref.detectChanges();
@@ -1270,112 +943,6 @@ export class RoutingMapComponent implements OnInit {
     return a.order > b.order ? -1 : 1;
   };
 
-  drawRoute(i) {
-    return false;
-
-    var route = this.routes[i];
-
-    var routeOrigin = new google.maps.LatLng(route.stops[0].lat, route.stops[0].long);
-    var routeDestination = new google.maps.LatLng(route.stops[route.stops.length-1].lat, route.stops[route.stops.length-1].long);
-    
-    var routeWaypoints = [];
-
-    route.stops.map((item, index) => {
-      if ( index > 0 && index < route.stops.length-1 ) {
-        var waypointLatLng = new google.maps.LatLng(item.lat, item.long);
-
-        routeWaypoints.push({
-          location: waypointLatLng,
-          stopover: true
-        });
-      }
-    });
-
-    var routeRequest = {
-        origin: routeOrigin,
-        destination: routeDestination,
-        waypoints: routeWaypoints,
-        travelMode: "DRIVING"
-    };
-
-    this.directionsService.route(routeRequest, (result, status) => {
-      if (status == google.maps.DirectionsStatus.OK) {
-        const interval = setInterval(() => {
-          console.log('Response od directionsService');
-          console.log(result);
-
-          this.delaySubmitRequest(i, result);
-          clearInterval(interval);
-        }, this.delayRequest);
-      } else {
-        if (status == google.maps.DirectionsStatus.OVER_QUERY_LIMIT) {
-          // this.toastr.warning(
-          //   `Over the requests limit in too short a period of time. OVER_QUERY_LIMIT`,
-          //   'Warning:'
-          // );
-          this.delayRequest++;
-          const interval = setInterval(() => {
-            this.drawRoute(i);
-            clearInterval(interval);
-          }, 1000);
-        } else {
-          //this.toastr.warning(`${status}`, 'Warning:');
-        }
-      }
-    });
-  }
-
-  delaySubmitRequest(i: number, result) {
-    /* Border Of Route */
-    this.renderBorderArray[i] = new google.maps.DirectionsRenderer();
-    this.renderBorderArray[i].setMap(this.agmMap);
-    this.renderBorderArray[i].setOptions({
-      preserveViewport: true,
-      suppressInfoWindows: false,
-      polylineOptions: {
-        strokeWeight: 6,
-        strokeOpacity: 1,
-        strokeColor: this.routeColors[i],
-        zIndex: i,
-      },
-      markerOptions: {
-        visible: false,
-      },
-    });
-    this.renderBorderArray[i].setDirections(result);
-
-    /* Route */
-    this.renderArray[i] = new google.maps.DirectionsRenderer();
-    this.renderArray[i].setMap(this.agmMap);
-    this.renderArray[i].setOptions({
-      preserveViewport: true,
-      suppressInfoWindows: false,
-      polylineOptions: {
-        strokeWeight: 3,
-        strokeOpacity: 1,
-        strokeColor: '#fff',
-        zIndex: i+1,
-      },
-      markerOptions: {
-        visible: false,
-      },
-    });
-    this.renderArray[i].setDirections(result);
-
-    this.allRenderInArray.push({
-      borderOfRoute: this.renderBorderArray[i],
-      renderArrayItem: this.renderArray[i],
-      color: this.routeColors[i],
-      routeDirectionsData: result,
-      active: true,
-    });
-
-    console.log('allRenderInArray');
-    console.log(this.allRenderInArray);
-
-    //this.nextRequest(i);
-  }
-
   toggleDropdown(event, tooltip: any, route: any) {
     event.stopPropagation();
     event.preventDefault();
@@ -1388,8 +955,6 @@ export class RoutingMapComponent implements OnInit {
     }
 
     this.dropDownActive = tooltip.isOpen() ? route.id : -1;
-
-    console.log('dropDownActive', route, this.dropDownActive);
   }
 
   hoverRoute(route) {
@@ -1454,8 +1019,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   toggleTollRoads() {
-    console.log('toggleTollRoads');
-
     for (let i = 0; i < this.tollRoads.length; i++) {
       if (this.tollRoads[i].docs.length) {
         if (!this.isTollRoadsActive) {
@@ -1473,8 +1036,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   toggleTimeZones() {
-    console.log('toggleTimeZones');
-
     if (this.timeZones.docs.length) {
       if (!this.isTimeZoneActive) {
         this.timeZones.showDocument();
@@ -1491,8 +1052,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   toggleRadar() {
-    console.log('toggleRadar');
-
     this.isDopplerOn = !this.isDopplerOn;
     this.onToggleDoppler(this.isDopplerOn);
 
@@ -1547,7 +1106,6 @@ export class RoutingMapComponent implements OnInit {
   }
 
   toggleTraffic() {
-    console.log('toggleTraffic');
     this.trafficLayerShow = !this.trafficLayerShow;
 
     const interval = setInterval(() => {

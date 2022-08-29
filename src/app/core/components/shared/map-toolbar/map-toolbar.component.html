@@ -64,11 +64,6 @@
     <div class="border"></div>
   </div>
 
-  <!-- SEARCH -->
-  <!-- <app-truckassist-search
-    [selectedTabData]="activeTableData"
-  ></app-truckassist-search> -->
-
   <!-- BORDER -->
   <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
     <div class="border"></div>
@@ -202,31 +197,6 @@
           [src]="'assets/svg/common/routing/ic_route_settings.svg'"
         ></svg-icon>
       </div>
-
-      <!-- BORDER -->
-      <!-- <div class="border-container">
-        <div class="border"></div>
-      </div> -->
-
-      <!-- Options -->
-      <!-- <div
-        #op="ngbPopover"
-        (click)="onShowOptions(op)"
-        [autoClose]="true"
-        [ngbPopover]="optionsPopover"
-        [placement]="'bottom-right'"
-        [autoClose]="'outside'"
-        popoverClass="toolbar-options-popover"
-        [ngClass]="{ 'active-options': optionsPopupOpen }"
-        triggers="manual"
-        (hidden)="optionsPopupOpen = false"
-        class="action-div"
-      >
-        <svg-icon
-          [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
-          [src]="'assets/svg/truckassist-table/burger-icon.svg'"
-        ></svg-icon>
-      </div> -->
     </div>
   </div>
 
@@ -337,8 +307,6 @@
 
       <div class="map-settings-content">
         <div class="map-settings-input-container" [formGroup]="mapForm">
-            <!-- <div class="map-settings-input-title">Map Name <span class="input-required">*</span></div> -->
-            <!-- <input type="text" class="map-settings-input" placeholder="Map Name" /> -->
             <app-ta-input
               formControlName="mapName"
               [inputConfig]="{
@@ -395,8 +363,6 @@
 
       <div class="map-settings-content mg-22">
         <div class="map-settings-input-container">
-            <!-- <div class="map-settings-input-title">Map Name <span class="input-required">*</span></div> -->
-            <!-- <input type="text" class="map-settings-input" placeholder="Map Name" /> -->
             <app-ta-input
               formControlName="routeName"
               [inputConfig]="{
@@ -584,8 +550,6 @@
   <!-- Legends -->
   <div class="legend-container" *ngIf="!layersPopup?.isOpen()">
     <div class="doppler-conatiner">
-      <!-- <app-doppler-legend *ngIf="isDopplerOn"></app-doppler-legend> -->
-
       <div class="doppler-legend" *ngIf="isDopplerOn">
         <div class="doppler_header">
           <span>Light</span>
@@ -639,8 +603,6 @@
 
     </div>
     <div [ngStyle]="{ 'margin-top': isDopplerOn ? '6px' : '0px' }" class="traffic-conatiner">
-      <!-- <app-traffic-legend *ngIf="trafficLayerShow"></app-traffic-legend> -->
-
       <div class="truffic-container" *ngIf="trafficLayerShow">
         <div class="truffic-title">
           <div class="fast">Fast</div>
@@ -661,8 +623,6 @@
       [ngStyle]="{ 'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px' }"
       class="timezone-conatiner"
     >
-      <!-- <app-timezone-legend *ngIf="isTimeZoneActive"></app-timezone-legend> -->
-
       <div class="time-zone-container" *ngIf="isTimeZoneActive">
         <div *ngFor="let timezone of timezones; let i = index" [ngClass]="{'add-margin': i !== 0}" class="time-zone">
           <div [ngStyle]="{'background': timezone.color}" class="timezone-color"></div>

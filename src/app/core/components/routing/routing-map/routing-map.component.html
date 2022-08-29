@@ -117,27 +117,9 @@
                                 class="dropdown-dots"
                                 src="assets/svg/common/ic_horizontal_dots_details.svg"
                             ></svg-icon>
-                            <!-- <app-details-page-dropdown
-                                [customClassDropDown]="'drop-down-route'"
-                                [options]="dropdownActions"
-                                [placement]="'right-top right-bottom'"
-                                [hasVericalDots]="true"
-                                [id]="route?.id"
-                                (dropDownActions)="callDropDownAction($event)"
-                            ></app-details-page-dropdown> -->
                         </div>
                     </div>
                     <div class="route-card-content" cdkDropList [cdkDropListDisabled]="route.stops.length < 2" (cdkDropListDropped)="dropStops($event, route.stops, i)">
-                        <!-- <div class="route-card-row">
-                            <div class="route-row-number marker-like-text marker-bold-text" [ngStyle]="{ color: routeColors[i] }">1</div>
-                            <div class="route-row-location marker-like-text" [ngClass]="{ 'full-address': route.fullAddressView }">{{ route.startPoint.fullAddress ? route.startPoint.fullAddress : route.startPoint.address }}</div>
-                            <div class="route-row-leg marker-like-text marker-bold-text gray-text" *ngIf="!route.expanded">Leg</div>
-                            <div class="route-row-leg shorter-leg-text marker-like-text marker-bold-text gray-text" *ngIf="route.expanded">Leg t</div>
-                            <div class="route-row-leg marker-like-text marker-bold-text gray-text" *ngIf="route.expanded">Total t</div>
-                            <div class="route-row-leg marker-like-text marker-bold-text gray-text" *ngIf="route.expanded">Leg mi</div>
-                            <div class="route-row-total marker-like-text marker-bold-text gray-text" *ngIf="!route.expanded">Total</div>
-                            <div class="route-row-total marker-like-text marker-bold-text gray-text" *ngIf="route.expanded">Total mi</div>
-                        </div> -->
                         <div 
                             class="route-card-row" 
                             *ngFor="let stop of route.stops; let b = index;" 
@@ -211,16 +193,8 @@
                                         {{ b === 0 ? (route.expanded && route.expandFinished) ? item.value.expandedText + (item.value.insertExpandedText && item.value.insertExpandedText == 'distanceUnit' ? ' '+tableData[selectedMapIndex].distanceUnit : '') : item.value.text : stop[item.value.value] }}
                                     </div>
                             </div>
-
-                            <!-- <div class="route-row-leg shorter-leg-text marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded && route.expandFinished">{{ b === 0 ? 'Leg t' : stop.time }}</div>
-                            <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }" *ngIf="route.expanded && route.expandFinished">{{ b === 0 ? 'Total t' : stop.totalTime }}</div>
-                            <div class="route-row-leg shorter-leg-text marker-like-text" [ngStyle]="{ 'width': '56px' }" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" *ngIf="route.expanded && route.expandFinished && route.fuelPrice">{{ b === 0 ? 'Leg $' :  '$' + route.fuelPrice }}</div>
-                            <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ 'width': '60px', color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }" *ngIf="route.expanded && route.expandFinished && route.fuelPrice">{{ b === 0 ? 'Total $' : '$' + route.fuelPrice }}</div>
-                            <div class="route-row-leg marker-like-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }">
-                                {{ b === 0 && route.expanded && route.expandFinished ? 'Leg ' + tableData[selectedMapIndex].distanceUnit : b === 0 && !route.expanded ? 'Leg' : (stop.leg) }}</div>
-                            <div class="route-row-total marker-like-text marker-semibold-text" [ngClass]="{ 'marker-bold-text gray-text': b === 0 }" [ngStyle]="{ color: (b == route.stops.length-1 && route.isFocused) ? routeFocusColors[i] : (b == route.stops.length-1 && !route.isFocused) ? routeColors[i] : '' }">{{ b === 0 && route.expanded && route.expandFinished ? 'Total ' + tableData[selectedMapIndex].distanceUnit : b === 0 && !route.expanded ? 'Total' : (stop.total) }}</div> -->
                         </div>
-                        <!-- <div class="empty-miles"></div> -->
+                        
                         <div 
                             class="route-card-row m-0" 
                             [formGroup]="$any(addressInputs)" 
@@ -470,28 +444,6 @@
                     <ng-template>
                         <div (mouseenter)="stopPickerLocation.hover = true" (mouseleave)="stopPickerLocation.hover = false">
                             <div class="marker-container marker-icon stop-picker-icon">
-                                <!-- <svg 
-                                    xmlns="http://www.w3.org/2000/svg" 
-                                    xmlns:xlink="http://www.w3.org/1999/xlink" 
-                                    width="34" 
-                                    height="37" 
-                                    viewBox="0 0 34 37">
-                                    <defs>
-                                    <filter id="Path_33651" x="0" y="0" width="34" height="37" filterUnits="userSpaceOnUse">
-                                        <feOffset input="SourceAlpha"/>
-                                        <feGaussianBlur stdDeviation="2" result="blur"/>
-                                        <feFlood flood-opacity="0.149"/>
-                                        <feComposite operator="in" in2="blur"/>
-                                        <feComposite in="SourceGraphic"/>
-                                    </filter>
-                                    </defs>
-                                    <g transform="matrix(1, 0, 0, 1, 0, 0)" filter="url(#Path_33651)">
-                                    <path id="Path_33651-2" data-name="Path 33651" d="M22,10.974a10.97,10.97,0,0,1-4.852,9.1c-.024.018-.379.237-.519.329-3.367,2.14-4.718,3.585-5.262,4.4a.441.441,0,0,1-.609.124.457.457,0,0,1-.124-.124c-.544-.811-1.9-2.256-5.262-4.4-.153-.095-.494-.311-.519-.329A10.983,10.983,0,1,1,22,10.974" transform="translate(6 6)" fill="#fff"/>
-                                    </g>
-                                    <circle id="Ellipse_6005" data-name="Ellipse 6005" cx="9" cy="9" r="9" transform="translate(8 8)" [ngStyle]="{ fill: routeFocusColors[focusedRouteIndex] }" />
-                                    <text x="50%" y="48.5%" dominant-baseline="middle" text-anchor="middle" id="_1" data-name="1" fill="#fff" font-size="11" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan>{{ stopPickerLocation.editIndex != null ? stopPickerLocation.editIndex+1 : routes[focusedRouteIndex].stops.length + 1 }}</tspan></text>
-                                </svg> -->
-
                                 <svg 
                                     xmlns="http://www.w3.org/2000/svg" 
                                     xmlns:xlink="http://www.w3.org/1999/xlink" 

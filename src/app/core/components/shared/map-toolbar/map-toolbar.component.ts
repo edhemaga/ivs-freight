@@ -253,7 +253,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       .pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe(
         (formChanges) => {
-          console.log('mapForm formChanges', formChanges);
           if ( formChanges.mapName != this.tableData[0].title ||
             formChanges.distanceUnit != this.tableData[0].distanceUnit ||
             formChanges.addressType != this.tableData[0].addressType ||
@@ -280,24 +279,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       fuelPrice: null,
       routeType: 'Practical'
     });
-
-    this.routeForm
-      .valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe(
-        (formChanges) => {
-          console.log('routeForm formChanges', formChanges);
-          // if ( formChanges.mapName != this.tableData[0].title ||
-          //   formChanges.distanceUnit != this.tableData[0].distanceUnit ||
-          //   formChanges.addressType != this.tableData[0].addressType ||
-          //   formChanges.borderType != this.tableData[0].borderType
-          // ) {
-          //   this.routeFormChanged = true;
-          // } else {
-          //   this.routeFormChanged = false;
-          // }
-        }
-      );
   }
 
   getSelectedTabTableData() {
@@ -411,23 +392,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public onTabChange(event: any, type: string): void {
-    // switch (type) {
-    //   case InputSwitchActions.DOCUMENTS_BOX:
-    //     this.selectedDocumentsTab = event.id;
-
-    //     break;
-    //   case InputSwitchActions.REQUESTS_BOX:
-    //     this.selectedRequestsTab = event.id;
-
-    //     if (this.selectedRequestsTab === 1) {
-    //       this.isDocumentsCardOpen = true;
-    //     }
-
-    //     break;
-    //   default:
-    //     break;
-    // }
-    
     if ( type == 'Distance-tab' ) {
       var distanceUnit = event.name == 'Miles' ? 'mi' : 'km';
 
@@ -443,34 +407,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     } else if ( type == 'Route-tab' ) {
       this.routeForm.get('routeType').setValue(event.name);
     }
-
-    console.log('onTabChange', event, type);
   }
 
   public onSelectDropdown(event: any, action: string, index?: number) {
     console.log('onSelectDropdown', event, action);
-
-    // switch (action) {
-    //   case 'truck': {
-    //     this.selectedTruckType = event;
-    //     break;
-    //   }
-    //   case 'fuel': {
-    //     this.selectedFuelStop = event;
-    //     break;
-    //   }
-    //   case 'store': {
-    //     this.selectedStoreType = event;
-    //     break;
-    //   }
-    //   case 'fuel-items': {
-    //     this.selectedFuelItemsFormArray[index] = event;
-    //     break;
-    //   }
-    //   default: {
-    //     break;
-    //   }
-    // }
   }
 
   onIncludeDuration() {
@@ -478,8 +418,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       .get('duration')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        console.log('duration value changed', value);
-
         if (value) {
           this.inputService.changeValidators(
             this.routeForm.get('durationTime'),
@@ -500,8 +438,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       .get('fuelCost')
       .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        console.log('fuelCost value changed', value);
-
         if (value) {
           this.inputService.changeValidators(
             this.routeForm.get('fuelMpg'),
@@ -514,8 +450,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             true,
             [Validators.required]
           );
-
-          console.log('routeForm', this.routeForm);
         } else {
           this.inputService.changeValidators(
             this.routeForm.get('fuelMpg'),
