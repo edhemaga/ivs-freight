@@ -18,7 +18,7 @@
             <div class="map-list-sort-category-container"
               #t2="ngbPopover"
               [ngbPopover]="sortPopover"
-              [placement]="['bottom-right']"
+              [placement]="['right-top']"
               [triggers]="'manual'"
               autoClose="outside"
               [container]="'body'"
@@ -35,8 +35,8 @@
             </div>
           </div>
         </div>
+        <div class="marker-divider"></div>
       </div>
-      <div class="marker-divider"></div>
       <div class="map-list-body">
         <ng-content></ng-content>
       </div>

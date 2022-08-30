@@ -45,7 +45,7 @@ export class TrailerItemResolver implements Resolve<TrailerItemState> {
         return of('No trailer data for...' + trailer_id);
       }),
       tap((trailerReponse: TrailerResponse) => {
-        this.trailerDetailStore.set({ ids: trailerReponse });
+        this.trailerDetailStore.set([trailerReponse]);
       })
     );
   }
