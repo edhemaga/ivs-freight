@@ -1,4 +1,7 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  businessNameRegex,
+  emailRegex,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -119,7 +122,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.shipperForm = this.formBuilder.group({
-      businessName: [null, Validators.required],
+      businessName: [null, [Validators.required, ...businessNameRegex]],
       phone: [null, phoneRegex],
       phoneExt: [null],
       email: [null, emailRegex],
@@ -541,7 +544,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to add Shipper "${shipperBuisnisName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to add Shipper "${shipperBuisnisName}"`,
+            'Error'
+          );
         },
       });
   }

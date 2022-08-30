@@ -1,5 +1,5 @@
 import { FormArray } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -76,7 +76,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   public owner: CheckOwnerSsnEinResponse = null;
 
   public disablePayType: boolean = false;
-  public paytypeValue: string;
 
   public driverStatus: boolean = true;
 
@@ -158,8 +157,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     globalDropZone: false,
   };
 
-  public addressFlag: string = 'Empty';
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -168,17 +165,15 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private modalService: ModalService,
     private uploadFileService: TaUploadFileService,
-    private formService: FormService,
-    private bankVerificationService: BankVerificationService
+    private bankVerificationService: BankVerificationService,
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
     this.getDriverDropdowns();
     this.onIncludePayroll();
-    this.onPayTypeSelected();
     this.onTwicTypeSelected();
-    this.onBankSelected();
 
     if (this.editData) {
       this.editDriverById(this.editData.id);
@@ -234,29 +229,35 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             this.notificationService.error(errorMessage, 'Error');
           },
         });
-    } else if (data.action === 'save and add new') {
+    }
+    // Save And Add New
+    else if (data.action === 'save and add new') {
       this.addDriver();
       this.modalService.setModalSpinner({
         action: 'save and add new',
         status: true,
       });
       this.addNewAfterSave = true;
-    } else if (data.action === 'save') {
-      // Save & Update
+    }
+    // Save or Update and Close
+    else if (data.action === 'save') {
       if (this.driverForm.invalid) {
         this.inputService.markInvalid(this.driverForm);
         return;
       }
-      if (this.editData) {
+      // Update
+      if (this.editData?.id) {
         this.updateDriver(this.editData.id);
         this.modalService.setModalSpinner({ action: null, status: true });
-      } else {
+      }
+      // Save
+      else {
         this.addDriver();
         this.modalService.setModalSpinner({ action: null, status: true });
       }
     }
     // Delete
-    else if (data.action === 'delete' && this.editData) {
+    else if (data.action === 'delete' && this.editData?.id) {
       this.deleteDriverById(this.editData.id);
       this.modalService.setModalSpinner({ action: 'delete', status: true });
     }
@@ -288,8 +289,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       teamLoadedMile: [null],
       teamPerStop: [null, perStopValidation],
       perMileTeam: [null],
-      commissionSolo: [null],
-      commissionTeam: [null],
+      commissionSolo: [25],
+      commissionTeam: [25],
       isOwner: [false],
       ownerId: [null],
       ownerType: ['Sole Proprietor'],
@@ -419,110 +420,96 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private onPayTypeSelected(): void {
-    this.driverForm
-      .get('payType')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
-      .subscribe((value) => {
-        if (value) {
-          this.paytypeValue = value;
-        }
-
-        if (this.paytypeValue?.toLowerCase() === 'per mile') {
-          if (['Solo', 'Combined'].includes(this.fleetType)) {
-            if (!this.hasMilesSameRate) {
-              this.inputService.changeValidators(
-                this.driverForm.get('soloEmptyMile'),
-                true,
-                [...mileValidation]
-              );
-              this.inputService.changeValidators(
-                this.driverForm.get('soloLoadedMile'),
-                true,
-                [...mileValidation]
-              );
-            } else {
-              this.inputService.changeValidators(
-                this.driverForm.get('perMileSolo'),
-                true,
-                [...mileValidation]
-              );
-            }
-          }
-          if (['Team', 'Combined'].includes(this.fleetType)) {
-            if (!this.hasMilesSameRate) {
-              this.inputService.changeValidators(
-                this.driverForm.get('teamEmptyMile'),
-                true,
-                [...mileValidation]
-              );
-              this.inputService.changeValidators(
-                this.driverForm.get('teamLoadedMile'),
-                true,
-                [...mileValidation]
-              );
-            } else {
-              this.inputService.changeValidators(
-                this.driverForm.get('perMileTeam'),
-                true,
-                [...mileValidation]
-              );
-            }
-          }
-
-          this.validateMiles();
-
-          this.driverForm.get('commissionSolo').patchValue(null);
-          this.driverForm.get('commissionTeam').patchValue(null);
-        }
-
-        if (this.paytypeValue?.toLowerCase() === 'commission') {
+  private onPayTypeSelected(payType: number): void {
+    console.log(payType);
+    if (payType === 1) {
+      if (['Solo', 'Combined'].includes(this.fleetType)) {
+        if (!this.hasMilesSameRate) {
           this.inputService.changeValidators(
             this.driverForm.get('soloEmptyMile'),
-            false,
-            [],
+            true,
+            [...mileValidation],
             false
           );
           this.inputService.changeValidators(
             this.driverForm.get('soloLoadedMile'),
-            false,
-            [],
+            true,
+            [...mileValidation],
             false
           );
+        } else {
           this.inputService.changeValidators(
-            this.driverForm.get('soloPerStop'),
-            false,
-            [],
+            this.driverForm.get('perMileSolo'),
+            true,
+            [...mileValidation],
             false
           );
-
+        }
+      }
+      if (['Team', 'Combined'].includes(this.fleetType)) {
+        if (!this.hasMilesSameRate) {
           this.inputService.changeValidators(
             this.driverForm.get('teamEmptyMile'),
-            false,
-            [],
+            true,
+            [...mileValidation],
             false
           );
           this.inputService.changeValidators(
             this.driverForm.get('teamLoadedMile'),
-            false,
-            [],
+            true,
+            [...mileValidation],
             false
           );
+        } else {
           this.inputService.changeValidators(
-            this.driverForm.get('teamPerStop'),
-            false,
-            [],
+            this.driverForm.get('perMileTeam'),
+            true,
+            [...mileValidation],
             false
           );
-
-          this.driverForm
-            .get('commissionSolo')
-            .patchValue(this.payrollCompany.solo.commissionSolo);
-          this.driverForm
-            .get('commissionTeam')
-            .patchValue(this.payrollCompany.team.commissionTeam);
         }
-      });
+      }
+
+      this.validateMiles();
+
+      this.driverForm.get('commissionSolo').patchValue(null);
+      this.driverForm.get('commissionTeam').patchValue(null);
+    }
+
+    if (payType === 2) {
+      this.inputService.changeValidators(
+        this.driverForm.get('soloEmptyMile'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.driverForm.get('soloLoadedMile'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.driverForm.get('soloPerStop'),
+        false
+      );
+
+      this.inputService.changeValidators(
+        this.driverForm.get('teamEmptyMile'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.driverForm.get('teamLoadedMile'),
+        false
+      );
+      this.inputService.changeValidators(
+        this.driverForm.get('teamPerStop'),
+        false
+      );
+
+      this.driverForm
+        .get('commissionSolo')
+        .patchValue(this.payrollCompany.solo.commissionSolo);
+      this.driverForm
+        .get('commissionTeam')
+        .patchValue(this.payrollCompany.team.commissionTeam);
+    }
   }
 
   private onTwicTypeSelected(): void {
@@ -696,16 +683,22 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string): void {
+    console.log(event);
     switch (action) {
       case 'bank': {
         this.selectedBank = event;
         if (!event) {
           this.driverForm.get('bankId').patchValue(null);
         }
+        this.onBankSelected();
         break;
       }
       case 'paytype': {
         this.selectedPayType = event;
+        if (!event) {
+          return;
+        }
+        this.onPayTypeSelected(this.selectedPayType.id);
         break;
       }
       default: {
@@ -844,14 +837,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  public openCloseCheckboxCard(event: any) {
-    if (this.driverForm.get('ownerId').value) {
-      event.preventDefault();
-      event.stopPropagation();
-      this.driverForm.get('ownerId').setValue(false);
-    }
-  }
-
   public validateMiles() {
     if (['Solo', 'Combined'].includes(this.fleetType)) {
       this.driverForm
@@ -917,7 +902,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('mvrExpiration').patchValue(data.mvrExpiration);
           this.fleetType = data.fleetType;
           this.hasMilesSameRate = data.loadedAndEmptySameRate;
-
+          console.log('DROPDOWNMS');
+          console.log(data);
           if (['Solo', 'Combined'].includes(this.fleetType)) {
             this.driverForm
               .get('soloEmptyMile')
@@ -1234,7 +1220,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             action: this.addNewAfterSave ? 'save and add new' : null,
             status: false,
           });
-
+          // If clicked Save and Add New, reset form and fields
           if (this.addNewAfterSave) {
             this.driverForm.reset();
             this.inputServiceReset.resetInputSubject.next(true);

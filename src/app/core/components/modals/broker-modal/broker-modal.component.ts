@@ -22,6 +22,7 @@ import {
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
+  businessNameRegex,
   einNumberRegex,
   emailRegex,
   phoneRegex,
@@ -180,7 +181,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.brokerForm = this.formBuilder.group({
-      businessName: [null, Validators.required],
+      businessName: [null, [Validators.required, ...businessNameRegex]],
       dbaName: [null],
       mcNumber: [null, Validators.maxLength(8)],
       ein: [null, [einNumberRegex]],
@@ -771,7 +772,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () => {
-          this.notificationService.error(`Failed to add Broker "${businessName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to add Broker "${businessName}"`,
+            'Error'
+          );
         },
       });
   }
