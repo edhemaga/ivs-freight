@@ -230,8 +230,8 @@ export class TaInputDropdownComponent
             if (this.activeItem) {
               // Dropdown image selection
               if (
-                !this.inputConfig.dropdownImageInput?.withText &&
-                this.inputConfig.dropdownImageInput?.url
+                !this.inputConfig?.dropdownImageInput?.withText &&
+                this.inputConfig?.dropdownImageInput?.url
               ) {
                 this.getSuperControl.patchValue(null);
                 this.getSuperControl.setErrors(null);
@@ -355,13 +355,13 @@ export class TaInputDropdownComponent
 
         if (
           ['truck', 'trailer'].includes(
-            this.inputConfig.dropdownImageInput.template
+            this.inputConfig?.dropdownImageInput?.template
           )
         ) {
           this.inputConfig = {
             ...this.inputConfig,
             dropdownImageInput: {
-              ...this.inputConfig.dropdownImageInput,
+              ...this.inputConfig?.dropdownImageInput,
               remove: true,
             },
           };
@@ -378,13 +378,13 @@ export class TaInputDropdownComponent
 
         if (
           ['truck', 'trailer'].includes(
-            this.inputConfig.dropdownImageInput.template
+            this.inputConfig?.dropdownImageInput?.template
           )
         ) {
           this.inputConfig = {
             ...this.inputConfig,
             dropdownImageInput: {
-              ...this.inputConfig.dropdownImageInput,
+              ...this.inputConfig?.dropdownImageInput,
               remove: false,
             },
           };
