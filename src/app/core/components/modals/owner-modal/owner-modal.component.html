@@ -23,7 +23,9 @@
             label: 'Business Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            autoFocus: editData?.type !== 'edit' ? true : false,
+            minLength: 2,
+            maxLength: 64
           }"
         ></app-ta-input>
       </div>

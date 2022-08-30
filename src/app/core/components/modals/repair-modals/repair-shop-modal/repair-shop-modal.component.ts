@@ -18,6 +18,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
   emailRegex,
+  phoneExtension,
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -87,7 +88,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       pinned: [null],
       phone: [null, [Validators.required, phoneRegex]],
-      phoneExt: [null, [Validators.maxLength(3)]],
+      phoneExt: [null, [...phoneExtension]],
       email: [null, emailRegex],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],

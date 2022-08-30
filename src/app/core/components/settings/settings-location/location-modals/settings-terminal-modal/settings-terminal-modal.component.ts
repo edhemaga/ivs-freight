@@ -1,4 +1,7 @@
-import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  phoneExtension,
+} from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Address } from 'src/app/core/components/shared/model/address';
@@ -138,17 +141,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null],
+      extensionPhone: [null, [...phoneExtension]],
       email: [null, emailRegex],
       // Office
       officeChecked: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
-      officeExtPhone: [null],
+      officeExtPhone: [null, [...phoneExtension]],
       officeEmail: [null, emailRegex],
       // Parking
       parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
-      parkingExtPhone: [null],
+      parkingExtPhone: [null, [...phoneExtension]],
       parkingEmail: [null, emailRegex],
 
       terminalParkingSlot: [null],
@@ -158,7 +161,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Warehouse
       warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
-      warehouseExtPhone: [null],
+      warehouseExtPhone: [null, [...phoneExtension]],
       warehouseEmail: [null, emailRegex],
       // Fuel stattion
       fuelStationChecked: [false],

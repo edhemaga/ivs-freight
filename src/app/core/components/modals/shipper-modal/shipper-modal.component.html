@@ -34,7 +34,9 @@
                 label: 'Business Name',
                 isRequired: true,
                 textTransform: 'uppercase',
-                autoFocus: editData?.type !== 'edit' ? true : false
+                autoFocus: editData?.type !== 'edit' ? true : false,
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
           </div>
@@ -71,10 +73,11 @@
               *ngIf="isPhoneExtExist"
               formControlName="phoneExt"
               [inputConfig]="{
-                name: 'Phone Extension',
+                name: 'phone-extension',
                 type: 'text',
                 label: 'Ext.',
-                maxLength: 3,
+                minLength: 1,
+                maxLength: 8,
                 placeholderIcon: 'phone-extension'
               }"
             ></app-ta-input>
@@ -310,9 +313,11 @@
                   formControlName="phoneExt"
                   [inputConfig]="{
                     id: 'Phone Extension' + ind,
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
-                    maxLength: 3
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
                 <app-ta-input

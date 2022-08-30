@@ -19,7 +19,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
-  businessNameRegex,
+  businessNameValidation,
   einNumberRegex,
   emailRegex,
   phoneRegex,
@@ -89,7 +89,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.ownerForm = this.formBuilder.group({
-      bussinesName: [null, [Validators.required, ...businessNameRegex]],
+      bussinesName: [null, [Validators.required, ...businessNameValidation]],
       firstName: [null],
       lastName: [null],
       ssn: [null, ssnNumberRegex],

@@ -22,9 +22,11 @@ import {
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
-  businessNameRegex,
+  businessNameValidation,
   einNumberRegex,
   emailRegex,
+  mcFFValidation,
+  phoneExtension,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -181,9 +183,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.brokerForm = this.formBuilder.group({
-      businessName: [null, [Validators.required, ...businessNameRegex]],
+      businessName: [null, [Validators.required, ...businessNameValidation]],
       dbaName: [null],
-      mcNumber: [null, Validators.maxLength(8)],
+      mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
       email: [null, [emailRegex]],
       phone: [null, [Validators.required, phoneRegex]],
@@ -246,7 +248,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ],
       extensionPhone: [
         data?.extensionPhone ? data.extensionPhone : null,
-        Validators.maxLength(3),
+        [...phoneExtension],
       ],
       email: [data?.email ? data.email : null, emailRegex],
     });

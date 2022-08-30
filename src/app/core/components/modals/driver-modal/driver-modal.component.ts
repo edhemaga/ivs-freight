@@ -294,7 +294,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       isOwner: [false],
       ownerId: [null],
       ownerType: ['Sole Proprietor'],
-      ein: [null],
+      ein: [null, einNumberRegex],
       bussinesName: [null],
       offDutyLocations: this.formBuilder.array([]),
       emergencyContactName: [null, Validators.required],

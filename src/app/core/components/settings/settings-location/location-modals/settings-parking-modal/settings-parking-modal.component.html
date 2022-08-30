@@ -104,10 +104,11 @@
                   *ngIf="isPhoneExtExist"
                   formControlName="extensionPhone"
                   [inputConfig]="{
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
                     label: 'Ext.',
-                    maxLength: 3,
+                    minLength: 1,
+                    maxLength: 8,
                     placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>

@@ -1,6 +1,7 @@
 import {
-  businessNameRegex,
+  businessNameValidation,
   emailRegex,
+  phoneExtension,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
@@ -122,9 +123,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.shipperForm = this.formBuilder.group({
-      businessName: [null, [Validators.required, ...businessNameRegex]],
+      businessName: [null, [Validators.required, ...businessNameValidation]],
       phone: [null, phoneRegex],
-      phoneExt: [null],
+      phoneExt: [null, [...phoneExtension]],
       email: [null, emailRegex],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],

@@ -670,6 +670,30 @@ export class TaInputComponent
       }
     }
 
+    // EIN Number
+    if (
+      ['ein', 'mc/ff', 'phone', 'phone-extension'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
     // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);

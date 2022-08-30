@@ -6,9 +6,11 @@ import {
 import {
   daysValidRegex,
   emailRegex,
+  mcFFValidation,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
+  phoneExtension,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -276,7 +278,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       usDot: [null, Validators.required],
       ein: [null, einNumberRegex],
-      mc: [null, Validators.maxLength(8)],
+      mc: [null, [...mcFFValidation]],
       phone: [null, phoneRegex],
       email: [null, emailRegex],
       fax: [null],
@@ -456,7 +458,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         data?.phone ? data?.phone : null,
         [Validators.required, phoneRegex],
       ],
-      extensionPhone: [data?.extensionPhone ? data?.extensionPhone : null],
+      extensionPhone: [
+        data?.extensionPhone ? data?.extensionPhone : null,
+        [...phoneExtension],
+      ],
       email: [
         data?.email ? data?.email : null,
         [Validators.required, emailRegex],

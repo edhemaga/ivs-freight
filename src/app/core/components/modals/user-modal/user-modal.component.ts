@@ -1,4 +1,7 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  phoneExtension,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -132,7 +135,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       mainOfficeId: [null],
       userType: [null],
       employePhone: [null, phoneRegex],
-      employePhoneExt: [null],
+      employePhoneExt: [null, [...phoneExtension]],
       employeEmail: [null, [Validators.required, emailRegex]],
       isIncludePayroll: [false],
       salary: [null],

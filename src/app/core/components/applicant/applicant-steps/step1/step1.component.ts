@@ -16,8 +16,8 @@ import {
   phoneRegex,
   emailRegex,
   ssnNumberRegex,
-  accountBankRegex,
-  routingBankRegex,
+  accountBankValidation,
+  routingBankValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
@@ -303,8 +303,8 @@ export class Step1Component implements OnInit, OnDestroy {
       addressUnit: [null, Validators.maxLength(6)],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       bankId: [null],
-      accountNumber: [null, accountBankRegex],
-      routingNumber: [null, routingBankRegex],
+      accountNumber: [null, accountBankValidation],
+      routingNumber: [null, routingBankValidation],
       legalWork: [null, Validators.required],
       anotherName: [null, Validators.required],
       inMilitary: [null, Validators.required],

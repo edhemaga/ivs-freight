@@ -1,38 +1,49 @@
 import { Validators } from '@angular/forms';
 
-//---------------- Bank Regex Routing & Accounting ----------------
+//---------------- Bank Regex, Routing & Accounting Validation ----------------
 const brnv = require('bank-routing-number-validator');
 
 export const bankRoutingValidator = (routingNumber: string) => {
   return brnv.ABARoutingNumberIsValid(routingNumber);
 };
 
-export const routingBankRegex = [
+export const routingBankValidation = [
   Validators.minLength(9),
   Validators.maxLength(9),
 ];
 
-export const accountBankRegex = [
+export const accountBankValidation = [
   Validators.minLength(4),
   Validators.maxLength(17),
 ];
+//-------------------------------------------------------------------------------
 
 //---------------- Bussiness Name ----------------
-export const businessNameRegex = [
+export const businessNameValidation = [
   Validators.minLength(2),
   Validators.maxLength(64),
+];
+
+//---------------- Ein Regex ----------------
+export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
+
+//---------------- MC/FF ----------------
+export const mcFFValidation = [
+  Validators.minLength(6),
+  Validators.maxLength(6),
+];
+
+//---------------- Phone Regex & Phone Extension ----------------
+export const phoneRegex = Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/);
+export const phoneExtension = [
+  Validators.minLength(1),
+  Validators.maxLength(8),
 ];
 
 //---------------- Email Regex ----------------
 export const emailRegex = Validators.pattern(
   /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/
 );
-
-//---------------- Phone Regex ----------------
-export const phoneRegex = Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/);
-
-//---------------- Ein Regex ----------------
-export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
 
 //---------------- SSN Regex ----------------
 export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);

@@ -79,11 +79,12 @@
             <app-ta-input
               formControlName="mc"
               [inputConfig]="{
-                name: 'MC FF',
+                name: 'MC/FF',
                 type: 'text',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 8
+                maxLength: 6,
+                minLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -346,9 +347,11 @@
                   formControlName="extensionPhone"
                   [inputConfig]="{
                     id: 'Phone Extension' + ind,
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
-                    maxLength: 3
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
                 <app-ta-input
