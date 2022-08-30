@@ -1,6 +1,4 @@
-<div
-  class="toolbar-container"
->
+<div class="toolbar-container">
   <!-- LIST NAME -->
   <div
     class="list-name"
@@ -65,7 +63,10 @@
   </div>
 
   <!-- BORDER -->
-  <div class="border-container" *ngIf="!options.toolbarActions.hideLocationFilter">
+  <div
+    class="border-container"
+    *ngIf="!options.toolbarActions.hideLocationFilter"
+  >
     <div class="border"></div>
   </div>
 
@@ -127,7 +128,11 @@
       </div>
 
       <!-- Route Stop Picker -->
-      <div class="action-div" [ngClass]="{ 'action-active': stopPickerActive }" (click)="onToolBarAction('open-stop-picker')">
+      <div
+        class="action-div"
+        [ngClass]="{ 'action-active': stopPickerActive }"
+        (click)="onToolBarAction('open-stop-picker')"
+      >
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
@@ -153,7 +158,10 @@
       </div>
 
       <!-- Route Keyboard Controls -->
-      <div class="action-div" (click)="onToolBarAction('open-keyboard-controls')">
+      <div
+        class="action-div"
+        (click)="onToolBarAction('open-keyboard-controls')"
+      >
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_keyboard.svg'"
@@ -179,7 +187,7 @@
       </div>
 
       <!-- Route Settings -->
-      <div 
+      <div
         class="action-div"
         #op="ngbPopover"
         (click)="onShowMapSettings(op)"
@@ -210,7 +218,14 @@
     [placement]="'bottom-right'"
     [autoClose]="'outside'"
     popoverClass="table-dropdown-popover layers-popover"
-    [ngClass]="{ 'active-options-maps': layersPopupOpen || isTollRoadsActive || isTimeZoneActive || isDopplerOn || trafficLayerShow }"
+    [ngClass]="{
+      'active-options-maps':
+        layersPopupOpen ||
+        isTollRoadsActive ||
+        isTimeZoneActive ||
+        isDopplerOn ||
+        trafficLayerShow
+    }"
     triggers="manual"
     (hidden)="layersPopupOpen = false"
   >
@@ -221,7 +236,7 @@
   </div>
 
   <!-- OPEN MODAL BUTTON -->
-  <div 
+  <div
     class="modal-open-container"
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
@@ -231,7 +246,8 @@
     popoverClass="map-settings-popover add-route-popover"
     [ngClass]="{ 'active-options-maps': addRoutePopupOpen }"
     triggers="manual"
-    (hidden)="addRoutePopupOpen = false">
+    (hidden)="addRoutePopupOpen = false"
+  >
     <svg-icon
       [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
       [src]="'assets/svg/truckassist-table/plus-icon.svg'"
@@ -271,7 +287,11 @@
     </div>
 
     <div class="columns-options" *ngIf="optionsPopupContent[4].active">
-      <div (click)="onToaggleColumn(column, i)" class="column" *ngFor="let column of columns; let i = index">
+      <div
+        (click)="onToaggleColumn(column, i)"
+        class="column"
+        *ngFor="let column of columns; let i = index"
+      >
         <div class="checkbox" *ngIf="!column.isPined && i > 1">
           <input
             [checked]="!column.hidden"
@@ -292,7 +312,10 @@
           ></svg-icon>
         </div>
 
-        <div class="column-text" [ngClass]="{'selectable-text': !column.isPined}">
+        <div
+          class="column-text"
+          [ngClass]="{ 'selectable-text': !column.isPined }"
+        >
           {{ column.name !== "" ? column.name : column.title }}
         </div>
       </div>
@@ -301,334 +324,341 @@
 </ng-template>
 
 <ng-template #mapSettingsPopover let-data="data" data-toggle="popover">
-    <div class="map-settings-container">
-      <div class="map-settings-title">Map Settings</div>
-      <div class="map-settings-divider"></div>
+  <div class="map-settings-container">
+    <div class="map-settings-title">Map Settings</div>
+    <div class="map-settings-divider"></div>
 
-      <div class="map-settings-content">
-        <div class="map-settings-input-container" [formGroup]="mapForm">
-            <app-ta-input
-              formControlName="mapName"
-              [inputConfig]="{
-                name: 'ssn',
-                type: 'text',
-                label: 'Map Name',
-                isRequired: true,
-                blackInput: true
-              }"
-            ></app-ta-input>
-        </div>
-
-        <app-ta-tab-switch
-            [tabs]="distanceTabs"
-            (switchClicked)="onTabChange($event, 'Distance-tab')"
-            [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
-        <app-ta-tab-switch
-            [tabs]="addressTabs"
-            (switchClicked)="onTabChange($event, 'Address-tab')"
-            [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
-        <app-ta-tab-switch
-            [tabs]="borderTabs"
-            (switchClicked)="onTabChange($event, 'Border-tab')"
-            [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
-      </div>
-      
-      <div class="map-settings-divider"></div>
-
-      <div class="map-settings-content buttons-container">
-        <div class="map-settings-button reset-button" (click)="resetMapForm()">
-            <div class="map-settings-button-text">Reset</div>
-        </div>
-        <div 
-          class="map-settings-button" 
-          [ngClass]="{ 'modal-save-btn': mapForm.valid && mapFormChanged }" 
-          (click)="onToolBarAction('map-settings')"
-        >
-            <div class="map-settings-button-text">Set</div>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #addRoutePopover let-data="data" data-toggle="popover">
-    <div class="map-settings-container" [formGroup]="routeForm">
-      <div class="map-settings-title">{{ routeToEdit?.id ? 'Route Settings' : 'Add New Route' }}</div>
-      <div class="map-settings-divider"></div>
-
-      <div class="map-settings-content mg-22">
-        <div class="map-settings-input-container">
-            <app-ta-input
-              formControlName="routeName"
-              [inputConfig]="{
-                name: 'ssn',
-                type: 'text',
-                label: 'Name',
-                isRequired: true,
-                blackInput: true
-              }"
-            ></app-ta-input>
-        </div>
-
-        <app-ta-tab-switch
-            [tabs]="routeTabs"
-            (switchClicked)="onTabChange($event, 'Route-tab')"
-            [type]="'type2-modal-popup'"
-        >
-        </app-ta-tab-switch>
-
-        <app-ta-input-dropdown
-          formControlName="truckId"
-          [template]="'svgtext-template'"
+    <div class="map-settings-content">
+      <div class="map-settings-input-container" [formGroup]="mapForm">
+        <app-ta-input
+          formControlName="mapName"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'ssn',
             type: 'text',
-            label: 'Truck Unit',
-            isDropdown: true,
-            dropdownWidthClass: 'w-col-280 truck-trailer-dropdown'
+            label: 'Map Name',
+            isRequired: true,
+            blackInput: true
           }"
-          [options]="truckType"
-          [activeItem]="selectedTruckType"
-          (selectedItem)="onSelectDropdown($event, 'truck')"
-        ></app-ta-input-dropdown>
-      </div>
-      
-      <div class="map-settings-divider"></div>
-
-      <div class="map-settings-content checkbox-container">
-        <div
-          class="checkbox-card-header"
-          [ngClass]="{ pointer: routeForm.get('duration').value }"
-        >
-          <app-ta-checkbox
-            formControlName="duration"
-            [label]="'Duration'"
-            [name]="'ta-checkbox-1'"
-          ></app-ta-checkbox>
-          <svg-icon
-            class="checkbox-card-header-arrow"
-            src="assets/svg/common/ic_arrow_down_updated.svg"
-            [ngClass]="{ visible: routeForm.get('duration').value }"
-          ></svg-icon>
-        </div>
-
-        <div class="duration-time-input" *ngIf="routeForm.get('duration').value">
-          <app-ta-input
-            formControlName="durationTime"
-            [inputConfig]="{
-              name: 'timepicker',
-              type: 'text',
-              label: 'Stop Time',
-              isRequired: true,
-              placeholderIcon: 'time',
-              customClass: 'datetimeclass'
-            }"
-          ></app-ta-input>
-        </div>
+        ></app-ta-input>
       </div>
 
-      <div class="map-settings-divider"></div>
-
-      <div class="map-settings-content checkbox-container">
-        <div
-          class="checkbox-card-header"
-          [ngClass]="{ pointer: routeForm.get('fuelCost').value }"
-        >
-          <app-ta-checkbox
-            formControlName="fuelCost"
-            [label]="'Fuel Cost'"
-            [name]="'ta-checkbox-2'"
-          ></app-ta-checkbox>
-          <svg-icon
-            class="checkbox-card-header-arrow"
-            src="assets/svg/common/ic_arrow_down_updated.svg"
-            [ngClass]="{ visible: routeForm.get('fuelCost').value }"
-          ></svg-icon>
-        </div>
-
-        <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value">
-          <app-ta-input
-            formControlName="fuelMpg"
-            [inputConfig]="{
-              name: 'ssn',
-              type: 'number',
-              label: 'Miles Per Gallon',
-              placeholderIcon: 'mileage',
-              isRequired: true
-            }"
-          ></app-ta-input>
-        </div>
-        <div class="duration-time-input mg-top-32" *ngIf="routeForm.get('fuelCost').value">
-          <app-ta-input
-            formControlName="fuelPrice"
-            [inputConfig]="{
-              name: 'ssn',
-              type: 'number',
-              label: 'Price Per Gallon',
-              placeholderIcon: 'dollar',
-              isRequired: true
-            }"
-          ></app-ta-input>
-        </div>
-      </div>
-
-      <div class="map-settings-divider"></div>
-
-      <div class="map-settings-content buttons-container">
-        <div class="map-settings-button" [ngStyle]="{'opacity': '0', 'pointer-events': 'none'}">
-            <div class="map-settings-button-text">Reset</div>
-        </div>
-        <div 
-          class="map-settings-button" 
-          [ngClass]="{ 'modal-save-btn': routeForm.valid }" 
-          (click)="onToolBarAction(routeToEdit?.id ? 'edit-route' : 'add-route')"
-        >
-            <div class="map-settings-button-text">{{ routeToEdit?.id ? 'Save Changes' : 'Create' }}</div>
-        </div>
-      </div>
-    </div>
-  </ng-template>
-
-  <ng-template #layersPopover>
-    <div class="table-dropdown">
-      <div
-        (click)="onToolBarAction('toggle-toll-roads')"
-        class="table-dropdown-content"
-        [ngClass]="{ 'active-option': isTollRoadsActive }"
+      <app-ta-tab-switch
+        [tabs]="distanceTabs"
+        (switchClicked)="onTabChange($event, 'Distance-tab')"
+        [type]="'type2-modal-popup'"
       >
-        <svg-icon
-          class="action-svg"
-          src="assets/svg/common/routing/ic_route_toll_roads.svg"
-          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
-        ></svg-icon>
-        <div class="dropdown-content-text">Toll road</div>
+      </app-ta-tab-switch>
+      <app-ta-tab-switch
+        [tabs]="addressTabs"
+        (switchClicked)="onTabChange($event, 'Address-tab')"
+        [type]="'type2-modal-popup'"
+      >
+      </app-ta-tab-switch>
+      <app-ta-tab-switch
+        [tabs]="borderTabs"
+        (switchClicked)="onTabChange($event, 'Border-tab')"
+        [type]="'type2-modal-popup'"
+      >
+      </app-ta-tab-switch>
+    </div>
+
+    <div class="map-settings-divider"></div>
+
+    <div class="map-settings-content buttons-container">
+      <div class="map-settings-button reset-button" (click)="resetMapForm()">
+        <div class="map-settings-button-text">Reset</div>
       </div>
       <div
-        (click)="onToolBarAction('toggle-time-zones')"
-        class="table-dropdown-content"
-        [ngClass]="{ 'active-option': isTimeZoneActive }"
+        class="map-settings-button"
+        [ngClass]="{ 'modal-save-btn': mapForm.valid && mapFormChanged }"
+        (click)="onToolBarAction('map-settings')"
       >
-        <svg-icon
-          class="action-svg"
-          src="assets/svg/common/routing/ic_route_timezones.svg"
-          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
-        ></svg-icon>
-        <div class="dropdown-content-text">Time zones</div>
+        <div class="map-settings-button-text">Set</div>
       </div>
-      <div
-        (click)="onToolBarAction('toggle-radar')"
-        class="table-dropdown-content"
-        [ngClass]="{ 'active-option': isDopplerOn }"
-      >
-        <svg-icon
-          class="action-svg"
-          src="assets/svg/common/routing/ic_route_radar.svg"
-          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
-        ></svg-icon>
-        <div class="dropdown-content-text">Doppler Radar</div>
-      </div>
-      <div
-        (click)="onToolBarAction('toggle-traffic')"
-        class="table-dropdown-content"
-        [ngClass]="{ 'active-option': trafficLayerShow }"
-      >
-        <svg-icon
-          class="action-svg"
-          src="assets/svg/common/routing/ic_route_traffic.svg"
-          [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
-        ></svg-icon>
-        <div class="dropdown-content-text">Traffic</div>
-      </div>
-    </div>
-  </ng-template>
-
-  <!-- Legends -->
-  <div class="legend-container" *ngIf="!layersPopup?.isOpen()">
-    <div class="doppler-conatiner">
-      <div class="doppler-legend" *ngIf="isDopplerOn">
-        <div class="doppler_header">
-          <span>Light</span>
-          <span>Heavy</span>
-        </div>
-        <div class="doplay_body">
-          <div class="quantity-text">
-            <p
-              appSelectionColor
-              class="light"
-              style="color: #b7b7b7;"
-            >Raining</p>
-            <div class="quantity-rain">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-          <div class="quantity-text">
-            <p
-              appSelectionColor
-              class="light"
-              style="color: #b7b7b7;"
-            >Sleeting</p>
-            <div class="quantity-rain-snow">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-          <div class="quantity-text">
-            <p
-              appSelectionColor
-              class="light"
-              style="color: #b7b7b7;"
-            >Snowing</p>
-            <div class="quantity-snow">
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-              <div></div>
-            </div>
-          </div>
-        </div>
-      </div>      
-
-    </div>
-    <div [ngStyle]="{ 'margin-top': isDopplerOn ? '6px' : '0px' }" class="traffic-conatiner">
-      <div class="truffic-container" *ngIf="trafficLayerShow">
-        <div class="truffic-title">
-          <div class="fast">Fast</div>
-          <div class="slow">Slow</div>
-        </div>
-        <div class="layers">
-          <div
-            *ngFor="let layer of trafficColors; let i = index"
-            [ngClass]="{ 'add-margin-right': i !== trafficColors.length - 1 }"
-            [ngStyle]="{ background: layer.color }"
-            class="layers-color"
-          ></div>
-        </div>
-      </div>      
-
-    </div>
-    <div
-      [ngStyle]="{ 'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px' }"
-      class="timezone-conatiner"
-    >
-      <div class="time-zone-container" *ngIf="isTimeZoneActive">
-        <div *ngFor="let timezone of timezones; let i = index" [ngClass]="{'add-margin': i !== 0}" class="time-zone">
-          <div [ngStyle]="{'background': timezone.color}" class="timezone-color"></div>
-          <div class="timezone-data">{{ timezone.text }}</div>
-        </div>
-      </div>      
-
     </div>
   </div>
+</ng-template>
+
+<ng-template #addRoutePopover let-data="data" data-toggle="popover">
+  <div class="map-settings-container" [formGroup]="routeForm">
+    <div class="map-settings-title">
+      {{ routeToEdit?.id ? "Route Settings" : "Add New Route" }}
+    </div>
+    <div class="map-settings-divider"></div>
+
+    <div class="map-settings-content mg-22">
+      <div class="map-settings-input-container">
+        <app-ta-input
+          formControlName="routeName"
+          [inputConfig]="{
+            name: 'ssn',
+            type: 'text',
+            label: 'Name',
+            isRequired: true,
+            blackInput: true
+          }"
+        ></app-ta-input>
+      </div>
+
+      <app-ta-tab-switch
+        [tabs]="routeTabs"
+        (switchClicked)="onTabChange($event, 'Route-tab')"
+        [type]="'type2-modal-popup'"
+      >
+      </app-ta-tab-switch>
+
+      <app-ta-input-dropdown
+        formControlName="truckId"
+        [template]="'svgtext-template'"
+        [inputConfig]="{
+          name: 'Input Dropdown',
+          type: 'text',
+          label: 'Truck Unit',
+          isDropdown: true,
+          dropdownWidthClass: 'w-col-280 truck-trailer-dropdown'
+        }"
+        [options]="truckType"
+        [activeItem]="selectedTruckType"
+        (selectedItem)="onSelectDropdown($event, 'truck')"
+      ></app-ta-input-dropdown>
+    </div>
+
+    <div class="map-settings-divider"></div>
+
+    <div class="map-settings-content checkbox-container">
+      <div
+        class="checkbox-card-header"
+        [ngClass]="{ pointer: routeForm.get('duration').value }"
+      >
+        <app-ta-checkbox
+          formControlName="duration"
+          [label]="'Duration'"
+          [name]="'ta-checkbox-1'"
+        ></app-ta-checkbox>
+        <svg-icon
+          class="checkbox-card-header-arrow"
+          src="assets/svg/common/ic_arrow_down_updated.svg"
+          [ngClass]="{ visible: routeForm.get('duration').value }"
+        ></svg-icon>
+      </div>
+
+      <div class="duration-time-input" *ngIf="routeForm.get('duration').value">
+        <app-ta-input
+          formControlName="durationTime"
+          [inputConfig]="{
+            name: 'timepicker',
+            type: 'text',
+            label: 'Stop Time',
+            isRequired: true,
+            placeholderIcon: 'time',
+            customClass: 'datetimeclass'
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+
+    <div class="map-settings-divider"></div>
+
+    <div class="map-settings-content checkbox-container">
+      <div
+        class="checkbox-card-header"
+        [ngClass]="{ pointer: routeForm.get('fuelCost').value }"
+      >
+        <app-ta-checkbox
+          formControlName="fuelCost"
+          [label]="'Fuel Cost'"
+          [name]="'ta-checkbox-2'"
+        ></app-ta-checkbox>
+        <svg-icon
+          class="checkbox-card-header-arrow"
+          src="assets/svg/common/ic_arrow_down_updated.svg"
+          [ngClass]="{ visible: routeForm.get('fuelCost').value }"
+        ></svg-icon>
+      </div>
+
+      <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value">
+        <app-ta-input
+          formControlName="fuelMpg"
+          [inputConfig]="{
+            name: 'ssn',
+            type: 'number',
+            label: 'Miles Per Gallon',
+            placeholderIcon: 'mileage',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+      <div
+        class="duration-time-input mg-top-32"
+        *ngIf="routeForm.get('fuelCost').value"
+      >
+        <app-ta-input
+          formControlName="fuelPrice"
+          [inputConfig]="{
+            name: 'ssn',
+            type: 'number',
+            label: 'Price Per Gallon',
+            placeholderIcon: 'dollar',
+            isRequired: true
+          }"
+        ></app-ta-input>
+      </div>
+    </div>
+
+    <div class="map-settings-divider"></div>
+
+    <div class="map-settings-content buttons-container">
+      <div
+        class="map-settings-button"
+        [ngStyle]="{ opacity: '0', 'pointer-events': 'none' }"
+      >
+        <div class="map-settings-button-text">Reset</div>
+      </div>
+      <div
+        class="map-settings-button"
+        [ngClass]="{ 'modal-save-btn': routeForm.valid }"
+        (click)="onToolBarAction(routeToEdit?.id ? 'edit-route' : 'add-route')"
+      >
+        <div class="map-settings-button-text">
+          {{ routeToEdit?.id ? "Save Changes" : "Create" }}
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #layersPopover>
+  <div class="table-dropdown">
+    <div
+      (click)="onToolBarAction('toggle-toll-roads')"
+      class="table-dropdown-content"
+      [ngClass]="{ 'active-option': isTollRoadsActive }"
+    >
+      <svg-icon
+        class="action-svg"
+        src="assets/svg/common/routing/ic_route_toll_roads.svg"
+        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+      ></svg-icon>
+      <div class="dropdown-content-text">Toll road</div>
+    </div>
+    <div
+      (click)="onToolBarAction('toggle-time-zones')"
+      class="table-dropdown-content"
+      [ngClass]="{ 'active-option': isTimeZoneActive }"
+    >
+      <svg-icon
+        class="action-svg"
+        src="assets/svg/common/routing/ic_route_timezones.svg"
+        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+      ></svg-icon>
+      <div class="dropdown-content-text">Time zones</div>
+    </div>
+    <div
+      (click)="onToolBarAction('toggle-radar')"
+      class="table-dropdown-content"
+      [ngClass]="{ 'active-option': isDopplerOn }"
+    >
+      <svg-icon
+        class="action-svg"
+        src="assets/svg/common/routing/ic_route_radar.svg"
+        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+      ></svg-icon>
+      <div class="dropdown-content-text">Doppler Radar</div>
+    </div>
+    <div
+      (click)="onToolBarAction('toggle-traffic')"
+      class="table-dropdown-content"
+      [ngClass]="{ 'active-option': trafficLayerShow }"
+    >
+      <svg-icon
+        class="action-svg"
+        src="assets/svg/common/routing/ic_route_traffic.svg"
+        [svgStyle]="{ 'width.px': 32, 'height.px': 32 }"
+      ></svg-icon>
+      <div class="dropdown-content-text">Traffic</div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Legends -->
+<div class="legend-container" *ngIf="!layersPopup?.isOpen()">
+  <div class="doppler-conatiner">
+    <div class="doppler-legend" *ngIf="isDopplerOn">
+      <div class="doppler_header">
+        <span>Light</span>
+        <span>Heavy</span>
+      </div>
+      <div class="doplay_body">
+        <div class="quantity-text">
+          <p appSelectionColor class="light" style="color: #b7b7b7">Raining</p>
+          <div class="quantity-rain">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div class="quantity-text">
+          <p appSelectionColor class="light" style="color: #b7b7b7">Sleeting</p>
+          <div class="quantity-rain-snow">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+        <div class="quantity-text">
+          <p appSelectionColor class="light" style="color: #b7b7b7">Snowing</p>
+          <div class="quantity-snow">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    [ngStyle]="{ 'margin-top': isDopplerOn ? '6px' : '0px' }"
+    class="traffic-conatiner"
+  >
+    <div class="truffic-container" *ngIf="trafficLayerShow">
+      <div class="truffic-title">
+        <div class="fast">Fast</div>
+        <div class="slow">Slow</div>
+      </div>
+      <div class="layers">
+        <div
+          *ngFor="let layer of trafficColors; let i = index"
+          [ngClass]="{ 'add-margin-right': i !== trafficColors.length - 1 }"
+          [ngStyle]="{ background: layer.color }"
+          class="layers-color"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div
+    [ngStyle]="{
+      'margin-top': isDopplerOn || trafficLayerShow ? '6px' : '0px'
+    }"
+    class="timezone-conatiner"
+  >
+    <div class="time-zone-container" *ngIf="isTimeZoneActive">
+      <div
+        *ngFor="let timezone of timezones; let i = index"
+        [ngClass]="{ 'add-margin': i !== 0 }"
+        class="time-zone"
+      >
+        <div
+          [ngStyle]="{ background: timezone.color }"
+          class="timezone-color"
+        ></div>
+        <div class="timezone-data">{{ timezone.text }}</div>
+      </div>
+    </div>
+  </div>
+</div>
