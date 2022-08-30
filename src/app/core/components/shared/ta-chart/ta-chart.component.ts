@@ -59,6 +59,9 @@ export class TaChartComponent implements OnInit {
   hoverTimeDisplay: boolean = false;
   hoveredItemTip: string[];
   hoveredItemTipSave: any;
+  hoverChartLeft: number = 0;
+  hoverColumnWidth: number = 0;
+  hoverColumnHeight: number = 0;
 
   constructor(private ref: ChangeDetectorRef) {}
 
@@ -111,17 +114,12 @@ export class TaChartComponent implements OnInit {
             if (this.chartConfig['onHoverAnnotation']) {
               this.setHoverAnnotation(elements[0]['_index']);
             }
-            if (this.gridHoverBackground) {
-              //this.drawGridBackground(elements[0]['_index']);
-            }
             if (this.lineChartType == 'doughnut' && this.driversList?.length) {
               this.hoverDoughnut(elements, 'object');
             }
           }
         } else {
-          //this.hoveringStatus = false;
           this.ref.detectChanges();
-          //this.showHoverData = false;
           if (!this.chartConfig['animationOnlyOnLoad']) { this.animationDuration = 1000; }
           if (this.chartConfig['onHoverAnnotation']) {
             this.setHoverAnnotation(null);
@@ -491,58 +489,7 @@ export class TaChartComponent implements OnInit {
       },
     ];
   }
-
-  drawGridBackground(value: any) {
-    this.setChartOptions();
-    let gridBeforeDraw = {
-      beforeDraw: (chart) => {
-        if (this.hoveringStatus ) {
-          const canvas = chart.chart.canvas;
-          const ctx = chart.chart.ctx;
-          const xAxis = chart.scales['x-axis-0'];
-          let xPoint1 = 0;
-          let xPoint2 = 0;
-
-          setTimeout(() => {
-            if (xAxis['_gridLineItems']) {
-              xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-              xPoint2 = xAxis['_gridLineItems'][0]['x2'];
-            }
-          })
-          
-          const gridWidth = xPoint1 - xPoint2;
-          ctx.save();
-          ctx.fillStyle = '#F3F3F3';
-          ctx.beginPath();
-          const yLeft = xAxis.getPixelForValue(value);
-          const reduce = this.chartConfig['startGridBackgroundFromZero']
-            ? xAxis.height
-            : 0;
-          ctx.fillRect(
-            yLeft - gridWidth / 2,
-            0,
-            gridWidth,
-            canvas.height - reduce
-          );
-          ctx.stroke();
-          ctx.restore();
-
-          this.showHoverData = true;
-          this.ref.detectChanges();
-        }
-      },
-    };
-
-    this.lineChartPlugins.map((item, i) => {
-      if (item['beforeDraw']) {
-        this.lineChartPlugins.splice(i, 1);
-      }
-    });
-
-    this.lineChartPlugins.push(gridBeforeDraw);
-    this.ref.detectChanges();
-  }
-
+  
   chartDataCheck(values: any[]) {
     let hasData = false;
     values.map((item, i) => {
@@ -997,6 +944,8 @@ export class TaChartComponent implements OnInit {
 
     setTimeout(() => {
       const xAxis = this.chart.chart['scales']['x-axis-0'];
+      const yAxis = this.chart.chart['scales']['y-axis-0'];
+
       if (xAxis['_gridLineItems']) {
         xPoint1 = xAxis['_gridLineItems'][1]['x1'];
         xPoint2 = xAxis['_gridLineItems'][0]['x2'];
@@ -1008,10 +957,14 @@ export class TaChartComponent implements OnInit {
         ) {
           this.updateHoverData(value);
           let oversizedHover = false;
+          this.hoverColumnWidth = elWidth;
+          this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'];
 
           let clientWidth = this.hoverDataHolder
             ? this.hoverDataHolder.nativeElement.offsetWidth + 16
             : 0;
+
+          this.hoverColumnHeight = this.chartConfig['startGridBackgroundFromZero'] ? yAxis.height : yAxis.height + xAxis.height;
 
           let xPos = this.chartConfig['offset']
             ? xAxis['_gridLineItems'][value]['x2'] + elWidth

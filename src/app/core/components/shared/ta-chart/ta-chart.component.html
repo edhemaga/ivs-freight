@@ -14,6 +14,7 @@
   </div>
 </div>
 <div class="main_chart_container" (mouseleave)="showHoverData = false; hoveringStatus = false;" [class.remove_chart_margin]="removeChartMargin" [class.add_inside]="hoveringStatus && hoverTimeDisplay">
+  <div class="chart_hover_background" [ngStyle]="{'left': hoverChartLeft + 'px', 'width': hoverColumnWidth + 'px', 'height': hoverColumnHeight + 'px'}" *ngIf="showHoverData"></div>
   <div class="no_chart_data" *ngIf="noChartData">
     <svg-icon src={{noChartImage}}></svg-icon>
   </div>
@@ -62,7 +63,7 @@
       </div>
     </div>
   </div>
-  <canvas *ngIf="!noChartData" baseChart id="baseChart" width={{chartWidth}} height={{chartHeight}} [class.dotted_background]="dottedBackground" [ngStyle]="{'width': '100%', 'height': chartHeight+'px'}"
+  <canvas *ngIf="!noChartData" baseChart id="baseChart" width={{chartWidth}} height={{chartHeight}} class="chart_canvas" [class.dotted_background]="dottedBackground" [ngStyle]="{'width': '100%', 'height': chartHeight+'px'}"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
