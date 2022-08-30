@@ -158,6 +158,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     globalDropZone: false,
   };
 
+  public addressFlag: string = 'Empty';
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,

@@ -56,7 +56,7 @@
                 -ms-overflow-style: none;
                 scrollbar-width: none;
 
-                &::-webkit-scrollbar { 
+                &::-webkit-scrollbar {
                     display: none;
                 }
             }
@@ -154,7 +154,7 @@
                     }
                 }
             }
-            
+
             &:hover, &.active-drop {
                 .dropdown-dots {
                     svg {
@@ -203,7 +203,7 @@
 
         .route-card-icon {
             display: flex;
-            
+
             svg {
                 path {
                     fill: #AAAAAA;
@@ -283,7 +283,7 @@
 
     &.selected-stop {
         background: #F3F3F3;
-        
+
         .focused-route-number-background {
             display: flex;
         }
@@ -334,7 +334,7 @@
                 input {
                     background-color: #00000000 !important;
                 }
-    
+
                 label {
                     color: #6C6C6C !important;
                 }
@@ -355,7 +355,7 @@
             .plus-button {
                 display: flex;
             }
-    
+
             .route-row-number {
                 display: none;
             }
@@ -464,7 +464,7 @@
     .delete-button:hover + .delete-stop-text {
         //display: flex!important;
     }
-    
+
     .route-row-number {
         position: relative;
         display: flex;
@@ -492,22 +492,12 @@
         &.full-address {
             width: 220px;
             min-width: 220px;
-
-            &.add-new-stop {
-                .input-custom-group {
-                    grid-template-columns: 87% 1fr !important;
-                }
-            }
         }
 
         &.add-new-stop {
             width: 100%;
             margin-right: 0px;
 
-            .input-custom-group {
-                grid-template-columns: 83% 1fr !important;
-            }
-        
             input {
                 background-color: #fff !important;
             }
@@ -551,7 +541,7 @@
     box-shadow: $box-shadow;
 
     &.route-info-card {
-        .route-card-svg { 
+        .route-card-svg {
             svg {
                 g {
                     opacity: 1;
@@ -563,11 +553,11 @@
     &.route-card-row {
         .delete-button {
             display: none!important;
-    
+
             &.drag-arrows {
                 display: flex!important;
             }
-    
+
             &.plus-button {
                 display: flex!important;
                 opacity: 0;
@@ -608,27 +598,27 @@
         }
     }
   }
-  
+
   .cdk-drag-placeholder {
     background: #DADADACC;
 
     .delete-button {
         display: none!important;
     }
-    
+
     div {
         opacity: 0;
     }
   }
-  
+
   .cdk-drag-animating {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
-  
+
   .route-card-container.cdk-drop-list-dragging .route-info-card:not(.cdk-drag-placeholder) {
     transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
   }
-  
+
 .pink-text {
     color: #F27B8E !important;
 
@@ -812,7 +802,7 @@
 
     height: 18px;
     padding: 2px 6px;
-    
+
     border-radius: 2px;
 
     pointer-events: all;
@@ -875,11 +865,11 @@
         position: absolute;
         left: 100%;
         top: 0px;
-    
+
         width: 0px;
         height: 18px;
         margin-left: 12px;
-    
+
         background-color: #616161;
         font-size: 11px;
         line-height: 18px;
