@@ -330,6 +330,7 @@ export class RoutingMapComponent implements OnInit {
 
     route.hidden = !route.hidden;
     if ( route.isFocused ) { route.isFocused = false; this.focusedRouteIndex = null; }
+    if ( route.expanded ) { route.expanded = false; route.expandFinished = false; }
   }
 
   resizeCard(event, route) {

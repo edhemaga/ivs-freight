@@ -124,6 +124,8 @@
 
         .header-content-container {
             display: flex;
+            width: 100%;
+            max-width: calc( 100% - 34px );
         }
 
         .show-more {
@@ -227,6 +229,7 @@
             border-radius: 2px;
             user-select: none;
             margin-left: 6px;
+            min-width: fit-content;
         }
 
         .route-card-header-divider {
@@ -757,7 +760,7 @@
 
     width: 164px;
     height: 30px;
-    padding: 4px 28px 4px 4px;
+    padding: 6px 28px 6px 6px;
 
     background: #fff;
     border-radius: 3px;
@@ -833,6 +836,12 @@
         transform: translateX(-26px);
     }
 
+    &.small-marker-tooltip {
+        top: -3px;
+
+        transform: translateX(15px);
+    }
+
     .stop-picker-address-text {
         display: -webkit-box;
 
@@ -868,12 +877,21 @@
     z-index: 999;
 }
 
+.header-properties-container {
+    display: flex;
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
 .route-name {
     position: relative;
+    display: flex;
+    min-width: fit-content;
 
     .route-name-tooltip {
-        position: absolute;
-        left: 100%;
+        position: relative;
+        left: 0px;
         top: 0px;
     
         width: 0px;
