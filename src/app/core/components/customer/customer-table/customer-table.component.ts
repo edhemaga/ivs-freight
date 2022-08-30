@@ -368,19 +368,27 @@ export class CustomerTableComponent
   }
 
   setCustomerData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
+    
+    if(td.data.length){
+      this.viewData = td.data;
 
-    this.viewData = this.viewData.map((data: any) => {
-      if (this.selectedTab === 'active') {
-        return this.mapBrokerData(data);
-      } else {
-        return this.mapShipperData(data);
-      }
-    });
-
-    console.log('Customer Data');
-    console.log(this.viewData);
+      this.viewData = this.viewData.map((data: any) => {
+        if (this.selectedTab === 'active') {
+          return this.mapBrokerData(data);
+        } else {
+          return this.mapShipperData(data);
+        }
+      });
+  
+      console.log('Customer Data');
+      console.log(this.viewData);
+  
+      // For Testing
+      // for (let i = 0; i < 100; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    }
   }
 
   // Map Broker Data
