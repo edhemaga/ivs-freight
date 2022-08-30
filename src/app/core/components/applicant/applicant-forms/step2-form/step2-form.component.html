@@ -146,6 +146,9 @@
           label: 'Employer Email',
           isRequired: true,
           placeholderIcon: 'email',
+          minLength: 5,
+          maxLength: 64,
+          textTransform: 'lowercase',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"

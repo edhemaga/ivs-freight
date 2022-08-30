@@ -457,7 +457,10 @@
                     formControlName="email"
                     [inputConfig]="{
                       name: 'Email',
-                      type: 'text'
+                      type: 'text',
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase'
                     }"
                   ></app-ta-input>
 

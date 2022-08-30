@@ -16,6 +16,7 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   emailRegex,
+  emailValidation,
   phoneExtension,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -108,7 +109,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       departmentContacts: this.formBuilder.array([]),
       rent: [null],
       payPeriod: [null],
@@ -190,7 +191,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
       email: [
         data?.email ? data.email : null,
-        [Validators.required, emailRegex],
+        [Validators.required, [emailRegex, ...emailValidation]],
       ],
     });
   }

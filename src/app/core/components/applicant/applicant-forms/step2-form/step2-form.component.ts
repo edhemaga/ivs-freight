@@ -20,6 +20,7 @@ import {
 
 import {
   emailRegex,
+  emailValidation,
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -264,7 +265,10 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
       employerPhone: [null, [Validators.required, phoneRegex]],
-      employerEmail: [null, [Validators.required, emailRegex]],
+      employerEmail: [
+        null,
+        [Validators.required, emailRegex, ...emailValidation],
+      ],
       employerFax: [null, phoneRegex],
       employerAddress: [null, Validators.required],
       employerAddressUnit: [null, Validators.maxLength(6)],

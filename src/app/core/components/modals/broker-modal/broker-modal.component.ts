@@ -25,6 +25,7 @@ import {
   businessNameValidation,
   einNumberRegex,
   emailRegex,
+  emailValidation,
   mcFFValidation,
   phoneExtension,
   phoneRegex,
@@ -187,7 +188,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dbaName: [null],
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
-      email: [null, [emailRegex]],
+      email: [null, [emailRegex, ...emailValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
       physicalAddress: [null, Validators.required],
@@ -250,7 +251,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         data?.extensionPhone ? data.extensionPhone : null,
         [...phoneExtension],
       ],
-      email: [data?.email ? data.email : null, emailRegex],
+      email: [
+        data?.email ? data.email : null,
+        [emailRegex, ...emailValidation],
+      ],
     });
   }
 

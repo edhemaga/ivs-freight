@@ -12,6 +12,7 @@ import { debounceTime } from 'rxjs';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   emailRegex,
+  emailValidation,
   phoneExtension,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -136,7 +137,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, phoneRegex],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       parkingSlot: [null],
       fullParkingSlot: [null],
       gate: [true],

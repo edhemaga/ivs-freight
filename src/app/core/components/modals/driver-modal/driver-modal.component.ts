@@ -24,6 +24,7 @@ import {
   phoneRegex,
   mileValidation,
   perStopValidation,
+  emailValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -268,7 +269,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required]],
       lastName: [null, [Validators.required]],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       address: [null, [Validators.required]],
       addressUnit: [null, [Validators.maxLength(6)]],
       dateOfBirth: [null],

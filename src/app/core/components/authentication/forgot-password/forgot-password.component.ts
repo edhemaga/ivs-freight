@@ -7,7 +7,10 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import moment from 'moment';
 
-import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
@@ -44,7 +47,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.forgotPasswordForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
     });
   }
 

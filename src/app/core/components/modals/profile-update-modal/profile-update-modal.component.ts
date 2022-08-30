@@ -1,5 +1,8 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -97,7 +100,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       mobile: [null, phoneRegex],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       address: [null],
       addressUnit: [null],
       createNewPassword: [false],

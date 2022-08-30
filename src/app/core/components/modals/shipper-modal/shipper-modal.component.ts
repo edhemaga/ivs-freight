@@ -1,6 +1,7 @@
 import {
   businessNameValidation,
   emailRegex,
+  emailValidation,
   phoneExtension,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
@@ -126,7 +127,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       businessName: [null, [Validators.required, ...businessNameValidation]],
       phone: [null, phoneRegex],
       phoneExt: [null, [...phoneExtension]],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       receivingAppointment: [false],
@@ -285,7 +286,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         [Validators.required, phoneRegex],
       ],
       phoneExt: [data?.phoneExt ? data.phoneExt : null],
-      email: [data?.email ? data.email : null, emailRegex],
+      email: [
+        data?.email ? data.email : null,
+        [emailRegex, ...emailValidation],
+      ],
     });
   }
 

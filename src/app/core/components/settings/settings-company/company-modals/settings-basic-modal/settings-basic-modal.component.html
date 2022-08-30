@@ -111,7 +111,10 @@
                 label: 'Email',
                 isRequired: editData.type === 'new-division' ? true : false,
                 isDisabled: editData.type === 'edit-company',
-                placeholderIcon: 'email'
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase'
               }"
             ></app-ta-input>
           </div>
@@ -359,7 +362,10 @@
                   [inputConfig]="{
                     id: 'Email' + ind,
                     name: 'Email',
-                    type: 'text'
+                    type: 'text',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
                 <div

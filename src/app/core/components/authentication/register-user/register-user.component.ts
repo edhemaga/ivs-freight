@@ -12,6 +12,7 @@ import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 import {
   emailRegex,
+  emailValidation,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -57,7 +58,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       address: [null, Validators.required],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });

@@ -1,5 +1,6 @@
 import {
   emailRegex,
+  emailValidation,
   phoneExtension,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -142,17 +143,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       // Office
       officeChecked: [true],
       officePhone: [null, [Validators.required, phoneRegex]],
       officeExtPhone: [null, [...phoneExtension]],
-      officeEmail: [null, emailRegex],
+      officeEmail: [null, [emailRegex, ...emailValidation]],
       // Parking
       parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneRegex]],
       parkingExtPhone: [null, [...phoneExtension]],
-      parkingEmail: [null, emailRegex],
+      parkingEmail: [null, [emailRegex, ...emailValidation]],
 
       terminalParkingSlot: [null],
       terminalFullParkingSlot: [null],
@@ -162,7 +163,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneRegex]],
       warehouseExtPhone: [null, [...phoneExtension]],
-      warehouseEmail: [null, emailRegex],
+      warehouseEmail: [null, [emailRegex, ...emailValidation]],
       // Fuel stattion
       fuelStationChecked: [false],
       // Additional tab

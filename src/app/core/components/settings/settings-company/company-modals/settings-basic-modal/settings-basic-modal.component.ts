@@ -6,6 +6,7 @@ import {
 import {
   daysValidRegex,
   emailRegex,
+  emailValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
@@ -280,7 +281,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       fax: [null],
       webUrl: [null],
       address: [null, Validators.required],
@@ -367,9 +368,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
 
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
-      this.companyForm
-        .get('email')
-        .setValidators([emailRegex, Validators.required]);
+      this.companyForm.get('email').setValidators(Validators.required);
     }
     // this.formService.checkFormChange(this.companyForm);
 
@@ -464,7 +463,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ],
       email: [
         data?.email ? data?.email : null,
-        [Validators.required, emailRegex],
+        [Validators.required, [emailRegex, ...emailValidation]],
       ],
     });
   }

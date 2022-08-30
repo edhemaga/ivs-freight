@@ -1,6 +1,7 @@
 import {
   phoneRegex,
   emailRegex,
+  emailValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -135,7 +136,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       insuranceClaimNumber: [null],
       insuranceAdjuster: [null],
       insurancePhone: [null, phoneRegex],
-      insuranceEmail: [null, emailRegex],
+      insuranceEmail: [null, [emailRegex, ...emailValidation]],
       note: [null],
       roadwayTrafficWay: [null],
       weatherCondition: [null],
@@ -187,7 +188,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       claimNumber: [null],
       insuranceAdjuster: [null],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
     });
   }
 

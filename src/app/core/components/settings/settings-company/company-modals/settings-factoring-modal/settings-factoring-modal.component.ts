@@ -1,5 +1,8 @@
 import { AddressEntity } from './../../../../../../../../appcoretruckassist/model/addressEntity';
-import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
@@ -47,7 +50,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     this.factoringForm = this.formBuilder.group({
       name: [null, Validators.required],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       address: [null],
       addressUnit: [null, Validators.maxLength(6)],
       noticeOfAssigment: [null],

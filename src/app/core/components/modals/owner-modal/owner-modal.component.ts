@@ -22,6 +22,7 @@ import {
   businessNameValidation,
   einNumberRegex,
   emailRegex,
+  emailValidation,
   phoneRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -97,7 +98,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       address: [null, Validators.required],
       addressUnit: [null, [Validators.maxLength(6)]],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       bankId: [null],
       accountNumber: [null],
       routingNumber: [null],

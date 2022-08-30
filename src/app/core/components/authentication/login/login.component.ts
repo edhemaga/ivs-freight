@@ -15,7 +15,10 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 import moment from 'moment';
 
-import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @UntilDestroy()
 @Component({
@@ -44,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       password: [null, [Validators.required]],
       staySignedIn: [false],
     });
