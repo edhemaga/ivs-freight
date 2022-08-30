@@ -1,4 +1,5 @@
 import {
+  addressValidation,
   emailRegex,
   emailValidation,
   phoneExtension,
@@ -128,7 +129,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     this.userForm = this.formBuilder.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
-      address: [null],
+      address: [null, [...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       personalPhone: [null, phoneRegex],
       personalEmail: [null, [emailRegex, ...emailValidation]],

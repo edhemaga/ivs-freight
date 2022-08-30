@@ -2,6 +2,7 @@ import {
   phoneRegex,
   emailRegex,
   emailValidation,
+  addressValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -104,7 +105,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       towing: [null],
       hazmat: [null],
       vehicleNumber: [null],
-      location: [null],
+      location: [null, [...addressValidation]],
       date: [null],
       time: [null],
       driverName: [null],
@@ -146,11 +147,11 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       reportingAgency: [null],
       authorityPoliceOffice: [null],
       authorityBadgeNumber: [null],
-      authorityAddress: [null],
+      authorityAddress: [null, [...addressValidation]],
       authorityPhone: [null, phoneRegex],
       authorityFax: [null],
-      shippingOriginLocation: [null],
-      shippingDestinationLocation: [null],
+      shippingOriginLocation: [null, [...addressValidation]],
+      shippingDestinationLocation: [null, [...addressValidation]],
       shippingCustomer: [null],
       shippingBOL: [null],
       shippingCargo: [null],

@@ -7,6 +7,7 @@ import {
   emailRegex,
   phoneExtension,
   emailValidation,
+  addressValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -95,7 +96,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
       name: [null, Validators.required],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null, [...phoneExtension]],

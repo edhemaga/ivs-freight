@@ -207,7 +207,9 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          incorrectInput: selectedMode === 'REVIEW_MODE',
+          minLength: 12,
+          maxLength: 256
         }"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 18)"

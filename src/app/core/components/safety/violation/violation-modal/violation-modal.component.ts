@@ -7,6 +7,7 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 @UntilDestroy()
 @Component({
   selector: 'app-violation-modal',
@@ -162,14 +163,14 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       policeDepartment: [null],
       policeOfficer: [null],
       badgeNumber: [null],
-      addressAuthority: [null],
+      addressAuthority: [null, [...addressValidation]],
       phoneAuthority: [null],
       faxAuthority: [null],
       facility: [null],
       highway: [null],
       milePost: [null],
-      originAddress: [null],
-      destinationAddress: [null],
+      originAddress: [null, [...addressValidation]],
+      destinationAddress: [null, [...addressValidation]],
       customer: [null],
       bol: [null],
       cargo: [null],

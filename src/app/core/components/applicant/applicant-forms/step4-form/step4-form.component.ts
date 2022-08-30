@@ -27,6 +27,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
@@ -150,7 +151,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
 
   public createForm(): void {
     this.accidentForm = this.formBuilder.group({
-      accidentLocation: [null, Validators.required],
+      accidentLocation: [null, [Validators.required, ...addressValidation]],
       accidentDate: [null, Validators.required],
       fatalities: [0],
       injuries: [0],

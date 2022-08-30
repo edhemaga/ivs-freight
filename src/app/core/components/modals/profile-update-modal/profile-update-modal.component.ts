@@ -1,5 +1,6 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
+  addressValidation,
   emailRegex,
   emailValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
@@ -101,7 +102,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       lastName: [null, Validators.required],
       mobile: [null, phoneRegex],
       email: [null, [emailRegex, ...emailValidation]],
-      address: [null],
+      address: [null, [...addressValidation]],
       addressUnit: [null],
       createNewPassword: [false],
       checkingOldPassword: [null],

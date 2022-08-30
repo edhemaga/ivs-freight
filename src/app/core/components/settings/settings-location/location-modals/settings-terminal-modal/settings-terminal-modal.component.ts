@@ -1,4 +1,5 @@
 import {
+  addressValidation,
   emailRegex,
   emailValidation,
   phoneExtension,
@@ -139,7 +140,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Terminal
       isOwner: [false],
       name: [null, Validators.required],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null, [...phoneExtension]],

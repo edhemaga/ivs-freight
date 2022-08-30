@@ -19,6 +19,7 @@ import {
 } from '../../state/utils/utils';
 
 import {
+  addressValidation,
   emailRegex,
   emailValidation,
   phoneRegex,
@@ -270,7 +271,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
         [Validators.required, emailRegex, ...emailValidation],
       ],
       employerFax: [null, phoneRegex],
-      employerAddress: [null, Validators.required],
+      employerAddress: [null, [Validators.required, ...addressValidation]],
       employerAddressUnit: [null, Validators.maxLength(6)],
       isDrivingPosition: [false],
       truckType: [null],

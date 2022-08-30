@@ -1,4 +1,5 @@
 import {
+  addressValidation,
   businessNameValidation,
   emailRegex,
   emailValidation,
@@ -128,7 +129,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneRegex],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       receivingAppointment: [false],
       receivingOpenTwentyFourHours: [false],

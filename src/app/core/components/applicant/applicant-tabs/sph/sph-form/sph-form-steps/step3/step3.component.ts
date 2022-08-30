@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import {
+  addressValidation,
+  phoneRegex,
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
@@ -177,7 +180,7 @@ export class Step3Component implements OnInit {
       drugAndAlcoholRegulation: [null, Validators.required],
       sapName: [null, Validators.required],
       phone: [null, [Validators.required, phoneRegex]],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       aspRehabilitation: [null, Validators.required],
     });

@@ -17,10 +17,12 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
+  addressValidation,
   emailRegex,
   emailValidation,
   phoneExtension,
   phoneRegex,
+  repairShopValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -86,12 +88,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...repairShopValidation]],
       pinned: [null],
       phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
-      address: [null, [Validators.required]],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [Validators.maxLength(6)]],
       companyOwned: [false],
       openHours: this.formBuilder.array([]),

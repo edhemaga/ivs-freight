@@ -120,6 +120,8 @@
             label: 'Address, City, State Zip',
             isRequired: true,
             placeholderIcon: 'address',
+            minLength: 12,
+            maxLength: 256,
             textTransform: 'capitalize'
           }"
           [activeAddress]="selectedAddress"

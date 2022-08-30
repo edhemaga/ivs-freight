@@ -464,6 +464,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAuthorityAddress"
@@ -539,6 +541,8 @@
                   type: 'text',
                   label: 'Origin',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedAuthorityOrigin"
@@ -553,6 +557,8 @@
                   type: 'text',
                   label: 'Destination',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedAuthorityDestination"

@@ -8,6 +8,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Applicant } from '../../state/model/applicant.model';
 import { Address } from '../../state/model/address.model';
 import { DrugAndAlcohol } from '../../state/model/drug-and-alchocol.model';
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step8',
@@ -101,11 +102,11 @@ export class Step8Component implements OnInit, OnDestroy {
     this.drugAlcoholStatementForm = this.formBuilder.group({
       motorCarrier: [null, Validators.required],
       phone: [null, Validators.required],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, Validators.maxLength(6)],
       sapName: [null, Validators.required],
       sapPhone: [null, Validators.required],
-      sapAddress: [null, Validators.required],
+      sapAddress: [null, [Validators.required, ...addressValidation]],
       sapAddressUnit: [null, Validators.maxLength(6)],
       isAgreement: [null, Validators.requiredTrue],
 

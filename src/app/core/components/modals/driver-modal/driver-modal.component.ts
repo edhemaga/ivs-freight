@@ -25,6 +25,7 @@ import {
   mileValidation,
   perStopValidation,
   emailValidation,
+  addressValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -270,7 +271,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       lastName: [null, [Validators.required]],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
-      address: [null, [Validators.required]],
+      address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [Validators.maxLength(6)]],
       dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
@@ -343,7 +344,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
       nickname: [data?.nickname ? data.nickname : null],
-      address: [data?.address ? data.address : null],
+      address: [data?.address ? data.address : null, [...addressValidation]],
       city: [data?.city ? data.city : null],
       state: [data?.state ? data.state : null],
       stateShortName: [data?.stateShortName ? data.stateShortName : null],

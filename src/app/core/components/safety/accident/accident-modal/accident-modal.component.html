@@ -117,6 +117,8 @@
                 label: 'Location',
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="addressLocation"
@@ -622,6 +624,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="addressAuthority"
@@ -662,6 +666,8 @@
                   type: 'text',
                   label: 'Origin',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="addressOrigin"
@@ -676,6 +682,8 @@
                   type: 'text',
                   label: 'Destination',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="addressDestination"

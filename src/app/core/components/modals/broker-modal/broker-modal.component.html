@@ -138,6 +138,8 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedPhysicalAddress"
@@ -191,6 +193,8 @@
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  minLength: 12,
+                  maxLength: 256,
                   onlyCityAndZipAddress: true
                 }"
                 [activeAddress]="selectedPhysicalPoBox"
@@ -240,6 +244,8 @@
                     label: 'Address, City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
+                    minLength: 12,
+                    maxLength: 256,
                     textTransform: 'capitalize'
                   }"
                   [activeAddress]="selectedBillingAddress"
@@ -293,6 +299,8 @@
                     isRequired: true,
                     placeholderIcon: 'address',
                     textTransform: 'capitalize',
+                    minLength: 12,
+                    maxLength: 256,
                     onlyCityAndZipAddress: true
                   }"
                   [activeAddress]="selectedBillingPoBox"

@@ -656,7 +656,11 @@ export class TaInputComponent
     }
 
     // Business Name
-    if (['business name'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['business name', 'shop name'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (
         /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü -]*$/g.test(
           String.fromCharCode(event.charCode)

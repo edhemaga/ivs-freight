@@ -1,4 +1,7 @@
-import { emailValidation } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressValidation,
+  emailValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -102,7 +105,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       companyContactLabelId: [null],
       phone: [null, [phoneRegex, Validators.required]],
       email: [null, [emailRegex, ...emailValidation, Validators.required]],
-      address: [null],
+      address: [null, [...addressValidation]],
       addressUnit: [null, [Validators.maxLength(6)]],
       shared: [true],
       sharedLabelId: [null, Validators.required],

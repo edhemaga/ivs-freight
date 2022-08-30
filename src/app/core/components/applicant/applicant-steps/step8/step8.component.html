@@ -122,6 +122,8 @@
                 isRequired: true,
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
+                minLength: 12,
+                maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"
@@ -262,6 +264,8 @@
                 isRequired: true,
                 placeholderIcon: 'address',
                 textTransform: 'capitalize',
+                minLength: 12,
+                maxLength: 256,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"

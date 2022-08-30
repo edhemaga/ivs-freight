@@ -11,6 +11,7 @@ import { Applicant } from '../../state/model/applicant.model';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @UntilDestroy()
 @Component({
@@ -139,7 +140,7 @@ export class Step7Component implements OnInit, OnDestroy {
     this.sevenDaysHosForm = this.formBuilder.group({
       isValidHos: [false, Validators.requiredTrue],
       startDate: [null, Validators.required],
-      address: [null, Validators.required],
+      address: [null, [Validators.required, ...addressValidation]],
       anotherEmployer: [null, Validators.required],
       intendToWorkAnotherEmployer: [null, Validators.required],
       isValidAnotherEmployer: [null, Validators.requiredTrue],
