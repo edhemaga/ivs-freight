@@ -32,6 +32,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
+import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -222,6 +223,24 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         if (data.action === 'delete' && this.editData) {
           this.deleteTrailerById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: 'Trailer',
+          });
+          break;
+        }
+        default: {
+          break;
         }
       }
     }
@@ -426,7 +445,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         companyOwned: res.companyOwned,
         trailerNumber: res.trailerNumber,
         trailerTypeId: res.trailerTypeId,
-        trailerMakeId: res.trailerMakeId,
+        trailerMakeId: ' ',
         model: res.model,
         colorId: res.colorId,
         year: res.year,
@@ -479,7 +498,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             companyOwned: res.companyOwned,
             trailerNumber: res.trailerNumber,
             trailerTypeId: res.trailerType ? res.trailerType.name : null,
-            trailerMakeId: res.trailerMake ? res.trailerMake.name : null,
+            trailerMakeId: res.trailerMake ? ' ' : null,
             model: res.model,
             colorId: res.color ? res.color.name : null,
             year: res.year,
@@ -519,6 +538,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
           this.selectedDoorType = res.doorType ? res.doorType : null;
           this.selectedReeferType = res.reeferUnit ? res.reeferUnit : null;
           this.trailerStatus = res.status === 1 ? false : true;
+
+          console.log('Trailer make: ', this.selectedColor);
 
           this.modalService.changeModalStatus({
             name: 'deactivate',
@@ -560,7 +581,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
               value: {
                 ...this.trailerForm.value,
                 selectedTrailerType: this.selectedTrailerType,
-                selectedTruckMake: this.selectedTrailerMake,
+                selectedTrailerMake: this.selectedTrailerMake,
                 selectedColor: this.selectedColor,
                 selectedTrailerLength: this.selectedTrailerLength,
                 selectedOwner: this.selectedOwner,
@@ -617,9 +638,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.trailerForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  trailerMakeId: res.trailerMake?.name
-                    ? res.trailerMake.name
-                    : null,
+                  trailerMakeId: res.trailerMake?.name ? ' ' : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTrailerMake = res.trailerMake;

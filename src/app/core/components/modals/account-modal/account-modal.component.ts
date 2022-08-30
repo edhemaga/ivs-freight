@@ -248,7 +248,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public onPickExistLabel(event: any) {
-    console.log('pick exist label: ', event);
     this.selectedAccountLabel = event;
   }
 
@@ -259,6 +258,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       colorId: this.selectedAccountColor.id,
       color: this.selectedAccountColor.name,
       code: this.selectedAccountColor.code,
+      hoverCode: this.selectedAccountColor.hoverCode,
     };
   }
 
@@ -311,6 +311,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           code: this.selectedAccountColor
             ? this.selectedAccountColor.code
             : this.colors[this.colors.length - 1].code,
+          hoverCode: this.selectedAccountColor
+            ? this.selectedAccountColor.hoverCode
+            : this.colors[this.colors.length - 1].hoverCode,
           count: 0,
           colorId: this.selectedAccountColor
             ? this.selectedAccountColor.id

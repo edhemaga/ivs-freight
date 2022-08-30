@@ -2,6 +2,7 @@ import { debounceTime } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -34,7 +35,7 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
-  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
@@ -150,6 +151,15 @@ export class TaInputDropdownComponent
     }
   }
 
+  ngAfterViewInit() {
+    if (this.inputConfig.autoFocus) {
+      const timeout = setTimeout(() => {
+        this.popoverRef.open();
+        clearTimeout(timeout);
+      }, 450);
+    }
+  }
+
   ngOnInit(): void {
     // Multiselect
     if (this.inputConfig.multiselectDropdown) {
@@ -218,8 +228,19 @@ export class TaInputDropdownComponent
 
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              this.getSuperControl.setValue(this.activeItem.name);
-              this.changeDetectionRef.detectChanges();
+              // Dropdown image selection
+              if (
+                !this.inputConfig?.dropdownImageInput?.withText &&
+                this.inputConfig?.dropdownImageInput?.url
+              ) {
+                this.getSuperControl.patchValue(null);
+                this.getSuperControl.setErrors(null);
+              }
+              // Native dropdown
+              else {
+                this.getSuperControl.setValue(this.activeItem.name);
+                this.changeDetectionRef.detectChanges();
+              }
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -332,6 +353,20 @@ export class TaInputDropdownComponent
                 .includes(searchText.toLowerCase())
         );
 
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig?.dropdownImageInput?.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig?.dropdownImageInput,
+              remove: true,
+            },
+          };
+        }
+
         if (!this.options.length) {
           this.options.push({
             id: 7654,
@@ -340,6 +375,20 @@ export class TaInputDropdownComponent
         }
       } else {
         this.options = this.originalOptions;
+
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig?.dropdownImageInput?.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig?.dropdownImageInput,
+              remove: false,
+            },
+          };
+        }
       }
     }
     // Group Dropdown Items
@@ -421,10 +470,25 @@ export class TaInputDropdownComponent
 
       // Normal Dropdown option selected
       else {
+        this.inputConfig = {
+          ...this.inputConfig,
+          blackInput: true,
+        };
+
         this.activeItem = option;
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
+
+        const timeout = setTimeout(() => {
+          this.inputConfig = {
+            ...this.inputConfig,
+            blackInput: false,
+          };
+          this.changeDetectionRef.detectChanges();
+          console.log(this.inputConfig);
+          clearTimeout(timeout);
+        }, 100);
       }
     }
   }
@@ -477,9 +541,6 @@ export class TaInputDropdownComponent
       id: uuidv4(),
       name: this.getSuperControl.value,
     };
-
-    // this.originalOptions = [...this.originalOptions, this.activeItem];
-    // this.options = this.originalOptions;
 
     this.saveItem.emit({ data: this.activeItem, action: 'new' });
 

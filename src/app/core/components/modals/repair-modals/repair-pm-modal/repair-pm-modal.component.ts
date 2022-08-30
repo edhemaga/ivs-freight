@@ -19,6 +19,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { debounceTime } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -29,6 +30,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
   @Input() editData: any;
+
   public PMform: FormGroup;
 
   public isDirty: boolean;
@@ -283,6 +285,24 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: this.editData?.type2,
+          });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
   }
 
   private getPMTruckList() {
@@ -334,9 +354,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               item.logoName.includes('custom') ? 'new-pm' : null
             );
           });
-
-          console.log(res.pagination.data);
-          console.log(this.defaultPMs, this.newPMs);
         },
         error: () => {
           this.notificationService.error(
@@ -605,41 +622,59 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   private getPMList() {
-    switch (this.editData.type) {
-      case 'new': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckList();
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerList();
-            break;
-          }
-          default: {
-            break;
-          }
+    // Global List
+    if (this.editData.type === 'new') {
+      switch (this.editData.header) {
+        case 'Truck': {
+          this.getPMTruckList();
+          break;
         }
-        break;
-      }
-      case 'edit': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckUnit(this.editData.id);
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerUnit(this.editData.id);
-            break;
-          }
-          default: {
-            break;
-          }
+        case 'Trailer': {
+          this.getPMTrailerList();
+          break;
         }
-        break;
+        default: {
+          break;
+        }
       }
-      default: {
-        break;
+    }
+    // Per Unit list
+    else {
+      if (['Truck', 'Trailer'].includes(this.editData?.type)) {
+        const data = JSON.parse(sessionStorage.getItem(this.editData.key));
+
+        if (this.editData.type === 'Truck') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Truck',
+            action: 'unit-pm',
+          };
+        }
+
+        if (this.editData.type === 'Trailer') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Trailer',
+            action: 'unit-pm',
+          };
+        }
+      }
+      if ([this.editData?.header, this.editData?.type].includes('Truck')) {
+        this.getPMTruckUnit(this.editData.id);
+      } else {
+        this.getPMTrailerUnit(this.editData.id);
       }
     }
   }

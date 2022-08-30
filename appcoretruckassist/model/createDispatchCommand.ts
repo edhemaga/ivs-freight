@@ -14,13 +14,10 @@ import { AddressEntity } from './addressEntity';
 
 export interface CreateDispatchCommand { 
     dispatchBoardId?: number;
-    dispatcherId?: number | null;
-    truckId?: number;
+    truckId?: number | null;
     trailerId?: number | null;
     driverId?: number | null;
     coDriverId?: number | null;
-    phone?: string | null;
-    email?: string | null;
     location?: AddressEntity;
     note?: string | null;
     loadIds?: Array<number> | null;
