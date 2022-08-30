@@ -28,6 +28,13 @@
         <div class="dashboard-top-driver-header-toolbar-search-icon">
           <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
         </div>
+        <div class="dashboard-top-driver-header-toolbar-border"></div>
+        <div class="dashboard-top-driver-toolbar-filter-selected" 
+          (click)="clearSelected()"
+          *ngIf="selectedDrivers?.length > 0"
+        >
+          Clear Selection
+        </div>
       </div>
       <div class="dashboard-top-driver-header-toolbar-items-holder">
         <div class="dashboard-top-driver-header-toolbar-switch-right">

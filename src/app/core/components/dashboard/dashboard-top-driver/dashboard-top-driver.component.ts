@@ -379,6 +379,32 @@ export class DashboardTopDriverComponent implements OnInit {
     delete this.compareHoverColor[item.id];
   }
 
+  clearSelected(e){
+    this.driverList.map((driver) => {
+      driver.acive = false;
+    });
+
+    this.savedColors = [...this.chartColors];
+    this.savedHoverColors = [];
+
+    this.driverList.sort((a, b) => {
+      return a.id - b.id;
+    });
+
+    this.setChartData(this.driverList, false);
+    this.compareColor = [];
+    this.compareHoverColor = [];
+
+    this.selectedDrivers.map((item, indx) => {
+      this.topDriverBarChart.removeMultiBarData(item, true);
+    });
+
+    this.selectedDrivers = [];
+    this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
+    this.doughnutChart.selectedDrivers = this.selectedDrivers;
+    this.removeDriverHover();
+  }
+
   changeTopTen(item){
     const newSwitchValue = [
       {

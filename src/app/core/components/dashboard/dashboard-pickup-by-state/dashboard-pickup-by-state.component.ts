@@ -289,6 +289,24 @@ export class DashboardPickupByStateComponent implements OnInit {
   }
 
   clearSelected(){
+    this.pickupStateList.map((driver) => {
+      driver.acive = false;
+    });
+
+    this.savedColors = [...this.chartColors];
+
+    this.pickupStateList.sort((a, b) => {
+      return a.id - b.id;
+    });
+
+    this.compareColor = [];
+
+    this.pickupStateList.map((item, indx) => {
+      this.statesBarChart.removeMultiBarData(item, true);
+    });
+
+    this.selectedStates = [];
+    this.statesBarChart.selectedDrivers = this.selectedStates;
   }
 
   changeState(item){

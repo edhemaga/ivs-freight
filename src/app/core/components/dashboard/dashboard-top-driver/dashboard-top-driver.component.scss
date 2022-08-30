@@ -118,6 +118,23 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', '
                     }
                 }
 
+                .dashboard-top-driver-toolbar-filter-selected{
+                    height: 28px;
+                    padding: 5px 8px;
+                    box-sizing: border-box;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 2px;
+                    background-color: #F3F3F3;
+                    font-size: 14px;
+                    font-weight: 800;
+                    color: #6C6C6C;
+                    margin-left: 2px;
+                    user-select: none;
+                    cursor: pointer;
+                }
+
                 .dashboard-top-driver-header-toolbar-search-icon{
                     width: 28px;
                     height: 28px;

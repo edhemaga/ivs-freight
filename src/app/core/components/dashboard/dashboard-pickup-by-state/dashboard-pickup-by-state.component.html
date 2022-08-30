@@ -30,7 +30,10 @@
           ></svg-icon>
         </div>
         <div class="dashboard-pickup-toolbar-border"></div>
-        <div class="dashboard-pickup-toolbar-filter-selected" (click)="clearSelected()">
+        <div class="dashboard-pickup-toolbar-filter-selected" 
+        (click)="clearSelected()"
+        *ngIf="selectedStates?.length > 0"
+        >
           Clear Selection
         </div>
       </div>
