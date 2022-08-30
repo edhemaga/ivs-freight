@@ -162,6 +162,7 @@ export class DashboardTopDriverComponent implements OnInit {
   compareHoverColor: any = {};
   savedColors: any[] = [];
   savedHoverColors: any[] = [];
+  chartHoverColors: any[] = [];
 
   popoverTopTen: any[] = [
     {
@@ -232,6 +233,7 @@ export class DashboardTopDriverComponent implements OnInit {
 
     if ( this.circleColor?.length ) {
       this.chartColors = this.circleColor;
+      this.chartHoverColors = this.hoverCircleColor;
     }
 
     let chartProp = [];
@@ -379,13 +381,13 @@ export class DashboardTopDriverComponent implements OnInit {
     delete this.compareHoverColor[item.id];
   }
 
-  clearSelected(e){
+  clearSelected(){
     this.driverList.map((driver) => {
       driver.acive = false;
     });
 
     this.savedColors = [...this.chartColors];
-    this.savedHoverColors = [];
+    this.savedHoverColors = [...this.chartHoverColors];
 
     this.driverList.sort((a, b) => {
       return a.id - b.id;
@@ -437,7 +439,7 @@ export class DashboardTopDriverComponent implements OnInit {
       }
 
       item.active = true;
-  
+      
       const firstInArray = this.savedColors.shift();
       const firstInArrayHover = this.savedHoverColors.shift();
       
