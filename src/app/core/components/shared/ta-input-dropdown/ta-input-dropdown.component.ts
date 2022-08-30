@@ -485,6 +485,8 @@ export class TaInputDropdownComponent
             ...this.inputConfig,
             blackInput: false,
           };
+          this.changeDetectionRef.detectChanges();
+          console.log(this.inputConfig);
           clearTimeout(timeout);
         }, 50);
       }

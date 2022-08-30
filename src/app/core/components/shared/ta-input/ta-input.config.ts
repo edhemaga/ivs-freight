@@ -60,8 +60,8 @@ export interface ITaInput {
   // Custom classes
   // - 'input-22' -> height: 22px
   // - 'input-26' -> height: 26px,
-  // - 'input-32' -> height: 32px,
   // - 'input-30' -> height: 30px,
+  // - 'input-32' -> height: 32px,
   // - 'datetimeclass' -> date/time pickers
   // - 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
