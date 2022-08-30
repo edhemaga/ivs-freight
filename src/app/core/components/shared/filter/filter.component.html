@@ -2,7 +2,7 @@
 class="user-icon"
 app-autoclose-popover
 [customClass]="'filterpopovermain'"
-[placement]="'bottom'"
+[placement]="'bottom-left'"
 [ngClass]="{ 'active-options': t2?.isOpen(), 'filter-active-colors' : selectedUser.length > 0 || selectedTimeValue != '' || canadaSelectedStates.length > 0 || usaSelectedStates.length || rangeValue > 0 || moneyFilterStatus }"
 >
     <!-- <svg-icon src="assets/svg/common/ic_user.svg"></svg-icon> -->
@@ -39,7 +39,7 @@ app-autoclose-popover
                     [inputConfig]="{
                         name: 'search',
                         type: 'text',
-                        label: 'Search',
+                        label: 'Search '+ filterTitle.split(' ')[0] +' ' , 
                         placeholderIcon: 'ic_search',
                         customClass: 'filter-search-input',
                         placeholderInsteadOfLabel: true,

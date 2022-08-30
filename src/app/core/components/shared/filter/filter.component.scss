@@ -9,6 +9,7 @@
     border-radius: 2px;
 
     svg-icon{
+        
         svg{
             width: 14.4px;
             height: 16.2px;        
@@ -110,6 +111,8 @@
     }
 }
 .filter-holder{
+    position: relative;
+    //left: -10px;
     width: 260px;
     padding: 7px 6px 6px 6px;
     border-radius: 3px;
@@ -149,7 +152,7 @@
             align-items: center;
 
             line-height: 18px;
-            font-size: 18px;
+            font-size: 14px;
             font-weight: 800;
             color: #6C6C6C;
             padding-left: 4px;
@@ -299,7 +302,7 @@
     }
 
     .border-thrird-margin{
-        margin: 8px 0px;
+        margin: 6px 0px;
     }
 
     .search-holder{
@@ -485,19 +488,36 @@
     }
 
     .user-holder{ 
+        position: relative;
         width: 100%;
         max-height: 224px;
         background-color: #fff;
-        overflow: auto;
+        //overflow: auto;
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
         flex-direction: column;
-        padding: 2px 2px 0px 2px;
+        padding: 0px 0px 0px 0px;
         box-sizing: border-box;
-        -ms-overflow-style: none;
-        scrollbar-width: none; 
+        overflow-y: scroll;
 
+        &::-webkit-scrollbar{
+            position: relative;
+            right: 2px;
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #AAAAAA !important;
+            border: 4px solid #AAAAAA !important;
+            border-radius: 1px;
+        }
+
+        &::-webkit-scrollbar-track{
+            width: 4px;
+            background-color: #ffffff;
+        }
+        
         .user-frame-holder{
             position: relative;
             width: 100%;
@@ -550,14 +570,7 @@
             }
         }
 
-
-        &::-webkit-scrollbar{
-            width: 9px;
-        }
-
-        &::-webkit-scrollbar-thumb{
-            border: 3px solid #fff !important;
-        }
+        
     }
 
     .buttons-holder{
@@ -679,14 +692,14 @@
 .pm-filter{
     .user-main-holder{
         .selected-filter-icon{
-            top: 4px !important;
+            top: 0px !important;
 
             svg-icon{
                 
                 svg{
 
-                    height: 18px;
-                    width: 18px;
+                    height: 16.45px;
+                    width: 16.65px;
 
                     path{
                         fill: #6D82C7;
@@ -697,16 +710,17 @@
     }
 
     .user-profile-img{
-        top: 4px !important;
-        svg-icon{
-            
-            svg{
-                height: 18px;
-                width: 18px;
+        display: flex;
+        align-items: center;
+        top: 0px !important;
+        height: 26px;
 
-                path{
-                    fill: #AAAAAA;
-                }
+        svg{
+            height: 16.45px;
+            width: 16.65px;
+
+            path{
+                fill: #AAAAAA;
             }
         }
     }
@@ -802,14 +816,6 @@
 
     .filter-header{
         padding-left: 4px;
-    }
-
-    .money-top-border-magin{
-        //margin: 8px 0px 25px 0px;
-    }
-
-    .money-bottom-border-magin{
-        //margin: 22px 0px 8px 0px;
     }
 
     .money-main-holder{
@@ -1844,13 +1850,6 @@
             }
         }
 
-        &::-webkit-scrollbar{
-            width: 9px;
-        }
-
-        &::-webkit-scrollbar-thumb{
-            border: 3px solid #fff !important;
-        }
     }
 
     .filter-buttons-holder{
@@ -1918,6 +1917,13 @@
 }
 
 .popover-body{
+    //position: relative;
+    //left: -10px;
     border-radius: 3px;
 }
+
+.popover{
+   background-color: transparent;
+}
+
 
