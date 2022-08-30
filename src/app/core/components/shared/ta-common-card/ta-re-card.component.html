@@ -94,6 +94,7 @@
       <app-details-page-dropdown
         [options]="options.actions"
         [id]="optionsId"
+        (click)="sendData(data)"
         [placement]="setPositionDrop? 'bottom-right' : 'bottom-left'"
         (dropDownActions)="dropAct($event)"
         [customClassDropDown]="'drop-down-details-single'"

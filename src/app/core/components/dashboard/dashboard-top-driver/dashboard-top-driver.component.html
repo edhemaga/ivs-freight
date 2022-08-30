@@ -59,7 +59,7 @@
             class="dashboard-top-driver-body-list-items-holder"
             (mouseenter)="hoverDriver(indx)"
             (mouseleave)="removeDriverHover()"
-            (click)="selectCompare(item, indx)"
+            (click)="selectCompare($event, item, indx)"
           >
             <div class="dashboard-top-driver-body-list-items top-compare-{{ compareColor[item.id] }}">
               <div class="dashboard-top-driver-body-list-frame">

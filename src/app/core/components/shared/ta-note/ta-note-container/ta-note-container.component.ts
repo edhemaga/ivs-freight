@@ -85,10 +85,10 @@ export class TaNoteContainerComponent implements OnInit {
   }
 
   executeEditor(action: string, color?: string, indx?: number) {
-    if (indx) {
+    if (indx || indx === 0) {
       this.selectedColorName = this.containerColors[indx];
     }
-    this.filterContainersColor();
+    
     document.execCommand('styleWithCSS', false, 'true');
     if (this.range) {
       this.selectionTaken.removeAllRanges();
@@ -108,6 +108,7 @@ export class TaNoteContainerComponent implements OnInit {
         document.execCommand(action, false, null);
       }
     } else {
+      this.filterContainersColor();
       setTimeout(() => {
 
         this.focusElement();

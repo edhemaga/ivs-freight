@@ -27,7 +27,7 @@
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
           (dropActions)="
-            optionsEvent($event, trailers.data, 'edit-registration')
+            optionsEvent($event, trailers.data, 'registration')
           "
         >
           <div class="cards-container">
@@ -35,7 +35,7 @@
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
+                  <div class="card-item-value">{{reg.state.stateShortName}}</div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
@@ -99,7 +99,7 @@
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
           [expDateClose]="fhwa.issueDate | setFutureYear"
-          (dropActions)="optionsEvent($event, trailers.data, 'edit-inspection')"
+          (dropActions)="optionsEvent($event, trailers.data, 'inspection')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
@@ -121,7 +121,7 @@
               <div class="divider"></div>
               <div class="card-note">
                 <app-ta-input-note
-                  [formControl]="registrationNote"
+                  [formControl]="fhwaNote"
                   [isVisibleDivider]="false"
                   [isVisibleSecondDivider]="false"
                   [placeholder]="'Write something.'"
@@ -154,14 +154,14 @@
               ? 'assets/svg/truckassist-table/note/Note.svg'
               : 'assets/svg/truckassist-table/note/Note - Empty.svg'
           "
-          (dropActions)="optionsEvent($event, trailers.data, 'edit-title')"
+          (dropActions)="optionsEvent($event, trailers.data, 'title')"
         >
           <div class="cards-container">
             <div class="card-body-cdl">
               <div class="card-row-endor">
                 <div class="card-item">
                   <div class="card-item-name">State</div>
-                  <div class="card-item-value">KV</div>
+                  <div class="card-item-value">{{title?.state?.stateShortName}}</div>
                 </div>
                 <div class="card-item">
                   <div class="card-item-name">Issued</div>
