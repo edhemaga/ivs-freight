@@ -655,86 +655,12 @@ export class TaInputComponent
       return false;
     }
 
-    if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-
-        if (
-          this.getSuperControl.value * 10 + event.charCode - 48 >
-          this.inputConfig.max
-        ) {
-          return false;
-        }
-
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[:*?"<>|/]*$/.test(String.fromCharCode(event.charCode))) {
-        event.preventDefault();
-        return false;
-      } else {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      }
-    }
-
-    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
-          this.numberOfSpaces++;
-        } else {
-          this.numberOfSpaces = 0;
-        }
-        if (this.numberOfSpaces > 1) {
-          event.preventDefault();
-          return false;
-        }
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (
-      [
-        'first name',
-        'last name',
-        'name',
-        'full name',
-        'relationship',
-        'title',
-      ].includes(this.inputConfig.name.toLowerCase())
-    ) {
-      let spaces = this.input.nativeElement.value.split(' ').length;
+    // Business Name
+    if (['business name'].includes(this.inputConfig.name.toLowerCase())) {
       if (
-        /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
-        spaces <= 2
+        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü -]*$/g.test(
+          String.fromCharCode(event.charCode)
+        )
       ) {
         this.disableConsecutivelySpaces(event);
         return true;
@@ -744,212 +670,289 @@ export class TaInputComponent
       }
     }
 
-    if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
 
-    if (
-      ['address unit', 'truck number', 'trailer number'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
-      if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     if (
+    //       this.getSuperControl.value * 10 + event.charCode - 48 >
+    //       this.inputConfig.max
+    //     ) {
+    //       return false;
+    //     }
 
-    if (
-      [
-        'routing number',
-        'account number',
-        'empty weight',
-        'purchase price',
-        'axles',
-        'mileage',
-        'ipas ezpass',
-        'phone extension',
-        'qty',
-        'price',
-        'odometer',
-        'prefix',
-        'sufix',
-        'starting',
-        'customer pay term',
-        'dollar',
-        'fatalinjuries',
-        'months',
-      ].includes(this.inputConfig.name.toLowerCase())
-    ) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        const timeout = setTimeout(() => {
-          if (this.getSuperControl.value) {
-            let perStopValue = this.getSuperControl.value.replace(/,/g, '');
-            if (
-              perStopValue > this.inputConfig.max ||
-              perStopValue < this.inputConfig.min
-            ) {
-              this.getSuperControl.setErrors({ invalid: true });
-              return false;
-            }
-            return true;
-          }
-          clearTimeout(timeout);
-        }, 0);
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        this.disableMultiplePoints(event);
+    // if (['username'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-        // Check for max length
-        if (this.getSuperControl.value?.toString().includes('.')) {
-          this.inputConfig.maxLength = 4;
-        } else {
-          this.inputConfig.maxLength = 2;
-        }
+    // if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[:*?"<>|/]*$/.test(String.fromCharCode(event.charCode))) {
+    //     event.preventDefault();
+    //     return false;
+    //   } else {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   }
+    // }
 
-        // Check for range
-        if (
-          this.getSuperControl.value > this.inputConfig.max ||
-          this.getSuperControl.value < this.inputConfig.min
-        ) {
-          this.getSuperControl.setErrors({ invalid: true });
-        }
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+    //     if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+    //       this.numberOfSpaces++;
+    //     } else {
+    //       this.numberOfSpaces = 0;
+    //     }
+    //     if (this.numberOfSpaces > 1) {
+    //       event.preventDefault();
+    //       return false;
+    //     }
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['year'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
-        !this.input.nativeElement.value
-      ) {
-        event.preventDefault();
-        return false;
-      }
+    // if (
+    //   [
+    //     'first name',
+    //     'last name',
+    //     'name',
+    //     'full name',
+    //     'relationship',
+    //     'title',
+    //   ].includes(this.inputConfig.name.toLowerCase())
+    // ) {
+    //   let spaces = this.input.nativeElement.value.split(' ').length;
+    //   if (
+    //     /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
+    //     spaces <= 2
+    //   ) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-      if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (
+    //   ['address unit', 'truck number', 'trailer number'].includes(
+    //     this.inputConfig.name.toLowerCase()
+    //   )
+    // ) {
+    //   if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        /^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))
-      ) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (
+    //   [
+    //     'routing number',
+    //     'account number',
+    //     'empty weight',
+    //     'purchase price',
+    //     'axles',
+    //     'mileage',
+    //     'ipas ezpass',
+    //     'phone extension',
+    //     'qty',
+    //     'price',
+    //     'odometer',
+    //     'prefix',
+    //     'sufix',
+    //     'starting',
+    //     'customer pay term',
+    //     'dollar',
+    //     'fatalinjuries',
+    //     'months',
+    //   ].includes(this.inputConfig.name.toLowerCase())
+    // ) {
+    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     const timeout = setTimeout(() => {
+    //       if (this.getSuperControl.value) {
+    //         let perStopValue = this.getSuperControl.value.replace(/,/g, '');
+    //         if (
+    //           perStopValue > this.inputConfig.max ||
+    //           perStopValue < this.inputConfig.min
+    //         ) {
+    //           this.getSuperControl.setErrors({ invalid: true });
+    //           return false;
+    //         }
+    //         return true;
+    //       }
+    //       clearTimeout(timeout);
+    //     }, 0);
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     this.disableMultiplePoints(event);
 
-    if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     // Check for max length
+    //     if (this.getSuperControl.value?.toString().includes('.')) {
+    //       this.inputConfig.maxLength = 4;
+    //     } else {
+    //       this.inputConfig.maxLength = 2;
+    //     }
 
-    if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     // Check for range
+    //     if (
+    //       this.getSuperControl.value > this.inputConfig.max ||
+    //       this.getSuperControl.value < this.inputConfig.min
+    //     ) {
+    //       this.getSuperControl.setErrors({ invalid: true });
+    //     }
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (['model'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (
+    //     /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
+    //     !this.input.nativeElement.value
+    //   ) {
+    //     event.preventDefault();
+    //     return false;
+    //   }
 
-    if (
-      ['full parking slot', 'parking slot'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
-      if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //   if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['email'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['model'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (
+    //   ['full parking slot', 'parking slot'].includes(
+    //     this.inputConfig.name.toLowerCase()
+    //   )
+    // ) {
+    //   if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
     this.input.nativeElement.value.trim();
   }
