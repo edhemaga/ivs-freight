@@ -22,6 +22,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   @Input() id: number;
   @Input() customClassDropDown: string;
   @Input() hasVericalDots: boolean;
+  @Input() data: any;
   @Input() public placement: string = 'bottom-right';
   @Output() dropDownActions: EventEmitter<any> = new EventEmitter();
   dropContent: any[] = [];
@@ -69,6 +70,7 @@ export class DetailsDropdownComponent implements OnInit, OnChanges {
   onAction(action: any) {
     this.dropDownActions.emit({
       id: this.id,
+      data: this.data,
       type: action.name,
     });
 

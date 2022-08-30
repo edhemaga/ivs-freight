@@ -243,10 +243,10 @@ export class DashboardPickupByStateComponent implements OnInit {
     this.statesBarChart.updateTime(ev['name']);
   }
 
-  selectStateCompare(item, indx){
+  selectStateCompare(e, item, indx){
     const itemId: any = item.id;
     if(!(itemId in this.compareColor)){
-
+      item.active = true;
       const firstInArray = this.pickupCircleColor[indx];
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
@@ -258,10 +258,14 @@ export class DashboardPickupByStateComponent implements OnInit {
 
       this.hoverState(indx);
     }
+    else{
+      this.removeFromStateList(e, indx, item)
+    }
   }
 
   removeFromStateList(e: Event,indx, item){
     e.stopPropagation();
+    item.active = false;
     this.pickupStateList.splice(indx, 1);
     let showDefault = false;
     if ( this.selectedStates?.length == 1 ) {
@@ -271,6 +275,15 @@ export class DashboardPickupByStateComponent implements OnInit {
     this.selectedStates.splice(indx, 1);
     this.statesBarChart.selectedDrivers = this.selectedStates;
     this.pickupStateList.push(item);
+    let allStates = [...this.pickupStateList];
+    let activeStates = allStates.filter((state) => state.active == true);
+    this.pickupStateList = activeStates;
+    let inactiveStates = allStates.filter((state) => !state.active).sort((a, b) => {
+      return a.id - b.id;
+    });
+    inactiveStates.map((state) => {
+      this.pickupStateList.push(state);
+    });
     this.savedColors.unshift(this.compareColor[item.id]);
     delete this.compareColor[item.id];
   }

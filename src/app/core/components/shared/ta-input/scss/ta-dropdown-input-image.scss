@@ -1,0 +1,176 @@
+.dropdown-selected-image {
+  position: absolute;
+  left: 6px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+  pointer-events: none;
+
+  // --------------------- TRUCKS ---------------------
+  &.semitruck {
+    svg {
+      path {
+        fill: #97d568 !important;
+      }
+    }
+  }
+
+  &.semisleeper {
+    svg {
+      path {
+        fill: #ffb74d !important;
+      }
+    }
+  }
+
+  &.boxtruck {
+    svg {
+      path {
+        fill: #fb6f6f !important;
+      }
+    }
+
+  }
+
+  &.cargovan {
+    svg {
+      path {
+        fill: #68c3ff !important;
+      }
+    }
+
+  }
+
+  &.towtruck {
+    svg {
+      path {
+        fill: #ba68c8 !important;
+      }
+    }
+
+  }
+
+  &.carhauler {
+    svg {
+      path {
+        fill: #59a5a5 !important;
+      }
+    }
+  }
+
+  &.spotter {
+    svg {
+      path {
+        fill: #415fc1 !important;
+      }
+    }
+  }
+
+
+// --------------------- TRAILERS ---------------------
+  &.reefer {
+    svg {
+      path {
+        fill: #ef6e6e !important;
+      }
+    }
+  }
+
+  &.dryvan {
+    svg {
+      path {
+        fill: #5673aa !important;
+      }
+    }
+  }
+
+  &.sidekit {
+    svg {
+      path {
+        fill: #76a77d !important;
+      }
+    }
+  }
+
+  &.conestog {
+    svg {
+      path {
+        fill: #484848 !important;
+      }
+    }
+  }
+
+  &.dumper {
+    svg {
+      path {
+        fill: #8fdee1!important;
+      }
+    }
+  }
+
+  &.container {
+    padding: 0 !important;
+    svg {
+      path {
+        fill: #ffbe7d !important;
+      }
+    }
+  }
+
+  &.tanker-liquid {
+    svg {
+      path: {
+        fill: #81ccff !important;
+      }
+    }
+  }
+
+  &.carhauler {
+    svg {
+      path {
+        fill: #668888 !important;
+      }
+    }
+  }
+
+  &.flatbed {
+    svg {
+      path {
+        fill: #af88ea !important;
+      }
+    }
+  }
+
+  &.low-boy-rgn {
+    svg {
+      path {
+        fill: #955fa2 !important;
+      }
+    }
+  }
+
+  &.chassis {
+    svg {
+      path {
+        fill: #547556 !important;
+      }
+    }
+  }
+
+  &.stepdeck {
+    svg {
+      path {
+        fill: #f2dd75 !important;
+      }
+    }
+  }
+
+  &.tanker-dry-bulk {
+    svg {
+      path: {
+        fill: #8ee0d2 !important;
+      }
+    }
+  }
+}

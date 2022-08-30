@@ -15,11 +15,8 @@ import { AddressEntity } from './addressEntity';
 
 export interface UpdateDispatchCommand { 
     id?: number;
-    dispatcherId?: number | null;
     status?: DispatchStatus;
     order?: number;
-    phone?: string | null;
-    email?: string | null;
     truckId?: number | null;
     trailerId?: number | null;
     driverId?: number | null;

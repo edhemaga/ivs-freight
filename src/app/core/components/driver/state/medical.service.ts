@@ -11,6 +11,7 @@ import { Observable, tap } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
+import { DriversItemStore } from './driver-details-state/driver-details.store';
 
 @Injectable({
   providedIn: 'root',
@@ -20,11 +21,36 @@ export class MedicalTService {
     private medicalService: MedicalService,
     private driverService: DriverTService,
     private driverStore: DriversActiveStore,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private driverItemStore: DriversItemStore
   ) {}
 
   public deleteMedicalById(id: number): Observable<any> {
-    return this.medicalService.apiMedicalIdDelete(id);
+    return this.medicalService.apiMedicalIdDelete(id).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'delete',
+              data: driver,
+              id: driverId,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public getMedicalById(id: number): Observable<MedicalResponse> {
@@ -32,9 +58,7 @@ export class MedicalTService {
   }
 
   /* Observable<CreateMedicalResponse> */
-  public addMedical(
-    data: CreateMedicalCommand
-  ): Observable<any> {
+  public addMedical(data: CreateMedicalCommand): Observable<any> {
     return this.medicalService.apiMedicalPost(data).pipe(
       tap((res: any) => {
         const subDriver = this.driverService
@@ -64,6 +88,30 @@ export class MedicalTService {
   }
 
   public updateMedical(data: EditMedicalCommand): Observable<object> {
-    return this.medicalService.apiMedicalPut(data);
+    return this.medicalService.apiMedicalPut(data).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: driver,
+              id: driverId,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 }

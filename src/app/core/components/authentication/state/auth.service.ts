@@ -53,8 +53,7 @@ export class AuthStoreService {
     return this.accountService.apiAccountLoginPost(data).pipe(
       tap((user: SignInResponse) => {
         // Production
-        this.authStore.set({ 1: user });
-        configFactory(user.token);
+        // this.authStore.set({ 1: user });
         // Develop
         localStorage.setItem('user', JSON.stringify(user));
         this.router.navigate(['/dashboard']);
