@@ -70,6 +70,8 @@
             background-color: #6D82C7;
             border: 1px solid #fff;
 
+            user-select: none;
+
             &:hover{
                 background-color: #3551B7 !important;
             }
@@ -1038,6 +1040,10 @@
     .top-border-margin{
         margin: 8px 0px 8px 0px;
     }
+
+    .bottom-border-margin{
+        margin: 8px 0px 6px 0px;
+    }
     
     .buttons-holder{
         padding: 0px;
@@ -1056,8 +1062,8 @@
         .ta-ngx-slider,
         .custom-slider-commission {
 
-            margin-top: 8px;
-            margin-bottom: 22px;
+            margin-top: 2px;
+            margin-bottom: 10px;
 
             .ngx-slider {
 
