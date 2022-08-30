@@ -62,6 +62,7 @@ export interface ITaInput {
   // - 'input-26' -> height: 26px,
   // - 'input-30' -> height: 30px,
   // - 'input-32' -> height: 32px,
+  // - 'line-input-26' -> centered elements into input, when input not a part of form tag
   // - 'datetimeclass' -> date/time pickers
   // - 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
