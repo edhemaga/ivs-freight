@@ -34,6 +34,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public documents: any[] = [];
 
+  public cdls: any[] = [];
+  public selectedCdl: any = null;
+
   public isDirty: boolean = false;
 
   constructor(
@@ -57,6 +60,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.mvrForm = this.formBuilder.group({
       issueDate: [null, Validators.required],
+      cdlId: [null, Validators.required],
       note: [null],
     });
 
@@ -115,6 +119,18 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'cdl': {
+        this.selectedCdl = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   private updateMVR() {
     const { issueDate } = this.mvrForm.value;
     const newData: EditMvrCommand = {
@@ -122,6 +138,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       id: this.editData.file_id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),
+      cdlId: this.selectedCdl.id,
     };
 
     this.mvrService
@@ -147,6 +164,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       driverId: this.editData.id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),
+      cdlId: this.selectedCdl.id,
     };
     this.mvrService
       .addMvr(newData)
@@ -172,9 +190,11 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
+            cdlId: null,
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
+          this.selectedCdl = null;
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');

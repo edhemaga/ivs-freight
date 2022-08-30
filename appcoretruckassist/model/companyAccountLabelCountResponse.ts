@@ -17,6 +17,7 @@ export interface CompanyAccountLabelCountResponse {
     colorId?: number;
     color?: string | null;
     code?: string | null;
+    hoverCode?: string | null;
     count?: number;
 }
 

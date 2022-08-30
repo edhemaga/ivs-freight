@@ -14,7 +14,7 @@
       width: 100%;
       background-color: #ffffff;
       border-radius: 2px;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3) !important;
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15) !important;
       padding: 2px;
       overflow: hidden;
 
@@ -105,6 +105,7 @@
           color: #536bc2;
           font-weight: 600;
           transition: all 0.3s ease-in-out;
+          position: relative;
 
           &:hover {
             color: #3551b7;
@@ -114,6 +115,19 @@
             color: #536bc2;
             font-weight: 600 !important;
             transition: all 0.3s ease-in-out;
+          }
+
+          &.add-new-divider {
+            &::after {
+              content: "";
+              position: absolute;
+              bottom: 0;
+              left: 0px;
+              height: 2px;
+              width: 100%;
+              background-color: #f3f3f3;
+              border-radius: 1px;
+            }
           }
         }
 
@@ -184,7 +198,7 @@
             content: "";
             position: absolute;
             bottom: 0;
-            left: 0;
+            left: 0px;
             height: 2px;
             width: 100%;
             background-color: #f3f3f3;
@@ -460,6 +474,10 @@
         width: 245px;
       }
 
+      &.w-col-229 {
+        width: 229px;
+      }
+
       &.w-col-228 {
         width: 228px;
       }
@@ -514,6 +532,11 @@
 
       &.w-col-166 {
         width: 166px;
+      }
+
+      &.w-col-165 {
+        width: 165px;
+        max-height: 304px;
       }
 
       &.w-col-164 {
@@ -769,7 +792,7 @@
       width: 100%;
       background-color: #ffffff;
       border-radius: 2px;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
       padding: 2px;
       overflow: hidden;
 
@@ -797,10 +820,10 @@
 
       .option {
         position: relative;
-        margin-bottom: 2px;
-        padding: 3px 4px;
+        padding: 3px;
         height: 26px;
         font-size: 14px;
+        line-height: 18px;
         font-weight: 400;
         border-radius: 2px;
         white-space: nowrap;
@@ -825,14 +848,14 @@
           color: #536bc2;
           font-weight: 600;
 
-          &::before {
+          &::after {
             content: "";
             height: 2px;
-            width: 162px;
+            width: 100%;
             background-color: #f3f3f3;
             border-radius: 1px;
             position: absolute;
-            bottom: 26px;
+            bottom: 0px;
             left: 0px;
           }
         }

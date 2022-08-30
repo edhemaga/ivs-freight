@@ -87,7 +87,9 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              this.deleteDriverById(res.id);
+              if (res.template === 'driver') {
+                this.deleteDriverById(res.id);
+              }
               break;
             }
             case 'activate': {
@@ -470,8 +472,10 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(this.viewData);
 
       // For Testing
-      // for (let i = 0; i < 50; i++) {
-      //   this.viewData.push(this.viewData[0]);
+      // if(this.selectedTab !== 'applicants'){
+      //   for (let i = 0; i < 10000; i++) {
+      //     this.viewData.push(this.viewData[0]);
+      //   }
       // }
     } else {
       this.viewData = [];

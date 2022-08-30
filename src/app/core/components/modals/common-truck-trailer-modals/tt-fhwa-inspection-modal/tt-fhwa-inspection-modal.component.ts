@@ -45,7 +45,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    console.log(this.editData);
+
     if (this.editData.type === 'edit-inspection') {
       this.editInspectionById();
     }
@@ -98,7 +98,6 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
       .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: InspectionResponse) => {
-          console.log(res);
           this.fhwaInspectionForm.patchValue({
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,

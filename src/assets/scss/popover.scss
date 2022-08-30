@@ -689,7 +689,319 @@
 }
 
 .map-list-sort-popover {
-  margin-left: 50px !important;
+  margin-left: 30px !important;
+}
+
+.layers-popover {
+  margin: 5px 0px 0px 36px;
+
+  .popover-body {
+    .details-dropdown, .table-dropdown {
+      .table-dropdown-content {
+        margin-bottom: 1px;
+        transition: 0.25s;
+
+        &:last-child {
+          margin: 0px;
+        }
+
+        &:hover, &.active-option {
+          background: #536bc21A;
+
+          .action-svg {
+            svg {
+              path {
+                fill: #536bc2;
+
+                &#Path_10766 {
+                  fill: #fff !important;
+                }
+              }
+            }
+          }
+
+          .dropdown-content-text {
+            color:  #536bc2 !important;
+          }
+        }
+
+        .action-svg {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            path {
+              fill: #AAAAAA;
+              transition: 0.25s;
+
+              &#Path_10766 {
+                fill: #fff !important;
+              }
+            }
+
+            rect {
+              fill: none;
+            }
+          }
+        }
+
+        .dropdown-content-text {
+          color: #6C6C6C;
+        }
+      }
+    }
+  }
+}
+
+.drop-down-route {
+  margin: 5px 0px 0px 12px;
+
+  .popover-body {
+    .details-dropdown, .table-dropdown {
+      width: 112px;
+
+      .table-dropdown-content {
+        &:hover {
+          background: #F3F3F3 !important;
+
+          .action-svg {
+            svg {
+              path {
+                fill: #6C6C6C !important;
+              }
+            }
+          }
+          
+          .dropdown-content-text {
+            color:  #3C3C3C !important;
+          }
+        }
+
+        .action-svg {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+  
+          margin: 0px 6px 0px 4px;
+  
+          svg {
+            path {
+              fill: #AAAAAA;
+            }
+          }
+        }
+
+        .dropdown-content-text {
+          color: #6C6C6C;
+        }
+
+        &.delete-text {
+          &:hover {
+            .action-svg {
+              svg {
+                path {
+                  fill: #EF5350 !important;
+                }
+              }
+            }
+    
+            .dropdown-content-text {
+              color: #EF5350 !important;
+            }
+          }
+
+          .action-svg {
+            svg {
+              path {
+                fill: #E57373;
+              }
+            }
+          }
+  
+          .dropdown-content-text {
+            color: #E57373;
+          }
+        }
+      }
+    }
+  }
+}
+
+.map-settings-popover {
+  max-width: 300px!important;
+  width: fit-content;
+  margin-top: 4px;
+  margin-left: 72px;
+
+  &.add-route-popover {
+    margin-left: 0px;
+  }
+
+  .popover-body {
+    width: fit-content;
+
+    .map-settings-container {
+      width: 300px;
+      padding: 8px;
+
+      background: #fff;
+
+      border-radius: 3px;
+      box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
+
+      .map-settings-divider {
+        width: 100%;
+        height: 2px;
+
+        background-color: #F3F3F3;
+        border-radius: 1px;
+      }
+
+      .map-settings-title {
+        width: 100%;
+
+        font-size: 14px;
+        font-weight: 900;
+        line-height: 18px;
+        color: #6C6C6C;
+
+        padding-bottom: 8px;
+      }
+
+      .map-settings-content {
+        padding: 18px 2px 0px 2px;
+
+        &.checkbox-container {
+          padding-top: 0px;
+        }
+
+        &.mg-22 {
+          margin-bottom: 22px;
+        }
+
+        .checkbox-card-header {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          padding: 0px 4px;
+          margin: 8px 0px;
+        }
+
+        .duration-time-input {
+          margin-top: 26px;
+          margin-bottom: 18px;
+
+          &.mg-top-32 {
+            margin-top: 32px;
+          }
+        }
+
+        .map-settings-input-container {
+          margin-top: 10px;
+          margin-bottom: 22px;
+
+          .map-settings-input-title {
+            padding-left: 6px;
+
+            font-size: 11px;
+            color: #6C6C6C;
+            font-weight: 600;
+
+            .input-required {
+              color: #E57373;
+            }
+          }
+
+          .map-settings-input {
+            width: 100%;
+            height: 26px;
+            background-color: #F3F3F3;
+            border: none;
+            padding-left: 6px;
+
+            border-radius: 2px;
+
+            margin-bottom: 22px;
+
+            font-size: 14px;
+            color: #6C6C6C;
+            line-height: 18px;
+          }
+        }
+
+        .tab-switch-holder {
+          margin-bottom: 22px;
+  
+          .tab-switch-items-holder {
+            width: 50%;
+            flex: 50%;
+          }
+        }
+        
+        &.buttons-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 12px 2px 2px 2px;
+
+          .map-settings-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            width: 132px;
+            height: 32px;
+
+            background-color: #F3F3F3;
+            border-radius: 2px;
+            cursor: pointer;
+            pointer-events: none;
+
+            &:hover {
+              background-color: #F3F3F3;
+    
+              .map-settings-button-text {
+                color: #6C6C6C;
+              }
+            }
+
+            &.modal-save-btn {
+              background-color: #6d82c7;
+              color: #ffffff;
+              pointer-events: all;
+              transition: all 0.3s ease-in-out;
+
+              &:hover {
+                background-color: #536bc2;
+              }
+
+              .map-settings-button-text {
+                color: #fff;
+              }
+            }
+
+            &.reset-button {
+              pointer-events: all;
+              cursor: pointer;
+
+              &:hover {
+                color: #6C6C6C;
+                background-color: #eeeeee;
+              }
+            }
+
+            .map-settings-button-text {
+              color: #AAAAAA;
+              font-size: 14px;
+              line-height: 18px;
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .toptenpopovermain {

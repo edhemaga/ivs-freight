@@ -41,6 +41,25 @@
                 label: 'Trailer Type',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedTrailerType?.logoName,
+                  template: 'trailer',
+                  class: selectedTrailerType?.name
+                    ?.toLowerCase()
+                    .includes('liquid')
+                    ? 'tanker-liquid'
+                    : selectedTrailerType?.name?.toLowerCase().includes('rgn')
+                    ? 'low-boy-rgn'
+                    : selectedTrailerType?.name
+                        ?.toLowerCase()
+                        .includes('dry-bulk')
+                    ? 'tanker-dry-bulk'
+                    : selectedTrailerType?.name
+                        ?.trim()
+                        .replace(' ', '')
+                        .toLowerCase()
+                },
                 dropdownWidthClass: 'w-col-348',
                 customClass: 'truck-trailer-dropdown'
               }"
@@ -80,6 +99,11 @@
                 label: 'Make',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: false,
+                  url: selectedTrailerMake?.logoName
+                },
+                placeholder: selectedTrailerMake?.name,
                 dropdownWidthClass: 'w-col-188'
               }"
               [options]="trailerMakeType"
@@ -110,6 +134,12 @@
                 type: 'text',
                 label: 'Color',
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedColor?.code ? 'ic_color.svg' : null,
+                  template: 'color',
+                  color: selectedColor?.code
+                },
                 dropdownWidthClass: 'w-col-126'
               }"
               [options]="colorType"

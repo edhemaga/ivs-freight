@@ -1,3 +1,4 @@
+import { RepairOrderModalComponent } from './../repair-order-modal/repair-order-modal.component';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -70,11 +71,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.getRepairShopModalDropdowns();
     this.onBankSelected();
 
-    if (this.editData) {
+    if (this.editData?.id) {
       this.editRepairShopById(this.editData.id);
     }
 
-    if (!this.editData) {
+    if (!this.editData || this.editData?.canOpenModal) {
       for (let i = 0; i < this.openHoursDays.length; i++) {
         this.addOpenHours(this.openHoursDays[i], i !== 0, i);
       }
@@ -118,7 +119,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.repairShopForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.id) {
           this.updateRepairShop(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
@@ -136,6 +137,24 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       }
       default: {
         break;
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: this.editData?.type,
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }

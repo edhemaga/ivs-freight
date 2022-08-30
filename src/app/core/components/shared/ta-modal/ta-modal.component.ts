@@ -166,9 +166,9 @@ export class TaModalComponent implements OnInit, OnDestroy {
         if (!['save and add new', 'resend email'].includes(data.action)) {
           const timeout = setTimeout(() => {
             $('.pac-container').remove();
-            this.ngbActiveModal.close();
+            this.ngbActiveModal.dismiss();
             clearTimeout(timeout);
-          }, 50);
+          }, 150);
         }
       });
   }

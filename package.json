@@ -45,6 +45,7 @@
     "@ngneat/until-destroy": "^9.2.1",
     "@types/chart.js": "^2.9.30",
     "@types/chartjs-plugin-annotation": "^0.5.2",
+    "agm-direction": "^0.8.10",
     "@types/crypto-js": "^4.1.1",
     "@types/overlayscrollbars": "^1.12.1",
     "angular-croppie-module": "0.0.7",

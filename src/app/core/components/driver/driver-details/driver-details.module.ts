@@ -21,9 +21,8 @@ import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver
     DriverDrugAlcoholModalComponent,
     DriverMedicalModalComponent,
     DriverMvrModalComponent,
-   
   ],
-  exports:[DriverDetailsCardComponent,SharedModule],
+  exports: [DriverDetailsCardComponent, SharedModule],
 
   imports: [
     CommonModule,
