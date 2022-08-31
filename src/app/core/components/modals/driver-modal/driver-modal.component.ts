@@ -158,6 +158,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     globalDropZone: false,
   };
 
+  public addressFlag: string = 'Empty';
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -395,7 +397,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   public onSaveNewBank(bank: { data: any; action: string }) {
     this.selectedBank = bank.data;
-    console.log(this.selectedBank);
+
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
       .pipe(untilDestroyed(this))
@@ -726,7 +728,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }
 
   private isCheckedOwner() {
-    console.log('POZIVA SE IS OWNER ', this.driverForm.get('isOwner').value);
     this.driverForm
       .get('isOwner')
       .valueChanges.pipe(untilDestroyed(this))
@@ -796,6 +797,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.driverForm.get('soloDriver').patchValue(false);
           this.driverForm.get('teamDriver').patchValue(false);
           this.driverForm.get('useTruckAssistAch').patchValue(false);
+          this.isBankSelected = false;
           this.selectedBank = null;
           this.selectedPayType = null;
         } else {
@@ -812,16 +814,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private einNumberChange() {
     this.driverForm
       .get('ein')
-      .valueChanges.pipe(
-        debounceTime(2000),
-        distinctUntilChanged(),
-        untilDestroyed(this)
-      )
+      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
       .subscribe((value) => {
-        if (value.length === 10) {
+        if (value?.length === 10) {
           this.loadingOwnerEin = true;
           this.driverTService
-            .checkOwnerEinNumber(value)
+            .checkOwnerEinNumber(value.toString())
             .pipe(untilDestroyed(this))
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {

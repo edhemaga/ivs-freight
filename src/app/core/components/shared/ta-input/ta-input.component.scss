@@ -4,7 +4,7 @@
 
   &.address-flag {
     display: grid;
-    grid-template-columns: 85% 1fr;
+    grid-template-columns: 1fr 40px;
     align-items: center;
     -moz-column-gap: 6px;
     column-gap: 6px;
@@ -279,6 +279,27 @@
     }
   }
 
+  &.valid-dropdown-image-selection {
+    &:hover {
+      .input-dropdown-arrow {
+        transition: all 0.3s ease-in-out;
+        svg {
+          path {
+            fill: #6d82c7;
+          }
+        }
+        &:hover {
+          transition: all 0.3s ease-in-out;
+          svg {
+            path {
+              fill: #6c6c6c;
+            }
+          }
+        }
+      }
+    }
+  }
+
   //--------------- end ---------------
   @import "./scss/ta-input.label.scss";
   @import "./scss/ta-input.input.scss";
@@ -297,4 +318,5 @@
   @import "./scss/ta-input.spinner.scss";
   @import "./scss/ta-input.addressflag.scss";
   @import "./scss/ta-input.editlabel.scss";
+  @import "./scss/ta-dropdown-input-image.scss";
 }

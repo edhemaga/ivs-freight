@@ -47,6 +47,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.editData);
     this.createForm();
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-medical') {

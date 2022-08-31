@@ -36,6 +36,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../../truck/state/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 
 @UntilDestroy()
 @Component({
@@ -219,7 +220,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.inputService.markInvalid(this.truckForm);
             return;
           }
-          if (this.editData) {
+          if (this.editData?.id) {
             this.updateTruck(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
@@ -232,6 +233,24 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         if (data.action === 'delete' && this.editData) {
           this.deleteTruckById(this.editData.id);
           this.modalService.setModalSpinner({ action: 'delete', status: true });
+        }
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: 'Truck',
+          });
+          break;
+        }
+        default: {
+          break;
         }
       }
     }
@@ -262,7 +281,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
             truckTypeId: res.truckType ? res.truckType.name : null,
-            truckMakeId: res.truckMake ? res.truckMake.name : null,
+            truckMakeId: res.truckMake ? ' ' : null,
             model: res.model,
             year: res.year,
             colorId: res.color ? res.color.name : null,
@@ -319,7 +338,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.truckForm.patchValue({
         truckNumber: res.truckNumber,
         truckTypeId: res.truckTypeId,
-        truckMakeId: res.truckMakeId,
+        truckMakeId: ' ',
         model: res.model,
         year: res.year,
         colorId: res.colorId,
@@ -439,7 +458,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  truckMakeId: res.truckMake?.name ? res.truckMake.name : null,
+                  truckMakeId: res.truckMake?.name ? ' ' : null,
                   truckEngineTypeId: res.engineType?.name
                     ? res.engineType.name
                     : null,
