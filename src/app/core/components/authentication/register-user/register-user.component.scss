@@ -15,8 +15,28 @@
       line-height: 63px;
       margin-bottom: 30px !important;
 
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
       span {
         color: $ta-blue;
+
+        &::-moz-selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
+
+        &::selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
       }
     }
 
@@ -28,6 +48,16 @@
       line-height: 24px;
       margin-bottom: 10px !important;
       text-transform: uppercase;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
     h3 {
@@ -38,6 +68,16 @@
       color: $bw6-2;
       line-height: 22px;
       margin-bottom: 26px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
   }
 
@@ -121,6 +161,16 @@
       color: $bw6-2;
       line-height: 18px;
 
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
       &:first-of-type {
         margin-bottom: 10px !important;
       }
@@ -129,6 +179,16 @@
         font-weight: bold;
         cursor: pointer;
         transition: color 0.1s ease-in-out;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
 
         &:hover {
           color: $ta-blue-2;
@@ -145,6 +205,16 @@
       color: $ta-blue-2;
       font-weight: 400;
       font-size: 14px;
+
+      &::-moz-selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
     }
   }
 }

@@ -10,13 +10,17 @@ import { applyDrag } from 'src/app/core/utils/methods.globals';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+@UntilDestroy()
 @Component({
   selector: 'app-to-do-list-card',
   templateUrl: './to-do-list-card.component.html',
   styleUrls: ['./to-do-list-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ToDoListCardComponent implements OnInit, OnDestroy {
+export class ToDoListCardComponent implements OnInit {
   public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
@@ -130,6 +134,18 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     },
   ];
 
+  public searchToDoOptions = {
+    gridNameTitle: 'To Do',
+  };
+
+  public searchOnGoingOptions = {
+    gridNameTitle: 'On Going',
+  };
+
+  public searchDoneOptions = {
+    gridNameTitle: 'Done',
+  };
+
   constructor(
     private todoTService: TodoTService,
     private modalService: ModalService,
@@ -137,14 +153,17 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     private commentsService: CommentsService
   ) {}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit(): void {
     this.getTodoList();
     this.initTableOptions();
+
+    // this.tableService.currentSearchTableData
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res: any) => {
+    //     if (res) {
+    //       // your search code here
+    //     }
+    //   });
   }
 
   dragStart = (e) => {
