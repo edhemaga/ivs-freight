@@ -301,11 +301,12 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
     }
+}
 
-    &.hide-marker-tooltip {
-        opacity: 0;
-        pointer-events: none;
-    }
+.hide-marker-tooltip {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
 }
 
 .marker-rating-container {
@@ -546,6 +547,12 @@
 
     pointer-events: auto;
 
+    svg {
+        #Ellipse_6007 {
+            filter: 'blur(2px)';
+        }
+    }
+
     &:hover {
         svg {
             #Ellipse_6005 {
@@ -570,7 +577,10 @@
         svg {
             #Ellipse_6006 {
                 //r: 3;
-                transform: translate(14px, 14px) scale(0.5);
+                // transform: translate(14px, 14px) scale(0.5); - old svg
+
+                transform: translate(644px, 2298px) scale(0.5);
+
                 transition: all 0.15s;
             }
         }

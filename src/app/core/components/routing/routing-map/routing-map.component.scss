@@ -64,6 +64,40 @@
     }
 }
 
+.routing-container {
+    .marker-container {
+        top: -25px!important;
+    
+        &.circle-marker {
+            top: 0px!important;
+            left: 50%;
+            cursor: pointer;
+            transform: translateX(-50%);
+        }
+    
+        &.stop-picker-icon {
+            top: -50px !important;
+            transform: translateX(-28px);
+        }
+    }
+    
+    .si-pointer-bottom, .si-close-button {
+        display: none!important;
+    }
+
+    .marker-icon {
+        transition: none !important;
+
+        svg {
+            outline: none;
+        }
+
+        &.selected-marker {
+            transform: translate(-50%, -35%) scale(2) !important;
+        }
+    }
+}
+
 .route-info-card .cdk-drop-list-dragging + .selected-route {
     opacity: 0.7;
 }
@@ -719,26 +753,6 @@
     z-index: 1;
 }
 
-.marker-container {
-    top: -25px!important;
-
-    &.circle-marker {
-        top: 0px!important;
-        left: 50%;
-        cursor: pointer;
-        transform: translateX(-50%);
-    }
-
-    &.stop-picker-icon {
-        top: -50px !important;
-        transform: translateX(-28px);
-    }
-}
-
-.si-pointer-bottom, .si-close-button {
-    display: none!important;
-}
-
 .stop-picker-window {
     position: absolute;
     top: -37px;
@@ -844,18 +858,6 @@
         overflow: hidden;
         -webkit-line-clamp: 1;
         -webkit-box-orient: vertical;
-    }
-}
-
-.marker-icon {
-    transition: none !important;
-
-    svg {
-        outline: none;
-    }
-
-    &.selected-marker {
-        transform: translate(-50%, -35%) scale(2) !important;
     }
 }
 
