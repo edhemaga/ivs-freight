@@ -1,6 +1,17 @@
-import {ChangeDetectorRef, Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild, ViewEncapsulation} from '@angular/core';
-import {Subject} from 'rxjs';
-import {animate, style, transition, trigger} from '@angular/animations';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 @Component({
@@ -11,31 +22,27 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
   animations: [
     trigger('pickupAnimation', [
       transition(':enter', [
-        style({height: 10}),
-        animate('100ms', style({height: '*'})),
+        style({ height: 10 }),
+        animate('100ms', style({ height: '*' })),
       ]),
-      transition(':leave', [
-        animate('50ms', style({height: 0})),
-      ]),
+      transition(':leave', [animate('50ms', style({ height: 0 }))]),
     ]),
     trigger('noteLongAnimation', [
       transition(':enter', [
-        style({width: 10}),
-        animate('100ms', style({width: '*'})),
+        style({ width: 10 }),
+        animate('100ms', style({ width: '*' })),
       ]),
-      transition(':leave', [
-        animate('300ms', style({width: 0})),
-      ]),
-    ])
-  ]
+      transition(':leave', [animate('300ms', style({ width: 0 }))]),
+    ]),
+  ],
 })
 export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() note: any;
   @Input() openAllNotesText: any;
   @Input() parking: any = false;
-  @ViewChild('main_editor', {static: false}) public main_editor: any;
-  @ViewChild('note_popover', {static: false}) public note_popover: any;
-  
+  @ViewChild('main_editor', { static: false }) public main_editor: any;
+  @ViewChild('note_popover', { static: false }) public note_popover: any;
+
   tooltip: any;
   showCollorPattern: boolean;
   buttonsExpanded = false;
@@ -52,7 +59,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     bold: false,
     italic: false,
     foreColor: false,
-    underline: false
+    underline: false,
   };
   @Output() saveNoteValue = new EventEmitter();
   @Input() openedAll: any;
@@ -62,11 +69,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   isFocused: boolean = false;
   private destroy$: Subject<void> = new Subject<void>();
 
-  constructor(private sharedService: SharedService, private ref: ChangeDetectorRef) {
-  }
+  constructor(
+    private sharedService: SharedService,
+    private ref: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
-    if ( this.note && this.note != '' ) {
+    if (this.note && this.note != '') {
       this.noteIcon = 'Note.svg';
     }
   }
@@ -76,13 +85,13 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     e.preventDefault();
 
     this.isFocused = true;
-      this.leaveThisOpened = true;
-      this.sharedService.emitAllNoteOpened.next(false);
-      this.isExpanded = true;
-      setTimeout(() => {
-        this.buttonsExpanded = true;
-        this.checkActiveItems();
-      }, 150);
+    this.leaveThisOpened = true;
+    this.sharedService.emitAllNoteOpened.next(false);
+    this.isExpanded = true;
+    setTimeout(() => {
+      this.buttonsExpanded = true;
+      this.checkActiveItems();
+    }, 150);
   }
 
   toggleNote(data: any, t2) {
@@ -129,7 +138,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     }
     this.saveIntervalStarted = false;
     clearInterval(this.saveInterval);
-    if ( this.savedValue != this.value ) {
+    if (this.savedValue != this.value) {
       this.saveNote();
     }
   }
@@ -144,15 +153,15 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     this.checkActiveItems();
     let saveValue = this.value;
 
-    if ( !this.saveIntervalStarted ) {
+    if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if ( saveValue == this.value ){
+        if (saveValue == this.value) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
         }
         this.saveNote(true);
-      },60000);
+      }, 60000);
     }
   }
 
@@ -161,7 +170,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   saveNote(autoSave?: boolean) {
-    if ( !autoSave ) {
+    if (!autoSave) {
       this.closeNote();
     }
     if (this.value == '<br>') {
@@ -185,36 +194,35 @@ export class TaNoteComponent implements OnInit, OnDestroy {
     let allowedKeys = false;
 
     if (e.type === 'keydown') {
-        allowedKeys = (
-            e.which === 8 ||  /* BACKSPACE */
-            e.which === 35 || /* END */
-            e.which === 36 || /* HOME */
-            e.which === 37 || /* LEFT */
-            e.which === 38 || /* UP */
-            e.which === 39 || /* RIGHT*/
-            e.which === 40 || /* DOWN */
-            e.which === 46 || /* DEL*/
-            e.ctrlKey === true && e.which === 65 || /* CTRL + A */
-            e.ctrlKey === true && e.which === 88 || /* CTRL + X */
-            e.ctrlKey === true && e.which === 67 || /* CTRL + C */
-            e.ctrlKey === true && e.which === 86 || /* CTRL + V */
-            e.ctrlKey === true && e.which === 90    /* CTRL + Z */
-        )
+      allowedKeys =
+        e.which === 8 /* BACKSPACE */ ||
+        e.which === 35 /* END */ ||
+        e.which === 36 /* HOME */ ||
+        e.which === 37 /* LEFT */ ||
+        e.which === 38 /* UP */ ||
+        e.which === 39 /* RIGHT*/ ||
+        e.which === 40 /* DOWN */ ||
+        e.which === 46 /* DEL*/ ||
+        (e.ctrlKey === true && e.which === 65) /* CTRL + A */ ||
+        (e.ctrlKey === true && e.which === 88) /* CTRL + X */ ||
+        (e.ctrlKey === true && e.which === 67) /* CTRL + C */ ||
+        (e.ctrlKey === true && e.which === 86) /* CTRL + V */ ||
+        (e.ctrlKey === true && e.which === 90) /* CTRL + Z */;
     }
-    if (e.ctrlKey === true && e.which === 86 ) {
-        setTimeout(function () {
-            $(e.target).text($(e.target).text().slice(0, limit));
-        });
+    if (e.ctrlKey === true && e.which === 86) {
+      setTimeout(function () {
+        $(e.target).text($(e.target).text().slice(0, limit));
+      });
     }
     if (!allowedKeys && $(e.target).text().length >= limit) {
-        e.preventDefault();
+      e.preventDefault();
     }
   }
 
   expandAllNotes() {
-    if ( !this.isExpanded ) {
+    if (!this.isExpanded) {
       setTimeout(() => {
-        if ( this.openedAll ) {
+        if (this.openedAll) {
           this.isExpanded = true;
         }
       });
