@@ -706,9 +706,11 @@
                 <app-ta-input
                   formControlName="fuelCard"
                   [inputConfig]="{
-                    name: 'Fuel Card',
+                    name: 'fuel-card',
                     type: 'text',
-                    label: 'Fuel Card #'
+                    label: 'Fuel Card #',
+                    minLength: 10,
+                    maxLength: 19
                   }"
                 ></app-ta-input>
               </div>

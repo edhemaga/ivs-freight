@@ -1,3 +1,4 @@
+import { fuelStopValidation } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -56,7 +57,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.fuelStopForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...fuelStopValidation]],
       store: [null],
       favourite: [null],
       phone: [null, [Validators.required, phoneRegex]],

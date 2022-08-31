@@ -24,6 +24,7 @@ import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculatio
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
   insurancePolicyRegex,
+  vehicleUnitValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -125,7 +126,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
-      truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
+      truckNumber: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(6),
+          ...vehicleUnitValidation,
+        ],
+      ],
       truckTypeId: [null, Validators.required],
       vin: [
         null,

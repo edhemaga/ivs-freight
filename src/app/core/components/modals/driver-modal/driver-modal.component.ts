@@ -31,6 +31,7 @@ import {
   bankValidation,
   accountBankValidation,
   routingBankValidation,
+  fuelCardValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -312,7 +313,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       avatar: [null],
       twic: [false],
       twicExpDate: [null],
-      fuelCard: [null],
+      fuelCard: [null, [...fuelCardValidation]],
       mailNotificationGeneral: [true],
       pushNotificationGeneral: [false],
       smsNotificationGeneral: [false],

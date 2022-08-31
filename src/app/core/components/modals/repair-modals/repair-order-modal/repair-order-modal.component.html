@@ -27,11 +27,14 @@
       <app-ta-input-dropdown
         formControlName="unit"
         [inputConfig]="{
-          name: 'Input Dropdown',
+          name: 'Input Dropdown vehicle-unit',
           type: 'text',
           label: 'Unit',
           isDropdown: true,
           isRequired: true,
+          textTransform: 'uppercase',
+          minLength: 1,
+          maxLength: 8,
           dropdownWidthClass: 'w-col-129',
           autoFocus:
             !editData?.type?.includes('edit') && !editData?.storageData?.unit

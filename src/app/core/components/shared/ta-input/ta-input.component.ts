@@ -657,7 +657,7 @@ export class TaInputComponent
 
     // Business Name
     if (
-      ['business name', 'shop name'].includes(
+      ['business name', 'shop name', 'fuel stop'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {
@@ -683,6 +683,8 @@ export class TaInputComponent
         'phone-extension',
         'account-bank',
         'routing-bank',
+        'ssn',
+        'fuel-card',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -718,7 +720,11 @@ export class TaInputComponent
     }
 
     // Department
-    if (['department'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['department', 'vehicle-unit'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[A-Za-z0-9]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {

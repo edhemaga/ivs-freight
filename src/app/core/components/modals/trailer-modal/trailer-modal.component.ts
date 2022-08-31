@@ -19,6 +19,7 @@ import {
 } from 'appcoretruckassist';
 import {
   insurancePolicyRegex,
+  vehicleUnitValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -118,7 +119,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.trailerForm = this.formBuilder.group({
       companyOwned: [true],
-      trailerNumber: [null, [Validators.required, Validators.maxLength(8)]],
+      trailerNumber: [
+        null,
+        [
+          Validators.required,
+          Validators.maxLength(8),
+          ...vehicleUnitValidation,
+        ],
+      ],
       trailerTypeId: [null, [Validators.required]],
       vin: [
         null,

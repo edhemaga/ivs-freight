@@ -21,7 +21,6 @@ export const accountBankValidation = [
   Validators.minLength(5),
   Validators.maxLength(17),
 ];
-//-------------------------------------------------------------------------------
 
 //---------------- Bussiness Name, Repair Shop, Fuel Stop ----------------
 export const businessNameValidation = [
@@ -41,6 +40,9 @@ export const fuelStopValidation = [
 
 //---------------- Ein Regex ----------------
 export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
+
+//---------------- SSN Regex ----------------
+export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
 //---------------- MC/FF ----------------
 export const mcFFValidation = [
@@ -95,8 +97,17 @@ export const lastNameValidation = [
   Validators.maxLength(26),
 ];
 
-//---------------- SSN Regex ----------------
-export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
+//---------------- Fuel Card ---------------------
+export const fuelCardValidation = [
+  Validators.minLength(10),
+  Validators.maxLength(19),
+];
+
+//---------------- Vehicle Unit ------------------
+export const vehicleUnitValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(8),
+];
 
 //---------------- Year, month, day ----------------
 export const yearValidRegex = Validators.pattern(

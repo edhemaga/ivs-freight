@@ -21,11 +21,12 @@
             <app-ta-input
               formControlName="trailerNumber"
               [inputConfig]="{
-                name: 'Trailer Number',
+                name: 'vehicle-unit',
                 type: 'text',
                 label: 'Unit #',
                 isRequired: true,
-                textTransform: 'capitalize',
+                textTransform: 'uppercase',
+                minLength: 1,
                 maxLength: 8,
                 autoFocus: editData?.type !== 'edit' ? true : false
               }"
