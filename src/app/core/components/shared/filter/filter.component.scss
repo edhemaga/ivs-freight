@@ -502,8 +502,6 @@
         overflow-y: scroll;
 
         &::-webkit-scrollbar{
-            position: relative;
-            right: 2px;
             width: 4px;
         }
 
@@ -836,12 +834,11 @@
             font-size: 14px;
             font-weight: 600; 
             color: #AAAAAA;
-            line-height: 28px;
         
             .input-custom-group{
 
                 .input-control{
-                    height: 26px !important;
+                    //height: 26px !important;
                 }
             }                 
 
@@ -895,7 +892,7 @@
         position: relative;
         width: 100%;
         padding-left: 4px;
-        margin-bottom: 26px;
+        margin-bottom: 24px;
 
         .form-name{
             font-size: 14px;
@@ -905,7 +902,7 @@
         
         .hide-money-form{
             position: absolute;
-            right: 0px;
+            right: 4px;
             top: 0px;
             height: 13px;
             width: 13px;
@@ -970,26 +967,39 @@
         padding-left: 40px !important;
     }
 
+    .user-frame-holder{
+        height: 26px;
+    }
     .user-frame{
         padding-left: 40px !important;
     }
 
     .state-name-holder{
-        padding-bottom: 10px;
+        padding-bottom: 6px;
         font-size: 11px;
         font-weight: 600;
         color: #AAAAAA;
     }
 
     .holder-bottom-margin{
-        margin-bottom: 10px;
+        margin-bottom: 4px;
     }
     
+    .user-profile-img{
+       width: 28px !important; 
+
+       &.active{
+            .state-short-holder{
+                color: #536BC2;
+            }
+       }
+    }
+
     .state-short-holder{
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 28px !important;
+        width: 28px;
         height: 18px;
 
         background-color: #F3F3F3;
@@ -998,14 +1008,19 @@
         font-size: 11px;
         font-weight: 800;
         color: #6C6C6C;
-
-        &.active{
-            color: #536BC2;
-        }
     }
     
     .states-selected{
         width: 100%;
+    }
+
+    .user-main-holder{
+
+        &:hover{
+            .state-short-holder{
+                background-color: #FFFFFF;
+            }
+        }
     }
 }
 
@@ -1015,11 +1030,11 @@
     }
 
     .money-bottom-border-magin{
-        margin: 22px 0px 12px 0px;
+        margin: 18px 0px 12px 0px;
     }
 
     .form-border{
-        margin: 22px 0px 8px 0px;
+        margin: 18px 0px 6px 0px;
     }
 
     .multi-form-holder{
@@ -1227,7 +1242,6 @@
             font-size: 14px;
             font-weight: 600; 
             color: #AAAAAA;
-            line-height: 28px;
             
             .input-custom-group{
 
@@ -1917,8 +1931,8 @@
 }
 
 .popover-body{
-    //position: relative;
-    //left: -10px;
+    position: relative;
+    left: -10px;
     border-radius: 3px;
 }
 

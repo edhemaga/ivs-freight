@@ -967,7 +967,10 @@ canadaStates: any[] = [
    multiFormSecondError: any = '';
    multiFormThirdError: any = '';
    moneyFilterStatus: any = false;
-
+   setButtonAvailable: boolean = false;
+   filterActiveArray: any[] = [];
+   filterActiveTime: any = '';
+   swipeActiveRange: any = 0;
 
   public sliderData: Options = {
     floor: 0,
@@ -1478,7 +1481,8 @@ canadaStates: any[] = [
       {
         this.selectedUser.push(item);
       }  
-   
+      
+    this.checkFilterActiveValue(); 
   }
 
   removeFromSelectedUser(item, indx, subType?){
@@ -1658,7 +1662,8 @@ canadaStates: any[] = [
               });   
           }  
       }   
-   
+
+    this.checkFilterActiveValue();
   }
 
   clearAll(e?){
@@ -1673,6 +1678,7 @@ canadaStates: any[] = [
     if ( this.type == 'timeFilter' )
       {
         this.selectedTimeValue = '';
+        this.filterActiveTime = '';
       }
     else 
       {
@@ -1789,8 +1795,9 @@ canadaStates: any[] = [
               } 
           }     
       }  
-
-   
+    this.setButtonAvailable = true;
+    this.filterActiveArray = [];
+    this.swipeActiveRange = 0;
   }
 
   filterUser(e: any) {
@@ -1846,6 +1853,13 @@ canadaStates: any[] = [
 
   setTimeValue(mod){
     this.selectedTimeValue = mod;
+   
+    if ( this.filterActiveTime == mod ) {
+      this.setButtonAvailable = false;
+    } else {
+      this.setButtonAvailable = true;
+    }
+    
   }
 
   removeTimeValue(e){
@@ -1972,5 +1986,46 @@ canadaStates: any[] = [
         });
       }
     
+  }
+
+  setFilter(e){
+    const element = e.target;
+    if (element.classList.contains('active')) {
+      this.setButtonAvailable = false;
+     
+      if ( this.type == 'timeFilter' ){
+        this.filterActiveTime = this.selectedTimeValue;
+      } else if ( this.swipeFilter ) {
+        this.swipeActiveRange = this.rangeValue;
+      } else {
+        this.filterActiveArray = [...this.selectedUser];
+      }
+    } else {
+      return false;
+    }
+  }
+
+  checkFilterActiveValue(){
+    let array1 = [...this.selectedUser];
+    let array2 = [...this.filterActiveArray];
+    array1.sort((a, b) => {
+        return a.id - b.id;
+      });  
+
+    array2.sort((a, b) => {
+        return a.id - b.id;
+      });    
+    
+    let stringfy1 = JSON.stringify(array1);
+    let stringfy2 = JSON.stringify(array2);
+    
+    //console.log('--stringfy1', stringfy1);
+    //console.log('--stringfy2', stringfy2);
+
+    if ( stringfy1 == stringfy2 ) {
+        this.setButtonAvailable = false;
+      } else {
+        this.setButtonAvailable = true;
+      } 
   }
 }

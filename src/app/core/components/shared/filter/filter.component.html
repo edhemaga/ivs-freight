@@ -104,7 +104,9 @@ app-autoclose-popover
                 <div class="states-selected" *ngIf="usaSelectedStates.length > 0" >
                     <div class="state-name-holder">UNITED STATES</div>
                     <div *ngFor="let item of usaSelectedStates; let indx=index" class="user-main-holder holder-bottom-margin">    
-                        <div class="user-profile-img state-short-holder active"> {{item.short}} </div>              
+                        <div class="user-profile-img active"> 
+                            <div class="state-short-holder">{{item.short}} </div>
+                        </div>              
                         <div class="selected-user-frame">
                             <div class="selected-name-text">{{item.name}}</div>
                             <div class="selected-icon">
@@ -125,7 +127,9 @@ app-autoclose-popover
                 <div class="states-selected" *ngIf="canadaSelectedStates.length > 0" >
                     <div class="state-name-holder">CANADA</div>
                     <div *ngFor="let item of canadaSelectedStates; let indx=index" class="user-main-holder">    
-                        <div class="user-profile-img state-short-holder active"> {{item.short}} </div>              
+                        <div class="user-profile-img active"> 
+                            <div class="state-short-holder">{{item.short}} </div>
+                        </div>              
                         <div class="selected-user-frame">
                             <div class="selected-name-text">{{item.name}}</div>
                             <div class="selected-icon">
@@ -325,7 +329,9 @@ app-autoclose-popover
                 <div class="state-name-holder">UNITED STATES</div>
                 <div *ngFor="let item of usaStates; let indx=index" class="user-frame-holder">
                     <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx)" class="user-main-holder">
-                        <div class="user-profile-img state-short-holder"> {{item.short}} </div>
+                        <div class="user-profile-img"> 
+                            <div class="state-short-holder"> {{item.short}} </div> 
+                        </div>
                         <div class="user-frame">
                             <div class="selected-name-text">{{item.name}}</div>
                         </div> 
@@ -334,7 +340,9 @@ app-autoclose-popover
                 <div class="state-name-holder">CANADA</div>   
                 <div *ngFor="let item of canadaStates; let indx=index" class="user-frame-holder">
                     <div *ngIf="!item.hidden && !item.isSelected" (click)="addToSelectedUser(item, indx, 'canada')" class="user-main-holder">
-                        <div class="user-profile-img state-short-holder"> {{item.short}} </div>
+                        <div class="user-profile-img"> 
+                            <div class="state-short-holder"> {{item.short}} </div> 
+                        </div>
                         <div class="user-frame">
                             <div class="selected-name-text">{{item.name}}</div>
                         </div> 
@@ -344,7 +352,7 @@ app-autoclose-popover
             <div class="border-filter"></div>
             <div class="buttons-holder">
                 <div (click)="clearAll()" class="button-clear" [class.active]="selectedUser.length > 0 || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0">Clear All</div>
-                <div class="button-set" [class.active]="selectedUser.length > 0 || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0">Set</div>
+                <div (click)="setFilter($event)" class="button-set" [class.active]="( selectedUser.length > 0 || canadaSelectedStates.length > 0 || usaSelectedStates.length > 0 ) && setButtonAvailable ">Set</div>
             </div>
         </div>
         <div *ngIf="type == 'timeFilter'" class="time-filter-holder">
@@ -594,7 +602,7 @@ app-autoclose-popover
             <div class="border-filter time-data-border"></div>
             <div class="buttons-holder">
                 <div (click)="clearAll()" class="button-clear" [class.active]="selectedTimeValue != '' ">Clear All</div>
-                <div class="button-set" [class.active]="selectedTimeValue != ''">Set</div>
+                <div (click)="setFilter($event)" class="button-set" [class.active]="selectedTimeValue != '' && setButtonAvailable ">Set</div>
             </div>
         </div>
         <div *ngIf="type == 'dispatcherFilter'" class="dispatcher-holder">
@@ -658,7 +666,7 @@ app-autoclose-popover
             <div class="dispatcher-border-filter"></div>
             <div class="filter-buttons-holder">
                 <div (click)="clearAllDispatcher()" class="filter-button-clear" [class.active]="selectedDispatcher.length > 0">Clear All</div>
-                <div class="filter-button-set" [class.active]="selectedDispatcher.length > 0">Set</div>
+                <div (click)="setFilter($event)" class="filter-button-set" [class.active]="selectedDispatcher.length > 0 && setButtonAvailable">Set</div>
             </div>
         </div>
     
@@ -677,7 +685,8 @@ app-autoclose-popover
                             name: 'ssn',
                             type: 'number',
                             label: 'From',
-                            placeholderIcon: 'dollar'
+                            placeholderIcon: 'dollar',
+                            customClass: 'line-input-26'
                             }"
                         ></app-ta-input>
                     </div>
@@ -688,7 +697,8 @@ app-autoclose-popover
                         name: 'ssn',
                         type: 'number',
                         label: 'To',
-                        placeholderIcon: 'dollar'
+                        placeholderIcon: 'dollar',
+                        customClass: 'line-input-26'
                         }"
                     ></app-ta-input>
                         <div class="invalid-message" *ngIf="singleFormError">Invalid</div> 
@@ -709,10 +719,11 @@ app-autoclose-popover
                         <app-ta-input
                             formControlName="multiFromFirstFrom"
                             [inputConfig]="{
-                            name: 'ssn',
+                            name: 'from1',
                             type: 'number',
                             label: 'From',
-                            placeholderIcon: 'dollar'
+                            placeholderIcon: 'dollar',
+                            customClass: 'line-input-26'
                             }"
                         ></app-ta-input>
                     </div>
@@ -720,10 +731,11 @@ app-autoclose-popover
                         <app-ta-input
                         formControlName="multiFromFirstTo"
                         [inputConfig]="{
-                        name: 'ssn',
+                        name: 'to1',
                         type: 'number',
                         label: 'To',
-                        placeholderIcon: 'dollar'
+                        placeholderIcon: 'dollar',
+                        customClass: 'line-input-26'
                         }"
                     ></app-ta-input>
                     <div class="invalid-message" *ngIf="multiFormFirstError">Invalid</div> 
@@ -743,10 +755,11 @@ app-autoclose-popover
                         <app-ta-input
                             formControlName="multiFormSecondFrom"
                             [inputConfig]="{
-                            name: 'ssn',
+                            name: 'from2',
                             type: 'number',
                             label: 'From',
-                            placeholderIcon: 'dollar'
+                            placeholderIcon: 'dollar',
+                            customClass: 'line-input-26'
                             }"
                         ></app-ta-input>
                     </div>
@@ -754,10 +767,11 @@ app-autoclose-popover
                         <app-ta-input
                         formControlName="multiFormSecondTo"
                         [inputConfig]="{
-                        name: 'ssn',
+                        name: 'to2',
                         type: 'number',
                         label: 'To',
-                        placeholderIcon: 'dollar'
+                        placeholderIcon: 'dollar',
+                        customClass: 'line-input-26'
                         }"
                     ></app-ta-input>
                     <div class="invalid-message" *ngIf="multiFormSecondError">Invalid</div> 
@@ -777,10 +791,11 @@ app-autoclose-popover
                         <app-ta-input
                             formControlName="multiFormThirdFrom"
                             [inputConfig]="{
-                            name: 'ssn',
+                            name: 'from3',
                             type: 'number',
                             label: 'From',
-                            placeholderIcon: 'dollar'
+                            placeholderIcon: 'dollar',
+                            customClass: 'line-input-26'
                             }"
                         ></app-ta-input>
                     </div>
@@ -788,10 +803,11 @@ app-autoclose-popover
                         <app-ta-input
                         formControlName="multiFormThirdTo"
                         [inputConfig]="{
-                        name: 'ssn',
+                        name: 'to3',
                         type: 'number',
                         label: 'To',
-                        placeholderIcon: 'dollar'
+                        placeholderIcon: 'dollar',
+                        customClass: 'line-input-26'
                         }"
                     ></app-ta-input>
                     <div class="invalid-message" *ngIf="multiFormThirdError">Invalid</div> 
@@ -802,7 +818,7 @@ app-autoclose-popover
             <div class="border-filter money-bottom-border-magin form-border" [class.hiddenFormBorder]="!showPart3"></div>
             <div class="buttons-holder">
                 <div (click)="clearAll()" class="button-clear" [class.active]="moneyFilterStatus">Clear All</div>
-                <div class="button-set" [class.active]="moneyFilterStatus">Set</div>
+                <div (click)="setFilter($event)" class="button-set" [class.active]="moneyFilterStatus && setButtonAvailable">Set</div>
             </div>
         </div>
         <div *ngIf="swipeFilter" class="filter-holder swipe-filter" [formGroup]="sliderForm">
@@ -821,8 +837,8 @@ app-autoclose-popover
             </div>
             <div class="border-filter bottom-border-margin"></div>
             <div class="buttons-holder">
-                <div (click)="clearAll()" class="button-clear" [class.active]="rangeValue > 0">Clear All</div>
-                <div class="button-set" [class.active]="rangeValue > 0">Set</div>
+                <div (click)="clearAll()" class="button-clear" [class.active]="rangeValue != swipeActiveRange || rangeValue > 0">Clear All</div>
+                <div (click)="setFilter($event)" class="button-set" [class.active]="rangeValue != swipeActiveRange">Set</div>
             </div>
         </div>
         <div *ngIf="locationDefType" class="filter-holder location-filter">
@@ -891,7 +907,7 @@ app-autoclose-popover
             <div class="border-filter bottom-border-margin"></div>
             <div class="buttons-holder">
                 <div (click)="clearAll()" class="button-clear" [class.active]="rangeValue > 0">Clear All</div>
-                <div class="button-set" [class.active]="rangeValue > 0">Set</div>
+                <div (click)="setFilter($event)" class="button-set" [class.active]="rangeValue > 0 && setButtonAvailable">Set</div>
             </div>
         </div>
     </div>
