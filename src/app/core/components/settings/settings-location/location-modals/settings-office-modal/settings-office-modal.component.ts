@@ -31,11 +31,10 @@ import {
   UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-office-modal',
   templateUrl: './settings-office-modal.component.html',
@@ -45,6 +44,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, FormService],
 })
 export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public officeForm: FormGroup;
@@ -123,7 +123,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.officeForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -285,7 +285,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .updateCompanyOffice(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -338,7 +338,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .addCompanyOffice(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -359,7 +359,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private deleteCompanyOfficeById(id: number) {
     this.settingsLocationService
       .deleteCompanyOfficeById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -383,7 +383,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private editCompanyOfficeById(id: number) {
     this.settingsLocationService
       .getCompanyOfficeById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyOfficeResponse) => {
           this.officeForm.patchValue({
@@ -440,7 +440,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private getCompanyOfficeDropdowns() {
     this.settingsLocationService
       .getModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyOfficeModalResponse) => {
           this.monthlyDays = res.payPeriodMonthly;
@@ -457,5 +457,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

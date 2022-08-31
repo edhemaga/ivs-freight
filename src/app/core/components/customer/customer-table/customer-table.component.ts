@@ -6,7 +6,6 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
@@ -29,8 +28,8 @@ import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
@@ -44,6 +43,8 @@ import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/revie
 export class CustomerTableComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
@@ -85,7 +86,7 @@ export class CustomerTableComponent
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
@@ -96,7 +97,7 @@ export class CustomerTableComponent
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -111,7 +112,7 @@ export class CustomerTableComponent
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -126,7 +127,7 @@ export class CustomerTableComponent
 
     // Add-Update Broker-Shipper
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         // <------------------ Broker ------------------->
         // Add Broker
@@ -159,7 +160,7 @@ export class CustomerTableComponent
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         // Multiple Delete
         if (response.length) {
@@ -168,7 +169,7 @@ export class CustomerTableComponent
           if (this.selectedTab === 'active') {
             this.brokerService
               .deleteBrokerList(response)
-              .pipe(untilDestroyed(this))
+              .pipe(takeUntil(this.destroy$))
               .subscribe(() => {
                 let brokerName = '';
                 let brokerText = 'Broker ';
@@ -214,7 +215,7 @@ export class CustomerTableComponent
 
             this.shipperService
               .deleteShipperList(response)
-              .pipe(untilDestroyed(this))
+              .pipe(takeUntil(this.destroy$))
               .subscribe(() => {
                 this.notificationService.success(
                   `${shipText} "${shipperName}" deleted `,
@@ -229,7 +230,7 @@ export class CustomerTableComponent
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.pageIndex = 1;
@@ -369,8 +370,8 @@ export class CustomerTableComponent
 
   setCustomerData(td: any) {
     this.columns = td.gridColumns;
-    
-    if(td.data.length){
+
+    if (td.data.length) {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data: any) => {
@@ -380,10 +381,10 @@ export class CustomerTableComponent
           return this.mapShipperData(data);
         }
       });
-  
+
       console.log('Customer Data');
       console.log(this.viewData);
-  
+
       // For Testing
       // for (let i = 0; i < 100; i++) {
       //   this.viewData.push(this.viewData[0]);
@@ -490,7 +491,7 @@ export class CustomerTableComponent
           filter.searchTwo,
           filter.searchThree
         )
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((brokers: GetBrokerListResponse) => {
           if (!isShowMore) {
             this.viewData = brokers.pagination.data;
@@ -527,7 +528,7 @@ export class CustomerTableComponent
           filter.searchTwo,
           filter.searchThree
         )
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((shippers: ShipperListResponse) => {
           if (!isShowMore) {
             this.viewData = shippers.pagination.data;
@@ -638,7 +639,7 @@ export class CustomerTableComponent
       if (this.selectedTab === 'active') {
         this.brokerService
           .deleteBrokerById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -662,7 +663,7 @@ export class CustomerTableComponent
 
         this.shipperService
           .deleteShipperById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -691,7 +692,7 @@ export class CustomerTableComponent
 
       this.reviewRatingService
         .addRating(raitingData)
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((res: any) => {
           this.viewData = this.viewData.map((data: any) => {
             if (data.id === event.data.id) {
@@ -805,6 +806,8 @@ export class CustomerTableComponent
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
 

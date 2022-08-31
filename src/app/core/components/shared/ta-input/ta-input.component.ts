@@ -12,7 +12,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
@@ -26,8 +25,8 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { TaInputResetService } from './ta-input-reset.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -43,6 +42,7 @@ import { TaInputResetService } from './ta-input-reset.service';
 export class TaInputComponent
   implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
+  private destroy$ = new Subject<void>();
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
@@ -113,7 +113,7 @@ export class TaInputComponent
       !this.inputConfig.isDisabled
     ) {
       this.calendarService.dateChanged
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((date) => {
           this.setTimeDateInput(date);
           this.t2.close();
@@ -126,7 +126,7 @@ export class TaInputComponent
       !this.inputConfig.isDisabled
     ) {
       this.inputService.dropdownAddMode$
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
             this.dropdownToggler = false;
@@ -137,7 +137,7 @@ export class TaInputComponent
 
       // Dropdown select item with enter
       this.inputService.dropDownItemSelectedOnEnter$
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
             this.dropdownToggler = false;
@@ -158,7 +158,7 @@ export class TaInputComponent
 
     // Reset Inputs
     this.inputResetService.resetInputSubject
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.touchedInput = false;
@@ -1104,7 +1104,10 @@ export class TaInputComponent
     this.onChange(this.input.nativeElement.value);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
 

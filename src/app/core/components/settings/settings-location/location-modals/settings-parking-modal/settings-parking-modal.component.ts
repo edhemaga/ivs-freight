@@ -7,8 +7,7 @@ import {
   ParkingResponse,
   UpdateParkingCommand,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   addressUnitValidation,
@@ -29,7 +28,6 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-parking-modal',
   templateUrl: './settings-parking-modal.component.html',
@@ -38,6 +36,7 @@ import { SettingsLocationService } from '../../../state/location-state/settings-
   providers: [ModalService, FormService],
 })
 export class SettingsParkingModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public parkingForm: FormGroup;
@@ -153,7 +152,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.parkingForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -260,7 +259,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private parkingSlot() {
     this.parkingForm
       .get('parkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[0].value = calculateParkingSlot(
@@ -273,7 +272,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private fullParkingSlot() {
     this.parkingForm
       .get('fullParkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[1].value = calculateParkingSlot(
@@ -328,7 +327,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .updateCompanyParking(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -390,7 +389,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .addCompanyParking(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -411,7 +410,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private deleteParkingById(id: number) {
     this.settingsLocationService
       .deleteCompanyParkingById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -435,7 +434,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private editCompanyParkingById(id: number) {
     this.settingsLocationService
       .getCompanyParkingById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: ParkingResponse) => {
           this.parkingForm.patchValue({
@@ -503,7 +502,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.settingsLocationService
       .getModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyOfficeModalResponse) => {
           this.payPeriods = res.payPeriod;
@@ -519,5 +518,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

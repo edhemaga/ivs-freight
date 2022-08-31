@@ -11,7 +11,7 @@ import {
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -36,15 +36,15 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
-@UntilDestroy()
 @Component({
   selector: 'app-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
 export class Step2FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChildren('cmp') set content(content: QueryList<any>) {
     if (content) {
       const radioButtonsArray = content.toArray();
@@ -224,8 +224,9 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
       this.isDriverPosition();
 
-      this.subscription = this.workExperienceForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.workExperienceForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             employerAddress,
             applicantId,
@@ -253,8 +254,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
           } else {
             this.isWorkExperienceEdited = true;
           }
-        }
-      );
+        });
     }
   }
   public trackByIdentity = (index: number, item: any): number => index;
@@ -336,7 +336,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   private isDriverPosition(): void {
     this.workExperienceForm
       .get('isDrivingPosition')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(
@@ -577,5 +577,8 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

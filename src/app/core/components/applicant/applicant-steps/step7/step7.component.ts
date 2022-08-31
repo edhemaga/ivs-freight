@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
@@ -12,14 +10,16 @@ import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { SevenDaysHos } from '../../state/model/seven-days-hos.model';
 import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-step7',
   templateUrl: './step7.component.html',
   styleUrls: ['./step7.component.scss'],
 })
 export class Step7Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant | undefined;
@@ -229,7 +229,7 @@ export class Step7Component implements OnInit, OnDestroy {
     this.hosArray
       .at(index)
       .get('hos')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.totalHours = [...this.totalHours];
         this.totalHours[index].value = +value;
@@ -387,5 +387,8 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public onSubmitReview(data: any): void {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

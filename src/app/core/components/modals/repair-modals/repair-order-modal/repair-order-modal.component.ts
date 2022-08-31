@@ -33,7 +33,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
-import { takeWhile } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-repair-order-modal',
@@ -42,7 +42,7 @@ import { takeWhile } from 'rxjs';
   providers: [SumArraysPipe, ModalService, FormService],
 })
 export class RepairOrderModalComponent implements OnInit, OnDestroy {
-  private isComponentAlive: boolean = false;
+  private destroy$ = new Subject<void>();
 
   @ViewChild('t2') public popoverRef: NgbPopover;
 
@@ -114,8 +114,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isComponentAlive = true;
-
     this.createForm();
 
     if (this.editData?.storageData) {
@@ -160,7 +158,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.repairOrderForm);
 
     // this.formService.formValueChange$
-    //   .pipe(takeWhile(() => this.isComponentAlive))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -254,7 +252,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.items
         .at(index)
         .get(formControlName)
-        .valueChanges.pipe(takeWhile(() => this.isComponentAlive))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
           this.quantity[index] = value;
           this.subtotal = [...this.subtotal];
@@ -267,7 +265,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       this.items
         .at(index)
         .get(formControlName)
-        .valueChanges.pipe(takeWhile(() => this.isComponentAlive))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
           if (!this.quantity[index] || this.quantity[index] === 0) {
             this.quantity[index] = 1;
@@ -427,7 +425,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
           if (this.selectedRepairShop) {
             this.repairService
               .getRepairShopById(this.selectedRepairShop.id)
-              .pipe(takeWhile(() => this.isComponentAlive))
+              .pipe(takeUntil(this.destroy$))
               .subscribe({
                 next: (res: RepairShopResponse) => {
                   this.selectedRepairShop = {
@@ -472,7 +470,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   private getRepairDropdowns(truckId?: number, trailerId?: number) {
     this.repairService
       .getRepairModalDropdowns(truckId, trailerId)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairModalResponse) => {
           // PM Trucks
@@ -649,7 +647,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .addRepair(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -732,7 +730,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .updateRepair(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -753,7 +751,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         id,
         this.editData.type === 'edit-trailer' ? 'inactive' : 'active'
       )
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -836,7 +834,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       const timeout = setTimeout(() => {
         this.repairService
           .getRepairById(id)
-          .pipe(takeWhile(() => this.isComponentAlive))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: RepairResponse) => {
               if (!this.editData.type.includes('fo')) {
@@ -894,7 +892,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
               if (res.repairShop?.id) {
                 this.repairService
                   .getRepairShopById(res.repairShop.id)
-                  .pipe(takeWhile(() => this.isComponentAlive))
+                  .pipe(takeUntil(this.destroy$))
                   .subscribe({
                     next: (res: RepairShopResponse) => {
                       this.selectedRepairShop = {
@@ -1016,6 +1014,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isComponentAlive = false;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

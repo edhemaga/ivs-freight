@@ -4,7 +4,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CommentResponse,
   CreateCommentCommand,
@@ -26,8 +25,8 @@ import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.c
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { departmentValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
@@ -35,6 +34,7 @@ import { departmentValidation } from '../../shared/ta-input/ta-input.regex-valid
   providers: [ModalService, FormService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public taskForm: FormGroup;
@@ -94,7 +94,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.taskForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -192,7 +192,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.commentsService
       .createComment(comment)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.comments = comments.sortData.map((item, index) => {
@@ -225,7 +225,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.commentsService
       .updateComment(comment)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -246,7 +246,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.comments = comments.sortData;
     this.commentsService
       .deleteCommentById(comments.data)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -286,7 +286,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.todoService
       .updateTodo(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -318,7 +318,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.todoService
       .addTodo(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -336,7 +336,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private deleteTaskById(id: number) {
     this.todoService
       .deleteTodoById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -357,7 +357,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private editTask(id: number) {
     this.todoService
       .getTodoById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TodoResponse) => {
           this.taskForm.patchValue({
@@ -398,7 +398,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private getTaskDropdowns() {
     this.todoService
       .getTodoDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TodoModalResponse) => {
           this.resDepartments = res.departments;
@@ -431,5 +431,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

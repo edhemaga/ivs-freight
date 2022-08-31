@@ -8,7 +8,6 @@ import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   AddressEntity,
   CompanyContactModalResponse,
@@ -28,8 +27,8 @@ import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { ContactTService } from '../../contacts/state/contact.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-contact-modal',
   templateUrl: './contact-modal.component.html',
@@ -37,6 +36,7 @@ import { ContactTService } from '../../contacts/state/contact.service';
   providers: [ModalService, FormService],
 })
 export class ContactModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public contactForm: FormGroup;
@@ -118,7 +118,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.contactForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -160,7 +160,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   private followSharedCheckbox() {
     this.contactForm
       .get('shared')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -178,7 +178,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   private getCompanyContactModal() {
     this.contactService
       .getCompanyContactModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyContactModalResponse) => {
           this.contactLabels = res.labels;
@@ -197,7 +197,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   private editCompanyContact(id: number) {
     this.contactService
       .getCompanyContactById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyContactResponse) => {
           this.contactForm.patchValue({
@@ -245,7 +245,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     this.contactService
       .addCompanyContact(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -284,7 +284,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
     this.contactService
       .updateCompanyContact(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -305,7 +305,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   public deleteCompanyContactById(id: number): void {
     this.contactService
       .deleteCompanyContactById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -357,7 +357,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
   private companyContactColorLabels() {
     this.contactService
       .companyContactLabelsColorList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Array<ContactColorResponse>) => {
           this.colors = res;
@@ -396,7 +396,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             name: this.selectedContactLabel.name,
             colorId: this.selectedContactLabel.colorId,
           })
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -406,7 +406,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
               this.contactService
                 .getCompanyContactModal()
-                .pipe(untilDestroyed(this))
+                .pipe(takeUntil(this.destroy$))
                 .subscribe({
                   next: (res: CompanyContactModalResponse) => {
                     this.contactLabels = res.labels;
@@ -454,7 +454,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             name: this.selectedContactLabel.name,
             colorId: this.selectedContactLabel.colorId,
           })
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CreateResponse) => {
               this.notificationService.success(
@@ -469,7 +469,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
               this.contactService
                 .getCompanyContactModal()
-                .pipe(untilDestroyed(this))
+                .pipe(takeUntil(this.destroy$))
                 .subscribe({
                   next: (res: CompanyContactModalResponse) => {
                     this.contactLabels = res.labels;
@@ -497,5 +497,8 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

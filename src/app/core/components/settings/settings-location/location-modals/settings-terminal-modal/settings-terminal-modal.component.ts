@@ -19,18 +19,16 @@ import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import {
   calculateParkingSlot,
   convertNumberInThousandSep,
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-terminal-modal',
   templateUrl: './settings-terminal-modal.component.html',
@@ -39,6 +37,7 @@ import { SettingsLocationService } from '../../../state/location-state/settings-
   providers: [ModalService, FormService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
   public terminalForm: FormGroup;
 
@@ -178,7 +177,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.terminalForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -235,7 +234,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedOffice() {
     this.terminalForm
       .get('officeChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -255,7 +254,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedParking() {
     this.terminalForm
       .get('parkingChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -275,7 +274,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedWarehouse() {
     this.terminalForm
       .get('warehouseChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -336,7 +335,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private parkingSlot() {
     this.terminalForm
       .get('terminalParkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[0].value = calculateParkingSlot(
@@ -349,7 +348,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private fullParkingSlot() {
     this.terminalForm
       .get('terminalFullParkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[1].value = calculateParkingSlot(
@@ -413,7 +412,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .updateCompanyTerminal(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -468,7 +467,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .addCompanyTerminal(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -489,7 +488,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private deleteTerminalById(id: number) {
     this.settingsLocationService
       .deleteCompanyTerminalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -513,7 +512,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private editTerminalById(id: number) {
     this.settingsLocationService
       .getCompanyTerminalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TerminalResponse) => {
           this.terminalForm.patchValue({
@@ -612,7 +611,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.settingsLocationService
       .getModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyOfficeModalResponse) => {
           this.monthlyDays = res.payPeriodMonthly;
@@ -625,5 +624,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

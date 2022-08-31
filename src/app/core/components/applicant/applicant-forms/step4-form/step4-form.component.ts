@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -10,7 +11,7 @@ import {
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -34,7 +35,9 @@ import { addressValidation } from '../../../shared/ta-input/ta-input.regex-valid
   templateUrl: './step4-form.component.html',
   styleUrls: ['./step4-form.component.scss'],
 })
-export class Step4FormComponent implements OnInit, AfterViewInit {
+export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
+
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -113,14 +116,20 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.accidentForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.accidentForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             accidentLocation,
             accidentState,
@@ -140,8 +149,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
           } else {
             this.isAccidentEdited = true;
           }
-        }
-      );
+        });
     }
   }
 

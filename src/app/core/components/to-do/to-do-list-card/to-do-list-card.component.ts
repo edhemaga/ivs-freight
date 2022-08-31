@@ -1,5 +1,5 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
@@ -16,23 +16,21 @@ import { CommentsService } from 'src/app/core/services/comments/comments.service
   styleUrls: ['./to-do-list-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ToDoListCardComponent implements OnInit {
-
+export class ToDoListCardComponent implements OnInit, OnDestroy {
   public updatedStatusData: UpdateTodoStatusCommand;
   startChangingStatus = false;
   public dragStarted = false;
   cardData: Array<any> = [];
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
   public dropdownOptions: any;
 
-
   scene = {
     type: 'container',
     props: {
-      orientation: 'horizontal'
+      orientation: 'horizontal',
     },
     children: [
       {
@@ -41,9 +39,9 @@ export class ToDoListCardComponent implements OnInit {
         name: 'column1',
         props: {
           orientation: 'horizontal',
-          className: 'card-container'
+          className: 'card-container',
         },
-        children: []
+        children: [],
       },
       {
         id: `column2`,
@@ -51,9 +49,9 @@ export class ToDoListCardComponent implements OnInit {
         name: 'column2',
         props: {
           orientation: 'horizontal',
-          className: 'card-container'
+          className: 'card-container',
         },
-        children: []
+        children: [],
       },
       {
         id: `column3`,
@@ -61,13 +59,12 @@ export class ToDoListCardComponent implements OnInit {
         name: 'column3',
         props: {
           orientation: 'horizontal',
-          className: 'card-container'
+          className: 'card-container',
         },
-        children: []
-      }
-    ]
-  }
-
+        children: [],
+      },
+    ],
+  };
 
   reviews: any = [
     {
@@ -95,7 +92,7 @@ export class ToDoListCardComponent implements OnInit {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
       isNewReview: false,
-    }
+    },
   ];
 
   worldClockHolder: any = [
@@ -137,8 +134,13 @@ export class ToDoListCardComponent implements OnInit {
     private todoTService: TodoTService,
     private modalService: ModalService,
     private sharedService: SharedService,
-    private commentsService: CommentsService,
-  ) { }
+    private commentsService: CommentsService
+  ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit(): void {
     this.getTodoList();
@@ -178,7 +180,7 @@ export class ToDoListCardComponent implements OnInit {
       };
       this.updateStatus(this.updatedStatusData);
     }
-  };
+  }
 
   private getTodoList() {
     this.todoTService
@@ -192,7 +194,6 @@ export class ToDoListCardComponent implements OnInit {
   public openModalTodo() {
     this.modalService.openModal(TaskModalComponent, { size: 'small' });
   }
-
 
   public updateStatus(todo) {
     this.todoTService
@@ -259,13 +260,15 @@ export class ToDoListCardComponent implements OnInit {
     e.preventDefault();
     e.stopPropagation();
 
-    this.scene.children[mainIndx].children[indx]['commentActive'] = !this.scene.children[mainIndx].children[indx]['commentActive'];
+    this.scene.children[mainIndx].children[indx]['commentActive'] =
+      !this.scene.children[mainIndx].children[indx]['commentActive'];
   }
 
   toggleLinkShow(e: Event, mainIndx: number, indx: number) {
     e.preventDefault();
     e.stopPropagation();
-    this.scene.children[mainIndx].children[indx]['linkActive'] = !this.scene.children[mainIndx].children[indx]['linkActive'];
+    this.scene.children[mainIndx].children[indx]['linkActive'] =
+      !this.scene.children[mainIndx].children[indx]['linkActive'];
   }
 
   //// NEW ANIMATION
@@ -279,7 +282,7 @@ export class ToDoListCardComponent implements OnInit {
   onCardDrop(columnId, dropResult) {
     if (dropResult.removedIndex !== null || dropResult.addedIndex !== null) {
       const scene = Object.assign({}, this.scene);
-      const column = scene.children.filter(p => p.id === columnId)[0];
+      const column = scene.children.filter((p) => p.id === columnId)[0];
       const columnIndex = scene.children.indexOf(column);
 
       const newColumn = Object.assign({}, column);
@@ -287,7 +290,6 @@ export class ToDoListCardComponent implements OnInit {
       scene.children.splice(columnIndex, 1, newColumn);
 
       if (dropResult.removedIndex === null && dropResult.addedIndex !== null) {
-
         newColumn.children[dropResult.addedIndex].x = columnIndex;
 
         this.changedRow(newColumn.children[dropResult.addedIndex]);
@@ -297,11 +299,12 @@ export class ToDoListCardComponent implements OnInit {
     }
   }
 
-
   getCardPayload(columnId) {
     return (index) => {
-      return this.scene.children.filter(p => p.id === columnId)[0].children[index];
-    }
+      return this.scene.children.filter((p) => p.id === columnId)[0].children[
+        index
+      ];
+    };
   }
 
   log(...params) {
@@ -313,7 +316,6 @@ export class ToDoListCardComponent implements OnInit {
       this.sharedService.emitUpdateScrollHeight.emit(true);
     }, 200);
   }
-
 
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -351,46 +353,50 @@ export class ToDoListCardComponent implements OnInit {
   }
 
   dropAct(event) {
-    if (event.type == "delete-item") {
+    if (event.type == 'delete-item') {
       this.todoTService.deleteTodoById(event.id).subscribe();
-      this.cardData = this.cardData.filter(item => item.id !== event.id);
-      this.scene.children = this.scene.children.map(item => {
-        item.children = item.children.filter(item => item.id !== event.id);
+      this.cardData = this.cardData.filter((item) => item.id !== event.id);
+      this.scene.children = this.scene.children.map((item) => {
+        item.children = item.children.filter((item) => item.id !== event.id);
         return item;
       });
     } else {
-      this.modalService.openModal(TaskModalComponent, { size: 'small' }, {
-        ...event,
-        type: 'edit'
-      });
+      this.modalService.openModal(
+        TaskModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+        }
+      );
     }
   }
 
-  changeReviewsEvent(event){
+  changeReviewsEvent(event) {
     console.log(event);
-    if( event.action == "delete" ){
-      this.commentsService.deleteCommentById(event.data)
-      .subscribe({
+    if (event.action == 'delete') {
+      this.commentsService.deleteCommentById(event.data).subscribe({
         next: () => {
-          console.log("SUCCESS DELETING");
-
+          console.log('SUCCESS DELETING');
         },
         error: () => {
-          console.log("ERROR WHILE DELETING");
+          console.log('ERROR WHILE DELETING');
         },
       });
-    }else if(event.action == "update"){
-      this.commentsService.updateComment({id: event.data.id, commentContent: event.data.commentContent})
-      .subscribe({
-        next: () => {
-          console.log("SUCCESS DELETING");
-
-        },
-        error: () => {
-          console.log("ERROR WHILE DELETING");
-        },
-      });
+    } else if (event.action == 'update') {
+      this.commentsService
+        .updateComment({
+          id: event.data.id,
+          commentContent: event.data.commentContent,
+        })
+        .subscribe({
+          next: () => {
+            console.log('SUCCESS DELETING');
+          },
+          error: () => {
+            console.log('ERROR WHILE DELETING');
+          },
+        });
     }
   }
-
 }

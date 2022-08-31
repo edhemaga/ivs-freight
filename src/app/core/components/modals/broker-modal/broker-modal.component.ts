@@ -1,5 +1,4 @@
 import { AddressEntity } from './../../../../../../appcoretruckassist/model/addressEntity';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -44,8 +43,8 @@ import {
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-broker-modal',
   templateUrl: './broker-modal.component.html',
@@ -55,6 +54,7 @@ import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculati
   providers: [ModalService, FormService, TaLikeDislikeService],
 })
 export class BrokerModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public brokerForm: FormGroup;
@@ -219,7 +219,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     //   this.formService.checkFormChange(this.brokerForm);
 
     //   this.formService.formValueChange$
-    //     .pipe(untilDestroyed(this))
+    //     .pipe(takeUntil(this.destroy$))
     //     .subscribe((isFormChange: boolean) => {
     //       isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //     });
@@ -288,7 +288,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.brokerModalService
           .changeDnuStatus(this.editData.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -320,7 +320,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.brokerForm.get('ban').patchValue(data.bool);
         this.brokerModalService
           .changeBanStatus(this.editData.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -572,7 +572,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
   private ratingChanges() {
     this.taLikeDislikeService.userLikeDislike$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((action: LikeDislikeModel) => {
         let rating: CreateRatingCommand = null;
 
@@ -592,7 +592,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         this.reviewRatingService
           .addRating(rating)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: any) => {
               this.editBrokerById(this.editData.id);
@@ -620,7 +620,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     this.reviewRatingService
       .addReview(review)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.reviews = reviews.sortData.map((item, index) => {
@@ -650,7 +650,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -673,7 +673,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     this.reviewRatingService
       .updateReview(review)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -705,7 +705,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private getBrokerDropdown() {
     this.brokerModalService
       .getBrokerDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reasponse: BrokerModalResponse) => {
           this.labelsDepartments = reasponse.departments;
@@ -768,7 +768,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     let businessName = this.brokerForm.value.businessName;
     this.brokerModalService
       .addBroker(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -836,7 +836,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     this.brokerModalService
       .updateBroker(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -857,7 +857,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private deleteBrokerById(id: number): void {
     this.brokerModalService
       .deleteBrokerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -878,7 +878,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private editBrokerById(id: number): void {
     this.brokerModalService
       .getBrokerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reasponse: BrokerResponse) => {
           this.brokerForm.patchValue({
@@ -1054,7 +1054,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private followIsBillingAddressSame() {
     this.brokerForm
       .get('isCheckedBillingAddress')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -1396,5 +1396,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     return { mainAddress, billingAddress, mainPoBox, billingPoBox };
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

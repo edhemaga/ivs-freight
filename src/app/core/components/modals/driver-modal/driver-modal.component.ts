@@ -1,9 +1,8 @@
 import { FormArray } from '@angular/forms';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -43,7 +42,7 @@ import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
-@UntilDestroy()
+
 @Component({
   selector: 'app-driver-modal',
   templateUrl: './driver-modal.component.html',
@@ -55,6 +54,7 @@ import { BankVerificationService } from 'src/app/core/services/bank-verification
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class DriverModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
   @Input() editData: any;
@@ -209,7 +209,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           this.editData.id,
           !this.driverStatus ? 'active' : 'inactive'
         )
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (res: HttpResponseBase) => {
             if (res.status === 200 || res.status === 204) {
@@ -319,7 +319,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.driverForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -374,7 +374,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onIncludePayroll(): void {
     this.driverForm
       .get('useTruckAssistAch')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(this.driverForm.get('bankId'));
@@ -392,7 +392,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onBankSelected() {
     this.driverForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -407,7 +407,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -521,7 +521,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private onTwicTypeSelected(): void {
     this.driverForm
       .get('twic')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -557,7 +557,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
       this.driverForm
         .get('soloDriver')
-        .valueChanges.pipe(untilDestroyed(this))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((val) => {
           if (!val && !this.driverForm.get('isOwner').value) {
             this.driverForm.get('teamDriver').patchValue(true);
@@ -574,7 +574,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
       this.driverForm
         .get('teamDriver')
-        .valueChanges.pipe(untilDestroyed(this))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((val) => {
           if (!val && !this.driverForm.get('isOwner').value) {
             this.driverForm.get('soloDriver').patchValue(true);
@@ -729,7 +729,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private isCheckedOwner() {
     this.driverForm
       .get('isOwner')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value && !this.driverForm.get('ownerType').value) {
           this.driverForm.get('ownerType').patchValue('Sole Proprietor');
@@ -813,13 +813,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private einNumberChange() {
     this.driverForm
       .get('ein')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value?.length === 10) {
           this.loadingOwnerEin = true;
           this.driverTService
             .checkOwnerEinNumber(value.toString())
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: CheckOwnerSsnEinResponse) => {
                 this.owner = res?.name ? res : null;
@@ -847,7 +847,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     if (['Solo', 'Combined'].includes(this.fleetType)) {
       this.driverForm
         .get('soloEmptyMile')
-        .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+        .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe((value) => {
           if (value > 10) {
             this.driverForm.get('soloEmptyMile').setErrors({ invalid: true });
@@ -858,7 +858,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
       this.driverForm
         .get('soloLoadedMile')
-        .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+        .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe((value) => {
           if (value > 10) {
             this.driverForm.get('soloLoadedMile').setErrors({ invalid: true });
@@ -873,7 +873,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     if (['Team', 'Combined'].includes(this.fleetType)) {
       this.driverForm
         .get('teamEmptyMile')
-        .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+        .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe((value) => {
           if (value > 10) {
             this.driverForm.get('teamEmptyMile').setErrors({ invalid: true });
@@ -884,7 +884,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
       this.driverForm
         .get('teamLoadedMile')
-        .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+        .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
         .subscribe((value) => {
           if (value > 10) {
             this.driverForm.get('teamLoadedMile').setErrors({ invalid: true });
@@ -900,7 +900,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private getDriverDropdowns(): void {
     this.driverTService
       .getDriverDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (data: GetDriverModalResponse) => {
           this.labelsBank = data.banks;
@@ -1214,7 +1214,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     this.driverTService
       .addDriver(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1526,7 +1526,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
     this.driverTService
       .updateDriver(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1546,7 +1546,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private editDriverById(id: number): void {
     this.driverTService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: DriverResponse) => {
           this.driverForm.patchValue({
@@ -1712,7 +1712,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   private deleteDriverById(id: number): void {
     this.driverTService
       .deleteDriverById(id, !this.driverStatus ? 'active' : 'inactive')
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1730,5 +1730,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

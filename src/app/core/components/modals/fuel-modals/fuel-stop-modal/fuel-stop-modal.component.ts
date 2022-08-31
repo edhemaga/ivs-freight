@@ -10,9 +10,8 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-fuel-stop-modal',
   templateUrl: './fuel-stop-modal.component.html',
@@ -20,6 +19,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [ModalService, FormService],
 })
 export class FuelStopModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public fuelStopForm: FormGroup;
@@ -69,7 +69,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.fuelStopForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -137,5 +137,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   private deleteFuelStopById(id: number) {}
   private editFuelStop(id: number) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

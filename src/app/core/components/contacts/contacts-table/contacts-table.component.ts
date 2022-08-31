@@ -24,7 +24,7 @@ import { ContactTService } from '../state/contact.service';
 export class ContactsTableComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];

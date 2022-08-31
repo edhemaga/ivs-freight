@@ -59,32 +59,34 @@ export class MvrTService {
 
   /* Observable<CreateMvrResponse> */
   public addMvr(data: CreateMvrCommand): Observable<any> {
-    return this.mvrService.apiMvrPost(data).pipe(
-      tap((res: any) => {
-        const subDriver = this.driverService
-          .getDriverById(data.driverId)
-          .subscribe({
-            next: (driver: DriverResponse | any) => {
-              this.driverStore.remove(({ id }) => id === data.driverId);
+    return this.mvrService
+      .apiMvrPost(data)
+      .pipe
+      // tap((res: any) => {
+      //   const subDriver = this.driverService
+      //     .getDriverById(data.driverId)
+      //     .subscribe({
+      //       next: (driver: DriverResponse | any) => {
+      //         this.driverStore.remove(({ id }) => id === data.driverId);
 
-              driver = {
-                ...driver,
-                fullName: driver.firstName + ' ' + driver.lastName,
-              };
+      //         driver = {
+      //           ...driver,
+      //           fullName: driver.firstName + ' ' + driver.lastName,
+      //         };
 
-              this.driverStore.add(driver);
+      //         this.driverStore.add(driver);
 
-              this.tableService.sendActionAnimation({
-                animation: 'update',
-                data: driver,
-                id: driver.id,
-              });
+      //         this.tableService.sendActionAnimation({
+      //           animation: 'update',
+      //           data: driver,
+      //           id: driver.id,
+      //         });
 
-              subDriver.unsubscribe();
-            },
-          });
-      })
-    );
+      //         subDriver.unsubscribe();
+      //       },
+      //     });
+      // })
+      ();
   }
 
   public updateMvr(data: EditMvrCommand): Observable<object> {

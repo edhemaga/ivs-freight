@@ -32,7 +32,7 @@ import { TruckTService } from '../../truck/state/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
-import { takeWhile } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-truck-modal',
@@ -43,7 +43,7 @@ import { takeWhile } from 'rxjs';
   providers: [ModalService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
-  private isComponentAlive: boolean = false;
+  private destroy$ = new Subject<void>();
 
   @ViewChild('appNote', { static: false }) public appNote: any;
 
@@ -109,8 +109,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isComponentAlive = true;
-
     this.createForm();
     this.isCompanyOwned();
     this.getTruckDropdowns();
@@ -165,7 +163,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.truckForm);
 
     // this.formService.formValueChange$
-    //   .pipe(takeWhile(() => this.isComponentAlive))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -187,7 +185,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       if (data.action === 'deactivate' && this.editData) {
         this.truckModalService
           .changeTruckStatus(this.editData.id, this.editData.tabSelected)
-          .pipe(takeWhile(() => this.isComponentAlive))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -258,7 +256,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
-      .valueChanges.pipe(takeWhile(() => this.isComponentAlive))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(this.truckForm.get('ownerId'));
@@ -274,7 +272,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public editTruckById(id: number) {
     this.truckModalService
       .getTruckById(id)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TruckResponse) => {
           this.truckForm.patchValue({
@@ -445,13 +443,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.truckForm
       .get('vin')
-      .valueChanges.pipe(takeWhile(() => this.isComponentAlive))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 1)
-            .pipe(takeWhile(() => this.isComponentAlive))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
                 this.truckForm.patchValue({
@@ -480,7 +478,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public getTruckDropdowns() {
     this.truckModalService
       .getTruckDropdowns()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
           this.truckType = res.truckTypes.map((item) => {
@@ -558,7 +556,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     this.truckModalService
       .addTruck(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -628,7 +626,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     };
     this.truckModalService
       .updateTruck(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -645,7 +643,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public deleteTruckById(id: number) {
     this.truckModalService
       .deleteTruckById(id, this.editData.tabSelected)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -663,6 +661,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isComponentAlive = false;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

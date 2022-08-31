@@ -1,8 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -24,7 +31,8 @@ import { addressValidation } from '../../../shared/ta-input/ta-input.regex-valid
   templateUrl: './step5-form.component.html',
   styleUrls: ['./step5-form.component.scss'],
 })
-export class Step5FormComponent implements OnInit {
+export class Step5FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -82,14 +90,20 @@ export class Step5FormComponent implements OnInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.violationsForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.violationsForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             violationLocation,
             isEditingViolation,
@@ -108,8 +122,7 @@ export class Step5FormComponent implements OnInit {
           } else {
             this.isViolationEdited = true;
           }
-        }
-      );
+        });
     }
   }
 

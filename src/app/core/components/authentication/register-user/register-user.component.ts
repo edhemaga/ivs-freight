@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import moment from 'moment';
 
 import { SignupUserCommand } from 'appcoretruckassist/model/models';
@@ -21,14 +19,16 @@ import {
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
   styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public registerUserForm!: FormGroup;
 
   private signUpUserCode: string;
@@ -68,7 +68,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   private patchForm(): void {
     this.authStoreService.getSignUpUserInfo$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((signUpUserInfo: SignUpUserInfo) => {
         this.registerUserForm.patchValue({
           firstName: signUpUserInfo.firstName,
@@ -86,7 +86,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   public passwordsNotSame(): void {
     this.registerUserForm
       .get('confirmPassword')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (
           value?.toLowerCase() ===
@@ -117,7 +117,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .signUpUser(saveData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: HttpResponseBase) => {
           if (res.status === 200 || res.status === 204) {
@@ -138,5 +138,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

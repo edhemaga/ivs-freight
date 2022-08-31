@@ -1,7 +1,14 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -21,7 +28,8 @@ import { LicenseModel } from '../../state/model/cdl-information';
   templateUrl: './step3-form.component.html',
   styleUrls: ['./step3-form.component.scss'],
 })
-export class Step3FormComponent implements OnInit {
+export class Step3FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -100,14 +108,20 @@ export class Step3FormComponent implements OnInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.licenseForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.licenseForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const { isEditingLicense, ...previousFormValues } =
             this.formValuesToPatch;
 
@@ -127,8 +141,7 @@ export class Step3FormComponent implements OnInit {
           } else {
             this.isLicenseEdited = true;
           }
-        }
-      );
+        });
     }
   }
 
@@ -204,7 +217,7 @@ export class Step3FormComponent implements OnInit {
       this.inputService.markInvalid(this.licenseForm);
       return;
     }
-    /* 
+    /*
       const {firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -214,7 +227,7 @@ export class Step3FormComponent implements OnInit {
       ...licenseForm,
       isEditingLicense: false,
     };
- 
+
     this.formValuesEmitter.emit(saveData);*/
 
     this.licenseForm.reset();

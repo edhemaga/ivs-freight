@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   Component,
   OnInit,
@@ -32,8 +31,8 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 import { RepairTService } from '../state/repair.service';
 import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
@@ -45,6 +44,7 @@ import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/revie
   providers: [TaThousandSeparatorPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
@@ -105,7 +105,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
@@ -116,7 +116,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Switch Selected
     this.tableService.currentSwitchOptionSelected
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           if (res.switchType === 'PM') {
@@ -127,7 +127,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -142,7 +142,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -157,7 +157,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.pageIndex = 1;
@@ -189,7 +189,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Repair Actions
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         // On Add Repair
         if (res.animation === 'add' && this.selectedTab === res.tab) {
@@ -588,7 +588,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((repair: RepairListResponse) => {
         if (!isShowMore) {
           this.viewData = repair.pagination.data;
@@ -649,7 +649,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((shop: RepairShopListResponse) => {
         if (!isShowMore) {
           this.viewData = shop.pagination.data;
@@ -771,7 +771,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
-    // Show More 
+    // Show More
     if (event.type === 'show-more') {
       this.selectedTab !== 'repair-shop'
         ? this.backFilterQuery.pageIndex++
@@ -780,7 +780,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedTab !== 'repair-shop'
         ? this.repairBackFilter(this.backFilterQuery, false, true)
         : this.shopBackFilter(this.backFilterQuery, false, true);
-    } 
+    }
     // Edit
     else if (event.type === 'edit') {
       switch (this.selectedTab) {
@@ -809,21 +809,21 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           break;
         }
       }
-    } 
+    }
     // Delete
     else if (event.type === 'delete-repair') {
       if (this.selectedTab !== 'repair-shop') {
         this.repairService
           .deleteRepairById(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe();
       } else {
         this.repairService
           .deleteRepairShopById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe();
       }
-    } 
+    }
     // Finish Order
     else if (event.type === 'finish-order') {
       switch (this.selectedTab) {
@@ -858,7 +858,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.reviewRatingService
         .addRating(raitingData)
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((res: any) => {
           this.viewData = this.viewData.map((data: any) => {
             if (data.id === event.data.id) {
@@ -884,6 +884,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.tableService.sendCurrentSwitchOptionSelected(null);
     this.resizeObserver.unobserve(document.querySelector('.table-container'));

@@ -17,11 +17,10 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { DashboardStrategy } from './dashboard_strategy';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
@@ -37,6 +36,7 @@ import { DashboardStrategy } from './dashboard_strategy';
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   @Input() viewData: any[];
@@ -92,7 +92,7 @@ export class TruckassistTableBodyComponent
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: string) => {
         if (response !== '') {
           const isSelect = response === 'select';
@@ -116,7 +116,7 @@ export class TruckassistTableBodyComponent
 
     // Columns Reorder
     this.tableService.currentColumnsOrder
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
@@ -132,7 +132,7 @@ export class TruckassistTableBodyComponent
 
     // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((reset: boolean) => {
         if (reset) {
           this.mySelection = [];
@@ -259,10 +259,8 @@ export class TruckassistTableBodyComponent
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
 
-       this.notPinedMaxWidth =
-        tableContainer.clientWidth -
-        (this.pinedWidth + this.actionsWidth) -
-        8;
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth - (this.pinedWidth + this.actionsWidth) - 8;
 
       /* this.checkForScroll(); */
     }
@@ -442,6 +440,8 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
   }
 

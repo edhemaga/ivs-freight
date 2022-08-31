@@ -15,7 +15,7 @@ import {
   UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { debounceTime, takeWhile } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
@@ -27,7 +27,7 @@ import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-mo
   providers: [ModalService, FormService],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
-  private isComponentAlive: boolean = false;
+  private destroy$ = new Subject<void>();
 
   @Input() editData: any;
 
@@ -45,8 +45,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.isComponentAlive = true;
-
     this.createForm();
 
     if (this.editData?.action?.includes('unit-pm')) {
@@ -67,7 +65,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.PMform);
 
     // this.formService.formValueChange$
-    //   .pipe(takeWhile(() => this.isComponentAlive))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -206,10 +204,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     this.newPMs
       .at(ind)
       .get('value')
-      .valueChanges.pipe(
-        debounceTime(2000),
-        takeWhile(() => this.isComponentAlive)
-      )
+      .valueChanges.pipe(debounceTime(2000), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.newPMs.at(ind).get('hidden').patchValue(true);
@@ -313,7 +308,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTruckList() {
     this.pmTService
       .getPMTruckList()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTruckListResponse) => {
           res.pagination.data.forEach((item, index) => {
@@ -341,7 +336,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTruckUnit(id: number) {
     this.pmTService
       .getPmTruckUnitIdModal(id)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTruckListResponse) => {
           res.pagination.data.forEach((item, index) => {
@@ -372,7 +367,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTrailerList() {
     this.pmTService
       .getPMTrailerList()
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTrailerListResponse) => {
           res.pagination.data.forEach((item) => {
@@ -400,7 +395,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTrailerUnit(id: number) {
     this.pmTService
       .getPmTrailerUnitIdModal(id)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTrailerListResponse) => {
           res.pagination.data.forEach((item) => {
@@ -457,7 +452,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTruckList(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -507,7 +502,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTrailerList(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -556,7 +551,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTruckUnit(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -605,7 +600,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTrailerUnit(newData)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -687,7 +682,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private deleteTruckPMList(id: number) {
     this.pmTService
       .deletePMTruckById(id)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -707,7 +702,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private deleteTrailerPMList(id: number) {
     this.pmTService
       .deletePMTrailerById(id)
-      .pipe(takeWhile(() => this.isComponentAlive))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -725,6 +720,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.isComponentAlive = false;
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

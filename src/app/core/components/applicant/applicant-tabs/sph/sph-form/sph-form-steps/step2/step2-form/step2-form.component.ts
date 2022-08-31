@@ -3,13 +3,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
@@ -29,7 +30,8 @@ import { addressValidation } from 'src/app/core/components/shared/ta-input/ta-in
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit, AfterViewInit {
+export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -75,14 +77,20 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.accidentForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.accidentForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             accidentLocation,
             accidentState,
@@ -99,8 +107,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
           } else {
             this.isAccidentEdited = true;
           }
-        }
-      );
+        });
     }
   }
 

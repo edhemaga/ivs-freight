@@ -13,9 +13,8 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-accident-modal',
   templateUrl: './accident-modal.component.html',
@@ -24,6 +23,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public accidentForm: FormGroup;
@@ -160,7 +160,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.accidentForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -305,5 +305,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

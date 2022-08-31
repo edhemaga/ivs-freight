@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   addressUnitValidation,
   addressValidation,
@@ -19,11 +18,10 @@ import {
   UserResponse,
 } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
-@UntilDestroy()
 @Component({
   selector: 'app-profile-update-modal',
   templateUrl: './profile-update-modal.component.html',
@@ -31,6 +29,7 @@ import { ImageBase64Service } from 'src/app/core/utils/base64.image';
   animations: [tab_modal_animation('animationTabsModal')],
 })
 export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   private user: SignInResponse = JSON.parse(localStorage.getItem('user'));
 
   public selectedTab: number = 1;
@@ -128,7 +127,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   public changeCheckboxDetection() {
     this.profileUserForm
       .get('createNewPassword')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -162,7 +161,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   public confirmationOldPassword() {
     this.profileUserForm
       .get('oldPassword')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.inputService.changeValidators(
           this.profileUserForm.get('checkingOldPassword')
@@ -171,7 +170,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.loadingOldPassword = true;
           this.userService
             .validateUserPassword({ password: value })
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: any) => {
                 if (res.correctPassword) {
@@ -197,7 +196,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   private passwordsNotSame(): void {
     this.profileUserForm
       .get('password')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (
           value?.toLowerCase() ===
@@ -254,7 +253,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
   private getUserById() {
     this.userService
       .getUserById(this.user.userId)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: UserResponse) => {
           this.profileUserForm.patchValue({
@@ -301,7 +300,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
     this.userService
       .updateUser(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -325,5 +324,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
