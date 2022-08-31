@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -26,8 +25,8 @@ import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
@@ -35,6 +34,7 @@ import {
   providers: [DetailsPageService],
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
+  private destroy$ = new Subject<void>();
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -69,7 +69,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.detailCongif(res.data);
@@ -80,7 +80,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -106,7 +106,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       });
 
     this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (!this.driverDetailsQuery.hasEntity(id)) {
@@ -114,7 +114,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           query = this.driverDetailsQuery.selectEntity(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: DriverResponse) => {
             this.initTableOptions(res);
             this.detailCongif(res);
@@ -302,7 +302,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public getDriverById(id: number) {
     this.driverService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
   }
   public onDriverActions(event: any) {
@@ -326,7 +326,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     } else if (event.type === 'deactivate' || event.type === 'activate') {
       this.driverService
         .changeDriverStatus(event.id)
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
             this.notificationService.success(
@@ -358,7 +358,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   private changeDriverStatus(id: number) {
     this.driverService
       .changeDriverStatus(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -378,7 +378,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   private deleteDriverById(id: number) {
     this.driverService
       .deleteDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -444,6 +444,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

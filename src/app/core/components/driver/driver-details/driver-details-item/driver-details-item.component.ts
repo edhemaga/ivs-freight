@@ -27,13 +27,13 @@ import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'app-driver-details-item',
   templateUrl: './driver-details-item.component.html',
@@ -44,6 +44,7 @@ import { TestTService } from '../../state/test.service';
 export class DriverDetailsItemComponent
   implements OnInit, OnDestroy, OnChanges
 {
+  private destroy$ = new Subject<void>();
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() drivers: DriverResponse | any = null;
   public cdlNote: FormControl = new FormControl();
@@ -88,7 +89,7 @@ export class DriverDetailsItemComponent
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -210,28 +211,28 @@ export class DriverDetailsItemComponent
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataCdl = item));
   }
 
   public getMedicalById(id: number) {
     this.medicalService
       .getMedicalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataMedical = item));
   }
 
   public getMvrById(id: number) {
     this.mvrService
       .getMvrById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataMvr = item));
   }
 
   public getTestById(id: number) {
     this.testService
       .getTestById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataTest = item));
   }
   public optionsEvent(any: any, action: string) {
@@ -391,7 +392,7 @@ export class DriverDetailsItemComponent
   public deleteCdlByIdFunction(id: number) {
     this.cdlService
       .deleteCdlById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -411,7 +412,7 @@ export class DriverDetailsItemComponent
   private deleteMedicalByIdFunction(id: number) {
     this.medicalService
       .deleteMedicalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -431,7 +432,7 @@ export class DriverDetailsItemComponent
   private deleteMvrByIdFunction(id: number) {
     this.mvrService
       .deleteMvrById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -451,7 +452,7 @@ export class DriverDetailsItemComponent
   private deleteTestByIdFunction(id: number) {
     this.testService
       .deleteTestById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -505,6 +506,8 @@ export class DriverDetailsItemComponent
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

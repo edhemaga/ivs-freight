@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpResponseBase } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import moment from 'moment';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -12,14 +10,16 @@ import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { SetNewPasswordCommand } from 'appcoretruckassist/model/setNewPasswordCommand';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-create-new-password-page',
   templateUrl: './create-new-password-page.component.html',
   styleUrls: ['./create-new-password-page.component.scss'],
 })
 export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public createNewPasswordForm: FormGroup;
 
   public copyrightYear: number;
@@ -50,7 +50,7 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
   public passwordsNotSame(): void {
     this.createNewPasswordForm
       .get('confirmNewPassword')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (
           value?.toLowerCase() ===
@@ -76,13 +76,13 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     };
 
     this.authStoreService.getForgotPassword$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((token) => {
         localStorage.setItem('user', JSON.stringify({ token: token }));
 
         this.authStoreService
           .createNewPassword(newData)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -111,5 +111,8 @@ export class CreateNewPasswordPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

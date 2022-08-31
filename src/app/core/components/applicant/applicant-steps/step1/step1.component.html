@@ -184,7 +184,10 @@
               label: 'Email',
               isRequired: true,
               placeholderIcon: 'email',
-              isDisabled: true
+              textTransform: 'lowercase',
+              isDisabled: true,
+              minLength: 5,
+              maxLength: 64
             }"
           ></app-ta-input>
         </div>
@@ -325,6 +328,8 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
+                          minLength: 12,
+                          maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="false"
@@ -339,10 +344,12 @@
                       <app-ta-input
                         formControlName="addressUnit"
                         [inputConfig]="{
-                          name: 'Address Unit',
+                          name: 'address-unit',
                           type: 'text',
                           label: 'Unit #',
-                          maxLength: 6,
+                          minLength: 1,
+                          maxLength: 10,
+                          textTransform: 'uppercase',
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="false"

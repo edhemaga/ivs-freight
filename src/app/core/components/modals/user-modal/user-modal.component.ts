@@ -1,4 +1,11 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressUnitValidation,
+  addressValidation,
+  departmentValidation,
+  emailRegex,
+  emailValidation,
+  phoneExtension,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -11,14 +18,12 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { distinctUntilChanged } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-user-modal',
   templateUrl: './user-modal.component.html',
@@ -28,6 +33,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public userForm: FormGroup;
@@ -124,16 +130,19 @@ export class UserModalComponent implements OnInit, OnDestroy {
     this.userForm = this.formBuilder.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       personalPhone: [null, phoneRegex],
-      personalEmail: [null, emailRegex],
-      departmentId: [null, Validators.required],
+      personalEmail: [null, [emailRegex, ...emailValidation]],
+      departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
       employePhone: [null, phoneRegex],
-      employePhoneExt: [null],
-      employeEmail: [null, [Validators.required, emailRegex]],
+      employePhoneExt: [null, [...phoneExtension]],
+      employeEmail: [
+        null,
+        [Validators.required, [emailRegex, ...emailValidation]],
+      ],
       isIncludePayroll: [false],
       salary: [null],
       startDate: [null],
@@ -147,7 +156,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.userForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -205,7 +214,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.userForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -247,7 +256,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -276,5 +285,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private getUserDropdowns() {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

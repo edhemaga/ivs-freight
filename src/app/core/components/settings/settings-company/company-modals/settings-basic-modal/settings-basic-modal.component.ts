@@ -4,11 +4,17 @@ import {
   convertThousanSepInNumber,
 } from './../../../../../utils/methods.calculations';
 import {
+  addressUnitValidation,
+  addressValidation,
   daysValidRegex,
+  departmentValidation,
   emailRegex,
+  emailValidation,
+  mcFFValidation,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
+  phoneExtension,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -27,8 +33,7 @@ import {
   UpdateCompanyCommand,
   UpdateDivisionCompanyCommand,
 } from 'appcoretruckassist';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
@@ -37,7 +42,6 @@ import { SettingsCompanyService } from '../../../state/company-state/settings-co
 import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-basic-modal',
   templateUrl: './settings-basic-modal.component.html',
@@ -46,6 +50,7 @@ import { BankVerificationService } from 'src/app/core/services/bank-verification
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class SettingsBasicModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public companyForm: FormGroup;
@@ -276,13 +281,13 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       usDot: [null, Validators.required],
       ein: [null, einNumberRegex],
-      mc: [null, Validators.maxLength(8)],
+      mc: [null, [...mcFFValidation]],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
+      email: [null, [emailRegex, ...emailValidation]],
       fax: [null],
       webUrl: [null],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       irp: [null],
       ifta: [null],
       toll: [null],
@@ -365,14 +370,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     });
 
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
-      this.companyForm
-        .get('email')
-        .setValidators([emailRegex, Validators.required]);
+      this.companyForm.get('email').setValidators(Validators.required);
     }
     // this.formService.checkFormChange(this.companyForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -450,16 +453,19 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       id: [data?.id ? data.id : 0],
       departmentId: [
         data?.departmentId ? data?.departmentId : null,
-        Validators.required,
+        [Validators.required, ...departmentValidation],
       ],
       phone: [
         data?.phone ? data?.phone : null,
         [Validators.required, phoneRegex],
       ],
-      extensionPhone: [data?.extensionPhone ? data?.extensionPhone : null],
+      extensionPhone: [
+        data?.extensionPhone ? data?.extensionPhone : null,
+        [...phoneExtension],
+      ],
       email: [
         data?.email ? data?.email : null,
-        [Validators.required, emailRegex],
+        [Validators.required, [emailRegex, ...emailValidation]],
       ],
     });
   }
@@ -500,7 +506,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: bank.data.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -559,7 +565,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       .valueChanges.pipe(
         debounceTime(150),
         distinctUntilChanged(),
-        untilDestroyed(this)
+        takeUntil(this.destroy$)
       )
       .subscribe((value) => {
         this.isBankSelectedFormArray[index] =
@@ -709,7 +715,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private validateMiles() {
     this.companyForm
       .get('soloEmptyMile')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('soloEmptyMile').setErrors({ invalid: true });
@@ -720,7 +726,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.companyForm
       .get('soloLoadedMile')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('soloLoadedMile').setErrors({ invalid: true });
@@ -732,7 +738,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.companyForm
       .get('perMileSolo')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('perMileSolo').setErrors({ invalid: true });
@@ -743,7 +749,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.companyForm
       .get('teamEmptyMile')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('teamEmptyMile').setErrors({ invalid: true });
@@ -754,7 +760,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.companyForm
       .get('teamLoadedMile')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('teamLoadedMile').setErrors({ invalid: true });
@@ -766,7 +772,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.companyForm
       .get('perMileTeam')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value > 10) {
           this.companyForm.get('perMileTeam').setErrors({ invalid: true });
@@ -819,7 +825,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private onSamePerMileCheck() {
     this.companyForm
       .get('loadedAndEmptySameRate')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((val) => {
         if (val) {
           if (['Solo', 'Combined'].includes(this.selectedFleetType)) {
@@ -844,7 +850,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.settingsCompanyService
       .getCompanyModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyModalResponse) => {
           this.banks = res.banks;
@@ -991,7 +997,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.settingsCompanyService
       .addCompanyDivision(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -1208,7 +1214,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.settingsCompanyService
       .updateCompanyDivision(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1229,7 +1235,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   public deleteCompanyDivisionById(id: number) {
     this.settingsCompanyService
       .deleteCompanyDivisionById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1512,7 +1518,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
     this.settingsCompanyService
       .updateCompany(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -1896,5 +1902,8 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

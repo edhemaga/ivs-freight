@@ -4,22 +4,19 @@ import { Router } from '@angular/router';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { Applicant } from '../../state/model/applicant.model';
-import {
-  WorkHistory,
-  WorkHistoryModel,
-} from '../../state/model/work-history.model';
+import { WorkHistoryModel } from '../../state/model/work-history.model';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-step2',
   templateUrl: './step2.component.html',
   styleUrls: ['./step2.component.scss'],
 })
 export class Step2Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public selectedMode: string = SelectedMode.FEEDBACK;
 
   public applicant: Applicant;
@@ -369,7 +366,7 @@ export class Step2Component implements OnInit, OnDestroy {
   /* private isNoExperience(): void {
     this.workExperienceForm
       .get('noWorkExperience')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.workExperienceArray = this.workExperienceArray?.map((wh) => {
@@ -531,5 +528,8 @@ export class Step2Component implements OnInit, OnDestroy {
         } */
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

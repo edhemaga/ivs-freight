@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard-top-driver',
   templateUrl: './dashboard-top-driver.component.html',
@@ -265,7 +268,11 @@ export class DashboardTopDriverComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  public searchDashboardOptions = {
+    gridNameTitle: 'Top Driver',
+  };
+
+  constructor(private tableService: TruckassistTableService) {}
 
   setChartData(drivers, selectedDrivers?) {
     var dataValues = [];
@@ -385,6 +392,14 @@ export class DashboardTopDriverComponent implements OnInit {
         custom: true,
       },
     ];
+
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          // your search code here
+        }
+      });
   }
 
   ngAfterViewInit(): void {

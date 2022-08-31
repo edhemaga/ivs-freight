@@ -138,7 +138,7 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
         }
 
         .dashboard-top-driver-header-toolbar-search-icon {
-          width: 28px;
+          width: auto;
           height: 28px;
           display: flex;
           justify-content: center;
@@ -240,7 +240,7 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
 
               @each $col1 in $top_driver_color {
                 &.top-ten-#{$col1}-color {
-                  background-color: unquote("#" + $col1);
+                  background-color: unquote('#' + $col1);
                 }
               }
             }
@@ -353,7 +353,7 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
               $hover_color: nth($top_driver_hover_color, $ii);
               $ii: $ii + 1;
               .top-ten-#{$col1}-color {
-                background-color: unquote("#" + $hover_color) !important;
+                background-color: unquote('#' + $hover_color) !important;
               }
             }
           }
@@ -363,7 +363,7 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
             $hover_color: nth($top_driver_hover_color, $ii);
             $ii: $ii + 1;
             &.top-compare-#{$col1} {
-              background-color: unquote("#" + $col1);
+              background-color: unquote('#' + $col1);
 
               .dashboard-top-driver-body-list-id {
                 color: #fff !important;
@@ -410,7 +410,7 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
               }
 
               &:hover {
-                background-color: unquote("#" + $hover_color);
+                background-color: unquote('#' + $hover_color);
 
                 .dashboard-top-driver-body-list-remove {
                   display: flex;

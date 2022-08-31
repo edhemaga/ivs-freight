@@ -1,21 +1,21 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import moment from 'moment';
+import { Subject, takeUntil } from 'rxjs';
 
 /* import { AcceptApplicationCommand } from 'appcoretruckassist';
  */
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-applicant-welcome-screen',
   templateUrl: './applicant-welcome-screen.component.html',
   styleUrls: ['./applicant-welcome-screen.component.scss'],
 })
 export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public currentDate: string;
   public copyrightYear: string;
 
@@ -55,7 +55,7 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   public onStartApplication(): void {
     /*  this.applicantActionsService
       .acceptApplicant(this.verifyData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         this.applicantActionsService.getApplicantInfo(res);
 
@@ -65,5 +65,8 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
       }); */
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

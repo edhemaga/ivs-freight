@@ -1,27 +1,19 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 /* import { TruckQuery } from './../state/truck.query'; */
-import { Subject } from 'rxjs';
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TruckTService } from '../state/truck.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
@@ -29,7 +21,7 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
   providers: [DetailsPageService],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
-  // @Input() data:any=null;
+  private destroy$ = new Subject<void>();
   public truckDetailsConfig: any[] = [];
   public dataTest: any;
   registrationLength: number;
@@ -52,7 +44,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.truckConf(res.data);
@@ -62,7 +54,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       });
     // this.data = this.activated_route.snapshot.data.truck;
     this.detailsPageDriverSer.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (this.truckDetailQuery.hasEntity(id)) {
@@ -70,7 +62,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.truckTService.getTruckById(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: TruckResponse) => {
             this.truckConf(res);
             if (this.router.url.includes('details')) {
@@ -249,7 +241,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       case 'delete-item': {
         this.truckTService
           .deleteTruckById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -272,5 +264,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

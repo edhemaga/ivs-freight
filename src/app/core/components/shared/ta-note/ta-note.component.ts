@@ -10,7 +10,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
@@ -67,7 +67,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   selectionTaken: any;
   range: any;
   isFocused: boolean = false;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sharedService: SharedService,

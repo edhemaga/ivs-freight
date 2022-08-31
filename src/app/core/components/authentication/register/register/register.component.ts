@@ -3,8 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { AuthStoreService } from '../../state/auth.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -14,18 +12,22 @@ import moment from 'moment';
 import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
 
 import {
+  addressUnitValidation,
+  addressValidation,
   einNumberRegex,
   emailRegex,
+  emailValidation,
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public registerForm!: FormGroup;
 
   public copyrightYear!: number;
@@ -54,10 +56,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
       lastName: [null, Validators.required],
       companyName: [null, Validators.required],
       ein: [null, [Validators.required, einNumberRegex]],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
@@ -72,7 +74,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
   public passwordsNotSame(): void {
     this.registerForm
       .get('confirmPassword')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (
           value?.toLowerCase() ===
@@ -106,7 +108,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .signUpCompany(saveData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: HttpResponseBase) => {
           if (res.status === 200 || res.status === 204) {
@@ -132,5 +134,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

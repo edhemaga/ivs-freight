@@ -6,7 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import {
+  addressUnitValidation,
+  addressValidation,
+  phoneRegex,
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import {
   AnswerChoices,
@@ -288,8 +292,8 @@ export class SphModalComponent implements OnInit {
       phone: [null, [phoneRegex]],
       email: [null],
       fax: [null],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
     });
 
     this.accidentHistoryForm = this.formBuilder.group({
@@ -303,7 +307,7 @@ export class SphModalComponent implements OnInit {
       consideredForEmploymentAgain: [null],
       noSafetyPerformance: [false],
       accidentDate: [null],
-      accidentLocation: [null],
+      accidentLocation: [null, [...addressValidation]],
       accidentDescription: [null],
       hazmatSpill: [null],
     });
@@ -319,8 +323,8 @@ export class SphModalComponent implements OnInit {
       drugAndAlcoholRegulation: [null],
       sapName: [null],
       phone: [null, [phoneRegex]],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null],
     });
   }

@@ -1,6 +1,13 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressUnitValidation,
+  addressValidation,
+  businessNameValidation,
+  departmentValidation,
+  emailRegex,
+  emailValidation,
+  phoneExtension,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -33,8 +40,8 @@ import {
 import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-shipper-modal',
   templateUrl: './shipper-modal.component.html',
@@ -44,6 +51,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, TaLikeDislikeService, FormService],
 })
 export class ShipperModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any = null;
 
   public shipperForm: FormGroup;
@@ -119,12 +127,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.shipperForm = this.formBuilder.group({
-      businessName: [null, Validators.required],
+      businessName: [null, [Validators.required, ...businessNameValidation]],
       phone: [null, phoneRegex],
-      phoneExt: [null],
-      email: [null, emailRegex],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      phoneExt: [null, [...phoneExtension]],
+      email: [null, [emailRegex, ...emailValidation]],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       receivingAppointment: [false],
       receivingOpenTwentyFourHours: [false],
       receivingFrom: [null],
@@ -141,7 +149,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.shipperForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -153,7 +161,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       if (data.action === 'dnu' && this.editData) {
         this.shipperModalService
           .changeDnuStatus(this.editData.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -185,7 +193,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.shipperForm.get('ban').patchValue(data.bool);
         this.shipperModalService
           .changeBanStatus(this.editData.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -274,14 +282,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       fullName: [data?.fullName ? data.fullName : null, Validators.required],
       departmentId: [
         data?.departmentId ? data.departmentId : null,
-        Validators.required,
+        [Validators.required, ...departmentValidation],
       ],
       phone: [
         data?.phone ? data.phone : null,
         [Validators.required, phoneRegex],
       ],
       phoneExt: [data?.phoneExt ? data.phoneExt : null],
-      email: [data?.email ? data.email : null, emailRegex],
+      email: [
+        data?.email ? data.email : null,
+        [emailRegex, ...emailValidation],
+      ],
     });
   }
 
@@ -369,7 +380,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
   private ratingChanges() {
     this.taLikeDislikeService.userLikeDislike$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((action: LikeDislikeModel) => {
         let rating: CreateRatingCommand = null;
 
@@ -389,7 +400,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
         this.reviewRatingService
           .addRating(rating)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: any) => {
               this.editShipperById(this.editData.id);
@@ -417,7 +428,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     this.reviewRatingService
       .addReview(review)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.reviews = reviews.sortData.map((item, index) => {
@@ -446,7 +457,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     this.disableOneMoreReview = false;
     this.reviewRatingService
       .deleteReview(reviews.data)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -469,7 +480,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     this.reviewRatingService
       .updateReview(review)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -531,7 +542,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     let shipperBuisnisName = this.shipperForm.value.businessName;
     this.shipperModalService
       .addShipper(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -541,7 +552,10 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error(`Failed to add Shipper "${shipperBuisnisName}"`, 'Error');
+          this.notificationService.error(
+            `Failed to add Shipper "${shipperBuisnisName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -580,7 +594,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     this.shipperModalService
       .updateShipper(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -598,7 +612,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private deleteShipperById(id: number) {
     this.shipperModalService
       .deleteShipperById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -619,7 +633,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private editShipperById(id: number) {
     this.shipperModalService
       .getShipperById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (reasponse: ShipperResponse) => {
           this.shipperForm.patchValue({
@@ -711,7 +725,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private getShipperDropdowns() {
     this.shipperModalService
       .getShipperDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: ShipperModalResponse) => {
           this.labelsDepartments = res.departments;
@@ -799,5 +813,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     return { receiving, shipping };
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { PDFDocumentProxy } from 'ng2-pdf-viewer';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
 import { TaInputComponent } from '../../ta-input/ta-input.component';
 import { TaInputService } from '../../ta-input/ta-input.service';
 
@@ -23,7 +23,6 @@ export interface UploadFile {
   size?: number | string;
   tag?: string;
 }
-@UntilDestroy()
 @Component({
   selector: 'app-ta-upload-file',
   templateUrl: './ta-upload-file.component.html',
@@ -32,6 +31,7 @@ export interface UploadFile {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaUploadFileComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @Input() customClassName: string;
   @Input() file: UploadFile;
@@ -53,7 +53,7 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.inputService.onFocusOutInput$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.editFile = false;
@@ -120,5 +120,8 @@ export class TaUploadFileComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

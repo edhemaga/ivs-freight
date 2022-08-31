@@ -6,8 +6,12 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-@UntilDestroy()
+import {
+  addressValidation,
+  departmentValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
@@ -16,6 +20,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [FormService, ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public violationForm: FormGroup;
@@ -159,17 +164,17 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         }),
       ]),
       note: [null],
-      policeDepartment: [null],
+      policeDepartment: [null, [...departmentValidation]],
       policeOfficer: [null],
       badgeNumber: [null],
-      addressAuthority: [null],
+      addressAuthority: [null, [...addressValidation]],
       phoneAuthority: [null],
       faxAuthority: [null],
       facility: [null],
       highway: [null],
       milePost: [null],
-      originAddress: [null],
-      destinationAddress: [null],
+      originAddress: [null, [...addressValidation]],
+      destinationAddress: [null, [...addressValidation]],
       customer: [null],
       bol: [null],
       cargo: [null],
@@ -178,7 +183,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.violationForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -264,5 +269,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   private editViolationById(id: number) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,4 +1,7 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -34,7 +37,7 @@ export class ApplicantModalComponent implements OnInit {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       phone: [null, Validators.required],
-      email: [null, [emailRegex, Validators.required]],
+      email: [null, [emailRegex, ...emailValidation, Validators.required]],
       note: [null],
     });
   }

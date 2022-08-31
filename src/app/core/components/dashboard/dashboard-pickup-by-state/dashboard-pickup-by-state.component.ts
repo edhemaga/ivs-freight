@@ -1,5 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard-pickup-by-state',
   templateUrl: './dashboard-pickup-by-state.component.html',
@@ -218,7 +221,11 @@ export class DashboardPickupByStateComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  public searchDashboardOptions = {
+    gridNameTitle: 'State',
+  };
+
+  constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
     if (this.pickupCircleColor?.length) {
@@ -255,6 +262,14 @@ export class DashboardPickupByStateComponent implements OnInit {
         custom: true,
       },
     ];
+
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          // your search code here
+        }
+      });
   }
 
   ngAfterViewInit(): void {

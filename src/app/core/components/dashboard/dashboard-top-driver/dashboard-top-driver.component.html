@@ -1,7 +1,9 @@
 <div class="dashboard-top-driver-holder">
   <div class="dashboard-top-driver-header-holder">
     <div class="dashboard-top-driver-header-title-holder">
-      <div class="dashboard-top-driver-header-title">Top {{ topTenTitle }} (67)</div>
+      <div class="dashboard-top-driver-header-title">
+        Top {{ topTenTitle }} (67)
+      </div>
       <div
         class="dashboard-top-driver-header-arrow-down"
         #t3="ngbPopover"
@@ -26,7 +28,9 @@
         </div>
         <div class="dashboard-top-driver-header-toolbar-border"></div>
         <div class="dashboard-top-driver-header-toolbar-search-icon">
-          <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+          <app-truckassist-search
+            [selectedTabData]="searchDashboardOptions"
+          ></app-truckassist-search>
         </div>
         <div class="dashboard-top-driver-header-toolbar-border"></div>
         <div class="dashboard-top-driver-toolbar-filter-selected" 
@@ -49,10 +53,10 @@
         <div
           class="dashboard-top-driver-header-toolbar-border different-margin"
         ></div>
-        <app-ta-time-period 
+        <app-ta-time-period
           #timePeriod
           (selectTimePeriod)="selectTimePeriod($event)"
-          >
+        >
         </app-ta-time-period>
       </div>
     </div>
@@ -68,12 +72,19 @@
             (mouseleave)="removeDriverHover()"
             (click)="selectCompare($event, item, indx)"
           >
-            <div class="dashboard-top-driver-body-list-items top-compare-{{ compareColor[item.id] }}">
+            <div
+              class="dashboard-top-driver-body-list-items top-compare-{{
+                compareColor[item.id]
+              }}"
+            >
               <div class="dashboard-top-driver-body-list-frame">
                 <div class="dashboard-top-driver-body-list-id">
                   {{ item.id }}
                 </div>
-                <div class="dashboard-top-driver-body-list-remove" (click)="removeDriverFromList($event, indx, item)">
+                <div
+                  class="dashboard-top-driver-body-list-remove"
+                  (click)="removeDriverFromList($event, indx, item)"
+                >
                   <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
                 </div>
                 <div
@@ -94,7 +105,10 @@
                 </div>
               </div>
             </div>
-            <div class="dashboard-top-driver-body-list-border" [class.list_line_hidden]="!compareColor[item.id]"></div>
+            <div
+              class="dashboard-top-driver-body-list-border"
+              [class.list_line_hidden]="!compareColor[item.id]"
+            ></div>
           </div>
         </div>
       </div>
@@ -113,7 +127,10 @@
         <div class="bar_chart_holder">
           <div class="chart_top_line_holder">
             <div class="chart_line_title">March, 2023 - March, 2025</div>
-            <div class="chart_legend_hold" [ngStyle]="{'opacity': selectedDrivers?.length ? '0': '1'}">
+            <div
+              class="chart_legend_hold"
+              [ngStyle]="{ opacity: selectedDrivers?.length ? '0' : '1' }"
+            >
               <div class="chart_legend_line line_sep">
                 <div class="chart_legend_dot round_dark_grey">
                   <svg-icon src="assets/svg/common/round_blue.svg"></svg-icon>
