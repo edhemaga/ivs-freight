@@ -5,18 +5,27 @@
       [ngStyle]="{ height: pageHeight - 84 + 'px' }"
     >
       <tr
-        [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
+        [ngStyle]="{
+          'margin-top': i > 0 ? '2px' : '0px'
+        }"
         *cdkVirtualFor="let row of viewData; let i = index"
         [ngClass]="{
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
-          'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle,
-          'delete-animation': row.actionAnimation === 'delete',
+          'show-attachments':
+            activeAttachments === row.id && attachmentsNgbPopover.isOpen(),
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation,
           'add-animation': row.actionAnimation === 'add',
           'update-animation': row.actionAnimation === 'update',
-          'row-repair-order': row.isRepairOrder && !row.actionAnimation
+          'delete-animation': row.actionAnimation === 'delete'
         }"
+        #attachmentsNgbPopover="ngbPopover"
+        [autoClose]="true"
+        [ngbPopover]="attachmentsPopover"
+        [placement]="'bottom-left'"
+        container="body"
+        popoverClass="table-attachments-popover"
+        triggers="manual"
       >
         <div class="columns-container">
           <!-- PINED -->
@@ -823,7 +832,7 @@
                 </div>
               </div>
 
-              <!-- PROGRESS COLUMN TEMPLATE -->
+              <!-- PROGRESS COLUMN -->
               <div
                 class="td-content"
                 [ngStyle]="{
@@ -898,6 +907,117 @@
                     *ngIf="row[column.field].percentage === 100"
                   >
                     {{ row[column.field].expirationDays }} days ago
+                  </div>
+                </div>
+              </div>
+
+              <!-- APPLICANT PROGRESS COLUMN -->
+              <div
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                *ngIf="column.ngTemplate === 'applicant-progress'"
+              >
+                <div
+                  class="applicant-progress-container"
+                  [ngStyle]="{ width: progressStatus.width + 'px' }"
+                  *ngFor="let progressStatus of row[column.field]"
+                >
+                  <!-- Progress -->
+                  <div
+                    class="table-progress-cotnainer"
+                    *ngIf="progressStatus.status === 'In Progres'"
+                  >
+                    <!-- Progress Bar  -->
+                    <div
+                      class="table-progress-bar-container"
+                      [ngClass]="{
+                        'bg-expired-container':
+                          progressStatus.percentage === 100,
+                        'bg-sliver-container':
+                          progressStatus.percentage >= 25 &&
+                          progressStatus.percentage < 100,
+                        'bg-orange-container':
+                          progressStatus.percentage >= 5 &&
+                          progressStatus.percentage < 25,
+                        'bg-danger-container':
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 5,
+                        'bg-inactive-container': !progressStatus.percentage
+                      }"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-progress-sliver':
+                            progressStatus.percentage >= 25 &&
+                            progressStatus.percentage < 50,
+                          'bg-progress-orange':
+                            progressStatus.percentage >= 5 &&
+                            progressStatus.percentage < 25,
+                          'bg-progress-danger':
+                            progressStatus.percentage > 0 &&
+                            progressStatus.percentage < 5
+                        }"
+                        [ngStyle]="{
+                          width: progressStatus.percentage + '%'
+                        }"
+                        class="table-progress-bar"
+                        *ngIf="
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 100
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Status Icon -->
+                  <div
+                    class="applicant-status-container"
+                    *ngIf="
+                      progressStatus.status !== 'In Progres' &&
+                      progressStatus.status !== 'No Started'
+                    "
+                  >
+                    <div
+                      class="status-icon"
+                      [class]="progressStatus.class"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- APPLICANT REVIEW COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'applicant-review'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="applicant-review-container">
+                  <div
+                    class="review-icon"
+                    [ngClass]="{
+                      reviewed: row[column.field].title === 'Reviewed',
+                      finished: row[column.field].title === 'Finished',
+                      incomplete: row[column.field].title === 'Incomplete',
+                      ready: row[column.field].title === 'Ready'
+                    }"
+                  >
+                    <svg-icon
+                      [src]="row[column.field].iconLink"
+                      [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                    ></svg-icon>
+                  </div>
+                  <div
+                    class="review-title"
+                    [ngStyle]="{
+                      width: column.width - 26 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].title }}
                   </div>
                 </div>
               </div>
@@ -1650,45 +1770,6 @@
                 </div>
               </div>
 
-              <!-- APPLICANT DONE CHECKBOX COLUMN -->
-              <div
-                class="td-content set-center"
-                *ngIf="column.ngTemplate === 'applicantDoneCheckbox'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div class="table-done-checkbox">
-                  <div
-                    class="checkbox-content"
-                    [ngClass]="{ done: row[column.field] >= 11 }"
-                  >
-                    {{ row[column.field] < 11 ? row[column.field] : "" }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- APPLICANT REVIEW COLUMN -->
-              <div
-                class="td-content set-center"
-                *ngIf="column.ngTemplate === 'applicantReview'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div class="table-applicant-review">
-                  <div
-                    class="review"
-                    [ngClass]="{
-                      'review-ok': row[column.field],
-                      'review-bad': !row[column.field]
-                    }"
-                  ></div>
-                </div>
-              </div>
-
               <!-- STATE TEXT COLUMN -->
               <div
                 *ngIf="column.ngTemplate === 'textState'"
@@ -1703,7 +1784,7 @@
                 </div>
               </div>
 
-              <!-- PROGRESS COLUMN TEMPLATE -->
+              <!-- PROGRESS COLUMN -->
               <div
                 class="td-content"
                 [ngStyle]="{
@@ -1781,6 +1862,117 @@
                   </div>
                 </div>
               </div>
+
+              <!-- APPLICANT PROGRESS COLUMN -->
+              <div
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                *ngIf="column.ngTemplate === 'applicant-progress'"
+              >
+                <div
+                  class="applicant-progress-container"
+                  [ngStyle]="{ width: progressStatus.width + 'px' }"
+                  *ngFor="let progressStatus of row[column.field]"
+                >
+                  <!-- Progress -->
+                  <div
+                    class="table-progress-cotnainer"
+                    *ngIf="progressStatus.status === 'In Progres'"
+                  >
+                    <!-- Progress Bar  -->
+                    <div
+                      class="table-progress-bar-container"
+                      [ngClass]="{
+                        'bg-expired-container':
+                          progressStatus.percentage === 100,
+                        'bg-sliver-container':
+                          progressStatus.percentage >= 25 &&
+                          progressStatus.percentage < 100,
+                        'bg-orange-container':
+                          progressStatus.percentage >= 5 &&
+                          progressStatus.percentage < 25,
+                        'bg-danger-container':
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 5,
+                        'bg-inactive-container': !progressStatus.percentage
+                      }"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-progress-sliver':
+                            progressStatus.percentage >= 25 &&
+                            progressStatus.percentage < 50,
+                          'bg-progress-orange':
+                            progressStatus.percentage >= 5 &&
+                            progressStatus.percentage < 25,
+                          'bg-progress-danger':
+                            progressStatus.percentage > 0 &&
+                            progressStatus.percentage < 5
+                        }"
+                        [ngStyle]="{
+                          width: progressStatus.percentage + '%'
+                        }"
+                        class="table-progress-bar"
+                        *ngIf="
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 100
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Status Icon -->
+                  <div
+                    class="applicant-status-container"
+                    *ngIf="
+                      progressStatus.status !== 'In Progres' &&
+                      progressStatus.status !== 'No Started'
+                    "
+                  >
+                    <div
+                      class="status-icon"
+                      [class]="progressStatus.class"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- APPLICANT REVIEW COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'applicant-review'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="applicant-review-container">
+                  <div
+                    class="review-icon"
+                    [ngClass]="{
+                      reviewed: row[column.field].title === 'Reviewed',
+                      finished: row[column.field].title === 'Finished',
+                      incomplete: row[column.field].title === 'Incomplete',
+                      ready: row[column.field].title === 'Ready'
+                    }"
+                  >
+                    <svg-icon
+                      [src]="row[column.field].iconLink"
+                      [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                    ></svg-icon>
+                  </div>
+                  <div
+                    class="review-title"
+                    [ngStyle]="{
+                      width: column.width - 26 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].title }}
+                  </div>
+                </div>
+              </div>
             </td>
           </div>
 
@@ -1802,7 +1994,10 @@
                 }"
                 class="td-content"
               >
-                <div (click)="onShowAttachments(row)" class="attachments-btn">
+                <div
+                  (click)="onShowAttachments(attachmentsNgbPopover, row)"
+                  class="attachments-btn"
+                >
                   <div class="attachments-svg"></div>
                 </div>
               </div>
@@ -1967,4 +2162,13 @@
     </div>
     <div class="right-background"></div>
   </div>
+</ng-template>
+
+<!-- ATTACHMENTS -->
+<!-- DROPDOWN -->
+<ng-template #attachmentsPopover let-data="data">
+  <!-- [ngStyle]="{
+    width: column.width + 'px'
+  }" -->
+  <div class="table-attachments"></div>
 </ng-template>
