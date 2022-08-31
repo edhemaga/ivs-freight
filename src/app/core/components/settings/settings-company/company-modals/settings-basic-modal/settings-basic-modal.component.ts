@@ -7,6 +7,7 @@ import {
   addressUnitValidation,
   addressValidation,
   daysValidRegex,
+  departmentValidation,
   emailRegex,
   emailValidation,
   mcFFValidation,
@@ -453,7 +454,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       id: [data?.id ? data.id : 0],
       departmentId: [
         data?.departmentId ? data?.departmentId : null,
-        Validators.required,
+        [Validators.required, ...departmentValidation],
       ],
       phone: [
         data?.phone ? data?.phone : null,

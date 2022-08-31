@@ -177,7 +177,9 @@
                 <app-ta-input-dropdown
                   formControlName="departmentId"
                   [inputConfig]="{
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown Department',
+                    minLength: 2,
+                    maxLength: 36,
                     type: 'text',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'

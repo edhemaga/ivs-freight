@@ -1,6 +1,7 @@
 import {
   addressUnitValidation,
   addressValidation,
+  departmentValidation,
   emailValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
@@ -109,7 +110,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       shared: [true],
-      sharedLabelId: [null, Validators.required],
+      sharedLabelId: [null, [Validators.required, ...departmentValidation]],
       avatar: [null],
       note: [null],
     });

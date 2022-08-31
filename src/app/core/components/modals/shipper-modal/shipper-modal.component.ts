@@ -2,6 +2,7 @@ import {
   addressUnitValidation,
   addressValidation,
   businessNameValidation,
+  departmentValidation,
   emailRegex,
   emailValidation,
   phoneExtension,
@@ -281,7 +282,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       fullName: [data?.fullName ? data.fullName : null, Validators.required],
       departmentId: [
         data?.departmentId ? data.departmentId : null,
-        Validators.required,
+        [Validators.required, ...departmentValidation],
       ],
       phone: [
         data?.phone ? data.phone : null,

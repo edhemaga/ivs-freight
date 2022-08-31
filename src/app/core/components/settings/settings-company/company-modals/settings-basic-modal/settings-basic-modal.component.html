@@ -329,7 +329,9 @@
                   formControlName="departmentId"
                   [inputConfig]="{
                     id: 'Input Dropdown Dep' + ind,
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown Department',
+                    minLength: 2,
+                    maxLength: 36,
                     type: 'text',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'

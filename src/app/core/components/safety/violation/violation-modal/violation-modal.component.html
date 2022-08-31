@@ -431,7 +431,9 @@
             <app-ta-input
               formControlName="policeDepartment"
               [inputConfig]="{
-                name: 'Police Report',
+                name: 'Department',
+                minLength: 2,
+                maxLength: 36,
                 type: 'text',
                 label: 'Police Department',
                 textTransform: 'capitalize'

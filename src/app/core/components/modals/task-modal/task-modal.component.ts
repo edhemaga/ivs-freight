@@ -25,6 +25,7 @@ import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { departmentValidation } from '../../shared/ta-input/ta-input.regex-validations';
 
 @UntilDestroy()
 @Component({
@@ -85,7 +86,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       description: [null],
       url: [null],
       deadline: [null],
-      departmentIds: [null],
+      departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],
       note: [null],
     });

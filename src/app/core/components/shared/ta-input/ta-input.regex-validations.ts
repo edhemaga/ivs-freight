@@ -72,6 +72,12 @@ export const addressUnitValidation = [
   Validators.maxLength(10),
 ];
 
+//---------------- Department -------------------
+export const departmentValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(36),
+];
+
 //---------------- SSN Regex ----------------
 export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 

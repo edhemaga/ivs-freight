@@ -25,6 +25,7 @@ import {
   addressUnitValidation,
   addressValidation,
   businessNameValidation,
+  departmentValidation,
   einNumberRegex,
   emailRegex,
   emailValidation,
@@ -243,7 +244,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ],
       departmentId: [
         data?.departmentId ? data.departmentId : null,
-        Validators.required,
+        [Validators.required, ...departmentValidation],
       ],
       phone: [
         data?.phone ? data.phone : null,
