@@ -130,8 +130,6 @@ export class TruckTService {
     truckId: number,
     tableSelectedTab?: string
   ): Observable<any> {
-    console.log(truckId);
-
     return this.truckService.apiTruckIdDelete(truckId).pipe(
       tap(() => {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));

@@ -84,8 +84,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
-          console.log(res + 'ovo je res');
-
           switch (res.type) {
             case 'delete': {
               if (res.template === 'truck') {
