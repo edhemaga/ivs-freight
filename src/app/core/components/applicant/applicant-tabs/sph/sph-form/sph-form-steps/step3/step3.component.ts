@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import {
+  addressUnitValidation,
   addressValidation,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -181,7 +182,7 @@ export class Step3Component implements OnInit {
       sapName: [null, Validators.required],
       phone: [null, [Validators.required, phoneRegex]],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null, Validators.required],
     });
   }

@@ -1,5 +1,6 @@
 import { AddressEntity } from './../../../../../../../../appcoretruckassist/model/addressEntity';
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -53,7 +54,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       noticeOfAssigment: [null],
       note: [null],
     });

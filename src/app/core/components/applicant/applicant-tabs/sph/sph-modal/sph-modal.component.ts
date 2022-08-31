@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 
 import {
+  addressUnitValidation,
   addressValidation,
   phoneRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -292,7 +293,7 @@ export class SphModalComponent implements OnInit {
       email: [null],
       fax: [null],
       address: [null, [...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
     });
 
     this.accidentHistoryForm = this.formBuilder.group({
@@ -323,7 +324,7 @@ export class SphModalComponent implements OnInit {
       sapName: [null],
       phone: [null, [phoneRegex]],
       address: [null, [...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null],
     });
   }

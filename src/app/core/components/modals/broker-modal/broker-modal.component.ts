@@ -22,6 +22,7 @@ import {
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import {
+  addressUnitValidation,
   addressValidation,
   businessNameValidation,
   einNumberRegex,
@@ -193,13 +194,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneRegex]],
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
-      physicalAddressUnit: [null],
+      physicalAddressUnit: [null, [...addressUnitValidation]],
       physicalPoBox: [null],
       physicalPoBoxCity: [null, [...addressValidation]],
       // Billing Address
       isCheckedBillingAddress: [true],
       billingAddress: [null, [...addressValidation]],
-      billingAddressUnit: [null],
+      billingAddressUnit: [null, [...addressUnitValidation]],
       billingPoBox: [null],
       billingPoBoxCity: [null, [...addressValidation]],
       isCredit: [true],

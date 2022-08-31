@@ -2,6 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
+  addressUnitValidation,
   addressValidation,
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
@@ -61,7 +62,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneRegex]],
       fax: [null],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       note: [null],
     });
 

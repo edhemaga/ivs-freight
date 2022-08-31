@@ -17,6 +17,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -94,7 +95,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      addressUnit: [null, [...addressUnitValidation]],
       companyOwned: [false],
       openHours: this.formBuilder.array([]),
       bankId: [null],

@@ -61,10 +61,15 @@ export const emailValidation = [
   Validators.maxLength(64),
 ];
 
-//---------------- Address -------------------
+//---------------- Address & Address Unit -------------------
 export const addressValidation = [
   Validators.minLength(12),
   Validators.maxLength(256),
+];
+
+export const addressUnitValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(10),
 ];
 
 //---------------- SSN Regex ----------------

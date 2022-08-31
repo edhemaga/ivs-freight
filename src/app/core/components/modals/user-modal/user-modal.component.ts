@@ -1,4 +1,5 @@
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -130,7 +131,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
       address: [null, [...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       personalPhone: [null, phoneRegex],
       personalEmail: [null, [emailRegex, ...emailValidation]],
       departmentId: [null, Validators.required],

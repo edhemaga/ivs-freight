@@ -3,6 +3,7 @@ import {
   emailRegex,
   emailValidation,
   addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -91,7 +92,7 @@ export class SettingsInsurancePolicyModalComponent
       phone: [null, phoneRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       // Commerical General Liability
       commericalGeneralLiability: [false],
       commericalPolicy: [null],

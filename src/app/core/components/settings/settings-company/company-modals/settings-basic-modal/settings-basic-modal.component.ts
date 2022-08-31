@@ -4,6 +4,7 @@ import {
   convertThousanSepInNumber,
 } from './../../../../../utils/methods.calculations';
 import {
+  addressUnitValidation,
   addressValidation,
   daysValidRegex,
   emailRegex,
@@ -286,7 +287,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       fax: [null],
       webUrl: [null],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       irp: [null],
       ifta: [null],
       toll: [null],

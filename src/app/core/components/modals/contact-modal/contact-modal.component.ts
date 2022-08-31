@@ -1,4 +1,5 @@
 import {
+  addressUnitValidation,
   addressValidation,
   emailValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
@@ -106,7 +107,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       phone: [null, [phoneRegex, Validators.required]],
       email: [null, [emailRegex, ...emailValidation, Validators.required]],
       address: [null, [...addressValidation]],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      addressUnit: [null, [...addressUnitValidation]],
       shared: [true],
       sharedLabelId: [null, Validators.required],
       avatar: [null],

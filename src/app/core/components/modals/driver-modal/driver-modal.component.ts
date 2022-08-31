@@ -26,6 +26,7 @@ import {
   perStopValidation,
   emailValidation,
   addressValidation,
+  addressUnitValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -272,7 +273,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
@@ -350,7 +351,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       stateShortName: [data?.stateShortName ? data.stateShortName : null],
       country: [data?.country ? data.country : null],
       zipCode: [data?.zipCode ? data.zipCode : null],
-      addressUnit: [data?.addressUnit ? data.addressUnit : null],
+      addressUnit: [
+        data?.addressUnit ? data.addressUnit : null,
+        [...addressUnitValidation],
+      ],
       street: [data?.street ? data.street : null],
       streetNumber: [data?.streetNumber ? data.streetNumber : null],
     });

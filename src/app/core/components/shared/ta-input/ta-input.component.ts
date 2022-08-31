@@ -702,6 +702,16 @@ export class TaInputComponent
       }
     }
 
+    // Address Unit
+    if (['address-unit'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9/]*$/g.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     // if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);

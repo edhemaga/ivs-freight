@@ -11,6 +11,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { debounceTime } from 'rxjs';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -135,7 +136,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       isOwner: [false],
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, phoneRegex],
       extensionPhone: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],

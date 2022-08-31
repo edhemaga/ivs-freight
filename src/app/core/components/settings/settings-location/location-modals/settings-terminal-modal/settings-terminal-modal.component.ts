@@ -1,4 +1,5 @@
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -141,7 +142,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       isOwner: [false],
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       extensionPhone: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],

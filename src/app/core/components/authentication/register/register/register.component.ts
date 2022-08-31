@@ -14,6 +14,7 @@ import moment from 'moment';
 import { AddressEntity, SignUpCompanyCommand } from 'appcoretruckassist';
 
 import {
+  addressUnitValidation,
   addressValidation,
   einNumberRegex,
   emailRegex,
@@ -57,7 +58,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       companyName: [null, Validators.required],
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       password: [null, Validators.required],

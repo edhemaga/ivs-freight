@@ -19,6 +19,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
+  addressUnitValidation,
   addressValidation,
   businessNameValidation,
   einNumberRegex,
@@ -97,7 +98,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       ssn: [null, ssnNumberRegex],
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       bankId: [null],

@@ -8,6 +8,7 @@ import {
   phoneExtension,
   emailValidation,
   addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -97,7 +98,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       companyOwned: [false],
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, Validators.maxLength(6)],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],

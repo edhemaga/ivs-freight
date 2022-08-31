@@ -1,5 +1,6 @@
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
+  addressUnitValidation,
   addressValidation,
   emailRegex,
   emailValidation,
@@ -103,7 +104,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       mobile: [null, phoneRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
-      addressUnit: [null],
+      addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
       checkingOldPassword: [null],
       oldPassword: [null],

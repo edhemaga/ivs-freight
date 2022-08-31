@@ -136,10 +136,11 @@
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
                 label: 'Unit #',
-                maxLength: 6,
+                minLength: 1,
+                maxLength: 10,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"
@@ -278,10 +279,11 @@
             <app-ta-input
               formControlName="sapAddressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
                 label: 'Unit #',
-                maxLength: 6,
+                minLength: 1,
+                maxLength: 10,
                 incorrectInput: selectedMode === 'REVIEW_MODE'
               }"
               [incorrectValue]="false"
