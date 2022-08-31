@@ -7,6 +7,11 @@ export const bankRoutingValidator = (routingNumber: string) => {
   return brnv.ABARoutingNumberIsValid(routingNumber);
 };
 
+export const bankValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(64),
+];
+
 export const routingBankValidation = [
   Validators.minLength(9),
   Validators.maxLength(9),
@@ -76,6 +81,18 @@ export const addressUnitValidation = [
 export const departmentValidation = [
   Validators.minLength(2),
   Validators.maxLength(36),
+];
+
+//---------------- First Name -------------------
+export const firstNameValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(26),
+];
+
+//---------------- Last Name --------------------
+export const lastNameValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(26),
 ];
 
 //---------------- SSN Regex ----------------

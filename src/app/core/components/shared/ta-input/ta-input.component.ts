@@ -662,7 +662,7 @@ export class TaInputComponent
       )
     ) {
       if (
-        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü -]*$/g.test(
+        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü\s-]*$/g.test(
           String.fromCharCode(event.charCode)
         )
       ) {
@@ -715,6 +715,55 @@ export class TaInputComponent
     // Department
     if (['department'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9]*$/g.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // First Name
+    if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z',\s.-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // Last Name
+    if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z\s]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // Bank Name
+    if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./:;=<>?-^[]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
         return true;
       } else {
         event.preventDefault();
@@ -1043,16 +1092,6 @@ export class TaInputComponent
     }
   }
 
-  public onDatePaste(e: any) {
-    e.preventDefault();
-    const pasteText = e.clipboardData.getData('text');
-    const pastedDate = new Date(pasteText);
-    if (!isNaN(pastedDate.getTime())) {
-      this.setTimeDateInput(pastedDate);
-      this.selectSpanByTabIndex(this.selectionInput);
-    }
-  }
-
   public onPaste(event: any, maxLength?: number) {
     event.preventDefault();
 
@@ -1102,6 +1141,16 @@ export class TaInputComponent
       );
     }
     this.onChange(this.input.nativeElement.value);
+  }
+
+  public onDatePaste(e: any) {
+    e.preventDefault();
+    const pasteText = e.clipboardData.getData('text');
+    const pastedDate = new Date(pasteText);
+    if (!isNaN(pastedDate.getTime())) {
+      this.setTimeDateInput(pastedDate);
+      this.selectSpanByTabIndex(this.selectionInput);
+    }
   }
 
   ngOnDestroy(): void {

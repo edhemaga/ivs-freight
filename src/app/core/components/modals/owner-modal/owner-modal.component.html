@@ -50,6 +50,8 @@
             name: 'First name',
             type: 'text',
             label: 'First Name',
+            minLength: 2,
+            maxLength: 26,
             isRequired: true,
             textTransform: 'capitalize'
           }"
@@ -62,6 +64,8 @@
             name: 'Last name',
             type: 'text',
             label: 'Last Name',
+            minLength: 2,
+            maxLength: 26,
             isRequired: true,
             textTransform: 'capitalize'
           }"
@@ -151,6 +155,9 @@
             name: 'Input Dropdown',
             type: 'text',
             label: 'Bank Name',
+            minLength: 2,
+            maxLength: 64,
+            textTransform: 'uppercase',
             isDropdown: true,
             dropdownWidthClass: 'w-col-165'
           }"

@@ -90,6 +90,8 @@
               type: 'text',
               label: 'First Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
               incorrectInput: selectedMode === 'REVIEW_MODE'
@@ -106,6 +108,8 @@
               type: 'text',
               label: 'Last Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
@@ -648,6 +652,9 @@
               name: 'Input Dropdown',
               type: 'text',
               label: 'Bank Name',
+              minLength: 2,
+              maxLength: 64,
+              textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-416',
               incorrectInput: selectedMode === 'REVIEW_MODE'

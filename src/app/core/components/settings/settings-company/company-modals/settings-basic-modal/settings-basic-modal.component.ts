@@ -6,6 +6,7 @@ import {
 import {
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   daysValidRegex,
   departmentValidation,
   emailRegex,
@@ -541,7 +542,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      bankId: [data?.bankId ? data.bankId : null],
+      bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
       routing: [data?.routing ? data.routing : null],
       account: [data?.account ? data.account : null],
     });

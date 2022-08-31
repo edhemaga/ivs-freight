@@ -18,6 +18,7 @@ import { RepairTService } from '../../../repair/state/repair.service';
 import {
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   emailRegex,
   emailValidation,
   phoneExtension,
@@ -98,7 +99,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       companyOwned: [false],
       openHours: this.formBuilder.array([]),
-      bankId: [null],
+      bankId: [null, [...bankValidation]],
       routing: [null],
       account: [null],
       note: [null],

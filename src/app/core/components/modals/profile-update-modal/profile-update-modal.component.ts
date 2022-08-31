@@ -3,6 +3,8 @@ import {
   addressValidation,
   emailRegex,
   emailValidation,
+  firstNameValidation,
+  lastNameValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -98,8 +100,8 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.profileUserForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       mobile: [null, phoneRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
