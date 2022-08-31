@@ -331,7 +331,8 @@
                       !item.value.checkMainValue) &&
                     stop[item.value.value] != null &&
                     ((item.value.expandedOnly &&
-                      route.expanded && route.expandFinished) ||
+                      route.expanded &&
+                      route.expandFinished) ||
                       !item.value.expandedOnly)
                   "
                 >
@@ -390,6 +391,8 @@
                     label: 'Add New Stop',
                     textTransform: 'capitalize',
                     addressFlag: addressFlag,
+                    minLength: 12,
+                    maxLength: 256,
                     blackInput: true,
                     hideErrorMessage: true,
                     customClass: 'input-22',

@@ -1,5 +1,4 @@
 import { Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
@@ -18,8 +17,8 @@ import {
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-tt-registration-modal',
   templateUrl: './tt-registration-modal.component.html',
@@ -27,6 +26,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, FormService],
 })
 export class TtRegistrationModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public registrationForm: FormGroup;
@@ -67,7 +67,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.registrationForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -128,7 +128,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     this.commonTruckTrailerService
       .updateRegistration(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -162,7 +162,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
     this.commonTruckTrailerService
       .addRegistration(newData, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -186,7 +186,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   private editRegistrationById() {
     this.commonTruckTrailerService
       .getRegistrationById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RegistrationResponse) => {
           this.registrationForm.patchValue({
@@ -208,7 +208,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.commonTruckTrailerService
       .getRegistrationModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RegistrationModalResponse) => {
           this.stateTypes = res.states.map((item) => {
@@ -228,5 +228,8 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

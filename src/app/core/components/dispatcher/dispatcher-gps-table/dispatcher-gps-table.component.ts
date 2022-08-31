@@ -1,4 +1,3 @@
-import { takeUntil } from 'rxjs/operators';
 import {
   Component,
   EventEmitter,
@@ -9,7 +8,7 @@ import {
 } from '@angular/core';
 import * as AppConst from 'src/app/const';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
 
@@ -104,7 +103,7 @@ export class DispatcherGpsTableComponent implements OnInit, OnDestroy {
   ];
   agmMap: any;
   gpsData: any;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private sharedService: SharedService,

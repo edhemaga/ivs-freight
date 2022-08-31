@@ -11,6 +11,8 @@
           placeholderIcon: 'address',
           textTransform: 'capitalize',
           autoFocus: true,
+          minLength: 12,
+          maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"

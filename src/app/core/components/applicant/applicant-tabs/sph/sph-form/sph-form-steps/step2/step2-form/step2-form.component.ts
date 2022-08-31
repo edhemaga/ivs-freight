@@ -3,13 +3,14 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 
@@ -22,13 +23,15 @@ import { AnswerChoices } from 'src/app/core/components/applicant/state/model/app
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
 import { Address } from 'src/app/core/components/applicant/state/model/address.model';
 import { SphFormAccidentModel } from 'src/app/core/components/applicant/state/model/accident.model';
+import { addressValidation } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-sph-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
-export class SphStep2FormComponent implements OnInit, AfterViewInit {
+export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -74,14 +77,20 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.accidentForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.accidentForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             accidentLocation,
             accidentState,
@@ -98,8 +107,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
           } else {
             this.isAccidentEdited = true;
           }
-        }
-      );
+        });
     }
   }
 
@@ -110,7 +118,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit {
   private createForm(): void {
     this.accidentForm = this.formBuilder.group({
       accidentDate: [null, Validators.required],
-      accidentLocation: [null, Validators.required],
+      accidentLocation: [null, [Validators.required, ...addressValidation]],
       accidentDescription: [null, Validators.required],
       hazmatSpill: [null, Validators.required],
       injuries: [0],

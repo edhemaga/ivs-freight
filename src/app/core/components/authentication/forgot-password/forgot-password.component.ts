@@ -3,25 +3,27 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import moment from 'moment';
 
-import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  emailRegex,
+  emailValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 
 import { ForgotPasswordCommand } from 'appcoretruckassist/model/forgotPasswordCommand';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-forgot-password',
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public forgotPasswordForm!: FormGroup;
 
   public copyrightYear: number;
@@ -44,7 +46,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.forgotPasswordForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
     });
   }
 
@@ -60,7 +62,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .forgotPassword(resetData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: HttpResponseBase) => {
           if (res.status === 200 || res.status === 204) {
@@ -86,5 +88,8 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

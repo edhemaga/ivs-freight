@@ -77,7 +77,10 @@
               type: 'text',
               label: 'Email',
               isRequired: true,
-              placeholderIcon: 'email'
+              placeholderIcon: 'email',
+              minLength: 5,
+              maxLength: 64,
+              textTransform: 'lowercase'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -101,6 +104,8 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAddress"
@@ -111,10 +116,12 @@
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
                 label: 'Unit #',
-                maxLength: 6
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 10
               }"
             ></app-ta-input>
           </div>
@@ -447,7 +454,6 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: driverForm.get('isOwner').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="isOwner"
@@ -566,6 +572,8 @@
                     name: 'Address',
                     type: 'text',
                     textTransform: 'capitalize',
+                    minLength: 12,
+                    maxLength: 256,
                     blackInput: true
                   }"
                   [activeAddress]="selectedAddress"

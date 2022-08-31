@@ -62,6 +62,8 @@
                     label: 'Address, City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
+                    minLength: 12,
+                    maxLength: 256,
                     textTransform: 'capitalize'
                   }"
                   [activeAddress]="selectedAddress"
@@ -72,10 +74,12 @@
                 <app-ta-input
                   formControlName="addressUnit"
                   [inputConfig]="{
-                    name: 'Address Unit',
+                    name: 'address-unit',
                     type: 'text',
                     label: 'Unit #',
-                    maxLength: 6
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 10
                   }"
                 ></app-ta-input>
               </div>
@@ -113,10 +117,11 @@
                   *ngIf="isPhoneExtExist"
                   formControlName="extensionPhone"
                   [inputConfig]="{
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
                     label: 'Ext.',
-                    maxLength: 3,
+                    minLength: 1,
+                    maxLength: 8,
                     placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
@@ -128,7 +133,10 @@
                     name: 'Email',
                     type: 'text',
                     label: 'Email',
-                    placeholderIcon: 'email'
+                    placeholderIcon: 'email',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
               </div>
@@ -170,7 +178,9 @@
                 <app-ta-input-dropdown
                   formControlName="departmentId"
                   [inputConfig]="{
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown Department',
+                    minLength: 2,
+                    maxLength: 36,
                     type: 'text',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'
@@ -190,16 +200,21 @@
                 <app-ta-input
                   formControlName="extensionPhone"
                   [inputConfig]="{
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
-                    maxLength: 3
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
                 <app-ta-input
                   formControlName="email"
                   [inputConfig]="{
                     name: 'Email',
-                    type: 'text'
+                    type: 'text',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
                 <div

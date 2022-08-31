@@ -5,7 +5,6 @@ import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
 import { NotificationService } from './../../../services/notification/notification.service';
 import { OwnerModalResponse } from './../../../../../../appcoretruckassist/model/ownerModalResponse';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -19,8 +18,12 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
+  addressUnitValidation,
+  addressValidation,
+  businessNameValidation,
   einNumberRegex,
   emailRegex,
+  emailValidation,
   phoneRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
@@ -29,8 +32,8 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
@@ -39,6 +42,8 @@ import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component'
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
 
   @Input() editData: any;
@@ -88,15 +93,15 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.ownerForm = this.formBuilder.group({
-      bussinesName: [null, Validators.required],
+      bussinesName: [null, [Validators.required, ...businessNameValidation]],
       firstName: [null],
       lastName: [null],
       ssn: [null, ssnNumberRegex],
       ein: [null, [Validators.required, einNumberRegex]],
-      address: [null, Validators.required],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
       bankId: [null],
       accountNumber: [null],
       routingNumber: [null],
@@ -106,7 +111,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.ownerForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -224,7 +229,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -246,7 +251,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private onBankSelected() {
     this.ownerForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -281,7 +286,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     this.ownerModalService
       .updateOwner(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -303,7 +308,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     let bussinesName = this.ownerForm.get('bussinesName')?.value;
     this.ownerModalService
       .deleteOwnerById(id, this.editData.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -348,7 +353,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     this.ownerModalService
       .addOwner(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -369,7 +374,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private editOwnerById(id: number) {
     this.ownerModalService
       .getOwnerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: OwnerResponse) => {
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
@@ -404,7 +409,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private getOwnerDropdowns() {
     this.ownerModalService
       .getOwnerDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: OwnerModalResponse) => {
           this.labelsBank = res.banks;
@@ -418,5 +423,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

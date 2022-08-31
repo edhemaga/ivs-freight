@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns';
@@ -10,9 +10,8 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   templateUrl: './load-table.component.html',
   styleUrls: ['./load-table.component.scss'],
 })
-export class LoadTableComponent implements OnInit {
-  private destroy$: Subject<void> = new Subject<void>();
-
+export class LoadTableComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -24,6 +23,11 @@ export class LoadTableComponent implements OnInit {
     private tableService: TruckassistTableService,
     private modalService: ModalService
   ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit(): void {
     this.initTableOptions();

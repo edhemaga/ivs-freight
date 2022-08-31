@@ -7,12 +7,11 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
 import { TaUploadFileService } from './ta-upload-file.service';
 import { UploadFile } from './ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-upload-files-carousel.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-upload-files',
   templateUrl: './ta-upload-files.component.html',
@@ -20,6 +19,7 @@ import { TaUploadFilesCarouselComponent } from './ta-upload-files-carousel/ta-up
   encapsulation: ViewEncapsulation.None,
 })
 export class TaUploadFilesComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaUploadFilesCarouselComponent)
   modalCarousel: TaUploadFilesCarouselComponent;
 
@@ -39,7 +39,7 @@ export class TaUploadFilesComponent implements OnInit {
 
   ngOnInit() {
     this.uploadFileService.uploadedFiles$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if (data) {
           this.onUploadFiles(data);
@@ -97,5 +97,8 @@ export class TaUploadFilesComponent implements OnInit {
     return item.name;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
