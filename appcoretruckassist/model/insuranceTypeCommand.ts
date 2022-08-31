@@ -11,9 +11,11 @@
  */
 
 
-export interface BrokerMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    status?: number;
+export interface InsuranceTypeCommand { 
+    insType?: number | null;
+    claimNo?: number | null;
+    insAdjuster?: string | null;
+    phone?: string | null;
+    email?: string | null;
 }
 

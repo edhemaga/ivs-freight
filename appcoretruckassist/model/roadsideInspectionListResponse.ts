@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { RoadsideInspectionResponsePagination } from './roadsideInspectionResponsePagination';
 
 
-export interface BrokerMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    status?: number;
+export interface RoadsideInspectionListResponse { 
+    pagination?: RoadsideInspectionResponsePagination;
+    count?: number;
+    active?: number;
+    inactive?: number;
 }
 

@@ -11,9 +11,8 @@
  */
 
 
-export interface BrokerMinimalResponse { 
+export interface DriverAccidentResponse { 
     id?: number;
-    businessName?: string | null;
-    status?: number;
+    fullName?: string | null;
 }
 

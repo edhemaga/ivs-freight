@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AccidentResponse } from './accidentResponse';
 
 
-export interface BrokerMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    status?: number;
+export interface AccidentResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<AccidentResponse> | null;
 }
 

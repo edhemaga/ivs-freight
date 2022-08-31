@@ -11,9 +11,16 @@
  */
 
 
-export interface BrokerMinimalResponse { 
-    id?: number;
-    businessName?: string | null;
-    status?: number;
+export interface ViolationCommand { 
+    code?: string | null;
+    category?: string | null;
+    unit?: string | null;
+    sw?: string | null;
+    oos?: boolean | null;
+    sms?: boolean | null;
+    description?: string | null;
+    extraDescription?: string | null;
+    basic?: string | null;
+    reason?: string | null;
 }
 

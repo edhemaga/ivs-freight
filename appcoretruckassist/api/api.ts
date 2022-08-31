@@ -1,3 +1,5 @@
+export * from './accident.service';
+import { AccidentService } from './accident.service';
 export * from './account.service';
 import { AccountService } from './account.service';
 export * from './applicant.service';
@@ -82,4 +84,6 @@ export * from './user.service';
 import { UserService } from './user.service';
 export * from './vinDecode.service';
 import { VinDecodeService } from './vinDecode.service';
-export const APIS = [AccountService, ApplicantService, BankService, BrokerService, CdlService, CommentService, CompanyService, CompanyAccountService, CompanyAccountLabelService, CompanyContactService, CompanyContactLabelService, CompanyOfficeService, CompanyUserService, DispatchService, DriverService, EmploymentHistoryService, EventService, GeolocationService, InspectionService, LoadService, MapService, MedicalService, MvrService, OwnerService, OwnerHistoryService, ParkingService, RatingReviewService, RegistrationService, RepairService, RepairShopService, RouteService, RoutingService, ShipperService, StopService, TerminalService, TestService, TitleService, TodoService, TrailerService, TruckService, UserService, VinDecodeService];
+export * from './violation.service';
+import { ViolationService } from './violation.service';
+export const APIS = [AccidentService, AccountService, ApplicantService, BankService, BrokerService, CdlService, CommentService, CompanyService, CompanyAccountService, CompanyAccountLabelService, CompanyContactService, CompanyContactLabelService, CompanyOfficeService, CompanyUserService, DispatchService, DriverService, EmploymentHistoryService, EventService, GeolocationService, InspectionService, LoadService, MapService, MedicalService, MvrService, OwnerService, OwnerHistoryService, ParkingService, RatingReviewService, RegistrationService, RepairService, RepairShopService, RouteService, RoutingService, ShipperService, StopService, TerminalService, TestService, TitleService, TodoService, TrailerService, TruckService, UserService, VinDecodeService, ViolationService];

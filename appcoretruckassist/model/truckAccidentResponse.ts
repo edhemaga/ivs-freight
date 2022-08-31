@@ -9,11 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TruckMakeResponse } from './truckMakeResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
-export interface BrokerMinimalResponse { 
+export interface TruckAccidentResponse { 
     id?: number;
-    businessName?: string | null;
-    status?: number;
+    truckType?: TruckTypeResponse;
+    truckMake?: TruckMakeResponse;
+    truckNumber?: string | null;
+    licensePlate?: string | null;
+    vin?: string | null;
 }
 
