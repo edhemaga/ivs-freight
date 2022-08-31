@@ -202,8 +202,14 @@ export class MapsComponent implements OnInit {
       // The user scrolled up.
       this.zoomChange(this.mapZoom+1);
 
-      this.mapLatitude = item.latitude;
-      this.mapLongitude = item.longitude;
+      if ( this.mapLatitude == item.latitude && this.mapLongitude == item.longitude ) {
+        this.mapLatitude = item.latitude+0.000001;
+        this.mapLongitude = item.longitude+0.000001;
+      } else {
+        this.mapLatitude = item.latitude;
+        this.mapLongitude = item.longitude;
+      }
+      
       console.log('markerZoom item', item);
       console.log('markerZoom mapLatitude', this.mapLatitude);
       console.log('markerZoom mapLongitude', this.mapLongitude);

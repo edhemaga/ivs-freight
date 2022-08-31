@@ -86,7 +86,7 @@
                             [ngClass]="{ 'selected-marker': latlong.isSelected }"
                             *ngIf="latlong.status == 2"
                         ></svg-icon>
-                        <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected }">
+                        <div [ngClass]="{ 'hide-marker': !latlong.isSelected && markerSelected, 'hide-marker-tooltip': latlong.isSelected }">
                             <div
                             class="marker-tooltip"
                             [ngClass]="{ 'hide-marker-tooltip': latlong.isSelected }"
