@@ -29,12 +29,14 @@
             <app-ta-input
               formControlName="businessName"
               [inputConfig]="{
-                name: 'Bussines Name',
+                name: 'Business Name',
                 type: 'text',
-                label: 'Bussines Name',
+                label: 'Business Name',
                 isRequired: true,
-                textTransform: 'capitalize',
-                autoFocus: editData?.type !== 'edit' ? true : false
+                textTransform: 'uppercase',
+                autoFocus: editData?.type !== 'edit' ? true : false,
+                minLength: 2,
+                maxLength: 64
               }"
             ></app-ta-input>
           </div>
@@ -66,11 +68,12 @@
             <app-ta-input
               formControlName="mcNumber"
               [inputConfig]="{
-                name: 'MC FF',
+                name: 'MC/FF',
                 type: 'text',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 8
+                maxLength: 6,
+                minLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -96,7 +99,10 @@
                 name: 'Email',
                 type: 'text',
                 label: 'Email',
-                placeholderIcon: 'email'
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase'
               }"
             ></app-ta-input>
           </div>
@@ -132,6 +138,8 @@
                   label: 'Address, City, State Zip',
                   isRequired: true,
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedPhysicalAddress"
@@ -142,10 +150,12 @@
               <app-ta-input
                 formControlName="physicalAddressUnit"
                 [inputConfig]="{
-                  name: 'Address Unit',
+                  name: 'address-unit',
                   type: 'text',
                   label: 'Unit #',
-                  maxLength: 6
+                  textTransform: 'uppercase',
+                  minLength: 1,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -185,6 +195,8 @@
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  minLength: 12,
+                  maxLength: 256,
                   onlyCityAndZipAddress: true
                 }"
                 [activeAddress]="selectedPhysicalPoBox"
@@ -234,6 +246,8 @@
                     label: 'Address, City, State Zip',
                     isRequired: true,
                     placeholderIcon: 'address',
+                    minLength: 12,
+                    maxLength: 256,
                     textTransform: 'capitalize'
                   }"
                   [activeAddress]="selectedBillingAddress"
@@ -244,10 +258,12 @@
                 <app-ta-input
                   formControlName="billingAddressUnit"
                   [inputConfig]="{
-                    name: 'Address Unit',
+                    name: 'address-unit',
                     type: 'text',
                     label: 'Unit #',
-                    maxLength: 6
+                    textTransform: 'uppercase',
+                    minLength: 1,
+                    maxLength: 10
                   }"
                 ></app-ta-input>
               </div>
@@ -287,6 +303,8 @@
                     isRequired: true,
                     placeholderIcon: 'address',
                     textTransform: 'capitalize',
+                    minLength: 12,
+                    maxLength: 256,
                     onlyCityAndZipAddress: true
                   }"
                   [activeAddress]="selectedBillingPoBox"
@@ -415,8 +433,11 @@
                   formControlName="departmentId"
                   [inputConfig]="{
                     id: 'Input Dropdown' + ind,
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown Department',
+                    minLength: 2,
+                    maxLength: 36,
                     type: 'text',
+                    textTransform: 'capitalize',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'
                   }"
@@ -439,9 +460,11 @@
                   formControlName="extensionPhone"
                   [inputConfig]="{
                     id: 'Phone Extension' + ind,
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
-                    maxLength: 3
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
                 <app-ta-input

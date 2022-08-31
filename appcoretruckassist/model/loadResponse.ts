@@ -59,5 +59,7 @@ export interface LoadResponse {
     totalMiles?: number;
     paidDate?: string | null;
     invoicedDate?: string | null;
+    shortPaid?: number | null;
+    age?: number | null;
 }
 

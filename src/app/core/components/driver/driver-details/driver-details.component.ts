@@ -14,7 +14,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -30,15 +29,16 @@ import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-st
 import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { CdlTService } from '../state/cdl.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
   styleUrls: ['./driver-details.component.scss'],
   providers: [DetailsPageService],
 })
-export class DriverDetailsComponent implements OnInit, OnDestroy {
+export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
+  private destroy$ = new Subject<void>();
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -86,7 +86,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       this.getCdlById(this.cdlActiveId);
     }
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.detailCongif(res.data);
@@ -99,7 +99,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -125,39 +125,32 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       });
 
     this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.driverService
-          .getDriverById(id)
-          .pipe(untilDestroyed(this))
-          .subscribe({
-            next: (res: DriverResponse) => {
-              this.currentIndex = this.driversList.findIndex(
-                (driver) => driver.id === res.id
-              );
-              this.initTableOptions(res);
-              if (this.cdlActiveId > 0) {
-                this.getCdlById(this.cdlActiveId);
-              }
-
-              this.detailCongif(res);
-              this.getDriverById(res.id);
-              if (this.router.url.includes('details')) {
-                this.router.navigate([`/driver/${res.id}/details`]);
-              }
-              this.notificationService.success(
-                'Driver successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error(
-                "Driver can't be loaded",
-                'Error:'
-              );
-            },
-          });
+        let query;
+        if (!this.driverDetailsQuery.hasEntity(id)) {
+          query = this.driverService.getDriverById(id);
+        } else {
+          query = this.driverDetailsQuery.selectEntity(id);
+        }
+        query.pipe(takeUntil(this.destroy$)).subscribe({
+          next: (res: DriverResponse) => {
+            this.initTableOptions(res);
+            this.detailCongif(res);
+            this.getDriverById(res.id);
+            if (this.router.url.includes('details')) {
+              this.router.navigate([`/driver/${res.id}/details`]);
+            }
+            this.notificationService.success(
+              'Driver successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Driver can't be loaded", 'Error:');
+          },
+        });
       });
   }
 
@@ -347,8 +340,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   public getDriverById(id: number) {
     this.driverService
-      .getDriverById(id, true)
+      .getDriverById(id)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
+  }
+  public getCdlById(id: number) {
+    this.cdlService
+      .getCdlById(id)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.dataCdl = item));
   }
   public getCdlById(id: number) {
     this.cdlService
@@ -367,8 +367,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   private changeDriverStatus(id: number) {
     let status = this.driverObject.status == 0 ? 'inactive' : 'active';
     this.driverService
-      .changeDriverStatus(id, status)
-      .pipe(untilDestroyed(this))
+      .changeDriverStatus(id)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -397,8 +397,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       this.currentIndex = ++this.currentIndex;
     }
     this.driverService
-      .deleteDriverByIdDetails(id, status)
-      .pipe(untilDestroyed(this))
+      .deleteDriverById(id)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           if (this.driverMinimimalListStore.getValue().ids.length < 1) {
@@ -493,6 +493,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

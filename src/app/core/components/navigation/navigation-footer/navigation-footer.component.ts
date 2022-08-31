@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
   Component,
@@ -12,13 +11,12 @@ import {
 } from '@angular/core';
 import { FooterData } from '../model/navigation.model';
 import { footerData } from '../model/navigation-data';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import { navigation_route_animation } from '../navigation.animation';
 import { TaUserService } from 'src/app/core/services/user/user.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-navigation-footer',
   templateUrl: './navigation-footer.component.html',
@@ -27,6 +25,7 @@ import { TaUserService } from 'src/app/core/services/user/user.service';
   animations: [navigation_route_animation('showHideDetails')],
 })
 export class NavigationFooterComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isNavigationHovered: boolean = false;
 
   @Output() onActivateFooterRoutes = new EventEmitter<boolean>();
@@ -81,7 +80,7 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     };
 
     this.userService.updateUserProfile$
-      .pipe(debounceTime(1000), untilDestroyed(this))
+      .pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((val: boolean) => {
         if (val) {
           this.loggedUser = JSON.parse(localStorage.getItem('user'));
@@ -154,5 +153,8 @@ export class NavigationFooterComponent implements OnInit, OnDestroy {
     return item.id;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

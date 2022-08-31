@@ -20,6 +20,7 @@ export class HoverSvgDirective implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.fill?.previousValue !== changes.fill?.currentValue) {
       this.fill = changes.fill?.currentValue;
+      this.fillHover = changes.fillHover?.currentValue;
       this.renderer2.setStyle(this.elRef.nativeElement, 'fill', this.fill);
     }
   }

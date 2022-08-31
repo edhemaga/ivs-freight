@@ -8,7 +8,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import moment from 'moment';
 import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -17,14 +16,15 @@ import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-moda
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'app-trailer-details-item',
   templateUrl: './trailer-details-item.component.html',
@@ -33,6 +33,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() trailer: TrailerResponse | any = null;
   public note: FormControl = new FormControl();
   public registrationNote: FormControl = new FormControl();
@@ -55,7 +56,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
     this.note?.patchValue(this.trailer[0]?.data?.note);
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -140,7 +141,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   private deleteRegistrationByIdFunction(id: number) {
     this.commonTrailerService
       .deleteRegistrationById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -160,7 +161,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   private deleteInspectionByIdFunction(id: number) {
     this.commonTrailerService
       .deleteInspectionById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -179,7 +180,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   private deleteTitleByIdFunction(id: number) {
     this.commonTrailerService
       .deleteTitleById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -197,5 +198,7 @@ export class TrailerDetailsItemComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

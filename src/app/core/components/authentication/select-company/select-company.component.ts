@@ -7,8 +7,8 @@ import {
   OnInit,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { Subject, takeUntil } from 'rxjs';
+
 //import {SelectCompany} from '../../model/select-company';
 
 @Component({
@@ -24,7 +24,7 @@ export class SelectCompanyComponent
   selectedCompanyID: any;
   apiData: any;
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     @Inject(DOCUMENT) private document: HTMLDocument,

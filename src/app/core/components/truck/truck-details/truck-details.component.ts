@@ -6,21 +6,14 @@ import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 /* import { TruckQuery } from './../state/truck.query'; */
-import { Subject } from 'rxjs';
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TruckTService } from '../state/truck.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
@@ -29,7 +22,6 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truck-details',
   templateUrl: './truck-details.component.html',
@@ -37,7 +29,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
   providers: [DetailsPageService],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
-  // @Input() data:any=null;
+  private destroy$ = new Subject<void>();
   public truckDetailsConfig: any[] = [];
   public dataTest: any;
   registrationLength: number;
@@ -71,7 +63,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     this.getTruckById(this.activated_route.snapshot.data.truck.id);
     this.initTableOptions(this.activated_route.snapshot.data.truck);
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.truckConf(res.data);
@@ -81,7 +73,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       });
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           console.log(res + 'ovo je res');
@@ -108,11 +100,11 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         },
       });
     this.detailsPageDriverSer.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         this.truckTService
           .getTruckById(id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: TruckResponse) => {
               this.currentIndex = this.truckList.findIndex(
@@ -158,7 +150,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
     this.truckTService
       .deleteTruckByIdDetails(id, status)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           if (this.truckMinimalStore.getValue().ids.length < 1) {
@@ -185,7 +177,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     let status = this.truckObject.status == 0 ? 'inactive' : 'active';
     this.truckTService
       .changeTruckStatus(id, status)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -358,7 +350,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       case 'delete-item': {
         this.truckTService
           .deleteTruckById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -381,5 +373,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

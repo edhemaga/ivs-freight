@@ -3,11 +3,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-load-modal',
   templateUrl: './load-modal.component.html',
@@ -15,6 +14,7 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
   providers: [FormService, ModalService],
 })
 export class LoadModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public loadForm: FormGroup;
@@ -157,7 +157,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.loadForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -297,5 +297,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
   public addComment(comments: any) {}
   public updateComment(comments: any) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

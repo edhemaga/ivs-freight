@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ViewChild,
+  OnDestroy,
+} from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
@@ -9,17 +15,21 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 @Component({
   selector: 'app-fuel-table',
   templateUrl: './fuel-table.component.html',
-  styleUrls: ['./fuel-table.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [
+    './fuel-table.component.scss',
+    '../../../../../assets/scss/maps.scss',
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
-export class FuelTableComponent implements OnInit {
-  @ViewChild('mapsComponent', {static: false}) public mapsComponent: any;
+export class FuelTableComponent implements OnInit, OnDestroy {
+  @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
-  public viewData: any[] = [];s
+  public viewData: any[] = [];
+  s;
   public columns: any[] = [];
   public selectedTab = 'active';
   resetColumns: boolean;
@@ -37,7 +47,7 @@ export class FuelTableComponent implements OnInit {
     '#FEC107',
     '#FF9800',
     '#EF5350',
-    '#919191'
+    '#919191',
   ];
 
   public fuelPriceHoverColors: any[] = [
@@ -46,13 +56,18 @@ export class FuelTableComponent implements OnInit {
     '#FFB300',
     '#FB8C00',
     '#F34235',
-    '#6C6C6C'
+    '#6C6C6C',
   ];
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService
   ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit(): void {
     this.initTableOptions();
@@ -69,22 +84,22 @@ export class FuelTableComponent implements OnInit {
         }
       });
 
-      this.sortTypes = [
-        {name: 'Business Name', id: 1, sortName: 'name'},
-        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
-        {name: 'Favorites', id: 8, sortName: 'favorites'},
-        {name: 'Fuel Price', id: 9, sortName: 'fuelPrice'},
-        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
-        {name: 'Purchase', id: 6, sortName: 'purchase'},
-        {name: 'Total Cost', id: 7, sortName: 'cost'}
-      ];
+    this.sortTypes = [
+      { name: 'Business Name', id: 1, sortName: 'name' },
+      { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+      { name: 'Favorites', id: 8, sortName: 'favorites' },
+      { name: 'Fuel Price', id: 9, sortName: 'fuelPrice' },
+      { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+      { name: 'Purchase', id: 6, sortName: 'purchase' },
+      { name: 'Total Cost', id: 7, sortName: 'cost' },
+    ];
 
-      this.activeSortType = this.sortTypes[0];
+    this.activeSortType = this.sortTypes[0];
 
-      this.sortBy = this.sortDirection
+    this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
   }
 
@@ -95,7 +110,7 @@ export class FuelTableComponent implements OnInit {
         hideLocationFilter: true,
         hideViewMode: false,
         showMapView: true,
-        viewModeActive: 'List'
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -180,15 +195,15 @@ export class FuelTableComponent implements OnInit {
     let data: any[] = [
       {
         address: {
-          address: "1 International Square, Kansas City, MO 64153, USA",
+          address: '1 International Square, Kansas City, MO 64153, USA',
           addressUnit: null,
-          city: "Kansas City",
-          country: "US",
-          state: "MO",
-          stateShortName: "MO",
-          street: "International Square",
-          streetNumber: "1",
-          zipCode: "64153"
+          city: 'Kansas City',
+          country: 'US',
+          state: 'MO',
+          stateShortName: 'MO',
+          street: 'International Square',
+          streetNumber: '1',
+          zipCode: '64153',
         },
         api: 1,
         apiTransactionId: 979637489,
@@ -257,7 +272,7 @@ export class FuelTableComponent implements OnInit {
       this.setFuelData(event.tabData);
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
-      if ( event.mode == 'Map' ) {
+      if (event.mode == 'Map') {
         //this.mapsComponent.markersDropAnimation();
       }
     }
@@ -281,28 +296,28 @@ export class FuelTableComponent implements OnInit {
     this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
-      
+
     //this.sortShippers();
   }
-  
+
   changeSortCategory(item) {
     this.activeSortType = item;
 
     this.sortBy = this.sortDirection
       ? this.activeSortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
-      
+
     //this.sortShippers();
   }
 
   searchStops(value) {
     this.searchValue = value;
     //if ( this.searchValue.length > 3 ) {
-      //this.sortShippers();
+    //this.sortShippers();
     //}
   }
 

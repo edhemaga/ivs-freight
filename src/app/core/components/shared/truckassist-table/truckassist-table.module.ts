@@ -17,6 +17,7 @@ import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.dir
 import { DirectivesModule } from 'src/app/core/directives/directives.module';
 import { PipesModule } from 'src/app/core/pipes/pipes.module';
 import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { VirtualScrollerModule } from 'ngx-virtual-scroller';
     AppNoteModule,
     ProfileImagesModule,
     PipesModule,
-    VirtualScrollerModule
+    VirtualScrollerModule,
+    ScrollingModule
   ],
   exports: [
     TruckassistTableBodyComponent,

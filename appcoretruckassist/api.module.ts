@@ -2,7 +2,9 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AccidentService } from './api/accident.service';
 import { AccountService } from './api/account.service';
+import { ApplicantService } from './api/applicant.service';
 import { BankService } from './api/bank.service';
 import { BrokerService } from './api/broker.service';
 import { CdlService } from './api/cdl.service';
@@ -21,6 +23,7 @@ import { EventService } from './api/event.service';
 import { GeolocationService } from './api/geolocation.service';
 import { InspectionService } from './api/inspection.service';
 import { LoadService } from './api/load.service';
+import { MapService } from './api/map.service';
 import { MedicalService } from './api/medical.service';
 import { MvrService } from './api/mvr.service';
 import { OwnerService } from './api/owner.service';
@@ -30,8 +33,10 @@ import { RatingReviewService } from './api/ratingReview.service';
 import { RegistrationService } from './api/registration.service';
 import { RepairService } from './api/repair.service';
 import { RepairShopService } from './api/repairShop.service';
+import { RouteService } from './api/route.service';
 import { RoutingService } from './api/routing.service';
 import { ShipperService } from './api/shipper.service';
+import { StopService } from './api/stop.service';
 import { TerminalService } from './api/terminal.service';
 import { TestService } from './api/test.service';
 import { TitleService } from './api/title.service';
@@ -40,6 +45,7 @@ import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
 import { UserService } from './api/user.service';
 import { VinDecodeService } from './api/vinDecode.service';
+import { ViolationService } from './api/violation.service';
 
 @NgModule({
   imports:      [],

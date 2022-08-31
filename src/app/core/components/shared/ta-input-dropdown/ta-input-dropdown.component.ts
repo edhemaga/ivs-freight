@@ -1,7 +1,8 @@
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -16,7 +17,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
@@ -24,7 +24,6 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
@@ -34,8 +33,9 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TaInputDropdownComponent
-  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
 
@@ -150,6 +150,15 @@ export class TaInputDropdownComponent
     }
   }
 
+  ngAfterViewInit() {
+    if (this.inputConfig.autoFocus) {
+      const timeout = setTimeout(() => {
+        this.popoverRef.open();
+        clearTimeout(timeout);
+      }, 450);
+    }
+  }
+
   ngOnInit(): void {
     // Multiselect
     if (this.inputConfig.multiselectDropdown) {
@@ -158,7 +167,7 @@ export class TaInputDropdownComponent
 
     // Search
     this.getSuperControl.valueChanges
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((searchText) => {
         if (this.labelMode === 'Color') {
           return;
@@ -168,7 +177,7 @@ export class TaInputDropdownComponent
 
     // Clear Input
     this.inputService.onClearInput$
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((action: boolean) => {
         if (action) {
           this.popoverRef.close();
@@ -185,7 +194,7 @@ export class TaInputDropdownComponent
 
     // Reset Input
     this.inputResetService.resetInputSubject
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((action) => {
         this.inputRef.touchedInput = false;
       });
@@ -204,7 +213,7 @@ export class TaInputDropdownComponent
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((action: boolean) => {
         // Multiselect dropdown
         if (this.inputConfig.multiselectDropdown) {
@@ -218,8 +227,19 @@ export class TaInputDropdownComponent
 
             // Prevent user to typing dummmy data if activeItem doesn't exist
             if (this.activeItem) {
-              this.getSuperControl.setValue(this.activeItem.name);
-              this.changeDetectionRef.detectChanges();
+              // Dropdown image selection
+              if (
+                !this.inputConfig?.dropdownImageInput?.withText &&
+                this.inputConfig?.dropdownImageInput?.url
+              ) {
+                this.getSuperControl.patchValue(null);
+                this.getSuperControl.setErrors(null);
+              }
+              // Native dropdown
+              else {
+                this.getSuperControl.setValue(this.activeItem.name);
+                this.changeDetectionRef.detectChanges();
+              }
             } else {
               const index = this.originalOptions.findIndex(
                 (item) => item.name === this.getSuperControl.value
@@ -263,7 +283,7 @@ export class TaInputDropdownComponent
 
   private dropDownKeyboardNavigationEvent() {
     this.inputService.dropDownKeyNavigation$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((keyCode) => {
         // Navigate down
         if (keyCode === 40) {
@@ -332,6 +352,20 @@ export class TaInputDropdownComponent
                 .includes(searchText.toLowerCase())
         );
 
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig?.dropdownImageInput?.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig?.dropdownImageInput,
+              remove: true,
+            },
+          };
+        }
+
         if (!this.options.length) {
           this.options.push({
             id: 7654,
@@ -340,6 +374,20 @@ export class TaInputDropdownComponent
         }
       } else {
         this.options = this.originalOptions;
+
+        if (
+          ['truck', 'trailer'].includes(
+            this.inputConfig?.dropdownImageInput?.template
+          )
+        ) {
+          this.inputConfig = {
+            ...this.inputConfig,
+            dropdownImageInput: {
+              ...this.inputConfig?.dropdownImageInput,
+              remove: false,
+            },
+          };
+        }
       }
     }
     // Group Dropdown Items
@@ -421,10 +469,24 @@ export class TaInputDropdownComponent
 
       // Normal Dropdown option selected
       else {
+        this.inputConfig = {
+          ...this.inputConfig,
+          blackInput: true,
+        };
+
         this.activeItem = option;
         this.getSuperControl.setValue(option.name);
         this.options = this.originalOptions;
         this.selectedItem.emit(option);
+
+        const timeout = setTimeout(() => {
+          this.inputConfig = {
+            ...this.inputConfig,
+            blackInput: false,
+          };
+          this.changeDetectionRef.detectChanges();
+          clearTimeout(timeout);
+        }, 100);
       }
     }
   }
@@ -477,9 +539,6 @@ export class TaInputDropdownComponent
       id: uuidv4(),
       name: this.getSuperControl.value,
     };
-
-    // this.originalOptions = [...this.originalOptions, this.activeItem];
-    // this.options = this.originalOptions;
 
     this.saveItem.emit({ data: this.activeItem, action: 'new' });
 
@@ -763,6 +822,8 @@ export class TaInputDropdownComponent
     }
   }
 
-  // Must be here, because of "untilDestroyed"
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

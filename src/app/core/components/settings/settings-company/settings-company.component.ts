@@ -11,12 +11,10 @@ import {
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',
@@ -25,6 +23,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
   providers: [DetailsPageService],
 })
 export class SettingsCompanyComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public isModalOpen$: boolean;
   // public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
   public data: any;
@@ -67,10 +66,10 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     });
     this.getCompanyDivision();
     this.detailsPageSer.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         this.SettingsCompanyService.getCompanyDivisionById(id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CompanyResponse) => {
               this.getData(res);
@@ -117,5 +116,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
+
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

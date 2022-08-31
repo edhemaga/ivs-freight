@@ -1,7 +1,6 @@
-import {takeUntil} from 'rxjs/operators';
-import {Component, Input, OnInit} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {Subject} from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
+import { Component, Input, OnInit } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
 import { SharedService } from '../../../../services/shared/shared.service';
 
 @Component({
@@ -11,14 +10,12 @@ import { SharedService } from '../../../../services/shared/shared.service';
   animations: [
     trigger('pickupAnimation', [
       transition(':enter', [
-        style({height: 10}),
-        animate('100ms', style({height: '*'})),
+        style({ height: 10 }),
+        animate('100ms', style({ height: '*' })),
       ]),
-      transition(':leave', [
-        animate('50ms', style({height: 0})),
-      ]),
+      transition(':leave', [animate('50ms', style({ height: 0 }))]),
     ]),
-  ]
+  ],
 })
 export class TaNoteContainerComponent implements OnInit {
   @Input() value: any;
@@ -33,44 +30,43 @@ export class TaNoteContainerComponent implements OnInit {
     bold: false,
     italic: false,
     foreColor: false,
-    underline: false
+    underline: false,
   };
   containerColors: any[] = [
     {
-      color: "#26A690",
-      name: "Dark Green"
+      color: '#26A690',
+      name: 'Dark Green',
     },
     {
-      color: "#EF5350",
-      name: "Red"
+      color: '#EF5350',
+      name: 'Red',
     },
     {
-      color: "#FFA726",
-      name: "Yellow"
+      color: '#FFA726',
+      name: 'Yellow',
     },
     {
-      color: "#536BC2",
-      name: "Blue"
+      color: '#536BC2',
+      name: 'Blue',
     },
     {
-      color: "#6C6C6C",
-      name: "Gray"
-    }
-  ]
+      color: '#6C6C6C',
+      name: 'Gray',
+    },
+  ];
   selectedColorName: any = {
-    color: "#6C6C6C",
-    name: "Gray"
+    color: '#6C6C6C',
+    name: 'Gray',
   };
   slowTimeout: any;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-  constructor(private sharedService: SharedService) {
-  }
+  constructor(private sharedService: SharedService) {}
 
   ngOnInit(): void {
     this.sharedService.emitUpdateNoteActiveList
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
+      .subscribe((res) => {
         this.checkActiveItems();
       });
   }
@@ -88,7 +84,7 @@ export class TaNoteContainerComponent implements OnInit {
     if (indx || indx === 0) {
       this.selectedColorName = this.containerColors[indx];
     }
-    
+
     document.execCommand('styleWithCSS', false, 'true');
     if (this.range) {
       this.selectionTaken.removeAllRanges();
@@ -110,7 +106,6 @@ export class TaNoteContainerComponent implements OnInit {
     } else {
       this.filterContainersColor();
       setTimeout(() => {
-
         this.focusElement();
         setTimeout(() => {
           this.focusElement();
@@ -135,11 +130,15 @@ export class TaNoteContainerComponent implements OnInit {
 
       clearTimeout(this.slowTimeout);
       this.slowTimeout = setTimeout(() => {
-        const findedColor = this.containerColors.find(item => item.color == document.queryCommandValue('ForeColor'));
-        this.selectedColorName = findedColor ? findedColor : {
-          color: "#6c6c6c",
-          name: "Gray"
-        };
+        const findedColor = this.containerColors.find(
+          (item) => item.color == document.queryCommandValue('ForeColor')
+        );
+        this.selectedColorName = findedColor
+          ? findedColor
+          : {
+              color: '#6c6c6c',
+              name: 'Gray',
+            };
       }, 200);
       this.selectedPaternColor = document.queryCommandValue('ForeColor');
     }

@@ -10,23 +10,20 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { CalendarMonthComponent } from './calendar-month/calendar-month.component';
 
-FullCalendarModule.registerPlugins([
-  dayGridPlugin,
-  interactionPlugin
-]);
+import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
+
+FullCalendarModule.registerPlugins([dayGridPlugin, interactionPlugin]);
 
 @NgModule({
-  declarations: [
-    CalendarComponent,
-    CalendarMonthComponent,
-  ],
+  declarations: [CalendarComponent, CalendarMonthComponent],
   imports: [
     CommonModule,
     CalendarRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     SharedModule,
-    FullCalendarModule
+    FullCalendarModule,
+    TruckassistSearchModule,
   ],
 })
-export class CalendarModule { }
+export class CalendarModule {}

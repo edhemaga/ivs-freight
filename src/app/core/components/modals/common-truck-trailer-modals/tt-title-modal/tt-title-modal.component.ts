@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -15,14 +14,15 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from 'src/app/core/utils/methods.calculations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-tt-title-modal',
   templateUrl: './tt-title-modal.component.html',
   styleUrls: ['./tt-title-modal.component.scss'],
 })
 export class TtTitleModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public ttTitleForm: FormGroup;
@@ -114,7 +114,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     this.commonTruckTrailerService
       .addTitle(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -140,7 +140,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
 
     this.commonTruckTrailerService
       .updateTitle(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -161,7 +161,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
   private editTitleById(id: number) {
     this.commonTruckTrailerService
       .getTitleById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TitleResponse) => {
           this.ttTitleForm.patchValue({
@@ -186,7 +186,7 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.commonTruckTrailerService
       .getTitleModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TitleModalResponse) => {
           this.stateTypes = res.states.map((item) => {
@@ -206,5 +206,8 @@ export class TtTitleModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

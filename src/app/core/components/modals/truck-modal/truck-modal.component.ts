@@ -1,8 +1,4 @@
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-  convertNumberInThousandSep,
-} from './../../../utils/methods.calculations';
+import { convertDateToBackend } from './../../../utils/methods.calculations';
 import { Options } from '@angular-slider/ngx-slider';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -21,7 +17,6 @@ import {
   UpdateTruckCommand,
   VinDecodeResponse,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
@@ -36,8 +31,9 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../../truck/state/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truck-modal',
   templateUrl: './truck-modal.component.html',
@@ -47,6 +43,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   providers: [ModalService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('appNote', { static: false }) public appNote: any;
 
   @Input() editData: any;
@@ -165,7 +163,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.truckForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -187,7 +185,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       if (data.action === 'deactivate' && this.editData) {
         this.truckModalService
           .changeTruckStatus(this.editData.id, this.editData.tabSelected)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -219,7 +217,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.inputService.markInvalid(this.truckForm);
             return;
           }
-          if (this.editData) {
+          if (this.editData?.id) {
             this.updateTruck(this.editData.id);
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
@@ -235,12 +233,30 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
       }
     }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: 'Truck',
+          });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
   }
 
   private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(this.truckForm.get('ownerId'));
@@ -256,13 +272,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public editTruckById(id: number) {
     this.truckModalService
       .getTruckById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TruckResponse) => {
           this.truckForm.patchValue({
             truckNumber: res.truckNumber,
             truckTypeId: res.truckType ? res.truckType.name : null,
-            truckMakeId: res.truckMake ? res.truckMake.name : null,
+            truckMakeId: res.truckMake ? ' ' : null,
             model: res.model,
             year: res.year,
             colorId: res.color ? res.color.name : null,
@@ -319,7 +335,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.truckForm.patchValue({
         truckNumber: res.truckNumber,
         truckTypeId: res.truckTypeId,
-        truckMakeId: res.truckMakeId,
+        truckMakeId: ' ',
         model: res.model,
         year: res.year,
         colorId: res.colorId,
@@ -427,19 +443,19 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.truckForm
       .get('vin')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 1)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
                 this.truckForm.patchValue({
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
-                  truckMakeId: res.truckMake?.name ? res.truckMake.name : null,
+                  truckMakeId: res.truckMake?.name ? ' ' : null,
                   truckEngineTypeId: res.engineType?.name
                     ? res.engineType.name
                     : null,
@@ -462,7 +478,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public getTruckDropdowns() {
     this.truckModalService
       .getTruckDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
           this.truckType = res.truckTypes.map((item) => {
@@ -540,7 +556,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     this.truckModalService
       .addTruck(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -610,7 +626,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     };
     this.truckModalService
       .updateTruck(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -627,7 +643,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public deleteTruckById(id: number) {
     this.truckModalService
       .deleteTruckById(id, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -644,5 +660,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

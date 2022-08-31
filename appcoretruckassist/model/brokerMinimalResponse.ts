@@ -13,7 +13,7 @@
 
 export interface BrokerMinimalResponse { 
     id?: number;
-    bussinesName?: string | null;
+    businessName?: string | null;
     status?: number;
 }
 

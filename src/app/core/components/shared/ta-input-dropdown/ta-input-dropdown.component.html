@@ -136,6 +136,7 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -166,6 +167,7 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             trailerContainer: option.name === 'Container',
             semisleeper: option.name === 'Semi w/Sleeper',
@@ -317,6 +319,7 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             'active-label':
               option.id === activeItem?.id && labelMode === 'Label'
           }"
@@ -339,7 +342,9 @@
             <div
               class="labels-template-text"
               [ngClass]="{
-                'add-new': option.name === 'Add New'
+                'add-new': option.name === 'Add New',
+                'add-new-divider':
+                  option.name === 'Add New' && options.length > 1
               }"
               [innerHtml]="
                 option.name
@@ -365,6 +370,7 @@
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
             'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             'active-repair-truck-trailer': option?.status === 1
           }"
