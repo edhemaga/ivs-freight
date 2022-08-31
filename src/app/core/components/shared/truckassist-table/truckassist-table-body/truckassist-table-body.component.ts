@@ -68,6 +68,9 @@ export class TruckassistTableBodyComponent
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
   pageHeight: number = window.innerHeight;
+  activeAttachments: number = -1;
+  attachmentsTooltip: any;
+  isAttachmentClosing: boolean;
 
   constructor(
     private router: Router,
@@ -289,11 +292,6 @@ export class TruckassistTableBodyComponent
     }
   }
 
-  // Truck By For List
-  trackByFn(index) {
-    return index;
-  }
-
   // Go To Details Page
   goToDetails(route: any, row: any) {
     const link =
@@ -420,7 +418,29 @@ export class TruckassistTableBodyComponent
     this.tooltip.close();
   }
 
-  // -------------------------------- Finish Order ---------------------------------
+  // Show Attachments
+  onShowAttachments(popup: any, row: any) {
+    if (!popup.isOpen()) {
+      let timeInterval = 0;
+
+      if (this.activeAttachments !== -1 && this.activeAttachments !== row.id) {
+        timeInterval = 250;
+      }
+
+      setTimeout(() => {
+        this.isAttachmentClosing = false;
+        this.attachmentsTooltip = popup;
+
+        if (popup.isOpen()) {
+          popup.close();
+        } else {
+          popup.open({ data: row });
+        }
+
+        this.activeAttachments = popup.isOpen() ? row.id : -1;
+      }, timeInterval);
+    }
+  }
 
   // Finish Order
   onFinishOrder(row: any) {
@@ -430,7 +450,6 @@ export class TruckassistTableBodyComponent
     });
   }
 
-  // -------------------------------- Show More Data ---------------------------------
   // Show More Data
   onShowMore() {
     this.bodyActions.emit({
@@ -446,10 +465,6 @@ export class TruckassistTableBodyComponent
   }
 
   // --------------------------------TODO---------------------------------
-  onShowAttachments(data: any) {
-    alert('Treba da se odradi');
-  }
-
   onShowItemDrop(index: number) {
     alert('Treba da se odradi');
   }
