@@ -5,9 +5,14 @@ import { TruckMinimalResponse } from './../../../../../../appcoretruckassist/mod
 import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-/* import { TruckQuery } from './../state/truck.query'; */
 import { Subject, takeUntil } from 'rxjs';
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { TruckTService } from '../state/truck.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
@@ -29,6 +34,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
   providers: [DetailsPageService],
 })
 export class TruckDetailsComponent implements OnInit, OnDestroy {
+  // @Input() data:any=null;
   private destroy$ = new Subject<void>();
   public truckDetailsConfig: any[] = [];
   public dataTest: any;
@@ -39,6 +45,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   public truckObject: any;
   public truckList: any = this.truckMinimalListQuery.getAll();
   public currentIndex: number = 0;
+  public truckId: number;
   constructor(
     private truckTService: TruckTService,
     private notificationService: NotificationService,
@@ -67,6 +74,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         if (res.animation) {
           this.truckConf(res.data);
+          this.getTruckById(res.id);
           this.initTableOptions(res.data);
           this.cdRef.detectChanges();
         }
@@ -153,9 +161,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          if (this.truckMinimalStore.getValue().ids.length < 1) {
-            this.router.navigate(['/truck']);
-          } else {
+          if (this.truckMinimalStore.getValue().ids.length >= 1) {
             this.router.navigate([
               `/truck/${this.truckList[this.currentIndex].id}/details`,
             ]);
@@ -166,10 +172,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error(
-            `Truck with id: ${id} couldn't be deleted`,
-            'Error:'
-          );
+          this.router.navigate(['/truck']);
         },
       });
   }
@@ -194,7 +197,12 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       });
   }
   public optionsDrop(event: any) {
-    this.dropService.dropActionHeaderTruck(event, this.truckObject, null);
+    this.dropService.dropActionHeaderTruck(
+      event,
+      this.truckObject,
+      this.truckId,
+      null
+    );
   }
   /**Function for dots in cards */
   public initTableOptions(data: TruckMinimalResponse): void {
@@ -328,49 +336,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         length: 1,
       },
     ];
-  }
-
-  public onTrackActions(event: any) {
-    const truck = this.activated_route.snapshot.data.truck;
-    switch (event.type) {
-      case 'edit': {
-        this.modalService.openModal(
-          TruckModalComponent,
-          { size: 'small' },
-          {
-            ...event,
-            type: 'edit',
-            disableButton: true,
-            id: truck.id,
-          }
-        );
-        break;
-      }
-
-      case 'delete-item': {
-        this.truckTService
-          .deleteTruckById(event.id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                'Truck successfully deleted',
-                'Success:'
-              );
-            },
-            error: () => {
-              this.notificationService.error(
-                `Truck with id: ${event.id} couldn't be deleted`,
-                'Error:'
-              );
-            },
-          });
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+    this.truckId = data?.id ? data.id : null;
   }
 
   ngOnDestroy(): void {

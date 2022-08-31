@@ -7,13 +7,13 @@ import {
   ViewEncapsulation,
   OnChanges,
   SimpleChanges,
+  OnDestroy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TrailerTService } from '../state/trailer.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -21,7 +21,9 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TrailerDetailsCardComponent implements OnInit, OnChanges {
+export class TrailerDetailsCardComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -29,7 +31,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   public dataEdit: any;
   public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
-
+  private destroy$ = new Subject<void>();
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
   constructor(
     private detailsPageDriverSer: DetailsPageService,
@@ -54,7 +56,7 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   public getTrailerById(id: number) {
     this.trailerService
       .getTrailerById(id, true)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => item);
   }
   /**Function for toggle page in cards */
@@ -153,5 +155,9 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
         break;
       }
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

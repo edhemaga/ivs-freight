@@ -17,7 +17,7 @@ import { TruckResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
@@ -26,8 +26,7 @@ import {
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { Subject, takeUntil } from 'rxjs';
-
+@UntilDestroy()
 @Component({
   selector: 'app-truck-details-item',
   templateUrl: './truck-details-item.component.html',
@@ -36,7 +35,6 @@ import { Subject, takeUntil } from 'rxjs';
   animations: [card_component_animation('showHideCardBody')],
 })
 export class TruckDetailsItemComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() truck: TruckResponse | any = null;
   public note: FormControl = new FormControl();
@@ -62,7 +60,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -154,7 +152,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   private deleteRegistrationByIdFunction(id: number) {
     this.commonTruckService
       .deleteRegistrationById(id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -174,7 +172,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   private deleteInspectionByIdFunction(id: number) {
     this.commonTruckService
       .deleteInspectionById(id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -193,7 +191,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
   private deleteTitleByIdFunction(id: number) {
     this.commonTruckService
       .deleteTitleById(id)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(untilDestroyed(this))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -255,8 +253,6 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy {
     this.accountText = value;
   }
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

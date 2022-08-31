@@ -133,12 +133,12 @@
                 </div>
                 <div
                   *ngIf="cdl.dateDeactivated && cdl.showButton && cdl.status==0"
-                  (click)="activateDeactiveCdl(cdl.id)"
+                  (click)="optionsEvent('activate-item','activate-item')"
                   class="activate-button"
                 >
                   Activate
                 </div>
-                <div *ngIf="!cdl.showButton" class="activate-button">Renew</div>
+                <div (click)="optionsEvent('renew','renew')" *ngIf="!cdl.showButton" class="activate-button">Renew</div>
               </div>
             </div>
             <div [@showHideCardBody]="toggler[i + 'cdl'] ? 'true' : 'false'">

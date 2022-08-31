@@ -33,21 +33,19 @@ export class CdlTService {
   public addCdl(data: CreateCdlCommand): Observable<CreateResponse> {
     return this.cdlService.apiCdlPost(data).pipe(
       tap((res: CreateResponse) => {
-        this.activateCdlById(res.id).subscribe({
-          next: (res: any) => {},
-          error: () => {
-            this.notificationService.error(
-              'Cannot activate cdl, already have active.',
-              'Error:'
-            );
-          },
-        });
         const subDriver = this.driverService
           .getDriverById(data.driverId)
           .subscribe({
             next: (driver: DriverResponse | any) => {
-              this.driverStore.remove(({ id }) => id === data.driverId);
-
+              this.activateCdlById(res.id).subscribe({
+                next: (res: any) => {},
+                error: () => {
+                  this.notificationService.error(
+                    'Cannot activate cdl, already have active.',
+                    'Error:'
+                  );
+                },
+              });
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
@@ -71,26 +69,28 @@ export class CdlTService {
   public updateCdl(data: any): Observable<object> {
     return this.cdlService.apiCdlPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.driverService.getDriverById(data.driverId).subscribe({
-          next: (driver: DriverResponse | any) => {
-            this.driverStore.remove(({ id }) => id === data.driverId);
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.driverStore.remove(({ id }) => id === data.driverId);
 
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
 
-            this.driverStore.add(driver);
+              this.driverStore.add(driver);
 
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: driver,
-              id: driver.id,
-            });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
 
-            subDriver.unsubscribe();
-          },
-        });
+              subDriver.unsubscribe();
+            },
+          });
       })
     );
   }

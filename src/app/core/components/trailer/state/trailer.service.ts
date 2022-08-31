@@ -34,9 +34,7 @@ export class TrailerTService {
     private trailerItemStore: TrailerItemStore,
     private trailerMinimalQuery: TrailersMinimalListQuery,
     private trailerMinimalStore: TrailersMinimalListStore
-  ) {
-    this.trailerId = this.trailerItemStore.getValue().ids[0];
-  }
+  ) {}
 
   /* Observable<CreateTrailerResponse> */
   public addTrailer(data: CreateTrailerCommand): Observable<any> {
@@ -136,6 +134,8 @@ export class TrailerTService {
   ): Observable<any> {
     return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
       tap(() => {
+        this.trailerMinimalStore.remove(({ id }) => id === trailerId);
+        this.trailerItemStore.remove(({ id }) => id === trailerId);
         const trailerCount = JSON.parse(
           localStorage.getItem('trailerTableCount')
         );

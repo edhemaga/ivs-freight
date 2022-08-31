@@ -23,22 +23,18 @@ import { DriverMedicalModalComponent } from '../driver-details/driver-modals/dri
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import {
-  Confirmation,
-  ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
-import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { DriverTService } from '../state/driver.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -51,7 +47,6 @@ import { DriverTService } from '../state/driver.service';
 export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
-  private destroy$ = new Subject<void>();
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @Input() driver: any;
   @Input() templateCard: boolean;
@@ -91,6 +86,7 @@ export class DriverDetailsCardComponent
   public dataMedical: any;
   public dataTestCard: any;
   public driverObject: any;
+  private destroy$ = new Subject<void>();
   barChartConfig: any = {
     dataProperties: [
       {

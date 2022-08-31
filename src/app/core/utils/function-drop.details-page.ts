@@ -40,6 +40,12 @@ export function dropActionNameDriver(any: any, action: string) {
       }
     }
   }
+  if (any.type === 'renew') {
+    dropAction = 'renew';
+  }
+  if (any.type === 'activate-item') {
+    dropAction = 'activate-item';
+  }
   return dropAction;
 }
 export function dropActionNameTrailerTruck(any: any, action: string) {

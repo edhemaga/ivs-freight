@@ -9,19 +9,15 @@ import {
   OnChanges,
   SimpleChanges,
   ViewChild,
+  OnDestroy,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import moment from 'moment';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 /* import { TruckQuery } from '../state/truck.query'; */
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { TruckTService } from '../state/truck.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -29,7 +25,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsCardComponent implements OnInit, OnChanges {
+export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @ViewChild('stackedBarChart', { static: false }) public stackedBarChart: any;
   @ViewChild('payrollChart', { static: false }) public payrollChart: any;
@@ -40,6 +36,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public toggler: boolean[] = [];
   public truckDropDowns: any[] = [];
   public dataEdit: any;
+  private destroy$ = new Subject<void>();
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
 
@@ -417,9 +414,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private activeted_route: ActivatedRoute,
-    private modalService: ModalService,
-    /* private trucksQuery: TruckQuery, */
     private detailsPageDriverSer: DetailsPageService,
     private truckMinimalListQuery: TrucksMinimalListQuery,
     private truckService: TruckTService
@@ -526,7 +520,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public getTruckById(id: number) {
     this.truckService
       .getTruckById(id, true)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => item);
   }
   /**Function for dots in cards */
@@ -627,5 +621,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         break;
       }
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

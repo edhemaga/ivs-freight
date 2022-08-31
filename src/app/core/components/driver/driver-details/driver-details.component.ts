@@ -1,17 +1,9 @@
-import { map } from 'rxjs';
-import { LengthData } from './../../../model/trailer';
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
 import { DriverResponse } from 'appcoretruckassist';
@@ -38,7 +30,6 @@ import { Subject, takeUntil } from 'rxjs';
   providers: [DetailsPageService],
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -58,6 +49,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public isActiveCdl: boolean;
   public dataCdl: any;
   public cdlActiveId: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
@@ -132,7 +124,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: DriverResponse) => {
+              this.currentIndex = this.driversList.findIndex(
+                (driver) => driver.id === res.id
+              );
               this.initTableOptions(res);
+              if (this.cdlActiveId > 0) {
+                this.getCdlById(this.cdlActiveId);
+              }
+
               this.detailCongif(res);
               this.getDriverById(res.id);
               if (this.router.url.includes('details')) {
@@ -340,11 +339,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   public getDriverById(id: number) {
     this.driverService
-      .getDriverById(id)
-      .pipe(takeUntil(this.destroy$))
+      .getDriverById(id, true)
       .subscribe((item) => (this.driverObject = item));
   }
-
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
@@ -362,7 +359,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   private changeDriverStatus(id: number) {
     let status = this.driverObject.status == 0 ? 'inactive' : 'active';
     this.driverService
-      .changeDriverStatus(id)
+      .changeDriverStatus(id, status)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -392,13 +389,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       this.currentIndex = ++this.currentIndex;
     }
     this.driverService
-      .deleteDriverById(id)
+      .deleteDriverByIdDetails(id, status)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          if (this.driverMinimimalListStore.getValue().ids.length < 1) {
-            this.router.navigate(['/driver']);
-          } else {
+          if (this.driverMinimimalListStore.getValue().ids.length >= 1) {
             this.router.navigate([
               `/driver/${this.driversList[this.currentIndex].id}/details`,
             ]);
@@ -409,10 +404,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error(
-            `Driver with id: ${id} couldn't be deleted`,
-            'Error:'
-          );
+          this.router.navigate(['/driver']);
         },
       });
   }

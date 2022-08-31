@@ -41,9 +41,7 @@ export class DriverTService {
     private driverMinimalQuery: DriversMinimalListQuery,
     private tableService: TruckassistTableService,
     private driverItemStore: DriversItemStore
-  ) {
-    this.driverId = this.driverItemStore.getValue().ids[0];
-  }
+  ) {}
 
   // Get Driver Minimal List
   public getDriversMinimalList(
@@ -130,6 +128,7 @@ export class DriverTService {
     return this.driverService.apiDriverIdDelete(driverId).pipe(
       tap(() => {
         this.driverMinimimalListStore.remove(({ id }) => id === driverId);
+        this.driverItemStore.remove(({ id }) => id === driverId);
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );

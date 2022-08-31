@@ -11,7 +11,6 @@ import { DetailsPageService } from 'src/app/core/services/details-page/details-p
 import { TrailerTService } from '../state/trailer.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { Subject, takeUntil } from 'rxjs';
@@ -102,6 +101,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
               this.currentIndex = this.trailerList.findIndex(
                 (trailer) => trailer.id === res.id
               );
+
               this.trailerConf(res);
               this.initTableOptions(res);
               this.getTrailerById(res.id);
@@ -230,28 +230,25 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     } else {
       this.currentIndex = ++this.currentIndex;
     }
+    this.trailerList = this.trailerMinimalQuery.getAll();
+
     this.trailerService
       .deleteTrailerByIdDetails(id, status)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          if (this.trailerMinimalStore.getValue().ids.length < 1) {
-            this.router.navigate(['/trailer']);
-          } else {
+          if (this.trailerMinimalStore.getValue().ids.length >= 1) {
             this.router.navigate([
               `/trailer/${this.trailerList[this.currentIndex].id}/details`,
             ]);
           }
           this.notificationService.success(
-            'Truck successfully deleted',
+            'Trailer successfully deleted',
             'Success:'
           );
         },
         error: () => {
-          this.notificationService.error(
-            `Truck with id: ${id} couldn't be deleted`,
-            'Error:'
-          );
+          this.router.navigate(['/trailer']);
         },
       });
   }
@@ -279,6 +276,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     this.dropService.dropActionHeaderTruck(
       event,
       this.trailerObject,
+      null,
       this.trailerId
     );
   }

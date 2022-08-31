@@ -245,6 +245,14 @@ export class DropDownService {
         );
         break;
       }
+      case 'renew': {
+        alert('Ubaci modal ovde u globalni servis, details page');
+        break;
+      }
+      case 'activate-item': {
+        alert('Ubaci modal ovde u globalni servis, details page za aktivate');
+        break;
+      }
       default: {
         break;
       }
@@ -295,6 +303,7 @@ export class DropDownService {
   public dropActionHeaderTruck(
     event: any,
     truckObject?: any,
+    truckId?: number,
     trailerId?: number
   ) {
     const mappedEvent = {

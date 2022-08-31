@@ -34,9 +34,7 @@ export class TruckTService {
     private truckMinimalQuery: TrucksMinimalListQuery,
     private truckMinimalStore: TrucksMinimalListStore,
     private truckItem: TruckItemStore
-  ) {
-    this.truckId = this.truckItem.getValue().ids[0];
-  }
+  ) {}
 
   //Get Truck Minimal List
   public getTrucksMinimalList(
@@ -132,10 +130,13 @@ export class TruckTService {
     truckId: number,
     tableSelectedTab?: string
   ): Observable<any> {
+    console.log(truckId);
+
     return this.truckService.apiTruckIdDelete(truckId).pipe(
       tap(() => {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
         this.truckMinimalStore.remove(({ id }) => id === truckId);
+        this.truckItem.remove(({ id }) => id === truckId);
         if (tableSelectedTab === 'active') {
           this.truckActiveStore.remove(({ id }) => id === truckId);
 
