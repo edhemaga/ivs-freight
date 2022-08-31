@@ -170,13 +170,39 @@ export function getApplicantColumnsDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'applicant-progress',
       title: 'App.',
       field: 'applicantProgress',
       name: 'App.',
       hidden: false,
       isPined: false,
       width: 312,
+      headTitle: [
+        {
+          title: 'App.',
+          width: 34,
+        },
+        {
+          title: 'Mvr',
+          width: 34,
+        },
+        {
+          title: 'Psp',
+          width: 29,
+        },
+        {
+          title: 'Sph',
+          width: 30,
+        },
+        {
+          title: 'Hos',
+          width: 32,
+        },
+        {
+          title: 'Ssn',
+          width: 29,
+        },
+      ],
       minWidth: 312,
       filter: '',
       isNumeric: true,
@@ -237,7 +263,7 @@ export function getApplicantColumnsDefinition() {
       resizable: true,
     },
     {
-      ngTemplate: '',
+      ngTemplate: 'applicant-review',
       title: 'Review',
       field: 'rev',
       name: 'Review',
