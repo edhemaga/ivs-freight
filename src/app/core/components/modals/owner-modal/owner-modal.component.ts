@@ -1,3 +1,7 @@
+import {
+  accountBankValidation,
+  routingBankValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TruckModalComponent } from './../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
@@ -106,8 +110,8 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       bankId: [null, [...bankValidation]],
-      accountNumber: [null],
-      routingNumber: [null],
+      accountNumber: [null, accountBankValidation],
+      routingNumber: [null, routingBankValidation],
       note: [null],
     });
 

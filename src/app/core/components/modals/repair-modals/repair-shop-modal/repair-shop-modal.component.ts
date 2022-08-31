@@ -16,6 +16,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
   bankValidation,
@@ -24,6 +25,7 @@ import {
   phoneExtension,
   phoneRegex,
   repairShopValidation,
+  routingBankValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
@@ -100,8 +102,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       companyOwned: [false],
       openHours: this.formBuilder.array([]),
       bankId: [null, [...bankValidation]],
-      routing: [null],
-      account: [null],
+      routing: [null, routingBankValidation],
+      account: [null, accountBankValidation],
       note: [null],
     });
 

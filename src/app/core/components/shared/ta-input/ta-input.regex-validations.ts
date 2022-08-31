@@ -18,7 +18,7 @@ export const routingBankValidation = [
 ];
 
 export const accountBankValidation = [
-  Validators.minLength(4),
+  Validators.minLength(5),
   Validators.maxLength(17),
 ];
 //-------------------------------------------------------------------------------

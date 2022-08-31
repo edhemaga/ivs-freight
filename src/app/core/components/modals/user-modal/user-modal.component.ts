@@ -1,4 +1,5 @@
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
   bankValidation,
@@ -8,6 +9,7 @@ import {
   firstNameValidation,
   lastNameValidation,
   phoneExtension,
+  routingBankValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -151,8 +153,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
       startDate: [null],
       payrollType: [null],
       bankId: [null, [...bankValidation]],
-      routingNumber: [null],
-      accountNumber: [null],
+      routingNumber: [null, routingBankValidation],
+      accountNumber: [null, accountBankValidation],
       note: [null],
     });
 

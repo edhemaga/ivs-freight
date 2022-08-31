@@ -699,13 +699,13 @@
           <app-ta-input
             formControlName="accountNumber"
             [inputConfig]="{
-              name: 'Account Number',
+              name: 'account-bank',
               type: 'text',
               label: 'Account number',
               isDisabled: !isBankSelected,
               isRequired: isBankSelected,
               maxLength: 17,
-              minLength: 4,
+              minLength: 5,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="false"

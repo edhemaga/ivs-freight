@@ -676,7 +676,7 @@ export class TaInputComponent
 
     // EIN Number
     if (
-      ['ein', 'mc/ff', 'phone', 'phone-extension'].includes(
+      ['ein', 'mc/ff', 'phone', 'phone-extension', 'account-bank'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {

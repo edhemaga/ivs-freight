@@ -29,6 +29,8 @@ import {
   firstNameValidation,
   lastNameValidation,
   bankValidation,
+  accountBankValidation,
+  routingBankValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -281,8 +283,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
       bankId: [null, [...bankValidation]],
-      account: [null],
-      routing: [null],
+      account: [null, accountBankValidation],
+      routing: [null, routingBankValidation],
       payType: [null, Validators.required],
       useTruckAssistAch: [false],
       soloDriver: [false],
