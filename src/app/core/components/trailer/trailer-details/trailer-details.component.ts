@@ -14,9 +14,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { Subject, takeUntil } from 'rxjs';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
   selector: 'app-trailer-details',

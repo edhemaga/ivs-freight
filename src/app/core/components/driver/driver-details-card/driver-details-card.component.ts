@@ -32,9 +32,9 @@ import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { DriverTService } from '../state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
   selector: 'app-driver-details-card',

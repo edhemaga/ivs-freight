@@ -259,8 +259,6 @@ export class DriverDetailsItemComponent
   }
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
-    console.log(name);
-
     this.dropDownService.dropActions(
       any,
       name,

@@ -22,8 +22,8 @@ import {
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
   selector: 'app-trailer-details-item',
