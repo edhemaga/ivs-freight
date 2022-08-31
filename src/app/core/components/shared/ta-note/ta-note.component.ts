@@ -34,6 +34,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() openAllNotesText: any;
   @Input() parking: any = false;
   @ViewChild('main_editor', {static: false}) public main_editor: any;
+  @ViewChild('note_popover', {static: false}) public note_popover: any;
   
   tooltip: any;
   showCollorPattern: boolean;
@@ -84,7 +85,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }, 150);
   }
 
-  toggleNote(data: any) {
+  toggleNote(data: any, t2) {
     if (this.noteOpened) {
       if (this.openedAll) {
         this.leaveThisOpened = true;
@@ -99,6 +100,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
         this.buttonsExpanded = false;
         this.leaveThisOpened = false;
         this.noteOpened = false;
+        t2.close();
       }
       this.showCollorPattern = false;
     } else {
@@ -109,6 +111,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       this.leaveThisOpened = true;
       this.sharedService.emitAllNoteOpened.next(false);
       this.noteOpened = true;
+      t2.open();
     }
   }
 
@@ -158,7 +161,6 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   saveNote(autoSave?: boolean) {
-    console.log('NOTE SAVED');
     if ( !autoSave ) {
       this.closeNote();
     }
@@ -172,6 +174,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   }
 
   closeNote() {
+    this.noteOpened = false;
     this.leaveThisOpened = false;
     this.showCollorPattern = false;
     this.isExpanded = false;
