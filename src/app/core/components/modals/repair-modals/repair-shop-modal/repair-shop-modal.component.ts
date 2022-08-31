@@ -10,8 +10,7 @@ import {
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, takeWhile } from 'rxjs';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -28,7 +27,6 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
@@ -36,6 +34,8 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
+  private isComponentAlive: boolean = false;
+
   @Input() editData: any;
   public repairShopForm: FormGroup;
 
@@ -72,6 +72,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.isComponentAlive = true;
+
     this.createForm();
     this.getRepairShopModalDropdowns();
     this.onBankSelected();
@@ -107,7 +109,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.repairShopForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeWhile(() => this.isComponentAlive))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -204,7 +206,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.openHours
       .at(index)
       .get('isDay')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeWhile(() => this.isComponentAlive))
       .subscribe((value) => {
         if (!value) {
           this.openHours
@@ -265,7 +267,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -287,7 +289,10 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.repairShopForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(
+        distinctUntilChanged(),
+        takeWhile(() => this.isComponentAlive)
+      )
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -300,7 +305,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private editRepairShopById(id: number) {
     this.shopService
       .getRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: (res: RepairShopResponse) => {
           this.repairShopForm.patchValue({
@@ -387,7 +392,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.shopService
       .addRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: () => {
           this.notificationService.success('Repair shop added', 'Success: ');
@@ -438,7 +443,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.shopService
       .updateRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -459,7 +464,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private deleteRepairShopById(id: number) {
     this.shopService
       .deleteRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -483,7 +488,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private getRepairShopModalDropdowns() {
     return this.shopService
       .getRepairShopModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeWhile(() => this.isComponentAlive))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
           this.labelsBank = res.banks;
@@ -506,5 +511,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.isComponentAlive = false;
+  }
 }
