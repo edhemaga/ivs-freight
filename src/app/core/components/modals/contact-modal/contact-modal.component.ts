@@ -81,7 +81,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    this.getContactLabelsAndDepartments();
+    this.getCompanyContactModal();
     this.companyContactColorLabels();
     this.followSharedCheckbox();
 
@@ -169,7 +169,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  private getContactLabelsAndDepartments() {
+  private getCompanyContactModal() {
     this.contactService
       .getCompanyContactModal()
       .pipe(untilDestroyed(this))
@@ -376,6 +376,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       colorId: this.selectedContactColor.id,
       color: this.selectedContactColor.name,
       code: this.selectedContactColor.code,
+      hoverCode: this.selectedContactColor.hoverCode,
     };
   }
 
@@ -428,6 +429,9 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           code: this.selectedContactColor
             ? this.selectedContactColor.code
             : this.colors[this.colors.length - 1].code,
+          hoverCode: this.selectedContactColor
+            ? this.selectedContactColor.hoverCode
+            : this.colors[this.colors.length - 1].hoverCode,
           count: 0,
           colorId: this.selectedContactColor
             ? this.selectedContactColor.id

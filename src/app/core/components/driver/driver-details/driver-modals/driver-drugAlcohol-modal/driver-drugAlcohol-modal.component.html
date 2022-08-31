@@ -17,7 +17,8 @@
             label: 'Type',
             isRequired: true,
             isDropdown: true,
-            dropdownWidthClass: 'w-col-216'
+            dropdownWidthClass: 'w-col-216',
+            autoFocus: editData?.type !== 'edit-drug' ? true : false
           }"
           [options]="testTypes"
           [activeItem]="selectedTestType"

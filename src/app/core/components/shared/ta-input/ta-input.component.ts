@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -40,7 +41,7 @@ import { TaInputResetService } from './ta-input-reset.service';
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
@@ -167,6 +168,19 @@ export class TaInputComponent
           this.resetDateTimeInputs();
         }
       });
+  }
+
+  ngAfterViewInit() {
+    const timeout = setTimeout(() => {
+      if (
+        this.inputConfig.autoFocus &&
+        ['datepicker', 'timepicker'].includes(this.inputConfig.name) &&
+        !this.getSuperControl.value
+      ) {
+        this.toggleDropdownOptions();
+      }
+      clearTimeout(timeout);
+    }, 600);
   }
 
   public setTimeDateInput(date) {
@@ -424,7 +438,10 @@ export class TaInputComponent
     }
   }
 
-  public onTogglePassword(): void {
+  public onTogglePassword(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.togglePassword = !this.togglePassword;
     clearTimeout(this.timeout);
     this.setInputCursorAtTheEnd(this.input.nativeElement);

@@ -18,6 +18,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { DashboardStrategy } from './dashboard_strategy';
 
 @UntilDestroy()
 @Component({
@@ -25,22 +27,33 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   templateUrl: './truckassist-table-body.component.html',
   styleUrls: ['./truckassist-table-body.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: VIRTUAL_SCROLL_STRATEGY,
+      useClass: DashboardStrategy,
+    },
+  ],
 })
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
+  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+
   @Input() viewData: any[];
   @Input() columns: any[];
   @Input() options: any;
   @Input() tableData: any[];
   @Input() selectedTab: string;
   @Input() tableContainerWidth: number;
-  @Output() bodyActions: EventEmitter<any> = new EventEmitter();
+
+  pinedColumns: any = [];
+  pinedWidth: number = 0;
+  notPinedColumns: any = [];
+  actionsColumns: any = [];
+  actionsWidth: number = 0;
   mySelection: any[] = [];
   showItemDrop: number = -1;
-  actionsMinWidth: number = 0;
   showScrollSectionBorder: boolean = false;
-  hoverActive: number = -1;
   activeTableData: any = {};
   notPinedMaxWidth: number = 0;
   showMoreContainerWidth: number = 220;
@@ -54,6 +67,7 @@ export class TruckassistTableBodyComponent
   rowData: any;
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
+  pageHeight: number = window.innerHeight;
 
   constructor(
     private router: Router,
@@ -65,6 +79,10 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
     this.viewDataEmpty = this.viewData.length;
+
+    if (this.viewDataEmpty) {
+      this.getTableSections();
+    }
 
     // Get Selected Tab Data
     this.getSelectedTabTableData();
@@ -103,8 +121,11 @@ export class TruckassistTableBodyComponent
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
 
+          this.getTableSections();
+
           this.changeDetectorRef.detectChanges();
 
+          console.log('Poziva se iz currentColumnsOrder');
           this.getNotPinedMaxWidth();
         }
       });
@@ -117,12 +138,6 @@ export class TruckassistTableBodyComponent
           this.mySelection = [];
         }
       });
-
-    this.columns.map((c) => {
-      if (c.isAction) {
-        this.actionsMinWidth += c.width;
-      }
-    });
   }
 
   // --------------------------------NgOnChanges---------------------------------
@@ -134,6 +149,7 @@ export class TruckassistTableBodyComponent
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
+          console.log('Poziva se iz ngOnChanges viewData');
           this.getNotPinedMaxWidth();
           this.getSelectedTabTableData();
         }, 10);
@@ -151,6 +167,7 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
+      console.log('Poziva se iz ngOnChanges tableContainerWidth');
       this.getNotPinedMaxWidth();
     }
 
@@ -161,7 +178,10 @@ export class TruckassistTableBodyComponent
     ) {
       this.columns = changes.columns.currentValue;
 
+      this.getTableSections();
+
       setTimeout(() => {
+        console.log('Poziva se iz ngOnChanges columns');
         this.getNotPinedMaxWidth();
       }, 10);
     }
@@ -181,6 +201,8 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
     this.sharedService.emitUpdateScrollHeight.emit(true);
+
+    console.log('Poziva se iz ngAfterViewInit');
     this.getNotPinedMaxWidth();
   }
 
@@ -190,6 +212,37 @@ export class TruckassistTableBodyComponent
     if (event.target.className === 'not-pined-tr') {
       this.tableService.sendScroll(event.path[0].scrollLeft);
     }
+  }
+
+  // Get Table Sections
+  getTableSections() {
+    this.pinedColumns = [];
+    this.notPinedColumns = [];
+    this.actionsColumns = [];
+
+    this.pinedWidth = 0;
+    this.actionsWidth = 0;
+
+    this.columns.map((c: any) => {
+      // Pined
+      if (c.isPined && !c.isAction && !c.hidden) {
+        this.pinedColumns.push(c);
+
+        this.pinedWidth += c.minWidth > c.width ? c.minWidth : c.width;
+      }
+
+      // Not Pined
+      if (!c.isPined && !c.isAction && !c.hidden) {
+        this.notPinedColumns.push(c);
+      }
+
+      // Actions
+      if (c.isAction && !c.hidden) {
+        this.actionsColumns.push(c);
+
+        this.actionsWidth += c.minWidth > c.width ? c.minWidth : c.width;
+      }
+    });
   }
 
   // Get Tab Table Data For Selected Tab
@@ -205,15 +258,13 @@ export class TruckassistTableBodyComponent
   getNotPinedMaxWidth() {
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
-      const pinedColumns = document.querySelector('.pined-tr');
-      const actionColumns = document.querySelector('.actions');
 
-      this.notPinedMaxWidth =
+       this.notPinedMaxWidth =
         tableContainer.clientWidth -
-        (pinedColumns.clientWidth + actionColumns.clientWidth) -
+        (this.pinedWidth + this.actionsWidth) -
         8;
 
-      this.checkForScroll();
+      /* this.checkForScroll(); */
     }
   }
 
@@ -300,7 +351,7 @@ export class TruckassistTableBodyComponent
     });
   }
 
-  onOpenReviews(row: any){
+  onOpenReviews(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'open-reviews',
@@ -308,7 +359,7 @@ export class TruckassistTableBodyComponent
   }
 
   // HIRE
-  onHire(row: any){
+  onHire(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'hire',
@@ -316,7 +367,7 @@ export class TruckassistTableBodyComponent
   }
 
   // FAVORITE
-  onFavorite(row: any){
+  onFavorite(row: any) {
     this.bodyActions.emit({
       data: row,
       type: 'favorite',

@@ -147,8 +147,11 @@ export class RepairTService {
     return this.repairService.apiRepairIdGet(id);
   }
 
-  public getRepairModalDropdowns(): Observable<RepairModalResponse> {
-    return this.repairService.apiRepairModalGet();
+  public getRepairModalDropdowns(
+    truckId: number,
+    trailerId: number
+  ): Observable<RepairModalResponse> {
+    return this.repairService.apiRepairModalGet(truckId, trailerId);
   }
 
   public deleteRepairById(
