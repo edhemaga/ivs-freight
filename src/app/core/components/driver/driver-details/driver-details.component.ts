@@ -37,7 +37,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./driver-details.component.scss'],
   providers: [DetailsPageService],
 })
-export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
+export class DriverDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
@@ -127,30 +127,30 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        let query;
-        if (!this.driverDetailsQuery.hasEntity(id)) {
-          query = this.driverService.getDriverById(id);
-        } else {
-          query = this.driverDetailsQuery.selectEntity(id);
-        }
-        query.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: DriverResponse) => {
-            this.initTableOptions(res);
-            this.detailCongif(res);
-            this.getDriverById(res.id);
-            if (this.router.url.includes('details')) {
-              this.router.navigate([`/driver/${res.id}/details`]);
-            }
-            this.notificationService.success(
-              'Driver successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Driver can't be loaded", 'Error:');
-          },
-        });
+        this.driverService
+          .getDriverById(id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: DriverResponse) => {
+              this.initTableOptions(res);
+              this.detailCongif(res);
+              this.getDriverById(res.id);
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/driver/${res.id}/details`]);
+              }
+              this.notificationService.success(
+                'Driver successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver can't be loaded",
+                'Error:'
+              );
+            },
+          });
       });
   }
 
@@ -344,16 +344,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
   }
+
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
-      .pipe(untilDestroyed(this))
-      .subscribe((item) => (this.dataCdl = item));
-  }
-  public getCdlById(id: number) {
-    this.cdlService
-      .getCdlById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataCdl = item));
   }
   public onDriverActions(event: any) {

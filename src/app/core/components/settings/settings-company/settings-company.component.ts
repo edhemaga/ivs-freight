@@ -14,6 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-settings-company',
@@ -47,7 +48,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
       .map((item) => (this.dataCompany = item.divisions));
 
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.dataCompany = res.data.divisions;

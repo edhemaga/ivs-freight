@@ -67,7 +67,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
       });
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -232,7 +232,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
     this.trailerService
       .deleteTrailerByIdDetails(id, status)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           if (this.trailerMinimalStore.getValue().ids.length < 1) {

@@ -349,7 +349,7 @@ export class DriverDetailsCardComponent
   public getDriverById(id: number) {
     this.driverService
       .getDriverById(id, true)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
   }
   public onDriverActions(event: any) {
