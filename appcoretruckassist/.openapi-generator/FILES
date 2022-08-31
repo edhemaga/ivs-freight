@@ -102,6 +102,7 @@ model/cdlLicenseCommand.ts
 model/cdlLicenseResponse.ts
 model/cdlLicenseReviewCommand.ts
 model/cdlLicenseReviewResponse.ts
+model/cdlMinimalResponse.ts
 model/cdlResponse.ts
 model/cdlRestrictionResponse.ts
 model/cdlReviewResponse.ts
@@ -269,6 +270,7 @@ model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
+model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
 model/getRouteListResponse.ts

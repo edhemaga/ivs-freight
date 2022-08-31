@@ -9,11 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { CdlMinimalResponse } from './cdlMinimalResponse';
 
 
-export interface CreateMvrCommand { 
-    cdlId?: number;
-    issueDate?: string;
-    note?: string | null;
+export interface GetMvrModalResponse { 
+    cdls?: Array<CdlMinimalResponse> | null;
 }
 

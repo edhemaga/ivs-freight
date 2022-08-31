@@ -11,9 +11,8 @@
  */
 
 
-export interface CreateMvrCommand { 
-    cdlId?: number;
-    issueDate?: string;
-    note?: string | null;
+export interface CdlMinimalResponse { 
+    id?: number;
+    cdlNumber?: string | null;
 }
 
