@@ -78,7 +78,7 @@
                       d="M3,0H1A1,1,0,0,0,0,1V3A1,1,0,0,0,1,4H3A1,1,0,0,0,4,3V1A1,1,0,0,0,3,0ZM3,5H1A1,1,0,0,0,0,6V8A1,1,0,0,0,1,9H3A1,1,0,0,0,4,8V6A1,1,0,0,0,3,5Zm0,5H1a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H3a1,1,0,0,0,1-1V11A1,1,0,0,0,3,10ZM9,0H7A1,1,0,0,0,6,1V3A1,1,0,0,0,7,4H9a1,1,0,0,0,1-1V1A1,1,0,0,0,9,0ZM9,5H7A1,1,0,0,0,6,6V8A1,1,0,0,0,7,9H9a1,1,0,0,0,1-1V6A1,1,0,0,0,9,5Zm0,5H7a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H9a1,1,0,0,0,1-1V11A1,1,0,0,0,9,10Z"
                       transform="translate(951.139 1361) rotate(90)"
                       [ngStyle]="{
-                        fill: route.isFocused ? '#fff' : routeColors[i]
+                        fill: route.isFocused ? '#fff' : route.color
                       }"
                       stroke="rgba(0,0,0,0)"
                       stroke-width="1"
@@ -100,7 +100,7 @@
                 class="route-name marker-info-text marker-bold-text mg-left-8"
                 [ngStyle]="{
                   color: route.nameHover
-                    ? routeFocusColors[i]
+                    ? route.color
                     : route.hidden
                     ? '#B7B7B7'
                     : '#3C3C3C'
@@ -288,7 +288,7 @@
                       d="M8.581,146.725v1.594H4.639v-1.594a.831.831,0,0,0-1.418-.587L.243,149.116a.831.831,0,0,0,0,1.175l2.979,2.979a.831.831,0,0,0,1.418-.587v-1.594H8.581v1.594A.831.831,0,0,0,10,153.27l2.979-2.979a.831.831,0,0,0,0-1.175L10,146.138a.831.831,0,0,0-1.418.587Z"
                       transform="translate(747.39 505.296)"
                       [ngStyle]="{
-                        fill: route.isFocused ? '#fff' : routeColors[i]
+                        fill: route.isFocused ? '#fff' : route.color
                       }"
                     />
                   </g>
@@ -296,7 +296,7 @@
               </div>
               <div
                 class="route-row-number marker-like-text marker-bold-text"
-                [ngStyle]="{ color: route.isFocused ? '#fff' : routeColors[i] }"
+                [ngStyle]="{ color: route.isFocused ? '#fff' : route.color }"
               >
                 {{ b + 1 }}
               </div>
@@ -340,9 +340,7 @@
                     'margin-right': '18px',
                     color:
                       b == route.stops.length - 1 && item.value.boldValue
-                        ? route.isFocused
-                          ? routeFocusColors[i]
-                          : routeColors[i]
+                        ? route.color
                         : '',
                     'font-weight': item.value.boldValue ? '800' : ''
                   }"
@@ -388,7 +386,7 @@
                 [svgStyle]="{
                   'width.px': 14,
                   'height.px': 14,
-                  fill: route.isFocused ? '#fff' : routeColors[i]
+                  fill: route.isFocused ? '#fff' : route.color
                 }"
               ></svg-icon>
               <div
@@ -448,7 +446,7 @@
           <div
             class="selected-route"
             *ngIf="route.isFocused"
-            [ngStyle]="{ backgroundColor: routeFocusColors[i] }"
+            [ngStyle]="{ backgroundColor: route.color }"
           ></div>
           <div
             class="route-card-resize-button"
@@ -547,7 +545,7 @@
                     (click)="stopMarkerClick($event, i, j)"
                   >
                     <svg
-                      [tooltipBackground]="routeFocusColors[i]"
+                      [tooltipBackground]="route.color"
                       ngbTooltip
                       [disableTooltip]="true"
                       [mainTooltip]="
@@ -598,7 +596,7 @@
                         cy="9"
                         r="9"
                         transform="translate(8 8)"
-                        [ngStyle]="{ fill: routeFocusColors[i] }"
+                        [ngStyle]="{ fill: route.color }"
                       />
                       <text
                         x="50%"
@@ -643,10 +641,7 @@
                         cy="6"
                         r="6"
                         [ngStyle]="{
-                          fill:
-                            route.isFocused || route.stops[j].hovered
-                              ? routeFocusColors[i]
-                              : routeColors[i]
+                          fill: route.color
                         }"
                       />
                       <circle
@@ -681,10 +676,7 @@
                           r="6"
                           transform="translate(1111 981)"
                           [ngStyle]="{
-                            fill:
-                              route.isFocused || route.stops[j].hovered
-                                ? routeFocusColors[i]
-                                : routeColors[i]
+                            fill: route.color
                           }"
                         />
                         <circle
@@ -703,7 +695,7 @@
                     class="stop-picker-address smaller-marker-address"
                     [ngClass]="{ 'small-marker-tooltip': !route.isFocused }"
                     [ngStyle]="{
-                      backgroundColor: routeFocusColors[i],
+                      backgroundColor: route.color,
                       visibility:
                         focusedRouteIndex == i &&
                         stopPickerLocation.editIndex == j
@@ -735,9 +727,7 @@
               [renderOptions]="{
                 preserveViewport: true,
                 polylineOptions: {
-                  strokeColor: route.isFocused
-                    ? routeFocusColors[i]
-                    : routeColors[i],
+                  strokeColor: route.color,
                   strokeWeight: 6,
                   zIndex: 1
                 },
@@ -841,7 +831,7 @@
                         r="4"
                         transform="translate(1113 983)"
                         [ngStyle]="{
-                          fill: routeFocusColors[focusedRouteIndex]
+                          fill: routes[focusedRouteIndex].color
                         }"
                       />
                     </g>
@@ -876,7 +866,7 @@
                         r="18"
                         transform="translate(640 2294)"
                         [ngStyle]="{
-                          fill: routeFocusColors[focusedRouteIndex]
+                          fill: routes[focusedRouteIndex].color
                         }"
                       />
                       <text
@@ -892,6 +882,9 @@
                       >
                         <tspan y="-5">
                           {{
+                            focusedStopIndex != null 
+                              ? focusedStopIndex+2 
+                              :
                             stopPickerLocation.editIndex != null
                               ? stopPickerLocation.editIndex + 1
                               : routes[focusedRouteIndex].stops.length + 1
@@ -933,7 +926,7 @@
                         r="18"
                         transform="translate(640 2294)"
                         [ngStyle]="{
-                          fill: routeFocusColors[focusedRouteIndex]
+                          fill: routes[focusedRouteIndex].color
                         }"
                       />
                       <g
@@ -980,8 +973,7 @@
                   (click)="addNewStop('empty')"
                   [ngClass]="{
                     active:
-                      stopPickerLocation.empty == true ||
-                      stopPickerLocation.empty == null
+                      addressFlag == 'Empty'
                   }"
                 >
                   <div class="stop-picker-button-text">Empty</div>
@@ -989,7 +981,7 @@
                 <div
                   class="stop-picker-button"
                   (click)="addNewStop('loaded')"
-                  [ngClass]="{ active: stopPickerLocation.empty == false }"
+                  [ngClass]="{ active: addressFlag == 'Loaded' }"
                 >
                   <div class="stop-picker-button-text">Loaded</div>
                 </div>
@@ -1003,7 +995,7 @@
               <div
                 class="stop-picker-address"
                 [ngStyle]="{
-                  backgroundColor: routeFocusColors[focusedRouteIndex]
+                  backgroundColor: routes[focusedRouteIndex].color
                 }"
               >
                 <div class="stop-picker-address-text">
@@ -1066,7 +1058,7 @@
           cy="9"
           r="9"
           transform="translate(8 8)"
-          [ngStyle]="{ fill: routeFocusColors[focusedRouteIndex] }"
+          [ngStyle]="{ fill: routes[focusedRouteIndex].color }"
         />
         <text
           dominant-baseline="middle"
@@ -1079,7 +1071,10 @@
           font-family="Montserrat-Bold, Montserrat"
           font-weight="700"
         >
-          <tspan y="-3">{{ routes[focusedRouteIndex].stops.length + 1 }}</tspan>
+          <tspan y="-3">{{ focusedStopIndex != null 
+                            ? focusedStopIndex+2 
+                            : routes[focusedRouteIndex].stops.length + 1 }}
+          </tspan>
         </text>
       </svg>
     </div>
@@ -1089,10 +1084,11 @@
 <ng-template #dropdownPopover let-data="data">
   <div class="table-dropdown">
     <div
-      (click)="callDropDownAction($event, action)"
+      (click)="action.disabled ? $event.stopPropagation() : callDropDownAction($event, action)"
       *ngFor="let action of data"
       class="table-dropdown-content"
       [class]="action.class"
+      [ngStyle]="{ 'background': action.disabled ? 'gray !important' : '' }"
     >
       <svg-icon
         [ngClass]="{

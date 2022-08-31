@@ -160,6 +160,7 @@ export class RoutingMapComponent implements OnInit {
   ];
 
   focusedRouteIndex: number = null;
+  focusedStopIndex: number = null;
   stopPickerActive: boolean = false;
   stopPickerLocation: any = {};
   stopJustAdded: boolean = false;
@@ -329,7 +330,7 @@ export class RoutingMapComponent implements OnInit {
     event.preventDefault();
 
     route.hidden = !route.hidden;
-    if ( route.isFocused ) { route.isFocused = false; this.focusedRouteIndex = null; }
+    if ( route.isFocused ) { route.isFocused = false; this.focusedRouteIndex = null; this.focusedStopIndex = null; }
     if ( route.expanded ) { route.expanded = false; route.expandFinished = false; }
   }
 
@@ -606,6 +607,8 @@ export class RoutingMapComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
 
+    console.log('callDropDownAction');
+
     // Edit Call
     if (action.name === 'duplicate-route') {
       this.duplicateRoute(this.dropDownActive);
@@ -649,8 +652,14 @@ export class RoutingMapComponent implements OnInit {
         stop.isSelected = false;
       });
       //newRoute.width = '312px';
+
+      newRoute.color = this.findRouteColor();
       
-      this.routes.push(newRoute);
+      if ( this.routes.length < 8 ) {
+        this.routes.push(newRoute);
+      }
+
+      this.showHideDuplicate();
       
       this.tableData[this.selectedMapIndex].length = this.routes.length;
 
@@ -689,6 +698,7 @@ export class RoutingMapComponent implements OnInit {
     }
 
     this.tableData[this.selectedMapIndex].length = this.routes.length;
+    this.showHideDuplicate();
   }
 
   getRouteById(id) {
@@ -718,6 +728,13 @@ export class RoutingMapComponent implements OnInit {
             this.focusedRouteIndex = i;
           } else {
             this.focusedRouteIndex = null;
+
+            route.stops.map((stop) => {
+              if ( stop.isSelected ) {
+                stop.isSelected = false;
+                this.focusedStopIndex = null;
+              }
+            });
           }
         }
       } else {
@@ -753,10 +770,18 @@ export class RoutingMapComponent implements OnInit {
           'stopTime': routeForm.get('durationTime').value ? routeForm.get('durationTime').value : '',
           'mpg': routeForm.get('fuelMpg').value ? routeForm.get('fuelMpg').value : '',
           'fuelPrice': routeForm.get('fuelPrice').value ? routeForm.get('fuelPrice').value : '',
-          'stops': []
+          'stops': [],
+          'color': this.findRouteColor()
       };
 
-      this.routes.push(newRoute);
+      console.log('newRoute', newRoute.color);
+
+      if ( this.routes.length < 8 ) {
+        this.routes.push(newRoute);
+      }
+
+      this.showHideDuplicate();
+      
       this.calculateRouteWidth(this.routes[this.routes.length-1]);
 
       this.tableData[this.selectedMapIndex].length = this.routes.length;
@@ -802,6 +827,7 @@ export class RoutingMapComponent implements OnInit {
       this.stopPickerLocation = {};
       if ( this.stopPickerActive ) {
         this.agmMap.setOptions({draggableCursor:'pointer'});
+        this.findNextStopIndex();
       } else {
         this.agmMap.setOptions({draggableCursor:''});
       }
@@ -882,11 +908,26 @@ export class RoutingMapComponent implements OnInit {
 
   addNewStop(loadType) {
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
+    this.addressFlag = loadType == 'empty' ? 'Empty' : 'Loaded';
 
     if ( this.stopPickerLocation.editIndex != null ) {
       this.routes[this.focusedRouteIndex].stops[this.stopPickerLocation.editIndex].empty = this.stopPickerLocation.empty;
     } else {
-      this.routes[this.focusedRouteIndex].stops.push({
+      var insertIndex = this.focusedStopIndex != null ? this.focusedStopIndex+1 : this.routes[this.focusedRouteIndex].stops.length;
+
+      // this.routes[this.focusedRouteIndex].stops.push({
+      //   'address': this.stopPickerLocation.address,
+      //   'cityAddress': this.stopPickerLocation.cityAddress,
+      //   'leg': '0',
+      //   'total': '0',
+      //   'time': '0',
+      //   'totalTime': '0',
+      //   'empty': this.stopPickerLocation.empty,
+      //   'lat': this.stopPickerLocation.lat,
+      //   'long': this.stopPickerLocation.long
+      // });
+
+      this.routes[this.focusedRouteIndex].stops.splice(insertIndex, 0, {
         'address': this.stopPickerLocation.address,
         'cityAddress': this.stopPickerLocation.cityAddress,
         'leg': '0',
@@ -909,12 +950,19 @@ export class RoutingMapComponent implements OnInit {
   }
 
   stopMarkerClick(event, routeIndex, stopIndex) {
-    if ( this.focusedRouteIndex != null && this.stopPickerActive) {
-      this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
-      this.stopPickerLocation.editIndex = stopIndex;
-    } else {
-      this.focusStop(event, routeIndex, stopIndex);
+    // if ( this.focusedRouteIndex != null && this.stopPickerActive) {
+    //   this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
+    //   this.stopPickerLocation.editIndex = stopIndex;
+    // } else {
+    //   this.focusStop(event, routeIndex, stopIndex);
+    // }
+
+    if ( this.focusedRouteIndex != routeIndex ) {
+      this.focusRoute(routeIndex);
     }
+
+    this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
+    this.stopPickerLocation.editIndex = stopIndex;
 
     this.ref.detectChanges();
   }
@@ -932,6 +980,12 @@ export class RoutingMapComponent implements OnInit {
     route.stops.map((item, index) => {
       if ( index == stopIndex ) {
         item.isSelected = !item.isSelected;
+
+        if ( item.isSelected ) {
+          this.focusedStopIndex = index;
+        } else {
+          this.focusedStopIndex = null;
+        }
       } else {
         item.isSelected = false;
       }
@@ -1165,5 +1219,50 @@ export class RoutingMapComponent implements OnInit {
     this.stopPickerLocation = {};
 
     this.ref.detectChanges();
+  }
+
+  findRouteColor() {
+    var allColors = this.routeFocusColors;
+    console.log('allColors', allColors);
+    var takenColors = [];
+    var freeColors = [];
+
+    this.routes.map((route) => {
+      takenColors.push(route.color);
+    });
+
+    console.log('takenColors', takenColors);
+
+    allColors.map((color) => {
+      var colorTaken = takenColors.indexOf(color);
+
+      if ( colorTaken == -1 ) {
+        freeColors.push(color);
+      }
+    });
+
+    console.log('freeColors', freeColors);
+
+    return freeColors[0];
+  }
+
+  showHideDuplicate() {
+    if ( this.routes.length < 8 ) {
+      this.dropdownActions[3].disabled = false;
+    } else {
+      this.dropdownActions[3].disabled = true;
+    }
+  }
+
+  findNextStopIndex() {
+    if ( this.focusedRouteIndex != null ) {
+      this.focusedStopIndex = this.routes[this.focusedRouteIndex].stops.findIndex(
+        (stop) => stop.isSelected
+      );
+
+      if ( this.focusedStopIndex == -1 ) this.focusedStopIndex = null;
+
+      console.log('focusedStopIndex', this.focusedStopIndex);
+    }
   }
 }

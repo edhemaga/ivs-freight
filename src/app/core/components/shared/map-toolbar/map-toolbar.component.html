@@ -241,6 +241,7 @@
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
     [ngbPopover]="addRoutePopover"
+    [disablePopover]="(tableData[0].length < 8 || routeToEdit?.id) ? false : true"
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
@@ -333,7 +334,7 @@
         <app-ta-input
           formControlName="mapName"
           [inputConfig]="{
-            name: 'ssn',
+            name: 'Map Name',
             type: 'text',
             label: 'Map Name',
             isRequired: true,
@@ -391,7 +392,7 @@
         <app-ta-input
           formControlName="routeName"
           [inputConfig]="{
-            name: 'ssn',
+            name: 'Route Name',
             type: 'text',
             label: 'Name',
             isRequired: true,
@@ -481,7 +482,7 @@
         <app-ta-input
           formControlName="fuelMpg"
           [inputConfig]="{
-            name: 'ssn',
+            name: 'Mpg',
             type: 'number',
             label: 'Miles Per Gallon',
             placeholderIcon: 'mileage',
@@ -497,7 +498,7 @@
         <app-ta-input
           formControlName="fuelPrice"
           [inputConfig]="{
-            name: 'ssn',
+            name: 'Fuel Price',
             type: 'number',
             label: 'Price Per Gallon',
             placeholderIcon: 'dollar',

@@ -588,6 +588,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.addRoutePopup.open();
+
+    this.ref.detectChanges();
   }
 
   toggleStopPicker() {
