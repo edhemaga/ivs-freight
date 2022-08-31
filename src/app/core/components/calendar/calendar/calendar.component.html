@@ -20,12 +20,10 @@
     </div>
     <div class="search-holder">
       <div class="search-icon">
-        <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+        <app-truckassist-search
+          [selectedTabData]="searchCalendarOptions"
+        ></app-truckassist-search>
       </div>
-      <div class="border-frame">
-        <div class="border"></div>
-      </div>
-      <input class="search" type="text" placeholder="Find Event" />
     </div>
     <div class="switch-holder">
       <app-ta-tab-switch
