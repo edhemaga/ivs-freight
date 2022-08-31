@@ -152,8 +152,8 @@
           (resizeing)="onResize($event)"
           *ngFor="let column of notPinedColumns; let i = index"
           cdkDrag
-          (cdkDragStarted)="onReorderStart()"
-          (cdkDragEnded)="onReorderEnd()"
+          (cdkDragStarted)="reordering = true"
+          (cdkDragEnded)="reordering = false"
           [cdkDragDisabled]="locked || rezaizeing || column.isAction"
           cdkDragBoundary="tr"
           [cdkDragPreviewClass]="'cdk-drag-preview'"

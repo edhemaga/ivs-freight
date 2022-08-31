@@ -716,7 +716,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       '#E3E3E3',
     ];
 
-    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
+    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0; 
 
     return {
       background: backgroundColors[this.mapingIndex],
@@ -740,7 +740,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       sort: string | undefined;
       searchOne: string | undefined;
       searchTwo: string | undefined;
-      searchThree: string | undefined;
+      searchThree: string | undefined; 
     },
     isSearch?: boolean,
     isShowMore?: boolean

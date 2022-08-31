@@ -200,7 +200,7 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
-    this.sharedService.emitUpdateScrollHeight.emit(true);
+    this.sharedService.emitUpdateScrollHeight.emit(true); 
 
     console.log('Poziva se iz ngAfterViewInit');
     this.getNotPinedMaxWidth();
@@ -289,11 +289,6 @@ export class TruckassistTableBodyComponent
         this.changeDetectorRef.detectChanges();
       }, 100);
     }
-  }
-
-  // Truck By For List
-  trackByFn(index) {
-    return index;
   }
 
   // Go To Details Page

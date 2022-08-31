@@ -232,11 +232,6 @@ export class TruckassistTableHeadComponent
   }
 
   // Reorder
-  onReorderStart() {
-    this.reordering = true;
-  }
-
-  // Reorder
   onReorder(event: CdkDragDrop<any>) {
     let previousIndex: number = null,
       currentIndex: number = null;
@@ -258,11 +253,6 @@ export class TruckassistTableHeadComponent
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
     this.setVisibleColumns();
-  }
-
-  // Reorder End
-  onReorderEnd() {
-    this.reordering = false;
   }
 
   // Rezaize
