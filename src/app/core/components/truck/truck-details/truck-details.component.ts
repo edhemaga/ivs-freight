@@ -1,3 +1,6 @@
+import { TrucksMinimalListStore } from './../state/truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckItemStore } from './../state/truck-details-state/truck.details.store';
+import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckMinimalResponse } from './../../../../../../appcoretruckassist/model/truckMinimalResponse';
 import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
@@ -22,6 +25,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 
 @UntilDestroy()
 @Component({
@@ -38,7 +44,9 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   inspectionLength: number;
   titleLength: number;
   public data: any;
-
+  public truckObject: any;
+  public truckList: any = this.truckMinimalListQuery.getAll();
+  public currentIndex: number = 0;
   constructor(
     private truckTService: TruckTService,
     private notificationService: NotificationService,
@@ -48,10 +56,19 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private router: Router,
     private cdRef: ChangeDetectorRef,
     private truckDetailQuery: TruckDetailsQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private dropService: DropDownService,
+    private confirmationService: ConfirmationService,
+    private truckMinimalListQuery: TrucksMinimalListQuery,
+    private truckItemStore: TruckItemStore,
+    private truckMinimalStore: TrucksMinimalListStore
   ) {}
 
   ngOnInit(): void {
+    this.currentIndex = this.truckList.findIndex(
+      (truck) => truck.id === this.activated_route.snapshot.data.truck.id
+    );
+    this.getTruckById(this.activated_route.snapshot.data.truck.id);
     this.initTableOptions(this.activated_route.snapshot.data.truck);
     this.tableService.currentActionAnimation
       .pipe(untilDestroyed(this))
@@ -62,40 +79,130 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           this.cdRef.detectChanges();
         }
       });
-    // this.data = this.activated_route.snapshot.data.truck;
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          console.log(res + 'ovo je res');
+
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'truck') {
+                this.deleteTruckById(res.id);
+              }
+              break;
+            }
+            case 'activate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeTruckStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(untilDestroyed(this))
       .subscribe((id) => {
-        let query;
-        if (this.truckDetailQuery.hasEntity(id)) {
-          query = this.truckDetailQuery.selectEntity(id);
-        } else {
-          query = this.truckTService.getTruckById(id);
-        }
-        query.pipe(untilDestroyed(this)).subscribe({
-          next: (res: TruckResponse) => {
-            this.truckConf(res);
-            this.initTableOptions(res);
-            if (this.router.url.includes('details')) {
-              this.router.navigate([`/truck/${res.id}/details`]);
-            }
+        this.truckTService
+          .getTruckById(id)
+          .pipe(untilDestroyed(this))
+          .subscribe({
+            next: (res: TruckResponse) => {
+              this.currentIndex = this.truckList.findIndex(
+                (truck) => truck.id === res.id
+              );
+              this.truckConf(res);
+              this.getTruckById(res.id);
+              this.initTableOptions(res);
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/truck/${res.id}/details`]);
+              }
 
-            this.notificationService.success(
-              'Truck successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Truck can't be loaded", 'Error:');
-          },
-        });
+              this.notificationService.success(
+                'Truck successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error("Truck can't be loaded", 'Error:');
+            },
+          });
       });
     this.truckConf(this.activated_route.snapshot.data.truck);
   }
   /**Function retrun id */
   public identity(index: number, item: any): number {
     return index;
+  }
+  public getTruckById(id: number) {
+    this.truckTService
+      .getTruckById(id, true)
+      .subscribe((item) => (this.truckObject = item));
+  }
+  public deleteTruckById(id: number) {
+    let status = this.truckObject.status == 0 ? 'inactive' : 'active';
+
+    let last = this.truckList.at(-1);
+    if (last.id === this.truckMinimalStore.getValue().ids[this.currentIndex]) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
+    this.truckTService
+      .deleteTruckByIdDetails(id, status)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          if (this.truckMinimalStore.getValue().ids.length < 1) {
+            this.router.navigate(['/truck']);
+          } else {
+            this.router.navigate([
+              `/truck/${this.truckList[this.currentIndex].id}/details`,
+            ]);
+          }
+          this.notificationService.success(
+            'Truck successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
+  public changeTruckStatus(id: number) {
+    let status = this.truckObject.status == 0 ? 'inactive' : 'active';
+    this.truckTService
+      .changeTruckStatus(id, status)
+      .pipe(untilDestroyed(this))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Truck successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Truck with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+  public optionsDrop(event: any) {
+    this.dropService.dropActionHeaderTruck(event, this.truckObject, null);
   }
   /**Function for dots in cards */
   public initTableOptions(data: TruckMinimalResponse): void {
@@ -114,7 +221,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
       actions: [
         {
           title: 'Print',
-          name: 'print',
+          name: 'print-truck',
           svg: 'assets/svg/common/ic_fax.svg',
           show: true,
         },
@@ -137,7 +244,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
           title: 'Delete',
           name: 'delete-item',
           type: 'truck',
-          text: 'Are you sure you want to delete truck(s)?',
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
@@ -197,6 +303,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         name: 'Truck Details',
         template: 'general',
         data: data,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 1,
@@ -204,6 +311,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         template: 'registration',
         length: data?.registrations?.length ? data.registrations.length : 0,
         data: data,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 2,
@@ -211,6 +319,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         template: 'fhwa-insepction',
         length: data?.inspections?.length ? data.inspections.length : 0,
         data: data,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 3,
@@ -218,6 +327,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         template: 'title',
         length: data?.titles?.length ? data.titles.length : 0,
         data: data,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 4,

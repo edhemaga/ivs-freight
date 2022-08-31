@@ -9,6 +9,8 @@ import { TtRegistrationModalComponent } from '../../components/modals/common-tru
 import { TtTitleModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../../components/modals/confirmation-modal/confirmation-modal.component';
 import { DriverModalComponent } from '../../components/modals/driver-modal/driver-modal.component';
+import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
+import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
 import { ModalService } from '../../components/shared/ta-modal/modal.service';
 
 @Injectable({
@@ -28,7 +30,8 @@ export class DropDownService {
     truckId?: number,
     trailerId?: number,
     data?: any,
-    nameTruck?: string
+    nameTruck?: string,
+    hasActiveCdl?: boolean
   ) {
     switch (name) {
       case 'delete-cdl': {
@@ -285,6 +288,69 @@ export class DropDownService {
           template: 'driver',
           type: 'delete',
           image: true,
+        }
+      );
+    }
+  }
+  public dropActionHeaderTruck(
+    event: any,
+    truckObject?: any,
+    trailerId?: number
+  ) {
+    const mappedEvent = {
+      ...truckObject,
+      data: {
+        ...truckObject,
+        number: trailerId
+          ? truckObject?.trailerNumber
+          : truckObject?.truckNumber,
+        avatar: trailerId
+          ? `assets/svg/common/trailers/${truckObject?.trailerType?.logoName}`
+          : `assets/svg/common/trucks/${truckObject?.truckType?.logoName}`,
+      },
+    };
+    if (event.type === 'edit' && !trailerId) {
+      this.modalService.openModal(
+        TruckModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          type: 'edit',
+          disableButton: true,
+        }
+      );
+    }
+    if (event.type === 'edit' && trailerId) {
+      this.modalService.openModal(
+        TrailerModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+          disableButton: true,
+          id: trailerId,
+        }
+      );
+    } else if (event.type === 'deactivate' || event.type === 'activate') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: trailerId ? 'trailer' : 'truck',
+          type: truckObject.status === 1 ? 'deactivate' : 'activate',
+          svg: true,
+        }
+      );
+    } else if (event.type === 'delete-item') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: trailerId ? 'trailer' : 'truck',
+          type: 'delete',
+          svg: true,
         }
       );
     }

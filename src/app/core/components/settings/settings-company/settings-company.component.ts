@@ -5,6 +5,8 @@ import {
   ViewEncapsulation,
   ChangeDetectorRef,
   OnDestroy,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -12,6 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({
@@ -35,15 +38,28 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService,
     private settingCompanyQuery: CompanyQuery
   ) {}
 
   ngOnInit(): void {
-    console.log(this.activated.snapshot.data);
+    this.settingCompanyQuery
+      .getAll()
+      .map((item) => (this.dataCompany = item.divisions));
+
+    this.tableService.currentActionAnimation
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.dataCompany = res.data.divisions;
+          this.getData(res.data);
+          this.getCompanyDivision();
+          this.cdRef.detectChanges();
+        }
+      });
     this.getData(this.activated.snapshot.data.company);
     this.settingCompanyQuery.getAll().map((item) => {
-      this.dataCompany = item.divisions;
-      if (item.companyPayrolls.length) {
+      if (item?.companyPayrolls?.length) {
         this.isModalOpen$ = false;
       } else {
         this.isModalOpen$ = true;
@@ -79,7 +95,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.data = data;
   }
   public getCompanyDivision() {
-    this.optionsCmp = this.dataCompany.map((item) => {
+    this.optionsCmp = this.dataCompany?.map((item) => {
       return {
         ...item,
         id: item.id,
@@ -99,5 +115,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     });
     this.detailsPageSer.getDataDetailId(event.id);
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.tableService.sendActionAnimation({});
+  }
 }

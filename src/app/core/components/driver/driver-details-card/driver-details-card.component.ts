@@ -38,6 +38,7 @@ import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { DriverTService } from '../state/driver.service';
 
 @UntilDestroy()
 @Component({
@@ -89,6 +90,7 @@ export class DriverDetailsCardComponent
   public dataMvr: any;
   public dataMedical: any;
   public dataTestCard: any;
+  public driverObject: any;
   barChartConfig: any = {
     dataProperties: [
       {
@@ -202,6 +204,7 @@ export class DriverDetailsCardComponent
     private medicalService: MedicalTService,
     private mvrService: MvrTService,
     private testService: TestTService,
+    private driverService: DriverTService,
     private confirmationService: ConfirmationService,
     private notificationService: NotificationService,
     private dropDownService: DropDownService
@@ -212,6 +215,7 @@ export class DriverDetailsCardComponent
       this.getExpireDate(changes?.driver?.currentValue);
       this.getYearsAndDays(changes?.driver?.currentValue);
       this.widthOfProgress();
+      this.getDriverById(changes.driver.currentValue.id);
       this.getDriversDropdown();
       if (changes?.driver?.firstChange) {
         if (this.templateCard == true) {
@@ -227,6 +231,7 @@ export class DriverDetailsCardComponent
   }
 
   ngOnInit(): void {
+    this.getDriverById(this.driver.id);
     this.note.patchValue(this.driver.note);
     // Confirmation Subscribe
     if (this.templateCard) {
@@ -299,11 +304,7 @@ export class DriverDetailsCardComponent
   }
   /**Function return user image if have in DB or default image */
   public transformImage() {
-    return this.imageBase64Service.sanitizer(
-      this.driver.avatar
-        ? this.driver.avatar
-        : 'assets/svg/common/ic_no_avatar_driver.svg'
-    );
+    return this.imageBase64Service.sanitizer(this.driver?.avatar);
   }
 
   public tabsButton() {
@@ -345,7 +346,19 @@ export class DriverDetailsCardComponent
   public changeTab(ev: any) {
     this.selectedTab = ev.id;
   }
-
+  public getDriverById(id: number) {
+    this.driverService
+      .getDriverById(id, true)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => (this.driverObject = item));
+  }
+  public onDriverActions(event: any) {
+    this.dropDownService.dropActionsHeader(
+      event,
+      this.driverObject,
+      this.driver.id
+    );
+  }
   public optionsEvent(any: any, action: string) {
     const name = dropActionNameDriver(any, action);
     this.dropDownService.dropActions(
@@ -358,6 +371,7 @@ export class DriverDetailsCardComponent
       this.driver.id
     );
   }
+  public optionsDropDown(any: any, actions: string) {}
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)

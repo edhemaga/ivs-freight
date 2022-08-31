@@ -9,6 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 
 @Component({
@@ -34,7 +35,6 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
   @Input() public hasArrow: boolean;
   @Input() public optionsId: number;
   @Input() public sortOptions: string;
-
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() selectValueStore = new EventEmitter<string>();
@@ -42,39 +42,47 @@ export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
   @Input() public dateChecked: string = '';
   @Input() public lastEdit: string = '';
   public inputFormControl: FormControl = new FormControl();
-
+  public driversList: any[] = this.driverMinimalQuery.getAll();
   public selectedDropdown: boolean = false;
   public selectedDropdownSecond: boolean = false;
   public hideLeftArrow: boolean;
   public hideRightArrow: boolean;
-  public routeId: number;
-  constructor(private driverItemStore: DriversItemStore) {}
+  public driverId: number = this.driverItemStore.getValue().ids[0];
+  constructor(
+    private driverItemStore: DriversItemStore,
+    private driverMinimalQuery: DriversMinimalListQuery
+  ) {}
   ngOnChanges(changes: SimpleChanges) {}
   ngOnInit(): void {
-    // this.hideArrowOnStart();
+    // this.hideArrowOnStart(this.driverId);
   }
 
-  public hideArrowOnStart() {
-    let driverId;
+  public hideArrowOnStart(id: number) {
     let last = this.options.at(-1);
-    setTimeout(() => {
-      driverId = this.driverItemStore.getValue().ids[0];
-    }, 100);
     let first = this.options.at(0);
 
-    if (first.id == driverId) {
+    if (first.id == id) {
       this.hideLeftArrow = true;
     } else {
       this.hideLeftArrow = false;
     }
-    if (last.id == driverId) {
+    if (last.id == id) {
       this.hideRightArrow = true;
     } else {
       this.hideRightArrow = false;
     }
   }
   public onAction(action: string) {
-    this.hideArrowOnStart();
+    // let currentIndex = this.driversList.findIndex(
+    //   (driver) => driver.id === this.driverItemStore.getValue().ids[0]
+    // );
+    // if (action === 'next') {
+    //   currentIndex = ++currentIndex;
+    //   this.hideArrowOnStart(this.driversList[currentIndex].id);
+    // } else {
+    //   currentIndex = --currentIndex;
+    //   this.hideArrowOnStart(this.driversList[currentIndex].id);
+    // }
     this.changeEvent.emit(action);
   }
 

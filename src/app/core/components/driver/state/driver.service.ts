@@ -19,15 +19,16 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverTService {
-  public driversList: any = this.driverMinimalQuery.getAll();
-
+  public currentIndex: number;
+  public driversList: any;
+  public driverId: number;
   constructor(
     private driverService: DriverService,
     private driversActiveQuery: DriversActiveQuery,
@@ -37,10 +38,12 @@ export class DriverTService {
     private driverMinimimalListStore: DriversMinimalListStore,
     private cdlService: CdlService,
     private ownerService: OwnerService,
-    private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
+    private tableService: TruckassistTableService,
     private driverItemStore: DriversItemStore
-  ) {}
+  ) {
+    this.driverId = this.driverItemStore.getValue().ids[0];
+  }
 
   // Get Driver Minimal List
   public getDriversMinimalList(
@@ -126,18 +129,7 @@ export class DriverTService {
   ): Observable<any> {
     return this.driverService.apiDriverIdDelete(driverId).pipe(
       tap(() => {
-        let driverIdStore = this.driverItemStore.getValue().ids[0];
-        let currentIndex = this.driversList.findIndex(
-          (driverId) => driverId.id === driverIdStore
-        );
-        let last = this.driversList.at(-1);
-        if (last.id === this.driverItemStore.getValue().ids[0]) {
-          currentIndex = --currentIndex;
-        } else {
-          currentIndex = ++currentIndex;
-        }
-        let drivId = this.driversList[currentIndex].id;
-
+        this.driverMinimimalListStore.remove(({ id }) => id === driverId);
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
@@ -160,19 +152,14 @@ export class DriverTService {
           })
         );
 
-        this.driverMinimimalListStore.remove(({ id }) => id === driverId);
-        const subDriver = this.getDriverById(drivId).subscribe({
+        const driverSub = this.getDriverById(this.driverId, true).subscribe({
           next: (driver: DriverResponse | any) => {
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
               id: driver.id,
             });
-            subDriver.unsubscribe();
+            driverSub.unsubscribe();
           },
         });
       })
@@ -278,7 +265,28 @@ export class DriverTService {
     );
   }
 
-  public getDriverById(driverId: number): Observable<DriverResponse> {
+  public getDriverById(
+    driverId: number,
+    getIndex?: boolean
+  ): Observable<DriverResponse> {
+    this.driversList = this.driverMinimalQuery.getAll();
+    if (getIndex) {
+      this.currentIndex = this.driversList.findIndex(
+        (driver) => driver.id === driverId
+      );
+      let last = this.driversList.at(-1);
+      if (last.id === driverId) {
+        this.currentIndex = --this.currentIndex;
+      }
+      if (last.id != driverId) {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.driverId = this.driversList[this.currentIndex].id;
+    }
+
     return this.driverService.apiDriverIdGet(driverId);
   }
 
@@ -294,79 +302,6 @@ export class DriverTService {
     number: string
   ): Observable<CheckOwnerSsnEinResponse> {
     return this.ownerService.apiOwnerCheckSsnEinGet(number);
-  }
-
-  public changeDriverStatusDetails(
-    driverId: number,
-    tabSelected?: string
-  ): Observable<any> {
-    return this.driverService.apiDriverStatusIdPut(driverId, 'response').pipe(
-      tap(() => {
-        /* Get Table Tab Count */
-        const driverCount = JSON.parse(
-          localStorage.getItem('driverTableCount')
-        );
-
-        /* Get Data From Store To Update */
-        let driverToUpdate =
-          tabSelected === 'active'
-            ? this.driversActiveQuery.getAll({
-                filterBy: ({ id }) => id === driverId,
-              })
-            : this.driversInactiveQuery.getAll({
-                filterBy: ({ id }) => id === driverId,
-              });
-
-        /* Remove Data From Store */
-        tabSelected === 'active'
-          ? this.driverActiveStore.remove(({ id }) => id === driverId)
-          : this.driverInactiveStore.remove(({ id }) => id === driverId);
-
-        /* Add Data To New Store */
-        tabSelected === 'active'
-          ? this.driverInactiveStore.add({
-              ...driverToUpdate[0],
-              status: 0,
-            })
-          : this.driverActiveStore.add({
-              ...driverToUpdate[0],
-              status: 1,
-            });
-
-        /* Update Table Tab Count */
-        if (tabSelected === 'active') {
-          driverCount.active--;
-          driverCount.inactive++;
-        } else if (tabSelected === 'inactive') {
-          driverCount.active++;
-          driverCount.inactive--;
-        }
-
-        /* Send Table Tab Count To Local Storage */
-        localStorage.setItem(
-          'driverTableCount',
-          JSON.stringify({
-            active: driverCount.active,
-            inactive: driverCount.inactive,
-          })
-        );
-        const subDriver = this.getDriverById(driverId).subscribe({
-          next: (driver: DriverResponse | any) => {
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
-
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              data: driver,
-              id: driver.id,
-            });
-            subDriver.unsubscribe();
-          },
-        });
-      })
-    );
   }
 
   public changeDriverStatus(
@@ -424,11 +359,26 @@ export class DriverTService {
           })
         );
 
-        /* Send Info For Table To Do Action Animation */
-        this.tableService.sendActionAnimation({
-          animation: 'update-status',
-          id: driverId,
+        const subDriver = this.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.tableService.sendActionAnimation({
+              animation: 'update-status',
+              data: driver,
+              id: driver.id,
+            });
+            subDriver.unsubscribe();
+          },
         });
+        /* Send Info For Table To Do Action Animation */
+        // this.tableService.sendActionAnimation({
+        //   animation: 'update-status',
+        //   id: driverId,
+        // });
       })
     );
   }

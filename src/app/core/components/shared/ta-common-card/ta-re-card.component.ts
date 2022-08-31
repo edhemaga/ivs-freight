@@ -27,6 +27,7 @@ export class TaReCardComponent implements OnInit {
   @Input() public options: any = [];
   @Input() public hasCopyIcon: boolean = false;
   @Input() public expDateClose: any;
+  @Input() public voidedDate: any;
   @Input() public hasFooter: boolean = true;
   @Input() public settingsIcon: boolean = false;
   @Input() public haveHeaderText: boolean = false;

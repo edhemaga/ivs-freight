@@ -20,10 +20,11 @@
           (resizePage)="toggleResizePage(i, 'cdl')"
           [cardNameCommon]="cdl?.cdlNumber"
           [expDateClose]="cdl?.expDate | formatDateP"
+          [voidedDate]="cdl?.dateDeactivated | formatDateP"
           [hasCopyIcon]="true"
           [optionsId]="cdl.id"
           [isCardOpen]="cdl.status==1?true:false"
-          (clickedCard)="getNameForDrop($event)"
+          (clickedCard)="getNameForDrop($event,cdl.id)"
           [cardNameCurrent]="'cdl'"
           [noteIcons]="
             cdl.note

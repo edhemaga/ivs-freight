@@ -49,7 +49,7 @@
       >
       </app-ta-input-dropdown>
     </div>
-    <div *ngIf="!hasArrow && options.length > 1 " class="arrows">
+    <div *ngIf="!hasArrow && options.length > 1" class="arrows">
       <span
         ngbTooltip
         [mainTooltip]="tooltipPrevious"
@@ -57,11 +57,10 @@
         tooltipBackground="#6C6C6C"
         (click)="onAction('previous')"
       >
-        <svg-icon  *ngIf="!hideLeftArrow " class="arrow-left" src="assets/svg/common/arrow-left.svg">
+        <svg-icon class="arrow-left" src="assets/svg/common/arrow-left.svg">
         </svg-icon>
       </span>
       <span
-      *ngIf="!hideRightArrow "
         tooltipBackground="#6C6C6C"
         ngbTooltip
         [mainTooltip]="tooltipNext"
@@ -69,7 +68,6 @@
         (click)="onAction('next')"
       >
         <svg-icon
-        *ngIf="!hideRightArrow"
           class="arrow-right"
           src="assets/svg/common/arrow-left.svg"
         ></svg-icon>

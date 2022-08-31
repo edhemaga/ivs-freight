@@ -7,9 +7,10 @@
       [headerText]="item.name"
       [counterData]="item.length"
       [hidePlus]="item.hide"
-      [statusInactive]="false"
+      [statusInactive]="item.status"
+      [isInactive]="item.status"
       [optionsId]="truckId"
-      (dropActions)="onTrackActions($event)"
+      (dropActions)="optionsDrop($event)"
       (openModalAction)="onModalAction($event)"
     >
     </app-ta-details-header>

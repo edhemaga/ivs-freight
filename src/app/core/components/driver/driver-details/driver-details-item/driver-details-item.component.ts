@@ -1,8 +1,6 @@
-import { DropDownService } from './../../../../services/details-page/drop-down.service';
 import { DriverTService } from './../../state/driver.service';
 import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { dropActionNameDriver } from '../../../../utils/function-drop.details-page';
 import {
   Component,
   Input,
@@ -27,6 +25,8 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
 @UntilDestroy()
 @Component({
   selector: 'app-driver-details-item',
@@ -49,13 +49,17 @@ export class DriverDetailsItemComponent
   public dataCDl: any;
   public templateName: boolean;
   public hasActiveCdl: boolean;
-  public arrayOfActiveCdl: any[] = [];
+  public arrayOfRenewCdl: any[] = [];
   public inactiveCdl: boolean;
   public test: boolean;
   public dataCdl: any;
   public dataMvr: any;
   public dataMedical: any;
   public dataTest: any;
+  public isActiveCdl: boolean;
+  public activateShow: any[] = [];
+  public expiredCard: any[] = [];
+  public currentIndex: number;
   constructor(
     private driverService: DriverTService,
     private cdlService: CdlTService,
@@ -72,11 +76,12 @@ export class DriverDetailsItemComponent
     if (!changes.drivers.firstChange && changes.drivers.currentValue) {
       this.drivers = changes.drivers.currentValue;
       this.getExpireDate();
+      this.initTableOptions(changes.drivers.currentValue[0].data);
     }
   }
 
   ngOnInit(): void {
-    this.initTableOptions();
+    this.initTableOptions(this.drivers[0].data);
     this.getExpireDate();
 
     // Confirmation Subscribe
@@ -131,15 +136,43 @@ export class DriverDetailsItemComponent
   public activateDeactiveCdl(id: number) {
     this.driverService.activateDeactiveCdl(id);
   }
-  public getNameForDrop(name: string) {
+  public getNameForDrop(name: string, cdlId?: number) {
     this.templateName = name === 'cdl' ? false : true;
-    this.initTableOptions();
+    this.currentIndex = this.drivers[1]?.data?.cdls?.findIndex(
+      (item) => item.id === cdlId
+    );
+    this.initTableOptions(this.drivers[0].data);
     if (name === 'cdl') {
       this.getExpireDate();
     }
   }
   /**Function for dots in cards */
-  public initTableOptions(): void {
+  public initTableOptions(data: DriverResponse): void {
+    this.arrayOfRenewCdl = [];
+    this.activateShow = [];
+    this.expiredCard = [];
+    data?.cdls?.map((item) => {
+      let endDate = moment(item.expDate);
+      if (moment(item.expDate).isBefore(moment())) {
+        this.expiredCard.push(true);
+      } else {
+        this.expiredCard.push(false);
+      }
+      if (item.dateDeactivated) {
+        this.activateShow.push(true);
+      } else {
+        this.activateShow.push(false);
+      }
+      if (
+        moment(item.expDate).isBefore(moment()) ||
+        endDate.diff(moment(), 'days') <= 365
+      ) {
+        this.arrayOfRenewCdl.push(true);
+      } else {
+        this.arrayOfRenewCdl.push(false);
+      }
+    });
+
     this.dataDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -163,13 +196,24 @@ export class DriverDetailsItemComponent
           title: 'Renew',
           name: 'renew',
           svg: 'assets/svg/common/ic_reload_renew.svg',
-          show: !this.templateName ? true : false,
+          show:
+            !this.templateName &&
+            this.arrayOfRenewCdl[this.currentIndex] == true
+              ? true
+              : false,
         },
         {
-          title: 'Void',
+          title:
+            this.activateShow[this.currentIndex] == true ? 'Activate' : 'Void',
           name: 'activate-item',
-          svg: 'assets/svg/common/ic_cancel_violation.svg',
-          show: !this.templateName ? true : false,
+          svg:
+            this.activateShow[this.currentIndex] == true
+              ? 'assets/svg/common/ic_deactivate.svg'
+              : 'assets/svg/common/ic_cancel_violation.svg',
+          show:
+            !this.templateName && this.expiredCard[this.currentIndex] == false
+              ? true
+              : false,
         },
         {
           title: 'Delete',
@@ -217,7 +261,7 @@ export class DriverDetailsItemComponent
     this.dropDownService.dropActions(
       any,
       name,
-      this.dataCDl,
+      this.dataCdl,
       this.dataMvr,
       this.dataMedical,
       this.dataTest,

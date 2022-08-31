@@ -15,17 +15,28 @@ import { TrailerActiveStore } from './trailer-active-state/trailer-active.store'
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
 import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
 import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
+import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
+import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-minimal.store';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService {
+  public trailerList: any;
+  public trailerId: number;
+  public currentIndex: number;
   constructor(
     private trailerActiveStore: TrailerActiveStore,
     private trailerInactiveStore: TrailerInactiveStore,
     private trailerService: TrailerService,
     private trailerActiveQuery: TrailerActiveQuery,
     private trailerInactiveQuery: TrailerInactiveQuery,
-    private tableService: TruckassistTableService
-  ) {}
+    private tableService: TruckassistTableService,
+    private trailerItemStore: TrailerItemStore,
+    private trailerMinimalQuery: TrailersMinimalListQuery,
+    private trailerMinimalStore: TrailersMinimalListStore
+  ) {
+    this.trailerId = this.trailerItemStore.getValue().ids[0];
+  }
 
   /* Observable<CreateTrailerResponse> */
   public addTrailer(data: CreateTrailerCommand): Observable<any> {
@@ -119,6 +130,48 @@ export class TrailerTService {
     );
   }
 
+  public deleteTrailerByIdDetails(
+    trailerId: number,
+    tableSelectedTab?: string
+  ): Observable<any> {
+    return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
+      tap(() => {
+        const trailerCount = JSON.parse(
+          localStorage.getItem('trailerTableCount')
+        );
+
+        if (tableSelectedTab === 'active') {
+          this.trailerActiveStore.remove(({ id }) => id === trailerId);
+
+          trailerCount.active--;
+        } else if (tableSelectedTab === 'inactive') {
+          this.trailerInactiveStore.remove(({ id }) => id === trailerId);
+
+          trailerCount.inactive--;
+        }
+
+        localStorage.setItem(
+          'trailerTableCount',
+          JSON.stringify({
+            active: trailerCount.active,
+            inactive: trailerCount.inactive,
+          })
+        );
+        const subTrailer = this.getTrailerById(this.trailerId, true).subscribe({
+          next: (trailer: TrailerResponse | any) => {
+            this.tableService.sendActionAnimation({
+              animation: 'delete',
+              data: trailer,
+              id: trailer.id,
+            });
+
+            subTrailer.unsubscribe();
+          },
+        });
+      })
+    );
+  }
+
   public deleteTrailerById(
     trailerId: number,
     tableSelectedTab?: string
@@ -171,8 +224,29 @@ export class TrailerTService {
     return of(null);
   }
 
-  public getTrailerById(id: number): Observable<TrailerResponse> {
-    return this.trailerService.apiTrailerIdGet(id);
+  public getTrailerById(
+    trailerId: number,
+    getIndex?: boolean
+  ): Observable<TrailerResponse> {
+    this.trailerList = this.trailerMinimalQuery.getAll();
+    if (getIndex) {
+      this.currentIndex = this.trailerList.findIndex(
+        (trailer) => trailer.id === trailerId
+      );
+      let last = this.trailerList.at(-1);
+      if (last.id == trailerId) {
+        this.currentIndex = --this.currentIndex;
+      }
+      if (last.id != trailerId) {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.trailerId = this.trailerList[this.currentIndex].id;
+    }
+
+    return this.trailerService.apiTrailerIdGet(trailerId);
   }
 
   public changeTrailerStatus(
@@ -184,7 +258,7 @@ export class TrailerTService {
       .pipe(
         tap(() => {
           const subTrailer = this.getTrailerById(trailerId).subscribe({
-            next: () => {
+            next: (trailer: TrailerResponse | any) => {
               /* Get Table Tab Count */
               const trailerCount = JSON.parse(
                 localStorage.getItem('trailerTableCount')
@@ -238,6 +312,7 @@ export class TrailerTService {
 
               this.tableService.sendActionAnimation({
                 animation: 'update-status',
+                data: trailer,
                 id: trailerId,
               });
 

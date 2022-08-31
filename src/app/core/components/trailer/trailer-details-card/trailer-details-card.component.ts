@@ -9,15 +9,11 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ActivatedRoute } from '@angular/router';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TrailerTService } from '../state/trailer.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+@UntilDestroy()
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -36,21 +32,30 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
 
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
   constructor(
-    private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
-    private trailerQuery: TrailerDetailsQuery,
-    private activeted_route: ActivatedRoute,
-    private trailerMinimalQuery: TrailersMinimalListQuery
+    private trailerMinimalQuery: TrailersMinimalListQuery,
+    private trailerService: TrailerTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.trailer?.firstChange && changes?.trailer) {
       this.getTrailerDropdown();
       this.note.patchValue(changes.trailer.currentValue.note);
     }
+    this.trailerMinimalQuery
+      .selectAll()
+      .subscribe((item) => (this.trailer_list = item));
   }
   ngOnInit(): void {
+    this.getTrailerById(this.trailer.id);
     this.initTableOptions();
     this.getTrailerDropdown();
+  }
+
+  public getTrailerById(id: number) {
+    this.trailerService
+      .getTrailerById(id, true)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => item);
   }
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {

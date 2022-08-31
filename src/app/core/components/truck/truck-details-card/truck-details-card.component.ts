@@ -19,6 +19,9 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TruckTService } from '../state/truck.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+@UntilDestroy()
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -418,7 +421,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     private modalService: ModalService,
     /* private trucksQuery: TruckQuery, */
     private detailsPageDriverSer: DetailsPageService,
-    private truckMinimalListQuery: TrucksMinimalListQuery
+    private truckMinimalListQuery: TrucksMinimalListQuery,
+    private truckService: TruckTService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -426,8 +430,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       this.noteControl.patchValue(changes.truck.currentValue.note);
       this.getTruckDropdown();
     }
+    this.truckMinimalListQuery
+      .selectAll()
+      .subscribe((item) => (this.truck_list = item));
   }
   ngOnInit(): void {
+    this.getTruckById(this.truck.id);
     this.noteControl.patchValue(this.truck.note);
     this.getTruckDropdown();
     this.buttonSwitcher();
@@ -513,6 +521,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         name: 'ALL',
       },
     ];
+  }
+
+  public getTruckById(id: number) {
+    this.truckService
+      .getTruckById(id, true)
+      .pipe(untilDestroyed(this))
+      .subscribe((item) => item);
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
