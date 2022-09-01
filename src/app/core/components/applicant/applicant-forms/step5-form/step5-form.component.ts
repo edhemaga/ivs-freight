@@ -1,8 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -17,13 +24,15 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { TruckType } from '../../state/model/truck-type.model';
 import { Address } from '../../state/model/address.model';
 import { ViolationModel } from '../../state/model/violations.model';
+import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step5-form',
   templateUrl: './step5-form.component.html',
   styleUrls: ['./step5-form.component.scss'],
 })
-export class Step5FormComponent implements OnInit {
+export class Step5FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -81,14 +90,20 @@ export class Step5FormComponent implements OnInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.violationsForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.violationsForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             violationLocation,
             isEditingViolation,
@@ -107,8 +122,7 @@ export class Step5FormComponent implements OnInit {
           } else {
             this.isViolationEdited = true;
           }
-        }
-      );
+        });
     }
   }
 
@@ -116,7 +130,7 @@ export class Step5FormComponent implements OnInit {
     this.violationsForm = this.formBuilder.group({
       violationDate: [null, Validators.required],
       truckType: [null, Validators.required],
-      violationLocation: [null, Validators.required],
+      violationLocation: [null, [Validators.required, ...addressValidation]],
       violationDescription: [null, Validators.required],
 
       firstRowReview: [null],

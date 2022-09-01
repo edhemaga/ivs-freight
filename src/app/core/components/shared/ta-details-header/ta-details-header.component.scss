@@ -272,6 +272,14 @@ svg {
         font-size: 11px;
         font-weight: 700;
         margin-right: 8px;
+        &::-moz-selection {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+        &::selection {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.2);
+        }
     }
 }
 .violation-counter {

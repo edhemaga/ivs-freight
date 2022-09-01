@@ -11,9 +11,9 @@ $nav-text-color: #6c6c6c;
 $nav-text-color-darker: #919191;
 $nav-text-color-hover: #3c3c3c;
 
-$nav-blue-1: #E0EAF8;
-$nav-blue-2: #97A8DC;
-$nav-blue-3: #6D82C7;
+$nav-blue-1: #e0eaf8;
+$nav-blue-2: #97a8dc;
+$nav-blue-3: #6d82c7;
 $nav-active-lighter: #536bc2;
 $nav-active: #3551b7;
 
@@ -25,7 +25,7 @@ $nav-important-light: #ff8080;
 $nav-important: #ef5350;
 $nav-important-hover: #f44336;
 
-$nav-boxshadow: 0 0 4px rgb(0, 0, 0, 0.16);
+$nav-boxshadow: 0 0 4px rgb(0, 0, 0, 0.15);
 
 $nav-transition: all 0.3s ease-in-out;
 $nav-transition-015: all 0.15s ease-in-out;
@@ -49,7 +49,6 @@ $user-busy-status: #ffb74d;
 $user-busy-status-hover: #ffa726;
 $user-active-status: #4db6a2;
 $user-active-status-hover: #26a690;
-
 
 @keyframes showMagicLine {
   0% {

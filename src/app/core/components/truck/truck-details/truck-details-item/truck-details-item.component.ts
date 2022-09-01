@@ -1,7 +1,9 @@
 import { FormControl } from '@angular/forms';
+import { dropActionNameTrailerTruck } from '../../../../utils/function-drop.details-page';
 import {
   Component,
   Input,
+  OnDestroy,
   OnInit,
   ViewChild,
   ViewEncapsulation,
@@ -14,6 +16,16 @@ import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-tra
 import { TruckResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-truck-details-item',
@@ -22,7 +34,8 @@ import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-moda
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsItemComponent implements OnInit {
+export class TruckDetailsItemComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild('autosize', { static: false }) autosize: CdkTextareaAutosize;
   @Input() truck: TruckResponse | any = null;
   public note: FormControl = new FormControl();
@@ -30,24 +43,47 @@ export class TruckDetailsItemComponent implements OnInit {
   public purchaseNote: FormControl = new FormControl();
   public registrationNote: FormControl = new FormControl();
   public titleNote: FormControl = new FormControl();
-
   public toggler: boolean[] = [];
-  cardNumberFake: string = '1234567890';
+  public cardNumberFake = '125335533513';
   truckName: string = '';
   isAccountVisible: boolean = true;
   accountText: string = null;
   public truckData: any;
   public dataEdit: any;
-
+  public dropActionName: string = '';
   constructor(
     private modalService: ModalService,
-    private activated_route: ActivatedRoute
+    private tableService: TruckassistTableService,
+    private confirmationService: ConfirmationService,
+    private notificationService: NotificationService,
+    private commonTruckService: CommonTruckTrailerService
   ) {}
 
   ngOnInit(): void {
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'registration') {
+                this.deleteRegistrationByIdFunction(res.id);
+              } else if (res.template === 'inspection') {
+                this.deleteInspectionByIdFunction(res.id);
+              } else if (res.template === 'title') {
+                this.deleteTitleByIdFunction(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
     this.initTableOptions();
   }
-  ngOnDestroy(): void {}
 
   public onShowDetails(componentData: any) {
     componentData.showDetails = !componentData.showDetails;
@@ -100,7 +136,47 @@ export class TruckDetailsItemComponent implements OnInit {
   }
 
   public optionsEvent(file: any, data: any, action: string) {
-    switch (action) {
+    const name = dropActionNameTrailerTruck(file, action);
+    switch (name) {
+      case 'delete-inspection': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: file.id,
+            template: 'inspection',
+            type: 'delete',
+            image: false,
+          }
+        );
+        break;
+      }
+      case 'delete-registration': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: file.id,
+            template: 'registration',
+            type: 'delete',
+            image: false,
+          }
+        );
+        break;
+      }
+      case 'delete-title': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: file.id,
+            template: 'title',
+            type: 'delete',
+            image: false,
+          }
+        );
+        break;
+      }
       case 'edit-registration': {
         this.modalService.openModal(
           TtRegistrationModalComponent,
@@ -109,8 +185,8 @@ export class TruckDetailsItemComponent implements OnInit {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: action,
-            modal: 'truck',
+            type: name,
+            modal: 'trailer',
           }
         );
         break;
@@ -123,8 +199,8 @@ export class TruckDetailsItemComponent implements OnInit {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: action,
-            modal: 'truck',
+            type: name,
+            modal: 'trailer',
           }
         );
         break;
@@ -137,8 +213,8 @@ export class TruckDetailsItemComponent implements OnInit {
             id: data.id,
             payload: data,
             file_id: file.id,
-            type: action,
-            modal: 'truck',
+            type: name,
+            modal: 'trailer',
           }
         );
         break;
@@ -148,7 +224,64 @@ export class TruckDetailsItemComponent implements OnInit {
       }
     }
   }
+  private deleteRegistrationByIdFunction(id: number) {
+    this.commonTruckService
+      .deleteRegistrationById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Registration successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Registration with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
 
+  private deleteInspectionByIdFunction(id: number) {
+    this.commonTruckService
+      .deleteInspectionById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Inspection successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Inspection with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
+  private deleteTitleByIdFunction(id: number) {
+    this.commonTruckService
+      .deleteTitleById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Title successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Title with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
   public onFileAction(action: string) {
     switch (action) {
       case 'download': {
@@ -193,5 +326,10 @@ export class TruckDetailsItemComponent implements OnInit {
       return;
     }
     this.accountText = value;
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

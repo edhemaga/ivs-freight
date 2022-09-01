@@ -41,6 +41,15 @@
                 label: 'Type',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedTruckType?.logoName,
+                  template: 'truck',
+                  class: selectedTruckType?.name
+                    ?.trim()
+                    .replace(' ', '')
+                    .toLowerCase()
+                },
                 dropdownWidthClass: 'w-col-308',
                 customClass: 'truck-trailer-dropdown'
               }"
@@ -80,6 +89,10 @@
                 label: 'Make',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: false,
+                  url: selectedTruckMake?.logoName
+                },
                 dropdownWidthClass: 'w-col-228'
               }"
               [options]="truckMakeType"
@@ -123,6 +136,12 @@
                 type: 'text',
                 label: 'Color',
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedColor?.code ? 'ic_color.svg' : null,
+                  template: 'color',
+                  color: selectedColor?.code
+                },
                 dropdownWidthClass: 'w-col-148'
               }"
               [options]="colorType"

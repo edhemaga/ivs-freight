@@ -9,8 +9,6 @@ import {
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
 import moment from 'moment';
@@ -21,14 +19,16 @@ import { CompanyInfoModel } from '../state/model/company.model';
 import { IdNameList } from '../state/model/lists.model';
 
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-applicant-footer',
   templateUrl: './applicant-footer.component.html',
   styleUrls: ['./applicant-footer.component.scss'],
 })
 export class ApplicantFooterComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('requestsBox')
   requestsBox: ElementRef;
 
@@ -296,13 +296,15 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
 
   public getCompanyInfo(): void {
     this.applicantActionsService.getApplicantInfo$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.companyInfo = data.companyInfo;
       });
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.requestsBoxObserver.unobserve(this.requestsBox.nativeElement);
     this.documentsBoxObserver.unobserve(this.documentsBox.nativeElement);
   }

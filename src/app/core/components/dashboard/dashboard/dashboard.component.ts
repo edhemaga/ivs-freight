@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Observable, Subject, interval, merge, combineLatest } from 'rxjs';
+
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
@@ -168,7 +169,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     },
   ];
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dashboardStoreService: DashboardStoreService,
@@ -177,7 +178,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private http: HttpClient
-  ) { }
+  ) {}
 
   ngOnInit() {
     //this.dashboardStoreService.addStats();

@@ -1,8 +1,9 @@
 @import '../../theme/variables.scss';
 
-.toolbar-absolute {
-    position: absolute;
+.toolbar-relative {
+    position: relative;
     width: 100%;
+    padding-right: 18px;
     z-index: 2;
 }
 
@@ -28,6 +29,42 @@
     agm-map {
         width: 100%;
         height: 100vh;
+
+        .gm-bundled-control {
+            right: 34px !important;
+            bottom: 58px !important;
+            
+            .gmnoprint {
+                width: 26px;
+                height: 50px;
+
+                :first-child {
+                    width: 26px !important;
+                    height: 50px !important;
+                    box-shadow: none !important;
+
+                    .gm-control-active {
+                        width: 26px !important;
+                        height: 25px !important;
+
+                        img {
+                            width: 12px !important;
+                            height: 12px !important;
+                        }
+
+                        &:hover {
+                            img:nth-child(4) {
+                                display: none !important;
+                            }
+                        }
+                    }
+
+                    div {
+                        display: none !important;
+                    }
+                }
+            }
+        }
 
         .si-shadow-frame {
             box-shadow: none;
@@ -322,6 +359,10 @@
     }
 }
 
+.marker-semibold-text {
+    font-weight: 600;
+}
+
 .marker-bold-text {
     font-weight: 700;
 
@@ -333,6 +374,10 @@
         color: $bw6-2;
         background: #6c6c6c33;
     }
+}
+
+.marker-extrabold-text {
+    font-weight: 800;
 }
 
 .marker-like-text {
@@ -479,6 +524,14 @@
 
 .mg-left-6 {
     margin-left: 6px;
+}
+
+.mg-left-8 {
+    margin-left: 8px;
+}
+
+.mg-left-12 {
+    margin-left: 12px !important;
 }
 
 .marker-icon {
@@ -782,6 +835,54 @@
     svg {
         rect {
             fill: #FEC107;
+        }
+    }
+}
+
+
+
+.map-zoom-controls {
+    position: absolute;
+    right: 18px;
+    bottom: 18px;
+
+    z-index: 1;
+
+    .map-zoom-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        height: 50px;
+        width: 26px;
+
+        background: #fff;
+        border-radius: 3px;
+
+        .map-zoom-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            height: 25px;
+            width: 26px;
+
+            cursor: pointer;
+
+            svg {
+                path {
+                    fill: #AAAAAA;
+                }
+            }
+
+            &:hover {
+                svg {
+                    path {
+                        fill: #3c3c3c;
+                    }
+                }
+            }
         }
     }
 }

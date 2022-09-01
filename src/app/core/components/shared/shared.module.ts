@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
@@ -103,6 +104,7 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
+import { MapToolbarComponent } from './map-toolbar/map-toolbar.component';
 import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
@@ -197,7 +199,9 @@ export function playerFactory() {
     TaUploadFilesComponent,
     TaCopyComponent,
     AutoclosePopoverComponent,
-    CustomToastMessagesComponent
+    CustomToastMessagesComponent,
+    MapToolbarComponent,
+    AutoclosePopoverComponent
   ],
   imports: [
     CommonModule,
@@ -216,6 +220,7 @@ export function playerFactory() {
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
       libraries: ['geometry', 'places'],
     }),
+    AgmDirectionModule,
     LottieModule.forRoot({ player: playerFactory }),
     NgxSliderModule,
     GooglePlaceModule,
@@ -255,6 +260,7 @@ export function playerFactory() {
     AppTooltipeModule,
     ProfileImagesModule,
     AgmSnazzyInfoWindowModule,
+    AgmDirectionModule,
 
     // Components
     TabSwitcherComponent,
@@ -299,6 +305,7 @@ export function playerFactory() {
     MapListCardComponent,
     MapMarkerDropdownComponent,
     MapsComponent,
+    MapToolbarComponent,
 
     ProgressInvoicesComponent,
     TaSpinnerComponent,

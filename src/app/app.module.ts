@@ -13,11 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import {
-  ToastrModule,
-  ToastNoAnimation,
-  ToastNoAnimationModule,
-} from 'ngx-toastr';
+import { ToastNoAnimationModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -34,6 +30,8 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
 import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+
 
 @NgModule({
   declarations: [
@@ -67,7 +65,11 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
     ApiModule,
   ],
   providers: [
-    GoogleMapsAPIWrapper,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true,
+    },
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
@@ -82,6 +84,7 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
     },
     { provide: HTTP_INTERCEPTORS, useClass: AppInterceptor, multi: true },
     EncryptionDecryptionService,
+    GoogleMapsAPIWrapper,
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

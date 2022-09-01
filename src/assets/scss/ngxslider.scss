@@ -40,7 +40,8 @@
       cursor: pointer;
       color: #536bc2 !important;
       font-size: 12px !important;
-      box-shadow: 0 0 4px rgb(0 0 0 / 16%) !important;
+      box-shadow: 0 0 4px rgb(0 0 0 / 15%) !important;
+      border-radius: 2px;
       background-color: #ffffff;
       font-weight: bold !important;
       position: absolute;
@@ -138,8 +139,8 @@
         height: 18px;
         top: -6px !important;
         background-color: #ffffff !important;
-        box-shadow: 0 0 2px rgb(0, 0, 0, 0.3) !important;
-        border-radius: 3px !important;
+        box-shadow: 0 0 4px rgb(0, 0, 0, 0.15) !important;
+        border-radius: 2px !important;
 
         &::after {
           content: none !important;

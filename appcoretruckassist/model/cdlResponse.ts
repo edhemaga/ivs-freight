@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { CdlEndorsementResponse } from './cdlEndorsementResponse';
+import { MvrResponse } from './mvrResponse';
 import { CdlRestrictionResponse } from './cdlRestrictionResponse';
 import { EnumValue } from './enumValue';
 import { StateResponse } from './stateResponse';
@@ -26,6 +27,7 @@ export interface CdlResponse {
     classType?: EnumValue;
     cdlRestrictions?: Array<CdlRestrictionResponse> | null;
     cdlEndorsements?: Array<CdlEndorsementResponse> | null;
+    mvrs?: Array<MvrResponse> | null;
     note?: string | null;
     createdAt?: string;
     updatedAt?: string;

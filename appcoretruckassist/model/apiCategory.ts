@@ -11,9 +11,10 @@
  */
 
 
-export type ApiCategory = 'EFSFUEL';
+export type ApiCategory = 'EFSFUEL' | 'AccidentViolation';
 
 export const ApiCategory = {
-    Efsfuel: 'EFSFUEL' as ApiCategory
+    Efsfuel: 'EFSFUEL' as ApiCategory,
+    AccidentViolation: 'AccidentViolation' as ApiCategory
 };
 
