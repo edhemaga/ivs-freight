@@ -655,7 +655,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Business Name
     if (
       ['business name', 'shop name', 'fuel stop'].includes(
         this.inputConfig.name.toLowerCase()
@@ -674,7 +673,6 @@ export class TaInputComponent
       return false;
     }
 
-    // EIN Number
     if (
       [
         'ein',
@@ -685,6 +683,7 @@ export class TaInputComponent
         'routing-bank',
         'ssn',
         'fuel-card',
+        'empty-weight',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -694,7 +693,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Email
     if (['email'].includes(this.inputConfig.name.toLowerCase())) {
       if (
         /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~@.-]*$/g.test(
@@ -707,8 +705,11 @@ export class TaInputComponent
       return false;
     }
 
-    // Address Unit
-    if (['address-unit'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['address-unit', 'department', 'vehicle-unit'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[A-Za-z0-9/]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
       }
@@ -716,20 +717,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Department
-    if (
-      ['department', 'vehicle-unit'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
-      if (/^[A-Za-z0-9]*$/g.test(String.fromCharCode(event.charCode))) {
-        return true;
-      }
-      event.preventDefault();
-      return false;
-    }
-
-    // First Name
     if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
       let space = this.input.nativeElement.value.split(' ').length;
       if (/^[A-Za-z',\s.-]*$/.test(String.fromCharCode(event.charCode))) {
@@ -743,7 +730,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Last Name
     if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
       let space = this.input.nativeElement.value.split(' ').length;
       if (/^[A-Za-z\s]*$/.test(String.fromCharCode(event.charCode))) {
@@ -757,7 +743,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Bank Name
     if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
       let space = this.input.nativeElement.value.split(' ').length;
       if (
@@ -775,8 +760,11 @@ export class TaInputComponent
       return false;
     }
 
-    // Vin Truck Trailer Number
-    if (['vin-number'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['vin-number', 'insurance-policy'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
         if (/^[IiOQ]*$/.test(String.fromCharCode(event.charCode))) {
           return false;
@@ -787,7 +775,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Model Truck Trailer
     if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
@@ -796,7 +783,6 @@ export class TaInputComponent
       return false;
     }
 
-    // Year
     if (['year'].includes(this.inputConfig.name.toLowerCase())) {
       if (
         /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
@@ -814,8 +800,6 @@ export class TaInputComponent
         return false;
       }
     }
-
-    // Axles
 
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
       if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {

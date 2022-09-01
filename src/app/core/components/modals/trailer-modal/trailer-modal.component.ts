@@ -19,7 +19,9 @@ import {
 } from 'appcoretruckassist';
 import {
   axlesValidation,
-  insurancePolicyRegex,
+  emptyWeightValidation,
+  insurancePolicyValidation,
+  mileageValidation,
   truckTrailerModelValidation,
   vehicleUnitValidation,
   vinNumberValidation,
@@ -145,10 +147,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       tireSizeId: [null],
       doorType: [null],
       reeferUnit: [null],
-      emptyWeight: [null],
-      mileage: [null],
+      emptyWeight: [null, emptyWeightValidation],
+      mileage: [null, mileageValidation],
       volume: [null],
-      insurancePolicy: [null, insurancePolicyRegex],
+      insurancePolicy: [null, insurancePolicyValidation],
     });
 
     // this.formService.checkFormChange(this.trailerForm);

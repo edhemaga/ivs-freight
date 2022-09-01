@@ -24,7 +24,9 @@ import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculatio
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
   axlesValidation,
-  insurancePolicyRegex,
+  emptyWeightValidation,
+  insurancePolicyValidation,
+  mileageValidation,
   truckTrailerModelValidation,
   vehicleUnitValidation,
   vinNumberValidation,
@@ -153,12 +155,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       shifter: [null],
       fhwaexp: [12, Validators.required],
       truckGrossWeightId: [null],
-      emptyWeight: [null, Validators.maxLength(6)],
+      emptyWeight: [null, emptyWeightValidation],
       truckEngineTypeId: [null],
       tireSizeId: [null],
       axles: [null, axlesValidation],
-      insurancePolicy: [null, insurancePolicyRegex],
-      mileage: [null, Validators.maxLength(10)],
+      insurancePolicy: [null, insurancePolicyValidation],
+      mileage: [null, mileageValidation],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
 
