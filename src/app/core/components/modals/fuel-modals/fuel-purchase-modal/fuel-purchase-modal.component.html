@@ -1,6 +1,8 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit' ? 'Add Fuel Transaction' : 'Edit Fuel Transaction'
+    editData?.type !== 'edit'
+      ? 'Create Fuel Transaction'
+      : 'Edit Fuel Transaction'
   "
   [editData]="editData"
   [editName]="editData?.id"

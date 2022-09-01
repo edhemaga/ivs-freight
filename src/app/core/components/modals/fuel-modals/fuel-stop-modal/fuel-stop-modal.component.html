@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Fuel Stop' : 'Edit Fuel Stop'"
+  [modalTitle]="
+    editData?.type !== 'edit' ? 'Create Fuel Stop' : 'Edit Fuel Stop'
+  "
   [editData]="editData"
   [editName]="editData?.id"
   [isModalValid]="fuelStopForm.valid"

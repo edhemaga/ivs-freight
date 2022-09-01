@@ -21,7 +21,10 @@ import { ModalService } from '../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { AccountTService } from '../../account/state/account.service';
 import { Subject, takeUntil } from 'rxjs';
-import { labelValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  labelValidation,
+  urlValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-account-modal',
@@ -68,7 +71,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, ...labelValidation]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
-      url: [null],
+      url: [null, [...urlValidation]],
       companyAccountLabelId: [null],
       note: [null],
     });

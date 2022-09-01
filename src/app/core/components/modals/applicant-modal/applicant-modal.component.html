@@ -1,5 +1,7 @@
 <app-ta-modal
-  [modalTitle]="editData?.type !== 'edit' ? 'Add Applicant' : 'Edit Applicant'"
+  [modalTitle]="
+    editData?.type !== 'edit' ? 'Create Applicant' : 'Edit Applicant'
+  "
   [editData]="editData"
   [editName]="editData?.id"
   [saveAndAddNew]="editData?.type !== 'edit'"

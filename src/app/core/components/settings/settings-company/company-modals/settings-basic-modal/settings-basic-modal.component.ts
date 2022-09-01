@@ -18,6 +18,7 @@ import {
   perStopValidation,
   phoneExtension,
   routingBankValidation,
+  urlValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -288,7 +289,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       phone: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
       fax: [null, phoneFaxRegex],
-      webUrl: [null],
+      webUrl: [null, [...urlValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       irp: [null],

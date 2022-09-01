@@ -1,6 +1,8 @@
 <app-ta-modal
   [modalTitle]="
-    editData?.type !== 'edit' ? 'Add Insurance Policy' : 'Edit Insurance Policy'
+    editData?.type !== 'edit'
+      ? 'Create Insurance Policy'
+      : 'Edit Insurance Policy'
   "
   [editData]="editData"
   [editName]="editData?.id"
