@@ -1,14 +1,12 @@
-import {Pipe, PipeTransform} from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'inputError'
+  name: 'inputError',
 })
 export class InputErrorPipe implements PipeTransform {
-
   transform(value: any, inputName?: string): string {
     let errorMessageValue: string = '';
     if (value !== null) {
-     
       if (value['required']) {
         errorMessageValue = 'Required';
       }
@@ -17,16 +15,14 @@ export class InputErrorPipe implements PipeTransform {
         errorMessageValue = 'Invalid';
       }
 
-      if(value['minlength']) {
-        // errorMessageValue = `Minimum required length is ${value.minlength.requiredLength}`
-        errorMessageValue = 'Invalid';
+      if (value['minlength']) {
+        errorMessageValue = `${value['minlength'].requiredLength} Characters Minimum`;
       }
-      if(value['maxlength']) {
-        // errorMessageValue = `Maximum possible characters is ${value.maxlength.requiredLength}`
-        errorMessageValue = 'Invalid';
+      if (value['maxlength']) {
+        errorMessageValue = `${value['maxlength'].requiredLength} Characters Maximum`;
       }
-      if(value['pattern']?.requiredPattern) {
-        switch(inputName.toLowerCase()) {
+      if (value['pattern']?.requiredPattern) {
+        switch (inputName.toLowerCase()) {
           case 'phone': {
             // errorMessageValue = `Phone as (XXX) XXX-XXXX`
             errorMessageValue = 'Invalid';
@@ -43,13 +39,12 @@ export class InputErrorPipe implements PipeTransform {
             break;
           }
           default: {
-            errorMessageValue = `Invalid`
+            errorMessageValue = `Invalid`;
             break;
           }
         }
       }
     }
-    return errorMessageValue
+    return errorMessageValue;
   }
-
 }

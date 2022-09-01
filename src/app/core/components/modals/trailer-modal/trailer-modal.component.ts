@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
@@ -33,8 +32,8 @@ import {
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
@@ -44,6 +43,8 @@ import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/r
   providers: [ModalService, FormService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @Input() editData: any;
 
   public trailerForm: FormGroup;
@@ -148,7 +149,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.trailerForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -157,7 +158,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private isCompanyOwned() {
     this.trailerForm
       .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(this.trailerForm.get('ownerId'));
@@ -185,7 +186,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
           .changeTrailerStatus(this.editData.id, this.editData.tabSelected)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -258,7 +259,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private getTrailerDropdowns(): void {
     this.trailerModalService
       .getTrailerDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTrailerModalResponse) => {
           this.trailerType = res.trailerTypes.map((item) => {
@@ -329,7 +330,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .addTrailer(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -350,7 +351,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .deleteTrailerById(id, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -422,7 +423,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     this.trailerModalService
       .updateTrailer(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -491,7 +492,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private editTrailerById(id: number): void {
     this.trailerModalService
       .getTrailerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TrailerResponse) => {
           this.trailerForm.patchValue({
@@ -626,13 +627,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.trailerForm
       .get('vin')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 2)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
                 this.trailerForm.patchValue({
@@ -654,5 +655,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

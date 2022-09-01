@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ColorResponse } from './colorResponse';
 
 
 export interface TrailerMinimalResponse { 
     id?: number;
     trailerNumber?: string | null;
     status?: number;
+    color?: ColorResponse;
 }
 

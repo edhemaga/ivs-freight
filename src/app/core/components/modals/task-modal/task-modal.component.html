@@ -67,10 +67,13 @@
           formControlName="departmentIds"
           [template]="'multiselect'"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown Department',
+            minLength: 2,
+            maxLength: 36,
             type: 'text',
             isDropdown: true,
             label: 'Department',
+            textTransform: 'capitalize',
             multiselectDropdown: true,
             dropdownWidthClass: 'w-col-455'
           }"

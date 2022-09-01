@@ -1,5 +1,5 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
@@ -25,7 +25,7 @@ export class ToDoListCardComponent implements OnInit {
   startChangingStatus = false;
   public dragStarted = false;
   cardData: Array<any> = [];
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
@@ -150,21 +150,20 @@ export class ToDoListCardComponent implements OnInit {
     private todoTService: TodoTService,
     private modalService: ModalService,
     private sharedService: SharedService,
-    private commentsService: CommentsService,
-    private tableService: TruckassistTableService
+    private commentsService: CommentsService
   ) {}
 
   ngOnInit(): void {
     this.getTodoList();
     this.initTableOptions();
 
-    this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
-      .subscribe((res: any) => {
-        if (res) {
-          // your search code here
-        }
-      });
+    // this.tableService.currentSearchTableData
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res: any) => {
+    //     if (res) {
+    //       // your search code here
+    //     }
+    //   });
   }
 
   dragStart = (e) => {

@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { CompanyAccountResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import {
@@ -19,7 +18,7 @@ import { AccountTService } from '../state/account.service';
   styleUrls: ['./account-table.component.scss'],
 })
 export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -360,8 +359,7 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     let caracters: any = '';
 
     for (let i = 0; i < data.password.length; i++) {
-      caracters +=
-        '<div class="password-characters-container"></div>';
+      caracters += '<div class="password-characters-container"></div>';
     }
 
     return caracters;

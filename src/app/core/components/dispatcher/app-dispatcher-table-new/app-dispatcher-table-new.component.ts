@@ -1,9 +1,7 @@
 import { SearchDataService } from './../../../services/shared/search-data.service';
 import { SearchFilterEvent } from './../../../model/searchFilter';
-import { DeleteDialogComponent } from './../../shared/delete-dialog/delete-dialog.component';
 import { DispatchSortService } from './../../../services/dispatchboard/dispatchsort.service';
 import { SignalRService } from './../../../services/dispatchboard/app-signalr.service';
-import { catchError, takeUntil } from 'rxjs/operators';
 /// <reference types="@types/googlemaps" />
 import {
   ChangeDetectorRef,
@@ -19,7 +17,7 @@ import {
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Options } from 'ng5-slider';
-import { forkJoin, of, Subject } from 'rxjs';
+import { forkJoin, of, catchError, Subject, takeUntil } from 'rxjs';
 import * as AppConst from 'src/app/const';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { AppAddLoadTableComponent } from './../app-add-load-table/app-add-load-table.component';
@@ -231,7 +229,7 @@ export class AppDispatcherTableNewComponent implements OnInit, OnChanges {
   showSortItem: boolean;
   sortDest: any = '';
   loadOpenedIndx: number = -1;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private loadService: AppLoadService,
