@@ -126,7 +126,7 @@ export class TaLogoChangeComponent
   }
 
   public handleCroppieUpdate(event) {
-    this.ngxSliderPosition = event.zoom;
+    this.ngxSliderPosition = 0.9;
   }
 
   public zooming(event: any) {

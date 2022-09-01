@@ -58,6 +58,16 @@
       width: 162px;
       height: 194px;
       user-select: none;
+      animation: slideInImage 1s;
+
+      @keyframes slideInImage {
+        from {
+          transform: translateX(200px);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
 
       &-circle {
         width: 162px;
