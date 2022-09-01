@@ -7,8 +7,6 @@ export class UserLoggedService {
 
   getAccessToken() {
     //const user = this.authquery.getEntity(1);
-    console.log('USER LOGGED SERVICE');
-    console.log(JSON.parse(localStorage.getItem('user')));
     const user = JSON.parse(localStorage.getItem('user'));
     return user?.token;
   }

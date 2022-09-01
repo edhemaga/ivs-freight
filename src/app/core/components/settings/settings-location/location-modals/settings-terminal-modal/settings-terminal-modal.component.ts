@@ -17,7 +17,7 @@ import {
 } from 'appcoretruckassist';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import {
@@ -142,17 +142,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       // Office
       officeChecked: [true],
-      officePhone: [null, [Validators.required, phoneRegex]],
+      officePhone: [null, [Validators.required, phoneFaxRegex]],
       officeExtPhone: [null, [...phoneExtension]],
       officeEmail: [null, [emailRegex, ...emailValidation]],
       // Parking
       parkingChecked: [true],
-      parkingPhone: [null, [Validators.required, phoneRegex]],
+      parkingPhone: [null, [Validators.required, phoneFaxRegex]],
       parkingExtPhone: [null, [...phoneExtension]],
       parkingEmail: [null, [emailRegex, ...emailValidation]],
 
@@ -162,7 +162,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       securityCamera: [true],
       // Warehouse
       warehouseChecked: [true],
-      warehousePhone: [null, [Validators.required, phoneRegex]],
+      warehousePhone: [null, [Validators.required, phoneFaxRegex]],
       warehouseExtPhone: [null, [...phoneExtension]],
       warehouseEmail: [null, [emailRegex, ...emailValidation]],
       // Fuel stattion
@@ -240,7 +240,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.terminalForm.get('officePhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(
@@ -260,7 +260,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.terminalForm.get('parkingPhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(
@@ -280,7 +280,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.terminalForm.get('warehousePhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(

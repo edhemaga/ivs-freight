@@ -29,6 +29,8 @@
             name: 'Description',
             type: 'text',
             label: 'Description',
+            minLength: 20,
+            maxLength: 160,
             textTransform: 'capitalize'
           }"
         ></app-ta-input>
@@ -39,11 +41,12 @@
         <app-ta-input
           formControlName="url"
           [inputConfig]="{
-            name: 'Hyperlink',
+            name: 'Url',
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            maxLength: 400
+            minLength: 4,
+            maxLength: 255
           }"
         ></app-ta-input>
       </div>

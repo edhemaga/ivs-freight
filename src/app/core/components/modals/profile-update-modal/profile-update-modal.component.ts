@@ -6,7 +6,7 @@ import {
   firstNameValidation,
   lastNameValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -102,7 +102,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
     this.profileUserForm = this.formBuilder.group({
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
-      mobile: [null, phoneRegex],
+      mobile: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],

@@ -86,6 +86,7 @@
                 name: 'Fax',
                 type: 'text',
                 label: 'Fax',
+                mask: '(000) 000-0000',
                 placeholderIcon: 'fax',
                 isDisabled: true
               }"
@@ -414,6 +415,8 @@
                     name: 'Description',
                     type: 'text',
                     label: 'Description',
+                    minLength: 20,
+                    maxLength: 160,
                     textTransform: 'capitalize',
                     isRequired: true
                   }"

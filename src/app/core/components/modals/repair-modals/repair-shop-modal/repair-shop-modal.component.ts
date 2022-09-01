@@ -23,7 +23,7 @@ import {
   emailRegex,
   emailValidation,
   phoneExtension,
-  phoneRegex,
+  phoneFaxRegex,
   repairShopValidation,
   routingBankValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
@@ -94,7 +94,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.repairShopForm = this.formBuilder.group({
       name: [null, [Validators.required, ...repairShopValidation]],
       pinned: [null],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],

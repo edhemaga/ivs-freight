@@ -30,7 +30,7 @@ import {
   emailValidation,
   mcFFValidation,
   phoneExtension,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
@@ -192,7 +192,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
       email: [null, [emailRegex, ...emailValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
       physicalAddressUnit: [null, [...addressUnitValidation]],
@@ -248,7 +248,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [
         data?.extensionPhone ? data.extensionPhone : null,
