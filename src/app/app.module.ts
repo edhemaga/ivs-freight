@@ -32,6 +32,7 @@ import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
+import { configFactory } from './app.config';
 
 @NgModule({
   declarations: [
@@ -67,13 +68,7 @@ import { EncryptionDecryptionService } from './core/services/encryption-decrypti
     GoogleMapsAPIWrapper,
     {
       provide: Configuration,
-      useFactory: (userLoggedService: UserLoggedService) =>
-        new Configuration({
-          basePath: environment.API_ENDPOINT,
-          credentials: {
-            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
-          },
-        }),
+      useFactory: (userLoggedService: UserLoggedService) => configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },

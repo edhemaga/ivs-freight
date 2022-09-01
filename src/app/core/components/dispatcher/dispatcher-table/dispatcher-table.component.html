@@ -1,5 +1,8 @@
 <div class="d-flex dispatchboard-main-container">
-  <div class="kendo-table-container p-0 mt-3 dispacher-table" [class.parking_opened]="dispatcherStoreService.parkingOpened">
+  <div
+    class="kendo-table-container p-0 mt-3 dispacher-table"
+    [class.parking_opened]="dispatcherStoreService.parkingOpened"
+  >
     <div class="row">
       <div class="grid-wrapper col-12">
         <div class="kendo_top_grid">
@@ -40,12 +43,15 @@
                             <svg-icon
                               [ngClass]="{ svg_rotate: truckTab }"
                               [src]="'assets/img/svgs/down.svg'"
-                              [svgStyle]="{ 'width.px': '14', 'height.px': '8' }"
+                              [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '8'
+                              }"
                               class="arrow-down-up"
                             ></svg-icon>
                           </span>
                         </div>
-  
+
                         <div
                           aria-labelledby="headingOne"
                           class="collapse"
@@ -60,7 +66,9 @@
                                     [ngClass]="truck.class"
                                     class="truck-item-wrapper d-flex justify-content-start truck-icon"
                                   >
-                                    <div class="truck-text">{{ truck.name }}</div>
+                                    <div class="truck-text">
+                                      {{ truck.name }}
+                                    </div>
                                     <div class="truck-image">
                                       <svg-icon
                                         [src]="
@@ -75,7 +83,7 @@
                           </div>
                         </div>
                       </div>
-  
+
                       <div
                         [ngClass]="{ panel_click: trailerTab }"
                         class="panel panel-default"
@@ -95,12 +103,15 @@
                             <svg-icon
                               [ngClass]="{ svg_rotate: trailerTab }"
                               [src]="'assets/img/svgs/down.svg'"
-                              [svgStyle]="{ 'width.px': '14', 'height.px': '8' }"
+                              [svgStyle]="{
+                                'width.px': '14',
+                                'height.px': '8'
+                              }"
                               class="arrow-down-up"
                             ></svg-icon>
                           </span>
                         </div>
-  
+
                         <div
                           aria-labelledby="headingTwo"
                           class="collapse"
@@ -136,14 +147,19 @@
                     </div>
                   </div>
                   <div class="custom_search">
-                    <app-custom-search [gridNameTitle]="'Board'" [stateName]="''">
+                    <app-custom-search
+                      [gridNameTitle]="'Board'"
+                      [stateName]="''"
+                    >
                     </app-custom-search>
                   </div>
                   <div class="dispatch-action-container"></div>
                   <button
                     (click)="lockUnlockBoardAndStartTimer()"
                     *ngIf="!manualLock || dispatcher != -1"
-                    [mainTooltip]="isBoardLocked ? 'Unlock table' : 'Lock table'"
+                    [mainTooltip]="
+                      isBoardLocked ? 'Unlock table' : 'Lock table'
+                    "
                     ngbTooltip
                     [class.lockedBoardFromOtherUser]=""
                     class="open_load btn-transparent lock-unlock cursor-pointer history_board"
@@ -287,8 +303,15 @@
             </app-app-dispatcher-table-new>
           </div> -->
 
-          <div class="dipsatch_groups" *ngFor="let item of dasbhoardTableList | async">
-            <app-dispatchboard-tables [dData]="item" [isBoardLocked]="isBoardLocked"></app-dispatchboard-tables>
+          <div
+            class="dipsatch_groups"
+            *ngFor="let item of dasbhoardTableList | async; let indx = index"
+          >
+            <app-dispatchboard-tables
+              [dData]="item"
+              [isBoardLocked]="isBoardLocked"
+              [dDataIndx]="indx"
+            ></app-dispatchboard-tables>
           </div>
         </div>
       </div>

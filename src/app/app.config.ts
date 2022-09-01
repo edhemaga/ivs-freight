@@ -4,10 +4,14 @@ import {
   ConfigurationParameters,
 } from './../../appcoretruckassist/configuration';
 
-export const configFactory = (token?: string): Configuration => {
+import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+
+export const configFactory = (userLoggedService?: UserLoggedService): Configuration => {
   const params: ConfigurationParameters = {
     basePath: environment.API_ENDPOINT,
-    credentials: { Bearer: token },
+    credentials: {
+      bearer: userLoggedService.getAccessToken.bind(userLoggedService),
+    }
   };
   return new Configuration(params);
 };

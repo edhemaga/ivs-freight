@@ -1,8 +1,9 @@
+import { FormControl } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, OnInit, ViewChild, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { DispatchBoardResponse } from 'appcoretruckassist';
+import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -63,11 +64,41 @@ import { DispatchBoardResponse } from 'appcoretruckassist';
   ],
 })
 export class DispatchboardTablesComponent implements OnInit {
-  @Input() dData: DispatchBoardResponse = {};
+  @Input() dData: DispatchBoardLocalResponse = {};
+  @Input() dDataIndx: number;
 
+  __isBoardLocked: boolean = true;
+
+  selectTruck: FormControl = new FormControl(null);
+
+  @Input() set isBoardLocked(isLocked: boolean){
+    this.__isBoardLocked = isLocked;
+    if(!isLocked){
+      // this.dData.dispatches.push({
+      //   id: null,
+      //   order: null,
+      //   dispatchBoardId: null,
+      //   dispatcher: null,
+      //   truck: null,
+      //   trailer: null,
+      //   driver: null,
+      //   coDriver: null,
+      //   phone: null,
+      //   email: null,
+      //   location: null,
+      //   status: null,
+      //   pickup: null,
+      //   delivery: null,
+      //   hoursOfService: null,
+      //   note: null,
+      //   activeLoad: null,
+      //   assignedLoads: null,
+      //   isPhone: false
+      // });
+    }
+  }
 
   @Input() gridData: any[] = [];
-  @Input() isBoardLocked: boolean;
   @ViewChild('truckDropdown', { static: false })
   public truckDropdown: NgSelectComponent;
   @ViewChild('trailerDropdown', { static: false })
@@ -82,63 +113,63 @@ export class DispatchboardTablesComponent implements OnInit {
   loadTrucks: any[] = [
     {
       id: 1,
-      truckNumber: "534534"
+      name: "534534"
     },
     {
       id: 2,
-      truckNumber: "675475"
+      name: "675475"
     }
   ];
 
   loadTrailers: any[] = [
     {
       id: 1,
-      trailerNumber: "534534"
+      name: "534534"
     },
     {
       id: 2,
-      trailerNumber: "675475"
+      name: "675475"
     }
   ];
 
   loadDrivers: any[] = [
     {
       id: 1,
-      driverName: "Marko Markovic"
+      name: "Marko Markovic"
     },
     {
       id: 2,
-      driverName: "Milos Milosevic"
+      name: "Milos Milosevic"
     }
   ];
 
-  data: any[] = new Array(500).fill({}).map((result, indx) => {
-    result = indx % 2 == 0 ? {
-      id: 1,
-      truckNumber: "7532",
-      truckColor: "5ba160",
-      trailerNumber: null,
-      trailerColor: null,
-      driverId: 1,
-      driverName: "Marko Markovic",
-      driverPhone: "55543234567",
-      driverEmail: "em@em.com",
-      location: null
-    } : 
-    {
-      id: 2,
-      truckNumber: null,
-      truckColor: null,
-      trailerNumber: "C638123",
-      trailerColor: "e94c4c",
-      driverId: null,
-      driverName: null,
-      location: null
-    }
+  // data: any[] = new Array(500).fill({}).map((result, indx) => {
+  //   result = indx % 2 == 0 ? {
+  //     id: 1,
+  //     truckNumber: "7532",
+  //     truckColor: "5ba160",
+  //     trailerNumber: null,
+  //     trailerColor: null,
+  //     driverId: 1,
+  //     driverName: "Marko Markovic",
+  //     driverPhone: "55543234567",
+  //     driverEmail: "em@em.com",
+  //     location: null
+  //   } : 
+  //   {
+  //     id: 2,
+  //     truckNumber: null,
+  //     truckColor: null,
+  //     trailerNumber: "C638123",
+  //     trailerColor: "e94c4c",
+  //     driverId: null,
+  //     driverName: null,
+  //     location: null
+  //   }
 
 
-    return result;
-  });
+  //   return result;
+  // });
 
   constructor() { }
 
@@ -147,13 +178,16 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
 
+  addTruck(e){
+    console.log(e);
+    this.truckSelectOpened = -1;
+  }
+
+
   showNextDropdown(indx: number): void {
     this.truckSelectOpened = this.truckSelectOpened != indx ? indx : -1;
     this.trailerSelectOpened = -1;
     this.driverSelectOpened = -1;
-    setTimeout(() => {
-      this.truckDropdown.focus();
-    }, 300);
   }
 
 
@@ -179,11 +213,11 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   dropList(event){
-    moveItemInArray(this.data, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.dData.dispatches, event.previousIndex, event.currentIndex);
   }
 
   public hoverPhoneEmailMain(indx: number) {
-    this.data[indx].isPhone = !this.data[indx].isPhone;
+   this.dData.dispatches[indx].isPhone = !this.dData.dispatches[indx].isPhone;
   }
 
 

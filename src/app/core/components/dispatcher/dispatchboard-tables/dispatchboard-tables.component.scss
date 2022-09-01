@@ -14,6 +14,14 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
+.example-box{
+  .app-ta-input-dropdown-holder{
+    .input-custom-group .input-control{
+      height: 28px !important;
+    }
+  }
+}
+
 .scrollholder {
   position: relative;
   max-width: 1510px;
@@ -23,6 +31,10 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
     flex-direction: column;
     width: 100%;
     overflow: auto;
+
+    thead.hideVisibility{
+      visibility: hidden;
+    }
 
     .inside-table {
       width: 1510px !important;
@@ -68,6 +80,11 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       &:nth-child(14) {
         right: 0px;
       }
+    }
+
+
+    .empty-box-field{
+      background-color: #ffffff33;
     }
   }
 }
