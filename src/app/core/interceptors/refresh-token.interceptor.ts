@@ -1,3 +1,4 @@
+import { configFactory } from './../../app.config';
 import { Injectable } from '@angular/core';
 import {
   HttpInterceptor,
@@ -31,7 +32,12 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 user.refreshToken = res.refreshToken;
                 localStorage.setItem('user', JSON.stringify(user));
                 console.log('Refresh token: ', user);
-                return next.handle(httpRequest);
+                configFactory(user.token);
+                return next.handle(
+                  httpRequest.clone({
+                    setHeaders: { Authorization: `bearer ${user.token}` },
+                  })
+                );
               }),
               catchError((err: HttpErrorResponse) => {
                 if (err.status === 404) {
