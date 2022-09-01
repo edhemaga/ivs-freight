@@ -84,7 +84,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           this.detailCongif(res.data);
           this.initTableOptions(res.data);
           this.checkExpiration(res.data);
-
+          if (this.cdlActiveId > 0) {
+            this.getCdlById(this.cdlActiveId);
+          }
           this.cdRef.detectChanges();
         }
       });
@@ -425,9 +427,9 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
           const mappedEvent = {
             ...this.dataCdl,
             data: {
-              state: this.dataCdl.state.stateShortName,
-              expDate: this.dataCdl.expDate,
-              cdlNumber: this.dataCdl.cdlNumber,
+              state: this.dataCdl?.state?.stateShortName,
+              expDate: this.dataCdl?.expDate,
+              cdlNumber: this.dataCdl?.cdlNumber,
             },
           };
           this.modalService.openModal(
