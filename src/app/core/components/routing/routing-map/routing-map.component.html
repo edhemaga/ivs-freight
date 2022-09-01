@@ -543,6 +543,7 @@
                           : 'visible'
                     }"
                     (click)="stopMarkerClick($event, i, j)"
+                    (mousewheel)="markerZoom($event, route.stops[j])"
                   >
                     <svg
                       [tooltipBackground]="route.color"
@@ -624,6 +625,7 @@
                     }"
                     class="marker-container circle-marker"
                     (click)="stopMarkerClick($event, i, j)"
+                    (mousewheel)="markerZoom($event, route.stops[j])"
                   >
                     <svg
                       *ngIf="j == 0 || j == route.stops.length - 1"
@@ -1084,11 +1086,11 @@
 <ng-template #dropdownPopover let-data="data">
   <div class="table-dropdown">
     <div
-      (click)="action.disabled ? $event.stopPropagation() : callDropDownAction($event, action)"
+      (click)="action.disabled ? stopDropdownClick($event) : callDropDownAction($event, action)"
       *ngFor="let action of data"
       class="table-dropdown-content"
       [class]="action.class"
-      [ngStyle]="{ 'background': action.disabled ? 'gray !important' : '' }"
+      [ngClass]="{ 'disabled-dropdown-option': action.disabled }"
     >
       <svg-icon
         [ngClass]="{

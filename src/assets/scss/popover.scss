@@ -796,6 +796,21 @@
           color: #6C6C6C;
         }
 
+        &.disabled-dropdown-option {
+          background: #6C6C6C33 !important;
+          cursor: default;
+
+          &:hover {
+            .action-svg {
+              svg {
+                path {
+                  fill: #AAAAAA !important;
+                }
+              }
+            }
+          }
+        }
+
         &.delete-text {
           &:hover {
             .action-svg {

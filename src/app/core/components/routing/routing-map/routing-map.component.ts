@@ -1265,4 +1265,31 @@ export class RoutingMapComponent implements OnInit {
       console.log('focusedStopIndex', this.focusedStopIndex);
     }
   }
+
+  markerZoom(e, item) {
+    if(e.wheelDeltaY > 0) {
+      // The user scrolled up.
+      this.zoomChange(this.mapZoom+1);
+
+      if ( this.mapLatitude == item.lat && this.mapLongitude == item.long ) {
+        this.mapLatitude = item.lat+0.000001;
+        this.mapLongitude = item.long+0.000001;
+      } else {
+        this.mapLatitude = item.lat;
+        this.mapLongitude = item.long;
+      }
+      
+      console.log('markerZoom item', item);
+      console.log('markerZoom mapLatitude', this.mapLatitude);
+      console.log('markerZoom mapLongitude', this.mapLongitude);
+    } else {
+      // The user scrolled down.
+      this.zoomChange(this.mapZoom-1);
+    }
+  }
+
+  stopDropdownClick(event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
 }
