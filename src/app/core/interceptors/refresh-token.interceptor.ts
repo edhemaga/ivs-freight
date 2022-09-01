@@ -10,10 +10,15 @@ import {
 import { Observable, catchError, throwError, switchMap, tap } from 'rxjs';
 import { AccountService, SignInResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
+import { UserLoggedService } from '../components/authentication/state/user-logged.service';
 
 @Injectable()
 export class RefreshTokenInterceptor implements HttpInterceptor {
-  constructor(private accountService: AccountService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private router: Router,
+    private userLoggedService: UserLoggedService
+  ) {}
 
   intercept(
     httpRequest: HttpRequest<any>,
@@ -23,7 +28,6 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
       catchError((err: HttpErrorResponse) => {
         const user: SignInResponse = JSON.parse(localStorage.getItem('user'));
         if (err.status === 401 && user) {
-          console.log('Err status: ', err.status);
           return this.accountService
             .apiAccountRefreshPost({ refreshToken: user.refreshToken })
             .pipe(
@@ -31,8 +35,7 @@ export class RefreshTokenInterceptor implements HttpInterceptor {
                 user.token = res.token;
                 user.refreshToken = res.refreshToken;
                 localStorage.setItem('user', JSON.stringify(user));
-                console.log('Refresh token: ', user);
-                configFactory(user.token);
+                configFactory(this.userLoggedService);
                 return next.handle(
                   httpRequest.clone({
                     setHeaders: { Authorization: `bearer ${user.token}` },
