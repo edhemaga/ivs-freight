@@ -1,6 +1,12 @@
 import { filter } from 'rxjs';
 import { NgbDropdownConfig } from '@ng-bootstrap/ng-bootstrap';
-import { Component, Input, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  ViewEncapsulation,
+  ViewChild,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 
@@ -12,8 +18,6 @@ import { Options } from '@angular-slider/ngx-slider';
   encapsulation: ViewEncapsulation.None,
 })
 export class FilterComponent implements OnInit {
-
-
   @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [
@@ -72,26 +76,26 @@ export class FilterComponent implements OnInit {
     {
       name: 'James Lopez',
       id: 14,
-    }
+    },
   ];
 
   selectedUser: any[] = [];
 
   unselectedDispatcher: any[] = [
     {
-      name: 'Angelo Trotter'
+      name: 'Angelo Trotter',
     },
     {
-      name: 'Aleksandra Djordjevic'
+      name: 'Aleksandra Djordjevic',
     },
     {
-      name: 'Alex Midleman'
+      name: 'Alex Midleman',
     },
     {
-      name: 'Ban Dover'
+      name: 'Ban Dover',
     },
     {
-      name: 'Carlos Huanito'
+      name: 'Carlos Huanito',
     },
     {
       name: 'Chirs Griffin',
@@ -100,17 +104,17 @@ export class FilterComponent implements OnInit {
       name: 'Eric Forman',
     },
     {
-      name: 'Glan Danzig'
+      name: 'Glan Danzig',
     },
     {
-      name: 'Denis Rodman'
+      name: 'Denis Rodman',
     },
     {
-      name: 'Michael Scott'
+      name: 'Michael Scott',
     },
     {
-      name: 'Marko Martinovic'
-    }
+      name: 'Marko Martinovic',
+    },
   ];
 
   departmentArray: any[] = [
@@ -137,24 +141,24 @@ export class FilterComponent implements OnInit {
     {
       name: 'Other',
       id: 6,
-    }
+    },
   ];
 
   pendingStatusArray: any[] = [
     {
       id: 1,
       name: 'BOOKED',
-      color: '#C1C1C1'
+      color: '#C1C1C1',
     },
     {
       id: 2,
       name: 'UNASSIGNED',
-      color: '#C1C1C1'
+      color: '#C1C1C1',
     },
     {
       id: 3,
       name: 'ASSIGNED',
-      color: '#9F9F9F'
+      color: '#9F9F9F',
     },
   ];
 
@@ -162,12 +166,12 @@ export class FilterComponent implements OnInit {
     {
       id: 1,
       name: 'LOADED',
-      color: '#74BF97'
+      color: '#74BF97',
     },
     {
       id: 2,
       name: 'DISPATCHED',
-      color: '#7FA2E6'
+      color: '#7FA2E6',
     },
   ];
 
@@ -175,42 +179,42 @@ export class FilterComponent implements OnInit {
     {
       id: 1,
       name: 'CANCELED',
-      color: '#E27579'
+      color: '#E27579',
     },
     {
       id: 2,
       name: 'CANCELED - LOADED',
-      color: '#E27579'
+      color: '#E27579',
     },
     {
       id: 3,
       name: 'DELIVERED',
-      color: '#FFCB86'
+      color: '#FFCB86',
     },
     {
       id: 4,
       name: 'HOLD',
-      color: '#D6D6D6'
+      color: '#D6D6D6',
     },
     {
       id: 5,
       name: 'HOLD - INVOICED',
-      color: '#D6D6D6'
+      color: '#D6D6D6',
     },
     {
       id: 6,
       name: 'INVOICED',
-      color: '#D2CBA6'
+      color: '#D2CBA6',
     },
     {
       id: 7,
       name: 'PAID',
-      color: '#BCB8A2'
+      color: '#BCB8A2',
     },
     {
       id: 8,
       name: 'SHORT-PAID',
-      color: '#A6A293'
+      color: '#A6A293',
     },
   ];
 
@@ -260,8 +264,7 @@ export class FilterComponent implements OnInit {
       name: 'Engine Oil & Filter',
       icon: 'assets/svg/common/repair-pm/ic_oil_pump.svg',
     },
-  ]
-
+  ];
 
   categoryFuelArray: any[] = [
     {
@@ -295,7 +298,7 @@ export class FilterComponent implements OnInit {
     {
       name: 'Other',
       id: 8,
-    }
+    },
   ];
 
   categoryRepairArray: any[] = [
@@ -329,7 +332,7 @@ export class FilterComponent implements OnInit {
       name: 'Dealer',
       icon: 'assets/svg/common/repair-services/ic_dealer.svg',
     },
-  ]
+  ];
 
   truckArray: any[] = [
     {
@@ -368,7 +371,7 @@ export class FilterComponent implements OnInit {
       id: 9,
       name: '1231C',
     },
-  ]
+  ];
 
   trailerArray: any[] = [
     {
@@ -407,7 +410,7 @@ export class FilterComponent implements OnInit {
       id: 9,
       name: 'TRAILER',
     },
-  ]
+  ];
 
   fuelStopArray: any[] = [
     {
@@ -442,7 +445,7 @@ export class FilterComponent implements OnInit {
       id: 8,
       name: 'Behemoth Gas Station',
     },
-  ]
+  ];
 
   brokerArray: any[] = [
     {
@@ -477,50 +480,50 @@ export class FilterComponent implements OnInit {
       id: 8,
       name: 'LOGY Supply chain 2',
     },
-  ]
+  ];
 
   driverArray: any[] = [
     {
       id: 1,
       name: 'Angelo Trotter',
-      image: ''
+      image: '',
     },
     {
       id: 2,
       name: 'Aleksandra Djordjevic',
-      image: ''
+      image: '',
     },
     {
       id: 3,
       name: 'Alex Midleman',
-      image: ''
+      image: '',
     },
     {
       id: 4,
       name: 'Ben Dover',
-      image: ''
+      image: '',
     },
     {
       id: 5,
       name: 'Carlos Huanito',
-      image: ''
+      image: '',
     },
     {
       id: 6,
       name: 'Chirs Griffin',
-      image: ''
+      image: '',
     },
     {
       id: 7,
       name: 'Erica Forman',
-      image: ''
+      image: '',
     },
     {
       id: 8,
       name: 'Glan Danzig',
-      image: ''
+      image: '',
     },
-  ]
+  ];
 
   truckTypeArray: any[] = [
     {
@@ -558,8 +561,7 @@ export class FilterComponent implements OnInit {
       name: 'Spotter',
       icon: 'assets/svg/common/trucks/ic_truck_spotter.svg',
     },
-  ]
-
+  ];
 
   trailerTypeArray: any[] = [
     {
@@ -622,7 +624,7 @@ export class FilterComponent implements OnInit {
       name: 'Step Deck',
       icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
     },
-  ]
+  ];
 
   usaStates: any[] = [
     {
@@ -689,7 +691,8 @@ export class FilterComponent implements OnInit {
       id: 13,
       name: 'Georgia',
       short: 'GA',
-    }, {
+    },
+    {
       id: 14,
       name: 'Guam',
       short: 'GU',
@@ -925,7 +928,6 @@ export class FilterComponent implements OnInit {
       name: 'Wyoming',
       short: 'WY',
     },
-
   ];
 
   canadaStates: any[] = [
@@ -944,7 +946,7 @@ export class FilterComponent implements OnInit {
       name: 'STATE 2',
       short: 'S2',
     },
-  ]
+  ];
 
   selectedDispatcher: any[] = [];
   selectedTimeValue: any = '';
@@ -996,7 +998,6 @@ export class FilterComponent implements OnInit {
     hideLimitLabels: false,
   };
 
-
   @Input() type: string = 'userFilter';
   @Input() icon: string = 'user';
   @Input() subType: string = 'pendingStatus';
@@ -1011,14 +1012,11 @@ export class FilterComponent implements OnInit {
   @Input() swipeFilter: boolean = false;
   @Input() locationDefType: boolean = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-  ) { }
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-
     this.searchForm = this.formBuilder.group({
-      search: ''
+      search: '',
     });
 
     this.sliderForm = this.formBuilder.group({
@@ -1037,7 +1035,7 @@ export class FilterComponent implements OnInit {
     });
 
     this.locationForm = this.formBuilder.group({
-      address: ''
+      address: '',
     });
 
     this.payForm = this.formBuilder.group({
@@ -1045,15 +1043,12 @@ export class FilterComponent implements OnInit {
       payTo: '',
     });
 
-
     this.locationForm.valueChanges.subscribe((changes) => {
-
       if (changes.address == null) {
         this.locationState = '';
         this.rangeValue = 0;
       }
-
-    })
+    });
 
     this.moneyForm.valueChanges.subscribe((changes) => {
       if (changes.singleFrom || changes.singleTo) {
@@ -1062,15 +1057,12 @@ export class FilterComponent implements OnInit {
           let from = parseInt(changes.singleFrom);
           if (from > to || from == to) {
             this.singleFormError = true;
-          }
-          else {
+          } else {
             this.singleFormError = false;
           }
-        }
-        else {
+        } else {
           this.singleFormError = false;
         }
-
       }
 
       if (changes.multiFromFirstFrom || changes.multiFromFirstTo) {
@@ -1080,15 +1072,12 @@ export class FilterComponent implements OnInit {
 
           if (from > to || from == to) {
             this.multiFormFirstError = true;
-          }
-          else {
+          } else {
             this.multiFormFirstError = false;
           }
-        }
-        else {
+        } else {
           this.multiFormFirstError = false;
         }
-
       }
 
       if (changes.multiFormSecondFrom || changes.multiFormSecondTo) {
@@ -1098,12 +1087,10 @@ export class FilterComponent implements OnInit {
 
           if (from > to || from == to) {
             this.multiFormSecondError = true;
-          }
-          else {
+          } else {
             this.multiFormSecondError = false;
           }
-        }
-        else {
+        } else {
           this.multiFormSecondError = false;
         }
       }
@@ -1114,36 +1101,40 @@ export class FilterComponent implements OnInit {
           let from = parseInt(changes.multiFormThirdFrom);
           if (from > to || from == to) {
             this.multiFormThirdError = true;
-          }
-          else {
+          } else {
             this.multiFormThirdError = false;
           }
-        }
-        else {
+        } else {
           this.multiFormThirdError = false;
         }
       }
 
-
       if (this.subType != 'all') {
         if (changes.singleFrom && changes.singleTo && !this.singleFormError) {
           this.moneyFilterStatus = true;
-        }
-        else {
+        } else {
           this.moneyFilterStatus = false;
         }
-      }
-      else {
-        if (changes.multiFromFirstFrom && changes.multiFromFirstTo && !this.multiFormFirstError) {
+      } else {
+        if (
+          changes.multiFromFirstFrom &&
+          changes.multiFromFirstTo &&
+          !this.multiFormFirstError
+        ) {
           this.moneyFilterStatus = true;
-        }
-        else if (changes.multiFormSecondFrom && changes.multiFormSecondTo && !this.multiFormSecondError) {
+        } else if (
+          changes.multiFormSecondFrom &&
+          changes.multiFormSecondTo &&
+          !this.multiFormSecondError
+        ) {
           this.moneyFilterStatus = true;
-        }
-        else if (changes.multiFormThirdFrom && changes.multiFormThirdTo && !this.multiFormThirdError) {
+        } else if (
+          changes.multiFormThirdFrom &&
+          changes.multiFormThirdTo &&
+          !this.multiFormThirdError
+        ) {
           this.moneyFilterStatus = true;
-        }
-        else {
+        } else {
           this.moneyFilterStatus = false;
         }
 
@@ -1158,9 +1149,8 @@ export class FilterComponent implements OnInit {
         if (this.multiFormThirdError) {
           this.moneyFilterStatus = false;
         }
-
       }
-    })
+    });
 
     this.searchForm.valueChanges.subscribe((changes) => {
       if (changes.search) {
@@ -1168,7 +1158,87 @@ export class FilterComponent implements OnInit {
         this.searchInputValue = inputValue;
 
         if (this.type == 'userFilter') {
-          this.unselectedUser.map(item => {
+          this.unselectedUser.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'statusFilter') {
+          this.pendingStatusArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+
+          this.activeStatusArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+
+          this.closedStatusArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'truckFilter') {
+          this.truckArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'fuelStopFilter') {
+          this.fuelStopArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'trailerFilter') {
+          this.trailerArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'brokerFilter') {
+          this.brokerArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'driverFilter') {
+          this.driverArray.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+        } else if (this.type == 'stateFilter') {
+          this.usaStates.map((item) => {
+            item.hidden = true;
+            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
+              item.hidden = false;
+            }
+            return item;
+          });
+
+          this.canadaStates.map((item) => {
             item.hidden = true;
             if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
               item.hidden = false;
@@ -1176,221 +1246,96 @@ export class FilterComponent implements OnInit {
             return item;
           });
         }
-        else if (this.type == 'statusFilter') {
-          this.pendingStatusArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-
-          this.activeStatusArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-
-          this.closedStatusArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-        else if (this.type == 'truckFilter') {
-          this.truckArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-        else if (this.type == 'fuelStopFilter') {
-          this.fuelStopArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-
-        else if (this.type == 'trailerFilter') {
-          this.trailerArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-
-        else if (this.type == 'brokerFilter') {
-          this.brokerArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-
-        else if (this.type == 'driverFilter') {
-          this.driverArray.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-        }
-
-        else if (this.type == 'stateFilter') {
-          this.usaStates.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-
-          this.canadaStates.map(item => {
-            item.hidden = true;
-            if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-              item.hidden = false;
-            }
-            return item;
-          });
-
-        }
-
-      }
-      else {
+      } else {
         if (this.type == 'userFilter') {
-          this.unselectedUser.map(item => {
+          this.unselectedUser.map((item) => {
             item.hidden = false;
           });
-        }
-
-        else if (this.type == 'statusFilter') {
-          this.pendingStatusArray.map(item => {
-            item.hidden = false;
-          });
-
-          this.activeStatusArray.map(item => {
+        } else if (this.type == 'statusFilter') {
+          this.pendingStatusArray.map((item) => {
             item.hidden = false;
           });
 
-          this.closedStatusArray.map(item => {
-            item.hidden = false;
-          });
-        }
-        else if (this.type == 'truckFilter') {
-          this.truckArray.map(item => {
-            item.hidden = false;
-          });
-        }
-        else if (this.type == 'trailerFilter') {
-          this.trailerArray.map(item => {
-            item.hidden = false;
-          });
-        }
-        else if (this.type == 'fuelStopFilter') {
-          this.fuelStopArray.map(item => {
-            item.hidden = false;
-          });
-        }
-
-        else if (this.type == 'brokerFilter') {
-          this.brokerArray.map(item => {
-            item.hidden = false;
-          });
-        }
-
-        else if (this.type == 'driverFilter') {
-          this.driverArray.map(item => {
-            item.hidden = false;
-          });
-        }
-
-        else if (this.type == 'stateFilter') {
-          this.usaStates.map(item => {
+          this.activeStatusArray.map((item) => {
             item.hidden = false;
           });
 
-          this.canadaStates.map(item => {
+          this.closedStatusArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'truckFilter') {
+          this.truckArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'trailerFilter') {
+          this.trailerArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'fuelStopFilter') {
+          this.fuelStopArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'brokerFilter') {
+          this.brokerArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'driverFilter') {
+          this.driverArray.map((item) => {
+            item.hidden = false;
+          });
+        } else if (this.type == 'stateFilter') {
+          this.usaStates.map((item) => {
             item.hidden = false;
           });
 
+          this.canadaStates.map((item) => {
+            item.hidden = false;
+          });
         }
 
         this.searchInputValue = '';
       }
-
-
     });
   }
 
   addToSelectedUser(item, indx, subType?) {
-
     let mainArray: any[] = [];
     if (this.type == 'departmentFilter') {
       mainArray = this.departmentArray;
-    }
-    else if (this.type == 'statusFilter') {
+    } else if (this.type == 'statusFilter') {
       if (subType == 'pending') {
         mainArray = this.pendingStatusArray;
-      }
-      else if (subType == 'active') {
+      } else if (subType == 'active') {
         mainArray = this.activeStatusArray;
-      }
-      else {
+      } else {
         mainArray = this.closedStatusArray;
       }
-    }
-    else if (this.type == 'pmFilter') {
+    } else if (this.type == 'pmFilter') {
       mainArray = this.pmFilterArray;
-    }
-    else if (this.type == 'categoryFuelFilter') {
+    } else if (this.type == 'categoryFuelFilter') {
       mainArray = this.categoryFuelArray;
-    }
-    else if (this.type == 'categoryRepairFilter') {
+    } else if (this.type == 'categoryRepairFilter') {
       mainArray = this.categoryRepairArray;
-    }
-    else if (this.type == 'truckFilter') {
+    } else if (this.type == 'truckFilter') {
       mainArray = this.truckArray;
-    }
-    else if (this.type == 'trailerFilter') {
+    } else if (this.type == 'trailerFilter') {
       mainArray = this.trailerArray;
-    }
-    else if (this.type == 'fuelStopFilter') {
+    } else if (this.type == 'fuelStopFilter') {
       mainArray = this.fuelStopArray;
-    }
-    else if (this.type == 'brokerFilter') {
+    } else if (this.type == 'brokerFilter') {
       mainArray = this.brokerArray;
-    }
-    else if (this.type == 'driverFilter') {
+    } else if (this.type == 'driverFilter') {
       mainArray = this.driverArray;
-    }
-    else if (this.type == 'truckTypeFilter') {
+    } else if (this.type == 'truckTypeFilter') {
       mainArray = this.truckTypeArray;
-    }
-    else if (this.type == 'userFilter') {
+    } else if (this.type == 'userFilter') {
       mainArray = this.unselectedUser;
-    }
-    else if (this.type == 'trailerTypeFilter') {
+    } else if (this.type == 'trailerTypeFilter') {
       mainArray = this.trailerTypeArray;
-    }
-    else if (this.type == 'stateFilter') {
+    } else if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         mainArray = this.canadaStates;
-      }
-      else {
+      } else {
         mainArray = this.usaStates;
       }
     }
@@ -1400,12 +1345,10 @@ export class FilterComponent implements OnInit {
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.push(item);
-      }
-      else {
+      } else {
         this.usaSelectedStates.push(item);
       }
-    }
-    else {
+    } else {
       this.selectedUser.push(item);
     }
 
@@ -1418,8 +1361,7 @@ export class FilterComponent implements OnInit {
     if (this.type == 'stateFilter') {
       if (subType == 'canada') {
         this.canadaSelectedStates.splice(indx, 1);
-      }
-      else {
+      } else {
         this.usaSelectedStates.splice(indx, 1);
       }
     }
@@ -1427,13 +1369,12 @@ export class FilterComponent implements OnInit {
     let id = item.id;
 
     if (this.type == 'departmentFilter') {
-      this.departmentArray.map(item => {
+      this.departmentArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'statusFilter') {
+    } else if (this.type == 'statusFilter') {
       let checkActiveStatusArray = this.activeStatusArray.indexOf(item);
       let checkPendingStatusArray = this.pendingStatusArray.indexOf(item);
 
@@ -1441,111 +1382,92 @@ export class FilterComponent implements OnInit {
 
       if (checkActiveStatusArray > -1) {
         mainArray = this.activeStatusArray;
-      }
-      else if (checkPendingStatusArray > -1) {
+      } else if (checkPendingStatusArray > -1) {
         mainArray = this.pendingStatusArray;
-      }
-      else {
+      } else {
         mainArray = this.closedStatusArray;
       }
 
-      mainArray.map(item => {
+      mainArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'pmFilter') {
-      this.pmFilterArray.map(item => {
+    } else if (this.type == 'pmFilter') {
+      this.pmFilterArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-
-    }
-    else if (this.type == 'categoryFuelFilter') {
-      this.categoryFuelArray.map(item => {
+    } else if (this.type == 'categoryFuelFilter') {
+      this.categoryFuelArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-
-    }
-    else if (this.type == 'categoryRepairFilter') {
-      this.categoryRepairArray.map(item => {
+    } else if (this.type == 'categoryRepairFilter') {
+      this.categoryRepairArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'truckFilter') {
-      this.truckArray.map(item => {
+    } else if (this.type == 'truckFilter') {
+      this.truckArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'trailerFilter') {
-      this.trailerArray.map(item => {
+    } else if (this.type == 'trailerFilter') {
+      this.trailerArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'fuelStopFilter') {
-      this.fuelStopArray.map(item => {
+    } else if (this.type == 'fuelStopFilter') {
+      this.fuelStopArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-
-    }
-    else if (this.type == 'brokerFilter') {
-      this.brokerArray.map(item => {
+    } else if (this.type == 'brokerFilter') {
+      this.brokerArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'driverFilter') {
-      this.driverArray.map(item => {
+    } else if (this.type == 'driverFilter') {
+      this.driverArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'truckTypeFilter') {
-      this.truckTypeArray.map(item => {
+    } else if (this.type == 'truckTypeFilter') {
+      this.truckTypeArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'trailerTypeFilter') {
-      this.trailerTypeArray.map(item => {
+    } else if (this.type == 'trailerTypeFilter') {
+      this.trailerTypeArray.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-    }
-    else if (this.type == 'userFilter') {
-      this.unselectedUser.map(item => {
+    } else if (this.type == 'userFilter') {
+      this.unselectedUser.map((item) => {
         if (item.id == id) {
           item.isSelected = false;
         }
       });
-
-    }
-    else if (this.type == 'stateFilter') {
+    } else if (this.type == 'stateFilter') {
       if (subType == 'canada') {
-        this.canadaStates.map(item => {
+        this.canadaStates.map((item) => {
           if (item.id == id) {
             item.isSelected = false;
           }
         });
-      }
-      else {
-        this.usaStates.map(item => {
+      } else {
+        this.usaStates.map((item) => {
           if (item.id == id) {
             item.isSelected = false;
           }
@@ -1557,7 +1479,6 @@ export class FilterComponent implements OnInit {
   }
 
   clearAll(e?) {
-
     if (e) {
       e.stopPropagation();
     }
@@ -1567,100 +1488,87 @@ export class FilterComponent implements OnInit {
     if (this.type == 'timeFilter') {
       this.selectedTimeValue = '';
       this.filterActiveTime = '';
-    }
-    else {
+    } else {
       this.unselectedUser = [...this.unselectedUser, ...this.selectedUser];
       this.selectedUser = [];
       this.usaSelectedStates = [];
       this.canadaSelectedStates = [];
 
       if (this.type == 'departmentFilter') {
-        this.departmentArray.map(item => {
+        this.departmentArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'statusFilter') {
-        this.pendingStatusArray.map(item => {
-          item.isSelected = false;
-        });
-
-        this.activeStatusArray.map(item => {
+      } else if (this.type == 'statusFilter') {
+        this.pendingStatusArray.map((item) => {
           item.isSelected = false;
         });
 
-        this.closedStatusArray.map(item => {
+        this.activeStatusArray.map((item) => {
           item.isSelected = false;
         });
 
-      }
-      else if (this.type == 'pmFilter') {
-        this.pmFilterArray.map(item => {
+        this.closedStatusArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'categoryFuelFilter') {
-        this.categoryFuelArray.map(item => {
+      } else if (this.type == 'pmFilter') {
+        this.pmFilterArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'categoryRepairFilter') {
-        this.categoryRepairArray.map(item => {
+      } else if (this.type == 'categoryFuelFilter') {
+        this.categoryFuelArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'truckFilter') {
-        this.truckArray.map(item => {
+      } else if (this.type == 'categoryRepairFilter') {
+        this.categoryRepairArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'trailerFilter') {
-        this.trailerArray.map(item => {
+      } else if (this.type == 'truckFilter') {
+        this.truckArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'brokerFilter') {
-        this.brokerArray.map(item => {
+      } else if (this.type == 'trailerFilter') {
+        this.trailerArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'driverFilter') {
-        this.driverArray.map(item => {
+      } else if (this.type == 'brokerFilter') {
+        this.brokerArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'truckTypeFilter') {
-        this.truckTypeArray.map(item => {
+      } else if (this.type == 'driverFilter') {
+        this.driverArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'userFilter') {
-        this.unselectedUser.map(item => {
+      } else if (this.type == 'truckTypeFilter') {
+        this.truckTypeArray.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'stateFilter') {
-        this.usaStates.map(item => {
+      } else if (this.type == 'userFilter') {
+        this.unselectedUser.map((item) => {
+          item.isSelected = false;
+        });
+      } else if (this.type == 'stateFilter') {
+        this.usaStates.map((item) => {
           item.isSelected = false;
         });
 
-        this.canadaStates.map(item => {
+        this.canadaStates.map((item) => {
           item.isSelected = false;
         });
-      }
-      else if (this.type == 'injuryFilter' || this.type == 'fatalityFilter' || this.type == 'violationFilter') {
+      } else if (
+        this.type == 'injuryFilter' ||
+        this.type == 'fatalityFilter' ||
+        this.type == 'violationFilter'
+      ) {
         this.rangeValue = 0;
-      }
-      else if (this.type == 'locationFilter') {
+      } else if (this.type == 'locationFilter') {
         this.rangeValue = 0;
         this.locationForm.setValue({
-          address: ''
+          address: '',
         });
-      }
-      else if (this.type == 'moneyFilter') {
+      } else if (this.type == 'moneyFilter') {
         if (this.subType != 'all') {
           this.clearForm('singleForm');
-        }
-        else {
+        } else {
           this.clearForm('clearAll');
         }
       }
@@ -1671,8 +1579,8 @@ export class FilterComponent implements OnInit {
   }
 
   filterUser(e: any) {
-    const inputValue = e.target.value
-    this.unselectedUser.filter(item => {
+    const inputValue = e.target.value;
+    this.unselectedUser.filter((item) => {
       item.hidden = true;
       if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
         item.hidden = false;
@@ -1693,7 +1601,7 @@ export class FilterComponent implements OnInit {
 
   filterDispatcher(e: any) {
     const inputValue = e.target.value;
-    this.unselectedDispatcher.filter(item => {
+    this.unselectedDispatcher.filter((item) => {
       item.hidden = true;
       if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
         item.hidden = false;
@@ -1703,22 +1611,24 @@ export class FilterComponent implements OnInit {
   }
 
   clearAllDispatcher() {
-    this.unselectedDispatcher = [...this.unselectedDispatcher, ...this.selectedDispatcher];
+    this.unselectedDispatcher = [
+      ...this.unselectedDispatcher,
+      ...this.selectedDispatcher,
+    ];
     this.selectedDispatcher = [];
   }
 
   hideOtherToolTips(e) {
     document.querySelectorAll('.box-icons').forEach((parentElement) => {
-      //console.log('---parentElement----', parentElement); 
-    })
-
+      //console.log('---parentElement----', parentElement);
+    });
   }
 
   backOtherToolTips(e) {
     document.querySelectorAll('.box-icons').forEach((parentElement) => {
       //parentElement.style.pointerEvents = 'auto';
       //parentElement.classList.remove('hideEventsOnBox');
-    })
+    });
   }
 
   setTimeValue(mod) {
@@ -1729,7 +1639,6 @@ export class FilterComponent implements OnInit {
     } else {
       this.setButtonAvailable = true;
     }
-
   }
 
   removeTimeValue(e) {
@@ -1740,24 +1649,19 @@ export class FilterComponent implements OnInit {
   showSearch(mod?) {
     if (mod) {
       this.expandSearch = false;
-    }
-    else {
+    } else {
       this.expandSearch = true;
     }
-
   }
 
   hideFormPart(mod) {
     if (mod == 'part1') {
       this.showPart1 = !this.showPart1;
-    }
-    else if (mod == 'part2') {
+    } else if (mod == 'part2') {
       this.showPart2 = !this.showPart2;
-    }
-    else {
+    } else {
       this.showPart3 = !this.showPart3;
     }
-
   }
 
   setRangeValue(mod) {
@@ -1785,9 +1689,7 @@ export class FilterComponent implements OnInit {
         multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
         multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
       });
-
-    }
-    else if (mod == 'multiFromFirst') {
+    } else if (mod == 'multiFromFirst') {
       this.multiFormFirstError = false;
       this.moneyForm.setValue({
         singleFrom: this.moneyForm.value.singleFrom,
@@ -1799,9 +1701,7 @@ export class FilterComponent implements OnInit {
         multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
         multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
       });
-
-    }
-    else if (mod == 'multiFormSecond') {
+    } else if (mod == 'multiFormSecond') {
       this.multiFormSecondError = false;
       this.moneyForm.setValue({
         singleFrom: this.moneyForm.value.singleFrom,
@@ -1813,9 +1713,7 @@ export class FilterComponent implements OnInit {
         multiFormThirdFrom: this.moneyForm.value.multiFormThirdFrom,
         multiFormThirdTo: this.moneyForm.value.multiFormThirdTo,
       });
-
-    }
-    else if (mod == 'multiFormThird') {
+    } else if (mod == 'multiFormThird') {
       this.multiFormThirdError = false;
       this.moneyForm.setValue({
         singleFrom: this.moneyForm.value.singleFrom,
@@ -1827,9 +1725,7 @@ export class FilterComponent implements OnInit {
         multiFormThirdFrom: '',
         multiFormThirdTo: '',
       });
-
-    }
-    else if (mod == 'clearAll') {
+    } else if (mod == 'clearAll') {
       this.multiFormFirstError = false;
       this.multiFormSecondError = false;
       this.multiFormThirdError = false;
@@ -1844,7 +1740,6 @@ export class FilterComponent implements OnInit {
         multiFormThirdTo: '',
       });
     }
-
   }
 
   setFilter(e) {
