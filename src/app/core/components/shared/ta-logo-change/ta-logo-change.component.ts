@@ -12,7 +12,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import * as Croppie from 'croppie';
+import Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
@@ -30,6 +30,7 @@ export class TaLogoChangeComponent
   private destroy$ = new Subject<void>();
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
   @Input() croppieOptions: Croppie.CroppieOptions = {
+    // Rectangle Cropper Options - all the same except Viewport width - boundary width 616, enforceBoundary: false
     enableExif: true,
     viewport: {
       width: 162,
@@ -41,6 +42,7 @@ export class TaLogoChangeComponent
       height: 194,
     },
   };
+  @Input() croppieShape: string;
   @Input() customClass: string;
   @Input() imageUrl: any | string = null;
   @Input() dropZoneConfig: DropZoneConfig = {
@@ -140,7 +142,7 @@ export class TaLogoChangeComponent
         this.imageBase64Service.getStringFromBase64(base64)
       );
       this.imageUrl = base64;
-      this.showUploadZone = true;
+      this.showUploadZone = this.croppieShape === 'rectangle' ? false : true;
     });
     this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);

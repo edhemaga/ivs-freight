@@ -286,6 +286,8 @@
         </div>
         <app-ta-custom-card [cardName]="'Logo'" [isCardOpen]="true">
           <app-ta-logo-change
+            [croppieOptions]="croppieOptions"
+            [croppieShape]="'rectangle'"
             [customClass]="'modal-container-M'"
             [imageUrl]="this.companyForm.get('logo').value"
             (validationEvent)="onImageValidation($event)"

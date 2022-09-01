@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import * as AppConst from 'src/app/const';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-dashboard-map',
   templateUrl: './dashboard-map.component.html',
   styleUrls: ['./dashboard-map.component.scss'],
 })
-export class DashboardMapComponent implements OnInit {
+export class DashboardMapComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   dashboardMapSwitchTabs: any[] = [];
 
   agmMap: any;
@@ -40,7 +41,7 @@ export class DashboardMapComponent implements OnInit {
     ];
 
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           // your search code here
@@ -49,4 +50,9 @@ export class DashboardMapComponent implements OnInit {
   }
 
   changeMapSwitchTabs(ev) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

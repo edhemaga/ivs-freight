@@ -213,6 +213,20 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
 
   public selectedFleetType: string = null;
 
+  public croppieOptions: Croppie.CroppieOptions = {
+    enableExif: true,
+    viewport: {
+      width: 616,
+      height: 194,
+      type: 'square',
+    },
+    boundary: {
+      width: 616,
+      height: 194,
+    },
+    enforceBoundary: false,
+  };
+
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,

@@ -1,18 +1,19 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-dashboard-pickup-by-state',
   templateUrl: './dashboard-pickup-by-state.component.html',
   styleUrls: ['./dashboard-pickup-by-state.component.scss'],
 })
-export class DashboardPickupByStateComponent implements OnInit {
+export class DashboardPickupByStateComponent implements OnInit, OnDestroy {
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
   @ViewChild('statesBarChart', { static: false }) public statesBarChart: any;
   @ViewChild('timePeriod', { static: false }) public timePeriod: any;
+
+  private destroy$ = new Subject<void>();
 
   public barChartConfig: object = {
     dataProperties: [
@@ -264,7 +265,7 @@ export class DashboardPickupByStateComponent implements OnInit {
     ];
 
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           // your search code here
@@ -375,5 +376,10 @@ export class DashboardPickupByStateComponent implements OnInit {
 
   selectTimePeriod(period) {
     this.statesBarChart.updateTime(this.currentSwitchTab, period);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
