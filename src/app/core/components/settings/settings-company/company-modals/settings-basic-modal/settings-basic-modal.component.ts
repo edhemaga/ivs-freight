@@ -24,7 +24,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   einNumberRegex,
-  phoneRegex,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -285,9 +285,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       usDot: [null, Validators.required],
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
-      fax: [null],
+      fax: [null, phoneFaxRegex],
       webUrl: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
@@ -460,7 +460,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data?.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [
         data?.extensionPhone ? data?.extensionPhone : null,

@@ -21,7 +21,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -137,12 +137,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
       lastName: [null, [Validators.required, ...lastNameValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      personalPhone: [null, phoneRegex],
+      personalPhone: [null, phoneFaxRegex],
       personalEmail: [null, [emailRegex, ...emailValidation]],
       departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
-      employePhone: [null, phoneRegex],
+      employePhone: [null, phoneFaxRegex],
       employePhoneExt: [null, [...phoneExtension]],
       employeEmail: [
         null,

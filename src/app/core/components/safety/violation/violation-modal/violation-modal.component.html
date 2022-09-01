@@ -398,6 +398,8 @@
                     [inputConfig]="{
                       name: 'Description',
                       type: 'text',
+                      minLength: 20,
+                      maxLength: 160,
                       textTransform: 'capitalize'
                     }"
                   ></app-ta-input>
@@ -494,6 +496,7 @@
                 name: 'Fax',
                 type: 'text',
                 label: 'Fax',
+                mask: '(000) 000-0000',
                 placeholderIcon: 'fax'
               }"
             ></app-ta-input>

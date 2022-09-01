@@ -31,7 +31,7 @@ import {
   emailValidation,
   firstNameValidation,
   lastNameValidation,
-  phoneRegex,
+  phoneFaxRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -107,7 +107,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       bankId: [null, [...bankValidation]],
       accountNumber: [null, accountBankValidation],

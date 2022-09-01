@@ -24,7 +24,10 @@ import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { departmentValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  departmentValidation,
+  descriptionValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -83,7 +86,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
-      description: [null],
+      description: [null, descriptionValidation],
       url: [null],
       deadline: [null],
       departmentIds: [null, [...departmentValidation]],

@@ -15,7 +15,7 @@ import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
-  phoneRegex,
+  phoneFaxRegex,
   emailRegex,
   ssnNumberRegex,
   accountBankValidation,
@@ -305,7 +305,7 @@ export class Step1Component implements OnInit, OnDestroy {
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
@@ -703,7 +703,7 @@ export class Step1Component implements OnInit, OnDestroy {
       firstName: [applicantInfo?.firstName, Validators.required],
       lastName: [applicantInfo?.lastName, Validators.required],
       dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
-      phone: [applicantInfo?.phone, [Validators.required, phoneRegex]],
+      phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
       email: [applicantInfo?.email, [Validators.required, emailRegex]],
       address: [applicantInfo?.address, Validators.required],
       addressUnit: [applicantInfo?.addressUnit],

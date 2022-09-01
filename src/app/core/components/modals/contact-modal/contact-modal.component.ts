@@ -19,7 +19,7 @@ import {
 } from 'appcoretruckassist';
 import {
   emailRegex,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { v4 as uuidv4 } from 'uuid';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -105,7 +105,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
     this.contactForm = this.formBuilder.group({
       name: [null, [Validators.required, Validators.maxLength(23)]],
       companyContactLabelId: [null],
-      phone: [null, [phoneRegex, Validators.required]],
+      phone: [null, [phoneFaxRegex, Validators.required]],
       email: [null, [emailRegex, ...emailValidation, Validators.required]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],

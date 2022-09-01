@@ -22,7 +22,7 @@ import {
   addressValidation,
   emailRegex,
   emailValidation,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -265,12 +265,12 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       jobDescription: [null, Validators.required],
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      employerPhone: [null, [Validators.required, phoneRegex]],
+      employerPhone: [null, [Validators.required, phoneFaxRegex]],
       employerEmail: [
         null,
         [Validators.required, emailRegex, ...emailValidation],
       ],
-      employerFax: [null, phoneRegex],
+      employerFax: [null, phoneFaxRegex],
       employerAddress: [null, [Validators.required, ...addressValidation]],
       employerAddressUnit: [null, Validators.maxLength(6)],
       isDrivingPosition: [false],

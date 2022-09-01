@@ -5,7 +5,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import {
   addressUnitValidation,
   addressValidation,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
@@ -60,8 +60,8 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, ...fuelStopValidation]],
       store: [null],
       favourite: [null],
-      phone: [null, [Validators.required, phoneRegex]],
-      fax: [null],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      fax: [null, phoneFaxRegex],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       note: [null],

@@ -18,7 +18,7 @@ import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
-import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { UpperCasePipe } from '@angular/common';
 import {
   convertNumberInThousandSep,
   convertThousanSepInNumber,
@@ -34,7 +34,6 @@ import { Subject, takeUntil } from 'rxjs';
   providers: [
     NgbDropdownConfig,
     CalendarScrollService,
-    TitleCasePipe,
     UpperCasePipe,
     TaThousandSeparatorPipe,
   ],
@@ -98,7 +97,6 @@ export class TaInputComponent
     private inputService: TaInputService,
     private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
-    private titlecasePipe: TitleCasePipe,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef
@@ -498,7 +496,9 @@ export class TaInputComponent
   public transformText(event: any) {
     switch (this.inputConfig.textTransform) {
       case 'capitalize': {
-        this.input.nativeElement.value = this.titleCaseInput(event);
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
         break;
       }
       case 'uppercase': {
@@ -635,10 +635,6 @@ export class TaInputComponent
         action: 'Toggle Dropdown',
       });
     }
-  }
-
-  public titleCaseInput(value: string) {
-    return this.titlecasePipe.transform(value);
   }
 
   public upperCaseInput(value: string) {
@@ -814,6 +810,23 @@ export class TaInputComponent
       if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
         // TODO:
       }
+    }
+
+    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+          this.numberOfSpaces++;
+        } else {
+          this.numberOfSpaces = 0;
+        }
+        if (this.numberOfSpaces > 1) {
+          event.preventDefault();
+          return false;
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
     }
 
     // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {

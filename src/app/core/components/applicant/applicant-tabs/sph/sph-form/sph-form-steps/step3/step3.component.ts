@@ -4,7 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {
   addressUnitValidation,
   addressValidation,
-  phoneRegex,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
@@ -180,7 +180,7 @@ export class Step3Component implements OnInit {
       otherViolations: [null, Validators.required],
       drugAndAlcoholRegulation: [null, Validators.required],
       sapName: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null, Validators.required],

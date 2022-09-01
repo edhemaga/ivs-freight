@@ -15,7 +15,7 @@ import {
   emailRegex,
   emailValidation,
   phoneExtension,
-  phoneRegex,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
@@ -136,7 +136,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       extensionPhone: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       parkingSlot: [null],

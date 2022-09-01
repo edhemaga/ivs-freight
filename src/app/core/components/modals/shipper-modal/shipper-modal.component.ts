@@ -29,7 +29,7 @@ import {
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
@@ -128,7 +128,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.shipperForm = this.formBuilder.group({
       businessName: [null, [Validators.required, ...businessNameValidation]],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
@@ -286,7 +286,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       phoneExt: [data?.phoneExt ? data.phoneExt : null],
       email: [
