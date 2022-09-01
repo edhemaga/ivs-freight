@@ -304,7 +304,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Successfuly update profile',
+            'Successfuly updated profile',
             'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });

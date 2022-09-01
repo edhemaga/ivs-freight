@@ -276,7 +276,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Successfuly update label',
+                'Successfuly updated label',
                 'Success'
               );
 

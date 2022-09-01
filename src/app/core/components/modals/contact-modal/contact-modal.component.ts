@@ -400,7 +400,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Successfuly update label',
+                'Successfuly updated label',
                 'Success'
               );
 
