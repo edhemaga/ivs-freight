@@ -216,6 +216,9 @@
               name: 'Input Dropdown',
               type: 'text',
               label: 'Bank Name',
+              minLength: 2,
+              maxLength: 64,
+              textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-163'
             }"
@@ -230,7 +233,7 @@
           <app-ta-input
             formControlName="routing"
             [inputConfig]="{
-              name: 'Routing Number',
+              name: 'routing-bank',
               type: 'text',
               label: 'Routing #',
               isDisabled: !isBankSelected,
@@ -244,13 +247,13 @@
           <app-ta-input
             formControlName="account"
             [inputConfig]="{
-              name: 'Account Number',
+              name: 'account-bank',
               type: 'text',
               label: 'Account #',
               isDisabled: !isBankSelected,
               isRequired: isBankSelected,
               maxLength: 17,
-              minLength: 4
+              minLength: 5
             }"
           ></app-ta-input>
         </div>

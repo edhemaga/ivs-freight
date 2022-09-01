@@ -80,7 +80,7 @@
               formControlName="mc"
               [inputConfig]="{
                 name: 'MC/FF',
-                type: 'text',
+                type: 'number',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
                 maxLength: 6,
@@ -421,6 +421,9 @@
                     id: 'Input Dropdown Bank' + ind,
                     name: 'Input Dropdown',
                     type: 'text',
+                    minLength: 2,
+                    maxLength: 64,
+                    textTransform: 'uppercase',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-163'
                   }"
@@ -436,7 +439,7 @@
                   formControlName="routing"
                   [inputConfig]="{
                     id: 'Routing Number' + ind,
-                    name: 'Routing Number',
+                    name: 'routing-bank',
                     type: 'text',
                     isDisabled: !isBankSelectedFormArray[ind],
                     minLength: 9,
@@ -447,12 +450,12 @@
                   formControlName="account"
                   [inputConfig]="{
                     id: 'Account Number' + ind,
-                    name: 'Account Number',
+                    name: 'account-bank',
                     type: 'password',
                     placeholderIcon: 'password',
                     isDisabled: !isBankSelectedFormArray[ind],
                     maxLength: 17,
-                    minLength: 4
+                    minLength: 5
                   }"
                 ></app-ta-input>
                 <svg-icon

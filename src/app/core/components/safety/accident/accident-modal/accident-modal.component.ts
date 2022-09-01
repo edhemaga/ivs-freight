@@ -3,6 +3,7 @@ import {
   emailRegex,
   emailValidation,
   addressValidation,
+  vinNumberValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -117,13 +118,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       truckMake: [null],
       truckPlateNumber: [null],
       truckState: [null],
-      truckVIN: [null],
+      truckVIN: [null, [...vinNumberValidation]],
       trailerUnit: [null],
       trailerType: [null],
       trailerMake: [null],
       trailerPlateNumber: [null],
       trailerState: [null],
-      trailerVIN: [null],
+      trailerVIN: [null, [...vinNumberValidation]],
       violations: this.formBuilder.array([
         this.formBuilder.group({
           categoryId: ['Crash Indicator'],

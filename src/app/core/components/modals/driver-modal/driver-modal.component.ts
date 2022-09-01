@@ -26,6 +26,12 @@ import {
   emailValidation,
   addressValidation,
   addressUnitValidation,
+  firstNameValidation,
+  lastNameValidation,
+  bankValidation,
+  accountBankValidation,
+  routingBankValidation,
+  fuelCardValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -268,8 +274,8 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.driverForm = this.formBuilder.group({
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
@@ -277,9 +283,9 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
-      bankId: [null],
-      account: [null],
-      routing: [null],
+      bankId: [null, [...bankValidation]],
+      account: [null, accountBankValidation],
+      routing: [null, routingBankValidation],
       payType: [null, Validators.required],
       useTruckAssistAch: [false],
       soloDriver: [false],
@@ -307,7 +313,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       avatar: [null],
       twic: [false],
       twicExpDate: [null],
-      fuelCard: [null],
+      fuelCard: [null, [...fuelCardValidation]],
       mailNotificationGeneral: [true],
       pushNotificationGeneral: [false],
       smsNotificationGeneral: [false],

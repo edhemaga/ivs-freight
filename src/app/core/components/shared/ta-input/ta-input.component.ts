@@ -655,40 +655,44 @@ export class TaInputComponent
       return false;
     }
 
-    // Business Name
     if (
-      ['business name', 'shop name'].includes(
+      ['business name', 'shop name', 'fuel stop'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {
       if (
-        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü -]*$/g.test(
+        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü\s-]*$/g.test(
           String.fromCharCode(event.charCode)
         )
       ) {
         this.disableConsecutivelySpaces(event);
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+
+      event.preventDefault();
+      return false;
     }
 
-    // EIN Number
     if (
-      ['ein', 'mc/ff', 'phone', 'phone-extension'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
+      [
+        'ein',
+        'mc/ff',
+        'phone',
+        'phone-extension',
+        'account-bank',
+        'routing-bank',
+        'ssn',
+        'fuel-card',
+        'empty-weight',
+      ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    // Email
     if (['email'].includes(this.inputConfig.name.toLowerCase())) {
       if (
         /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~@.-]*$/g.test(
@@ -696,29 +700,119 @@ export class TaInputComponent
         )
       ) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    // Address Unit
-    if (['address-unit'].includes(this.inputConfig.name.toLowerCase())) {
+    if (
+      ['address-unit', 'department', 'vehicle-unit'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[A-Za-z0-9/]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z',\s.-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z\s]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./:;=<>?-^[]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (
+      ['vin-number', 'insurance-policy'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[IiOQ]*$/.test(String.fromCharCode(event.charCode))) {
+          return false;
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
+        !this.input.nativeElement.value
+      ) {
+        event.preventDefault();
+        return false;
+      }
+
+      if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      }
+
+      event.preventDefault();
+      return false;
+    }
+
+    if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
+        return true;
       } else {
         event.preventDefault();
         return false;
       }
     }
 
-    // Department
-    if (['department'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9]*$/g.test(String.fromCharCode(event.charCode))) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
+    if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
+        // TODO:
       }
     }
 
@@ -1043,16 +1137,6 @@ export class TaInputComponent
     }
   }
 
-  public onDatePaste(e: any) {
-    e.preventDefault();
-    const pasteText = e.clipboardData.getData('text');
-    const pastedDate = new Date(pasteText);
-    if (!isNaN(pastedDate.getTime())) {
-      this.setTimeDateInput(pastedDate);
-      this.selectSpanByTabIndex(this.selectionInput);
-    }
-  }
-
   public onPaste(event: any, maxLength?: number) {
     event.preventDefault();
 
@@ -1102,6 +1186,16 @@ export class TaInputComponent
       );
     }
     this.onChange(this.input.nativeElement.value);
+  }
+
+  public onDatePaste(e: any) {
+    e.preventDefault();
+    const pasteText = e.clipboardData.getData('text');
+    const pastedDate = new Date(pasteText);
+    if (!isNaN(pastedDate.getTime())) {
+      this.setTimeDateInput(pastedDate);
+      this.selectSpanByTabIndex(this.selectionInput);
+    }
   }
 
   ngOnDestroy(): void {

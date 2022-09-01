@@ -17,6 +17,8 @@ import {
   einNumberRegex,
   emailRegex,
   emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   phoneRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
@@ -52,8 +54,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.registerForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       companyName: [null, Validators.required],
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],

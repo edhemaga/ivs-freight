@@ -13,6 +13,8 @@ import {
   addressValidation,
   emailRegex,
   emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   phoneRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 
@@ -55,8 +57,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.registerUserForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],

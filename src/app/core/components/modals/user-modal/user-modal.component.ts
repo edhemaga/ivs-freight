@@ -1,10 +1,15 @@
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   departmentValidation,
   emailRegex,
   emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   phoneExtension,
+  routingBankValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -128,8 +133,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.userForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       personalPhone: [null, phoneRegex],
@@ -147,9 +152,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
       salary: [null],
       startDate: [null],
       payrollType: [null],
-      bankId: [null],
-      routingNumber: [null],
-      accountNumber: [null],
+      bankId: [null, [...bankValidation]],
+      routingNumber: [null, routingBankValidation],
+      accountNumber: [null, accountBankValidation],
       note: [null],
     });
 

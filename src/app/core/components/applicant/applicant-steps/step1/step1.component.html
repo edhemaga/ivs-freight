@@ -90,6 +90,8 @@
               type: 'text',
               label: 'First Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
               incorrectInput: selectedMode === 'REVIEW_MODE'
@@ -106,6 +108,8 @@
               type: 'text',
               label: 'Last Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
@@ -648,6 +652,9 @@
               name: 'Input Dropdown',
               type: 'text',
               label: 'Bank Name',
+              minLength: 2,
+              maxLength: 64,
+              textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-416',
               incorrectInput: selectedMode === 'REVIEW_MODE'
@@ -692,13 +699,13 @@
           <app-ta-input
             formControlName="accountNumber"
             [inputConfig]="{
-              name: 'Account Number',
+              name: 'account-bank',
               type: 'text',
               label: 'Account number',
               isDisabled: !isBankSelected,
               isRequired: isBankSelected,
               maxLength: 17,
-              minLength: 4,
+              minLength: 5,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="false"
@@ -709,7 +716,7 @@
           <app-ta-input
             formControlName="routingNumber"
             [inputConfig]="{
-              name: 'Routing Number',
+              name: 'routing-bank',
               type: 'text',
               label: 'Routing number',
               isDisabled: !isBankSelected,

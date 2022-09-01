@@ -4,8 +4,10 @@ import {
   convertThousanSepInNumber,
 } from './../../../../../utils/methods.calculations';
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   daysValidRegex,
   departmentValidation,
   emailRegex,
@@ -15,6 +17,7 @@ import {
   monthsValidRegex,
   perStopValidation,
   phoneExtension,
+  routingBankValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -541,9 +544,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      bankId: [data?.bankId ? data.bankId : null],
-      routing: [data?.routing ? data.routing : null],
-      account: [data?.account ? data.account : null],
+      bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
+      routing: [
+        data?.routing ? data.routing : null,
+        [...routingBankValidation],
+      ],
+      account: [
+        data?.account ? data.account : null,
+        [...accountBankValidation],
+      ],
     });
   }
 

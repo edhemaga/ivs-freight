@@ -1,3 +1,7 @@
+import {
+  bankValidation,
+  lastNameValidation,
+} from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
@@ -19,6 +23,7 @@ import {
   emailValidation,
   addressValidation,
   addressUnitValidation,
+  firstNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
@@ -297,15 +302,15 @@ export class Step1Component implements OnInit, OnDestroy {
   private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
       phone: [null, [Validators.required, phoneRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      bankId: [null],
+      bankId: [null, [...bankValidation]],
       accountNumber: [null, accountBankValidation],
       routingNumber: [null, routingBankValidation],
       legalWork: [null, Validators.required],
