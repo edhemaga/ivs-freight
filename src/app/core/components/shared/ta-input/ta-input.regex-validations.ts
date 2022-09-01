@@ -157,6 +157,12 @@ export const mileageValidation = [
   Validators.maxLength(10),
 ];
 
+//---------------- License plate -------------------------
+export const licensePlateValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(7),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 export const perStopValidation = [Validators.min(0), Validators.max(5000)];

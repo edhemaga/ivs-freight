@@ -795,10 +795,10 @@ export class TaInputComponent
       if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+
+      event.preventDefault();
+      return false;
     }
 
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
@@ -807,6 +807,12 @@ export class TaInputComponent
       } else {
         event.preventDefault();
         return false;
+      }
+    }
+
+    if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
+        // TODO:
       }
     }
 
