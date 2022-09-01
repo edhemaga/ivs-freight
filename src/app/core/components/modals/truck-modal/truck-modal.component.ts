@@ -23,8 +23,12 @@ import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.
 import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
+  axlesValidation,
   insurancePolicyRegex,
+  truckTrailerModelValidation,
   vehicleUnitValidation,
+  vinNumberValidation,
+  yearValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -135,20 +139,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         ],
       ],
       truckTypeId: [null, Validators.required],
-      vin: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(17),
-          Validators.maxLength(17),
-        ],
-      ],
+      vin: [null, [Validators.required, ...vinNumberValidation]],
       truckMakeId: [null, Validators.required],
-      model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [
-        null,
-        [Validators.required, Validators.maxLength(4), yearValidRegex],
-      ],
+      model: [null, [Validators.required, ...truckTrailerModelValidation]],
+      year: [null, [Validators.required, ...yearValidation, yearValidRegex]],
       colorId: [null],
       companyOwned: [true],
       ownerId: [null],
@@ -162,7 +156,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       emptyWeight: [null, Validators.maxLength(6)],
       truckEngineTypeId: [null],
       tireSizeId: [null],
-      axles: [null, Validators.maxLength(1)],
+      axles: [null, axlesValidation],
       insurancePolicy: [null, insurancePolicyRegex],
       mileage: [null, Validators.maxLength(10)],
       ipasEzpass: [null, Validators.maxLength(14)],
@@ -453,7 +447,14 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       .get('vin')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value?.length === 17) {
+        if (value?.length > 13 && value?.length < 17) {
+          this.truckForm.get('vin').setErrors({ invalid: true });
+        }
+
+        if (
+          value?.length === 17 ||
+          (value?.length >= 5 && value?.length <= 13)
+        ) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 1)

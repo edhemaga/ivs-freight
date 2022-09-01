@@ -258,11 +258,13 @@
             <app-ta-input
               formControlName="truckVIN"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>
@@ -322,11 +324,13 @@
             <app-ta-input
               formControlName="trailerVIN"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>

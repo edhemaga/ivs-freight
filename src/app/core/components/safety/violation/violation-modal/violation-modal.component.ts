@@ -9,6 +9,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import {
   addressValidation,
   departmentValidation,
+  vinNumberValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -145,13 +146,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       truckMake: [null],
       truckPlateNumber: [null],
       truckState: [null],
-      truckVIN: [null],
+      truckVIN: [null, [...vinNumberValidation]],
       trailerUnit: [null],
       trailerType: [null],
       trailerMake: [null],
       trailerPlateNumber: [null],
       trailerState: [null],
-      trailerVIN: [null],
+      trailerVIN: [null, [...vinNumberValidation]],
       violations: this.formBuilder.array([
         this.formBuilder.group({
           code: ['392.2-SLLS3'],

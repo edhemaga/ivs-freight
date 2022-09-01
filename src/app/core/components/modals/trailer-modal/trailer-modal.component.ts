@@ -18,8 +18,12 @@ import {
   VinDecodeResponse,
 } from 'appcoretruckassist';
 import {
+  axlesValidation,
   insurancePolicyRegex,
+  truckTrailerModelValidation,
   vehicleUnitValidation,
+  vinNumberValidation,
+  yearValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -128,22 +132,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         ],
       ],
       trailerTypeId: [null, [Validators.required]],
-      vin: [
-        null,
-        [
-          Validators.required,
-          Validators.minLength(17),
-          Validators.maxLength(17),
-        ],
-      ],
+      vin: [null, [Validators.required, ...vinNumberValidation]],
       trailerMakeId: [null, [Validators.required]],
-      model: [null],
+      model: [null, truckTrailerModelValidation],
       colorId: [null],
-      year: [null, [Validators.required, yearValidRegex]],
+      year: [null, [Validators.required, yearValidRegex, ...yearValidation]],
       trailerLengthId: [null, [Validators.required]],
       ownerId: [null],
       note: [null],
-      axles: [null],
+      axles: [null, axlesValidation],
       suspension: [null],
       tireSizeId: [null],
       doorType: [null],
@@ -637,7 +634,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .get('vin')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
-        if (value?.length === 17) {
+        if (value?.length > 13 && value?.length < 17) {
+          this.trailerForm.get('vin').setErrors({ invalid: true });
+        }
+        if (
+          value?.length === 17 ||
+          (value?.length >= 5 && value?.length <= 13)
+        ) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 2)

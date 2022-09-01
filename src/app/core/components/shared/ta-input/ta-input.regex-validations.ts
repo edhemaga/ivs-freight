@@ -109,10 +109,29 @@ export const vehicleUnitValidation = [
   Validators.maxLength(8),
 ];
 
+//---------------- VIN Number ------------------
+export const vinNumberValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(17),
+];
+
+//---------------- Truck Trailer Model ------------
+export const truckTrailerModelValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(30),
+];
+
+//---------------- Axles Model ------------
+export const axlesValidation = [Validators.min(2), Validators.max(17)];
+
 //---------------- Year, month, day ----------------
 export const yearValidRegex = Validators.pattern(
   /^(19[0-9]\d|20[0-4]\d|2100)$/
 );
+export const yearValidation = [
+  Validators.minLength(4),
+  Validators.maxLength(4),
+];
 export const monthsValidRegex = Validators.pattern(/^([1-9]|1[012])$/);
 export const daysValidRegex = Validators.pattern(
   /^([1-9][0-9]?|[12][0-9][0-9]|3[0-5][0-9]|36[0-5])$/

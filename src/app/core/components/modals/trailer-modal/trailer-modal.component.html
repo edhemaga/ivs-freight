@@ -75,13 +75,13 @@
             <app-ta-input
               formControlName="vin"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
                 isRequired: true,
                 textTransform: 'uppercase',
                 maxLength: 17,
-                minLength: 17,
+                minLength: 5,
                 loadingSpinner: {
                   size: 'small',
                   color: 'white',
@@ -118,11 +118,12 @@
             <app-ta-input
               formControlName="model"
               [inputConfig]="{
-                name: 'Model',
+                name: 'truck-trailer-model',
                 type: 'text',
                 label: 'Model',
-                textTransform: 'capitalize',
-                maxLength: 22
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 30
               }"
             ></app-ta-input>
           </div>
@@ -156,6 +157,7 @@
                 type: 'text',
                 label: 'Year',
                 isRequired: true,
+                minLength: 4,
                 maxLength: 4
               }"
             ></app-ta-input>
@@ -254,9 +256,10 @@
               formControlName="axles"
               [inputConfig]="{
                 name: 'Axles',
-                type: 'text',
+                type: 'number',
                 label: 'Axles',
-                maxLength: 1
+                minLength: 1,
+                maxLength: 2
               }"
             ></app-ta-input>
           </div>

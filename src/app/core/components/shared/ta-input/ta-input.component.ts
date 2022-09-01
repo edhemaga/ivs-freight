@@ -668,10 +668,10 @@ export class TaInputComponent
       ) {
         this.disableConsecutivelySpaces(event);
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+
+      event.preventDefault();
+      return false;
     }
 
     // EIN Number
@@ -689,10 +689,9 @@ export class TaInputComponent
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // Email
@@ -703,20 +702,18 @@ export class TaInputComponent
         )
       ) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // Address Unit
     if (['address-unit'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9/]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // Department
@@ -727,10 +724,9 @@ export class TaInputComponent
     ) {
       if (/^[A-Za-z0-9]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // First Name
@@ -742,10 +738,9 @@ export class TaInputComponent
             this.input.nativeElement.value.trim();
         }
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // Last Name
@@ -757,10 +752,9 @@ export class TaInputComponent
             this.input.nativeElement.value.trim();
         }
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     // Bank Name
@@ -775,6 +769,56 @@ export class TaInputComponent
           this.input.nativeElement.value =
             this.input.nativeElement.value.trim();
         }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    // Vin Truck Trailer Number
+    if (['vin-number'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[IiOQ]*$/.test(String.fromCharCode(event.charCode))) {
+          return false;
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    // Model Truck Trailer
+    if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    // Year
+    if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
+        !this.input.nativeElement.value
+      ) {
+        event.preventDefault();
+        return false;
+      }
+
+      if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    // Axles
+
+    if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
         event.preventDefault();
