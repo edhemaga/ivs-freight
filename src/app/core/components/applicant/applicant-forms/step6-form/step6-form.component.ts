@@ -1,6 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -22,7 +29,8 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   templateUrl: './step6-form.component.html',
   styleUrls: ['./step6-form.component.scss'],
 })
-export class Step6FormComponent implements OnInit {
+export class Step6FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -103,14 +111,20 @@ export class Step6FormComponent implements OnInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.contactForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.contactForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const { isEditingContact, ...previousFormValues } =
             this.formValuesToPatch;
 
@@ -121,8 +135,7 @@ export class Step6FormComponent implements OnInit {
           } else {
             this.isContactEdited = true;
           }
-        }
-      );
+        });
     }
   }
 

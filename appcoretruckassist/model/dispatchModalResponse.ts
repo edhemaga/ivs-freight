@@ -10,18 +10,18 @@
  * Do not edit the class manually.
  */
 import { TruckMinimalResponse } from './truckMinimalResponse';
+import { DispatchBoardResponse } from './dispatchBoardResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { LoadShortResponse } from './loadShortResponse';
-import { CompanyUserShortResponse } from './companyUserShortResponse';
 
 
 export interface DispatchModalResponse { 
     trucks?: Array<TruckMinimalResponse> | null;
     trailers?: Array<TrailerMinimalResponse> | null;
     drivers?: Array<DriverMinimalResponse> | null;
-    dispatchers?: Array<CompanyUserShortResponse> | null;
+    dispatchBoards?: Array<DispatchBoardResponse> | null;
     loads?: Array<LoadShortResponse> | null;
     dispatchStatuses?: Array<EnumValue> | null;
 }

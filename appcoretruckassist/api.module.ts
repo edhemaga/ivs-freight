@@ -2,6 +2,7 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { Configuration } from './configuration';
 import { HttpClient } from '@angular/common/http';
 
+import { AccidentService } from './api/accident.service';
 import { AccountService } from './api/account.service';
 import { ApplicantService } from './api/applicant.service';
 import { BankService } from './api/bank.service';
@@ -44,6 +45,7 @@ import { TrailerService } from './api/trailer.service';
 import { TruckService } from './api/truck.service';
 import { UserService } from './api/user.service';
 import { VinDecodeService } from './api/vinDecode.service';
+import { ViolationService } from './api/violation.service';
 
 @NgModule({
   imports:      [],

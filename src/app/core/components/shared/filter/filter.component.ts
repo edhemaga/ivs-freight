@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
+import { addressValidation } from '../ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-filter',
@@ -1035,7 +1036,7 @@ export class FilterComponent implements OnInit {
     });
 
     this.locationForm = this.formBuilder.group({
-      address: '',
+      address: [null, [...addressValidation]],
     });
 
     this.payForm = this.formBuilder.group({
@@ -1190,6 +1191,7 @@ export class FilterComponent implements OnInit {
             return item;
           });
         } else if (this.type == 'truckFilter') {
+
           this.truckArray.map((item) => {
             item.hidden = true;
             if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
@@ -1198,6 +1200,7 @@ export class FilterComponent implements OnInit {
             return item;
           });
         } else if (this.type == 'fuelStopFilter') {
+
           this.fuelStopArray.map((item) => {
             item.hidden = true;
             if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
@@ -1206,7 +1209,7 @@ export class FilterComponent implements OnInit {
             return item;
           });
         } else if (this.type == 'trailerFilter') {
-          this.trailerArray.map((item) => {
+            this.trailerArray.map((item) => {
             item.hidden = true;
             if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
               item.hidden = false;
@@ -1351,7 +1354,6 @@ export class FilterComponent implements OnInit {
     } else {
       this.selectedUser.push(item);
     }
-
     this.checkFilterActiveValue();
   }
 
@@ -1374,6 +1376,7 @@ export class FilterComponent implements OnInit {
           item.isSelected = false;
         }
       });
+
     } else if (this.type == 'statusFilter') {
       let checkActiveStatusArray = this.activeStatusArray.indexOf(item);
       let checkPendingStatusArray = this.pendingStatusArray.indexOf(item);

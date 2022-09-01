@@ -5,6 +5,10 @@ import {
 import {
   phoneRegex,
   emailRegex,
+  phoneExtension,
+  emailValidation,
+  addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -19,12 +23,11 @@ import {
 } from 'appcoretruckassist';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { RepairTService } from 'src/app/core/components/repair/state/repair.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-repairshop-modal',
   templateUrl: './settings-repairshop-modal.component.html',
@@ -33,6 +36,7 @@ import { RepairTService } from 'src/app/core/components/repair/state/repair.serv
   providers: [ModalService, FormService],
 })
 export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public repairShopForm: FormGroup;
@@ -93,11 +97,11 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
       name: [null, Validators.required],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneRegex]],
-      phoneExt: [null],
-      email: [null, emailRegex],
+      phoneExt: [null, [...phoneExtension]],
+      email: [null, [emailRegex, ...emailValidation]],
       rent: [null],
       payPeriod: [null],
       weeklyDay: [null],
@@ -107,7 +111,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.repairShopForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -213,7 +217,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .updateRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -260,7 +264,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .addRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -280,7 +284,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private deleteRepairShopById(id: number) {
     this.repairService
       .deleteRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -300,7 +304,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private editRepairShopById(id: number) {
     this.repairService
       .getRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopResponse) => {
           this.repairShopForm.patchValue({
@@ -351,7 +355,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.repairService
       .getRepairShopModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
           this.payPeriods = res.payPeriods;
@@ -375,5 +379,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,4 +1,4 @@
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 
 import {
@@ -17,7 +17,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { input_dropdown_animation } from './ta-input-dropdown.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputService } from '../ta-input/ta-input.service';
 import { v4 as uuidv4 } from 'uuid';
 import { ITaInput } from '../ta-input/ta-input.config';
@@ -25,7 +24,6 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TaInputComponent } from '../ta-input/ta-input.component';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input-dropdown',
   templateUrl: './ta-input-dropdown.component.html',
@@ -37,6 +35,7 @@ import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 export class TaInputDropdownComponent
   implements OnInit, AfterViewInit, OnDestroy, OnChanges, ControlValueAccessor
 {
+  private destroy$ = new Subject<void>();
   @ViewChild(TaInputComponent) inputRef: TaInputComponent;
   @ViewChild('t2') public popoverRef: NgbPopover;
 
@@ -168,7 +167,7 @@ export class TaInputDropdownComponent
 
     // Search
     this.getSuperControl.valueChanges
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((searchText) => {
         if (this.labelMode === 'Color') {
           return;
@@ -178,7 +177,7 @@ export class TaInputDropdownComponent
 
     // Clear Input
     this.inputService.onClearInput$
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((action: boolean) => {
         if (action) {
           this.popoverRef.close();
@@ -195,7 +194,7 @@ export class TaInputDropdownComponent
 
     // Reset Input
     this.inputResetService.resetInputSubject
-      .pipe(debounceTime(50), untilDestroyed(this))
+      .pipe(debounceTime(50), takeUntil(this.destroy$))
       .subscribe((action) => {
         this.inputRef.touchedInput = false;
       });
@@ -214,7 +213,7 @@ export class TaInputDropdownComponent
 
   private dropDownShowHideEvent() {
     this.inputService.dropDownShowHide$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((action: boolean) => {
         // Multiselect dropdown
         if (this.inputConfig.multiselectDropdown) {
@@ -284,7 +283,7 @@ export class TaInputDropdownComponent
 
   private dropDownKeyboardNavigationEvent() {
     this.inputService.dropDownKeyNavigation$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((keyCode) => {
         // Navigate down
         if (keyCode === 40) {
@@ -486,7 +485,6 @@ export class TaInputDropdownComponent
             blackInput: false,
           };
           this.changeDetectionRef.detectChanges();
-          console.log(this.inputConfig);
           clearTimeout(timeout);
         }, 100);
       }
@@ -824,6 +822,8 @@ export class TaInputDropdownComponent
     }
   }
 
-  // Must be here, because of "untilDestroyed"
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

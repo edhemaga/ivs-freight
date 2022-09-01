@@ -10,20 +10,23 @@ import {
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
 import moment from 'moment';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
+  addressUnitValidation,
+  addressValidation,
   emailRegex,
+  emailValidation,
+  phoneExtension,
   phoneRegex,
+  repairShopValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-repair-shop-modal',
   templateUrl: './repair-shop-modal.component.html',
@@ -31,6 +34,8 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class RepairShopModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @Input() editData: any;
   public repairShopForm: FormGroup;
 
@@ -84,13 +89,13 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...repairShopValidation]],
       pinned: [null],
       phone: [null, [Validators.required, phoneRegex]],
-      phoneExt: [null, [Validators.maxLength(3)]],
-      email: [null, emailRegex],
-      address: [null, [Validators.required]],
-      addressUnit: [null, [Validators.maxLength(6)]],
+      phoneExt: [null, [...phoneExtension]],
+      email: [null, [emailRegex, ...emailValidation]],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       companyOwned: [false],
       openHours: this.formBuilder.array([]),
       bankId: [null],
@@ -102,7 +107,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.repairShopForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -199,7 +204,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     this.openHours
       .at(index)
       .get('isDay')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.openHours
@@ -260,7 +265,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.bankVerificationService
       .createBank({ name: this.selectedBank.name })
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -282,7 +287,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.repairShopForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -295,7 +300,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private editRepairShopById(id: number) {
     this.shopService
       .getRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopResponse) => {
           this.repairShopForm.patchValue({
@@ -382,7 +387,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.shopService
       .addRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success('Repair shop added', 'Success: ');
@@ -433,7 +438,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     this.shopService
       .updateRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -454,7 +459,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private deleteRepairShopById(id: number) {
     this.shopService
       .deleteRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -478,7 +483,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
   private getRepairShopModalDropdowns() {
     return this.shopService
       .getRepairShopModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
           this.labelsBank = res.banks;
@@ -501,5 +506,8 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -17,11 +17,10 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 
 import { SharedService } from 'src/app/core/services/shared/shared.service';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { DashboardStrategy } from './dashboard_strategy';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-body',
   templateUrl: './truckassist-table-body.component.html',
@@ -37,6 +36,7 @@ import { DashboardStrategy } from './dashboard_strategy';
 export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   @Input() viewData: any[];
@@ -68,6 +68,9 @@ export class TruckassistTableBodyComponent
   activeDescriptionDropdown: number = -1;
   descriptionTooltip: any;
   pageHeight: number = window.innerHeight;
+  activeAttachments: number = -1;
+  attachmentsTooltip: any;
+  isAttachmentClosing: boolean;
 
   constructor(
     private router: Router,
@@ -92,7 +95,7 @@ export class TruckassistTableBodyComponent
 
     // Select Or Deselect All
     this.tableService.currentSelectOrDeselect
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: string) => {
         if (response !== '') {
           const isSelect = response === 'select';
@@ -116,7 +119,7 @@ export class TruckassistTableBodyComponent
 
     // Columns Reorder
     this.tableService.currentColumnsOrder
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response.columnsOrder) {
           this.columns = response.columnsOrder;
@@ -132,7 +135,7 @@ export class TruckassistTableBodyComponent
 
     // Reset Selected Columns
     this.tableService.currentResetSelectedColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((reset: boolean) => {
         if (reset) {
           this.mySelection = [];
@@ -259,10 +262,8 @@ export class TruckassistTableBodyComponent
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
 
-       this.notPinedMaxWidth =
-        tableContainer.clientWidth -
-        (this.pinedWidth + this.actionsWidth) -
-        8;
+      this.notPinedMaxWidth =
+        tableContainer.clientWidth - (this.pinedWidth + this.actionsWidth) - 8;
 
       /* this.checkForScroll(); */
     }
@@ -289,11 +290,6 @@ export class TruckassistTableBodyComponent
         this.changeDetectorRef.detectChanges();
       }, 100);
     }
-  }
-
-  // Truck By For List
-  trackByFn(index) {
-    return index;
   }
 
   // Go To Details Page
@@ -422,7 +418,29 @@ export class TruckassistTableBodyComponent
     this.tooltip.close();
   }
 
-  // -------------------------------- Finish Order ---------------------------------
+  // Show Attachments
+  onShowAttachments(popup: any, row: any) {
+    if (!popup.isOpen()) {
+      let timeInterval = 0;
+
+      if (this.activeAttachments !== -1 && this.activeAttachments !== row.id) {
+        timeInterval = 250;
+      }
+
+      setTimeout(() => {
+        this.isAttachmentClosing = false;
+        this.attachmentsTooltip = popup;
+
+        if (popup.isOpen()) {
+          popup.close();
+        } else {
+          popup.open({ data: row });
+        }
+
+        this.activeAttachments = popup.isOpen() ? row.id : -1;
+      }, timeInterval);
+    }
+  }
 
   // Finish Order
   onFinishOrder(row: any) {
@@ -432,7 +450,6 @@ export class TruckassistTableBodyComponent
     });
   }
 
-  // -------------------------------- Show More Data ---------------------------------
   // Show More Data
   onShowMore() {
     this.bodyActions.emit({
@@ -442,14 +459,12 @@ export class TruckassistTableBodyComponent
 
   // --------------------------------ON DESTROY---------------------------------
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendRowsSelected([]);
   }
 
   // --------------------------------TODO---------------------------------
-  onShowAttachments(data: any) {
-    alert('Treba da se odradi');
-  }
-
   onShowItemDrop(index: number) {
     alert('Treba da se odradi');
   }

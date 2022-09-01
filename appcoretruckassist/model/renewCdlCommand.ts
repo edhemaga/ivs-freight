@@ -15,5 +15,8 @@ export interface RenewCdlCommand {
     id?: number;
     issueDate?: string;
     expDate?: string;
+    restrictions?: Array<number> | null;
+    endorsements?: Array<number> | null;
+    note?: string | null;
 }
 

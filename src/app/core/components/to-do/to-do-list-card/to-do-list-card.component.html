@@ -7,13 +7,15 @@
           <div class="count-box">{{ toDoTasks.length }}</div>
           <div class="border-right"></div>
           <div
-            class="box-icons"
+            class="box-icons search-icon"
             ngbTooltip
             mainTooltip="Search"
             position="bottom"
             tooltipBackground="#6C6C6C"
           >
-            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            <app-truckassist-search
+              [selectedTabData]="searchToDoOptions"
+            ></app-truckassist-search>
           </div>
           <div class="border-right"></div>
           <div
@@ -238,13 +240,15 @@
           <div class="count-box">{{ inProgressTasks.length }}</div>
           <div class="border-right"></div>
           <div
-            class="box-icons"
+            class="box-icons search-icon"
             ngbTooltip
             mainTooltip="Search"
             position="bottom"
             tooltipBackground="#6C6C6C"
           >
-            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            <app-truckassist-search
+              [selectedTabData]="searchOnGoingOptions"
+            ></app-truckassist-search>
           </div>
           <div class="border-right"></div>
           <div
@@ -299,13 +303,15 @@
           <div class="count-box">{{ doneTasks.length }}</div>
           <div class="border-right"></div>
           <div
-            class="box-icons"
+            class="box-icons search-icon"
             ngbTooltip
             mainTooltip="Search"
             position="bottom"
             tooltipBackground="#6C6C6C"
           >
-            <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+            <app-truckassist-search
+              [selectedTabData]="searchDoneOptions"
+            ></app-truckassist-search>
           </div>
           <div class="border-right"></div>
           <div

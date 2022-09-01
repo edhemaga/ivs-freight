@@ -1,5 +1,4 @@
-import { takeUntil } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { filter } from 'rxjs';
@@ -17,7 +16,7 @@ export class SettingsToollbarCardComponent implements OnInit, OnDestroy {
   @Input() cardBackground: boolean;
   @Input() route: string;
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(private router: Router) {}
 
@@ -27,7 +26,7 @@ export class SettingsToollbarCardComponent implements OnInit, OnDestroy {
   };
 
   // TODO: ON RELOAD
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.onReloadRoute(window.location.pathname);
 
     this.router.events

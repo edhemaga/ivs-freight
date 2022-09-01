@@ -11,10 +11,8 @@ import {
   ChangeDetectorRef,
   ChangeDetectionStrategy,
 } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 const rotate: { [key: string]: any } = {
   asc: '',
@@ -22,7 +20,6 @@ const rotate: { [key: string]: any } = {
   '': 'desc',
 };
 
-@UntilDestroy()
 @Component({
   selector: 'app-truckassist-table-head',
   templateUrl: './truckassist-table-head.component.html',
@@ -30,8 +27,9 @@ const rotate: { [key: string]: any } = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TruckassistTableHeadComponent
-  implements OnInit, OnChanges, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  implements OnInit, OnChanges, OnDestroy
+{
+  private destroy$ = new Subject<void>();
   @Input() columns: any[];
   @Input() options: any;
   @Input() viewData: any[];
@@ -55,7 +53,7 @@ export class TruckassistTableHeadComponent
   constructor(
     private tableService: TruckassistTableService,
     private changeDetectorRef: ChangeDetectorRef
-  ) { }
+  ) {}
 
   // --------------------------------NgOnInit---------------------------------
   ngOnInit(): void {
@@ -63,7 +61,7 @@ export class TruckassistTableHeadComponent
 
     // Scroll
     this.tableService.currentScroll
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: number) => {
         let scroll = document.getElementById('scroll');
         scroll.scrollLeft = response;
@@ -71,7 +69,7 @@ export class TruckassistTableHeadComponent
 
     // Rows Selected
     this.tableService.currentRowsSelected
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         this.mySelection = response;
 
@@ -80,7 +78,7 @@ export class TruckassistTableHeadComponent
 
     // Unlock Table
     this.tableService.currentUnlockTable
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response.toaggleUnlockTable) {
           this.locked = !this.locked;
@@ -181,9 +179,7 @@ export class TruckassistTableHeadComponent
       const tableContainer = document.querySelector('.table-container');
 
       this.notPinedMaxWidth =
-        tableContainer.clientWidth -
-        (this.pinedWidth + this.actionsWidth) -
-        8;
+        tableContainer.clientWidth - (this.pinedWidth + this.actionsWidth) - 8;
 
       this.changeDetectorRef.detectChanges();
     }
@@ -215,25 +211,20 @@ export class TruckassistTableHeadComponent
 
       const directionSort = column.sortDirection
         ? column.sortName +
-        (column.sortDirection[0]?.toUpperCase() +
-          column.sortDirection?.substr(1).toLowerCase())
+          (column.sortDirection[0]?.toUpperCase() +
+            column.sortDirection?.substr(1).toLowerCase())
         : '';
 
       this.headActions.emit({ action: 'sort', direction: directionSort });
 
       this.changeDetectorRef.detectChanges();
-    }else if(!column.sortable){
-      alert('Kolona nije podesena u konfig tabele da bude sortable')
-    }else if(this.viewData.length <= 1){
+    } else if (!column.sortable) {
+      alert('Kolona nije podesena u konfig tabele da bude sortable');
+    } else if (this.viewData.length <= 1) {
       alert('U tabeli ima samo jedan podatak, sort se nece zbog toga odraditi');
-    }else if(!column.sortName){
-      alert('Nije postavljen sortName za ovu kolonu')
+    } else if (!column.sortName) {
+      alert('Nije postavljen sortName za ovu kolonu');
     }
-  }
-
-  // Reorder
-  onReorderStart() {
-    this.reordering = true;
   }
 
   // Reorder
@@ -258,11 +249,6 @@ export class TruckassistTableHeadComponent
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
     this.setVisibleColumns();
-  }
-
-  // Reorder End
-  onReorderEnd() {
-    this.reordering = false;
   }
 
   // Rezaize

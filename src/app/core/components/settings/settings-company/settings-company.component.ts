@@ -9,11 +9,10 @@ import {
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-company',
   templateUrl: './settings-company.component.html',
@@ -22,6 +21,7 @@ import { CompanyQuery } from '../state/company-state/company-settings.query';
   providers: [DetailsPageService],
 })
 export class SettingsCompanyComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public isModalOpen$: boolean;
   // public isModalOpen$: boolean; // TODO: FILL DATA WITH REAL DATA, IF NO DATA, SHOW NO_DATA_COMPONENT !!!
   public data: any;
@@ -39,7 +39,6 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.activated.snapshot.data);
     this.getData(this.activated.snapshot.data.company);
     this.settingCompanyQuery.getAll().map((item) => {
       this.dataCompany = item.divisions;
@@ -51,10 +50,10 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     });
     this.getCompanyDivision();
     this.detailsPageSer.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         this.SettingsCompanyService.getCompanyDivisionById(id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CompanyResponse) => {
               this.getData(res);
@@ -99,5 +98,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     });
     this.detailsPageSer.getDataDetailId(event.id);
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

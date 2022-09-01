@@ -12,7 +12,7 @@
 
 
 export interface CreateMvrCommand { 
-    driverId?: number;
+    cdlId?: number;
     issueDate?: string;
     note?: string | null;
 }

@@ -3,16 +3,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthStoreService } from '../state/auth.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
-@UntilDestroy()
 @Component({
   selector: 'app-helper',
   templateUrl: './helper.component.html',
   styleUrls: ['./helper.component.scss'],
 })
 export class HelperComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   private verifyData: { emailHash: string; code: string };
 
   constructor(
@@ -41,7 +40,7 @@ export class HelperComponent implements OnInit, OnDestroy {
   private onVerifyOwner(): void {
     this.authStoreService
       .verifyOwner(this.verifyData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notification.success('Verifying successful', 'Success');
@@ -53,5 +52,8 @@ export class HelperComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

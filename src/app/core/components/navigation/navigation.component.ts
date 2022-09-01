@@ -35,7 +35,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   public isActiveMagicLine: boolean = false;
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private router: Router,

@@ -1,6 +1,9 @@
 import {
   phoneRegex,
   emailRegex,
+  emailValidation,
+  addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import {
@@ -17,7 +20,6 @@ import {
   InsurancePolicyModalResponse,
   UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import {
@@ -27,9 +29,8 @@ import {
   convertThousanSepInNumber,
 } from 'src/app/core/utils/methods.calculations';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
@@ -39,6 +40,7 @@ import { distinctUntilChanged } from 'rxjs';
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public insurancePolicyForm: FormGroup;
@@ -87,9 +89,9 @@ export class SettingsInsurancePolicyModalComponent
       issued: [null, Validators.required],
       expires: [null, Validators.required],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      email: [null, [emailRegex, ...emailValidation]],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       // Commerical General Liability
       commericalGeneralLiability: [false],
       commericalPolicy: [null],
@@ -137,7 +139,7 @@ export class SettingsInsurancePolicyModalComponent
     // this.formService.checkFormChange(this.insurancePolicyForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -246,7 +248,7 @@ export class SettingsInsurancePolicyModalComponent
     control_9?: AbstractControl
   ) {
     checkboxControl.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(control_1);
@@ -333,7 +335,7 @@ export class SettingsInsurancePolicyModalComponent
   private getInsurancePolicyDropdowns() {
     this.settingsCompanyService
       .getInsurancePolicyModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: InsurancePolicyModalResponse) => {
           this.ratings = res.ratings;
@@ -537,7 +539,7 @@ export class SettingsInsurancePolicyModalComponent
 
     this.settingsCompanyService
       .addInsurancePolicy(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -746,7 +748,7 @@ export class SettingsInsurancePolicyModalComponent
 
     this.settingsCompanyService
       .updateInsurancePolicy(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -766,7 +768,7 @@ export class SettingsInsurancePolicyModalComponent
   private deleteInsurancePolicyById(id: number) {
     this.settingsCompanyService
       .deleteInsurancePolicyById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -997,5 +999,8 @@ export class SettingsInsurancePolicyModalComponent
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

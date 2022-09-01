@@ -63,7 +63,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            //margin: 0px 2px;
+            margin: 0px 2px;
 
             svg-icon {
               svg {
@@ -88,6 +88,10 @@
                 }
               }
             }
+          }
+
+          .search-icon {
+            width: auto !important;
           }
 
           .plus-box {
@@ -152,7 +156,6 @@
         .smooth-dnd-container.vertical {
           flex-direction: column;
           margin: 0 6px;
-
           .smooth-dnd-draggable-wrapper {
             flex: 0 0 100%;
             padding: 0;

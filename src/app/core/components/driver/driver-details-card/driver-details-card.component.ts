@@ -25,7 +25,6 @@ import moment from 'moment';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
@@ -37,8 +36,8 @@ import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-details-card',
   templateUrl: './driver-details-card.component.html',
@@ -50,6 +49,7 @@ import { TestTService } from '../state/test.service';
 export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
+  private destroy$ = new Subject<void>();
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @Input() driver: any;
   @Input() templateCard: boolean;
@@ -227,7 +227,7 @@ export class DriverDetailsCardComponent
     // Confirmation Subscribe
     if (this.templateCard) {
       this.confirmationService.confirmationData$
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (res: Confirmation) => {
             console.log(res);
@@ -252,7 +252,7 @@ export class DriverDetailsCardComponent
         });
     }
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.driver = res.data;
@@ -524,34 +524,34 @@ export class DriverDetailsCardComponent
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataCdl = item));
   }
 
   public getMedicalById(id: number) {
     this.medicalService
       .getMedicalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataMedical = item));
   }
 
   public getMvrById(id: number) {
     this.mvrService
       .getMvrById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataMvr = item));
   }
 
   public getTestById(id: number) {
     this.testService
       .getTestById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.dataTestCard = item));
   }
   public deleteCdlByIdFunction(id: number) {
     this.cdlService
       .deleteCdlById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -571,7 +571,7 @@ export class DriverDetailsCardComponent
   private deleteMedicalByIdFunction(id: number) {
     this.medicalService
       .deleteMedicalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -591,7 +591,7 @@ export class DriverDetailsCardComponent
   private deleteMvrByIdFunction(id: number) {
     this.mvrService
       .deleteMvrById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -611,7 +611,7 @@ export class DriverDetailsCardComponent
   private deleteTestByIdFunction(id: number) {
     this.testService
       .deleteTestById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -935,6 +935,8 @@ export class DriverDetailsCardComponent
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }
