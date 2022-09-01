@@ -972,6 +972,8 @@ export class FilterComponent implements OnInit {
   moneyFilterStatus: any = false;
   setButtonAvailable: boolean = false;
   filterActiveArray: any[] = [];
+  filterUsaActiveArray: any[] = [];
+  filterCanadaActiveArray: any[] = [];
   filterActiveTime: any = '';
   swipeActiveRange: any = 0;
 
@@ -1754,6 +1756,9 @@ export class FilterComponent implements OnInit {
         this.filterActiveTime = this.selectedTimeValue;
       } else if (this.swipeFilter) {
         this.swipeActiveRange = this.rangeValue;
+      } else if ( this.type == 'stateFilter' ) {
+        this.filterUsaActiveArray = [...this.usaSelectedStates];
+        this.filterCanadaActiveArray = [...this.canadaSelectedStates];
       } else {
         this.filterActiveArray = [...this.selectedUser];
       }
@@ -1763,26 +1768,76 @@ export class FilterComponent implements OnInit {
   }
 
   checkFilterActiveValue() {
-    let array1 = [...this.selectedUser];
-    let array2 = [...this.filterActiveArray];
-    array1.sort((a, b) => {
-      return a.id - b.id;
-    });
+    if ( this.type == 'stateFilter' ){
+      
+      let usaArrayChanged = false;
+      let canadaArrayChanged = false;
 
-    array2.sort((a, b) => {
-      return a.id - b.id;
-    });
+      let arrayUsaSelected = [...this.usaSelectedStates];
+      let arrayUsaActive = [...this.filterUsaActiveArray];
+      let arrayCanadaSelected = [...this.canadaSelectedStates];
+      let arrayCanadaActive = [...this.filterCanadaActiveArray];
 
-    let stringfy1 = JSON.stringify(array1);
-    let stringfy2 = JSON.stringify(array2);
+      arrayUsaSelected.sort((a, b) => {
+        return a.id - b.id;
+      });
 
-    //console.log('--stringfy1', stringfy1);
-    //console.log('--stringfy2', stringfy2);
+      arrayUsaActive.sort((a, b) => {
+        return a.id - b.id;
+      });
 
-    if (stringfy1 == stringfy2) {
-      this.setButtonAvailable = false;
+      arrayCanadaSelected.sort((a, b) => {
+        return a.id - b.id;
+      });
+
+      arrayCanadaActive.sort((a, b) => {
+        return a.id - b.id;
+      });
+
+      let usaStringfy = JSON.stringify(arrayUsaSelected);
+      let usaActiveStringify = JSON.stringify(arrayUsaActive);
+      let canadaStringfy = JSON.stringify(arrayCanadaSelected);
+      let canadaActiveStringify = JSON.stringify(arrayCanadaActive);
+
+      if ( usaStringfy == usaActiveStringify ){
+        usaArrayChanged = false;
+      } else {
+        usaArrayChanged = true;
+      }
+
+      if ( canadaStringfy == canadaActiveStringify ){
+        canadaArrayChanged = false;
+      } else {
+        canadaArrayChanged = true;
+      }
+
+
+      if ( usaArrayChanged || canadaArrayChanged ) {
+        this.setButtonAvailable = true;
+      } else { 
+        this.setButtonAvailable = false;
+       }
+
     } else {
-      this.setButtonAvailable = true;
+      let array1 = [...this.selectedUser];
+      let array2 = [...this.filterActiveArray];
+      array1.sort((a, b) => {
+        return a.id - b.id;
+      });
+
+      array2.sort((a, b) => {
+        return a.id - b.id;
+      });
+
+      let stringfy1 = JSON.stringify(array1);
+      let stringfy2 = JSON.stringify(array2);
+
+      if (stringfy1 == stringfy2) {
+        this.setButtonAvailable = false;
+      } else {
+        this.setButtonAvailable = true;
+      }
     }
+    
   }
 }
