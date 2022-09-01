@@ -115,16 +115,16 @@ export const vinNumberValidation = [
   Validators.maxLength(17),
 ];
 
-//---------------- Truck Trailer Model ------------
+//---------------- Truck Trailer Model ---------------
 export const truckTrailerModelValidation = [
   Validators.minLength(1),
   Validators.maxLength(30),
 ];
 
-//---------------- Axles Model ------------
+//---------------- Axles Model --------------------
 export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
-//---------------- Year, month, day ----------------
+//---------------- Year, month, day ---------------
 export const yearValidRegex = Validators.pattern(
   /^(19[0-9]\d|20[0-4]\d|2100)$/
 );
@@ -139,7 +139,7 @@ export const daysValidRegex = Validators.pattern(
   /^([1-9][0-9]?|[12][0-9][0-9]|3[0-5][0-9]|36[0-5])$/
 );
 
-//---------------- Empty Weight ----------------
+//---------------- Empty Weight -------------------
 export const emptyWeightValidation = [
   Validators.minLength(4),
   Validators.maxLength(6), // because of ','
@@ -151,12 +151,12 @@ export const insurancePolicyValidation = [
   Validators.maxLength(14),
 ];
 
-//---------------- Mileage ----------------
+//---------------- Mileage -------------------------
 export const mileageValidation = [
   Validators.minLength(1),
   Validators.maxLength(10),
 ];
 
-//---------------- Mile, PerStop ----------------
+//---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 export const perStopValidation = [Validators.min(0), Validators.max(5000)];
