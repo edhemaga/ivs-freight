@@ -269,7 +269,7 @@ export class DashboardTopDriverComponent implements OnInit {
   ];
 
   public searchDashboardOptions = {
-    gridNameTitle: 'Top Driver',
+    gridNameTitle: 'Driver',
   };
 
   constructor(private tableService: TruckassistTableService) {}
@@ -499,6 +499,7 @@ export class DashboardTopDriverComponent implements OnInit {
     this.topTenSwitchTabstype1 = newSwitchValue;
 
     this.topTenTitle = item.name;
+    this.searchDashboardOptions.gridNameTitle = item.name;
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;
