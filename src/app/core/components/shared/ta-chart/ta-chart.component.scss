@@ -1,21 +1,21 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
-.charts-item-wrapper{
+.charts-item-wrapper {
   display: block;
   height: auto;
 
-  .charts-template-item-value{
+  .charts-template-item-value {
     line-height: 22px;
   }
 
-  .icon-name-item{
+  .icon-name-item {
     display: flex;
     line-height: 15px;
     align-items: center;
     height: auto;
     margin-bottom: 3px;
-    svg-icon{
-      svg{
+    svg-icon {
+      svg {
         display: flex;
         width: 11px;
         height: 11px;
@@ -23,71 +23,71 @@
     }
   }
 
-  &.hover{
+  &.hover {
     border-radius: 2px;
     padding: 6px;
     box-shadow: 0 0 4px rgb(0 0 0 / 15%);
   }
 
-  .hover_data_time{
+  .hover_data_time {
     padding: 0;
-    .hover_time_title{
+    .hover_time_title {
       font-size: 14px;
       font-weight: 700;
       line-height: 18px;
       color: $bw6-2;
     }
 
-    .hover_time_border{
+    .hover_time_border {
       height: 2px;
       width: 100%;
       margin: 6px 0;
 
-      background-color: #F3F3F3;
+      background-color: #f3f3f3;
       border-radius: 1px;
     }
   }
 
-  .chart_all_inner_hold{
+  .chart_all_inner_hold {
     display: flex;
     align-items: center;
     padding: 0;
   }
 }
 
-.main_chart_container{
+.main_chart_container {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   margin-top: 12px;
 
-  .chart_hover_background{
+  .chart_hover_background {
     position: absolute;
     top: 0;
     height: 100%;
-    background-color: #F3F3F3;
+    background-color: #f3f3f3;
     z-index: 0;
   }
 
-  .chart_canvas{
+  .chart_canvas {
     z-index: 1;
   }
 
-  &.remove_chart_margin{
+  &.remove_chart_margin {
     margin: 0;
   }
 
-  &.add_inside{
+  &.add_inside {
     padding: 0px 6px;
     margin-top: 6px;
   }
 
-  .no_chart_data{
+  .no_chart_data {
     user-select: none;
   }
 
-  .hover_data_holder{
+  .hover_data_holder {
     position: absolute;
     top: 50%;
     left: 0;
@@ -100,7 +100,7 @@
 
     z-index: 2;
 
-    .hover_data_title{
+    .hover_data_title {
       font-size: 11px;
       font-weight: 700;
       line-height: 14px;
@@ -110,25 +110,24 @@
       &::-moz-selection {
         background: #91919133;
         color: #919191;
-    }
+      }
       &::selection {
         background: #91919133;
         color: #919191;
-    }
+      }
     }
 
-    .hover_data_border_line{
+    .hover_data_border_line {
       height: 2px;
       width: 100%;
       margin: 6px 0px 8px 0px;
 
       border-radius: 1px;
-      background-color: #F3F3F3;
+      background-color: #f3f3f3;
     }
 
-    .hover_data_info_holder{
-
-      .hover_data_info_top_line{
+    .hover_data_info_holder {
+      .hover_data_info_top_line {
         display: flex;
         align-items: center;
         margin-bottom: 2px;
@@ -137,44 +136,44 @@
           background: #91919133;
           color: #919191;
         }
-          &::selection {
-            background: #91919133;
-            color: #919191;
+        &::selection {
+          background: #91919133;
+          color: #919191;
         }
 
-        .hover_data_icon{
-            svg{
-              display: flex;
-              width: 10px;
-              height: 10px;
-            }
+        .hover_data_icon {
+          svg {
+            display: flex;
+            width: 10px;
+            height: 10px;
+          }
         }
 
-        .hover_data_info_title{
+        .hover_data_info_title {
           font-size: 11px;
           font-weight: 500;
           line-height: 14px;
           text-align: center;
           color: $bw6-2;
           padding-left: 4px;
-          
+
           &::-moz-selection {
             background: #91919133;
             color: #919191;
           }
-            &::selection {
-              background: #91919133;
-              color: #919191;
+          &::selection {
+            background: #91919133;
+            color: #919191;
           }
         }
 
-        .hover_data_values_hold{
+        .hover_data_values_hold {
           display: flex;
           align-items: center;
         }
       }
 
-      .hover_data_price{
+      .hover_data_price {
         font-size: 14px;
         line-height: 18px;
         font-weight: 600;
@@ -184,17 +183,17 @@
           background: #91919133;
           color: #919191;
         }
-          &::selection {
-            background: #91919133;
-            color: #919191;
+        &::selection {
+          background: #91919133;
+          color: #919191;
         }
 
-        &.increased_title{
+        &.increased_title {
           padding-right: 12px;
         }
       }
 
-      .hover_data_percent{
+      .hover_data_percent {
         font-size: 11px;
         line-height: 14px;
         font-weight: 700;
@@ -204,14 +203,14 @@
           background: #91919133;
           color: #919191;
         }
-          &::selection {
-            background: #91919133;
-            color: #919191;
+        &::selection {
+          background: #91919133;
+          color: #919191;
         }
       }
 
-      &.hover_data_bigger_hold{
-        .hover_title_container{
+      &.hover_data_bigger_hold {
+        .hover_title_container {
           display: flex;
           flex: 1;
           align-items: center;
@@ -221,32 +220,32 @@
   }
 }
 
-.chart_text_holder{
+.chart_text_holder {
   display: flex;
   justify-content: center;
   align-items: center;
 
   user-select: none;
 
-  .chart_inner{
+  .chart_inner {
     position: absolute;
     top: 50%;
     right: 50%;
-    transform: translate(50%,-50%);
-    
+    transform: translate(50%, -50%);
+
     text-align: center;
 
-    .chart_value_holder{
+    .chart_value_holder {
       margin-bottom: 22px;
 
-      .chart_label{
+      .chart_label {
         font-size: 28px;
         font-weight: 700;
         color: $bw6-2;
         line-height: 34px;
       }
 
-      .chart_value{
+      .chart_value {
         margin-bottom: 4px;
         font-size: 18px;
         line-height: 22px;
@@ -254,7 +253,7 @@
         color: $bw6-2;
       }
 
-      .chart_data_name{
+      .chart_data_name {
         font-size: 11px;
         line-height: 14px;
         font-weight: 700;
@@ -264,6 +263,6 @@
   }
 }
 
-.charts-template-item{
+.charts-template-item {
   padding: 0 !important;
 }

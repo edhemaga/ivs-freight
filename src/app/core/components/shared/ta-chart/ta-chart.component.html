@@ -1,60 +1,155 @@
-<div class="charts-item-wrapper revenue" *ngIf="legendAttributes?.length > 0" [class.row]="legendAttributes?.length > 2" [class.hover]="hoveringStatus && hoverTimeDisplay">
+<div
+  class="charts-item-wrapper revenue"
+  *ngIf="legendAttributes?.length > 0"
+  [class.row]="legendAttributes?.length > 2"
+  [class.hover]="hoveringStatus && hoverTimeDisplay"
+>
   <div class="hover_data_time" *ngIf="hoveringStatus && hoverTimeDisplay">
     <div class="hover_time_title">DECEMBER, 2021</div>
     <div class="hover_time_border"></div>
   </div>
   <div class="chart_all_inner_hold">
-    <div class="charts-template-item" [class.col-4]="legendAttributes?.length > 2" *ngFor="let item of legendAttributes; let indx = index">
+    <div
+      class="charts-template-item"
+      [class.col-4]="legendAttributes?.length > 2"
+      *ngFor="let item of legendAttributes; let indx = index"
+    >
       <div class="icon-name-item">
-        <svg-icon src={{item.image}}></svg-icon>
-        <div class="charts-template-item-name" [ngStyle]="{'margin-left': item.image ? '6px' : '0px'}">{{ item.title }}</div>
+        <svg-icon src="{{ item.image }}"></svg-icon>
+        <div
+          class="charts-template-item-name"
+          [ngStyle]="{ 'margin-left': item.image ? '6px' : '0px' }"
+        >
+          {{ item.title }}
+        </div>
       </div>
-      <div class="charts-template-item-value">{{item.prefix}}{{ item.value | nFormatter }} {{item.sufix}}</div>
+      <div class="charts-template-item-value">
+        {{ item.prefix }}{{ item.value | nFormatter }} {{ item.sufix }}
+      </div>
     </div>
   </div>
 </div>
-<div class="main_chart_container" (mouseleave)="showHoverData = false; hoveringStatus = false;" [class.remove_chart_margin]="removeChartMargin" [class.add_inside]="hoveringStatus && hoverTimeDisplay">
-  <div class="chart_hover_background" [ngStyle]="{'left': hoverChartLeft + 'px', 'width': hoverColumnWidth + 'px', 'height': hoverColumnHeight + 'px'}" *ngIf="showHoverData"></div>
+<div
+  class="main_chart_container"
+  (mouseleave)="chartHoverOut()"
+  [class.remove_chart_margin]="removeChartMargin"
+  [class.add_inside]="hoveringStatus && hoverTimeDisplay"
+>
+  <div
+    class="chart_hover_background"
+    [ngStyle]="{
+      left: hoverChartLeft + 'px',
+      width: hoverColumnWidth + 'px',
+      height: hoverColumnHeight + 'px'
+    }"
+    *ngIf="showHoverData"
+  ></div>
   <div class="no_chart_data" *ngIf="noChartData">
-    <svg-icon src={{noChartImage}}></svg-icon>
+    <svg-icon src="{{ noChartImage }}"></svg-icon>
   </div>
-  <div class="chart_text_holder" *ngIf="lineChartType == 'doughnut' && doughnutChartLegend">
+  <div
+    class="chart_text_holder"
+    *ngIf="lineChartType == 'doughnut' && doughnutChartLegend"
+  >
     <div class="chart_inner">
-      <div class="chart_value_holder" *ngFor="let item of chartInnitProperties; let indx = index" [ngStyle]="{'margin-bottom': indx+1 < chartInnitProperties.length ? '30px': '0px'}">
+      <div
+        class="chart_value_holder"
+        *ngFor="let item of chartInnitProperties; let indx = index"
+        [ngStyle]="{
+          'margin-bottom':
+            indx + 1 < chartInnitProperties.length ? '30px' : '0px'
+        }"
+      >
         <div class="chart_label">{{ item.percent }}</div>
         <div class="chart_value">{{ item.value }}</div>
         <div class="chart_data_name">{{ item.name }}</div>
       </div>
     </div>
   </div>
-  <div class="hover_data_holder" (mouseenter)="showHoverData = false" *ngIf="showHoverData && selectedDataRows?.length" [ngStyle]="{'left': hoverDataPosition+'px', 'width': selectedDrivers?.length > dataMaxRows ? '279px' : selectedDataRows?.length > dataMaxRows ? '206px': 'auto'}">
-    <div class="hover_data_title" [ngStyle]="{'text-align': selectedDrivers?.length > 0 || selectedDataRows?.length > dataMaxRows ? 'left': 'center'}">JANUARY, 2024</div>
+  <div
+    class="hover_data_holder"
+    (mouseenter)="showHoverData = false"
+    *ngIf="showHoverData && selectedDataRows?.length"
+    [ngStyle]="{
+      left: hoverDataPosition + 'px',
+      width:
+        selectedDrivers?.length > dataMaxRows
+          ? '279px'
+          : selectedDataRows?.length > dataMaxRows
+          ? '206px'
+          : 'auto'
+    }"
+  >
+    <div
+      class="hover_data_title"
+      [ngStyle]="{
+        'text-align':
+          selectedDrivers?.length > 0 || selectedDataRows?.length > dataMaxRows
+            ? 'left'
+            : 'center'
+      }"
+    >
+      JANUARY, 2024
+    </div>
     <div class="hover_data_border_line"></div>
     <div class="hover_data_innit" *ngIf="selectedDataRows.length > dataMaxRows">
-      <div class="hover_data_info_holder hover_data_bigger_hold" #hoverDataHolder *ngFor="let item of selectedDataRows; let indx = index" [ngStyle]="{'margin-top': indx > 0  ? '12px': '0px'}">
+      <div
+        class="hover_data_info_holder hover_data_bigger_hold"
+        #hoverDataHolder
+        *ngFor="let item of selectedDataRows; let indx = index"
+        [ngStyle]="{ 'margin-top': indx > 0 ? '12px' : '0px' }"
+      >
         <div class="hover_data_info_top_line">
           <div class="hover_title_container">
             <div class="hover_data_icon">
-              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
-                  <rect width="10" height="10" rx="5.5" [attr.fill]="item.color" />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="10"
+                height="10"
+                viewBox="0 0 10 10"
+              >
+                <rect
+                  width="10"
+                  height="10"
+                  rx="5.5"
+                  [attr.fill]="item.color"
+                />
               </svg>
             </div>
             <div class="hover_data_info_title">{{ item.name }}</div>
           </div>
           <div class="hover_data_values_hold">
-            <div class="hover_data_price" [class.increased_title]="selectedDrivers?.length > dataMaxRows">${{ item.value | nFormatter }}</div>
+            <div
+              class="hover_data_price"
+              [class.increased_title]="selectedDrivers?.length > dataMaxRows"
+            >
+              ${{ item.value | nFormatter }}
+            </div>
             <div class="hover_data_percent">{{ item.percent }}</div>
           </div>
         </div>
       </div>
     </div>
-    <div class="hover_data_innit" *ngIf="selectedDataRows.length <= dataMaxRows">
-      <div class="hover_data_info_holder" #hoverDataHolder *ngFor="let item of selectedDataRows; let indx = index" [ngStyle]="{'margin-top': indx > 0  ? '12px': '0px'}">
+    <div
+      class="hover_data_innit"
+      *ngIf="selectedDataRows.length <= dataMaxRows"
+    >
+      <div
+        class="hover_data_info_holder"
+        #hoverDataHolder
+        *ngFor="let item of selectedDataRows; let indx = index"
+        [ngStyle]="{ 'margin-top': indx > 0 ? '12px' : '0px' }"
+      >
         <div class="hover_data_info_top_line">
           <div class="hover_data_icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+            >
               <rect width="10" height="10" rx="5.5" [attr.fill]="item.color" />
-          </svg>
+            </svg>
           </div>
           <div class="hover_data_info_title">{{ item.name }}</div>
         </div>
@@ -63,13 +158,22 @@
       </div>
     </div>
   </div>
-  <canvas *ngIf="!noChartData" baseChart id="baseChart" width={{chartWidth}} height={{chartHeight}} class="chart_canvas" [class.dotted_background]="dottedBackground" [ngStyle]="{'width': '100%', 'height': chartHeight+'px'}"
+  <canvas
+    *ngIf="!noChartData"
+    baseChart
+    id="baseChart"
+    width="{{ chartWidth }}"
+    height="{{ chartHeight }}"
+    class="chart_canvas"
+    [class.dotted_background]="dottedBackground"
+    [ngStyle]="{ width: '100%', height: chartHeight + 'px' }"
     [datasets]="lineChartData"
     [labels]="lineChartLabels"
     [options]="lineChartOptions"
     [colors]="lineChartColors"
     [legend]="lineChartLegend"
     [chartType]="lineChartType"
-    [plugins]="lineChartPlugins">
+    [plugins]="lineChartPlugins"
+  >
   </canvas>
 </div>
