@@ -3,6 +3,7 @@ import {
   addressValidation,
   departmentValidation,
   emailValidation,
+  labelValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -21,7 +22,6 @@ import {
   emailRegex,
   phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
-import { v4 as uuidv4 } from 'uuid';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -103,7 +103,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.contactForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.maxLength(23)]],
+      name: [null, [Validators.required, ...labelValidation]],
       companyContactLabelId: [null],
       phone: [null, [phoneFaxRegex, Validators.required]],
       email: [null, [emailRegex, ...emailValidation, Validators.required]],

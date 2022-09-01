@@ -800,16 +800,17 @@ export class TaInputComponent
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
       if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
-        // TODO:
+        return true;
       }
+      event.preventDefault();
+      return false;
     }
 
     if (['description'].includes(this.inputConfig.name.toLowerCase())) {
@@ -828,6 +829,18 @@ export class TaInputComponent
       event.preventDefault();
       return false;
     }
+
+    // if (['url'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (
+    //     /^[A-Za-z0-9!*'();:@&=+$,/?%#._~[-]$/.test(
+    //       String.fromCharCode(event.charCode)
+    //     )
+    //   ) {
+    //     return true;
+    //   }
+    //   event.preventDefault();
+    //   return false;
+    // }
 
     // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -874,101 +887,6 @@ export class TaInputComponent
     //   } else {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
-    //   }
-    // }
-
-    // if (['description'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-    //     if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
-    //       this.numberOfSpaces++;
-    //     } else {
-    //       this.numberOfSpaces = 0;
-    //     }
-    //     if (this.numberOfSpaces > 1) {
-    //       event.preventDefault();
-    //       return false;
-    //     }
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   [
-    //     'first name',
-    //     'last name',
-    //     'name',
-    //     'full name',
-    //     'relationship',
-    //     'title',
-    //   ].includes(this.inputConfig.name.toLowerCase())
-    // ) {
-    //   let spaces = this.input.nativeElement.value.split(' ').length;
-    //   if (
-    //     /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
-    //     spaces <= 2
-    //   ) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   ['address unit', 'truck number', 'trailer number'].includes(
-    //     this.inputConfig.name.toLowerCase()
-    //   )
-    // ) {
-    //   if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   [
-    //     'routing number',
-    //     'account number',
-    //     'empty weight',
-    //     'purchase price',
-    //     'axles',
-    //     'mileage',
-    //     'ipas ezpass',
-    //     'phone extension',
-    //     'qty',
-    //     'price',
-    //     'odometer',
-    //     'prefix',
-    //     'sufix',
-    //     'starting',
-    //     'customer pay term',
-    //     'dollar',
-    //     'fatalinjuries',
-    //     'months',
-    //   ].includes(this.inputConfig.name.toLowerCase())
-    // ) {
-    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
     //   }
     // }
 
@@ -1021,34 +939,6 @@ export class TaInputComponent
     //   }
     // }
 
-    // if (['year'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (
-    //     /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
-    //     !this.input.nativeElement.value
-    //   ) {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-
-    //   if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
     // if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
@@ -1059,38 +949,8 @@ export class TaInputComponent
     //   }
     // }
 
-    // if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
     // if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['model'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
     //   } else {
