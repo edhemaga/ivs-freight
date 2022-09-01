@@ -58,7 +58,7 @@ import { configFactory } from './app.config';
       timeOut: 5000,
     }),
     NgIdleModule.forRoot(),
-    ApiModule.forRoot(configFactory),
+    ApiModule,
   ],
   providers: [
     {
@@ -69,12 +69,7 @@ import { configFactory } from './app.config';
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
-        new Configuration({
-          basePath: environment.API_ENDPOINT,
-          credentials: {
-            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
-          },
-        }),
+        configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },
