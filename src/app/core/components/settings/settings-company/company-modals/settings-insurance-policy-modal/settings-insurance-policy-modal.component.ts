@@ -1,7 +1,5 @@
 import {
   phoneFaxRegex,
-  emailRegex,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
@@ -89,7 +87,7 @@ export class SettingsInsurancePolicyModalComponent
       issued: [null, Validators.required],
       expires: [null, Validators.required],
       phone: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       // Commerical General Liability
@@ -135,6 +133,12 @@ export class SettingsInsurancePolicyModalComponent
       trailerValue: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.insurancePolicyForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.insurancePolicyForm);
 

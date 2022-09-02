@@ -27,7 +27,6 @@ import { FormService } from 'src/app/core/services/form/form.service';
 import {
   departmentValidation,
   descriptionValidation,
-  urlValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -88,12 +87,18 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
       description: [null, descriptionValidation],
-      url: [null, [...urlValidation]],
+      url: [null],
       deadline: [null],
       departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.taskForm.get('url'),
+      'url',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.taskForm);
 

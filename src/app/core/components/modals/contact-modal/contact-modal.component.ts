@@ -2,7 +2,6 @@ import {
   addressUnitValidation,
   addressValidation,
   departmentValidation,
-  emailValidation,
   labelValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
@@ -18,10 +17,7 @@ import {
   CreateResponse,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import {
-  emailRegex,
-  phoneFaxRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -106,7 +102,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, ...labelValidation]],
       companyContactLabelId: [null],
       phone: [null, [phoneFaxRegex, Validators.required]],
-      email: [null, [emailRegex, ...emailValidation, Validators.required]],
+      email: [null, [Validators.required]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       shared: [true],
@@ -114,6 +110,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       avatar: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.contactForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.contactForm);
 

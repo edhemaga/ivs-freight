@@ -58,16 +58,6 @@ export const phoneExtension = [
   Validators.maxLength(8),
 ];
 
-//---------------- Email Regex ----------------
-export const emailRegex = Validators.pattern(
-  /^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$/
-);
-
-export const emailValidation = [
-  Validators.minLength(5),
-  Validators.maxLength(64),
-];
-
 //---------------- Address & Address Unit -------------------
 export const addressValidation = [
   Validators.minLength(12),
@@ -167,12 +157,6 @@ export const licensePlateValidation = [
 export const descriptionValidation = [
   Validators.minLength(20),
   Validators.maxLength(160),
-];
-
-//---------------- URL --------------------------------
-export const urlValidation = [
-  Validators.minLength(4),
-  Validators.maxLength(255),
 ];
 
 //---------------- Label --------------------------------
