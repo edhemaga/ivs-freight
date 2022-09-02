@@ -6,8 +6,8 @@ import {
   EditMedicalCommand,
   MedicalResponse,
 } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
@@ -18,7 +18,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { MedicalTService } from '../../../state/medical.service';
-@UntilDestroy()
+
 @Component({
   selector: 'app-driver-medical-modal',
   templateUrl: './driver-medical-modal.component.html',
@@ -26,6 +26,7 @@ import { MedicalTService } from '../../../state/medical.service';
   providers: [ModalService],
 })
 export class DriverMedicalModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public medicalForm: FormGroup;
@@ -64,7 +65,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.medicalForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -73,7 +74,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   private getDriverById(id: number) {
     this.driverService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: DriverResponse) => {
           this.modalName = res.firstName.concat(' ', res.lastName);
@@ -128,7 +129,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     this.medicalService
       .updateMedical(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -154,7 +155,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
 
     this.medicalService
       .addMedical(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -172,7 +173,7 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
   public getMedicalById() {
     this.medicalService
       .getMedicalById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: MedicalResponse) => {
           this.medicalForm.patchValue({
@@ -187,5 +188,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

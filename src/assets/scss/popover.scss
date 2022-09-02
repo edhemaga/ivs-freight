@@ -169,6 +169,28 @@
   }
 }
 
+// Table Attachments Popup
+.table-attachments-popover{
+  background-color: unset !important;
+
+  .table-attachments{
+    margin-top: 2px;
+    width: 1575px;
+    height: 198px;
+    background: white;
+    animation: attachmentsAnimation 0.25s ease-in-out;
+  }
+
+  @keyframes attachmentsAnimation {
+    from {
+      height: 0px;
+    }
+    to {
+      height: 198px;
+    }
+  }
+}
+
 // Table Toolbar Options Popup
 .toolbar-options-popover {
   box-shadow: none !important;
@@ -1165,8 +1187,9 @@
 
       &:hover:not(.active) {
         cursor: pointer;
-        background-color: #f3f3f3;
+        background-color: #f7f7f7;
         color: #3c3c3c;
+        border-radius: 1px;
       }
 
       &.active {

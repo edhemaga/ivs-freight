@@ -15,11 +15,13 @@ import {
 import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import {
+  DropZoneConfig,
+  TaUploadDropzoneComponent,
+} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-logo-change',
   templateUrl: './ta-logo-change.component.html',
@@ -28,6 +30,8 @@ import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-
 export class TaLogoChangeComponent
   implements AfterViewInit, OnInit, OnChanges, OnDestroy
 {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
   @Input() croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,
@@ -89,7 +93,7 @@ export class TaLogoChangeComponent
 
   ngOnInit(): void {
     this.uploadFileService.uploadedFiles$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data: { files: UploadFile[]; action: string }) => {
         if (data) {
           this.onUploadImage(data);
@@ -159,5 +163,8 @@ export class TaLogoChangeComponent
     this.validationEvent.emit(this.isImageValid);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

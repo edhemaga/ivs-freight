@@ -1,7 +1,9 @@
+import {
+  bankValidation,
+  lastNameValidation,
+} from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -16,19 +18,25 @@ import {
   phoneRegex,
   emailRegex,
   ssnNumberRegex,
-  accountBankRegex,
-  routingBankRegex,
+  accountBankValidation,
+  routingBankValidation,
+  emailValidation,
+  addressValidation,
+  addressUnitValidation,
+  firstNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-step1',
   templateUrl: './step1.component.html',
   styleUrls: ['./step1.component.scss'],
 })
 export class Step1Component implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public personalInfoForm: FormGroup;
@@ -294,17 +302,17 @@ export class Step1Component implements OnInit, OnDestroy {
   private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
       phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      bankId: [null],
-      accountNumber: [null, accountBankRegex],
-      routingNumber: [null, routingBankRegex],
+      bankId: [null, [...bankValidation]],
+      accountNumber: [null, accountBankValidation],
+      routingNumber: [null, routingBankValidation],
       legalWork: [null, Validators.required],
       anotherName: [null, Validators.required],
       inMilitary: [null, Validators.required],
@@ -386,7 +394,7 @@ export class Step1Component implements OnInit, OnDestroy {
   public isBankUnselected(): void {
     this.personalInfoForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.isBankSelected = false;
@@ -402,7 +410,7 @@ export class Step1Component implements OnInit, OnDestroy {
   public getBanksDropdownList(): void {
     this.applicantListsService
       .getBanksDropdownList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.banksDropdownList = data;
       });
@@ -923,5 +931,8 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   } */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

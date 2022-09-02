@@ -1,7 +1,6 @@
 import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TrailerListResponse } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Subject, takeUntil } from 'rxjs';
 import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -25,7 +24,6 @@ import {
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-trailer-table',
   templateUrl: './trailer-table.component.html',
@@ -33,7 +31,7 @@ import {
   providers: [TaThousandSeparatorPipe],
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -72,7 +70,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -112,7 +110,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -127,7 +125,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -142,7 +140,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Add Trailer
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation === 'add') {
           this.viewData.push(this.mapTrailerData(res.data));
@@ -204,7 +202,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         if (response.length) {
           let mappedRes = response.map((item) => {
@@ -233,7 +231,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
@@ -470,7 +468,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((trailer: TrailerListResponse) => {
         if (!isShowMore) {
           this.viewData = trailer.pagination.data;
@@ -613,7 +611,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private changeTrailerStatus(id: number) {
     this.trailerService
       .changeTrailerStatus(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -635,7 +633,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private deleteTrailerById(id: number) {
     this.trailerService
       .deleteTrailerById(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -671,7 +669,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private multipleDeleteTrailers(response: any[]) {
     this.trailerService
       .deleteTrailerList(response)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         let trailerNumber = '';
         let trailersText = 'Trailer ';
@@ -716,5 +714,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -258,11 +258,13 @@
             <app-ta-input
               formControlName="truckVIN"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>
@@ -322,11 +324,13 @@
             <app-ta-input
               formControlName="trailerVIN"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
-                isDisabled: true,
-                textTransform: 'capitalize'
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                isDisabled: true
               }"
             ></app-ta-input>
           </div>
@@ -431,7 +435,9 @@
             <app-ta-input
               formControlName="policeDepartment"
               [inputConfig]="{
-                name: 'Police Report',
+                name: 'Department',
+                minLength: 2,
+                maxLength: 36,
                 type: 'text',
                 label: 'Police Department',
                 textTransform: 'capitalize'
@@ -464,6 +470,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAuthorityAddress"
@@ -539,6 +547,8 @@
                   type: 'text',
                   label: 'Origin',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedAuthorityOrigin"
@@ -553,6 +563,8 @@
                   type: 'text',
                   label: 'Destination',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="selectedAuthorityDestination"

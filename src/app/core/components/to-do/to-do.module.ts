@@ -10,10 +10,10 @@ import { GridsterModule } from 'angular-gridster2';
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { NgxSmoothDnDModule } from 'ngx-smooth-dnd';
 import { TruckassistProgressExpirationModule } from './../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
+import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
+
 @NgModule({
-  declarations: [
-    ToDoListCardComponent
-  ],
+  declarations: [ToDoListCardComponent],
   imports: [
     CommonModule,
     ToDoRoutingModule,
@@ -22,8 +22,9 @@ import { TruckassistProgressExpirationModule } from './../shared/truckassist-pro
     AppTooltipeModule,
     SharedModule,
     NgxSmoothDnDModule,
-    TruckassistProgressExpirationModule
+    TruckassistProgressExpirationModule,
+    TruckassistSearchModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class ToDoModule { }
+export class ToDoModule {}

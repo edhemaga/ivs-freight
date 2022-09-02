@@ -9,9 +9,8 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-like-dislike',
   templateUrl: './ta-like-dislike.component.html',
@@ -19,6 +18,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaLikeDislikeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() taLikes: number = 0;
   @Input() taDislikes: number = 0;
   @Input() customClass: string = null;
@@ -30,7 +30,7 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.taLikeDislikeService.populateLikeDislike$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((data: PopulateLikeDislikeModel) => {
         this.taLikes = data.upRatingCount ? data.upRatingCount : 0;
         this.taDislikes = data.downRatingCount ? data.downRatingCount : 0;
@@ -79,5 +79,8 @@ export class TaLikeDislikeComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

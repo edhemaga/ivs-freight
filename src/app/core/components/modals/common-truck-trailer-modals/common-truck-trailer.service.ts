@@ -1,3 +1,4 @@
+import { ActivatedRoute } from '@angular/router';
 import { Injectable } from '@angular/core';
 import {
   CreateInspectionCommand,
@@ -26,6 +27,8 @@ import { TruckActiveStore } from '../../truck/state/truck-active-state/truck-act
 import { TruckInactiveStore } from '../../truck/state/truck-inactive-state/truck-inactive.store';
 import { TrailerInactiveStore } from '../../trailer/state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerActiveStore } from '../../trailer/state/trailer-active-state/trailer-active.store';
+import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
+import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +44,10 @@ export class CommonTruckTrailerService {
     private titleService: TitleService,
     private truckService: TruckTService,
     private tableService: TruckassistTableService,
-    private trailerService: TrailerTService
+    private trailerService: TrailerTService,
+    private truckItemStore: TruckItemStore,
+    private trailerItemStore: TrailerItemStore,
+    private activeRoute: ActivatedRoute
   ) {}
 
   // Registration
@@ -114,17 +120,29 @@ export class CommonTruckTrailerService {
   }
 
   public updateRegistration(
-    data: UpdateRegistrationCommand
+    data: UpdateRegistrationCommand,
+    tabSelected?: string
   ): Observable<object> {
-    return this.registrationService.apiRegistrationPut(data);
+    return this.registrationService.apiRegistrationPut(data).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   public getRegistrationById(id: number): Observable<RegistrationResponse> {
     return this.registrationService.apiRegistrationIdGet(id);
   }
 
-  public deleteRegistrationById(id: number): Observable<any> {
-    return this.registrationService.apiRegistrationIdDelete(id);
+  public deleteRegistrationById(
+    id: number,
+    tabSelected?: string
+  ): Observable<any> {
+    return this.registrationService.apiRegistrationIdDelete(id).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   public getRegistrationModalDropdowns(): Observable<RegistrationModalResponse> {
@@ -132,8 +150,15 @@ export class CommonTruckTrailerService {
   }
 
   // Inspection
-  public deleteInspectionById(id: number): Observable<any> {
-    return this.inspectionService.apiInspectionIdDelete(id);
+  public deleteInspectionById(
+    id: number,
+    tabSelected?: string
+  ): Observable<any> {
+    return this.inspectionService.apiInspectionIdDelete(id).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   public getInspectionById(id: number): Observable<InspectionResponse> {
@@ -206,28 +231,168 @@ export class CommonTruckTrailerService {
     );
   }
 
-  public updateInspection(data: UpdateInspectionCommand): Observable<object> {
-    return this.inspectionService.apiInspectionPut(data);
+  public updateInspection(
+    data: UpdateInspectionCommand,
+    tabSelected?: string
+  ): Observable<object> {
+    return this.inspectionService.apiInspectionPut(data).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   // Title
-  public deleteTitleById(id: number): Observable<any> {
-    return this.titleService.apiTitleIdDelete(id);
+  public deleteTitleById(id: number, tabSelected?: string): Observable<any> {
+    return this.titleService.apiTitleIdDelete(id).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   public getTitleById(id: number): Observable<TitleResponse> {
     return this.titleService.apiTitleIdGet(id);
   }
 
-  public addTitle(data: CreateTitleCommand): Observable<any> {
-    return this.titleService.apiTitlePost(data);
+  public addTitle(
+    data: CreateTitleCommand,
+    tabSelected?: string
+  ): Observable<any> {
+    return this.titleService.apiTitlePost(data).pipe(
+      tap(() => {
+        // Truck Add Inspection
+        if (data.truckId) {
+          const subTruck = this.truckService
+            .getTruckById(data.truckId)
+            .subscribe({
+              next: (truck: TruckResponse | any) => {
+                if (tabSelected === 'active') {
+                  this.truckActiveStore.remove(({ id }) => id === data.truckId);
+
+                  this.truckActiveStore.add(truck);
+                } else if (tabSelected === 'inactive') {
+                  this.truckInactiveStore.remove(
+                    ({ id }) => id === data.truckId
+                  );
+
+                  this.truckInactiveStore.add(truck);
+                }
+
+                this.tableService.sendActionAnimation({
+                  animation: 'update',
+                  data: truck,
+                  id: truck.id,
+                });
+
+                subTruck.unsubscribe();
+              },
+            });
+        } else if (data.trailerId) {
+          const subTrailer = this.trailerService
+            .getTrailerById(data.trailerId)
+            .subscribe({
+              next: (trailer: TrailerResponse | any) => {
+                if (tabSelected === 'active') {
+                  this.trailerActiveStore.remove(
+                    ({ id }) => id === data.trailerId
+                  );
+
+                  this.trailerActiveStore.add(trailer);
+                } else if (tabSelected === 'inactive') {
+                  this.trailerInactiveStore.remove(
+                    ({ id }) => id === data.trailerId
+                  );
+
+                  this.trailerInactiveStore.add(trailer);
+                }
+
+                this.tableService.sendActionAnimation({
+                  animation: 'update',
+                  data: trailer,
+                  id: trailer.id,
+                });
+
+                subTrailer.unsubscribe();
+              },
+            });
+        }
+      })
+    );
   }
 
-  public updateTitle(data: UpdateTitleCommand): Observable<object> {
-    return this.titleService.apiTitlePut(data);
+  public updateTitle(
+    data: UpdateTitleCommand,
+    tabSelected?: string
+  ): Observable<object> {
+    return this.titleService.apiTitlePut(data).pipe(
+      tap(() => {
+        this.updateDataAnimation(tabSelected);
+      })
+    );
   }
 
   public getTitleModalDropdowns(): Observable<TitleModalResponse> {
     return this.titleService.apiTitleModalGet();
+  }
+
+  public updateDataAnimation(tabSelected?: string) {
+    let val = window.location.pathname.includes('truck');
+    let truckId;
+    let trailerId;
+    // Truck Add Inspection
+    if (val == true) {
+      truckId = this.truckItemStore.getValue().ids[0];
+    } else {
+      trailerId = this.trailerItemStore.getValue().ids[0];
+    }
+    if (truckId) {
+      const subTruck = this.truckService.getTruckById(truckId).subscribe({
+        next: (truck: TruckResponse | any) => {
+          if (tabSelected === 'active') {
+            this.truckActiveStore.remove(({ id }) => id === truckId);
+
+            this.truckActiveStore.add(truck);
+          } else if (tabSelected === 'inactive') {
+            this.truckInactiveStore.remove(({ id }) => id === truckId);
+
+            this.truckInactiveStore.add(truck);
+          }
+
+          this.tableService.sendActionAnimation({
+            animation: 'update',
+            data: truck,
+            id: truck.id,
+          });
+
+          subTruck.unsubscribe();
+        },
+      });
+    }
+    if (trailerId) {
+      const subTrailer = this.trailerService
+        .getTrailerById(trailerId)
+        .subscribe({
+          next: (trailer: TrailerResponse | any) => {
+            if (tabSelected === 'active') {
+              this.trailerActiveStore.remove(({ id }) => id === trailerId);
+
+              this.trailerActiveStore.add(trailer);
+            } else if (tabSelected === 'inactive') {
+              this.trailerInactiveStore.remove(({ id }) => id === trailerId);
+
+              this.trailerInactiveStore.add(trailer);
+            }
+
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              data: trailer,
+              id: trailer.id,
+            });
+
+            subTrailer.unsubscribe();
+          },
+        });
+    }
   }
 }

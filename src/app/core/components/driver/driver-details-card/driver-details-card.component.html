@@ -399,10 +399,11 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
+        *ngIf="driver.commissionSolo && driver.solo.emptyMile"
         [cardName]="driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
-        <div *ngIf="driver.commissionSolo" class="purchase-template">
+        <div *ngIf="driver.commissionSolo" class="purchase-template" >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value commsion-solo">
@@ -410,7 +411,7 @@
             </div>
           </div>
 
-          <div class="purchase-template-item second-name">
+          <div class="purchase-template-item second-name" *ngIf="driver.commissionTeam">
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value commsion-solo">
               {{ driver.commissionTeam }}%
@@ -529,7 +530,6 @@
       >
         <div
           *ngIf="
-            !driver.emergencyContactRelationship ||
             !driver.emergencyContactName ||
             !driver.emergencyContactPhone
           "
@@ -539,7 +539,6 @@
         </div>
         <div
           *ngIf="
-            driver.emergencyContactRelationship &&
             driver.emergencyContactName &&
             driver.emergencyContactPhone
           "
@@ -547,7 +546,7 @@
         >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">
-              {{ driver?.emergencyContactRelationship }}
+              {{ driver?.emergencyContactRelationship ? driver.emergencyContactRelationship : 'Name' }}
             </div>
             <div class="purchase-template-item-value">
               {{ driver.emergencyContactName }}
@@ -602,10 +601,14 @@
               [hasCopyIcon]="true"
               [optionsId]="cdl.id"
               [weeklyWidth]="'28'"
+              [cardNameCurrent]="'cdl'"
+              (clickedCard)="getNameForDrop($event)"
+              (dataDropDopwn)="getCdlById(cdl.id)"
+              [isCardOpen]="cdl.status==1?true:false"
               [isDeactivated]="cdl.dateDeactivated"
               [stateTooltipName]="cdl.state.stateName"
               [shortName]="cdl.state.stateShortName"
-              (dropActions)="optionsEvent($event, 'edit-licence')"
+              (dropActions)="optionsEvent($event, 'cdl')"
               [setPositionDrop]="true"
             >
               <div class="cards-container">
@@ -789,10 +792,13 @@
               (resizePage)="toggleResizePage(i, 'tests')"
               [optionsId]="test.id"
               [weeklyWidth]="'18'"
+              (dataDropDopwn)="getTestById(test.id)"
+              [cardNameCurrent]="'test'"
+              (clickedCard)="getNameForDrop($event)"
               [cardSecondName]="test?.testReason.name"
               [shortName]="test.testType.name[0]"
               [stateTooltipName]="test.testType.name + ' Test'"
-              (dropActions)="optionsEvent($event, 'edit-drug')"
+              (dropActions)="optionsEvent($event, 'test')"
               [setPositionDrop]="true"
             >
               <div
@@ -843,7 +849,7 @@
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
-                      [formControl]="cdlNote"
+                      [formControl]="testNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
                       [isVisibleSecondDivider]="false"
@@ -884,8 +890,11 @@
               [cardNameCommon]="med?.issueDate | formatDateP"
               [expDateClose]="med?.expDate | formatDateP"
               [optionsId]="med.id"
+              [cardNameCurrent]="'medical'"
+              (dataDropDopwn)="getMedicalById(med.id)"
+              (clickedCard)="getNameForDrop($event)"
               (resizePage)="toggleResizePage(i, 'medicals')"
-              (dropActions)="optionsEvent($event, 'edit-medical')"
+              (dropActions)="optionsEvent($event, 'medical')"
               [setPositionDrop]="true"
             >
               <div class="cards-container">
@@ -950,7 +959,7 @@
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
-                      [formControl]="cdlNote"
+                      [formControl]="medicalNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
                       [isVisibleSecondDivider]="false"
@@ -986,12 +995,15 @@
             <app-ta-re-card
               [options]="dataTest"
               [cardDocumentCounter]="6"
+              (clickedCard)="getNameForDrop($event)"
+              [cardNameCurrent]="'mvr'"
+              (dataDropDopwn)="getMvrById(mvr.id)"
               (resizePage)="toggleResizePage(i, 'mvrs')"
               [cardNameCommon]="mvr?.issueDate | formatDateP"
               [expDateClose]="mvr?.issueDate | formatDateP"
               [optionsId]="mvr.id"
               [setPositionDrop]="true"
-              (dropActions)="optionsEvent($event, 'edit-mvr')"
+              (dropActions)="optionsEvent($event, 'mvr')"
             >
               <div class="cards-container">
                 <div class="card-body-cdl">
@@ -1053,7 +1065,7 @@
                   <div class="divider"></div>
                   <div class="card-note">
                     <app-ta-input-note
-                      [formControl]="cdlNote"
+                      [formControl]="mvrNote"
                       [isVisibleDivider]="false"
                       [isVisibleNote]="true"
                       [isVisibleSecondDivider]="false"

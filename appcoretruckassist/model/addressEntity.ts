@@ -14,6 +14,7 @@
 export interface AddressEntity { 
     city?: string | null;
     state?: string | null;
+    county?: string | null;
     address?: string | null;
     street?: string | null;
     streetNumber?: string | null;

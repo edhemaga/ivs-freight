@@ -1,5 +1,10 @@
 import { AddressEntity } from './../../../../../../../../appcoretruckassist/model/addressEntity';
-import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressUnitValidation,
+  addressValidation,
+  emailRegex,
+  emailValidation,
+} from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
@@ -7,11 +12,10 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-factoring-modal',
   templateUrl: './settings-factoring-modal.component.html',
@@ -19,6 +23,7 @@ import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
   providers: [ModalService, FormService],
 })
 export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public factoringForm: FormGroup;
@@ -47,9 +52,9 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     this.factoringForm = this.formBuilder.group({
       name: [null, Validators.required],
       phone: [null, phoneRegex],
-      email: [null, emailRegex],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      email: [null, [emailRegex, ...emailValidation]],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       noticeOfAssigment: [null],
       note: [null],
     });
@@ -57,7 +62,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.factoringForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -127,7 +132,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     };
     this.settingsCompanyService
       .updateFactoringCompany(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -150,7 +155,7 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   private deleteFactoringCompanyById(company: any) {
     this.settingsCompanyService
       .deleteFactoringCompanyById(this.editData.company.id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -188,5 +193,8 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

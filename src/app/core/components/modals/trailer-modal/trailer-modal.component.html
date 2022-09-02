@@ -21,11 +21,12 @@
             <app-ta-input
               formControlName="trailerNumber"
               [inputConfig]="{
-                name: 'Trailer Number',
+                name: 'vehicle-unit',
                 type: 'text',
                 label: 'Unit #',
                 isRequired: true,
-                textTransform: 'capitalize',
+                textTransform: 'uppercase',
+                minLength: 1,
                 maxLength: 8,
                 autoFocus: editData?.type !== 'edit' ? true : false
               }"
@@ -41,6 +42,25 @@
                 label: 'Trailer Type',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedTrailerType?.logoName,
+                  template: 'trailer',
+                  class: selectedTrailerType?.name
+                    ?.toLowerCase()
+                    .includes('liquid')
+                    ? 'tanker-liquid'
+                    : selectedTrailerType?.name?.toLowerCase().includes('rgn')
+                    ? 'low-boy-rgn'
+                    : selectedTrailerType?.name
+                        ?.toLowerCase()
+                        .includes('dry-bulk')
+                    ? 'tanker-dry-bulk'
+                    : selectedTrailerType?.name
+                        ?.trim()
+                        .replace(' ', '')
+                        .toLowerCase()
+                },
                 dropdownWidthClass: 'w-col-348',
                 customClass: 'truck-trailer-dropdown'
               }"
@@ -55,13 +75,13 @@
             <app-ta-input
               formControlName="vin"
               [inputConfig]="{
-                name: 'VIN',
+                name: 'vin-number',
                 type: 'text',
                 label: 'VIN',
                 isRequired: true,
                 textTransform: 'uppercase',
                 maxLength: 17,
-                minLength: 17,
+                minLength: 5,
                 loadingSpinner: {
                   size: 'small',
                   color: 'white',
@@ -80,6 +100,11 @@
                 label: 'Make',
                 isRequired: true,
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: false,
+                  url: selectedTrailerMake?.logoName
+                },
+                placeholder: selectedTrailerMake?.name,
                 dropdownWidthClass: 'w-col-188'
               }"
               [options]="trailerMakeType"
@@ -93,11 +118,12 @@
             <app-ta-input
               formControlName="model"
               [inputConfig]="{
-                name: 'Model',
+                name: 'truck-trailer-model',
                 type: 'text',
                 label: 'Model',
-                textTransform: 'capitalize',
-                maxLength: 22
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 30
               }"
             ></app-ta-input>
           </div>
@@ -110,6 +136,12 @@
                 type: 'text',
                 label: 'Color',
                 isDropdown: true,
+                dropdownImageInput: {
+                  withText: true,
+                  url: selectedColor?.code ? 'ic_color.svg' : null,
+                  template: 'color',
+                  color: selectedColor?.code
+                },
                 dropdownWidthClass: 'w-col-126'
               }"
               [options]="colorType"
@@ -125,6 +157,7 @@
                 type: 'text',
                 label: 'Year',
                 isRequired: true,
+                minLength: 4,
                 maxLength: 4
               }"
             ></app-ta-input>
@@ -223,9 +256,10 @@
               formControlName="axles"
               [inputConfig]="{
                 name: 'Axles',
-                type: 'text',
+                type: 'number',
                 label: 'Axles',
-                maxLength: 1
+                minLength: 1,
+                maxLength: 2
               }"
             ></app-ta-input>
           </div>
@@ -364,7 +398,9 @@
                 name: 'Empty Weight',
                 type: 'text',
                 label: 'Empty Weight',
+                minLength: 4,
                 maxLength: 6,
+                placeholderText: 'ibs',
                 thousandSeparator: true,
                 placeholderText: !trailerForm.get('emptyWeight').value
                   ? ''
@@ -388,6 +424,7 @@
                 name: 'Mileage',
                 type: 'text',
                 label: 'Mileage',
+                minLength: 1,
                 maxLength: 10,
                 placeholderText: 'mi',
                 thousandSeparator: true
@@ -401,9 +438,11 @@
             <app-ta-input
               formControlName="insurancePolicy"
               [inputConfig]="{
-                name: 'Insurance Policy',
+                name: 'insurance-policy',
                 type: 'text',
                 label: 'Insurance Policy',
+                minLength: 8,
+                maxLength: 14,
                 textTransform: 'uppercase'
               }"
             ></app-ta-input>

@@ -81,7 +81,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   trucksPositionOnMap = [];
   selectedDispatchers: any[] = [];
   savedMainGridData: any;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
 
   dasbhoardTableList: Observable<number[]>;

@@ -23,7 +23,7 @@ import { OwnerTService } from '../state/owner.service';
   providers: [formatPhonePipe],
 })
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -361,7 +361,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textType: data?.ownerType?.name ? data.ownerType.name : '',
       textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
       textAddress: data?.address?.address ? data.address.address : '',
-      textBankName: data?.bank?.name ? data.bank.name : ''
+      textBankName: data?.bank?.name ? data.bank.name : '',
     };
   }
 
@@ -482,6 +482,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

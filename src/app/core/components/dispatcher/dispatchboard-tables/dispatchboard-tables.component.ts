@@ -183,6 +183,14 @@ export class DispatchboardTablesComponent implements OnInit {
     this.truckSelectOpened = -1;
   }
 
+  addDriver(){
+    this.driverSelectOpened = -1;
+  }
+
+  addTrailer(){
+    this.trailerSelectOpened = -1;
+  }
+
 
   showNextDropdown(indx: number): void {
     this.truckSelectOpened = this.truckSelectOpened != indx ? indx : -1;
@@ -195,10 +203,6 @@ export class DispatchboardTablesComponent implements OnInit {
     this.trailerSelectOpened = this.trailerSelectOpened != indx ? indx : -1;
     this.driverSelectOpened = -1;
     this.truckSelectOpened = -1;
-
-    setTimeout(() => {
-      this.trailerDropdown.focus();
-    }, 300);
   }
 
 
@@ -206,10 +210,6 @@ export class DispatchboardTablesComponent implements OnInit {
     this.driverSelectOpened = this.driverSelectOpened != indx ? indx : -1;
     this.trailerSelectOpened = -1;
     this.truckSelectOpened = -1;
-
-    setTimeout(() => {
-      this.driverDropdown.focus();
-    }, 300);
   }
 
   dropList(event){

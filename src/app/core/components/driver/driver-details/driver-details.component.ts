@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
@@ -21,8 +20,13 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import moment from 'moment';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-details',
   templateUrl: './driver-details.component.html',
@@ -30,6 +34,7 @@ import { DriversDetailsQuery } from '../state/driver-details-state/driver-detail
   providers: [DetailsPageService],
 })
 export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
+  private destroy$ = new Subject<void>();
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -42,7 +47,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public hasDangerMedical: boolean;
   public hasDangerMvr: boolean;
   public driverId: number = null;
-
+  public driverObject: any;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
@@ -52,17 +57,19 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {}
 
   ngOnInit() {
+    this.getDriverById(this.activated_route.snapshot.data.driver.id);
     this.initTableOptions(this.activated_route.snapshot.data.driver);
 
     this.detailCongif(this.activated_route.snapshot.data.driver);
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.detailCongif(res.data);
@@ -71,8 +78,35 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         }
       });
 
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'driver') {
+                this.deleteDriverById(res.id);
+              }
+              break;
+            }
+            case 'activate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
+
     this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (!this.driverDetailsQuery.hasEntity(id)) {
@@ -80,10 +114,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         } else {
           query = this.driverDetailsQuery.selectEntity(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: DriverResponse) => {
             this.initTableOptions(res);
             this.detailCongif(res);
+            this.getDriverById(res.id);
             if (this.router.url.includes('details')) {
               this.router.navigate([`/driver/${res.id}/details`]);
             }
@@ -245,7 +280,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
         },
         {
           title: data.status == 0 ? 'Activate' : 'Deactivate',
-          name: 'deactivate',
+          name: data.status == 0 ? 'activate' : 'deactivate',
           svg: 'assets/svg/common/ic_deactivate.svg',
           activate: data.status == 0 ? true : false,
           deactivate: data.status == 1 ? true : false,
@@ -264,7 +299,20 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       export: true,
     };
   }
+  public getDriverById(id: number) {
+    this.driverService
+      .getDriverById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.driverObject = item));
+  }
   public onDriverActions(event: any) {
+    const mappedEvent = {
+      ...this.driverObject,
+      data: {
+        ...this.driverObject,
+        name: this.driverObject?.firstName + ' ' + this.driverObject?.lastName,
+      },
+    };
     if (event.type === 'edit') {
       this.modalService.openModal(
         DriverModalComponent,
@@ -275,10 +323,10 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
           id: this.driverId,
         }
       );
-    } else if (event.type === 'deactivate') {
+    } else if (event.type === 'deactivate' || event.type === 'activate') {
       this.driverService
-        .changeDriverStatus(event.id, 'driver-details')
-        .pipe(untilDestroyed(this))
+        .changeDriverStatus(event.id)
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
             this.notificationService.success(
@@ -294,35 +342,57 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
           },
         });
     } else if (event.type === 'delete-item') {
-      this.driverService
-        .deleteDriverById(event.id)
-        .pipe(untilDestroyed(this))
-        .subscribe({
-          next: () => {
-            setTimeout(() => {
-              this.router.navigate(['/driver']);
-            }, 500);
-            this.notificationService.success(
-              'Driver successfully deleted',
-              'Success:'
-            );
-
-            // this.viewData = this.viewData.map((driver: any) => {
-            //   if (driver.id === event.id) {
-            //     driver.actionAnimation = 'delete';
-            //   }
-
-            //   return driver;
-            // });
-          },
-          error: () => {
-            this.notificationService.error(
-              `Driver with id: ${event.id} couldn't be deleted`,
-              'Error:'
-            );
-          },
-        });
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'driver',
+          type: 'delete',
+          image: true,
+        }
+      );
     }
+  }
+
+  private changeDriverStatus(id: number) {
+    this.driverService
+      .changeDriverStatus(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Driver successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Driver with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private deleteDriverById(id: number) {
+    this.driverService
+      .deleteDriverById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Driver successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Driver with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
   }
   public onModalAction(action: string): void {
     if (action.includes('Drug')) {
@@ -374,6 +444,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

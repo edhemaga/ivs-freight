@@ -7,20 +7,20 @@ import {
   ChangeDetectorRef,
 } from '@angular/core';
 import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-card',
   templateUrl: './driver-card.component.html',
   styleUrls: ['./driver-card.component.scss'],
 })
 export class DriverCardComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() viewData: any;
   public selectedData: any;
 
@@ -36,11 +36,11 @@ export class DriverCardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         this.driverDetailsQuery
           .selectEntity(id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: DriverResponse) => {
               this.selectedData = res;
@@ -73,7 +73,7 @@ export class DriverCardComponent implements OnInit, OnDestroy {
   changeChatBox(e: number) {
     this.driverService
       .getDriverById(e)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(
         (x) => (this.selectedData = x),
         (err) => console.error(err)
@@ -81,5 +81,8 @@ export class DriverCardComponent implements OnInit, OnDestroy {
 
     //this.driverBox[indx].checked = e.target.checked;
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

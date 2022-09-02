@@ -117,6 +117,8 @@
                 label: 'Location',
                 isDisabled: editData?.type === 'edit',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="addressLocation"
@@ -252,11 +254,13 @@
             <app-ta-input
               formControlName="truckVIN"
               [inputConfig]="{
-                name: 'VIN',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
+                name: 'vin-number',
                 label: 'VIN',
-                textTransform: 'capitalize'
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                type: 'text',
+                isDisabled: editData?.type === 'edit'
               }"
             ></app-ta-input>
           </div>
@@ -322,12 +326,13 @@
             <app-ta-input
               formControlName="trailerVIN"
               [inputConfig]="{
-                name: 'VIN',
-                type: 'text',
-                isDisabled: editData?.type === 'edit',
+                name: 'vin-number',
                 label: 'VIN',
-                isDisabled: editData?.type === 'edit',
-                textTransform: 'capitalize'
+                type: 'text',
+                minLength: 5,
+                maxLength: 17,
+                textTransform: 'uppercase',
+                isDisabled: editData?.type === 'edit'
               }"
             ></app-ta-input>
           </div>
@@ -457,7 +462,10 @@
                     formControlName="email"
                     [inputConfig]="{
                       name: 'Email',
-                      type: 'text'
+                      type: 'text',
+                      minLength: 5,
+                      maxLength: 64,
+                      textTransform: 'lowercase'
                     }"
                   ></app-ta-input>
 
@@ -619,6 +627,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="addressAuthority"
@@ -659,6 +669,8 @@
                   type: 'text',
                   label: 'Origin',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="addressOrigin"
@@ -673,6 +685,8 @@
                   type: 'text',
                   label: 'Destination',
                   placeholderIcon: 'address',
+                  minLength: 12,
+                  maxLength: 256,
                   textTransform: 'capitalize'
                 }"
                 [activeAddress]="addressDestination"

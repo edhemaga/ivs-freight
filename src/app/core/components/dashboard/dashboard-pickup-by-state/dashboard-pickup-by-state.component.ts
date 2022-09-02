@@ -1,44 +1,55 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard-pickup-by-state',
   templateUrl: './dashboard-pickup-by-state.component.html',
-  styleUrls: ['./dashboard-pickup-by-state.component.scss']
+  styleUrls: ['./dashboard-pickup-by-state.component.scss'],
 })
 export class DashboardPickupByStateComponent implements OnInit {
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
-  @ViewChild('statesBarChart', {static: false}) public statesBarChart: any;
-  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
+  @ViewChild('statesBarChart', { static: false }) public statesBarChart: any;
+  @ViewChild('timePeriod', { static: false }) public timePeriod: any;
 
   public barChartConfig: object = {
     dataProperties: [
       {
         defaultConfig: {
           type: 'bar',
-          data: [12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13],
+          data: [
+            12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18,
+            13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17, 13, 12, 18, 13, 17,
+            13, 12, 18, 13, 17, 13,
+          ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
           borderColor: '#919191',
           hoverBackgroundColor: '#6C6C6C',
           hoverBorderColor: '#707070',
           label: 'Top 10',
-          id: 'top10'
-        }
+          id: 'top10',
+        },
       },
       {
         defaultConfig: {
           type: 'bar',
-          data: [8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17],
+          data: [
+            8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16,
+            17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9, 16, 17, 8, 10, 9,
+            16, 17,
+          ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
           borderColor: '#CCCCCC',
           hoverBackgroundColor: '#AAAAAA',
           hoverBorderColor: '#707070',
           label: 'All Others',
-          id: 'allOthers'
-        }
-      }
+          id: 'allOthers',
+        },
+      },
     ],
     showLegend: false,
     chartValues: [2, 2],
@@ -53,8 +64,14 @@ export class DashboardPickupByStateComponent implements OnInit {
     hasPercentage: true,
     allowAnimation: true,
     offset: true,
-    dataLabels: [[20, 'MON'], [21, 'TUE'], [22, 'WED'], [23, 'THU'], [24, 'FRI']],
-    noChartImage: 'assets/svg/common/no_data_pay.svg'
+    dataLabels: [
+      [20, 'MON'],
+      [21, 'TUE'],
+      [22, 'WED'],
+      [23, 'THU'],
+      [24, 'FRI'],
+    ],
+    noChartImage: 'assets/svg/common/no_data_pay.svg',
   };
   public barAxes: object = {
     verticalLeftAxes: {
@@ -62,16 +79,16 @@ export class DashboardPickupByStateComponent implements OnInit {
       minValue: 0,
       maxValue: 20,
       stepSize: 5,
-      showGridLines: true
+      showGridLines: true,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
-  pickupTitle: string = "Pickup";
+  pickupTitle: string = 'Pickup';
 
   stateSwitchTabsType1: any[] = [];
 
@@ -90,65 +107,76 @@ export class DashboardPickupByStateComponent implements OnInit {
       id: 1,
       name: 'IL',
       price: '$123.45K',
-      percent: '8.53%'
+      percent: '8.53%',
     },
     {
       id: 2,
       name: 'IN',
       price: '$102.34K',
-      percent: '8.43%'
+      percent: '8.43%',
     },
     {
       id: 3,
       name: 'KY',
       price: '$95.15K',
-      percent: '7.35%'
+      percent: '7.35%',
     },
     {
       id: 4,
       name: 'MO',
       price: '$93.52K',
-      percent: '7.23%'
+      percent: '7.23%',
     },
     {
       id: 5,
       name: 'IA',
       price: '$89.35K',
-      percent: '6.87%'
+      percent: '6.87%',
     },
     {
       id: 6,
       name: 'WI',
       price: '$75.23K',
-      percent: '4.07%'
+      percent: '4.07%',
     },
     {
       id: 7,
       name: 'OH',
       price: '$67.52K',
-      percent: '3.52%'
+      percent: '3.52%',
     },
     {
       id: 8,
       name: 'TN',
       price: '$65.25K',
-      percent: '3.43%'
+      percent: '3.43%',
     },
     {
       id: 9,
       name: 'VA',
       price: '$35.04K',
-      percent: '2.96%'
+      percent: '2.96%',
     },
     {
       id: 10,
       name: 'OK',
       price: '$26.23K',
-      percent: '2.12%'
-    }
+      percent: '2.12%',
+    },
   ];
 
-  pickupCircleColor: any[] = ['6278C7', '7A8DCB', '7A8DCB', 'A0AFDE', 'A0AFDE', 'C2CEEC', 'C2CEEC', 'C2CEEC', 'D7E1F4', 'D7E1F4'];
+  pickupCircleColor: any[] = [
+    '6278C7',
+    '7A8DCB',
+    '7A8DCB',
+    'A0AFDE',
+    'A0AFDE',
+    'C2CEEC',
+    'C2CEEC',
+    'C2CEEC',
+    'D7E1F4',
+    'D7E1F4',
+  ];
   chartColors: any[] = [];
   compareColor: any = {};
   savedColors: any[] = [];
@@ -159,94 +187,105 @@ export class DashboardPickupByStateComponent implements OnInit {
       name: 'Pickup',
       active: true,
       tabSwitch1: 'Count',
-      tabSwitch2: 'Revenue'
+      tabSwitch2: 'Revenue',
     },
     {
       name: 'Delivery',
       tabSwitch1: 'Count',
-      tabSwitch2: 'Revenue'
+      tabSwitch2: 'Revenue',
     },
     {
       name: 'Load',
       tabSwitch1: 'Count',
-      tabSwitch2: 'Revenue'
+      tabSwitch2: 'Revenue',
     },
     {
       name: 'Violation',
       tabSwitch1: 'Count',
-      tabSwitch2: 'SW'
+      tabSwitch2: 'SW',
     },
     {
       name: 'Accident',
       tabSwitch1: 'Count',
-      tabSwitch2: 'SW'
+      tabSwitch2: 'SW',
     },
     {
       name: 'Repair',
       tabSwitch1: 'Count',
-      tabSwitch2: 'Cost'
+      tabSwitch2: 'Cost',
     },
     {
       name: 'Fuel',
       tabSwitch1: 'Price',
-      tabSwitch2: 'Cost'
-    }
+      tabSwitch2: 'Cost',
+    },
   ];
 
+  public searchDashboardOptions = {
+    gridNameTitle: 'State',
+  };
 
-  constructor() { }
+  constructor(private tableService: TruckassistTableService) {}
 
   ngOnInit(): void {
-    if ( this.pickupCircleColor?.length ) {
+    if (this.pickupCircleColor?.length) {
       this.chartColors = this.pickupCircleColor;
     }
     this.stateSwitchTabsType1 = [
       {
-        name: 'Count'
+        name: 'Count',
       },
       {
-        name: 'Revenue'
-      }  
+        name: 'Revenue',
+      },
     ];
 
     this.pickupSwitch = [
       {
-        name: 'Today'
+        name: 'Today',
       },
       {
         name: 'WTD',
-        checked: true
+        checked: true,
       },
       {
-        name: 'MTD'
+        name: 'MTD',
       },
       {
-        name: 'YTD'
+        name: 'YTD',
       },
       {
-        name: 'All Time'
+        name: 'All Time',
       },
       {
         name: 'Custom',
-        custom: true
-      }
+        custom: true,
+      },
     ];
+
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          // your search code here
+        }
+      });
   }
 
   ngAfterViewInit(): void {
     this.timePeriod.changeTimePeriod('WTD');
   }
 
-  changeStateSwitchTabs(ev){
+  changeStateSwitchTabs(ev) {
     this.timePeriod.changeTimePeriod(ev['name']);
     this.currentSwitchTab = ev['name'];
     this.statesBarChart.updateTime(ev['name']);
   }
 
-  selectStateCompare(item, indx){
+  selectStateCompare(e, item, indx) {
     const itemId: any = item.id;
-    if(!(itemId in this.compareColor)){
-
+    if (!(itemId in this.compareColor)) {
+      item.active = true;
       const firstInArray = this.pickupCircleColor[indx];
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
@@ -257,64 +296,84 @@ export class DashboardPickupByStateComponent implements OnInit {
       this.pickupStateList.splice(objectSize, 0, item);
 
       this.hoverState(indx);
+    } else {
+      this.removeFromStateList(e, indx, item);
     }
   }
 
-  removeFromStateList(e: Event,indx, item){
+  removeFromStateList(e: Event, indx, item) {
     e.stopPropagation();
+    item.active = false;
     this.pickupStateList.splice(indx, 1);
     let showDefault = false;
-    if ( this.selectedStates?.length == 1 ) {
+    if (this.selectedStates?.length == 1) {
       showDefault = true;
     }
-    this.statesBarChart.removeMultiBarData(this.selectedStates[indx], showDefault);
+    this.statesBarChart.removeMultiBarData(
+      this.selectedStates[indx],
+      showDefault
+    );
     this.selectedStates.splice(indx, 1);
     this.statesBarChart.selectedDrivers = this.selectedStates;
     this.pickupStateList.push(item);
+    let allStates = [...this.pickupStateList];
+    let activeStates = allStates.filter((state) => state.active == true);
+    this.pickupStateList = activeStates;
+    let inactiveStates = allStates
+      .filter((state) => !state.active)
+      .sort((a, b) => {
+        return a.id - b.id;
+      });
+    inactiveStates.map((state) => {
+      this.pickupStateList.push(state);
+    });
     this.savedColors.unshift(this.compareColor[item.id]);
     delete this.compareColor[item.id];
   }
 
-  clearSelected(){
-  }
+  clearSelected() {}
 
-  changeState(item){
+  changeState(item) {
     const newSwitchValue = [
       {
         name: item.tabSwitch1,
-        checked: true
+        checked: true,
       },
       {
-        name: item.tabSwitch2
-      }
+        name: item.tabSwitch2,
+      },
     ];
     this.stateSwitchTabsType1 = newSwitchValue;
     this.pickupTitle = item.name;
     this.popoverState.map((item) => {
       item.active = false;
       return item;
-    })
+    });
     item.active = true;
     this.t3.close();
   }
 
-  hoverState(index: any){
+  hoverState(index: any) {
     this.statesBarChart.hoverBarChart(this.selectedStates[index]);
   }
 
-  removeStateHover(){
+  removeStateHover() {
     this.statesBarChart.hoverBarChart(null);
   }
 
-  updateBarChart(selectedStates: any){
+  updateBarChart(selectedStates: any) {
     let dataSend = [10, 12, 20, 5, 18];
-    if ( this.statesBarChart ){
-      this.statesBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareColor);
+    if (this.statesBarChart) {
+      this.statesBarChart.updateMuiliBar(
+        selectedStates,
+        dataSend,
+        this.compareColor,
+        this.compareColor
+      );
     }
   }
 
-  selectTimePeriod(period){
+  selectTimePeriod(period) {
     this.statesBarChart.updateTime(this.currentSwitchTab, period);
   }
-
 }

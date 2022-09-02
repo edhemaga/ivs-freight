@@ -79,11 +79,12 @@
             <app-ta-input
               formControlName="mc"
               [inputConfig]="{
-                name: 'MC FF',
-                type: 'text',
+                name: 'MC/FF',
+                type: 'number',
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
-                maxLength: 8
+                maxLength: 6,
+                minLength: 6
               }"
             ></app-ta-input>
           </div>
@@ -110,7 +111,10 @@
                 label: 'Email',
                 isRequired: editData.type === 'new-division' ? true : false,
                 isDisabled: editData.type === 'edit-company',
-                placeholderIcon: 'email'
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase'
               }"
             ></app-ta-input>
           </div>
@@ -149,6 +153,8 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAddress"
@@ -159,10 +165,12 @@
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
-                label: 'Unit No.',
-                maxLength: 6
+                label: 'Unit #',
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 10
               }"
             ></app-ta-input>
           </div>
@@ -322,7 +330,10 @@
                   formControlName="departmentId"
                   [inputConfig]="{
                     id: 'Input Dropdown Dep' + ind,
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown Department',
+                    minLength: 2,
+                    maxLength: 36,
+                    textTransform: 'capitalize',
                     type: 'text',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-120'
@@ -346,9 +357,11 @@
                   formControlName="extensionPhone"
                   [inputConfig]="{
                     id: 'Phone Extension' + ind,
-                    name: 'Phone Extension',
+                    name: 'phone-extension',
                     type: 'text',
-                    maxLength: 3
+                    minLength: 1,
+                    maxLength: 8,
+                    placeholderIcon: 'phone-extension'
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -356,7 +369,10 @@
                   [inputConfig]="{
                     id: 'Email' + ind,
                     name: 'Email',
-                    type: 'text'
+                    type: 'text',
+                    minLength: 5,
+                    maxLength: 64,
+                    textTransform: 'lowercase'
                   }"
                 ></app-ta-input>
                 <div
@@ -405,6 +421,9 @@
                     id: 'Input Dropdown Bank' + ind,
                     name: 'Input Dropdown',
                     type: 'text',
+                    minLength: 2,
+                    maxLength: 64,
+                    textTransform: 'uppercase',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-163'
                   }"
@@ -420,7 +439,7 @@
                   formControlName="routing"
                   [inputConfig]="{
                     id: 'Routing Number' + ind,
-                    name: 'Routing Number',
+                    name: 'routing-bank',
                     type: 'text',
                     isDisabled: !isBankSelectedFormArray[ind],
                     minLength: 9,
@@ -431,12 +450,12 @@
                   formControlName="account"
                   [inputConfig]="{
                     id: 'Account Number' + ind,
-                    name: 'Account Number',
+                    name: 'account-bank',
                     type: 'password',
                     placeholderIcon: 'password',
                     isDisabled: !isBankSelectedFormArray[ind],
                     maxLength: 17,
-                    minLength: 4
+                    minLength: 5
                   }"
                 ></app-ta-input>
                 <svg-icon
