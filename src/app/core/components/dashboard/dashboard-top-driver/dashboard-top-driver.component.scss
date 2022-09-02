@@ -181,9 +181,19 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
         display: flex;
 
         width: auto;
-        max-width: 476px;
-        min-width: 426px;
+        max-width: 536px;
+        min-width: 476px;
         padding-right: 0px;
+
+        &.medium_scale {
+          max-width: 476px;
+          min-width: 426px;
+        }
+
+        &.small_scale {
+          max-width: 396px;
+          min-width: 368px;
+        }
       }
     }
 
