@@ -7,7 +7,6 @@ import {
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   AddressEntity,
   CompanyContactModalResponse,
@@ -21,9 +20,10 @@ import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations'
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-contact-modal',

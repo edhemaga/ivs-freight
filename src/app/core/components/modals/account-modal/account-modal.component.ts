@@ -16,12 +16,12 @@ import {
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
 
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { AccountTService } from '../../account/state/account.service';
 import { Subject, takeUntil } from 'rxjs';
 import { labelValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-account-modal',

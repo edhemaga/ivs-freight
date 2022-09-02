@@ -1,3 +1,6 @@
+import * as AppConst from 'src/app/const';
+import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
+import { LoadStatusPipe } from '../../../pipes/load-status.pipe';
 import {
   Component,
   EventEmitter,
@@ -6,9 +9,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import * as AppConst from 'src/app/const';
-import { LoadStatusPipe } from 'src/app/core/pipes/load-status.pipe';
-import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
 
 @Component({
   selector: 'app-ta-status-select',

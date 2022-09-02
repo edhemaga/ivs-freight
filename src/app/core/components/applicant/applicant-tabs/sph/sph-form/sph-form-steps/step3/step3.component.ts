@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+import { Address } from '../../../../../../shared/model/address';
+import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
 import {
-  addressUnitValidation,
-  addressValidation,
   phoneFaxRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-
-import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
-import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
-import { Address } from 'src/app/core/components/applicant/state/model/address.model';
+  addressValidation,
+  addressUnitValidation,
+} from '../../../../../../shared/ta-input/ta-input.regex-validations';
+import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
 
 @Component({
   selector: 'app-step3',

@@ -1,6 +1,6 @@
-import {ServerResponse} from './shared/response';
-import {ZipCode} from './shared/zipCode';
-import {Address} from 'src/app/core/model/address';
+import { ServerResponse } from './shared/response';
+import { ZipCode } from './shared/zipCode';
+import { Address } from './address';
 
 export interface Customers {
   activeCount: number;

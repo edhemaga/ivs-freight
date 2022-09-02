@@ -13,9 +13,9 @@ import {
   UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccountStore } from './account-state/account.store';
 import { AccountQuery } from './account-state/account.query';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

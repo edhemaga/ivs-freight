@@ -7,10 +7,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ShipperResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShipperMinimalListQuery } from '../state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-shipper-card-view',

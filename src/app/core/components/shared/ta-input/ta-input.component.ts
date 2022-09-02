@@ -12,20 +12,21 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 import { UpperCasePipe } from '@angular/common';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
 import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
+import { pasteCheck } from '../../../../../assets/utils/methods-global';
 
 @Component({
   selector: 'app-ta-input',

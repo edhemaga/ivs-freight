@@ -8,17 +8,17 @@ import {
   RegistrationResponse,
   UpdateRegistrationCommand,
 } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { Subject, takeUntil } from 'rxjs';
 import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-registration-modal',

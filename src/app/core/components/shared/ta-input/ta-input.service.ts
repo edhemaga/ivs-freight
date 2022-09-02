@@ -1,8 +1,8 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import validator from 'validator';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',

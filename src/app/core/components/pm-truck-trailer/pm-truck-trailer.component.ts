@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../shared/ta-modal/modal.service';
-import {
-  getTrailerPMColumnDefinition,
-  getTruckPMColumnDefinition,
-} from 'src/assets/utils/settings/pm-columns';
+
 import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
+import {
+  getTruckPMColumnDefinition,
+  getTrailerPMColumnDefinition,
+} from '../../../../assets/utils/settings/pm-columns';
 
 @Component({
   selector: 'app-pm-truck-trailer',

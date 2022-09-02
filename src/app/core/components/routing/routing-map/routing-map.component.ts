@@ -9,11 +9,10 @@ import {
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
-import { imageMapType } from 'src/assets/utils/methods-global';
 import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { imageMapType } from '../../../../../assets/utils/methods-global';
 
 declare var google: any;
 declare const geoXML3: any;

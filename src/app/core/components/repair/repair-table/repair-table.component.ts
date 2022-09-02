@@ -6,32 +6,33 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  getRepairsShopColumnDefinition,
-  getRepairTrailerColumnDefinition,
-  getRepairTruckColumnDefinition,
-} from 'src/assets/utils/settings/repair-columns';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
+
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
 import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
 import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
 import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { RepairTService } from '../state/repair.service';
 import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import {
+  getRepairTruckColumnDefinition,
+  getRepairTrailerColumnDefinition,
+  getRepairsShopColumnDefinition,
+} from '../../../../../assets/utils/settings/repair-columns';
 
 @Component({
   selector: 'app-repair-table',
