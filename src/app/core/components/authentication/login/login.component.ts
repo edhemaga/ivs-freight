@@ -42,11 +42,17 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createForm();
 
     this.copyrightYear = moment().year();
+
+    this.inputService.customInputValidator(
+      this.loginForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private createForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required, ...emailValidation]],
       password: [null, [Validators.required]],
       staySignedIn: [false],
     });
