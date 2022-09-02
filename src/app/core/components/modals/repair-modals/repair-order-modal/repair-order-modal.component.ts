@@ -34,6 +34,10 @@ import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import {
+  descriptionValidation,
+  vehicleUnitValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-repair-order-modal',
@@ -146,7 +150,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     this.repairOrderForm = this.formBuilder.group({
       repairType: ['Bill'],
       unitType: ['Truck'],
-      unit: [null, Validators.required],
+      unit: [null, [Validators.required, ...vehicleUnitValidation]],
       odometer: [null],
       date: [null, Validators.required],
       invoice: [null],
@@ -211,7 +215,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data.id],
-      description: [data.description],
+      description: [data.description, [...descriptionValidation]],
       price: [data.price],
       quantity: [data.quantity],
       subtotal: [data.subtotal],

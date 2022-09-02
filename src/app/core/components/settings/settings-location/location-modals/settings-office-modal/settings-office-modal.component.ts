@@ -21,7 +21,7 @@ import {
   emailRegex,
   emailValidation,
   phoneExtension,
-  phoneRegex,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import {
   AddressEntity,
@@ -110,7 +110,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       departmentContacts: this.formBuilder.array([]),
@@ -189,7 +189,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
       email: [

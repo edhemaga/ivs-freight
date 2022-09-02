@@ -9,7 +9,8 @@ import {
 import {
   addressUnitValidation,
   addressValidation,
-  phoneRegex,
+  descriptionValidation,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 import {
@@ -289,9 +290,9 @@ export class SphModalComponent implements OnInit {
   private createForm(): void {
     this.prospectiveEmployerForm = this.formBuilder.group({
       toPreviousEmployer: [null],
-      phone: [null, [phoneRegex]],
+      phone: [null, phoneFaxRegex],
       email: [null],
-      fax: [null],
+      fax: [null, phoneFaxRegex],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
     });
@@ -308,7 +309,7 @@ export class SphModalComponent implements OnInit {
       noSafetyPerformance: [false],
       accidentDate: [null],
       accidentLocation: [null, [...addressValidation]],
-      accidentDescription: [null],
+      accidentDescription: [null, descriptionValidation],
       hazmatSpill: [null],
     });
 
@@ -322,7 +323,7 @@ export class SphModalComponent implements OnInit {
       otherViolations: [null],
       drugAndAlcoholRegulation: [null],
       sapName: [null],
-      phone: [null, [phoneRegex]],
+      phone: [null, [phoneFaxRegex]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null],

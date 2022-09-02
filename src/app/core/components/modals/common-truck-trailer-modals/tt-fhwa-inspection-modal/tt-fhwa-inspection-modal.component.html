@@ -26,7 +26,8 @@
             placeholderIcon: 'date',
             isRequired: true,
             isDropdown: true,
-            customClass: 'datetimeclass'
+            customClass: 'datetimeclass',
+            autoFocus: editData?.type !== 'edit-inspection' ? true : false
           }"
         ></app-ta-input>
       </div>

@@ -16,7 +16,7 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { phoneRegex } from '../../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -142,7 +142,7 @@ export class Step6FormComponent implements OnInit, OnDestroy {
   private createForm(): void {
     this.contactForm = this.formBuilder.group({
       contactName: [null, Validators.required],
-      contactPhone: [null, [Validators.required, phoneRegex]],
+      contactPhone: [null, [Validators.required, phoneFaxRegex]],
       contactRelationship: [null, Validators.required],
 
       firstRowReview: [null],

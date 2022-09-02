@@ -18,6 +18,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { Subject, takeUntil } from 'rxjs';
+import { licensePlateValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-tt-registration-modal',
@@ -57,7 +58,7 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.registrationForm = this.formBuilder.group({
-      licensePlate: [null, Validators.required],
+      licensePlate: [null, [Validators.required, ...licensePlateValidation]],
       stateId: [null, Validators.required],
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],

@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { AuthState, AuthStore } from './auth.store';
+import { AuthStore } from './auth.store';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 import {
@@ -15,7 +15,6 @@ import {
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
-import { configFactory } from 'src/app/app.config';
 import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
@@ -66,7 +65,6 @@ export class AuthStoreService {
     this.persistStorage.clearStore();
     this.persistStorage.destroy();
     this.router.navigate(['/auth/login']);
-    configFactory(null);
     // ---- DEVELOP MODE ----
     localStorage.removeItem('user');
   }
