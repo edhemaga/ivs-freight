@@ -193,11 +193,14 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
-            cdlId: null,
+            cdlId: res.cdlNumber,
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
-          this.selectedCdl = null;
+          this.selectedCdl = {
+            id: res.cdlId,
+            name: res.cdlNumber,
+          };
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
