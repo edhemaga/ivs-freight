@@ -1,5 +1,5 @@
 import {
-  phoneRegex,
+  phoneFaxRegex,
   emailRegex,
   emailValidation,
   addressValidation,
@@ -88,7 +88,7 @@ export class SettingsInsurancePolicyModalComponent
       producerName: [null, Validators.required],
       issued: [null, Validators.required],
       expires: [null, Validators.required],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],

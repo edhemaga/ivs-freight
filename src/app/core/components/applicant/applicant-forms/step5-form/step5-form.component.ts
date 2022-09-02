@@ -24,7 +24,10 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { TruckType } from '../../state/model/truck-type.model';
 import { Address } from '../../state/model/address.model';
 import { ViolationModel } from '../../state/model/violations.model';
-import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step5-form',
@@ -131,7 +134,10 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       violationDate: [null, Validators.required],
       truckType: [null, Validators.required],
       violationLocation: [null, [Validators.required, ...addressValidation]],
-      violationDescription: [null, Validators.required],
+      violationDescription: [
+        null,
+        [Validators.required, ...descriptionValidation],
+      ],
 
       firstRowReview: [null],
       secondRowReview: [null],

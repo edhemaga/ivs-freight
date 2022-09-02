@@ -1,3 +1,7 @@
+import {
+  accountBankValidation,
+  routingBankValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { TruckModalComponent } from './../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
@@ -20,11 +24,14 @@ import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.
 import {
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   businessNameValidation,
   einNumberRegex,
   emailRegex,
   emailValidation,
-  phoneRegex,
+  firstNameValidation,
+  lastNameValidation,
+  phoneFaxRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -94,17 +101,17 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.ownerForm = this.formBuilder.group({
       bussinesName: [null, [Validators.required, ...businessNameValidation]],
-      firstName: [null],
-      lastName: [null],
+      firstName: [null, [...firstNameValidation]],
+      lastName: [null, [...lastNameValidation]],
       ssn: [null, ssnNumberRegex],
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       email: [null, [Validators.required, emailRegex, ...emailValidation]],
-      bankId: [null],
-      accountNumber: [null],
-      routingNumber: [null],
+      bankId: [null, [...bankValidation]],
+      accountNumber: [null, accountBankValidation],
+      routingNumber: [null, routingBankValidation],
       note: [null],
     });
 

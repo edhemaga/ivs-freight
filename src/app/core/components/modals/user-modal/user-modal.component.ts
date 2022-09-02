@@ -1,10 +1,15 @@
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   departmentValidation,
   emailRegex,
   emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   phoneExtension,
+  routingBankValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -16,7 +21,7 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -128,16 +133,16 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.userForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      personalPhone: [null, phoneRegex],
+      personalPhone: [null, phoneFaxRegex],
       personalEmail: [null, [emailRegex, ...emailValidation]],
       departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
-      employePhone: [null, phoneRegex],
+      employePhone: [null, phoneFaxRegex],
       employePhoneExt: [null, [...phoneExtension]],
       employeEmail: [
         null,
@@ -147,9 +152,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
       salary: [null],
       startDate: [null],
       payrollType: [null],
-      bankId: [null],
-      routingNumber: [null],
-      accountNumber: [null],
+      bankId: [null, [...bankValidation]],
+      routingNumber: [null, routingBankValidation],
+      accountNumber: [null, accountBankValidation],
       note: [null],
     });
 

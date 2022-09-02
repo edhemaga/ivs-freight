@@ -28,6 +28,7 @@ import { ApiModule, Configuration } from 'appcoretruckassist';
 import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+import { configFactory } from './app.config';
 
 @NgModule({
   declarations: [
@@ -68,12 +69,7 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
-        new Configuration({
-          basePath: environment.API_ENDPOINT,
-          credentials: {
-            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
-          },
-        }),
+        configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },

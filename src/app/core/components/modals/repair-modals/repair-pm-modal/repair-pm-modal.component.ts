@@ -19,6 +19,7 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from 'src/app/core/services/form/form.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
+import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-repair-pm-modal',
@@ -112,7 +113,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       svg: [svg],
       title: [title],
       mileage: [mileage],
-      value: [value],
+      value: [value, [...descriptionValidation]],
       hidden: [hidden],
     });
   }

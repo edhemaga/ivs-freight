@@ -3,7 +3,7 @@ import {
   convertNumberInThousandSep,
 } from 'src/app/core/utils/methods.calculations';
 import {
-  phoneRegex,
+  phoneFaxRegex,
   emailRegex,
   phoneExtension,
   emailValidation,
@@ -99,7 +99,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
       email: [null, [emailRegex, ...emailValidation]],
       rent: [null],

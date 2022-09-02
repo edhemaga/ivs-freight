@@ -1,7 +1,8 @@
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import validator from 'validator';
 
 @Injectable({
   providedIn: 'root',
@@ -79,5 +80,37 @@ export class TaInputService {
     if (formControl) {
       formControl.updateValueAndValidity();
     }
+  }
+
+  public customInputValidator(
+    formControl: AbstractControl,
+    type: string,
+    destroy$: Subject<void>
+  ) {
+    return formControl.valueChanges
+      .pipe(takeUntil(destroy$))
+      .subscribe((value) => {
+        switch (type) {
+          case 'email': {
+            if (!validator.isEmail(value)) {
+              formControl.setErrors({ invalid: true });
+            } else {
+              formControl.setErrors(null);
+            }
+            break;
+          }
+          case 'url': {
+            if (!validator.isURL(value)) {
+              formControl.setErrors({ invalid: true });
+            } else {
+              formControl.setErrors(null);
+            }
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      });
   }
 }

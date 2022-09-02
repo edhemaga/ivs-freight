@@ -1,8 +1,10 @@
 import {
-  phoneRegex,
+  phoneFaxRegex,
   emailRegex,
   emailValidation,
   addressValidation,
+  vinNumberValidation,
+  descriptionValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
@@ -117,26 +119,29 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       truckMake: [null],
       truckPlateNumber: [null],
       truckState: [null],
-      truckVIN: [null],
+      truckVIN: [null, [...vinNumberValidation]],
       trailerUnit: [null],
       trailerType: [null],
       trailerMake: [null],
       trailerPlateNumber: [null],
       trailerState: [null],
-      trailerVIN: [null],
+      trailerVIN: [null, [...vinNumberValidation]],
       violations: this.formBuilder.array([
         this.formBuilder.group({
           categoryId: ['Crash Indicator'],
           sw: ['2'],
           hm: [true],
-          description: ['Involves tow-away but no injury or fatality'],
+          description: [
+            'Involves tow-away but no injury or fatality',
+            [...descriptionValidation],
+          ],
         }),
       ]),
       insurance: this.formBuilder.array([]),
       insuranceType: [null],
       insuranceClaimNumber: [null],
       insuranceAdjuster: [null],
-      insurancePhone: [null, phoneRegex],
+      insurancePhone: [null, phoneFaxRegex],
       insuranceEmail: [null, [emailRegex, ...emailValidation]],
       note: [null],
       roadwayTrafficWay: [null],
@@ -148,8 +153,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       authorityPoliceOffice: [null],
       authorityBadgeNumber: [null],
       authorityAddress: [null, [...addressValidation]],
-      authorityPhone: [null, phoneRegex],
-      authorityFax: [null],
+      authorityPhone: [null, phoneFaxRegex],
+      authorityFax: [null, phoneFaxRegex],
       shippingOriginLocation: [null, [...addressValidation]],
       shippingDestinationLocation: [null, [...addressValidation]],
       shippingCustomer: [null],
@@ -188,7 +193,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       insuranceType: [null],
       claimNumber: [null],
       insuranceAdjuster: [null],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
     });
   }

@@ -4,8 +4,10 @@ import {
   convertThousanSepInNumber,
 } from './../../../../../utils/methods.calculations';
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   daysValidRegex,
   departmentValidation,
   emailRegex,
@@ -15,13 +17,15 @@ import {
   monthsValidRegex,
   perStopValidation,
   phoneExtension,
+  routingBankValidation,
+  urlValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
 import {
   einNumberRegex,
-  phoneRegex,
+  phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
@@ -301,10 +305,10 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       usDot: [null, Validators.required],
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       email: [null, [emailRegex, ...emailValidation]],
-      fax: [null],
-      webUrl: [null],
+      fax: [null, phoneFaxRegex],
+      webUrl: [null, [...urlValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       irp: [null],
@@ -476,7 +480,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data?.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [
         data?.extensionPhone ? data?.extensionPhone : null,
@@ -560,9 +564,15 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      bankId: [data?.bankId ? data.bankId : null],
-      routing: [data?.routing ? data.routing : null],
-      account: [data?.account ? data.account : null],
+      bankId: [data?.bankId ? data.bankId : null, [...bankValidation]],
+      routing: [
+        data?.routing ? data.routing : null,
+        [...routingBankValidation],
+      ],
+      account: [
+        data?.account ? data.account : null,
+        [...accountBankValidation],
+      ],
     });
   }
 
