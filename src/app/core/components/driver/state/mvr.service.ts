@@ -5,6 +5,7 @@ import {
   CreateMvrCommand,
   DriverResponse,
   EditMvrCommand,
+  GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
 /* import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse'; */
@@ -115,5 +116,9 @@ export class MvrTService {
         });
       })
     );
+  }
+
+  public getMvrModal(): Observable<GetMvrModalResponse> {
+    return this.mvrService.apiMvrModalGet();
   }
 }

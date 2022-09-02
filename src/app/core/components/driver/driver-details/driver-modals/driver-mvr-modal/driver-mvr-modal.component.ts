@@ -6,6 +6,7 @@ import {
   CreateMvrCommand,
   DriverResponse,
   EditMvrCommand,
+  GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
 import { DriverTService } from '../../../state/driver.service';
@@ -51,6 +52,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this.getModalDropdowns();
+
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-mvr') {
       this.getMVRById();
@@ -198,6 +201,28 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
+  }
+
+  public getModalDropdowns() {
+    this.mvrService
+      .getMvrModal()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetMvrModalResponse) => {
+          this.cdls = res.cdls.map((item) => {
+            return {
+              ...item,
+              name: item.cdlNumber,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load mvr's modal dropdowns",
+            'Error'
+          );
         },
       });
   }
