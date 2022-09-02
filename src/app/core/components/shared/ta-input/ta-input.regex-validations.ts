@@ -44,7 +44,7 @@ export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
 //---------------- SSN Regex ----------------
 export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
-//---------------- MC/FF ----------------
+//---------------- MC/FF --------------------
 export const mcFFValidation = [
   Validators.minLength(6),
   Validators.maxLength(6),
