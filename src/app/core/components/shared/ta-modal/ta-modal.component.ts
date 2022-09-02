@@ -142,34 +142,39 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
     this.modalService.modalSpinner$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data: { action: string; status: boolean }) => {
-        switch (data.action) {
-          case 'delete': {
-            this.deleteSpinnerVisibility = data.status;
-            break;
+      .subscribe(
+        (data: { action: string; status: boolean; clearTimeout: boolean }) => {
+          switch (data.action) {
+            case 'delete': {
+              this.deleteSpinnerVisibility = data.status;
+              break;
+            }
+            case 'save and add new': {
+              this.saveAddNewSpinnerVisibility = data.status;
+              break;
+            }
+            case 'resend email': {
+              this.resendEmailSpinnerVisibility = data.status;
+              break;
+            }
+            default: {
+              this.saveSpinnerVisibility = data.status;
+              break;
+            }
           }
-          case 'save and add new': {
-            this.saveAddNewSpinnerVisibility = data.status;
-            break;
-          }
-          case 'resend email': {
-            this.resendEmailSpinnerVisibility = data.status;
-            break;
-          }
-          default: {
-            this.saveSpinnerVisibility = data.status;
-            break;
-          }
-        }
 
-        if (!['save and add new', 'resend email'].includes(data.action)) {
-          const timeout = setTimeout(() => {
-            $('.pac-container').remove();
-            this.ngbActiveModal.dismiss();
-            clearTimeout(timeout);
-          }, 150);
+          if (!['save and add new', 'resend email'].includes(data.action)) {
+            if (data.clearTimeout) {
+              this.onAction('close');
+            } else {
+              const timeout = setTimeout(() => {
+                this.onAction('close');
+                clearTimeout(timeout);
+              }, 1200);
+            }
+          }
         }
-      });
+      );
   }
 
   public dragOver() {
