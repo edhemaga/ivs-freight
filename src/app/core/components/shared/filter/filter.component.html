@@ -1079,7 +1079,7 @@
             <app-ta-input
               formControlName="singleFrom"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'singleFrom',
                 type: 'number',
                 label: 'From',
                 placeholderIcon: 'dollar',
@@ -1091,14 +1091,13 @@
             <app-ta-input
               formControlName="singleTo"
               [inputConfig]="{
-                name: 'ssn',
+                name: 'singleTo',
                 type: 'number',
                 label: 'To',
                 placeholderIcon: 'dollar',
                 customClass: 'line-input-26'
               }"
-            ></app-ta-input>
-            <div class="invalid-message" *ngIf="singleFormError">Invalid</div>
+            ></app-ta-input> 
           </div>
         </div>
       </div>
@@ -1131,7 +1130,7 @@
             <app-ta-input
               formControlName="multiFromFirstFrom"
               [inputConfig]="{
-                name: 'from1',
+                name: 'multiFromFirstFrom',
                 type: 'number',
                 label: 'From',
                 placeholderIcon: 'dollar',
@@ -1146,16 +1145,13 @@
             <app-ta-input
               formControlName="multiFromFirstTo"
               [inputConfig]="{
-                name: 'to1',
+                name: 'multiFromFirstTo',
                 type: 'number',
                 label: 'To',
                 placeholderIcon: 'dollar',
                 customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormFirstError">
-              Invalid
-            </div>
           </div>
         </div>
         <div
@@ -1190,7 +1186,7 @@
             <app-ta-input
               formControlName="multiFormSecondFrom"
               [inputConfig]="{
-                name: 'from2',
+                name: 'multiFormSecondFrom',
                 type: 'number',
                 label: 'From',
                 placeholderIcon: 'dollar',
@@ -1205,16 +1201,13 @@
             <app-ta-input
               formControlName="multiFormSecondTo"
               [inputConfig]="{
-                name: 'to2',
+                name: 'multiFormSecondTo',
                 type: 'number',
                 label: 'To',
                 placeholderIcon: 'dollar',
                 customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormSecondError">
-              Invalid
-            </div>
           </div>
         </div>
         <div
@@ -1249,7 +1242,7 @@
             <app-ta-input
               formControlName="multiFormThirdFrom"
               [inputConfig]="{
-                name: 'from3',
+                name: 'multiFormThirdFrom',
                 type: 'number',
                 label: 'From',
                 placeholderIcon: 'dollar',
@@ -1264,16 +1257,13 @@
             <app-ta-input
               formControlName="multiFormThirdTo"
               [inputConfig]="{
-                name: 'to3',
+                name: 'multiFormThirdTo',
                 type: 'number',
                 label: 'To',
                 placeholderIcon: 'dollar',
                 customClass: 'line-input-26'
               }"
             ></app-ta-input>
-            <div class="invalid-message" *ngIf="multiFormThirdError">
-              Invalid
-            </div>
           </div>
         </div>
       </div>
@@ -1380,7 +1370,7 @@
           <app-ta-input
             formControlName="singleFrom"
             [inputConfig]="{
-              name: 'ssn',
+              name: 'singleFrom',
               type: 'number',
               label: 'From',
               placeholderIcon: 'dollar'
@@ -1391,13 +1381,12 @@
           <app-ta-input
             formControlName="singleTo"
             [inputConfig]="{
-              name: 'ssn',
+              name: 'singleTo',
               type: 'number',
               label: 'To',
               placeholderIcon: 'dollar'
             }"
           ></app-ta-input>
-          <div class="invalid-message" *ngIf="singleFormError">Invalid</div>
         </div>
       </div>
       <div
