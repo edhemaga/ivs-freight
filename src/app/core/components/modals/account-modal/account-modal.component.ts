@@ -64,6 +64,12 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editCompanyAccount(this.editData.id);
     }
+
+    this.inputService.customInputValidator(
+      this.accountForm.get('url'),
+      'url',
+      this.destroy$
+    );
   }
 
   private createForm(): void {

@@ -9,17 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { DispatchShortResponse } from './dispatchShortResponse';
-import { MvrResponse } from './mvrResponse';
-import { TestResponse } from './testResponse';
-import { EnumValue } from './enumValue';
-import { PerMileEntity } from './perMileEntity';
 import { MedicalResponse } from './medicalResponse';
 import { BankResponse } from './bankResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EmploymentHistoryResponse } from './employmentHistoryResponse';
+import { TestResponse } from './testResponse';
+import { EnumValue } from './enumValue';
 import { CdlResponse } from './cdlResponse';
 import { OwnerResponse } from './ownerResponse';
 import { OffDutyLocationResponse } from './offDutyLocationResponse';
+import { PerMileEntity } from './perMileEntity';
 import { NotificationEntity } from './notificationEntity';
 import { AddressEntity } from './addressEntity';
 
@@ -60,7 +59,6 @@ export interface DriverResponse {
     emergencyContactRelationship?: string | null;
     general?: NotificationEntity;
     payroll?: NotificationEntity;
-    mvrs?: Array<MvrResponse> | null;
     medicals?: Array<MedicalResponse> | null;
     tests?: Array<TestResponse> | null;
     cdls?: Array<CdlResponse> | null;

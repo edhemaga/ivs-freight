@@ -189,6 +189,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     this.isCheckedOwner();
+
+    this.inputService.customInputValidator(
+      this.driverForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
@@ -277,7 +283,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required, ...emailValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null],
