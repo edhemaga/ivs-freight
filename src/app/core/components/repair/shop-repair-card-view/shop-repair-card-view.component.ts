@@ -9,11 +9,11 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShopQuery } from '../state/shop-state/shop.query';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-shop-repair-card-view',

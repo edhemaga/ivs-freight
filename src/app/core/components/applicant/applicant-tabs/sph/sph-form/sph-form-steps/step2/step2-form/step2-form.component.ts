@@ -11,22 +11,18 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
-
-import { TaInputRadiobuttonsComponent } from 'src/app/core/components/shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-
-import { isFormValueEqual } from 'src/app/core/components/applicant/state/utils/utils';
-
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { TaInputResetService } from 'src/app/core/components/shared/ta-input/ta-input-reset.service';
-
-import { AnswerChoices } from 'src/app/core/components/applicant/state/model/applicant-question.model';
-import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
-import { Address } from 'src/app/core/components/applicant/state/model/address.model';
-import { SphFormAccidentModel } from 'src/app/core/components/applicant/state/model/accident.model';
+import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
+import { Address } from '../../../../../../../shared/model/address';
+import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../../../../../shared/ta-input/ta-input-reset.service';
+import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
+import { isFormValueEqual } from '../../../../../../state/utils/utils';
 import {
   addressValidation,
   descriptionValidation,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+} from '../../../../../../../shared/ta-input/ta-input.regex-validations';
+import { InputSwitchActions } from '../../../../../../state/enum/input-switch-actions.enum';
 
 @Component({
   selector: 'app-sph-step2-form',

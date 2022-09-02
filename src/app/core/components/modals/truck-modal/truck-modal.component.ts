@@ -17,10 +17,7 @@ import {
   UpdateTruckCommand,
   VinDecodeResponse,
 } from 'appcoretruckassist';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
-import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
+
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
   axlesValidation,
@@ -40,6 +37,10 @@ import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
+import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-truck-modal',

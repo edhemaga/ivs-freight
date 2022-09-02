@@ -1,6 +1,4 @@
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { Subject, takeUntil } from 'rxjs';
-import * as AppConst from 'src/app/const';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,7 +10,9 @@ import {
 } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
-import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
+import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
+import * as AppConst from 'src/app/const';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-status-switch',

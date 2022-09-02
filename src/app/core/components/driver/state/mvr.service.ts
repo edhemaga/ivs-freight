@@ -8,11 +8,10 @@ import {
   GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
-/* import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse'; */
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

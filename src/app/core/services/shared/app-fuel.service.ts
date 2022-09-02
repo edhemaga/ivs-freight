@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {environment} from 'src/environments/environment';
-import {checkParamas} from 'src/assets/utils/methods-global';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { checkParamas } from '../../utils/methods.globals';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -16,8 +16,7 @@ export class AppFuelService {
   public newFuelAdd = new Subject<void>();
   public editFuel = new Subject<any>();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   /* For Fuel Tabel */
   get getNewFuel() {
@@ -42,7 +41,7 @@ export class AppFuelService {
     return this.http.get(
       environment.API_ENDPOINT + `fuel/list/all/${pageIndex}/${pageSize}`,
       {
-        params
+        params,
       }
     );
   }
@@ -64,7 +63,10 @@ export class AppFuelService {
   }
 
   fuelMultipleDelete(fuelData: any) {
-    return this.http.put(environment.API_ENDPOINT + `fuel/multiple/delete`, fuelData);
+    return this.http.put(
+      environment.API_ENDPOINT + `fuel/multiple/delete`,
+      fuelData
+    );
   }
 
   addFuel(data) {
@@ -81,14 +83,21 @@ export class AppFuelService {
 
   /* Fuel List Category */
   getFuelCategoryList() {
-    return this.http.get(environment.API_ENDPOINT + 'select/fuel/category/list');
+    return this.http.get(
+      environment.API_ENDPOINT + 'select/fuel/category/list'
+    );
   }
 
   getFuelAvailableCredit(companyAccountId: number) {
-    return this.http.get(environment.API_ENDPOINT + `fuel/availableCredit/${companyAccountId}`);
+    return this.http.get(
+      environment.API_ENDPOINT + `fuel/availableCredit/${companyAccountId}`
+    );
   }
 
   getAccountCompanyId(apiCategoryId: number) {
-    return this.http.get(environment.API_ENDPOINT + `company/api/${apiCategoryId}/account/list/all/1/20`);
+    return this.http.get(
+      environment.API_ENDPOINT +
+        `company/api/${apiCategoryId}/account/list/all/1/20`
+    );
   }
 }

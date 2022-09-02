@@ -2,11 +2,11 @@ import { BrokerDetailsQuery } from './../state/broker-details-state/broker-detai
 import { BrokerResponse } from 'appcoretruckassist';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { BrokerTService } from '../state/broker-state/broker.service';
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 
 @Component({
   selector: 'app-broker-details',

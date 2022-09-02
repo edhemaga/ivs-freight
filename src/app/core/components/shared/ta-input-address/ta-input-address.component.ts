@@ -12,9 +12,9 @@ import {
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-input-address',

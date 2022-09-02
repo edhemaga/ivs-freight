@@ -7,8 +7,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import moment from 'moment';
-import { DISPATCH_BOARD_STATUS } from 'src/app/const';
-import { AppLoadService } from 'src/app/core/services/load/app-load.service';
+import { AppLoadService } from '../../../services/load/app-load.service';
+import { DISPATCH_BOARD_STATUS } from '../../../../const';
 
 @Component({
   selector: 'app-dispatcher-history',

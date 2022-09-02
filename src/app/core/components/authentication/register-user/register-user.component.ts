@@ -6,7 +6,6 @@ import { HttpResponseBase } from '@angular/common/http';
 import moment from 'moment';
 
 import { SignupUserCommand } from 'appcoretruckassist/model/models';
-import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 import {
   addressUnitValidation,
@@ -18,8 +17,9 @@ import {
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
 @Component({
   selector: 'app-register-user',

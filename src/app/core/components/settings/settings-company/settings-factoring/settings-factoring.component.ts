@@ -6,8 +6,8 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-settings-factoring',

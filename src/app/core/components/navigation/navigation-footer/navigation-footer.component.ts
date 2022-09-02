@@ -1,4 +1,3 @@
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import {
   Component,
   Input,
@@ -15,7 +14,8 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
 import { NavigationService } from '../services/navigation.service';
 import { navigation_route_animation } from '../navigation.animation';
-import { TaUserService } from 'src/app/core/services/user/user.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { TaUserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-navigation-footer',

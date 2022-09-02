@@ -5,7 +5,6 @@ import {
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Address } from 'src/app/core/components/shared/model/address';
 import {
   AddressEntity,
   CompanyOfficeModalResponse,
@@ -13,19 +12,21 @@ import {
   TerminalResponse,
   UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneFaxRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
+import { FormService } from '../../../../../services/form/form.service';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   calculateParkingSlot,
-  convertNumberInThousandSep,
   convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
+import { Address } from '../../../../shared/model/address';
 
 @Component({
   selector: 'app-settings-terminal-modal',

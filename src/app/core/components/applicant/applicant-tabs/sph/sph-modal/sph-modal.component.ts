@@ -7,19 +7,18 @@ import {
 } from '@angular/forms';
 
 import {
-  addressUnitValidation,
-  addressValidation,
-  descriptionValidation,
-  phoneFaxRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-
-import {
   AnswerChoices,
   ApplicantQuestion,
 } from '../../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../../state/model/trailer-type.model';
 import { TruckType } from '../../../state/model/truck-type.model';
+import {
+  phoneFaxRegex,
+  addressValidation,
+  addressUnitValidation,
+  descriptionValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-sph-modal',

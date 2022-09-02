@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject } from 'rxjs';
-import { EncryptionDecryptionService } from 'src/app/core/services/encryption-decryption/EncryptionDecryption.service';
 import { ModalOptions } from './modal.options';
+import { EncryptionDecryptionService } from '../../../services/encryption-decryption/EncryptionDecryption.service';
 @Injectable({
   providedIn: 'root',
 })

@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
 import {
   BrokerResponse,
@@ -33,15 +32,16 @@ import {
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import {
   LikeDislikeModel,
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-broker-modal',

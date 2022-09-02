@@ -1,4 +1,3 @@
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AppAddLoadTableComponent } from './app-add-load-table/app-add-load-table.component';
@@ -17,6 +16,7 @@ import { DispatcherParkingComponent } from './dispatcher-parking/dispatcher-park
 import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboard-tables.component';
 import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
+import { SharedModule } from '../shared/shared.module';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -41,7 +41,7 @@ export function playerFactory() {
     AgmSnazzyInfoWindowModule,
     LottieModule.forRoot({ player: playerFactory }),
     PipesModule,
-    TaNoteModule
+    TaNoteModule,
   ],
   entryComponents: [],
   exports: [],
