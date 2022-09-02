@@ -177,8 +177,12 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
     .row {
       width: 100%;
 
-      .col-4 {
+      .dashboard_top_driver_list {
         display: flex;
+
+        width: auto;
+        max-width: 476px;
+        min-width: 426px;
         padding-right: 0px;
       }
     }
@@ -219,6 +223,11 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
             justify-content: flex-start;
             align-items: center;
 
+            &.list-name-holder {
+              flex: 1;
+              overflow: hidden;
+            }
+
             .dashboard-top-driver-body-list-id {
               width: 18px;
               display: flex;
@@ -246,11 +255,18 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
             }
 
             .dashboard-top-driver-body-list-name {
+              max-width: 80%;
+              padding-left: 6px;
+
               font-size: 14px;
               font-weight: 700;
               color: #6c6c6c;
-              padding-left: 6px;
+
               box-sizing: border-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+
               &::-moz-selection {
                 background: #6c6c6c33;
                 color: #6c6c6c;
@@ -498,10 +514,11 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
       }
     }
 
-    .col-3 {
+    .doughnut_chart_main_holder {
       display: flex;
       justify-content: center;
       align-items: center;
+      width: auto;
 
       padding: 9px 0px 7px 0px;
 
@@ -509,6 +526,8 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
         display: flex;
         justify-content: center;
         align-items: center;
+
+        padding: 0 66px 0 63px;
 
         width: 100%;
         height: 100%;
@@ -520,7 +539,8 @@ $top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
       }
     }
 
-    .col-5 {
+    .bar_chart_main_holder {
+      flex: 1;
       padding: 13px 12px 11px 12px;
       .bar_chart_holder {
         width: 100%;

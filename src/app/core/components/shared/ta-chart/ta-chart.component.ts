@@ -5,6 +5,7 @@ import {
   ViewChild,
   ChangeDetectorRef,
   ElementRef,
+  HostListener,
 } from '@angular/core';
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
@@ -24,6 +25,12 @@ export class TaChartComponent implements OnInit {
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   lineChartData: ChartDataSets[] = [];
   @ViewChild('hoverDataHolder') hoverDataHolder: ElementRef;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.animationDuration = 0;
+    this.setChartOptions();
+  }
 
   public lineChartLabels: Label[] = [];
   public lineChartOptions: ChartOptions = {};
