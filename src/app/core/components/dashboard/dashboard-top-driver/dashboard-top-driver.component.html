@@ -110,6 +110,22 @@
               [class.list_line_hidden]="!compareColor[item.id]"
             ></div>
           </div>
+          <div class="driver_empty_state_holder" *ngIf="!driverList.length">
+            <div class="main_empty_state_holder">
+              <div class="empty_state_title">
+                {{this.searchDashboardOptions.gridNameTitle}} list is empty
+              </div>
+              <div class="empty_state_title_bottom">
+                Please add {{this.searchDashboardOptions.gridNameTitle.toLowerCase()+'s'}}
+              </div>
+              <div class="empty_state_image">
+                <svg-icon src="assets/svg/common/dashboard_empty_state.svg"></svg-icon>
+              </div>
+              <div class="empty_add_button">
+                <div class="add_text">Add {{this.searchDashboardOptions.gridNameTitle}}</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-3">

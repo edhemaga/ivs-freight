@@ -382,6 +382,7 @@ $top_state_color: "6278C7", "7A8DCB", "7A8DCB", "A0AFDE", "A0AFDE", "C2CEEC",
       align-items: flex-start;
       flex-direction: column;
       overflow: auto;
+      user-select: none;
 
       .dashboard-pickup-body-state-list-items-holder {
         width: 100%;
@@ -591,6 +592,59 @@ $top_state_color: "6278C7", "7A8DCB", "7A8DCB", "A0AFDE", "A0AFDE", "C2CEEC",
 
       &::-webkit-scrollbar-thumb {
         border: 6px solid #fff;
+      }
+
+      .state_empty_state_holder {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        width: 100%;
+        height: 100%;
+        padding-top: 18px;
+
+        .main_empty_state_holder {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .empty_state_title {
+            padding-bottom: 4px;
+
+            font-weight: 700;
+            line-height: 18px;
+            font-size: 14px;
+            color: #6c6c6c;
+            text-align: center;
+          }
+
+          .empty_state_title_bottom {
+            font-weight: 700;
+            line-height: 14px;
+            font-size: 11px;
+            color: #6c6c6c;
+            text-align: center;
+          }
+
+          .empty_state_image {
+            margin: 25px 0px 29px 0px;
+          }
+
+          .empty_add_button {
+            background-color: #6d82c7;
+            border-radius: 2px;
+            cursor: pointer;
+
+            .add_text {
+              padding: 7px 35px;
+
+              color: #fff;
+              font-weight: 700;
+              font-size: 14px;
+              line-height: 18px;
+            }
+          }
+        }
       }
     }
   }
