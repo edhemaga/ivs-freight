@@ -16,11 +16,9 @@ import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
   phoneFaxRegex,
-  emailRegex,
   ssnNumberRegex,
   accountBankValidation,
   routingBankValidation,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
   firstNameValidation,
@@ -28,6 +26,7 @@ import {
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-step1',
@@ -280,7 +279,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -306,7 +306,7 @@ export class Step1Component implements OnInit, OnDestroy {
       lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       ssn: [null, [Validators.required, ssnNumberRegex]],
@@ -340,6 +340,12 @@ export class Step1Component implements OnInit, OnDestroy {
 
       previousAddresses: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.personalInfoForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public handleInputSelect(event: any, action: string, index?: number): void {
@@ -704,7 +710,7 @@ export class Step1Component implements OnInit, OnDestroy {
       lastName: [applicantInfo?.lastName, Validators.required],
       dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
       phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
-      email: [applicantInfo?.email, [Validators.required, emailRegex]],
+      email: [applicantInfo?.email, [Validators.required]],
       address: [applicantInfo?.address, Validators.required],
       addressUnit: [applicantInfo?.addressUnit],
 

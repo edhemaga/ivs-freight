@@ -18,8 +18,6 @@ import {
   addressUnitValidation,
   addressValidation,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
   phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -112,13 +110,19 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       departmentContacts: this.formBuilder.array([]),
       rent: [null],
       payPeriod: [null],
       monthlyDay: [null],
       weeklyDay: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.officeForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.officeForm);
 
@@ -192,17 +196,21 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
-      email: [
-        data?.email ? data.email : null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      email: [data?.email ? data.email : null, [Validators.required]],
     });
   }
 
   public addDepartmentContacts(event: { check: boolean; action: string }) {
+    const form = this.createDepartmentContacts();
     if (event.check) {
       this.departmentContacts.push(this.createDepartmentContacts());
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeDepartmentContacts(id: number) {

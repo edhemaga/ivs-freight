@@ -20,8 +20,6 @@ import {
   addressUnitValidation,
   addressValidation,
   bankValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
   phoneFaxRegex,
   repairShopValidation,
@@ -96,7 +94,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       pinned: [null],
       phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       companyOwned: [false],
@@ -106,6 +104,12 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
       account: [null, accountBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.repairShopForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.repairShopForm);
 

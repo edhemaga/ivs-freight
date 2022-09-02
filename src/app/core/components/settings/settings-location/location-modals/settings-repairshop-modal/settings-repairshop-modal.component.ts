@@ -4,9 +4,7 @@ import {
 } from 'src/app/core/utils/methods.calculations';
 import {
   phoneFaxRegex,
-  emailRegex,
   phoneExtension,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
@@ -101,12 +99,18 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       phoneExt: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       rent: [null],
       payPeriod: [null],
       weeklyDay: [null],
       monthlyDay: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.repairShopForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.repairShopForm);
 

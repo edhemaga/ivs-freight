@@ -2,8 +2,6 @@ import { AddressEntity } from './../../../../../../../../appcoretruckassist/mode
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -52,12 +50,18 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
     this.factoringForm = this.formBuilder.group({
       name: [null, Validators.required],
       phone: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       noticeOfAssigment: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.factoringForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.factoringForm);
 

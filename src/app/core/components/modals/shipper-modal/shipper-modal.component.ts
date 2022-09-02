@@ -3,8 +3,6 @@ import {
   addressValidation,
   businessNameValidation,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
@@ -130,7 +128,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       businessName: [null, [Validators.required, ...businessNameValidation]],
       phone: [null, phoneFaxRegex],
       phoneExt: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       receivingAppointment: [false],
@@ -145,6 +143,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       note: [null],
       shipperContacts: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.shipperForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.shipperForm);
 
@@ -289,17 +293,21 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         [Validators.required, phoneFaxRegex],
       ],
       phoneExt: [data?.phoneExt ? data.phoneExt : null],
-      email: [
-        data?.email ? data.email : null,
-        [emailRegex, ...emailValidation],
-      ],
+      email: [data?.email ? data.email : null],
     });
   }
 
   public addShipperContacts(event: { check: boolean; action: string }) {
+    const form = this.createShipperContacts();
     if (event.check) {
-      this.shipperContacts.push(this.createShipperContacts());
+      this.shipperContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeShipperContacts(id: number) {

@@ -12,8 +12,6 @@ import { tab_modal_animation } from 'src/app/core/components/shared/animations/t
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
   phoneFaxRegex,
 } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
@@ -138,7 +136,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, phoneFaxRegex],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       parkingSlot: [null],
       fullParkingSlot: [null],
       gate: [true],
@@ -148,6 +146,12 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
       monthlyDay: [null],
       weeklyDay: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.parkingForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.parkingForm);
 

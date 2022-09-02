@@ -453,10 +453,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.truckForm.get('vin').setErrors({ invalid: true });
         }
 
-        if (
-          value?.length === 17 ||
-          (value?.length >= 5 && value?.length <= 13)
-        ) {
+        if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 1)

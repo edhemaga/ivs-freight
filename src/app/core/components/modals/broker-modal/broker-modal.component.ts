@@ -26,8 +26,6 @@ import {
   businessNameValidation,
   departmentValidation,
   einNumberRegex,
-  emailRegex,
-  emailValidation,
   mcFFValidation,
   phoneExtension,
   phoneFaxRegex,
@@ -191,7 +189,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dbaName: [null],
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       phone: [null, [Validators.required, phoneFaxRegex]],
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
@@ -214,6 +212,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.brokerForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // if (this.editData) {
     //   this.formService.checkFormChange(this.brokerForm);
@@ -254,17 +258,22 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         data?.extensionPhone ? data.extensionPhone : null,
         [...phoneExtension],
       ],
-      email: [
-        data?.email ? data.email : null,
-        [emailRegex, ...emailValidation],
-      ],
+      email: [data?.email ? data.email : null],
     });
   }
 
   public addBrokerContacts(event: { check: boolean; action: string }) {
+    const form = this.createBrokerContacts();
+
     if (event.check) {
-      this.brokerContacts.push(this.createBrokerContacts());
+      this.brokerContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeBrokerContacts(id: number) {

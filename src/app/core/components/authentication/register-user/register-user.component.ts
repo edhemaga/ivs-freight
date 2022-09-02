@@ -11,8 +11,6 @@ import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
   phoneFaxRegex,
@@ -62,10 +60,16 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
+
+    this.inputService.customInputValidator(
+      this.registerUserForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private patchForm(): void {

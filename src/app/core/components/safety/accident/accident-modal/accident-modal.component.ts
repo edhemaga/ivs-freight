@@ -1,7 +1,5 @@
 import {
   phoneFaxRegex,
-  emailRegex,
-  emailValidation,
   addressValidation,
   vinNumberValidation,
   descriptionValidation,
@@ -142,7 +140,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       insuranceClaimNumber: [null],
       insuranceAdjuster: [null],
       insurancePhone: [null, phoneFaxRegex],
-      insuranceEmail: [null, [emailRegex, ...emailValidation]],
+      insuranceEmail: [null],
       note: [null],
       roadwayTrafficWay: [null],
       weatherCondition: [null],
@@ -161,6 +159,12 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       shippingBOL: [null],
       shippingCargo: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.accidentForm.get('insuranceEmail'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.accidentForm);
 
@@ -194,14 +198,21 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       claimNumber: [null],
       insuranceAdjuster: [null],
       phone: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
     });
   }
 
   public addInsurance(event: { check: boolean; action: string }) {
+    const form = this.createInsurance();
     if (event.check) {
-      this.insurances.push(this.createInsurance());
+      this.insurances.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeInsurance(id: number) {

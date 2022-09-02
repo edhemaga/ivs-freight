@@ -19,11 +19,9 @@ import {
 import {
   einNumberRegex,
   ssnNumberRegex,
-  emailRegex,
   phoneFaxRegex,
   mileValidation,
   perStopValidation,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
   firstNameValidation,
@@ -189,12 +187,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
     }
 
     this.isCheckedOwner();
-
-    this.inputService.customInputValidator(
-      this.driverForm.get('email'),
-      'email',
-      this.destroy$
-    );
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {
@@ -283,7 +275,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, ...emailValidation]],
+      email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null],
@@ -328,6 +320,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       smsNotificationPayroll: [false],
     });
 
+    this.inputService.customInputValidator(
+      this.driverForm.get('email'),
+      'email',
+      this.destroy$
+    );
     // this.formService.checkFormChange(this.driverForm);
 
     // this.formService.formValueChange$
