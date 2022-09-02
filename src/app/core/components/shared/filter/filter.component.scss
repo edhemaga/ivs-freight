@@ -435,9 +435,9 @@
                 display: none;
                 justify-content: center;
                 align-items: center;
-                top: 4.5px;
+                top: 4px;
                 right: 4px;
-
+                transition: all 0.2s ease-in-out;
                 svg-icon{
                     svg{
                         display: flex;
@@ -450,7 +450,12 @@
                     }
                 }
 
-                &:hover{              
+                &:hover{    
+                    
+                    top: 2.5px;
+                    width: 21px;
+                    height: 21px;
+
                     svg-icon{
                         svg{
                             path{
@@ -1412,12 +1417,13 @@
                 position: absolute;
                 width: 18px;
                 height: 18px;
-                display: none;
+                display: none;  
                 background-color: #EF9A9A;
                 justify-content: center;
                 align-items: center;
-                top: 4px;
+                top: 5px;
                 right: 4px;
+                transition: all 0.2s ease-in-out;
 
                 svg-icon{
                     svg{
@@ -1432,6 +1438,10 @@
                 }
 
                 &:hover{
+                    top: 3px;
+                    width: 21px;
+                    height: 21px;
+
                     svg-icon{
                         svg{
                             path{

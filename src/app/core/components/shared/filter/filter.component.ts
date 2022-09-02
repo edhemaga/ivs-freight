@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
+import { card_component_animation } from '../animations/card-component.animations';
 
 @Component({
   selector: 'app-filter',
@@ -17,6 +18,7 @@ import { addressValidation } from '../ta-input/ta-input.regex-validations';
   styleUrls: ['./filter.component.scss'],
   providers: [NgbDropdownConfig],
   encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class FilterComponent implements OnInit {
   @ViewChild('t2') t2: any;
@@ -978,6 +980,12 @@ export class FilterComponent implements OnInit {
   swipeActiveRange: any = 0;
   singleFromActive: any = 0;
   singleToActive: any = 0;
+  multiFromFirstFromActive: any = 0;
+  multiFromFirstToActive: any = 0;
+  multiFormSecondFromActive: any = 0;
+  multiFormSecondToActive: any = 0;
+  multiFormThirdFromActive: any = 0;
+  multiFormThirdToActive: any = 0;
 
   public sliderData: Options = {
     floor: 0,
@@ -1115,28 +1123,27 @@ export class FilterComponent implements OnInit {
       }
 
       if (this.subType != 'all') {
-        
-        let toValueChanged = false;
-        let fromValueChanged = false;
-        
-        if ( parseInt(this.singleToActive) == parseInt(changes.singleTo) || this.singleToActive == 0 )
-          {
-            toValueChanged = true;
-          }
+        let toValueChanged = true;
+        let fromValueChanged = true;
 
-        if ( parseInt(this.singleFromActive) == parseInt(changes.singleFrom) || this.singleFromActive == 0 )
-          {
-            fromValueChanged = true;
-          }  
-        console.log('----this.singleToActive', this.singleToActive);
-        console.log('----this.singleFromActive', this.singleFromActive);
-        console.log('---toValueChanged', toValueChanged);  
-        console.log('---fromValueChanged', fromValueChanged);  
+        if (parseInt(this.singleToActive) == parseInt(changes.singleTo)) {
+          toValueChanged = false;
+        }
 
-        if (changes.singleFrom && changes.singleTo && !this.singleFormError && ( toValueChanged || fromValueChanged ) ) {
+        if (parseInt(this.singleFromActive) == parseInt(changes.singleFrom)) {
+          fromValueChanged = false;
+        }
+
+        if (changes.singleFrom && changes.singleTo && !this.singleFormError) {
           this.moneyFilterStatus = true;
+          if (toValueChanged || fromValueChanged) {
+            this.setButtonAvailable = true;
+          } else {
+            this.setButtonAvailable = false;
+          }
         } else {
           this.moneyFilterStatus = false;
+          this.setButtonAvailable = false;
         }
       } else {
         if (
@@ -1151,6 +1158,7 @@ export class FilterComponent implements OnInit {
             !this.multiFormThirdError)
         ) {
           this.moneyFilterStatus = true;
+          this.checkMoneyMultiForm(changes);
         }
 
         if (
@@ -1158,7 +1166,7 @@ export class FilterComponent implements OnInit {
           this.multiFormSecondError ||
           this.multiFormThirdError
         ) {
-          this.moneyFilterStatus = false;
+          this.setButtonAvailable = false;
         }
       }
 
@@ -1188,7 +1196,6 @@ export class FilterComponent implements OnInit {
 
       //console.log('---moneyFilterStatus', this.moneyFilterStatus);
       if (this.moneyFilterStatus) {
-        this.setButtonAvailable = true;
       }
     });
 
@@ -1613,6 +1620,7 @@ export class FilterComponent implements OnInit {
       }
     }
     this.setButtonAvailable = true;
+    this.moneyFilterStatus = false;
     this.filterActiveArray = [];
     this.swipeActiveRange = 0;
   }
@@ -1625,48 +1633,6 @@ export class FilterComponent implements OnInit {
         item.hidden = false;
       }
       return item;
-    });
-  }
-
-  addToSelectedDispatcher(indx, item) {
-    this.unselectedDispatcher.splice(indx, 1);
-    this.selectedDispatcher.push(item);
-  }
-
-  removeFromSelectedDispatcher(item, indx) {
-    this.selectedDispatcher.splice(indx, 1);
-    this.unselectedDispatcher.push(item);
-  }
-
-  filterDispatcher(e: any) {
-    const inputValue = e.target.value;
-    this.unselectedDispatcher.filter((item) => {
-      item.hidden = true;
-      if (item.name.toLowerCase().includes(inputValue.toLowerCase())) {
-        item.hidden = false;
-      }
-      return item;
-    });
-  }
-
-  clearAllDispatcher() {
-    this.unselectedDispatcher = [
-      ...this.unselectedDispatcher,
-      ...this.selectedDispatcher,
-    ];
-    this.selectedDispatcher = [];
-  }
-
-  hideOtherToolTips(e) {
-    document.querySelectorAll('.box-icons').forEach((parentElement) => {
-      //console.log('---parentElement----', parentElement);
-    });
-  }
-
-  backOtherToolTips(e) {
-    document.querySelectorAll('.box-icons').forEach((parentElement) => {
-      //parentElement.style.pointerEvents = 'auto';
-      //parentElement.classList.remove('hideEventsOnBox');
     });
   }
 
@@ -1715,42 +1681,40 @@ export class FilterComponent implements OnInit {
   }
 
   clearForm(mod) {
-
-    switch(mod){
-      case 'singleForm' :
-
+    switch (mod) {
+      case 'singleForm':
         this.singleFormError = false;
         this.moneyFilterStatus = false;
+        this.singleToActive = false;
+        this.singleFromActive = false;
         this.moneyForm.get('singleFrom')?.setValue('');
         this.moneyForm.get('singleTo')?.setValue('');
 
-      break;
-      case 'multiFromFirst' :
-
+        break;
+      case 'multiFromFirst':
         this.multiFormFirstError = false;
         this.moneyForm.get('multiFromFirstFrom')?.setValue('');
         this.moneyForm.get('multiFromFirstTo')?.setValue('');
 
-      break; 
-      case 'multiFormSecond' :
-          this.multiFormSecondError = false;
-          this.moneyForm.get('multiFormSecondFrom')?.setValue('');
-          this.moneyForm.get('multiFormSecondTo')?.setValue('');
-      break;  
-      case 'multiFormThird' :
+        break;
+      case 'multiFormSecond':
+        this.multiFormSecondError = false;
+        this.moneyForm.get('multiFormSecondFrom')?.setValue('');
+        this.moneyForm.get('multiFormSecondTo')?.setValue('');
+        break;
+      case 'multiFormThird':
         this.multiFormThirdError = false;
         this.moneyForm.get('multiFormThirdFrom')?.setValue('');
         this.moneyForm.get('multiFormThirdTo')?.setValue('');
-      break; 
-      case 'clearAll' :
+        break;
+      case 'clearAll':
         this.multiFormFirstError = false;
         this.multiFormSecondError = false;
         this.multiFormThirdError = false;
         this.moneyForm.reset();
-      break;         
+        break;
     }
-
-  } 
+  }
 
   setFilter(e) {
     const element = e.target;
@@ -1764,15 +1728,34 @@ export class FilterComponent implements OnInit {
       } else if (this.type == 'stateFilter') {
         this.filterUsaActiveArray = [...this.usaSelectedStates];
         this.filterCanadaActiveArray = [...this.canadaSelectedStates];
-      } else if ( this.type == 'moneyFilter' ) {
-          
-          if ( this.subType == 'all' ) {
-            console.log('--here---');
-          } else {
-            this.singleFromActive = (' ' + this.moneyForm.get('singleFrom')?.value).slice(1);
-            this.singleToActive = (' ' + this.moneyForm.get('singleTo')?.value).slice(1);     
-          }
-
+      } else if (this.type == 'moneyFilter') {
+        if (this.subType == 'all') {
+          this.multiFromFirstFromActive = (
+            ' ' + this.moneyForm.get('multiFromFirstFrom')?.value
+          ).slice(1);
+          this.multiFromFirstToActive = (
+            ' ' + this.moneyForm.get('multiFromFirstTo')?.value
+          ).slice(1);
+          this.multiFormSecondFromActive = (
+            ' ' + this.moneyForm.get('multiFormSecondFrom')?.value
+          ).slice(1);
+          this.multiFormSecondToActive = (
+            ' ' + this.moneyForm.get('multiFormSecondTo')?.value
+          ).slice(1);
+          this.multiFormThirdFromActive = (
+            ' ' + this.moneyForm.get('multiFormThirdFrom')?.value
+          ).slice(1);
+          this.multiFormThirdToActive = (
+            ' ' + this.moneyForm.get('multiFormThirdTo')?.value
+          ).slice(1);
+        } else {
+          this.singleFromActive = (
+            ' ' + this.moneyForm.get('singleFrom')?.value
+          ).slice(1);
+          this.singleToActive = (
+            ' ' + this.moneyForm.get('singleTo')?.value
+          ).slice(1);
+        }
       } else {
         this.filterActiveArray = [...this.selectedUser];
       }
@@ -1849,5 +1832,50 @@ export class FilterComponent implements OnInit {
         this.setButtonAvailable = true;
       }
     }
+  }
+
+  checkMoneyMultiForm(data) {
+    let firstFormChanged = false;
+    let secondFormChanged = false;
+    let thirdFormChanged = false;
+
+    if (
+      (parseInt(this.multiFromFirstFromActive) !=
+        parseInt(data.multiFromFirstFrom) &&
+        data.multiFromFirstFrom != '') ||
+      (parseInt(this.multiFromFirstToActive) != data.multiFromFirstTo &&
+        data.multiFromFirstTo != '')
+    ) {
+      firstFormChanged = true;
+    }
+
+    if (
+      (parseInt(this.multiFormSecondFromActive) !=
+        parseInt(data.multiFormSecondFrom) &&
+        data.multiFormSecondFrom != '') ||
+      (parseInt(this.multiFormSecondToActive) !=
+        parseInt(data.multiFormSecondTo) &&
+        data.multiFormSecondTo != '')
+    ) {
+      secondFormChanged = true;
+    }
+
+    if (
+      (parseInt(this.multiFormThirdFromActive) !=
+        parseInt(data.multiFormThirdFrom) &&
+        data.multiFormThirdFrom != '') ||
+      (parseInt(this.multiFormThirdToActive) !=
+        parseInt(data.multiFormThirdTo) &&
+        data.multiFormThirdTo != '')
+    ) {
+      thirdFormChanged = true;
+    }
+
+    if (firstFormChanged || secondFormChanged || thirdFormChanged ) {
+      this.setButtonAvailable = true;
+    } else {
+      this.setButtonAvailable = false;
+    }
+
   }
 }

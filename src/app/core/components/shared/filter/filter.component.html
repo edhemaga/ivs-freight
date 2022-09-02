@@ -41,8 +41,6 @@
       position="bottom"
       tooltipBackground="#6C6C6C"
       (click)="clearAll($event)"
-      (mouseover)="hideOtherToolTips($event)"
-      (mouseleave)="backOtherToolTips($event)"
     >
       <svg-icon src="assets/svg/common/ic_cancel_violation.svg"></svg-icon>
     </div>
@@ -154,6 +152,7 @@
               (click)="removeFromSelectedUser(item, indx)"
               class="icon-delete"
             >
+              <div class="icon-delete-hold"></div>
               <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
             </div>
           </div>
@@ -951,111 +950,6 @@
         </div>
       </div>
     </div>
-    <div *ngIf="type == 'dispatcherFilter'" class="dispatcher-holder">
-      <div class="dispatcher-header">
-        <div class="dispatcher-filter-box">{{ selectedDispatcher.length }}</div>
-        <div class="dispatcher-title-text">Dispatcher Filter</div>
-        <div class="dispatcher-close" (click)="t2.close()">
-          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-        </div>
-      </div>
-      <div class="dispatcher-border-filter"></div>
-      <div class="dispatcher-search-holder">
-        <div class="search-icons">
-          <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-        </div>
-        <div class="border-search"></div>
-        <input
-          (keyup)="filterDispatcher($event)"
-          class="dispatcher-search-user-holder"
-          type="text"
-          placeholder="Search Dispatcher"
-        />
-      </div>
-      <div class="dispatcher-border-filter different-margin"></div>
-      <div class="dispatcher-selected-user-holder">
-        <div
-          *ngFor="let item of selectedDispatcher; let indx = index"
-          class="dispatcher-selected-user-frame"
-        >
-          <div class="dispatcher-initials">
-            <app-profile-images
-              [indx]="indx"
-              [size]="'small'"
-              [type]="'user'"
-              [name]="item.name"
-            ></app-profile-images>
-          </div>
-          <div class="dispatcher-selected">{{ item.name }}</div>
-          <div class="selected-icon">
-            <svg-icon src="assets/svg/common/ic_confirm.svg"></svg-icon>
-          </div>
-          <div
-            ngbTooltip
-            mainTooltip="Remove User"
-            position="top"
-            tooltipBackground="#6C6C6C"
-            (click)="removeFromSelectedDispatcher(item, indx)"
-            class="icon-delete"
-          >
-            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-          </div>
-        </div>
-      </div>
-      <div
-        *ngIf="selectedDispatcher.length > 0"
-        class="dispatcher-border-filter different-margin"
-      ></div>
-      <div
-        class="dispatcher-user-holder"
-        [ngStyle]="{
-          padding:
-            unselectedDispatcher.length > 7
-              ? '2px 0px 0px 12px'
-              : '2px 12px 0px 12px'
-        }"
-      >
-        <div
-          *ngFor="let item of unselectedDispatcher; let indx = index"
-          class="dispatcher-user-frame-holder"
-        >
-          <div
-            *ngIf="!item.hidden"
-            (click)="addToSelectedDispatcher(indx, item)"
-            class="dispatcher-user-frame"
-          >
-            <div class="dispatcher-initials">
-              <app-profile-images
-                [indx]="indx"
-                [size]="'small'"
-                [type]="'user'"
-                [name]="item.name"
-              >
-              </app-profile-images>
-            </div>
-            <div class="unselecter-dispatcher">{{ item.name }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="dispatcher-border-filter"></div>
-      <div class="filter-buttons-holder">
-        <div
-          (click)="clearAllDispatcher()"
-          class="filter-button-clear"
-          [class.active]="selectedDispatcher.length > 0"
-        >
-          Clear All
-        </div>
-        <div
-          (click)="setFilter($event)"
-          class="filter-button-set"
-          [class.active]="selectedDispatcher.length > 0 && setButtonAvailable"
-        >
-          Set
-        </div>
-      </div>
-    </div>
-
     <div
       *ngIf="moneyFilter"
       class="filter-holder money-filter"
@@ -1067,13 +961,6 @@
       </div>
       <div class="border-filter money-top-border-magin"></div>
       <div class="single-form-holder" *ngIf="subType != 'all'">
-        <div
-          class="clear-money-form"
-          *ngIf="moneyForm.value.singleFrom && moneyForm.value.singleTo"
-          (click)="clearForm('singleForm')"
-        >
-          CLEAR
-        </div>
         <div class="money-main-holder">
           <div class="money-value-holder">
             <app-ta-input
@@ -1125,7 +1012,7 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart1">
+        <div class="money-main-holder" [@showHideCardBody]="showPart1 ? 'true' : 'false'">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFromFirstFrom"
@@ -1181,7 +1068,7 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart2">
+        <div class="money-main-holder" [@showHideCardBody]="showPart2 ? 'true' : 'false'">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFormSecondFrom"
@@ -1237,7 +1124,7 @@
             ></svg-icon>
           </div>
         </div>
-        <div class="money-main-holder" *ngIf="showPart3">
+        <div class="money-main-holder" [@showHideCardBody]="showPart3 ? 'true' : 'false'">
           <div class="money-value-holder">
             <app-ta-input
               formControlName="multiFormThirdFrom"
