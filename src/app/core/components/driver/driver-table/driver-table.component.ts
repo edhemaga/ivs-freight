@@ -478,11 +478,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(this.viewData);
 
       // For Testing
-      if (this.selectedTab !== 'applicants') {
-        for (let i = 0; i < 10000; i++) {
-          this.viewData.push(this.viewData[0]);
-        }
-      }
+      // if (this.selectedTab !== 'applicants') {
+      //   for (let i = 0; i < 10000; i++) {
+      //     this.viewData.push(this.viewData[0]);
+      //   }
+      // }
     } else {
       this.viewData = [];
     }
