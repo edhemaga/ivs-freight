@@ -64,17 +64,12 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentIndex = this.truckList.findIndex(
-      (truck) => truck.id === this.activated_route.snapshot.data.truck.id
-    );
-    this.getTruckById(this.activated_route.snapshot.data.truck.id);
     this.initTableOptions(this.activated_route.snapshot.data.truck);
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.truckConf(res.data);
-          this.getTruckById(res.id);
           this.initTableOptions(res.data);
           this.cdRef.detectChanges();
         }
@@ -117,7 +112,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 (truck) => truck.id === res.id
               );
               this.truckConf(res);
-              this.getTruckById(res.id);
               this.initTableOptions(res);
               if (this.router.url.includes('details')) {
                 this.router.navigate([`/truck/${res.id}/details`]);
@@ -198,12 +192,16 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     this.dropService.dropActionHeaderTruck(
       event,
       this.truckObject,
-      this.truckId,
+      event.id,
       null
     );
   }
   /**Function for dots in cards */
   public initTableOptions(data: TruckMinimalResponse): void {
+    this.currentIndex = this.truckList.findIndex(
+      (truck) => truck.id === data.id
+    );
+    this.getTruckById(data.id);
     this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {

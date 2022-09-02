@@ -223,6 +223,7 @@ export class DriverDetailsCardComponent
     }
     this.driverMinimalQuery
       .selectAll()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driversList = item));
   }
 
@@ -297,10 +298,6 @@ export class DriverDetailsCardComponent
         this.initTableOptions();
         break;
     }
-  }
-  /**Function return user image if have in DB or default image */
-  public transformImage() {
-    return this.imageBase64Service.sanitizer(this.driver?.avatar);
   }
 
   public tabsButton() {

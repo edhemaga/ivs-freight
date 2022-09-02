@@ -135,7 +135,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
               }
 
               this.detailCongif(res);
-              this.getDriverById(res.id);
+
               if (this.router.url.includes('details')) {
                 this.router.navigate([`/driver/${res.id}/details`]);
               }
@@ -266,22 +266,17 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   /**Function for dots in cards */
   public initTableOptions(data: DriverResponse): void {
+    this.getDriverById(data.id);
     this.arrayActiveCdl = [];
     this.isActiveCdl = false;
     this.cdlActiveId = 0;
     data?.cdls?.map((item) => {
       if (item.status == 1) {
         this.cdlActiveId = item.id;
-      }
-
-      if (item.status == 1) {
         this.arrayActiveCdl.push(true);
-      } else {
-        this.arrayActiveCdl.push(false);
-      }
-      if (this.arrayActiveCdl.includes(true)) {
         this.isActiveCdl = true;
       } else {
+        this.arrayActiveCdl.push(false);
         this.isActiveCdl = false;
       }
     });
@@ -342,6 +337,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   public getDriverById(id: number) {
     this.driverService
       .getDriverById(id, true)
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
   }
   public getCdlById(id: number) {
@@ -351,11 +347,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       .subscribe((item) => (this.dataCdl = item));
   }
   public onDriverActions(event: any) {
-    this.dropDownService.dropActionsHeader(
-      event,
-      this.driverObject,
-      this.driverId
-    );
+    this.dropDownService.dropActionsHeader(event, this.driverObject, event.id);
   }
 
   private changeDriverStatus(id: number) {

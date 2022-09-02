@@ -426,6 +426,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
     this.truckMinimalListQuery
       .selectAll()
+      .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.truck_list = item));
   }
   ngOnInit(): void {

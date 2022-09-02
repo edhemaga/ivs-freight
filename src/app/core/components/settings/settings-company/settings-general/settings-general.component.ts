@@ -45,8 +45,6 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       this.hasArrow = true;
     } else {
       this.companyDivision = false;
-    }
-    if (changes?.companyData?.currentValue?.divisions?.length > 1) {
       this.hasArrow = true;
     }
     if (

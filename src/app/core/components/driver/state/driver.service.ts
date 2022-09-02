@@ -1,7 +1,7 @@
 import { CdlService } from './../../../../../../appcoretruckassist/api/cdl.service';
 import { DriverService } from './../../../../../../appcoretruckassist/api/driver.service';
-import { Injectable } from '@angular/core';
-import { Observable, of, tap } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
+import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
 import {
   CheckOwnerSsnEinResponse,
   CreateDriverCommand,
@@ -25,10 +25,12 @@ import { DriversMinimalListQuery } from './driver-details-minimal-list-state/dri
 @Injectable({
   providedIn: 'root',
 })
-export class DriverTService {
+export class DriverTService implements OnDestroy {
   public currentIndex: number;
   public driversList: any;
   public driverId: number;
+  private destroy$ = new Subject<void>();
+
   constructor(
     private driverService: DriverService,
     private driversActiveQuery: DriversActiveQuery,
@@ -268,16 +270,19 @@ export class DriverTService {
     driverId: number,
     getIndex?: boolean
   ): Observable<DriverResponse> {
-    this.driversList = this.driverMinimalQuery.getAll();
+    this.driverMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.driversList = item));
     if (getIndex) {
       this.currentIndex = this.driversList.findIndex(
         (driver) => driver.id === driverId
       );
       let last = this.driversList.at(-1);
+
       if (last.id === driverId) {
         this.currentIndex = --this.currentIndex;
-      }
-      if (last.id != driverId) {
+      } else {
         this.currentIndex = ++this.currentIndex;
       }
       if (this.currentIndex == -1) {
@@ -358,21 +363,23 @@ export class DriverTService {
           })
         );
 
-        const subDriver = this.getDriverById(driverId).subscribe({
-          next: (driver: DriverResponse | any) => {
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
+        const subDriver = this.getDriverById(driverId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
 
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              data: driver,
-              id: driver.id,
-            });
-            subDriver.unsubscribe();
-          },
-        });
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                data: driver,
+                id: driver.id,
+              });
+              subDriver.unsubscribe();
+            },
+          });
         /* Send Info For Table To Do Action Animation */
         // this.tableService.sendActionAnimation({
         //   animation: 'update-status',
@@ -380,5 +387,9 @@ export class DriverTService {
         // });
       })
     );
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

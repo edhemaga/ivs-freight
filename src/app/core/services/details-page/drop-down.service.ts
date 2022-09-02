@@ -11,14 +11,25 @@ import { ConfirmationModalComponent } from '../../components/modals/confirmation
 import { DriverModalComponent } from '../../components/modals/driver-modal/driver-modal.component';
 import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
+import { SettingsParkingModalComponent } from '../../components/settings/settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsLocationService } from '../../components/settings/state/location-state/settings-location.service';
 import { ModalService } from '../../components/shared/ta-modal/modal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DropDownService {
-  constructor(private modalService: ModalService) {}
+  public parkingDataById: any;
 
+  constructor(
+    private modalService: ModalService,
+    private settingsLocationService: SettingsLocationService
+  ) {}
+  public getParkingById(id: number) {
+    this.settingsLocationService
+      .getCompanyParkingById(id)
+      .subscribe((item) => (this.parkingDataById = item));
+  }
   public dropActions(
     any: any,
     name: string,
@@ -360,6 +371,48 @@ export class DropDownService {
           template: trailerId ? 'trailer' : 'truck',
           type: 'delete',
           svg: true,
+        }
+      );
+    }
+  }
+
+  public dropActionCompanyLocation(
+    event: any,
+    name: string,
+    parkingObject?: any
+  ) {
+    const mappedEvent = {
+      ...parkingObject,
+      data: {
+        ...parkingObject,
+        name: parkingObject?.name,
+      },
+    };
+    if (event.type === 'edit') {
+      switch (name) {
+        case 'edit-parking': {
+          this.modalService.openModal(
+            SettingsParkingModalComponent,
+            {
+              size: 'small',
+            },
+            {
+              ...event,
+              disableButton: true,
+              id: event.id,
+            }
+          );
+        }
+      }
+    } else if (event.type === 'delete-item') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'parking',
+          type: 'delete',
+          svg: false,
         }
       );
     }

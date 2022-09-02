@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   CdlResponse,
   CdlService,
@@ -9,7 +9,7 @@ import {
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
@@ -19,7 +19,8 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
 @Injectable({
   providedIn: 'root',
 })
-export class CdlTService {
+export class CdlTService implements OnDestroy {
+  private destroy$ = new Subject<void>();
   constructor(
     private cdlService: CdlService,
     private driverService: DriverTService,
@@ -37,15 +38,17 @@ export class CdlTService {
           .getDriverById(data.driverId)
           .subscribe({
             next: (driver: DriverResponse | any) => {
-              this.activateCdlById(res.id).subscribe({
-                next: (res: any) => {},
-                error: () => {
-                  this.notificationService.error(
-                    'Cannot activate cdl, already have active.',
-                    'Error:'
-                  );
-                },
-              });
+              this.activateCdlById(res.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                  next: (res: any) => {},
+                  error: () => {
+                    this.notificationService.error(
+                      'Cannot activate cdl, already have active.',
+                      'Error:'
+                    );
+                  },
+                });
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
@@ -71,6 +74,7 @@ export class CdlTService {
       tap((res: any) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (driver: DriverResponse | any) => {
               this.driverStore.remove(({ id }) => id === data.driverId);
@@ -157,5 +161,9 @@ export class CdlTService {
 
   public getCdlDropdowns(): Observable<GetCdlModalResponse> {
     return this.cdlService.apiCdlModalGet();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

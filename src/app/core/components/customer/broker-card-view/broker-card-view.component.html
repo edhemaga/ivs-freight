@@ -15,31 +15,31 @@
       </div>
       <div class="repair-information-item">
         <span
-                tooltipBackground="#6c6c6c"
-                ngbTooltip
-                mainTooltip="Call"
-                position="top"
-                class="semi-tooltip"
-              >
-        <svg-icon
-          class="repair-icon"
-          src="assets/svg/common/ic_phone.svg"
-        ></svg-icon>
+          tooltipBackground="#6c6c6c"
+          ngbTooltip
+          mainTooltip="Call"
+          position="top"
+          class="semi-tooltip"
+        >
+          <svg-icon
+            class="repair-icon"
+            src="assets/svg/common/ic_phone.svg"
+          ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="broker?.phone"></app-ta-copy>
       </div>
-      <div class="repair-information-item">
+      <div *ngIf="broker.email" class="repair-information-item">
         <span
-        tooltipBackground="#6c6c6c"
-        ngbTooltip
-        mainTooltip="Send Email"
-        position="top"
-        class="semi-tooltip"
-      >
-        <svg-icon
-          class="repair-icon"
-          src="assets/svg/common/ic_email.svg"
-        ></svg-icon>
+          tooltipBackground="#6c6c6c"
+          ngbTooltip
+          mainTooltip="Send Email"
+          position="top"
+          class="semi-tooltip"
+        >
+          <svg-icon
+            class="repair-icon"
+            src="assets/svg/common/ic_email.svg"
+          ></svg-icon>
         </span>
         <app-ta-copy [copyValue]="broker?.email"></app-ta-copy>
       </div>
@@ -55,7 +55,6 @@
               : broker?.billingAddress?.address
           "
         ></app-ta-copy>
-      
       </div>
     </div>
   </app-ta-details-header-card>
@@ -143,8 +142,20 @@
               broker?.totalDebt | formatCurrency
             }}</span>
           </div>
+          <div
+            *ngIf="
+              broker.payTerm.name === 'Unlimited'
+            "
+            class="invoice-agein-unlimited"
+          >
+          
+          Avg. <span class="avg-days-invoice">42 Days</span>
+        </div>
         </div>
         <app-progress-invoices
+          *ngIf="
+            broker.payTerm.name !== 'Unlimited'
+          "
           [invoiceDays]="broker?.invoiceAgeingGroupOne?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupOne?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupOne?.totalSum"
@@ -153,6 +164,10 @@
         </app-progress-invoices>
 
         <app-progress-invoices
+          *ngIf="
+            
+            broker.payTerm.name !== 'Unlimited'
+          "
           [invoiceDays]="broker?.invoiceAgeingGroupTwo?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupTwo?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupTwo?.totalSum"
@@ -160,6 +175,10 @@
         >
         </app-progress-invoices>
         <app-progress-invoices
+          *ngIf="
+           
+            broker.payTerm.name !== 'Unlimited'
+          "
           [invoiceDays]="broker?.invoiceAgeingGroupThree?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupThree?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupThree?.totalSum"
@@ -167,6 +186,10 @@
         >
         </app-progress-invoices>
         <app-progress-invoices
+          *ngIf="
+           
+            broker.payTerm.name !== 'Unlimited'
+          "
           [invoiceDays]="broker?.invoiceAgeingGroupFour?.periodOfDays"
           [invoiceCounter]="broker?.invoiceAgeingGroupFour?.countInvoice"
           [invoiceTotal]="broker?.invoiceAgeingGroupFour?.totalSum"
@@ -182,7 +205,10 @@
         [cardName]="'Terms and Credit'"
         [isCardOpen]="true"
       >
-        <div class="invoice-ageing-template">
+        <div
+          class="invoice-ageing-template"
+          *ngIf="broker.creditType.name !== 'Unlimited'"
+        >
           <div class="invoice-ageing-template-item">
             <span class="header-name">Available Credit</span>
             <span *ngIf="broker.availableCredit" class="value-ageing">{{
@@ -190,7 +216,10 @@
             }}</span>
           </div>
         </div>
-        <div class="progress-container">
+        <div
+          class="progress-container"
+          *ngIf="broker.creditType.name !== 'Unlimited'"
+        >
           <app-ta-currency-progress-bar
             [template]="'broker-credit'"
             [totalAmount]="broker.creditLimit"
@@ -203,7 +232,9 @@
           <div class="addition-template-item">
             <span class="header">Credit</span>
             <span class="value charts-value">{{
-              broker?.creditLimit | formatCurrency
+              broker.creditType.name === "Unlimited"
+                ? "Unlimited"
+                : (broker?.creditLimit | formatCurrency)
             }}</span>
           </div>
           <div class="addition-template-item">

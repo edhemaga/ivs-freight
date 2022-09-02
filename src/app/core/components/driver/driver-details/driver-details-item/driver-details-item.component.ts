@@ -77,12 +77,11 @@ export class DriverDetailsItemComponent
     if (!changes.drivers.firstChange && changes.drivers.currentValue) {
       this.drivers = changes.drivers.currentValue;
       this.getExpireDate();
-      this.initTableOptions(changes.drivers.currentValue[0].data);
     }
+    this.initTableOptions(changes.drivers.currentValue[0].data);
   }
 
   ngOnInit(): void {
-    this.initTableOptions(this.drivers[0].data);
     this.getExpireDate();
 
     // Confirmation Subscribe

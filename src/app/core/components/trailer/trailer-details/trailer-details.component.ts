@@ -50,11 +50,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.currentIndex = this.trailerList.findIndex(
-      (trailer) => trailer.id === this.activated_route.snapshot.data.trailer.id
-    );
     this.initTableOptions(this.activated_route.snapshot.data.trailer);
-    this.getTrailerById(this.activated_route.snapshot.data.trailer.id);
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
@@ -104,7 +100,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
               this.trailerConf(res);
               this.initTableOptions(res);
-              this.getTrailerById(res.id);
               this.router.navigate([`/trailer/${res.id}/details`]);
               this.notificationService.success(
                 'Trailer successfully changed',
@@ -169,6 +164,10 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
   }
   /**Function for dots in cards */
   public initTableOptions(data: TrailerResponse): void {
+    this.currentIndex = this.trailerList.findIndex(
+      (trailer) => trailer.id === data.id
+    );
+    this.getTrailerById(data.id);
     this.dataHeaderDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -277,7 +276,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
       event,
       this.trailerObject,
       null,
-      this.trailerId
+      event.id
     );
   }
   public onModalAction(action: string): void {

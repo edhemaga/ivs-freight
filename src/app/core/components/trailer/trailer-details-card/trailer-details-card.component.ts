@@ -39,7 +39,7 @@ export class TrailerDetailsCardComponent
     private trailerService: TrailerTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.trailer?.firstChange && changes?.trailer) {
+    if (!changes?.trailer?.firstChange) {
       this.getTrailerDropdown();
       this.note.patchValue(changes.trailer.currentValue.note);
     }

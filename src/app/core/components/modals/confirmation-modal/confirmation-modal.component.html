@@ -219,7 +219,7 @@
         </div>
         <!-- Shipper, Repair Shop -->
         <div
-          *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
+          *ngIf="['shipper', 'repair shop','parking'].includes(editData?.template)"
           class="confirmation-info"
         >
           <p class="confirmation-text-1">{{ item?.data?.name }}</p>
