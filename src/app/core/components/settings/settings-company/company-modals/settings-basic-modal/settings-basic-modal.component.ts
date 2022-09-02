@@ -377,7 +377,7 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     );
 
     this.inputService.customInputValidator(
-      this.companyForm.get('url'),
+      this.companyForm.get('webUrl'),
       'url',
       this.destroy$
     );
