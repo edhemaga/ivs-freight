@@ -10,8 +10,15 @@ export class ModalService {
   private modalStatusChange: Subject<{ name: string; status: boolean | null }> =
     new Subject<{ name: string; status: boolean }>();
 
-  private modalSpinner: Subject<{ action: string; status: boolean }> =
-    new Subject<{ action: string; status: boolean }>();
+  private modalSpinner: Subject<{
+    action: string;
+    status: boolean;
+    clearTimeout?: boolean;
+  }> = new Subject<{
+    action: string;
+    status: boolean;
+    clearTimeout?: boolean;
+  }>();
 
   constructor(
     private ngbModal: NgbModal,
@@ -28,8 +35,16 @@ export class ModalService {
   }
 
   // Setter
-  public setModalSpinner({ action: string, status: boolean }) {
-    this.modalSpinner.next({ action: string, status: boolean });
+  public setModalSpinner(data: {
+    action: string;
+    status: boolean;
+    clearTimeout?: boolean;
+  }) {
+    this.modalSpinner.next({
+      action: data.action,
+      status: data.status,
+      clearTimeout: data.clearTimeout,
+    });
   }
 
   public changeModalStatus(data: { name: string; status: boolean | null }) {
@@ -43,7 +58,6 @@ export class ModalService {
     size: string;
     type?: string;
   }) {
-    console.log('Projection modal: ', data);
     const timeout = setTimeout(() => {
       // Closing Modal and Open New One
       if (data.action === 'open') {
@@ -109,7 +123,7 @@ export class ModalService {
 
     (modal as any)._removeModalElements = () => {
       instance.windowClass = '';
-      setTimeout(fx, 250);
+      setTimeout(fx, 400);
     };
 
     return modal;

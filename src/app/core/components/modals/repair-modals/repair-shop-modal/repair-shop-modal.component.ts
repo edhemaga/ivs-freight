@@ -136,7 +136,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRepairShop();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            clearTimeout: this.editData?.canOpenModal ? true : false,
+          });
         }
         break;
       }

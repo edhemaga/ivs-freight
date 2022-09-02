@@ -385,6 +385,7 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfSpaces = 0;
+      this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
 
       if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {

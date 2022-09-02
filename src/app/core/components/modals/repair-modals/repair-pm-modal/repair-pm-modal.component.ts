@@ -233,6 +233,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }
@@ -241,6 +242,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }
