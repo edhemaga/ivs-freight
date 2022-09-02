@@ -134,6 +134,28 @@
         </div>
       </div>
 
+      <!-- Edit & Delete Actions -->
+      <div *ngIf="hasEditAndDeleteActions" class="edit-delete-actions">
+        <svg-icon
+          class="edit-icon"
+          src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+          [svgStyle]="{
+            'width.px': 18,
+            'height.px': 18
+          }"
+          (click)="onAction($event, 'edit')"
+        ></svg-icon>
+        <svg-icon
+          class="delete-icon"
+          src="assets/svg/truckassist-table/dropdown/content/delete.svg"
+          [svgStyle]="{
+            'width.px': 18,
+            'height.px': 18
+          }"
+          (click)="onAction($event, 'delete')"
+        ></svg-icon>
+      </div>
+
       <!-- Arrow -->
       <svg-icon
         *ngIf="hasArrow && hasBodyData"
@@ -148,7 +170,11 @@
   <div
     class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
     [@.disabled]="animationsDisabled"
-    [ngClass]="{ active: isCardOpen, scroll: hasScrollBody, unopened: !isCardOpen }"
+    [ngClass]="{
+      active: isCardOpen,
+      scroll: hasScrollBody,
+      unopened: !isCardOpen
+    }"
   >
     <div
       [@showHideCardBody]="isCardOpen ? 'true' : 'false'"

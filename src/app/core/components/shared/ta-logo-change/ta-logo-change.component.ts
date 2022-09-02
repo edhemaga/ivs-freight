@@ -52,11 +52,25 @@ export class TaLogoChangeComponent
     multiple: false,
     globalDropZone: false,
   };
+  @Input() displayUploadZone?: boolean;
+  @Input() isEditingLogo?: boolean;
 
   @Output() validationEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
     false
   );
   @Output() base64ImageEvent: EventEmitter<string> = new EventEmitter<string>();
+
+  @Output() saveLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
+
+  @Output() deleteLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
+
+  @Output() editLogoEvent: EventEmitter<boolean> = new EventEmitter<boolean>(
+    false
+  );
 
   public showUploadZone = true;
   public imageScale = 0.5;
@@ -87,6 +101,24 @@ export class TaLogoChangeComponent
 
       clearTimeout(timeout);
     }, 150);
+
+    if (this.displayUploadZone) {
+      this.showUploadZone = true;
+
+      this.imageUrl = null;
+
+      this.deleteLogoEvent.emit(true);
+    }
+
+    if (this.isEditingLogo) {
+      this.imageUrl = null;
+
+      this.showUploadZone = false;
+
+      this.isImageValid = true;
+
+      this.editLogoEvent.emit(true);
+    }
   }
 
   ngOnInit(): void {
@@ -146,6 +178,10 @@ export class TaLogoChangeComponent
     });
     this.isImageValid = true;
     this.validationEvent.emit(this.isImageValid);
+
+    if (this.croppieShape === 'rectangle') {
+      this.saveLogoEvent.emit(true);
+    }
   }
 
   public onDeleteSavedImage() {
