@@ -36,6 +36,7 @@ export class SharedService {
   public emitViewChange: EventEmitter<boolean> = new EventEmitter();
   public emitRefreshAfterUpdate: EventEmitter<any[]> = new EventEmitter();
   public emitUpdateScrollHeight: EventEmitter<any> = new EventEmitter();
+  public emitTableScrolling: EventEmitter<any> = new EventEmitter();
   // Owner
   public createOwner = new Subject<OwnerData>();
   public editOwnerSubject = new Subject<void>();

@@ -392,7 +392,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Applicants',
         field: 'applicants',
-        length: 0,
+        length: applicantsData.length,
         data: applicantsData,
         extended: true,
         gridNameTitle: 'Driver',
@@ -479,7 +479,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       // For Testing
       // if (this.selectedTab !== 'applicants') {
-      //   for (let i = 0; i < 10000; i++) {
+      //   for (let i = 0; i < 1000; i++) {
       //     this.viewData.push(this.viewData[0]);
       //   }
       // }
