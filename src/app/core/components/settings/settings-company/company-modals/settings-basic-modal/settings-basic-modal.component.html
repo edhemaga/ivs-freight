@@ -291,7 +291,7 @@
           [cardName]="'Logo'"
           [isCardOpen]="true"
           [hasEditAndDeleteActions]="displayEditAndDeleteActions"
-          (onActionEvent)="onEditOrDeleteLogoAction($event)"
+          (onActionEvent)="handleEditOrDeleteClick($event)"
         >
           <app-ta-logo-change
             [croppieOptions]="croppieOptions"

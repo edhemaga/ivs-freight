@@ -1931,16 +1931,16 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onEditOrDeleteLogoAction(event: any) {
+  public handleEditOrDeleteClick(event: any) {
     if (event.action === 'edit') {
       this.isEditingLogo = true;
     }
 
     if (event.action === 'delete') {
-      this.displayEditAndDeleteActions = false;
-
       this.displayUploadZone = true;
     }
+
+    this.displayEditAndDeleteActions = false;
   }
 
   public onSaveLogoAction(event: any) {
