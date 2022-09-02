@@ -1,8 +1,6 @@
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -144,17 +142,17 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       // Office
       officeChecked: [true],
       officePhone: [null, [Validators.required, phoneFaxRegex]],
       officeExtPhone: [null, [...phoneExtension]],
-      officeEmail: [null, [emailRegex, ...emailValidation]],
+      officeEmail: [null],
       // Parking
       parkingChecked: [true],
       parkingPhone: [null, [Validators.required, phoneFaxRegex]],
       parkingExtPhone: [null, [...phoneExtension]],
-      parkingEmail: [null, [emailRegex, ...emailValidation]],
+      parkingEmail: [null],
 
       terminalParkingSlot: [null],
       terminalFullParkingSlot: [null],
@@ -164,7 +162,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       warehouseChecked: [true],
       warehousePhone: [null, [Validators.required, phoneFaxRegex]],
       warehouseExtPhone: [null, [...phoneExtension]],
-      warehouseEmail: [null, [emailRegex, ...emailValidation]],
+      warehouseEmail: [null],
       // Fuel stattion
       fuelStationChecked: [false],
       // Additional tab
@@ -173,6 +171,30 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       weeklyDay: [null],
       monthlyDay: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('officeEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('parkingEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('warehouseEmail'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.terminalForm);
 

@@ -1,8 +1,6 @@
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
@@ -103,7 +101,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
       mobile: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
@@ -113,6 +111,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       password: [null],
       avatar: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.profileUserForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

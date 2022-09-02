@@ -10,15 +10,12 @@ import {
   bankValidation,
   daysValidRegex,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
   phoneExtension,
   routingBankValidation,
-  urlValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -306,9 +303,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
       phone: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       fax: [null, phoneFaxRegex],
-      webUrl: [null, [...urlValidation]],
+      webUrl: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       irp: [null],
@@ -391,6 +388,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherEndingIn: ['Monday', Validators.required],
       otherDefaultBase: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.companyForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.companyForm.get('webUrl'),
+      'url',
+      this.destroy$
+    );
 
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.companyForm.get('email').setValidators(Validators.required);
@@ -486,17 +495,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         data?.extensionPhone ? data?.extensionPhone : null,
         [...phoneExtension],
       ],
-      email: [
-        data?.email ? data?.email : null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      email: [data?.email ? data?.email : null, [Validators.required]],
     });
   }
 
   public addDepartmentContacts(event: { check: boolean; action: string }) {
+    const form = this.createDepartmentContacts();
     if (event.check) {
-      this.departmentContacts.push(this.createDepartmentContacts());
+      this.departmentContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeDepartmentContacts(id: number) {

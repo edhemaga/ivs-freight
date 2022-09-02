@@ -27,8 +27,6 @@ import {
   bankValidation,
   businessNameValidation,
   einNumberRegex,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
   phoneFaxRegex,
@@ -108,12 +106,18 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       bankId: [null, [...bankValidation]],
       accountNumber: [null, accountBankValidation],
       routingNumber: [null, routingBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.ownerForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.ownerForm);
 
