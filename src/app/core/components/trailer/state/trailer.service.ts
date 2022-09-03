@@ -9,15 +9,14 @@ import {
   TrailerService,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-/* import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse'; */
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
 import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
 import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
-import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
 import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-minimal.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
+import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {

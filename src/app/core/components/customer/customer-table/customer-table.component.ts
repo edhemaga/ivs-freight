@@ -6,16 +6,7 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import {
-  getBrokerColumnDefinition,
-  getShipperColumnDefinition,
-} from 'src/assets/utils/settings/customer-columns';
+
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -26,9 +17,19 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import {
+  getBrokerColumnDefinition,
+  getShipperColumnDefinition,
+} from '../../../../../assets/utils/settings/customer-columns';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 
 @Component({
   selector: 'app-customer-table',

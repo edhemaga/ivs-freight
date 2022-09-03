@@ -12,7 +12,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 const rotate: { [key: string]: any } = {
   asc: '',

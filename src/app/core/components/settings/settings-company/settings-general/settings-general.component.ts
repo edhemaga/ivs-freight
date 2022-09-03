@@ -11,8 +11,8 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { DetailsActiveItemPipe } from '../../../../pipes/detailsActiveItem.pipe';
+import { DetailsPageService } from '../../../../services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-settings-general',

@@ -1,11 +1,11 @@
-import { DispatchLoad } from 'src/app/core/model/dispatch';
 import { AppLoadService } from './../../../services/load/app-load.service';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
-import * as AppConst from 'src/app/const';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { DispatchLoad } from '../../shared/model/dispatch';
+import * as AppConst from 'src/app/const';
 
 declare var google: any;
 

@@ -9,12 +9,12 @@ import {
   GetCdlModalResponse,
 } from 'appcoretruckassist';
 /* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
-import { Observable, Subject, tap, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DriverTService } from './driver.service';
 
 @Injectable({
   providedIn: 'root',
@@ -74,7 +74,6 @@ export class CdlTService implements OnDestroy {
       tap((res: any) => {
         const subDriver = this.driverService
           .getDriverById(data.driverId)
-          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (driver: DriverResponse | any) => {
               this.driverStore.remove(({ id }) => id === data.driverId);

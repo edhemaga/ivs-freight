@@ -7,13 +7,13 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { RepairTService } from '../state/repair.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
 import { Subject, takeUntil } from 'rxjs';
+import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-shop-repair-details',

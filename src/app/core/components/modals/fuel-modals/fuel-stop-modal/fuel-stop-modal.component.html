@@ -11,10 +11,12 @@
         <app-ta-input-dropdown
           formControlName="name"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown Fuel Stop',
             type: 'text',
             label: 'Fuel Stop Name',
             isDropdown: true,
+            minLength: 2,
+            maxLength: 64,
             isRequired: true,
             dropdownWidthClass: 'w-col-256'
           }"
@@ -63,6 +65,7 @@
             name: 'Fax',
             type: 'text',
             label: 'Fax',
+            mask: '(000) 000-0000',
             placeholderIcon: 'fax'
           }"
         ></app-ta-input>

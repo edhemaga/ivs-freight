@@ -13,14 +13,13 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
-/* import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse'; */
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
 import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
-import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from './driver-details-state/driver-details.store';
 
 @Injectable({
   providedIn: 'root',

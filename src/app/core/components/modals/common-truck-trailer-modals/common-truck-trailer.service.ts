@@ -20,7 +20,6 @@ import {
 } from 'appcoretruckassist';
 
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckTService } from '../../truck/state/truck.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
 import { TruckActiveStore } from '../../truck/state/truck-active-state/truck-active.store';
@@ -29,6 +28,7 @@ import { TrailerInactiveStore } from '../../trailer/state/trailer-inactive-state
 import { TrailerActiveStore } from '../../trailer/state/trailer-active-state/trailer-active.store';
 import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
 import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

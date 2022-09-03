@@ -55,13 +55,21 @@
         getSuperControl.invalid &&
         focusInput &&
         !inputConfig.isDropdown &&
-        !inputConfig.blackInput,
+        !inputConfig.blackInput &&
+        !(
+          !inputConfig.dropdownImageInput?.withText &&
+          inputConfig.dropdownImageInput?.url
+        ),
       'dropdown-position':
         getSuperControl.value &&
         (inputConfig.isDropdown || inputConfig.type === 'password') &&
         !inputConfig.isDisabled &&
         !inputConfig.multiSelectDropdownActive &&
         !inputConfig.blackInput,
+      'dropdown-position-image':
+        inputConfig.dropdownImageInput?.url &&
+        !inputConfig.isDisabled &&
+        !inputConfig.multiSelectDropdownActive,
       focus: focusInput,
       'visible-focus-password':
         getSuperControl.value &&
@@ -70,7 +78,9 @@
       'incorrect-input': inputConfig.incorrectInput && getSuperControl.value,
       'incorrect-input-enabled':
         inputConfig.incorrectInput && getSuperControl.value && incorrectValue,
-      'dropdown-label-position': selectedDropdownLabelColor
+      'dropdown-label-position': selectedDropdownLabelColor,
+      'dropdown-image-input':
+        inputConfig?.dropdownImageInput?.url && !focusInput
     }"
     ngbTooltip
     [mainTooltip]="inputConfig.incorrectInput ? 'Mark Incorrect' : 'Clear'"

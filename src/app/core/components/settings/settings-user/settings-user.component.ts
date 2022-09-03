@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { getUsersColumnDefinition } from '../../../../../assets/utils/settings/users-columns';
 
 @Component({
   selector: 'app-settings-user',

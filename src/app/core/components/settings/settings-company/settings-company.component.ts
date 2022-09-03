@@ -1,20 +1,18 @@
-import { ActivatedRoute } from '@angular/router';
 import {
   Component,
-  OnInit,
   ViewEncapsulation,
-  ChangeDetectorRef,
+  OnInit,
   OnDestroy,
-  OnChanges,
-  SimpleChanges,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { SettingsCompanyService } from '../state/company-state/settings-company.service';
+import { ActivatedRoute } from '@angular/router';
+import { CompanyResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { CompanyResponse } from 'appcoretruckassist';
-import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { Subject, takeUntil, Observable } from 'rxjs';
+import { CompanyQuery } from '../state/company-state/company-settings.query';
+import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 
 @Component({
   selector: 'app-settings-company',
@@ -33,7 +31,7 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   public dataCompany: any;
 
   constructor(
-    private SettingsCompanyService: SettingsCompanyService,
+    private settingsCompanyService: SettingsCompanyService,
     private activated: ActivatedRoute,
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
@@ -60,7 +58,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.detailsPageSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.SettingsCompanyService.getCompanyDivisionById(id)
+        this.settingsCompanyService
+          .getCompanyDivisionById(id)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CompanyResponse) => {

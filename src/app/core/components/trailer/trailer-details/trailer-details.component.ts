@@ -7,16 +7,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TrailerTService } from '../state/trailer.service';
+import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { Subject, takeUntil } from 'rxjs';
-import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 
 @Component({
   selector: 'app-trailer-details',

@@ -1,19 +1,20 @@
-import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import {
   Component,
-  Input,
-  OnInit,
   ViewEncapsulation,
+  OnInit,
   OnChanges,
-  SimpleChanges,
   OnDestroy,
+  Input,
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TrailerTService } from '../state/trailer.service';
+import { TrailerResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerTService } from '../state/trailer.service';
+
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',

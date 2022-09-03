@@ -2,7 +2,6 @@ import { CreateTodoCommand } from './../../../../../../appcoretruckassist/model/
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import {
   CommentResponse,
@@ -15,17 +14,22 @@ import {
   UpdateTodoCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+
 import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { departmentValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  departmentValidation,
+  descriptionValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-task-modal',
@@ -83,13 +87,19 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
-      description: [null],
+      description: [null, descriptionValidation],
       url: [null],
       deadline: [null],
       departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.taskForm.get('url'),
+      'url',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.taskForm);
 

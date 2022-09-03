@@ -1,10 +1,13 @@
 import {
+  accountBankValidation,
   addressUnitValidation,
   addressValidation,
+  bankValidation,
   departmentValidation,
-  emailRegex,
-  emailValidation,
+  firstNameValidation,
+  lastNameValidation,
   phoneExtension,
+  routingBankValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
@@ -16,13 +19,13 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -128,30 +131,39 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.userForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      personalPhone: [null, phoneRegex],
-      personalEmail: [null, [emailRegex, ...emailValidation]],
+      personalPhone: [null, phoneFaxRegex],
+      personalEmail: [null],
       departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
-      employePhone: [null, phoneRegex],
+      employePhone: [null, phoneFaxRegex],
       employePhoneExt: [null, [...phoneExtension]],
-      employeEmail: [
-        null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      employeEmail: [null, [Validators.required]],
       isIncludePayroll: [false],
       salary: [null],
       startDate: [null],
       payrollType: [null],
-      bankId: [null],
-      routingNumber: [null],
-      accountNumber: [null],
+      bankId: [null, [...bankValidation]],
+      routingNumber: [null, routingBankValidation],
+      accountNumber: [null, accountBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.userForm.get('personalEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.userForm.get('employeEmail'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.userForm);
 

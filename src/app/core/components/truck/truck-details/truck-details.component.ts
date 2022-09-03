@@ -1,31 +1,22 @@
-import { TrucksMinimalListStore } from './../state/truck-details-minima-list-state/truck-details-minimal.store';
-import { TruckItemStore } from './../state/truck-details-state/truck.details.store';
-import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
-import { TruckMinimalResponse } from './../../../../../../appcoretruckassist/model/truckMinimalResponse';
-import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TruckResponse, TruckMinimalResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import {
-  Component,
-  Input,
-  OnInit,
-  OnDestroy,
-  ChangeDetectorRef,
-} from '@angular/core';
-import { TruckTService } from '../state/truck.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
-import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
+import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
+import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListStore } from '../state/truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
+import { TruckItemStore } from '../state/truck-details-state/truck.details.store';
+import { TruckTService } from '../state/truck.service';
 
 @Component({
   selector: 'app-truck-details',

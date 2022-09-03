@@ -1,5 +1,4 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -18,21 +17,30 @@ import {
   VinDecodeResponse,
 } from 'appcoretruckassist';
 import {
-  insurancePolicyRegex,
+  axlesValidation,
+  emptyWeightValidation,
+  insurancePolicyValidation,
+  mileageValidation,
+  truckTrailerModelValidation,
+  vehicleUnitValidation,
+  vinNumberValidation,
+  yearValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -118,32 +126,32 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.trailerForm = this.formBuilder.group({
       companyOwned: [true],
-      trailerNumber: [null, [Validators.required, Validators.maxLength(8)]],
-      trailerTypeId: [null, [Validators.required]],
-      vin: [
+      trailerNumber: [
         null,
         [
           Validators.required,
-          Validators.minLength(17),
-          Validators.maxLength(17),
+          Validators.maxLength(8),
+          ...vehicleUnitValidation,
         ],
       ],
+      trailerTypeId: [null, [Validators.required]],
+      vin: [null, [Validators.required, ...vinNumberValidation]],
       trailerMakeId: [null, [Validators.required]],
-      model: [null],
+      model: [null, truckTrailerModelValidation],
       colorId: [null],
-      year: [null, [Validators.required, yearValidRegex]],
+      year: [null, [Validators.required, yearValidRegex, ...yearValidation]],
       trailerLengthId: [null, [Validators.required]],
       ownerId: [null],
       note: [null],
-      axles: [null],
+      axles: [null, axlesValidation],
       suspension: [null],
       tireSizeId: [null],
       doorType: [null],
       reeferUnit: [null],
-      emptyWeight: [null],
-      mileage: [null],
+      emptyWeight: [null, emptyWeightValidation],
+      mileage: [null, mileageValidation],
       volume: [null],
-      insurancePolicy: [null, insurancePolicyRegex],
+      insurancePolicy: [null, insurancePolicyValidation],
     });
 
     // this.formService.checkFormChange(this.trailerForm);
@@ -216,7 +224,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTrailer();
-            this.modalService.setModalSpinner({ action: null, status: true });
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+              clearTimeout: this.editData?.canOpenModal ? true : false,
+            });
           }
         }
 
@@ -629,6 +641,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       .get('vin')
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
+        if (value?.length > 13 && value?.length < 17) {
+          this.trailerForm.get('vin').setErrors({ invalid: true });
+        }
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService

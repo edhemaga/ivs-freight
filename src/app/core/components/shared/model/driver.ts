@@ -1,8 +1,8 @@
-import {HistoryData} from 'src/app/shared/truckassist-history-data/truckassist-history-data.component';
-import {Address} from './address';
-import {IApplicant} from './applicant';
-import {MetaData} from './shared/enums';
-import {OwnerData} from './shared/owner';
+import { Address } from './address';
+import { IApplicant } from './applicant';
+import { MetaData } from './shared/enums';
+import { OwnerData } from './shared/owner';
+import { HistoryData } from '../history-data/history-data.component';
 
 export interface DriverTabData {
   applicantDrivers: IApplicant[];

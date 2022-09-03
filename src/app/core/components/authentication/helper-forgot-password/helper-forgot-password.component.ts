@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthStoreService } from '../state/auth.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-helper-forgot-password',

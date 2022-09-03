@@ -1,23 +1,21 @@
-import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
-import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
-import { ActivatedRoute } from '@angular/router';
 import {
   Component,
-  Input,
-  OnInit,
   ViewEncapsulation,
+  OnInit,
   OnChanges,
-  SimpleChanges,
-  ViewChild,
   OnDestroy,
+  ViewChild,
+  Input,
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-/* import { TruckQuery } from '../state/truck.query'; */
+import { TruckResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
 import { TruckTService } from '../state/truck.service';
-import { Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',

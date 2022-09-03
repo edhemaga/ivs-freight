@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-import { card_component_animation } from 'src/app/core/components/shared/animations/card-component.animations';
+import { card_component_animation } from '../../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-violation-details-single',

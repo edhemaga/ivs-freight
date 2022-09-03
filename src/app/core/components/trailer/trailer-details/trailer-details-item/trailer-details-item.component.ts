@@ -1,29 +1,21 @@
-import { TrailerResponse } from './../../../../../../../appcoretruckassist/model/trailerResponse';
-import { dropActionNameTrailerTruck } from '../../../../utils/function-drop.details-page';
 import {
   Component,
-  Input,
-  OnInit,
   ViewEncapsulation,
+  OnInit,
   OnDestroy,
+  Input,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TtRegistrationModalComponent } from '../../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-
-import {
-  Confirmation,
-  ConfirmationModalComponent,
-} from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { TrailerResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-trailer-details-item',

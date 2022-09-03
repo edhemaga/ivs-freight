@@ -9,8 +9,8 @@ import {
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
-import { hexToRgbA } from 'src/assets/utils/methods-global';
 import moment from 'moment';
+import { hexToRgbA } from '../../../../../assets/utils/methods-global';
 
 @Component({
   selector: 'app-ta-chart',
@@ -97,13 +97,18 @@ export class TaChartComponent implements OnInit {
         : false,
       cutoutPercentage: 90,
       animation: {
-        duration: this.chartConfig['allowAnimation'] ? this.animationDuration : 0,
+        duration: this.chartConfig['allowAnimation']
+          ? this.animationDuration
+          : 0,
       },
       onHover: (evt, elements) => {
         if (elements?.length) {
           this.hoveringStatus = true;
           this.animationDuration = 0;
-          if ((elements[0]['_index'] != this.lastHoveredIndex) || this.lineChartType == 'doughnut') {
+          if (
+            elements[0]['_index'] != this.lastHoveredIndex ||
+            this.lineChartType == 'doughnut'
+          ) {
             this.lastHoveredIndex = elements[0]['_index'];
             if (this.legendAttributes?.length) {
               this.setChartLegendData(elements);
@@ -122,7 +127,9 @@ export class TaChartComponent implements OnInit {
           //this.hoveringStatus = false;
           this.ref.detectChanges();
           //this.showHoverData = false;
-          if (!this.chartConfig['animationOnlyOnLoad']) { this.animationDuration = 1000; }
+          if (!this.chartConfig['animationOnlyOnLoad']) {
+            this.animationDuration = 1000;
+          }
           if (this.chartConfig['onHoverAnnotation']) {
             this.setHoverAnnotation(null);
           }
@@ -175,7 +182,7 @@ export class TaChartComponent implements OnInit {
           if (this.gridHoverBackground && tooltipModel?.dataPoints?.[0]) {
             this.showChartTooltip(tooltipModel.dataPoints[0].index);
           }
-        }
+        },
       },
       plugins: {
         datalabels: {
@@ -235,7 +242,7 @@ export class TaChartComponent implements OnInit {
                   : 0,
               fontColor: '#AAAAAA',
               fontSize: 11,
-              fontFamily: "Montserrat",
+              fontFamily: 'Montserrat',
               padding: 10,
               callback: (value: any) => {
                 if (
@@ -298,7 +305,7 @@ export class TaChartComponent implements OnInit {
                   ? this.axesProperties['verticalRightAxes']['minValue']
                   : 0,
               fontColor: '#AAAAAA',
-              fontFamily: "Montserrat",
+              fontFamily: 'Montserrat',
               fontSize: 11,
               padding: -4,
               callback: function (value: any) {
@@ -362,8 +369,8 @@ export class TaChartComponent implements OnInit {
                   ? 'rgba(0, 0, 0, 0)'
                   : '#AAAAAA',
               fontSize: 11,
-              fontFamily: "Montserrat",
-              fontStyle: "bold",
+              fontFamily: 'Montserrat',
+              fontStyle: 'bold',
               autoSkip: false,
               maxRotation: 0,
               minRotation: 0,
@@ -496,7 +503,7 @@ export class TaChartComponent implements OnInit {
     this.setChartOptions();
     let gridBeforeDraw = {
       beforeDraw: (chart) => {
-        if (this.hoveringStatus ) {
+        if (this.hoveringStatus) {
           const canvas = chart.chart.canvas;
           const ctx = chart.chart.ctx;
           const xAxis = chart.scales['x-axis-0'];
@@ -508,8 +515,8 @@ export class TaChartComponent implements OnInit {
               xPoint1 = xAxis['_gridLineItems'][1]['x1'];
               xPoint2 = xAxis['_gridLineItems'][0]['x2'];
             }
-          })
-          
+          });
+
           const gridWidth = xPoint1 - xPoint2;
           ctx.save();
           ctx.fillStyle = '#F3F3F3';
@@ -865,7 +872,7 @@ export class TaChartComponent implements OnInit {
       removeIndex = 0,
       rangeIndicator = 20,
       periodFormat = 0,
-      periodIndex = 0
+      periodIndex = 0;
 
     switch (ev) {
       case 'All Time':
@@ -948,7 +955,8 @@ export class TaChartComponent implements OnInit {
     value.map((item, i) => {
       let timePeriodCheck = moment(item).format('LT').split(' ')[1];
       let finalFormat = format;
-      finalFormat = period == 'Semi-Daily' && timePeriodCheck == 'AM' ? 'DD MMM' : format;
+      finalFormat =
+        period == 'Semi-Daily' && timePeriodCheck == 'AM' ? 'DD MMM' : format;
 
       item = item.format(finalFormat).toUpperCase();
       let weekDaySep = item.split(' ');
@@ -958,12 +966,11 @@ export class TaChartComponent implements OnInit {
         weekDaySep[0] = '';
         weekDaySep[1] = '';
       }
-      if (ev == 'Today' ) {
+      if (ev == 'Today') {
         this.chart.chart.config.data.labels.push(
           weekDaySep[0] + ' ' + weekDaySep[1]
         );
-      }
-      else if (
+      } else if (
         ev == 'WTD' ||
         ev == 'MTD' ||
         ev == 'Custom Set' ||
@@ -982,16 +989,16 @@ export class TaChartComponent implements OnInit {
         this.chart.chart.config.data.labels.push(insertData);
       }
     });
-    
+
     this.setChartOptions();
   }
 
-  showChartTooltip(value){
+  showChartTooltip(value) {
     this.animationDuration = 0;
     this.hoveringStatus = true;
     const canvas = this.chart.chart.canvas;
     const ctx = this.chart.chart.ctx;
-    
+
     let xPoint1 = 0;
     let xPoint2 = 0;
 
@@ -1031,8 +1038,8 @@ export class TaChartComponent implements OnInit {
           }
         }
       }
-    })
-    
+    });
+
     this.showHoverData = true;
     this.ref.detectChanges();
   }

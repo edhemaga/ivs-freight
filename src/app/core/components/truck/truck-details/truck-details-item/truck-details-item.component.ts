@@ -1,24 +1,24 @@
-import { FormControl } from '@angular/forms';
-import { dropActionNameTrailerTruck } from '../../../../utils/function-drop.details-page';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   Component,
-  Input,
-  OnDestroy,
-  OnInit,
-  ViewChild,
   ViewEncapsulation,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  Input,
 } from '@angular/core';
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-
+import { FormControl } from '@angular/forms';
 import { TruckResponse } from 'appcoretruckassist';
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { dropActionNameTrailerTruck } from 'src/app/core/utils/function-drop.details-page';
+import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
+
 @Component({
   selector: 'app-truck-details-item',
   templateUrl: './truck-details-item.component.html',
