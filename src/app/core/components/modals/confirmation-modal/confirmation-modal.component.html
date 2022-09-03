@@ -148,7 +148,7 @@
           Issued: {{ editData?.data?.medicalIssued | formatDateP }}
         </p>
         <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
-          CDL: 
+          CDL: {{editData?.data.cdlNumber}}
         </p>
         <p class="confirmation-text-2">
           {{

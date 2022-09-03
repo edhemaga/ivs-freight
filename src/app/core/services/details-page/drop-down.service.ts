@@ -91,6 +91,7 @@ export class DropDownService {
           data: {
             ...dataMvr,
             mvrIssueDate: dataMvr.issueDate,
+            cdlNumber: data.cdlNumber,
           },
         };
         this.modalService.openModal(
