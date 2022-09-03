@@ -1,32 +1,30 @@
-import { DriverTService } from './../../state/driver.service';
-import { FormControl } from '@angular/forms';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   Component,
-  Input,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
   ViewEncapsulation,
+  OnInit,
+  OnDestroy,
+  OnChanges,
+  ViewChild,
+  Input,
+  SimpleChanges,
 } from '@angular/core';
-
+import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
 import moment from 'moment';
-
-import { card_component_animation } from '../../../shared/animations/card-component.animations';
-import { CdlTService } from '../../state/cdl.service';
-import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { CdlTService } from '../../state/cdl.service';
+import { DriverTService } from '../../state/driver.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
-import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
-import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-driver-details-item',
