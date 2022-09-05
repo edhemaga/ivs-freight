@@ -239,7 +239,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
     const dataId = oldData.id;
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand  = {
-      status: oldData.status?.name as DispatchStatus,
+      status: (oldData.status ? oldData.status?.name as DispatchStatus : "Off"),
       order: oldData.order, 
       truckId: oldData.truck?.id,
       trailerId: oldData.trailer?.id,
@@ -249,24 +249,28 @@ export class DispatchboardTablesComponent implements OnInit {
       note: oldData.note
     }
      
-      let newData: CreateDispatchCommand = {
+      let newData: any = {
         ...oldUpdateData,
         [key]: value
       }
+
+      console.log(key);
+      console.log(value);
+      console.log(newData);
 
 
       if(oldData.id){
         newData = {
           id: oldData.id,
-          ...oldUpdateData
+          ...newData
         }
 
-        this.dss.updateDispatchBoard(newData);
+        this.dss.updateDispatchBoard(newData, this.dData.id);
       }else{
 
         newData.dispatchBoardId = this.dData.id;
 
-        this.dss.createDispatchBoard(newData);
+        this.dss.createDispatchBoard(newData, this.dData.id);
 
       }
      // console.log("HELOOOOO", newData);
