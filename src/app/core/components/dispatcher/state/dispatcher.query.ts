@@ -14,6 +14,19 @@ export class DispatcherQuery extends QueryEntity<DispatcherState> {
     (state) => state.dispatchList.pagination.data
   );
 
+  modalBoardListData$ = this.select(
+    (state) => state.modal
+  );
+
+  dispatchboardShortList$ = this.select(
+    (state) => ({
+      drivers: state.modal.drivers,
+      trucks: state.modal.trucks,
+      trailers: state.modal.trailers,
+      statuses: state.modal.dispatchStatuses
+    })
+  )
+
   get modalList() {
     return this.getValue().modal;
   }

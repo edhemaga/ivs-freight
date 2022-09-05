@@ -287,6 +287,15 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
         border-radius: 3px;
         height: 32px;
         background-color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+
+        .dispatch-board-buttons-holder{
+          display: flex;
+          align-items: center;
+        }
       }
     }
 
@@ -294,6 +303,14 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       width: 100%;
       margin: 0;
     }
+  }
+
+  .border-spacer{
+    height: 20px;
+    width: 2px;
+    margin: 0 2px;
+    border-radius: 1px;
+    background-color: #F3F3F3;
   }
 
   .k-grid-header {

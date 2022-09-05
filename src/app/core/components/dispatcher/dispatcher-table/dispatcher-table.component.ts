@@ -84,7 +84,8 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
 
 
-  dasbhoardTableList: Observable<number[]>;
+  dispatchTableList: Observable<number[]>;
+  dispatchBoardSmallList: Observable<any>
 
   constructor(
     private dispatcherQuery: DispatcherQuery,
@@ -97,19 +98,26 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.dispatcherQuery.modalList$
+    this.dispatcherQuery.modalBoardListData$
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        this.getDispatcherData(result.dispatchers);
+        console.log("WHAT IS LIST RESULT", result);
+        this.getDispatcherData(result.dispatchBoards);
       });
 
-      this.dasbhoardTableList = this.dispatcherQuery.dispatchBoardListData$;
-      console.log(this.dasbhoardTableList);
+      this.dispatchTableList = this.dispatcherQuery.dispatchBoardListData$;
+      this.dispatchBoardSmallList = this.dispatcherQuery.dispatchboardShortList$;
+      console.log(this.dispatchTableList);
 
       this.dispatcherQuery.dispatchBoardListData$.subscribe(result => {
-        console.log("WHAT IS RESULT");
+        console.log("WHAT IS RESULT------");
         console.log(result);
       });
+
+      this.dispatcherQuery.dispatchboardShortList$.subscribe(result => {
+        console.log("WHAT IS RESULT OF LISTTTTT------");
+        console.log(result);
+      })
   }
   ngOnDestroy(): void {}
   openAddLoad(id: any) {}
@@ -133,35 +141,55 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
 
   getDispatcherData(result?) {
     this.dispatcherItems = [...result];
+
+    let fullDispatchCount = 0;
+    this.dispatcherItems.map(item => {
+
+      fullDispatchCount += parseInt(item.dispatchCount);
+      if(item.teamBoard){
+        item.dispatcher = {
+          avatar: null,
+          fullName: "Team Board",
+          id: 1
+        }
+      }
+
+      return item;
+    })
+
     const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
-      id: -1,
-      fullName: 'Team Board',
-    });
-    this.dispatcherItems.unshift({
+      dispatchCount: fullDispatchCount,
       id: 0,
-      fullName: 'All Boards',
+      selected: true,
+      dispatcher: {
+        avatar: null,
+        fullName: 'All Boards',
+        id: 0
+      }
     });
 
-    const previous_selected = localStorage.getItem('dispatchUserSelect');
-    if (!previous_selected) {
-      const itemIndex = this.dispatcherItems.findIndex(
-        (item) => item.id === this.user.id
-      );
-      if (itemIndex > -1) {
-        this.dispatcher = this.dispatcherItems[itemIndex].id;
-        this.selectedDispatcher = JSON.parse(
-          JSON.stringify(this.dispatcherItems[itemIndex])
-        );
-      }
-    } else {
-      this.selectedDispatcher = JSON.parse(
-        JSON.stringify(
-          this.dispatcherItems.find((item) => item.id == previous_selected)
-        )
-      );
-      this.dispatcher = parseInt(previous_selected);
-    }
+    console.log(this.dispatcherItems)
+
+    // const previous_selected = localStorage.getItem('dispatchUserSelect');
+    // if (!previous_selected) {
+    //   const itemIndex = this.dispatcherItems.findIndex(
+    //     (item) => item.id === this.user.id
+    //   );
+    //   if (itemIndex > -1) {
+    //     this.dispatcher = this.dispatcherItems[itemIndex].id;
+    //     this.selectedDispatcher = JSON.parse(
+    //       JSON.stringify(this.dispatcherItems[itemIndex])
+    //     );
+    //   }
+    // } else {
+    //   this.selectedDispatcher = JSON.parse(
+    //     JSON.stringify(
+    //       this.dispatcherItems.find((item) => item.id == previous_selected)
+    //     )
+    //   );
+    //   this.dispatcher = parseInt(previous_selected);
+    // }
   }
 
   lockUnlockBoardAndStartTimer() {

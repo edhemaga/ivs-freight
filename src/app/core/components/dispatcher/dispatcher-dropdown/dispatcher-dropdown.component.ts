@@ -14,18 +14,27 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class DispatcherDropdownComponent implements OnInit {
-  @Input() items: any;
-  @Input() selectValue: any;
+
+  __items: any[];
+
+  selectValue: any = {};
+  @Input() set items(value: any[]) {
+    this.__items = value;
+    this.selectValue = value.find(item => item.selected);
+  };
+
   @Output() changeVal = new EventEmitter();
   constructor() {}
 
   ngOnInit(): void { 
-    if (this.selectValue == null) {
-      this.selectValue = {
-        id: 0,
-        name: 'All',
-      };
-    }
+    // if (this.selectValue == null) {
+    //   this.selectValue = {
+    //     id: 0,
+    //     name: 'All',
+    //   };
+    // }
+
+    //this.selectValue
   }
 
   public change(event, elem) {

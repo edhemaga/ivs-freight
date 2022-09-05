@@ -99,13 +99,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-70',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="truckList"
                       (selectedItem)="
                         addTruck($event, item.id, truckDropdown, rowIndex)
                       "
@@ -202,13 +202,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-92',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="trailerList"
                       (selectedItem)="
                         addTrailer(
                           $event,
@@ -225,7 +225,11 @@
               </div>
               <button
                 (click)="showNextTrailerDropdown(rowIndex)"
-                *ngIf="item.trailer === null && !__isBoardLocked"
+                *ngIf="
+                  item.trailer === null &&
+                  !__isBoardLocked &&
+                  trailerSelectOpened != rowIndex
+                "
                 [class.active]="trailerSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
@@ -293,13 +297,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-142',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="driverList"
                       (selectedItem)="
                         addDriver(
                           $event,
@@ -406,7 +410,7 @@
               class="form-label-group input-icon table-address-field address-field-wrapper"
               triggers="manual"
             >
-              <input
+              <!-- <input
                 #newLocationField
                 #placesRef="ngx-places"
                 (blur)="locationChangeBlur(rowIndex)"
@@ -419,8 +423,28 @@
                 ngx-google-places-autocomplete
                 placeholder="Address, City, State Zip"
                 required
-              />
+              /> -->
             </div>
+            <app-ta-input-address
+              [formControl]="truckAddress"
+              [inputConfig]="{
+                name: 'Address',
+                type: 'text',
+                label: 'Truck Address',
+                isRequired: true,
+                placeholderIcon: 'address',
+                textTransform: 'capitalize',
+                incorrectInput: selectedMode === 'REVIEW_MODE',
+                minLength: 12,
+                maxLength: 256,
+                autoFocus: true,
+                placeholderInsteadOfLabel: true
+              }"
+              [incorrectValue]="false"
+              (incorrectEvent)="incorrectInput($event, 0, 18)"
+              [activeAddress]="selectedAddress"
+              (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+            ></app-ta-input-address>
             <div class="full-loc-hold" [class.empty-box-field]="true">
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
@@ -621,13 +645,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-70',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="truckList"
                       (selectedItem)="addTruck($event, -1, truckDropdown, -2)"
                     ></app-ta-input-dropdown>
                   </div>
@@ -671,13 +695,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-92',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="trailerList"
                       (selectedItem)="
                         addTrailer($event, -2, null, null, trailerDropdown, -2)
                       "
@@ -723,13 +747,13 @@
                         type: 'text',
                         label: 'Trailer #',
                         isDropdown: true,
-                        dropdownWidthClass: 'w-col-applicant-previous-employer',
+                        dropdownWidthClass: 'w-col-142',
                         blackInput: true,
                         hide: true,
                         autoFocus: true,
                         placeholderInsteadOfLabel: true
                       }"
-                      [options]="loadTrucks"
+                      [options]="driverList"
                       (selectedItem)="
                         addDriver($event, -1, null, null, driverDropdown, -2)
                       "

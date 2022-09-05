@@ -679,9 +679,14 @@
     transition: all 0.3s ease-in-out;
   }
 
+  .dispatcher-left-hold{
+    display: flex;
+    align-items: center;
+  }
+
   .dispatcher-drpdwn-wrap {
     width: 200px;
-    height: 32px;
+    height: 28px;
   }
 
   .custom_search {
@@ -1082,8 +1087,8 @@
   // .active-drag[aria-grabbed="false"] { cursor: grab; }
 
   .open_load {
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
     border-radius: 3px;
     background-color: #ffffff;
 
@@ -1100,8 +1105,6 @@
     }
 
     &.history_board {
-      margin-right: 5px;
-
       svg {
         path {
           fill: #dadada;
@@ -1123,11 +1126,9 @@
     }
 
     &:hover:not(.live_board) {
-      background-color: #5673aa;
-
       svg-icon {
         path {
-          fill: #ffffff;
+          fill: #5673aa;
           transition: none !important;
         }
       }
@@ -1140,8 +1141,8 @@
     padding: 0 !important;
 
     button.btn-transparent {
-      width: 32px;
-      height: 32px;
+      width: 28px;
+      height: 28px;
 
       display: flex;
       align-items: center;
@@ -1327,6 +1328,10 @@
     .drag-span-holder, .driver_span_holder, .trailer_span_holder {
       margin: 2px;
       height: 28px;
+
+      .app-ta-input-dropdown-holder .input-custom-group .input-control{
+        height: 28px !important;
+      }
     }
 
     span.drag-span,

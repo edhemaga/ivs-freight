@@ -1,9 +1,18 @@
 import { FormControl } from '@angular/forms';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
-import { Component, OnInit, ViewChild, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  ChangeDetectionStrategy,
+  ViewEncapsulation,
+} from '@angular/core';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
+import { DispatcherStoreService } from '../state/dispatcher.service';
+import { UpdateDispatchCommand } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -67,13 +76,36 @@ export class DispatchboardTablesComponent implements OnInit {
   @Input() dData: DispatchBoardLocalResponse = {};
   @Input() dDataIndx: number;
 
+  truckAddress: FormControl = new FormControl(null);
+
+  truckList: any[];
+  trailerList: any[];
+  driverList: any[];
+
+  @Input() set smallList(value) {
+    this.truckList = value.trucks.map((item) => {
+      item.name = item.truckNumber;
+      return item;
+    });
+
+    this.trailerList = value.trailers.map((item) => {
+      item.name = item.trailerNumber;
+      return item;
+    });
+
+    this.driverList = value.drivers.map((item) => {
+      item.name = `${item.firstName} ${item.lastName}`;
+      return item;
+    });
+  }
+
   __isBoardLocked: boolean = true;
 
   selectTruck: FormControl = new FormControl(null);
 
-  @Input() set isBoardLocked(isLocked: boolean){
+  @Input() set isBoardLocked(isLocked: boolean) {
     this.__isBoardLocked = isLocked;
-    if(!isLocked){
+    if (!isLocked) {
       // this.dData.dispatches.push({
       //   id: null,
       //   order: null,
@@ -110,39 +142,6 @@ export class DispatchboardTablesComponent implements OnInit {
   trailerSelectOpened: number = -1;
   driverSelectOpened: number = -1;
 
-  loadTrucks: any[] = [
-    {
-      id: 1,
-      name: "534534"
-    },
-    {
-      id: 2,
-      name: "675475"
-    }
-  ];
-
-  loadTrailers: any[] = [
-    {
-      id: 1,
-      name: "534534"
-    },
-    {
-      id: 2,
-      name: "675475"
-    }
-  ];
-
-  loadDrivers: any[] = [
-    {
-      id: 1,
-      name: "Marko Markovic"
-    },
-    {
-      id: 2,
-      name: "Milos Milosevic"
-    }
-  ];
-
   // data: any[] = new Array(500).fill({}).map((result, indx) => {
   //   result = indx % 2 == 0 ? {
   //     id: 1,
@@ -155,7 +154,7 @@ export class DispatchboardTablesComponent implements OnInit {
   //     driverPhone: "55543234567",
   //     driverEmail: "em@em.com",
   //     location: null
-  //   } : 
+  //   } :
   //   {
   //     id: 2,
   //     truckNumber: null,
@@ -167,30 +166,50 @@ export class DispatchboardTablesComponent implements OnInit {
   //     location: null
   //   }
 
-
   //   return result;
   // });
 
-  constructor() { }
+  constructor(private dss: DispatcherStoreService) {}
 
   ngOnInit(): void {
-    console.log("WHat is date", this.dData);
+    console.log('WHat is date', this.dData);
   }
 
-
-  addTruck(e){
+  addTruck(e) {
     console.log(e);
+    console.log(this.truckSelectOpened);
+    console.log(this.dData);
+
+    const truckId = e.id;
+    const dispatchId = this.dData.dispatches[this.truckSelectOpened].id;
+
+    const oldData = {...this.dData.dispatches[this.truckSelectOpened], truckId: e.id} as UpdateDispatchCommand;
+
+    const dd: UpdateDispatchCommand = {
+      id: oldData.id,
+      status: "Off",
+      order: oldData.order,
+      truckId: oldData.truckId,
+      trailerId: oldData.trailerId,
+      driverId: oldData.driverId,
+      location: oldData.location,
+      hourOfService: oldData.hourOfService,
+      note: oldData.note,
+      loadIds: oldData.loadIds
+    }
+
+    this.dss.updateDispatchBoard(dd);
+
     this.truckSelectOpened = -1;
   }
 
-  addDriver(){
+  addDriver() {
     this.driverSelectOpened = -1;
   }
 
-  addTrailer(){
+  addTrailer() {
     this.trailerSelectOpened = -1;
   }
-
 
   showNextDropdown(indx: number): void {
     this.truckSelectOpened = this.truckSelectOpened != indx ? indx : -1;
@@ -198,13 +217,11 @@ export class DispatchboardTablesComponent implements OnInit {
     this.driverSelectOpened = -1;
   }
 
-
   showNextTrailerDropdown(indx: number): void {
     this.trailerSelectOpened = this.trailerSelectOpened != indx ? indx : -1;
     this.driverSelectOpened = -1;
     this.truckSelectOpened = -1;
   }
-
 
   showNextDriverDropdown(indx: number): void {
     this.driverSelectOpened = this.driverSelectOpened != indx ? indx : -1;
@@ -212,14 +229,17 @@ export class DispatchboardTablesComponent implements OnInit {
     this.truckSelectOpened = -1;
   }
 
-  dropList(event){
-    moveItemInArray(this.dData.dispatches, event.previousIndex, event.currentIndex);
+  dropList(event) {
+    moveItemInArray(
+      this.dData.dispatches,
+      event.previousIndex,
+      event.currentIndex
+    );
   }
 
   public hoverPhoneEmailMain(indx: number) {
-   this.dData.dispatches[indx].isPhone = !this.dData.dispatches[indx].isPhone;
+    this.dData.dispatches[indx].isPhone = !this.dData.dispatches[indx].isPhone;
   }
-
 
   public copy(event: any): void {
     const copyText = event.target.textContent;
