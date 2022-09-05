@@ -7,18 +7,18 @@ import {
 } from '@angular/forms';
 
 import {
-  addressUnitValidation,
-  addressValidation,
-  phoneRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-
-import {
   AnswerChoices,
   ApplicantQuestion,
 } from '../../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../../state/model/trailer-type.model';
 import { TruckType } from '../../../state/model/truck-type.model';
+import {
+  phoneFaxRegex,
+  addressValidation,
+  addressUnitValidation,
+  descriptionValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-sph-modal',
@@ -289,9 +289,9 @@ export class SphModalComponent implements OnInit {
   private createForm(): void {
     this.prospectiveEmployerForm = this.formBuilder.group({
       toPreviousEmployer: [null],
-      phone: [null, [phoneRegex]],
+      phone: [null, phoneFaxRegex],
       email: [null],
-      fax: [null],
+      fax: [null, phoneFaxRegex],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
     });
@@ -308,7 +308,7 @@ export class SphModalComponent implements OnInit {
       noSafetyPerformance: [false],
       accidentDate: [null],
       accidentLocation: [null, [...addressValidation]],
-      accidentDescription: [null],
+      accidentDescription: [null, descriptionValidation],
       hazmatSpill: [null],
     });
 
@@ -322,7 +322,7 @@ export class SphModalComponent implements OnInit {
       otherViolations: [null],
       drugAndAlcoholRegulation: [null],
       sapName: [null],
-      phone: [null, [phoneRegex]],
+      phone: [null, [phoneFaxRegex]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null],

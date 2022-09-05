@@ -13,10 +13,6 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 import moment from 'moment';
 
-import {
-  emailRegex,
-  emailValidation,
-} from '../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -42,14 +38,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createForm();
 
     this.copyrightYear = moment().year();
+
+    this.inputService.customInputValidator(
+      this.loginForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private createForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
       staySignedIn: [false],
     });
+
+    this.inputService.customInputValidator(
+      this.loginForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public userLogin() {

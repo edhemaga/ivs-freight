@@ -60,10 +60,10 @@ export interface DriverResponse {
     emergencyContactRelationship?: string | null;
     general?: NotificationEntity;
     payroll?: NotificationEntity;
-    mvrs?: Array<MvrResponse> | null;
     medicals?: Array<MedicalResponse> | null;
     tests?: Array<TestResponse> | null;
     cdls?: Array<CdlResponse> | null;
+    mvrs?: Array<MvrResponse> | null;
     employmentHistories?: Array<EmploymentHistoryResponse> | null;
     offDutyLocations?: Array<OffDutyLocationResponse> | null;
     mvrExpirationDays?: number | null;

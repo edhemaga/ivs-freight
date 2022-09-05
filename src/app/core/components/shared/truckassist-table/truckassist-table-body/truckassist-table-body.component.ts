@@ -13,13 +13,12 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { DashboardStrategy } from './dashboard_strategy';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { SharedService } from '../../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-truckassist-table-body',

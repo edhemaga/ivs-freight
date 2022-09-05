@@ -16,16 +16,16 @@ import { TtFhwaInspectionModalComponent } from '../../../modals/common-truck-tra
 import { TruckResponse } from 'appcoretruckassist';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
 import { TtTitleModalComponent } from '../../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { CommonTruckTrailerService } from '../../../modals/common-truck-trailer-modals/common-truck-trailer.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-truck-details-item',

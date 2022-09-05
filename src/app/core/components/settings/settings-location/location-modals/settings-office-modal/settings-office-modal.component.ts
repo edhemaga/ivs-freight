@@ -1,7 +1,3 @@
-import {
-  convertThousanSepInNumber,
-  convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
 import { SettingsLocationService } from './../../../state/location-state/settings-location.service';
 import { FormArray, Validators } from '@angular/forms';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -12,17 +8,7 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import {
-  addressUnitValidation,
-  addressValidation,
-  departmentValidation,
-  emailRegex,
-  emailValidation,
-  phoneExtension,
-  phoneRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
+
 import {
   AddressEntity,
   CompanyOfficeModalResponse,
@@ -30,10 +16,24 @@ import {
   CreateCompanyOfficeCommand,
   UpdateCompanyOfficeCommand,
 } from 'appcoretruckassist';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+
 import { Subject, takeUntil } from 'rxjs';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import {
+  addressValidation,
+  addressUnitValidation,
+  phoneFaxRegex,
+  phoneExtension,
+  departmentValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-settings-office-modal',
@@ -110,15 +110,21 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       name: [null, Validators.required],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       departmentContacts: this.formBuilder.array([]),
       rent: [null],
       payPeriod: [null],
       monthlyDay: [null],
       weeklyDay: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.officeForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.officeForm);
 
@@ -189,20 +195,24 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [data?.extensionPhone ? data.extensionPhone : null],
-      email: [
-        data?.email ? data.email : null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      email: [data?.email ? data.email : null, [Validators.required]],
     });
   }
 
   public addDepartmentContacts(event: { check: boolean; action: string }) {
+    const form = this.createDepartmentContacts();
     if (event.check) {
       this.departmentContacts.push(this.createDepartmentContacts());
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeDepartmentContacts(id: number) {

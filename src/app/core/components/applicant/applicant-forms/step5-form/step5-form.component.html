@@ -89,8 +89,10 @@
           name: 'Description',
           type: 'text',
           label: 'Description of violation',
-          textTransform: 'capitalize',
+          minLength: 20,
+          maxLength: 160,
           isRequired: true,
+          textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"

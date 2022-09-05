@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { BrokerModalResponse } from './../../../../../../appcoretruckassist/model/brokerModalResponse';
 import {
   BrokerResponse,
@@ -26,24 +25,23 @@ import {
   businessNameValidation,
   departmentValidation,
   einNumberRegex,
-  emailRegex,
-  emailValidation,
   mcFFValidation,
   phoneExtension,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import {
   LikeDislikeModel,
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
 import { BrokerTService } from '../../customer/state/broker-state/broker.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -191,8 +189,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dbaName: [null],
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
-      email: [null, [emailRegex, ...emailValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
+      email: [null],
+      phone: [null, [Validators.required, phoneFaxRegex]],
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
       physicalAddressUnit: [null, [...addressUnitValidation]],
@@ -214,6 +212,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       dnu: [null],
       brokerContacts: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.brokerForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // if (this.editData) {
     //   this.formService.checkFormChange(this.brokerForm);
@@ -248,23 +252,28 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       extensionPhone: [
         data?.extensionPhone ? data.extensionPhone : null,
         [...phoneExtension],
       ],
-      email: [
-        data?.email ? data.email : null,
-        [emailRegex, ...emailValidation],
-      ],
+      email: [data?.email ? data.email : null],
     });
   }
 
   public addBrokerContacts(event: { check: boolean; action: string }) {
+    const form = this.createBrokerContacts();
+
     if (event.check) {
-      this.brokerContacts.push(this.createBrokerContacts());
+      this.brokerContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeBrokerContacts(id: number) {

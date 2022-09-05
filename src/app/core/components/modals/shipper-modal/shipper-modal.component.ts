@@ -3,8 +3,6 @@ import {
   addressValidation,
   businessNameValidation,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   phoneExtension,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { ShipperModalResponse } from './../../../../../../appcoretruckassist/model/shipperModalResponse';
@@ -28,8 +26,7 @@ import {
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { HttpResponseBase } from '@angular/common/http';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
@@ -37,10 +34,11 @@ import {
   LikeDislikeModel,
   TaLikeDislikeService,
 } from '../../shared/ta-like-dislike/ta-like-dislike.service';
-import { ReviewsRatingService } from 'src/app/core/services/reviews-rating/reviewsRating.service';
 import { ShipperTService } from '../../customer/state/shipper-state/shipper.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 
 @Component({
   selector: 'app-shipper-modal',
@@ -128,9 +126,9 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.shipperForm = this.formBuilder.group({
       businessName: [null, [Validators.required, ...businessNameValidation]],
-      phone: [null, phoneRegex],
+      phone: [null, phoneFaxRegex],
       phoneExt: [null, [...phoneExtension]],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       receivingAppointment: [false],
@@ -145,6 +143,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       note: [null],
       shipperContacts: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.shipperForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.shipperForm);
 
@@ -286,20 +290,24 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
       ],
       phone: [
         data?.phone ? data.phone : null,
-        [Validators.required, phoneRegex],
+        [Validators.required, phoneFaxRegex],
       ],
       phoneExt: [data?.phoneExt ? data.phoneExt : null],
-      email: [
-        data?.email ? data.email : null,
-        [emailRegex, ...emailValidation],
-      ],
+      email: [data?.email ? data.email : null],
     });
   }
 
   public addShipperContacts(event: { check: boolean; action: string }) {
+    const form = this.createShipperContacts();
     if (event.check) {
-      this.shipperContacts.push(this.createShipperContacts());
+      this.shipperContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeShipperContacts(id: number) {

@@ -1,22 +1,23 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   CreateMvrCommand,
   DriverResponse,
   EditMvrCommand,
+  GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
 import { DriverTService } from '../../../state/driver.service';
 import { MvrTService } from '../../../state/mvr.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { Subject, takeUntil } from 'rxjs';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-mvr-modal',
@@ -51,6 +52,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this.getModalDropdowns();
+
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-mvr') {
       this.getMVRById();
@@ -190,14 +193,39 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
-            cdlId: null,
+            cdlId: res.cdlNumber,
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
-          this.selectedCdl = null;
+          this.selectedCdl = {
+            id: res.cdlId,
+            name: res.cdlNumber,
+          };
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
+        },
+      });
+  }
+
+  public getModalDropdowns() {
+    this.mvrService
+      .getMvrModal()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetMvrModalResponse) => {
+          this.cdls = res.cdls.map((item) => {
+            return {
+              ...item,
+              name: item.cdlNumber,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load mvr's modal dropdowns",
+            'Error'
+          );
         },
       });
   }

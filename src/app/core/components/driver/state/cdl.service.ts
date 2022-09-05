@@ -8,13 +8,12 @@ import {
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-/* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -71,26 +70,28 @@ export class CdlTService {
   public updateCdl(data: any): Observable<object> {
     return this.cdlService.apiCdlPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.driverService.getDriverById(data.driverId).subscribe({
-          next: (driver: DriverResponse | any) => {
-            this.driverStore.remove(({ id }) => id === data.driverId);
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.driverStore.remove(({ id }) => id === data.driverId);
 
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
 
-            this.driverStore.add(driver);
+              this.driverStore.add(driver);
 
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: driver,
-              id: driver.id,
-            });
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
 
-            subDriver.unsubscribe();
-          },
-        });
+              subDriver.unsubscribe();
+            },
+          });
       })
     );
   }
