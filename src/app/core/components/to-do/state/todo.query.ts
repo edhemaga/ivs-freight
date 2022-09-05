@@ -5,7 +5,7 @@ import { combineLatest } from 'rxjs';
 import { TodoState, TodoStore } from './todo.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TodoQuery extends QueryEntity<TodoState> {
   selectTodoList$ = this.select('todoList');
@@ -14,7 +14,7 @@ export class TodoQuery extends QueryEntity<TodoState> {
     super(store);
   }
 
-  get todoGetTodoList(){
+  get todoGetTodoList() {
     return this.getValue().todoList;
   }
 }

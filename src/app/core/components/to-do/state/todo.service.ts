@@ -16,10 +16,7 @@ import {
   providedIn: 'root',
 })
 export class TodoTService {
-  constructor(
-    private todoService: TodoService,
-    private todoStore: TodoStore
-  ) {}
+  constructor(private todoService: TodoService, private todoStore: TodoStore) {}
 
   public getTodoList(
     title?: string,
