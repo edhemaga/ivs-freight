@@ -1249,8 +1249,8 @@
         ></app-ta-ngx-slider>
       </div>
       <div
-        class="money-main-holder"
-        *ngIf="type == 'payFilter'"
+        class="money-main-holder payPadding"
+        *ngIf="type == 'payFilter' || type == 'milesFilter' "
         [formGroup]="moneyForm"
       >
         <div class="money-value-holder">
@@ -1260,7 +1260,8 @@
               name: 'singleFrom',
               type: 'number',
               label: 'From',
-              placeholderIcon: 'dollar'
+              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+              customClass: 'line-input-26'
             }"
           ></app-ta-input>
         </div>
@@ -1271,18 +1272,19 @@
               name: 'singleTo',
               type: 'number',
               label: 'To',
-              placeholderIcon: 'dollar'
+              placeholderIcon: type == 'payFilter' ? 'dollar' : 'mileage',
+              customClass: 'line-input-26'
             }"
           ></app-ta-input>
         </div>
       </div>
       <div
-        class="filter-middle-holder"
+        class="filter-middle-holder slider-two-holder"
         [formGroup]="payForm"
-        *ngIf="type == 'payFilter'"
+        *ngIf="type == 'payFilter' || type == 'milesFilter' "
       >
         <app-ta-ngx-slider
-          [sliderOptions]="paySliderData"
+          [sliderOptions]="type == 'payFilter' ? paySliderData : milesSliderData" 
           [startedValue]="rangeValue"
           [customClass]="'custom-slider-filter'"
           (onUserValueChange)="setRangeValue($event)"

@@ -1179,7 +1179,7 @@
         .custom-slider-commission {
 
             margin-top: 8px;
-            margin-bottom: 22px;
+            margin-bottom: 9px;
 
             .ngx-slider {
 
@@ -1225,6 +1225,31 @@
                 }
             }
         }
+
+        &.slider-two-holder{
+            .ta-ngx-slider,
+            .custom-slider-commission {
+
+                .ngx-slider-pointer{
+                    width: 24px;
+                    height: 24px;
+                }
+
+                .ngx-slider-selection-bar{
+                    width: 100% !important;
+                }
+
+                .ngx-slider-bubble {
+                    
+                    width: 24px;
+                    height: 24px;
+                    overflow: hidden;   
+                    &::after {
+                        content: "";
+                        }
+                }
+            }
+        }
         
     }
 
@@ -1234,6 +1259,10 @@
         align-items: center;
         width: 100%;
         padding-top: 22px;
+
+        &.payPadding{
+            padding-top: 18px;
+        }
 
         .money-value-holder{
             position: relative;

@@ -1005,7 +1005,15 @@ export class FilterComponent implements OnInit {
 
   public paySliderData: Options = {
     floor: 0,
-    ceil: 10000,
+    ceil: 3000000,
+    step: 0,
+    showSelectionBar: true,
+    hideLimitLabels: false,
+  };
+
+  public milesSliderData: Options = {
+    floor: 0,
+    ceil: 3000,
     step: 0,
     showSelectionBar: true,
     hideLimitLabels: false,
@@ -1343,6 +1351,7 @@ export class FilterComponent implements OnInit {
         this.searchInputValue = '';
       }
     });
+
   }
 
   addToSelectedUser(item, indx, subType?) {
@@ -1835,9 +1844,9 @@ export class FilterComponent implements OnInit {
   }
 
   checkMoneyMultiForm(data) {
-    let firstFormChanged = false;
-    let secondFormChanged = false;
-    let thirdFormChanged = false;
+    let firstFormChanged = 'none';
+    let secondFormChanged = 'none';
+    let thirdFormChanged = 'none';
 
     if (
       (parseInt(this.multiFromFirstFromActive) !=
@@ -1846,18 +1855,18 @@ export class FilterComponent implements OnInit {
       (parseInt(this.multiFromFirstToActive) != data.multiFromFirstTo &&
         data.multiFromFirstTo != '')
     ) {
-      firstFormChanged = true;
+      firstFormChanged = 'true';
     }
 
     if (
       (parseInt(this.multiFormSecondFromActive) !=
         parseInt(data.multiFormSecondFrom) &&
-        data.multiFormSecondFrom != '') ||
+        data.multiFormSecondFrom != '' ) ||
       (parseInt(this.multiFormSecondToActive) !=
         parseInt(data.multiFormSecondTo) &&
-        data.multiFormSecondTo != '')
+        data.multiFormSecondTo != '' )
     ) {
-      secondFormChanged = true;
+      secondFormChanged = 'true';
     }
 
     if (
@@ -1868,10 +1877,25 @@ export class FilterComponent implements OnInit {
         parseInt(data.multiFormThirdTo) &&
         data.multiFormThirdTo != '')
     ) {
-      thirdFormChanged = true;
+      thirdFormChanged = 'true';
     }
 
-    if (firstFormChanged || secondFormChanged || thirdFormChanged ) {
+    if ( data.multiFromFirstFrom && !data.multiFromFirstTo || !data.multiFromFirstFrom && data.multiFromFirstTo ) {
+      firstFormChanged = 'error';
+    }
+
+    if ( data.multiFormSecondFrom && !data.multiFormSecondTo || !data.multiFormSecondFrom && data.multiFormSecondTo ) {
+      secondFormChanged = 'error';
+    }
+
+    if ( data.multiFormThirdFrom && !data.multiFormThirdTo || !data.multiFormThirdFrom && data.multiFormThirdTo ) {
+      thirdFormChanged = 'error';
+    }
+
+    
+    if ( ( firstFormChanged == 'true' && secondFormChanged != 'error' && thirdFormChanged != 'error' ) || 
+    ( secondFormChanged == 'true' && firstFormChanged != 'error' && thirdFormChanged != 'error' ) || 
+    ( thirdFormChanged == 'true' && firstFormChanged != 'error' && secondFormChanged != 'error' ) ) {
       this.setButtonAvailable = true;
     } else {
       this.setButtonAvailable = false;
