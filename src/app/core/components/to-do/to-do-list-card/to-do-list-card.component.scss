@@ -1,4 +1,7 @@
+@import "src/theme/variables.scss";
+
 .todo-list-holder {
+  padding-right: 18px;
   .todo-tollbar {
     display: flex;
     .toolbar {
@@ -16,6 +19,16 @@
         line-height: 32px;
         padding-right: 12px;
         box-sizing: border-box;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       .toolbar-menu-holder {
@@ -47,6 +60,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            user-select: none;
           }
 
           .border-right {
@@ -119,8 +133,7 @@
   }
 
   .card-main-to-do-holder {
-    //padding-right: 0;
-    margin: 6px 0;
+    margin: 8px 0;
 
     gridster-preview {
       background-color: #eeeeee;
@@ -148,7 +161,7 @@
       .smooth-dnd-draggable-wrapper {
         flex: 0 0 33.3%;
         //padding: 12px 6px;
-        min-height: 130px;
+        min-height: 107px;
         //margin: 6px 0;
 
         .smooth-dnd-container.vertical {
@@ -176,7 +189,11 @@
       flex-direction: column;
       border-radius: 3px;
       transition: all 0.1s;
-      margin: 6px 0;
+      margin: 4px 0;
+
+      .todo_deadline_hold {
+        width: 100%;
+      }
 
       .list-top-holder {
         width: 100%;
@@ -196,6 +213,16 @@
           font-weight: 700;
           color: #6c6c6c;
           line-height: 18px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .icons-frame {
@@ -280,6 +307,7 @@
               color: #fff;
               line-height: 13px;
               top: 1px;
+              user-select: none;
             }
           }
         }
@@ -318,6 +346,16 @@
           color: #919191;
           line-height: 14px;
           margin-right: 4px;
+
+          &::-moz-selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
+
+          &::selection {
+            color: $bw6-2;
+            background: rgb(108, 108, 108, 0.2);
+          }
         }
 
         .users {
@@ -371,6 +409,21 @@
         padding: 6px 0px 12px 0px;
         box-sizing: border-box;
         overflow: auto;
+
+        .add_comment_holder {
+          display: flex;
+          .add_comment_text {
+            font-size: 14px;
+            line-height: 18px;
+            font-weight: bold;
+            color: #6c6c6c;
+            cursor: pointer;
+
+            &:hover {
+              color: #3551b7;
+            }
+          }
+        }
       }
 
       .line-holder {
@@ -450,7 +503,7 @@
 
         .list-holder {
           transform: rotate(5deg) !important;
-          box-shadow: 0 0 4px rgb(112 112 112 / 50%);
+          box-shadow: 0 0 4px rgba(49, 6, 241, 0.5);
           border-radius: 3px;
         }
       }

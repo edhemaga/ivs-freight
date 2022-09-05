@@ -226,6 +226,7 @@
             (dragStart)="log('drag start', $event)"
             (dragEnd)="log('drag end', $event)"
             [dragBeginDelay]="0"
+            [animationDuration]="100"
             [dropPlaceholder]="{
               className: 'dropShadowClass, showOnTop: true'
             }"
@@ -300,15 +301,16 @@
                   <div class="list-text">{{ item.description }}</div>
                   <div class="link" *ngIf="item.linkActive">{{ item.url }}</div>
                 </div>
-                <div
-                  class="comment-holder"
-                  *ngIf="item.comments.length && item.commentActive"
-                >
+                <div class="comment-holder" *ngIf="item.commentActive">
                   <app-ta-user-review
                     (changeReviewsEvent)="changeReviewsEvent($event)"
                     [reviewData]="item.comments"
+                    *ngIf="item.comments.length"
                   >
                   </app-ta-user-review>
+                  <div class="add_comment_holder">
+                    <div class="add_comment_text">Add Comment</div>
+                  </div>
                 </div>
                 <div class="todo_deadline_hold">
                   <app-truckassist-progress-expiration
@@ -316,7 +318,7 @@
                     [startDate]="item.createdAt | formatDateP"
                     [expiresSettings]="'details'"
                   >
-                </app-truckassist-progress-expiration>
+                  </app-truckassist-progress-expiration>
                 </div>
               </div>
             </smooth-dnd-draggable>

@@ -32,6 +32,7 @@ export class ToDoListCardComponent implements OnInit {
   public doneTasks: any[] = [];
   public dropdownOptions: any;
   todoTest: Observable<any>;
+  addedTodo: number[] = [];
 
   scene = {
     type: 'container',
@@ -227,7 +228,6 @@ export class ToDoListCardComponent implements OnInit {
       .pipe(takeUntil(this.destroy$))
       .subscribe((resp: TodoListResponse) => {
         this.startChangingStatus = false;
-        // this.notification.success('Task status updated successfully.', 'Success:');
         this.updateTodosList(this.cardData, true);
       });
   }
@@ -240,10 +240,11 @@ export class ToDoListCardComponent implements OnInit {
             ...x,
             type: 'draggable',
           };
-
-          this.cardData.push(newObject);
-
-          this.scene.children[0].children.push(newObject);
+          if (!this.addedTodo.includes(x.id)) {
+            this.addedTodo.push(x.id);
+            this.cardData.push(newObject);
+            this.scene.children[0].children.push(newObject);
+          }
         }
         return true;
       }
@@ -257,9 +258,11 @@ export class ToDoListCardComponent implements OnInit {
             type: 'draggable',
           };
 
-          this.cardData.push(newObject);
-
-          this.scene.children[1].children.push(newObject);
+          if (!this.addedTodo.includes(x.id)) {
+            this.addedTodo.push(x.id);
+            this.cardData.push(newObject);
+            this.scene.children[1].children.unshift(newObject);
+          }
         }
         return true;
       }
@@ -273,9 +276,11 @@ export class ToDoListCardComponent implements OnInit {
             type: 'draggable',
           };
 
-          this.cardData.push(newObject);
-
-          this.scene.children[2].children.push(newObject);
+          if (!this.addedTodo.includes(x.id)) {
+            this.addedTodo.push(x.id);
+            this.cardData.push(newObject);
+            this.scene.children[2].children.unshift(newObject);
+          }
         }
         return true;
       }

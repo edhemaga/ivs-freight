@@ -1,7 +1,7 @@
 import { TodoService } from './../../../../../../appcoretruckassist/api/todo.service';
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { flatMap, Observable } from 'rxjs';
 import { TodoStore } from './todo.store';
 import {
   CreateResponse,
@@ -42,8 +42,14 @@ export class TodoTService {
     return this.todoService.apiTodoPut(data);
   }
 
-  public addTodo(data: CreateTodoCommand): Observable<CreateResponse> {
-    return this.todoService.apiTodoPost(data);
+  public addTodo(data: CreateTodoCommand){
+    return this.todoService.apiTodoPost(data).pipe(
+      flatMap(param => {
+        return this.getTodoById(param.id);
+      })
+    ).subscribe((todo) => {
+      this.updateTodoList = todo;
+    });
   }
 
   public deleteTodoById(id: number): Observable<any> {
@@ -56,6 +62,19 @@ export class TodoTService {
 
   public getTodoDropdowns(): Observable<TodoModalResponse> {
     return this.todoService.apiTodoModalGet();
+  }
+
+  set updateTodoList(todo) {
+    this.todoStore.update((store) => ({
+      ...store,
+      todoList: {
+        ...store.todoList,
+        pagination: {
+          ...store.todoList.pagination,
+          data: [...store.todoList.pagination.data, todo],
+        },
+      },
+    }));
   }
 
   set setTodoList(response) {

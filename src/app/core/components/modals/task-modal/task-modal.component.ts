@@ -326,21 +326,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         : [],
     };
 
-    this.todoService
-      .addTodo(newData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.notificationService.success(
-            'Task successfully added.',
-            'Success:'
-          );
-          this.modalService.setModalSpinner({ action: null, status: false });
-        },
-        error: () => {
-          this.notificationService.error("Task can't be added.", 'Error:');
-        },
-      });
+    this.todoService.addTodo(newData);
   }
 
   private deleteTaskById(id: number) {
