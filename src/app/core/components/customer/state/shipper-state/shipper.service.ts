@@ -13,9 +13,9 @@ import {
   UpdateShipperCommand,
 } from 'appcoretruckassist';
 import { Observable, of, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShipperStore } from './shipper.store';
 import { ShipperQuery } from './shipper.query';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

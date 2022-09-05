@@ -199,8 +199,10 @@
                     id: 'Description' + ind,
                     name: 'Description',
                     type: 'text',
-                    textTransform: 'capitalize',
+                    minLength: 20,
+                    maxLength: 160,
                     hideRequiredCheck: true,
+                    textTransform: 'capitalize',
                     blueInputColor:
                       !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
                     customClass: 'repair-m-pm'

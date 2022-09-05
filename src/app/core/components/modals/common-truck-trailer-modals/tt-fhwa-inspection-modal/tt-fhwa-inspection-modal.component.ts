@@ -1,7 +1,6 @@
 import { FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
@@ -11,12 +10,13 @@ import {
 } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { Subject, takeUntil } from 'rxjs';
+} from '../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',

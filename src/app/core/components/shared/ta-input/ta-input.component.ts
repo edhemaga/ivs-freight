@@ -12,20 +12,21 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
-import { TitleCasePipe, UpperCasePipe } from '@angular/common';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { UpperCasePipe } from '@angular/common';
+
 import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
+import { pasteCheck } from '../../../../../assets/utils/methods-global';
 
 @Component({
   selector: 'app-ta-input',
@@ -34,7 +35,6 @@ import { Subject, takeUntil } from 'rxjs';
   providers: [
     NgbDropdownConfig,
     CalendarScrollService,
-    TitleCasePipe,
     UpperCasePipe,
     TaThousandSeparatorPipe,
   ],
@@ -98,7 +98,6 @@ export class TaInputComponent
     private inputService: TaInputService,
     private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
-    private titlecasePipe: TitleCasePipe,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef
@@ -387,6 +386,7 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfSpaces = 0;
+      this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
 
       if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
@@ -498,7 +498,9 @@ export class TaInputComponent
   public transformText(event: any) {
     switch (this.inputConfig.textTransform) {
       case 'capitalize': {
-        this.input.nativeElement.value = this.titleCaseInput(event);
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
         break;
       }
       case 'uppercase': {
@@ -635,10 +637,6 @@ export class TaInputComponent
         action: 'Toggle Dropdown',
       });
     }
-  }
-
-  public titleCaseInput(value: string) {
-    return this.titlecasePipe.transform(value);
   }
 
   public upperCaseInput(value: string) {
@@ -804,17 +802,47 @@ export class TaInputComponent
     if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
       if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
     if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
-        // TODO:
+        return true;
       }
+      event.preventDefault();
+      return false;
     }
+
+    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+          this.numberOfSpaces++;
+        } else {
+          this.numberOfSpaces = 0;
+        }
+        if (this.numberOfSpaces > 1) {
+          event.preventDefault();
+          return false;
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    // if (['url'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (
+    //     /^[A-Za-z0-9!*'();:@&=+$,/?%#._~[-]$/.test(
+    //       String.fromCharCode(event.charCode)
+    //     )
+    //   ) {
+    //     return true;
+    //   }
+    //   event.preventDefault();
+    //   return false;
+    // }
 
     // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -861,101 +889,6 @@ export class TaInputComponent
     //   } else {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
-    //   }
-    // }
-
-    // if (['description'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-    //     if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
-    //       this.numberOfSpaces++;
-    //     } else {
-    //       this.numberOfSpaces = 0;
-    //     }
-    //     if (this.numberOfSpaces > 1) {
-    //       event.preventDefault();
-    //       return false;
-    //     }
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   [
-    //     'first name',
-    //     'last name',
-    //     'name',
-    //     'full name',
-    //     'relationship',
-    //     'title',
-    //   ].includes(this.inputConfig.name.toLowerCase())
-    // ) {
-    //   let spaces = this.input.nativeElement.value.split(' ').length;
-    //   if (
-    //     /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
-    //     spaces <= 2
-    //   ) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   ['address unit', 'truck number', 'trailer number'].includes(
-    //     this.inputConfig.name.toLowerCase()
-    //   )
-    // ) {
-    //   if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (
-    //   [
-    //     'routing number',
-    //     'account number',
-    //     'empty weight',
-    //     'purchase price',
-    //     'axles',
-    //     'mileage',
-    //     'ipas ezpass',
-    //     'phone extension',
-    //     'qty',
-    //     'price',
-    //     'odometer',
-    //     'prefix',
-    //     'sufix',
-    //     'starting',
-    //     'customer pay term',
-    //     'dollar',
-    //     'fatalinjuries',
-    //     'months',
-    //   ].includes(this.inputConfig.name.toLowerCase())
-    // ) {
-    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
     //   }
     // }
 
@@ -1008,34 +941,6 @@ export class TaInputComponent
     //   }
     // }
 
-    // if (['year'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (
-    //     /^[0]*$/.test(String.fromCharCode(event.charCode)) &&
-    //     !this.input.nativeElement.value
-    //   ) {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-
-    //   if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
     // if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
@@ -1046,38 +951,8 @@ export class TaInputComponent
     //   }
     // }
 
-    // if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
     // if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['model'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
     //   } else {

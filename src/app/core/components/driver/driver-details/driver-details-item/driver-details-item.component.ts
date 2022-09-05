@@ -27,12 +27,12 @@ import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../../modals/confirmation-modal/confirmation-modal.component';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-driver-details-item',

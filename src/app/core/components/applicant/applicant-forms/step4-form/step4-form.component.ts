@@ -28,7 +28,10 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
@@ -165,7 +168,10 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       injuries: [0],
       hazmatSpill: [null, Validators.required],
       truckType: [null, Validators.required],
-      accidentDescription: [null, Validators.required],
+      accidentDescription: [
+        null,
+        [Validators.required, ...descriptionValidation],
+      ],
 
       firstRowReview: [null],
       secondRowReview: [null],

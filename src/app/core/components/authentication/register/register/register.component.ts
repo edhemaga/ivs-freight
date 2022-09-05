@@ -15,11 +15,9 @@ import {
   addressUnitValidation,
   addressValidation,
   einNumberRegex,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
-  phoneRegex,
+  phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -60,11 +58,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
       ein: [null, [Validators.required, einNumberRegex]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, [Validators.required]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
+
+    this.inputService.customInputValidator(
+      this.registerForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public handleAddressChange(event: any): void {

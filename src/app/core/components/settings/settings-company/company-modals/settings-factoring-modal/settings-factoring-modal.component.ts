@@ -2,19 +2,17 @@ import { AddressEntity } from './../../../../../../../../appcoretruckassist/mode
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { UpdateFactoringCompanyCommand } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-settings-factoring-modal',
@@ -51,13 +49,19 @@ export class SettingsFactoringModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.factoringForm = this.formBuilder.group({
       name: [null, Validators.required],
-      phone: [null, phoneRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      phone: [null, phoneFaxRegex],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       noticeOfAssigment: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.factoringForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.factoringForm);
 

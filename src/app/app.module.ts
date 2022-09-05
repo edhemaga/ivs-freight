@@ -25,12 +25,10 @@ import { NavigationSubrouteCardComponent } from './core/components/navigation/na
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
-
 @NgModule({
   declarations: [
     AppComponent,

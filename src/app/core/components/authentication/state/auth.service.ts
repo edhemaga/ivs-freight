@@ -15,7 +15,7 @@ import {
 } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { PersistState } from '@datorama/akita';
-import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
+import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
 @Injectable({ providedIn: 'root' })
 export class AuthStoreService {

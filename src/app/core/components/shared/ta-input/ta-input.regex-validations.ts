@@ -44,28 +44,18 @@ export const einNumberRegex = Validators.pattern(/^\d{2}\-\d{7}$/);
 //---------------- SSN Regex ----------------
 export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
-//---------------- MC/FF ----------------
+//---------------- MC/FF --------------------
 export const mcFFValidation = [
   Validators.minLength(6),
   Validators.maxLength(6),
 ];
 
-//---------------- Phone Regex & Phone Extension ----------------
-export const phoneRegex = Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/);
+//---------------- Phone/Fax Regex & Phone Extension ----------------
+export const phoneFaxRegex = Validators.pattern(/^\(\d{3}\)\s\d{3}-\d{4}$/);
 
 export const phoneExtension = [
   Validators.minLength(1),
   Validators.maxLength(8),
-];
-
-//---------------- Email Regex ----------------
-export const emailRegex = Validators.pattern(
-  /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/g
-);
-
-export const emailValidation = [
-  Validators.minLength(5),
-  Validators.maxLength(64),
 ];
 
 //---------------- Address & Address Unit -------------------
@@ -163,6 +153,19 @@ export const licensePlateValidation = [
   Validators.maxLength(7),
 ];
 
+//---------------- Description -------------------------
+export const descriptionValidation = [
+  Validators.minLength(20),
+  Validators.maxLength(160),
+];
+
+//---------------- Label --------------------------------
+export const labelValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(32),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
+
 export const perStopValidation = [Validators.min(0), Validators.max(5000)];

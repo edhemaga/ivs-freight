@@ -9,8 +9,8 @@ import {
 import * as AppConst from 'src/app/const';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Subject, takeUntil } from 'rxjs';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
+import { SharedService } from '../../../services/shared/shared.service';
+import { AppDispatchSignalrService } from '../../../services/dispatchboard/app-dispatchSignalr.service';
 
 @Component({
   selector: 'app-dispatcher-gps-table',

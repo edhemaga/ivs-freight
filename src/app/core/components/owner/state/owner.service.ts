@@ -9,11 +9,11 @@ import {
   UpdateOwnerCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { OwnerActiveQuery } from './owner-active-state/owner-active.query';
 import { OwnerActiveStore } from './owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from './owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveStore } from './owner-inactive-state/owner-inactive.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

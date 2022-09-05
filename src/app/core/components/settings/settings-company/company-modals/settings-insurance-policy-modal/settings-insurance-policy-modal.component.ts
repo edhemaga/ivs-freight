@@ -1,35 +1,35 @@
 import {
-  phoneRegex,
-  emailRegex,
-  emailValidation,
+  phoneFaxRegex,
   addressValidation,
   addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
 import {
   AddressEntity,
   CreateInsurancePolicyCommand,
   InsurancePolicyModalResponse,
   UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import {
+  convertDateToBackend,
+  convertThousanSepInNumber,
+  convertDateFromBackend,
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-settings-insurance-policy-modal',
@@ -88,8 +88,8 @@ export class SettingsInsurancePolicyModalComponent
       producerName: [null, Validators.required],
       issued: [null, Validators.required],
       expires: [null, Validators.required],
-      phone: [null, phoneRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      phone: [null, phoneFaxRegex],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       // Commerical General Liability
@@ -135,6 +135,12 @@ export class SettingsInsurancePolicyModalComponent
       trailerValue: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.insurancePolicyForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.insurancePolicyForm);
 

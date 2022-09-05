@@ -1,6 +1,6 @@
-import {ServerResponse, ServerResponseList} from './response';
-import {Address} from 'src/app/core/model/address';
-import {ZipCode} from './zipCode';
+import { ServerResponse, ServerResponseList } from './response';
+import { ZipCode } from './zipCode';
+import { Address } from '../address';
 
 export interface RepairShop {
   id: number;

@@ -1,18 +1,18 @@
 import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
-/* import { TruckQuery } from './../state/truck.query'; */
 import { Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { TruckTService } from '../state/truck.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { TruckDetailsQuery } from '../state/truck-details-state/truck.details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-truck-details',

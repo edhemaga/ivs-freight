@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({

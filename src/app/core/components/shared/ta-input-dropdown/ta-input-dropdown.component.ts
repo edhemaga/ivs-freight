@@ -498,6 +498,7 @@ export class TaInputDropdownComponent
     this.inputConfig = {
       ...this.inputConfig,
       placeholder: '',
+      dropdownImageInput: null,
     };
     this.selectedItem.emit(null);
   }

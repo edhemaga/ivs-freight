@@ -14,9 +14,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
 import { DriverResponse } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import moment from 'moment';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
@@ -26,6 +23,9 @@ import {
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-driver-details',

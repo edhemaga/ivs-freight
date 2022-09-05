@@ -2,7 +2,6 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
-  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -10,9 +9,9 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-note',
