@@ -1328,6 +1328,7 @@
     .drag-span-holder, .driver_span_holder, .trailer_span_holder {
       margin: 2px;
       height: 28px;
+      width: 100%;
 
       .app-ta-input-dropdown-holder .input-custom-group .input-control{
         height: 28px !important;
@@ -1340,7 +1341,7 @@
       // padding-right: 0.75rem;
       width: 80px;
       line-height: 32px;
-      height: 32px;
+      height: 28px;
       // box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15) !important;
       padding-left: 6px;
       display: flex;

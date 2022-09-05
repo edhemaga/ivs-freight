@@ -107,7 +107,7 @@
                       }"
                       [options]="truckList"
                       (selectedItem)="
-                        addTruck($event, item.id, truckDropdown, rowIndex)
+                        addTruck($event, item, truckDropdown, rowIndex)
                       "
                     ></app-ta-input-dropdown>
                   </div>
@@ -401,7 +401,7 @@
             </div>
           </td>
           <td class="location-field">
-            <div
+            <!-- <div
               #t2="ngbPopover"
               *ngIf="item.enterNewAddress"
               [ngbPopover]="pacContainer"
@@ -410,7 +410,7 @@
               class="form-label-group input-icon table-address-field address-field-wrapper"
               triggers="manual"
             >
-              <!-- <input
+              <input
                 #newLocationField
                 #placesRef="ngx-places"
                 (blur)="locationChangeBlur(rowIndex)"
@@ -423,9 +423,10 @@
                 ngx-google-places-autocomplete
                 placeholder="Address, City, State Zip"
                 required
-              /> -->
-            </div>
+              />
+            </div> -->
             <app-ta-input-address
+              *ngIf="showAddAddressField == rowIndex"
               [formControl]="truckAddress"
               [inputConfig]="{
                 name: 'Address',
@@ -445,7 +446,7 @@
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
-            <div class="full-loc-hold" [class.empty-box-field]="true">
+            <div class="full-loc-hold" [class.empty-box-field]="!item.location">
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="full_location_name"

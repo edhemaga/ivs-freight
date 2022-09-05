@@ -12,7 +12,8 @@ import {
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
-import { UpdateDispatchCommand } from 'appcoretruckassist';
+import { DispatchResponse, UpdateDispatchCommand } from 'appcoretruckassist';
+import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -142,32 +143,7 @@ export class DispatchboardTablesComponent implements OnInit {
   trailerSelectOpened: number = -1;
   driverSelectOpened: number = -1;
 
-  // data: any[] = new Array(500).fill({}).map((result, indx) => {
-  //   result = indx % 2 == 0 ? {
-  //     id: 1,
-  //     truckNumber: "7532",
-  //     truckColor: "5ba160",
-  //     trailerNumber: null,
-  //     trailerColor: null,
-  //     driverId: 1,
-  //     driverName: "Marko Markovic",
-  //     driverPhone: "55543234567",
-  //     driverEmail: "em@em.com",
-  //     location: null
-  //   } :
-  //   {
-  //     id: 2,
-  //     truckNumber: null,
-  //     truckColor: null,
-  //     trailerNumber: "C638123",
-  //     trailerColor: "e94c4c",
-  //     driverId: null,
-  //     driverName: null,
-  //     location: null
-  //   }
-
-  //   return result;
-  // });
+  showAddAddressField: number = -1;
 
   constructor(private dss: DispatcherStoreService) {}
 
@@ -177,37 +153,28 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addTruck(e) {
     console.log(e);
-    console.log(this.truckSelectOpened);
-    console.log(this.dData);
 
-    const truckId = e.id;
-    const dispatchId = this.dData.dispatches[this.truckSelectOpened].id;
-
-    const oldData = {...this.dData.dispatches[this.truckSelectOpened], truckId: e.id} as UpdateDispatchCommand;
-
-    const dd: UpdateDispatchCommand = {
-      id: oldData.id,
-      status: "Off",
-      order: oldData.order,
-      truckId: oldData.truckId,
-      trailerId: oldData.trailerId,
-      driverId: oldData.driverId,
-      location: oldData.location,
-      hourOfService: oldData.hourOfService,
-      note: oldData.note,
-      loadIds: oldData.loadIds
-    }
-
-    this.dss.updateDispatchBoard(dd);
+    this.dData.dispatches[this.truckSelectOpened].truck = e;
+    this.showAddAddressField = this.truckSelectOpened;
 
     this.truckSelectOpened = -1;
+  }
+
+  handleInputSelect(e: any){
+    if(e.valid){
+      this.updateDispatchBoardAndSend("location", e.address, this.showAddAddressField);
+
+      this.showAddAddressField = -1;
+    }
   }
 
   addDriver() {
     this.driverSelectOpened = -1;
   }
 
-  addTrailer() {
+  addTrailer(e) {
+    console.log(e);
+    this.updateDispatchBoardAndSend("trailerId", e.id, this.trailerSelectOpened);
     this.trailerSelectOpened = -1;
   }
 
@@ -263,5 +230,31 @@ export class DispatchboardTablesComponent implements OnInit {
     el.select();
     document.execCommand('copy');
     document.body.removeChild(el);
+  }
+
+
+  updateDispatchBoardAndSend(key, value, index){
+    const oldData = this.dData.dispatches[index];
+
+      const oldUpdateData: UpdateDispatchCommand = {
+        id: oldData.id,
+        status: oldData.status.name as DispatchStatus,
+        order: oldData.order, 
+        truckId: oldData.truck?.id,
+        trailerId: oldData.trailer?.id,
+        driverId: oldData.driver?.id,
+        location: oldData.location,
+        hourOfService: oldData.hoursOfService,
+        note: oldData.note
+      }
+     
+      const newData = {
+        ...oldUpdateData,
+        [key]: value
+      }
+
+     // console.log("HELOOOOO", newData);
+
+      //this.dss.updateDispatchBoard(newData);
   }
 }
