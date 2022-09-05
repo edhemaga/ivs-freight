@@ -6,12 +6,11 @@ import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
-import { applyDrag } from 'src/app/core/utils/methods.globals';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { SharedService } from '../../../services/shared/shared.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import { applyDrag } from '../../../utils/methods.globals';
 
 @UntilDestroy()
 @Component({
@@ -25,7 +24,7 @@ export class ToDoListCardComponent implements OnInit {
   startChangingStatus = false;
   public dragStarted = false;
   cardData: Array<any> = [];
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
@@ -150,21 +149,20 @@ export class ToDoListCardComponent implements OnInit {
     private todoTService: TodoTService,
     private modalService: ModalService,
     private sharedService: SharedService,
-    private commentsService: CommentsService,
-    private tableService: TruckassistTableService
+    private commentsService: CommentsService
   ) {}
 
   ngOnInit(): void {
     this.getTodoList();
     this.initTableOptions();
 
-    this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
-      .subscribe((res: any) => {
-        if (res) {
-          // your search code here
-        }
-      });
+    // this.tableService.currentSearchTableData
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res: any) => {
+    //     if (res) {
+    //       // your search code here
+    //     }
+    //   });
   }
 
   dragStart = (e) => {

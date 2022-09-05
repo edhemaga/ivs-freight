@@ -6,10 +6,10 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
 import moment from 'moment';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { SharedService } from '../../../services/shared/shared.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({

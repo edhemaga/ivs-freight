@@ -18,5 +18,6 @@ export interface DispatchBoardResponse {
     dispatcher?: CompanyUserShortResponse;
     dispatches?: Array<DispatchResponse> | null;
     teamBoard?: boolean;
+    dispatchCount?: number;
 }
 

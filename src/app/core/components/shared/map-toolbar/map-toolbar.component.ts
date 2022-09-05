@@ -12,9 +12,8 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-@UntilDestroy()
+
 @Component({
   selector: 'app-map-toolbar',
   templateUrl: './map-toolbar.component.html',
@@ -24,8 +23,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   ],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
-  
+  private destroy$ = new Subject<void>();
   @ViewChild('op') mapSettingsPopup: any;
   @ViewChild('op2') addRoutePopup: any;
   @ViewChild('op3') layersPopup: any;
@@ -265,7 +263,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.mapForm.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((formChanges) => {
         if (
           formChanges.mapName != this.tableData[0].title ||

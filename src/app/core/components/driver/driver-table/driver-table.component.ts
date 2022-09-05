@@ -1,38 +1,38 @@
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
+
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { Subject, takeUntil } from 'rxjs';
+import { NameInitialsPipe } from '../../../pipes/nameinitials';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
+import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-table',
   templateUrl: './driver-table.component.html',
@@ -40,6 +40,7 @@ import { ConfirmationService } from '../../modals/confirmation-modal/confirmatio
   providers: [NameInitialsPipe, TaThousandSeparatorPipe],
 })
 export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -82,7 +83,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -113,7 +114,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response && !this.loadingPage) {
           this.resetColumns = response;
@@ -124,7 +125,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -139,7 +140,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -154,7 +155,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.mapingIndex = 0;
@@ -176,7 +177,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
           let mappedRes = response.map((item) => {
@@ -201,7 +202,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Driver Actions
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         // On Add Driver Active
         if (res.animation === 'add' && this.selectedTab === 'active') {
@@ -436,7 +437,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       return this.driversInactive?.length ? this.driversInactive : [];
     } else {
-      return [{}, {}, {}, {}, {}];
+      let mockData = [];
+
+      for (let i = 0; i < 10; i++) {
+        mockData.push({});
+      }
+
+      return mockData;
     }
   }
 
@@ -472,11 +479,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(this.viewData);
 
       // For Testing
-      // if(this.selectedTab !== 'applicants'){
-      //   for (let i = 0; i < 10000; i++) {
-      //     this.viewData.push(this.viewData[0]);
-      //   }
-      // }
+      if (this.selectedTab !== 'applicants') {
+        for (let i = 0; i < 10000; i++) {
+          this.viewData.push(this.viewData[0]);
+        }
+      }
     } else {
       this.viewData = [];
     }
@@ -611,44 +618,50 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       phone: '(325) 540-1157',
       dob: '04/04/44',
       email: 'angelo.T@gmail.com',
-      applicantProgress: {
-        app: {
+      applicantProgress: [
+        {
+          title: 'App.',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 34,
+          class: 'complete-icon',
           percentage: 34,
         },
-        mvr: {
+        {
+          title: 'Mvr',
           status: 'In Progres',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 34,
+          class: 'complete-icon',
           percentage: 34,
         },
-        psp: {
+        {
+          title: 'Psp',
           status: 'Wrong',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 29,
+          class: 'wrong-icon',
           percentage: 34,
         },
-        sph: {
+        {
+          title: 'Sph',
           status: 'No Started',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 30,
+          class: 'complete-icon',
           percentage: 34,
         },
-        hos: {
+        {
+          title: 'Hos',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 32,
+          class: 'done-icon',
           percentage: 34,
         },
-        ssn: {
+        {
+          title: 'Ssn',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 29,
+          class: 'wrong-icon',
           percentage: 34,
         },
-      },
+      ],
       // Complete, Done, Wrong, In Progres, Not Started
       medical: {
         class:
@@ -678,7 +691,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         expirationDays: this.thousandSeparator.transform('12'),
         percentage: 10,
       },
-      rev: 'Ready',
+      rev: {
+        title:
+          index === 0
+            ? 'Reviewed'
+            : index === 1
+            ? 'Finished'
+            : index === 2
+            ? 'Incomplete'
+            : 'Ready',
+        iconLink:
+          index === 0 || index === 2
+            ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+            : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+      },
       hire: true,
       favorite: true,
     };
@@ -756,7 +782,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((drivers: DriverListResponse) => {
         if (!isShowMore) {
           this.viewData = drivers.pagination.data;
@@ -900,7 +926,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   changeDriverStatus(id: number) {
     this.driverTService
       .changeDriverStatus(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -920,7 +946,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   deleteDriverById(id: number) {
     this.driverTService
       .deleteDriverById(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -956,7 +982,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   multipleDeleteDrivers(response: any[]) {
     this.driverTService
       .deleteDriverList(response)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.viewData = this.viewData.map((driver: any) => {
           response.map((id: any) => {
@@ -982,6 +1008,8 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

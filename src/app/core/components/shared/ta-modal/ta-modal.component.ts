@@ -1,4 +1,4 @@
-import { distinctUntilChanged } from 'rxjs/operators';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import {
   Component,
@@ -10,7 +10,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ModalService } from './modal.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
 import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
@@ -22,7 +21,6 @@ import {
   trigger,
 } from '@angular/animations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-modal',
   templateUrl: './ta-modal.component.html',
@@ -47,6 +45,7 @@ import {
   ],
 })
 export class TaModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() modalTitle: string;
   @Input() editName: string;
   @Input() editData: any;
@@ -110,7 +109,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.modalService.modalStatus$
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((data: { name: string; status: boolean }) => {
         switch (data?.name) {
           case 'deactivate': {
@@ -132,7 +131,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
       });
 
     this.uploadFileService.visibilityDropZone$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.dragOver();
@@ -142,35 +141,40 @@ export class TaModalComponent implements OnInit, OnDestroy {
       });
 
     this.modalService.modalSpinner$
-      .pipe(untilDestroyed(this))
-      .subscribe((data: { action: string; status: boolean }) => {
-        switch (data.action) {
-          case 'delete': {
-            this.deleteSpinnerVisibility = data.status;
-            break;
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (data: { action: string; status: boolean; clearTimeout: boolean }) => {
+          switch (data.action) {
+            case 'delete': {
+              this.deleteSpinnerVisibility = data.status;
+              break;
+            }
+            case 'save and add new': {
+              this.saveAddNewSpinnerVisibility = data.status;
+              break;
+            }
+            case 'resend email': {
+              this.resendEmailSpinnerVisibility = data.status;
+              break;
+            }
+            default: {
+              this.saveSpinnerVisibility = data.status;
+              break;
+            }
           }
-          case 'save and add new': {
-            this.saveAddNewSpinnerVisibility = data.status;
-            break;
-          }
-          case 'resend email': {
-            this.resendEmailSpinnerVisibility = data.status;
-            break;
-          }
-          default: {
-            this.saveSpinnerVisibility = data.status;
-            break;
-          }
-        }
 
-        if (!['save and add new', 'resend email'].includes(data.action)) {
-          const timeout = setTimeout(() => {
-            $('.pac-container').remove();
-            this.ngbActiveModal.dismiss();
-            clearTimeout(timeout);
-          }, 150);
+          if (!['save and add new', 'resend email'].includes(data.action)) {
+            if (data.clearTimeout) {
+              this.onAction('close');
+            } else {
+              const timeout = setTimeout(() => {
+                this.onAction('close');
+                clearTimeout(timeout);
+              }, 1200);
+            }
+          }
         }
-      });
+      );
   }
 
   public dragOver() {
@@ -333,6 +337,8 @@ export class TaModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     clearTimeout(this.timeout);
   }
 }

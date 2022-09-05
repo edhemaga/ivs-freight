@@ -109,6 +109,25 @@ table {
           }
         }
 
+        // Special Title
+        .special-title {
+          display: flex;
+          overflow: hidden;
+
+          .title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6c6c6c;
+            transition: width 0.2s ease-in-out;
+            margin-right: 20px;
+
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+        }
+
         // Sort
         .sort-indicator-container {
           width: 12px;
@@ -224,10 +243,6 @@ table {
 .actions-columns-container {
   padding: 2px 2px 2px 1px;
   justify-content: flex-end;
-
-  th {
-    justify-content: center;
-  }
 }
 
 // Drag Preview

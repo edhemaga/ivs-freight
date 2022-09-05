@@ -1,12 +1,17 @@
-import { Component, OnInit, ViewEncapsulation, ViewChild, ChangeDetectorRef, HostListener } from '@angular/core';
-import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {
+  Component,
+  OnInit,
+  ViewEncapsulation,
+  ViewChild,
+  ChangeDetectorRef,
+  HostListener,
+} from '@angular/core';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import {
-  AddressEntity
-} from 'appcoretruckassist';
-import { Address } from 'ngx-google-places-autocomplete/objects/address';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { AddressEntity } from 'appcoretruckassist';
+import { addressValidation } from '../../shared/ta-input/ta-input.regex-validations';
 import {imageMapType} from 'src/assets/utils/methods-global';
 import {
   Confirmation,
@@ -14,7 +19,6 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -22,20 +26,24 @@ declare const geoXML3: any;
 @Component({
   selector: 'app-routing-map',
   templateUrl: './routing-map.component.html',
-  styleUrls: ['./routing-map.component.scss', '../../../../../assets/scss/maps.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: [
+    './routing-map.component.scss',
+    '../../../../../assets/scss/maps.scss',
+  ],
+  encapsulation: ViewEncapsulation.None,
 })
 export class RoutingMapComponent implements OnInit {
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
 
   @HostListener('mousemove', ['$event']) onMouseOver(event) {
-    if ( this.stopPickerActive && this.focusedRouteIndex != null ) {
-      let stopPickerCursor: HTMLElement = document.querySelector('#stopPickerCursor');
+    if (this.stopPickerActive && this.focusedRouteIndex != null) {
+      let stopPickerCursor: HTMLElement =
+        document.querySelector('#stopPickerCursor');
 
-      if ( stopPickerCursor ) {
-        stopPickerCursor.style.top = (event.pageY+15)+'px';
-        stopPickerCursor.style.left = (event.pageX+10)+'px';
+      if (stopPickerCursor) {
+        stopPickerCursor.style.top = event.pageY + 15 + 'px';
+        stopPickerCursor.style.left = event.pageX + 10 + 'px';
       }
     }
   }
@@ -199,7 +207,7 @@ export class RoutingMapComponent implements OnInit {
   public mapLatitude: number = 41.860119;
   public mapLongitude: number = -87.660156;
   public mapZoom: number = 1;
-  
+
   public addressForm: FormGroup;
   public addressFlag: string = 'Empty';
 
@@ -208,16 +216,16 @@ export class RoutingMapComponent implements OnInit {
   addressInputs: FormArray = this.formBuilder.array([]);
 
   public markerOptions = {
-      origin: {
-          icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
-          draggable: true,
-      },
-      destination: {
-          icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
-          label: 'MARKER LABEL',
-          opacity: 0.8,
-      },
-  }
+    origin: {
+      icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756617_face_512x512.png',
+      draggable: true,
+    },
+    destination: {
+      icon: 'https://www.shareicon.net/data/32x32/2016/04/28/756626_face_512x512.png',
+      label: 'MARKER LABEL',
+      opacity: 0.8,
+    },
+  };
 
   selectedTab: string = 'map1';
   selectedMapIndex: number = 0;
@@ -242,7 +250,7 @@ export class RoutingMapComponent implements OnInit {
       show: true,
       svg: 'assets/svg/common/routing/ic_route_report.svg',
       showArrow: true,
-      openPopover: true
+      openPopover: true,
     },
     {
       title: 'Print',
@@ -299,7 +307,7 @@ export class RoutingMapComponent implements OnInit {
     '#AB47BC',
     '#38BDEB',
     '#F276EF',
-    '#8D6E63'
+    '#8D6E63',
   ];
 
   public routeFocusColors: any[] = [
@@ -310,7 +318,7 @@ export class RoutingMapComponent implements OnInit {
     '#AB47BC',
     '#38BDEB',
     '#F276EF',
-    '#8D6E63'
+    '#8D6E63',
   ];
 
   focusedRouteIndex: number = null;
@@ -325,79 +333,79 @@ export class RoutingMapComponent implements OnInit {
   geocoder = new google.maps.Geocoder();
 
   routeProperties: any = {
-    'legTime': {
-      'expandedText': 'Leg t',
-      'value': 'time',
-      'expandedOnly': true,
-      'width': '40px',
-      'order': 1,
-      'class': 'route-row-leg marker-like-text'
+    legTime: {
+      expandedText: 'Leg t',
+      value: 'time',
+      expandedOnly: true,
+      width: '40px',
+      order: 1,
+      class: 'route-row-leg marker-like-text',
     },
-    'totalTime': {
-      'expandedText': 'Total t',
-      'value': 'totalTime',
-      'expandedOnly': true,
-      'width': '44px',
-      'order': 2,
-      'class': 'route-row-total marker-like-text marker-semibold-text',
-      'boldValue': true
+    totalTime: {
+      expandedText: 'Total t',
+      value: 'totalTime',
+      expandedOnly: true,
+      width: '44px',
+      order: 2,
+      class: 'route-row-total marker-like-text marker-semibold-text',
+      boldValue: true,
     },
-    'legPrice': {
-      'expandedText': 'Leg $',
-      'value': 'legPrice',
-      'expandedOnly': true,
-      'width': '56px',
-      'order': 3,
-      'class': 'route-row-leg marker-like-text'
+    legPrice: {
+      expandedText: 'Leg $',
+      value: 'legPrice',
+      expandedOnly: true,
+      width: '56px',
+      order: 3,
+      class: 'route-row-leg marker-like-text',
     },
-    'totalPrice': {
-      'expandedText': 'Total $',
-      'value': 'totalPrice',
-      'expandedOnly': true,
-      'width': '60px',
-      'order': 4,
-      'class': 'route-row-total marker-like-text marker-semibold-text',
-      'boldValue': true
+    totalPrice: {
+      expandedText: 'Total $',
+      value: 'totalPrice',
+      expandedOnly: true,
+      width: '60px',
+      order: 4,
+      class: 'route-row-total marker-like-text marker-semibold-text',
+      boldValue: true,
     },
-    'legDistance': {
-      'text': 'Leg',
-      'expandedText': 'Leg',
-      'value': 'leg',
-      'width': '44px',
-      'order': 5,
-      'class': 'route-row-leg marker-like-text',
-      'insertExpandedText': 'distanceUnit'
+    legDistance: {
+      text: 'Leg',
+      expandedText: 'Leg',
+      value: 'leg',
+      width: '44px',
+      order: 5,
+      class: 'route-row-leg marker-like-text',
+      insertExpandedText: 'distanceUnit',
     },
-    'emptyDistance': {
-      'expandedText': 'Empty',
-      'value': 'emptyDistance',
-      'expandedOnly': true,
-      'width': '46px',
-      'order': 6,
-      'class': 'route-row-total marker-like-text marker-semibold-text',
-      'boldValue': true,
-      'checkMainValue': 'hasEmptyMiles'
+    emptyDistance: {
+      expandedText: 'Empty',
+      value: 'emptyDistance',
+      expandedOnly: true,
+      width: '46px',
+      order: 6,
+      class: 'route-row-total marker-like-text marker-semibold-text',
+      boldValue: true,
+      checkMainValue: 'hasEmptyMiles',
     },
-    'loadedDistance': {
-      'expandedText': 'Loaded',
-      'value': 'loadedDistance',
-      'expandedOnly': true,
-      'width': '46px',
-      'order': 7,
-      'class': 'route-row-leg marker-like-text marker-semibold-text',
-      'boldValue': true,
-      'checkMainValue': 'hasEmptyMiles'
+    loadedDistance: {
+      expandedText: 'Loaded',
+      value: 'loadedDistance',
+      expandedOnly: true,
+      width: '46px',
+      order: 7,
+      class: 'route-row-leg marker-like-text marker-semibold-text',
+      boldValue: true,
+      checkMainValue: 'hasEmptyMiles',
     },
-    'totalDistance': {
-      'text': 'Total',
-      'expandedText': 'Total',
-      'value': 'total',
-      'width': '46.5px',
-      'order': 8,
-      'class': 'route-row-total marker-like-text marker-semibold-text m-0',
-      'insertExpandedText': 'distanceUnit',
-      'boldValue': true
-    }
+    totalDistance: {
+      text: 'Total',
+      expandedText: 'Total',
+      value: 'total',
+      width: '46.5px',
+      order: 8,
+      class: 'route-row-total marker-like-text marker-semibold-text m-0',
+      insertExpandedText: 'distanceUnit',
+      boldValue: true,
+    },
   };
 
   renderBorderArray = [];
@@ -411,26 +419,26 @@ export class RoutingMapComponent implements OnInit {
   tollRoads: any = [];
   isTollRoadsActive: boolean;
   tollRoadsKml = [
-    {state: 'assets/kml/toll-roads/florida.kml'},
-    {state: 'assets/kml/toll-roads/Texas.kml'},
-    {state: 'assets/kml/toll-roads/California.kml'},
+    { state: 'assets/kml/toll-roads/florida.kml' },
+    { state: 'assets/kml/toll-roads/Texas.kml' },
+    { state: 'assets/kml/toll-roads/California.kml' },
   ];
-  
+
   trafficLayer;
   trafficLayerShow = false;
   timeZones: any;
   isTimeZoneActive: boolean;
   kmlUrl = 'assets/kml/timezones.kml';
-  
+
   tileNeXRad = [];
   allNexrad = [
-    {nexrad: 'nexrad-n0q-900913'},
-    {nexrad: 'nexrad-n0q-900913-m05m'},
-    {nexrad: 'nexrad-n0q-900913-m10m'},
-    {nexrad: 'nexrad-n0q-900913-m15m'},
-    {nexrad: 'nexrad-n0q-900913-m20m'},
-    {nexrad: 'nexrad-n0q-900913-m25m'},
-    {nexrad: 'nexrad-n0q-900913-m30m'},
+    { nexrad: 'nexrad-n0q-900913' },
+    { nexrad: 'nexrad-n0q-900913-m05m' },
+    { nexrad: 'nexrad-n0q-900913-m10m' },
+    { nexrad: 'nexrad-n0q-900913-m15m' },
+    { nexrad: 'nexrad-n0q-900913-m20m' },
+    { nexrad: 'nexrad-n0q-900913-m25m' },
+    { nexrad: 'nexrad-n0q-900913-m30m' },
   ];
   isDopplerOn: boolean;
   dopplerInterval: any;
@@ -441,13 +449,13 @@ export class RoutingMapComponent implements OnInit {
     private ref: ChangeDetectorRef,
     private modalService: ModalService,
     private confirmationService: ConfirmationService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
 
     this.addressForm = this.formBuilder.group({
-      address: [null]
+      address: [null, [...addressValidation]],
     });
 
     this.initAddressFields();
@@ -479,10 +487,12 @@ export class RoutingMapComponent implements OnInit {
   }
 
   initAddressFields() {
-    new Array(this.routes.length).fill(1).map((item, index)=> {
-      this.addressInputs.push(this.formBuilder.group({
-        address: []
-      }));
+    new Array(this.routes.length).fill(1).map((item, index) => {
+      this.addressInputs.push(
+        this.formBuilder.group({
+          address: [],
+        })
+      );
     });
   }
 
@@ -496,7 +506,7 @@ export class RoutingMapComponent implements OnInit {
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
-    
+
     this.calculateDistanceBetweenStops(index);
     this.calculateRouteWidth(this.routes[index]);
   }
@@ -540,7 +550,7 @@ export class RoutingMapComponent implements OnInit {
     console.log('mapClick', event);
   }
 
-  zoomChange(event){
+  zoomChange(event) {
     this.mapZoom = event;
   }
 
@@ -571,87 +581,101 @@ export class RoutingMapComponent implements OnInit {
     }
 
     map.addListener('click', (e) => {
-      if ( mainthis.stopJustAdded ) { mainthis.stopJustAdded = false; return false; }
+      if (mainthis.stopJustAdded) {
+        mainthis.stopJustAdded = false;
+        return false;
+      }
 
-      if ( mainthis.focusedRouteIndex != null && mainthis.stopPickerActive ) {
-        mainthis.geocoder.geocode({
-          'latLng': e.latLng
-        }, function(results, status) {
-          if (status == google.maps.GeocoderStatus.OK) {
-            var sortedResults = results.sort((a, b) => {
-              return b.address_components.length - a.address_components.length;
-            });
+      if (mainthis.focusedRouteIndex != null && mainthis.stopPickerActive) {
+        mainthis.geocoder.geocode(
+          {
+            latLng: e.latLng,
+          },
+          function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              var sortedResults = results.sort((a, b) => {
+                return (
+                  b.address_components.length - a.address_components.length
+                );
+              });
 
-            var result = sortedResults[0];
+              var result = sortedResults[0];
 
-            if (result) {
-              //console.log('geocoder result', result);
+              if (result) {
+                //console.log('geocoder result', result);
 
                 var address = {
-                  address: "",
-                  city: "",
-                  country: "",
-                  state: "",
-                  stateShortName: "",
-                  street: "",
-                  streetNumber: "",
-                  zipCode: ""
+                  address: '',
+                  city: '',
+                  country: '',
+                  state: '',
+                  stateShortName: '',
+                  street: '',
+                  streetNumber: '',
+                  zipCode: '',
                 };
 
                 result.address_components.map((item, index) => {
-                  if ( item.types.indexOf('locality') > -1 ) {
+                  if (item.types.indexOf('locality') > -1) {
                     address.city = item.long_name;
-                  } else if ( item.types.indexOf('country') > -1 ) {
+                  } else if (item.types.indexOf('country') > -1) {
                     address.country = item.short_name;
-                  } else if ( item.types.indexOf('administrative_area_level_1') > -1 ) {
+                  } else if (
+                    item.types.indexOf('administrative_area_level_1') > -1
+                  ) {
                     address.state = item.short_name;
                     address.stateShortName = item.short_name;
-                  } else if ( item.types.indexOf('route') > -1 ) {
+                  } else if (item.types.indexOf('route') > -1) {
                     address.street = item.long_name;
-                  } else if ( item.types.indexOf('street_number') > -1 ) {
+                  } else if (item.types.indexOf('street_number') > -1) {
                     address.streetNumber = item.short_name;
-                  } else if ( item.types.indexOf('postal_code') > -1 ) {
+                  } else if (item.types.indexOf('postal_code') > -1) {
                     address.zipCode = item.short_name;
                   }
                 });
 
-                if ( result.formatted_address ) {
+                if (result.formatted_address) {
                   address.address = result.formatted_address;
                 }
 
-                if ( address.city && address.zipCode ) {
+                if (address.city && address.zipCode) {
                   mainthis.stopPickerLocation = {
-                    'address': address,
-                    'cityAddress': address.city + ', ' + address.state + ' ' + address.zipCode,
-                    'lat': result.geometry.location.lat(),
-                    'long': result.geometry.location.lng(),
-                    'empty': null
+                    address: address,
+                    cityAddress:
+                      address.city +
+                      ', ' +
+                      address.state +
+                      ' ' +
+                      address.zipCode,
+                    lat: result.geometry.location.lat(),
+                    long: result.geometry.location.lng(),
+                    empty: null,
                   };
-  
+
                   mainthis.ref.detectChanges();
                 }
+              }
             }
           }
-        });
+        );
       }
     });
   }
 
   mapPlacesSearch(results, status) {
-    this.placesService.getDetails({
-      placeId: results[0].place_id
-      }, function (result, status) {
+    this.placesService.getDetails(
+      {
+        placeId: results[0].place_id,
+      },
+      function (result, status) {
         console.log(result);
-      });
+      }
+    );
   }
 
-  public onHandleAddress(
-    event: any,
-    route,
-    index
-  ) {
+  public onHandleAddress(event: any, route, index) {
     this.addressInputs.at(index).reset();
-    if ( event.action == 'confirm' && event.address ) {
+    if (event.action == 'confirm' && event.address) {
       var request = {
         query: event.address.address,
         fields: ['formatted_address', 'place_id', 'name', 'geometry'],
@@ -659,28 +683,33 @@ export class RoutingMapComponent implements OnInit {
 
       var mainthis = this;
 
-      mainthis.placesService.findPlaceFromQuery(request, function(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
+      mainthis.placesService.findPlaceFromQuery(
+        request,
+        function (results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+            route.stops.push({
+              address: event.address,
+              cityAddress:
+                event.address.city +
+                ', ' +
+                event.address.state +
+                ' ' +
+                event.address.zipCode,
+              leg: '60.6',
+              total: '60.6',
+              time: '01:15',
+              totalTime: '01:15',
+              empty: mainthis.addressFlag == 'Empty' ? true : false,
+              lat: results[0].geometry.location.lat(),
+              long: results[0].geometry.location.lng(),
+            });
 
-          route.stops.push(
-            {
-              'address': event.address,
-              'cityAddress': event.address.city + ', ' + event.address.state + ' ' + event.address.zipCode,
-              'leg': '60.6',
-              'total': '60.6',
-              'time': '01:15',
-              'totalTime': '01:15',
-              'empty': mainthis.addressFlag == 'Empty' ? true : false,
-              'lat': results[0].geometry.location.lat(),
-              'long': results[0].geometry.location.lng()
-            }
-          );
-    
-          mainthis.calculateDistanceBetweenStops(index);
-          mainthis.calculateRouteWidth(route);
-          mainthis.ref.detectChanges();
+            mainthis.calculateDistanceBetweenStops(index);
+            mainthis.calculateRouteWidth(route);
+            mainthis.ref.detectChanges();
+          }
         }
-      });
+      );
     }
   }
 
@@ -694,8 +723,8 @@ export class RoutingMapComponent implements OnInit {
       this.routes[i].stops[j].loadedDistance = 0;
 
       this.routes[i].hasEmptyMiles = false;
-      
-      if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
+
+      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
         this.routes[i].stops[j].legPrice = 0;
         this.routes[i].stops[j].totalPrice = 0;
       } else {
@@ -722,25 +751,35 @@ export class RoutingMapComponent implements OnInit {
         /* Chack if miles or km */
         if (this.tableData[this.selectedMapIndex].distanceUnit == 'mi') {
           distance =
-            google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) *
-            0.000621371;
+            google.maps.geometry.spherical.computeDistanceBetween(
+              firstAddress,
+              secondAddress
+            ) * 0.000621371;
         } else {
           distance =
-            google.maps.geometry.spherical.computeDistanceBetween(firstAddress, secondAddress) /
-            1000.0;
+            google.maps.geometry.spherical.computeDistanceBetween(
+              firstAddress,
+              secondAddress
+            ) / 1000.0;
         }
 
         this.routes[i].stops[j].leg = distance;
         this.routes[i].stops[j].total =
-          parseFloat(this.routes[i].stops[j - 1].total) + parseFloat(this.routes[i].stops[j].leg);
+          parseFloat(this.routes[i].stops[j - 1].total) +
+          parseFloat(this.routes[i].stops[j].leg);
 
-        this.routes[i].stops[j].emptyDistance = parseFloat(this.routes[i].stops[j - 1].emptyDistance) + (this.routes[i].stops[j].empty ? distance : 0);
-        this.routes[i].stops[j].loadedDistance = parseFloat(this.routes[i].stops[j - 1].loadedDistance) + (!this.routes[i].stops[j].empty ? distance : 0);
+        this.routes[i].stops[j].emptyDistance =
+          parseFloat(this.routes[i].stops[j - 1].emptyDistance) +
+          (this.routes[i].stops[j].empty ? distance : 0);
+        this.routes[i].stops[j].loadedDistance =
+          parseFloat(this.routes[i].stops[j - 1].loadedDistance) +
+          (!this.routes[i].stops[j].empty ? distance : 0);
 
-        if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
-          let distanceInMiles = 
-            this.tableData[this.selectedMapIndex].distanceUnit == 'mi' ? distance : 
-            distance / 1.609344;
+        if (this.routes[i].fuelPrice && this.routes[i].mpg) {
+          let distanceInMiles =
+            this.tableData[this.selectedMapIndex].distanceUnit == 'mi'
+              ? distance
+              : distance / 1.609344;
 
           let fuel = distanceInMiles / this.routes[i].mpg;
           let tripCost = fuel * this.routes[i].fuelPrice;
@@ -750,7 +789,8 @@ export class RoutingMapComponent implements OnInit {
 
           this.routes[i].stops[j].legPrice = tripCostShort;
           this.routes[i].stops[j].totalPrice =
-            parseFloat(this.routes[i].stops[j - 1].legPrice) + parseFloat(this.routes[i].stops[j].legPrice);
+            parseFloat(this.routes[i].stops[j - 1].legPrice) +
+            parseFloat(this.routes[i].stops[j].legPrice);
         }
       }
     }
@@ -765,11 +805,11 @@ export class RoutingMapComponent implements OnInit {
       this.routes[i].stops[j].emptyDistance = emptyLeg.toFixed(1);
       this.routes[i].stops[j].loadedDistance = loadedLeg.toFixed(1);
 
-      if ( this.routes[i].stops[j].emptyDistance > 0 ) {
+      if (this.routes[i].stops[j].emptyDistance > 0) {
         this.routes[i].hasEmptyMiles = true;
       }
 
-      if ( this.routes[i].fuelPrice && this.routes[i].mpg ) {
+      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
         var legCost = parseFloat(this.routes[i].stops[j].legPrice);
         var totalCost = parseFloat(this.routes[i].stops[j].totalPrice);
 
@@ -826,15 +866,17 @@ export class RoutingMapComponent implements OnInit {
   duplicateRoute(id) {
     let route = this.getRouteById(id);
 
-    if ( route ) {
-      this.addressInputs.push(this.formBuilder.group({
-        address: []
-      }));
+    if (route) {
+      this.addressInputs.push(
+        this.formBuilder.group({
+          address: [],
+        })
+      );
 
-      const lastId = Math.max(...this.routes.map(item => item.id));
+      const lastId = Math.max(...this.routes.map((item) => item.id));
 
       const newRoute = JSON.parse(JSON.stringify(route));
-      newRoute.id = lastId+1;
+      newRoute.id = lastId + 1;
       newRoute.isFocused = false;
       newRoute.expanded = false;
       newRoute.expandFinished = false;
@@ -855,8 +897,8 @@ export class RoutingMapComponent implements OnInit {
       
       this.tableData[this.selectedMapIndex].length = this.routes.length;
 
-      this.calculateDistanceBetweenStops(this.routes.length-1);
-      this.calculateRouteWidth(this.routes[this.routes.length-1]);
+      this.calculateDistanceBetweenStops(this.routes.length - 1);
+      this.calculateRouteWidth(this.routes[this.routes.length - 1]);
     }
   }
 
@@ -865,7 +907,7 @@ export class RoutingMapComponent implements OnInit {
 
     const routeIndex = this.getRouteIndexById(id);
 
-    if ( route && route.stops && route.stops.length ) {
+    if (route && route.stops && route.stops.length) {
       route.stops = route.stops.reverse();
 
       this.calculateDistanceBetweenStops(routeIndex);
@@ -877,7 +919,7 @@ export class RoutingMapComponent implements OnInit {
     let route = this.getRouteById(id);
     const routeIndex = this.getRouteIndexById(id);
 
-    if ( route && route.stops && route.stops.length ) {
+    if (route && route.stops && route.stops.length) {
       route.stops = [];
     }
   }
@@ -885,7 +927,7 @@ export class RoutingMapComponent implements OnInit {
   deleteRoute(id) {
     const routeIndex = this.getRouteIndexById(id);
 
-    if ( routeIndex > -1 ) {
+    if (routeIndex > -1) {
       this.routes.splice(routeIndex, 1);
     }
 
@@ -894,29 +936,28 @@ export class RoutingMapComponent implements OnInit {
   }
 
   getRouteById(id) {
-    let route = this.routes
-        .filter((item) => item.id === id)[0];
+    let route = this.routes.filter((item) => item.id === id)[0];
 
     return route ? route : false;
   }
 
   getRouteIndexById(id) {
-    const routeIndex = this.routes.findIndex(route => {
+    const routeIndex = this.routes.findIndex((route) => {
       return route.id === id;
     });
 
     return routeIndex;
   }
-  
+
   focusRoute(i) {
     this.stopPickerLocation = {};
 
     this.routes.map((route, index) => {
-      if ( index == i ) {
-        if ( !route.hidden ) {
+      if (index == i) {
+        if (!route.hidden) {
           route.isFocused = !route.isFocused;
 
-          if ( route.isFocused ) { 
+          if (route.isFocused) {
             this.focusedRouteIndex = i;
           } else {
             this.focusedRouteIndex = null;
@@ -933,25 +974,27 @@ export class RoutingMapComponent implements OnInit {
         route.isFocused = false;
 
         route.stops.map((stop) => {
-          if ( stop.isSelected ) stop.isSelected = false;
+          if (stop.isSelected) stop.isSelected = false;
         });
       }
     });
   }
 
   onToolBarAction(event: any) {
-    if ( event.action == 'add-route' ) {
+    if (event.action == 'add-route') {
       var routeForm = event.data;
 
-      let lastId = Math.max(...this.routes.map(item => item.id));
-      if ( !lastId || lastId < 1 ) {
+      let lastId = Math.max(...this.routes.map((item) => item.id));
+      if (!lastId || lastId < 1) {
         lastId = 1;
       }
 
-      this.addressInputs.push(this.formBuilder.group({
-        address: []
-      }));
-      
+      this.addressInputs.push(
+        this.formBuilder.group({
+          address: [],
+        })
+      );
+
       var newRoute = {
           'id': lastId+1,
           'name': routeForm.get('routeName').value,
@@ -977,7 +1020,7 @@ export class RoutingMapComponent implements OnInit {
       this.calculateRouteWidth(this.routes[this.routes.length-1]);
 
       this.tableData[this.selectedMapIndex].length = this.routes.length;
-    } else if ( event.action == 'edit-route' ) {
+    } else if (event.action == 'edit-route') {
       var routeForm = event.data.form;
       let route = this.getRouteById(event.data.editId);
 
@@ -994,50 +1037,65 @@ export class RoutingMapComponent implements OnInit {
       this.calculateRouteWidth(route);
 
       this.ref.detectChanges();
-    } else if ( event.action == 'map-settings' ) {
+    } else if (event.action == 'map-settings') {
       var mapForm = event.data;
 
       var infoTypeChanged = false;
-      if ( this.tableData[this.selectedMapIndex].distanceUnit != mapForm.get('distanceUnit').value ) infoTypeChanged = true;
-      if ( this.tableData[this.selectedMapIndex].addressType != mapForm.get('addressType').value ) infoTypeChanged = true;
-      if ( this.tableData[this.selectedMapIndex].borderType != mapForm.get('borderType').value ) infoTypeChanged = true;
+      if (
+        this.tableData[this.selectedMapIndex].distanceUnit !=
+        mapForm.get('distanceUnit').value
+      )
+        infoTypeChanged = true;
+      if (
+        this.tableData[this.selectedMapIndex].addressType !=
+        mapForm.get('addressType').value
+      )
+        infoTypeChanged = true;
+      if (
+        this.tableData[this.selectedMapIndex].borderType !=
+        mapForm.get('borderType').value
+      )
+        infoTypeChanged = true;
 
-      this.tableData[this.selectedMapIndex].title = mapForm.get('mapName').value;
-      this.tableData[this.selectedMapIndex].distanceUnit = mapForm.get('distanceUnit').value;
-      this.tableData[this.selectedMapIndex].addressType = mapForm.get('addressType').value;
-      this.tableData[this.selectedMapIndex].borderType = mapForm.get('borderType').value;
+      this.tableData[this.selectedMapIndex].title =
+        mapForm.get('mapName').value;
+      this.tableData[this.selectedMapIndex].distanceUnit =
+        mapForm.get('distanceUnit').value;
+      this.tableData[this.selectedMapIndex].addressType =
+        mapForm.get('addressType').value;
+      this.tableData[this.selectedMapIndex].borderType =
+        mapForm.get('borderType').value;
 
-      if ( infoTypeChanged ) {
+      if (infoTypeChanged) {
         this.routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
         });
       }
-
-    } else if ( event.action == 'open-stop-picker' ) {
+    } else if (event.action == 'open-stop-picker') {
       this.stopPickerActive = !this.stopPickerActive;
       this.stopPickerLocation = {};
       if ( this.stopPickerActive ) {
         this.agmMap.setOptions({draggableCursor:'pointer'});
         this.findNextStopIndex();
       } else {
-        this.agmMap.setOptions({draggableCursor:''});
+        this.agmMap.setOptions({ draggableCursor: '' });
       }
-    } else if ( event.action == 'open-route-compare' ) {
+    } else if (event.action == 'open-route-compare') {
       console.log('onToolbarAction open-route-compare');
-    } else if ( event.action == 'open-keyboard-controls' ) {
+    } else if (event.action == 'open-keyboard-controls') {
       console.log('onToolbarAction open-keyboard-controls');
-    } else if ( event.action == 'open-route-info' ) {
+    } else if (event.action == 'open-route-info') {
       console.log('onToolbarAction open-route-info');
-    } else if ( event.action == 'open-layers' ) {
+    } else if (event.action == 'open-layers') {
       console.log('onToolbarAction open-layers');
-    } else if ( event.action == 'toggle-toll-roads' ) {
+    } else if (event.action == 'toggle-toll-roads') {
       this.toggleTollRoads();
-    } else if ( event.action == 'toggle-time-zones' ) {
+    } else if (event.action == 'toggle-time-zones') {
       this.toggleTimeZones();
-    } else if ( event.action == 'toggle-radar' ) {
+    } else if (event.action == 'toggle-radar') {
       this.toggleRadar();
-    } else if ( event.action == 'toggle-traffic' ) {
+    } else if (event.action == 'toggle-traffic') {
       this.toggleTraffic();
     }
   }
@@ -1048,7 +1106,7 @@ export class RoutingMapComponent implements OnInit {
       toolbarActions: {
         hideLocationFilter: true,
         hideViewMode: true,
-        showMapView: false
+        showMapView: false,
       },
       config: {
         showSort: true,
@@ -1056,7 +1114,7 @@ export class RoutingMapComponent implements OnInit {
         sortDirection: '',
         disabledColumns: [0],
         minWidth: 60,
-      }
+      },
     };
 
     this.tableData = [
@@ -1067,7 +1125,7 @@ export class RoutingMapComponent implements OnInit {
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
         borderType: 'open', // open or closed
-        addressType: 'city' // city or address
+        addressType: 'city', // city or address
       },
       // {
       //   title: 'Map 2',
@@ -1091,9 +1149,9 @@ export class RoutingMapComponent implements OnInit {
   }
 
   zoomMap(zoom) {
-    if ( zoom == 'minus' && this.mapZoom > 0 ) {
+    if (zoom == 'minus' && this.mapZoom > 0) {
       this.mapZoom--;
-    } else if ( this.mapZoom < 21 ) {
+    } else if (this.mapZoom < 21) {
       this.mapZoom++;
     }
   }
@@ -1102,8 +1160,10 @@ export class RoutingMapComponent implements OnInit {
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
     this.addressFlag = loadType == 'empty' ? 'Empty' : 'Loaded';
 
-    if ( this.stopPickerLocation.editIndex != null ) {
-      this.routes[this.focusedRouteIndex].stops[this.stopPickerLocation.editIndex].empty = this.stopPickerLocation.empty;
+    if (this.stopPickerLocation.editIndex != null) {
+      this.routes[this.focusedRouteIndex].stops[
+        this.stopPickerLocation.editIndex
+      ].empty = this.stopPickerLocation.empty;
     } else {
       var insertIndex = this.focusedStopIndex != null ? this.focusedStopIndex+1 : this.routes[this.focusedRouteIndex].stops.length;
 
@@ -1165,12 +1225,12 @@ export class RoutingMapComponent implements OnInit {
 
     var route = this.routes[routeIndex];
 
-    if ( !route.isFocused ) {
+    if (!route.isFocused) {
       this.focusRoute(routeIndex);
     }
-    
+
     route.stops.map((item, index) => {
-      if ( index == stopIndex ) {
+      if (index == stopIndex) {
         item.isSelected = !item.isSelected;
 
         if ( item.isSelected ) {
@@ -1205,60 +1265,75 @@ export class RoutingMapComponent implements OnInit {
   }
 
   hoverRoute(route) {
-    if ( route.hidden ) {
+    if (route.hidden) {
       route.nameHover = true;
       route.hover = false;
-    } else if ( (this.tooltip && this.tooltip.isOpen() && this.dropDownActive == route.id) ||
-                (!route.stops.length && !route.truckId && !route.stopTime && !route.mpg && !route.fuelPrice) ) {
+    } else if (
+      (this.tooltip &&
+        this.tooltip.isOpen() &&
+        this.dropDownActive == route.id) ||
+      (!route.stops.length &&
+        !route.truckId &&
+        !route.stopTime &&
+        !route.mpg &&
+        !route.fuelPrice)
+    ) {
       route.hover = false;
     } else {
       route.hover = true;
     }
-    
+
     this.calculateRouteWidth(route);
   }
 
   leaveRouteHover(route) {
     route.hover = false;
     route.nameHover = false;
-    
+
     this.calculateRouteWidth(route);
   }
 
   calculateRouteWidth(route) {
     var widthNumber = 312;
 
-    if ( route.expanded ) {
-      if ( this.tableData[this.selectedMapIndex].addressType == 'address' ) {
-        if ( route.fuelPrice && route.hasEmptyMiles ) {
+    if (route.expanded) {
+      if (this.tableData[this.selectedMapIndex].addressType == 'address') {
+        if (route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 792;
-        } else if ( route.fuelPrice && !route.hasEmptyMiles ) {
+        } else if (route.fuelPrice && !route.hasEmptyMiles) {
           widthNumber = 664;
-        } else if ( !route.fuelPrice && route.hasEmptyMiles ) {
+        } else if (!route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 640;
         } else {
           widthNumber = 512;
         }
       } else {
-        if ( route.fuelPrice && route.hasEmptyMiles ) {
+        if (route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 712;
-        } else if ( route.fuelPrice && !route.hasEmptyMiles ) {
+        } else if (route.fuelPrice && !route.hasEmptyMiles) {
           widthNumber = 584;
-        } else if ( !route.fuelPrice && route.hasEmptyMiles ) {
+        } else if (!route.fuelPrice && route.hasEmptyMiles) {
           widthNumber = 560;
         } else {
           widthNumber = 432;
         }
       }
     } else {
-      if ( this.tableData[this.selectedMapIndex].addressType == 'address' ) {
+      if (this.tableData[this.selectedMapIndex].addressType == 'address') {
         widthNumber = 392;
       } else {
         widthNumber = 312;
       }
     }
 
-    if ( route.hover && (route.stops.length || route.truckId || route.stopTime || route.mpg || route.fuelPrice) ) {
+    if (
+      route.hover &&
+      (route.stops.length ||
+        route.truckId ||
+        route.stopTime ||
+        route.mpg ||
+        route.fuelPrice)
+    ) {
       widthNumber += 10;
     }
 
@@ -1365,11 +1440,16 @@ export class RoutingMapComponent implements OnInit {
       }
       clearInterval(interval);
     }, 200);
-    
+
     this.turnOffOtherToolActions(true, true, true, false);
   }
 
-  turnOffOtherToolActions(toll: boolean, timeZone: boolean, doppler: boolean, traffic: boolean) {
+  turnOffOtherToolActions(
+    toll: boolean,
+    timeZone: boolean,
+    doppler: boolean,
+    traffic: boolean
+  ) {
     if (toll) {
       for (let i = 0; i < this.tollRoads.length; i++) {
         if (this.tollRoads[i].docs.length) {
@@ -1399,15 +1479,18 @@ export class RoutingMapComponent implements OnInit {
       }, 200);
     }
   }
-  
+
   deleteStopPickerLocation(event) {
     event.stopPropagation();
     event.preventDefault();
 
-    if ( this.stopPickerLocation.editIndex != null ) {
-      this.routes[this.focusedRouteIndex].stops.splice(this.stopPickerLocation.editIndex, 1);
+    if (this.stopPickerLocation.editIndex != null) {
+      this.routes[this.focusedRouteIndex].stops.splice(
+        this.stopPickerLocation.editIndex,
+        1
+      );
     }
-    
+
     this.stopPickerLocation = {};
 
     this.ref.detectChanges();

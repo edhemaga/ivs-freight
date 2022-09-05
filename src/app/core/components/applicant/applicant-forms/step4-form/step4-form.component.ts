@@ -3,6 +3,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -10,7 +11,7 @@ import {
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -27,13 +28,19 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
   templateUrl: './step4-form.component.html',
   styleUrls: ['./step4-form.component.scss'],
 })
-export class Step4FormComponent implements OnInit, AfterViewInit {
+export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
+
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -112,14 +119,20 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
     private inputResetService: TaInputResetService
   ) {}
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   ngOnInit(): void {
     this.createForm();
 
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.accidentForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.subscription = this.accidentForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             accidentLocation,
             accidentState,
@@ -139,8 +152,7 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
           } else {
             this.isAccidentEdited = true;
           }
-        }
-      );
+        });
     }
   }
 
@@ -150,13 +162,16 @@ export class Step4FormComponent implements OnInit, AfterViewInit {
 
   public createForm(): void {
     this.accidentForm = this.formBuilder.group({
-      accidentLocation: [null, Validators.required],
+      accidentLocation: [null, [Validators.required, ...addressValidation]],
       accidentDate: [null, Validators.required],
       fatalities: [0],
       injuries: [0],
       hazmatSpill: [null, Validators.required],
       truckType: [null, Validators.required],
-      accidentDescription: [null, Validators.required],
+      accidentDescription: [
+        null,
+        [Validators.required, ...descriptionValidation],
+      ],
 
       firstRowReview: [null],
       secondRowReview: [null],

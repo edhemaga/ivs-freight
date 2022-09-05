@@ -5,13 +5,13 @@ import {
   CreateMvrCommand,
   DriverResponse,
   EditMvrCommand,
+  GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
-/* import { CreateMvrResponse } from 'appcoretruckassist/model/createMvrResponse'; */
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -59,32 +59,34 @@ export class MvrTService {
 
   /* Observable<CreateMvrResponse> */
   public addMvr(data: CreateMvrCommand): Observable<any> {
-    return this.mvrService.apiMvrPost(data).pipe(
-      tap((res: any) => {
-        const subDriver = this.driverService
-          .getDriverById(data.driverId)
-          .subscribe({
-            next: (driver: DriverResponse | any) => {
-              this.driverStore.remove(({ id }) => id === data.driverId);
+    return this.mvrService
+      .apiMvrPost(data)
+      .pipe
+      // tap((res: any) => {
+      //   const subDriver = this.driverService
+      //     .getDriverById(data.driverId)
+      //     .subscribe({
+      //       next: (driver: DriverResponse | any) => {
+      //         this.driverStore.remove(({ id }) => id === data.driverId);
 
-              driver = {
-                ...driver,
-                fullName: driver.firstName + ' ' + driver.lastName,
-              };
+      //         driver = {
+      //           ...driver,
+      //           fullName: driver.firstName + ' ' + driver.lastName,
+      //         };
 
-              this.driverStore.add(driver);
+      //         this.driverStore.add(driver);
 
-              this.tableService.sendActionAnimation({
-                animation: 'update',
-                data: driver,
-                id: driver.id,
-              });
+      //         this.tableService.sendActionAnimation({
+      //           animation: 'update',
+      //           data: driver,
+      //           id: driver.id,
+      //         });
 
-              subDriver.unsubscribe();
-            },
-          });
-      })
-    );
+      //         subDriver.unsubscribe();
+      //       },
+      //     });
+      // })
+      ();
   }
 
   public updateMvr(data: EditMvrCommand): Observable<object> {
@@ -113,5 +115,9 @@ export class MvrTService {
         });
       })
     );
+  }
+
+  public getMvrModal(): Observable<GetMvrModalResponse> {
+    return this.mvrService.apiMvrModalGet();
   }
 }

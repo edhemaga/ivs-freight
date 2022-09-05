@@ -1,6 +1,8 @@
 .gitignore
+.openapi-generator-ignore
 README.md
 api.module.ts
+api/accident.service.ts
 api/account.service.ts
 api/api.ts
 api/applicant.service.ts
@@ -44,6 +46,7 @@ api/trailer.service.ts
 api/truck.service.ts
 api/user.service.ts
 api/vinDecode.service.ts
+api/violation.service.ts
 configuration.ts
 encoder.ts
 git_push.sh
@@ -51,8 +54,12 @@ index.ts
 model/acceptApplicationCommand.ts
 model/accidentItemCommand.ts
 model/accidentItemReviewCommand.ts
+model/accidentListResponse.ts
+model/accidentModalResponse.ts
 model/accidentRecordFeedbackResponse.ts
 model/accidentRecordItemResponse.ts
+model/accidentResponse.ts
+model/accidentResponsePagination.ts
 model/accountColorResponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addressEntity.ts
@@ -96,6 +103,7 @@ model/cdlLicenseCommand.ts
 model/cdlLicenseResponse.ts
 model/cdlLicenseReviewCommand.ts
 model/cdlLicenseReviewResponse.ts
+model/cdlMinimalResponse.ts
 model/cdlResponse.ts
 model/cdlRestrictionResponse.ts
 model/cdlReviewResponse.ts
@@ -138,6 +146,7 @@ model/companyUserResponsePagination.ts
 model/companyUserShortResponse.ts
 model/contactColorResponse.ts
 model/countryType.ts
+model/createAccidentCommand.ts
 model/createAccidentRecordCommand.ts
 model/createAccidentRecordReviewCommand.ts
 model/createApplicantCdlCommand.ts
@@ -219,6 +228,7 @@ model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
+model/driverAccidentResponse.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
@@ -261,6 +271,7 @@ model/getCompanyUserListResponse.ts
 model/getDriverModalResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
+model/getMvrModalResponse.ts
 model/getOwnerListResponse.ts
 model/getRatingReviewModalResponse.ts
 model/getRouteListResponse.ts
@@ -276,6 +287,8 @@ model/inspectionResponse.ts
 model/insurancePolicyAddonResponse.ts
 model/insurancePolicyModalResponse.ts
 model/insurancePolicyResponse.ts
+model/insuranceTypeCommand.ts
+model/insuranceTypeResponse.ts
 model/inviteEmployerResponse.ts
 model/invitePreviousEmployerCommand.ts
 model/invoiceAgeingResponse.ts
@@ -399,6 +412,9 @@ model/resendInviteCommand.ts
 model/reviewByEntityTypeListResponse.ts
 model/reviewResponse.ts
 model/reviewResponsePagination.ts
+model/roadsideInspectionListResponse.ts
+model/roadsideInspectionResponse.ts
+model/roadsideInspectionResponsePagination.ts
 model/routeResponse.ts
 model/routeResponsePagination.ts
 model/routingResponse.ts
@@ -458,6 +474,7 @@ model/trafficViolationItemCommand.ts
 model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewCommand.ts
 model/trafficViolationItemReviewResponse.ts
+model/trailerAccidentResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -468,6 +485,7 @@ model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
 model/trailerTypeResponse.ts
+model/truckAccidentResponse.ts
 model/truckEngineTypeResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
@@ -479,6 +497,7 @@ model/truckResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
 model/truckTypeResponse.ts
+model/updateAccidentCommand.ts
 model/updateAccidentRecordCommand.ts
 model/updateApplicantCdlCommand.ts
 model/updateApplicantCommand.ts
@@ -531,6 +550,7 @@ model/updateRegistrationCommand.ts
 model/updateRepairCommand.ts
 model/updateRepairShopCommand.ts
 model/updateReviewCommand.ts
+model/updateRoadsideInspectionCommand.ts
 model/updateRouteCommand.ts
 model/updateSevenDaysHosCommand.ts
 model/updateShipperCommand.ts
@@ -554,6 +574,8 @@ model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts
 model/vinDecodeResponse.ts
+model/violationCommand.ts
+model/violationResponse.ts
 model/workExperienceFeedbackResponse.ts
 model/workExperienceItemCommand.ts
 model/workExperienceItemResponse.ts

@@ -1,12 +1,12 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-state/shipper.details.query';
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+
 @Component({
   selector: 'app-shipper-details',
   templateUrl: './shipper-details.component.html',
@@ -14,6 +14,7 @@ import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-stat
   providers: [DetailsPageService],
 })
 export class ShipperDetailsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public shipperConfig: any[] = [];
   public shipperDrop: any;
   constructor(
@@ -29,7 +30,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.detailsPageService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (this.shipperQuery.hasEntity(id)) {
@@ -37,7 +38,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.shipperService.getShipperById(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: ShipperResponse) => {
             this.shipperConf(res);
             this.router.navigate([`/customer/${res.id}/shipper-details`]);
@@ -174,5 +175,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -7,15 +7,14 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { RepairTService } from '../state/repair.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopDetailsQuery } from '../state/shop-details-state/shop-details.query';
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { Subject, takeUntil } from 'rxjs';
+import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-shop-repair-details',
   templateUrl: './shop-repair-details.component.html',
@@ -24,6 +23,7 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   providers: [DetailsPageService, SumArraysPipe],
 })
 export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public shopRepairConfig: any[] = [];
   public repairDrop: any;
   constructor(
@@ -42,7 +42,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     this.initTableOptions();
     this.shopConf(this.act_route.snapshot.data.shop);
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.shopConf(res.data);
@@ -51,7 +51,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
       });
 
     this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (!this.shopDetailsQuery.hasEntity(id)) {
@@ -61,7 +61,7 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
         }
         this.shopService
           .getRepairShopById(id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: RepairShopResponse) => {
               this.shopConf(res);
@@ -216,6 +216,8 @@ export class ShopRepairDetailsComponent implements OnInit, OnDestroy {
     ];
   }
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

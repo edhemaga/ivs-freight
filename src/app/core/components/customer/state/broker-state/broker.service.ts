@@ -13,9 +13,9 @@ import {
   UpdateReviewCommand,
 } from 'appcoretruckassist';
 import { Observable, tap, of } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

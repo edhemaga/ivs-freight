@@ -1,5 +1,4 @@
 import { ImageBase64Service } from './../../../utils/base64.image';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,14 +9,13 @@ import {
 import { userNavigationData } from '../model/navigation-data';
 import { NavigationUserPanel } from '../model/navigation.model';
 import { Router } from '@angular/router';
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
-import { TaUserService } from 'src/app/core/services/user/user.service';
+import { TaUserService } from '../../../services/user/user.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-navigation-user-profile',
   templateUrl: './navigation-user-profile.component.html',
@@ -25,6 +23,7 @@ import { TaUserService } from 'src/app/core/services/user/user.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavigationUserProfileComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() isNavigationHovered: boolean = false;
   @Input() isUserPanelOpen: boolean = false;
 
@@ -63,7 +62,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
     };
 
     this.userService.updateUserProfile$
-      .pipe(debounceTime(1000), untilDestroyed(this))
+      .pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((val: boolean) => {
         if (val) {
           this.loggedUser = JSON.parse(localStorage.getItem('user'));
@@ -123,5 +122,8 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
   private changeMyStatus() {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

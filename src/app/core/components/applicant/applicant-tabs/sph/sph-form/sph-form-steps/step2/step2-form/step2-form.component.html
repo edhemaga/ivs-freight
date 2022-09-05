@@ -24,6 +24,8 @@
           label: 'Location',
           isRequired: true,
           placeholderIcon: 'address',
+          minLength: 12,
+          maxLength: 256,
           textTransform: 'capitalize'
         }"
         [activeAddress]="selectedAddress"
@@ -42,6 +44,8 @@
           name: 'Description',
           type: 'text',
           label: 'Description',
+          minLength: 20,
+          maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true
         }"

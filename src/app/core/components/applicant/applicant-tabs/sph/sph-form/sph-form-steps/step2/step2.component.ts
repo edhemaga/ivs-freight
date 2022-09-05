@@ -8,12 +8,12 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
-import { TrailerType } from 'src/app/core/components/applicant/state/model/trailer-type.model';
-import { TruckType } from 'src/app/core/components/applicant/state/model/truck-type.model';
-import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
-import { ReasonForLeaving } from 'src/app/core/components/applicant/state/model/reason-for-leaving.model';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
+import { TruckType } from '../../../../../state/model/truck-type.model';
+import { ApplicantQuestion } from '../../../../../state/model/applicant-question.model';
+import { TrailerType } from '../../../../../state/model/trailer-type.model';
+import { ReasonForLeaving } from '../../../../../state/model/reason-for-leaving.model';
+import { InputSwitchActions } from '../../../../../state/enum/input-switch-actions.enum';
 
 @Component({
   selector: 'app-step2',

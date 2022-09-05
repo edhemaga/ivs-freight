@@ -1,19 +1,20 @@
 import {
-  phoneRegex,
-  emailRegex,
+  phoneFaxRegex,
+  addressValidation,
+  vinNumberValidation,
+  descriptionValidation,
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-accident-modal',
   templateUrl: './accident-modal.component.html',
@@ -22,6 +23,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [ModalService, FormService],
 })
 export class AccidentModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public accidentForm: FormGroup;
@@ -103,7 +105,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       towing: [null],
       hazmat: [null],
       vehicleNumber: [null],
-      location: [null],
+      location: [null, [...addressValidation]],
       date: [null],
       time: [null],
       driverName: [null],
@@ -115,27 +117,30 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       truckMake: [null],
       truckPlateNumber: [null],
       truckState: [null],
-      truckVIN: [null],
+      truckVIN: [null, [...vinNumberValidation]],
       trailerUnit: [null],
       trailerType: [null],
       trailerMake: [null],
       trailerPlateNumber: [null],
       trailerState: [null],
-      trailerVIN: [null],
+      trailerVIN: [null, [...vinNumberValidation]],
       violations: this.formBuilder.array([
         this.formBuilder.group({
           categoryId: ['Crash Indicator'],
           sw: ['2'],
           hm: [true],
-          description: ['Involves tow-away but no injury or fatality'],
+          description: [
+            'Involves tow-away but no injury or fatality',
+            [...descriptionValidation],
+          ],
         }),
       ]),
       insurance: this.formBuilder.array([]),
       insuranceType: [null],
       insuranceClaimNumber: [null],
       insuranceAdjuster: [null],
-      insurancePhone: [null, phoneRegex],
-      insuranceEmail: [null, emailRegex],
+      insurancePhone: [null, phoneFaxRegex],
+      insuranceEmail: [null],
       note: [null],
       roadwayTrafficWay: [null],
       weatherCondition: [null],
@@ -145,20 +150,26 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       reportingAgency: [null],
       authorityPoliceOffice: [null],
       authorityBadgeNumber: [null],
-      authorityAddress: [null],
-      authorityPhone: [null, phoneRegex],
-      authorityFax: [null],
-      shippingOriginLocation: [null],
-      shippingDestinationLocation: [null],
+      authorityAddress: [null, [...addressValidation]],
+      authorityPhone: [null, phoneFaxRegex],
+      authorityFax: [null, phoneFaxRegex],
+      shippingOriginLocation: [null, [...addressValidation]],
+      shippingDestinationLocation: [null, [...addressValidation]],
       shippingCustomer: [null],
       shippingBOL: [null],
       shippingCargo: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.accidentForm.get('insuranceEmail'),
+      'email',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.accidentForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -186,15 +197,22 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
       insuranceType: [null],
       claimNumber: [null],
       insuranceAdjuster: [null],
-      phone: [null, phoneRegex],
-      email: [null, emailRegex],
+      phone: [null, phoneFaxRegex],
+      email: [null],
     });
   }
 
   public addInsurance(event: { check: boolean; action: string }) {
+    const form = this.createInsurance();
     if (event.check) {
-      this.insurances.push(this.createInsurance());
+      this.insurances.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeInsurance(id: number) {
@@ -303,5 +321,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

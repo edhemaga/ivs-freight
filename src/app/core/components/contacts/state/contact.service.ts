@@ -14,9 +14,9 @@ import {
   UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ContactQuery } from './contact-state/contact.query';
 import { ContactStore } from './contact-state/contact.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

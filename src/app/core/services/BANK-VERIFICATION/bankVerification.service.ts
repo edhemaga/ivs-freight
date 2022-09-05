@@ -7,9 +7,9 @@ import {
 } from 'appcoretruckassist';
 import { distinctUntilChanged, Observable, take } from 'rxjs';
 import {
-  accountBankRegex,
+  accountBankValidation,
   bankRoutingValidator,
-  routingBankRegex,
+  routingBankValidation,
 } from '../../components/shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../components/shared/ta-input/ta-input.service';
 
@@ -31,13 +31,13 @@ export class BankVerificationService {
       this.inputService.changeValidators(
         routingControl,
         true,
-        routingBankRegex
+        routingBankValidation
       );
       this.routingNumberTyping(routingControl);
       this.inputService.changeValidators(
         accountControl,
         true,
-        accountBankRegex
+        accountBankValidation
       );
       return true;
     } else {

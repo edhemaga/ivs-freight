@@ -1,8 +1,4 @@
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-  convertNumberInThousandSep,
-} from './../../../utils/methods.calculations';
+import { convertDateToBackend } from './../../../utils/methods.calculations';
 import { Options } from '@angular-slider/ngx-slider';
 import { HttpResponseBase } from '@angular/common/http';
 import {
@@ -21,14 +17,17 @@ import {
   UpdateTruckCommand,
   VinDecodeResponse,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
-import { convertThousanSepInNumber } from 'src/app/core/utils/methods.calculations';
+
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import {
-  insurancePolicyRegex,
+  axlesValidation,
+  emptyWeightValidation,
+  insurancePolicyValidation,
+  mileageValidation,
+  truckTrailerModelValidation,
+  vehicleUnitValidation,
+  vinNumberValidation,
+  yearValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
@@ -37,8 +36,12 @@ import { TruckTService } from '../../truck/state/truck.service';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
+import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truck-modal',
   templateUrl: './truck-modal.component.html',
@@ -48,6 +51,8 @@ import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/r
   providers: [ModalService, FormService],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('appNote', { static: false }) public appNote: any;
 
   @Input() editData: any;
@@ -128,22 +133,19 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
-      truckNumber: [null, [Validators.required, Validators.maxLength(6)]],
-      truckTypeId: [null, Validators.required],
-      vin: [
+      truckNumber: [
         null,
         [
           Validators.required,
-          Validators.minLength(17),
-          Validators.maxLength(17),
+          Validators.maxLength(6),
+          ...vehicleUnitValidation,
         ],
       ],
+      truckTypeId: [null, Validators.required],
+      vin: [null, [Validators.required, ...vinNumberValidation]],
       truckMakeId: [null, Validators.required],
-      model: [null, [Validators.required, Validators.maxLength(22)]],
-      year: [
-        null,
-        [Validators.required, Validators.maxLength(4), yearValidRegex],
-      ],
+      model: [null, [Validators.required, ...truckTrailerModelValidation]],
+      year: [null, [Validators.required, ...yearValidation, yearValidRegex]],
       colorId: [null],
       companyOwned: [true],
       ownerId: [null],
@@ -154,19 +156,19 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       shifter: [null],
       fhwaexp: [12, Validators.required],
       truckGrossWeightId: [null],
-      emptyWeight: [null, Validators.maxLength(6)],
+      emptyWeight: [null, emptyWeightValidation],
       truckEngineTypeId: [null],
       tireSizeId: [null],
-      axles: [null, Validators.maxLength(1)],
-      insurancePolicy: [null, insurancePolicyRegex],
-      mileage: [null, Validators.maxLength(10)],
+      axles: [null, axlesValidation],
+      insurancePolicy: [null, insurancePolicyValidation],
+      mileage: [null, mileageValidation],
       ipasEzpass: [null, Validators.maxLength(14)],
     });
 
     // this.formService.checkFormChange(this.truckForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -188,7 +190,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       if (data.action === 'deactivate' && this.editData) {
         this.truckModalService
           .changeTruckStatus(this.editData.id, this.editData.tabSelected)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -225,7 +227,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTruck();
-            this.modalService.setModalSpinner({ action: null, status: true });
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+              clearTimeout: this.editData?.canOpenModal ? true : false,
+            });
           }
         }
 
@@ -259,7 +265,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private isCompanyOwned() {
     this.truckForm
       .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(this.truckForm.get('ownerId'));
@@ -275,7 +281,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public editTruckById(id: number) {
     this.truckModalService
       .getTruckById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TruckResponse) => {
           this.truckForm.patchValue({
@@ -446,13 +452,17 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.truckForm
       .get('vin')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
+        if (value?.length > 13 && value?.length < 17) {
+          this.truckForm.get('vin').setErrors({ invalid: true });
+        }
+
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 1)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
                 this.truckForm.patchValue({
@@ -481,7 +491,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public getTruckDropdowns() {
     this.truckModalService
       .getTruckDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTruckModalResponse) => {
           this.truckType = res.truckTypes.map((item) => {
@@ -559,7 +569,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     this.truckModalService
       .addTruck(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -629,7 +639,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     };
     this.truckModalService
       .updateTruck(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -646,7 +656,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public deleteTruckById(id: number) {
     this.truckModalService
       .deleteTruckById(id, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -663,5 +673,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

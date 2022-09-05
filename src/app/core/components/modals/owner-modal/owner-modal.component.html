@@ -18,12 +18,14 @@
         <app-ta-input
           formControlName="bussinesName"
           [inputConfig]="{
-            name: 'Bussines Name',
+            name: 'Business Name',
             type: 'text',
-            label: 'Bussines Name',
+            label: 'Business Name',
             isRequired: true,
-            textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit' ? true : false
+            textTransform: 'uppercase',
+            autoFocus: editData?.type !== 'edit' ? true : false,
+            minLength: 2,
+            maxLength: 64
           }"
         ></app-ta-input>
       </div>
@@ -48,6 +50,8 @@
             name: 'First name',
             type: 'text',
             label: 'First Name',
+            minLength: 2,
+            maxLength: 26,
             isRequired: true,
             textTransform: 'capitalize'
           }"
@@ -60,6 +64,8 @@
             name: 'Last name',
             type: 'text',
             label: 'Last Name',
+            minLength: 2,
+            maxLength: 26,
             isRequired: true,
             textTransform: 'capitalize'
           }"
@@ -100,7 +106,10 @@
             type: 'text',
             label: 'Email',
             isRequired: true,
-            placeholderIcon: 'email'
+            placeholderIcon: 'email',
+            minLength: 5,
+            maxLength: 64,
+            textTransform: 'lowercase'
           }"
         ></app-ta-input>
       </div>
@@ -115,6 +124,8 @@
             label: 'Address, City, State Zip',
             isRequired: true,
             placeholderIcon: 'address',
+            minLength: 12,
+            maxLength: 256,
             textTransform: 'capitalize'
           }"
           [activeAddress]="selectedAddress"
@@ -125,10 +136,12 @@
         <app-ta-input
           formControlName="addressUnit"
           [inputConfig]="{
-            name: 'Address Unit',
+            name: 'address-unit',
             type: 'text',
             label: 'Unit #',
-            maxLength: 6
+            textTransform: 'uppercase',
+            minLength: 1,
+            maxLength: 10
           }"
         ></app-ta-input>
       </div>
@@ -139,9 +152,12 @@
           formControlName="bankId"
           [template]="'svg-template'"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown  Bank Name',
             type: 'text',
             label: 'Bank Name',
+            minLength: 2,
+            maxLength: 64,
+            textTransform: 'uppercase',
             isDropdown: true,
             dropdownWidthClass: 'w-col-165'
           }"
@@ -156,7 +172,7 @@
         <app-ta-input
           formControlName="routingNumber"
           [inputConfig]="{
-            name: 'Routing Number',
+            name: 'routing-bank',
             type: 'text',
             label: 'Routing #',
             isDisabled: !isBankSelected,
@@ -170,13 +186,13 @@
         <app-ta-input
           formControlName="accountNumber"
           [inputConfig]="{
-            name: 'Account Number',
+            name: 'account-bank',
             type: 'text',
             label: 'Account #',
             isDisabled: !isBankSelected,
             isRequired: isBankSelected,
             maxLength: 17,
-            minLength: 4
+            minLength: 5
           }"
         ></app-ta-input>
       </div>

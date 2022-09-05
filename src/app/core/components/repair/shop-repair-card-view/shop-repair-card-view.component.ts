@@ -9,13 +9,12 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { RepairShopResponse } from 'appcoretruckassist';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShopQuery } from '../state/shop-state/shop.query';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-minimal-list-state/shop-minimal.query';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-shop-repair-card-view',
   templateUrl: './shop-repair-card-view.component.html',
@@ -24,6 +23,7 @@ import { RepairShopMinimalListQuery } from '../state/shop-details-state/shop-min
 export class ShopRepairCardViewComponent
   implements OnInit, OnChanges, OnDestroy
 {
+  private destroy$ = new Subject<void>();
   @Input() shopResponse: any;
   @Input() templateCard: boolean;
   public noteControl: FormControl = new FormControl();
@@ -49,7 +49,7 @@ export class ShopRepairCardViewComponent
   }
   ngOnInit(): void {
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.shopResponse = res.data;
@@ -162,6 +162,8 @@ export class ShopRepairCardViewComponent
     ];
   }
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
   }
 }

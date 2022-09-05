@@ -1,13 +1,10 @@
 import {
-  convertThousanSepInNumber,
-  convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
-import {
-  phoneRegex,
-  emailRegex,
+  phoneFaxRegex,
+  phoneExtension,
+  addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -17,14 +14,19 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { RepairTService } from 'src/app/core/components/repair/state/repair.service';
 
-@UntilDestroy()
+import { Subject, takeUntil } from 'rxjs';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { RepairTService } from '../../../../repair/state/repair.service';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
+
 @Component({
   selector: 'app-settings-repairshop-modal',
   templateUrl: './settings-repairshop-modal.component.html',
@@ -33,6 +35,7 @@ import { RepairTService } from 'src/app/core/components/repair/state/repair.serv
   providers: [ModalService, FormService],
 })
 export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public repairShopForm: FormGroup;
@@ -93,21 +96,27 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
       name: [null, Validators.required],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, [Validators.required, phoneRegex]],
-      phoneExt: [null],
-      email: [null, emailRegex],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      phoneExt: [null, [...phoneExtension]],
+      email: [null],
       rent: [null],
       payPeriod: [null],
       weeklyDay: [null],
       monthlyDay: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.repairShopForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.repairShopForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -213,7 +222,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .updateRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -260,7 +269,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
 
     this.repairService
       .addRepairShop(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -280,7 +289,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private deleteRepairShopById(id: number) {
     this.repairService
       .deleteRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -300,7 +309,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private editRepairShopById(id: number) {
     this.repairService
       .getRepairShopById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopResponse) => {
           this.repairShopForm.patchValue({
@@ -351,7 +360,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.repairService
       .getRepairShopModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: RepairShopModalResponse) => {
           this.payPeriods = res.payPeriods;
@@ -375,5 +384,8 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

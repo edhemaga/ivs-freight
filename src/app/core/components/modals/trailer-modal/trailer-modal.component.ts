@@ -1,5 +1,4 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -10,7 +9,6 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CreateTrailerCommand,
   GetTrailerModalResponse,
@@ -19,22 +17,31 @@ import {
   VinDecodeResponse,
 } from 'appcoretruckassist';
 import {
-  insurancePolicyRegex,
+  axlesValidation,
+  emptyWeightValidation,
+  insurancePolicyValidation,
+  mileageValidation,
+  truckTrailerModelValidation,
+  vehicleUnitValidation,
+  vinNumberValidation,
+  yearValidation,
   yearValidRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-trailer-modal',
   templateUrl: './trailer-modal.component.html',
@@ -44,6 +51,8 @@ import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/r
   providers: [ModalService, FormService],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @Input() editData: any;
 
   public trailerForm: FormGroup;
@@ -117,38 +126,38 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.trailerForm = this.formBuilder.group({
       companyOwned: [true],
-      trailerNumber: [null, [Validators.required, Validators.maxLength(8)]],
-      trailerTypeId: [null, [Validators.required]],
-      vin: [
+      trailerNumber: [
         null,
         [
           Validators.required,
-          Validators.minLength(17),
-          Validators.maxLength(17),
+          Validators.maxLength(8),
+          ...vehicleUnitValidation,
         ],
       ],
+      trailerTypeId: [null, [Validators.required]],
+      vin: [null, [Validators.required, ...vinNumberValidation]],
       trailerMakeId: [null, [Validators.required]],
-      model: [null],
+      model: [null, truckTrailerModelValidation],
       colorId: [null],
-      year: [null, [Validators.required, yearValidRegex]],
+      year: [null, [Validators.required, yearValidRegex, ...yearValidation]],
       trailerLengthId: [null, [Validators.required]],
       ownerId: [null],
       note: [null],
-      axles: [null],
+      axles: [null, axlesValidation],
       suspension: [null],
       tireSizeId: [null],
       doorType: [null],
       reeferUnit: [null],
-      emptyWeight: [null],
-      mileage: [null],
+      emptyWeight: [null, emptyWeightValidation],
+      mileage: [null, mileageValidation],
       volume: [null],
-      insurancePolicy: [null, insurancePolicyRegex],
+      insurancePolicy: [null, insurancePolicyValidation],
     });
 
     // this.formService.checkFormChange(this.trailerForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -157,7 +166,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private isCompanyOwned() {
     this.trailerForm
       .get('companyOwned')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(this.trailerForm.get('ownerId'));
@@ -185,7 +194,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       if (data.action === 'deactivate' && this.editData) {
         this.trailerModalService
           .changeTrailerStatus(this.editData.id, this.editData.tabSelected)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: HttpResponseBase) => {
               if (res.status === 200 || res.status === 204) {
@@ -215,7 +224,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTrailer();
-            this.modalService.setModalSpinner({ action: null, status: true });
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+              clearTimeout: this.editData?.canOpenModal ? true : false,
+            });
           }
         }
 
@@ -258,7 +271,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private getTrailerDropdowns(): void {
     this.trailerModalService
       .getTrailerDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTrailerModalResponse) => {
           this.trailerType = res.trailerTypes.map((item) => {
@@ -329,7 +342,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .addTrailer(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -350,7 +363,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     let trailerUnit = this.trailerForm.get('trailerNumber').value;
     this.trailerModalService
       .deleteTrailerById(id, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -422,7 +435,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     this.trailerModalService
       .updateTrailer(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -491,7 +504,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private editTrailerById(id: number): void {
     this.trailerModalService
       .getTrailerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TrailerResponse) => {
           this.trailerForm.patchValue({
@@ -626,13 +639,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
   private vinDecoder() {
     this.trailerForm
       .get('vin')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
+        if (value?.length > 13 && value?.length < 17) {
+          this.trailerForm.get('vin').setErrors({ invalid: true });
+        }
         if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 2)
-            .pipe(untilDestroyed(this))
+            .pipe(takeUntil(this.destroy$))
             .subscribe({
               next: (res: VinDecodeResponse) => {
                 this.trailerForm.patchValue({
@@ -654,5 +670,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

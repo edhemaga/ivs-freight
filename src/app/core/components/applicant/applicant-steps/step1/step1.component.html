@@ -90,6 +90,8 @@
               type: 'text',
               label: 'First Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: true,
               incorrectInput: selectedMode === 'REVIEW_MODE'
@@ -106,6 +108,8 @@
               type: 'text',
               label: 'Last Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
@@ -184,7 +188,10 @@
               label: 'Email',
               isRequired: true,
               placeholderIcon: 'email',
-              isDisabled: true
+              textTransform: 'lowercase',
+              isDisabled: true,
+              minLength: 5,
+              maxLength: 64
             }"
           ></app-ta-input>
         </div>
@@ -325,6 +332,8 @@
                           isRequired: true,
                           placeholderIcon: 'address',
                           textTransform: 'capitalize',
+                          minLength: 12,
+                          maxLength: 256,
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="false"
@@ -339,10 +348,12 @@
                       <app-ta-input
                         formControlName="addressUnit"
                         [inputConfig]="{
-                          name: 'Address Unit',
+                          name: 'address-unit',
                           type: 'text',
                           label: 'Unit #',
-                          maxLength: 6,
+                          minLength: 1,
+                          maxLength: 10,
+                          textTransform: 'uppercase',
                           incorrectInput: selectedMode === 'REVIEW_MODE'
                         }"
                         [incorrectValue]="false"
@@ -638,9 +649,12 @@
             formControlName="bankId"
             [template]="'svg-template'"
             [inputConfig]="{
-              name: 'Input Dropdown',
+              name: 'Input Dropdown Bank Name',
               type: 'text',
               label: 'Bank Name',
+              minLength: 2,
+              maxLength: 64,
+              textTransform: 'uppercase',
               isDropdown: true,
               dropdownWidthClass: 'w-col-416',
               incorrectInput: selectedMode === 'REVIEW_MODE'
@@ -685,13 +699,13 @@
           <app-ta-input
             formControlName="accountNumber"
             [inputConfig]="{
-              name: 'Account Number',
+              name: 'account-bank',
               type: 'text',
               label: 'Account number',
               isDisabled: !isBankSelected,
               isRequired: isBankSelected,
               maxLength: 17,
-              minLength: 4,
+              minLength: 5,
               incorrectInput: selectedMode === 'REVIEW_MODE'
             }"
             [incorrectValue]="false"
@@ -702,7 +716,7 @@
           <app-ta-input
             formControlName="routingNumber"
             [inputConfig]="{
-              name: 'Routing Number',
+              name: 'routing-bank',
               type: 'text',
               label: 'Routing number',
               isDisabled: !isBankSelected,

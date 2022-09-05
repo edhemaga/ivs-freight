@@ -11,6 +11,8 @@
           placeholderIcon: 'address',
           textTransform: 'capitalize',
           autoFocus: true,
+          minLength: 12,
+          maxLength: 256,
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
@@ -159,6 +161,8 @@
           name: 'Description',
           type: 'text',
           label: 'Description',
+          minLength: 20,
+          maxLength: 160,
           textTransform: 'capitalize',
           isRequired: true,
           incorrectInput: selectedMode === 'REVIEW_MODE'

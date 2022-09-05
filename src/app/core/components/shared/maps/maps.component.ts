@@ -1,16 +1,22 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import * as AppConst from 'src/app/const';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
-import { MapsService } from 'src/app/core/services/shared/maps.service';
+import * as AppConst from 'src/app/const';
+import { MapsService } from '../../../services/shared/maps.service';
 
 @Component({
   selector: 'app-maps',
   templateUrl: './maps.component.html',
-  styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss']
+  styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
 })
 export class MapsComponent implements OnInit {
-
   @Input() viewData: any[] = [];
   @Input() mapType: string = 'shipper';
   @Input() dropdownActions: any[] = [];
@@ -37,7 +43,7 @@ export class MapsComponent implements OnInit {
   public mapCircle: any = {
     lat: 41.860119,
     lng: -87.660156,
-    radius: 160934.4 // 100 miles
+    radius: 160934.4, // 100 miles
   };
   public locationFilterOn: boolean = false;
   private tooltip: any;
@@ -50,7 +56,7 @@ export class MapsComponent implements OnInit {
   public mapCenter: any = {
     lat: 41.860119,
     lng: -87.660156,
-  }
+  };
 
   public routeColors: any[] = [
     '#8A9AEF',
@@ -60,7 +66,7 @@ export class MapsComponent implements OnInit {
     '#A574C3',
     '#73D0F1',
     '#F69FF3',
-    '#A1887F'
+    '#A1887F',
   ];
 
   constructor(
@@ -68,7 +74,7 @@ export class MapsComponent implements OnInit {
     private formBuilder: FormBuilder,
     private mapsAPILoader: MapsAPILoader,
     private mapsService: MapsService
-    ) { }
+  ) {}
 
   ngOnInit(): void {
     this.showHideMarkers();
@@ -88,76 +94,78 @@ export class MapsComponent implements OnInit {
 
       if (data.isSelected && data.id != id) {
         data.isSelected = false;
-      }
-      else if ( data.id == id ) {
+      } else if (data.id == id) {
         data.isSelected = !data.isSelected;
 
-        if ( data.isSelected ) {
+        if (data.isSelected) {
           this.markerSelected = true;
           this.mapLatitude = data.latitude;
           this.mapLongitude = data.longitude;
-        }
-        else {
+        } else {
           this.markerSelected = false;
         }
 
-        document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-          parentElement.style.zIndex = '998';
-  
-          setTimeout(() => { 
-            var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-            if ( childElements.length ) parentElement.style.zIndex = '999';
-          }, 1);
-        });
+        document
+          .querySelectorAll('.si-float-wrapper')
+          .forEach((parentElement: HTMLElement) => {
+            parentElement.style.zIndex = '998';
+
+            setTimeout(() => {
+              var childElements = parentElement.querySelectorAll(
+                '.show-marker-dropdown'
+              );
+              if (childElements.length) parentElement.style.zIndex = '999';
+            }, 1);
+          });
       }
     });
 
-      // this.mapMarkers.map((data: any, index) => {
-      //   if (data.isExpanded) {
-      //     data.isExpanded = false;
-      //   }
-  
-      //   if (data.isSelected && data.id != id) {
-      //     data.isSelected = false;
-      //   }
-      //   else if ( data.id == id ) {
-      //     data.isSelected = !data.isSelected;
-  
-      //     if ( data.isSelected ) {
-      //       this.markerSelected = true;
-      //       this.mapLatitude = data.latitude;
-      //       this.mapLongitude = data.longitude;
-      //     }
-      //     else {
-      //       this.markerSelected = false;
-      //     }
-  
-      //     document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
-      //         parentElement.style.zIndex = '998';
-  
-      //         var shadowElement = parentElement.querySelectorAll<HTMLElement>(".si-content")[0];
-      //         shadowElement.classList.remove("marker-tooltip-shadow");
-  
-      //         setTimeout(() => { 
-      //           var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
-      //           if ( childElements.length ) {
-                  
-      //             setTimeout(() => { 
-      //               shadowElement.classList.add("marker-tooltip-shadow");
-      //             }, 150);
-  
-      //             parentElement.style.zIndex = '999';
-      //           }
-      //         }, 1);
-      //     });
-          
-      //     data.markerAnimation = 'BOUNCE';
-  
-      //     setTimeout(function() {
-      //       data.markerAnimation = 'none';
-      //     }, 500);
-      //   }
-      // });
+    // this.mapMarkers.map((data: any, index) => {
+    //   if (data.isExpanded) {
+    //     data.isExpanded = false;
+    //   }
+
+    //   if (data.isSelected && data.id != id) {
+    //     data.isSelected = false;
+    //   }
+    //   else if ( data.id == id ) {
+    //     data.isSelected = !data.isSelected;
+
+    //     if ( data.isSelected ) {
+    //       this.markerSelected = true;
+    //       this.mapLatitude = data.latitude;
+    //       this.mapLongitude = data.longitude;
+    //     }
+    //     else {
+    //       this.markerSelected = false;
+    //     }
+
+    //     document.querySelectorAll('.si-float-wrapper').forEach((parentElement: HTMLElement) => {
+    //         parentElement.style.zIndex = '998';
+
+    //         var shadowElement = parentElement.querySelectorAll<HTMLElement>(".si-content")[0];
+    //         shadowElement.classList.remove("marker-tooltip-shadow");
+
+    //         setTimeout(() => {
+    //           var childElements = parentElement.querySelectorAll('.show-marker-dropdown');
+    //           if ( childElements.length ) {
+
+    //             setTimeout(() => {
+    //               shadowElement.classList.add("marker-tooltip-shadow");
+    //             }, 150);
+
+    //             parentElement.style.zIndex = '999';
+    //           }
+    //         }, 1);
+    //     });
+
+    //     data.markerAnimation = 'BOUNCE';
+
+    //     setTimeout(function() {
+    //       data.markerAnimation = 'none';
+    //     }, 500);
+    //   }
+    // });
   }
 
   mapClick(event) {
@@ -168,39 +176,42 @@ export class MapsComponent implements OnInit {
     });
 
     console.log('mapClick event', event);
-    
-    var shadowElements = document.getElementsByClassName("marker-tooltip-shadow");
-    if ( shadowElements.length ) shadowElements[0].classList.remove("marker-tooltip-shadow");
+
+    var shadowElements = document.getElementsByClassName(
+      'marker-tooltip-shadow'
+    );
+    if (shadowElements.length)
+      shadowElements[0].classList.remove('marker-tooltip-shadow');
   }
 
   markersDropAnimation() {
     var mainthis = this;
 
+    setTimeout(() => {
+      this.viewData.map((data: any) => {
+        if (!mainthis.markerAnimations[data.id]) {
+          mainthis.markerAnimations[data.id] = true;
+        }
+      });
+
       setTimeout(() => {
         this.viewData.map((data: any) => {
-          if ( !mainthis.markerAnimations[data.id] ) {
-            mainthis.markerAnimations[data.id] = true;
+          if (!mainthis.showMarkerWindow[data.id]) {
+            mainthis.showMarkerWindow[data.id] = true;
           }
         });
-          
-        setTimeout(() => {
-          this.viewData.map((data: any) => {
-            if ( !mainthis.showMarkerWindow[data.id] ) {
-              mainthis.showMarkerWindow[data.id] = true;
-            }
-          });
-        }, 100);
-      }, 1000);
+      }, 100);
+    }, 1000);
   }
 
-  zoomChange(event){
+  zoomChange(event) {
     this.mapZoom = event;
   }
 
   markerZoom(e, item) {
-    if(e.wheelDeltaY > 0) {
+    if (e.wheelDeltaY > 0) {
       // The user scrolled up.
-      this.zoomChange(this.mapZoom+1);
+      this.zoomChange(this.mapZoom + 1);
 
       if ( this.mapLatitude == item.latitude && this.mapLongitude == item.longitude ) {
         this.mapLatitude = item.latitude+0.000001;
@@ -215,15 +226,22 @@ export class MapsComponent implements OnInit {
       console.log('markerZoom mapLongitude', this.mapLongitude);
     } else {
       // The user scrolled down.
-      this.zoomChange(this.mapZoom-1);
+      this.zoomChange(this.mapZoom - 1);
     }
   }
 
-  showHideMarkers(){
+  showHideMarkers() {
     this.viewData.map((data: any) => {
-      var getDistance = this.mapsService.getDistanceBetween(data.latitude,data.longitude,this.mapCircle.lat,this.mapCircle.lng);
+      var getDistance = this.mapsService.getDistanceBetween(
+        data.latitude,
+        data.longitude,
+        this.mapCircle.lat,
+        this.mapCircle.lng
+      );
       data.isShown = getDistance[0];
-      data.distanceBetween = this.mapsService.getMiles(getDistance[1]).toFixed(1);
+      data.distanceBetween = this.mapsService
+        .getMiles(getDistance[1])
+        .toFixed(1);
     });
   }
 
@@ -247,12 +265,12 @@ export class MapsComponent implements OnInit {
 
     this.sortTypes[1].isHidden = true;
 
-    if ( this.activeSortType.name == 'Location' ) {
+    if (this.activeSortType.name == 'Location') {
       this.activeSortType = this.sortTypes[0];
     }
 
     this.locationForm.reset();
-    
+
     this.ref.detectChanges();
   }
 
@@ -272,11 +290,10 @@ export class MapsComponent implements OnInit {
   }
 
   zoomMap(zoom) {
-    if ( zoom == 'minus' && this.mapZoom > 0 ) {
+    if (zoom == 'minus' && this.mapZoom > 0) {
       this.mapZoom--;
-    } else if ( this.mapZoom < 21 ) {
+    } else if (this.mapZoom < 21) {
       this.mapZoom++;
     }
   }
-
 }

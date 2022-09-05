@@ -1,8 +1,7 @@
-import {ServerResponse, ServerResponseList} from './shared/response';
-import {Enums} from './shared/enums';
-// import { Color } from './shared/color';
-import {RepairShop} from './shared/repairShop';
-import {HistoryData} from 'src/app/shared/truckassist-history-data/truckassist-history-data.component';
+import { ServerResponse, ServerResponseList } from './shared/response';
+import { Enums } from './shared/enums';
+import { RepairShop } from './shared/repairShop';
+import { HistoryData } from '../history-data/history-data.component';
 
 export interface TruckColumn {
   name: string;
