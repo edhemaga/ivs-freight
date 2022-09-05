@@ -1,18 +1,24 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
+@UntilDestroy()
 @Component({
   selector: 'app-dashboard-top-driver',
   templateUrl: './dashboard-top-driver.component.html',
-  styleUrls: ['./dashboard-top-driver.component.scss']
+  styleUrls: ['./dashboard-top-driver.component.scss'],
 })
 export class DashboardTopDriverComponent implements OnInit {
-  @ViewChild('doughnutChart', {static: false}) public doughnutChart: any;
-  @ViewChild('topDriverBarChart', {static: false}) public topDriverBarChart: any;
-  @ViewChild('timePeriod', {static: false}) public timePeriod: any;
+  @ViewChild('doughnutChart', { static: false }) public doughnutChart: any;
+  @ViewChild('topDriverBarChart', { static: false })
+  public topDriverBarChart: any;
+  @ViewChild('timePeriod', { static: false }) public timePeriod: any;
+  @ViewChild('tabSwitch', { static: false }) public tabSwitch: any;
   @ViewChild('t2') t2: any;
   @ViewChild('t3') t3: any;
 
-  topTenTitle: string = "Driver";
+  topTenTitle: string = 'Driver';
+  currentSwitchTab: string = 'All Time';
 
   selectedDrivers: any[] = [];
 
@@ -23,29 +29,37 @@ export class DashboardTopDriverComponent implements OnInit {
       {
         defaultConfig: {
           type: 'bar',
-          data: [90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000, 25000, 13000, 28000, 80000, 120000, 70000, 50000],
+          data: [
+            90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000, 40000,
+            50000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000,
+            25000, 13000, 28000, 80000, 120000, 70000, 50000,
+          ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
           borderColor: '#919191',
           hoverBackgroundColor: '#6C6C6C',
           hoverBorderColor: '#707070',
           label: 'Top 10',
-          id: 'top10'
-        }
+          id: 'top10',
+        },
       },
       {
         defaultConfig: {
           type: 'bar',
-          data: [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000],
+          data: [
+            60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
+            95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
+            80000, 120000, 90000, 60000, 50000, 100000, 120000,
+          ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
           borderColor: '#CCCCCC',
           hoverBackgroundColor: '#AAAAAA',
           hoverBorderColor: '#707070',
           label: 'All Others',
-          id: 'allOthers'
-        }
-      }
+          id: 'allOthers',
+        },
+      },
     ],
     showLegend: false,
     chartValues: [2, 2],
@@ -58,9 +72,36 @@ export class DashboardTopDriverComponent implements OnInit {
     dataMaxRows: 4,
     hasHoverData: true,
     hasPercentage: true,
+    allowAnimation: true,
     offset: true,
-    dataLabels: ['MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2024', '', 'MAR', '', 'MAY', '', 'JUL', '', 'SEP', '', 'NOV', '', '2025', '', 'MAR'],
-    noChartImage: 'assets/svg/common/no_data_pay.svg'
+    dataLabels: [
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP',
+      '',
+      'NOV',
+      '',
+      '2024',
+      '',
+      'MAR',
+      '',
+      'MAY',
+      '',
+      'JUL',
+      '',
+      'SEP',
+      '',
+      'NOV',
+      '',
+      '2025',
+      '',
+      'MAR',
+    ],
+    noChartImage: 'assets/svg/common/no_data_pay.svg',
   };
 
   public barAxes: object = {
@@ -69,13 +110,13 @@ export class DashboardTopDriverComponent implements OnInit {
       minValue: 0,
       maxValue: 120000,
       stepSize: 30000,
-      showGridLines: true
+      showGridLines: true,
     },
     horizontalAxes: {
       visible: true,
       position: 'bottom',
-      showGridLines: false
-    }
+      showGridLines: false,
+    },
   };
 
   public chartAxes: object = {};
@@ -85,7 +126,6 @@ export class DashboardTopDriverComponent implements OnInit {
   topTenSwitchTabstype2: any[] = [];
 
   topTenSwitchTabstype3: any[] = [];
- 
 
   driverTopSwitch: any[] = [];
 
@@ -94,66 +134,89 @@ export class DashboardTopDriverComponent implements OnInit {
       id: 1,
       name: 'Denis Rodman',
       price: '$123.45K',
-      percent: '8.53%'
+      percent: '8.53%',
     },
     {
       id: 2,
       name: 'Sasa Djordjevic',
       price: '$102.34K',
-      percent: '8.43%'
+      percent: '8.43%',
     },
     {
       id: 3,
       name: 'Nicolas Drozlibrew',
       price: '$95.15K',
-      percent: '7.35%'
+      percent: '7.35%',
     },
     {
       id: 4,
       name: 'Samuel Lioton',
       price: '$93.52K',
-      percent: '7.23%'
+      percent: '7.23%',
     },
     {
       id: 5,
       name: 'Angelo Trotter',
       price: '$89.35K',
-      percent: '6.87%'
+      percent: '6.87%',
     },
     {
       id: 6,
       name: 'Stan Tolbert',
       price: '$75.23K',
-      percent: '4.07%'
+      percent: '4.07%',
     },
     {
       id: 7,
       name: 'Michael Scott',
       price: '$67.52K',
-      percent: '3.52%'
+      percent: '3.52%',
     },
     {
       id: 8,
       name: 'Toby Flanders',
       price: '$65.25K',
-      percent: '3.43%'
+      percent: '3.43%',
     },
     {
       id: 9,
       name: 'Sasuke Uchica',
       price: '$35.04K',
-      percent: '2.96%'
+      percent: '2.96%',
     },
     {
       id: 10,
       name: 'Peter Simpson',
       price: '$26.23K',
-      percent: '2.12%'
-    }
+      percent: '2.12%',
+    },
   ];
 
-  circleColor: any[] = ['8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1', 'FFD54F', 'BDE08E', 'F69FF3', 'A1887F', 'CCCCCC'];
-  hoverCircleColor: any[] = ['596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63'];
+  circleColor: any[] = [
+    '8A9AEF',
+    'FDB46B',
+    'F27B8E',
+    '6DC089',
+    'A574C3',
+    '73D0F1',
+    'FFD54F',
+    'BDE08E',
+    'F69FF3',
+    'A1887F',
+    'CCCCCC',
+  ];
+  hoverCircleColor: any[] = [
+    '596FE8',
+    'FD952D',
+    'ED445E',
+    '2FA558',
+    '7F39AA',
+    '38BDEB',
+    'FFCA28',
+    'A2D35F',
+    'F276EF',
+    '8D6E63',
+  ];
   chartColors: any[] = [];
   compareColor: any = {};
   compareHoverColor: any = {};
@@ -164,47 +227,51 @@ export class DashboardTopDriverComponent implements OnInit {
     {
       name: 'Dispatcher',
       tab1: 'Load',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Driver',
       active: true,
       tab1: 'Mileage',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Truck',
       tab1: 'Mileage',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Broker',
       tab1: 'Load',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Shipper',
       tab1: 'Load',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Owner',
       tab1: 'Load',
-      tab2: 'Revenue'
+      tab2: 'Revenue',
     },
     {
       name: 'Repair Shop',
       tab1: 'Visit',
-      tab2: 'Cost'
+      tab2: 'Cost',
     },
     {
       name: 'Fuel Stop',
       tab1: 'Visit',
-      tab2: 'Cost'
-    }
+      tab2: 'Cost',
+    },
   ];
 
-  constructor() { }
+  public searchDashboardOptions = {
+    gridNameTitle: 'Top Driver',
+  };
+
+  constructor(private tableService: TruckassistTableService) {}
 
   setChartData(drivers, selectedDrivers?) {
     var dataValues = [];
@@ -220,39 +287,40 @@ export class DashboardTopDriverComponent implements OnInit {
     var otherPercent = 100 - topTenPercentage;
     otherPercent = parseFloat(otherPercent.toFixed(2));
 
-    if ( !selectedDrivers ) { dataValues.push(otherPercent); }
+    if (!selectedDrivers) {
+      dataValues.push(otherPercent);
+    }
 
     this.circleColor.map((item, i) => {
-      var color = '#'+item;
+      var color = '#' + item;
       dataColors.push(color);
     });
 
-    if ( this.circleColor?.length ) {
+    if (this.circleColor?.length) {
       this.chartColors = this.circleColor;
     }
 
     let chartProp = [];
 
-    if ( selectedDrivers ){
+    if (selectedDrivers) {
       chartProp = [
         {
-          name: drivers.length+' SELECTED',
-          percent: '$773.08K'
-        }
+          name: drivers.length + ' SELECTED',
+          percent: '$773.08K',
+        },
       ];
-    }
-    else{
+    } else {
       chartProp = [
         {
-          name: 'TOP '+drivers.length,
+          name: 'TOP ' + drivers.length,
           value: '$773.08K',
-          percent: topTenPercentage+'%'
+          percent: topTenPercentage + '%',
         },
         {
           name: 'ALL OTHERS',
           value: '$623.56K',
-          percent: otherPercent+'%'
-        }
+          percent: otherPercent + '%',
+        },
       ];
     }
 
@@ -265,9 +333,9 @@ export class DashboardTopDriverComponent implements OnInit {
             backgroundColor: dataColors,
             borderColor: '#fff',
             hoverBackgroundColor: ['#596FE8'],
-            hoverBorderColor: '#fff'
-          }
-        }
+            hoverBorderColor: '#fff',
+          },
+        },
       ],
       chartInnitProperties: chartProp,
       showLegend: true,
@@ -278,17 +346,17 @@ export class DashboardTopDriverComponent implements OnInit {
       removeChartMargin: true,
       dataLabels: [],
       driversList: drivers,
-      noChartImage: 'assets/svg/common/no_data_pay.svg'
+      allowAnimation: true,
+      noChartImage: 'assets/svg/common/no_data_pay.svg',
     };
 
-    if ( this.doughnutChart ) {
+    if (this.doughnutChart) {
       this.doughnutChart.chartInnitProperties = chartProp;
       this.doughnutChart.chartUpdated(dataValues);
     }
   }
 
   ngOnInit(): void {
-
     this.setChartData(this.driverList);
 
     this.topTenSwitchTabstype1 = [
@@ -296,71 +364,109 @@ export class DashboardTopDriverComponent implements OnInit {
         name: 'Mileage',
       },
       {
-        name: 'Revenue'
-      }
+        name: 'Revenue',
+      },
     ];
 
     this.driverTopSwitch = [
       {
-        name: 'Today'
+        name: 'Today',
       },
       {
-        name: 'WTD'
+        name: 'WTD',
       },
       {
-        name: 'MTD'
+        name: 'MTD',
       },
       {
-        name: 'YTD'
+        name: 'YTD',
       },
       {
-        name: 'All Time'
+        name: 'All Time',
+        checked: true,
       },
       {
         name: 'Custom',
-        custom: true
-      }
+        custom: true,
+      },
     ];
+
+    this.tableService.currentSearchTableData
+      .pipe(untilDestroyed(this))
+      .subscribe((res: any) => {
+        if (res) {
+          // your search code here
+        }
+      });
   }
 
-  changeDriverSwitchTabs(ev){
+  ngAfterViewInit(): void {
+    this.timePeriod.changeTimePeriod('All Time');
+  }
+
+  changeDriverSwitchTabs(ev) {
     this.timePeriod.changeTimePeriod(ev['name']);
-    this.topDriverBarChart.updateTime(ev);
+    this.currentSwitchTab = ev['name'];
+    if (ev['name'] == 'Custom') {
+      return false;
+    }
+    this.topDriverBarChart.updateTime(ev['name']);
   }
 
-  removeDriverFromList(e: Event,indx, item){
-    e.stopPropagation()
+  saveCustomRange(ev) {
+    this.timePeriod.changeCustomTime(ev);
+    this.topDriverBarChart.updateTime('Custom Set', ev);
+  }
+
+  removeDriverFromList(e: Event, indx, item) {
+    e.stopPropagation();
+    item.active = false;
     this.driverList.splice(indx, 1);
     let showDefault = false;
-    if ( this.selectedDrivers?.length == 1 ) {
+    if (this.selectedDrivers?.length == 1) {
       showDefault = true;
     }
-    this.topDriverBarChart.removeMultiBarData(this.selectedDrivers[indx], showDefault);
+    this.topDriverBarChart.removeMultiBarData(
+      this.selectedDrivers[indx],
+      showDefault
+    );
     this.selectedDrivers.splice(indx, 1);
     this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-    if ( this.selectedDrivers?.length > 0 ) {
+    if (this.selectedDrivers?.length > 0) {
       this.setChartData(this.selectedDrivers, true);
     }
-    
+
     this.driverList.push(item);
+    let allDrivers = [...this.driverList];
+    let activeDrivers = allDrivers.filter((driver) => driver.active == true);
+    this.driverList = activeDrivers;
+    let inactiveDrivers = allDrivers
+      .filter((driver) => !driver.active)
+      .sort((a, b) => {
+        return a.id - b.id;
+      });
+    inactiveDrivers.map((driver) => {
+      this.driverList.push(driver);
+    });
+
     this.savedColors.unshift(this.compareColor[item.id]);
     this.savedHoverColors.unshift(this.compareHoverColor[item.id]);
-    if ( this.selectedDrivers?.length == 0 ) {
+    if (this.selectedDrivers?.length == 0) {
       this.setChartData(this.driverList);
     }
     delete this.compareColor[item.id];
     delete this.compareHoverColor[item.id];
   }
 
-  changeTopTen(item){
+  changeTopTen(item) {
     const newSwitchValue = [
       {
         name: item.tab1,
-        checked: true
+        checked: true,
       },
       {
-        name: item.tab2
-      }
+        name: item.tab2,
+      },
     ];
     this.topTenSwitchTabstype1 = newSwitchValue;
 
@@ -368,24 +474,26 @@ export class DashboardTopDriverComponent implements OnInit {
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;
-    })
+    });
     item.active = true;
     this.t3.close();
   }
 
-  selectCompare(item, indx){
+  selectCompare(e, item, indx) {
     const itemId: any = item.id;
-    if(!(itemId in this.compareColor)){
-      if( !this.savedColors.length ){
-        this.savedColors = [...this.circleColor]; 
+    if (!(itemId in this.compareColor)) {
+      if (!this.savedColors.length) {
+        this.savedColors = [...this.circleColor];
         this.circleColor = [];
-        this.savedHoverColors = [...this.hoverCircleColor]; 
+        this.savedHoverColors = [...this.hoverCircleColor];
         this.hoverCircleColor = [];
       }
-  
+
+      item.active = true;
+
       const firstInArray = this.savedColors.shift();
       const firstInArrayHover = this.savedHoverColors.shift();
-      
+
       const objectSize = Object.keys(this.compareColor).length;
       this.compareColor[item.id] = firstInArray;
       this.compareHoverColor[item.id] = firstInArrayHover;
@@ -398,24 +506,38 @@ export class DashboardTopDriverComponent implements OnInit {
       this.driverList.splice(objectSize, 0, item);
 
       this.hoverDriver(indx);
+    } else {
+      this.removeDriverFromList(e, indx, item);
     }
-
   }
 
-  hoverDriver(index: any){
+  hoverDriver(index: any) {
     this.doughnutChart.hoverDoughnut(index, 'number');
     this.topDriverBarChart.hoverBarChart(this.selectedDrivers[index]);
   }
 
-  removeDriverHover(){
+  removeDriverHover() {
     this.doughnutChart.hoverDoughnut(null);
     this.topDriverBarChart.hoverBarChart(null);
   }
 
-  updateBarChart(selectedStates: any){
-    let dataSend = [60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 50000, 100000, 120000];
-    if ( this.topDriverBarChart ){
-      this.topDriverBarChart.updateMuiliBar(selectedStates, dataSend, this.compareColor, this.compareHoverColor);
+  updateBarChart(selectedStates: any) {
+    let dataSend = [
+      60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000,
+      47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000, 80000, 120000,
+      90000, 60000, 50000, 100000, 120000,
+    ];
+    if (this.topDriverBarChart) {
+      this.topDriverBarChart.updateMuiliBar(
+        selectedStates,
+        dataSend,
+        this.compareColor,
+        this.compareHoverColor
+      );
     }
+  }
+
+  selectTimePeriod(period) {
+    this.topDriverBarChart.updateTime(this.currentSwitchTab, period);
   }
 }

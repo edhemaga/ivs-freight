@@ -13,11 +13,11 @@ import {
   UpdateDriverCommand,
 } from 'appcoretruckassist';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
-/* import { CreateDriverResponse } from 'appcoretruckassist/model/createDriverResponse'; */
 import { DriversActiveQuery } from './driver-active-state/driver-active.query';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversInactiveQuery } from './driver-inactive-state/driver-inactive.query';
 import { DriversInactiveStore } from './driver-inactive-state/driver-inactive.store';
+import { DriversMinimalListStore } from './driver-details-minimal-list-state/driver-minimal-list.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +29,7 @@ export class DriverTService {
     private driverActiveStore: DriversActiveStore,
     private driversInactiveQuery: DriversInactiveQuery,
     private driverInactiveStore: DriversInactiveStore,
+    private driverMinimimalListStore: DriversMinimalListStore,
     private cdlService: CdlService,
     private ownerService: OwnerService,
     private tableService: TruckassistTableService
@@ -121,7 +122,7 @@ export class DriverTService {
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
-
+        this.driverMinimimalListStore.remove(({ id }) => id === driverId);
         if (tableSelectedTab === 'active') {
           this.driverActiveStore.remove(({ id }) => id === driverId);
 

@@ -97,12 +97,12 @@
 
 .card-note {
   margin-left: 6px;
-  height: 40px;
   .note-body {
     padding-left: 4px !important;
   }
   .note-textarea {
     color: #6c6c6c !important;
+    margin-bottom: 0 !important;
     &::-moz-selection {
       color: #6c6c6c;
       background: rgb(108, 108, 108, 0.2);

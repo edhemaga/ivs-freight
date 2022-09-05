@@ -5,18 +5,18 @@ import { FuelRoutingModule } from './fuel-routing.module';
 import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { AgmCoreModule } from '@agm/core';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [FuelTableComponent],
-  exports:[TruckassistTableModule],
+  exports: [TruckassistTableModule],
   imports: [
-    CommonModule, 
-    FuelRoutingModule, 
+    CommonModule,
+    FuelRoutingModule,
     TruckassistTableModule,
     AgmSnazzyInfoWindowModule,
     AgmCoreModule,
-    SharedModule
+    SharedModule,
   ],
 })
 export class FuelModule {}

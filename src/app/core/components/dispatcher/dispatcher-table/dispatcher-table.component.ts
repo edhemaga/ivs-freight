@@ -1,5 +1,4 @@
 import { DispatcherQuery } from './../state/dispatcher.query';
-import { takeUntil } from 'rxjs/operators';
 /// <reference types="@types/googlemaps" />
 import {
   Component,
@@ -8,25 +7,21 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { Subject } from 'rxjs';
-//import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
-import * as AppConst from 'src/app/const';
+import { Subject, takeUntil } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-// import { AppSignalRService } from './../../../core/services/app-signalr.service';
-import { environment } from 'src/environments/environment.prod';
-import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
-import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
-import { AppLoadService } from 'src/app/core/services/load/app-load.service';
-import { getDataFromGpsResponse } from 'src/assets/utils/methods-global';
-import { Enums } from 'src/app/core/model/enums';
-import { AppIdleService } from 'src/app/core/services/dispatchboard/app-idle.service';
-import { DispatchSortService } from 'src/app/core/services/dispatchboard/dispatchsort.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
-import { AppAddLoadTableComponent } from '../app-add-load-table/app-add-load-table.component';
-import { DispatcherHistoryComponent } from '../dispatcher-history/dispatcher-history.component';
 import { DispatcherStoreService } from '../state/dispatcher.service';
+import { AppIdleService } from '../../../services/dispatchboard/app-idle.service';
+import * as AppConst from 'src/app/const';
+import { Enums } from '../../shared/model/shared/enums';
+import { AppLoadService } from '../../../services/load/app-load.service';
+import { DispatchSortService } from '../../../services/dispatchboard/dispatchsort.service';
+import { SharedService } from '../../../services/shared/shared.service';
+import { SignalRService } from '../../../services/dispatchboard/app-signalr.service';
+import { AppDispatchSignalrService } from '../../../services/dispatchboard/app-dispatchSignalr.service';
+import { getDataFromGpsResponse } from '../../../utils/methods.globals';
+import { environment } from '../../../../../environments/environment';
 
 declare var google: any;
 
@@ -97,7 +92,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   trucksPositionOnMap = [];
   selectedDispatchers: any[] = [];
   savedMainGridData: any;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private loadService: AppLoadService,
@@ -110,7 +105,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     private gpsDataService: AppDispatchSignalrService,
     private dispatcherQuery: DispatcherQuery,
     public dispatcherStoreService: DispatcherStoreService
-  ) { }
+  ) {}
 
   openParking() {
     this.dispatcherStoreService.parkingOpened =
@@ -140,16 +135,15 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.dispatcherQuery.modalList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        console.log("dispatcherList");
+        console.log('dispatcherList');
         console.log(result);
         this.getDispatcherData(result.dispatchers);
       });
 
-
     this.dispatcherQuery.dispatchboardList$
       .pipe(takeUntil(this.destroy$))
       .subscribe((result) => {
-        console.log("dispatcherList");
+        console.log('dispatcherList');
         console.log(result);
       });
 
@@ -312,11 +306,11 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     const user = JSON.parse(localStorage.getItem('currentUser'));
     this.dispatcherItems.unshift({
       id: -1,
-      fullName: 'Team Board'
+      fullName: 'Team Board',
     });
     this.dispatcherItems.unshift({
       id: 0,
-      fullName: 'All Boards'
+      fullName: 'All Boards',
     });
 
     const previous_selected = localStorage.getItem('dispatchUserSelect');
@@ -348,7 +342,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
     this.refreshDispatchBoard(null);
   }
 
-  openAddLoad(id: any) { }
+  openAddLoad(id: any) {}
 
   addLoad() {
     const data = {
@@ -435,7 +429,6 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
   }
 
   refreshDispatchBoard(item?: any, id?: number) {
-
     if (this.dispatcher) {
       id = this.dispatcher;
     }
@@ -451,17 +444,17 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
             if (el.statusId > 0 && el.route) {
               const routesInfo = el.route
                 ? el.route.reduce(
-                  (routesNumb, item) => {
-                    if (item.PointType == 'pickup') {
-                      routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
-                    } else {
-                      routesNumb.deliveryNumber =
-                        routesNumb.deliveryNumber + 1;
-                    }
-                    return routesNumb;
-                  },
-                  { pickupNumber: 0, deliveryNumber: 0 }
-                )
+                    (routesNumb, item) => {
+                      if (item.PointType == 'pickup') {
+                        routesNumb.pickupNumber = routesNumb.pickupNumber + 1;
+                      } else {
+                        routesNumb.deliveryNumber =
+                          routesNumb.deliveryNumber + 1;
+                      }
+                      return routesNumb;
+                    },
+                    { pickupNumber: 0, deliveryNumber: 0 }
+                  )
                 : { pickupNumber: 0, deliveryNumber: 0 };
               Object.assign(el, routesInfo);
             }
@@ -470,7 +463,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
           this.getDispatcherItemsData();
           this.formatGridData(this.gridData);
         },
-        (error) => { }
+        (error) => {}
       );
   }
 
@@ -549,7 +542,7 @@ export class DispatcherTableComponent implements OnInit, OnDestroy {
       this.phoneEmailToggle == 'Email' ? 'Phone' : 'Email';
   }
 
-  openDispatchHistory() { }
+  openDispatchHistory() {}
 
   private startHttpRequest = () => {
     this.http

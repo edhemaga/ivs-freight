@@ -13,7 +13,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './core/components/shared/shared.module';
-import { ToastrModule, ToastNoAnimation, ToastNoAnimationModule} from 'ngx-toastr';
+import { ToastNoAnimationModule } from 'ngx-toastr';
 import { NgIdleModule } from '@ng-idle/core';
 import { GoogleMapsAPIWrapper } from '@agm/core';
 // ---- NAVIGATION
@@ -25,9 +25,9 @@ import { NavigationSubrouteCardComponent } from './core/components/navigation/na
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
-
+import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
+import { configFactory } from './app.config';
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,19 +59,19 @@ import { UserLoggedService } from './core/components/authentication/state/user-l
     ApiModule,
   ],
   providers: [
-    GoogleMapsAPIWrapper,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true,
+    },
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
-        new Configuration({
-          basePath: environment.API_ENDPOINT,
-          credentials: {
-            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
-          },
-        }),
+        configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },
+    GoogleMapsAPIWrapper,
   ],
   exports: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

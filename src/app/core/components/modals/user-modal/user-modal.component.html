@@ -25,6 +25,8 @@
                 type: 'text',
                 label: 'First Name',
                 isRequired: true,
+                minLength: 2,
+                maxLength: 26,
                 textTransform: 'capitalize',
                 autoFocus: editData?.type !== 'edit' ? true : false
               }"
@@ -37,6 +39,8 @@
                 name: 'Last name',
                 type: 'text',
                 label: 'Last Name',
+                minLength: 2,
+                maxLength: 26,
                 isRequired: true,
                 textTransform: 'capitalize'
               }"
@@ -52,6 +56,8 @@
                 type: 'text',
                 label: 'Address, City, State Zip',
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAddress"
@@ -62,10 +68,12 @@
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
                 label: 'Unit #',
-                maxLength: 6
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 10
               }"
             ></app-ta-input>
           </div>
@@ -91,7 +99,10 @@
                 name: 'Email',
                 type: 'text',
                 label: 'Email',
-                placeholderIcon: 'email'
+                placeholderIcon: 'email',
+                minLength: 5,
+                maxLength: 64,
+                textTransform: 'lowercase'
               }"
             ></app-ta-input>
           </div>
@@ -103,9 +114,12 @@
               <app-ta-input-dropdown
                 formControlName="departmentId"
                 [inputConfig]="{
-                  name: 'Input Dropdown',
+                  name: 'Input Dropdown Department',
+                  minLength: 2,
+                  maxLength: 36,
                   type: 'text',
                   label: 'Department',
+                  textTransform: 'capitalize',
                   isRequired: true,
                   isDropdown: true,
                   dropdownWidthClass: 'w-col-136'
@@ -172,10 +186,11 @@
                 *ngIf="isPhoneExtExist"
                 formControlName="employePhoneExt"
                 [inputConfig]="{
-                  name: 'Phone Extension',
+                  name: 'phone-extension',
                   type: 'text',
                   label: 'Ext.',
-                  maxLength: 3,
+                  minLength: 1,
+                  maxLength: 8,
                   placeholderIcon: 'phone-extension'
                 }"
               ></app-ta-input>
@@ -188,7 +203,10 @@
                   type: 'text',
                   label: 'Email',
                   placeholderIcon: 'email',
-                  isRequired: true
+                  isRequired: true,
+                  minLength: 5,
+                  maxLength: 64,
+                  textTransform: 'lowercase'
                 }"
               ></app-ta-input>
             </div>
@@ -264,9 +282,12 @@
                   formControlName="bankId"
                   [template]="'svg-template'"
                   [inputConfig]="{
-                    name: 'Input Dropdown',
+                    name: 'Input Dropdown  Bank Name',
                     type: 'text',
                     label: 'Bank Name',
+                    minLength: 2,
+                    maxLength: 64,
+                    textTransform: 'uppercase',
                     isDropdown: true,
                     dropdownWidthClass: 'w-col-163'
                   }"
@@ -281,7 +302,7 @@
                 <app-ta-input
                   formControlName="routingNumber"
                   [inputConfig]="{
-                    name: 'Routing Number',
+                    name: 'routing-bank',
                     type: 'text',
                     label: 'Routing #',
                     isDisabled: !isBankSelected,
@@ -295,13 +316,13 @@
                 <app-ta-input
                   formControlName="accountNumber"
                   [inputConfig]="{
-                    name: 'Account Number',
+                    name: 'account-bank',
                     type: 'text',
                     label: 'Account #',
                     isDisabled: !isBankSelected,
                     isRequired: isBankSelected,
                     maxLength: 17,
-                    minLength: 4
+                    minLength: 5
                   }"
                 ></app-ta-input>
               </div>

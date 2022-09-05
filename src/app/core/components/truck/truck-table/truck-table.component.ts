@@ -1,30 +1,30 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getTruckColumnDefinition } from 'src/assets/utils/settings/truck-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TruckModalComponent } from '../../modals/truck-modal/truck-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TruckTService } from '../state/truck.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
+
 import { TruckListResponse } from 'appcoretruckassist';
 import { TruckActiveQuery } from '../state/truck-active-state/truck-active.query';
 import { TruckInactiveQuery } from '../state/truck-inactive-state/truck-inactive.query';
 import { TruckActiveState } from '../state/truck-active-state/truck-active.store';
 import { TruckInactiveState } from '../state/truck-inactive-state/truck-inactive.store';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from '../../../utils/methods.globals';
+import { getTruckColumnDefinition } from '../../../../../assets/utils/settings/truck-columns';
 
-@UntilDestroy()
 @Component({
   selector: 'app-truck-table',
   templateUrl: './truck-table.component.html',
@@ -32,6 +32,7 @@ import {
   providers: [TaThousandSeparatorPipe],
 })
 export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -70,7 +71,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -99,7 +100,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response && !this.loadingPage) {
           this.resetColumns = response;
@@ -110,7 +111,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -125,7 +126,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -140,7 +141,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Add Truck Or Update
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation === 'add') {
           this.viewData.push(this.mapTruckData(res.data));
@@ -224,7 +225,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         if (response.length && !this.loadingPage) {
           let mappedRes = response.map((item) => {
@@ -253,7 +254,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
@@ -411,7 +412,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log(this.viewData);
 
     /* For Testing */
-    /* for(let i = 0; i < 500; i++){
+    /* for(let i = 0; i < 100; i++){
       this.viewData.push(this.viewData[0])
     } */
   }
@@ -501,7 +502,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((trucks: TruckListResponse) => {
         if (!isShowMore) {
           this.viewData = trucks.pagination.data;
@@ -642,7 +643,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private changeTruckStatus(id: number) {
     this.truckService
       .changeTruckStatus(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -662,7 +663,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private deleteTruckById(id: number) {
     this.truckService
       .deleteTruckById(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -698,7 +699,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private multipleDeleteTrucks(response: any[]) {
     this.truckService
       .deleteTruckList(response)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe(() => {
         this.viewData = this.viewData.map((truck: any) => {
           response.map((id: any) => {
@@ -729,6 +730,8 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

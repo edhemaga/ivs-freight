@@ -6,16 +6,16 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-factoring',
   templateUrl: './settings-factoring.component.html',
   styleUrls: ['./settings-factoring.component.scss'],
 })
 export class SettingsFactoringComponent implements OnChanges, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() public factoringData: any;
   public factoringPhone: boolean;
   public factoringEmail: boolean;
@@ -42,7 +42,7 @@ export class SettingsFactoringComponent implements OnChanges, OnDestroy {
       .deleteFactoringCompanyById(
         this.factoringData.divisions.length ? null : this.factoringData.id
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -59,5 +59,8 @@ export class SettingsFactoringComponent implements OnChanges, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -35,15 +35,16 @@
             "styles": [
               "src/styles.scss",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "node_modules/snazzy-info-window/dist/snazzy-info-window.css",
+              "./node_modules/snazzy-info-window/dist/snazzy-info-window.css",
               "./node_modules/ngx-toastr/toastr.css",
-              "node_modules/croppie/croppie.css"
+              "./node_modules/croppie/croppie.css"
             ],
             "scripts": [
               "./node_modules/jquery/dist/jquery.min.js",
-              "node_modules/popper.js/dist/umd/popper.js",
-              "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "src/assets/scripts/geoxml3.js"
+              "./node_modules/popper.js/dist/umd/popper.js",
+              "./node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "src/assets/scripts/geoxml3.js",
+              "./node_modules/crypto-js/crypto-js.js"
             ],
             "allowedCommonJsDependencies": [
               "ngx-google-places-autocomplete",

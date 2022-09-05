@@ -2,17 +2,16 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthStoreService } from '../state/auth.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
-@UntilDestroy()
 @Component({
   selector: 'app-helper-forgot-password',
   templateUrl: './helper-forgot-password.component.html',
   styleUrls: ['./helper-forgot-password.component.scss'],
 })
 export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   private verifyData: { emailHash: string; code: string };
 
   constructor(
@@ -41,7 +40,7 @@ export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
   private onVerifyForgotPassword(): void {
     this.authStoreService
       .verifyForgotPassword(this.verifyData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.authStoreService.getForgotPasswordToken(res.token);
@@ -55,5 +54,8 @@ export class HelperForgotPasswordComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

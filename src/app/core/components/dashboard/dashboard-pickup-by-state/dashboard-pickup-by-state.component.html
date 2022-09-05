@@ -25,12 +25,15 @@
         </div>
         <div class="dashboard-pickup-toolbar-border"></div>
         <div class="dashboard-pickup-toolbar-icons-holder">
-          <svg-icon
-            src="assets/svg/truckassist-search/new-search-icon.svg"
-          ></svg-icon>
+          <app-truckassist-search
+            [selectedTabData]="searchDashboardOptions"
+          ></app-truckassist-search>
         </div>
         <div class="dashboard-pickup-toolbar-border"></div>
-        <div class="dashboard-pickup-toolbar-filter-selected" (click)="clearSelected()">
+        <div
+          class="dashboard-pickup-toolbar-filter-selected"
+          (click)="clearSelected()"
+        >
           Clear Selection
         </div>
       </div>
@@ -42,7 +45,11 @@
           ></app-ta-tab-switch>
         </div>
         <div class="dashboard-pickup-toolbar-border margin-right"></div>
-        <app-ta-time-period #timePeriod></app-ta-time-period>
+        <app-ta-time-period
+          #timePeriod
+          (selectTimePeriod)="selectTimePeriod($event)"
+        >
+        </app-ta-time-period>
       </div>
     </div>
   </div>
@@ -53,7 +60,7 @@
           <div
             *ngFor="let item of pickupStateList; let indx = index"
             class="dashboard-pickup-body-state-list-items-holder"
-            (click)="selectStateCompare(item, indx)"
+            (click)="selectStateCompare($event, item, indx)"
             (mouseenter)="hoverState(indx)"
             (mouseleave)="removeStateHover()"
           >
@@ -65,6 +72,12 @@
               <div class="dashboard-pickup-body-state-list-frame">
                 <div class="dashboard-pickup-body-state-list-id">
                   {{ item.id }}
+                </div>
+                <div
+                  class="dashboard-pickup-body-state-list-remove"
+                  (click)="removeFromStateList($event, indx, item)"
+                >
+                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
                 </div>
                 <div
                   class="dashboard-pickup-body-state-list-circle"
@@ -83,15 +96,12 @@
                 <div class="dashboard-pickup-body-state-list-percent">
                   {{ item.percent }}
                 </div>
-                <div
-                  class="dashboard-pickup-body-state-list-remove"
-                  (click)="removeFromStateList($event, indx, item)"
-                >
-                  <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
-                </div>
               </div>
             </div>
-            <div class="dashboard-pickup-body-state-list-border"></div>
+            <div
+              class="dashboard-pickup-body-state-list-border"
+              [class.list_line_hidden]="!compareColor[item.id]"
+            ></div>
           </div>
         </div>
       </div>

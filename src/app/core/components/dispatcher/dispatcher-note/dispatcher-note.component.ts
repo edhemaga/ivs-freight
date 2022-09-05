@@ -1,7 +1,14 @@
-import {TaNoteContainerComponent} from './../../shared/ta-note/ta-note-container/ta-note-container.component';
-import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
-import {animate, style, transition, trigger} from '@angular/animations';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { TaNoteContainerComponent } from './../../shared/ta-note/ta-note-container/ta-note-container.component';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-dispatcher-note',
@@ -10,16 +17,13 @@ import { SharedService } from 'src/app/core/services/shared/shared.service';
   animations: [
     trigger('noteLongAnimation', [
       transition(':enter', [
-        style({width: 10}),
-        animate('100ms', style({width: '*'})),
+        style({ width: 10 }),
+        animate('100ms', style({ width: '*' })),
       ]),
-      transition(':leave', [
-        animate('300ms', style({width: 0})),
-      ]),
-    ])
-  ]
+      transition(':leave', [animate('300ms', style({ width: 0 }))]),
+    ]),
+  ],
 })
-
 export class DispatcherNoteComponent implements OnInit {
   @ViewChild(TaNoteContainerComponent) noteItem: TaNoteContainerComponent;
   @Input() note: any;
@@ -39,12 +43,11 @@ export class DispatcherNoteComponent implements OnInit {
   openedAll: boolean;
   leaveThisOpened: boolean;
 
-  constructor(private sharedService: SharedService) {
-  }
+  constructor(private sharedService: SharedService) {}
 
   ngOnInit(): void {
     this.savedNote = this.note;
-    this.sharedService.emitOpenNote.subscribe(item => {
+    this.sharedService.emitOpenNote.subscribe((item) => {
       if (this.isExpanded) {
         this.closeNote();
       }
@@ -115,6 +118,5 @@ export class DispatcherNoteComponent implements OnInit {
     // if(this.value){
     //   return this.value.length < 225;
     // }
-
   }
 }

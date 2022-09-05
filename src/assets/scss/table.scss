@@ -1,5 +1,10 @@
 // Table Body Global Scss
 .truckassist-table-body-style {
+  cdk-virtual-scroll-viewport{
+    width: 100%;
+  }
+  
+  // DESCRIPTION
   .description-container {
     .description-dot-container {
       min-width: 18px;
@@ -25,6 +30,20 @@
     .description-dot {
       background: #536bc2 !important;
       transition: 0.25s;
+    }
+  }
+
+  // PASSWORD
+  .password-text-crypted{
+    display: flex;
+    align-self: center;
+
+    .password-characters-container{
+      width: 5px;
+      height: 5px;
+      background: #6C6C6C;
+      border-radius: 50%;
+      margin-right: 2px;
     }
   }
 }

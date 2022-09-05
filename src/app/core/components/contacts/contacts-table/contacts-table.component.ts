@@ -1,19 +1,20 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { GetCompanyContactListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getToolsContactsColumnDefinition } from 'src/assets/utils/settings/contacts-columns';
+
 import { ContactModalComponent } from '../../modals/contact-modal/contact-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ContactQuery } from '../state/contact-state/contact.query';
 import { ContactState } from '../state/contact-state/contact.store';
 import { ContactTService } from '../state/contact.service';
+import { NameInitialsPipe } from '../../../pipes/nameinitials';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getToolsContactsColumnDefinition } from '../../../../../assets/utils/settings/contacts-columns';
 
 @Component({
   selector: 'app-contacts-table',
@@ -24,7 +25,7 @@ import { ContactTService } from '../state/contact.service';
 export class ContactsTableComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];

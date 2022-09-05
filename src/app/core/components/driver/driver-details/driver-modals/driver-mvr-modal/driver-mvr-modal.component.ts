@@ -1,24 +1,24 @@
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CreateMvrCommand,
   DriverResponse,
   EditMvrCommand,
+  GetMvrModalResponse,
   MvrResponse,
 } from 'appcoretruckassist';
 import { DriverTService } from '../../../state/driver.service';
 import { MvrTService } from '../../../state/mvr.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
-  convertDateFromBackend,
   convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
+  convertDateFromBackend,
+} from '../../../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-mvr-modal',
   templateUrl: './driver-mvr-modal.component.html',
@@ -26,6 +26,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public mvrForm: FormGroup;
@@ -33,6 +34,9 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public modalName: string;
 
   public documents: any[] = [];
+
+  public cdls: any[] = [];
+  public selectedCdl: any = null;
 
   public isDirty: boolean = false;
 
@@ -48,6 +52,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.createForm();
+    this.getModalDropdowns();
+
     this.getDriverById(this.editData.id);
     if (this.editData.type === 'edit-mvr') {
       this.getMVRById();
@@ -57,13 +63,14 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.mvrForm = this.formBuilder.group({
       issueDate: [null, Validators.required],
+      cdlId: [null, Validators.required],
       note: [null],
     });
 
     // this.formService.checkFormChange(this.mvrForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -72,7 +79,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   private getDriverById(id: number) {
     this.driverService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: DriverResponse) => {
           this.modalName = res.firstName.concat(' ', res.lastName);
@@ -115,6 +122,18 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
+  public onSelectDropdown(event: any, action: string) {
+    switch (action) {
+      case 'cdl': {
+        this.selectedCdl = event;
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   private updateMVR() {
     const { issueDate } = this.mvrForm.value;
     const newData: EditMvrCommand = {
@@ -122,11 +141,12 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       id: this.editData.file_id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),
+      cdlId: this.selectedCdl.id,
     };
 
     this.mvrService
       .updateMvr(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -147,10 +167,11 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       driverId: this.editData.id,
       ...this.mvrForm.value,
       issueDate: convertDateToBackend(issueDate),
+      cdlId: this.selectedCdl.id,
     };
     this.mvrService
       .addMvr(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -168,13 +189,18 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
   public getMVRById() {
     this.mvrService
       .getMvrById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: MvrResponse) => {
           this.mvrForm.patchValue({
+            cdlId: res.cdlNumber,
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
           });
+          this.selectedCdl = {
+            id: res.cdlId,
+            name: res.cdlNumber,
+          };
         },
         error: () => {
           this.notificationService.error("Can't get Test", 'Error:');
@@ -182,5 +208,30 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  public getModalDropdowns() {
+    this.mvrService
+      .getMvrModal()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: GetMvrModalResponse) => {
+          this.cdls = res.cdls.map((item) => {
+            return {
+              ...item,
+              name: item.cdlNumber,
+            };
+          });
+        },
+        error: () => {
+          this.notificationService.error(
+            "Can't load mvr's modal dropdowns",
+            'Error'
+          );
+        },
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

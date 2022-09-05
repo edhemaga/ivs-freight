@@ -6,11 +6,15 @@ import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
-import { applyDrag } from 'src/app/core/utils/methods.globals';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
+
 import { TodoQuery } from '../state/todo.query';
 
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { SharedService } from '../../../services/shared/shared.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import { applyDrag } from '../../../utils/methods.globals';
+
+@UntilDestroy()
 @Component({
   selector: 'app-to-do-list-card',
   templateUrl: './to-do-list-card.component.html',
@@ -22,7 +26,7 @@ export class ToDoListCardComponent implements OnInit {
   startChangingStatus = false;
   public dragStarted = false;
   cardData: Array<any> = [];
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
   public toDoTasks: any[] = [];
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
@@ -132,6 +136,18 @@ export class ToDoListCardComponent implements OnInit {
     },
   ];
 
+  public searchToDoOptions = {
+    gridNameTitle: 'To Do',
+  };
+
+  public searchOnGoingOptions = {
+    gridNameTitle: 'On Going',
+  };
+
+  public searchDoneOptions = {
+    gridNameTitle: 'Done',
+  };
+
   constructor(
     private todoTService: TodoTService,
     private modalService: ModalService,
@@ -147,6 +163,14 @@ export class ToDoListCardComponent implements OnInit {
     this.todoQuery.selectTodoList$.subscribe((resp) => {
       this.updateTodosList(resp.pagination.data);
     });
+
+    // this.tableService.currentSearchTableData
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res: any) => {
+    //     if (res) {
+    //       // your search code here
+    //     }
+    //   });
   }
 
   dragStart = (e) => {

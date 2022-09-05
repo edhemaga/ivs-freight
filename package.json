@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "dev": "lite-server",
     "svg:preview": "node src/app/svg-definitions/svg-converter.js"
   },
   "private": true,
@@ -45,7 +46,9 @@
     "@ngneat/until-destroy": "^9.2.1",
     "@types/chart.js": "^2.9.30",
     "@types/chartjs-plugin-annotation": "^0.5.2",
+    "@types/crypto-js": "^4.1.1",
     "@types/overlayscrollbars": "^1.12.1",
+    "agm-direction": "^0.8.10",
     "angular-croppie-module": "0.0.7",
     "angular-gridster2": "^13.2.1",
     "angular-svg-icon": "^13.0.0",
@@ -58,6 +61,7 @@
     "chartjs-plugin-datalabels": "^1.0.0",
     "chartjs-plugin-doughnutlabel": "^2.0.3",
     "croppie": "^2.6.5",
+    "crypto-js": "^4.1.1",
     "evoweb-geoxml3": "^1.0.0",
     "glob": "^7.2.0",
     "gsap": "npm:@gsap/shockingly@^3.6.1",
@@ -86,6 +90,7 @@
     "svg-icon": "^0.8.2",
     "tslib": "^2.3.0",
     "uuid": "^8.3.2",
+    "validator": "^13.7.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -104,6 +109,7 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "lite-server": "^2.6.1",
     "typescript": "~4.2.0"
   }
 }

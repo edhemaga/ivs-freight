@@ -194,6 +194,14 @@ const routes: Routes = [
     },
   },
   {
+    path: 'routing',
+    loadChildren: () =>
+      import('./core/components/routing/routing.module').then(
+        (m) => m.RoutingModule
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'tools/calendar',
     loadChildren: () =>
       import('./core/components/calendar/calendar.module').then(

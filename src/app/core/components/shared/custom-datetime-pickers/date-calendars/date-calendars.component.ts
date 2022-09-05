@@ -1,32 +1,32 @@
-import {CalendarScrollService} from './../calendar-scroll.service';
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import { CalendarScrollService } from './../calendar-scroll.service';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import calendarJson from '../../../../../../assets/calendarjson/calendar.json';
 
-import {RANGE, STARTING_YEAR} from "./calendar_strategy";
-import {Subject, Subscription, takeUntil} from "rxjs";
-import moment from "moment";
+import { RANGE, STARTING_YEAR } from './calendar_strategy';
+import { Subject, Subscription, takeUntil } from 'rxjs';
+import moment from 'moment';
 
 const SCROLL_DEBOUNCE_TIME = 80;
 
 const MONTHS = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
 ];
 
 @Component({
   selector: 'app-date-calendars',
   templateUrl: './date-calendars.component.html',
-  styleUrls: ['./date-calendars.component.scss']
+  styleUrls: ['./date-calendars.component.scss'],
 })
 export class DateCalendarsComponent implements OnInit {
   @Input() listPreview: string;
@@ -39,26 +39,21 @@ export class DateCalendarsComponent implements OnInit {
   private activeIndex = 0;
   currentIndex: number;
   monthYearsIndx: any[] = [];
-  months = Array.from(
-    {length: RANGE},
-    (_, i) => {
-      let year = (STARTING_YEAR) + Math.floor(i / 12);
-      let month = i % 12;
-      if (year == this.currentYear && month == this.currentMonth) {
-        this.currentIndex = i;
-        this.activeIndex = i;
-      }
-      const sendDate = new Date(year, month, 1);
-      this.monthYearsIndx.push(moment(sendDate).format("MM/DD/YY"));
-      return sendDate;
+  months = Array.from({ length: RANGE }, (_, i) => {
+    let year = STARTING_YEAR + Math.floor(i / 12);
+    let month = i % 12;
+    if (year == this.currentYear && month == this.currentMonth) {
+      this.currentIndex = i;
+      this.activeIndex = i;
     }
-  );
+    const sendDate = new Date(year, month, 1);
+    this.monthYearsIndx.push(moment(sendDate).format('MM/DD/YY'));
+    return sendDate;
+  });
 
-  justYears = Array.from(
-    {length: 196},
-    (_, i) => {
-      return new Date(STARTING_YEAR + i, 1, 1)
-    });
+  justYears = Array.from({ length: 196 }, (_, i) => {
+    return new Date(STARTING_YEAR + i, 1, 1);
+  });
 
   monthNames = [
     'January',
@@ -90,10 +85,9 @@ export class DateCalendarsComponent implements OnInit {
   selectedMonth: any;
   private activeMonth = 0;
   private subscription?: Subscription;
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-  constructor(private calendarService: CalendarScrollService) {
-  }
+  constructor(private calendarService: CalendarScrollService) {}
 
   ngOnInit(): void {
     this.selectedMonth = this.monthNames[this.dateTime.getMonth()];
@@ -102,19 +96,19 @@ export class DateCalendarsComponent implements OnInit {
     this.activeIndex = this.calendarService.selectedIndex;
     this.calendarService.scrolledIndexChange
       .pipe(takeUntil(this.destroy$))
-      .subscribe(res => {
-      this.activeIndex = res.indx;
-      this.onMonthChange(res.indx);
-    });
+      .subscribe((res) => {
+        this.activeIndex = res.indx;
+        this.onMonthChange(res.indx);
+      });
   }
 
   onMonthChange(month: number) {
-    if( this.listPreview == 'full_list' ){
+    if (this.listPreview == 'full_list') {
       this.selectedYear = this.months[month].getFullYear();
-    }else{
+    } else {
       this.selectedYear = this.justYears[month].getFullYear();
     }
-    
+
     this.selectedMonth = this.monthNames[this.months[month].getMonth()];
     this.activeMonth = month;
   }
@@ -134,15 +128,14 @@ export class DateCalendarsComponent implements OnInit {
   }
 
   public setListPreview(): void {
-
-    if(this.listPreview === "full_list"){
-      this.setListPreviewValue.emit("month_list");
+    if (this.listPreview === 'full_list') {
+      this.setListPreviewValue.emit('month_list');
       this.calendarService.setAutoIndex = Math.floor(this.activeIndex / 12);
     }
   }
 
-  public setListPreviewToFull(num){
-    this.setListPreviewValue.emit("full_list");
+  public setListPreviewToFull(num) {
+    this.setListPreviewValue.emit('full_list');
     this.calendarService.setAutoIndex = this.activeIndex * 12 + num;
   }
 
@@ -150,13 +143,12 @@ export class DateCalendarsComponent implements OnInit {
     setTimeout(() => {
       //this.virtualScrollViewport.scrollToIndex(this.currentIndex);
     });
-
   }
 
-  public selectCurrentDay(){
+  public selectCurrentDay() {
     const new_date = moment(new Date()).format();
     this.calendarService.dateChanged.next(new_date);
-    this.setListPreviewValue.emit("full_list");
+    this.setListPreviewValue.emit('full_list');
   }
 
   public scrollIndexChange(e): void {
@@ -170,5 +162,4 @@ export class DateCalendarsComponent implements OnInit {
     this.destroy$.next();
     this.destroy$.complete();
   }
-
 }

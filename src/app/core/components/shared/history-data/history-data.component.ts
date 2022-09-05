@@ -1,8 +1,12 @@
-import {DatePipe} from '@angular/common';
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-
-import {environment} from 'src/environments/environment';
-
+import { DatePipe } from '@angular/common';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 export interface HistoryData {
   id: string;
   startDate: Date | string;
@@ -41,8 +45,7 @@ export class HistoryDataComponent implements OnInit {
 
   // showDialog = false;
 
-  constructor(private datePipe: DatePipe, private cd: ChangeDetectorRef) {
-  }
+  constructor(private datePipe: DatePipe, private cd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -96,7 +99,9 @@ export class HistoryDataComponent implements OnInit {
 
   removeData(event: boolean, i: number, j: number): void {
     if (event) {
-      const index = this.data.findIndex((d) => d.id === this.items[i].data[j].id);
+      const index = this.data.findIndex(
+        (d) => d.id === this.items[i].data[j].id
+      );
       this.removeEvent.emit(index);
     } else {
       setTimeout(() => {
@@ -115,7 +120,8 @@ export class HistoryDataComponent implements OnInit {
   hideDialog(i: number, j: number) {
     this.items.map((d1, key1) => {
       d1.data.map((d2, key2) => {
-        d2.showDialog = key2 === j && key1 === i ? (d2.showDialog ? false : true) : false;
+        d2.showDialog =
+          key2 === j && key1 === i ? (d2.showDialog ? false : true) : false;
         return d2;
       });
       return d1;

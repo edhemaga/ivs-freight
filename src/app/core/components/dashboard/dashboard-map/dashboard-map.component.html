@@ -1,25 +1,38 @@
 <div class="dashboard-map-holder">
-    <div class="dashboard-map-header-holder">
-        <div class="dashboard-map-header-title-holder">
-            <div class="dashboard-map-header-title">Telematics Map</div>
-            <div class="dashboard-map-header-arrow-down">
-                <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
-            </div>
-        </div>
-        <div class="dashboard-map-header-toolbar-holder">
-            <div class="dashboard-map-switch-holder">
-                <app-ta-tab-switch
-                [tabs]="dashboardMapSwitchTabs"
-                (switchClicked)="changeMapSwitchTabs($event)" 
-                [type]="'performance-switch'"
-                >
-                </app-ta-tab-switch>
-            </div>
-            <div class="dashboard-map-toolbar-border"></div>
-            <div class="dashboard-map-toolbar-icons-holder">
-                <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
-            </div>
-        </div>
+  <div class="dashboard-map-header-holder">
+    <div class="dashboard-map-header-title-holder">
+      <div class="dashboard-map-header-title">Telematics Map</div>
+      <div class="dashboard-map-header-arrow-down">
+        <svg-icon src="assets/svg/common/fill_arrow_down.svg"></svg-icon>
+      </div>
     </div>
-    <div class="dashboard-map-body-holder"></div>
+    <div class="dashboard-map-header-toolbar-holder">
+      <div class="dashboard-map-switch-holder">
+        <app-ta-tab-switch
+          [tabs]="dashboardMapSwitchTabs"
+          (switchClicked)="changeMapSwitchTabs($event)"
+          [type]="'performance-switch'"
+        >
+        </app-ta-tab-switch>
+      </div>
+      <div class="dashboard-map-toolbar-border"></div>
+      <div class="dashboard-map-toolbar-icons-holder">
+        <app-truckassist-search
+          [selectedTabData]="searchDashboardOptions"
+        ></app-truckassist-search>
+      </div>
+    </div>
+  </div>
+  <div class="dashboard-map-body-holder">
+    <agm-map
+      [latitude]="mapLatitude"
+      [longitude]="mapLongitude"
+      [restriction]="mapRestrictions"
+      [streetViewControl]="false"
+      [styles]="styles"
+      [zoom]="mapZoom"
+      [usePanning]="true"
+      [keyboardShortcuts]="false"
+    ></agm-map>
+  </div>
 </div>

@@ -27,10 +27,12 @@
           <app-ta-input
             formControlName="firstName"
             [inputConfig]="{
-              name: 'First name',
+              name: 'First Name',
               type: 'text',
               label: 'First Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize',
               autoFocus: editData?.type !== 'edit' ? true : false
             }"
@@ -42,6 +44,8 @@
               type: 'text',
               label: 'Last Name',
               isRequired: true,
+              minLength: 2,
+              maxLength: 26,
               textTransform: 'capitalize'
             }"
           ></app-ta-input>
@@ -77,7 +81,10 @@
               type: 'text',
               label: 'Email',
               isRequired: true,
-              placeholderIcon: 'email'
+              placeholderIcon: 'email',
+              minLength: 5,
+              maxLength: 64,
+              textTransform: 'lowercase'
             }"
           ></app-ta-input>
           <app-ta-input
@@ -101,6 +108,8 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
+                minLength: 12,
+                maxLength: 256,
                 textTransform: 'capitalize'
               }"
               [activeAddress]="selectedAddress"
@@ -111,10 +120,12 @@
             <app-ta-input
               formControlName="addressUnit"
               [inputConfig]="{
-                name: 'Address Unit',
+                name: 'address-unit',
                 type: 'text',
                 label: 'Unit #',
-                maxLength: 6
+                textTransform: 'uppercase',
+                minLength: 1,
+                maxLength: 10
               }"
             ></app-ta-input>
           </div>
@@ -395,9 +406,12 @@
                 formControlName="bankId"
                 [template]="'svg-template'"
                 [inputConfig]="{
-                  name: 'Input Dropdown',
+                  name: 'Input Dropdown  Bank Name',
                   type: 'text',
                   label: 'Bank Name',
+                  minLength: 2,
+                  maxLength: 64,
+                  textTransform: 'uppercase',
                   isDropdown: true,
                   isRequired: driverForm.get('useTruckAssistAch').value,
                   isDisabled: disablePayType,
@@ -414,7 +428,7 @@
               <app-ta-input
                 formControlName="routing"
                 [inputConfig]="{
-                  name: 'Routing Number',
+                  name: 'routing-bank',
                   type: 'text',
                   label: 'Routing #',
                   isDisabled: !isBankSelected,
@@ -428,13 +442,13 @@
               <app-ta-input
                 formControlName="account"
                 [inputConfig]="{
-                  name: 'Account Number',
+                  name: 'account-bank',
                   type: 'text',
                   label: 'Account #',
                   isDisabled: !isBankSelected,
                   isRequired: isBankSelected,
                   maxLength: 17,
-                  minLength: 4
+                  minLength: 5
                 }"
               ></app-ta-input>
             </div>
@@ -447,7 +461,6 @@
           <div
             class="checkbox-card-header"
             [ngClass]="{ pointer: driverForm.get('isOwner').value }"
-            (click)="openCloseCheckboxCard($event)"
           >
             <app-ta-checkbox
               formControlName="isOwner"
@@ -566,6 +579,8 @@
                     name: 'Address',
                     type: 'text',
                     textTransform: 'capitalize',
+                    minLength: 12,
+                    maxLength: 256,
                     blackInput: true
                   }"
                   [activeAddress]="selectedAddress"
@@ -691,9 +706,11 @@
                 <app-ta-input
                   formControlName="fuelCard"
                   [inputConfig]="{
-                    name: 'Fuel Card',
+                    name: 'fuel-card',
                     type: 'text',
-                    label: 'Fuel Card #'
+                    label: 'Fuel Card #',
+                    minLength: 10,
+                    maxLength: 19
                   }"
                 ></app-ta-input>
               </div>

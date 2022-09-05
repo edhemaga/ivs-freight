@@ -1,12 +1,7 @@
 import { PmTService } from './../../../pm-truck-trailer/state/pm.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import {
   PMTrailerListResponse,
   PMTruckListResponse,
@@ -16,11 +11,17 @@ import {
   UpdatePMTruckUnitListCommand,
 } from 'appcoretruckassist';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { debounceTime } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
+import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import {
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-repair-pm-modal',
   templateUrl: './repair-pm-modal.component.html',
@@ -28,7 +29,10 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, FormService],
 })
 export class RepairPmModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @Input() editData: any;
+
   public PMform: FormGroup;
 
   public isDirty: boolean;
@@ -63,7 +67,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.PMform);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -110,7 +114,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       svg: [svg],
       title: [title],
       mileage: [mileage],
-      value: [value],
+      value: [value, [...descriptionValidation]],
       hidden: [hidden],
     });
   }
@@ -202,7 +206,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
     this.newPMs
       .at(ind)
       .get('value')
-      .valueChanges.pipe(debounceTime(2000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(2000), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.newPMs.at(ind).get('hidden').patchValue(true);
@@ -230,6 +234,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }
@@ -238,6 +243,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }
@@ -283,12 +289,30 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
         break;
       }
     }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'repair-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: RepairOrderModalComponent,
+            size: 'large',
+            type: this.editData?.type2,
+          });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
   }
 
   private getPMTruckList() {
     this.pmTService
       .getPMTruckList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTruckListResponse) => {
           res.pagination.data.forEach((item, index) => {
@@ -316,7 +340,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTruckUnit(id: number) {
     this.pmTService
       .getPmTruckUnitIdModal(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTruckListResponse) => {
           res.pagination.data.forEach((item, index) => {
@@ -334,9 +358,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
               item.logoName.includes('custom') ? 'new-pm' : null
             );
           });
-
-          console.log(res.pagination.data);
-          console.log(this.defaultPMs, this.newPMs);
         },
         error: () => {
           this.notificationService.error(
@@ -350,7 +371,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTrailerList() {
     this.pmTService
       .getPMTrailerList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTrailerListResponse) => {
           res.pagination.data.forEach((item) => {
@@ -378,7 +399,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private getPMTrailerUnit(id: number) {
     this.pmTService
       .getPmTrailerUnitIdModal(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: PMTrailerListResponse) => {
           res.pagination.data.forEach((item) => {
@@ -435,7 +456,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTruckList(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -485,7 +506,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTrailerList(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -534,7 +555,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTruckUnit(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -583,7 +604,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
 
     this.pmTService
       .addUpdatePMTrailerUnit(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -605,41 +626,59 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   }
 
   private getPMList() {
-    switch (this.editData.type) {
-      case 'new': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckList();
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerList();
-            break;
-          }
-          default: {
-            break;
-          }
+    // Global List
+    if (this.editData.type === 'new') {
+      switch (this.editData.header) {
+        case 'Truck': {
+          this.getPMTruckList();
+          break;
         }
-        break;
-      }
-      case 'edit': {
-        switch (this.editData.header) {
-          case 'Truck': {
-            this.getPMTruckUnit(this.editData.id);
-            break;
-          }
-          case 'Trailer': {
-            this.getPMTrailerUnit(this.editData.id);
-            break;
-          }
-          default: {
-            break;
-          }
+        case 'Trailer': {
+          this.getPMTrailerList();
+          break;
         }
-        break;
+        default: {
+          break;
+        }
       }
-      default: {
-        break;
+    }
+    // Per Unit list
+    else {
+      if (['Truck', 'Trailer'].includes(this.editData?.type)) {
+        const data = JSON.parse(sessionStorage.getItem(this.editData.key));
+
+        if (this.editData.type === 'Truck') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Truck',
+            action: 'unit-pm',
+          };
+        }
+
+        if (this.editData.type === 'Trailer') {
+          this.editData = {
+            ...this.editData,
+            id: data.id,
+            data: {
+              textUnit: data.unit,
+            },
+            type2: this.editData.type,
+            type: 'edit',
+            header: 'Trailer',
+            action: 'unit-pm',
+          };
+        }
+      }
+      if ([this.editData?.header, this.editData?.type].includes('Truck')) {
+        this.getPMTruckUnit(this.editData.id);
+      } else {
+        this.getPMTrailerUnit(this.editData.id);
       }
     }
   }
@@ -647,7 +686,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private deleteTruckPMList(id: number) {
     this.pmTService
       .deletePMTruckById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -667,7 +706,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
   private deleteTrailerPMList(id: number) {
     this.pmTService
       .deletePMTrailerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -684,5 +723,8 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

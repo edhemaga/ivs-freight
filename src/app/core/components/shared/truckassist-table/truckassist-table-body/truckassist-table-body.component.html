@@ -1,2136 +1,2087 @@
 <table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
-    <!-- Pined -->
-    <div class="pined-tr">
+    <cdk-virtual-scroll-viewport
+      [itemSize]="35"
+      [ngStyle]="{ height: pageHeight - 84 + 'px' }"
+    >
       <tr
-        [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
-        *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
+        [ngStyle]="{
+          'margin-top': i > 0 ? '2px' : '0px'
+        }"
+        *cdkVirtualFor="let row of viewData; let i = index"
         [ngClass]="{
-          'regular-columns-hover':
-            hoverActive === i &&
-            !row.actionAnimation &&
-            !row.isRepairOrder &&
-            !row.isSelected,
           'regular-row': !row.isSelected,
           'selected-row': row.isSelected,
-          'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle,
-          'delete-animation': row.actionAnimation === 'delete',
+          'show-attachments':
+            activeAttachments === row.id && attachmentsNgbPopover.isOpen(),
+          'row-repair-order': row.isRepairOrder && !row.actionAnimation,
           'add-animation': row.actionAnimation === 'add',
           'update-animation': row.actionAnimation === 'update',
-          'row-repair-order': row.isRepairOrder && !row.actionAnimation
+          'delete-animation': row.actionAnimation === 'delete'
         }"
-        class="pined-tr-container"
+        #attachmentsNgbPopover="ngbPopover"
+        [autoClose]="true"
+        [ngbPopover]="attachmentsPopover"
+        [placement]="'bottom-left'"
+        container="body"
+        popoverClass="table-attachments-popover"
+        triggers="manual"
       >
-        <div
-          class="columns-container"
-          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
-          (mouseleave)="hoverActive = -1"
-        >
-          <td *ngFor="let column of columns">
-            <!-- NO TEMPLATE -->
-            <div
-              *ngIf="
-                !column.hidden && column.ngTemplate === '' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="no-template">NO TEMPLATE</div>
-            </div>
-
-            <!-- CHECKBOX TEMPLATE -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'checkbox' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content set-center"
-            >
-              <input
-                (change)="onSelectItem(row, i)"
-                [checked]="row.isSelected"
-                class="table-checkbox"
-                id="checkbox{{ i }}"
-                type="checkbox"
-              />
-              <label class="table-checkbox-label" for="checkbox{{ i }}"></label>
-            </div>
-
-            <!-- USER CHECKBOX TEMPLATE -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'user-checkbox' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content set-center"
-            >
-              <!-- IF USER IS OWNER -->
-              <svg-icon
-                *ngIf="row.userType === 'Owner'"
-                [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
-                [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
-              ></svg-icon>
-
-              <!-- IF USER IS NOT OWNER -->
-              <input
-                *ngIf="row.userType !== 'Owner'"
-                (change)="onSelectItem(row, i)"
-                [checked]="row.isSelected"
-                class="table-checkbox"
-                id="checkbox{{ i }}"
-                type="checkbox"
-              />
-              <label
-                *ngIf="row.userType !== 'Owner'"
-                class="table-checkbox-label"
-                for="checkbox{{ i }}"
-              ></label>
-            </div>
-
-            <!-- AVATAR COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'avatar' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="avatar-container">
-                <div
-                  class="avatar-img"
-                  [ngClass]="{
-                    'round-avatar': column.isRound,
-                    'regular-avatar': !column.isRound
-                  }"
-                  *ngIf="row.avatarImg"
-                >
-                  <img alt="avatar" [src]="row.avatarImg" />
-                </div>
-
-                <div
-                  class="avatar-no-img"
-                  *ngIf="!row.avatarImg"
-                  [ngClass]="{
-                    'round-avatar': column.isRound,
-                    'regular-avatar': !column.isRound
-                  }"
-                  [ngStyle]="{
-                    'background-color': row.avatarColor?.background
-                      ? row.avatarColor.background
-                      : 'unset',
-                    color: row.avatarColor?.color
-                      ? row.avatarColor.color
-                      : 'unset'
-                  }"
-                >
-                  {{ row.textShortName }}
-                </div>
-
-                <img
-                  class="avatar-owner"
-                  alt="avatar"
-                  *ngIf="row.isOwner"
-                  src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
-                />
-              </div>
-              <span
-                (click)="goToDetails(column, row)"
-                class="table-avatar-name"
-                >{{ row[column.field] }}</span
+        <div class="columns-container">
+          <!-- PINED -->
+          <div class="pined-columns">
+            <td *ngFor="let column of pinedColumns">
+              <!-- NO TEMPLATE -->
+              <div
+                *ngIf="column.ngTemplate === ''"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
               >
-            </div>
-
-            <!-- USER AVATAR COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'user-avatar' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="user-avatar-container">
-                <img
-                  alt="avatar"
-                  [src]="
-                    row?.avatar?.src
-                      ? row?.avatar?.src
-                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                  "
-                  class="avatar"
-                />
+                <div class="no-template">NO TEMPLATE</div>
               </div>
-              <span class="table-avatar-name">{{ row.userFullName }}</span>
-            </div>
 
-            <!-- USER STATUS COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'user-status' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="user-status-container">{{ row[column.field] }}</div>
-            </div>
+              <!-- CHECKBOX TEMPLATE -->
+              <div
+                *ngIf="column.ngTemplate === 'checkbox'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content set-center"
+              >
+                <input
+                  (change)="onSelectItem(row, i)"
+                  [checked]="row.isSelected"
+                  class="table-checkbox"
+                  id="checkbox{{ i }}"
+                  type="checkbox"
+                />
+                <label
+                  class="table-checkbox-label"
+                  for="checkbox{{ i }}"
+                ></label>
+              </div>
 
-            <!-- NAME LINK COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'nameLink' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span
+              <!-- USER CHECKBOX TEMPLATE -->
+              <div
+                *ngIf="column.ngTemplate === 'user-checkbox'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content set-center"
+              >
+                <!-- IF USER IS OWNER -->
+                <svg-icon
+                  *ngIf="row.userType === 'Owner'"
+                  [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
+                  [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
+                ></svg-icon>
+
+                <!-- IF USER IS NOT OWNER -->
+                <input
+                  *ngIf="row.userType !== 'Owner'"
+                  (change)="onSelectItem(row, i)"
+                  [checked]="row.isSelected"
+                  class="table-checkbox"
+                  id="checkbox{{ i }}"
+                  type="checkbox"
+                />
+                <label
+                  *ngIf="row.userType !== 'Owner'"
+                  class="table-checkbox-label"
+                  for="checkbox{{ i }}"
+                ></label>
+              </div>
+
+              <!-- AVATAR COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div class="avatar-container">
+                  <div
+                    class="avatar-img"
+                    [ngClass]="{
+                      'round-avatar': column.isRound,
+                      'regular-avatar': !column.isRound
+                    }"
+                    *ngIf="row.avatarImg"
+                  >
+                    <img alt="avatar" [src]="row.avatarImg" />
+                  </div>
+
+                  <div
+                    class="avatar-no-img"
+                    *ngIf="!row.avatarImg"
+                    [ngClass]="{
+                      'round-avatar': column.isRound,
+                      'regular-avatar': !column.isRound
+                    }"
+                    [ngStyle]="{
+                      'background-color': row.avatarColor?.background
+                        ? row.avatarColor.background
+                        : 'unset',
+                      color: row.avatarColor?.color
+                        ? row.avatarColor.color
+                        : 'unset'
+                    }"
+                  >
+                    {{ row.textShortName }}
+                  </div>
+
+                  <img
+                    class="avatar-owner"
+                    alt="avatar"
+                    *ngIf="row.isOwner"
+                    src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
+                  />
+                </div>
+                <span
+                  (click)="goToDetails(column, row)"
+                  class="table-avatar-name"
+                  >{{ row[column.field] }}</span
+                >
+              </div>
+
+              <!-- USER AVATAR COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'user-avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div class="user-avatar-container">
+                  <img
+                    alt="avatar"
+                    [src]="
+                      row?.avatar?.src
+                        ? row?.avatar?.src
+                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                    "
+                    class="avatar"
+                  />
+                </div>
+                <span class="table-avatar-name">{{ row.userFullName }}</span>
+              </div>
+
+              <!-- USER STATUS COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'user-status'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="user-status-container">{{ row[column.field] }}</div>
+              </div>
+
+              <!-- NAME LINK COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'nameLink'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span
+                  [ngStyle]="{
+                    width: column.width + 'px'
+                  }"
+                  class="table-name-link"
+                  (click)="goToDetails(column, row)"
+                  >{{ row[column.field] }}</span
+                >
+              </div>
+
+              <!-- OOS COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'oos'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="oos-container">
+                  <div [ngClass]="{ 'oos-active': row.oos[0].active }">
+                    {{ row.oos[0].value }}
+                  </div>
+                  <div [ngClass]="{ 'oos-active': row.oos[1].active }">
+                    {{ row.oos[1].value }}
+                  </div>
+                  <div [ngClass]="{ 'oos-active': row.oos[2].active }">
+                    {{ row.oos[2].value }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- VIOLATION STATE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'violation-state'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
-                class="table-name-link"
-                (click)="goToDetails(column, row)"
-                >{{ row[column.field] }}</span
               >
-            </div>
-
-            <!-- OOS COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'oos' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="oos-container">
-                <div [ngClass]="{ 'oos-active': row.oos[0].active }">
-                  {{ row.oos[0].value }}
-                </div>
-                <div [ngClass]="{ 'oos-active': row.oos[1].active }">
-                  {{ row.oos[1].value }}
-                </div>
-                <div [ngClass]="{ 'oos-active': row.oos[2].active }">
-                  {{ row.oos[2].value }}
-                </div>
-              </div>
-            </div>
-
-            <!-- VIOLATION STATE COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'violation-state' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="violation-state-container">
-                {{ row[column.field] }}
-              </div>
-            </div>
-
-            <!-- INV. AGEING COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'inv-ageing' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="inv-ageing-container">
-                <div class="bfb-container">{{ row[column.field].bfb }}</div>
-                <div class="dnu-container">{{ row[column.field].dnu }}</div>
-                <div
-                  class="inv-ageing-text"
-                  [ngStyle]="{
-                    width: column.width - 42 + 'px'
-                  }"
-                >
-                  {{ row[column.field].amount }}
-                </div>
-              </div>
-            </div>
-
-            <!-- CONTACT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'contact' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="contact-container" *ngIf="row[column.field]">
-                <div class="contact-count">{{ row[column.field] }}</div>
-                <div class="contact-avatar"></div>
-              </div>
-            </div>
-
-            <!-- WORK HOUR COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'work-hour' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="work-hour-container">
-                <div class="work-hour-icon"></div>
-                <div
-                  class="work-hour-time"
-                  [ngStyle]="{
-                    width: column.width - 22 + 'px'
-                  }"
-                >
+                <div class="violation-state-container">
                   {{ row[column.field] }}
                 </div>
               </div>
-            </div>
 
-            <!-- DESCRIPTION COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'description' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
+              <!-- INV. AGEING COLUMN -->
               <div
-                *ngIf="row[column.field]"
+                class="td-content"
+                *ngIf="column.ngTemplate === 'inv-ageing'"
                 [ngStyle]="{
-                  width: column.width - 5 + 'px'
-                }"
-                [ngClass]="{
-                  'active-description':
-                    activeDescriptionDropdown === row.id && t1.isOpen()
-                }"
-                class="description-container"
-                [innerHtml]="row[column.field]"
-                #t1="ngbPopover"
-                (click)="onShowDescriptionDropdown(t1, row)"
-                [ngbPopover]="descriptionPopover"
-                [placement]="'bottom-left'"
-                popoverClass="table-description-popover"
-                triggers="manual"
-              ></div>
-            </div>
-
-            <!-- SHARED COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'shared' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="shared-container">
-                <div
-                  class="shared-icon"
-                  [ngClass]="{
-                    'lock-icon': !isShared,
-                    'shared-active-icon': isShared
-                  }"
-                ></div>
-                <div class="shared-text">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- LVL COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'lvl' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="lvl-container">{{ row[column.field] }}</div>
-            </div>
-
-            <!-- CITATION COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'citation' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                class="citation-table"
-                [ngClass]="{ 'citation-table-active': row.citation > 0 }"
-              >
-                {{ row.citation ? row.citation : "0" }}
-              </div>
-            </div>
-
-            <!-- VL COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'violation-count' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                [ngClass]="{
-                  'active-vl-count': row[column.field] > 0,
-                  'zero-vl-count': !row[column.field]
+                  width: column.width + 'px'
                 }"
               >
-                {{ row[column.field] ? row[column.field] : "0" }}
-              </div>
-            </div>
-
-            <!-- CUSTOMER NAME COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'customer-name' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="customer-name-container">
-                <svg-icon
-                  *ngIf="row.ban && !row.dnu"
-                  [src]="
-                    'assets/svg/truckassist-table/customer/banner-icon.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <svg-icon
-                  *ngIf="!row.ban && row.dnu"
-                  [src]="
-                    'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <span class="customer-name">{{ row[column.field] }}</span>
-              </div>
-            </div>
-
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
-            <!-- TOTAL  COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'total' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
-            highlightingWords) : '' " -->
-              <span
-                *ngIf="!row.isRepairOrder"
-                class="table-total"
-                [innerHtml]="row[column.field] ? row[column.field] : ''"
-              ></span>
-
-              <div
-                class="finish-order-action"
-                (click)="onFinishOrder(row)"
-                *ngIf="row.isRepairOrder"
-              >
-                Finish Order
-              </div>
-            </div>
-
-            <!-- COMPACT TEXT -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'compact-text' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                class="compact-text-container"
-                *ngIf="
-                  row[column.field][0].value ||
-                  row[column.field][1].value ||
-                  row[column.field][2].value
-                "
-              >
-                <!-- First -->
-                <div
-                  class="title-values-container title-values-margin"
-                  *ngIf="row[column.field][0].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][0].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][0].value }}
-                  </div>
-                </div>
-
-                <!-- Second  -->
-                <div
-                  class="title-values-container title-values-margin"
-                  *ngIf="row[column.field][1].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][1].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][1].value }}
-                  </div>
-                </div>
-
-                <!-- Third  -->
-                <div
-                  class="title-values-container"
-                  *ngIf="row[column.field][2].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][2].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][2].value }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- SERVICE COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'service' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="service-container" *ngIf="row[column.field]">
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][0].active ? 'truck-active' : 'truck'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][1].active ? 'trailer-active' : 'trailer'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][2].active ? 'mobile-active' : 'mobile'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][4].active ? 'towing-active' : 'towing'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][5].active ? 'parts-active' : 'parts'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
-                ></div>
-                <div
-                  class="img-style"
-                  [class]="
-                    row[column.field][7].active ? 'dealer-active' : 'dealer'
-                  "
-                ></div>
-              </div>
-            </div>
-
-            <!-- PPG COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'ppg' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
-              <span class="table-text" [innerHtml]="'$0'"></span>
-            </div>
-
-            <!-- URL COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'url' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <a
-                class="table-url"
-                href="{{ row[column.field] }}"
-                [innerHtml]="row[column.field] ? row[column.field] : ''"
-              ></a>
-            </div>
-
-            <!-- PASSWORD COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'password' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <svg-icon
-                class="table-password-icon"
-                [ngClass]="{
-                  'table-active-password': showPassword[i]
-                }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
-              >
-
-              <svg-icon
-                class="password-spiner"
-                *ngIf="loadingPassword === i"
-                src="/assets/svg/truckassist-table/loading-spinner.svg"
-              ></svg-icon>
-            </div>
-
-            <!-- LABLE COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'label' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div
-                class="table-lable"
-                [ngStyle]="{
-                  background: row[column.field]?.color
-                    ? row[column.field].color
-                    : 'unset'
-                }"
-              ></div>
-              <span
-                class="table-lable-text"
-                [innerHtml]="
-                  row[column.field]?.name ? row[column.field].name : ''
-                "
-              ></span>
-            </div>
-
-            <!-- TEXT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'text' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span class="table-text">{{
-                row[column.field] ? row[column.field] : ""
-              }}</span>
-            </div>
-
-            <!-- SEMI BOLD TEXT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'semi-bold-text' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span class="semi-bold-table-text">{{
-                row[column.field] ? row[column.field] : ""
-              }}</span>
-            </div>
-
-            <!-- COLOR COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'color' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <svg
-                *ngIf="row[column.field]"
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 11.638 16.2"
-              >
-                <path
-                  d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                  transform="translate(-16 -6.014)"
-                  [ngStyle]="{
-                    fill: row[column.field],
-                    filter:
-                      row.color === '#F9F9F9'
-                        ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
-                        : 'unset'
-                  }"
-                />
-              </svg>
-
-              <div
-                *ngIf="row[column.field]"
-                [ngStyle]="{
-                  width: column.width - 18 + 'px'
-                }"
-                class="color-name"
-              >
-                {{ row.colorName }}
-              </div>
-            </div>
-
-            <!-- SVG COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'svg' && column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="truckassist-icon">
-                <svg-icon
-                  [class]="row[column.classField]"
-                  [src]="column.svgUrl + row[column.field]"
-                  [svgStyle]="{
-                    'width.px': column.svgDimensions.width,
-                    'height.px': column.svgDimensions.height
-                  }"
-                ></svg-icon>
-              </div>
-            </div>
-
-            <!-- PICKUP COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'pickup' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="pickup-and-delivery-container">
-                <div class="picup-count">{{ row.pickupCount }}</div>
-                <div class="loaction">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- PICKUP COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'delivery' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="pickup-and-delivery-container">
-                <div class="delivery-count">{{ row.deliveryCount }}</div>
-                <div class="loaction">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
-                <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
-                >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
-                </div>
-              </div>
-            </div>
-
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
-              </div>
-            </div>
-
-            <!-- STATE TEXT COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'textState' &&
-                column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div *ngIf="row[column.field]" class="table-state">
-                {{ row[column.field] ? row[column.field] : "" }}
-              </div>
-            </div>
-
-            <!-- PROGRESS COLUMN TEMPLATE -->
-            <div
-              class="td-content"
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'progress' &&
-                column.isPined
-              "
-            >
-              <div
-                class="table-progress-cotnainer"
-                *ngIf="row[column.field]?.expirationDays"
-              >
-                <!-- Progres Bar  -->
-                <div
-                  class="table-progress-bar-container"
-                  [ngClass]="{
-                    'bg-expired-container':
-                      row[column.field].percentage === 100,
-                    'bg-sliver-container':
-                      row[column.field].percentage >= 25 &&
-                      row[column.field].percentage < 100,
-                    'bg-orange-container':
-                      row[column.field].percentage >= 5 &&
-                      row[column.field].percentage < 25,
-                    'bg-danger-container':
-                      row[column.field].percentage > 0 &&
-                      row[column.field].percentage < 5,
-                    'bg-inactive-container': !row[column.field].percentage
-                  }"
-                >
+                <div class="inv-ageing-container">
+                  <div class="bfb-container">{{ row[column.field].bfb }}</div>
+                  <div class="dnu-container">{{ row[column.field].dnu }}</div>
                   <div
+                    class="inv-ageing-text"
+                    [ngStyle]="{
+                      width: column.width - 42 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].amount }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- CONTACT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'contact'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="contact-container" *ngIf="row[column.field]">
+                  <div class="contact-count">{{ row[column.field] }}</div>
+                  <div class="contact-avatar"></div>
+                </div>
+              </div>
+
+              <!-- WORK HOUR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'work-hour'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="work-hour-container">
+                  <div class="work-hour-icon"></div>
+                  <div
+                    class="work-hour-time"
+                    [ngStyle]="{
+                      width: column.width - 22 + 'px'
+                    }"
+                  >
+                    {{ row[column.field] }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- DESCRIPTION COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'description'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  *ngIf="row[column.field]"
+                  [ngStyle]="{
+                    width: column.width - 5 + 'px'
+                  }"
+                  [ngClass]="{
+                    'active-description':
+                      activeDescriptionDropdown === row.id && t1.isOpen()
+                  }"
+                  class="description-container"
+                  [innerHtml]="row[column.field]"
+                  #t1="ngbPopover"
+                  (click)="onShowDescriptionDropdown(t1, row)"
+                  [ngbPopover]="descriptionPopover"
+                  [placement]="'bottom-left'"
+                  popoverClass="table-description-popover"
+                  triggers="manual"
+                ></div>
+              </div>
+
+              <!-- SHARED COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'shared'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="shared-container">
+                  <div
+                    class="shared-icon"
                     [ngClass]="{
-                      'bg-progress-sliver':
+                      'lock-icon': !isShared,
+                      'shared-active-icon': isShared
+                    }"
+                  ></div>
+                  <div class="shared-text">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- LVL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'lvl'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="lvl-container">{{ row[column.field] }}</div>
+              </div>
+
+              <!-- CITATION COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  class="citation-table"
+                  [ngClass]="{ 'citation-table-active': row.citation > 0 }"
+                >
+                  {{ row.citation ? row.citation : "0" }}
+                </div>
+              </div>
+
+              <!-- VL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'violation-count'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  [ngClass]="{
+                    'active-vl-count': row[column.field] > 0,
+                    'zero-vl-count': !row[column.field]
+                  }"
+                >
+                  {{ row[column.field] ? row[column.field] : "0" }}
+                </div>
+              </div>
+
+              <!-- CUSTOMER NAME COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'customer-name'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="customer-name-container">
+                  <svg-icon
+                    *ngIf="row.ban && !row.dnu"
+                    [src]="
+                      'assets/svg/truckassist-table/customer/banner-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                  <svg-icon
+                    *ngIf="!row.ban && row.dnu"
+                    [src]="
+                      'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                  <span class="customer-name">{{ row[column.field] }}</span>
+                </div>
+              </div>
+
+              <!-- TOTAL  COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'total'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
+              highlightingWords) : '' " -->
+                <span
+                  *ngIf="!row.isRepairOrder"
+                  class="table-total"
+                  [innerHtml]="row[column.field] ? row[column.field] : ''"
+                ></span>
+
+                <div
+                  class="finish-order-action"
+                  (click)="onFinishOrder(row)"
+                  *ngIf="row.isRepairOrder"
+                >
+                  Finish Order
+                </div>
+              </div>
+
+              <!-- COMPACT TEXT -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'compact-text'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  class="compact-text-container"
+                  *ngIf="
+                    row[column.field][0].value ||
+                    row[column.field][1].value ||
+                    row[column.field][2].value
+                  "
+                >
+                  <!-- First -->
+                  <div
+                    class="title-values-container title-values-margin"
+                    *ngIf="row[column.field][0].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][0].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][0].value }}
+                    </div>
+                  </div>
+
+                  <!-- Second  -->
+                  <div
+                    class="title-values-container title-values-margin"
+                    *ngIf="row[column.field][1].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][1].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][1].value }}
+                    </div>
+                  </div>
+
+                  <!-- Third  -->
+                  <div
+                    class="title-values-container"
+                    *ngIf="row[column.field][2].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][2].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][2].value }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- SERVICE COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'service'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="service-container" *ngIf="row[column.field]">
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][0].active ? 'truck-active' : 'truck'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][1].active ? 'trailer-active' : 'trailer'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][2].active ? 'mobile-active' : 'mobile'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][3].active ? 'shop-active' : 'shop'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][4].active ? 'towing-active' : 'towing'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][5].active ? 'parts-active' : 'parts'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][6].active ? 'tire-active' : 'tire'
+                    "
+                  ></div>
+                  <div
+                    class="img-style"
+                    [class]="
+                      row[column.field][7].active ? 'dealer-active' : 'dealer'
+                    "
+                  ></div>
+                </div>
+              </div>
+
+              <!-- PPG COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'ppg'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
+                <span class="table-text" [innerHtml]="'$0'"></span>
+              </div>
+
+              <!-- URL COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'url'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <a
+                  class="table-url"
+                  href="{{ row[column.field] }}"
+                  [innerHtml]="row[column.field] ? row[column.field] : ''"
+                ></a>
+              </div>
+
+              <!-- PASSWORD COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'password'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  (click)="onShowPassword(row, column)"
+                  *ngIf="!row[column.field].apiCallStarted"
+                  class="password-icon"
+                  [ngClass]="{
+                    'password-hidden': row[column.field].hiden,
+                    'password-showing': !row[column.field].hiden
+                  }"
+                ></div>
+
+                <svg-icon
+                  class="password-spiner"
+                  *ngIf="row[column.field].apiCallStarted"
+                  src="/assets/svg/truckassist-table/loading-spinner.svg"
+                ></svg-icon>
+
+                <div
+                  class="password-text-crypted"
+                  *ngIf="
+                    row[column.field].hiden && !row[column.field].apiCallStarted
+                  "
+                  [innerHtml]="row[column.field].hidemCharacters"
+                ></div>
+
+                <div
+                  class="password-text-showing"
+                  *ngIf="
+                    !row[column.field].hiden &&
+                    !row[column.field].apiCallStarted
+                  "
+                >
+                  {{ row[column.field].password }}
+                </div>
+              </div>
+
+              <!-- RAITING COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'rating'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="raiting-container">
+                  <div
+                    class="raiting-icon"
+                    (click)="onLike(row)"
+                    [ngClass]="{
+                      'did-like-icon': row[column.field].hasLiked,
+                      'like-icon': !row[column.field].hasLiked
+                    }"
+                  ></div>
+                  <div
+                    class="raiting-counter-container"
+                    (click)="onOpenReviews(row)"
+                  >
+                    <div class="raiting-counter like-counter">
+                      {{ row[column.field].likeCount }}
+                    </div>
+                    <div class="raiting-counter dislike-counter">
+                      {{ row[column.field].dislikeCount }}
+                    </div>
+                  </div>
+                  <div
+                    class="raiting-icon"
+                    (click)="onDislike(row)"
+                    [ngClass]="{
+                      'did-dislike-icon': row[column.field].hasDislike,
+                      'dislike-icon': !row[column.field].hasDislike
+                    }"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- LABLE COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'label'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="table-lable"
+                  [ngStyle]="{
+                    background: row[column.field]?.color
+                      ? row[column.field].color
+                      : 'unset'
+                  }"
+                ></div>
+                <span
+                  class="table-lable-text"
+                  [innerHtml]="
+                    row[column.field]?.name ? row[column.field].name : ''
+                  "
+                ></span>
+              </div>
+
+              <!-- TEXT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'text'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span class="table-text">{{
+                  row[column.field] ? row[column.field] : ""
+                }}</span>
+              </div>
+
+              <!-- SEMI BOLD TEXT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'semi-bold-text'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span class="semi-bold-table-text">{{
+                  row[column.field] ? row[column.field] : ""
+                }}</span>
+              </div>
+
+              <!-- COLOR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'color'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <svg
+                  *ngIf="row[column.field]"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 11.638 16.2"
+                >
+                  <path
+                    d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                    transform="translate(-16 -6.014)"
+                    [ngStyle]="{
+                      fill: row[column.field],
+                      filter:
+                        row.color === '#F9F9F9'
+                          ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
+                          : 'unset'
+                    }"
+                  />
+                </svg>
+
+                <div
+                  *ngIf="row[column.field]"
+                  [ngStyle]="{
+                    width: column.width - 18 + 'px'
+                  }"
+                  class="color-name"
+                >
+                  {{ row.colorName }}
+                </div>
+              </div>
+
+              <!-- SVG COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'svg'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="truckassist-icon">
+                  <svg-icon
+                    [class]="row[column.classField]"
+                    [src]="column.svgUrl + row[column.field]"
+                    [svgStyle]="{
+                      'width.px': column.svgDimensions.width,
+                      'height.px': column.svgDimensions.height
+                    }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- PICKUP COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'pickup'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="picup-count">{{ row.pickupCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- PICKUP COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'delivery'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="delivery-count">{{ row.deliveryCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- STATE TEXT COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'textState'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div *ngIf="row[column.field]" class="table-state">
+                  {{ row[column.field] ? row[column.field] : "" }}
+                </div>
+              </div>
+
+              <!-- PROGRESS COLUMN -->
+              <div
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                *ngIf="column.ngTemplate === 'progress'"
+              >
+                <div
+                  class="table-progress-cotnainer"
+                  *ngIf="row[column.field]?.expirationDays"
+                >
+                  <!-- Progres Bar  -->
+                  <div
+                    class="table-progress-bar-container"
+                    [ngClass]="{
+                      'bg-expired-container':
+                        row[column.field].percentage === 100,
+                      'bg-sliver-container':
                         row[column.field].percentage >= 25 &&
-                        row[column.field].percentage < 50,
-                      'bg-progress-orange':
+                        row[column.field].percentage < 100,
+                      'bg-orange-container':
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
-                      'bg-progress-danger':
+                      'bg-danger-container':
                         row[column.field].percentage > 0 &&
-                        row[column.field].percentage < 5
+                        row[column.field].percentage < 5,
+                      'bg-inactive-container': !row[column.field].percentage
                     }"
-                    [ngStyle]="{ width: row[column.field].percentage + '%' }"
-                    class="table-progress-bar"
+                  >
+                    <div
+                      [ngClass]="{
+                        'bg-progress-sliver':
+                          row[column.field].percentage >= 25 &&
+                          row[column.field].percentage < 50,
+                        'bg-progress-orange':
+                          row[column.field].percentage >= 5 &&
+                          row[column.field].percentage < 25,
+                        'bg-progress-danger':
+                          row[column.field].percentage > 0 &&
+                          row[column.field].percentage < 5
+                      }"
+                      [ngStyle]="{ width: row[column.field].percentage + '%' }"
+                      class="table-progress-bar"
+                      *ngIf="
+                        row[column.field].percentage > 0 &&
+                        row[column.field].percentage < 100
+                      "
+                    ></div>
+                  </div>
+
+                  <!-- Progres Text -->
+                  <div
+                    class="table-progress-text"
+                    [ngStyle]="{
+                      width: column.width - 30 + 'px'
+                    }"
                     *ngIf="
                       row[column.field].percentage > 0 &&
                       row[column.field].percentage < 100
                     "
-                  ></div>
-                </div>
+                  >
+                    in {{ row[column.field].expirationDays }} days
+                  </div>
 
-                <!-- Progres Text -->
-                <div
-                  class="table-progress-text"
-                  [ngStyle]="{
-                    width: column.width - 30 + 'px'
-                  }"
-                  *ngIf="
-                    row[column.field].percentage > 0 &&
-                    row[column.field].percentage < 100
-                  "
-                >
-                  in {{ row[column.field].expirationDays }} days
-                </div>
-
-                <!-- Progres Text Expired-->
-                <div
-                  class="table-progress-text"
-                  [ngStyle]="{
-                    width: column.width - 30 + 'px'
-                  }"
-                  *ngIf="row[column.field].percentage === 100"
-                >
-                  {{ row[column.field].expirationDays }} days ago
+                  <!-- Progres Text Expired-->
+                  <div
+                    class="table-progress-text"
+                    [ngStyle]="{
+                      width: column.width - 30 + 'px'
+                    }"
+                    *ngIf="row[column.field].percentage === 100"
+                  >
+                    {{ row[column.field].expirationDays }} days ago
+                  </div>
                 </div>
               </div>
-            </div>
-          </td>
-        </div>
-      </tr>
-    </div>
 
-    <!-- Border For Not Pined -->
-    <div
-      class="not-pined-border-left table-select-border"
-      *ngIf="showScrollSectionBorder"
-      [ngStyle]="{
-        height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
-      }"
-    ></div>
-
-    <!-- Not Pined -->
-    <div
-      class="not-pined-tr"
-      id="scroll-container"
-      (scroll)="onScroll($event)"
-      [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
-    >
-      <tr
-        [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
-        *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
-        [ngClass]="{
-          'regular-columns-hover':
-            hoverActive === i &&
-            !row.actionAnimation &&
-            !row.isRepairOrder &&
-            !row.isSelected,
-          'regular-row': !row.isSelected,
-          'selected-row': row.isSelected,
-          'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle,
-          'delete-animation': row.actionAnimation === 'delete',
-          'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update',
-          'row-repair-order': row.isRepairOrder && !row.actionAnimation
-        }"
-        class="not-pined-tr-container"
-      >
-        <div
-          class="columns-container"
-          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
-          (mouseleave)="hoverActive = -1"
-          [ngClass]="{
-            'border-inactive': !showScrollSectionBorder
-          }"
-        >
-          <td *ngFor="let column of columns">
-            <!-- NO TEMPLATE -->
-            <div
-              *ngIf="
-                !column.hidden && column.ngTemplate === '' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="no-template">NO TEMPLATE</div>
-            </div>
-
-            <!-- AVATAR COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'avatar' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="avatar-container">
-                <div class="avatar-img" *ngIf="row.avatarImg">
-                  <img alt="avatar" [src]="row.avatarImg" />
-                </div>
-
-                <div
-                  class="avatar-no-img"
-                  *ngIf="!row.avatarImg"
-                  [ngStyle]="{
-                    'background-color': row.avatarColor?.background
-                      ? row.avatarColor.background
-                      : 'unset',
-                    color: row.avatarColor?.color
-                      ? row.avatarColor.color
-                      : 'unset'
-                  }"
-                >
-                  {{ row.textDriverShortName }}
-                </div>
-
-                <img
-                  class="avatar-owner"
-                  alt="avatar"
-                  *ngIf="row.isOwner"
-                  src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
-                />
-              </div>
-              <span
-                (click)="goToDetails(column, row)"
-                class="table-avatar-name"
-                >{{ row[column.field] }}</span
+              <!-- APPLICANT PROGRESS COLUMN -->
+              <div
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                *ngIf="column.ngTemplate === 'applicant-progress'"
               >
-            </div>
+                <div
+                  class="applicant-progress-container"
+                  [ngStyle]="{ width: progressStatus.width + 'px' }"
+                  *ngFor="let progressStatus of row[column.field]"
+                >
+                  <!-- Progress -->
+                  <div
+                    class="table-progress-cotnainer"
+                    *ngIf="progressStatus.status === 'In Progres'"
+                  >
+                    <!-- Progress Bar  -->
+                    <div
+                      class="table-progress-bar-container"
+                      [ngClass]="{
+                        'bg-expired-container':
+                          progressStatus.percentage === 100,
+                        'bg-sliver-container':
+                          progressStatus.percentage >= 25 &&
+                          progressStatus.percentage < 100,
+                        'bg-orange-container':
+                          progressStatus.percentage >= 5 &&
+                          progressStatus.percentage < 25,
+                        'bg-danger-container':
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 5,
+                        'bg-inactive-container': !progressStatus.percentage
+                      }"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-progress-sliver':
+                            progressStatus.percentage >= 25 &&
+                            progressStatus.percentage < 50,
+                          'bg-progress-orange':
+                            progressStatus.percentage >= 5 &&
+                            progressStatus.percentage < 25,
+                          'bg-progress-danger':
+                            progressStatus.percentage > 0 &&
+                            progressStatus.percentage < 5
+                        }"
+                        [ngStyle]="{
+                          width: progressStatus.percentage + '%'
+                        }"
+                        class="table-progress-bar"
+                        *ngIf="
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 100
+                        "
+                      ></div>
+                    </div>
+                  </div>
 
-            <!-- USER AVATAR COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'user-avatar' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div class="user-avatar-container">
-                <img
-                  alt="avatar"
-                  [src]="
-                    row?.avatar?.src
-                      ? row?.avatar?.src
-                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                  "
-                  class="avatar"
-                />
+                  <!-- Status Icon -->
+                  <div
+                    class="applicant-status-container"
+                    *ngIf="
+                      progressStatus.status !== 'In Progres' &&
+                      progressStatus.status !== 'No Started'
+                    "
+                  >
+                    <div
+                      class="status-icon"
+                      [class]="progressStatus.class"
+                    ></div>
+                  </div>
+                </div>
               </div>
-              <span class="table-avatar-name">{{ row.userFullName }}</span>
-            </div>
 
-            <!-- USER STATUS COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'user-status' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="user-status-container">{{ row[column.field] }}</div>
-            </div>
-
-            <!-- NAME LINK COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'nameLink' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span
+              <!-- APPLICANT REVIEW COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'applicant-review'"
                 [ngStyle]="{
                   width: column.width + 'px'
                 }"
-                class="table-name-link"
-                (click)="goToDetails(column, row)"
-                >{{ row[column.field] }}</span
               >
-            </div>
-
-            <!-- OOS COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'oos' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="oos-container">
-                <div [ngClass]="{ 'oos-active': row.oos[0].active }">
-                  {{ row.oos[0].value }}
-                </div>
-                <div [ngClass]="{ 'oos-active': row.oos[1].active }">
-                  {{ row.oos[1].value }}
-                </div>
-                <div [ngClass]="{ 'oos-active': row.oos[2].active }">
-                  {{ row.oos[2].value }}
+                <div class="applicant-review-container">
+                  <div
+                    class="review-icon"
+                    [ngClass]="{
+                      reviewed: row[column.field].title === 'Reviewed',
+                      finished: row[column.field].title === 'Finished',
+                      incomplete: row[column.field].title === 'Incomplete',
+                      ready: row[column.field].title === 'Ready'
+                    }"
+                  >
+                    <svg-icon
+                      [src]="row[column.field].iconLink"
+                      [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                    ></svg-icon>
+                  </div>
+                  <div
+                    class="review-title"
+                    [ngStyle]="{
+                      width: column.width - 26 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].title }}
+                  </div>
                 </div>
               </div>
-            </div>
+            </td>
+          </div>
 
-            <!-- VIOLATION STATE COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'violation-state' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="violation-state-container">
-                {{ row[column.field] }}
+          <!-- Border -->
+          <div
+            class="border-scroll-section"
+            [ngClass]="{ 'border-left': false }"
+          ></div>
+
+          <!-- class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)"-->
+          <!-- NOT PINED -->
+          <div
+            class="not-pined-columns"
+            [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
+          >
+            <td class="not-pined-td" *ngFor="let column of notPinedColumns">
+              <!-- NO TEMPLATE -->
+              <div
+                *ngIf="column.ngTemplate === ''"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div class="no-template">NO TEMPLATE</div>
               </div>
-            </div>
 
-            <!-- INV. AGEING COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'inv-ageing' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="inv-ageing-container">
-                <div class="bfb-container">{{ row[column.field].bfb }}</div>
-                <div class="dnu-container">{{ row[column.field].dnu }}</div>
-                <div
-                  class="inv-ageing-text"
-                  [ngStyle]="{
-                    width: column.width - 42 + 'px'
-                  }"
+              <!-- AVATAR COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div class="avatar-container">
+                  <div class="avatar-img" *ngIf="row.avatarImg">
+                    <img alt="avatar" [src]="row.avatarImg" />
+                  </div>
+
+                  <div
+                    class="avatar-no-img"
+                    *ngIf="!row.avatarImg"
+                    [ngStyle]="{
+                      'background-color': row.avatarColor?.background
+                        ? row.avatarColor.background
+                        : 'unset',
+                      color: row.avatarColor?.color
+                        ? row.avatarColor.color
+                        : 'unset'
+                    }"
+                  >
+                    {{ row.textDriverShortName }}
+                  </div>
+
+                  <img
+                    class="avatar-owner"
+                    alt="avatar"
+                    *ngIf="row.isOwner"
+                    src="../../../../../../assets/svg/truckassist-table/owner-badge.svg"
+                  />
+                </div>
+                <span
+                  (click)="goToDetails(column, row)"
+                  class="table-avatar-name"
+                  >{{ row[column.field] }}</span
                 >
-                  {{ row[column.field].amount }}
+              </div>
+
+              <!-- USER AVATAR COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'user-avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div class="user-avatar-container">
+                  <img
+                    alt="avatar"
+                    [src]="
+                      row?.avatar?.src
+                        ? row?.avatar?.src
+                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                    "
+                    class="avatar"
+                  />
+                </div>
+                <span class="table-avatar-name">{{ row.userFullName }}</span>
+              </div>
+
+              <!-- USER STATUS COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'user-status'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="user-status-container">{{ row[column.field] }}</div>
+              </div>
+
+              <!-- NAME LINK COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'nameLink'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span
+                  [ngStyle]="{
+                    width: column.width + 'px'
+                  }"
+                  class="table-name-link"
+                  (click)="goToDetails(column, row)"
+                  >{{ row[column.field] }}</span
+                >
+              </div>
+
+              <!-- OOS COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'oos'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="oos-container">
+                  <div [ngClass]="{ 'oos-active': row.oos[0].active }">
+                    {{ row.oos[0].value }}
+                  </div>
+                  <div [ngClass]="{ 'oos-active': row.oos[1].active }">
+                    {{ row.oos[1].value }}
+                  </div>
+                  <div [ngClass]="{ 'oos-active': row.oos[2].active }">
+                    {{ row.oos[2].value }}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- CONTACT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'contact' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="contact-container" *ngIf="row[column.field]">
-                <div class="contact-count">{{ row[column.field] }}</div>
-                <div class="contact-avatar"></div>
-              </div>
-            </div>
-
-            <!-- WORK HOUR COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'work-hour' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="work-hour-container">
-                <div class="work-hour-icon"></div>
-                <div
-                  class="work-hour-time"
-                  [ngStyle]="{
-                    width: column.width - 22 + 'px'
-                  }"
-                >
+              <!-- VIOLATION STATE COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'violation-state'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="violation-state-container">
                   {{ row[column.field] }}
                 </div>
               </div>
-            </div>
 
-            <!-- DESCRIPTION COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'description' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
+              <!-- INV. AGEING COLUMN -->
               <div
-                *ngIf="row[column.field]"
+                class="td-content"
+                *ngIf="column.ngTemplate === 'inv-ageing'"
                 [ngStyle]="{
-                  width: column.width - 5 + 'px'
+                  width: column.width + 'px'
                 }"
-                [ngClass]="{
-                  'active-description':
-                    activeDescriptionDropdown === row.id && t1.isOpen()
-                }"
-                class="description-container"
-                [innerHtml]="row[column.field]"
-                #t1="ngbPopover"
-                (click)="onShowDescriptionDropdown(t1, row)"
-                [ngbPopover]="descriptionPopover"
-                [placement]="'bottom-left'"
-                popoverClass="table-description-popover"
-                triggers="manual"
-              ></div>
-            </div>
+              >
+                <div class="inv-ageing-container">
+                  <div class="bfb-container">{{ row[column.field].bfb }}</div>
+                  <div class="dnu-container">{{ row[column.field].dnu }}</div>
+                  <div
+                    class="inv-ageing-text"
+                    [ngStyle]="{
+                      width: column.width - 42 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].amount }}
+                  </div>
+                </div>
+              </div>
 
-            <!-- SHARED COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'shared' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="shared-container">
+              <!-- CONTACT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'contact'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="contact-container" *ngIf="row[column.field]">
+                  <div class="contact-count">{{ row[column.field] }}</div>
+                  <div class="contact-avatar"></div>
+                </div>
+              </div>
+
+              <!-- WORK HOUR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'work-hour'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="work-hour-container">
+                  <div class="work-hour-icon"></div>
+                  <div
+                    class="work-hour-time"
+                    [ngStyle]="{
+                      width: column.width - 22 + 'px'
+                    }"
+                  >
+                    {{ row[column.field] }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- DESCRIPTION COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'description'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
                 <div
-                  class="shared-icon"
+                  *ngIf="row[column.field]"
+                  [ngStyle]="{
+                    width: column.width - 5 + 'px'
+                  }"
                   [ngClass]="{
-                    'lock-icon': !isShared,
-                    'shared-active-icon': isShared
+                    'active-description':
+                      activeDescriptionDropdown === row.id && t1.isOpen()
+                  }"
+                  class="description-container"
+                  [innerHtml]="row[column.field]"
+                  #t1="ngbPopover"
+                  (click)="onShowDescriptionDropdown(t1, row)"
+                  [ngbPopover]="descriptionPopover"
+                  [placement]="'bottom-left'"
+                  popoverClass="table-description-popover"
+                  triggers="manual"
+                ></div>
+              </div>
+
+              <!-- SHARED COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'shared'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="shared-container">
+                  <div
+                    class="shared-icon"
+                    [ngClass]="{
+                      'lock-icon': !isShared,
+                      'shared-active-icon': isShared
+                    }"
+                  ></div>
+                  <div class="shared-text">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- RAITING COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'rating'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="raiting-container">
+                  <div
+                    class="raiting-icon"
+                    (click)="onLike(row, column)"
+                    [ngClass]="{
+                      'did-like-icon': row[column.field].hasLiked,
+                      'like-icon': !row[column.field].hasLiked
+                    }"
+                  ></div>
+                  <div
+                    class="raiting-counter-container"
+                    (click)="onOpenReviews(row)"
+                  >
+                    <div class="raiting-counter like-counter">
+                      {{ row[column.field].likeCount }}
+                    </div>
+                    <div class="raiting-counter dislike-counter">
+                      {{ row[column.field].dislikeCount }}
+                    </div>
+                  </div>
+                  <div
+                    class="raiting-icon"
+                    (click)="onDislike(row, column)"
+                    [ngClass]="{
+                      'did-dislike-icon': row[column.field].hasDislike,
+                      'dislike-icon': !row[column.field].hasDislike
+                    }"
+                  ></div>
+                </div>
+              </div>
+
+              <!-- LVL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'lvl'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="lvl-container">{{ row[column.field] }}</div>
+              </div>
+
+              <!-- COMPACT TEXT -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'compact-text'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  class="compact-text-container"
+                  *ngIf="
+                    row[column.field][0].value ||
+                    row[column.field][1].value ||
+                    row[column.field][2].value
+                  "
+                >
+                  <!-- First -->
+                  <div
+                    class="title-values-container title-values-margin"
+                    *ngIf="row[column.field][0].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][0].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][0].value }}
+                    </div>
+                  </div>
+
+                  <!-- Second  -->
+                  <div
+                    class="title-values-container title-values-margin"
+                    *ngIf="row[column.field][1].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][1].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][1].value }}
+                    </div>
+                  </div>
+
+                  <!-- Third  -->
+                  <div
+                    class="title-values-container"
+                    *ngIf="row[column.field][2].value"
+                  >
+                    <div class="title-compact-text">
+                      {{ row[column.field][2].title }}
+                    </div>
+                    <div class="values-compact-text">
+                      {{ row[column.field][2].value }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- CITATION COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'citation'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  class="citation-table"
+                  [ngClass]="{ 'citation-table-active': row.citation > 0 }"
+                >
+                  {{ row.citation ? row.citation : "0" }}
+                </div>
+              </div>
+
+              <!-- VL COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'violation-count'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div
+                  [ngClass]="{
+                    'active-vl-count': row[column.field] > 0,
+                    'zero-vl-count': !row[column.field]
+                  }"
+                >
+                  {{ row[column.field] ? row[column.field] : "0" }}
+                </div>
+              </div>
+
+              <!-- CUSTOMER NAME COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'customer-name'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="customer-name-container">
+                  <svg-icon
+                    *ngIf="row.ban && !row.dnu"
+                    [src]="
+                      'assets/svg/truckassist-table/customer/banner-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                  <svg-icon
+                    *ngIf="!row.ban && row.dnu"
+                    [src]="
+                      'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
+                    "
+                    [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  ></svg-icon>
+                  <span class="customer-name">{{ row[column.field] }}</span>
+                </div>
+              </div>
+
+              <!-- TOTAL  COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'total'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
+            highlightingWords) : '' " -->
+                <span
+                  *ngIf="!row.isRepairOrder"
+                  class="table-total"
+                  [innerHtml]="row[column.field] ? row[column.field] : ''"
+                ></span>
+
+                <div
+                  class="finish-order-action"
+                  (click)="onFinishOrder(row)"
+                  *ngIf="row.isRepairOrder"
+                >
+                  Finish Order
+                </div>
+              </div>
+
+              <!-- SERVICE COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'service'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="service-container" *ngIf="row[column.field]">
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][0].active ? 'truck-active' : 'truck'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][1].active ? 'trailer-active' : 'trailer'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][2].active ? 'mobile-active' : 'mobile'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][3].active ? 'shop-active' : 'shop'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][4].active ? 'towing-active' : 'towing'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][5].active ? 'parts-active' : 'parts'
+                    "
+                  ></div>
+                  <div
+                    class="img-style img-margin"
+                    [class]="
+                      row[column.field][6].active ? 'tire-active' : 'tire'
+                    "
+                  ></div>
+                  <div
+                    class="img-style"
+                    [class]="
+                      row[column.field][7].active ? 'dealer-active' : 'dealer'
+                    "
+                  ></div>
+                </div>
+              </div>
+
+              <!-- PPG COLUMN-->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'ppg'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
+                <span class="table-text" [innerHtml]="'$0'"></span>
+              </div>
+
+              <!-- URL COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'url'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <a
+                  class="table-url"
+                  href="{{ row[column.field] }}"
+                  [innerHtml]="row[column.field] ? row[column.field] : ''"
+                ></a>
+              </div>
+
+              <!-- PASSWORD COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'password'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  (click)="onShowPassword(row, column)"
+                  *ngIf="!row[column.field].apiCallStarted"
+                  class="password-icon"
+                  [ngClass]="{
+                    'password-hidden': row[column.field].hiden,
+                    'password-showing': !row[column.field].hiden
                   }"
                 ></div>
-                <div class="shared-text">{{ row[column.field] }}</div>
-              </div>
-            </div>
 
-            <!-- LVL COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'lvl' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div class="lvl-container">{{ row[column.field] }}</div>
-            </div>
-
-            <!-- COMPACT TEXT -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'compact-text' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                class="compact-text-container"
-                *ngIf="
-                  row[column.field][0].value ||
-                  row[column.field][1].value ||
-                  row[column.field][2].value
-                "
-              >
-                <!-- First -->
-                <div
-                  class="title-values-container title-values-margin"
-                  *ngIf="row[column.field][0].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][0].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][0].value }}
-                  </div>
-                </div>
-
-                <!-- Second  -->
-                <div
-                  class="title-values-container title-values-margin"
-                  *ngIf="row[column.field][1].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][1].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][1].value }}
-                  </div>
-                </div>
-
-                <!-- Third  -->
-                <div
-                  class="title-values-container"
-                  *ngIf="row[column.field][2].value"
-                >
-                  <div class="title-compact-text">
-                    {{ row[column.field][2].title }}
-                  </div>
-                  <div class="values-compact-text">
-                    {{ row[column.field][2].value }}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- CITATION COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'citation' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                class="citation-table"
-                [ngClass]="{ 'citation-table-active': row.citation > 0 }"
-              >
-                {{ row.citation ? row.citation : "0" }}
-              </div>
-            </div>
-
-            <!-- VL COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'violation-count' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px'
-              }"
-            >
-              <div
-                [ngClass]="{
-                  'active-vl-count': row[column.field] > 0,
-                  'zero-vl-count': !row[column.field]
-                }"
-              >
-                {{ row[column.field] ? row[column.field] : "0" }}
-              </div>
-            </div>
-
-            <!-- CUSTOMER NAME COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'customer-name' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="customer-name-container">
                 <svg-icon
-                  *ngIf="row.ban && !row.dnu"
-                  [src]="
-                    'assets/svg/truckassist-table/customer/banner-icon.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                  class="password-spiner"
+                  *ngIf="row[column.field].apiCallStarted"
+                  src="/assets/svg/truckassist-table/loading-spinner.svg"
                 ></svg-icon>
-                <svg-icon
-                  *ngIf="!row.ban && row.dnu"
-                  [src]="
-                    'assets/svg/truckassist-table/customer/do-not-use-icon.svg'
+
+                <div
+                  class="password-text-crypted"
+                  *ngIf="
+                    row[column.field].hiden && !row[column.field].apiCallStarted
                   "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-                <span class="customer-name">{{ row[column.field] }}</span>
+                  [innerHtml]="row[column.field].hidemCharacters"
+                ></div>
+
+                <div
+                  class="password-text-showing"
+                  *ngIf="
+                    !row[column.field].hiden &&
+                    !row[column.field].apiCallStarted
+                  "
+                >
+                  {{ row[column.field].password }}
+                </div>
               </div>
-            </div>
 
-            <!-- RATING  COLUMN-->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'rating' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-truckassist-reveiw [data]="row"></app-truckassist-reveiw> -->
-            </div>
-
-            <!-- TOTAL  COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'total' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- [innerHtml]=" row[column.field] ? (row[column.field] | taHighlight:
-            highlightingWords) : '' " -->
-              <span
-                *ngIf="!row.isRepairOrder"
-                class="table-total"
-                [innerHtml]="row[column.field] ? row[column.field] : ''"
-              ></span>
-
+              <!-- LABLE COLUMN -->
               <div
-                class="finish-order-action"
-                (click)="onFinishOrder(row)"
-                *ngIf="row.isRepairOrder"
-              >
-                Finish Order
-              </div>
-            </div>
-
-            <!-- SERVICE COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'service' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="service-container" *ngIf="row[column.field]">
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][0].active ? 'truck-active' : 'truck'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][1].active ? 'trailer-active' : 'trailer'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][2].active ? 'mobile-active' : 'mobile'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row[column.field][3].active ? 'shop-active' : 'shop'"
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][4].active ? 'towing-active' : 'towing'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="
-                    row[column.field][5].active ? 'parts-active' : 'parts'
-                  "
-                ></div>
-                <div
-                  class="img-style img-margin"
-                  [class]="row[column.field][6].active ? 'tire-active' : 'tire'"
-                ></div>
-                <div
-                  class="img-style"
-                  [class]="
-                    row[column.field][7].active ? 'dealer-active' : 'dealer'
-                  "
-                ></div>
-              </div>
-            </div>
-
-            <!-- PPG COLUMN-->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'ppg' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <!-- [innerHtml]="'$0' | taHighlight: highlightingWords" -->
-              <span class="table-text" [innerHtml]="'$0'"></span>
-            </div>
-
-            <!-- URL COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'url' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <a
-                class="table-url"
-                href="{{ row[column.field] }}"
-                [innerHtml]="row[column.field] ? row[column.field] : ''"
-              ></a>
-            </div>
-
-            <!-- PASSWORD COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'password' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <svg-icon
-                class="table-password-icon"
-                [ngClass]="{
-                  'table-active-password': showPassword[i]
+                class="td-content"
+                *ngIf="column.ngTemplate === 'label'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
-                (click)="onShowPassword(i)"
-                src="/assets/svg/truckassist-table/password-icon.svg"
-              ></svg-icon>
-
-              <span
-                *ngIf="loadingPassword !== i"
-                [ngClass]="{
-                  'crypted-password': !showPassword[i],
-                  'decrypted-password': showPassword[i]
-                }"
-                >{{ showPassword[i] ? decryptedPassword[i] : "∗∗∗∗∗" }}</span
               >
+                <div class="lable-container" *ngIf="row[column.field]">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                  >
+                    <g transform="translate(-1084 -362)">
+                      <rect
+                        width="18"
+                        height="18"
+                        transform="translate(1084 362)"
+                        fill="#8a9aef"
+                        opacity="0"
+                      />
+                      <path
+                        d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z"
+                        transform="translate(1084.9 362.9)"
+                        [ngStyle]="{
+                          fill: row[column.field].color
+                        }"
+                      />
+                    </g>
+                  </svg>
+                  <div class="lable-name">{{ row[column.field].name }}</div>
+                </div>
+              </div>
 
-              <svg-icon
-                class="password-spiner"
-                *ngIf="loadingPassword === i"
-                src="/assets/svg/truckassist-table/loading-spinner.svg"
-              ></svg-icon>
-            </div>
+              <!-- TEXT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'text'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span class="table-text">{{
+                  row[column.field] ? row[column.field] : ""
+                }}</span>
+              </div>
 
-            <!-- LABLE COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'label' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="lable-container" *ngIf="row[column.field]">
+              <!-- SEMI BOLD TEXT COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'semi-bold-text'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <span class="semi-bold-table-text">{{
+                  row[column.field] ? row[column.field] : ""
+                }}</span>
+              </div>
+
+              <!-- COLOR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'color'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="18"
                   height="18"
-                  viewBox="0 0 18 18"
+                  viewBox="0 0 11.638 16.2"
+                  *ngIf="row[column.field]"
                 >
-                  <g transform="translate(-1084 -362)">
-                    <rect
-                      width="18"
-                      height="18"
-                      transform="translate(1084 362)"
-                      fill="#8a9aef"
-                      opacity="0"
-                    />
-                    <path
-                      d="M0,7.977V1.519A1.519,1.519,0,0,1,1.519,0H7.977A1.519,1.519,0,0,1,9.051.445l6.7,6.7a1.519,1.519,0,0,1,0,2.148L9.3,15.755a1.519,1.519,0,0,1-2.148,0l-6.7-6.7A1.519,1.519,0,0,1,0,7.977ZM3.544,2.025A1.519,1.519,0,1,0,5.063,3.544,1.519,1.519,0,0,0,3.544,2.025Z"
-                      transform="translate(1084.9 362.9)"
-                      [ngStyle]="{
-                        fill: row[column.field].color
-                      }"
-                    />
-                  </g>
+                  <path
+                    d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
+                    transform="translate(-16 -6.014)"
+                    [ngStyle]="{
+                      fill: row[column.field],
+                      filter:
+                        row.color === '#F9F9F9'
+                          ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
+                          : 'unset'
+                    }"
+                  />
                 </svg>
-                <div class="lable-name">{{ row[column.field].name }}</div>
-              </div>
-            </div>
-
-            <!-- TEXT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'text' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span class="table-text">{{
-                row[column.field] ? row[column.field] : ""
-              }}</span>
-            </div>
-
-            <!-- SEMI BOLD TEXT COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'semi-bold-text' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <span class="semi-bold-table-text">{{
-                row[column.field] ? row[column.field] : ""
-              }}</span>
-            </div>
-
-            <!-- COLOR COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'color' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
-                viewBox="0 0 11.638 16.2"
-                *ngIf="row[column.field]"
-              >
-                <path
-                  d="M16,16.365c0-2.42,3.382-7.593,4.989-9.912a1,1,0,0,1,1.66,0c1.607,2.319,4.989,7.492,4.989,9.912a5.819,5.819,0,1,1-11.638,0Zm3.174,0a.529.529,0,0,0-1.058,0,3.708,3.708,0,0,0,3.7,3.733.529.529,0,1,0,0-1.058A2.651,2.651,0,0,1,19.174,16.365Z"
-                  transform="translate(-16 -6.014)"
-                  [ngStyle]="{
-                    fill: row[column.field],
-                    filter:
-                      row.color === '#F9F9F9'
-                        ? 'drop-shadow(0px 0px 0px rgba(0, 0, 0, 0.2))'
-                        : 'unset'
-                  }"
-                />
-              </svg>
-              <div
-                *ngIf="row[column.field]"
-                [ngStyle]="{
-                  width: column.width - 18 + 'px'
-                }"
-                class="color-name"
-              >
-                {{ row.colorName }}
-              </div>
-            </div>
-
-            <!-- SVG COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden && column.ngTemplate === 'svg' && !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="truckassist-icon">
-                <svg-icon
-                  [class]="row[column.classField]"
-                  [src]="column.svgUrl + row[column.field]"
-                  [svgStyle]="{
-                    'width.px': column.svgDimensions.width,
-                    'height.px': column.svgDimensions.height
-                  }"
-                ></svg-icon>
-              </div>
-            </div>
-
-            <!-- PICKUP COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'pickup' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="pickup-and-delivery-container">
-                <div class="picup-count">{{ row.pickupCount }}</div>
-                <div class="loaction">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- DELIVERY COLUMN -->
-            <div
-              class="td-content"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'delivery' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="pickup-and-delivery-container">
-                <div class="delivery-count">{{ row.deliveryCount }}</div>
-                <div class="loaction">{{ row[column.field] }}</div>
-              </div>
-            </div>
-
-            <!-- APPLICANT DONE CHECKBOX COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantDoneCheckbox' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-done-checkbox">
                 <div
-                  class="checkbox-content"
-                  [ngClass]="{ done: row[column.field] >= 11 }"
+                  *ngIf="row[column.field]"
+                  [ngStyle]="{
+                    width: column.width - 18 + 'px'
+                  }"
+                  class="color-name"
                 >
-                  {{ row[column.field] < 11 ? row[column.field] : "" }}
+                  {{ row.colorName }}
                 </div>
               </div>
-            </div>
 
-            <!-- APPLICANT REVIEW COLUMN -->
-            <div
-              class="td-content set-center"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'applicantReview' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
-              <div class="table-applicant-review">
-                <div
-                  class="review"
-                  [ngClass]="{
-                    'review-ok': row[column.field],
-                    'review-bad': !row[column.field]
-                  }"
-                ></div>
-              </div>
-            </div>
-
-            <!-- STATE TEXT COLUMN -->
-            <div
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'textState' &&
-                !column.isPined
-              "
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div *ngIf="row[column.field]" class="table-state">
-                {{ row[column.field] ? row[column.field] : "" }}
-              </div>
-            </div>
-
-            <!-- PROGRESS COLUMN TEMPLATE -->
-            <div
-              class="td-content"
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              *ngIf="
-                !column.hidden &&
-                column.ngTemplate === 'progress' &&
-                !column.isPined
-              "
-            >
+              <!-- SVG COLUMN -->
               <div
-                class="table-progress-cotnainer"
-                *ngIf="row[column.field]?.expirationDays"
+                class="td-content"
+                *ngIf="column.ngTemplate === 'svg'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
               >
-                <!-- Progres Bar  -->
+                <div class="truckassist-icon">
+                  <svg-icon
+                    [class]="row[column.classField]"
+                    [src]="column.svgUrl + row[column.field]"
+                    [svgStyle]="{
+                      'width.px': column.svgDimensions.width,
+                      'height.px': column.svgDimensions.height
+                    }"
+                  ></svg-icon>
+                </div>
+              </div>
+
+              <!-- PICKUP COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'pickup'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="picup-count">{{ row.pickupCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- DELIVERY COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'delivery'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="delivery-count">{{ row.deliveryCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- STATE TEXT COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'textState'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div *ngIf="row[column.field]" class="table-state">
+                  {{ row[column.field] ? row[column.field] : "" }}
+                </div>
+              </div>
+
+              <!-- PROGRESS COLUMN -->
+              <div
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                *ngIf="column.ngTemplate === 'progress'"
+              >
                 <div
-                  class="table-progress-bar-container"
-                  [ngClass]="{
-                    'bg-expired-container':
-                      row[column.field].percentage === 100,
-                    'bg-sliver-container':
-                      row[column.field].percentage >= 25 &&
-                      row[column.field].percentage < 100,
-                    'bg-orange-container':
-                      row[column.field].percentage >= 5 &&
-                      row[column.field].percentage < 25,
-                    'bg-danger-container':
-                      row[column.field].percentage > 0 &&
-                      row[column.field].percentage < 5,
-                    'bg-inactive-container': !row[column.field].percentage
-                  }"
+                  class="table-progress-cotnainer"
+                  *ngIf="row[column.field]?.expirationDays"
                 >
+                  <!-- Progres Bar  -->
                   <div
+                    class="table-progress-bar-container"
                     [ngClass]="{
-                      'bg-progress-sliver':
+                      'bg-expired-container':
+                        row[column.field].percentage === 100,
+                      'bg-sliver-container':
                         row[column.field].percentage >= 25 &&
-                        row[column.field].percentage < 50,
-                      'bg-progress-orange':
+                        row[column.field].percentage < 100,
+                      'bg-orange-container':
                         row[column.field].percentage >= 5 &&
                         row[column.field].percentage < 25,
-                      'bg-progress-danger':
+                      'bg-danger-container':
                         row[column.field].percentage > 0 &&
-                        row[column.field].percentage < 5
+                        row[column.field].percentage < 5,
+                      'bg-inactive-container': !row[column.field].percentage
                     }"
-                    [ngStyle]="{ width: row[column.field].percentage + '%' }"
-                    class="table-progress-bar"
+                  >
+                    <div
+                      [ngClass]="{
+                        'bg-progress-sliver':
+                          row[column.field].percentage >= 25 &&
+                          row[column.field].percentage < 50,
+                        'bg-progress-orange':
+                          row[column.field].percentage >= 5 &&
+                          row[column.field].percentage < 25,
+                        'bg-progress-danger':
+                          row[column.field].percentage > 0 &&
+                          row[column.field].percentage < 5
+                      }"
+                      [ngStyle]="{ width: row[column.field].percentage + '%' }"
+                      class="table-progress-bar"
+                      *ngIf="
+                        row[column.field].percentage > 0 &&
+                        row[column.field].percentage < 100
+                      "
+                    ></div>
+                  </div>
+
+                  <!-- Progres Text -->
+                  <div
+                    class="table-progress-text"
+                    [ngStyle]="{
+                      width: column.width - 30 + 'px'
+                    }"
                     *ngIf="
                       row[column.field].percentage > 0 &&
                       row[column.field].percentage < 100
                     "
-                  ></div>
-                </div>
+                  >
+                    in {{ row[column.field].expirationDays }} days
+                  </div>
 
-                <!-- Progres Text -->
-                <div
-                  class="table-progress-text"
-                  [ngStyle]="{
-                    width: column.width - 30 + 'px'
-                  }"
-                  *ngIf="
-                    row[column.field].percentage > 0 &&
-                    row[column.field].percentage < 100
-                  "
-                >
-                  in {{ row[column.field].expirationDays }} days
-                </div>
-
-                <!-- Progres Text Expired-->
-                <div
-                  class="table-progress-text"
-                  [ngStyle]="{
-                    width: column.width - 30 + 'px'
-                  }"
-                  *ngIf="row[column.field].percentage === 100"
-                >
-                  {{ row[column.field].expirationDays }} days ago
+                  <!-- Progres Text Expired-->
+                  <div
+                    class="table-progress-text"
+                    [ngStyle]="{
+                      width: column.width - 30 + 'px'
+                    }"
+                    *ngIf="row[column.field].percentage === 100"
+                  >
+                    {{ row[column.field].expirationDays }} days ago
+                  </div>
                 </div>
               </div>
-            </div>
-          </td>
-        </div>
-      </tr>
-    </div>
 
-    <!-- Border For Not Pined -->
-    <div
-      class="not-pined-border-right table-select-border"
-      *ngIf="showScrollSectionBorder"
-      [ngStyle]="{
-        height: viewData.length * 32 + 2 * viewData.length - 1 - 1 + 'px'
-      }"
-    ></div>
-
-    <!-- Actions -->
-    <div class="actions" [ngStyle]="{ 'min-width': actionsMinWidth + 'px' }">
-      <tr
-        [ngStyle]="{ 'margin-top': i > 0 ? '2px' : '0px' }"
-        *ngFor="let row of viewData; let i = index; trackBy: trackByFn"
-        [ngClass]="{
-          'regular-columns-hover':
-            hoverActive === i &&
-            !row.actionAnimation &&
-            !row.isRepairOrder &&
-            !row.isSelected,
-          'regular-row': !row.isSelected,
-          'selected-row': row.isSelected,
-          'muted-row':
-            !row.active && !row['status'] && !options.disabledMutedStyle,
-          'delete-animation': row.actionAnimation === 'delete',
-          'add-animation': row.actionAnimation === 'add',
-          'update-animation': row.actionAnimation === 'update',
-          'row-repair-order': row.isRepairOrder && !row.actionAnimation
-        }"
-        class="actions-tr-container"
-      >
-        <div
-          class="columns-container"
-          (mouseenter)="hoverActive = !row.isSelected ? i : -1"
-          (mouseleave)="hoverActive = -1"
-        >
-          <td *ngFor="let column of columns">
-            <!-- ATTACHMENTS COLUMN TEMPLATE -->
-            <div
-              *ngIf="!column.hidden && column.ngTemplate === 'attachments'"
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content"
-            >
-              <div (click)="onShowAttachments(row)" class="attachments-btn">
-                <div class="attachments-svg"></div>
-              </div>
-            </div>
-
-            <!-- NOTE COLUMN TEMPLATE -->
-            <div
-              *ngIf="!column.hidden && column.ngTemplate === 'note'"
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-              class="td-content set-center"
-            >
-              <!-- Ovde je komponenta -->
-              <!-- <app-app-note
-                [note]="row?.note ? row.note : ''"
-                [note_expanded]="false"
-                [rowIndex]="i"
-              ></app-app-note> -->
-            </div>
-
-            <!-- ACTIONS COLUMN TEMPLATE -->
-            <div
-              class="td-content set-center"
-              *ngIf="!column.hidden && column.ngTemplate === 'actions'"
-              [ngStyle]="{
-                width: column.width + 'px',
-                'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-              }"
-            >
+              <!-- APPLICANT PROGRESS COLUMN -->
               <div
-                #t2="ngbPopover"
-                (click)="toggleDropdown(t2, row)"
-                [autoClose]="true"
-                [ngbPopover]="dropdownPopover"
-                [placement]="'bottom-right'"
-                class="table-dropdown-container"
-                [ngClass]="{
-                  'active-drop': dropDownActive === row.id && t2.isOpen()
+                class="td-content"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
-                popoverClass="table-dropdown-popover"
-                triggers="manual"
-              ></div>
-            </div>
-          </td>
+                *ngIf="column.ngTemplate === 'applicant-progress'"
+              >
+                <div
+                  class="applicant-progress-container"
+                  [ngStyle]="{ width: progressStatus.width + 'px' }"
+                  *ngFor="let progressStatus of row[column.field]"
+                >
+                  <!-- Progress -->
+                  <div
+                    class="table-progress-cotnainer"
+                    *ngIf="progressStatus.status === 'In Progres'"
+                  >
+                    <!-- Progress Bar  -->
+                    <div
+                      class="table-progress-bar-container"
+                      [ngClass]="{
+                        'bg-expired-container':
+                          progressStatus.percentage === 100,
+                        'bg-sliver-container':
+                          progressStatus.percentage >= 25 &&
+                          progressStatus.percentage < 100,
+                        'bg-orange-container':
+                          progressStatus.percentage >= 5 &&
+                          progressStatus.percentage < 25,
+                        'bg-danger-container':
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 5,
+                        'bg-inactive-container': !progressStatus.percentage
+                      }"
+                    >
+                      <div
+                        [ngClass]="{
+                          'bg-progress-sliver':
+                            progressStatus.percentage >= 25 &&
+                            progressStatus.percentage < 50,
+                          'bg-progress-orange':
+                            progressStatus.percentage >= 5 &&
+                            progressStatus.percentage < 25,
+                          'bg-progress-danger':
+                            progressStatus.percentage > 0 &&
+                            progressStatus.percentage < 5
+                        }"
+                        [ngStyle]="{
+                          width: progressStatus.percentage + '%'
+                        }"
+                        class="table-progress-bar"
+                        *ngIf="
+                          progressStatus.percentage > 0 &&
+                          progressStatus.percentage < 100
+                        "
+                      ></div>
+                    </div>
+                  </div>
+
+                  <!-- Status Icon -->
+                  <div
+                    class="applicant-status-container"
+                    *ngIf="
+                      progressStatus.status !== 'In Progres' &&
+                      progressStatus.status !== 'No Started'
+                    "
+                  >
+                    <div
+                      class="status-icon"
+                      [class]="progressStatus.class"
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- APPLICANT REVIEW COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'applicant-review'"
+                [ngStyle]="{
+                  width: column.width + 'px'
+                }"
+              >
+                <div class="applicant-review-container">
+                  <div
+                    class="review-icon"
+                    [ngClass]="{
+                      reviewed: row[column.field].title === 'Reviewed',
+                      finished: row[column.field].title === 'Finished',
+                      incomplete: row[column.field].title === 'Incomplete',
+                      ready: row[column.field].title === 'Ready'
+                    }"
+                  >
+                    <svg-icon
+                      [src]="row[column.field].iconLink"
+                      [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
+                    ></svg-icon>
+                  </div>
+                  <div
+                    class="review-title"
+                    [ngStyle]="{
+                      width: column.width - 26 + 'px'
+                    }"
+                  >
+                    {{ row[column.field].title }}
+                  </div>
+                </div>
+              </div>
+            </td>
+          </div>
+
+          <!-- Border -->
+          <div
+            class="border-scroll-section"
+            [ngClass]="{ 'border-right': false }"
+          ></div>
+
+          <!-- ACTIONS -->
+          <div class="actions-columns">
+            <td class="action-td" *ngFor="let column of actionsColumns">
+              <!-- ATTACHMENTS COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'attachments'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div
+                  (click)="onShowAttachments(attachmentsNgbPopover, row)"
+                  class="attachments-btn"
+                >
+                  <div class="attachments-svg"></div>
+                </div>
+              </div>
+
+              <!-- HIRE COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'hire'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div
+                  class="hire-icon"
+                  (click)="onHire(row)"
+                  *ngIf="row[column.field]"
+                ></div>
+              </div>
+
+              <!-- FAVORITE COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'favorite'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content"
+              >
+                <div
+                  (click)="onFavorite(row)"
+                  [ngClass]="{
+                    'is-favorite-icon': row[column.field],
+                    'not-favorite-icon': row[column.field]
+                  }"
+                ></div>
+              </div>
+
+              <!-- NOTE COLUMN -->
+              <div
+                *ngIf="column.ngTemplate === 'note'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+                class="td-content set-center"
+              >
+                <app-ta-note
+                  [note]="row[column.field] ? row[column.field] : ''"
+                  [openedAll]="false"
+                  [parking]="false"
+                >
+                </app-ta-note>
+              </div>
+
+              <!-- ACTIONS COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'actions'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  #t2="ngbPopover"
+                  (click)="toggleDropdown(t2, row)"
+                  [autoClose]="true"
+                  [ngbPopover]="dropdownPopover"
+                  [placement]="'bottom-right'"
+                  class="table-dropdown-container"
+                  [ngClass]="{
+                    'active-drop': dropDownActive === row.id && t2.isOpen()
+                  }"
+                  container="body"
+                  popoverClass="table-dropdown-popover"
+                  triggers="manual"
+                ></div>
+              </div>
+            </td>
+          </div>
         </div>
       </tr>
-    </div>
+    </cdk-virtual-scroll-viewport>
   </tbody>
 </table>
 
@@ -2211,4 +2162,13 @@
     </div>
     <div class="right-background"></div>
   </div>
+</ng-template>
+
+<!-- ATTACHMENTS -->
+<!-- DROPDOWN -->
+<ng-template #attachmentsPopover let-data="data">
+  <!-- [ngStyle]="{
+    width: column.width + 'px'
+  }" -->
+  <div class="table-attachments"></div>
 </ng-template>

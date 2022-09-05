@@ -2,9 +2,7 @@ import { CreateTodoCommand } from './../../../../../../appcoretruckassist/model/
 import { Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   CommentResponse,
   CreateCommentCommand,
@@ -16,17 +14,23 @@ import {
   UpdateTodoCommand,
 } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+
 import { TodoTService } from '../../to-do/state/todo.service';
 import { AuthQuery } from '../../authentication/state/auth.query';
 import { ReviewCommentModal } from '../../shared/ta-user-review/ta-user-review.component';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
-import { FormService } from 'src/app/core/services/form/form.service';
+import {
+  departmentValidation,
+  descriptionValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-task-modal',
   templateUrl: './task-modal.component.html',
@@ -34,6 +38,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, FormService],
 })
 export class TaskModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public taskForm: FormGroup;
@@ -82,18 +87,24 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.taskForm = this.formBuilder.group({
       title: [null, Validators.required],
-      description: [null],
+      description: [null, descriptionValidation],
       url: [null],
       deadline: [null],
-      departmentIds: [null],
+      departmentIds: [null, [...departmentValidation]],
       companyUserIds: [null],
       note: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.taskForm.get('url'),
+      'url',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.taskForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -191,7 +202,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.commentsService
       .createComment(comment)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
           this.comments = comments.sortData.map((item, index) => {
@@ -224,7 +235,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.commentsService
       .updateComment(comment)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -245,7 +256,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     this.comments = comments.sortData;
     this.commentsService
       .deleteCommentById(comments.data)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -285,7 +296,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.todoService
       .updateTodo(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -317,7 +328,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
     this.todoService
       .addTodo(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -335,7 +346,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private deleteTaskById(id: number) {
     this.todoService
       .deleteTodoById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -356,7 +367,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private editTask(id: number) {
     this.todoService
       .getTodoById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TodoResponse) => {
           this.taskForm.patchValue({
@@ -397,7 +408,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   private getTaskDropdowns() {
     this.todoService
       .getTodoDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TodoModalResponse) => {
           this.resDepartments = res.departments;
@@ -430,5 +441,8 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

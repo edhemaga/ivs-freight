@@ -1,6 +1,6 @@
-import {Injectable, NgZone, OnDestroy} from '@angular/core';
-import {BehaviorSubject, interval, Observable} from 'rxjs';
-import {map, takeWhile} from 'rxjs/operators';
+import { Injectable, NgZone, OnDestroy } from '@angular/core';
+import { BehaviorSubject, interval, Observable } from 'rxjs';
+import { map, takeUntil } from 'rxjs/operators';
 
 const STORE_KEY = 'userLastAction';
 
@@ -63,9 +63,18 @@ export class AppIdleService implements OnDestroy {
   // If user is start witch clicking on page reset timer
   private initListener(): void {
     this.zone.runOutsideAngular(() => {
-      this.userActivityChangeCallback = ($event) => this.handleUserActiveState($event);
-      window.document.addEventListener('click', this.userActivityChangeCallback.bind(this), true);
-      window.document.addEventListener('mousedown', this.userActivityChangeCallback.bind(this), true);
+      this.userActivityChangeCallback = ($event) =>
+        this.handleUserActiveState($event);
+      window.document.addEventListener(
+        'click',
+        this.userActivityChangeCallback.bind(this),
+        true
+      );
+      window.document.addEventListener(
+        'mousedown',
+        this.userActivityChangeCallback.bind(this),
+        true
+      );
     });
   }
 
@@ -75,32 +84,35 @@ export class AppIdleService implements OnDestroy {
       map((tick: number) => {
         return tick;
       }),
-      takeWhile(() => AppIdleService.runTimer)
+      takeUntil(() => AppIdleService.runTimer)
     );
 
     this.check();
   }
 
   private check(): void {
-    this.sessionForIdle
-      .subscribe(() => {
-        const now = Date.now();
-        const timeleft = this.lastAction + this.USER_IDLE_TIMER_VALUE_IN_MIN * 60 * 1000;
-        const diff = timeleft - now;
-        const isTimeout = diff < 0;
+    this.sessionForIdle.subscribe(() => {
+      const now = Date.now();
+      const timeleft =
+        this.lastAction + this.USER_IDLE_TIMER_VALUE_IN_MIN * 60 * 1000;
+      const diff = timeleft - now;
+      const isTimeout = diff < 0;
 
-        this.userIdlenessChecker.next(`${diff}`);
+      this.userIdlenessChecker.next(`${diff}`);
 
-        if (isTimeout) {
-          window.document.removeEventListener('click', this.userActivityChangeCallback, true);
-          this.zone.run(() => {
-            if (this.userIdlenessChecker) {
-              this.userIdlenessChecker.next('STOPPED_TIMER');
-            }
-            AppIdleService.runTimer = false;
-          });
-        }
-      });
+      if (isTimeout) {
+        window.document.removeEventListener(
+          'click',
+          this.userActivityChangeCallback,
+          true
+        );
+        this.zone.run(() => {
+          if (this.userIdlenessChecker) {
+            this.userIdlenessChecker.next('STOPPED_TIMER');
+          }
+          AppIdleService.runTimer = false;
+        });
+      }
+    });
   }
-
 }

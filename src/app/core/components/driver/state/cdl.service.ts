@@ -3,15 +3,17 @@ import {
   CdlResponse,
   CdlService,
   CreateCdlCommand,
+  CreateResponse,
   DriverResponse,
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-/* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
+import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +23,24 @@ export class CdlTService {
     private cdlService: CdlService,
     private driverService: DriverTService,
     private driverStore: DriversActiveStore,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private driverItemStore: DriversItemStore,
+    private notificationService: NotificationService
   ) {}
 
   /* Observable<CreateCdlResponse> */
-  public addCdl(data: CreateCdlCommand): Observable<any> {
+  public addCdl(data: CreateCdlCommand): Observable<CreateResponse> {
     return this.cdlService.apiCdlPost(data).pipe(
-      tap((res: any) => {
+      tap((res: CreateResponse) => {
+        this.activateCdlById(res.id).subscribe({
+          next: (res: any) => {},
+          error: () => {
+            this.notificationService.error(
+              'Cannot activate cdl, already have active.',
+              'Error:'
+            );
+          },
+        });
         const subDriver = this.driverService
           .getDriverById(data.driverId)
           .subscribe({
@@ -57,9 +70,39 @@ export class CdlTService {
   public updateCdl(data: any): Observable<object> {
     return this.cdlService.apiCdlPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.driverService.getDriverById(data.driverId).subscribe({
+        const subDriver = this.driverService
+          .getDriverById(data.driverId)
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.driverStore.remove(({ id }) => id === data.driverId);
+
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
+
+              this.driverStore.add(driver);
+
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
+
+              subDriver.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
+  public deleteCdlById(id: number): Observable<any> {
+    return this.cdlService.apiCdlIdDelete(id).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
           next: (driver: DriverResponse | any) => {
-            this.driverStore.remove(({ id }) => id === data.driverId);
+            this.driverStore.remove(({ id }) => id === driverId);
 
             driver = {
               ...driver,
@@ -69,9 +112,9 @@ export class CdlTService {
             this.driverStore.add(driver);
 
             this.tableService.sendActionAnimation({
-              animation: 'update',
+              animation: 'delete',
               data: driver,
-              id: driver.id,
+              id: driverId,
             });
 
             subDriver.unsubscribe();
@@ -81,8 +124,32 @@ export class CdlTService {
     );
   }
 
-  public deleteCdlById(id: number): Observable<any> {
-    return this.cdlService.apiCdlIdDelete(id);
+  public activateCdlById(id: number): Observable<any> {
+    return this.cdlService.apiCdlActivateIdPut(id).pipe(
+      tap((res: any) => {
+        let driverId = this.driverItemStore.getValue().ids[0];
+        const subDriver = this.driverService.getDriverById(driverId).subscribe({
+          next: (driver: DriverResponse | any) => {
+            this.driverStore.remove(({ id }) => id === driverId);
+
+            driver = {
+              ...driver,
+              fullName: driver.firstName + ' ' + driver.lastName,
+            };
+
+            this.driverStore.add(driver);
+
+            this.tableService.sendActionAnimation({
+              animation: 'delete',
+              data: driver,
+              id: driverId,
+            });
+
+            subDriver.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public getCdlById(id: number): Observable<CdlResponse> {

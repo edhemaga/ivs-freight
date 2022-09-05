@@ -5,7 +5,6 @@
 
   .popover-body {
     .ta-label-options {
-
       position: relative;
       top: 4px;
       left: 0px;
@@ -14,7 +13,7 @@
       width: 100%;
       background-color: #ffffff;
       border-radius: 2px;
-      box-shadow: 0 0 2px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
       padding: 2px;
       overflow: hidden;
 
@@ -84,7 +83,7 @@
         .ta-label-vertical-divider {
           width: 1px;
           height: 14px;
-          background-color: #F3F3F3;
+          background-color: #f3f3f3;
           content: "";
           margin: 0 6px;
         }
@@ -100,7 +99,7 @@
           width: 22px;
           height: 16px;
           border-radius: 20px;
-          background-color: #B7B7B7;
+          background-color: #b7b7b7;
           color: #ffffff;
           text-align: center;
           font-size: 11px;

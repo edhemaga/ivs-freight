@@ -8,14 +8,16 @@ import { TruckassistTableToolbarComponent } from './truckassist-table-toolbar/tr
 import { TruckassistSearchModule } from '../truckassist-search/truckassist-search.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TruckassistProgressExpirationModule } from '../truckassist-progress-expiration/truckassist-progress-expiration.module';
-import { GetExpireDataPipe } from 'src/app/core/pipes/get-expire-data.pipe';
 import { TruckassistReveiwModule } from '../truckassist-reveiw/truckassist-reveiw.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaNoteModule } from '../ta-note/ta-note.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { ResizeColumnDirective } from 'src/app/core/directives/resize-column.directive';
-import { DirectivesModule } from 'src/app/core/directives/directives.module';
-import { PipesModule } from 'src/app/core/pipes/pipes.module';
+import { VirtualScrollerModule } from 'ngx-virtual-scroller';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { GetExpireDataPipe } from '../../../pipes/get-expire-data.pipe';
+import { ResizeColumnDirective } from '../../../directives/resize-column.directive';
+import { DirectivesModule } from '../../../directives/directives.module';
+import { PipesModule } from '../../../pipes/pipes.module';
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { PipesModule } from 'src/app/core/pipes/pipes.module';
     AppNoteModule,
     ProfileImagesModule,
     PipesModule,
+    VirtualScrollerModule,
+    ScrollingModule,
   ],
   exports: [
     TruckassistTableBodyComponent,

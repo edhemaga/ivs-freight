@@ -11,14 +11,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import moment from 'moment';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-/* import { TruckQuery } from '../state/truck.query'; */
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -95,6 +91,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     ],
     onHoverAnnotation: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     hoverTimeDisplay: true,
     noChartImage: 'assets/svg/common/yellow_no_data.svg',
   };
@@ -153,6 +151,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     onHoverAnnotation: true,
     hoverTimeDisplay: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     noChartImage: 'assets/svg/common/green_no_data.svg',
   };
 
@@ -208,6 +208,8 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
     hoverTimeDisplay: true,
     stacked: true,
     offset: true,
+    allowAnimation: true,
+    animationOnlyOnLoad: true,
     noChartImage: 'assets/svg/common/stacked_no_data.svg',
   };
 

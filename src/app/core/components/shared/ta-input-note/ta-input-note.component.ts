@@ -10,8 +10,8 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { input_note_animation } from './ta-input-note.animation';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-input-note',
@@ -44,7 +44,10 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   @Output() saveNoteValue = new EventEmitter();
   @ViewChild('main_editor', { static: true }) noteRef: ElementRef;
 
-  constructor(@Self() public superControl: NgControl, private sharedService: SharedService) {
+  constructor(
+    @Self() public superControl: NgControl,
+    private sharedService: SharedService
+  ) {
     this.superControl.valueAccessor = this;
   }
 
@@ -69,7 +72,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
 
   public openNote() {
     this._isVisibleNote = !this._isVisibleNote;
-    if ( this._isVisibleNote ) {
+    if (this._isVisibleNote) {
       this.checkActiveItems();
     }
   }
@@ -84,20 +87,20 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
   }
 
-  changeValue(event){
+  changeValue(event) {
     this.value = event;
     this.checkActiveItems();
     let saveValue = this.value;
 
-    if ( !this.saveIntervalStarted ) {
+    if (!this.saveIntervalStarted) {
       this.saveIntervalStarted = true;
       this.saveInterval = setInterval(() => {
-        if ( saveValue == this.value ){
+        if (saveValue == this.value) {
           this.saveIntervalStarted = false;
           clearInterval(this.saveInterval);
         }
         this.saveNote(true);
-      },60000);
+      }, 60000);
     }
   }
 
@@ -110,7 +113,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     if (this.value == '<br>') {
       this.value = this.value.replace('<br>', '');
     }
-    if ( allowSave ) {
+    if (allowSave) {
       this.savedValue = this.value;
       this.saveNoteValue.emit(this.value);
     }
@@ -124,7 +127,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
     }
     this.saveIntervalStarted = false;
     clearInterval(this.saveInterval);
-    if ( this.savedValue != this.value ) {
+    if (this.savedValue != this.value) {
       this.saveNote(true);
     }
   }

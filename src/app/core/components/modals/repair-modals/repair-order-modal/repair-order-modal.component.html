@@ -27,13 +27,22 @@
       <app-ta-input-dropdown
         formControlName="unit"
         [inputConfig]="{
-          name: 'Input Dropdown',
+          name: 'Input Dropdown vehicle-unit',
           type: 'text',
           label: 'Unit',
           isDropdown: true,
           isRequired: true,
-          dropdownWidthClass: 'w-col-129'
+          textTransform: 'uppercase',
+          minLength: 1,
+          maxLength: 8,
+          dropdownWidthClass: 'w-col-129',
+          autoFocus:
+            !editData?.type?.includes('edit') && !editData?.storageData?.unit
+              ? true
+              : false
         }"
+        [canAddNew]="true"
+        [canOpenModal]="true"
         [options]="labelsUnit"
         [activeItem]="selectedUnit"
         (selectedItem)="onSelectDropDown($event, 'repair-unit')"
@@ -132,6 +141,8 @@
             isRequired: selectedHeaderTab === 1,
             dropdownWidthClass: 'w-col-686'
           }"
+          [canAddNew]="true"
+          [canOpenModal]="true"
           [options]="labelsRepairShop"
           [activeItem]="selectedRepairShop"
           (selectedItem)="onSelectDropDown($event, 'repair-shop')"
@@ -175,7 +186,7 @@
               class="common-fake-table-card"
               [ngClass]="{
                 'card-item-active':
-                  !selectedPM[ind]?.logoName.includes('default_pm')
+                  !selectedPM[ind]?.logoName?.includes('default_pm')
               }"
             >
               <p>
@@ -188,8 +199,10 @@
                     id: 'Description' + ind,
                     name: 'Description',
                     type: 'text',
-                    textTransform: 'capitalize',
+                    minLength: 20,
+                    maxLength: 160,
                     hideRequiredCheck: true,
+                    textTransform: 'capitalize',
                     blueInputColor:
                       !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
                     customClass: 'repair-m-pm'
@@ -207,10 +220,16 @@
                     class="pm-svg"
                     [class.active]="
                       selectedPM.length
-                        ? !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                        ? !selectedPM[ind]?.logoName?.includes(
+                            'ic_custom_pm'
+                          ) && selectedPM[ind]?.logoName
                         : false
                     "
-                    [src]="selectedPM[ind]?.logoName"
+                    [src]="
+                      selectedPM[ind]?.logoName
+                        ? selectedPM[ind]?.logoName
+                        : 'assets/svg/common/repair-pm/ic_custom_pm.svg'
+                    "
                   ></svg-icon>
                 </div>
 

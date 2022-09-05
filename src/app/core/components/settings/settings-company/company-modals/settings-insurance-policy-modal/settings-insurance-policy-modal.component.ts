@@ -1,35 +1,36 @@
 import {
-  phoneRegex,
-  emailRegex,
+  phoneFaxRegex,
+  addressValidation,
+  addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+
 import {
   AddressEntity,
   CreateInsurancePolicyCommand,
   InsurancePolicyModalResponse,
   UpdateInsurancePolicyCommand,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { distinctUntilChanged } from 'rxjs';
 
-@UntilDestroy()
+import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import {
+  FormGroup,
+  FormBuilder,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import {
+  convertDateToBackend,
+  convertThousanSepInNumber,
+  convertDateFromBackend,
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
+
 @Component({
   selector: 'app-settings-insurance-policy-modal',
   templateUrl: './settings-insurance-policy-modal.component.html',
@@ -39,6 +40,7 @@ import { distinctUntilChanged } from 'rxjs';
 export class SettingsInsurancePolicyModalComponent
   implements OnInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public insurancePolicyForm: FormGroup;
@@ -86,10 +88,10 @@ export class SettingsInsurancePolicyModalComponent
       producerName: [null, Validators.required],
       issued: [null, Validators.required],
       expires: [null, Validators.required],
-      phone: [null, phoneRegex],
-      email: [null, emailRegex],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      phone: [null, phoneFaxRegex],
+      email: [null],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       // Commerical General Liability
       commericalGeneralLiability: [false],
       commericalPolicy: [null],
@@ -134,10 +136,16 @@ export class SettingsInsurancePolicyModalComponent
       note: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.insurancePolicyForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.insurancePolicyForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -246,7 +254,7 @@ export class SettingsInsurancePolicyModalComponent
     control_9?: AbstractControl
   ) {
     checkboxControl.valueChanges
-      .pipe(distinctUntilChanged(), untilDestroyed(this))
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(control_1);
@@ -333,7 +341,7 @@ export class SettingsInsurancePolicyModalComponent
   private getInsurancePolicyDropdowns() {
     this.settingsCompanyService
       .getInsurancePolicyModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: InsurancePolicyModalResponse) => {
           this.ratings = res.ratings;
@@ -537,7 +545,7 @@ export class SettingsInsurancePolicyModalComponent
 
     this.settingsCompanyService
       .addInsurancePolicy(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -746,7 +754,7 @@ export class SettingsInsurancePolicyModalComponent
 
     this.settingsCompanyService
       .updateInsurancePolicy(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -766,7 +774,7 @@ export class SettingsInsurancePolicyModalComponent
   private deleteInsurancePolicyById(id: number) {
     this.settingsCompanyService
       .deleteInsurancePolicyById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -997,5 +1005,8 @@ export class SettingsInsurancePolicyModalComponent
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

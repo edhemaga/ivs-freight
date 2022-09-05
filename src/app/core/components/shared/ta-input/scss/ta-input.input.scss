@@ -28,10 +28,6 @@
     text-align: center;
   }
 
-  &.capitalize {
-    text-transform: capitalize;
-  }
-
   &.uppercase {
     text-transform: uppercase;
   }
@@ -127,6 +123,18 @@
 
   &.has-input-icon {
     padding-left: 37px;
+  }
+
+  &.dropdown-input-image-truck {
+    padding-left: 63px;
+  }
+
+  &.dropdown-input-image-trailer {
+    padding-left: 68px;
+  }
+
+  &.dropdown-input-image-color {
+    padding-left: 29px;
   }
 
   &.valid-focus-in,

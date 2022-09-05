@@ -8,6 +8,10 @@
       padding: 0px 5px 0px 4px;
     }
 
+    &.opened_parking_editor{
+      justify-content: end;
+    }
+
     .font_editor{
       display: flex;
 
@@ -29,7 +33,7 @@
       cursor: pointer;
       
       .color_picker_arrow{
-        display: none;
+        display: none !important;
       }
 
       &.italic_text{
@@ -64,6 +68,11 @@
         }
       }
 
+      &.text_color{
+        overflow: hidden;
+        justify-content: flex-end;
+      }
+
       &:hover,
       &.active {
         background-color: #F3F3F3;
@@ -89,9 +98,10 @@
 
       &.text_color {
         position: relative;
-        width: auto;
+        transition: all 0.3s ease-in-out;
         border-radius: 2px;
         padding: 4px;
+        width: 24px;
 
         //background-image: url('../../../../assets/img/svgs/right.svg');
         background-repeat: no-repeat;
@@ -100,6 +110,13 @@
 
         &.no_opacity {
           opacity: 1;
+          width: 98px;
+        }
+
+        &.parking_tooltip{
+          width: 100%;
+          display: flex;
+          justify-content: end;
         }
 
         &:hover {
@@ -107,23 +124,25 @@
           background-color: #EEEEEE;
 
           .color_picker_arrow{
-            display: block;
+            display: flex !important;
           }
         }
 
         .circle_span {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           width: 16px;
           height: 16px;
           background-color: #6c6c6c;
-          border-radius: 3px;
+          border-radius: 2px;
           cursor: pointer;
         }
 
         .colors_patter {
           display: flex;
           align-items: center;
-          background-color: #f7f7f7;
-          border-radius: 3px;
+          border-radius: 1px;
           // box-shadow: 0 1px 5px 1px rgba(0, 0, 0, 0.15) !important;
           z-index: 10;
           // &:after {
@@ -138,7 +157,6 @@
             align-items: center;
             width: 16px;
             height: 16px;
-            border-radius: 3px;
             margin: 0 1px;
             cursor: pointer;
 
@@ -180,20 +198,26 @@
         }
       }
 
+      &.opened_text_color{
+        border-radius: 1px;
+      }
+
+      &.hide_elements{
+        opacity: 0;
+      }
+
       .color_picker_arrow{
         position: absolute;
         z-index: 11;
+        background-color: transparent !important;
 
         &.flip_arrow{
             transform: scaleX(-1);
         }
-        &.active{
-          right: 9px;
-        }
         svg-icon{
             svg{
                 display: flex;
-                width: 9px;
+                width: 6px;
                 height: 10px;
 
                 path{

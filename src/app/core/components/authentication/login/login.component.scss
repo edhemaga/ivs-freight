@@ -19,8 +19,28 @@
       line-height: 63px;
       margin-bottom: 20px !important;
 
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
       span {
         color: $ta-blue;
+
+        &::-moz-selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
+
+        &::selection {
+          color: $ta-blue;
+          background: rgb(83, 107, 194, 0.2);
+        }
       }
     }
 
@@ -32,6 +52,16 @@
       color: $bw6-2;
       line-height: 22px;
       margin-bottom: 40px !important;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
   }
 
@@ -56,6 +86,16 @@
     color: $ta-light-blue;
     background-color: transparent;
     transition: color 0.2s ease-in-out;
+
+    &::-moz-selection {
+      color: $ta-light-blue;
+      background: rgb(109, 130, 199, 0.2);
+    }
+
+    &::selection {
+      color: $ta-light-blue;
+      background: rgb(109, 130, 199, 0.2);
+    }
 
     &:hover {
       color: $ta-blue;
@@ -105,8 +145,28 @@
     background-color: transparent;
     transition: color 0.3s ease-in-out;
 
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
     span {
       font-weight: bold;
+
+      &::-moz-selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
+
+      &::selection {
+        color: $bw6-2;
+        background: rgb(108, 108, 108, 0.2);
+      }
     }
 
     &:hover span {
@@ -123,6 +183,16 @@
       color: $ta-blue-2;
       font-weight: 400;
       font-size: 14px;
+
+      &::-moz-selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
+
+      &::selection {
+        color: $ta-blue-2;
+        background: rgb(53, 81, 183, 0.2);
+      }
     }
   }
 }

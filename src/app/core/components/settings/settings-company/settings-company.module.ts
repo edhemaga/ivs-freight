@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { SettingsCompanyRoutes } from './settings-company.routing';
 
 // Components
@@ -18,6 +17,7 @@ import { SettingsNodataComponent } from './settings-nodata/settings-nodata.compo
 import { ReactiveFormsModule } from '@angular/forms';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { SettingsSharedModule } from '../settings-shared/settings-shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [

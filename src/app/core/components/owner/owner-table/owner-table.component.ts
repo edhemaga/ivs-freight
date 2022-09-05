@@ -1,13 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { GetOwnerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
@@ -15,6 +8,13 @@ import { OwnerActiveState } from '../state/owner-active-state/owner-active.store
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveState } from '../state/owner-inactive-state/owner-inactive.store';
 import { OwnerTService } from '../state/owner.service';
+import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
 
 @Component({
   selector: 'app-owner-table',
@@ -23,7 +23,7 @@ import { OwnerTService } from '../state/owner.service';
   providers: [formatPhonePipe],
 })
 export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -361,7 +361,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textType: data?.ownerType?.name ? data.ownerType.name : '',
       textPhone: data?.phone ? this.phonePipe.transform(data.phone) : '',
       textAddress: data?.address?.address ? data.address.address : '',
-      textBankName: data?.bank?.name ? data.bank.name : ''
+      textBankName: data?.bank?.name ? data.bank.name : '',
     };
   }
 
@@ -482,6 +482,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();

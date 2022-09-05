@@ -1,11 +1,11 @@
-import { DispatchLoad } from 'src/app/core/model/dispatch';
 import { AppLoadService } from './../../../services/load/app-load.service';
-import { takeUntil } from 'rxjs/operators';
+
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
-import * as AppConst from 'src/app/const';
+import { Subject, takeUntil } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { DispatchLoad } from '../../shared/model/dispatch';
+import * as AppConst from 'src/app/const';
 
 declare var google: any;
 
@@ -55,7 +55,7 @@ export class AppAddLoadTableComponent implements OnInit, OnDestroy {
       line: '#7B99D4',
     },
   };
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private activeModal: NgbActiveModal,

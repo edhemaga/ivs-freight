@@ -35,6 +35,8 @@
                   type: 'text',
                   label: 'First Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize',
                   isDisabled: true
                 }"
@@ -48,6 +50,8 @@
                   type: 'text',
                   label: 'Last Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize',
                   isDisabled: true
                 }"
@@ -68,6 +72,8 @@
                   isRequired: true,
                   placeholderIcon: 'address',
                   textTransform: 'capitalize',
+                  minLength: 12,
+                  maxLength: 256,
                   isDisabled: true
                 }"
               ></app-ta-input-address>
@@ -76,10 +82,12 @@
               <app-ta-input
                 formControlName="addressUnit"
                 [inputConfig]="{
-                  name: 'Address Unit',
+                  name: 'address-unit',
                   type: 'text',
                   label: 'Unit #',
-                  maxLength: 6,
+                  textTransform: 'uppercase',
+                  minLength: 1,
+                  maxLength: 10,
                   isDisabled: true
                 }"
               ></app-ta-input>
@@ -113,7 +121,10 @@
                   isRequired: true,
                   placeholderIcon: 'email',
                   autocomplete: 'off',
-                  isDisabled: true
+                  isDisabled: true,
+                  minLength: 5,
+                  maxLength: 64,
+                  textTransform: 'lowercase'
                 }"
               ></app-ta-input>
             </div>

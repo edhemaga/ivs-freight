@@ -7,7 +7,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { v4 as uuidv4 } from 'uuid';
 import {
   AccountColorResponse,
   CompanyAccountModalResponse,
@@ -16,13 +15,14 @@ import {
   CreateResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { AccountTService } from '../../account/state/account.service';
 
-@UntilDestroy()
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { AccountTService } from '../../account/state/account.service';
+import { Subject, takeUntil } from 'rxjs';
+import { labelValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
+
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
@@ -31,6 +31,7 @@ import { AccountTService } from '../../account/state/account.service';
   providers: [ModalService, FormService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public accountForm: FormGroup;
@@ -60,11 +61,17 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editCompanyAccount(this.editData.id);
     }
+
+    this.inputService.customInputValidator(
+      this.accountForm.get('url'),
+      'url',
+      this.destroy$
+    );
   }
 
   private createForm(): void {
     this.accountForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.maxLength(23)]],
+      name: [null, [Validators.required, ...labelValidation]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
       url: [null],
@@ -72,10 +79,16 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.accountForm.get('url'),
+      'url',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.accountForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -118,7 +131,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private companyAccountModal(): void {
     this.accountService
       .companyAccountModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyAccountModalResponse) => {
           this.accountLabels = res.labels;
@@ -129,7 +142,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private companyAccountColorLabels() {
     this.accountService
       .companyAccountLabelsColorList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Array<AccountColorResponse>) => {
           this.colors = res;
@@ -146,7 +159,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private editCompanyAccount(id: number) {
     this.accountService
       .getCompanyAccountById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyAccountResponse) => {
           this.accountForm.patchValue({
@@ -178,7 +191,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     };
     this.accountService
       .addCompanyAccount(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -207,7 +220,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     };
     this.accountService
       .updateCompanyAccount(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -227,7 +240,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public deleteCompanyAccountById(id: number): void {
     this.accountService
       .deleteCompanyAccountById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -248,7 +261,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   public onPickExistLabel(event: any) {
-    console.log('pick exist label: ', event);
     this.selectedAccountLabel = event;
   }
 
@@ -259,6 +271,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       colorId: this.selectedAccountColor.id,
       color: this.selectedAccountColor.name,
       code: this.selectedAccountColor.code,
+      hoverCode: this.selectedAccountColor.hoverCode,
     };
   }
 
@@ -272,7 +285,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             name: this.selectedAccountLabel.name,
             colorId: this.selectedAccountLabel.colorId,
           })
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -282,7 +295,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
               this.accountService
                 .companyAccountModal()
-                .pipe(untilDestroyed(this))
+                .pipe(takeUntil(this.destroy$))
                 .subscribe({
                   next: (res: CompanyAccountModalResponse) => {
                     this.accountLabels = res.labels;
@@ -311,6 +324,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
           code: this.selectedAccountColor
             ? this.selectedAccountColor.code
             : this.colors[this.colors.length - 1].code,
+          hoverCode: this.selectedAccountColor
+            ? this.selectedAccountColor.hoverCode
+            : this.colors[this.colors.length - 1].hoverCode,
           count: 0,
           colorId: this.selectedAccountColor
             ? this.selectedAccountColor.id
@@ -327,7 +343,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
             name: this.selectedAccountLabel.name,
             colorId: this.selectedAccountLabel.colorId,
           })
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CreateResponse) => {
               this.notificationService.success(
@@ -342,7 +358,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
               this.accountService
                 .companyAccountModal()
-                .pipe(untilDestroyed(this))
+                .pipe(takeUntil(this.destroy$))
                 .subscribe({
                   next: (res: CompanyAccountModalResponse) => {
                     this.accountLabels = res.labels;
@@ -370,5 +386,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }
