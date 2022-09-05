@@ -446,7 +446,7 @@
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
-            <div class="full-loc-hold" [class.empty-box-field]="!item.location">
+            <div class="full-loc-hold" [class.empty-box-field]="!item.location.address">
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="full_location_name"

@@ -12,7 +12,7 @@ import {
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
-import { DispatchResponse, UpdateDispatchCommand } from 'appcoretruckassist';
+import { CreateDispatchCommand, DispatchResponse, UpdateDispatchCommand } from 'appcoretruckassist';
 import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
 
 @Component({
@@ -162,19 +162,20 @@ export class DispatchboardTablesComponent implements OnInit {
 
   handleInputSelect(e: any){
     if(e.valid){
-      this.updateDispatchBoardAndSend("location", e.address, this.showAddAddressField);
+      this.updateOrAddDispatchBoardAndSend("location", e.address, this.showAddAddressField);
 
       this.showAddAddressField = -1;
     }
   }
 
   addDriver() {
+
     this.driverSelectOpened = -1;
   }
 
   addTrailer(e) {
     console.log(e);
-    this.updateDispatchBoardAndSend("trailerId", e.id, this.trailerSelectOpened);
+    this.updateOrAddDispatchBoardAndSend("trailerId", e.id, this.trailerSelectOpened);
     this.trailerSelectOpened = -1;
   }
 
@@ -233,28 +234,42 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
 
-  updateDispatchBoardAndSend(key, value, index){
-    const oldData = this.dData.dispatches[index];
+  updateOrAddDispatchBoardAndSend(key, value, index){
+    const oldData = this.dData.dispatches[index] ? this.dData.dispatches[index] : {};
 
-      const oldUpdateData: UpdateDispatchCommand = {
-        id: oldData.id,
-        status: oldData.status.name as DispatchStatus,
-        order: oldData.order, 
-        truckId: oldData.truck?.id,
-        trailerId: oldData.trailer?.id,
-        driverId: oldData.driver?.id,
-        location: oldData.location,
-        hourOfService: oldData.hoursOfService,
-        note: oldData.note
-      }
+    const dataId = oldData.id;
+    let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand  = {
+      status: oldData.status?.name as DispatchStatus,
+      order: oldData.order, 
+      truckId: oldData.truck?.id,
+      trailerId: oldData.trailer?.id,
+      driverId: oldData.driver?.id,
+      location: oldData.location,
+      hourOfService: oldData.hoursOfService,
+      note: oldData.note
+    }
      
-      const newData = {
+      let newData: CreateDispatchCommand = {
         ...oldUpdateData,
         [key]: value
       }
 
+
+      if(oldData.id){
+        newData = {
+          id: oldData.id,
+          ...oldUpdateData
+        }
+
+        this.dss.updateDispatchBoard(newData);
+      }else{
+
+        newData.dispatchBoardId = this.dData.id;
+
+        this.dss.createDispatchBoard(newData);
+
+      }
      // console.log("HELOOOOO", newData);
 
-      //this.dss.updateDispatchBoard(newData);
   }
 }
