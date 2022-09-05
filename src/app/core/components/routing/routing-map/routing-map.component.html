@@ -971,7 +971,7 @@
                 *ngIf="!stopPickerLocation.deleteHover"
               >
                 <div
-                  class="stop-picker-button"
+                  class="stop-picker-button empty-button"
                   (click)="addNewStop('empty')"
                   [ngClass]="{
                     active:
@@ -981,7 +981,7 @@
                   <div class="stop-picker-button-text">Empty</div>
                 </div>
                 <div
-                  class="stop-picker-button"
+                  class="stop-picker-button loaded-button"
                   (click)="addNewStop('loaded')"
                   [ngClass]="{ active: addressFlag == 'Loaded' }"
                 >

@@ -851,6 +851,16 @@
 
   &.add-route-popover {
     margin-left: 0px;
+
+    .popover-body {
+      .map-settings-container {
+        padding: 12px;
+
+        .map-settings-content {
+          padding: 18px 0px 0px 0px;
+        }
+      }
+    }
   }
 
   .popover-body {
@@ -873,15 +883,37 @@
         border-radius: 1px;
       }
 
-      .map-settings-title {
+      .map-settings-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-
-        font-size: 14px;
-        font-weight: 900;
-        line-height: 18px;
-        color: #6C6C6C;
-
         padding-bottom: 8px;
+
+        .map-settings-title {
+          font-size: 14px;
+          font-weight: 900;
+          line-height: 18px;
+          color: #6C6C6C;
+        }
+
+        .close-svg {
+          svg {
+            path {
+              transition: 0.2s;
+            }
+          }
+
+          &:hover {
+            cursor: pointer;
+            
+            svg {
+              path {
+                fill: #6c6c6c;
+              }
+            }
+          }
+        }
       }
 
       .map-settings-content {
@@ -901,11 +933,27 @@
           width: 100%;
           padding: 0px 4px;
           margin: 8px 0px;
+
+          .checkbox-card-header-arrow {
+            transition: all 0.3s ease-in-out;
+
+            &.active {
+              transform: rotate(180deg);
+            }
+          }
         }
 
         .duration-time-input {
           margin-top: 26px;
           margin-bottom: 18px;
+          transition: all 0.2s;
+
+          &.hidden {
+            height: 0;
+            overflow: hidden;
+            margin: 0;
+            width: 0;
+          }
 
           &.mg-top-32 {
             margin-top: 32px;

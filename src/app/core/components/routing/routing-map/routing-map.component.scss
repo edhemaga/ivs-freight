@@ -764,7 +764,7 @@
 
     width: 164px;
     height: 30px;
-    padding: 6px 28px 6px 6px;
+    padding: 4px 26px 4px 4px;
 
     background: #fff;
     border-radius: 3px;
@@ -785,7 +785,7 @@
         border-radius: 1px;
         cursor: pointer;
 
-        transition: 0.2s;
+        transition: all 0.15s;
 
         .stop-picker-button-text {
             color: #fff;
@@ -795,9 +795,19 @@
             text-transform: uppercase;
         }
 
+        &.empty-button {
+            margin-left: 2px;
+        }
+
+        &.loaded-button {
+            margin-right: 2px;
+        }
+
         &:hover {
             width: 66px;
             height: 22px;
+            margin-left: 0px;
+            margin-right: 0px;
 
             background: #B7B7B7;
         }

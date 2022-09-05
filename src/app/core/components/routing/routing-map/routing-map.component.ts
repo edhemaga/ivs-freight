@@ -8,6 +8,13 @@ import {
 } from 'appcoretruckassist';
 import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import {imageMapType} from 'src/assets/utils/methods-global';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { ModalService } from './../../shared/ta-modal/modal.service';
+import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -31,6 +38,153 @@ export class RoutingMapComponent implements OnInit {
         stopPickerCursor.style.left = (event.pageX+10)+'px';
       }
     }
+  }
+
+  dontUseTab: boolean = false;
+
+  // @HostListener('keydown', ['$event']) onKeyDown(e) {
+  //   console.log('keydown key', e);
+
+  //   if (e.shiftKey && e.keyCode == 9) {
+  //     this.switchRouteFocus(true);
+  //     this.dontUseTab = true;
+  //   }
+  // }
+
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: any) {
+    const key = event.keyCode;
+    console.log('document:keydown key', key);
+
+    if (key === 9) {
+      /* Tab switch routes */
+      event.preventDefault();
+      this.switchRouteFocus(event.shiftKey);
+    } else if ( key === 27 ) {
+      if ( this.focusedRouteIndex != null ) {
+        /* Remove focus from all routes */
+        this.focusRoute(this.focusedRouteIndex);
+      }
+    } else if ( key === 46 ) {
+      if ( this.focusedRouteIndex != null ) {
+        /* Delete focused route */
+        this.dropDownActive = this.routes[this.focusedRouteIndex].id;
+        this.callDropDownAction(event, this.dropdownActions[6]);
+      }
+    } else if (key === 40 || key === 38) {
+      /* Up and Down arrow */
+      event.preventDefault();
+      if (this.focusedRouteIndex != null ) {
+        this.onUpAndDownArrow(event);
+      }
+    } else if (key === 119) {
+      if (this.focusedRouteIndex != null ) {
+        var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
+
+        if ( currentlyFocusedStop > -1 ) {
+          this.deleteRouteStop(event, this.routes[this.focusedRouteIndex], currentlyFocusedStop);
+        }
+      }
+    } else if (key === 107) {
+      console.log('Plus pressed');
+      console.log(this.mapToolbar.addRoutePopup);
+
+      var addRoutePopover = this.mapToolbar.addRoutePopup;
+      if ( !addRoutePopover.isOpen() ) {
+        /* Open Add Route popover on Plus key press */
+        this.mapToolbar.onShowRoutePopover(addRoutePopover);
+      }
+    } else if (key === 13) {
+      var addRoutePopover = this.mapToolbar.addRoutePopup;
+      if ( addRoutePopover.isOpen() ) {
+        event.preventDefault();
+        event.stopPropagation();
+        
+        this.mapToolbar.onToolBarAction(this.mapToolbar.routeToEdit?.id ? 'edit-route' : 'add-route');
+      }
+    }
+
+    // if (key === 27) {
+    //   /* Esc */
+    //   if (this.fullScreenMode && this.currentlyFocusedRoute === -1) {
+    //     this.onFullScreen(false);
+    //   }
+    //   if (this.currentlyFocusedRoute !== -1) {
+    //     this.checkIfOpenInternalAdd(this.currentlyFocusedRoute);
+    //     this.routs[this.currentlyFocusedRoute].rightColorHight = this.calculateHeight(
+    //       this.currentlyFocusedRoute
+    //     );
+    //   }
+    //   this.routAddress = null;
+    //   if (this.openAddNewPlaceOnEnter) {
+    //     this.openAddNewPlaceOnEnter = false;
+    //   }
+    //   this.internalAddPlace = false;
+    //   this.currentlyFocusedPlace = -1;
+    //   this.indexOFInternalInput = -1;
+    //   this.firstUsageOfUpAndDownArrow = false;
+    //   this.currentlyFocusedRoute = -1;
+    // } else if (!this.dontUseTab && key === 9) {
+    //   /* Tab switch routes */
+    //   event.preventDefault();
+    //   this.switchRoute();
+    // } else if (key === 40 || key === 38) {
+    //   /* Up and Down arrow */
+    //   event.preventDefault();
+    //   if (this.currentlyFocusedRoute !== -1) {
+    //     this.onUpAndDownArrow(key);
+    //   }
+    // } else if (key === 119) {
+    //   /* F8 */
+    //   event.preventDefault();
+    //   this.canUseUpAndDown = true;
+    //   if (!this.internalAddPlace) {
+    //     if (this.currentlyFocusedPlace !== -1) {
+    //       this.onDeleteWithShortCut();
+    //     }
+    //   } else {
+    //     if (this.indexOFInternalInput !== this.currentlyFocusedPlace) {
+    //       this.onDeleteWithShortCut(true);
+    //     } else {
+    //       this.internalAddPlace = false;
+    //       this.indexOFInternalInput = -1;
+    //       this.checkIfOpenInternalAdd(this.currentlyFocusedRoute);
+    //     }
+    //   }
+    // } else if (key === 118) {
+    //   /* F7 */
+    //   event.preventDefault();
+    //   this.routAddress = '';
+    //   if (this.currentlyFocusedRoute !== -1) {
+    //     if (this.currentlyFocusedPlace !== -1) {
+    //       this.firstUsageOfUpAndDownArrow = false;
+    //       this.checkIfOpenInternalAdd(this.currentlyFocusedRoute);
+    //       this.internalAddPlace = true;
+    //       this.showAddNewPlace = this.currentlyFocusedRoute;
+    //       this.hideRegularInput = true;
+    //       this.canUseUpAndDown = true;
+    //       this.indexOFInternalInput = this.currentlyFocusedPlace;
+    //       this.routs[this.currentlyFocusedRoute].places.splice(this.currentlyFocusedPlace, 0, {
+    //         emptyPlace: true,
+    //       });
+    //       this.routs[this.currentlyFocusedRoute].rightColorHight = this.calculateHeight(
+    //         this.currentlyFocusedRoute,
+    //         true
+    //       );
+    //       let count = 0;
+    //       const interval = setInterval(() => {
+    //         document.getElementById('insertPlaceInternal' + this.currentlyFocusedPlace).focus();
+    //         count++;
+    //         if (count === 1) {
+    //           clearInterval(interval);
+    //         }
+    //       }, 100);
+    //     } else {
+    //       this.onAddNewPlace(this.currentlyFocusedRoute);
+    //     }
+    //   }
+    // }
+    this.dontUseTab = false;
   }
 
   mapHover: boolean = false;
@@ -285,6 +439,8 @@ export class RoutingMapComponent implements OnInit {
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
+    private modalService: ModalService,
+    private confirmationService: ConfirmationService
   ) { }
 
   ngOnInit(): void {
@@ -300,6 +456,26 @@ export class RoutingMapComponent implements OnInit {
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(item);
     });
+
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      //.pipe(untilDestroyed(this))
+      .subscribe({
+        next: (res: Confirmation) => {
+          console.log('confirmationData', res);
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'route') {
+                this.deleteRoute(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
   }
 
   initAddressFields() {
@@ -607,7 +783,7 @@ export class RoutingMapComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
 
-    console.log('callDropDownAction');
+    console.log('callDropDownAction', action);
 
     // Edit Call
     if (action.name === 'duplicate-route') {
@@ -617,7 +793,23 @@ export class RoutingMapComponent implements OnInit {
     } else if (action.name === 'clear-route-stops') {
       this.clearRouteStops(this.dropDownActive);
     } else if (action.name === 'delete') {
-      this.deleteRoute(this.dropDownActive);
+      //this.deleteRoute(this.dropDownActive);
+
+      var routeObj = {
+        id: this.dropDownActive,
+        type: "delete-item"
+      }
+      
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...routeObj,
+          template: 'route',
+          type: 'delete'
+        }
+      );
+
     } else if ( action.name === 'open-settings' ) {
       let route = this.getRouteById(this.dropDownActive);
       this.mapToolbar.editRoute(route);
@@ -1291,5 +1483,60 @@ export class RoutingMapComponent implements OnInit {
   stopDropdownClick(event) {
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  switchRouteFocus(previousRoute?) {
+    console.log('switchRouteFocus', previousRoute);
+
+    if ( this.routes.length ) {
+      if ( this.focusedRouteIndex != null ) {
+        var nextRoute = this.focusedRouteIndex+1 < this.routes.length ? this.focusedRouteIndex+1 : 0;
+
+        if ( previousRoute ) {
+          nextRoute = this.focusedRouteIndex-1 >= 0 ? this.focusedRouteIndex-1 : this.routes.length-1;
+        }
+
+        this.focusRoute(nextRoute);
+      } else {
+        var focusIndex = previousRoute ? this.routes.length-1 : 0;
+
+        this.focusRoute(focusIndex);
+      }
+    }
+  }
+
+  /* Up And Down Arrow Method */
+  onUpAndDownArrow(event) {
+    var key = event.keyCode;
+    
+    var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
+    var nextFocusedStop = -1;
+    console.log('currentlyFocusedStop', currentlyFocusedStop);
+
+    if (key === 38) {
+      /* Up Arrow */
+      if (currentlyFocusedStop === -1) {
+        nextFocusedStop = this.routes[this.focusedRouteIndex].stops.length - 1;
+      } else {
+        nextFocusedStop = currentlyFocusedStop-1 >= 0 ? currentlyFocusedStop-1 : this.routes[this.focusedRouteIndex].stops.length - 1;
+      }
+    } else if (key === 40) {
+      /* Down Arrow */
+      if (currentlyFocusedStop === -1) {
+        nextFocusedStop = 0;
+      } else {
+        nextFocusedStop = currentlyFocusedStop+1 < this.routes[this.focusedRouteIndex].stops.length ? currentlyFocusedStop+1 : 0;
+      }
+    }
+
+    this.focusStop(event, this.focusedRouteIndex, nextFocusedStop);
+  }
+
+  findFocusedStop(routeIndex) {
+    const stopIndex = this.routes[routeIndex].stops.findIndex(stop => {
+      return stop.isSelected;
+    });
+
+    return stopIndex;
   }
 }

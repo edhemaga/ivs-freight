@@ -326,7 +326,17 @@
 
 <ng-template #mapSettingsPopover let-data="data" data-toggle="popover">
   <div class="map-settings-container">
-    <div class="map-settings-title">Map Settings</div>
+    <div class="map-settings-header">
+      <div class="map-settings-title">
+        Map Settings
+      </div>
+      <svg-icon
+        class="close-svg"
+        src="assets/svg/applicant/close-x.svg"
+        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        (click)="onShowMapSettings(mapSettingsPopup)"
+      ></svg-icon>
+    </div>
     <div class="map-settings-divider"></div>
 
     <div class="map-settings-content">
@@ -382,8 +392,16 @@
 
 <ng-template #addRoutePopover let-data="data" data-toggle="popover">
   <div class="map-settings-container" [formGroup]="routeForm">
-    <div class="map-settings-title">
-      {{ routeToEdit?.id ? "Route Settings" : "Add New Route" }}
+    <div class="map-settings-header">
+      <div class="map-settings-title">
+        {{ routeToEdit?.id ? "Route Settings" : "Add New Route" }}
+      </div>
+      <svg-icon
+        class="close-svg"
+        src="assets/svg/applicant/close-x.svg"
+        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        (click)="onShowRoutePopover(addRoutePopup)"
+      ></svg-icon>
     </div>
     <div class="map-settings-divider"></div>
 
@@ -440,11 +458,13 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{ visible: routeForm.get('duration').value }"
+          [ngStyle]="{ display: routeForm.get('duration').value ? 'block' : 'none' }"
+          [ngClass]="{ 'active': routeForm.get('duration').value && !hideDuration }"
+          (click)="hideDuration = !hideDuration"
         ></svg-icon>
       </div>
 
-      <div class="duration-time-input" *ngIf="routeForm.get('duration').value">
+      <div class="duration-time-input" *ngIf="routeForm.get('duration').value && !hideDuration">
         <app-ta-input
           formControlName="durationTime"
           [inputConfig]="{
@@ -474,11 +494,13 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngClass]="{ visible: routeForm.get('fuelCost').value }"
+          [ngStyle]="{ display: routeForm.get('fuelCost').value ? 'block' : 'none' }"
+          [ngClass]="{ 'active': routeForm.get('fuelCost').value && !hideFuelCost }"
+          (click)="hideFuelCost = !hideFuelCost"
         ></svg-icon>
       </div>
 
-      <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value">
+      <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value && !hideFuelCost">
         <app-ta-input
           formControlName="fuelMpg"
           [inputConfig]="{
@@ -493,7 +515,7 @@
       </div>
       <div
         class="duration-time-input mg-top-32"
-        *ngIf="routeForm.get('fuelCost').value"
+        *ngIf="routeForm.get('fuelCost').value && !hideFuelCost"
       >
         <app-ta-input
           formControlName="fuelPrice"
@@ -514,7 +536,8 @@
     <div class="map-settings-content buttons-container">
       <div
         class="map-settings-button"
-        [ngStyle]="{ opacity: '0', 'pointer-events': 'none' }"
+        [ngStyle]="{ opacity: routeFormChanged ? '1' : '0', 'pointer-events': routeFormChanged ? 'all' : 'none' }"
+        (click)="resetRouteForm()"
       >
         <div class="map-settings-button-text">Reset</div>
       </div>

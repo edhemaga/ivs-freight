@@ -11,7 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
-import { distinctUntilChanged } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 @UntilDestroy()
@@ -24,6 +24,8 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   ],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
+  private destroy$: Subject<void> = new Subject<void>();
+  
   @ViewChild('op') mapSettingsPopup: any;
   @ViewChild('op2') addRoutePopup: any;
   @ViewChild('op3') layersPopup: any;
@@ -194,6 +196,9 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     { color: '#A851FF', text: '-08:00 Alaska Daylight Time' },
   ];
 
+  hideFuelCost: boolean = false;
+  hideDuration: boolean = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
@@ -228,7 +233,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   createMapForm() {
     this.mapForm = this.formBuilder.group({
@@ -288,6 +296,52 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       fuelPrice: null,
       routeType: 'Practical',
     });
+
+    this.routeForm.valueChanges
+      .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((formChanges) => {
+        var originalValues = {
+          routeName: 'Route 0' + (this.activeTableData.length + 1),
+          truckId: '',
+          duration: false,
+          durationTime: null,
+          fuelCost: false,
+          fuelMpg: null,
+          fuelPrice: null,
+          routeType: 'Practical'
+        }
+
+        if ( this.routeToEdit.id ) {
+          originalValues = {
+            routeName: this.routeToEdit.name,
+            truckId: this.routeToEdit.truckId ? this.routeToEdit.truckId : '',
+            duration: this.routeToEdit.stopTime ? true : false,
+            durationTime: this.routeToEdit.stopTime
+              ? this.routeToEdit.stopTime
+              : null,
+            fuelCost: this.routeToEdit.fuelPrice ? true : false,
+            fuelMpg: this.routeToEdit.mpg ? this.routeToEdit.mpg : null,
+            fuelPrice: this.routeToEdit.fuelPrice
+              ? this.routeToEdit.fuelPrice
+              : null,
+            routeType: this.routeToEdit.routeType
+          }
+        }
+
+        if ( formChanges.routeName != originalValues.routeName ||
+             formChanges.truckId != originalValues.truckId ||
+             formChanges.duration != originalValues.duration ||
+             formChanges.durationTime != originalValues.durationTime ||
+             formChanges.fuelCost != originalValues.fuelCost ||
+             formChanges.fuelMpg != originalValues.fuelMpg ||
+             formChanges.fuelPrice != originalValues.fuelPrice ||
+             formChanges.routeType != originalValues.routeType
+        ) {
+          this.routeFormChanged = true;
+        } else {
+          this.routeFormChanged = false;
+        }
+      });
   }
 
   getSelectedTabTableData() {
@@ -425,7 +479,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   onIncludeDuration() {
     this.routeForm
       .get('duration')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -433,11 +487,13 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             true,
             [Validators.required]
           );
+          this.hideDuration = false;
         } else {
           this.inputService.changeValidators(
             this.routeForm.get('durationTime'),
             false
           );
+          this.hideDuration = true;
         }
       });
   }
@@ -445,7 +501,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   onIncludeFuelCost() {
     this.routeForm
       .get('fuelCost')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
@@ -459,6 +515,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             true,
             [Validators.required]
           );
+
+          this.hideFuelCost = false;
         } else {
           this.inputService.changeValidators(
             this.routeForm.get('fuelMpg'),
@@ -469,6 +527,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             this.routeForm.get('fuelPrice'),
             false
           );
+
+          this.hideFuelCost = true;
         }
       });
   }
@@ -553,16 +613,28 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         routeType: 'Practical',
       });
     }
-
-    this.routeTabs.map((item) => {
-      if (this.routeToEdit && item.name == this.routeToEdit.routeType) {
-        item.checked = true;
-      } else {
-        item.checked = false;
-      }
-    });
+    
+    this.routeTabs = [
+      {
+        id: 1,
+        name: 'Practical',
+        checked: this.routeToEdit.routeType == 'Practical',
+      },
+      {
+        id: 2,
+        name: 'Shortest',
+        checked: this.routeToEdit.routeType == 'Shortest',
+      },
+      {
+        id: 3,
+        name: 'Cheapest',
+        checked: this.routeToEdit.routeType == 'Cheapest',
+      },
+    ];
 
     this.routeFormChanged = false;
+
+    this.ref.detectChanges();
   }
 
   editRoute(route) {
@@ -587,9 +659,9 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       }
     });
 
-    this.addRoutePopup.open();
-
     this.ref.detectChanges();
+    
+    this.addRoutePopup.open();
   }
 
   toggleStopPicker() {
