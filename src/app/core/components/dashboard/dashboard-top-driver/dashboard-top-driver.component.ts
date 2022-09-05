@@ -500,6 +500,8 @@ export class DashboardTopDriverComponent implements OnInit {
 
     this.topTenTitle = item.name;
     this.searchDashboardOptions.gridNameTitle = item.name;
+    this.topDriverBarChart.animationDuration = 0;
+    this.topDriverBarChart.setChartOptions();
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;
