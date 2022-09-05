@@ -11,14 +11,6 @@ import * as AppConst from 'src/app/const';
 import { Enums } from 'src/app/core/model/enums';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
 import { DispatcherStoreService } from '../state/dispatcher.service';
-import { AppIdleService } from '../../../services/dispatchboard/app-idle.service';
-import { AppLoadService } from '../../../services/load/app-load.service';
-import { DispatchSortService } from '../../../services/dispatchboard/dispatchsort.service';
-import { SharedService } from '../../../services/shared/shared.service';
-import { SignalRService } from '../../../services/dispatchboard/app-signalr.service';
-import { AppDispatchSignalrService } from '../../../services/dispatchboard/app-dispatchSignalr.service';
-import { getDataFromGpsResponse } from '../../../utils/methods.globals';
-import { environment } from '../../../../../environments/environment';
 
 import { DispatcherQuery } from './../state/dispatcher.query';
 import { takeUntil } from 'rxjs/operators';
