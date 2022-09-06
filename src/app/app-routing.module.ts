@@ -81,6 +81,12 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'load',
+    loadChildren: () =>
+      import('./core/components/load/load.module').then((m) => m.LoadModule),
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'driver',
     loadChildren: () =>
       import('./core/components/driver/driver.module').then(
@@ -122,12 +128,6 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
     resolve: { broker: BrokerResolver, shipper: ShipperResolver },
-  },
-  {
-    path: 'load',
-    loadChildren: () =>
-      import('./core/components/load/load.module').then((m) => m.LoadModule),
-    canActivate: [AuthGuard],
   },
   {
     path: 'repair',

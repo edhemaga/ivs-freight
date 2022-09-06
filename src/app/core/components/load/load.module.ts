@@ -8,6 +8,11 @@ import { LoadCardComponent } from './load-card/load-card.component';
 
 @NgModule({
   declarations: [LoadTableComponent, LoadCardComponent],
-  imports: [CommonModule, LoadRoutingModule, TruckassistTableModule, AngularSvgIconModule],
+  imports: [
+    CommonModule,
+    LoadRoutingModule,
+    TruckassistTableModule,
+    AngularSvgIconModule,
+  ],
 })
 export class LoadModule {}
