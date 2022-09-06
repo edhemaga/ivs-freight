@@ -1,9 +1,9 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
-$top_driver_hover_color: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA',
-  '38BDEB', 'FFCA28', 'A2D35F', 'F276EF', '8D6E63';
-$top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
-  'FFD54F', 'BDE08E', 'F69FF3', 'A1887F';
+$top_driver_hover_color: "596FE8", "FD952D", "ED445E", "2FA558", "7F39AA",
+  "38BDEB", "FFCA28", "A2D35F", "F276EF", "8D6E63";
+$top_driver_color: "8A9AEF", "FDB46B", "F27B8E", "6DC089", "A574C3", "73D0F1",
+  "FFD54F", "BDE08E", "F69FF3", "A1887F";
 
 .dashboard-top-driver-holder {
   width: 100%;
@@ -120,6 +120,23 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
           }
         }
 
+        .dashboard-top-driver-toolbar-filter-selected {
+          height: 28px;
+          padding: 5px 8px;
+          box-sizing: border-box;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 2px;
+          background-color: #f3f3f3;
+          font-size: 14px;
+          font-weight: 800;
+          color: #6c6c6c;
+          margin-left: 2px;
+          user-select: none;
+          cursor: pointer;
+        }
+
         .dashboard-top-driver-header-toolbar-search-icon {
           width: auto;
           height: 28px;
@@ -160,9 +177,23 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
     .row {
       width: 100%;
 
-      .col-4 {
+      .dashboard_top_driver_list {
         display: flex;
+
+        width: auto;
+        max-width: 536px;
+        min-width: 476px;
         padding-right: 0px;
+
+        &.medium_scale {
+          max-width: 476px;
+          min-width: 426px;
+        }
+
+        &.small_scale {
+          max-width: 396px;
+          min-width: 368px;
+        }
       }
     }
 
@@ -202,6 +233,11 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
             justify-content: flex-start;
             align-items: center;
 
+            &.list-name-holder {
+              flex: 1;
+              overflow: hidden;
+            }
+
             .dashboard-top-driver-body-list-id {
               width: 18px;
               display: flex;
@@ -223,17 +259,24 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
 
               @each $col1 in $top_driver_color {
                 &.top-ten-#{$col1}-color {
-                  background-color: unquote('#' + $col1);
+                  background-color: unquote("#" + $col1);
                 }
               }
             }
 
             .dashboard-top-driver-body-list-name {
+              max-width: 80%;
+              padding-left: 6px;
+
               font-size: 14px;
               font-weight: 700;
               color: #6c6c6c;
-              padding-left: 6px;
+
               box-sizing: border-box;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+
               &::-moz-selection {
                 background: #6c6c6c33;
                 color: #6c6c6c;
@@ -336,7 +379,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
               $hover_color: nth($top_driver_hover_color, $ii);
               $ii: $ii + 1;
               .top-ten-#{$col1}-color {
-                background-color: unquote('#' + $hover_color) !important;
+                background-color: unquote("#" + $hover_color) !important;
               }
             }
           }
@@ -346,7 +389,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
             $hover_color: nth($top_driver_hover_color, $ii);
             $ii: $ii + 1;
             &.top-compare-#{$col1} {
-              background-color: unquote('#' + $col1);
+              background-color: unquote("#" + $col1);
 
               .dashboard-top-driver-body-list-id {
                 color: #fff !important;
@@ -393,7 +436,7 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
               }
 
               &:hover {
-                background-color: unquote('#' + $hover_color);
+                background-color: unquote("#" + $hover_color);
 
                 .dashboard-top-driver-body-list-remove {
                   display: flex;
@@ -426,12 +469,66 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
       &::-webkit-scrollbar-thumb {
         border: 6px solid #fff;
       }
+
+      .driver_empty_state_holder {
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        width: 100%;
+        height: 100%;
+        padding-top: 18px;
+
+        .main_empty_state_holder {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+
+          .empty_state_title {
+            padding-bottom: 4px;
+
+            font-weight: 700;
+            line-height: 18px;
+            font-size: 14px;
+            color: #6c6c6c;
+            text-align: center;
+          }
+
+          .empty_state_title_bottom {
+            font-weight: 700;
+            line-height: 14px;
+            font-size: 11px;
+            color: #6c6c6c;
+            text-align: center;
+          }
+
+          .empty_state_image {
+            margin: 25px 0px 29px 0px;
+          }
+
+          .empty_add_button {
+            background-color: #6d82c7;
+            border-radius: 2px;
+            cursor: pointer;
+
+            .add_text {
+              padding: 7px 35px;
+
+              color: #fff;
+              font-weight: 700;
+              font-size: 14px;
+              line-height: 18px;
+            }
+          }
+        }
+      }
     }
 
-    .col-3 {
+    .doughnut_chart_main_holder {
       display: flex;
       justify-content: center;
       align-items: center;
+      width: auto;
 
       padding: 9px 0px 7px 0px;
 
@@ -439,6 +536,8 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
         display: flex;
         justify-content: center;
         align-items: center;
+
+        padding: 0 66px 0 63px;
 
         width: 100%;
         height: 100%;
@@ -450,7 +549,8 @@ $top_driver_color: '8A9AEF', 'FDB46B', 'F27B8E', '6DC089', 'A574C3', '73D0F1',
       }
     }
 
-    .col-5 {
+    .bar_chart_main_holder {
+      flex: 1;
       padding: 13px 12px 11px 12px;
       .bar_chart_holder {
         width: 100%;
