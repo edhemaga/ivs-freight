@@ -968,10 +968,8 @@ export class TaChartComponent implements OnInit {
             if (i) {
               xAxis['_gridLineItems'][i].color = '#DADADA';
             }
-            if (i == value) {
-              xAxis['_gridLineItems'][i].color = '#fff';
-            } else if (i == value + 1) {
-              xAxis['_gridLineItems'][i].color = '#F3F3F3';
+            if (i == value || i == value + 1) {
+              xAxis['_gridLineItems'][i].color = 'transparent';
             }
           });
         }
@@ -982,8 +980,8 @@ export class TaChartComponent implements OnInit {
         ) {
           this.updateHoverData(value);
           let oversizedHover = false;
-          this.hoverColumnWidth = elWidth;
-          this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'];
+          this.hoverColumnWidth = elWidth + 1;
+          this.hoverChartLeft = xAxis['_gridLineItems'][value]['x2'] - 1;
 
           let clientWidth = this.hoverDataHolder
             ? this.hoverDataHolder.nativeElement.offsetWidth + 16
@@ -993,6 +991,8 @@ export class TaChartComponent implements OnInit {
             'startGridBackgroundFromZero'
           ]
             ? yAxis.height
+            : this.chartConfig['multiChartHover']
+            ? yAxis.height + xAxis.height + 40
             : yAxis.height + xAxis.height;
 
           let xPos = this.chartConfig['offset']

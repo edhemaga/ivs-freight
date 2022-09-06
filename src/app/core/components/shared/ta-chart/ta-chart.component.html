@@ -1,6 +1,6 @@
 <div
   class="charts-item-wrapper revenue"
-  *ngIf="legendAttributes?.length > 0"
+  *ngIf="legendAttributes?.length"
   [class.row]="legendAttributes?.length > 2"
   [class.hover]="hoveringStatus && hoverTimeDisplay"
 >
@@ -84,7 +84,7 @@
       class="hover_data_title"
       [ngStyle]="{
         'text-align':
-          selectedDrivers?.length > 0 || selectedDataRows?.length > dataMaxRows
+          selectedDrivers?.length || selectedDataRows?.length > dataMaxRows
             ? 'left'
             : 'center'
       }"

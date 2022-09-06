@@ -20,7 +20,7 @@
         <div class="dashboard-pickup-toolbar-switch-left">
           <app-ta-tab-switch
             [tabs]="stateSwitchTabsType1"
-            (switchClicked)="changeStateSwitchTabs($event)"
+            (switchClicked)="changeStateSwitchTabs($event, true)"
           ></app-ta-tab-switch>
         </div>
         <div class="dashboard-pickup-toolbar-border"></div>
@@ -33,7 +33,7 @@
         <div
           class="dashboard-pickup-toolbar-filter-selected"
           (click)="clearSelected()"
-          *ngIf="selectedStates?.length > 0"
+          *ngIf="selectedStates?.length"
         >
           Clear Selection
         </div>

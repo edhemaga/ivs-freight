@@ -276,10 +276,11 @@ export class DashboardPickupByStateComponent implements OnInit {
     this.timePeriod.changeTimePeriod('WTD');
   }
 
-  changeStateSwitchTabs(ev) {
-    this.timePeriod.changeTimePeriod(ev['name']);
-    this.currentSwitchTab = ev['name'];
-    this.statesBarChart.updateTime(ev['name']);
+  changeStateSwitchTabs(ev, useLast?) {
+    const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    this.timePeriod.changeTimePeriod(switchData);
+    this.currentSwitchTab = switchData;
+    this.statesBarChart.updateTime(switchData);
   }
 
   selectStateCompare(e, item, indx) {

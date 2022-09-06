@@ -22,7 +22,7 @@
         <div class="dashboard-top-driver-header-toolbar-switch-left">
           <app-ta-tab-switch
             [tabs]="topTenSwitchTabstype1"
-            (switchClicked)="changeDriverSwitchTabs($event)"
+            (switchClicked)="changeDriverSwitchTabs($event, true)"
           >
           </app-ta-tab-switch>
         </div>
@@ -36,7 +36,7 @@
         <div
           class="dashboard-top-driver-toolbar-filter-selected"
           (click)="clearSelected()"
-          *ngIf="selectedDrivers?.length > 0"
+          *ngIf="selectedDrivers?.length"
         >
           Clear Selection
         </div>

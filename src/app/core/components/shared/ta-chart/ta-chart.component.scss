@@ -64,6 +64,7 @@
 
   .chart_hover_background {
     position: absolute;
+    transition: all 0.3s ease-in-out;
     top: 0;
     height: 100%;
     background-color: #f3f3f3;
@@ -96,7 +97,9 @@
     box-shadow: 0 0 4px rgb(0 0 0 / 15%);
 
     padding: 6px 8px 8px 8px;
+    transition: all 0.3s ease-in-out;
     transform: translateY(-50%);
+    pointer-events: none;
 
     z-index: 2;
 

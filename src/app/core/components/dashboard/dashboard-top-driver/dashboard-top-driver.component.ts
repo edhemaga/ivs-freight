@@ -32,7 +32,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [
             90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000, 40000,
             50000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000,
-            25000, 13000, 28000, 80000, 120000, 70000, 50000,
+            25000, 13000, 28000, 80000, 120000, 70000, 50000, 28000, 80000,
+            120000, 70000, 50000, 28000, 80000, 120000, 70000, 50000, 28000,
+            80000, 120000, 70000, 50000, 28000, 80000, 120000, 70000, 50000,
+            28000, 80000, 120000, 70000, 50000,
           ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
@@ -49,7 +52,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [
             60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
             95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
-            80000, 120000, 90000, 60000, 50000, 100000, 120000,
+            80000, 120000, 90000, 60000, 50000, 100000, 120000, 90000, 60000,
+            50000, 100000, 120000, 90000, 60000, 50000, 100000, 120000, 90000,
+            60000, 50000, 100000, 120000, 90000, 60000, 50000, 100000, 120000,
+            90000, 60000, 50000, 100000, 120000,
           ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
@@ -406,13 +412,14 @@ export class DashboardTopDriverComponent implements OnInit {
     this.timePeriod.changeTimePeriod('All Time');
   }
 
-  changeDriverSwitchTabs(ev) {
-    this.timePeriod.changeTimePeriod(ev['name']);
-    this.currentSwitchTab = ev['name'];
-    if (ev['name'] == 'Custom') {
+  changeDriverSwitchTabs(ev, useLast?) {
+    const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    this.timePeriod.changeTimePeriod(switchData);
+    this.currentSwitchTab = switchData;
+    if (switchData == 'Custom') {
       return false;
     }
-    this.topDriverBarChart.updateTime(ev['name']);
+    this.topDriverBarChart.updateTime(switchData);
   }
 
   saveCustomRange(ev) {
@@ -434,7 +441,7 @@ export class DashboardTopDriverComponent implements OnInit {
     );
     this.selectedDrivers.splice(indx, 1);
     this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-    if (this.selectedDrivers?.length > 0) {
+    if (this.selectedDrivers?.length) {
       this.setChartData(this.selectedDrivers, true);
     }
 
