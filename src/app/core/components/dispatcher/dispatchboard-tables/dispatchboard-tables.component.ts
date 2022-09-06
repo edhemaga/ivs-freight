@@ -1,5 +1,11 @@
 import { FormControl } from '@angular/forms';
-import { animate, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  style,
+  transition,
+  trigger,
+  state,
+} from '@angular/animations';
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
@@ -12,7 +18,11 @@ import {
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { DispatchBoardLocalResponse } from '../state/dispatcher.model';
 import { DispatcherStoreService } from '../state/dispatcher.service';
-import { CreateDispatchCommand, DispatchResponse, UpdateDispatchCommand } from 'appcoretruckassist';
+import {
+  CreateDispatchCommand,
+  DispatchResponse,
+  UpdateDispatchCommand,
+} from 'appcoretruckassist';
 import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
 
 @Component({
@@ -22,6 +32,23 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   animations: [
+    trigger('boxAnimation', [
+      state(
+        'filled',
+        style({
+          transform: 'scale(1)',
+        })
+      ),
+      state(
+        'empty',
+        style({
+          transform: 'scale(0)',
+        })
+      ),
+      transition('empty => filled', [
+        animate('0.3s 0s ease-out')
+      ])
+    ]),
     trigger('pickupAnimation', [
       transition(':enter', [
         style({ height: 100 }),
@@ -39,10 +66,7 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
     trigger('userTextAnimations', [
       transition(':enter', [
         style({
-          zIndex: '100',
-          opacity: 0.2,
-          fontWeight: '600',
-          transform: 'scale(1.1)',
+          transform: 'scale(0)',
         }),
         animate('100ms', style({ opacity: 1 })),
         animate(
@@ -52,10 +76,7 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
       ]),
       transition(':leave', [
         style({
-          zIndex: '100',
-          opacity: 0.2,
-          fontWeight: '600',
-          transform: 'scale(1.1)',
+          transform: 'scale(0)',
         }),
         animate('50ms', style({ opacity: 1 })),
         animate(
@@ -74,7 +95,15 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
   ],
 })
 export class DispatchboardTablesComponent implements OnInit {
-  @Input() dData: DispatchBoardLocalResponse = {};
+
+  dData: DispatchBoardLocalResponse = {};
+
+  checkForEmpty: boolean = false;
+
+  @Input() set _dData(value) {
+    this.dData = value;
+  }
+
   @Input() dDataIndx: number;
 
   truckAddress: FormControl = new FormControl(null);
@@ -152,30 +181,43 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addTruck(e) {
-    console.log(e);
-
-    this.dData.dispatches[this.truckSelectOpened].truck = e;
-    this.showAddAddressField = this.truckSelectOpened;
+    if(e){
+      this.dData.dispatches[this.truckSelectOpened].truck = e;
+      this.showAddAddressField = this.truckSelectOpened;
+    }
 
     this.truckSelectOpened = -1;
   }
 
-  handleInputSelect(e: any){
-    if(e.valid){
-      this.updateOrAddDispatchBoardAndSend("location", e.address, this.showAddAddressField);
+  handleInputSelect(e: any) {
+    if (e.valid) {
+      this.updateOrAddDispatchBoardAndSend(
+        'location',
+        e.address,
+        this.showAddAddressField
+      );
 
       this.showAddAddressField = -1;
     }
   }
 
-  addDriver() {
-
+  addDriver(e) {
+    console.log(e);
+    this.updateOrAddDispatchBoardAndSend(
+      'driverId',
+      e.id,
+      this.driverSelectOpened
+    );
     this.driverSelectOpened = -1;
   }
 
   addTrailer(e) {
     console.log(e);
-    this.updateOrAddDispatchBoardAndSend("trailerId", e.id, this.trailerSelectOpened);
+    this.updateOrAddDispatchBoardAndSend(
+      'trailerId',
+      e.id,
+      this.trailerSelectOpened
+    );
     this.trailerSelectOpened = -1;
   }
 
@@ -233,47 +275,44 @@ export class DispatchboardTablesComponent implements OnInit {
     document.body.removeChild(el);
   }
 
-
-  updateOrAddDispatchBoardAndSend(key, value, index){
-    const oldData = this.dData.dispatches[index] ? this.dData.dispatches[index] : {};
+  updateOrAddDispatchBoardAndSend(key, value, index) {
+    const oldData = this.dData.dispatches[index]
+      ? this.dData.dispatches[index]
+      : {};
 
     const dataId = oldData.id;
-    let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand  = {
-      status: (oldData.status ? oldData.status?.name as DispatchStatus : "Off"),
-      order: oldData.order, 
+    let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
+      status: oldData.status ? (oldData.status?.name as DispatchStatus) : 'Off',
+      order: oldData.order,
       truckId: oldData.truck?.id,
       trailerId: oldData.trailer?.id,
       driverId: oldData.driver?.id,
-      location: oldData.location,
+      location: oldData.location?.address ? oldData.location : null,
       hourOfService: oldData.hoursOfService,
-      note: oldData.note
+      note: oldData.note,
+    };
+
+    let newData: any = {
+      ...oldUpdateData,
+      [key]: value,
+    };
+
+    console.log(key);
+    console.log(value);
+    console.log(newData);
+
+    if (oldData.id) {
+      newData = {
+        id: oldData.id,
+        ...newData,
+      };
+
+      this.dss.updateDispatchBoard(newData, this.dData.id);
+    } else {
+      newData.dispatchBoardId = this.dData.id;
+
+      this.dss.createDispatchBoard(newData, this.dData.id);
     }
-     
-      let newData: any = {
-        ...oldUpdateData,
-        [key]: value
-      }
-
-      console.log(key);
-      console.log(value);
-      console.log(newData);
-
-
-      if(oldData.id){
-        newData = {
-          id: oldData.id,
-          ...newData
-        }
-
-        this.dss.updateDispatchBoard(newData, this.dData.id);
-      }else{
-
-        newData.dispatchBoardId = this.dData.id;
-
-        this.dss.createDispatchBoard(newData, this.dData.id);
-
-      }
-     // console.log("HELOOOOO", newData);
-
+    // console.log("HELOOOOO", newData);
   }
 }

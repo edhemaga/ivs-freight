@@ -10,6 +10,7 @@ import {
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Options } from '@angular-slider/ngx-slider';
 import { addressValidation } from '../ta-input/ta-input.regex-validations';
+import { AutoclosePopoverComponent } from '../autoclose-popover/autoclose-popover.component';
 
 @Component({
   selector: 'app-filter',
@@ -19,6 +20,8 @@ import { addressValidation } from '../ta-input/ta-input.regex-validations';
   encapsulation: ViewEncapsulation.None,
 })
 export class FilterComponent implements OnInit {
+  @ViewChild(AutoclosePopoverComponent) autoClosePopover: AutoclosePopoverComponent;
+
   @ViewChild('t2') t2: any;
 
   unselectedUser: any[] = [

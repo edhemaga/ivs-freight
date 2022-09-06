@@ -34,7 +34,7 @@ export class DispatcherStoreService {
             })
         )
         .subscribe(res => {
-            console.log("ADDED OF CREATING DISPATCHBOARD", res);
+            this.dispatchBoardItem = {id: dispatch_id, item: res};
         });
     }
 
@@ -47,24 +47,37 @@ export class DispatcherStoreService {
         )
         .subscribe( res => {
             console.log("RESULT OF UPDATED DISPATCHBOARD", res);
-
+            this.dispatchBoardItem = {id: dispatch_id, item: res};
         });
     }
 
     set dispatchBoardItem(boardData){
         this.dispatcherStore.update((store) => ({
             ...store,
-            dispatchList: store.dispatchList.map(item => {
-                if(item.id == boardData.id){
-                    item.dispatches.map(data => {
-                        if(data.id == boardData.item.id){
-                            data = boardData.item;
+            dispatchList: {
+                ...store.dispatchList,
+                pagination: {
+                    ...store.dispatchList.pagination,
+                    data: store.dispatchList.pagination.data.map(item => {
+                        let findedItem = false;
+                        if(item.id == boardData.id){
+                            
+                            item.dispatches = item.dispatches.map(data => {
+                                if(data.id == boardData.item.id){
+                                    findedItem = true;
+                                    data = {...boardData.item};
+                                }
+                                return data;
+                            });
+
+                            if( !findedItem ) {
+                                item.dispatches.push({...boardData.item});
+                            }
                         }
-                        return data;
+                        return item;
                     })
                 }
-                return item;
-            })
+            }
         }));   
     }
 

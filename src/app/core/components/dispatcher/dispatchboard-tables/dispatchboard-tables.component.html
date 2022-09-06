@@ -45,12 +45,12 @@
               <div
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="!item.truck && truckSelectOpened != rowIndex"
+                [@boxAnimation]="checkForEmpty ? (!item.truck && truckSelectOpened != rowIndex ? 'empty' : 'filled') : 'void'"
                 [class.empty-box-field]="__isBoardLocked && !item.truck"
               >
                 <div class="drag-span-holder">
                   <span
                     *ngIf="item.truck !== null"
-                    @userTextAnimations
                     [class.hasColor]="item.truck.truckColor"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
                     [ngClass]="
@@ -143,6 +143,7 @@
                 [class.empty_row]="
                   !item.trailer && trailerSelectOpened != rowIndex
                 "
+                [@boxAnimation]="!item.trailer && trailerSelectOpened != rowIndex ? 'empty' : 'filled'"
                 [class.empty-box-field]="__isBoardLocked && !item.trailer"
               >
                 <!-- <div
@@ -154,7 +155,6 @@
                 <div class="trailer_span_holder">
                   <span
                     *ngIf="item.trailer !== null"
-                    @userTextAnimations
                     [class.hasColor]="item.trailerColor"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
                     [ngClass]="
@@ -253,18 +253,19 @@
                 [class.empty_row]="
                   !item.driver && driverSelectOpened != rowIndex
                 "
+
+                [@boxAnimation]="!item.driver && driverSelectOpened != rowIndex ? 'empty' : 'filled'"
                 [class.empty-box-field]="__isBoardLocked && !item.driver"
               >
                 <div class="driver_span_holder">
                   <span
                     *ngIf="item.driver !== null"
-                    @userTextAnimations
                     [class.statusOpened]="statusOpenedIndex > -1"
                     class="drag-span no-color"
                   >
                     <span
                       [innerHtml]="
-                        item.driver.driverName | taHighlight: highlightingWords
+                        (item.driver.firstName + ' ' + item.driver.lastName) | taHighlight: highlightingWords
                       "
                       [ngStyle]="{
                         color: statusOpenedIndex > -1 ? '' : '#919191'
@@ -346,7 +347,9 @@
             </div>
           </td>
           <td class="phoneemail-field">
-            <div class="phone-em-hold empty-box-field">
+            <div class="phone-em-hold"
+            [class.empty-box-field]="!item.email"
+            >
               <div
                 *ngIf="item.driver"
                 [class.statusOpened]="statusOpenedIndex > -1"
@@ -356,8 +359,8 @@
                   <span
                     (click)="copy($event)"
                     [innerHtml]="
-                      (item.driverPhone
-                        ? (item.driverPhone | mask: '(000) 000-0000')
+                      (item.phone
+                        ? (item.phone | mask: '(000) 000-0000')
                         : 'no phone'
                       ) | taHighlight: highlightingWords
                     "
@@ -374,7 +377,7 @@
                   <span
                     (click)="copy($event)"
                     [innerHtml]="
-                      (item.driverEmail ? item.driverEmail : 'no email')
+                      (item.email ? item.email : 'no email')
                         | taHighlight: highlightingWords
                     "
                     [ngStyle]="{
@@ -455,7 +458,7 @@
                     item.location.address !== null && !item.enterNewAddress
                   "
                   [innerHtml]="
-                    item.location.address | taHighlight: highlightingWords
+                    (item.location.city + ', ' + item.location.stateShortName) | taHighlight: highlightingWords
                   "
                   [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
                   appSelectionColor

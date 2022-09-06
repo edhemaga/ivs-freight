@@ -233,7 +233,7 @@
             *ngFor="let item of dispatchTableList | async; let indx = index"
           >
             <app-dispatchboard-tables
-              [dData]="item"
+              [_dData]="item"
               [isBoardLocked]="isBoardLocked"
               [dDataIndx]="indx"
               [smallList]="dispatchBoardSmallList | async"
