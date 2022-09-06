@@ -23,32 +23,42 @@
                       <div class="border-spacer"></div>
                       <button
                         (click)="openDispatchHistory()"
-                        mainTooltip="History"
+                        mainTooltip="Truck Type Legend"
                         ngbTooltip
                         class="btn-transparent open_load history_board"
                         position="bottom"
                       >
-                        <svg-icon
-                          [svgStyle]="{ 'width.px': 18, 'height.px': 16 }"
-                          class="icon-hover-blue-28 m-0 blue_icon"
-                          src="assets/svg/applicant/car.svg"
+                        <app-filter
+                          [type]="'truckTypeFilter'"
+                          [filterTitle]="'Truck Type Legend'"
+                          [defFilterHolder]="true"
+                          [icon]="'truck'"
+                          [leftSideIcon]="true"
+                          [largeLeftIcon]="true"
+                          [svgCustom]="true" 
+                          [legendView]="true"
                         >
-                        </svg-icon>
+                        </app-filter>
                       </button>
                       <div class="border-spacer"></div>
                       <button
                         (click)="openDispatchHistory()"
-                        mainTooltip="History"
+                        mainTooltip="Trailer Type Legend"
                         ngbTooltip
                         class="btn-transparent open_load history_board"
                         position="bottom"
                       >
-                        <svg-icon
-                          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                          class="icon-hover-blue-28 m-0 blue_icon"
-                          src="assets/svg/common/repair-services/ic_repair.svg"
-                        >
-                        </svg-icon>
+                      <app-filter
+                        [type]="'trailerTypeFilter'"
+                        [filterTitle]="'Trailer Type Legend'"
+                        [defFilterHolder]="true"
+                        [icon]="'trailer'"
+                        [leftSideIcon]="true"
+                        [largeLeftIcon]="true"
+                        [svgCustom]="true" 
+                        [legendView]="true"
+                      >
+                      </app-filter>
                       </button>
                       <div class="border-spacer"></div>
                       <button
