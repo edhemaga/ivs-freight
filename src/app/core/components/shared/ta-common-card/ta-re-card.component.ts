@@ -50,6 +50,8 @@ export class TaReCardComponent implements OnInit {
   @Input() paddingDots: string = '11px 8px 0 12px';
   @Output() clickedCard = new EventEmitter<any>();
   @Output() dataDropDopwn = new EventEmitter<any>();
+  @Input() hasToggler: boolean;
+  @Input() public testDate: any;
   public data: any;
   public resPage: boolean = false;
   public copiedCommon: boolean = false;
@@ -79,7 +81,8 @@ export class TaReCardComponent implements OnInit {
     if (
       moment(this.expDateClose).isBefore(currentDate) ||
       this.isDeactivated ||
-      this.statusActive == 0
+      this.statusActive == 0 ||
+      this.hasToggler
     ) {
       this.isCardOpen = !this.isCardOpen;
     }
