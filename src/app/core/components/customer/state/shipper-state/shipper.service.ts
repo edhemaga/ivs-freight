@@ -1,3 +1,7 @@
+import {
+  ShipperMinimalListState,
+  ShipperMinimalListStore,
+} from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
 import { Injectable } from '@angular/core';
 import {
@@ -26,7 +30,8 @@ export class ShipperTService {
     private tableService: TruckassistTableService,
     private ratingReviewService: RatingReviewService,
     private shipperStore: ShipperStore,
-    private shipperQuery: ShipperQuery
+    private shipperQuery: ShipperQuery,
+    private shipperMinimalStore: ShipperMinimalListStore
   ) {}
 
   // Create Shipper
@@ -72,9 +77,9 @@ export class ShipperTService {
         const subShipper = this.getShipperById(data.id).subscribe({
           next: (shipper: ShipperResponse | any) => {
             this.shipperStore.remove(({ id }) => id === data.id);
-
+            this.shipperMinimalStore.remove(({ id }) => id === data.id);
             this.shipperStore.add(shipper);
-
+            this.shipperMinimalStore.add(shipper);
             this.tableService.sendActionAnimation({
               animation: 'update',
               tab: 'shipper',

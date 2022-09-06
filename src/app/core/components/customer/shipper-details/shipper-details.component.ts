@@ -6,6 +6,8 @@ import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-stat
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-shipper-details',
@@ -17,6 +19,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public shipperConfig: any[] = [];
   public shipperDrop: any;
+  public shipperId: number;
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
@@ -24,34 +27,45 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
     private detailsPageService: DetailsPageService,
-    private shipperQuery: ShipperDetailsQuery
+    private shipperQuery: ShipperDetailsQuery,
+    private dropDownService: DropDownService,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.shipperConf(res.data);
+          this.initTableOptions();
+          this.cdRef.detectChanges();
+        }
+      });
     this.detailsPageService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        let query;
-        if (this.shipperQuery.hasEntity(id)) {
-          query = this.shipperQuery.selectEntity(id);
-        } else {
-          query = this.shipperService.getShipperById(id);
-        }
-        query.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: ShipperResponse) => {
-            this.shipperConf(res);
-            this.router.navigate([`/customer/${res.id}/shipper-details`]);
-            this.notificationService.success(
-              'Shipper successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Shipper can't be loaded", 'Error:');
-          },
-        });
+        this.shipperService
+          .getShipperById(id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: ShipperResponse) => {
+              this.shipperConf(res);
+              this.router.navigate([`/customer/${res.id}/shipper-details`]);
+              this.notificationService.success(
+                'Shipper successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Shipper can't be loaded",
+                'Error:'
+              );
+            },
+          });
       });
     this.shipperConf(this.activated_route.snapshot.data.shipper);
   }
@@ -122,8 +136,11 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         hasArrow: false,
       },
     ];
+    this.shipperId = data?.id ? data.id : null;
   }
-
+  public onDropActions(event: any) {
+    this.dropDownService.dropActionsHeaderShipperBroker(event, null, 'shipper');
+  }
   /**Function for dots in cards */
   public initTableOptions(): void {
     this.shipperDrop = {
@@ -161,8 +178,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
         {
           title: 'Delete',
           name: 'delete-item',
-          type: 'truck',
-          text: 'Are you sure you want to delete truck(s)?',
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
@@ -178,5 +193,6 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

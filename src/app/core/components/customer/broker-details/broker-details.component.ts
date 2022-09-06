@@ -1,12 +1,14 @@
 import { BrokerDetailsQuery } from './../state/broker-details-state/broker-details.query';
 import { BrokerResponse } from 'appcoretruckassist';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BrokerTService } from '../state/broker-state/broker.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-broker-details',
@@ -16,7 +18,7 @@ import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 })
 export class BrokerDetailsComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
-
+  public brokerId: number;
   public brokerConfig: any[] = [];
   public brokerDrop: any;
   constructor(
@@ -26,33 +28,52 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private brokerQuery: BrokerDetailsQuery,
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService,
-    private sumArr: SumArraysPipe
+    private sumArr: SumArraysPipe,
+    private cdRef: ChangeDetectorRef,
+    private dropDownService: DropDownService,
+    private tableService: TruckassistTableService
   ) {}
 
   ngOnInit(): void {
     this.initTableOptions();
+
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.brokerInitConfig(res.data);
+          this.initTableOptions();
+          this.cdRef.detectChanges();
+        }
+      });
     this.detailsPageService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        let query;
-        if (this.brokerQuery.hasEntity(id)) {
-          query = this.brokerQuery.selectEntity(id);
-        } else {
-          query = this.brokerService.getBrokerById(id);
-        }
-        query.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: BrokerResponse) => {
-            this.brokerInitConfig(res);
-            this.router.navigate([`/customer/${res.id}/broker-details`]);
-            this.notificationService.success(
-              'Broker successfully changed',
-              'Success:'
-            );
-          },
-          error: () => {
-            this.notificationService.error("Broker can't be loaded", 'Error:');
-          },
-        });
+        // let query;
+        // if (this.brokerQuery.hasEntity(id)) {
+        //   query = this.brokerQuery.selectEntity(id);
+        // } else {
+        //   query = this.brokerService.getBrokerById(id);
+        // }
+        this.brokerService
+          .getBrokerById(id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: BrokerResponse) => {
+              this.brokerInitConfig(res);
+              this.router.navigate([`/customer/${res.id}/broker-details`]);
+              this.notificationService.success(
+                'Broker successfully changed',
+                'Success:'
+              );
+            },
+            error: () => {
+              this.notificationService.error(
+                "Broker can't be loaded",
+                'Error:'
+              );
+            },
+          });
       });
     this.brokerInitConfig(this.activated_route.snapshot.data.broker);
   }
@@ -93,27 +114,33 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/common/ic_clock.svg',
+            name: 'clock',
           },
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/common/ic_search.svg',
+            name: 'search',
           },
 
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/common/ic_broker-user.svg',
+            name: 'broker-user',
           },
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/common/ic_broker-half-circle.svg',
+            name: 'half-circle',
           },
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/truckassist-table/location-icon.svg',
+            name: 'location',
           },
           {
             id: Math.random() * 1000,
             icon: 'assets/svg/common/ic_dollar.svg',
+            name: 'dolar',
           },
         ],
         data: data,
@@ -148,6 +175,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         hasArrow: false,
       },
     ];
+    this.brokerId = data?.id ? data.id : null;
   }
 
   /**Function for dots in cards */
@@ -165,28 +193,35 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        // {
-        //   title: 'Send Message',
-        //   name: 'dm',
-        //   class: 'regular-text',
-        //   contentType: 'dm',
-        // },
-        // {
-        //   title: 'Print',
-        //   name: 'print',
-        //   class: 'regular-text',
-        //   contentType: 'print',
-        // },
-        // {
-        //   title: 'Deactivate',
-        //   name: 'deactivate',
-        //   class: 'regular-text',
-        //   contentType: 'deactivate',
-        // },
+        {
+          title: 'Send Message',
+          name: 'dm',
+          svg: 'assets/svg/common/ic_dm.svg',
+          show: true,
+        },
+        {
+          title: 'Print',
+          name: 'print',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
         {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'Move to DNU',
+          name: 'move-to-dnu',
+          svg: 'assets/svg/common/ic_disable-status.svg',
+          deactivate: true,
+          show: true,
+        },
+        {
+          title: 'Move to Ban list',
+          name: 'move-to-ban',
+          svg: 'assets/svg/common/ic_disable-status.svg',
           show: true,
         },
 
@@ -203,6 +238,9 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
+  public onDropActions(event: any) {
+    this.dropDownService.dropActionsHeaderShipperBroker(event, null, 'broker');
+  }
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
@@ -210,5 +248,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

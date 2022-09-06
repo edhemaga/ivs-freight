@@ -80,14 +80,17 @@
           <div class="basic-logo-text">This logo will be used on invoices</div>
           <svg-icon class="basic-logo-edit" src="ic_pen.svg"></svg-icon>
         </div>
-        <svg-icon
-          class="basic-logo"
-          src="assets/svg/common/ic_company_logo_dummy.svg"
-        ></svg-icon>
+        <img
+        *ngIf="companyData.logo"
+        [src]="imageBase64Service.sanitizer(companyData.logo)"
+        [alt]="companyData.logo?.name?.substring(0, 1)"
+        class="company-logo-img"
+      />
+        <div *ngIf="!companyData.logo" class="no-company-logo">{{companyData?.name}}</div>
       </div>
       <!-- Middle -->
       <div class="basic-middle">
-        <div class="basic-data">
+        <div class="basic-data first-element-company">
           <svg-icon
             class="basic-data-svg"
             src="assets/svg/common/ic_address.svg"

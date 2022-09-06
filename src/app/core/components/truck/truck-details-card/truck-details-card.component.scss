@@ -1,5 +1,16 @@
 @import "../truck-details/truck-details-item/truck-details-item.component.scss";
 app-truck-details-card {
+    :root {
+        --dynamic-colour: #aaa;
+    }
+    $color-truck: var(--dynamic-colour);
+    .truck-color-code {
+        svg {
+            path {
+                fill: $color-truck !important;
+            }
+        }
+    }
     .custom-card-single {
         background-color: #ffffff;
         border-radius: 3px;

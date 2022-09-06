@@ -669,9 +669,9 @@ p {
         position: relative;
         bottom: -1px;
       }
-      .light-green {
-        margin-left: 29px;
-      }
+      // .light-green {
+      //   margin-right: 29px;
+      // }
       .date {
         margin-left: 8px !important;
         position: relative;
@@ -680,6 +680,7 @@ p {
   }
   .vin-text {
     margin-left: 6px !important;
+    margin-right: 37px;
     position: relative;
     bottom: -1px !important;
   }
@@ -934,4 +935,7 @@ p {
 }
 .icons-details {
   margin-right: 6px;
+}
+.date-details-svg {
+  margin-left: 29px;
 }

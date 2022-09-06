@@ -16,6 +16,7 @@ export class ShipperMinimalListResolver
   pageIndex: number = 1;
   pageSize: number = 25;
   count: number;
+
   constructor(
     private shipperService: ShipperTService,
     private shipperMinimalListStore: ShipperMinimalListStore

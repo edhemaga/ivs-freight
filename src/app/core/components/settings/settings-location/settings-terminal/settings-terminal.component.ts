@@ -1,139 +1,100 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { formatCurrency } from '../../../../pipes/formatCurrency.pipe';
+import { CompanyTerminalService } from './state/company-terminal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-settings-terminal',
   templateUrl: './settings-terminal.component.html',
   styleUrls: ['./settings-terminal.component.scss'],
+  providers: [formatCurrency],
 })
-export class SettingsTerminalComponent implements OnInit {
-  public terminalData = [
-    {
-      id: 1,
-      name: 'IVS DRIVER CENTER',
-      phone: '(123) 456-7890',
-      email: 'contact@windsor-brokers.com',
-      address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned: 'ic_company.svg',
-      options: [
-        {
-          id: 1,
-          name: 'Office',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 2,
-          name: 'Dispatch Department',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 3,
-          name: 'Safety Department',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 4,
-          name: 'Warehouse',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 5,
-          name: 'Parking',
-          check: true,
-          phone: '(123) 456-7890',
-          parking_slot: 12,
-          parking_slot_full: 5,
-          gate: true,
-          security_camera: true,
-        },
-        {
-          id: 6,
-          name: 'Fuel Station',
-          check: true,
-        },
-      ],
-    },
-    {
-      id: 1,
-      name: 'Alexandro Castor Office',
-      phone: '(123) 456-7890',
-      email: 'contact@windsor-brokers.com',
-      address: 'East River Rd apt 611, Chicago, IL 60656 ',
-      companyOwned: '',
-      options: [
-        {
-          id: 1,
-          name: 'Office',
-          check: false,
-          phone: '',
-          phone_ext: '',
-          email: '',
-        },
-        {
-          id: 2,
-          name: 'Dispatch Department',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 3,
-          name: 'Safety Department',
-          check: false,
-          phone: '',
-          phone_ext: '',
-          email: '',
-        },
-        {
-          id: 4,
-          name: 'Warehouse',
-          check: true,
-          phone: '(123) 456-7890',
-          phone_ext: '1234',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 5,
-          name: 'Parking',
-          check: true,
-          phone: '(123) 456-7890',
-          parking_slot: 12,
-          parking_slot_full: 5,
-          gate: true,
-          security_camera: true,
-        },
-        {
-          id: 6,
-          name: 'Fuel Station',
-          check: false,
-        },
-      ],
-    },
-  ];
-  public terminalPhone: boolean[] = [];
-  public terminalEmail: boolean[] = [];
-  public departmentPhone: boolean[] = [];
-  public departmentEmail: boolean[] = [];
+export class SettingsTerminalComponent implements OnInit, OnDestroy {
+  public terminalData: any;
+  public terminalActions: any;
+  private destroy$ = new Subject<void>();
+
   constructor(
     private settingsLocationService: SettingsLocationService,
-    private clipboar: Clipboard
+    private terminalService: CompanyTerminalService,
+    private tableService: TruckassistTableService,
+    private cdRef: ChangeDetectorRef,
+    private dropDownService: DropDownService,
+    private confirmationService: ConfirmationService,
+    private notificationService: NotificationService,
+    private formatCurrency: formatCurrency,
+    private activatedRoute: ActivatedRoute
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.getTerminalList();
+          this.cdRef.detectChanges();
+        }
+      });
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'terminal') {
+                this.deleteTerminalById(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
+    this.terminalData = this.activatedRoute.snapshot.data.terminal.pagination;
+    this.initOptions();
+  }
 
+  public getTerminalList() {
+    this.terminalService
+      .getTerminalList()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.terminalData = item.pagination));
+  }
+
+  public optionsEvent(any: any, action: string) {
+    const name = dropActionNameDriver(any, action);
+    this.dropDownService.dropActionCompanyLocation(any, name, any.id);
+  }
+  public deleteTerminalById(id: number) {
+    this.settingsLocationService
+      .deleteCompanyTerminalById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Terminal successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Terminal with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
   public onAction(modal: { modalName: string; type: string }) {
     this.settingsLocationService.onModalAction(modal);
   }
@@ -145,24 +106,43 @@ export class SettingsTerminalComponent implements OnInit {
   public identityCardData(index: number, item: any): number {
     return item.id;
   }
-
-  /* To copy any Text */
-  public copyText(val: any, index: number, name: string) {
-    switch (name) {
-      case 'terminal-phone':
-        this.terminalPhone[index] = true;
-        break;
-      case 'terminal-email':
-        this.terminalEmail[index] = true;
-        break;
-      case 'department-phone':
-        this.departmentPhone[index] = true;
-        break;
-      case 'department-email':
-        this.departmentEmail[index] = true;
-        break;
-    }
-
-    this.clipboar.copy(val);
+  /**Function for dots in cards */
+  public initOptions(): void {
+    this.terminalActions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

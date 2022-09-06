@@ -30,7 +30,7 @@ export class BrokerDetailsResolver implements Resolve<BrokerResponse[]> {
         return of('No broker data for...' + ids);
       }),
       tap((brokerRespon: BrokerResponse) => {
-        this.brokerDetailsStore.set({ ids: brokerRespon });
+        this.brokerDetailsStore.set([brokerRespon]);
       })
     );
   }

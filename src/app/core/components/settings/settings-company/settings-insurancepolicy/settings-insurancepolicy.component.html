@@ -56,7 +56,7 @@
             ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.email"> </app-ta-copy>
           </div>
-          <div *ngIf="insurance.address" class="single-item">
+          <div *ngIf="insurance.address.address" class="single-item">
             <svg-icon
               class="company-icons"
               src="assets/svg/truckassist-table/location-icon.svg"
@@ -286,9 +286,9 @@
         <div class="divider"></div>
         <div class="settings-progress-container">
           <app-truckassist-progress-expiration
-            [expireDate]="insurance.issued | formatDateP"
-            [startDate]="insurance.expires | formatDateP"
-            [expiresSettings]="'settings-parking'"
+            [expireDate]="insurance.expires | formatDateP"
+            [startDate]="insurance.issued | formatDateP"
+            [expiresSettings]="'settings-insurance-policy'"
           ></app-truckassist-progress-expiration>
         </div>
       </app-ta-re-card>

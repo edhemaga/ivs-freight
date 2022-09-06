@@ -16,6 +16,7 @@ import { Observable, tap, of } from 'rxjs';
 import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-list-state/broker-minimal.store';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,7 @@ export class BrokerTService {
     private brokerStore: BrokerStore,
     private ratingReviewService: RatingReviewService,
     private tableService: TruckassistTableService,
+    private brokerMinimalStore: BrokerMinimalListStore,
     private brokerQuery: BrokerQuery
   ) {}
 
@@ -36,7 +38,7 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(res.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.add(broker);
-
+            this.brokerMinimalStore.add(broker);
             const brokerShipperCount = JSON.parse(
               localStorage.getItem('brokerShipperTableCount')
             );
@@ -72,9 +74,9 @@ export class BrokerTService {
         const subBroker = this.getBrokerById(data.id).subscribe({
           next: (broker: BrokerResponse | any) => {
             this.brokerStore.remove(({ id }) => id === data.id);
-
+            this.brokerMinimalStore.remove(({ id }) => id === data.id);
             this.brokerStore.add(broker);
-
+            this.brokerMinimalStore.add(broker);
             this.tableService.sendActionAnimation({
               animation: 'update',
               tab: 'broker',

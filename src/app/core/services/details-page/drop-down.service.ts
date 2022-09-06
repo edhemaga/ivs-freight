@@ -4,14 +4,19 @@ import { DriverCdlModalComponent } from '../../components/driver/driver-details/
 import { DriverDrugAlcoholModalComponent } from '../../components/driver/driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../../components/driver/driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../../components/driver/driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
+import { BrokerModalComponent } from '../../components/modals/broker-modal/broker-modal.component';
 import { TtFhwaInspectionModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TtTitleModalComponent } from '../../components/modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../../components/modals/confirmation-modal/confirmation-modal.component';
 import { DriverModalComponent } from '../../components/modals/driver-modal/driver-modal.component';
+import { ShipperModalComponent } from '../../components/modals/shipper-modal/shipper-modal.component';
 import { TrailerModalComponent } from '../../components/modals/trailer-modal/trailer-modal.component';
 import { TruckModalComponent } from '../../components/modals/truck-modal/truck-modal.component';
+import { SettingsOfficeModalComponent } from '../../components/settings/settings-location/location-modals/settings-office-modal/settings-office-modal.component';
 import { SettingsParkingModalComponent } from '../../components/settings/settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
+import { SettingsRepairshopModalComponent } from '../../components/settings/settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
+import { SettingsTerminalModalComponent } from '../../components/settings/settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { SettingsLocationService } from '../../components/settings/state/location-state/settings-location.service';
 import { ModalService } from '../../components/shared/ta-modal/modal.service';
 
@@ -284,7 +289,7 @@ export class DropDownService {
         {
           ...event,
           disableButton: true,
-          id: driverId,
+          id: event.id,
         }
       );
     } else if (event.type === 'deactivate' || event.type === 'activate') {
@@ -310,6 +315,65 @@ export class DropDownService {
         }
       );
     }
+  }
+
+  public dropActionsHeaderShipperBroker(
+    event: any,
+    dataObject?: any,
+    name?: string
+  ) {
+    const mappedEvent = {
+      ...dataObject,
+      data: {
+        ...dataObject,
+      },
+    };
+    if (event.type === 'edit' && name === 'shipper') {
+      this.modalService.openModal(
+        ShipperModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          disableButton: true,
+          id: event.id,
+        }
+      );
+    }
+    if (event.type === 'edit' && name === 'broker') {
+      this.modalService.openModal(
+        BrokerModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          disableButton: true,
+          id: event.id,
+        }
+      );
+    } else if (event.type === 'delete-item') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          id: event.id,
+          template: name === 'shipper' ? 'shipper' : 'broker',
+          type: 'delete',
+          image: false,
+        }
+      );
+    }
+
+    // else if (event.type === 'deactivate' || event.type === 'activate') {
+    //   this.modalService.openModal(
+    //     ConfirmationModalComponent,
+    //     { size: 'small' },
+    //     {
+    //       ...mappedEvent,
+    //       template: 'driver',
+    //       type: dataObject.status === 1 ? 'deactivate' : 'activate',
+    //       image: true,
+    //     }
+    //   );
+    // }
   }
   public dropActionHeaderTruck(
     event: any,
@@ -378,7 +442,7 @@ export class DropDownService {
 
   public dropActionCompanyLocation(
     event: any,
-    name: string,
+    names: string,
     parkingObject?: any
   ) {
     const mappedEvent = {
@@ -389,7 +453,7 @@ export class DropDownService {
       },
     };
     if (event.type === 'edit') {
-      switch (name) {
+      switch (names) {
         case 'edit-parking': {
           this.modalService.openModal(
             SettingsParkingModalComponent,
@@ -402,19 +466,106 @@ export class DropDownService {
               id: event.id,
             }
           );
+          break;
+        }
+        case 'edit-office': {
+          this.modalService.openModal(
+            SettingsOfficeModalComponent,
+            {
+              size: 'small',
+            },
+            {
+              ...event,
+              disableButton: true,
+              id: event.id,
+            }
+          );
+          break;
+        }
+        case 'edit-repair-shop': {
+          this.modalService.openModal(
+            SettingsRepairshopModalComponent,
+            {
+              size: 'small',
+            },
+            {
+              ...event,
+              disableButton: true,
+              id: event.id,
+            }
+          );
+          break;
+        }
+        case 'edit-terminal': {
+          this.modalService.openModal(
+            SettingsTerminalModalComponent,
+            {
+              size: 'small',
+            },
+            {
+              ...event,
+              disableButton: true,
+              id: event.id,
+            }
+          );
+          break;
         }
       }
     } else if (event.type === 'delete-item') {
-      this.modalService.openModal(
-        ConfirmationModalComponent,
-        { size: 'small' },
-        {
-          ...mappedEvent,
-          template: 'parking',
-          type: 'delete',
-          svg: false,
+      switch (names) {
+        case 'delete-parking': {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              ...mappedEvent,
+              template: 'parking',
+              type: 'delete',
+              svg: false,
+            }
+          );
+          break;
         }
-      );
+        case 'delete-office': {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              id: event.id,
+              template: 'office',
+              type: 'delete',
+              svg: false,
+            }
+          );
+          break;
+        }
+        case 'delete-repair-shop': {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              id: event.id,
+              template: 'repair-shop',
+              type: 'delete',
+              svg: false,
+            }
+          );
+          break;
+        }
+        case 'delete-terminal': {
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              id: event.id,
+              template: 'terminal',
+              type: 'delete',
+              svg: false,
+            }
+          );
+          break;
+        }
+      }
     }
   }
 }

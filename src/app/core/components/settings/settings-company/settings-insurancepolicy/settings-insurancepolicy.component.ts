@@ -7,7 +7,14 @@ import {
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
@@ -17,11 +24,14 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
   @Input() public insurancePolicyData: any;
   public copyPolicyName: boolean[] = [];
   public dropOptions: any;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private settingsCompanyService: SettingsCompanyService,
     private notificationService: NotificationService,
-    private clipboar: Clipboard
+    private clipboar: Clipboard,
+    private confirmationService: ConfirmationService,
+    private modalService: ModalService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -34,6 +44,24 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
 
   ngOnInit(): void {
     this.initDropOptions();
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'insurance') {
+                this.deleteInsurancePolicy(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
   }
 
   public onAction(modal: { modalName: string; type: string; company?: any }) {
@@ -42,13 +70,20 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
 
   public deleteInsurancePolicy(insurance: any) {
     this.settingsCompanyService
-      .deleteInsurancePolicyById(insurance.id)
+      .deleteInsurancePolicyById(insurance)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.notificationService.success('SUCCESS DELETE', 'Success');
+          this.notificationService.success(
+            'Success deleted insurance',
+            'Success'
+          );
         },
         error: () => {
-          this.notificationService.error('Error  DELETE', 'Error');
+          this.notificationService.error(
+            `Insurance with id: ${insurance.id}, couldn't be deleted'`,
+            'Error'
+          );
         },
       });
   }
@@ -110,7 +145,16 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
         break;
       }
       case 'delete-item': {
-        this.deleteInsurancePolicy(insurance);
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: insurance.id,
+            template: 'insurance',
+            type: 'delete',
+            image: false,
+          }
+        );
         break;
       }
       default: {

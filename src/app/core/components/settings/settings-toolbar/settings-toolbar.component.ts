@@ -1,5 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanyQuery } from '../state/company-state/company-settings.query';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { OfficeStore } from '../settings-location/settings-office/state/company-office.store';
+import { ParkingStore } from '../settings-location/settings-parking/parking-state/company-parking.store';
+import { CompanyRepairShopStore } from '../settings-location/settings-repair-shop/state/company-repairshop.store';
+import { TerminalStore } from '../settings-location/settings-terminal/state/company-terminal.store';
+import { CompanyStore } from '../state/company-state/company-settings.store';
 
 @Component({
   selector: 'app-settings-toolbar',
@@ -7,11 +11,24 @@ import { CompanyQuery } from '../state/company-state/company-settings.query';
   styleUrls: ['./settings-toolbar.component.scss'],
 })
 export class SettingsToolbarComponent implements OnInit {
-  public countCompany: number;
+  public countLocation: number;
   public settingsToolbar: any;
 
-  constructor(private copmanyQuery: CompanyQuery) {}
+  constructor(
+    private companyStore: CompanyStore,
+    private terminalStore: TerminalStore,
+    private comRShopStore: CompanyRepairShopStore,
+    private parkingStore: ParkingStore,
+    private officeStore: OfficeStore
+  ) {}
+
   ngOnInit(): void {
+    let countLocation;
+    countLocation =
+      this.terminalStore.getValue().ids.length +
+      this.comRShopStore.getValue().ids.length +
+      this.parkingStore.getValue().ids.length +
+      this.officeStore.getValue().ids.length;
     this.settingsToolbar = [
       {
         id: 1,
@@ -24,7 +41,10 @@ export class SettingsToolbarComponent implements OnInit {
       {
         id: 2,
         name: 'Company',
-        count: 3,
+        count:
+          this.companyStore.getValue()?.entities[
+            this.companyStore.getValue()?.ids[0]
+          ]?.divisions?.length,
         svg: 'ic_company.svg',
         background: '#FFFFFF',
         route: '/settings/company',
@@ -32,7 +52,7 @@ export class SettingsToolbarComponent implements OnInit {
       {
         id: 3,
         name: 'Location',
-        count: 7,
+        count: countLocation,
         svg: 'assets/svg/common/ic_location.svg',
         background: '#FFFFFF',
         route: '/settings/location',
