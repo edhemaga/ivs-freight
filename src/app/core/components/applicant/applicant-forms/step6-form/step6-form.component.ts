@@ -8,9 +8,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { Subscription } from 'rxjs';
-
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subject, Subscription, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,

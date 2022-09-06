@@ -27,9 +27,6 @@ import { AccidentModel } from '../../state/model/accident.model';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
-
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import {
   addressValidation,
