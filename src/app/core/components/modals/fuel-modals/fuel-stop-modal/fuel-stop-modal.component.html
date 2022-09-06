@@ -11,10 +11,12 @@
         <app-ta-input-dropdown
           formControlName="name"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown Fuel Stop',
             type: 'text',
             label: 'Fuel Stop Name',
             isDropdown: true,
+            minLength: 2,
+            maxLength: 64,
             isRequired: true,
             dropdownWidthClass: 'w-col-256'
           }"
@@ -63,6 +65,7 @@
             name: 'Fax',
             type: 'text',
             label: 'Fax',
+            mask: '(000) 000-0000',
             placeholderIcon: 'fax'
           }"
         ></app-ta-input>
@@ -78,6 +81,8 @@
             label: 'Address, City, State Zip',
             isRequired: true,
             placeholderIcon: 'address',
+            minLength: 12,
+            maxLength: 256,
             textTransform: 'capitalize'
           }"
           [activeAddress]="selectedAddress"
@@ -88,10 +93,12 @@
         <app-ta-input
           formControlName="addressUnit"
           [inputConfig]="{
-            name: 'Address Unit',
+            name: 'address-unit',
             type: 'text',
             label: 'Unit #',
-            maxLength: 6
+            textTransform: 'uppercase',
+            minLength: 1,
+            maxLength: 10
           }"
         ></app-ta-input>
       </div>

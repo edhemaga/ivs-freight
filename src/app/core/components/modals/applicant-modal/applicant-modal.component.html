@@ -13,10 +13,12 @@
         <app-ta-input
           formControlName="firstName"
           [inputConfig]="{
-            name: 'First name',
+            name: 'First Name',
             type: 'text',
             label: 'First Name',
             isRequired: true,
+            minLength: 2,
+            maxLength: 26,
             textTransform: 'capitalize',
             autoFocus: editData?.type !== 'edit' ? true : false
           }"
@@ -30,6 +32,8 @@
             type: 'text',
             label: 'Last Name',
             isRequired: true,
+            minLength: 2,
+            maxLength: 26,
             textTransform: 'capitalize'
           }"
         ></app-ta-input>
@@ -57,7 +61,10 @@
             type: 'text',
             label: 'Email',
             isRequired: true,
-            placeholderIcon: 'email'
+            placeholderIcon: 'email',
+            minLength: 5,
+            maxLength: 64,
+            textTransform: 'lowercase'
           }"
         ></app-ta-input>
       </div>

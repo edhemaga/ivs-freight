@@ -20,12 +20,14 @@
         <app-ta-input
           formControlName="licensePlate"
           [inputConfig]="{
-            name: 'License plate',
+            name: 'License Plate',
             type: 'text',
             label: 'License plate',
+            minLength: 5,
+            maxLength: 7,
             isRequired: true,
-            autoFocus: editData?.type !== 'edit' ? true : false,
-            textTransform: 'capitalize'
+            autoFocus: editData?.type !== 'edit-registration' ? true : false,
+            textTransform: 'uppercase'
           }"
         ></app-ta-input>
       </div>

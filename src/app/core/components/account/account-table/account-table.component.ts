@@ -1,16 +1,17 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
+
 import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountQuery } from '../state/account-state/account.query';
 import { AccountState } from '../state/account-state/account.store';
 import { AccountTService } from '../state/account.service';
+import { getToolsAccountsColumnDefinition } from '../../../../../assets/utils/settings/toolsAccounts-columns';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
 
 @Component({
   selector: 'app-account-table',
@@ -18,7 +19,7 @@ import { AccountTService } from '../state/account.service';
   styleUrls: ['./account-table.component.scss'],
 })
 export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -29,6 +30,16 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
   accounts: AccountState[] = [];
+  backFilterQuery = {
+    labelId: undefined,
+    pageIndex: 1,
+    pageSize: 25,
+    companyId: undefined,
+    sort: undefined,
+    searchOne: undefined,
+    searchTwo: undefined,
+    searchThree: undefined,
+  };
 
   constructor(
     private modalService: ModalService,
@@ -86,19 +97,17 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
-          /* const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery,
-            this.selectedTab
-          );
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.driverBackFilter(searchEvent.query);
+              this.accountBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendAccountData();
             }
-          } */
+          }
         }
       });
 
@@ -328,7 +337,83 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
     return {
       ...data,
       isSelected: false,
+      lable: data?.companyAccountLabel
+        ? {
+            name: data?.companyAccountLabel?.name
+              ? data.companyAccountLabel.name
+              : '',
+            color: data?.companyAccountLabel?.code
+              ? data.companyAccountLabel.code
+              : '',
+          }
+        : null,
+      accountPassword: {
+        hiden: true,
+        apiCallStarted: false,
+        password: data?.password ? data.password : '',
+        hidemCharacters: this.getHidenCharacters(data),
+      },
     };
+  }
+
+  getHidenCharacters(data: any) {
+    let caracters: any = '';
+
+    for (let i = 0; i < data.password.length; i++) {
+      caracters += '<div class="password-characters-container"></div>';
+    }
+
+    return caracters;
+  }
+
+  // Account Back Filter
+  accountBackFilter(
+    filter: {
+      labelId: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
+    this.accountService
+      .getAccounts(
+        filter.labelId,
+        filter.pageIndex,
+        filter.pageSize,
+        filter.companyId,
+        filter.sort,
+        filter.searchOne,
+        filter.searchTwo,
+        filter.searchThree
+      )
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((account: any) => {
+        if (!isShowMore) {
+          this.viewData = account.pagination.data;
+
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapAccountData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[0].length = account.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          account.pagination.data.map((data: any) => {
+            newData.push(this.mapAccountData(data));
+          });
+
+          this.viewData = [...newData];
+        }
+      });
   }
 
   onToolBarAction(event: any) {
@@ -336,6 +421,9 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(AccountModalComponent, { size: 'small' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
+
       this.setAccountData(event.tabData);
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
@@ -345,10 +433,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-        /* this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
 
-        this.driverBackFilter(this.backFilterQuery); */
+        this.backFilterQuery.pageIndex = 1;
+
+        this.accountBackFilter(this.backFilterQuery);
       } else {
         this.sendAccountData();
       }
@@ -356,7 +445,11 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
-    if (event.type === 'edit-account') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.accountBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-account') {
       this.modalService.openModal(
         AccountModalComponent,
         { size: 'small' },
@@ -366,7 +459,10 @@ export class AccountTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       );
     } else if (event.type === 'delete-account') {
-      this.accountService.deleteCompanyAccountById(event.id).pipe(takeUntil(this.destroy$)).subscribe();
+      this.accountService
+        .deleteCompanyAccountById(event.id)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe();
     }
   }
 

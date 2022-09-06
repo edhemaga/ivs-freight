@@ -1,13 +1,20 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-@UntilDestroy()
+import {
+  addressValidation,
+  departmentValidation,
+  descriptionValidation,
+  phoneFaxRegex,
+  vinNumberValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+
 @Component({
   selector: 'app-violation-modal',
   templateUrl: './violation-modal.component.html',
@@ -16,6 +23,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [FormService, ModalService],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public violationForm: FormGroup;
@@ -140,13 +148,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
       truckMake: [null],
       truckPlateNumber: [null],
       truckState: [null],
-      truckVIN: [null],
+      truckVIN: [null, [...vinNumberValidation]],
       trailerUnit: [null],
       trailerType: [null],
       trailerMake: [null],
       trailerPlateNumber: [null],
       trailerState: [null],
-      trailerVIN: [null],
+      trailerVIN: [null, [...vinNumberValidation]],
       violations: this.formBuilder.array([
         this.formBuilder.group({
           code: ['392.2-SLLS3'],
@@ -155,21 +163,24 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
           sw: ['10+2'],
           oos: [true],
           sms: [false],
-          description: ['Allowing or requiring a driver to use i…'],
+          description: [
+            'Allowing or requiring a driver to use i…',
+            [...descriptionValidation],
+          ],
         }),
       ]),
       note: [null],
-      policeDepartment: [null],
+      policeDepartment: [null, [...departmentValidation]],
       policeOfficer: [null],
       badgeNumber: [null],
-      addressAuthority: [null],
+      addressAuthority: [null, [...addressValidation]],
       phoneAuthority: [null],
-      faxAuthority: [null],
+      faxAuthority: [null, phoneFaxRegex],
       facility: [null],
       highway: [null],
       milePost: [null],
-      originAddress: [null],
-      destinationAddress: [null],
+      originAddress: [null, [...addressValidation]],
+      destinationAddress: [null, [...addressValidation]],
       customer: [null],
       bol: [null],
       cargo: [null],
@@ -178,7 +189,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.violationForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -264,5 +275,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
 
   private editViolationById(id: number) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

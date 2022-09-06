@@ -9,8 +9,8 @@ import {
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
-import { hexToRgbA } from 'src/assets/utils/methods-global';
 import moment from 'moment';
+import { hexToRgbA } from '../../../../../assets/utils/methods-global';
 
 @Component({
   selector: 'app-ta-chart',
@@ -57,6 +57,8 @@ export class TaChartComponent implements OnInit {
   selectedDrivers: any = [];
   dataMaxRows: number = 6;
   hoverTimeDisplay: boolean = false;
+  hoveredItemTip: string[];
+  hoveredItemTipSave: any;
 
   constructor(private ref: ChangeDetectorRef) {}
 
@@ -95,13 +97,18 @@ export class TaChartComponent implements OnInit {
         : false,
       cutoutPercentage: 90,
       animation: {
-        duration: this.allowAnimation ? this.animationDuration : 0,
+        duration: this.chartConfig['allowAnimation']
+          ? this.animationDuration
+          : 0,
       },
       onHover: (evt, elements) => {
         if (elements?.length) {
           this.hoveringStatus = true;
           this.animationDuration = 0;
-          if (elements[0]['_index'] != this.lastHoveredIndex) {
+          if (
+            elements[0]['_index'] != this.lastHoveredIndex ||
+            this.lineChartType == 'doughnut'
+          ) {
             this.lastHoveredIndex = elements[0]['_index'];
             if (this.legendAttributes?.length) {
               this.setChartLegendData(elements);
@@ -110,17 +117,19 @@ export class TaChartComponent implements OnInit {
               this.setHoverAnnotation(elements[0]['_index']);
             }
             if (this.gridHoverBackground) {
-              this.drawGridBackground(elements[0]['_index']);
+              //this.drawGridBackground(elements[0]['_index']);
             }
             if (this.lineChartType == 'doughnut' && this.driversList?.length) {
               this.hoverDoughnut(elements, 'object');
             }
           }
         } else {
-          this.hoveringStatus = false;
+          //this.hoveringStatus = false;
           this.ref.detectChanges();
-          this.showHoverData = false;
-          this.animationDuration = 1000;
+          //this.showHoverData = false;
+          if (!this.chartConfig['animationOnlyOnLoad']) {
+            this.animationDuration = 1000;
+          }
           if (this.chartConfig['onHoverAnnotation']) {
             this.setHoverAnnotation(null);
           }
@@ -165,7 +174,15 @@ export class TaChartComponent implements OnInit {
         ],
       },
       tooltips: {
-        enabled: this.chartConfig['tooltip'],
+        enabled: false,
+        mode: 'x-axis',
+        position: 'average',
+        intersect: false,
+        custom: (tooltipModel) => {
+          if (this.gridHoverBackground && tooltipModel?.dataPoints?.[0]) {
+            this.showChartTooltip(tooltipModel.dataPoints[0].index);
+          }
+        },
       },
       plugins: {
         datalabels: {
@@ -225,6 +242,7 @@ export class TaChartComponent implements OnInit {
                   : 0,
               fontColor: '#AAAAAA',
               fontSize: 11,
+              fontFamily: 'Montserrat',
               padding: 10,
               callback: (value: any) => {
                 if (
@@ -287,6 +305,7 @@ export class TaChartComponent implements OnInit {
                   ? this.axesProperties['verticalRightAxes']['minValue']
                   : 0,
               fontColor: '#AAAAAA',
+              fontFamily: 'Montserrat',
               fontSize: 11,
               padding: -4,
               callback: function (value: any) {
@@ -350,6 +369,8 @@ export class TaChartComponent implements OnInit {
                   ? 'rgba(0, 0, 0, 0)'
                   : '#AAAAAA',
               fontSize: 11,
+              fontFamily: 'Montserrat',
+              fontStyle: 'bold',
               autoSkip: false,
               maxRotation: 0,
               minRotation: 0,
@@ -488,41 +509,14 @@ export class TaChartComponent implements OnInit {
           const xAxis = chart.scales['x-axis-0'];
           let xPoint1 = 0;
           let xPoint2 = 0;
-          if (xAxis['_gridLineItems']) {
-            xPoint1 = xAxis['_gridLineItems'][1]['x1'];
-            xPoint2 = xAxis['_gridLineItems'][0]['x2'];
 
-            const elWidth = xPoint1 - xPoint2;
-
-            if (
-              xAxis['_gridLineItems'][value] &&
-              this.chartConfig['hasHoverData']
-            ) {
-              this.updateHoverData(value);
-              let oversizedHover = false;
-
-              let clientWidth = this.hoverDataHolder
-                ? this.hoverDataHolder.nativeElement.offsetWidth + 16
-                : 0;
-
-              let xPos = this.chartConfig['offset']
-                ? xAxis['_gridLineItems'][value]['x2'] + elWidth
-                : xAxis['_gridLineItems'][value]['x2'];
-
-              if (
-                this.hoverDataHolder &&
-                this.hoverDataHolder.nativeElement &&
-                xPos + clientWidth > canvas.width
-              ) {
-                oversizedHover = true;
-              }
-              if (oversizedHover) {
-                this.hoverDataPosition = xPos - clientWidth - elWidth;
-              } else {
-                this.hoverDataPosition = xPos;
-              }
+          setTimeout(() => {
+            if (xAxis['_gridLineItems']) {
+              xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+              xPoint2 = xAxis['_gridLineItems'][0]['x2'];
             }
-          }
+          });
+
           const gridWidth = xPoint1 - xPoint2;
           ctx.save();
           ctx.fillStyle = '#F3F3F3';
@@ -691,7 +685,7 @@ export class TaChartComponent implements OnInit {
 
   hoverDoughnut(elements: any, type?) {
     let driverDetails, dataIndex, showOthers;
-
+    this.animationDuration = 0;
     if (type == 'object' && elements && elements[0]) {
       driverDetails = this.driversList[elements[0]['_index']];
       dataIndex = elements[0]['_index'];
@@ -852,6 +846,7 @@ export class TaChartComponent implements OnInit {
   }
 
   hoverBarChart(hoveredData: any) {
+    this.animationDuration = 0;
     this.chart.chart.config.data.datasets.map((item, i) => {
       if (hoveredData == null || item['id'] == hoveredData['id']) {
         let color = item.backgroundColor;
@@ -866,7 +861,8 @@ export class TaChartComponent implements OnInit {
     this.setChartOptions();
   }
 
-  updateTime(ev: any) {
+  updateTime(ev: any, period?: string) {
+    this.animationDuration = 1000;
     let range = 0,
       type,
       value = [],
@@ -876,10 +872,9 @@ export class TaChartComponent implements OnInit {
       removeIndex = 0,
       rangeIndicator = 20,
       periodFormat = 0,
-      periodIndex = 0,
-      period = '';
+      periodIndex = 0;
 
-    switch (ev['name']) {
+    switch (ev) {
       case 'All Time':
         range = 25;
         type = 'M';
@@ -891,15 +886,15 @@ export class TaChartComponent implements OnInit {
         format = 'D ddd';
         indicator = moment().clone().startOf('isoWeek');
 
-        if (period == '6 Hours') {
+        if (period == '6 Hours' || period == 'Semi-Daily') {
           range =
             moment().day() == 1
               ? moment().hour() + 1
-              : moment().day() - 1 * 24 + moment().hour() + 1;
+              : (moment().day() - 1) * 24 + moment().hour() + 1;
           type = 'hours';
           format = 'hh A';
           indicator = moment().clone().startOf('isoWeek');
-          periodFormat = 6;
+          periodFormat = period == '6 Hours' ? 6 : 12;
         }
         break;
       case 'MTD':
@@ -907,19 +902,19 @@ export class TaChartComponent implements OnInit {
         type = 'days';
         format = 'D ddd';
         indicator = moment().clone().startOf('month');
-        periodFormat = period == 'Weekly' ? 7 : 0;
+        periodFormat = period == 'Weekly' ? 7 : period == 'Semi-Weekly' ? 3 : 0;
         break;
       case 'YTD':
         range = moment().month() + 1;
         type = 'M';
         format = 'MMM';
         indicator = moment().clone().startOf('year');
-        if (period == 'Weekly') {
+        if (period == 'Weekly' || period == 'Semi-Monthly') {
           range = moment().dayOfYear();
           type = 'days';
           format = 'D MMM';
           indicator = moment().clone().startOf('year');
-          periodFormat = 7;
+          periodFormat = period == 'Weekly' ? 7 : 15;
         }
         break;
       case 'Today':
@@ -930,6 +925,14 @@ export class TaChartComponent implements OnInit {
         rangeIndicator = 10;
         periodFormat = period == '3 Hours' ? 3 : period == '6 Hours' ? 6 : 0;
         break;
+      case 'Custom Set':
+        type = 'days';
+        format = 'D MMM';
+        const fromDate = moment(period[0]);
+        const toDate = moment(period[1]);
+        const diff = toDate.diff(fromDate, type);
+        indicator = fromDate;
+        range = diff + 1;
     }
 
     for (let a = 0; a < range; a++) {
@@ -950,7 +953,12 @@ export class TaChartComponent implements OnInit {
     });
 
     value.map((item, i) => {
-      item = item.format(format).toUpperCase();
+      let timePeriodCheck = moment(item).format('LT').split(' ')[1];
+      let finalFormat = format;
+      finalFormat =
+        period == 'Semi-Daily' && timePeriodCheck == 'AM' ? 'DD MMM' : format;
+
+      item = item.format(finalFormat).toUpperCase();
       let weekDaySep = item.split(' ');
       removeIndex++;
       if (value.length > rangeIndicator && removeIndex == removeEvery) {
@@ -958,19 +966,20 @@ export class TaChartComponent implements OnInit {
         weekDaySep[0] = '';
         weekDaySep[1] = '';
       }
-      if (
-        ev['name'] == 'WTD' ||
-        ev['name'] == 'MTD' ||
-        (ev['name'] == 'YTD' && period == 'Weekly')
+      if (ev == 'Today') {
+        this.chart.chart.config.data.labels.push(
+          weekDaySep[0] + ' ' + weekDaySep[1]
+        );
+      } else if (
+        ev == 'WTD' ||
+        ev == 'MTD' ||
+        ev == 'Custom Set' ||
+        (ev == 'YTD' && (period == 'Weekly' || period == 'Semi-Monthly'))
       ) {
         this.chart.chart.config.data.labels.push([
           weekDaySep[0],
           weekDaySep[1],
         ]);
-      } else if (ev['name'] == 'Today') {
-        this.chart.chart.config.data.labels.push(
-          weekDaySep[0] + ' ' + weekDaySep[1]
-        );
       } else {
         let insertData =
           weekDaySep?.length > 1 && weekDaySep[0] == 'JAN'
@@ -980,6 +989,58 @@ export class TaChartComponent implements OnInit {
         this.chart.chart.config.data.labels.push(insertData);
       }
     });
+
     this.setChartOptions();
+  }
+
+  showChartTooltip(value) {
+    this.animationDuration = 0;
+    this.hoveringStatus = true;
+    const canvas = this.chart.chart.canvas;
+    const ctx = this.chart.chart.ctx;
+
+    let xPoint1 = 0;
+    let xPoint2 = 0;
+
+    setTimeout(() => {
+      const xAxis = this.chart.chart['scales']['x-axis-0'];
+      if (xAxis['_gridLineItems']) {
+        xPoint1 = xAxis['_gridLineItems'][1]['x1'];
+        xPoint2 = xAxis['_gridLineItems'][0]['x2'];
+        const elWidth = xPoint1 - xPoint2;
+
+        if (
+          xAxis['_gridLineItems'][value] &&
+          this.chartConfig['hasHoverData']
+        ) {
+          this.updateHoverData(value);
+          let oversizedHover = false;
+
+          let clientWidth = this.hoverDataHolder
+            ? this.hoverDataHolder.nativeElement.offsetWidth + 16
+            : 0;
+
+          let xPos = this.chartConfig['offset']
+            ? xAxis['_gridLineItems'][value]['x2'] + elWidth
+            : xAxis['_gridLineItems'][value]['x2'];
+
+          if (
+            this.hoverDataHolder &&
+            this.hoverDataHolder.nativeElement &&
+            xPos + clientWidth > canvas.width
+          ) {
+            oversizedHover = true;
+          }
+          if (oversizedHover) {
+            this.hoverDataPosition = xPos - clientWidth - elWidth;
+          } else {
+            this.hoverDataPosition = xPos;
+          }
+        }
+      }
+    });
+
+    this.showHoverData = true;
+    this.ref.detectChanges();
   }
 }

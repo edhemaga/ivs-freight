@@ -29,6 +29,8 @@
             name: 'Description',
             type: 'text',
             label: 'Description',
+            minLength: 20,
+            maxLength: 160,
             textTransform: 'capitalize'
           }"
         ></app-ta-input>
@@ -39,11 +41,12 @@
         <app-ta-input
           formControlName="url"
           [inputConfig]="{
-            name: 'Hyperlink',
+            name: 'Url',
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            maxLength: 400
+            minLength: 4,
+            maxLength: 255
           }"
         ></app-ta-input>
       </div>
@@ -67,10 +70,13 @@
           formControlName="departmentIds"
           [template]="'multiselect'"
           [inputConfig]="{
-            name: 'Input Dropdown',
+            name: 'Input Dropdown Department',
+            minLength: 2,
+            maxLength: 36,
             type: 'text',
             isDropdown: true,
             label: 'Department',
+            textTransform: 'capitalize',
             multiselectDropdown: true,
             dropdownWidthClass: 'w-col-455'
           }"

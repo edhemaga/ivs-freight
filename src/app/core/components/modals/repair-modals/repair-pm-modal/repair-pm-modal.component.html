@@ -2,7 +2,7 @@
   [modalTitle]="editData?.header?.concat(' ', 'PM')"
   [editData]="editData"
   [editName]="
-    editData?.action.includes('unit-pm')
+    editData?.action?.includes('unit-pm')
       ? 'Unit'.concat(' ', editData?.data?.textUnit)
       : null
   "
@@ -16,7 +16,7 @@
       [hasDivider]="false"
       [cardName]="'Selected'"
       [hasActionSvg]="
-        editData?.action.includes('unit-pm')
+        editData?.action?.includes('unit-pm')
           ? null
           : 'assets/svg/common/ic_plus.svg'
       "
@@ -119,6 +119,8 @@
                   name: 'Description',
                   type: 'text',
                   blackInput: true,
+                  minLength: 20,
+                  maxLength: 160,
                   textTransform: 'capitalize',
                   placeholderIcon: 'default_pm'
                 }"
@@ -152,7 +154,7 @@
             ></app-ta-input>
 
             <div
-              *ngIf="editData.type === 'new'"
+              *ngIf="editData?.type === 'new'"
               ngbTooltip
               mainTooltip="Delete"
               position="top"

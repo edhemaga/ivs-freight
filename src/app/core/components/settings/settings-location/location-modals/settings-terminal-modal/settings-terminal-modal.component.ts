@@ -1,7 +1,10 @@
-import { emailRegex } from './../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressUnitValidation,
+  addressValidation,
+  phoneExtension,
+} from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Address } from 'src/app/core/components/shared/model/address';
 import {
   AddressEntity,
   CompanyOfficeModalResponse,
@@ -9,22 +12,22 @@ import {
   TerminalResponse,
   UpdateTerminalCommand,
 } from 'appcoretruckassist';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
+import { FormService } from '../../../../../services/form/form.service';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   calculateParkingSlot,
-  convertNumberInThousandSep,
   convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { debounceTime } from 'rxjs';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { SettingsLocationService } from '../../../state/location-state/settings-location.service';
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
+import { Address } from '../../../../shared/model/address';
 
-@UntilDestroy()
 @Component({
   selector: 'app-settings-terminal-modal',
   templateUrl: './settings-terminal-modal.component.html',
@@ -33,6 +36,7 @@ import { SettingsLocationService } from '../../../state/location-state/settings-
   providers: [ModalService, FormService],
 })
 export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
   public terminalForm: FormGroup;
 
@@ -135,21 +139,21 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Terminal
       isOwner: [false],
       name: [null, Validators.required],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, [Validators.required, phoneRegex]],
-      extensionPhone: [null],
-      email: [null, emailRegex],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      extensionPhone: [null, [...phoneExtension]],
+      email: [null],
       // Office
       officeChecked: [true],
-      officePhone: [null, [Validators.required, phoneRegex]],
-      officeExtPhone: [null],
-      officeEmail: [null, emailRegex],
+      officePhone: [null, [Validators.required, phoneFaxRegex]],
+      officeExtPhone: [null, [...phoneExtension]],
+      officeEmail: [null],
       // Parking
       parkingChecked: [true],
-      parkingPhone: [null, [Validators.required, phoneRegex]],
-      parkingExtPhone: [null],
-      parkingEmail: [null, emailRegex],
+      parkingPhone: [null, [Validators.required, phoneFaxRegex]],
+      parkingExtPhone: [null, [...phoneExtension]],
+      parkingEmail: [null],
 
       terminalParkingSlot: [null],
       terminalFullParkingSlot: [null],
@@ -157,9 +161,9 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       securityCamera: [true],
       // Warehouse
       warehouseChecked: [true],
-      warehousePhone: [null, [Validators.required, phoneRegex]],
-      warehouseExtPhone: [null],
-      warehouseEmail: [null, emailRegex],
+      warehousePhone: [null, [Validators.required, phoneFaxRegex]],
+      warehouseExtPhone: [null, [...phoneExtension]],
+      warehouseEmail: [null],
       // Fuel stattion
       fuelStationChecked: [false],
       // Additional tab
@@ -169,10 +173,34 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       monthlyDay: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.terminalForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('officeEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('parkingEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.terminalForm.get('warehouseEmail'),
+      'email',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.terminalForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -229,13 +257,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedOffice() {
     this.terminalForm
       .get('officeChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('officePhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(
@@ -249,13 +277,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedParking() {
     this.terminalForm
       .get('parkingChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('parkingPhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(
@@ -269,13 +297,13 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   public isCheckedWarehouse() {
     this.terminalForm
       .get('warehouseChecked')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(
             this.terminalForm.get('warehousePhone'),
             true,
-            [phoneRegex]
+            [phoneFaxRegex]
           );
         } else {
           this.inputService.changeValidators(
@@ -330,7 +358,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private parkingSlot() {
     this.terminalForm
       .get('terminalParkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[0].value = calculateParkingSlot(
@@ -343,7 +371,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private fullParkingSlot() {
     this.terminalForm
       .get('terminalFullParkingSlot')
-      .valueChanges.pipe(debounceTime(1000), untilDestroyed(this))
+      .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.parkingSlots = [...this.parkingSlots];
         this.parkingSlots[1].value = calculateParkingSlot(
@@ -407,7 +435,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .updateCompanyTerminal(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -462,7 +490,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
 
     this.settingsLocationService
       .addCompanyTerminal(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -483,7 +511,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private deleteTerminalById(id: number) {
     this.settingsLocationService
       .deleteCompanyTerminalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -507,7 +535,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private editTerminalById(id: number) {
     this.settingsLocationService
       .getCompanyTerminalById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TerminalResponse) => {
           this.terminalForm.patchValue({
@@ -606,7 +634,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
   private getModalDropdowns() {
     this.settingsLocationService
       .getModalDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyOfficeModalResponse) => {
           this.monthlyDays = res.payPeriodMonthly;
@@ -619,5 +647,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { getUsersColumnDefinition } from '../../../../../assets/utils/settings/users-columns';
 
 @Component({
   selector: 'app-settings-user',
   templateUrl: './settings-user.component.html',
   styleUrls: ['./settings-user.component.scss'],
 })
-export class SettingsUserComponent implements OnInit {
-  private destroy$: Subject<void> = new Subject<void>();
+export class SettingsUserComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -24,6 +24,11 @@ export class SettingsUserComponent implements OnInit {
     private modalService: ModalService,
     private tableService: TruckassistTableService
   ) {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   ngOnInit(): void {
     this.initTableOptions();

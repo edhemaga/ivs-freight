@@ -28,10 +28,6 @@
     text-align: center;
   }
 
-  &.capitalize {
-    text-transform: capitalize;
-  }
-
   &.uppercase {
     text-transform: uppercase;
   }
@@ -129,6 +125,18 @@
     padding-left: 37px;
   }
 
+  &.dropdown-input-image-truck {
+    padding-left: 63px;
+  }
+
+  &.dropdown-input-image-trailer {
+    padding-left: 68px;
+  }
+
+  &.dropdown-input-image-color {
+    padding-left: 29px;
+  }
+
   &.valid-focus-in,
   &.dropdown-placeholder-active,
   &.multiSelect-dropdown-active {
@@ -181,10 +189,6 @@
 
   &.blue-input-color {
     color: #536bc2 !important;
-  }
-
-  &.dropdown-label-active {
-    padding-left: 143px !important;
   }
 
   //------------------------- Custom class -------------------------

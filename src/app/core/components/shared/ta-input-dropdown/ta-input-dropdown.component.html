@@ -95,15 +95,22 @@
   </div>
   <!-- Dropdown search -->
   <app-ta-input
+    #t2="ngbPopover"
+    popoverClass="ta-input-dropdown"
     [formControl]="getSuperControl"
     [inputConfig]="inputConfig"
-    #t2="ngbPopover"
     [ngbPopover]="taInputDropdownPopover"
     [placement]="['bottom-left']"
-    popoverClass="ta-input-dropdown"
     [container]="'body'"
-    (commandEvent)="onCommandInput($event)"
     [incorrectValue]="incorrectValue"
+    [selectedDropdownLabelColor]="
+      inputConfig.dropdownLabel
+        ? activeItem
+          ? activeItem
+          : activeItemColor
+        : null
+    "
+    (commandEvent)="commandEvent($event)"
     (incorrectEvent)="onIncorrectInput($event)"
   ></app-ta-input>
 </div>
@@ -128,7 +135,8 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id
           }"
           (click)="onActiveItem(option)"
@@ -158,7 +166,8 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
             active: option.id === activeItem?.id,
             trailerContainer: option.name === 'Container',
             semisleeper: option.name === 'Semi w/Sleeper',
@@ -173,7 +182,8 @@
             [ngClass]="{
               active: option.id === activeItem?.id,
               'hide-hover-icons':
-                inputConfig.customClass === 'truck-trailer-dropdown'
+                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                !['No Results', 'Add New'].includes(option.name)
             }"
             [src]="option.logoName"
           ></svg-icon>
@@ -182,7 +192,8 @@
             [ngClass]="{
               'truck-text': option.subFolder === 'trucks',
               'move-hover-text':
-                inputConfig.customClass === 'truck-trailer-dropdown'
+                inputConfig.customClass === 'truck-trailer-dropdown' &&
+                !['No Results', 'Add New'].includes(option.name)
             }"
             [innerHtml]="
               option.name
@@ -268,7 +279,8 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            active: option?.active
+            active: option?.active,
+            'last-active': lastActiveMultiselectItem?.id === option.id
           }"
           (click)="onMultiselectSelect(option, 'multiselect-res-endors')"
           [innerHtml]="
@@ -297,6 +309,57 @@
           "
         ></div>
       </div>
+      <!--------------------------- Labels Template --------------------------->
+      <div *ngSwitchCase="'labels'">
+        <div
+          *ngFor="let option of options; trackBy: identity"
+          class="dropdown-option labels-template"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
+            'active-label':
+              option.id === activeItem?.id && labelMode === 'Label'
+          }"
+          (click)="onActiveItem(option)"
+        >
+          <div
+            *ngIf="!['No Results', 'Add New'].includes(option.name)"
+            class="labels-template-left-side"
+          >
+            <svg-icon
+              class="labels-template-logo"
+              src="assets/svg/common/ic_dynamic_label.svg"
+              appHoverSvg
+              [fill]="option?.code ? option.code : '#b7b7b7'"
+              [fillHover]="option?.hoverCode ? option.hoverCode : null"
+            ></svg-icon>
+            <div class="labels-template-vertical-divider"></div>
+          </div>
+          <div class="labels-template-right-side">
+            <div
+              class="labels-template-text"
+              [ngClass]="{
+                'add-new': option.name === 'Add New',
+                'add-new-divider':
+                  option.name === 'Add New' && options.length > 1
+              }"
+              [innerHtml]="
+                option.name
+                  | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+              "
+            ></div>
+            <div
+              *ngIf="!['No Results', 'Add New'].includes(option.name)"
+              class="labels-template-counter"
+            >
+              {{ option.count }}
+            </div>
+          </div>
+        </div>
+      </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>
         <div
@@ -306,8 +369,10 @@
             disabled: option?.disabled,
             'no-result':
               options.length === 1 && options[0].name === 'No Results',
-            'add-new': options.length === 1 && options[0].name === 'Add New',
-            active: option.id === activeItem?.id
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
+            active: option.id === activeItem?.id,
+            'active-repair-truck-trailer': option?.status === 1
           }"
           (click)="onActiveItem(option)"
           [innerHtml]="

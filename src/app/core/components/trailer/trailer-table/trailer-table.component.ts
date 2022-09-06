@@ -1,16 +1,7 @@
 import { ConfirmationService } from './../../modals/confirmation-modal/confirmation.service';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TrailerListResponse } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Subject, takeUntil } from 'rxjs';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
@@ -20,12 +11,19 @@ import { TrailerActiveState } from '../state/trailer-active-state/trailer-active
 import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerTService } from '../state/trailer.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from '../../../utils/methods.globals';
+import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 
-@UntilDestroy()
 @Component({
   selector: 'app-trailer-table',
   templateUrl: './trailer-table.component.html',
@@ -33,7 +31,7 @@ import {
   providers: [TaThousandSeparatorPipe],
 })
 export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   public tableOptions: any = {};
   public tableData: any[] = [];
@@ -72,7 +70,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           switch (res.type) {
@@ -86,6 +84,10 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             }
             case 'deactivate': {
               this.changeTrailerStatus(res.id);
+              break;
+            }
+            case 'multiple delete': {
+              this.multipleDeleteTrailers(res.array);
               break;
             }
             default: {
@@ -108,7 +110,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -123,7 +125,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -138,7 +140,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Add Trailer
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation === 'add') {
           this.viewData.push(this.mapTrailerData(res.data));
@@ -200,54 +202,47 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         if (response.length) {
-          this.trailerService
-            .deleteTrailerList(response)
-            .pipe(untilDestroyed(this))
-            .subscribe(() => {
-              this.viewData = this.viewData.map((trailer: any) => {
-                response.map((r: any) => {
-                  if (trailer.id === r.id) {
-                    trailer.actionAnimation = 'delete';
-                  }
-                });
-
-                return trailer;
-              });
-
-              this.updateDataCount();
-
-              this.notificationService.success(
-                'Trailers successfully deleted',
-                'Success:'
-              );
-
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-
-                clearInterval(inetval);
-              }, 1000);
-
-              this.tableService.sendRowsSelected([]);
-              this.tableService.sendResetSelectedColumns(true);
-            });
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: {
+                ...item.tableData,
+                number: item.tableData?.trailerNumber,
+                avatar: `assets/svg/common/trailers/${item.tableData?.trailerType?.logoName}`,
+              },
+            };
+          });
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'trailer',
+              type: 'multiple delete',
+              svg: true,
+            }
+          );
         }
       });
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+
+          this.backFilterQuery.pageIndex = 1;
 
           const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.trailerBackFilter(searchEvent.query);
+              this.trailerBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendTrailerData();
             }
@@ -383,6 +378,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.viewData = this.viewData.map((data) => {
       return this.mapTrailerData(data);
     });
+
+    console.log('Trailer Data');
+    console.log(this.viewData);
   }
 
   mapTrailerData(data: any) {
@@ -394,6 +392,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       textTireSize: data?.tireSize?.name ? data.tireSize.name : '',
       textReeferUnit: data?.reeferUnit?.name ? data.reeferUnit.name : '',
       textInsPolicy: data?.insurancePolicy ? data.insurancePolicy : '',
+      trailerTypeIcon: data.trailerType.logoName,
+      trailerTypeClass: data.trailerType.logoName.replace('.svg', ''),
       textEmptyWeight: data?.emptyWeight
         ? this.thousandSeparator.transform(data.emptyWeight) + ' lbs.'
         : '',
@@ -443,16 +443,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  trailerBackFilter(filter: {
-    active: number;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  trailerBackFilter(
+    filter: {
+      active: number;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.trailerService
       .getTrailers(
         filter.active,
@@ -464,13 +468,28 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
-      .subscribe((trucks: TrailerListResponse) => {
-        this.viewData = trucks.pagination.data;
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((trailer: TrailerListResponse) => {
+        if (!isShowMore) {
+          this.viewData = trailer.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapTrailerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapTrailerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              trailer.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          trailer.pagination.data.map((data: any) => {
+            newData.push(this.mapTrailerData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -481,6 +500,8 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
+
+      this.backFilterQuery.pageIndex = 1;
 
       this.sendTrailerData();
     } else if (event.action === 'view-mode') {
@@ -493,6 +514,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       if (event.direction) {
         this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
         this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
 
         this.trailerBackFilter(this.backFilterQuery);
       } else {
@@ -502,6 +524,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onTableBodyActions(event: any) {
+    let trailerNum = event.data.trailerNumber;
     const mappedEvent = {
       ...event,
       data: {
@@ -511,6 +534,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     };
     switch (event.type) {
+      case 'show-more': {
+        this.backFilterQuery.pageIndex++;
+        this.trailerBackFilter(this.backFilterQuery, false, true);
+        break;
+      }
       case 'edit-trailer': {
         this.modalService.openModal(
           TrailerModalComponent,
@@ -583,7 +611,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private changeTrailerStatus(id: number) {
     this.trailerService
       .changeTrailerStatus(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -605,7 +633,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private deleteTrailerById(id: number) {
     this.trailerService
       .deleteTrailerById(id, this.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -638,9 +666,55 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  private multipleDeleteTrailers(response: any[]) {
+    this.trailerService
+      .deleteTrailerList(response)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => {
+        let trailerNumber = '';
+        let trailersText = 'Trailer ';
+
+        this.viewData = this.viewData.map((trailer: any) => {
+          response.map((id: any) => {
+            if (trailer.id === id) {
+              trailer.actionAnimation = 'delete';
+
+              if (trailerNumber == '') {
+                trailerNumber = trailer.trailerNumber;
+              } else {
+                trailerNumber = trailerNumber + ', ' + trailer.trailerNumber;
+                trailersText = 'Trailers ';
+              }
+            }
+          });
+
+          return trailer;
+        });
+
+        this.updateDataCount();
+
+        this.notificationService.success(
+          `${trailersText} "${trailerNumber}" deleted`,
+          'Success'
+        );
+
+        trailerNumber = '';
+        const inetval = setInterval(() => {
+          this.viewData = closeAnimationAction(true, this.viewData);
+
+          clearInterval(inetval);
+        }, 1000);
+
+        this.tableService.sendRowsSelected([]);
+        this.tableService.sendResetSelectedColumns(true);
+      });
+  }
+
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

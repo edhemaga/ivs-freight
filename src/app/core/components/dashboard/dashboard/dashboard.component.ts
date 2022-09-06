@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { takeUntil } from 'rxjs/operators';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,7 +6,7 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { DashboardService } from '../../../services/dashboard/dashboard.service';
 import { SharedService } from '../../../services/shared/shared.service';
 import { DashboardStats } from '../state/dashboard.model';
@@ -168,7 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     },
   ];
 
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private dashboardStoreService: DashboardStoreService,
@@ -177,7 +176,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private http: HttpClient
-  ) { }
+  ) {}
 
   ngOnInit() {
     //this.dashboardStoreService.addStats();

@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getViolationsColums } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { ViolationModalComponent } from '../violation-modal/violation-modal.component';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { getViolationsColums } from '../../../../../../assets/utils/settings/safety-columns';
 
 @Component({
   selector: 'app-violation-table',

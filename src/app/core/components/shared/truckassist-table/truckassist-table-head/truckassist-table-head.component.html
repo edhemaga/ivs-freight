@@ -44,7 +44,11 @@
 
         <!-- Title -->
         <div
-          *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+          *ngIf="
+            column.ngTemplate !== 'checkbox' &&
+            column.name !== '' &&
+            column.ngTemplate !== 'applicant-progress'
+          "
           class="th-title"
           (click)="sortHeaderClick(column)"
           [ngStyle]="{
@@ -62,8 +66,40 @@
           {{ column.name }}
         </div>
 
+        <!-- Special Title -->
+        <div
+        class="special-title"
+        *ngIf="column.ngTemplate === 'applicant-progress'"
+        (click)="sortHeaderClick(column)"
+        [ngStyle]="{
+          'min-width.px':
+            column.resizable && !locked ? column.width - 100 : column.width
+        }"
+        [ngClass]="{
+          'sort-active':
+            column.sortDirection !== '' && column.sortDirection,
+          'th-title-locked-cursor': locked
+        }"
+      >
+        <div
+          class="title"
+          *ngFor="let title of column.headTitle"
+          [ngStyle]="{
+            'width.px': title.width
+          }"
+        >
+          {{ title.title }}
+        </div>
+      </div>
+
         <!-- Icons -->
-        <div *ngIf="column?.headIconStyle" class="icons">
+        <div
+          *ngIf="
+            column?.headIconStyle && column.ngTemplate !== 'applicant-progress'
+          "
+          [ngClass]="{ 'icon-hover': column.ngTemplate !== 'hire' }"
+          class="icons"
+        >
           <svg-icon
             [svgStyle]="{
               'width.px': column.headIconStyle.width,
@@ -132,6 +168,7 @@
     <div class="not-pined-border"></div>
 
     <!-- Not Pined -->
+    <!-- notPinedMaxWidth -->
     <tr
       cdkDropListOrientation="horizontal"
       cdkDropList
@@ -151,8 +188,8 @@
           (resizeing)="onResize($event)"
           *ngFor="let column of notPinedColumns; let i = index"
           cdkDrag
-          (cdkDragStarted)="onReorderStart()"
-          (cdkDragEnded)="onReorderEnd()"
+          (cdkDragStarted)="reordering = true"
+          (cdkDragEnded)="reordering = false"
           [cdkDragDisabled]="locked || rezaizeing || column.isAction"
           cdkDragBoundary="tr"
           [cdkDragPreviewClass]="'cdk-drag-preview'"
@@ -169,7 +206,11 @@
         >
           <!-- Title -->
           <div
-            *ngIf="column.ngTemplate !== 'checkbox' && column.name !== ''"
+            *ngIf="
+              column.ngTemplate !== 'checkbox' &&
+              column.name !== '' &&
+              column.ngTemplate !== 'applicant-progress'
+            "
             class="th-title"
             (click)="sortHeaderClick(column)"
             [ngStyle]="{
@@ -179,14 +220,48 @@
                   : column.width - 20
             }"
             [ngClass]="{
-              'sort-active': column.sortDirection !== '' && column.sortDirection
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
             }"
           >
             {{ column.name }}
           </div>
 
+          <!-- Special Title -->
+          <div
+            class="special-title"
+            *ngIf="column.ngTemplate === 'applicant-progress'"
+            (click)="sortHeaderClick(column)"
+            [ngStyle]="{
+              'min-width.px':
+                column.resizable && !locked ? column.width - 100 : column.width
+            }"
+            [ngClass]="{
+              'sort-active':
+                column.sortDirection !== '' && column.sortDirection,
+              'th-title-locked-cursor': locked
+            }"
+          >
+            <div
+              class="title"
+              *ngFor="let title of column.headTitle"
+              [ngStyle]="{
+                'width.px': title.width
+              }"
+            >
+              {{ title.title }}
+            </div>
+          </div>
+
           <!-- Icons -->
-          <div *ngIf="column?.headIconStyle" class="icons">
+          <div
+            *ngIf="
+              column?.headIconStyle &&
+              column.ngTemplate !== 'applicant-progress'
+            "
+            class="icons"
+          >
             <svg-icon
               [svgStyle]="{
                 'width.px': column.headIconStyle.width,
@@ -259,7 +334,7 @@
     </tr>
 
     <!-- Border -->
-    <div class="not-pined-border"></div>
+    <div class="not-pined-border" [ngStyle]="{ width: 2 + 'px' }"></div>
 
     <!-- Actions -->
     <tr class="tr actions-columns-container">

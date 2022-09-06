@@ -1,16 +1,21 @@
 import { CompanyAccountService } from './../../../../../../appcoretruckassist/api/companyAccount.service';
 import { Injectable } from '@angular/core';
 import {
+  AccountColorResponse,
+  CompanyAccountLabelService,
   CompanyAccountModalResponse,
   CompanyAccountResponse,
   CreateCompanyAccountCommand,
+  CreateCompanyAccountLabelCommand,
   CreateResponse,
+  GetCompanyAccountLabelListResponse,
   UpdateCompanyAccountCommand,
+  UpdateCompanyAccountLabelCommand,
 } from 'appcoretruckassist';
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { AccountStore } from './account-state/account.store';
 import { AccountQuery } from './account-state/account.query';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +25,8 @@ export class AccountTService {
     private accountService: CompanyAccountService,
     private tableService: TruckassistTableService,
     private accountStore: AccountStore,
-    private accountQuery: AccountQuery
+    private accountQuery: AccountQuery,
+    private accountLabelService: CompanyAccountLabelService
   ) {}
 
   // Add Account
@@ -113,9 +119,7 @@ export class AccountTService {
   }
 
   // Delete Account List
-  public deleteAccountList(
-    accountsToDelete: any[]
-  ): Observable<any> {
+  public deleteAccountList(accountsToDelete: any[]): Observable<any> {
     let deleteOnBack = accountsToDelete.map((owner: any) => {
       return owner.id;
     });
@@ -137,7 +141,7 @@ export class AccountTService {
         localStorage.setItem(
           'accountTableCount',
           JSON.stringify({
-            account: storeAccounts.length - countDeleted
+            account: storeAccounts.length - countDeleted,
           })
         );
       })
@@ -150,7 +154,9 @@ export class AccountTService {
       tap(() => {
         this.accountStore.remove(({ id }) => id === accountId);
 
-        const accountCount = JSON.parse(localStorage.getItem('accountTableCount'));
+        const accountCount = JSON.parse(
+          localStorage.getItem('accountTableCount')
+        );
 
         accountCount.account--;
 
@@ -169,8 +175,31 @@ export class AccountTService {
     );
   }
 
-  // Get Account Modal
+  //--------------------- Get Account Modal ---------------------
   public companyAccountModal(): Observable<CompanyAccountModalResponse> {
     return this.accountService.apiCompanyaccountModalGet();
+  }
+
+  // --------------------- ACCOUNT LABEL ---------------------
+  public companyAccountLabelsList(): Observable<GetCompanyAccountLabelListResponse> {
+    return this.accountLabelService.apiCompanyaccountlabelListGet();
+  }
+
+  public companyAccountLabelsColorList(): Observable<
+    Array<AccountColorResponse>
+  > {
+    return this.accountLabelService.apiCompanyaccountlabelColorListGet();
+  }
+
+  public addCompanyAccountLabel(
+    data: CreateCompanyAccountLabelCommand
+  ): Observable<CreateResponse> {
+    return this.accountLabelService.apiCompanyaccountlabelPost(data);
+  }
+
+  public updateCompanyAccountLabel(
+    data: UpdateCompanyAccountLabelCommand
+  ): Observable<any> {
+    return this.accountLabelService.apiCompanyaccountlabelPut(data);
   }
 }

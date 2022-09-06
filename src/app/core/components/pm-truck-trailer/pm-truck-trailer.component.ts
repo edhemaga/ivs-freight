@@ -1,20 +1,21 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { Component, OnInit } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ModalService } from '../shared/ta-modal/modal.service';
-import {
-  getTrailerPMColumnDefinition,
-  getTruckPMColumnDefinition,
-} from 'src/assets/utils/settings/pm-columns';
-import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
 
-@UntilDestroy()
+import { RepairPmModalComponent } from '../modals/repair-modals/repair-pm-modal/repair-pm-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../services/truckassist-table/truckassist-table.service';
+import {
+  getTruckPMColumnDefinition,
+  getTrailerPMColumnDefinition,
+} from '../../../../assets/utils/settings/pm-columns';
+
 @Component({
   selector: 'app-pm-truck-trailer',
   templateUrl: './pm-truck-trailer.component.html',
   styleUrls: ['./pm-truck-trailer.component.scss'],
 })
 export class PmTruckTrailerComponent implements OnInit {
+  private destroy$ = new Subject<void>();
   public tableOptions: any = {};
   public tableData: any[] = [];
   public viewData: any[] = [];
@@ -33,7 +34,7 @@ export class PmTruckTrailerComponent implements OnInit {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
@@ -275,5 +276,8 @@ export class PmTruckTrailerComponent implements OnInit {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

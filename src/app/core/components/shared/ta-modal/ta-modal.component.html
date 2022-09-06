@@ -186,8 +186,10 @@
       </button>
       <!-- Delete -->
       <button
-        *ngIf="confirmationData?.type === 'delete'"
-        (click)="onAction('delete')"
+        *ngIf="['delete', 'multiple delete'].includes(confirmationData?.type)"
+        (click)="
+          onAction(confirmationData?.data ? 'delete' : 'multiple delete')
+        "
         class="modal-delete-btn modal-red-btn modal-confirmation-btn"
         type="button"
       >

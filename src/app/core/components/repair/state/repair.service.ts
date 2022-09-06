@@ -19,11 +19,11 @@ import {
 import { RepairShopResponse } from '../../../../../../appcoretruckassist/model/repairShopResponse';
 import { RepairTruckStore } from './repair-truck-state/repair-truck.store';
 import { RepairTrailerStore } from './repair-trailer-state/repair-trailer.store';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { ShopStore } from './shop-state/shop.store';
 import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',
@@ -147,8 +147,11 @@ export class RepairTService {
     return this.repairService.apiRepairIdGet(id);
   }
 
-  public getRepairModalDropdowns(): Observable<RepairModalResponse> {
-    return this.repairService.apiRepairModalGet();
+  public getRepairModalDropdowns(
+    truckId: number,
+    trailerId: number
+  ): Observable<RepairModalResponse> {
+    return this.repairService.apiRepairModalGet(truckId, trailerId);
   }
 
   public deleteRepairById(

@@ -1,34 +1,33 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   OnDestroy,
   OnInit,
   Output,
   Self,
-  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
-import { TitleCasePipe, UpperCasePipe } from '@angular/common';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { TaInputResetService } from './ta-input-reset.service';
+import { UpperCasePipe } from '@angular/common';
 
-@UntilDestroy()
+import { TaInputResetService } from './ta-input-reset.service';
+import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
+import { pasteCheck } from '../../../../../assets/utils/methods-global';
+
 @Component({
   selector: 'app-ta-input',
   templateUrl: './ta-input.component.html',
@@ -36,31 +35,31 @@ import { TaInputResetService } from './ta-input-reset.service';
   providers: [
     NgbDropdownConfig,
     CalendarScrollService,
-    TitleCasePipe,
     UpperCasePipe,
     TaThousandSeparatorPipe,
   ],
 })
 export class TaInputComponent
-  implements OnInit, OnDestroy, ControlValueAccessor
+  implements OnInit, AfterViewInit, OnDestroy, ControlValueAccessor
 {
+  private destroy$ = new Subject<void>();
   @ViewChild('input', { static: true }) public input: ElementRef;
   @ViewChild('span1', { static: false }) span1: ElementRef;
   @ViewChild('span2', { static: false }) span2: ElementRef;
   @ViewChild('span3', { static: false }) span3: ElementRef;
   @ViewChild('holder1', { static: false }) holder1: ElementRef;
   @ViewChild('t2') t2: any;
-  @ViewChild(NgbPopover)
-  private ngbMainPopover: NgbPopover;
+  @ViewChild(NgbPopover) ngbMainPopover: NgbPopover;
 
   @Input() inputConfig: ITaInput;
   @Input() incorrectValue: boolean;
+  @Input() selectedDropdownLabelColor: any;
 
   @Output('incorrectEvent') incorrectInput: EventEmitter<any> =
     new EventEmitter<any>();
 
   @Output('change') changeInput: EventEmitter<any> = new EventEmitter<any>();
-  @Output('commandEvent') inputCommandEvent: EventEmitter<any> =
+  @Output('commandEvent') commandEvent: EventEmitter<any> =
     new EventEmitter<any>();
 
   public focusInput: boolean = false;
@@ -80,6 +79,7 @@ export class TaInputComponent
 
   // Date Timer
   private dateTimeMainTimer: any;
+  private preventBlur: boolean = false;
 
   // Capslock input
   public capsLockOn: boolean = false;
@@ -90,14 +90,14 @@ export class TaInputComponent
   // Number of points
   public numberOfPoints: number = 0;
 
-  // Applicant incorrect
+  // Edit Input
+  public editInputMode: boolean = false;
 
   constructor(
     @Self() public superControl: NgControl,
     private inputService: TaInputService,
     private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
-    private titlecasePipe: TitleCasePipe,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef
@@ -107,11 +107,12 @@ export class TaInputComponent
 
   ngOnInit(): void {
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       this.calendarService.dateChanged
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((date) => {
           this.setTimeDateInput(date);
           this.t2.close();
@@ -119,9 +120,12 @@ export class TaInputComponent
     }
 
     // Dropdown add mode
-    if (this.inputConfig.isDropdown && !this.inputConfig.isDisabled) {
+    if (
+      (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) &&
+      !this.inputConfig.isDisabled
+    ) {
       this.inputService.dropdownAddMode$
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
             this.dropdownToggler = false;
@@ -132,7 +136,7 @@ export class TaInputComponent
 
       // Dropdown select item with enter
       this.inputService.dropDownItemSelectedOnEnter$
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((action) => {
           if (action) {
             this.dropdownToggler = false;
@@ -153,7 +157,7 @@ export class TaInputComponent
 
     // Reset Inputs
     this.inputResetService.resetInputSubject
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.touchedInput = false;
@@ -163,6 +167,19 @@ export class TaInputComponent
           this.resetDateTimeInputs();
         }
       });
+  }
+
+  ngAfterViewInit() {
+    const timeout = setTimeout(() => {
+      if (
+        this.inputConfig.autoFocus &&
+        ['datepicker', 'timepicker'].includes(this.inputConfig.name) &&
+        !this.getSuperControl.value
+      ) {
+        this.toggleDropdownOptions();
+      }
+      clearTimeout(timeout);
+    }, 600);
   }
 
   public setTimeDateInput(date) {
@@ -194,14 +211,18 @@ export class TaInputComponent
   public writeValue(obj: any): void {
     this.changeInput.emit(obj);
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (obj) {
         const timeout = setTimeout(() => {
           this.setTimeDateInput(obj);
           clearTimeout(timeout);
         }, 300);
+      } else {
+        this.input.nativeElement.value = obj;
+        this.resetDateTimeInputs();
       }
     } else {
       this.input.nativeElement.value = obj;
@@ -220,8 +241,6 @@ export class TaInputComponent
     this.inputConfig.isDisabled = isDisabled;
   }
 
-  preventBlur: boolean = false;
-
   public onFocus(): void {
     // Password
     if (this.inputConfig.type === 'password') {
@@ -233,10 +252,16 @@ export class TaInputComponent
       this.isVisibleCommands = true;
     }
 
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_focus_label.svg';
+    }
+
     // Datepicker
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       clearTimeout(this.dateTimeMainTimer);
       this.showDateInput = true;
@@ -260,16 +285,29 @@ export class TaInputComponent
     this.focusInput = true;
   }
 
-  public onBlur(): void {
+  public onBlur(e?: Event): void {
+    // DropDown Label
+    if (this.inputConfig.dropdownLabel && !this.editInputMode) {
+      this.inputConfig.placeholderIcon = 'ic_dynamic_label.svg';
+    }
+
+    // Edit Input
+    if (this.editInputMode) {
+      this.getSuperControl.setErrors({ invalid: true });
+      return;
+    }
+
+    // Datepicker
     if (this.preventBlur) {
       this.preventBlur = false;
       return;
     }
     // Dropdown
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (
-        this.inputConfig.name === 'datepicker' ||
-        this.inputConfig.name === 'timepicker'
+        (this.inputConfig.name === 'datepicker' ||
+          this.inputConfig.name === 'timepicker') &&
+        !this.inputConfig.isDisabled
       ) {
         // Datepicker
         if (this.inputConfig.name === 'datepicker') {
@@ -348,6 +386,7 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfSpaces = 0;
+      this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
 
       if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {
@@ -359,14 +398,16 @@ export class TaInputComponent
   }
 
   public resetDateTimeInputs() {
-    if (this.inputConfig.name === 'datepicker') {
-      this.span1.nativeElement.innerHTML = 'mm';
-      this.span2.nativeElement.innerHTML = 'dd';
-      this.span3.nativeElement.innerHTML = 'yy';
-    } else if (this.inputConfig.name === 'timepicker') {
-      this.span1.nativeElement.innerHTML = 'HH';
-      this.span2.nativeElement.innerHTML = 'MM';
-      this.span3.nativeElement.innerHTML = 'AM';
+    if (this.span1) {
+      if (this.inputConfig.name === 'datepicker') {
+        this.span1.nativeElement.innerHTML = 'mm';
+        this.span2.nativeElement.innerHTML = 'dd';
+        this.span3.nativeElement.innerHTML = 'yy';
+      } else if (this.inputConfig.name === 'timepicker') {
+        this.span1.nativeElement.innerHTML = 'HH';
+        this.span2.nativeElement.innerHTML = 'MM';
+        this.span3.nativeElement.innerHTML = 'AM';
+      }
     }
 
     this.focusInput = false;
@@ -374,6 +415,9 @@ export class TaInputComponent
   }
 
   public toggleDropdownOptions() {
+    if (this.inputConfig.isDisabled) {
+      return;
+    }
     this.dropdownToggler = !this.dropdownToggler;
 
     this.inputService.dropDownShowHide$.next(this.dropdownToggler);
@@ -384,8 +428,9 @@ export class TaInputComponent
       this.focusInput = true;
     }
     if (
-      this.inputConfig.name === 'datepicker' ||
-      this.inputConfig.name === 'timepicker'
+      (this.inputConfig.name === 'datepicker' ||
+        this.inputConfig.name === 'timepicker') &&
+      !this.inputConfig.isDisabled
     ) {
       if (this.t2) {
         this.t2.open();
@@ -393,7 +438,10 @@ export class TaInputComponent
     }
   }
 
-  public onTogglePassword(): void {
+  public onTogglePassword(event: Event): void {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.togglePassword = !this.togglePassword;
     clearTimeout(this.timeout);
     this.setInputCursorAtTheEnd(this.input.nativeElement);
@@ -411,7 +459,10 @@ export class TaInputComponent
   }
 
   public onKeyUp(event): void {
-    if (event.keyCode == 8 && !this.inputConfig.isDropdown) {
+    if (
+      event.keyCode == 8 &&
+      !(this.inputConfig.isDropdown || this.inputConfig.dropdownLabel)
+    ) {
       this.numberOfSpaces = 0;
 
       if (!this.input.nativeElement.value) {
@@ -419,7 +470,7 @@ export class TaInputComponent
       }
     }
 
-    if (this.inputConfig.isDropdown) {
+    if (this.inputConfig.isDropdown || this.inputConfig.dropdownLabel) {
       if (event.keyCode === 40 || event.keyCode === 38) {
         this.inputService.dropDownKeyNavigation$.next(event.keyCode);
       }
@@ -447,7 +498,9 @@ export class TaInputComponent
   public transformText(event: any) {
     switch (this.inputConfig.textTransform) {
       case 'capitalize': {
-        this.input.nativeElement.value = this.titleCaseInput(event);
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
         break;
       }
       case 'uppercase': {
@@ -464,6 +517,21 @@ export class TaInputComponent
         this.thousandSeparatorPipe.transform(this.getSuperControl.value)
       );
     }
+  }
+
+  public onEditInput(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.editInputMode = true;
+    this.inputConfig.commands.active = true;
+    this.focusInput = true;
+    this.setInputCursorAtTheEnd(this.input.nativeElement);
+    this.getSuperControl.setErrors({ required: true });
+    this.commandEvent.emit({
+      data: this.getSuperControl.value,
+      action: 'Edit Input',
+    });
   }
 
   public onCommands(event: Event, type: string, action: string) {
@@ -490,7 +558,7 @@ export class TaInputComponent
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 10000)
               );
-            } else {
+            } else if (value >= 1000) {
               this.getSuperControl.patchValue(
                 convertNumberInThousandSep(value - 500)
               );
@@ -532,17 +600,26 @@ export class TaInputComponent
       case 'confirm-cancel': {
         switch (action) {
           case 'confirm': {
-            this.inputCommandEvent.emit('confirm');
+            this.commandEvent.emit({
+              data: this.getSuperControl.value,
+              action: 'confirm',
+              mode: !this.inputConfig.dropdownLabelNew ? 'edit' : 'new',
+            });
             break;
           }
           case 'cancel': {
-            this.inputCommandEvent.emit('cancel');
+            this.commandEvent.emit({ action: 'cancel' });
             break;
           }
           default: {
             break;
           }
         }
+        this.getSuperControl.setErrors(null);
+        this.editInputMode = false;
+        this.inputConfig.dropdownLabelNew;
+        this.inputConfig.commands.active = false;
+        this.onBlur();
         break;
       }
       default: {
@@ -551,8 +628,15 @@ export class TaInputComponent
     }
   }
 
-  public titleCaseInput(value: string) {
-    return this.titlecasePipe.transform(value);
+  public onPlaceholderIconEvent(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    if (this.editInputMode) {
+      this.commandEvent.emit({
+        data: this.getSuperControl.value,
+        action: 'Toggle Dropdown',
+      });
+    }
   }
 
   public upperCaseInput(value: string) {
@@ -569,196 +653,132 @@ export class TaInputComponent
       return false;
     }
 
-    if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-
-        if (
-          this.getSuperControl.value * 10 + event.charCode - 48 >
-          this.inputConfig.max
-        ) {
-          return false;
-        }
-
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['username'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[:*?"<>|/]*$/.test(String.fromCharCode(event.charCode))) {
-        event.preventDefault();
-        return false;
-      } else {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      }
-    }
-
-    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
-        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
-          this.numberOfSpaces++;
-        } else {
-          this.numberOfSpaces = 0;
-        }
-        if (this.numberOfSpaces > 1) {
-          event.preventDefault();
-          return false;
-        }
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
     if (
-      [
-        'first name',
-        'last name',
-        'name',
-        'full name',
-        'relationship',
-        'title',
-      ].includes(this.inputConfig.name.toLowerCase())
-    ) {
-      let spaces = this.input.nativeElement.value.split(' ').length;
-      if (
-        /^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode)) &&
-        spaces <= 2
-      ) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (['insurance policy'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
-
-    if (
-      ['address unit', 'truck number', 'trailer number'].includes(
+      ['business name', 'shop name', 'fuel stop'].includes(
         this.inputConfig.name.toLowerCase()
       )
     ) {
-      if (/^[A-Za-z0-9 ]*$/.test(String.fromCharCode(event.charCode))) {
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./[:;=<>?çéâêîôûàèìòùëïü\s-]*$/g.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
         this.disableConsecutivelySpaces(event);
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+
+      event.preventDefault();
+      return false;
     }
 
     if (
       [
-        'routing number',
-        'account number',
-        'empty weight',
-        'purchase price',
-        'axles',
-        'mileage',
-        'ipas ezpass',
-        'phone extension',
-        'qty',
-        'price',
-        'odometer',
-        'prefix',
-        'sufix',
-        'starting',
-        'customer pay term',
-        'dollar',
-        'fatalinjuries',
-        'months',
+        'ein',
+        'mc/ff',
+        'phone',
+        'phone-extension',
+        'account-bank',
+        'routing-bank',
+        'ssn',
+        'fuel-card',
+        'empty-weight',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
+      if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        const timeout = setTimeout(() => {
-          if (this.getSuperControl.value) {
-            let perStopValue = this.getSuperControl.value.replace(/,/g, '');
-            if (
-              perStopValue > this.inputConfig.max ||
-              perStopValue < this.inputConfig.min
-            ) {
-              this.getSuperControl.setErrors({ invalid: true });
-              return false;
-            }
-            return true;
-          }
-          clearTimeout(timeout);
-        }, 0);
-      } else {
-        event.preventDefault();
-        return false;
+    if (['email'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~@.-]*$/g.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        return true;
       }
+      event.preventDefault();
+      return false;
     }
 
-    if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        this.disableMultiplePoints(event);
+    if (
+      ['address-unit', 'department', 'vehicle-unit'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z0-9/]*$/g.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
 
-        // Check for max length
-        if (this.getSuperControl.value?.toString().includes('.')) {
-          this.inputConfig.maxLength = 4;
-        } else {
-          this.inputConfig.maxLength = 2;
-        }
-
-        // Check for range
-        if (
-          this.getSuperControl.value > this.inputConfig.max ||
-          this.getSuperControl.value < this.inputConfig.min
-        ) {
-          this.getSuperControl.setErrors({ invalid: true });
+    if (['first name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z',\s.-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
         }
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['last name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z\s]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['bank name'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./:;=<>?-^[]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (
+      ['vin-number', 'insurance-policy'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[IiOQ]*$/.test(String.fromCharCode(event.charCode))) {
+          return false;
+        }
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
     }
 
     if (['year'].includes(this.inputConfig.name.toLowerCase())) {
@@ -773,97 +793,187 @@ export class TaInputComponent
       if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
         this.disableConsecutivelySpaces(event);
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+
+      event.preventDefault();
+      return false;
     }
 
-    if (['email'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9.@-_]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
+    if (['axles'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/\b([1-9]|1[0-7])\b/g.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    if (['bussines name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        /^[A-Za-z0-9 .,$@#*&%-]*$/.test(String.fromCharCode(event.charCode))
-      ) {
-        this.disableConsecutivelySpaces(event);
+    if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
+    if (['description'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z ]*$/.test(String.fromCharCode(event.charCode))) {
+        if (/^[ ]*$/.test(String.fromCharCode(event.charCode))) {
+          this.numberOfSpaces++;
+        } else {
+          this.numberOfSpaces = 0;
+        }
+        if (this.numberOfSpaces > 1) {
+          event.preventDefault();
+          return false;
+        }
         return true;
-      } else {
-        event.preventDefault();
-        return false;
       }
+      event.preventDefault();
+      return false;
     }
 
-    if (['mc ff'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 ,.&-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['url'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (
+    //     /^[A-Za-z0-9!*'();:@&=+$,/?%#._~[-]$/.test(
+    //       String.fromCharCode(event.charCode)
+    //     )
+    //   ) {
+    //     return true;
+    //   }
+    //   event.preventDefault();
+    //   return false;
+    // }
 
-    if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
 
-    if (['vin'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     if (
+    //       this.getSuperControl.value * 10 + event.charCode - 48 >
+    //       this.inputConfig.max
+    //     ) {
+    //       return false;
+    //     }
 
-    if (['model'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 -]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
-    if (
-      ['full parking slot', 'parking slot'].includes(
-        this.inputConfig.name.toLowerCase()
-      )
-    ) {
-      if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-        return true;
-      } else {
-        event.preventDefault();
-        return false;
-      }
-    }
+    // if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['username'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9.,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['file name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[:*?"<>|/]*$/.test(String.fromCharCode(event.charCode))) {
+    //     event.preventDefault();
+    //     return false;
+    //   } else {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   }
+    // }
+
+    // if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     const timeout = setTimeout(() => {
+    //       if (this.getSuperControl.value) {
+    //         let perStopValue = this.getSuperControl.value.replace(/,/g, '');
+    //         if (
+    //           perStopValue > this.inputConfig.max ||
+    //           perStopValue < this.inputConfig.min
+    //         ) {
+    //           this.getSuperControl.setErrors({ invalid: true });
+    //           return false;
+    //         }
+    //         return true;
+    //       }
+    //       clearTimeout(timeout);
+    //     }, 0);
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     this.disableMultiplePoints(event);
+
+    //     // Check for max length
+    //     if (this.getSuperControl.value?.toString().includes('.')) {
+    //       this.inputConfig.maxLength = 4;
+    //     } else {
+    //       this.inputConfig.maxLength = 2;
+    //     }
+
+    //     // Check for range
+    //     if (
+    //       this.getSuperControl.value > this.inputConfig.max ||
+    //       this.getSuperControl.value < this.inputConfig.min
+    //     ) {
+    //       this.getSuperControl.setErrors({ invalid: true });
+    //     }
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
+    //   if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
+
+    // if (
+    //   ['full parking slot', 'parking slot'].includes(
+    //     this.inputConfig.name.toLowerCase()
+    //   )
+    // ) {
+    //   if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
+    //     this.disableConsecutivelySpaces(event);
+    //     return true;
+    //   } else {
+    //     event.preventDefault();
+    //     return false;
+    //   }
+    // }
 
     this.input.nativeElement.value.trim();
   }
@@ -899,16 +1009,6 @@ export class TaInputComponent
       }
     } else {
       this.numberOfPoints = 0;
-    }
-  }
-
-  public onDatePaste(e: any) {
-    e.preventDefault();
-    const pasteText = e.clipboardData.getData('text');
-    const pastedDate = new Date(pasteText);
-    if (!isNaN(pastedDate.getTime())) {
-      this.setTimeDateInput(pastedDate);
-      this.selectSpanByTabIndex(this.selectionInput);
     }
   }
 
@@ -963,7 +1063,20 @@ export class TaInputComponent
     this.onChange(this.input.nativeElement.value);
   }
 
-  ngOnDestroy(): void {}
+  public onDatePaste(e: any) {
+    e.preventDefault();
+    const pasteText = e.clipboardData.getData('text');
+    const pastedDate = new Date(pasteText);
+    if (!isNaN(pastedDate.getTime())) {
+      this.setTimeDateInput(pastedDate);
+      this.selectSpanByTabIndex(this.selectionInput);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   // OVAJ DEO OVDE JE ZA CUSTOM DATEPICKERS
 
@@ -981,21 +1094,16 @@ export class TaInputComponent
   setSelection(e) {
     e.preventDefault();
     e.stopPropagation();
+
     const element = e.target;
     this.focusInput = true;
-    console.log('SET SELECTION');
-    console.log(this.selectionInput);
+
     const selectionInput = parseInt(element.getAttribute('tabindex'));
 
     clearTimeout(this.dateTimeMainTimer);
     if (element.classList.contains('main')) {
       this.selectionInput = selectionInput;
       this.setSpanSelection(element);
-      // if( this.selectionInput == -1 ){
-      //   this.showDateTimePlaceholder();
-      // }else{
-
-      // }
     } else {
       if (this.selectionInput == -1) {
         this.span1.nativeElement.focus();
@@ -1390,13 +1498,17 @@ export class TaInputComponent
   }
 
   onPopoverShown() {
-    this.focusInput = true;
-    this.showDateInput = true;
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = true;
+      this.showDateInput = true;
+    }
   }
 
   onPopoverHidden() {
-    this.focusInput = false;
-    this.blurOnDateTime();
+    if (!this.inputConfig.dropdownLabel) {
+      this.focusInput = false;
+      this.blurOnDateTime();
+    }
   }
 
   closePopover() {

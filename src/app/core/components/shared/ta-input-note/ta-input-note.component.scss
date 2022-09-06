@@ -55,8 +55,7 @@
     }
 
     &.active {
-      margin-bottom: 12px;
-      transition: all 0.3s ease-in-out;
+      margin-top: 2.4px;
       .note-label {
         color: #6c6c6c;
       }
@@ -85,6 +84,7 @@
     overflow: hidden;
     padding: 0 6px;
     transition: height 0.3s ease-in-out;
+    cursor: text;
 
     &.unopened {
       height: 0px;
@@ -99,6 +99,7 @@
       line-height: 15px;
       min-height: 15px;
       margin-bottom: 9px;
+      margin-top: 9px;
       max-height: 75px;
       font-size: 12px;
 

@@ -146,6 +146,9 @@
           label: 'Employer Email',
           isRequired: true,
           placeholderIcon: 'email',
+          minLength: 5,
+          maxLength: 64,
+          textTransform: 'lowercase',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
@@ -160,6 +163,7 @@
           type: 'text',
           label: 'Employer Fax',
           placeholderIcon: 'fax',
+          mask: '(000) 000-0000',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"
@@ -204,7 +208,9 @@
           isRequired: true,
           placeholderIcon: 'address',
           textTransform: 'capitalize',
-          incorrectInput: selectedMode === 'REVIEW_MODE'
+          incorrectInput: selectedMode === 'REVIEW_MODE',
+          minLength: 12,
+          maxLength: 256
         }"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 23)"
@@ -216,10 +222,12 @@
       <app-ta-input
         formControlName="employerAddressUnit"
         [inputConfig]="{
-          name: 'Address Unit',
+          name: 'address-unit',
           type: 'text',
           label: 'Unit #',
-          maxLength: 6,
+          minLength: 1,
+          maxLength: 10,
+          textTransform: 'uppercase',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"

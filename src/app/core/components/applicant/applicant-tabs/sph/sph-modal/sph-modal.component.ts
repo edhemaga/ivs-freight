@@ -6,8 +6,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { phoneRegex } from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-
 import {
   AnswerChoices,
   ApplicantQuestion,
@@ -15,6 +13,12 @@ import {
 import { ReasonForLeaving } from '../../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../../state/model/trailer-type.model';
 import { VehicleType } from '../../../state/model/vehicle-type.model';
+import {
+  phoneFaxRegex,
+  addressValidation,
+  addressUnitValidation,
+  descriptionValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-sph-modal',
@@ -282,11 +286,11 @@ export class SphModalComponent implements OnInit {
   private createForm(): void {
     this.prospectiveEmployerForm = this.formBuilder.group({
       toPreviousEmployer: [null],
-      phone: [null, [phoneRegex]],
+      phone: [null, phoneFaxRegex],
       email: [null],
-      fax: [null],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      fax: [null, phoneFaxRegex],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
     });
 
     this.accidentHistoryForm = this.formBuilder.group({
@@ -300,8 +304,8 @@ export class SphModalComponent implements OnInit {
       consideredForEmploymentAgain: [null],
       noSafetyPerformance: [false],
       accidentDate: [null],
-      accidentLocation: [null],
-      accidentDescription: [null],
+      accidentLocation: [null, [...addressValidation]],
+      accidentDescription: [null, descriptionValidation],
       hazmatSpill: [null],
     });
 
@@ -315,9 +319,9 @@ export class SphModalComponent implements OnInit {
       otherViolations: [null],
       drugAndAlcoholRegulation: [null],
       sapName: [null],
-      phone: [null, [phoneRegex]],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
+      phone: [null, [phoneFaxRegex]],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       aspRehabilitation: [null],
     });
   }

@@ -21,7 +21,7 @@ export interface CreateRepairCommand {
     truckId?: number | null;
     trailerId?: number | null;
     odometer?: number | null;
-    date?: string;
+    date?: string | null;
     invoice?: string | null;
     repairShopId?: number | null;
     total?: number | null;

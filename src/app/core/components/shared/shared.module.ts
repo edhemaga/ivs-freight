@@ -9,6 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { AgmCoreModule } from '@agm/core';
+import { AgmDirectionModule } from 'agm-direction';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HistoryDataComponent } from './history-data/history-data.component';
 import { GooglePlaceModule } from 'ngx-google-places-autocomplete';
@@ -18,7 +19,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-//import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
@@ -34,10 +34,8 @@ import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
-import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
-import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
 import { CustomDatetimePickersComponent } from './custom-datetime-pickers/custom-datetime-pickers.component';
 import { CalendarDatesMainComponent } from './custom-datetime-pickers/calendar-dates-main/calendar-dates-main.component';
@@ -103,9 +101,12 @@ import { TaCopyComponent } from './ta-copy/ta-copy.component';
 import { LottieModule } from 'ngx-lottie';
 import { TaTimePeriodComponent } from './ta-time-period/ta-time-period.component';
 import { ProfileUpdateModalComponent } from '../modals/profile-update-modal/profile-update-modal.component';
+import { MapToolbarComponent } from './map-toolbar/map-toolbar.component';
+import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover.component';
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
+import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -194,6 +195,8 @@ export function playerFactory() {
     ProgressInvoicesComponent,
     TaUploadFilesComponent,
     TaCopyComponent,
+    MapToolbarComponent,
+    AutoclosePopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -212,6 +215,7 @@ export function playerFactory() {
       apiKey: 'AIzaSyCw4WQw1T4N6TjFWdS731mM09x88SGW81I',
       libraries: ['geometry', 'places'],
     }),
+    AgmDirectionModule,
     LottieModule.forRoot({ player: playerFactory }),
     NgxSliderModule,
     GooglePlaceModule,
@@ -251,6 +255,7 @@ export function playerFactory() {
     AppTooltipeModule,
     ProfileImagesModule,
     AgmSnazzyInfoWindowModule,
+    AgmDirectionModule,
 
     // Components
     TabSwitcherComponent,
@@ -295,6 +300,7 @@ export function playerFactory() {
     MapListCardComponent,
     MapMarkerDropdownComponent,
     MapsComponent,
+    MapToolbarComponent,
 
     ProgressInvoicesComponent,
     TaSpinnerComponent,
@@ -331,8 +337,9 @@ export function playerFactory() {
     LoadModalComponent,
     TaUploadFilesComponent,
     TaTimePeriodComponent,
+    AutoclosePopoverComponent,
     TtTitleModalComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

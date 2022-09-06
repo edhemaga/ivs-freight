@@ -4,16 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TrailerTService } from '../state/trailer.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
 import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-trailer-details',
   templateUrl: './trailer-details.component.html',
@@ -21,6 +20,7 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
   providers: [DetailsPageService],
 })
 export class TrailerDetailsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public trailerDetailsConfig: any[] = [];
   public trailerId: number = null;
   public dataHeaderDropDown: any;
@@ -39,7 +39,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.initTableOptions();
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.trailerConf(res.data);
@@ -48,7 +48,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         }
       });
     this.detailsPageDriverSer.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (this.trailerDetailsQuery.hasEntity(id)) {
@@ -56,7 +56,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.trailerService.getTrailerById(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: TrailerResponse) => {
             this.trailerConf(res);
             this.router.navigate([`/trailer/${res.id}/details`]);
@@ -184,7 +184,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
       case 'delete': {
         this.trailerService
           .deleteTrailerById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
@@ -257,5 +257,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

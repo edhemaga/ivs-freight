@@ -6,17 +6,7 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import {
-  getBrokerColumnDefinition,
-  getShipperColumnDefinition,
-} from 'src/assets/utils/settings/customer-columns';
+
 import { BrokerModalComponent } from '../../modals/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '../../modals/shipper-modal/shipper-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
@@ -27,9 +17,20 @@ import { ShipperState } from '../state/shipper-state/shipper.store';
 import { ShipperQuery } from '../state/shipper-state/shipper.query';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { GetBrokerListResponse, ShipperListResponse } from 'appcoretruckassist';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+import { Subject, takeUntil } from 'rxjs';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import {
+  getBrokerColumnDefinition,
+  getShipperColumnDefinition,
+} from '../../../../../assets/utils/settings/customer-columns';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-customer-table',
   templateUrl: './customer-table.component.html',
@@ -43,6 +44,8 @@ import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.
 export class CustomerTableComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
+  private destroy$ = new Subject<void>();
+
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
@@ -75,7 +78,8 @@ export class CustomerTableComponent
     private shipperQuery: ShipperQuery,
     private shipperService: ShipperTService,
     private notificationService: NotificationService,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit(): void {
@@ -83,7 +87,7 @@ export class CustomerTableComponent
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
@@ -94,7 +98,7 @@ export class CustomerTableComponent
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -109,7 +113,7 @@ export class CustomerTableComponent
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -124,7 +128,7 @@ export class CustomerTableComponent
 
     // Add-Update Broker-Shipper
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         // <------------------ Broker ------------------->
         // Add Broker
@@ -157,19 +161,36 @@ export class CustomerTableComponent
 
     // Delete Selected Rows
     this.tableService.currentDeleteSelectedRows
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any[]) => {
         // Multiple Delete
         if (response.length) {
           // Delete Broker List
+
           if (this.selectedTab === 'active') {
             this.brokerService
               .deleteBrokerList(response)
-              .pipe(untilDestroyed(this))
+              .pipe(takeUntil(this.destroy$))
               .subscribe(() => {
+                let brokerName = '';
+                let brokerText = 'Broker ';
+                this.viewData.map((data: any) => {
+                  response.map((r: any) => {
+                    if (data.id === r.id) {
+                      console.log(data);
+                      if (!brokerName) {
+                        brokerName = data.businessName;
+                      } else {
+                        brokerName = brokerName + ', ' + data.businessName;
+                        brokerText = 'Brokers ';
+                      }
+                    }
+                  });
+                });
+
                 this.notificationService.success(
-                  'Brokers successfully deleted',
-                  'Success:'
+                  `${brokerText} "${brokerName}" deleted`,
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -177,13 +198,29 @@ export class CustomerTableComponent
           }
           // Delete Shipper List
           else {
+            let shipperName = '';
+            let shipText = 'Shipper ';
+            this.viewData.map((data: any) => {
+              response.map((r: any) => {
+                if (data.id === r.id) {
+                  console.log(data);
+                  if (!shipperName) {
+                    shipperName = data.businessName;
+                  } else {
+                    shipperName = shipperName + ', ' + data.businessName;
+                    shipText = 'Shippers ';
+                  }
+                }
+              });
+            });
+
             this.shipperService
               .deleteShipperList(response)
-              .pipe(untilDestroyed(this))
+              .pipe(takeUntil(this.destroy$))
               .subscribe(() => {
                 this.notificationService.success(
-                  'Shippers successfully deleted',
-                  'Success:'
+                  `${shipText} "${shipperName}" deleted `,
+                  'Success'
                 );
 
                 this.multipleDeleteData(response);
@@ -194,17 +231,16 @@ export class CustomerTableComponent
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
-          const searchEvent = tableSearch(
-            res,
-            this.backFilterQuery
-          );
+          this.backFilterQuery.pageIndex = 1;
+
+          const searchEvent = tableSearch(res, this.backFilterQuery);
 
           if (searchEvent) {
             if (searchEvent.action === 'api') {
-              this.brokerAndShipperBackFilter(searchEvent.query);
+              this.brokerAndShipperBackFilter(searchEvent.query, true);
             } else if (searchEvent.action === 'store') {
               this.sendCustomerData();
             }
@@ -334,19 +370,27 @@ export class CustomerTableComponent
   }
 
   setCustomerData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    console.log('Customer Data');
-    console.log(this.viewData);
+    if (td.data.length) {
+      this.viewData = td.data;
 
-    this.viewData = this.viewData.map((data: any) => {
-      if (this.selectedTab === 'active') {
-        return this.mapBrokerData(data);
-      } else {
-        return this.mapShipperData(data);
-      }
-    });
+      this.viewData = this.viewData.map((data: any) => {
+        if (this.selectedTab === 'active') {
+          return this.mapBrokerData(data);
+        } else {
+          return this.mapShipperData(data);
+        }
+      });
+
+      console.log('Customer Data');
+      console.log(this.viewData);
+
+      // For Testing
+      // for (let i = 0; i < 100; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    }
   }
 
   // Map Broker Data
@@ -354,6 +398,14 @@ export class CustomerTableComponent
     return {
       ...data,
       isSelected: false,
+      textInvAgeing: {
+        bfb: 0,
+        dnu: 0,
+        amount: 'Nije Povezano',
+      },
+      textContact: data?.brokerContacts?.length
+        ? data.brokerContacts.length
+        : 0,
       textAddress: data?.mainAddress
         ? data.mainAddress.city + ', ' + data.mainAddress.state
         : '',
@@ -363,6 +415,14 @@ export class CustomerTableComponent
       textTotal: data?.total
         ? '$' + this.thousandSeparator.transform(data.total)
         : '',
+      textUnpaid: 'Nije Povezano',
+      textOnetoTwentyDays: 'Nije Povezano',
+      raiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
@@ -371,6 +431,11 @@ export class CustomerTableComponent
     return {
       ...data,
       isSelected: false,
+      textShipWorkHour: 'Nije Povezano',
+      textReceWorkHour: 'Nije Povezano',
+      textContact: data?.shipperContacts?.length
+        ? data.shipperContacts.length
+        : 0,
       textDbaName: '',
       textAddress: data?.address
         ? data.address.city + ', ' + data.address.state
@@ -378,6 +443,12 @@ export class CustomerTableComponent
       mcNumber: '',
       loadCount: '',
       total: '',
+      raiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
@@ -392,17 +463,21 @@ export class CustomerTableComponent
   }
 
   // Broker And Shipper Back Filter Query
-  brokerAndShipperBackFilter(filter: {
-    ban: number | undefined;
-    dnu: number | undefined;
-    pageIndex: number;
-    pageSize: number;
-    companyId: number | undefined;
-    sort: string | undefined;
-    searchOne: string | undefined;
-    searchTwo: string | undefined;
-    searchThree: string | undefined;
-  }) {
+  brokerAndShipperBackFilter(
+    filter: {
+      ban: number | undefined;
+      dnu: number | undefined;
+      pageIndex: number;
+      pageSize: number;
+      companyId: number | undefined;
+      sort: string | undefined;
+      searchOne: string | undefined;
+      searchTwo: string | undefined;
+      searchThree: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     // Broker Api Call
     if (this.selectedTab === 'active') {
       this.brokerService
@@ -417,13 +492,27 @@ export class CustomerTableComponent
           filter.searchTwo,
           filter.searchThree
         )
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((brokers: GetBrokerListResponse) => {
-          this.viewData = brokers.pagination.data;
+          if (!isShowMore) {
+            this.viewData = brokers.pagination.data;
 
-          this.viewData = this.viewData.map((data: any) => {
-            return this.mapBrokerData(data);
-          });
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapBrokerData(data);
+            });
+
+            if (isSearch) {
+              this.tableData[0].length = brokers.pagination.count;
+            }
+          } else {
+            let newData = [...this.viewData];
+
+            brokers.pagination.data.map((data: any) => {
+              newData.push(this.mapBrokerData(data));
+            });
+
+            this.viewData = [...newData];
+          }
         });
     }
     // Shipper Api Call
@@ -440,13 +529,27 @@ export class CustomerTableComponent
           filter.searchTwo,
           filter.searchThree
         )
-        .pipe(untilDestroyed(this))
+        .pipe(takeUntil(this.destroy$))
         .subscribe((shippers: ShipperListResponse) => {
-          this.viewData = shippers.pagination.data;
+          if (!isShowMore) {
+            this.viewData = shippers.pagination.data;
 
-          this.viewData = this.viewData.map((data: any) => {
-            return this.mapShipperData(data);
-          });
+            this.viewData = this.viewData.map((data: any) => {
+              return this.mapShipperData(data);
+            });
+
+            if (isSearch) {
+              this.tableData[1].length = shippers.pagination.count;
+            }
+          } else {
+            let newData = [...this.viewData];
+
+            shippers.pagination.data.map((data: any) => {
+              newData.push(this.mapBrokerData(data));
+            });
+
+            this.viewData = [...newData];
+          }
         });
     }
   }
@@ -468,6 +571,8 @@ export class CustomerTableComponent
     else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
 
+      this.backFilterQuery.pageIndex = 1;
+
       this.sendCustomerData();
     } else if (event.action === 'view-mode') {
       this.tableOptions.toolbarActions.viewModeActive = event.mode;
@@ -480,6 +585,8 @@ export class CustomerTableComponent
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
 
+        this.backFilterQuery.pageIndex = 1;
+
         this.brokerAndShipperBackFilter(this.backFilterQuery);
       } else {
         this.sendCustomerData();
@@ -489,8 +596,17 @@ export class CustomerTableComponent
 
   // Table Body Actions
   onTableBodyActions(event: any) {
+    let businessName = '';
+
+    console.log('onTableBodyActions');
+    console.log(event);
+
     // Edit Call
-    if (event.type === 'edit-cutomer-or-shipper') {
+    if (event.type === 'show-more') {
+      this.backFilterQuery.pageIndex++;
+
+      this.brokerAndShipperBackFilter(this.backFilterQuery, false, true);
+    } else if (event.type === 'edit-cutomer-or-shipper') {
       // Edit Broker Call Modal
       if (this.selectedTab === 'active') {
         this.modalService.openModal(
@@ -518,50 +634,96 @@ export class CustomerTableComponent
     }
     // Delete Call
     else if (event.type === 'delete') {
+      businessName = this.getBusinessName(event, businessName);
+
       // Delete Broker Call
       if (this.selectedTab === 'active') {
         this.brokerService
           .deleteBrokerById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Broker successfully deleted',
-                'Success:'
+                `Broker "${businessName}" deleted`,
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Broker "${businessName}" `,
+                'Error'
               );
             },
           });
       }
       // Delete Shipper Call
       else {
+        businessName = this.getBusinessName(event, businessName);
+
         this.shipperService
           .deleteShipperById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: () => {
               this.notificationService.success(
-                'Shipper successfully deleted',
-                'Success:'
+                `Shipper "${businessName}" deleted`,
+                'Success'
               );
 
               this.deleteDataById(event.id);
             },
             error: () => {
               this.notificationService.error(
-                `Broker with id: ${event.id} couldn't be deleted`,
-                'Error:'
+                `Failed to delete Shipper "${businessName}" `,
+                'Error'
               );
             },
           });
       }
+    }
+    // Raiting
+    else if (event.type === 'raiting') {
+      let raitingData = {
+        entityTypeRatingId: this.selectedTab === 'active' ? 1 : 3,
+        entityTypeId: event.data.id,
+        thumb: event.subType === 'like' ? 1 : -1,
+      };
+
+      this.reviewRatingService
+        .addRating(raitingData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res: any) => {
+          this.viewData = this.viewData.map((data: any) => {
+            if (data.id === event.data.id) {
+              data.actionAnimation = 'update';
+              data.raiting = {
+                hasLiked: res.currentCompanyUserRating === 1,
+                hasDislike: res.currentCompanyUserRating === -1,
+                likeCount: res?.upCount ? res.upCount : '0',
+                dislikeCount: res?.downCount ? res.downCount : '0',
+              };
+            }
+
+            return data;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        });
+    }
+  }
+
+  // Get Business Name
+  getBusinessName(event: any, businessName: string) {
+    if (!businessName) {
+      return (businessName = event.data.businessName);
+    } else {
+      return (businessName = businessName + ', ' + event.data.businessName);
     }
   }
 
@@ -645,6 +807,8 @@ export class CustomerTableComponent
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.tableService.sendDeleteSelectedRows([]);
 

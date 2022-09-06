@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthStoreService } from '../state/auth.service';
-
-import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
+import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
 @Component({
   selector: 'app-helper-signup-user',

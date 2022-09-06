@@ -7,7 +7,6 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { v4 as uuidv4 } from 'uuid';
 import {
   AccountColorResponse,
   CompanyAccountModalResponse,
@@ -16,14 +15,14 @@ import {
   CreateResponse,
   UpdateCompanyAccountCommand,
 } from 'appcoretruckassist';
-import { AccountModalService } from './account-modal.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { AccountTService } from '../../account/state/account.service';
 
-@UntilDestroy()
+import { ModalService } from '../../shared/ta-modal/modal.service';
+import { AccountTService } from '../../account/state/account.service';
+import { Subject, takeUntil } from 'rxjs';
+import { labelValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { FormService } from '../../../services/form/form.service';
+
 @Component({
   selector: 'app-account-modal',
   templateUrl: './account-modal.component.html',
@@ -32,28 +31,22 @@ import { AccountTService } from '../../account/state/account.service';
   providers: [ModalService, FormService],
 })
 export class AccountModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public accountForm: FormGroup;
 
   public accountLabels: any[] = [];
   public selectedAccountLabel: any = null;
-  public sendAccountLabelId: any = null;
 
   public colors: any[] = [];
-  public selectedAccountColor: any = {
-    id: 1,
-    name: 'No Color',
-    code: null,
-    count: 0,
-  };
+  public selectedAccountColor: any;
 
   public isDirty: boolean;
 
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private accountModalService: AccountModalService,
     private notificationService: NotificationService,
     private modalService: ModalService,
     private accountService: AccountTService,
@@ -68,11 +61,17 @@ export class AccountModalComponent implements OnInit, OnDestroy {
     if (this.editData) {
       this.editCompanyAccount(this.editData.id);
     }
+
+    this.inputService.customInputValidator(
+      this.accountForm.get('url'),
+      'url',
+      this.destroy$
+    );
   }
 
   private createForm(): void {
     this.accountForm = this.formBuilder.group({
-      name: [null, [Validators.required, Validators.maxLength(23)]],
+      name: [null, [Validators.required, ...labelValidation]],
       username: [null, [Validators.required, Validators.maxLength(40)]],
       password: [null, [Validators.required, Validators.maxLength(20)]],
       url: [null],
@@ -80,10 +79,16 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       note: [null],
     });
 
+    this.inputService.customInputValidator(
+      this.accountForm.get('url'),
+      'url',
+      this.destroy$
+    );
+
     // this.formService.checkFormChange(this.accountForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -126,7 +131,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private companyAccountModal(): void {
     this.accountService
       .companyAccountModal()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyAccountModalResponse) => {
           this.accountLabels = res.labels;
@@ -135,9 +140,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   }
 
   private companyAccountColorLabels() {
-    this.accountModalService
+    this.accountService
       .companyAccountLabelsColorList()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Array<AccountColorResponse>) => {
           this.colors = res;
@@ -154,7 +159,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   private editCompanyAccount(id: number) {
     this.accountService
       .getCompanyAccountById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CompanyAccountResponse) => {
           this.accountForm.patchValue({
@@ -180,15 +185,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.sendAccountLabelId
-        ? this.sendAccountLabelId
-        : this.selectedAccountLabel
+      companyAccountLabelId: this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
     this.accountService
       .addCompanyAccount(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -211,15 +214,13 @@ export class AccountModalComponent implements OnInit, OnDestroy {
       ...this.accountForm.value,
       api: 1,
       apiCategory: 'EFSFUEL',
-      companyAccountLabelId: this.sendAccountLabelId
-        ? this.sendAccountLabelId
-        : this.selectedAccountLabel
+      companyAccountLabelId: this.selectedAccountLabel
         ? this.selectedAccountLabel.id
         : null,
     };
     this.accountService
       .updateCompanyAccount(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -239,7 +240,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
   public deleteCompanyAccountById(id: number): void {
     this.accountService
       .deleteCompanyAccountById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -265,51 +266,128 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
   public onSelectColorLabel(event: any): void {
     this.selectedAccountColor = event;
-  }
-
-  public onSaveLabel(data: { action: string; label: string }) {
-    if (data.action === 'cancel') {
-      this.selectedAccountLabel = {
-        name: data.label,
-        code: this.selectedAccountColor.code,
-        count: this.selectedAccountColor.count
-          ? this.selectedAccountColor.count
-          : null,
-        createdAt: null,
-        updatedAt: null,
-      };
-      return;
-    }
     this.selectedAccountLabel = {
-      id: uuidv4(),
-      name: data.label,
+      ...this.selectedAccountLabel,
+      colorId: this.selectedAccountColor.id,
+      color: this.selectedAccountColor.name,
       code: this.selectedAccountColor.code,
-      count: this.selectedAccountColor.count,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      hoverCode: this.selectedAccountColor.hoverCode,
     };
-
-    this.accountLabels = [...this.accountLabels, this.selectedAccountLabel];
-
-    this.accountModalService
-      .addCompanyLabel({
-        name: data.label,
-        colorId: this.selectedAccountColor.id,
-      })
-      .pipe(untilDestroyed(this))
-      .subscribe({
-        next: (res: CreateResponse) => {
-          this.sendAccountLabelId = res.id;
-          this.notificationService.success(
-            'Successfully add account label.',
-            'Success:'
-          );
-        },
-        error: () => {
-          this.notificationService.error("Can't add account label.", 'Error:');
-        },
-      });
   }
 
-  ngOnDestroy(): void {}
+  public onSaveLabel(data: { data: any; action: string }) {
+    switch (data.action) {
+      case 'edit': {
+        this.selectedAccountLabel = data.data;
+        this.accountService
+          .updateCompanyAccountLabel({
+            id: this.selectedAccountLabel.id,
+            name: this.selectedAccountLabel.name,
+            colorId: this.selectedAccountLabel.colorId,
+          })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.notificationService.success(
+                'Successfuly update label',
+                'Success'
+              );
+
+              this.accountService
+                .companyAccountModal()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                  next: (res: CompanyAccountModalResponse) => {
+                    this.accountLabels = res.labels;
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get account label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't update exist label",
+                'Error'
+              );
+            },
+          });
+        break;
+      }
+      case 'new': {
+        this.selectedAccountLabel = {
+          id: data.data.id,
+          name: data.data.name,
+          code: this.selectedAccountColor
+            ? this.selectedAccountColor.code
+            : this.colors[this.colors.length - 1].code,
+          hoverCode: this.selectedAccountColor
+            ? this.selectedAccountColor.hoverCode
+            : this.colors[this.colors.length - 1].hoverCode,
+          count: 0,
+          colorId: this.selectedAccountColor
+            ? this.selectedAccountColor.id
+            : this.colors[this.colors.length - 1].id,
+          color: this.selectedAccountColor
+            ? this.selectedAccountColor.name
+            : this.colors[this.colors.length - 1].name,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+        };
+
+        this.accountService
+          .addCompanyAccountLabel({
+            name: this.selectedAccountLabel.name,
+            colorId: this.selectedAccountLabel.colorId,
+          })
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: CreateResponse) => {
+              this.notificationService.success(
+                'Successfully add account label.',
+                'Success:'
+              );
+
+              this.selectedAccountLabel = {
+                ...this.selectedAccountLabel,
+                id: res.id,
+              };
+
+              this.accountService
+                .companyAccountModal()
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                  next: (res: CompanyAccountModalResponse) => {
+                    this.accountLabels = res.labels;
+                  },
+                  error: () => {
+                    this.notificationService.error(
+                      "Can't get account label list.",
+                      'Error'
+                    );
+                  },
+                });
+            },
+            error: () => {
+              this.notificationService.error(
+                "Can't add account label.",
+                'Error:'
+              );
+            },
+          });
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

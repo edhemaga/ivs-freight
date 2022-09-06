@@ -11,12 +11,11 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { AddressEntity } from 'appcoretruckassist';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { Subject, takeUntil } from 'rxjs';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
+import { SharedService } from '../../../services/shared/shared.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-ta-input-address',
   templateUrl: './ta-input-address.component.html',
@@ -25,6 +24,7 @@ import { ITaInput } from '../ta-input/ta-input.config';
 export class TaInputAddressComponent
   implements OnInit, OnDestroy, ControlValueAccessor
 {
+  private destroy$ = new Subject<void>();
   @ViewChild('input', { static: true }) input: ElementRef;
 
   @Input() inputConfig: ITaInput;
@@ -76,7 +76,7 @@ export class TaInputAddressComponent
   ngOnInit(): void {
     // Reset Inputs
     this.inputResetService.resetInputSubject
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.touchedInput = false;
@@ -304,5 +304,8 @@ export class TaInputAddressComponent
     }, 30);
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

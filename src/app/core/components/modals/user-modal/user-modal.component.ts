@@ -1,4 +1,14 @@
-import { emailRegex } from './../../shared/ta-input/ta-input.regex-validations';
+import {
+  accountBankValidation,
+  addressUnitValidation,
+  addressValidation,
+  bankValidation,
+  departmentValidation,
+  firstNameValidation,
+  lastNameValidation,
+  phoneExtension,
+  routingBankValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -9,16 +19,14 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { phoneRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
-import { distinctUntilChanged } from 'rxjs';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-user-modal',
   templateUrl: './user-modal.component.html',
@@ -28,6 +36,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class UserModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public userForm: FormGroup;
@@ -82,7 +91,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
       checked: false,
     },
   ];
-
+  public labelsBank: any[] = [];
   public departments: any[] = [];
   public offices: any[] = [];
 
@@ -122,32 +131,44 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private createForm() {
     this.userForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      address: [null],
-      addressUnit: [null, Validators.maxLength(6)],
-      personalPhone: [null, phoneRegex],
-      personalEmail: [null, emailRegex],
-      departmentId: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
+      address: [null, [...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
+      personalPhone: [null, phoneFaxRegex],
+      personalEmail: [null],
+      departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
-      employePhone: [null, phoneRegex],
-      employePhoneExt: [null],
-      employeEmail: [null, [Validators.required, emailRegex]],
+      employePhone: [null, phoneFaxRegex],
+      employePhoneExt: [null, [...phoneExtension]],
+      employeEmail: [null, [Validators.required]],
       isIncludePayroll: [false],
       salary: [null],
       startDate: [null],
       payrollType: [null],
-      bankId: [null],
-      routingNumber: [null],
-      accountNumber: [null],
+      bankId: [null, [...bankValidation]],
+      routingNumber: [null, routingBankValidation],
+      accountNumber: [null, accountBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.userForm.get('personalEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.userForm.get('employeEmail'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.userForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -205,7 +226,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
   private onBankSelected(): void {
     this.userForm
       .get('bankId')
-      .valueChanges.pipe(distinctUntilChanged(), untilDestroyed(this))
+      .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -242,12 +263,12 @@ export class UserModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSaveNewBank(bank: any) {
-    this.selectedBank = bank;
+  public onSaveNewBank(bank: { data: any; action: string }) {
+    this.selectedBank = bank.data;
 
     this.bankVerificationService
-      .createBank({ name: bank.name })
-      .pipe(untilDestroyed(this))
+      .createBank({ name: this.selectedBank.name })
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -256,8 +277,9 @@ export class UserModalComponent implements OnInit, OnDestroy {
           );
           this.selectedBank = {
             id: res.id,
-            name: bank.name,
+            name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -275,5 +297,8 @@ export class UserModalComponent implements OnInit, OnDestroy {
 
   private getUserDropdowns() {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

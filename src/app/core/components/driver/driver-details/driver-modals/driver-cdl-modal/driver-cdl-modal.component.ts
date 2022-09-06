@@ -7,19 +7,18 @@ import {
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+} from '../../../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-cdl-modal',
   templateUrl: './driver-cdl-modal.component.html',
@@ -27,6 +26,7 @@ import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
   providers: [ModalService],
 })
 export class DriverCdlModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public cdlForm: FormGroup;
@@ -84,7 +84,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.cdlForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -143,7 +143,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   private getCdlDropdowns() {
     this.cdlService
       .getCdlDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
           this.stateTypes = res.states.map((item) => {
@@ -169,7 +169,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   private getDriverById(id: number) {
     this.driverService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: DriverResponse) => {
           this.modalName = res.firstName.concat(' ', res.lastName);
@@ -183,7 +183,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public getCdlById() {
     this.cdlService
       .getCdlById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CdlResponse) => {
           this.cdlForm.patchValue({
@@ -228,7 +228,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     this.cdlService
       .updateCdl(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -263,7 +263,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     this.cdlService
       .addCdl(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -282,5 +282,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

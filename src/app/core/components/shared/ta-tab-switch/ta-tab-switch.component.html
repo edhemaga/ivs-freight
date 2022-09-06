@@ -3,63 +3,61 @@
     *ngFor="let item of tabs; let indx=index" 
     class="tab-switch-items-holder" 
     [class.active]="indx == indexSwitch" 
-    (click)="switchTab($event, indx, item, t2)"
-    #t2="ngbPopover"
-    [ngbPopover]="customPopover"
-    [placement]="['bottom-right']"
-    [popoverClass]="'custompopovermain'"
-    autoClose="outside"
-    [container]="'body'"
-    triggers="'manual'" 
-    [disablePopover]="!item.custom"
+    (click)="switchTab($event, indx, item)"
+    #popoverHolder
+    app-autoclose-popover
+    [customClass]="'custompopovermain'"
+    [isDisabled]="!item.custom"
     >
-        {{item.name}}
-    </div>
-    <div class="slide-active-holder" [ngStyle]="{'width': hoverStyle.width + 'px', 'left': hoverStyle.x + 'px'}"></div>
-</div>
-<ng-template #customPopover let-data="data">
-    <div class="custom-popover-holder">
-        <div class="custom-popover-close" (click)="closeCustomPopover()">
-            <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
+        <div mainContent style="pointer-events: none;">
+            {{item.name}}
         </div>
-        <div class="custom-popover-title">Custom Range</div>
-        <div class="custom-popover-border"></div>
-        <div class="custom-popover-date-picker-holder">
-            <div class="row">
-                <div class="col-6">
-                    <app-ta-input
-                    [formControl]="date1"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'From',
-                      isDropdown: true,
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass'
-                    }"
-                  ></app-ta-input>      
+        <div popoverContent>
+            <div class="custom-popover-holder">
+                <div class="custom-popover-close" (click)="closeCustomPopover($event)">
+                    <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
                 </div>
-                <div class="col-6">
-                    <app-ta-input
-                    [formControl]="date2"
-                    [inputConfig]="{
-                      name: 'datepicker',
-                      type: 'text',
-                      label: 'To',
-                      isDropdown: true,
-                      placeholderIcon: 'date',
-                      isRequired: true,
-                      customClass: 'datetimeclass'
-                    }"
-                  ></app-ta-input>      
+                <div class="custom-popover-title">Custom Range</div>
+                <div class="custom-popover-border"></div>
+                <div class="custom-popover-date-picker-holder">
+                    <div class="row">
+                        <div class="col-6">
+                            <app-ta-input
+                            [formControl]="date1"
+                            [inputConfig]="{
+                              name: 'datepicker',
+                              type: 'text',
+                              label: 'From',
+                              isDropdown: true,
+                              placeholderIcon: 'date',
+                              isRequired: true,
+                              customClass: 'datetimeclass'
+                            }"
+                          ></app-ta-input>      
+                        </div>
+                        <div class="col-6">
+                            <app-ta-input
+                            [formControl]="date2"
+                            [inputConfig]="{
+                              name: 'datepicker',
+                              type: 'text',
+                              label: 'To',
+                              isDropdown: true,
+                              placeholderIcon: 'date',
+                              isRequired: true,
+                              customClass: 'datetimeclass'
+                            }"
+                          ></app-ta-input>      
+                        </div>
+                    </div>
+                </div>
+                <div class="custom-popover-border"></div>
+                <div class="custom-popover-button-holder">
+                    <div class="custom-popover-button-clear" [class.active]="data1Valid || data2Valid" (click)="clearFields()">Clear All</div>
+                    <div class="custom-popover-button-clear custom-popover-button-set" [class.active]="data1Valid && data2Valid" (click)="setCustomRange($event)">Set</div>
                 </div>
             </div>
         </div>
-        <div class="custom-popover-border"></div>
-        <div class="custom-popover-button-holder">
-            <div class="custom-popover-button-clear" [class.active]="data1Valid || data2Valid" (click)="clearFields()">Clear All</div>
-            <div class="custom-popover-button-clear custom-popover-button-set" [class.active]="data1Valid && data2Valid">Set</div>
-        </div>
     </div>
-</ng-template>
+    <div class="slide-active-holder" [ngStyle]="{'width': hoverStyle.width + 'px', 'left': hoverStyle.x + 'px'}"></div>
+</div>

@@ -1,6 +1,4 @@
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { takeUntil } from 'rxjs/operators';
-import * as AppConst from 'src/app/const';
+import { Subject, takeUntil } from 'rxjs';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,10 +8,11 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { Subject } from 'rxjs';
 import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
-import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
+import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
+import * as AppConst from 'src/app/const';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-status-switch',
@@ -54,7 +53,7 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
   statusMainSignal = 0;
   hoverItem = -1;
   statusAgo: string = '';
-  private destroy$: Subject<void> = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
   constructor(
     private statusPipe: StatusPipePipe,

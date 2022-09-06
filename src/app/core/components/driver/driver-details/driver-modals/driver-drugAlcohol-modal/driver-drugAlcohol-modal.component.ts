@@ -7,20 +7,19 @@ import {
   GetTestModalResponse,
   TestResponse,
 } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
 import { DriverTService } from '../../../state/driver.service';
 import { TestTService } from '../../../state/test.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-driver-drugAlcohol-modal',
   templateUrl: './driver-drugAlcohol-modal.component.html',
@@ -28,6 +27,7 @@ import { TestTService } from '../../../state/test.service';
   providers: [ModalService],
 })
 export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public drugForm: FormGroup;
@@ -77,7 +77,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.drugForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -113,7 +113,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   private getDriverById(id: number) {
     this.driverService
       .getDriverById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: DriverResponse) => {
           this.modalName = res.firstName.concat(' ', res.lastName);
@@ -127,7 +127,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   private getDrugDropdowns() {
     this.testService
       .getTestDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetTestModalResponse) => {
           this.testTypes = res.testTypes;
@@ -146,7 +146,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   private testStateChange() {
     this.drugForm
       .get('testType')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
           this.inputService.changeValidators(this.drugForm.get('testReasonId'));
@@ -201,7 +201,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     this.testService
       .updateTest(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -229,7 +229,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
 
     this.testService
       .addTest(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -247,7 +247,7 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
   public getTestById() {
     this.testService
       .getTestById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: TestResponse) => {
           this.drugForm.patchValue({
@@ -265,5 +265,8 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

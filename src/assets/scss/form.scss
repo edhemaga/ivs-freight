@@ -130,7 +130,7 @@
   //---------------- Driver Modal ------------------------------------
   .driver-modal-first-row {
     display: grid;
-    grid-template-columns: repeat(2, 224px) 144px;
+    grid-template-columns: repeat(2, 216px) 160px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;
@@ -139,7 +139,7 @@
 
   .driver-modal-second-row {
     display: grid;
-    grid-template-columns: 170px 282px 140px;
+    grid-template-columns: 170px 262px 160px;
     align-items: center;
     -moz-column-gap: 12px;
     column-gap: 12px;

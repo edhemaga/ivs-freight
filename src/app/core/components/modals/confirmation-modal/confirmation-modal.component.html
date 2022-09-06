@@ -5,6 +5,8 @@
         ? editData?.subType?.substring(0, 1).toUpperCase() +
           editData?.subType?.substring(1)
         : 'Move'
+      : editData?.type === 'multiple delete'
+      ? 'Delete'
       : editData?.type?.substring(0, 1).toUpperCase() +
         editData?.type?.substring(1)) +
     ' ' +
@@ -12,7 +14,7 @@
   "
   [customClass]="'modal-container-XS'"
   [bottomDivider]="true"
-  [headerSvg]="editData?.type"
+  [headerSvg]="editData?.type === 'multiple delete' ? 'delete' : editData?.type"
   [confirmationData]="editData"
   (confirmationAction)="onModalAction($event)"
 >
@@ -48,11 +50,23 @@
       class="confirmation-header"
     >
       Are you sure you want to
-      {{ editData?.type === "info" ? editData?.subType : editData?.type }} this
-      {{ editData?.template }}?
+      {{
+        editData?.type === "info"
+          ? editData?.subType
+          : editData?.type === "multiple delete"
+          ? "delete" + " " + editData.array.length
+          : editData.type
+      }}
+      {{ editData?.type === "multiple delete" ? null : "this" }}
+      {{
+        editData?.type === "multiple delete"
+          ? editData?.template + "s"
+          : editData?.template
+      }}?
     </p>
 
-    <div class="confirmation-body">
+    <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
+    <div *ngIf="editData.data" class="confirmation-body">
       <!-- Svg -->
       <svg-icon
         class="confirmation-svg"
@@ -63,7 +77,7 @@
       <img
         *ngIf="editData?.image && editData?.data?.avatar"
         [src]="imageBase64Service.sanitizer(editData?.data?.avatar)"
-        [alt]="editData?.data?.fullName?.substring(0, 1)"
+        [alt]="editData?.data?.name?.substring(0, 1)"
         class="confirmation-img"
       />
       <!-- Initial name, if avatar not upload -->
@@ -74,7 +88,7 @@
         <app-profile-images
           [indx]="0"
           [size]="'confirmation'"
-          [name]="editData?.data?.fullName"
+          [name]="editData?.data?.name"
         >
         </app-profile-images>
       </div>
@@ -104,6 +118,115 @@
         <p class="confirmation-text-2">
           Address: {{ editData?.data?.address?.address }}
         </p>
+      </div>
+
+      <!-- CDL -->
+      <div
+        *ngIf="['cdl'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1 confirmation-flex">
+          <span class="confirmation-state">{{ editData?.data?.state }}</span>
+          {{ editData?.data?.cdlNumber }}
+        </p>
+        <p class="confirmation-text-2">
+          Expires: {{ editData?.data.expDate | formatDateP }}
+        </p>
+      </div>
+
+      <!-- Medical, Mvr, Test -->
+      <div
+        *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
+        class="confirmation-info"
+      >
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'test'">
+          {{ editData?.data?.testTypeName }} Test ({{
+            editData?.data?.reasonName
+          }})
+        </p>
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'medical'">
+          Issued: {{ editData?.data?.medicalIssued | formatDateP }}
+        </p>
+        <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
+          CDL: 
+        </p>
+        <p class="confirmation-text-2">
+          {{
+            editData?.template === "test" || editData?.template === "mvr"
+              ? "Issued"
+              : "Expires"
+          }}:
+          <span *ngIf="editData?.template === 'test'">{{
+            editData?.data.issuedDataTest | formatDateP
+          }}</span>
+          <span *ngIf="editData?.template === 'medical'">{{
+            editData?.data.medicalExpDate | formatDateP
+          }}</span>
+          <span  *ngIf="editData?.template === 'mvr'">{{
+            editData?.data.mvrIssueDate | formatDateP
+          }}</span>
+        </p>
+      </div>
+    </div>
+
+    <!---------------------------------------------- Confirmation Body for Array ---------------------------------------------->
+    <div *ngIf="editData.array?.length" class="confirmation-array-body">
+      <div
+        *ngFor="let item of editData.array; trackBy: identity"
+        class="confirmation-body"
+      >
+        <!-- Svg -->
+        <svg-icon
+          class="confirmation-svg"
+          *ngIf="editData?.svg && item?.data?.avatar"
+          [src]="item?.data?.avatar"
+        ></svg-icon>
+        <!-- Image -->
+        <img
+          *ngIf="editData?.image && item?.data?.avatar"
+          [src]="imageBase64Service.sanitizer(item?.data?.avatar)"
+          [alt]="item?.data?.name?.substring(0, 1)"
+          class="confirmation-img"
+        />
+        <!-- Initial name, if avatar not upload -->
+        <div
+          *ngIf="editData?.image && !item?.data?.avatar"
+          class="no-profile-image"
+        >
+          <app-profile-images
+            [indx]="0"
+            [size]="'confirmation'"
+            [name]="item?.data?.name"
+          >
+          </app-profile-images>
+        </div>
+        <!---------------------------------------------- Different templates for body --------------------------------------------->
+        <!-- Driver, Owner -->
+        <div
+          *ngIf="['driver', 'owner'].includes(editData?.template)"
+          class="confirmation-info"
+        >
+          <p class="confirmation-text-1">{{ item?.data?.name }}</p>
+          <p class="confirmation-text-2">SSN: {{ item?.data?.ssn }}</p>
+        </div>
+        <!-- Truck, Trailer -->
+        <div
+          *ngIf="['truck', 'trailer'].includes(editData?.template)"
+          class="confirmation-info"
+        >
+          <p class="confirmation-text-1">Unit {{ item?.data?.number }}</p>
+          <p class="confirmation-text-2">VIN: {{ item?.data?.vin }}</p>
+        </div>
+        <!-- Shipper, Repair Shop -->
+        <div
+          *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
+          class="confirmation-info"
+        >
+          <p class="confirmation-text-1">{{ item?.data?.name }}</p>
+          <p class="confirmation-text-2">
+            Address: {{ item?.data?.address?.address }}
+          </p>
+        </div>
       </div>
     </div>
   </div>

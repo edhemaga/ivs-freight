@@ -1,6 +1,5 @@
 import { DriverDetailsCardComponent } from './../driver-details-card/driver-details-card.component';
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DriverDetailsComponent } from './driver-details.component';
@@ -10,6 +9,7 @@ import { TruckassistProgressExpirationModule } from '../../shared/truckassist-pr
 import { DriverMvrModalComponent } from './driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import { DriverMedicalModalComponent } from './driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -21,9 +21,8 @@ import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver
     DriverDrugAlcoholModalComponent,
     DriverMedicalModalComponent,
     DriverMvrModalComponent,
-   
   ],
-  exports:[DriverDetailsCardComponent,SharedModule],
+  exports: [DriverDetailsCardComponent, SharedModule],
 
   imports: [
     CommonModule,

@@ -3,29 +3,32 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpResponseBase } from '@angular/common/http';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import moment from 'moment';
 
 import { SignupUserCommand } from 'appcoretruckassist/model/models';
-import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 import {
-  emailRegex,
-  phoneRegex,
+  addressUnitValidation,
+  addressValidation,
+  firstNameValidation,
+  lastNameValidation,
+  phoneFaxRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
-@UntilDestroy()
 @Component({
   selector: 'app-register-user',
   templateUrl: './register-user.component.html',
   styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public registerUserForm!: FormGroup;
 
   private signUpUserCode: string;
@@ -52,20 +55,26 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.registerUserForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, [Validators.required]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
+
+    this.inputService.customInputValidator(
+      this.registerUserForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private patchForm(): void {
     this.authStoreService.getSignUpUserInfo$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((signUpUserInfo: SignUpUserInfo) => {
         this.registerUserForm.patchValue({
           firstName: signUpUserInfo.firstName,
@@ -83,7 +92,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   public passwordsNotSame(): void {
     this.registerUserForm
       .get('confirmPassword')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (
           value?.toLowerCase() ===
@@ -114,7 +123,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .signUpUser(saveData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: HttpResponseBase) => {
           if (res.status === 200 || res.status === 204) {
@@ -135,5 +144,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

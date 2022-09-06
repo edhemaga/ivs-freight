@@ -31,15 +31,15 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
-            isDropdownLabel: true,
-            dropdownLabelSelected: selectedContactColor,
-            dropdownWidthClass: 'w-col-164',
-            textTransform: 'capitalize',
+            dropdownLabel: true,
+            dropdownWidthClass: 'w-col-456',
+            textTransform: 'lowercase',
+            minLength: 1,
+            maxLength: 32,
             blackInput: true,
             commands: {
-              active: true,
+              active: false,
               type: 'confirm-cancel',
               firstCommand: {
                 popup: {
@@ -62,8 +62,9 @@
           [colors]="colors"
           [options]="contactLabels"
           [selectedLabel]="selectedContactLabel"
+          [selectedLabelColor]="selectedContactColor"
           (pickExistLabel)="onPickExistLabel($event)"
-          (selectedColorLabel)="onSelectColorLabel($event)"
+          (pickColorLabel)="onSelectColorLabel($event)"
           (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
@@ -91,7 +92,10 @@
             type: 'text',
             label: 'Email',
             isRequired: true,
-            placeholderIcon: 'email'
+            placeholderIcon: 'email',
+            minLength: 5,
+            maxLength: 64,
+            textTransform: 'lowercase'
           }"
         ></app-ta-input>
       </div>
@@ -105,6 +109,8 @@
             type: 'text',
             label: 'Address, City, State Zip',
             placeholderIcon: 'address',
+            minLength: 12,
+            maxLength: 256,
             textTransform: 'capitalize'
           }"
           [activeAddress]="selectedAddress"
@@ -115,10 +121,12 @@
         <app-ta-input
           formControlName="addressUnit"
           [inputConfig]="{
-            name: 'Address Unit',
+            name: 'address-unit',
             type: 'text',
             label: 'Unit #',
-            maxLength: 6
+            textTransform: 'uppercase',
+            minLength: 1,
+            maxLength: 10
           }"
         ></app-ta-input>
       </div>
@@ -151,11 +159,14 @@
                 formControlName="sharedLabelId"
                 [template]="'groups'"
                 [inputConfig]="{
-                  name: 'Input Dropdown',
+                  name: 'Input Dropdown Department',
+                  minLength: 2,
+                  maxLength: 36,
                   type: 'text',
-                  label: 'Share Contact',
+                  label: 'Department',
                   isDropdown: true,
                   isRequired: true,
+                  textTransform: 'capitalize',
                   dropdownWidthClass: 'w-col-455'
                 }"
                 [options]="sharedDepartments"

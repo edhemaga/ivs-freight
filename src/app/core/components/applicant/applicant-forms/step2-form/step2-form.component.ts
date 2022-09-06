@@ -10,9 +10,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
   anyInputInLineIncorrect,
@@ -20,8 +18,8 @@ import {
 } from '../../state/utils/utils';
 
 import {
-  emailRegex,
-  phoneRegex,
+  addressValidation,
+  phoneFaxRegex,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -39,13 +37,14 @@ import {
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
 
-@UntilDestroy()
 @Component({
   selector: 'app-step2-form',
   templateUrl: './step2-form.component.html',
   styleUrls: ['./step2-form.component.scss'],
 })
 export class Step2FormComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChildren('cmp') set content(content: QueryList<any>) {
     if (content) {
       const radioButtonsArray = content.toArray();
@@ -338,8 +337,11 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     if (this.formValuesToPatch) {
       this.patchForm();
 
-      this.subscription = this.workExperienceForm.valueChanges.subscribe(
-        (updatedFormValues) => {
+      this.isDriverPosition();
+
+      this.subscription = this.workExperienceForm.valueChanges
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((updatedFormValues) => {
           const {
             employerAddress,
             applicantId,
@@ -367,8 +369,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
           } else {
             this.isWorkExperienceEdited = true;
           }
-        }
-      );
+        });
     }
   }
   public trackByIdentity = (index: number, item: any): number => index;
@@ -379,10 +380,10 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       jobDescription: [null, Validators.required],
       fromDate: [null, Validators.required],
       toDate: [null, Validators.required],
-      employerPhone: [null, [Validators.required, phoneRegex]],
-      employerEmail: [null, [Validators.required, emailRegex]],
-      employerFax: [null, phoneRegex],
-      employerAddress: [null, Validators.required],
+      employerPhone: [null, [Validators.required, phoneFaxRegex]],
+      employerEmail: [null, [Validators.required]],
+      employerFax: [null, phoneFaxRegex],
+      employerAddress: [null, [Validators.required, ...addressValidation]],
       employerAddressUnit: [null, Validators.maxLength(6)],
       isDrivingPosition: [false],
       classOfEquipmentCards: this.formBuilder.group({
@@ -416,6 +417,12 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       trailerType: [null],
       trailerLength: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.workExperienceForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public patchForm(): void {
@@ -481,7 +488,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   private isDriverPosition(): void {
     this.workExperienceForm
       .get('isDrivingPosition')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (!value) {
           this.inputService.changeValidators(
@@ -923,5 +930,8 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

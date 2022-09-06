@@ -1,8 +1,6 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
 import {
@@ -12,13 +10,14 @@ import {
 } from 'appcoretruckassist';
 
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
+} from '../../../../utils/methods.calculations';
 
-@UntilDestroy()
 @Component({
   selector: 'app-tt-fhwa-inspection-modal',
   templateUrl: './tt-fhwa-inspection-modal.component.html',
@@ -26,6 +25,7 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [ModalService, FormService],
 })
 export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public fhwaInspectionForm: FormGroup;
@@ -45,7 +45,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.createForm();
-    console.log(this.editData);
+
     if (this.editData.type === 'edit-inspection') {
       this.editInspectionById();
     }
@@ -60,7 +60,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.fhwaInspectionForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -95,10 +95,9 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
   private editInspectionById() {
     this.commonTruckTrailerService
       .getInspectionById(this.editData.file_id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: InspectionResponse) => {
-          console.log(res);
           this.fhwaInspectionForm.patchValue({
             issueDate: convertDateFromBackend(res.issueDate),
             note: res.note,
@@ -118,7 +117,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
 
     this.commonTruckTrailerService
       .updateInspection(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -149,7 +148,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     };
     this.commonTruckTrailerService
       .addInspection(newData, this.editData.tabSelected)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
@@ -174,5 +173,8 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
     this.documents = event.files;
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -1,4 +1,3 @@
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import {
   Component,
   OnInit,
@@ -7,32 +6,34 @@ import {
   ViewChild,
   AfterViewInit,
 } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  getRepairsShopColumnDefinition,
-  getRepairTrailerColumnDefinition,
-  getRepairTruckColumnDefinition,
-} from 'src/assets/utils/settings/repair-columns';
 import { RepairShopModalComponent } from '../../modals/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { Router } from '@angular/router';
 import { RepairOrderModalComponent } from '../../modals/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ShopQuery } from '../state/shop-state/shop.query';
 import { ShopState } from '../state/shop-state/shop.store';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
+
 import { RepairTruckState } from '../state/repair-truck-state/repair-truck.store';
 import { RepairTrailerState } from '../state/repair-trailer-state/repair-trailer.store';
 import { RepairTruckQuery } from '../state/repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from '../state/repair-trailer-state/repair-trailer.query';
 import { DatePipe } from '@angular/common';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 import { RepairTService } from '../state/repair.service';
 import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import {
+  getRepairTruckColumnDefinition,
+  getRepairTrailerColumnDefinition,
+  getRepairsShopColumnDefinition,
+} from '../../../../../assets/utils/settings/repair-columns';
 
-@UntilDestroy()
 @Component({
   selector: 'app-repair-table',
   templateUrl: './repair-table.component.html',
@@ -44,6 +45,7 @@ import { RepairListResponse, RepairShopListResponse } from 'appcoretruckassist';
   providers: [TaThousandSeparatorPipe],
 })
 export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
+  private destroy$ = new Subject<void>();
   @ViewChild('mapsComponent', { static: false }) public mapsComponent: any;
 
   public tableOptions: any = {};
@@ -95,7 +97,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     private repairTrailerQuery: RepairTrailerQuery,
     private repairService: RepairTService,
     public datePipe: DatePipe,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private thousandSeparator: TaThousandSeparatorPipe,
+    private reviewRatingService: ReviewsRatingService
   ) {}
 
   ngOnInit(): void {
@@ -103,7 +106,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Reset Columns
     this.tableService.currentResetColumns
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
         if (response) {
           this.resetColumns = response;
@@ -114,7 +117,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Switch Selected
     this.tableService.currentSwitchOptionSelected
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
           if (res.switchType === 'PM') {
@@ -125,7 +128,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Resize
     this.tableService.currentColumnWidth
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.event?.width) {
           this.columns = this.columns.map((c) => {
@@ -140,7 +143,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Toaggle Columns
     this.tableService.currentToaggleColumn
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((response: any) => {
         if (response?.column) {
           this.columns = this.columns.map((c) => {
@@ -155,9 +158,12 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Search
     this.tableService.currentSearchTableData
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res) {
+          this.backFilterQuery.pageIndex = 1;
+          this.shopFilterQuery.pageIndex = 1;
+
           const searchEvent = tableSearch(
             res,
             this.selectedTab !== 'repair-shop'
@@ -171,9 +177,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.backFilterQuery.unitType =
                   this.selectedTab === 'active' ? 1 : 2;
 
-                this.repairBackFilter(this.backFilterQuery);
+                this.repairBackFilter(this.backFilterQuery, true);
               } else {
-                this.shopBackFilter(this.shopFilterQuery);
+                this.shopBackFilter(this.shopFilterQuery, true);
               }
             } else if (searchEvent.action === 'store') {
               this.sendRepairData();
@@ -184,7 +190,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // Repair Actions
     this.tableService.currentActionAnimation
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         // On Add Repair
         if (res.animation === 'add' && this.selectedTab === res.tab) {
@@ -469,6 +475,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       textTotal: data?.total
         ? '$ ' + this.thousandSeparator.transform(data.total)
         : '',
+      truckDescription: data?.items
+        ? data.items
+            .map((item) => item.description?.trim())
+            .join(
+              '<div class="description-dot-container"><span class="description-dot"></span></div>'
+            )
+        : null,
+      descriptionItems: data?.items
+        ? data.items.map((item) => {
+            return {
+              ...item,
+              descriptionPrice: item?.price
+                ? '$' + this.thousandSeparator.transform(item.price)
+                : '',
+              descriptionTotalPrice: item?.subtotal
+                ? '$' + this.thousandSeparator.transform(item.subtotal)
+                : '',
+              pmDescription: item.pmTruck,
+            };
+          })
+        : null,
     };
   }
 
@@ -486,6 +513,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       textTotal: data?.total
         ? '$ ' + this.thousandSeparator.transform(data.total)
         : '',
+      trailerDescription: data?.items
+        ? data.items
+            .map((item) => item.description?.trim())
+            .join(
+              '<div class="description-dot-container"><span class="description-dot"></span></div>'
+            )
+        : null,
+      descriptionItems: data?.items
+        ? data.items.map((item) => {
+            return {
+              ...item,
+              descriptionPrice: item?.price
+                ? '$' + this.thousandSeparator.transform(item.price)
+                : '',
+              descriptionTotalPrice: item?.subtotal
+                ? '$' + this.thousandSeparator.transform(item.subtotal)
+                : '',
+              pmDescription: item.pmTrailer,
+            };
+          })
+        : null,
     };
   }
 
@@ -495,25 +543,36 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
       ...data,
       isSelected: false,
       textAddress: data?.address?.address ? data.address.address : '',
+      shopServices: data?.serviceTypes ? data?.serviceTypes : null,
+      shopRaiting: {
+        hasLiked: data.currentCompanyUserRating === 1,
+        hasDislike: data.currentCompanyUserRating === -1,
+        likeCount: data?.upCount ? data.upCount : '0',
+        dislikeCount: data?.downCount ? data.downCount : '0',
+      },
     };
   }
 
   // Repair Back Filters
-  repairBackFilter(filter: {
-    repairShopId?: number | undefined;
-    repairType?: number | undefined;
-    unitType?: number | undefined;
-    dateFrom?: string | undefined;
-    dateTo?: string | undefined;
-    isPM?: number | undefined;
-    pageIndex?: number;
-    pageSize?: number;
-    companyId?: number | undefined;
-    sort?: string | undefined;
-    searchOne?: string | undefined;
-    searchTwo?: string | undefined;
-    searchThree?: string | undefined;
-  }) {
+  repairBackFilter(
+    filter: {
+      repairShopId?: number | undefined;
+      repairType?: number | undefined;
+      unitType?: number | undefined;
+      dateFrom?: string | undefined;
+      dateTo?: string | undefined;
+      isPM?: number | undefined;
+      pageIndex?: number;
+      pageSize?: number;
+      companyId?: number | undefined;
+      sort?: string | undefined;
+      searchOne?: string | undefined;
+      searchTwo?: string | undefined;
+      searchThree?: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.repairService
       .getRepairList(
         filter.repairShopId,
@@ -530,31 +589,54 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((repair: RepairListResponse) => {
-        this.viewData = repair.pagination.data;
+        if (!isShowMore) {
+          this.viewData = repair.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return filter.unitType === 1
-            ? this.mapTruckData(data)
-            : this.mapTrailerData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return filter.unitType === 1
+              ? this.mapTruckData(data)
+              : this.mapTrailerData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[this.selectedTab === 'active' ? 0 : 1].length =
+              repair.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          repair.pagination.data.map((data: any) => {
+            newData.push(
+              filter.unitType === 1
+                ? this.mapTruckData(data)
+                : this.mapTrailerData(data)
+            );
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
   // Shop Back Filters
-  shopBackFilter(filter: {
-    active?: number;
-    pinned?: boolean;
-    companyOwned?: boolean;
-    pageIndex?: number;
-    pageSize?: number;
-    companyId?: number;
-    sort?: string;
-    searchOne?: string | undefined;
-    searchTwo?: string | undefined;
-    searchThree?: string | undefined;
-  }) {
+  shopBackFilter(
+    filter: {
+      active?: number;
+      pinned?: boolean;
+      companyOwned?: boolean;
+      pageIndex?: number;
+      pageSize?: number;
+      companyId?: number;
+      sort?: string;
+      searchOne?: string | undefined;
+      searchTwo?: string | undefined;
+      searchThree?: string | undefined;
+    },
+    isSearch?: boolean,
+    isShowMore?: boolean
+  ) {
     this.repairService
       .getRepairShopList(
         filter.active,
@@ -568,13 +650,27 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         filter.searchTwo,
         filter.searchThree
       )
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((shop: RepairShopListResponse) => {
-        this.viewData = shop.pagination.data;
+        if (!isShowMore) {
+          this.viewData = shop.pagination.data;
 
-        this.viewData = this.viewData.map((data: any) => {
-          return this.mapShopData(data);
-        });
+          this.viewData = this.viewData.map((data: any) => {
+            return this.mapShopData(data);
+          });
+
+          if (isSearch) {
+            this.tableData[2].length = shop.pagination.count;
+          }
+        } else {
+          let newData = [...this.viewData];
+
+          shop.pagination.data.map((data: any) => {
+            newData.push(this.mapShopData(data));
+          });
+
+          this.viewData = [...newData];
+        }
       });
   }
 
@@ -597,6 +693,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     switch (event.action) {
       case 'tab-selected': {
         this.selectedTab = event.tabData.field;
+
+        this.backFilterQuery.pageIndex = 1;
+        this.shopFilterQuery.pageIndex = 1;
 
         this.sendRepairData();
         break;
@@ -655,6 +754,8 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     if (event.action === 'sort') {
       if (event.direction) {
         this.backFilterQuery.sort = event.direction;
+        this.backFilterQuery.pageIndex = 1;
+        this.shopFilterQuery.pageIndex = 1;
 
         if (this.selectedTab !== 'repair-shop') {
           this.backFilterQuery.unitType = this.selectedTab === 'active' ? 1 : 2;
@@ -671,7 +772,18 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // Table Body Actions
   onTableBodyActions(event: any) {
-    if (event.type === 'edit') {
+    // Show More
+    if (event.type === 'show-more') {
+      this.selectedTab !== 'repair-shop'
+        ? this.backFilterQuery.pageIndex++
+        : this.shopFilterQuery.pageIndex++;
+
+      this.selectedTab !== 'repair-shop'
+        ? this.repairBackFilter(this.backFilterQuery, false, true)
+        : this.shopBackFilter(this.backFilterQuery, false, true);
+    }
+    // Edit
+    else if (event.type === 'edit') {
       switch (this.selectedTab) {
         case 'active': {
           this.modalService.openModal(
@@ -698,19 +810,23 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
           break;
         }
       }
-    } else if (event.type === 'delete-repair') {
+    }
+    // Delete
+    else if (event.type === 'delete-repair') {
       if (this.selectedTab !== 'repair-shop') {
         this.repairService
           .deleteRepairById(event.id, this.selectedTab)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe();
       } else {
         this.repairService
           .deleteRepairShopById(event.id)
-          .pipe(untilDestroyed(this))
+          .pipe(takeUntil(this.destroy$))
           .subscribe();
       }
-    } else if (event.type === 'finish-order') {
+    }
+    // Finish Order
+    else if (event.type === 'finish-order') {
       switch (this.selectedTab) {
         case 'active': {
           this.modalService.openModal(
@@ -733,9 +849,44 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         }
       }
     }
+    // Raiting
+    else if (event.type === 'raiting') {
+      let raitingData = {
+        entityTypeRatingId: 2,
+        entityTypeId: event.data.id,
+        thumb: event.subType === 'like' ? 1 : -1,
+      };
+
+      this.reviewRatingService
+        .addRating(raitingData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res: any) => {
+          this.viewData = this.viewData.map((data: any) => {
+            if (data.id === event.data.id) {
+              data.actionAnimation = 'update';
+              data.shopRaiting = {
+                hasLiked: res.currentCompanyUserRating === 1,
+                hasDislike: res.currentCompanyUserRating === -1,
+                likeCount: res?.upCount ? res.upCount : '0',
+                dislikeCount: res?.downCount ? res.downCount : '0',
+              };
+            }
+
+            return data;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000);
+        });
+    }
   }
 
   ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
     this.tableService.sendActionAnimation({});
     this.tableService.sendCurrentSwitchOptionSelected(null);
     this.resizeObserver.unobserve(document.querySelector('.table-container'));

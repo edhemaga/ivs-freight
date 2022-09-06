@@ -11,6 +11,8 @@ table {
 
     .tr {
       display: flex;
+      height: 30px;
+
       th {
         display: flex;
         align-items: center;
@@ -22,11 +24,11 @@ table {
             transition: 0.25s;
           }
 
-          .sort-indicator-container{
-            svg-icon{
-              svg{
-                path{
-                  fill: #536BC2 !important;
+          .sort-indicator-container {
+            svg-icon {
+              svg {
+                path {
+                  fill: #536bc2 !important;
                   transition: 0.25s;
                 }
               }
@@ -74,13 +76,15 @@ table {
         }
 
         // Icons
-        .icons{
+        .icons {
           cursor: pointer;
-          
-          &:hover{
-            svg-icon{
-              svg{
-                path{
+        }
+
+        .icon-hover {
+          &:hover {
+            svg-icon {
+              svg {
+                path {
                   fill: #919191;
                   transition: 0.25s;
                 }
@@ -97,7 +101,7 @@ table {
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
-          transition: width 0.20s ease-in-out;
+          transition: width 0.2s ease-in-out;
 
           &::selection {
             color: #6c6c6c;
@@ -105,8 +109,27 @@ table {
           }
         }
 
+        // Special Title
+        .special-title {
+          display: flex;
+          overflow: hidden;
+
+          .title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #6c6c6c;
+            transition: width 0.2s ease-in-out;
+            margin-right: 20px;
+
+            &::selection {
+              color: #6c6c6c;
+              background: #6c6c6c20;
+            }
+          }
+        }
+
         // Sort
-        .sort-indicator-container{
+        .sort-indicator-container {
           width: 12px;
           height: 21px;
           display: flex;
@@ -220,10 +243,6 @@ table {
 .actions-columns-container {
   padding: 2px 2px 2px 1px;
   justify-content: flex-end;
-
-  th {
-    justify-content: center;
-  }
 }
 
 // Drag Preview
@@ -275,21 +294,21 @@ table {
 }
 
 // NG CLASS
-.set-cursor-resize{
+.set-cursor-resize {
   /* cursor: ew-resize !important; */
   user-select: none !important;
 }
 
-.sort-active{
+.sort-active {
   user-select: none !important;
 }
 
-.th-title-locked-cursor{
+.th-title-locked-cursor {
   cursor: pointer !important;
 }
 
-.resize-hit-limit{
-  .resise-btn{
+.resize-hit-limit {
+  .resise-btn {
     animation: resizeLimitAnimation 0.5s ease-in-out !important;
   }
 }
@@ -299,9 +318,9 @@ table {
     background: #aaaaaa;
   }
   50% {
-    background: #EF5350;
+    background: #ef5350;
   }
-  100%{
+  100% {
     background: #aaaaaa;
   }
 }

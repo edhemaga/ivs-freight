@@ -1,8 +1,10 @@
-import {HttpParams} from '@angular/common/http';
-import {dateFormat, formatPhoneNumber} from 'src/app/core/helpers/formating';
+import { HttpParams } from '@angular/common/http';
+import {
+  dateFormat,
+  formatPhoneNumber,
+} from '../../app/core/helpers/formating';
 /// <reference types="@types/googlemaps" />
 declare var google: any;
-
 
 export function ssnFormat(ssn: any): string {
   let count = 0;
@@ -148,7 +150,9 @@ export function imageMapType(rad: any) {
 export function mapUserData(user: any): any {
   if (user.firstName && user.lastName) {
     user.firstName =
-      user.firstName && user.lastName ? `${user.firstName} ${user.lastName}` : user.firstName;
+      user.firstName && user.lastName
+        ? `${user.firstName} ${user.lastName}`
+        : user.firstName;
   }
 
   if (user.userType === 'master' || user.baseUserType === 'master') {
@@ -178,11 +182,15 @@ export function mapUserData(user: any): any {
   }
 
   if (user.dateValue) {
-    user.dateValue = user.dateValue ? dateFormat(user.dateValue) : user.dateValue;
+    user.dateValue = user.dateValue
+      ? dateFormat(user.dateValue)
+      : user.dateValue;
   }
 
   if (user.doc && user.doc.phone) {
-    user.doc.phone = user.doc.phone ? formatPhoneNumber(user.doc.phone) : user.doc.phone;
+    user.doc.phone = user.doc.phone
+      ? formatPhoneNumber(user.doc.phone)
+      : user.doc.phone;
   }
 
   /* user.show = false; */
@@ -295,8 +303,7 @@ export function getGPSLegendData() {
           text: 'Unassigned Ignition on',
         },
         {
-          icon:
-            '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-Off/New-SHORT STOP IG OFF.svg',
+          icon: '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-Off/New-SHORT STOP IG OFF.svg',
           text: 'Unassigned Ignition off',
         },
         {
@@ -304,18 +311,15 @@ export function getGPSLegendData() {
           text: 'Ignition on',
         },
         {
-          icon:
-            '../../assets/img/svgs/GPS/Status/ASSIGNED/Ignation-Off/New-EXTENDET STOP IG-OFF.svg',
+          icon: '../../assets/img/svgs/GPS/Status/ASSIGNED/Ignation-Off/New-EXTENDET STOP IG-OFF.svg',
           text: 'Ignition off',
         },
         {
-          icon:
-            '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-On/New-EXTENDED STOP IG-ON.svg',
+          icon: '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-On/New-EXTENDED STOP IG-ON.svg',
           text: 'Unassigned Ignition on',
         },
         {
-          icon:
-            '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-Off/New-EXTENDED STOP IG-OFF.svg',
+          icon: '../../assets/img/svgs/GPS/Status/UNASSIGNED/Ignation-Off/New-EXTENDED STOP IG-OFF.svg',
           text: 'Unassigned Ignition off',
         },
 
@@ -341,7 +345,11 @@ export function getGPSLegendData() {
 }
 
 /* Get Route And Markers Data */
-export function getRouteAndMarkerData(mapData: any, getMarkers: boolean, getRoute: boolean) {
+export function getRouteAndMarkerData(
+  mapData: any,
+  getMarkers: boolean,
+  getRoute: boolean
+) {
   let markers = [];
   let waypoints = [];
   const routes = [];
@@ -376,7 +384,11 @@ export function getRouteAndMarkerData(mapData: any, getMarkers: boolean, getRout
             lat: mapData[i].latitude,
             lng: mapData[i].longitude,
           };
-        } else if (countOfData > 1 && countOfData < 6 && i !== mapData.length - 1) {
+        } else if (
+          countOfData > 1 &&
+          countOfData < 6 &&
+          i !== mapData.length - 1
+        ) {
           /* Get Waypoints */
           waypoints.push({
             position: {
@@ -524,7 +536,10 @@ export function getFlagOfFilterMiles(
 /* Get Data From Gps SignalR Response */
 export function getDataFromGpsResponse(gpsRespons: any, i: number) {
   const marker = getGpsMarkerData(gpsRespons[i], gpsRespons[i].truckId).marker;
-  const statusOfVehicle = getGpsMarkerData(gpsRespons[i], gpsRespons[i].truckId).statusOfVehicle;
+  const statusOfVehicle = getGpsMarkerData(
+    gpsRespons[i],
+    gpsRespons[i].truckId
+  ).statusOfVehicle;
   const speed = getGpsMarkerData(gpsRespons[i], gpsRespons[i].truckId).speed;
 
   return {
@@ -538,17 +553,28 @@ export function getDataFromGpsResponse(gpsRespons: any, i: number) {
     eventDateTime: gpsRespons[i].eventDateTime,
     hardwareID: gpsRespons[i].uniqueId,
     marker: marker ? marker : '',
-    driverName: gpsRespons[i].driverFullName !== ' ' ? gpsRespons[i].driverFullName : 'No Driver',
+    driverName:
+      gpsRespons[i].driverFullName !== ' '
+        ? gpsRespons[i].driverFullName
+        : 'No Driver',
     distance: gpsRespons[i].distance,
     totalDistance: gpsRespons[i].totalDistance,
     altitude: gpsRespons[i].altitude,
     truckId: gpsRespons[i].truckId ? gpsRespons[i].truckId : undefined,
-    truckNumber: gpsRespons[i].truckNumber ? gpsRespons[i].truckNumber : 'No Data',
-    truckLoadNumber: gpsRespons[i].truckloadId ? gpsRespons[i].truckloadId : 'No Data',
-    trailerNumber: gpsRespons[i].trailerNumber ? gpsRespons[i].trailerNumber : 'No Data',
+    truckNumber: gpsRespons[i].truckNumber
+      ? gpsRespons[i].truckNumber
+      : 'No Data',
+    truckLoadNumber: gpsRespons[i].truckloadId
+      ? gpsRespons[i].truckloadId
+      : 'No Data',
+    trailerNumber: gpsRespons[i].trailerNumber
+      ? gpsRespons[i].trailerNumber
+      : 'No Data',
     fullAddress: gpsRespons[i].address ? gpsRespons[i].address : '',
     fullLocation: gpsRespons[i].location ? gpsRespons[i].location : '',
-    dispatchBoardStatus: gpsRespons[i].dispatchBoardStatus ? gpsRespons[i].dispatchBoardStatus : '',
+    dispatchBoardStatus: gpsRespons[i].dispatchBoardStatus
+      ? gpsRespons[i].dispatchBoardStatus
+      : '',
     ignition: gpsRespons[i].ignition,
     animation: '',
     motion: gpsRespons[i].motion,
@@ -592,7 +618,8 @@ export function getGpsMarkerData(gpsData: any, isAssigned) {
       statusOfVehicle = 'Parking';
       speed = '/';
       driverNameColor = '#6C6C6C';
-      clusterMurker = '../../assets/img/svgs/GPS/Cluster Dropdown/cluster-parking.svg';
+      clusterMurker =
+        '../../assets/img/svgs/GPS/Cluster Dropdown/cluster-parking.svg';
     } else if (
       Math.round(millSec / (1000 * 60)) >= 30 &&
       Math.round(millSec / (1000 * 60 * 60)) < 12
@@ -626,7 +653,8 @@ export function getGpsMarkerData(gpsData: any, isAssigned) {
       statusOfVehicle = 'Short Stop';
       speed = '/';
       driverNameColor = '#FFA24E';
-      clusterMurker = '../../assets/img/svgs/GPS/Cluster Dropdown/cluster-short-stop.svg';
+      clusterMurker =
+        '../../assets/img/svgs/GPS/Cluster Dropdown/cluster-short-stop.svg';
     }
   }
 
@@ -664,25 +692,43 @@ export function checkParamas(queryParams: any) {
       .set('EndDate', queryParams.filterData.endDate)
       .set('TruckNumber', queryParams.filterData.truckNumber);
 
-    if (!queryParams.filterData.search || queryParams.filterData.search === '') {
+    if (
+      !queryParams.filterData.search ||
+      queryParams.filterData.search === ''
+    ) {
       params = params.delete('Search', undefined);
     }
-    if (!queryParams.filterData.search1 || queryParams.filterData.search1 === '') {
+    if (
+      !queryParams.filterData.search1 ||
+      queryParams.filterData.search1 === ''
+    ) {
       params = params.delete('Search1', undefined);
     }
-    if (!queryParams.filterData.search2 || queryParams.filterData.search2 === '') {
+    if (
+      !queryParams.filterData.search2 ||
+      queryParams.filterData.search2 === ''
+    ) {
       params = params.delete('Search2', undefined);
     }
     if (!queryParams.filterData.sort || queryParams.filterData.sort === '') {
       params = params.delete('Sort', undefined);
     }
-    if (!queryParams.filterData.startDate || queryParams.filterData.startDate === '') {
+    if (
+      !queryParams.filterData.startDate ||
+      queryParams.filterData.startDate === ''
+    ) {
       params = params.delete('StartDate', undefined);
     }
-    if (!queryParams.filterData.endDate || queryParams.filterData.endDate === '') {
+    if (
+      !queryParams.filterData.endDate ||
+      queryParams.filterData.endDate === ''
+    ) {
       params = params.delete('EndDate', undefined);
     }
-    if (!queryParams.filterData.truckNumber || queryParams.filterData.truckNumber === '') {
+    if (
+      !queryParams.filterData.truckNumber ||
+      queryParams.filterData.truckNumber === ''
+    ) {
       params = params.delete('TruckNumber', undefined);
     }
 
@@ -797,24 +843,26 @@ export function getPmDefaultList() {
 
 export function getDefaultMoveToList() {
   return [
-    {count: 15, id: 0},
-    {count: 75, id: 1},
-    {count: 150, id: 2},
+    { count: 15, id: 0 },
+    { count: 75, id: 1 },
+    { count: 150, id: 2 },
   ];
 }
 
 export function getRepairTypesData() {
-  const shopTypeFilter = JSON.parse(localStorage.getItem('repair_shops_shopTypeFilter'));
+  const shopTypeFilter = JSON.parse(
+    localStorage.getItem('repair_shops_shopTypeFilter')
+  );
 
   let types = [
-    {option: 'Truck', active: false},
-    {option: 'Trailer', active: false},
-    {option: 'Mobile', active: false},
-    {option: 'Shop', active: false},
-    {option: 'Towing', active: false},
-    {option: 'Parts', active: false},
-    {option: 'Tire', active: false},
-    {option: 'Dealer', active: false},
+    { option: 'Truck', active: false },
+    { option: 'Trailer', active: false },
+    { option: 'Mobile', active: false },
+    { option: 'Shop', active: false },
+    { option: 'Towing', active: false },
+    { option: 'Parts', active: false },
+    { option: 'Tire', active: false },
+    { option: 'Dealer', active: false },
   ];
 
   if (shopTypeFilter?.length) {
@@ -830,16 +878,22 @@ export function getRepairTypesData() {
   return types;
 }
 
-export function hexToRgbA(hex, opacity?){
+export function hexToRgbA(hex, opacity?) {
   let c;
   let addOpacity = opacity || opacity == 0 ? opacity : 1;
-  if(/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)){
-      c= hex.substring(1).split('');
-      if(c.length== 3){
-          c= [c[0], c[0], c[1], c[1], c[2], c[2]];
-      }
-      c= '0x'+c.join('');
-      return 'rgba('+[(c>>16)&255, (c>>8)&255, c&255].join(',')+','+addOpacity+')';
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split('');
+    if (c.length == 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = '0x' + c.join('');
+    return (
+      'rgba(' +
+      [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') +
+      ',' +
+      addOpacity +
+      ')'
+    );
   }
   throw new Error('Bad Hex');
 }

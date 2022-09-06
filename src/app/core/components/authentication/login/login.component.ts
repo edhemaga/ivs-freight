@@ -7,17 +7,14 @@ import {
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-
 import { AuthStoreService } from './../state/auth.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 
 import moment from 'moment';
 
-import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
+import { Subject, takeUntil } from 'rxjs';
 
-@UntilDestroy()
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,6 +22,7 @@ import { emailRegex } from '../../shared/ta-input/ta-input.regex-validations';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   public loginForm: FormGroup;
 
   public copyrightYear!: number;
@@ -40,14 +38,26 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.createForm();
 
     this.copyrightYear = moment().year();
+
+    this.inputService.customInputValidator(
+      this.loginForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private createForm(): void {
     this.loginForm = this.formBuilder.group({
-      email: [null, [Validators.required, emailRegex]],
+      email: [null, [Validators.required]],
       password: [null, [Validators.required]],
       staySignedIn: [false],
     });
+
+    this.inputService.customInputValidator(
+      this.loginForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public userLogin() {
@@ -58,7 +68,7 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     this.authStoreService
       .accountLogin(this.loginForm.value)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notification.success('Login is success', 'Success');
@@ -78,5 +88,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

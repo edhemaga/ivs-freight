@@ -11,11 +11,86 @@ table {
       height: 32px;
       background: white;
       display: flex;
+      border-radius: 3px;
+      padding: 2px;
+      transition: margin-bottom 0.25s;
+
+      // Hover
+      &:hover {
+        .columns-container {
+          background: #f7f7f7 !important;
+
+          .table-text,
+          .table-name-link,
+          .color-name,
+          .table-progress-text {
+            color: #3c3c3c !important;
+          }
+
+          .table-state {
+            background: #ffffff !important;
+          }
+
+          .table-checkbox-label {
+            background-color: #aaaaaa !important;
+          }
+
+          .contact-container {
+            .contact-count {
+              background: #ffffff !important;
+            }
+
+            .contact-avatar {
+              background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-hover-row.svg");
+            }
+          }
+
+          .raiting-container {
+            .raiting-counter-container {
+              &:hover {
+                .raiting-counter {
+                  color: #6c6c6c !important;
+                }
+              }
+              .raiting-counter {
+                background: #ffffff !important;
+              }
+            }
+
+            .like-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
+              }
+            }
+
+            .dislike-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
+              }
+            }
+          }
+        }
+      }
+
       // Columns
       .columns-container {
         width: 100%;
         height: 100%;
         display: flex;
+
+        .pined-columns,
+        .not-pined-columns,
+        .actions-columns {
+          display: flex;
+        }
+
+        .not-pined-columns {
+          overflow: hidden;
+        }
 
         td {
           width: fit-content;
@@ -205,6 +280,155 @@ table {
               }
             }
 
+            // INV. AGEING COLUMN
+            .inv-ageing-container {
+              width: fit-content;
+              height: 18px;
+              display: flex;
+              .bfb-container,
+              .dnu-container {
+                cursor: pointer;
+                min-width: 18px;
+                width: fit-content;
+                height: 18px;
+                padding: 2px;
+                color: #ffffff;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                font-weight: bold;
+
+                &::selection {
+                  color: #ffffff;
+                  background: #ffffff20;
+                }
+              }
+
+              .bfb-container {
+                margin-right: 2px;
+                border-radius: 2px 0 0 2px;
+                background: #6d82c7;
+
+                &:hover {
+                  background: #536bc2;
+                  transition: 0.25s;
+                }
+              }
+
+              .dnu-container {
+                margin-right: 4px;
+                border-radius: 0 2px 2px 0;
+                background: #e57373;
+
+                &:hover {
+                  background: #ef5350;
+                  transition: 0.25s;
+                }
+              }
+
+              .inv-ageing-text {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: 18px;
+                line-height: 18px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // CONTACT COLUMN
+            .contact-container {
+              width: fit-content;
+              height: 18px;
+              display: flex;
+
+              .contact-count {
+                width: fit-content;
+                min-width: 18px;
+                height: 18px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background: #f3f3f3;
+                color: #919191;
+                margin-right: 2px;
+                font-size: 11px;
+                font-weight: bold;
+
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
+              }
+
+              .contact-avatar {
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar.svg");
+              }
+            }
+
+            // WORK HOUR COLUMN
+            .work-hour-container {
+              width: fit-content;
+              height: 18px;
+              display: flex;
+
+              .work-hour-icon {
+                margin-right: 4px;
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                background-image: url("../../../../../../assets/svg/truckassist-table/customer/calendar.svg");
+              }
+
+              .work-hour-time {
+                color: #6c6c6c;
+                height: 18px;
+                line-height: 18px;
+                font-size: 14px;
+                font-weight: 400;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // DESCRIPTION COLUMN
+            .description-container {
+              cursor: pointer;
+              color: #6c6c6c;
+              font-size: 14px;
+              font-weight: 400;
+              height: 18px;
+              line-height: 18px;
+              display: flex;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+
+              &::selection {
+                color: #6c6c6c;
+                background: #6c6c6c20;
+              }
+            }
+
             // VL COLUMN
             .active-vl-count,
             .zero-vl-count {
@@ -228,7 +452,7 @@ table {
             // AVATAR COLUMN
             .avatar-container {
               width: fit-content;
-              height: 20px;
+              height: fit-content;
               margin-right: 6px;
               display: flex;
               cursor: pointer;
@@ -239,22 +463,33 @@ table {
                 transition: 0.2s;
               }
 
-              .avatar-img {
+              .round-avatar {
+                border-radius: 50%;
+                width: 20px;
+                height: 20px;
+                overflow: hidden;
+              }
+
+              .regular-avatar {
+                border-radius: 2px;
                 width: 18px;
                 height: 20px;
+                overflow: hidden;
 
                 img {
-                  display: flex;
-                  width: 100%;
-                  height: 100%;
                   border-radius: 2px;
                 }
               }
 
+              .avatar-img {
+                img {
+                  display: flex;
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+
               .avatar-no-img {
-                width: 18px;
-                height: 20px;
-                border-radius: 2px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -476,7 +711,7 @@ table {
               }
             }
 
-            // ATTACHMENTS COLUMN TEMPLATE
+            // ATTACHMENTS COLUMN
             .attachments-btn {
               width: 18px;
               height: 18px;
@@ -494,53 +729,43 @@ table {
               }
             }
 
-            // APPLICANT DONE CHECKBOX
-            .table-done-checkbox {
-              width: 26px;
-              height: 26px;
-              background: #eeeeee;
-              border-radius: 3px;
-              color: #6c6c6c;
+            // HIRE COLUMN
+            .hire-icon {
+              cursor: pointer;
+              width: 18px;
+              height: 18px;
+              background-repeat: no-repeat;
+              background-position: center;
+              background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant.svg");
 
-              .checkbox-content {
-                user-select: none;
-                font-size: 14px;
-                font-weight: 400;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 100%;
-                height: 100%;
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg");
               }
             }
 
-            .done {
-              background: url("../../../../../../assets/svg/truckassist-table/done-checkbox/done-checkbox.svg");
+            // FAVORITE COLUMN
+            .not-favorite-icon,
+            .is-favorite-icon {
+              cursor: pointer;
+              width: 18px;
+              height: 18px;
               background-repeat: no-repeat;
               background-position: center;
             }
 
-            // APPLICANT REVIEW
-            .table-applicant-review {
-              width: 26px;
-              height: 26px;
-              background: #eeeeee;
-              border-radius: 3px;
-              .review {
-                width: 100%;
-                height: 100%;
-              }
+            .not-favorite-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/favorite.svg");
 
-              .review-ok {
-                background: url("../../../../../../assets/svg/truckassist-table/applicant-review/applicant-review-ok.svg");
-                background-position: center;
-                background-repeat: no-repeat;
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg");
               }
+            }
 
-              .review-bad {
-                background: url("../../../../../../assets/svg/truckassist-table/applicant-review/applicant-review-x.svg");
-                background-position: center;
-                background-repeat: no-repeat;
+            .is-favorite-icon {
+              background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/is-favorite-icon-hover.svg");
               }
             }
 
@@ -569,6 +794,11 @@ table {
             .truckassist-icon {
               svg-icon {
                 display: flex;
+                svg {
+                  path {
+                    fill: #aaaaaa;
+                  }
+                }
               }
 
               &:hover {
@@ -628,170 +858,115 @@ table {
                     }
                   }
                 }
-              }
-            }
 
-            // ITEM DROP COLUMN
-            .table-item {
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-
-              display: flex;
-              white-space: pre;
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-              .description-dot {
-                width: 6px;
-                height: 6px;
-                margin: 8px 5px 0 5px;
-                border-radius: 50%;
-                background: #6c6c6c;
-              }
-            }
-
-            .item-drop-container {
-              width: 458px;
-              height: auto;
-              position: absolute;
-              top: 4px;
-              .item-title {
-                width: 100%;
-                height: 24px;
-                background: #6c6c6c;
-                padding: 0 20px 0 17px;
-                display: flex;
-                border-radius: 1px;
-                span {
-                  color: white;
-                  font-size: 14px;
-                  font-weight: 600;
-                  height: 100%;
-                  display: flex;
-                  align-items: center;
-                }
-
-                .count {
-                  width: 10px;
-                  margin-right: 17px;
-                }
-
-                .item-name {
-                  width: 96px;
-                  margin-right: 22px;
-                }
-
-                .qty {
-                  width: 76px;
-                  margin-right: 12px;
-                }
-
-                .price {
-                  width: 86px;
-                  margin-right: 12px;
-                }
-
-                .total {
-                  width: 90px;
-                }
-
-                .qty,
-                .price,
-                .total {
-                  justify-content: right;
-                }
-              }
-
-              .items-container {
-                width: 100%;
-                height: auto;
-                border-radius: 1px;
-                margin-top: 4px;
-                background: white;
-                box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.15);
-                position: relative;
-                padding: 2px;
-                .item-container {
-                  position: relative;
-                  z-index: 100;
-                  width: 100%;
-                  height: 24px;
-                  border-radius: 2px;
-                  padding: 0 16px 0 10px;
-                  display: flex;
-                  &:hover {
-                    background: #f7f7f7;
-
-                    .total-item-background {
-                      position: absolute;
-                      right: 0;
-                      width: 108px;
-                      height: 100%;
-                      top: 0;
-                      background: #eeeeee;
-                      border-top-right-radius: 2px;
-                      border-bottom-left-radius: 2px;
+                // TRAILERS
+                .ic_trailer_reefer {
+                  svg {
+                    path {
+                      fill: #ff5454;
                     }
                   }
+                }
 
-                  span {
-                    color: #b7b7b7;
-                    font-size: 14px;
-                    font-weight: 400;
-                    display: flex;
-                    align-items: center;
-                  }
-
-                  .count {
-                    width: 20px;
-                    margin-right: 12px;
-                    justify-content: center;
-                  }
-
-                  .item-name {
-                    width: 96px;
-                    margin-right: 22px;
-                  }
-
-                  .qty {
-                    width: 76px;
-                    margin-right: 12px;
-                  }
-
-                  .price {
-                    width: 86px;
-                    margin-right: 12px;
-                  }
-
-                  .total {
-                    width: 94px;
-                    font-weight: 600 !important;
-                    color: #b7b7b7 !important;
-                    position: relative;
-                    z-index: 1000;
-                  }
-
-                  .qty,
-                  .price,
-                  .total {
-                    justify-content: right;
+                .ic_trailer_dryvan {
+                  svg {
+                    path {
+                      fill: #6d82c7;
+                    }
                   }
                 }
 
-                .total-background {
-                  position: absolute;
-                  right: 0;
-                  width: 110px;
-                  height: 100%;
-                  top: 0;
-                  background: #f7f7f7;
+                .ic_trailer_side-kit {
+                  svg {
+                    path {
+                      fill: #56ab62;
+                    }
+                  }
+                }
+
+                .ic_trailer_conestoga {
+                  svg {
+                    path {
+                      fill: #3c3c3c;
+                    }
+                  }
+                }
+
+                .ic_trailer_dumper {
+                  svg {
+                    path {
+                      fill: #6fdfe4;
+                    }
+                  }
+                }
+
+                .ic_trailer_container {
+                  svg {
+                    path {
+                      fill: #f89a3d;
+                    }
+                  }
+                }
+
+                .ic_trailer_tanker-liquid {
+                  svg {
+                    path {
+                      fill: #1e9df3;
+                    }
+                  }
+                }
+
+                .ic_trailer_carhauler {
+                  svg {
+                    path {
+                      fill: #59a5a5;
+                    }
+                  }
+                }
+
+                .ic_trailer_flatbed {
+                  svg {
+                    path {
+                      fill: #a468ff;
+                    }
+                  }
+                }
+
+                .ic_trailer_low-boy {
+                  svg {
+                    path {
+                      fill: #a34cb8;
+                    }
+                  }
+                }
+
+                .ic_trailer_chassis {
+                  svg {
+                    path {
+                      fill: #4a9a4f;
+                    }
+                  }
+                }
+
+                .ic_trailer_step-deck {
+                  svg {
+                    path {
+                      fill: #f3d542;
+                    }
+                  }
+                }
+
+                .ic_trailer-tanker-dryBulk {
+                  svg {
+                    path {
+                      fill: #f3f3f3;
+                    }
+                  }
                 }
               }
             }
 
-            // TOTAL TEXT
+            // TOTAL TEXT COLUMN
             .table-total {
               font-size: 14px;
               font-weight: 600;
@@ -803,6 +978,7 @@ table {
               }
             }
 
+            // FINISH ORDER COLUMN
             .finish-order-action {
               width: 98px;
               height: 24px;
@@ -820,14 +996,14 @@ table {
               cursor: pointer;
             }
 
-            // SERVICE
+            // SERVICE COLUMN
             .service-container {
               width: 100%;
               display: flex;
 
               .img-style {
-                width: 22px;
-                height: 22px;
+                width: 18px;
+                height: 18px;
               }
 
               .img-margin {
@@ -836,68 +1012,127 @@ table {
 
               /* Regular Type Icon */
               .truck {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_truck.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_truck_table-inactive.svg");
               }
 
               .trailer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_trailer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_trailer_table-inactive.svg");
               }
 
               .mobile {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_mobile.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_mobile_table-inactive.svg");
               }
 
               .shop {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_shop.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_shop_table-inactive.svg");
               }
 
               .towing {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_towing.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_towing_table-inactive.svg");
               }
 
               .parts {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_parts.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_parts_table-inactive.svg");
               }
 
               .tire {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_tire.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_tire_table-inactive.svg");
               }
 
               .dealer {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/ic_dealer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-inactive/ic_dealer_table-inactive.svg");
               }
 
               /* Active Type Icon */
               .truck-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Truck.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_truck_table.svg");
               }
 
               .trailer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Trailer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_trailer_table.svg");
               }
 
               .mobile-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Mobile.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_mobile_table.svg");
               }
 
               .shop-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Shop.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_shop_table.svg");
               }
 
               .towing-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Towing.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_towing_table.svg");
               }
 
               .parts-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Parts.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_parts_table.svg");
               }
 
               .tire-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Tire.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_tire_table.svg");
               }
 
               .dealer-active {
-                background: url("../../../../../../assets/svg/truckassist-table/repair/active-shop-types/Dealer.svg");
+                background: url("../../../../../../assets/svg/truckassist-table/repair/shop-type-active/ic_dealer_table.svg");
+              }
+            }
+
+            // SHARED  COLUMN
+            .shared-container {
+              display: flex;
+              height: 18px;
+              width: fit-content;
+
+              .shared-icon {
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+                margin-right: 6px;
+              }
+
+              .lock-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock.svg");
+              }
+
+              .shared-active-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/shared.svg");
+              }
+
+              .shared-text {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: fit-content;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+            }
+
+            // LABLE COLUMN
+            .lable-container {
+              cursor: pointer;
+              display: flex;
+              align-self: center;
+
+              svg {
+                margin-right: 4px;
+                height: 21px;
+              }
+
+              .lable-name {
+                font-size: 14px;
+                font-weight: 400;
+                height: fit-content;
+                color: #6c6c6c;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
               }
             }
 
@@ -926,37 +1161,29 @@ table {
             }
 
             // PASSWORD
-            .table-password-icon {
-              margin-right: 6px;
-              &:hover {
-                path {
-                  fill: #6c6c6c;
-                }
-              }
-              position: relative;
-            }
-
-            .decrypted-password,
-            .crypted-password {
-              &::selection {
-                color: #6c6c6c;
-                background: #6c6c6c20;
-              }
-            }
-
-            .decrypted-password {
-              color: #6c6c6c;
-              font-size: 14px;
-              font-weight: 400;
-            }
-
-            .crypted-password {
-              color: #6c6c6c;
-            }
-
-            .table-password-icon,
-            .table-active-password {
+            .password-icon {
               cursor: pointer;
+              width: 18px;
+              height: 18px;
+              background-repeat: no-repeat;
+              background-position: center;
+              margin-right: 4px;
+            }
+
+            .password-hidden {
+              background-image: url("../../../../../../assets/svg/truckassist-table/password-locked.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/show-password.svg");
+              }
+            }
+
+            .password-showing {
+              background-image: url("../../../../../../assets/svg/truckassist-table/showing-password.svg");
+
+              &:hover {
+                background-image: url("../../../../../../assets/svg/truckassist-table/hide-password.svg");
+              }
             }
 
             .password-spiner {
@@ -965,6 +1192,86 @@ table {
               svg {
                 width: 24px;
                 height: 24px;
+              }
+            }
+
+            .password-text-showing {
+              font-size: 14px;
+              font-weight: 400;
+              color: #6c6c6c;
+            }
+
+            // RAITING
+            .raiting-container {
+              display: flex;
+              width: fit-content;
+              height: 18px;
+              justify-self: center;
+
+              .raiting-icon {
+                cursor: pointer;
+                width: 18px;
+                height: 18px;
+                background-repeat: no-repeat;
+                background-position: center;
+              }
+
+              .like-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/like.svg");
+                margin-right: 2px;
+              }
+
+              .did-like-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/has-like.svg");
+                margin-right: 2px;
+
+                &:hover {
+                  background-image: url("../../../../../../assets/svg/truckassist-table/has-like-icon-hover.svg");
+                }
+              }
+
+              .dislike-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/dislike.svg");
+              }
+
+              .did-dislike-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike.svg");
+
+                &:hover {
+                  background-image: url("../../../../../../assets/svg/truckassist-table/has-dislike-icon-hover.svg");
+                }
+              }
+
+              .raiting-counter-container {
+                display: flex;
+                cursor: pointer;
+
+                .raiting-counter {
+                  min-width: 18px;
+                  height: 18px;
+                  background: #f3f3f3;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  color: #919191;
+                  font-size: 11px;
+                  font-weight: bold;
+                  margin-right: 2px;
+                  padding: 0px 3px;
+
+                  &::selection {
+                    color: #919191;
+                    background: #91919120;
+                  }
+                }
+
+                .like-counter {
+                  border-radius: 2px 0px 0px 2px;
+                }
+
+                .dislike-counter {
+                  border-radius: 0px 2px 2px 0px;
+                }
               }
             }
 
@@ -999,7 +1306,31 @@ table {
               }
             }
 
-            // PROGGRESS BAR
+            // PROGRESS COLUMN
+            .applicant-status-container {
+              width: fit-content;
+              height: fit-content;
+
+              .status-icon {
+                width: 16px;
+                height: 16px;
+                background-repeat: no-repeat;
+                background-position: center;
+              }
+
+              .done-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon.svg");
+              }
+
+              .wrong-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg");
+              }
+
+              .complete-icon {
+                background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon.svg");
+              }
+            }
+
             .table-progress-cotnainer {
               display: flex;
               align-items: center;
@@ -1040,34 +1371,98 @@ table {
                 }
               }
             }
+
+            // APPLICANT PROGRESS COLUMN
+            .applicant-progress-container {
+              height: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 20px;
+            }
+
+            // APPLICANT REVIEW COLUMN
+            .applicant-review-container {
+              display: flex;
+              align-items: center;
+
+              .review-icon {
+                width: 22px;
+                height: 22px;
+                border-radius: 2px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 4px;
+
+                svg-icon {
+                  display: flex;
+                }
+              }
+
+              // Wrong
+              .review-icon {
+                background: #e57373;
+
+                svg-icon {
+                  svg {
+                    path {
+                      fill: #ffffff;
+                    }
+                  }
+                }
+              }
+
+              // Done
+              .finished {
+                background: #26a690;
+
+                svg-icon {
+                  svg {
+                    path {
+                      fill: #ffffff;
+                    }
+                  }
+                }
+              }
+
+              // Incomplete
+              .incomplete {
+                background: #f3f3f3;
+
+                svg-icon {
+                  svg {
+                    path {
+                      fill: #aaaaaa;
+                    }
+                  }
+                }
+              }
+              // Ready
+              .ready {
+                background: #f3f3f3;
+
+                svg-icon {
+                  svg {
+                    path {
+                      fill: #aaaaaa;
+                    }
+                  }
+                }
+              }
+
+              .review-title {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: 18px;
+                line-height: 18px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              }
+            }
           }
-        }
-      }
-    }
-
-    // Hover Row
-    .regular-columns-hover {
-      .border-inactive {
-        border-right: 4px solid #f7f7f7 !important;
-        border-left: 4px solid #f7f7f7 !important;
-      }
-
-      .columns-container {
-        background: #f7f7f7 !important;
-
-        .table-text,
-        .table-name-link,
-        .color-name,
-        .table-progress-text {
-          color: #3c3c3c !important;
-        }
-
-        .table-state {
-          background: #ffffff !important;
-        }
-
-        .table-checkbox-label {
-          background-color: #aaaaaa !important;
         }
       }
     }
@@ -1076,96 +1471,133 @@ table {
     .selected-row {
       .columns-container {
         background: #e5e5e5;
-      }
 
-      .border-inactive {
-        border-right: 4px solid #e5e5e5;
-        border-left: 4px solid #e5e5e5;
+        // CONTACT COLUMN
+        .contact-container {
+          .contact-count {
+            background: #f3f3f3 !important;
+            color: #6c6c6c !important;
+
+            &::selection {
+              color: #6c6c6c !important;
+              background: #6c6c6c20 !important;
+            }
+          }
+
+          .contact-avatar {
+            background-image: url("../../../../../../assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg") !important;
+          }
+        }
+
+        // SHARED COLUMN
+        .shared-container {
+          .lock-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/shared-lock-select.svg") !important;
+          }
+
+          .shared-active-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/shared-select.svg") !important;
+          }
+
+          .shared-text {
+            color: #3c3c3c !important;
+
+            &::selection {
+              color: #3c3c3c !important;
+              background: #3c3c3c20 !important;
+            }
+          }
+        }
+
+        // RAITING
+        .raiting-container {
+          .raiting-counter-container {
+            &:hover {
+              .raiting-counter {
+                color: #3c3c3c !important;
+              }
+            }
+
+            .raiting-counter {
+              background: #f3f3f3 !important;
+              color: #6c6c6c !important;
+            }
+          }
+
+          .like-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/like-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/like-icon-hover.svg") !important;
+            }
+          }
+
+          .dislike-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/dislike-row-hover.svg") !important;
+
+            &:hover {
+              background-image: url("../../../../../../assets/svg/truckassist-table/dislike-icon-hover.svg") !important;
+            }
+          }
+        }
+
+        // HIRE
+        .hire-icon {
+          background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-selected-row.svg") !important;
+
+          &:hover {
+            background-image: url("../../../../../../assets/svg/truckassist-table/hire-applicant-icon-hover.svg") !important;
+          }
+        }
+
+        // FAVORITE
+        .not-favorite-icon {
+          background-image: url("../../../../../../assets/svg/truckassist-table/favorite-selected-row.svg") !important;
+
+          &:hover {
+            background-image: url("../../../../../../assets/svg/truckassist-table/favorite-icon-hover.svg") !important;
+          }
+        }
+
+        // PROGRESS
+        .applicant-status-container {
+          .done-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-done-icon-select-row.svg") !important;
+          }
+
+          .wrong-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg") !important;
+          }
+
+          .complete-icon {
+            background-image: url("../../../../../../assets/svg/truckassist-table/applicant-complete-icon-select-row.svg") !important;
+          }
+        }
       }
+    }
+
+    // Show Attachments
+    .show-attachments {
+      margin-bottom: 202px;
+      transition: 0.25s;
     }
 
     // Repair Order Row
     .row-repair-order {
       background: #fff3e0;
-
-      .border-inactive {
-        border-right: 4px solid #fff3e0;
-        border-left: 4px solid #fff3e0;
-      }
     }
 
-    // Borders
-    .not-pined-border-left,
-    .not-pined-border-right {
+    // Border Scroll Section
+    .border-scroll-section {
       width: 4px;
-      height: 32px;
-      background: white;
     }
 
-    .not-pined-border-left {
+    .border-left {
       background-image: linear-gradient(to right, #eeeeee, #f7f7f700);
     }
 
-    .not-pined-border-right {
+    .border-right {
       background-image: linear-gradient(to right, #f7f7f700, #eeeeee);
-    }
-
-    .not-pined-tr {
-      overflow-y: hidden;
-      overflow-x: scroll;
-
-      scrollbar-width: none !important; /* Firefox */
-
-      &::-webkit-scrollbar {
-        width: 3px;
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background-color: #cccccc;
-        border: 6px solid #eeeeee;
-        border-radius: 1px;
-      }
-
-      &::-webkit-scrollbar-track {
-        padding: 5px;
-        position: absolute;
-        right: -3rem;
-        top: -50rem;
-        background: transparent;
-      }
-    }
-
-    .actions {
-      tr {
-        width: 100%;
-      }
-    }
-
-    .pined-tr-container {
-      border-radius: 3px 0px 0px 3px;
-      padding: 2px 0px 2px 2px;
-
-      .columns-container {
-        border-radius: 3px 0px 0px 3px;
-      }
-    }
-
-    .not-pined-tr-container {
-      border-radius: 0px 0px 0px 0px;
-      padding: 2px 0px 2px 0px;
-    }
-
-    .actions-tr-container {
-      border-radius: 0px 3px 3px 0px;
-      padding: 2px 2px 2px 0px;
-      .columns-container {
-        justify-content: flex-end;
-        border-radius: 0px 3px 3px 0px;
-
-        .td-content {
-          justify-content: center;
-        }
-      }
     }
   }
 }
@@ -1173,7 +1605,8 @@ table {
 // SHOW MORE
 .show-more-container {
   height: 18px;
-  margin-top: -10px;
+  width: fit-content;
+  margin-top: 3px;
   display: flex;
   align-items: center;
   margin-bottom: 20px;
@@ -1200,6 +1633,7 @@ table {
   }
 
   .show-more {
+    cursor: pointer;
     justify-self: flex-end;
     margin-left: auto;
     font-size: 14px;
@@ -1219,14 +1653,8 @@ table {
 }
 
 // PROGRESS COLOR CLASSES
-.bg-progress-muted {
-  background: #b7b7b7;
-}
 
-.bg-progress-sliver {
-  background: #aaaaaa;
-}
-
+// Progress Container
 .bg-sliver-container {
   background: #dadada;
 }
@@ -1239,6 +1667,19 @@ table {
   background: #e5e5e5;
 }
 
+.bg-danger-container {
+  background: #ffe1e4;
+}
+
+// Progress Bar
+.bg-progress-muted {
+  background: #b7b7b7;
+}
+
+.bg-progress-sliver {
+  background: #aaaaaa;
+}
+
 .bg-progress-orange {
   background: #ffb74d;
 }
@@ -1249,10 +1690,6 @@ table {
 
 .bg-progress-danger {
   background: #e57373;
-}
-
-.bg-danger-container {
-  background: #ffe1e4;
 }
 
 // ACTION ANIMATION
@@ -1272,11 +1709,6 @@ table {
 }
 
 // NG CLASS
-.border-inactive {
-  border-right: 4px solid white;
-  border-left: 4px solid white;
-}
-
 .active-drop {
   background-image: url("../../../../../../assets/svg/truckassist-table/dropdown/dropdown-select.svg") !important;
 

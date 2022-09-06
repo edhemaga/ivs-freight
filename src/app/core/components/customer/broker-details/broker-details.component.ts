@@ -2,13 +2,12 @@ import { BrokerDetailsQuery } from './../state/broker-details-state/broker-detai
 import { BrokerResponse } from 'appcoretruckassist';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { BrokerTService } from '../state/broker-state/broker.service';
-import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
+import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 
-@UntilDestroy()
 @Component({
   selector: 'app-broker-details',
   templateUrl: './broker-details.component.html',
@@ -16,6 +15,8 @@ import { SumArraysPipe } from 'src/app/core/pipes/sum-arrays.pipe';
   providers: [DetailsPageService, SumArraysPipe],
 })
 export class BrokerDetailsComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   public brokerConfig: any[] = [];
   public brokerDrop: any;
   constructor(
@@ -26,13 +27,12 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService,
     private sumArr: SumArraysPipe
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-
     this.initTableOptions();
     this.detailsPageService.pageDetailChangeId$
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
         if (this.brokerQuery.hasEntity(id)) {
@@ -40,7 +40,7 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
         } else {
           query = this.brokerService.getBrokerById(id);
         }
-        query.pipe(untilDestroyed(this)).subscribe({
+        query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: BrokerResponse) => {
             this.brokerInitConfig(res);
             this.router.navigate([`/customer/${res.id}/broker-details`]);
@@ -207,5 +207,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public identity(index: number, item: any): number {
     return item.id;
   }
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

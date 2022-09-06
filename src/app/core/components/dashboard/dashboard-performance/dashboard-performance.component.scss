@@ -420,14 +420,11 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
             transition: all 0.2s;
 
             .dashboard-performance-right-close{
-                position: absolute;
                 width: 18px;
                 height: 18px;
                 display: none;
                 justify-content: center;
                 align-items: center;
-                top: 12px;
-                right: 12px;
 
                 svg-icon{
                     svg{
@@ -454,6 +451,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 
                 .dashboard-performance-body-right-cards-title-circle{
                     width: 14px;
+                    min-width: 14px;
                     height: 14px;
                     border-radius: 100%;
                     background-color: #DADADA;
@@ -469,6 +467,8 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
                     color: #6C6C6C;
                     padding-left: 6px;
                     box-sizing: border-box;
+                    line-height: 18px;
+                    flex: 1;
                 }
             }
 
@@ -726,6 +726,7 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
     background-color: #fff;
     padding: 12px 12px 14px 12px;
     margin-bottom: 18px;
+    border-radius: 3px;
 
     .line_chart_title_hold{
         display: flex;
@@ -836,6 +837,16 @@ $performance_hover_colors: '596FE8', 'FD952D', 'ED445E', '2FA558', '7F39AA', '38
 @media only screen and (min-width: 1201px) and (max-width: 1664px) {
     .dashboard-performance-holder .dashboard-performance-body{
         grid-template-columns: repeat(7, calc((100% - 48px) / 7));
+
+        .dashboard-performance-body-left-holder {
+            .dashboard-performance-body-items-holder{
+                padding-top: 52px;
+
+                &:last-child {
+                    padding-top: 62px;
+                  }
+            }
+        }
     }
 }
 

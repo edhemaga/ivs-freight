@@ -30,15 +30,15 @@
             name: 'Input Dropdown Label',
             type: 'text',
             label: 'Label',
-            placeholder: 'Label Name',
             placeholderIcon: 'ic_dynamic_label',
-            isDropdownLabel: true,
-            dropdownLabelSelected: selectedAccountColor,
-            dropdownWidthClass: 'w-col-164',
-            textTransform: 'capitalize',
+            dropdownLabel: true,
+            dropdownWidthClass: 'w-col-456',
+            textTransform: 'lowercase',
             blackInput: true,
+            minLength: 1,
+            maxLength: 32,
             commands: {
-              active: true,
+              active: false,
               type: 'confirm-cancel',
               firstCommand: {
                 popup: {
@@ -61,8 +61,9 @@
           [colors]="colors"
           [options]="accountLabels"
           [selectedLabel]="selectedAccountLabel"
+          [selectedLabelColor]="selectedAccountColor"
           (pickExistLabel)="onPickExistLabel($event)"
-          (selectedColorLabel)="onSelectColorLabel($event)"
+          (pickColorLabel)="onSelectColorLabel($event)"
           (saveLabel)="onSaveLabel($event)"
         >
         </app-ta-input-dropdown-label>
@@ -101,11 +102,12 @@
         <app-ta-input
           formControlName="url"
           [inputConfig]="{
-            name: 'Hyperlink',
+            name: 'Url',
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            maxLength: 400
+            minLength: 4,
+            maxLength: 255
           }"
         ></app-ta-input>
       </div>

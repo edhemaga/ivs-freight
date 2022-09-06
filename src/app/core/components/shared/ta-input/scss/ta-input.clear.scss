@@ -79,12 +79,10 @@
     }
   }
 
-  &.password-eye {
-    display: none !important;
-  }
-
   // If dropdown
   &.dropdown-position,
+  &.dropdown-position-image,
+  &.dropdown-label-position,
   &.repair-m-pm {
     right: 27px !important;
   }
@@ -147,8 +145,12 @@
     top: 2px;
   }
 
+  &.line-input-26 {
+    top: 2px;
+  }
+
   &.focus {
-    &.repair-shop-oh {
+    &.repair-shop-open-hour {
       display: inline-block;
       svg {
         path {
@@ -164,6 +166,26 @@
           rect {
             fill: #eeeeee !important;
           }
+        }
+      }
+    }
+  }
+
+  &.visible-focus-password {
+    display: inline-block !important;
+    svg {
+      path {
+        fill: #6c6c6c !important;
+      }
+      rect {
+        fill: #b7b7b7 !important;
+      }
+    }
+
+    &:hover {
+      svg {
+        rect {
+          fill: #eeeeee !important;
         }
       }
     }

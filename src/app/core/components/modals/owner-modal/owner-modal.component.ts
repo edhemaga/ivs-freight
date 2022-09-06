@@ -1,9 +1,14 @@
+import {
+  accountBankValidation,
+  routingBankValidation,
+} from './../../shared/ta-input/ta-input.regex-validations';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { TruckModalComponent } from './../truck-modal/truck-modal.component';
 import { UpdateOwnerCommand } from './../../../../../../appcoretruckassist/model/updateOwnerCommand';
 import { CreateOwnerCommand } from './../../../../../../appcoretruckassist/model/createOwnerCommand';
 import { OwnerResponse } from './../../../../../../appcoretruckassist/model/ownerResponse';
 import { NotificationService } from './../../../services/notification/notification.service';
 import { OwnerModalResponse } from './../../../../../../appcoretruckassist/model/ownerModalResponse';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -15,20 +20,25 @@ import {
 } from '@angular/core';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AddressEntity, CreateResponse } from 'appcoretruckassist';
-import { distinctUntilChanged } from 'rxjs';
 import { TabSwitcherComponent } from '../../switchers/tab-switcher/tab-switcher.component';
 import {
+  addressUnitValidation,
+  addressValidation,
+  bankValidation,
+  businessNameValidation,
   einNumberRegex,
-  emailRegex,
-  phoneRegex,
+  firstNameValidation,
+  lastNameValidation,
+  phoneFaxRegex,
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
+import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
+import { Subject, takeUntil } from 'rxjs';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-owner-modal',
   templateUrl: './owner-modal.component.html',
@@ -37,6 +47,8 @@ import { OwnerTService } from '../../owner/state/owner.service';
   providers: [ModalService, FormService, BankVerificationService],
 })
 export class OwnerModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @ViewChild(TabSwitcherComponent) tabSwitcher: any;
 
   @Input() editData: any;
@@ -79,32 +91,38 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     this.getOwnerDropdowns();
     this.onBankSelected();
 
-    if (this.editData) {
+    if (this.editData?.id) {
       this.editOwnerById(this.editData.id);
     }
   }
 
   private createForm() {
     this.ownerForm = this.formBuilder.group({
-      bussinesName: [null, Validators.required],
-      firstName: [null],
-      lastName: [null],
+      bussinesName: [null, [Validators.required, ...businessNameValidation]],
+      firstName: [null, [...firstNameValidation]],
+      lastName: [null, [...lastNameValidation]],
       ssn: [null, ssnNumberRegex],
       ein: [null, [Validators.required, einNumberRegex]],
-      address: [null, Validators.required],
-      addressUnit: [null, [Validators.maxLength(6)]],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex]],
-      bankId: [null],
-      accountNumber: [null],
-      routingNumber: [null],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, [Validators.required]],
+      bankId: [null, [...bankValidation]],
+      accountNumber: [null, accountBankValidation],
+      routingNumber: [null, routingBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.ownerForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.ownerForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -159,12 +177,16 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.inputService.markInvalid(this.ownerForm);
           return;
         }
-        if (this.editData) {
+        if (this.editData?.id) {
           this.updateOwner(this.editData.id);
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOwner();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            clearTimeout: this.editData?.canOpenModal ? true : false,
+          });
         }
 
         break;
@@ -176,6 +198,32 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
       }
       default: {
         break;
+      }
+    }
+
+    if (this.editData?.canOpenModal) {
+      switch (this.editData?.key) {
+        case 'truck-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TruckModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        case 'trailer-modal': {
+          this.modalService.setProjectionModal({
+            action: 'close',
+            payload: { key: this.editData?.key, value: null },
+            component: TrailerModalComponent,
+            size: 'small',
+          });
+          break;
+        }
+        default: {
+          break;
+        }
       }
     }
   }
@@ -191,12 +239,12 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
     }
   }
 
-  public onSaveNewBank(bank: any) {
-    this.selectedBank = bank;
+  public onSaveNewBank(bank: { data: any; action: string }) {
+    this.selectedBank = bank.data;
 
     this.bankVerificationService
-      .createBank({ name: bank.name })
-      .pipe(untilDestroyed(this))
+      .createBank({ name: this.selectedBank.name })
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: CreateResponse) => {
           this.notificationService.success(
@@ -205,8 +253,9 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           );
           this.selectedBank = {
             id: res.id,
-            name: bank.name,
+            name: this.selectedBank.name,
           };
+          this.labelsBank = [...this.labelsBank, this.selectedBank];
         },
         error: (err) => {
           this.notificationService.error("Can't add new bank", 'Error');
@@ -217,7 +266,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private onBankSelected() {
     this.ownerForm
       .get('bankId')
-      .valueChanges.pipe(untilDestroyed(this))
+      .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         this.isBankSelected = this.bankVerificationService.onSelectBank(
           this.selectedBank ? this.selectedBank.name : value,
@@ -252,30 +301,34 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     this.ownerModalService
       .updateOwner(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Owner successfully updated.',
-            'Success:'
+            `Changes saved for "${bussinesName}"`,
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Owner can't be updated.", 'Error:');
+          this.notificationService.error(
+            `Failed to save changes for "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
 
   private deleteOwnerById(id: number) {
+    let bussinesName = this.ownerForm.get('bussinesName')?.value;
     this.ownerModalService
       .deleteOwnerById(id, this.editData.selectedTab)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Owner successfully deleted.',
-            'Success:'
+            `"${bussinesName}" deleted`,
+            'Success'
           );
           this.modalService.setModalSpinner({
             action: 'delete',
@@ -283,7 +336,10 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           });
         },
         error: () => {
-          this.notificationService.error("Owner can't be deleted.", 'Error:');
+          this.notificationService.error(
+            `Failed to delete "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -312,17 +368,20 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
 
     this.ownerModalService
       .addOwner(newData)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
           this.notificationService.success(
-            'Owner successfully added.',
-            'Success:'
+            `"${bussinesName}" added`,
+            'Success'
           );
           this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
-          this.notificationService.error("Owner can't be added.", 'Error:');
+          this.notificationService.error(
+            `Failed to add "${bussinesName}"`,
+            'Error'
+          );
         },
       });
   }
@@ -330,7 +389,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private editOwnerById(id: number) {
     this.ownerModalService
       .getOwnerById(id)
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: OwnerResponse) => {
           const splitName = res.ownerType.id === 2 ? res.name.split(' ') : null;
@@ -357,7 +416,7 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           );
         },
         error: () => {
-          this.notificationService.error("Owner can't be loaded.", 'Error:');
+          this.notificationService.error("Owner can't be loaded", 'Error');
         },
       });
   }
@@ -365,19 +424,22 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
   private getOwnerDropdowns() {
     this.ownerModalService
       .getOwnerDropdowns()
-      .pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: OwnerModalResponse) => {
           this.labelsBank = res.banks;
         },
         error: () => {
           this.notificationService.error(
-            "Owner's dropdowns can't be loaded.",
-            'Error:'
+            "Owner's dropdowns can't be loaded",
+            'Error'
           );
         },
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

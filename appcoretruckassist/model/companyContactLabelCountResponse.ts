@@ -16,6 +16,8 @@ export interface CompanyContactLabelCountResponse {
     name?: string | null;
     colorId?: number;
     color?: string | null;
+    code?: string | null;
+    hoverCode?: string | null;
     count?: number;
 }
 

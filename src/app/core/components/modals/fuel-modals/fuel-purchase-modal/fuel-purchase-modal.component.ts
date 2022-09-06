@@ -7,13 +7,12 @@ import {
   OnInit,
 } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
-@UntilDestroy()
 @Component({
   selector: 'app-fuel-purchase-modal',
   templateUrl: './fuel-purchase-modal.component.html',
@@ -21,6 +20,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
   providers: [ModalService, FormService],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @Input() editData: any;
 
   public fuelForm: FormGroup;
@@ -81,7 +81,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     // this.formService.checkFormChange(this.fuelForm);
 
     // this.formService.formValueChange$
-    //   .pipe(untilDestroyed(this))
+    //   .pipe(takeUntil(this.destroy$))
     //   .subscribe((isFormChange: boolean) => {
     //     isFormChange ? (this.isDirty = false) : (this.isDirty = true);
     //   });
@@ -143,7 +143,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       this.fuelItems
         .at(index)
         .get(formControlName)
-        .valueChanges.pipe(untilDestroyed(this))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
           this.quantity[index] = value;
           this.subtotal = [...this.subtotal];
@@ -160,7 +160,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       this.fuelItems
         .at(index)
         .get(formControlName)
-        .valueChanges.pipe(untilDestroyed(this))
+        .valueChanges.pipe(takeUntil(this.destroy$))
         .subscribe((value) => {
           if (!this.quantity[index] || this.quantity[index] === 0) {
             this.quantity[index] = 1;
@@ -251,5 +251,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
   private editFuel(id: number) {}
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

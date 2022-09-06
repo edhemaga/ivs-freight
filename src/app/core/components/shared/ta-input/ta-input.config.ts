@@ -17,10 +17,10 @@ export interface ITaInput {
   max?: number;
   step?: any; // step for input type="number";
   mask?: string; // only for phone type of input
-  textTransform?: string | 'capitalize' | 'uppercase' | 'lowercase';
+  textTransform?: 'capitalize' | 'uppercase' | 'lowercase';
   textAlign?: string | 'center';
   blackInput?: boolean; // has only black background && input clear, no validations
-  blueInputColor?: boolean; // some inputs has blue color on focus out
+  blueInputColor?: boolean; // some inputs has blue color on focus out (example in repair-order)
   incorrectInput?: boolean;
   dangerMark?: boolean;
   autoFocus?: boolean;
@@ -59,8 +59,10 @@ export interface ITaInput {
 
   // Custom classes
   // - 'input-22' -> height: 22px
-  // - 'input-32' -> height: 32px,
+  // - 'input-26' -> height: 26px,
   // - 'input-30' -> height: 30px,
+  // - 'input-32' -> height: 32px,
+  // - 'line-input-26' -> centered elements into input, when input not a part of form tag
   // - 'datetimeclass' -> date/time pickers
   // - 'dollar-placeholderIcon' -> when input has dollar icon
   customClass?: string;
@@ -68,10 +70,18 @@ export interface ITaInput {
   // Pure Dropdown
   isDropdown?: boolean;
   dropdownWidthClass?: string; // Look in ta-input-drodown.scss for implementation class (width of dropdowns)
+  dropdownImageInput?: {
+    withText: boolean;
+    url: string;
+    template?: string; // truck, trailer...
+    color?: string; // colors store in backe-end dynamicly
+    class?: string; // colors store in front-end
+    remove?: boolean; // remove svg in focus mode and when user are typing
+  };
 
   // Label dropdown
-  isDropdownLabel?: boolean;
-  dropdownLabelSelected?: any;
+  dropdownLabel?: boolean;
+  dropdownLabelNew?: boolean;
 
   // MultiSelect Dropdown
   multiselectDropdown?: boolean;
