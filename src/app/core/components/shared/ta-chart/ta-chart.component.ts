@@ -965,10 +965,14 @@ export class TaChartComponent implements OnInit {
         const elWidth = xPoint1 - xPoint2;
         if (this.axesProperties?.horizontalAxes?.showGridLines) {
           xAxis['_gridLineItems'].map((item, i) => {
-            if (i) {
+            if (i && i != xAxis['_gridLineItems'].length - 1) {
               xAxis['_gridLineItems'][i].color = '#DADADA';
             }
-            if (i == value || i == value + 1) {
+            if (
+              i == value ||
+              i == value + 1 ||
+              i == xAxis['_gridLineItems'].length - 1
+            ) {
               xAxis['_gridLineItems'][i].color = 'transparent';
             }
           });
@@ -1032,6 +1036,9 @@ export class TaChartComponent implements OnInit {
       xAxis['_gridLineItems'].map((item, i) => {
         if (i) {
           xAxis['_gridLineItems'][i].color = '#DADADA';
+        }
+        if (i == xAxis['_gridLineItems'].length - 1) {
+          xAxis['_gridLineItems'][i].color = 'transparent';
         }
       });
     }
