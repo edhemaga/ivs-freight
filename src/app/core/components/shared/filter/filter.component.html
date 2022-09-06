@@ -2,9 +2,10 @@
   class="user-icon"
   app-autoclose-popover
   [customClass]="'filterpopovermain'"
-  [placement]="'bottom'"
+  [placement]="'bottom-left'"
   [ngClass]="{
     'active-options': t2?.isOpen(),
+    'customSvg': svgCustom,
     'filter-active-colors':
       selectedUser.length > 0 ||
       selectedTimeValue != '' ||
@@ -56,21 +57,25 @@
       [class.status-filter]="type == 'statusFilter'"
       [class.pm-filter]="leftSideIcon"
       [class.truck-icon-holder]="largeLeftIcon"
+      [class.legend-view]="legendView"
     >
       <div class="filter-header" *ngIf="!expandSearch">
-        <div class="user-filter-box" *ngIf="type != 'stateFilter'">
+        <div class="user-filter-box" *ngIf="type != 'stateFilter' && !legendView">
           {{ selectedUser.length }}
         </div>
-        <div class="user-filter-box" *ngIf="type == 'stateFilter'">
+        <div class="user-filter-box" *ngIf="type == 'stateFilter' && !legendView">
           {{ canadaSelectedStates.length + usaSelectedStates.length }}
         </div>
-        <div class="user-title-text">{{ filterTitle }}</div>
+        <div class="user-title-text" [class.legend-view-title]="legendView" >{{ filterTitle }}</div>
         <div
           class="search-icon-holder"
           *ngIf="searchState"
           (click)="showSearch()"
         >
           <svg-icon src="assets/svg/common/ic_search.svg"></svg-icon>
+        </div>
+        <div class="close close-legend-view" *ngIf="legendView" (click)="closeLegendView($event)">
+          <svg-icon src="assets/svg/truckassist-table/x.svg"></svg-icon>
         </div>
       </div>
       <div
@@ -484,10 +489,10 @@
           </div>
         </div>
       </div>
-      <div class="user-holder" *ngIf="type == 'truckTypeFilter'">
+      <div class="user-holder" [class.legend-type-holder]="legendView" *ngIf="type == 'truckTypeFilter'"> 
         <div
           *ngFor="let item of truckTypeArray; let indx = index"
-          class="user-frame-holder"
+          class="user-frame-holder truck-type-{{item.color}}"
         >
           <div
             *ngIf="!item.hidden && !item.isSelected"
@@ -503,10 +508,10 @@
           </div>
         </div>
       </div>
-      <div class="user-holder" *ngIf="type == 'trailerTypeFilter'">
+      <div class="user-holder" [class.legend-type-holder]="legendView" *ngIf="type == 'trailerTypeFilter'">
         <div
           *ngFor="let item of trailerTypeArray; let indx = index"
-          class="user-frame-holder"
+          class="user-frame-holder trailer-type-{{item.color}}"
         >
           <div
             *ngIf="!item.hidden && !item.isSelected"
@@ -560,8 +565,8 @@
           </div>
         </div>
       </div>
-      <div class="border-filter"></div>
-      <div class="buttons-holder">
+      <div class="border-filter" *ngIf="!legendView"></div>
+      <div class="buttons-holder" *ngIf="!legendView">
         <div
           (click)="clearAll()"
           class="button-clear"
