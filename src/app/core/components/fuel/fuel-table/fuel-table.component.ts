@@ -6,11 +6,11 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getAccountingFuelColumnDefinition } from 'src/assets/utils/settings/accounting-fuel-columns';
 import { FuelPurchaseModalComponent } from '../../modals/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { getAccountingFuelColumnDefinition } from '../../../../../assets/utils/settings/accounting-fuel-columns';
 
 @Component({
   selector: 'app-fuel-table',

@@ -86,6 +86,7 @@
                 name: 'Fax',
                 type: 'text',
                 label: 'Fax',
+                mask: '(000) 000-0000',
                 placeholderIcon: 'fax',
                 isDisabled: true
               }"
@@ -281,7 +282,7 @@
 
                       <div class="group">
                         <app-ta-input-dropdown
-                          formControlName="truckType"
+                          formControlName="vehicleType"
                           [template]="'svgtext-template'"
                           [inputConfig]="{
                             name: 'Input Dropdown',
@@ -414,6 +415,8 @@
                     name: 'Description',
                     type: 'text',
                     label: 'Description',
+                    minLength: 20,
+                    maxLength: 160,
                     textTransform: 'capitalize',
                     isRequired: true
                   }"
@@ -423,7 +426,7 @@
 
             <!-- HAZMAT SPILL, INJURIES, FATALITIES -->
 
-            <div class="d-flex">
+            <div class="d-flex hazmat-injuries-fatalities-container">
               <div
                 class="d-flex align-items-center justify-content-between group hazmat-spill-group"
               >
@@ -442,6 +445,22 @@
               <div class="d-flex align-items-center fatalities-injuries-group">
                 <div class="d-flex align-items-center injuries-group">
                   <app-ta-input-arrows
+                    [formControl]="injuriesControl"
+                    [inputConfig]="{
+                      name: 'FatalInjuries',
+                      type: 'text',
+                      blackInput: true,
+                      hideRequiredCheck: true,
+                      hideClear: true,
+                      hideErrorMessage: true,
+                      textAlign: 'center'
+                    }"
+                    [name]="'Injuries #'"
+                    [type]="'applicant'"
+                  ></app-ta-input-arrows>
+                </div>
+                <div class="d-flex align-items-center fatalities-group">
+                  <app-ta-input-arrows
                     [formControl]="fatalitiesControl"
                     [inputConfig]="{
                       name: 'FatalInjuries',
@@ -453,22 +472,6 @@
                       textAlign: 'center'
                     }"
                     [name]="'Fatalities #'"
-                    [type]="'applicant'"
-                  ></app-ta-input-arrows>
-                </div>
-                <div class="d-flex align-items-center fatalities-group">
-                  <app-ta-input-arrows
-                    [formControl]="injuriesControl"
-                    [inputConfig]="{
-                      name: 'FatalInjuries',
-                      type: 'text',
-                      blackInput: true,
-                      hideRequiredCheck: true,
-                      hideClear: true,
-                      hideErrorMessage: true,
-                      textAlign: 'center'
-                    }"
-                    [name]="'Inj. #'"
                     [type]="'applicant'"
                   ></app-ta-input-arrows>
                 </div>
@@ -629,7 +632,7 @@
               <app-ta-input
                 formControlName="sapName"
                 [inputConfig]="{
-                  name: 'Motor Carrier',
+                  name: 'Name of SAP',
                   type: 'text',
                   label: 'Name of SAP',
                   isRequired: true,

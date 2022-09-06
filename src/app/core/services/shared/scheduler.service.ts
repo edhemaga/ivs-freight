@@ -1,6 +1,6 @@
-import {EventEmitter, Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {environment} from 'src/environments/environment';
+import { EventEmitter, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -8,8 +8,7 @@ import {environment} from 'src/environments/environment';
 export class SchedulerService {
   public emitEventUpdate: EventEmitter<boolean> = new EventEmitter();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   public createEvent(event: any) {
     return this.http.post(environment.API_ENDPOINT + 'scheduler', event);

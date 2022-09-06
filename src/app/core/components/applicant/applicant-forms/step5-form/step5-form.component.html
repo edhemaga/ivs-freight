@@ -18,7 +18,7 @@
     </div>
     <div class="group truck-type-group">
       <app-ta-input-dropdown
-        formControlName="truckType"
+        formControlName="vehicleType"
         [template]="'svgtext-template'"
         [inputConfig]="{
           name: 'Input Dropdown',
@@ -31,7 +31,7 @@
         }"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 1, 10)"
-        [options]="truckType"
+        [options]="vehicleType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -89,8 +89,10 @@
           name: 'Description',
           type: 'text',
           label: 'Description of violation',
-          textTransform: 'capitalize',
+          minLength: 20,
+          maxLength: 160,
           isRequired: true,
+          textTransform: 'capitalize',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [incorrectValue]="false"

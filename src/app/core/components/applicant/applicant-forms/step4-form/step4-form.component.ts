@@ -8,7 +8,6 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
@@ -18,17 +17,21 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { TruckType } from '../../state/model/truck-type.model';
+import { VehicleType } from '../../state/model/vehicle-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { AddressEntity } from 'appcoretruckassist';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { addressValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
@@ -55,12 +58,16 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
   public accidentForm: FormGroup;
 
   public selectedAddress: AddressEntity;
-  public selectedTruckType: any = null;
+  public selectedVehicleType: any = null;
 
   public isAccidentEdited: boolean;
+
   public editingCardAddress: any;
 
-  public truckType: TruckType[] = [];
+  public vehicleType: VehicleType[] = [];
+
+  public hazmatSpillRadios: any;
+
   public answerChoices: AnswerChoices[] = [
     {
       id: 1,
@@ -77,8 +84,6 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       checked: false,
     },
   ];
-
-  public hazmatSpillRadios: any;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -164,8 +169,11 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       fatalities: [0],
       injuries: [0],
       hazmatSpill: [null, Validators.required],
-      truckType: [null, Validators.required],
-      accidentDescription: [null, Validators.required],
+      vehicleType: [null, Validators.required],
+      accidentDescription: [
+        null,
+        [Validators.required, ...descriptionValidation],
+      ],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -179,7 +187,7 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
       injuries: this.formValuesToPatch.injuries,
-      truckType: this.formValuesToPatch.truckType,
+      vehicleType: this.formValuesToPatch.vehicleType,
       accidentDescription: this.formValuesToPatch.accidentDescription,
     });
 
@@ -205,7 +213,7 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
         break;
       case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
+        this.selectedVehicleType = event;
 
         break;
       case InputSwitchActions.ADDRESS:

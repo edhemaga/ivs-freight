@@ -19,11 +19,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('ID', 'id-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="ID"
         class="country_state"
         data-name="Path 38712"
@@ -34,11 +29,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('MT', 'mt-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="MT"
         class="country_state"
         attr.fill="{{ statesColor['MT']['color'] }}"
@@ -89,12 +79,7 @@
       >
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('WY', 'wy-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
-          
+          id="WY_path"
           class="country_state"
           attr.fill="{{ statesColor['WY']['color'] }}"
           triggers="mouseenter:mouseleave"
@@ -184,12 +169,7 @@
         />
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('OK', 'ok-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
-          
+          id="OK_path"
           class="country_state"
           attr.fill="{{ statesColor['OK']['color'] }}"
           triggers="mouseenter:mouseleave"
@@ -212,15 +192,11 @@
       >
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('MS', 'ms-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           class="country_state"
           attr.fill="{{ statesColor['MS']['color'] }}"
           triggers="mouseenter:mouseleave"
           data-name="Path 32284"
+          id="MS_path"
           d="M3707.268,1865.629a16.026,16.026,0,0,0-.212-2.809,44.539,44.539,0,0,1-.71-5.6,34.269,34.269,0,0,0-1.046-6.255,8.167,8.167,0,0,1-.169-4.16,15.735,15.735,0,0,1,.488-2.8,20.339,20.339,0,0,0,.523-2.375,26.38,26.38,0,0,0,.364-2.867c.035-.463.053-.927.071-1.361.044-1.4.009-2.616-.036-3.388H3690.2c-.025.1-.062.212-.1.328-.027.1-.062.184-.1.29-.071.241-.169.521-.284.859a7.294,7.294,0,0,1-2.129,3.282c-.462.463-1.039,1.052-1.784,1.93-1.438,1.67-2.166,2.625-3.008,3.726-.515.676-1.055,1.39-1.819,2.336-.257.328-.417.56-.514.714a3.328,3.328,0,0,1,1.384,1.139,3.093,3.093,0,0,1,.4,1.9c-.009.173-.036.357-.062.531a2.046,2.046,0,0,1-.037.222c-.035.212-.088.425-.142.627-.026.087-.053.183-.08.27-.088.3-.185.589-.293.859-.044.125-.1.251-.142.367-.009.019-.018.048-.027.067-.088.2-.167.386-.249.541-.026.058-.044.106-.07.155v.009l-.009.01a1.782,1.782,0,0,0,.009.222c0,.067.008.145.008.232a7.224,7.224,0,0,0,.346,2.152,2.9,2.9,0,0,0,.772,1.129l.275.271a14.344,14.344,0,0,1,1.163,1.313,2.594,2.594,0,0,0,.2.231c.711.772.009,1.661-.666,2.519a9.168,9.168,0,0,0-.949,1.323c-.168.319-.355.627-.541.956a21.988,21.988,0,0,0-1.465,2.828,1.791,1.791,0,0,0-.1,1.2,2.9,2.9,0,0,1-.834,2.809,13.42,13.42,0,0,1-1.3,1.236c-.125.106-.266.232-.373.328a1.652,1.652,0,0,1,.133.868c.169,0,.391,0,.657-.01a4.046,4.046,0,0,1,1.908.251c.329-.077.914-.231,1.7-.435l.168-.038a23.489,23.489,0,0,0,3.39-1.081,2.729,2.729,0,0,1,1.961-.2,3.362,3.362,0,0,1,1.225.406c.24.135.487.26,2.324.154a10.736,10.736,0,0,0,2.884-.637c.922-.309,1.65-.55,2.209.039a2,2,0,0,1,.248,1.872,5.335,5.335,0,0,1-1.384,2.375c-.018.02-.027.039-.044.048a3.386,3.386,0,0,0,1.606.376,1.7,1.7,0,0,1,1.854,1.409c.036.125.071.241.106.357a4.874,4.874,0,0,1,1.251-.444,3.545,3.545,0,0,1,1.943-.164,6.76,6.76,0,0,0,.888.145,6.022,6.022,0,0,1,1.118.2c.435.116.594.164,2.014-.367a4.983,4.983,0,0,1,.816-.232,25.065,25.065,0,0,1,.088-3.2c.071-1.361.151-2.326.222-3.06s.133-1.245.2-1.67A19.261,19.261,0,0,0,3707.268,1865.629Z"
           transform="translate(-3677.701 -1834.018)"
         />
@@ -283,7 +259,7 @@
         [autoClose]="false"
         [container]="'body'"
         [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
+        [placement]="'right-center'"
         [popoverClass]="'main_popover_country'"
         id="WA"
         triggers="mouseenter:mouseleave"
@@ -299,6 +275,7 @@
         />
         <path
           id="wa-text"
+          class="country_text"
           d="M-11.749-8.4l-2.228,6.962h-2.516l-1.124-3.72L-18.8-1.438h-2.516L-23.544-8.4h2.417l1.213,3.958L-18.631-8.4h2.158l1.213,4.008L-13.976-8.4Zm5.013,5.748H-9.382l-.467,1.213h-2.387L-9.193-8.4h2.307l3.043,6.962H-6.269Zm-.646-1.691-.676-1.75-.676,1.75Z"
           transform="translate(44.995 23.812)"
           fill="#fff"
@@ -318,14 +295,10 @@
         />
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('AR', 'ar-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           class="country_state"
           attr.fill="{{ statesColor['AR']['color'] }}"
           triggers="mouseenter:mouseleave"
+          id="AR_path"
           data-name="Path 32292"
           d="M3685.839,1824.341a5.817,5.817,0,0,1-1.021-1.3,1.467,1.467,0,0,0-.585-.6c-.577-.377-.843-.357-2.732-.135-.391.048-.844.106-1.359.154a49.685,49.685,0,0,1-5.617.039c-3.053-.068-6.5-.155-8.145.28a2.949,2.949,0,0,0-1.43.714c-1,.888-1.633.6-4.126-.792a18.157,18.157,0,0,1-2.538-1.708c-.737-.6-.737-.6-3.363,0-1.366.309-2.689.6-3.86.849-.443.087-.869.174-1.26.251a.188.188,0,0,1-.071.019c-.2.048-.408.087-.594.125-.1.019-.2.039-.283.058-.276.048-.524.1-.755.145q-.226.043-.426.087h-.018a.063.063,0,0,1-.035.01l.2.579,1.571,24.43h.009c.257-.019.524-.029.808-.038,4.347-.125,4.6-.135,4.808.782a1.235,1.235,0,0,1-.878,1.361,3.72,3.72,0,0,0-.532.3,3.4,3.4,0,0,1,.3,1.052c.009.106.018.222.018.328a3.294,3.294,0,0,1-.027.415l-.053.347a10.676,10.676,0,0,1-.275,1.042l22.761-.608c.054-.125.106-.251.16-.386a3.9,3.9,0,0,0,.169-.454c.053-.145.106-.3.152-.444a6.371,6.371,0,0,0,.222-.839c.025-.126.043-.251.061-.367a2.109,2.109,0,0,0,0-.579.8.8,0,0,0-.071-.183,1.7,1.7,0,0,0-.7-.521,1.8,1.8,0,0,1-1.118-1.236c-.15-.782.319-1.554,1.056-2.48.754-.936,1.287-1.641,1.792-2.307.826-1.071,1.607-2.095,3.071-3.813.8-.927,1.393-1.535,1.872-2.017a5.441,5.441,0,0,0,1.677-2.538,12.856,12.856,0,0,0,.541-1.776l.018-.126a1.047,1.047,0,0,0,.018-.173,1.461,1.461,0,0,0,.018-.2c.027-.261.053-.589.115-1.072a5.752,5.752,0,0,1,.116-.6c.026-.106.052-.222.079-.338a28.619,28.619,0,0,1,1.384-3.716c.1-.212.186-.415.266-.6.036-.077.071-.155.1-.222A9.61,9.61,0,0,1,3685.839,1824.341Z"
           transform="translate(-3647.621 -1820.543)"
@@ -384,15 +357,11 @@
       >
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('MO', 'mo-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           class="country_state"
           attr.fill="{{ statesColor['MO']['color'] }}"
           triggers="mouseenter:mouseleave"
           data-name="Path 32297"
+          id="MO_path"
           d="M3690.575,1815.564a5.669,5.669,0,0,0-.878-1.013c-.088-.087-.177-.174-.265-.27a7.853,7.853,0,0,1-.534-.589l-.142-.164-.027-.029a5.369,5.369,0,0,1-.444-.7,2.922,2.922,0,0,1-.292-.994,5.62,5.62,0,0,0-.843-2.944,1,1,0,0,0-.523-.406,1.979,1.979,0,0,1-1.233-1.245,5.821,5.821,0,0,0-1.349-2.133c-.213-.222-.328-.241-1.243-.019-.355.087-.754.184-1.215.251a1.7,1.7,0,0,1-1.553-.386,2.37,2.37,0,0,1-.345-1.969,8.376,8.376,0,0,0,.07-1.458,2.878,2.878,0,0,1,1.278-2.954,3.526,3.526,0,0,0,.427-.348,5.035,5.035,0,0,1-.64-.985,3.889,3.889,0,0,1-1.456.386c-1.632.106-1.96.135-2.75-.734l-.1-.106a1.9,1.9,0,0,1-.319-2.123,1.33,1.33,0,0,0,.071-.222,5.815,5.815,0,0,0-1.3-1.679c-.275-.309-.444-.328-.95-.4a6.607,6.607,0,0,1-1.6-.386c-2.014-.782-2.98-5.019-2.849-6.245a11.735,11.735,0,0,0,.018-1.689c-.008-.309-.026-.618-.026-.927a1.863,1.863,0,0,1,.1-.589c.018-.058.035-.116.052-.174a3.827,3.827,0,0,1,.257-.5c.009,0,.009-.01.009-.01-.079-.019-.151-.039-.222-.058-.249-.068-.488-.135-.727-.183a23.287,23.287,0,0,0-5.99-.483c-.072.01-.187.019-.338.029-.044,0-.106.01-.16.01-.515.038-1.322.077-2.36.125-.133,0-.283.01-.426.019h-.177l-.727.029c-.169.01-.338.019-.505.019-.338.019-.684.029-1.039.039a2.119,2.119,0,0,1-.249.01c-.284.009-.568.029-.86.038l-1.757.058c-.409.019-.816.029-1.234.039a2.689,2.689,0,0,1-.275.01c-.328.019-.657.029-.984.039-1.065.029-2.148.068-3.24.106-.435.01-.878.02-1.313.039-.87.029-1.73.048-2.573.077l-.887.029c-.551.019-1.082.029-1.6.048-.39.01-.772.019-1.145.039-.124,0-.248,0-.372.01-.241,0-.471.01-.7.019-.195,0-.381.01-.567.019l-1,.029h-.009c-.647.019-1.233.029-1.757.048-.248.01-.5.019-.719.019s-.426.019-.612.019v.01a14.627,14.627,0,0,0,.968,1.805,16.186,16.186,0,0,0,1.313,1.824l.019.019,3.975,1.95-1.643,3.475a1.907,1.907,0,0,0,.648.753c.773.212,2.609.83,2.992,2.085a5.038,5.038,0,0,0,1.127,1.207l.371.309-.55,18.195-.79.434,1.748,5.212c.009-.01.009-.01.018-.01a1.919,1.919,0,0,1,.267-.048c.088-.019.177-.039.275-.058h.026c.106-.029.222-.048.337-.068.435-.1.932-.193,1.482-.309.133-.019.266-.048.408-.077a1.64,1.64,0,0,1,.231-.048c.169-.038.346-.077.523-.116s.346-.068.523-.106.355-.077.541-.116c.374-.077.746-.164,1.136-.251.577-.126,1.181-.261,1.784-.4,3.062-.7,3.452-.743,4.783.338a14.918,14.918,0,0,0,2.3,1.544,17.815,17.815,0,0,0,2.121,1.071.436.436,0,0,0,.063-.058,4.715,4.715,0,0,1,2.138-1.091c1.872-.5,5.289-.415,8.6-.338a48.371,48.371,0,0,0,5.4-.029c.514-.048.958-.106,1.34-.154a17.842,17.842,0,0,1,1.943-.164,3.146,3.146,0,0,1,1.9.569,3.253,3.253,0,0,1,1.162,1.207,3.772,3.772,0,0,0,.728.917,7.008,7.008,0,0,0,1.819,1.323,1.743,1.743,0,0,0,.364.125.35.35,0,0,0,.088.019.2.2,0,0,0,.071.01c.044.01.072.01.08,0a3.054,3.054,0,0,0-.062-1.68,3.106,3.106,0,0,1-.125-1.255c.169-1.139,1.313-2.548,2.973-3.678l.187-.135A3.318,3.318,0,0,1,3690.575,1815.564Z"
           transform="translate(-3635.461 -1781.027)"
         />
@@ -406,11 +375,6 @@
       </g>
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('MI', 'mi-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="MI"
         class="country_state"
         attr.fill="{{ statesColor['MI']['color'] }}"
@@ -480,11 +444,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('PA', 'pa-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="PA"
         class="country_state"
         attr.fill="{{ statesColor['PA']['color'] }}"
@@ -495,11 +454,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('WI', 'wi-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="WI"
         class="country_state"
         attr.fill="{{ statesColor['WI']['color'] }}"
@@ -510,11 +464,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('IL', 'il-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['IL']['color'] }}"
         data-name="Path 38722"
         id="IL"
@@ -525,11 +474,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('IN', 'in-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['IN']['color'] }}"
         data-name="Path 38722"
         id="IN"
@@ -541,11 +485,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('KS', 'ks-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['KS']['color'] }}"
         data-name="Path 38722"
         id="KS"
@@ -557,11 +496,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('CO', 'co-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['CO']['color'] }}"
         data-name="Path 38722"
         id="CO"
@@ -591,13 +525,9 @@
       >
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('NM', 'nm-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           attr.fill="{{ statesColor['NM']['color'] }}"
           data-name="Path 38722"
+          id="NM_path"
           class="country_state"
           triggers="mouseenter:mouseleave"
           data-name="Path 32316"
@@ -607,11 +537,6 @@
       </g>
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('TX', 'tx-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['TX']['color'] }}"
         data-name="Path 38722"
         id="TX"
@@ -623,11 +548,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('NV', 'nv-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['NV']['color'] }}"
         data-name="Path 38722"
         id="NV"
@@ -639,11 +559,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('UT', 'ut-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['UT']['color'] }}"
         data-name="Path 38722"
         id="UT"
@@ -662,11 +577,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('AZ', 'az-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['AZ']['color'] }}"
         data-name="Path 38722"
         id="AZ"
@@ -678,11 +588,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('NC', 'nc-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['NC']['color'] }}"
         data-name="Path 38722"
         id="NC"
@@ -694,11 +599,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('KY', 'ky-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['KY']['color'] }}"
         data-name="Path 38722"
         id="KY"
@@ -717,11 +617,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('AL', 'al-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['AL']['color'] }}"
         data-name="Path 38722"
         id="AL"
@@ -733,11 +628,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('SC', 'sc-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['SC']['color'] }}"
         data-name="Path 38722"
         id="SC"
@@ -756,11 +646,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('GA', 'ga-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['GA']['color'] }}"
         data-name="Path 38722"
         id="GA"
@@ -772,11 +657,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('TN', 'tn-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['TN']['color'] }}"
         data-name="Path 38722"
         id="TN"
@@ -795,11 +675,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('VA', 'va-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['VA']['color'] }}"
         data-name="Path 38722"
         id="VA"
@@ -816,14 +691,10 @@
       >
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('FL', 'fl-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           attr.fill="{{ statesColor['FL']['color'] }}"
           data-name="Path 38722"
           class="country_state"
+          id="FL_path"
           triggers="mouseenter:mouseleave"
           data-name="Path 32333"
           d="M3799.151,1907.828a8.992,8.992,0,0,1-.009-2.375c-.044-.1-.115-.232-.222-.435-.221-.424-.567-1.1-1.1-2.2a23.087,23.087,0,0,1-1.358-3.1,24.4,24.4,0,0,0-1.624-3.4,23.88,23.88,0,0,0-2.334-4.015,13.063,13.063,0,0,1-1.455-2.432,13.432,13.432,0,0,0-1.216-2.114,9.627,9.627,0,0,1-1.251-2.645,4.853,4.853,0,0,1-.426-2.345c-.249-.164-.666-.435-1.153-.734l-.4-.261a7.44,7.44,0,0,0-2.271-1.091c-.913-.241-1.18-.541-2.556-2.49a6.314,6.314,0,0,0-2.041-1.979c-1.083-.666-1.419-1.274-1.135-3.34.071-.482.142-.907.2-1.274.212-1.332.212-1.525.079-1.631l-.062-.039a4.516,4.516,0,0,0-.8-.338c-1.464-.473-1.624-.521-2.262,0,0,.039.009.077.009.106.053.84-.373,1.023-2.732,2.046a9.106,9.106,0,0,0-2.254,1.284c-1.057.8-1.313.743-4.535.048l-.2-.039a9.326,9.326,0,0,1-3.638-1.342,1.137,1.137,0,0,0-.177-.116,11.415,11.415,0,0,0-1.935.435,9.059,9.059,0,0,0-2.8,1.139,3.308,3.308,0,0,1-2.467.521,5.69,5.69,0,0,0-.763-.02.79.79,0,0,1-.267.135.464.464,0,0,1-.124.029.671.671,0,0,1-.142.01c-.018,0-.035.01-.053.01-.044,0-.1-.01-.142-.01a.2.2,0,0,0-.08-.01,2.562,2.562,0,0,1-.417-.068c-.089-.019-.178-.038-.285-.058-.239-.048-.523-.116-.86-.2a14.765,14.765,0,0,0-2.414-.367,2.508,2.508,0,0,1-1.313-.338c.133-.067.257-.145.39-.222a.031.031,0,0,0-.027-.01c-.124.077-.248.145-.381.222-.949.55-1.935,1.081-2.928,1.583-1.775.907-3.585,1.737-5.351,2.558l-.506.231a4.725,4.725,0,0,1,1.5,1.091,1.653,1.653,0,0,1,.426.714c.142.087.3.193.471.3a10.957,10.957,0,0,0,3.522,1.65,1.513,1.513,0,0,1,1.1.714,1.2,1.2,0,0,1,.123.367c1.047-.425,1.367-.531,1.633-.618.293-.1.523-.174,1.907-.763a10.339,10.339,0,0,0,2.37-1.255,4.138,4.138,0,0,1,1.517-.724,2.019,2.019,0,0,0,1.055-.589,1.54,1.54,0,0,1,1.331-.541,1.756,1.756,0,0,0,.311-.01,4.524,4.524,0,0,1,4.357,2.075,2.236,2.236,0,0,1,.435,2.153c.452.135,1.1.318,1.935.54a18.853,18.853,0,0,0,5.28.676c1.34,0,2.5.01,2.937,1.979a2.149,2.149,0,0,1-.275,1.959c.115.193.292.473.559.878.754,1.129,1.313,1.091,1.686,1.072a1.107,1.107,0,0,1,1.109.492c.347.608.133,1.023-.666,2.577a18.725,18.725,0,0,0-1.757,4.122l-.133.734c.133.25.311.56.56.965a3,3,0,0,0,2.218,1.622,1.754,1.754,0,0,1,1.313.782,2.13,2.13,0,0,1,.089,1.573,6.658,6.658,0,0,1-1.109,2.278c-.559.84-.523.878-.381,1.1a5.033,5.033,0,0,1,.6,1.216.932.932,0,0,0,.08.193,3.822,3.822,0,0,0,1.092.493,3.979,3.979,0,0,0,1.154.28c.807.068,1.011.425,1.509,1.294l.3.54a2.446,2.446,0,0,1,.337,1.882c.187,0,.355-.01.47-.01a6.141,6.141,0,0,0,2.511-.483c1.429-.569,1.953-.058,3.576,1.8a8.544,8.544,0,0,0,2,1.892c.532.328.8.57,1.535,1.824a3.564,3.564,0,0,1,.541,2.548c.133.029.32.077.577.126a8.512,8.512,0,0,1,2.05.685c.63.28.692.309,1.872-.54a2.214,2.214,0,0,1,2.29-.377c.018-.453.018-.926.026-1.158a19.051,19.051,0,0,0-.355-4.411,3,3,0,0,1,.523-2.818,2,2,0,0,1,1.722-1.023h.035C3799.222,1908.773,3799.2,1908.4,3799.151,1907.828Z"
@@ -832,11 +703,6 @@
       </g>
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('LA', 'la-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         attr.fill="{{ statesColor['LA']['color'] }}"
         data-name="Path 38722"
         id="LA"
@@ -848,11 +714,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('NY', 'ny-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="NY"
         class="country_state"
         attr.fill="{{ statesColor['NY']['color'] }}"
@@ -863,11 +724,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('ME', 'me-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="ME"
         class="country_state"
         attr.fill="{{ statesColor['ME']['color'] }}"
@@ -878,11 +734,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('ND', 'nd-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="ND"
         class="country_state"
         attr.fill="{{ statesColor['ND']['color'] }}"
@@ -893,11 +744,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('MN', 'mn-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="MN"
         class="country_state"
         attr.fill="{{ statesColor['MN']['color'] }}"
@@ -908,11 +754,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('SD', 'sd-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="SD"
         class="country_state"
         attr.fill="{{ statesColor['SD']['color'] }}"
@@ -924,11 +765,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('NE', 'ne-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="NE"
         class="country_state"
         attr.fill="{{ statesColor['NE']['color'] }}"
@@ -947,7 +783,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="DE"
           [class.country_state_letters]="hoveredItem && currentCountry == 'DE'"
@@ -965,7 +801,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -987,7 +823,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="NJ"
           [class.country_state_letters]="hoveredItem && currentCountry == 'NJ'"
@@ -1004,7 +840,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1026,7 +862,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="RI"
           [class.country_state_letters]="hoveredItem && currentCountry == 'RI'"
@@ -1043,7 +879,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1065,7 +901,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="CT"
           [class.country_state_letters]="hoveredItem && currentCountry == 'CT'"
@@ -1082,7 +918,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1104,7 +940,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="MA"
           [class.country_state_letters]="hoveredItem && currentCountry == 'MA'"
@@ -1121,7 +957,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1143,7 +979,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="VT"
           [class.country_state_letters]="hoveredItem && currentCountry == 'VT'"
@@ -1160,7 +996,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1182,7 +1018,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="MD"
           [class.country_state_letters]="hoveredItem && currentCountry == 'MD'"
@@ -1199,7 +1035,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1213,11 +1049,6 @@
       </g>
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('WV', 'wv-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="WV"
         class="country_state"
         attr.fill="{{ statesColor['WV']['color'] }}"
@@ -1240,21 +1071,18 @@
         />
         <path
           (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('IA', 'ia-text')"
-          [autoClose]="false"
-          [container]="'body'"
-          [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
-          [popoverClass]="'main_popover_country'"
           class="country_state"
           attr.fill="{{ statesColor['IA']['color'] }}"
           triggers="mouseenter:mouseleave"
           data-name="Path 32368"
+          id="IA_path"
           d="M3678.006,1767.575a17.769,17.769,0,0,1-.035-1.882l.018-.4v-.222l.009-.222a1.03,1.03,0,0,0-.133-.6c-.035-.039-.062-.077-.1-.116a3.592,3.592,0,0,0-.5-.444,10.5,10.5,0,0,0-1.81-1.293c-.382-.222-.9-.541-1.829-1.12a3.527,3.527,0,0,0-1.748-.627c-1.215-.125-1.667-.647-2.208-2.539a30.478,30.478,0,0,1-.711-3.031,3.748,3.748,0,0,0-.275-1.023,5.831,5.831,0,0,0-.753-1.178c-.835,0-2.84-.019-5.511-.039-.514-.009-1.047-.009-1.615-.019l-2.574-.029c-.453-.01-.9-.01-1.366-.019l-2.139-.029c-.345-.01-.692-.01-1.038-.019-.142,0-.284-.01-.426-.01-.249,0-.5-.01-.746-.01-.15-.01-.311-.01-.461-.01-.346-.01-.692-.02-1.039-.02-1.011-.019-2.023-.048-3.025-.068-.612-.019-1.216-.029-1.81-.048-.4-.01-.808-.029-1.207-.038-.249,0-.5-.01-.737-.019-.417-.01-.825-.029-1.233-.039-1.3-.048-2.556-.087-3.745-.145l-.666-.029c-.053,0-.106-.01-.167-.01-.338-.02-.666-.029-.995-.048q-1.331-.073-2.5-.145c-.364-.029-.71-.058-1.039-.077h-.026c-.284-.019-.558-.048-.816-.068-.062-.01-.115-.01-.168-.019-.151-.01-.311-.019-.453-.039-.044,0-.08-.009-.106-.009-.16-.02-.319-.039-.461-.048-.3-.039-.577-.068-.834-.106-.168-.019-.328-.039-.479-.068h-.009c-.026.212-.062.425-.1.647-.152.936-.32,1.892-.507,2.712-.026.116-.053.232-.08.338-.062.251-.125.492-.187.7-.044.154-.1.3-.142.434a5.657,5.657,0,0,1-.266.589,2.834,2.834,0,0,1-.167.318,10.05,10.05,0,0,1-1.1,1.564c-.08.1-.169.193-.248.28-.037.039-.081.077-.116.116v.01q.212.217.426.463c.088.106.178.212.266.328.178.222.355.463.523.714l.187.29c.186.289.373.589.542.9.053.1.115.2.169.309.115.212.222.425.328.637s.213.425.311.637.2.434.3.647c.15.348.293.685.427,1.023.079.174.141.338.2.512s.132.338.194.5c.124.319.24.627.337.917,1.188,3.4,2.28,7.886,2.023,10.26a4.737,4.737,0,0,0-.009.936c.009.1.026.193.035.29.009.077.027.155.045.241a.731.731,0,0,0,.019.145h.008c.532-.019,1.295-.039,2.235-.068.071,0,.151-.01.232-.01.132,0,.266,0,.408-.01.212-.009.443-.009.673-.019.2-.01.417-.02.63-.02q.918-.029,1.944-.058c.5-.019,1-.029,1.526-.048h.213c.311-.019.63-.029.949-.029l1.7-.058,2.769-.087c2.725-.087,5.458-.174,7.826-.261.364-.01.719-.019,1.057-.038,1.073-.038,2.042-.077,2.875-.106.106-.009.213-.009.311-.019a2.428,2.428,0,0,0,.267-.01c.16-.01.311-.01.461-.019.062,0,.125-.01.187-.01.15-.01.292-.01.417-.019.675-.039,1.127-.068,1.3-.087a10.932,10.932,0,0,1,1.987-.048c.24.01.489.019.728.039l.374.029c.372.029.744.068,1.1.116.958.106,1.819.261,2.369.377.258.058.524.125.8.193a7.026,7.026,0,0,0,1.49.29c.044,0,.089-.01.124-.01l.08-.01a2.472,2.472,0,0,1,.781-.994,1.3,1.3,0,0,0,.143-.125.844.844,0,0,0,.018-.212,4.313,4.313,0,0,0-.089-.772,15.694,15.694,0,0,0-.816-2.982c-.106-.29-.2-.57-.3-.878l-.036-.116a2.927,2.927,0,0,1-.08-2.229,2.327,2.327,0,0,1,1.553-1.158,18.8,18.8,0,0,0,1.855-.666c.381-.155.914-.357,1.748-.676a4.021,4.021,0,0,1,2.263-.222C3678.033,1767.951,3678.024,1767.787,3678.006,1767.575Z"
           transform="translate(-3627.631 -1751.658)"
         />
       </g>
       <path
         id="mt-text"
+        class="country_text"
         data-name="Text"
         d="M-12.4-1.438l-.02-3.173-1.512,2.546h-1.034L-16.474-4.5v3.063h-2.138V-8.4h1.929l2.268,3.71,2.208-3.71h1.929l.02,6.962ZM-7.612-6.58H-9.651V-8.4h6.425v1.82H-5.265v5.142H-7.612Z"
         transform="translate(523.668 3132.774)"
@@ -1262,6 +1090,7 @@
       />
       <path
         id="nd-text"
+        class="country_text"
         data-name="Text"
         d="M-12.014-8.4v6.962h-1.929L-16.589-4.6v3.163h-2.287V-8.4h1.929L-14.3-5.237V-8.4Zm1.134,0h3.431a4.736,4.736,0,0,1,2.054.423A3.216,3.216,0,0,1-4.012-6.769a3.411,3.411,0,0,1,.492,1.85,3.411,3.411,0,0,1-.492,1.85A3.216,3.216,0,0,1-5.395-1.861a4.736,4.736,0,0,1-2.054.423H-10.88Zm3.332,5.132A1.676,1.676,0,0,0-6.34-3.7a1.606,1.606,0,0,0,.453-1.218A1.606,1.606,0,0,0-6.34-6.137,1.676,1.676,0,0,0-7.548-6.57h-.985v3.3Z"
         transform="translate(589.851 3133.853)"
@@ -1272,7 +1101,7 @@
         [autoClose]="false"
         [container]="'body'"
         [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
+        [placement]="'right-center'"
         [popoverClass]="'main_popover_country'"
         id="OR"
         attr.fill="{{ statesColor['OR']['color'] }}"
@@ -1289,6 +1118,7 @@
         />
         <path
           id="or-text"
+          class="country_text"
           data-name="Text"
           d="M-14.84-1.312a4.3,4.3,0,0,1-2.019-.467,3.511,3.511,0,0,1-1.4-1.3,3.524,3.524,0,0,1-.507-1.875,3.524,3.524,0,0,1,.507-1.875,3.511,3.511,0,0,1,1.4-1.3,4.3,4.3,0,0,1,2.019-.467,4.3,4.3,0,0,1,2.019.467,3.511,3.511,0,0,1,1.4,1.3,3.524,3.524,0,0,1,.507,1.875,3.524,3.524,0,0,1-.507,1.875,3.511,3.511,0,0,1-1.4,1.3A4.3,4.3,0,0,1-14.84-1.312Zm0-1.9a1.5,1.5,0,0,0,.791-.214,1.531,1.531,0,0,0,.562-.607,1.932,1.932,0,0,0,.209-.92,1.932,1.932,0,0,0-.209-.92,1.531,1.531,0,0,0-.562-.607,1.5,1.5,0,0,0-.791-.214,1.5,1.5,0,0,0-.791.214,1.531,1.531,0,0,0-.562.607,1.932,1.932,0,0,0-.209.92,1.932,1.932,0,0,0,.209.92,1.531,1.531,0,0,0,.562.607A1.5,1.5,0,0,0-14.84-3.212Zm7.767-.01h-.637v1.75h-2.347V-8.433H-6.7a4.109,4.109,0,0,1,1.681.318,2.477,2.477,0,0,1,1.1.915,2.5,2.5,0,0,1,.388,1.392A2.461,2.461,0,0,1-3.87-4.5a2.388,2.388,0,0,1-.975.885l1.462,2.148H-5.889ZM-5.9-5.807a.766.766,0,0,0-.239-.6,1.044,1.044,0,0,0-.716-.214h-.855v1.631h.855a1.044,1.044,0,0,0,.716-.214A.766.766,0,0,0-5.9-5.807Z"
           transform="translate(45.192 30.984)"
@@ -1297,6 +1127,7 @@
       </g>
       <path
         id="id-text"
+        class="country_text"
         data-name="Text"
         d="M-13.428-8.4h2.347v6.962h-2.347Zm3.481,0h3.431a4.736,4.736,0,0,1,2.054.423A3.216,3.216,0,0,1-3.08-6.769a3.411,3.411,0,0,1,.492,1.85,3.411,3.411,0,0,1-.492,1.85A3.216,3.216,0,0,1-4.462-1.861a4.736,4.736,0,0,1-2.054.423H-9.947Zm3.332,5.132A1.676,1.676,0,0,0-5.407-3.7a1.606,1.606,0,0,0,.453-1.218,1.606,1.606,0,0,0-.453-1.218A1.676,1.676,0,0,0-6.615-6.57H-7.6v3.3Z"
         transform="translate(475.125 3152.5)"
@@ -1304,6 +1135,7 @@
       />
       <path
         id="wy-text"
+        class="country_text"
         data-name="Text"
         d="M-10.717-8.4l-2.228,6.962h-2.516l-1.124-3.72-1.184,3.72h-2.516L-22.512-8.4H-20.1l1.213,3.958L-17.6-8.4h2.158l1.213,4.008L-12.944-8.4Zm4.505,4.436v2.526H-8.559V-3.994L-11.184-8.4h2.476l1.422,2.407L-5.853-8.4h2.268Z"
         transform="translate(532.209 3169.076)"
@@ -1315,17 +1147,19 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           class="country_state"
           attr.fill="{{ statesColor['CA']['color'] }}"
           triggers="mouseenter:mouseleave"
+          id="CA_path"
           data-name="Path 38627"
           d="M3437.993,1819.324a2.565,2.565,0,0,1-.231-.212,1.547,1.547,0,0,1-.2-.222l-.284-.512a2.851,2.851,0,0,1-.16-.55,4.031,4.031,0,0,1-.044-.57,4.883,4.883,0,0,1,.222-1.39v-.01c-.062-.019-.133-.039-.2-.058-.906-.3-2.165-.7-3.052-.955-.089-.029-.169-.048-.249-.068a6.179,6.179,0,0,0-.612-.164c-1.012-.222-1.757-1.776-4.694-9.778-.844-2.3-1.642-4.459-2.21-5.743-1.561-3.523-3.186-5.589-6.22-8.89-1.039-1.129-1.82-1.931-2.415-2.538a8.166,8.166,0,0,1-1.979-2.5,11.078,11.078,0,0,1-.461-1.429,14.768,14.768,0,0,0-.7-2.095c-.452-1.071-7.107-9.865-11.2-15.154l-.328-.425,9.663-28.272-30.206-8.243a20.848,20.848,0,0,1-1.171,6.332,12.383,12.383,0,0,1-3.434,4.421,15.212,15.212,0,0,0-3.124,3.629,9.069,9.069,0,0,0-.577,1.168h.01a3.511,3.511,0,0,1,1.845,1.959,9.742,9.742,0,0,0,1.207,2.172,3.42,3.42,0,0,1,.772,1.776c.106.994-.79,2.22-3.009,4.99a25.673,25.673,0,0,0-1.784,2.374,6.3,6.3,0,0,0,.861.55,15.282,15.282,0,0,1,2.254,1.554,4.137,4.137,0,0,1,1.8,2.683,32.437,32.437,0,0,0,1.748,4.865c.178.4.329.743.461,1.062a6.04,6.04,0,0,1,1.455-1.042,1.555,1.555,0,0,1,1.526-.145,1.64,1.64,0,0,1,.622,1.371,5.184,5.184,0,0,0,.576,2.114c.914,1.805.8,2.471-.009,3.572a7.878,7.878,0,0,0-1.083,1.911c-.319.8-.727,1.786-1.588,1.737a1.065,1.065,0,0,1-.914-.733c.062.251.134.521.2.82a5.859,5.859,0,0,0,.373,1.284,2.5,2.5,0,0,1,.816.792,5.869,5.869,0,0,0,.426.541c.55.637.55.956.55,2,0,.57,0,1.014-.39,1.361a1.017,1.017,0,0,1-.958.2,2.277,2.277,0,0,0-1.216.077,10.513,10.513,0,0,1,1.979,1.67c1.18,1.332,1.393,1.815,1.3,2.876a5.913,5.913,0,0,0,.16,2.017c.089.434.275,1.3.364,1.583a4.389,4.389,0,0,1,1,1.457,5.2,5.2,0,0,1,.879,2.876c.035.676.1,1.7.345,3.677a19.544,19.544,0,0,1-.151,5.724c-.009.077-.027.164-.036.26,2.769-.839,7.578,2.027,8.989,3.436a13.4,13.4,0,0,1,1.5,1.8,7.127,7.127,0,0,0,1.144,1.332,2.923,2.923,0,0,0,.471.367,3.832,3.832,0,0,1,1.4.328c.169.068.312.116.435.164,1,.357,1.083.444,3.115,2.49l1.57,1.564c3.594,3.581,5.253,10.81,5.874,13.523.036.135.062.261.089.357,2.165.627,13.354,2.732,20.49,4.016.008,0,.026-.01.036-.01.1-.039.2-.087.318-.125.284-.116.621-.261.958-.405.106-.048.213-.1.32-.155a6.753,6.753,0,0,0,.887-.473c.1-.068.161-.116.2-.145a4.763,4.763,0,0,0-.177-.57,1.721,1.721,0,0,1-.781.174,1.267,1.267,0,0,1-1.163-.579,2.028,2.028,0,0,1,.09-1.834,5.455,5.455,0,0,0,.319-1.042c.107-.647.16-1.091.213-1.535.053-.464.116-.936.231-1.631.1-.589.187-1.091.7-1.313a.994.994,0,0,1,1.038.222,1.838,1.838,0,0,0,1.2.425,3.99,3.99,0,0,0,.488,0,1.943,1.943,0,0,1,.346-.984,7.293,7.293,0,0,0,.5-1.071,13.828,13.828,0,0,1,1.269-2.548,3.033,3.033,0,0,1,1.1-1.052A9.3,9.3,0,0,0,3437.993,1819.324Z"
           transform="translate(-3373.171 -1729.548)"
         />
         <path
           id="ca-text"
+          class="country_text"
           data-name="Text"
           d="M-14.253-1.312a4.23,4.23,0,0,1-1.989-.462A3.457,3.457,0,0,1-17.63-3.067a3.57,3.57,0,0,1-.5-1.885,3.57,3.57,0,0,1,.5-1.885A3.457,3.457,0,0,1-16.242-8.13a4.23,4.23,0,0,1,1.989-.462,4.367,4.367,0,0,1,1.81.358A3.36,3.36,0,0,1-11.13-7.2l-1.482,1.323a1.9,1.9,0,0,0-1.522-.816,1.554,1.554,0,0,0-1.184.472,1.768,1.768,0,0,0-.448,1.268,1.768,1.768,0,0,0,.448,1.268,1.554,1.554,0,0,0,1.184.472,1.9,1.9,0,0,0,1.522-.816L-11.13-2.7A3.36,3.36,0,0,1-12.443-1.67,4.367,4.367,0,0,1-14.253-1.312ZM-5.81-2.684H-8.455l-.467,1.213h-2.387l3.043-6.962h2.307l3.043,6.962H-5.342Zm-.646-1.691-.676-1.75-.676,1.75Z"
           transform="translate(39.572 64.296)"
@@ -1334,6 +1168,7 @@
       </g>
       <path
         id="nv-text"
+        class="country_text"
         data-name="Text"
         d="M-11.534-8.4v6.962h-1.929L-16.109-4.6v3.163H-18.4V-8.4h1.929l2.645,3.163V-8.4Zm8.573,0L-5.9-1.438H-8.212L-11.156-8.4H-8.63l1.661,4.068,1.7-4.068Z"
         transform="translate(449.704 3190.21)"
@@ -1341,6 +1176,7 @@
       />
       <path
         id="ut-text"
+        class="country_text"
         data-name="Text"
         d="M-13.133-1.279a3.443,3.443,0,0,1-2.5-.865,3.218,3.218,0,0,1-.9-2.427V-8.4h2.347v3.759A1.809,1.809,0,0,0-13.9-3.527a.946.946,0,0,0,.791.348.946.946,0,0,0,.791-.348,1.809,1.809,0,0,0,.274-1.114V-8.4h2.307v3.829a3.218,3.218,0,0,1-.9,2.427A3.443,3.443,0,0,1-13.133-1.279Zm5.878-5.3H-9.294V-8.4h6.425v1.82H-4.908v5.142H-7.255Z"
         transform="translate(490.159 3201.645)"
@@ -1348,6 +1184,7 @@
       />
       <path
         id="az-text"
+        class="country_text"
         data-name="Text"
         d="M-12.644-2.652H-15.29l-.467,1.213h-2.387L-15.1-8.4h2.307L-9.75-1.438h-2.427Zm-.646-1.691-.676-1.75-.676,1.75ZM-3.226-3.258v1.82H-9.621V-2.88l3.183-3.7H-9.521V-8.4h6.136v1.442l-3.183,3.7Z"
         transform="translate(479.248 3245.571)"
@@ -1355,6 +1192,7 @@
       />
       <path
         id="co-text"
+        class="country_text"
         data-name="Text"
         d="M-14.7-1.312a4.23,4.23,0,0,1-1.989-.462,3.457,3.457,0,0,1-1.387-1.293,3.57,3.57,0,0,1-.5-1.885,3.57,3.57,0,0,1,.5-1.885A3.457,3.457,0,0,1-16.686-8.13,4.23,4.23,0,0,1-14.7-8.592a4.367,4.367,0,0,1,1.81.358A3.36,3.36,0,0,1-11.574-7.2l-1.482,1.323a1.9,1.9,0,0,0-1.522-.816,1.554,1.554,0,0,0-1.184.472,1.768,1.768,0,0,0-.448,1.268,1.768,1.768,0,0,0,.448,1.268,1.554,1.554,0,0,0,1.184.472,1.9,1.9,0,0,0,1.522-.816L-11.574-2.7A3.36,3.36,0,0,1-12.887-1.67,4.367,4.367,0,0,1-14.7-1.312Zm7.3,0a4.3,4.3,0,0,1-2.019-.467,3.511,3.511,0,0,1-1.4-1.3,3.524,3.524,0,0,1-.507-1.875,3.524,3.524,0,0,1,.507-1.875,3.511,3.511,0,0,1,1.4-1.3A4.3,4.3,0,0,1-7.4-8.592a4.3,4.3,0,0,1,2.019.467,3.511,3.511,0,0,1,1.4,1.3,3.524,3.524,0,0,1,.507,1.875,3.524,3.524,0,0,1-.507,1.875,3.511,3.511,0,0,1-1.4,1.3A4.3,4.3,0,0,1-7.4-1.312Zm0-1.9a1.5,1.5,0,0,0,.791-.214,1.531,1.531,0,0,0,.562-.607,1.932,1.932,0,0,0,.209-.92,1.932,1.932,0,0,0-.209-.92,1.531,1.531,0,0,0-.562-.607A1.5,1.5,0,0,0-7.4-6.692a1.5,1.5,0,0,0-.791.214,1.531,1.531,0,0,0-.562.607,1.932,1.932,0,0,0-.209.92,1.932,1.932,0,0,0,.209.92,1.531,1.531,0,0,0,.562.607A1.5,1.5,0,0,0-7.4-3.212Z"
         transform="translate(540.652 3210.464)"
@@ -1362,6 +1200,7 @@
       />
       <path
         id="nm-text"
+        class="country_text"
         data-name="Text"
         d="M-13.55-8.4v6.962h-1.929L-18.125-4.6v3.163h-2.287V-8.4h1.929l2.645,3.163V-8.4ZM-6.2-1.438l-.02-3.173L-7.732-2.065H-8.766L-10.278-4.5v3.063h-2.138V-8.4h1.929l2.268,3.71L-6.011-8.4h1.929l.02,6.962Z"
         transform="translate(531.85 3254.606)"
@@ -1369,6 +1208,7 @@
       />
       <path
         id="sd-text"
+        class="country_text"
         data-name="Text"
         d="M-14.607-1.312a7.3,7.3,0,0,1-1.686-.194,4.519,4.519,0,0,1-1.348-.522l.756-1.711a4.819,4.819,0,0,0,1.114.462,4.354,4.354,0,0,0,1.184.174,1.834,1.834,0,0,0,.7-.094.3.3,0,0,0,.209-.283q0-.219-.274-.328a5.882,5.882,0,0,0-.9-.239A10.207,10.207,0,0,1-16.2-4.41a2.288,2.288,0,0,1-.935-.637,1.726,1.726,0,0,1-.4-1.2,2.065,2.065,0,0,1,.368-1.193,2.431,2.431,0,0,1,1.1-.845,4.565,4.565,0,0,1,1.775-.308,6.445,6.445,0,0,1,1.407.154,4.408,4.408,0,0,1,1.218.453l-.706,1.7A4.316,4.316,0,0,0-14.308-6.8q-.905,0-.905.438,0,.209.269.313a5.686,5.686,0,0,0,.885.224,9.1,9.1,0,0,1,1.343.343,2.336,2.336,0,0,1,.95.632,1.694,1.694,0,0,1,.4,1.193,2.042,2.042,0,0,1-.368,1.188,2.477,2.477,0,0,1-1.1.845A4.5,4.5,0,0,1-14.607-1.312Zm3.938-7.121h3.431a4.736,4.736,0,0,1,2.054.423A3.216,3.216,0,0,1-3.8-6.8a3.411,3.411,0,0,1,.492,1.85A3.411,3.411,0,0,1-3.8-3.1,3.216,3.216,0,0,1-5.183-1.894a4.736,4.736,0,0,1-2.054.423h-3.431ZM-7.336-3.3a1.676,1.676,0,0,0,1.208-.433,1.606,1.606,0,0,0,.453-1.218A1.606,1.606,0,0,0-6.128-6.17,1.676,1.676,0,0,0-7.336-6.6h-.985v3.3Z"
         transform="translate(588.976 3162.229)"
@@ -1376,6 +1216,7 @@
       />
       <path
         id="ne-text"
+        class="country_text"
         data-name="Text"
         d="M-10.178-8.4v6.962h-1.929L-14.753-4.6v3.163H-17.04V-8.4h1.929l2.645,3.163V-8.4Zm6.922,5.192v1.77H-9.044V-8.4h5.659v1.77H-6.736v.816h2.944v1.691H-6.736v.915Z"
         transform="translate(590.282 3190.291)"
@@ -1383,6 +1224,7 @@
       />
       <path
         id="ks-text"
+        class="country_text"
         data-name="Text"
         d="M-13.366-3.778l-.527.587v1.721H-16.2V-8.433h2.307v2.526l2.287-2.526h2.556L-11.834-5.37l2.924,3.9h-2.715Zm7.22,2.466a7.3,7.3,0,0,1-1.686-.194,4.519,4.519,0,0,1-1.348-.522l.756-1.711a4.819,4.819,0,0,0,1.114.462A4.354,4.354,0,0,0-6.125-3.1a1.834,1.834,0,0,0,.7-.094A.3.3,0,0,0-5.22-3.48q0-.219-.274-.328a5.882,5.882,0,0,0-.9-.239A10.207,10.207,0,0,1-7.736-4.41a2.288,2.288,0,0,1-.935-.637,1.726,1.726,0,0,1-.4-1.2A2.065,2.065,0,0,1-8.7-7.438a2.431,2.431,0,0,1,1.1-.845,4.565,4.565,0,0,1,1.775-.308,6.445,6.445,0,0,1,1.407.154A4.408,4.408,0,0,1-3.2-7.985l-.706,1.7A4.316,4.316,0,0,0-5.847-6.8q-.905,0-.905.438,0,.209.269.313a5.686,5.686,0,0,0,.885.224,9.1,9.1,0,0,1,1.343.343,2.336,2.336,0,0,1,.95.632,1.694,1.694,0,0,1,.4,1.193,2.042,2.042,0,0,1-.368,1.188,2.477,2.477,0,0,1-1.1.845A4.5,4.5,0,0,1-6.145-1.312Z"
         transform="translate(599.089 3220.245)"
@@ -1390,6 +1232,7 @@
       />
       <path
         id="ok-text"
+        class="country_text"
         data-name="Text"
         d="M-15.08-1.312A4.3,4.3,0,0,1-17.1-1.779a3.511,3.511,0,0,1-1.4-1.3,3.524,3.524,0,0,1-.507-1.875A3.524,3.524,0,0,1-18.5-6.827a3.511,3.511,0,0,1,1.4-1.3,4.3,4.3,0,0,1,2.019-.467,4.3,4.3,0,0,1,2.019.467,3.511,3.511,0,0,1,1.4,1.3,3.524,3.524,0,0,1,.507,1.875,3.524,3.524,0,0,1-.507,1.875,3.511,3.511,0,0,1-1.4,1.3A4.3,4.3,0,0,1-15.08-1.312Zm0-1.9a1.5,1.5,0,0,0,.791-.214,1.531,1.531,0,0,0,.562-.607,1.932,1.932,0,0,0,.209-.92,1.932,1.932,0,0,0-.209-.92,1.531,1.531,0,0,0-.562-.607,1.5,1.5,0,0,0-.791-.214,1.5,1.5,0,0,0-.791.214,1.531,1.531,0,0,0-.562.607,1.932,1.932,0,0,0-.209.92,1.932,1.932,0,0,0,.209.92,1.531,1.531,0,0,0,.562.607A1.5,1.5,0,0,0-15.08-3.212Zm7.618-.567-.527.587v1.721H-10.3V-8.433h2.307v2.526L-5.7-8.433h2.556L-5.93-5.37l2.924,3.9H-5.721Z"
         transform="translate(607.444 3246.766)"
@@ -1397,6 +1240,7 @@
       />
       <path
         id="tx-text"
+        class="country_text"
         data-name="Text"
         d="M-14.545-6.58h-2.039V-8.4h6.425v1.82H-12.2v5.142h-2.347Zm9.1,5.142-1.2-1.86-1.174,1.86H-10.5l2.516-3.511L-10.408-8.4h2.636l1.184,1.75L-5.435-8.4h2.526L-5.326-5.038l2.566,3.6Z"
         transform="translate(588.381 3286.515)"
@@ -1404,6 +1248,7 @@
       />
       <path
         id="mn-text"
+        class="country_text"
         data-name="Text"
         d="M-14.2-1.438l-.02-3.173-1.512,2.546h-1.034L-18.274-4.5v3.063h-2.138V-8.4h1.929l2.268,3.71,2.208-3.71h1.929l.02,6.962ZM-4.062-8.4v6.962H-5.991L-8.637-4.6v3.163h-2.287V-8.4h1.929l2.645,3.163V-8.4Z"
         transform="translate(633.961 3147.693)"
@@ -1411,6 +1256,7 @@
       />
       <path
         id="ia-text"
+        class="country_text"
         data-name="Text"
         d="M-13.188-8.4h2.347v6.962h-2.347Zm8.225,5.748H-7.609l-.467,1.213h-2.387L-7.42-8.4h2.307l3.043,6.962H-4.5ZM-5.61-4.342l-.676-1.75-.676,1.75Z"
         transform="translate(637.336 3186.442)"
@@ -1418,6 +1264,7 @@
       />
       <path
         id="mo-text"
+        class="country_text"
         data-name="Text"
         d="M-14.724-1.471l-.02-3.173L-16.256-2.1H-17.29L-18.8-4.534v3.063H-20.94V-8.433h1.929l2.268,3.71,2.208-3.71h1.929l.02,6.962Zm6.922.159a4.3,4.3,0,0,1-2.019-.467,3.511,3.511,0,0,1-1.4-1.3,3.524,3.524,0,0,1-.507-1.875,3.524,3.524,0,0,1,.507-1.875,3.511,3.511,0,0,1,1.4-1.3A4.3,4.3,0,0,1-7.8-8.592a4.3,4.3,0,0,1,2.019.467,3.511,3.511,0,0,1,1.4,1.3,3.524,3.524,0,0,1,.507,1.875,3.524,3.524,0,0,1-.507,1.875,3.511,3.511,0,0,1-1.4,1.3A4.3,4.3,0,0,1-7.8-1.312Zm0-1.9a1.5,1.5,0,0,0,.791-.214,1.531,1.531,0,0,0,.562-.607,1.932,1.932,0,0,0,.209-.92,1.932,1.932,0,0,0-.209-.92,1.531,1.531,0,0,0-.562-.607A1.5,1.5,0,0,0-7.8-6.692a1.5,1.5,0,0,0-.791.214,1.531,1.531,0,0,0-.562.607,1.932,1.932,0,0,0-.209.92,1.932,1.932,0,0,0,.209.92,1.531,1.531,0,0,0,.562.607A1.5,1.5,0,0,0-7.8-3.212Z"
         transform="translate(652.069 3222.381)"
@@ -1425,6 +1272,7 @@
       />
       <path
         id="ar-text"
+        class="country_text"
         data-name="Text"
         d="M-13.34-2.652h-2.645l-.467,1.213H-18.84L-15.8-8.4h2.307l3.043,6.962h-2.427Zm-.646-1.691-.676-1.75-.676,1.75Zm6.9,1.154h-.637v1.75h-2.347V-8.4h3.352a4.109,4.109,0,0,1,1.681.318,2.477,2.477,0,0,1,1.1.915,2.5,2.5,0,0,1,.388,1.392,2.461,2.461,0,0,1-.338,1.3,2.388,2.388,0,0,1-.975.885l1.462,2.148H-5.9Zm1.174-2.586a.766.766,0,0,0-.239-.6,1.044,1.044,0,0,0-.716-.214h-.855v1.631h.855a1.044,1.044,0,0,0,.716-.214A.766.766,0,0,0-5.911-5.774Z"
         transform="translate(651.284 3255.299)"
@@ -1432,6 +1280,7 @@
       />
       <path
         id="la-text"
+        class="country_text"
         data-name="Text"
         d="M-16.512-8.4h2.347v5.142h3.143v1.82h-5.49Zm10.98,5.748H-8.178l-.467,1.213h-2.387L-7.989-8.4h2.307l3.043,6.962H-5.065Zm-.646-1.691-.676-1.75-.676,1.75Z"
         transform="translate(650.528 3284.608)"
@@ -1439,6 +1288,7 @@
       />
       <path
         id="wi-text"
+        class="country_text"
         data-name="Text"
         d="M-6.577-8.4-8.8-1.438h-2.516l-1.124-3.72-1.184,3.72h-2.516L-18.372-8.4h2.417l1.213,3.958L-13.459-8.4H-11.3l1.213,4.008L-8.8-8.4Zm.517,0h2.347v6.962H-6.06Z"
         transform="translate(668.001 3165.926)"
@@ -1446,6 +1296,7 @@
       />
       <path
         id="il-text"
+        class="country_text"
         data-name="Text"
         d="M-10.92-8.4h2.347v6.962H-10.92Zm3.481,0h2.347v5.142h3.143v1.82h-5.49Z"
         transform="translate(674.185 3207.2)"
@@ -1453,6 +1304,7 @@
       />
       <path
         id="ms-text"
+        class="country_text"
         data-name="Text"
         d="M-12.432-1.471l-.02-3.173L-13.964-2.1H-15L-16.51-4.534v3.063h-2.138V-8.433h1.929l2.268,3.71,2.208-3.71h1.929l.02,6.962Zm5.868.159A7.3,7.3,0,0,1-8.25-1.506,4.519,4.519,0,0,1-9.6-2.028l.756-1.711a4.819,4.819,0,0,0,1.114.462A4.354,4.354,0,0,0-6.544-3.1a1.834,1.834,0,0,0,.7-.094.3.3,0,0,0,.209-.283q0-.219-.274-.328a5.882,5.882,0,0,0-.9-.239A10.207,10.207,0,0,1-8.156-4.41a2.288,2.288,0,0,1-.935-.637,1.726,1.726,0,0,1-.4-1.2A2.065,2.065,0,0,1-9.12-7.438a2.431,2.431,0,0,1,1.1-.845,4.565,4.565,0,0,1,1.775-.308,6.445,6.445,0,0,1,1.407.154,4.408,4.408,0,0,1,1.218.453l-.706,1.7A4.316,4.316,0,0,0-6.266-6.8q-.905,0-.905.438,0,.209.269.313a5.686,5.686,0,0,0,.885.224,9.1,9.1,0,0,1,1.343.343,2.336,2.336,0,0,1,.95.632,1.694,1.694,0,0,1,.4,1.193A2.042,2.042,0,0,1-3.69-2.471a2.477,2.477,0,0,1-1.1.845A4.5,4.5,0,0,1-6.564-1.312Z"
         transform="translate(677.747 3273.951)"
@@ -1460,6 +1312,7 @@
       />
       <path
         id="mi-text"
+        class="country_text"
         data-name="Text"
         d="M-8.748-1.438l-.02-3.173L-10.28-2.065h-1.034L-12.826-4.5v3.063h-2.138V-8.4h1.929l2.268,3.71L-8.559-8.4H-6.63l.02,6.962ZM-5.476-8.4h2.347v6.962H-5.476Z"
         transform="translate(708.61 3173.385)"
@@ -1467,6 +1320,7 @@
       />
       <path
         id="in-text"
+        class="country_text"
         data-name="Text"
         d="M-13.164-8.4h2.347v6.962h-2.347Zm10.343,0v6.962H-4.75L-7.4-4.6v3.163H-9.683V-8.4h1.929l2.645,3.163V-8.4Z"
         transform="translate(699.599 3203.885)"
@@ -1474,6 +1328,7 @@
       />
       <path
         id="al-text"
+        class="country_text"
         data-name="Text"
         d="M-11.8-2.652H-14.45l-.467,1.213H-17.3L-14.261-8.4h2.307L-8.91-1.438h-2.427Zm-.646-1.691-.676-1.75-.676,1.75ZM-8.532-8.4h2.347v5.142h3.143v1.82h-5.49Z"
         transform="translate(704.535 3271.846)"
@@ -1481,6 +1336,7 @@
       />
       <path
         id="ga-text"
+        class="country_text"
         data-name="Text"
         d="M-13.669-5.141h2.039V-2.2a4.734,4.734,0,0,1-1.432.656,5.912,5.912,0,0,1-1.6.229,4.252,4.252,0,0,1-2-.462A3.457,3.457,0,0,1-18.05-3.067a3.57,3.57,0,0,1-.5-1.885,3.57,3.57,0,0,1,.5-1.885,3.434,3.434,0,0,1,1.4-1.293,4.385,4.385,0,0,1,2.034-.462,4.667,4.667,0,0,1,1.835.343,3.447,3.447,0,0,1,1.348,1l-1.5,1.323a2,2,0,0,0-1.561-.766,1.647,1.647,0,0,0-1.233.467,1.742,1.742,0,0,0-.457,1.273,1.76,1.76,0,0,0,.453,1.263,1.587,1.587,0,0,0,1.208.477,2.211,2.211,0,0,0,.855-.169Zm7.787,2.457H-8.527l-.467,1.213h-2.387l3.043-6.962h2.307l3.043,6.962H-5.414Zm-.646-1.691L-7.2-6.126l-.676,1.75Z"
         transform="translate(735.828 3269.558)"
@@ -1488,6 +1344,7 @@
       />
       <path
         id="fl-text"
+        class="country_text"
         data-name="Text"
         d="M-12.1-6.63v1.193h2.9v1.77h-2.9v2.228h-2.347V-8.4h5.659v1.77ZM-8.043-8.4H-5.7v5.142h3.143v1.82h-5.49Z"
         transform="translate(758.331 3312.207)"
@@ -1495,6 +1352,7 @@
       />
       <path
         id="sc-text"
+        class="country_text"
         data-name="Text"
         d="M-13.623-1.312a7.3,7.3,0,0,1-1.686-.194,4.519,4.519,0,0,1-1.348-.522l.756-1.711a4.819,4.819,0,0,0,1.114.462A4.354,4.354,0,0,0-13.6-3.1a1.834,1.834,0,0,0,.7-.094A.3.3,0,0,0-12.7-3.48q0-.219-.274-.328a5.882,5.882,0,0,0-.9-.239,10.207,10.207,0,0,1-1.343-.363,2.288,2.288,0,0,1-.935-.637,1.726,1.726,0,0,1-.4-1.2,2.065,2.065,0,0,1,.368-1.193,2.431,2.431,0,0,1,1.1-.845A4.565,4.565,0,0,1-13.3-8.592a6.445,6.445,0,0,1,1.407.154,4.408,4.408,0,0,1,1.218.453l-.706,1.7A4.316,4.316,0,0,0-13.324-6.8q-.905,0-.905.438,0,.209.269.313a5.686,5.686,0,0,0,.885.224,9.1,9.1,0,0,1,1.343.343,2.336,2.336,0,0,1,.95.632,1.694,1.694,0,0,1,.4,1.193,2.042,2.042,0,0,1-.368,1.188,2.477,2.477,0,0,1-1.1.845A4.5,4.5,0,0,1-13.623-1.312Zm7.539,0a4.23,4.23,0,0,1-1.989-.462A3.457,3.457,0,0,1-9.46-3.067a3.57,3.57,0,0,1-.5-1.885,3.57,3.57,0,0,1,.5-1.885A3.457,3.457,0,0,1-8.073-8.13a4.23,4.23,0,0,1,1.989-.462,4.367,4.367,0,0,1,1.81.358A3.36,3.36,0,0,1-2.961-7.2L-4.443-5.877a1.9,1.9,0,0,0-1.522-.816,1.554,1.554,0,0,0-1.184.472A1.768,1.768,0,0,0-7.6-4.952a1.768,1.768,0,0,0,.448,1.268,1.554,1.554,0,0,0,1.184.472,1.9,1.9,0,0,0,1.522-.816L-2.961-2.7A3.36,3.36,0,0,1-4.274-1.67,4.367,4.367,0,0,1-6.084-1.312Z"
         transform="translate(756.042 3253.278)"
@@ -1502,6 +1360,7 @@
       />
       <path
         id="ky-text"
+        class="country_text"
         data-name="Text"
         d="M-13.522-3.746l-.527.587v1.721h-2.307V-8.4h2.307v2.526L-11.761-8.4h2.556L-11.99-5.337l2.924,3.9h-2.715Zm8.364-.219v2.526H-7.5V-3.994L-10.13-8.4h2.476l1.422,2.407L-4.8-8.4h2.268Z"
         transform="translate(716.804 3223.941)"
@@ -1509,6 +1368,7 @@
       />
       <path
         id="tn-text"
+        class="country_text"
         data-name="Text"
         d="M-15.409-6.58h-2.039V-8.4h6.425v1.82h-2.039v5.142h-2.347ZM-3.554-8.4v6.962H-5.484L-8.129-4.6v3.163h-2.287V-8.4h1.929l2.645,3.163V-8.4Z"
         transform="translate(706.416 3241.65)"
@@ -1516,6 +1376,7 @@
       />
       <path
         id="nc-text"
+        class="country_text"
         data-name="Text"
         d="M-11.03-8.433v6.962h-1.929L-15.6-4.634v3.163h-2.287V-8.433h1.929l2.645,3.163V-8.433ZM-6.3-1.312a4.23,4.23,0,0,1-1.989-.462A3.457,3.457,0,0,1-9.672-3.067a3.57,3.57,0,0,1-.5-1.885,3.57,3.57,0,0,1,.5-1.885A3.457,3.457,0,0,1-8.285-8.13,4.23,4.23,0,0,1-6.3-8.592a4.367,4.367,0,0,1,1.81.358A3.36,3.36,0,0,1-3.173-7.2L-4.655-5.877a1.9,1.9,0,0,0-1.522-.816A1.554,1.554,0,0,0-7.36-6.22a1.768,1.768,0,0,0-.448,1.268A1.768,1.768,0,0,0-7.36-3.684a1.554,1.554,0,0,0,1.184.472,1.9,1.9,0,0,0,1.522-.816L-3.173-2.7A3.36,3.36,0,0,1-4.486-1.67,4.367,4.367,0,0,1-6.3-1.312Z"
         transform="translate(772.261 3236.346)"
@@ -1523,6 +1384,7 @@
       />
       <path
         id="va-text"
+        class="country_text"
         data-name="Text"
         d="M-10.657-8.4-13.6-1.438h-2.307L-18.852-8.4h2.526l1.661,4.068,1.7-4.068Zm4.724,5.748H-8.578l-.467,1.213h-2.387L-8.389-8.4h2.307l3.043,6.962H-5.465Zm-.646-1.691-.676-1.75-.676,1.75Z"
         transform="translate(771.932 3218.14)"
@@ -1530,6 +1392,7 @@
       />
       <path
         id="ny-text"
+        class="country_text"
         data-name="Text"
         d="M-10.622-8.4v6.962h-1.929L-15.2-4.6v3.163h-2.287V-8.4h1.929l2.645,3.163V-8.4Zm5.271,4.436v2.526H-7.7V-3.994L-10.323-8.4h2.476l1.422,2.407L-4.992-8.4h2.268Z"
         transform="translate(785.787 3161.368)"
@@ -1543,7 +1406,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="AK"
           class="country_state"
@@ -1557,6 +1420,7 @@
         />
         <path
           id="ak-text"
+          class="country_text"
           data-name="Text"
           d="M-13.58-2.652h-2.645l-.467,1.213H-19.08L-16.037-8.4h2.307l3.043,6.962h-2.427Zm-.646-1.691-.676-1.75-.676,1.75Zm6.753.6L-8-3.159v1.721h-2.307V-8.4H-8v2.526L-5.713-8.4h2.556L-5.942-5.337l2.924,3.9H-5.733Z"
           transform="translate(80.558 51.204)"
@@ -1565,6 +1429,7 @@
       </g>
       <path
         id="pa-text"
+        class="country_text"
         data-name="Text"
         d="M-14.012-8.4a4.109,4.109,0,0,1,1.681.318,2.477,2.477,0,0,1,1.1.915,2.5,2.5,0,0,1,.388,1.392,2.5,2.5,0,0,1-.388,1.392,2.477,2.477,0,0,1-1.1.915,4.109,4.109,0,0,1-1.681.318h-1v1.711h-2.347V-8.4Zm-.149,3.441a1.044,1.044,0,0,0,.716-.214.766.766,0,0,0,.239-.6.766.766,0,0,0-.239-.6,1.044,1.044,0,0,0-.716-.214h-.855v1.631Zm8.483,2.307H-8.324l-.467,1.213h-2.387L-8.135-8.4h2.307l3.043,6.962H-5.211Zm-.646-1.691L-7-6.093l-.676,1.75Z"
         transform="translate(767.533 3184.409)"
@@ -1572,6 +1437,7 @@
       />
       <path
         id="me-text"
+        class="country_text"
         data-name="Text"
         d="M-12.624-1.438l-.02-3.173-1.512,2.546H-15.19L-16.7-4.5v3.063H-18.84V-8.4h1.929l2.268,3.71,2.208-3.71h1.929l.02,6.962Zm9.06-1.77v1.77H-9.352V-8.4h5.659v1.77H-7.045v.816H-4.1v1.691H-7.045v.915Z"
         transform="translate(821.657 3128.216)"
@@ -1579,6 +1445,7 @@
       />
       <path
         id="wv-text"
+        class="country_text"
         data-name="Text"
         d="M-11.989-8.4l-2.228,6.962h-2.516l-1.124-3.72-1.184,3.72h-2.516L-23.784-8.4h2.417l1.213,3.958L-18.871-8.4h2.158L-15.5-4.392-14.216-8.4Zm7.575,0L-7.357-1.438H-9.665L-12.609-8.4h2.526l1.661,4.068,1.7-4.068Z"
         transform="translate(751.668 3211.539)"
@@ -1586,11 +1453,6 @@
       />
       <path
         (mouseleave)="removePopoverData()" (mouseover)="setPopoverData('OH', 'oh-text')"
-        [autoClose]="false"
-        [container]="'body'"
-        [ngbPopover]="countryPopover"
-        [placement]="'right-top'"
-        [popoverClass]="'main_popover_country'"
         id="OH"
         class="country_state"
         attr.fill="{{ statesColor['OH']['color'] }}"
@@ -1601,6 +1463,7 @@
       />
       <path
         id="oh-text"
+        class="country_text"
         data-name="Text"
         d="M-15.548-1.312a4.3,4.3,0,0,1-2.019-.467,3.511,3.511,0,0,1-1.4-1.3,3.524,3.524,0,0,1-.507-1.875,3.524,3.524,0,0,1,.507-1.875,3.511,3.511,0,0,1,1.4-1.3,4.3,4.3,0,0,1,2.019-.467,4.3,4.3,0,0,1,2.019.467,3.511,3.511,0,0,1,1.4,1.3,3.524,3.524,0,0,1,.507,1.875,3.524,3.524,0,0,1-.507,1.875,3.511,3.511,0,0,1-1.4,1.3A4.3,4.3,0,0,1-15.548-1.312Zm0-1.9a1.5,1.5,0,0,0,.791-.214,1.531,1.531,0,0,0,.562-.607,1.932,1.932,0,0,0,.209-.92,1.932,1.932,0,0,0-.209-.92,1.531,1.531,0,0,0-.562-.607,1.5,1.5,0,0,0-.791-.214,1.5,1.5,0,0,0-.791.214,1.531,1.531,0,0,0-.562.607,1.932,1.932,0,0,0-.209.92,1.932,1.932,0,0,0,.209.92,1.531,1.531,0,0,0,.562.607A1.5,1.5,0,0,0-15.548-3.212ZM-3.9-8.433v6.962H-6.249V-4.037H-8.417v2.566h-2.347V-8.433h2.347v2.466h2.168V-8.433Z"
         transform="translate(729.506 3198.154)"
@@ -1617,7 +1480,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           triggers="mouseenter:mouseleave"
           data-name="Text"
@@ -1633,7 +1496,7 @@
           [autoClose]="false"
           [container]="'body'"
           [ngbPopover]="countryPopover"
-          [placement]="'right-top'"
+          [placement]="'right-center'"
           [popoverClass]="'main_popover_country'"
           id="NH"
           [class.country_state_letters]="hoveredItem && currentCountry == 'NH'"
@@ -1645,8 +1508,18 @@
           transform="translate(-3839.101 -1710.958)"
         />
       </g>
-      <g>
-        <use [attr.xlink:href]="hoveredContry" class="country_state" />
+      <g
+        [autoClose]="false"
+        [container]="'body'"
+        [ngbPopover]="countryPopover"
+        [placement]="'right-center'"
+        [popoverClass]="'main_popover_country'"
+        triggers="mouseenter:mouseleave"
+      >
+        <use 
+          [attr.xlink:href]="hoveredContry" 
+          class="country_state"
+        />
         <use [attr.xlink:href]="hoveredContryLetter" />
       </g>
     </g>

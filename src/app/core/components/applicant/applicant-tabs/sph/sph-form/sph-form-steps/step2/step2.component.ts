@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 
 import { ApplicantQuestion } from 'src/app/core/components/applicant/state/model/applicant-question.model';
 import { TrailerType } from 'src/app/core/components/applicant/state/model/trailer-type.model';
-import { TruckType } from 'src/app/core/components/applicant/state/model/truck-type.model';
+import { VehicleType } from 'src/app/core/components/applicant/state/model/vehicle-type.model';
 import { InputSwitchActions } from 'src/app/core/components/applicant/state/enum/input-switch-actions.enum';
 import { ReasonForLeaving } from 'src/app/core/components/applicant/state/model/reason-for-leaving.model';
 import { SphFormAccidentModel } from './../../../../../state/model/accident.model';
@@ -24,19 +24,31 @@ export class Step2Component implements OnInit, AfterViewInit {
   @ViewChildren('cmp') components: QueryList<any>;
 
   public accidentHistoryForm: FormGroup;
-  public accidentArray: SphFormAccidentModel[] = [];
 
-  public truckType: TruckType[] = [];
+  public accidentArray: SphFormAccidentModel[] = [
+    {
+      accidentDate: '01/01/01',
+      accidentLocation: 'Chicago, IL, USA',
+      accidentState: 'IL',
+      accidentDescription: 'ASD',
+      hazmatSpill: 'YES',
+      fatalities: 1,
+      injuries: 2,
+      isEditingAccident: false,
+    },
+  ];
+
+  public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
 
-  public selectedTruckType: any = null;
+  public selectedVehicleType: any = null;
   public selectedTrailerType: any = null;
   public selectedReasonForLeaving: any = null;
+
   public selectedAccidentIndex: number;
+  public helperIndex: number = 2;
 
   public isEditing: boolean = false;
-
-  public helperIndex: number = 2;
 
   public workForCompanyRadios: any;
 
@@ -144,7 +156,7 @@ export class Step2Component implements OnInit, AfterViewInit {
       applicantWorkForCompanyBeforeExplain: [null, Validators.required],
       applicantWorkForCompanyToExplain: [null, Validators.required],
       motorVehicleForCompany: [null, Validators.required],
-      truckType: [null, Validators.required],
+      vehicleType: [null, Validators.required],
       trailerType: [null, Validators.required],
       reasonForLeaving: [null, Validators.required],
       consideredForEmploymentAgain: [null, Validators.required],
@@ -155,7 +167,7 @@ export class Step2Component implements OnInit, AfterViewInit {
   public handleInputSelect(event: any, action: string): void {
     switch (action) {
       case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
+        this.selectedVehicleType = event;
 
         break;
       case InputSwitchActions.TRAILER_TYPE:
@@ -200,11 +212,10 @@ export class Step2Component implements OnInit, AfterViewInit {
     }
 
     this.helperIndex = index;
+    this.selectedAccidentIndex = index;
 
     this.isEditing = true;
     this.accidentArray[index].isEditingAccident = true;
-
-    this.selectedAccidentIndex = index;
 
     const selectedAccident = this.accidentArray[index];
 
@@ -251,5 +262,13 @@ export class Step2Component implements OnInit, AfterViewInit {
 
     this.helperIndex = 2;
     this.selectedAccidentIndex = -1;
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
   }
 }

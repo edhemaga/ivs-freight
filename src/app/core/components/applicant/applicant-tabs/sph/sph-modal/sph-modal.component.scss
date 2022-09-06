@@ -369,47 +369,49 @@
           margin-bottom: 22px !important;
         }
 
-        .hazmat-spill-group {
-          width: 187px;
-          height: 26px;
-          margin-bottom: 22px !important;
-          margin-right: 91px !important;
+        .hazmat-injuries-fatalities-container {
+          display: grid;
+          grid-template-columns: 196px 347px;
+          grid-column-gap: 73px;
 
-          .title-box {
-            p {
-              font-size: 14px;
-              color: $bw6-2;
-              user-select: none !important;
+          .hazmat-spill-group {
+            display: grid;
+            grid-template-columns: 98px 86px;
+            grid-column-gap: 12px;
+            height: 26px;
+            margin-bottom: 22px !important;
+            margin-right: 0 !important;
 
-              .required-star {
-                color: $progress-danger;
+            .title-box {
+              p {
+                font-size: 14px;
+                color: $bw6-2;
+                user-select: none !important;
+
+                .required-star {
+                  color: $progress-danger;
+                }
+              }
+            }
+
+            .radios-box {
+              width: 86px;
+
+              .ta-input-radiobutons {
+                width: 100%;
+
+                .radio-button {
+                  padding-left: 0;
+                }
               }
             }
           }
 
-          .radios-box {
-            width: 86px;
-
-            .ta-input-radiobutons {
-              width: 100%;
-
-              .radio-button {
-                padding-left: 0;
-              }
-            }
-          }
-        }
-
-        .fatalities-injuries-group {
-          margin-bottom: 22px;
-
-          .injuries-group {
-            width: 157px;
-            margin-right: 12px;
-          }
-
-          .fatalities-group {
-            width: 178px;
+          .fatalities-injuries-group {
+            display: grid;
+            grid-template-columns: 157px 168px;
+            grid-column-gap: 22px;
+            margin-bottom: 22px;
           }
         }
 

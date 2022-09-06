@@ -19,7 +19,6 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { StatusSwitcherComponent } from '../switchers/status-switcher/status-switcher.component';
 import { NgxSliderModule } from '@angular-slider/ngx-slider';
 import { NgxMaskModule } from 'ngx-mask';
-//import { TaNoteContainerComponent } from './ta-note/ta-note-container/ta-note-container.component';
 import { DeleteDialogComponent } from './delete-dialog/delete-dialog.component';
 import { TaStatusSelectComponent } from './ta-status-select/ta-status-select.component';
 import { TaStatusSwitchComponent } from './ta-status-switch/ta-status-switch.component';
@@ -35,10 +34,8 @@ import { TaLogoChangeComponent } from './ta-logo-change/ta-logo-change.component
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 import { TaInputComponent } from '../../components/shared/ta-input/ta-input.component';
-import { SvgDefinitionsComponent } from 'src/app/svg-definitions/svg-definitions.component';
 import { AccountModalComponent } from '../modals/account-modal/account-modal.component';
 import { TaInputNoteComponent } from './ta-input-note/ta-input-note.component';
-import { TextareaAutosizeDirective } from '../../directives/TextareaAutosize.directive';
 import { TaInputDropdownComponent } from './ta-input-dropdown/ta-input-dropdown.component';
 import { CustomDatetimePickersComponent } from './custom-datetime-pickers/custom-datetime-pickers.component';
 import { CalendarDatesMainComponent } from './custom-datetime-pickers/calendar-dates-main/calendar-dates-main.component';
@@ -109,7 +106,8 @@ import { AutoclosePopoverComponent } from './autoclose-popover/autoclose-popover
 import { ApplicantModalComponent } from '../modals/applicant-modal/applicant-modal.component';
 import { TtTitleModalComponent } from '../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
 import { ConfirmationModalComponent } from '../modals/confirmation-modal/confirmation-modal.component';
-import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component';
+import { CustomToastMessagesComponent } from './custom-toast-messages/custom-toast-messages.component'; 
+import { SvgDefinitionsComponent } from '../../../svg-definitions/svg-definitions.component';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -201,7 +199,7 @@ export function playerFactory() {
     AutoclosePopoverComponent,
     CustomToastMessagesComponent,
     MapToolbarComponent,
-    AutoclosePopoverComponent
+    AutoclosePopoverComponent,
   ],
   imports: [
     CommonModule,
@@ -344,7 +342,7 @@ export function playerFactory() {
     TaTimePeriodComponent,
     AutoclosePopoverComponent,
     TtTitleModalComponent,
-    ConfirmationModalComponent
+    ConfirmationModalComponent,
   ],
   providers: [],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

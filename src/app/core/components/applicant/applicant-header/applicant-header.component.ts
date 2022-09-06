@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
-import { INavigation } from 'src/app/core/components/applicant/state/model/navigation.model';
 import { SelectedMode } from '../state/enum/selected-mode.enum';
+import { INavigation } from '../state/model/navigation.model';
 
 @Component({
   selector: 'app-applicant-header',

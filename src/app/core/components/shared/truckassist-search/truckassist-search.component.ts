@@ -1,3 +1,4 @@
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import {
   Component,
   Input,
@@ -6,7 +7,6 @@ import {
   SimpleChanges,
   OnDestroy,
 } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-truckassist-search',
@@ -81,7 +81,7 @@ export class TruckassistSearchComponent
       this.tableService.sendCurrentSearchTableData({
         chipAdded: true,
         search: this.searchText,
-        query: this.getChipQuery(this.chips.length - 1)
+        query: this.getChipQuery(this.chips.length - 1),
       });
 
       this.searchText = '';

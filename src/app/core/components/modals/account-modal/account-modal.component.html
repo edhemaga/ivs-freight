@@ -33,8 +33,10 @@
             placeholderIcon: 'ic_dynamic_label',
             dropdownLabel: true,
             dropdownWidthClass: 'w-col-456',
-            textTransform: 'capitalize',
+            textTransform: 'lowercase',
             blackInput: true,
+            minLength: 1,
+            maxLength: 32,
             commands: {
               active: false,
               type: 'confirm-cancel',
@@ -100,11 +102,12 @@
         <app-ta-input
           formControlName="url"
           [inputConfig]="{
-            name: 'Hyperlink',
+            name: 'Url',
             type: 'text',
             label: 'Hyperlink',
             placeholderIcon: 'hyperlink',
-            maxLength: 400
+            minLength: 4,
+            maxLength: 255
           }"
         ></app-ta-input>
       </div>

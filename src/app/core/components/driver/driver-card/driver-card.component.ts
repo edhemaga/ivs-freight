@@ -6,13 +6,13 @@ import {
   OnDestroy,
   ChangeDetectorRef,
 } from '@angular/core';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { Router } from '@angular/router';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
   selector: 'app-driver-card',

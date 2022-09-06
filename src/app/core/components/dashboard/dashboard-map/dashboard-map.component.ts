@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import * as AppConst from 'src/app/const';
 
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import * as AppConst from 'src/app/const';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({

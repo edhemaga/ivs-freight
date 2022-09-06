@@ -175,7 +175,6 @@
 
   .table-attachments{
     margin-top: 2px;
-    width: 1575px;
     height: 198px;
     background: white;
     animation: attachmentsAnimation 0.25s ease-in-out;
@@ -1044,7 +1043,7 @@
     height: 266px;
     border-radius: 2px;
     background-color: #fff;
-    box-shadow: 0 0 2px #0000004d;
+    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
     padding: 5px 4px;
     box-sizing: border-box;
     display: flex;
@@ -1133,7 +1132,7 @@
     min-width: 112px;
     border-radius: 2px;
     background-color: #fff;
-    box-shadow: 0 0 2px #0000004d;
+    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
     padding: 0px 2px;
     box-sizing: border-box;
     display: flex;

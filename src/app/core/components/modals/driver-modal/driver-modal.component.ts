@@ -6,7 +6,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { card_modal_animation } from '../../shared/animations/card-modal.animation';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   AddressEntity,
   CheckOwnerSsnEinResponse,
@@ -19,29 +18,35 @@ import {
 import {
   einNumberRegex,
   ssnNumberRegex,
-  emailRegex,
-  phoneRegex,
+  phoneFaxRegex,
   mileValidation,
   perStopValidation,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
+  firstNameValidation,
+  lastNameValidation,
+  bankValidation,
+  accountBankValidation,
+  routingBankValidation,
+  fuelCardValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
 import { DriverTService } from '../../driver/state/driver.service';
 import { HttpResponseBase } from '@angular/common/http';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import { TaTabSwitchComponent } from '../../shared/ta-tab-switch/ta-tab-switch.component';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { TaInputResetService } from '../../shared/ta-input/ta-input-reset.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  convertNumberInThousandSep,
+  convertDateToBackend,
+  convertThousanSepInNumber,
+  convertDateFromBackend,
+} from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-modal',
@@ -268,18 +273,18 @@ export class DriverModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.driverForm = this.formBuilder.group({
-      firstName: [null, [Validators.required]],
-      lastName: [null, [Validators.required]],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       dateOfBirth: [null],
       ssn: [null, [Validators.required, ssnNumberRegex]],
       mvrExpiration: [5, Validators.required],
-      bankId: [null],
-      account: [null],
-      routing: [null],
+      bankId: [null, [...bankValidation]],
+      account: [null, accountBankValidation],
+      routing: [null, routingBankValidation],
       payType: [null, Validators.required],
       useTruckAssistAch: [false],
       soloDriver: [false],
@@ -301,13 +306,13 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       bussinesName: [null],
       offDutyLocations: this.formBuilder.array([]),
       emergencyContactName: [null, Validators.required],
-      emergencyContactPhone: [null, [phoneRegex, Validators.required]],
+      emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
       emergencyContactRelationship: [null],
       note: [{ value: null, disabled: true }],
       avatar: [null],
       twic: [false],
       twicExpDate: [null],
-      fuelCard: [null],
+      fuelCard: [null, [...fuelCardValidation]],
       mailNotificationGeneral: [true],
       pushNotificationGeneral: [false],
       smsNotificationGeneral: [false],
@@ -316,6 +321,11 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       smsNotificationPayroll: [false],
     });
 
+    this.inputService.customInputValidator(
+      this.driverForm.get('email'),
+      'email',
+      this.destroy$
+    );
     // this.formService.checkFormChange(this.driverForm);
 
     // this.formService.formValueChange$
