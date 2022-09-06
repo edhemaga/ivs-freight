@@ -14,7 +14,7 @@ import { NavigationService } from '../services/navigation.service';
 import { AuthStoreService } from '../../authentication/state/auth.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { ProfileUpdateModalComponent } from '../../modals/profile-update-modal/profile-update-modal.component';
-import { TaUserService } from 'src/app/core/services/user/user.service';
+import { TaUserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-navigation-user-profile',

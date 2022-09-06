@@ -10,25 +10,15 @@ import {
   bankValidation,
   daysValidRegex,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
   perStopValidation,
   phoneExtension,
   routingBankValidation,
-  urlValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import {
-  einNumberRegex,
-  phoneFaxRegex,
-} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   AddressEntity,
   CompanyModalResponse,
@@ -39,12 +29,19 @@ import {
 } from 'appcoretruckassist';
 import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { Options } from '@angular-slider/ngx-slider';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { DropZoneConfig } from 'src/app/core/components/shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { SettingsCompanyService } from '../../../state/company-state/settings-company.service';
-import { convertNumberInThousandSep } from 'src/app/core/utils/methods.calculations';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { BankVerificationService } from '../../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { DropZoneConfig } from '../../../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import {
+  einNumberRegex,
+  phoneFaxRegex,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
+import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -287,9 +284,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       ein: [null, einNumberRegex],
       mc: [null, [...mcFFValidation]],
       phone: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       fax: [null, phoneFaxRegex],
-      webUrl: [null, [...urlValidation]],
+      webUrl: [null],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       irp: [null],
@@ -372,6 +369,18 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       otherEndingIn: ['Monday', Validators.required],
       otherDefaultBase: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.companyForm.get('email'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.companyForm.get('webUrl'),
+      'url',
+      this.destroy$
+    );
 
     if (['new-division', 'edit-division'].includes(this.editData.type)) {
       this.companyForm.get('email').setValidators(Validators.required);
@@ -467,17 +476,21 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         data?.extensionPhone ? data?.extensionPhone : null,
         [...phoneExtension],
       ],
-      email: [
-        data?.email ? data?.email : null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      email: [data?.email ? data?.email : null, [Validators.required]],
     });
   }
 
   public addDepartmentContacts(event: { check: boolean; action: string }) {
+    const form = this.createDepartmentContacts();
     if (event.check) {
-      this.departmentContacts.push(this.createDepartmentContacts());
+      this.departmentContacts.push(form);
     }
+
+    this.inputService.customInputValidator(
+      form.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public removeDepartmentContacts(id: number) {

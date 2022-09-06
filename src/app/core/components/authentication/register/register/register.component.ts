@@ -15,8 +15,6 @@ import {
   addressUnitValidation,
   addressValidation,
   einNumberRegex,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
   phoneFaxRegex,
@@ -61,10 +59,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
+
+    this.inputService.customInputValidator(
+      this.registerForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public handleAddressChange(event: any): void {

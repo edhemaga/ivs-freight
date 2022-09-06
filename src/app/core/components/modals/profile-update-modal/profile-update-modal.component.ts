@@ -1,8 +1,6 @@
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
@@ -12,17 +10,17 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { TaUserService } from 'src/app/core/services/user/user.service';
 import {
   AddressEntity,
   SignInResponse,
   UpdateUserCommand,
   UserResponse,
 } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { TaUserService } from '../../../services/user/user.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @Component({
   selector: 'app-profile-update-modal',
@@ -103,7 +101,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       firstName: [null, [Validators.required, ...firstNameValidation]],
       lastName: [null, [Validators.required, ...lastNameValidation]],
       mobile: [null, phoneFaxRegex],
-      email: [null, [emailRegex, ...emailValidation]],
+      email: [null],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       createNewPassword: [false],
@@ -113,6 +111,12 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
       password: [null],
       avatar: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.profileUserForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public onModalAction(data: { action: string; bool: boolean }): void {

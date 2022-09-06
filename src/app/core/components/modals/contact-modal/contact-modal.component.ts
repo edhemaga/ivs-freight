@@ -2,13 +2,11 @@ import {
   addressUnitValidation,
   addressValidation,
   departmentValidation,
-  emailValidation,
   labelValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   AddressEntity,
   CompanyContactModalResponse,
@@ -18,16 +16,14 @@ import {
   CreateResponse,
   UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
-import {
-  emailRegex,
-  phoneFaxRegex,
-} from '../../shared/ta-input/ta-input.regex-validations';
+import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DropZoneConfig } from '../../shared/ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { ContactTService } from '../../contacts/state/contact.service';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-contact-modal',
@@ -106,7 +102,7 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       name: [null, [Validators.required, ...labelValidation]],
       companyContactLabelId: [null],
       phone: [null, [phoneFaxRegex, Validators.required]],
-      email: [null, [emailRegex, ...emailValidation, Validators.required]],
+      email: [null, [Validators.required]],
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       shared: [true],
@@ -114,6 +110,12 @@ export class ContactModalComponent implements OnInit, OnDestroy {
       avatar: [null],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.contactForm.get('email'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.contactForm);
 

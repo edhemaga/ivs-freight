@@ -4,8 +4,6 @@ import {
   addressValidation,
   bankValidation,
   departmentValidation,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
   phoneExtension,
@@ -25,9 +23,9 @@ import { phoneFaxRegex } from '../../shared/ta-input/ta-input.regex-validations'
 import { tab_modal_animation } from '../../shared/animations/tabs-modal.animation';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-user-modal',
@@ -138,16 +136,13 @@ export class UserModalComponent implements OnInit, OnDestroy {
       address: [null, [...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       personalPhone: [null, phoneFaxRegex],
-      personalEmail: [null, [emailRegex, ...emailValidation]],
+      personalEmail: [null],
       departmentId: [null, [Validators.required, ...departmentValidation]],
       mainOfficeId: [null],
       userType: [null],
       employePhone: [null, phoneFaxRegex],
       employePhoneExt: [null, [...phoneExtension]],
-      employeEmail: [
-        null,
-        [Validators.required, [emailRegex, ...emailValidation]],
-      ],
+      employeEmail: [null, [Validators.required]],
       isIncludePayroll: [false],
       salary: [null],
       startDate: [null],
@@ -157,6 +152,18 @@ export class UserModalComponent implements OnInit, OnDestroy {
       accountNumber: [null, accountBankValidation],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.userForm.get('personalEmail'),
+      'email',
+      this.destroy$
+    );
+
+    this.inputService.customInputValidator(
+      this.userForm.get('employeEmail'),
+      'email',
+      this.destroy$
+    );
 
     // this.formService.checkFormChange(this.userForm);
 

@@ -3,10 +3,6 @@ import {
   convertThousanSepInNumber,
 } from './../../../../utils/methods.calculations';
 import { SumArraysPipe } from './../../../../pipes/sum-arrays.pipe';
-import {
-  convertDateToBackend,
-  convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
 import { NotificationService } from './../../../../services/notification/notification.service';
 import {
   ChangeDetectorRef,
@@ -29,11 +25,15 @@ import {
 import { NgbActiveModal, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { RepairPmModalComponent } from '../repair-pm-modal/repair-pm-modal.component';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { TruckModalComponent } from '../../truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '../../trailer-modal/trailer-modal.component';
 import { RepairShopModalComponent } from '../repair-shop-modal/repair-shop-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import {
+  convertDateToBackend,
+  convertNumberInThousandSep,
+} from '../../../../utils/methods.calculations';
 import {
   descriptionValidation,
   vehicleUnitValidation,

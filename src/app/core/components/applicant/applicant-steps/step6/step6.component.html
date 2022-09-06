@@ -522,6 +522,25 @@
                     ></svg-icon>
                   </div>
                 </div>
+
+                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                  <div
+                    class="feedback-icon-box"
+                    ngbTooltip
+                    mainTooltip="Marked Incorrect"
+                    tooltipBackground="#F44336"
+                    position="top"
+                  >
+                    <svg-icon
+                      class="feedback-icon"
+                      src="assets/svg/common/ic_danger.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
+                    ></svg-icon>
+                  </div>
+                </div>
               </div>
             </div>
 

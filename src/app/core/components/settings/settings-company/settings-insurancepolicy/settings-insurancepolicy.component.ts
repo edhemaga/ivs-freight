@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',

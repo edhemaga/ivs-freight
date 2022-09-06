@@ -21,7 +21,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { TruckType } from '../../state/model/truck-type.model';
+import { VehicleType } from '../../state/model/vehicle-type.model';
 import { Address } from '../../state/model/address.model';
 import { ViolationModel } from '../../state/model/violations.model';
 import {
@@ -45,17 +45,18 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
   public selectedMode = SelectedMode.FEEDBACK;
 
+  private subscription: Subscription;
+
   public violationsForm: FormGroup;
 
   public isViolationEdited: boolean;
+
   public editingCardAddress: any;
 
-  private subscription: Subscription;
-
-  public selectedTruckType: any = null;
+  public selectedVehicleType: any = null;
   public selectedAddress: Address = null;
 
-  public truckType: TruckType[] = [];
+  public vehicleType: VehicleType[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -147,7 +148,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   public patchForm(): void {
     this.violationsForm.patchValue({
       violationDate: this.formValuesToPatch.violationDate,
-      truckType: this.formValuesToPatch.truckType,
+      vehicleType: this.formValuesToPatch.vehicleType,
       violationLocation: this.formValuesToPatch.violationLocation.address,
       violationDescription: this.formValuesToPatch.violationDescription,
     });
@@ -156,7 +157,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   public handleInputSelect(event: any, action: string): void {
     switch (action) {
       case InputSwitchActions.TRUCK_TYPE:
-        this.selectedTruckType = event;
+        this.selectedVehicleType = event;
 
         break;
       case InputSwitchActions.ADDRESS:

@@ -20,7 +20,7 @@
         <div class="dashboard-pickup-toolbar-switch-left">
           <app-ta-tab-switch
             [tabs]="stateSwitchTabsType1"
-            (switchClicked)="changeStateSwitchTabs($event)"
+            (switchClicked)="changeStateSwitchTabs($event, true)"
           ></app-ta-tab-switch>
         </div>
         <div class="dashboard-pickup-toolbar-border"></div>
@@ -33,6 +33,7 @@
         <div
           class="dashboard-pickup-toolbar-filter-selected"
           (click)="clearSelected()"
+          *ngIf="selectedStates?.length"
         >
           Clear Selection
         </div>
@@ -55,7 +56,7 @@
   </div>
   <div class="dashboard-pickup-body-holder">
     <div class="row">
-      <div class="col-3">
+      <div class="dashboard_state_list_holder">
         <div class="dashboard-pickup-body-state-list-holder">
           <div
             *ngFor="let item of pickupStateList; let indx = index"
@@ -103,9 +104,25 @@
               [class.list_line_hidden]="!compareColor[item.id]"
             ></div>
           </div>
+          <div class="state_empty_state_holder" *ngIf="!pickupStateList.length">
+            <div class="main_empty_state_holder">
+              <div class="empty_state_title">
+                Pickup list is empty
+              </div>
+              <div class="empty_state_title_bottom">
+                Please create load
+              </div>
+              <div class="empty_state_image">
+                <svg-icon src="assets/svg/common/dashboard_empty_state.svg"></svg-icon>
+              </div>
+              <div class="empty_add_button">
+                <div class="add_text">Create Load</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-4">
+      <div class="dashboard_state_map_holder">
         <div class="state_all_holder">
           <div class="state_hold_main">
             <div class="state_data_hold">
@@ -127,7 +144,7 @@
           <app-dashboard-state-tracking></app-dashboard-state-tracking>
         </div>
       </div>
-      <div class="col-5">
+      <div class="dashboard_state_bar_holder">
         <div class="bar_chart_holder">
           <div class="chart_top_line_holder">
             <div class="chart_line_title">March, 2023 - March, 2025</div>

@@ -1,11 +1,7 @@
 import { PmTService } from './../../../pm-truck-trailer/state/pm.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import {
   PMTrailerListResponse,
   PMTruckListResponse,
@@ -17,9 +13,14 @@ import {
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import { RepairOrderModalComponent } from '../repair-order-modal/repair-order-modal.component';
 import { descriptionValidation } from '../../../shared/ta-input/ta-input.regex-validations';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import {
+  convertNumberInThousandSep,
+  convertThousanSepInNumber,
+} from '../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-repair-pm-modal',
@@ -233,6 +234,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }
@@ -241,6 +243,7 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
                 this.modalService.setModalSpinner({
                   action: null,
                   status: true,
+                  clearTimeout: this.editData?.canOpenModal ? true : false,
                 });
                 break;
               }

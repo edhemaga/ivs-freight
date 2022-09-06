@@ -6,13 +6,10 @@ import { HttpResponseBase } from '@angular/common/http';
 import moment from 'moment';
 
 import { SignupUserCommand } from 'appcoretruckassist/model/models';
-import { SignUpUserInfo } from 'src/app/core/model/signUpUserInfo';
 
 import {
   addressUnitValidation,
   addressValidation,
-  emailRegex,
-  emailValidation,
   firstNameValidation,
   lastNameValidation,
   phoneFaxRegex,
@@ -20,8 +17,9 @@ import {
 
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
 import { AuthStoreService } from '../state/auth.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { SignUpUserInfo } from '../../../model/signUpUserInfo';
 
 @Component({
   selector: 'app-register-user',
@@ -62,10 +60,16 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       password: [null, Validators.required],
       confirmPassword: [null, Validators.required],
     });
+
+    this.inputService.customInputValidator(
+      this.registerUserForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   private patchForm(): void {

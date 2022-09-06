@@ -1,4 +1,7 @@
-<div class="ta-input-arrows-container">
+<div
+  class="ta-input-arrows-container"
+  [ngClass]="{ applicant: type === 'applicant' }"
+>
   <p
     class="m-0 ta-font-regular"
     [ngStyle]="{

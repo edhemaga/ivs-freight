@@ -1,5 +1,4 @@
 import { HttpResponseBase } from '@angular/common/http';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
   Component,
@@ -30,16 +29,18 @@ import {
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../../trailer/state/trailer.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { VinDecoderService } from 'src/app/core/services/vin-decoder/vindecoder.service';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
+
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { OwnerModalComponent } from '../owner-modal/owner-modal.component';
 import { RepairOrderModalComponent } from '../repair-modals/repair-order-modal/repair-order-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../services/form/form.service';
+import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-trailer-modal',
@@ -223,7 +224,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.modalService.setModalSpinner({ action: null, status: true });
           } else {
             this.addTrailer();
-            this.modalService.setModalSpinner({ action: null, status: true });
+            this.modalService.setModalSpinner({
+              action: null,
+              status: true,
+              clearTimeout: this.editData?.canOpenModal ? true : false,
+            });
           }
         }
 
@@ -639,10 +644,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         if (value?.length > 13 && value?.length < 17) {
           this.trailerForm.get('vin').setErrors({ invalid: true });
         }
-        if (
-          value?.length === 17 ||
-          (value?.length >= 5 && value?.length <= 13)
-        ) {
+        if (value?.length === 17) {
           this.loadingVinDecoder = true;
           this.vinDecoderService
             .getVINDecoderData(value.toString(), 2)

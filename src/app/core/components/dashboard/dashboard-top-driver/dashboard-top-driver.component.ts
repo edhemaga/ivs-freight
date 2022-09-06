@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({
@@ -32,7 +32,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [
             90000, 70000, 25000, 13000, 28000, 80000, 120000, 70000, 40000,
             50000, 25000, 13000, 28000, 80000, 120000, 70000, 40000, 50000,
-            25000, 13000, 28000, 80000, 120000, 70000, 50000,
+            25000, 13000, 28000, 80000, 120000, 70000, 50000, 28000, 80000,
+            120000, 70000, 50000, 28000, 80000, 120000, 70000, 50000, 28000,
+            80000, 120000, 70000, 50000, 28000, 80000, 120000, 70000, 50000,
+            28000, 80000, 120000, 70000, 50000,
           ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#919191',
@@ -49,7 +52,10 @@ export class DashboardTopDriverComponent implements OnInit {
           data: [
             60000, 100000, 95000, 47000, 80000, 120000, 90000, 60000, 100000,
             95000, 47000, 80000, 120000, 90000, 60000, 100000, 95000, 47000,
-            80000, 120000, 90000, 60000, 50000, 100000, 120000,
+            80000, 120000, 90000, 60000, 50000, 100000, 120000, 90000, 60000,
+            50000, 100000, 120000, 90000, 60000, 50000, 100000, 120000, 90000,
+            60000, 50000, 100000, 120000, 90000, 60000, 50000, 100000, 120000,
+            90000, 60000, 50000, 100000, 120000,
           ],
           yAxisID: 'y-axis-0',
           backgroundColor: '#CCCCCC',
@@ -222,6 +228,7 @@ export class DashboardTopDriverComponent implements OnInit {
   compareHoverColor: any = {};
   savedColors: any[] = [];
   savedHoverColors: any[] = [];
+  chartHoverColors: any[] = [];
 
   popoverTopTen: any[] = [
     {
@@ -268,7 +275,7 @@ export class DashboardTopDriverComponent implements OnInit {
   ];
 
   public searchDashboardOptions = {
-    gridNameTitle: 'Top Driver',
+    gridNameTitle: 'Driver',
   };
 
   constructor(private tableService: TruckassistTableService) {}
@@ -298,6 +305,7 @@ export class DashboardTopDriverComponent implements OnInit {
 
     if (this.circleColor?.length) {
       this.chartColors = this.circleColor;
+      this.chartHoverColors = this.hoverCircleColor;
     }
 
     let chartProp = [];
@@ -404,13 +412,14 @@ export class DashboardTopDriverComponent implements OnInit {
     this.timePeriod.changeTimePeriod('All Time');
   }
 
-  changeDriverSwitchTabs(ev) {
-    this.timePeriod.changeTimePeriod(ev['name']);
-    this.currentSwitchTab = ev['name'];
-    if (ev['name'] == 'Custom') {
+  changeDriverSwitchTabs(ev, useLast?) {
+    const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    this.timePeriod.changeTimePeriod(switchData);
+    this.currentSwitchTab = switchData;
+    if (switchData == 'Custom') {
       return false;
     }
-    this.topDriverBarChart.updateTime(ev['name']);
+    this.topDriverBarChart.updateTime(switchData);
   }
 
   saveCustomRange(ev) {
@@ -432,7 +441,7 @@ export class DashboardTopDriverComponent implements OnInit {
     );
     this.selectedDrivers.splice(indx, 1);
     this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
-    if (this.selectedDrivers?.length > 0) {
+    if (this.selectedDrivers?.length) {
       this.setChartData(this.selectedDrivers, true);
     }
 
@@ -458,6 +467,32 @@ export class DashboardTopDriverComponent implements OnInit {
     delete this.compareHoverColor[item.id];
   }
 
+  clearSelected() {
+    this.driverList.map((driver) => {
+      driver.acive = false;
+    });
+
+    this.savedColors = [...this.chartColors];
+    this.savedHoverColors = [...this.chartHoverColors];
+
+    this.driverList.sort((a, b) => {
+      return a.id - b.id;
+    });
+
+    this.setChartData(this.driverList, false);
+    this.compareColor = [];
+    this.compareHoverColor = [];
+
+    this.selectedDrivers.map((item, indx) => {
+      this.topDriverBarChart.removeMultiBarData(item, true);
+    });
+
+    this.selectedDrivers = [];
+    this.topDriverBarChart.selectedDrivers = this.selectedDrivers;
+    this.doughnutChart.selectedDrivers = this.selectedDrivers;
+    this.removeDriverHover();
+  }
+
   changeTopTen(item) {
     const newSwitchValue = [
       {
@@ -471,6 +506,9 @@ export class DashboardTopDriverComponent implements OnInit {
     this.topTenSwitchTabstype1 = newSwitchValue;
 
     this.topTenTitle = item.name;
+    this.searchDashboardOptions.gridNameTitle = item.name;
+    this.topDriverBarChart.animationDuration = 0;
+    this.topDriverBarChart.setChartOptions();
     this.popoverTopTen.map((item) => {
       item.active = false;
       return item;

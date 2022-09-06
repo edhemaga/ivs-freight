@@ -42,6 +42,14 @@
     }
   }
 
+  &.dropdown-image-input {
+    &:hover {
+      .input-clear {
+        display: inline-block !important;
+      }
+    }
+  }
+
   &.dropdown-label-active {
     &:hover {
       .input-edit-pen {
@@ -281,6 +289,11 @@
 
   &.valid-dropdown-image-selection {
     &:hover {
+
+      .input-clear {
+        display: inline-block;
+      }
+
       .input-dropdown-arrow {
         transition: all 0.3s ease-in-out;
         svg {

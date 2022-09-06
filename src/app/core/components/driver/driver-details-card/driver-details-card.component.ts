@@ -15,18 +15,14 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   Confirmation,
   ConfirmationModalComponent,
@@ -37,6 +33,10 @@ import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-driver-details-card',

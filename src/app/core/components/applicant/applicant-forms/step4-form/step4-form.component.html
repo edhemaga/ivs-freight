@@ -137,7 +137,7 @@
   <div class="d-flex line-container">
     <div class="group truck-type-group">
       <app-ta-input-dropdown
-        formControlName="truckType"
+        formControlName="vehicleType"
         [template]="'svgtext-template'"
         [inputConfig]="{
           name: 'Input Dropdown',
@@ -150,7 +150,7 @@
         }"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 11)"
-        [options]="truckType"
+        [options]="vehicleType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>

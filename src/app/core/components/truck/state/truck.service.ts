@@ -9,12 +9,11 @@ import {
   TruckService,
   UpdateTruckCommand,
 } from 'appcoretruckassist';
-/* import { CreateTruckResponse } from 'appcoretruckassist/model/createTruckResponse'; */
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store';
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
 import { TruckInactiveQuery } from './truck-inactive-state/truck-inactive.query';
 import { TruckActiveQuery } from './truck-active-state/truck-active.query';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService {

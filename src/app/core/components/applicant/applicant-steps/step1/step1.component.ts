@@ -11,16 +11,13 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
   phoneFaxRegex,
-  emailRegex,
   ssnNumberRegex,
   accountBankValidation,
   routingBankValidation,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
   firstNameValidation,
@@ -28,6 +25,7 @@ import {
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-step1',
@@ -50,8 +48,6 @@ export class Step1Component implements OnInit, OnDestroy {
   public isLastInputDeleted: boolean = false;
   public isEditingMiddlePositionAddress: boolean = false;
 
-  public helperIndex: number = 2;
-
   public isEditingArray: {
     id: number;
     isEditing: boolean;
@@ -59,6 +55,8 @@ export class Step1Component implements OnInit, OnDestroy {
     isFirstAddress: boolean;
   }[] = [];
   public isEditingId: number = -1;
+
+  public helperIndex: number = 2;
 
   public previousAddressOnEdit: string;
   public previousAddressUnitOnEdit: string;
@@ -280,7 +278,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -306,9 +305,10 @@ export class Step1Component implements OnInit, OnDestroy {
       lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
+      previousAddresses: this.formBuilder.array([]),
       ssn: [null, [Validators.required, ssnNumberRegex]],
       bankId: [null, [...bankValidation]],
       accountNumber: [null, accountBankValidation],
@@ -337,9 +337,13 @@ export class Step1Component implements OnInit, OnDestroy {
       questionReview4: [null],
       questionReview5: [null],
       questionReview6: [null],
-
-      previousAddresses: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.personalInfoForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public handleInputSelect(event: any, action: string, index?: number): void {
@@ -458,10 +462,6 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public onAddNewAddress(): void {
-    this.isEditingMiddlePositionAddress = false;
-
-    this.helperIndex = 2;
-
     if (
       this.previousAddresses.controls.length &&
       !this.isLastAddedPreviousAddressValid &&
@@ -469,6 +469,10 @@ export class Step1Component implements OnInit, OnDestroy {
     ) {
       return;
     }
+
+    this.isEditingMiddlePositionAddress = false;
+
+    this.helperIndex = 2;
 
     this.isLastInputDeleted = false;
 
@@ -622,14 +626,6 @@ export class Step1Component implements OnInit, OnDestroy {
     this.helperIndex = 2;
   }
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-    }
-
-    if (event.action === 'back-step') {
-    }
-  }
-
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -688,6 +684,11 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+  }
+
   /* private formFIlling(): void {
     // Redirect to next Step
     // if (this.personalInfo?.isCompleted) {
@@ -704,7 +705,7 @@ export class Step1Component implements OnInit, OnDestroy {
       lastName: [applicantInfo?.lastName, Validators.required],
       dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
       phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
-      email: [applicantInfo?.email, [Validators.required, emailRegex]],
+      email: [applicantInfo?.email, [Validators.required]],
       address: [applicantInfo?.address, Validators.required],
       addressUnit: [applicantInfo?.addressUnit],
 

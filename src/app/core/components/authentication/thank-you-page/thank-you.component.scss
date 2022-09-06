@@ -94,6 +94,26 @@
     }
   }
 
+  .confirmed-text {
+    color: $bw6-2;
+    font-size: 14px;
+    margin-top: 24px !important;
+
+    &::-moz-selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    &::selection {
+      color: $bw6-2;
+      background: rgb(108, 108, 108, 0.2);
+    }
+
+    span {
+      cursor: pointer;
+    }
+  }
+
   .copyright {
     height: 42px;
     border-top: 0.1rem solid $ta-gray-02;

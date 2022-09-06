@@ -1,17 +1,16 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
-import { applyDrag } from 'src/app/core/utils/methods.globals';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
-import { CommentsService } from 'src/app/core/services/comments/comments.service';
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { UntilDestroy } from '@ngneat/until-destroy';
+import { SharedService } from '../../../services/shared/shared.service';
+import { CommentsService } from '../../../services/comments/comments.service';
+import { applyDrag } from '../../../utils/methods.globals';
 
 @UntilDestroy()
 @Component({

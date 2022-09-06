@@ -1,8 +1,8 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
-import { environment } from 'src/environments/environment';
-import { checkParamas } from 'src/assets/utils/methods-global';
+import { environment } from '../../../../environments/environment';
+import { checkParamas } from '../../utils/methods.globals';
 
 @Injectable({
   providedIn: 'root',

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
-import { getLoadColumnDefinition } from 'src/assets/utils/settings/load-columns';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { getLoadColumnDefinition } from '../../../../../assets/utils/settings/load-columns';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-load-table',

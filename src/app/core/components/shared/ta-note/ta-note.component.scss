@@ -122,7 +122,6 @@
       }
 
       &.expanded {
-        position: absolute;
         z-index: 100;
       }
     }
@@ -362,7 +361,6 @@
   }
 
   &.opened_all_hold{
-    position: absolute;
     top: 0;
     left: 0;
 
@@ -402,12 +400,6 @@
     .k-editor{
       width: auto;
     }
-  }
-
-  &.closed_note_hold{
-    position: absolute;
-    left: -264px;
-    top: -8px;
   }
 }
 

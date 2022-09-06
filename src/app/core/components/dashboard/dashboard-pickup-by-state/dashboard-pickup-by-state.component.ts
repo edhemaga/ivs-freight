@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @UntilDestroy()
 @Component({
@@ -276,10 +276,11 @@ export class DashboardPickupByStateComponent implements OnInit {
     this.timePeriod.changeTimePeriod('WTD');
   }
 
-  changeStateSwitchTabs(ev) {
-    this.timePeriod.changeTimePeriod(ev['name']);
-    this.currentSwitchTab = ev['name'];
-    this.statesBarChart.updateTime(ev['name']);
+  changeStateSwitchTabs(ev, useLast?) {
+    const switchData = useLast ? this.currentSwitchTab : ev['name']; //currently no data for milage/revnue so insert last chosen
+    this.timePeriod.changeTimePeriod(switchData);
+    this.currentSwitchTab = switchData;
+    this.statesBarChart.updateTime(switchData);
   }
 
   selectStateCompare(e, item, indx) {
@@ -331,7 +332,26 @@ export class DashboardPickupByStateComponent implements OnInit {
     delete this.compareColor[item.id];
   }
 
-  clearSelected() {}
+  clearSelected() {
+    this.pickupStateList.map((driver) => {
+      driver.acive = false;
+    });
+
+    this.savedColors = [...this.chartColors];
+
+    this.pickupStateList.sort((a, b) => {
+      return a.id - b.id;
+    });
+
+    this.compareColor = [];
+
+    this.pickupStateList.map((item, indx) => {
+      this.statesBarChart.removeMultiBarData(item, true);
+    });
+
+    this.selectedStates = [];
+    this.statesBarChart.selectedDrivers = this.selectedStates;
+  }
 
   changeState(item) {
     const newSwitchValue = [

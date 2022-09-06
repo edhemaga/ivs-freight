@@ -6,7 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-custom-scrollbar',
@@ -59,9 +59,9 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
           document.scrollingElement.scrollTop =
             (e.clientY - this.barClickPosition) * this.scrollRatioFull;
 
-          if (hasTablePageHeight) {
-            this.sharedService.emitTableScrolling.emit((e.clientY - this.barClickPosition) * this.scrollRatioFull);
-          }
+            if (hasTablePageHeight) {
+              this.sharedService.emitTableScrolling.emit((e.clientY - this.barClickPosition) * this.scrollRatioFull);
+            }
         }
       });
 

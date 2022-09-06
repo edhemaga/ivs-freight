@@ -6,7 +6,6 @@ import { SettingsLocationRoutes } from './settings-location.routing';
 import { SettingsParkingComponent } from './settings-parking/settings-parking.component';
 import { SettingsOfficeComponent } from './settings-office/settings-office.component';
 import { SettingsTerminalComponent } from './settings-terminal/settings-terminal.component';
-import { SharedModule } from 'src/app/core/components/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TruckassistProgressExpirationModule } from '../../shared/truckassist-progress-expiration/truckassist-progress-expiration.module';
 import { SettingsParkingModalComponent } from './location-modals/settings-parking-modal/settings-parking-modal.component';
@@ -14,6 +13,7 @@ import { SettingsOfficeModalComponent } from './location-modals/settings-office-
 import { SettingsRepairshopModalComponent } from './location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
 import { SettingsTerminalModalComponent } from './location-modals/settings-terminal-modal/settings-terminal-modal.component';
 import { SettingsSharedModule } from '../settings-shared/settings-shared.module';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   imports: [
@@ -22,7 +22,7 @@ import { SettingsSharedModule } from '../settings-shared/settings-shared.module'
     SettingsLocationRoutes,
     SharedModule,
     SettingsSharedModule,
-    TruckassistProgressExpirationModule
+    TruckassistProgressExpirationModule,
   ],
   declarations: [
     SettingsLocationComponent,
@@ -35,7 +35,7 @@ import { SettingsSharedModule } from '../settings-shared/settings-shared.module'
     SettingsParkingModalComponent,
     SettingsOfficeModalComponent,
     SettingsRepairshopModalComponent,
-    SettingsTerminalModalComponent
+    SettingsTerminalModalComponent,
   ],
 })
 export class SettingsLocationModule {}
