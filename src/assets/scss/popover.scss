@@ -715,7 +715,7 @@
 }
 
 .layers-popover {
-  margin: 5px 0px 0px 36px;
+  margin-top: 4px;
 
   .popover-body {
     .details-dropdown, .table-dropdown {
@@ -776,27 +776,42 @@
   }
 }
 
+.keyboard-shortcuts-popover {
+  .popover-body {
+    .show-lagend {
+      visibility: visible !important;
+      top: 4px !important;
+      right: 0px !important;
+      opacity: 1 !important;
+      transition: top 0.3s, opacity 0.3s;
+    }
+  }
+}
+
 .drop-down-route {
   margin: 5px 0px 0px 12px;
 
   .popover-body {
     .details-dropdown, .table-dropdown {
       width: 112px;
+      background: #424242;
 
       .table-dropdown-content {
+        position: relative;
+
         &:hover {
-          background: #F3F3F3 !important;
+          background: #2F2F2F !important;
 
           .action-svg {
             svg {
               path {
-                fill: #6C6C6C !important;
+                fill: #AAAAAA !important;
               }
             }
           }
           
           .dropdown-content-text {
-            color:  #3C3C3C !important;
+            color:  #CCCCCC !important;
           }
         }
 
@@ -815,21 +830,46 @@
         }
 
         .dropdown-content-text {
-          color: #6C6C6C;
+          color: #CCCCCC;
+        }
+
+        .option-disabled-tooltip {
+          position: absolute;
+          left: 100%;
+          top: 50%;
+  
+          width: 0px;
+          height: 18px;
+          margin-left: 12px;
+  
+          background-color: #424242;
+          font-size: 11px;
+          line-height: 18px;
+          font-weight: 700;
+          color: #fff;
+          text-align: center;
+  
+          border-radius: 2px;
+  
+          opacity: 0;
+          overflow: hidden;
+          transition: all 0.2s ease-in-out;
+          transform: translateY(-50%);
         }
 
         &.disabled-dropdown-option {
-          background: #6C6C6C33 !important;
           cursor: default;
 
-          &:hover {
-            .action-svg {
-              svg {
-                path {
-                  fill: #AAAAAA !important;
-                }
+          .action-svg {
+            svg {
+              path {
+                fill: #6C6C6C !important;
               }
             }
+          }
+
+          .dropdown-content-text {
+            color: #6C6C6C !important;
           }
         }
 
@@ -838,26 +878,18 @@
             .action-svg {
               svg {
                 path {
-                  fill: #EF5350 !important;
+                  fill: #E67374 !important;
                 }
               }
-            }
-    
-            .dropdown-content-text {
-              color: #EF5350 !important;
             }
           }
 
           .action-svg {
             svg {
               path {
-                fill: #E57373;
+                fill: #E67374;
               }
             }
-          }
-  
-          .dropdown-content-text {
-            color: #E57373;
           }
         }
       }
@@ -869,9 +901,10 @@
   max-width: 300px!important;
   width: fit-content;
   margin-top: 4px;
-  margin-left: 72px;
+  margin-left: 41px;
 
   &.add-route-popover {
+    margin-top: 1px;
     margin-left: 0px;
 
     .popover-body {

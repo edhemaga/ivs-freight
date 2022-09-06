@@ -19,7 +19,6 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   templateUrl: './map-toolbar.component.html',
   styleUrls: [
     './map-toolbar.component.scss',
-    '../truckassist-table/truckassist-table-toolbar/truckassist-table-toolbar.component.scss',
   ],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
@@ -27,6 +26,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('op') mapSettingsPopup: any;
   @ViewChild('op2') addRoutePopup: any;
   @ViewChild('op3') layersPopup: any;
+  @ViewChild('op4') keyboardPopup: any;
 
   @Output() toolBarAction: EventEmitter<any> = new EventEmitter();
   @Input() tableData: any[];
@@ -43,6 +43,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   mapSettingsPopupOpen: boolean = false;
   addRoutePopupOpen: boolean = false;
   layersPopupOpen: boolean = false;
+  keyboardPopupOpen: boolean = false;
   tableLocked: boolean = true;
   optionsPopupContent: any[] = [
     {
@@ -450,6 +451,25 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.layersPopupOpen = layersPopup.isOpen();
+  }
+
+  onShowKeyboardShortcutsPopover(keyboardPopup: any) {
+    this.keyboardPopup = keyboardPopup;
+    console.log('keyboardPopup', keyboardPopup);
+
+    if (keyboardPopup.isOpen()) {
+      keyboardPopup.close();
+    } else {
+      keyboardPopup.open({});
+    }
+
+    if (this.addRoutePopup && this.addRoutePopup.isOpen()) {
+      this.addRoutePopup.close();
+      this.routeToEdit = {};
+    }
+
+    this.keyboardPopupOpen = keyboardPopup.isOpen();
+    console.log('keyboardPopupOpen', this.keyboardPopupOpen);
   }
 
   public onTabChange(event: any, type: string): void {

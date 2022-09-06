@@ -267,6 +267,7 @@ export class RoutingMapComponent implements OnInit {
       contentType: 'duplicate',
       show: true,
       svg: 'assets/svg/common/routing/ic_route_duplicate.svg',
+      disabledTooltip: '8 Route Limit'
     },
     {
       title: 'Reverse',
@@ -442,6 +443,9 @@ export class RoutingMapComponent implements OnInit {
   ];
   isDopplerOn: boolean;
   dopplerInterval: any;
+
+  actionDisabledTooltip: boolean = false;
+  actionDisabledTooltipFinished: boolean = false;
 
   constructor(
     private mapsService: MapsService,
@@ -1621,5 +1625,15 @@ export class RoutingMapComponent implements OnInit {
     });
 
     return stopIndex;
+  }
+
+  hoverDropdownAction(mod) {
+    this.actionDisabledTooltip = mod;
+
+    setTimeout(() => {
+      this.actionDisabledTooltipFinished = mod;
+    }, 250);
+
+    this.ref.detectChanges();
   }
 }

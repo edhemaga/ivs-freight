@@ -22,7 +22,7 @@
         (cdkDropListDropped)="dropRoutes($event, routes)"
         [ngStyle]="{
           'padding-right': tooltip?.isOpen() ? '126px' : '13px',
-          'padding-bottom': tooltip?.isOpen() ? '113px' : '13px'
+          'padding-bottom': tooltip?.isOpen() ? '120px' : '13px'
         }"
       >
         <div
@@ -1094,6 +1094,11 @@
       class="table-dropdown-content"
       [class]="action.class"
       [ngClass]="{ 'disabled-dropdown-option': action.disabled }"
+      [tooltipBackground]="'#424242'"
+      ngbTooltip
+      [mainTooltip]="action.disabledTooltip ? action.disabledTooltip : ''"
+      position="right"
+      [disableTooltip]="action.disabled == true ? false : true"
     >
       <svg-icon
         [ngClass]="{

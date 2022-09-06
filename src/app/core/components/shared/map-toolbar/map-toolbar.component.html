@@ -92,11 +92,6 @@
         ></svg-icon>
       </div>
 
-      <!-- BORDER -->
-      <div class="border-container" *ngIf="tableRowsSelected.length">
-        <div class="border"></div>
-      </div>
-
       <!-- Delete -->
       <div
         *ngIf="tableRowsSelected.length"
@@ -109,22 +104,12 @@
         ></svg-icon>
       </div>
 
-      <!-- BORDER -->
-      <div class="border-container" *ngIf="tableRowsSelected.length">
-        <div class="border"></div>
-      </div>
-
       <!-- Print -->
       <div *ngIf="tableRowsSelected.length" class="action-div">
         <svg-icon
           [svgStyle]="{ 'width.px': 18, 'height.px': 17 }"
           [src]="'assets/svg/truckassist-table/print-icon.svg'"
         ></svg-icon>
-      </div>
-
-      <!-- BORDER -->
-      <div class="border-container" *ngIf="tableRowsSelected.length">
-        <div class="border"></div>
       </div>
 
       <!-- Route Stop Picker -->
@@ -136,12 +121,8 @@
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_stop_picker.svg'"
+          class="action-svg"
         ></svg-icon>
-      </div>
-
-      <!-- BORDER -->
-      <div class="border-container">
-        <div class="border"></div>
       </div>
 
       <!-- Route Compare -->
@@ -149,28 +130,29 @@
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_compare.svg'"
+          class="action-svg"
         ></svg-icon>
-      </div>
-
-      <!-- BORDER -->
-      <div class="border-container">
-        <div class="border"></div>
       </div>
 
       <!-- Route Keyboard Controls -->
       <div
         class="action-div"
-        (click)="onToolBarAction('open-keyboard-controls')"
+        #op4="ngbPopover"
+        (click)="onShowKeyboardShortcutsPopover(op4)"
+        [autoClose]="true"
+        [ngbPopover]="keyboardShortcutsPopover"
+        [placement]="'bottom-right'"
+        [autoClose]="'outside'"
+        popoverClass="keyboard-shortcuts-popover"
+        [ngClass]="{ 'active-options-maps': keyboardPopupOpen }"
+        triggers="manual"
+        (hidden)="keyboardPopupOpen = false"
       >
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_keyboard.svg'"
+          class="action-svg"
         ></svg-icon>
-      </div>
-
-      <!-- BORDER -->
-      <div class="border-container">
-        <div class="border"></div>
       </div>
 
       <!-- Route Info -->
@@ -178,12 +160,41 @@
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_info.svg'"
+          class="action-svg"
+        ></svg-icon>
+      </div>
+
+      <!-- OPEN MAP LAYERS BUTTON -->
+      <div
+        class="action-div general-pm-open-container map-layers-container"
+        #op3="ngbPopover"
+        (click)="onShowLayersPopover(op3)"
+        [autoClose]="true"
+        [ngbPopover]="layersPopover"
+        [placement]="'bottom-right'"
+        [autoClose]="'outside'"
+        popoverClass="table-dropdown-popover layers-popover"
+        [ngClass]="{
+          'active-options-maps': layersPopupOpen,
+          'action-active':
+            isTollRoadsActive ||
+            isTimeZoneActive ||
+            isDopplerOn ||
+            trafficLayerShow
+        }"
+        triggers="manual"
+        (hidden)="layersPopupOpen = false"
+      >
+        <svg-icon
+          [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+          [src]="'assets/svg/common/routing/ic_route_layers.svg'"
+          class="action-svg"
         ></svg-icon>
       </div>
 
       <!-- BORDER -->
       <div class="border-container">
-        <div class="border"></div>
+        <div class="border-line"></div>
       </div>
 
       <!-- Route Settings -->
@@ -203,36 +214,20 @@
         <svg-icon
           [svgStyle]="{ 'width.px': 28, 'height.px': 28 }"
           [src]="'assets/svg/common/routing/ic_route_settings.svg'"
+          class="action-svg"
         ></svg-icon>
       </div>
-    </div>
-  </div>
 
-  <!-- OPEN MAP LAYERS BUTTON -->
-  <div
-    class="general-pm-open-container map-layers-container"
-    #op3="ngbPopover"
-    (click)="onShowLayersPopover(op3)"
-    [autoClose]="true"
-    [ngbPopover]="layersPopover"
-    [placement]="'bottom-right'"
-    [autoClose]="'outside'"
-    popoverClass="table-dropdown-popover layers-popover"
-    [ngClass]="{
-      'active-options-maps':
-        layersPopupOpen ||
-        isTollRoadsActive ||
-        isTimeZoneActive ||
-        isDopplerOn ||
-        trafficLayerShow
-    }"
-    triggers="manual"
-    (hidden)="layersPopupOpen = false"
-  >
-    <svg-icon
-      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-      [src]="'assets/svg/common/routing/ic_route_layers.svg'"
-    ></svg-icon>
+      <!-- BORDER -->
+      <div class="border-container" [ngStyle]="{ width: '2px' }" *ngIf="tableData[0].length == 8">
+        <div class="border-line"></div>
+      </div>
+
+      <!-- Dummy action -->
+      <div
+        class="action-div dummy-div"
+      ></div>
+    </div>
   </div>
 
   <!-- OPEN MODAL BUTTON -->
@@ -245,14 +240,24 @@
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
-    [ngClass]="{ 'active-options-maps': addRoutePopupOpen }"
+    [ngClass]="{ 'active-options-maps': addRoutePopupOpen, 'disabled': tableData[0].length == 8 }"
     triggers="manual"
     (hidden)="addRoutePopupOpen = false"
   >
-    <svg-icon
-      [svgStyle]="{ 'width.px': 16, 'height.px': 16 }"
-      [src]="'assets/svg/truckassist-table/plus-icon.svg'"
-    ></svg-icon>
+    <div
+      *ngIf="tableData[0].length == 8"
+      class="tooltip-hold"
+      [tooltipBackground]="'#424242'"
+      ngbTooltip
+      [mainTooltip]="'8 Route Limit'"
+      position="bottom-right"
+    ></div>
+    <div class="svg-holder">
+      <svg-icon
+        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        [src]="'assets/svg/truckassist-table/plus-icon.svg'"
+      ></svg-icon>
+    </div>
   </div>
 </div>
 
@@ -689,3 +694,60 @@
     </div>
   </div>
 </div>
+
+<ng-template #keyboardShortcutsPopover>
+  <div class="keyboard-container show-lagend">
+    <div class="legend-item">
+      <p class="shortcut">Esc</p>
+      <p class="shortcut-explination">Remove focus</p>
+    </div>
+    <div class="legend-item">
+      <p class="shortcut">Del.</p>
+      <p class="shortcut-explination">Remove route</p>
+    </div>
+    <div class="legend-item">
+      <p class="shortcut">Tab</p>
+      <p class="shortcut-explination">Next route</p>
+    </div>
+    <div class="legend-item">
+      <p class="shortcut">Shift</p>
+      <svg-icon
+        class="legend-plus"
+        src="assets/svg/common/routing/ic_keyboard_plus.svg"
+      ></svg-icon>
+      <p class="shortcut">Tab</p>
+      <p class="shortcut-explination">Previous route</p>
+    </div>
+    <!-- <div class="legend-item">
+      <p class="shortcut">F7</p>
+      <p class="shortcut-explination">Insert before</p>
+    </div> -->
+    <div class="legend-item">
+      <p class="shortcut">F8</p>
+      <p class="shortcut-explination">Remove waypoint</p>
+    </div>
+    <div class="legend-item">
+      <div class="legend-up-down-arrow legend-margin">
+        <svg-icon src="assets/svg/common/routing/ic_keyboard_arrow_up.svg"></svg-icon>
+      </div>
+      <div class="legend-up-down-arrow">
+        <svg-icon src="assets/svg/common/routing/ic_keyboard_arrow_down.svg"></svg-icon>
+      </div>
+      <p class="shortcut-explination">Move Up or Down</p>
+    </div>
+    <div class="legend-item">
+      <p class="shortcut">
+        <svg-icon
+          class="legend-plus shortcut-icon"
+          src="assets/svg/common/routing/ic_keyboard_plus.svg"
+          [svgStyle]="{ 'width.px': 8, 'height.px': 8 }"
+        ></svg-icon>
+      </p>
+      <p class="shortcut-explination">Open Add Route Modal</p>
+    </div>
+    <div class="legend-item">
+      <p class="shortcut">Enter</p>
+      <p class="shortcut-explination">Add Route</p>
+    </div>
+  </div>
+</ng-template>
