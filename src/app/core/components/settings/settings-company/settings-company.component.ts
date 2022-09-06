@@ -7,11 +7,11 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { SettingsCompanyService } from '../state/company-state/settings-company.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { CompanyResponse } from 'appcoretruckassist';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-settings-company',

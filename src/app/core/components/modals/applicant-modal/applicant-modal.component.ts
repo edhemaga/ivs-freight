@@ -1,19 +1,22 @@
 import {
-  emailRegex,
-  emailValidation,
+  firstNameValidation,
+  lastNameValidation,
 } from './../../shared/ta-input/ta-input.regex-validations';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { Subject } from 'rxjs';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-applicant-modal',
   templateUrl: './applicant-modal.component.html',
   styleUrls: ['./applicant-modal.component.scss'],
 })
-export class ApplicantModalComponent implements OnInit {
+export class ApplicantModalComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+
   @Input() editData: any = {
     type: 'edit',
     id: 1,
@@ -34,12 +37,18 @@ export class ApplicantModalComponent implements OnInit {
 
   private createForm() {
     this.applicantForm = this.formBuilder.group({
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       phone: [null, Validators.required],
-      email: [null, [emailRegex, ...emailValidation, Validators.required]],
+      email: [null, [Validators.required]],
       note: [null],
     });
+
+    this.inputService.customInputValidator(
+      this.applicantForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public onModalAction(data: { action: string; bool: boolean }) {
@@ -85,4 +94,9 @@ export class ApplicantModalComponent implements OnInit {
   private updateApplicant(id: number) {}
 
   private addApplicant() {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

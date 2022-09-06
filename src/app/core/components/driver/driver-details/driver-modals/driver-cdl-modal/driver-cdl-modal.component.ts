@@ -7,17 +7,17 @@ import {
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
 import { CdlTService } from '../../../state/cdl.service';
 import { DriverTService } from '../../../state/driver.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { FormService } from '../../../../../services/form/form.service';
 import {
   convertDateFromBackend,
   convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { Subject, takeUntil } from 'rxjs';
+} from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-driver-cdl-modal',

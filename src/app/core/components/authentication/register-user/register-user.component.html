@@ -35,6 +35,8 @@
                   type: 'text',
                   label: 'First Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize',
                   isDisabled: true
                 }"
@@ -48,6 +50,8 @@
                   type: 'text',
                   label: 'Last Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize',
                   isDisabled: true
                 }"
@@ -168,7 +172,7 @@
               disabled: registerUserForm.invalid
             }"
           >
-            Sign Up
+            Sign up
           </button>
 
           <!-- INFO -->
@@ -180,7 +184,9 @@
           </p>
 
           <p class="m-0 text-center">
-            Already have an account?<span routerLink="/login"> Login</span>
+            Already have an account?<span routerLink="/auth/login">
+              Sign in</span
+            >
           </p>
         </form>
       </div>

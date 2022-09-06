@@ -1,3 +1,7 @@
+import {
+  bankValidation,
+  lastNameValidation,
+} from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
@@ -11,18 +15,18 @@ import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 
 import {
-  phoneRegex,
-  emailRegex,
+  phoneFaxRegex,
   ssnNumberRegex,
   accountBankValidation,
   routingBankValidation,
-  emailValidation,
   addressValidation,
   addressUnitValidation,
+  firstNameValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 @Component({
   selector: 'app-step1',
@@ -275,7 +279,8 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private inputService: TaInputService
   ) {}
 
   ngOnInit(): void {
@@ -297,15 +302,15 @@ export class Step1Component implements OnInit, OnDestroy {
   private createForm(): void {
     this.personalInfoForm = this.formBuilder.group({
       isAgreement: [false, Validators.requiredTrue],
-      firstName: [null, Validators.required],
-      lastName: [null, Validators.required],
+      firstName: [null, [Validators.required, ...firstNameValidation]],
+      lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
-      phone: [null, [Validators.required, phoneRegex]],
-      email: [null, [Validators.required, emailRegex, ...emailValidation]],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      email: [null, [Validators.required]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       ssn: [null, [Validators.required, ssnNumberRegex]],
-      bankId: [null],
+      bankId: [null, [...bankValidation]],
       accountNumber: [null, accountBankValidation],
       routingNumber: [null, routingBankValidation],
       legalWork: [null, Validators.required],
@@ -335,6 +340,12 @@ export class Step1Component implements OnInit, OnDestroy {
 
       previousAddresses: this.formBuilder.array([]),
     });
+
+    this.inputService.customInputValidator(
+      this.personalInfoForm.get('email'),
+      'email',
+      this.destroy$
+    );
   }
 
   public handleInputSelect(event: any, action: string, index?: number): void {
@@ -698,8 +709,8 @@ export class Step1Component implements OnInit, OnDestroy {
       firstName: [applicantInfo?.firstName, Validators.required],
       lastName: [applicantInfo?.lastName, Validators.required],
       dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
-      phone: [applicantInfo?.phone, [Validators.required, phoneRegex]],
-      email: [applicantInfo?.email, [Validators.required, emailRegex]],
+      phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
+      email: [applicantInfo?.email, [Validators.required]],
       address: [applicantInfo?.address, Validators.required],
       addressUnit: [applicantInfo?.addressUnit],
 

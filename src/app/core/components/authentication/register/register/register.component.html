@@ -37,6 +37,8 @@
                   type: 'text',
                   label: 'First Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize',
                   autoFocus: true
                 }"
@@ -50,6 +52,8 @@
                   type: 'text',
                   label: 'Last Name',
                   isRequired: true,
+                  minLength: 2,
+                  maxLength: 26,
                   textTransform: 'capitalize'
                 }"
               ></app-ta-input>
@@ -195,7 +199,7 @@
               disabled: registerForm.invalid
             }"
           >
-            Sign Up
+            Sign up
           </button>
 
           <!-- INFO -->
@@ -207,7 +211,9 @@
           </p>
 
           <p class="m-0 text-center">
-            Already have an account?<span routerLink="/auth/login"> Login</span>
+            Already have an account?<span routerLink="/auth/login">
+              Sign in</span
+            >
           </p>
         </form>
       </div>

@@ -8,24 +8,20 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-//import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
-import * as AppConst from 'src/app/const';
 import { ToastrService } from 'ngx-toastr';
 import { HttpClient } from '@angular/common/http';
-// import { AppSignalRService } from './../../../core/services/app-signalr.service';
-import { environment } from 'src/environments/environment.prod';
-import { AppDispatchSignalrService } from 'src/app/core/services/dispatchboard/app-dispatchSignalr.service';
-import { SignalRService } from 'src/app/core/services/dispatchboard/app-signalr.service';
-import { AppLoadService } from 'src/app/core/services/load/app-load.service';
-import { getDataFromGpsResponse } from 'src/assets/utils/methods-global';
-import { Enums } from 'src/app/core/model/enums';
-import { AppIdleService } from 'src/app/core/services/dispatchboard/app-idle.service';
-import { DispatchSortService } from 'src/app/core/services/dispatchboard/dispatchsort.service';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { AppDispatcherTableNewComponent } from '../app-dispatcher-table-new/app-dispatcher-table-new.component';
-import { AppAddLoadTableComponent } from '../app-add-load-table/app-add-load-table.component';
-import { DispatcherHistoryComponent } from '../dispatcher-history/dispatcher-history.component';
 import { DispatcherStoreService } from '../state/dispatcher.service';
+import { AppIdleService } from '../../../services/dispatchboard/app-idle.service';
+import * as AppConst from 'src/app/const';
+import { Enums } from '../../shared/model/shared/enums';
+import { AppLoadService } from '../../../services/load/app-load.service';
+import { DispatchSortService } from '../../../services/dispatchboard/dispatchsort.service';
+import { SharedService } from '../../../services/shared/shared.service';
+import { SignalRService } from '../../../services/dispatchboard/app-signalr.service';
+import { AppDispatchSignalrService } from '../../../services/dispatchboard/app-dispatchSignalr.service';
+import { getDataFromGpsResponse } from '../../../utils/methods.globals';
+import { environment } from '../../../../../environments/environment';
 
 declare var google: any;
 

@@ -10,8 +10,8 @@ import {
 import { Chart, ChartDataSets, ChartOptions } from 'chart.js';
 import { BaseChartDirective, Color, Label } from 'ng2-charts';
 import * as annotation from 'chartjs-plugin-annotation';
-import { hexToRgbA } from 'src/assets/utils/methods-global';
 import moment from 'moment';
+import { hexToRgbA } from '../../../../../assets/utils/methods-global';
 
 @Component({
   selector: 'app-ta-chart',

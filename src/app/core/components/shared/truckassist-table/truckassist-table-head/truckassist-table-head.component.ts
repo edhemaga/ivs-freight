@@ -12,7 +12,7 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 
 const rotate: { [key: string]: any } = {
   asc: '',
@@ -228,11 +228,6 @@ export class TruckassistTableHeadComponent
   }
 
   // Reorder
-  onReorderStart() {
-    this.reordering = true;
-  }
-
-  // Reorder
   onReorder(event: CdkDragDrop<any>) {
     let previousIndex: number = null,
       currentIndex: number = null;
@@ -254,11 +249,6 @@ export class TruckassistTableHeadComponent
     this.tableService.sendColumnsOrder({ columnsOrder: this.columns });
 
     this.setVisibleColumns();
-  }
-
-  // Reorder End
-  onReorderEnd() {
-    this.reordering = false;
   }
 
   // Rezaize

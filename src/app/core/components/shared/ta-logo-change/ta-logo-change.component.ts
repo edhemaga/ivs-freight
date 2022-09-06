@@ -16,7 +16,10 @@ import * as Croppie from 'croppie';
 import { CroppieDirective } from 'angular-croppie-module';
 import { Options } from '@angular-slider/ngx-slider';
 import { UploadFile } from '../ta-upload-files/ta-upload-file/ta-upload-file.component';
-import { DropZoneConfig } from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
+import {
+  DropZoneConfig,
+  TaUploadDropzoneComponent,
+} from '../ta-upload-files/ta-upload-dropzone/ta-upload-dropzone.component';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -28,6 +31,7 @@ export class TaLogoChangeComponent
   implements AfterViewInit, OnInit, OnChanges, OnDestroy
 {
   private destroy$ = new Subject<void>();
+
   @ViewChild('croppie') croppieDirective: CroppieDirective | any;
   @Input() croppieOptions: Croppie.CroppieOptions = {
     enableExif: true,

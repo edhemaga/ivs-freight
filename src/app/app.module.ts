@@ -25,10 +25,9 @@ import { NavigationSubrouteCardComponent } from './core/components/navigation/na
 import { NavigationUserCompanyComponent } from './core/components/navigation/navigation-user-company/navigation-user-company.component';
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
-import { environment } from 'src/environments/environment';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
-
+import { configFactory } from './app.config';
 @NgModule({
   declarations: [
     AppComponent,
@@ -68,12 +67,7 @@ import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.inter
     {
       provide: Configuration,
       useFactory: (userLoggedService: UserLoggedService) =>
-        new Configuration({
-          basePath: environment.API_ENDPOINT,
-          credentials: {
-            bearer: userLoggedService.getAccessToken.bind(userLoggedService),
-          },
-        }),
+        configFactory(userLoggedService),
       deps: [UserLoggedService],
       multi: false,
     },

@@ -9,12 +9,11 @@ import {
   TrailerService,
   UpdateTrailerCommand,
 } from 'appcoretruckassist';
-/* import { CreateTrailerResponse } from 'appcoretruckassist/model/createTrailerResponse'; */
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerActiveStore } from './trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from './trailer-inactive-state/trailer-inactive.store';
 import { TrailerActiveQuery } from './trailer-active-state/trailer-active.query';
 import { TrailerInactiveQuery } from './trailer-inactive-state/trailer-inactive.query';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService {

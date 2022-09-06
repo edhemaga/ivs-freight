@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {Observable, Subject} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {environment} from 'src/environments/environment';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { LoadTabledata } from '../../model/load';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,8 +13,7 @@ export class AppLoadService {
   public editLoad = new Subject<LoadTabledata>();
   public editDispatchBoard = new Subject<void>();
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   get getDispatchBoardList() {
     return this.editDispatchBoard;
@@ -40,15 +39,21 @@ export class AppLoadService {
   // OLD: return this.http.get(app_endpoint + 'app/truck/main/load/list');
   getLoadTrucks(dispatcherId?: any) {
     if (!dispatcherId) {
-      return this.http.get(environment.API_ENDPOINT + `select/dispatchboard/list`);
+      return this.http.get(
+        environment.API_ENDPOINT + `select/dispatchboard/list`
+      );
     } else {
-      return this.http.get(environment.API_ENDPOINT + `select/dispatchboard/list/${dispatcherId}`);
+      return this.http.get(
+        environment.API_ENDPOINT + `select/dispatchboard/list/${dispatcherId}`
+      );
     }
   }
 
   // New Route to get all from dispatch board
   getAllLoadTrucks() {
-    return this.http.get(environment.API_ENDPOINT + `select/dispatchboard/list/bystatus/all`);
+    return this.http.get(
+      environment.API_ENDPOINT + `select/dispatchboard/list/bystatus/all`
+    );
   }
 
   getLoadTypes() {
@@ -93,24 +98,30 @@ export class AppLoadService {
 
   // OLD: return this.http.put(app_endpoint + 'app/load/update/'
   updateLoad(data, id): Observable<LoadTabledata> {
-    return this.http.put(environment.API_ENDPOINT + `truckload/${id}`, data).pipe(
-      tap((loadData: LoadTabledata) => {
-        this.editLoad.next(data);
-      })
-    );
+    return this.http
+      .put(environment.API_ENDPOINT + `truckload/${id}`, data)
+      .pipe(
+        tap((loadData: LoadTabledata) => {
+          this.editLoad.next(data);
+        })
+      );
   }
 
   addLoadToDispatchBoardItem(data) {
-    return this.http.put(environment.API_ENDPOINT + 'dispatchboard/addload', data).pipe(
-      tap((res: any) => {
-        this.editDispatchBoard.next();
-        this.newLoad.next(res);
-      })
-    );
+    return this.http
+      .put(environment.API_ENDPOINT + 'dispatchboard/addload', data)
+      .pipe(
+        tap((res: any) => {
+          this.editDispatchBoard.next();
+          this.newLoad.next(res);
+        })
+      );
   }
 
   getByDispatchboardData(id) {
-    return this.http.get(environment.API_ENDPOINT + `truckload/bydispatchboard/${id}/all`);
+    return this.http.get(
+      environment.API_ENDPOINT + `truckload/bydispatchboard/${id}/all`
+    );
   }
 
   createLoad(data) {
@@ -145,12 +156,12 @@ export class AppLoadService {
   getLoadData() {
     return this.http.get(
       environment.API_ENDPOINT +
-      'truckload/list/' +
-      'all' +
-      '/' +
-      environment.page +
-      '/' +
-      environment.perPage
+        'truckload/list/' +
+        'all' +
+        '/' +
+        environment.page +
+        '/' +
+        environment.perPage
     );
   }
 
@@ -165,46 +176,50 @@ export class AppLoadService {
       +'?bydisp=1';
       return this.http.get(
         environment.API_ENDPOINT +
-        'dispatchboard/list/all/' +
-        environment.page +
-        '/' +
-        environment.perPage
+          'dispatchboard/list/all/' +
+          environment.page +
+          '/' +
+          environment.perPage
       );
     } else if (id === -1) {
       return this.http.get(
         environment.API_ENDPOINT +
-        'dispatchboard/byteam/1/list/all/' +
-        environment.page +
-        '/' +
-        environment.perPage
+          'dispatchboard/byteam/1/list/all/' +
+          environment.page +
+          '/' +
+          environment.perPage
       );
       /// api/v2/dispatchboard/byteam/{teamBoardId}/list/{jsonNode}/{page}/{perPage}
     } else {
       return this.http.get(
         environment.API_ENDPOINT +
-        `dispatchboard/bydispatcher/${id}/list/all/` +
-        environment.page +
-        '/' +
-        environment.perPage
+          `dispatchboard/bydispatcher/${id}/list/all/` +
+          environment.page +
+          '/' +
+          environment.perPage
       );
     }
   }
 
   // OLD:return this.http.post(app_endpoint + 'app/dispatch_board/create', null);
   addDispatchItem(data) {
-    return this.http.post(environment.API_ENDPOINT + 'dispatchboard', data).pipe(
-      tap(() => {
-        this.editDispatchBoard.next();
-      })
-    );
+    return this.http
+      .post(environment.API_ENDPOINT + 'dispatchboard', data)
+      .pipe(
+        tap(() => {
+          this.editDispatchBoard.next();
+        })
+      );
   }
 
   editDispatchBoardData(data, id) {
-    return this.http.put(environment.API_ENDPOINT + `dispatchboard/${id}`, data).pipe(
-      tap(() => {
-        this.editDispatchBoard.next();
-      })
-    );
+    return this.http
+      .put(environment.API_ENDPOINT + `dispatchboard/${id}`, data)
+      .pipe(
+        tap(() => {
+          this.editDispatchBoard.next();
+        })
+      );
   }
 
   getDispatchAffectedRow(id) {
@@ -214,28 +229,43 @@ export class AppLoadService {
   // Switch API set
   // OLD: return this.http.put(app_endpoint + 'app/dispatch_board/switch/driver', data, {responseType: 'text'});
   switchDrivers(data) {
-    return this.http.put(environment.API_ENDPOINT + 'dispatchboard/switch/driver', data, {
-      responseType: 'text',
-    });
+    return this.http.put(
+      environment.API_ENDPOINT + 'dispatchboard/switch/driver',
+      data,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   // OLD: return this.http.put(app_endpoint + 'app/dispatch_board/switch/trailer', data);
   switchTrailers(data) {
-    return this.http.put(environment.API_ENDPOINT + 'dispatchboard/switch/trailer', data, {
-      responseType: 'text',
-    });
+    return this.http.put(
+      environment.API_ENDPOINT + 'dispatchboard/switch/trailer',
+      data,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   // OLD: return this.http.put(app_endpoint + 'app/dispatch_board/switch/truck', data);
 
   switchTrucks(data) {
-    return this.http.put(environment.API_ENDPOINT + 'dispatchboard/switch/row', data, {
-      responseType: 'text',
-    });
+    return this.http.put(
+      environment.API_ENDPOINT + 'dispatchboard/switch/row',
+      data,
+      {
+        responseType: 'text',
+      }
+    );
   }
 
   saveHos(data, driverId) {
-    return this.http.put(environment.API_ENDPOINT + `driver/hos/${driverId}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `driver/hos/${driverId}`,
+      data
+    );
   }
 
   /* Load table */
@@ -244,17 +274,26 @@ export class AppLoadService {
   }
 
   addUpdateLoadNote(data) {
-    return this.http.put(environment.API_ENDPOINT + `truckload/note/${data.id}`, {
-      note: data.note,
-    });
+    return this.http.put(
+      environment.API_ENDPOINT + `truckload/note/${data.id}`,
+      {
+        note: data.note,
+      }
+    );
   }
 
   updateDispatchStatus(data: any, id: number) {
-    return this.http.put(environment.API_ENDPOINT + `dispatchboard/status/${id}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `dispatchboard/status/${id}`,
+      data
+    );
   }
 
   updateLoadStatus(data: any, id: number) {
-    return this.http.put(environment.API_ENDPOINT + `truckload/status/${id}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `truckload/status/${id}`,
+      data
+    );
   }
 
   // Comment section
@@ -265,16 +304,21 @@ export class AppLoadService {
   getLoadComments(id) {
     return this.http.get(
       environment.API_ENDPOINT +
-      `truckload/comment/list/id/${id}/${environment.page}/${environment.perPage}`
+        `truckload/comment/list/id/${id}/${environment.page}/${environment.perPage}`
     );
   }
 
   deleteLoadComment(id) {
-    return this.http.delete(environment.API_ENDPOINT + `truckload/comment/id/${id}`);
+    return this.http.delete(
+      environment.API_ENDPOINT + `truckload/comment/id/${id}`
+    );
   }
 
   updateLoadComment(id, data) {
-    return this.http.put(environment.API_ENDPOINT + `truckload/comment/id/${id}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `truckload/comment/id/${id}`,
+      data
+    );
   }
 
   getLoadLogList(loadId: number) {
@@ -286,23 +330,25 @@ export class AppLoadService {
   }
 
   getDispatchboardHistoryUsed(params?) {
-    return this.http.get(environment.API_ENDPOINT + `dispatchboard/usedby${params ? params : ''}`);
+    return this.http.get(
+      environment.API_ENDPOINT + `dispatchboard/usedby${params ? params : ''}`
+    );
   }
 
   getDispatchboardHistoryData(params?, isStatus?) {
     if (isStatus) {
       return this.http.get(
         environment.API_ENDPOINT +
-        `dispatchboard/status/history/${environment.page}/${environment.perPage}${
-          params ? params : ''
-        }`
+          `dispatchboard/status/history/${environment.page}/${
+            environment.perPage
+          }${params ? params : ''}`
       );
     }
     return this.http.get(
       environment.API_ENDPOINT +
-      `dispatchboard/board/history/${environment.page}/${environment.perPage}${
-        params ? params : ''
-      }`
+        `dispatchboard/board/history/${environment.page}/${
+          environment.perPage
+        }${params ? params : ''}`
     );
   }
 
@@ -313,7 +359,10 @@ export class AppLoadService {
         data
       );
     }
-    return this.http.put(environment.API_ENDPOINT + `dispatchboard/datetime/load/${dispID}`, data);
+    return this.http.put(
+      environment.API_ENDPOINT + `dispatchboard/datetime/load/${dispID}`,
+      data
+    );
   }
 
   importLoads(loads) {

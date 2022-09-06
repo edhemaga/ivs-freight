@@ -10,9 +10,9 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
 import { card_component_animation } from '../animations/card-component.animations';
 import { input_note_animation } from './ta-input-note.animation';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-ta-input-note',

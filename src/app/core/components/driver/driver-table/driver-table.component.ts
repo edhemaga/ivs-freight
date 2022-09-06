@@ -1,29 +1,19 @@
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getApplicantColumnsDefinition } from 'src/assets/utils/settings/applicant-columns';
-import { getDriverColumnsDefinition } from 'src/assets/utils/settings/driver-columns';
 import { DriversActiveQuery } from '../state/driver-active-state/driver-active.query';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import { DatePipe } from '@angular/common';
 import { DriverTService } from '../state/driver.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DriversActiveState } from '../state/driver-active-state/driver-active.store';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
+
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
 import { DriverListResponse } from 'appcoretruckassist';
-import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
 
 import {
   Confirmation,
@@ -31,6 +21,17 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { Subject, takeUntil } from 'rxjs';
+import { NameInitialsPipe } from '../../../pipes/nameinitials';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getApplicantColumnsDefinition } from '../../../../../assets/utils/settings/applicant-columns';
+import { getDriverColumnsDefinition } from '../../../../../assets/utils/settings/driver-columns';
 
 @Component({
   selector: 'app-driver-table',
@@ -436,7 +437,13 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       return this.driversInactive?.length ? this.driversInactive : [];
     } else {
-      return [{}, {}, {}, {}, {}];
+      let mockData = [];
+
+      for (let i = 0; i < 10; i++) {
+        mockData.push({});
+      }
+
+      return mockData;
     }
   }
 
@@ -611,44 +618,50 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       phone: '(325) 540-1157',
       dob: '04/04/44',
       email: 'angelo.T@gmail.com',
-      applicantProgress: {
-        app: {
+      applicantProgress: [
+        {
+          title: 'App.',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 34,
+          class: 'complete-icon',
           percentage: 34,
         },
-        mvr: {
+        {
+          title: 'Mvr',
           status: 'In Progres',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 34,
+          class: 'complete-icon',
           percentage: 34,
         },
-        psp: {
+        {
+          title: 'Psp',
           status: 'Wrong',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 29,
+          class: 'wrong-icon',
           percentage: 34,
         },
-        sph: {
+        {
+          title: 'Sph',
           status: 'No Started',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 30,
+          class: 'complete-icon',
           percentage: 34,
         },
-        hos: {
+        {
+          title: 'Hos',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 32,
+          class: 'done-icon',
           percentage: 34,
         },
-        ssn: {
+        {
+          title: 'Ssn',
           status: 'Done',
-          isApplicant: true,
-          expirationDays: this.thousandSeparator.transform('24'),
+          width: 29,
+          class: 'wrong-icon',
           percentage: 34,
         },
-      },
+      ],
       // Complete, Done, Wrong, In Progres, Not Started
       medical: {
         class:
@@ -678,7 +691,20 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
         expirationDays: this.thousandSeparator.transform('12'),
         percentage: 10,
       },
-      rev: 'Ready',
+      rev: {
+        title:
+          index === 0
+            ? 'Reviewed'
+            : index === 1
+            ? 'Finished'
+            : index === 2
+            ? 'Incomplete'
+            : 'Ready',
+        iconLink:
+          index === 0 || index === 2
+            ? '../../../../../assets/svg/truckassist-table/applicant-wrong-icon.svg'
+            : '../../../../../assets/svg/truckassist-table/applicant-done-icon.svg',
+      },
       hire: true,
       favorite: true,
     };
