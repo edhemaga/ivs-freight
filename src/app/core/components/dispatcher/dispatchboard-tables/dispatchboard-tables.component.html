@@ -349,6 +349,7 @@
           <td class="phoneemail-field">
             <div class="phone-em-hold"
             [class.empty-box-field]="!item.email"
+            [@boxAnimation]="checkForEmpty == 'driverId' ? (!item.email ? 'void' : 'filled') : 'empty'"
             >
               <div
                 *ngIf="item.driver"
@@ -615,7 +616,7 @@
               <!-- <div class="dispatcher-table-cell-holder">7532</div> -->
               <app-ta-note
                   [note]="item.note"
-                  [openedAll]="false"
+                  [openedAll]="true"
                   [dispatchIndex]="rowIndex"
                   [parking]="false"
                   (saveNoteValue)="saveNoteValue($event)"
