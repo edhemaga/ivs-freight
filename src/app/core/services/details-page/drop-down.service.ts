@@ -326,6 +326,7 @@ export class DropDownService {
       ...dataObject,
       data: {
         ...dataObject,
+        name: dataObject?.businessName,
       },
     };
     if (event.type === 'edit' && name === 'shipper') {
@@ -354,26 +355,65 @@ export class DropDownService {
         ConfirmationModalComponent,
         { size: 'small' },
         {
-          id: event.id,
+          ...mappedEvent,
           template: name === 'shipper' ? 'shipper' : 'broker',
           type: 'delete',
           image: false,
         }
       );
+    } else if (event.type === 'move-to-ban') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'broker',
+          subType: 'ban list',
+          subTypeStatus: 'move',
+          type: 'info',
+          image: false,
+        }
+      );
+    } else if (event.type === 'remove-from-ban') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'broker',
+          subType: 'ban list',
+          subTypeStatus: 'remove',
+          type: 'info',
+          image: false,
+        }
+      );
+    } else if (event.type === 'move-to-dnu') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'broker',
+          subType: 'dnu',
+          subTypeStatus: 'move',
+          type: 'info',
+          image: false,
+        }
+      );
+    } else if (event.type === 'remove-from-dnu') {
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          ...mappedEvent,
+          template: 'broker',
+          subType: 'dnu',
+          subTypeStatus: 'remove',
+          type: 'info',
+          image: false,
+        }
+      );
     }
-
-    // else if (event.type === 'deactivate' || event.type === 'activate') {
-    //   this.modalService.openModal(
-    //     ConfirmationModalComponent,
-    //     { size: 'small' },
-    //     {
-    //       ...mappedEvent,
-    //       template: 'driver',
-    //       type: dataObject.status === 1 ? 'deactivate' : 'activate',
-    //       image: true,
-    //     }
-    //   );
-    // }
   }
   public dropActionHeaderTruck(
     event: any,
@@ -519,7 +559,7 @@ export class DropDownService {
             { size: 'small' },
             {
               ...mappedEvent,
-              template: 'parking',
+              template: 'Company Parking',
               type: 'delete',
               svg: false,
             }
@@ -531,8 +571,8 @@ export class DropDownService {
             ConfirmationModalComponent,
             { size: 'small' },
             {
-              id: event.id,
-              template: 'office',
+              ...mappedEvent,
+              template: 'Company Office',
               type: 'delete',
               svg: false,
             }
@@ -544,8 +584,8 @@ export class DropDownService {
             ConfirmationModalComponent,
             { size: 'small' },
             {
-              id: event.id,
-              template: 'repair-shop',
+              ...mappedEvent,
+              template: 'Company Repair Shop',
               type: 'delete',
               svg: false,
             }
@@ -557,8 +597,8 @@ export class DropDownService {
             ConfirmationModalComponent,
             { size: 'small' },
             {
-              id: event.id,
-              template: 'terminal',
+              ...mappedEvent,
+              template: 'Company Terminal',
               type: 'delete',
               svg: false,
             }

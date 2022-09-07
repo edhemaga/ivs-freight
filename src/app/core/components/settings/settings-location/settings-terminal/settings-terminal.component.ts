@@ -21,7 +21,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
   public terminalData: any;
   public terminalActions: any;
   private destroy$ = new Subject<void>();
-
+  public terminalDataById: any;
   constructor(
     private settingsLocationService: SettingsLocationService,
     private terminalService: CompanyTerminalService,
@@ -50,7 +50,7 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              if (res.template === 'terminal') {
+              if (res.template === 'Company Terminal') {
                 this.deleteTerminalById(res.id);
               }
               break;
@@ -64,7 +64,12 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
     this.terminalData = this.activatedRoute.snapshot.data.terminal.pagination;
     this.initOptions();
   }
-
+  public getTerminalById(id: number) {
+    this.settingsLocationService
+      .getCompanyTerminalById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.terminalDataById = item));
+  }
   public getTerminalList() {
     this.terminalService
       .getTerminalList()
@@ -73,8 +78,15 @@ export class SettingsTerminalComponent implements OnInit, OnDestroy {
   }
 
   public optionsEvent(any: any, action: string) {
-    const name = dropActionNameDriver(any, action);
-    this.dropDownService.dropActionCompanyLocation(any, name, any.id);
+    this.getTerminalById(any.id);
+    setTimeout(() => {
+      const name = dropActionNameDriver(any, action);
+      this.dropDownService.dropActionCompanyLocation(
+        any,
+        name,
+        this.terminalDataById
+      );
+    }, 100);
   }
   public deleteTerminalById(id: number) {
     this.settingsLocationService

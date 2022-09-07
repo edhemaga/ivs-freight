@@ -20,6 +20,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public officeActions: any;
   public officeData: any;
+  public officeDataById: any;
   constructor(
     private settingsLocationService: SettingsLocationService,
     private companyOfficeService: CompanyTOfficeService,
@@ -48,7 +49,7 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              if (res.template === 'office') {
+              if (res.template === 'Company Office') {
                 this.deleteOfficeById(res.id);
               }
               break;
@@ -62,7 +63,12 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
     this.officeData = this.activatedRoute.snapshot.data.office.pagination;
     this.initOptions();
   }
-
+  public getOfficeById(id: number) {
+    this.settingsLocationService
+      .getCompanyOfficeById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.officeDataById = item));
+  }
   public deleteOfficeById(id: number) {
     this.settingsLocationService
       .deleteCompanyOfficeById(id)
@@ -102,9 +108,14 @@ export class SettingsOfficeComponent implements OnInit, OnDestroy {
   }
 
   public officeDropActions(any: any, actions: string) {
+    this.getOfficeById(any.id);
     setTimeout(() => {
       const name = dropActionNameDriver(any, actions);
-      this.dropDownService.dropActionCompanyLocation(any, name, any.id);
+      this.dropDownService.dropActionCompanyLocation(
+        any,
+        name,
+        this.officeDataById
+      );
     }, 100);
   }
   /**Function for dots in cards */

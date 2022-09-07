@@ -9,6 +9,10 @@ import { NotificationService } from '../../../services/notification/notification
 import { SumArraysPipe } from '../../../pipes/sum-arrays.pipe';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { BrokerMinimalListQuery } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { BrokerMinimalListStore } from '../state/broker-details-state/broker-minimal-list-state/broker-minimal.store';
 
 @Component({
   selector: 'app-broker-details',
@@ -21,28 +25,59 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
   public brokerId: number;
   public brokerConfig: any[] = [];
   public brokerDrop: any;
+  public brokerObject: any;
+  public currentIndex: number = 0;
+  public brokerList: any = this.brokerMimialQuery.getAll();
   constructor(
     private activated_route: ActivatedRoute,
     private router: Router,
     private notificationService: NotificationService,
-    private brokerQuery: BrokerDetailsQuery,
+    private brokerMimialQuery: BrokerMinimalListQuery,
     private brokerService: BrokerTService,
     private detailsPageService: DetailsPageService,
     private sumArr: SumArraysPipe,
     private cdRef: ChangeDetectorRef,
     private dropDownService: DropDownService,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private confirmationService: ConfirmationService,
+    private brokerMinimalStore: BrokerMinimalListStore
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          console.log(res);
 
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'broker') {
+                this.deleteBrokerById(res.id);
+              }
+              break;
+            }
+            case 'info': {
+              if (res.template === 'broker' && res.subType === 'ban list') {
+                this.moveRemoveBrokerToBan(res.id);
+              }
+              if (res.template === 'broker' && res.subType === 'dnu') {
+                this.moveRemoveBrokerToDnu(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.brokerInitConfig(res.data);
-          this.initTableOptions();
           this.cdRef.detectChanges();
         }
       });
@@ -78,11 +113,46 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     this.brokerInitConfig(this.activated_route.snapshot.data.broker);
   }
 
+  public deleteBrokerById(id: number) {
+    let last = this.brokerList.at(-1);
+    if (last.id === this.brokerMinimalStore.getValue().ids[this.currentIndex]) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
+    this.brokerService
+      .deleteBrokerByIdDetails(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (this.brokerMinimalStore.getValue().ids.length >= 1) {
+            this.router.navigate([
+              `/customer/${
+                this.brokerList[this.currentIndex].id
+              }/broker-details`,
+            ]);
+          }
+          this.notificationService.success(
+            'Broker successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.router.navigate(['/customer']);
+        },
+      });
+  }
+
   public brokerInitConfig(data: BrokerResponse) {
+    this.currentIndex = this.brokerList.findIndex(
+      (broker) => broker.id === data.id
+    );
+    this.initTableOptions(data);
+    this.getBrokerById(data.id);
     let totalCost;
-    if (data.loads.length) {
+    if (data?.loads?.length) {
       totalCost = this.sumArr.transform(
-        data.loads.map((item) => {
+        data?.loads.map((item) => {
           return {
             id: item.id,
             value: item.totalRate,
@@ -177,9 +247,14 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     ];
     this.brokerId = data?.id ? data.id : null;
   }
-
+  public getBrokerById(id: number) {
+    this.brokerService
+      .getBrokerById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.brokerObject = item));
+  }
   /**Function for dots in cards */
-  public initTableOptions(): void {
+  public initTableOptions(data: BrokerResponse): void {
     this.brokerDrop = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -212,15 +287,15 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
           show: true,
         },
         {
-          title: 'Move to DNU',
-          name: 'move-to-dnu',
+          title: data?.dnu ? 'Remove from DNU' : 'Move to DNU',
+          name: data?.dnu ? 'remove-from-dnu' : 'move-to-dnu',
           svg: 'assets/svg/common/ic_disable-status.svg',
           deactivate: true,
           show: true,
         },
         {
-          title: 'Move to Ban list',
-          name: 'move-to-ban',
+          title: data?.ban ? 'Remove from Ban List' : 'Move to Ban list',
+          name: data?.ban ? 'remove-from-ban' : 'move-to-ban',
           svg: 'assets/svg/common/ic_disable-status.svg',
           show: true,
         },
@@ -238,8 +313,50 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
+  public moveRemoveBrokerToBan(id: number) {
+    this.brokerService
+      .changeBanStatus(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Broker successfully change status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `You can not move broker whit id: ${id}, to ban list`,
+            'Error:'
+          );
+        },
+      });
+  }
+  public moveRemoveBrokerToDnu(id: number) {
+    this.brokerService
+      .changeDnuStatus(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Broker successfully change status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `You can not move broker whit id: ${id}, to ban list`,
+            'Error:'
+          );
+        },
+      });
+  }
   public onDropActions(event: any) {
-    this.dropDownService.dropActionsHeaderShipperBroker(event, null, 'broker');
+    this.dropDownService.dropActionsHeaderShipperBroker(
+      event,
+      this.brokerObject,
+      'broker'
+    );
   }
   /**Function return id */
   public identity(index: number, item: any): number {

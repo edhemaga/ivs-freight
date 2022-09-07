@@ -23,6 +23,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
   public count: number = 0;
   public repairsActions: any;
+  public repairShopDataId: any;
   constructor(
     private settingsLocationService: SettingsLocationService,
     private repairShopSrv: CompanyRepairShopService,
@@ -52,7 +53,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              if (res.template === 'repair-shop') {
+              if (res.template === 'Company Repair Shop') {
                 this.deleteRepairShopById(res.id);
               }
               break;
@@ -67,12 +68,24 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
       this.activatedRoute.snapshot.data.companyrepairshop.pagination;
     this.initOptions();
   }
+  public getRepairShopById(id: number) {
+    this.repairService
+      .getRepairShopById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.repairShopDataId = item));
+  }
   public repairDropActions(any: any, actions: string) {
+    this.getRepairShopById(any.id);
     setTimeout(() => {
       const name = dropActionNameDriver(any, actions);
-      this.dropDownService.dropActionCompanyLocation(any, name, any.id);
+      this.dropDownService.dropActionCompanyLocation(
+        any,
+        name,
+        this.repairShopDataId
+      );
     }, 100);
   }
+
   public deleteRepairShopById(id: number) {
     this.repairService
       .deleteRepairShopById(id)

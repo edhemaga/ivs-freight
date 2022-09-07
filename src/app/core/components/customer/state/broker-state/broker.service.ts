@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { BrokerMinimalListQuery } from './../broker-details-state/broker-minimal-list-state/broker-minimal.query';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   BrokerMinimalListResponse,
   BrokerModalResponse,
@@ -12,7 +13,7 @@ import {
   UpdateBrokerCommand,
   UpdateReviewCommand,
 } from 'appcoretruckassist';
-import { Observable, tap, of } from 'rxjs';
+import { Observable, tap, of, Subject, takeUntil } from 'rxjs';
 import { BrokerQuery } from './broker.query';
 import { BrokerStore } from './broker.store';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
@@ -21,14 +22,19 @@ import { BrokerMinimalListStore } from '../broker-details-state/broker-minimal-l
 @Injectable({
   providedIn: 'root',
 })
-export class BrokerTService {
+export class BrokerTService implements OnDestroy {
+  public brokerId: number;
+  public brokerList: any;
+  public currentIndex: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private brokerService: BrokerService,
     private brokerStore: BrokerStore,
     private ratingReviewService: RatingReviewService,
     private tableService: TruckassistTableService,
     private brokerMinimalStore: BrokerMinimalListStore,
-    private brokerQuery: BrokerQuery
+    private brokerQuery: BrokerQuery,
+    private brokerMinimalQuery: BrokerMinimalListQuery
   ) {}
 
   // Add Broker
@@ -131,8 +137,30 @@ export class BrokerTService {
   }
 
   // Get Broker By ID
-  public getBrokerById(id: number): Observable<BrokerResponse> {
-    return this.brokerService.apiBrokerIdGet(id);
+  public getBrokerById(
+    brokerId: number,
+    getIndex?: boolean
+  ): Observable<BrokerResponse> {
+    this.brokerMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.brokerList = item));
+    if (getIndex) {
+      this.currentIndex = this.brokerList.findIndex(
+        (broker) => broker.id === brokerId
+      );
+      let last = this.brokerList.at(-1);
+      if (last.id === brokerId) {
+        this.currentIndex = --this.currentIndex;
+      } else {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.brokerId = this.brokerList[this.currentIndex].id;
+    }
+    return this.brokerService.apiBrokerIdGet(brokerId);
   }
 
   // Delete Broker List
@@ -157,11 +185,48 @@ export class BrokerTService {
     return of(null);
   }
 
+  // Delete Broker By Id Details
+  public deleteBrokerByIdDetails(brokerId: number): Observable<any> {
+    return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
+      tap(() => {
+        this.brokerStore.remove(({ id }) => id === brokerId);
+        this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+        const brokerShipperCount = JSON.parse(
+          localStorage.getItem('brokerShipperTableCount')
+        );
+
+        brokerShipperCount.broker--;
+
+        localStorage.setItem(
+          'brokerShipperTableCount',
+          JSON.stringify({
+            broker: brokerShipperCount.broker,
+            shipper: brokerShipperCount.shipper,
+          })
+        );
+        const subBroker = this.getBrokerById(this.brokerId, true)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (broker: BrokerResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                tab: 'broker',
+                data: broker,
+                id: broker.id,
+              });
+
+              subBroker.unsubscribe();
+            },
+          });
+      })
+    );
+  }
+
   // Delete Broker By Id
   public deleteBrokerById(brokerId: number): Observable<any> {
     return this.brokerService.apiBrokerIdDelete(brokerId).pipe(
       tap(() => {
-        this.brokerStore.remove(({ id }) => id === id);
+        this.brokerStore.remove(({ id }) => id === brokerId);
 
         const brokerShipperCount = JSON.parse(
           localStorage.getItem('brokerShipperTableCount')
@@ -181,13 +246,53 @@ export class BrokerTService {
   }
 
   // Change Ban Status
-  public changeBanStatus(id: number): Observable<any> {
-    return this.brokerService.apiBrokerBanIdPut(id, 'response');
+  public changeBanStatus(brokerId: number): Observable<any> {
+    return this.brokerService.apiBrokerBanIdPut(brokerId, 'response').pipe(
+      tap(() => {
+        const subBroker = this.getBrokerById(brokerId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (broker: BrokerResponse | any) => {
+              this.brokerStore.remove(({ id }) => id === brokerId);
+              this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+              this.brokerStore.add(broker);
+              this.brokerMinimalStore.add(broker);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'broker',
+                data: broker,
+                id: broker.id,
+              });
+
+              subBroker.unsubscribe();
+            },
+          });
+      })
+    );
   }
 
   // Change Dnu Status
-  public changeDnuStatus(id: number): Observable<any> {
-    return this.brokerService.apiBrokerDnuIdPut(id, 'response');
+  public changeDnuStatus(brokerId: number): Observable<any> {
+    return this.brokerService.apiBrokerDnuIdPut(brokerId, 'response').pipe(
+      tap(() => {
+        const subBroker = this.getBrokerById(brokerId).subscribe({
+          next: (broker: BrokerResponse | any) => {
+            this.brokerStore.remove(({ id }) => id === brokerId);
+            this.brokerMinimalStore.remove(({ id }) => id === brokerId);
+            this.brokerStore.add(broker);
+            this.brokerMinimalStore.add(broker);
+            this.tableService.sendActionAnimation({
+              animation: 'update',
+              tab: 'broker',
+              data: broker,
+              id: broker.id,
+            });
+
+            subBroker.unsubscribe();
+          },
+        });
+      })
+    );
   }
 
   public getBrokerDropdowns(): Observable<BrokerModalResponse> {
@@ -206,5 +311,9 @@ export class BrokerTService {
 
   public updateReview(review: UpdateReviewCommand): Observable<any> {
     return this.ratingReviewService.apiRatingReviewReviewPut(review);
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

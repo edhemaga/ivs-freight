@@ -37,6 +37,12 @@ export class companyRepairShopResolver
           return of('No RepairData data...');
         }),
         tap((repairShopPagination: RepairShopListResponse) => {
+          localStorage.setItem(
+            'repairShopTableCount',
+            JSON.stringify({
+              repairShops: repairShopPagination.pagination.count,
+            })
+          );
           this.companyRepairShopStore.set(repairShopPagination.pagination.data);
         })
       );

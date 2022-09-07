@@ -303,17 +303,19 @@ export class TruckTService implements OnDestroy {
             inactive: truckCount.inactive,
           })
         );
-        const subTruck = this.getTruckById(truckId).subscribe({
-          next: (truck: TruckResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              data: truck,
-              id: truck.id,
-            });
+        const subTruck = this.getTruckById(truckId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                data: truck,
+                id: truck.id,
+              });
 
-            subTruck.unsubscribe();
-          },
-        });
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }

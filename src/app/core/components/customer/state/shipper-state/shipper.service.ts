@@ -3,7 +3,7 @@ import {
   ShipperMinimalListStore,
 } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.store';
 import { ShipperService } from './../../../../../../../appcoretruckassist/api/shipper.service';
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   CreateRatingCommand,
   CreateResponse,
@@ -16,56 +16,63 @@ import {
   UpdateReviewCommand,
   UpdateShipperCommand,
 } from 'appcoretruckassist';
-import { Observable, of, tap } from 'rxjs';
+import { Observable, of, Subject, takeUntil, tap } from 'rxjs';
 import { ShipperStore } from './shipper.store';
 import { ShipperQuery } from './shipper.query';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { ShipperMinimalListQuery } from './shipper-details-state/shipper-minimal-list-state/shipper-minimal.query';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ShipperTService {
+export class ShipperTService implements OnDestroy {
+  public shipperId: number;
+  public shipperList: any;
+  public currentIndex: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private shipperService: ShipperService,
     private tableService: TruckassistTableService,
     private ratingReviewService: RatingReviewService,
     private shipperStore: ShipperStore,
-    private shipperQuery: ShipperQuery,
-    private shipperMinimalStore: ShipperMinimalListStore
+    private shipperMinimalStore: ShipperMinimalListStore,
+    private shipperMinimalQuery: ShipperMinimalListQuery
   ) {}
 
   // Create Shipper
   public addShipper(data: CreateShipperCommand): Observable<CreateResponse> {
     return this.shipperService.apiShipperPost(data).pipe(
       tap((res: any) => {
-        const subShipper = this.getShipperById(res.id).subscribe({
-          next: (shipper: ShipperResponse | any) => {
-            this.shipperStore.add(shipper);
+        const subShipper = this.getShipperById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shipper: ShipperResponse | any) => {
+              this.shipperStore.add(shipper);
+              this.shipperMinimalStore.add(shipper);
+              const brokerShipperCount = JSON.parse(
+                localStorage.getItem('brokerShipperTableCount')
+              );
 
-            const brokerShipperCount = JSON.parse(
-              localStorage.getItem('brokerShipperTableCount')
-            );
+              brokerShipperCount.shipper++;
 
-            brokerShipperCount.shipper++;
+              localStorage.setItem(
+                'brokerShipperTableCount',
+                JSON.stringify({
+                  broker: brokerShipperCount.broker,
+                  shipper: brokerShipperCount.shipper,
+                })
+              );
 
-            localStorage.setItem(
-              'brokerShipperTableCount',
-              JSON.stringify({
-                broker: brokerShipperCount.broker,
-                shipper: brokerShipperCount.shipper,
-              })
-            );
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                tab: 'shipper',
+                data: shipper,
+                id: shipper.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              tab: 'shipper',
-              data: shipper,
-              id: shipper.id,
-            });
-
-            subShipper.unsubscribe();
-          },
-        });
+              subShipper.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -74,22 +81,24 @@ export class ShipperTService {
   public updateShipper(data: UpdateShipperCommand): Observable<any> {
     return this.shipperService.apiShipperPut(data).pipe(
       tap(() => {
-        const subShipper = this.getShipperById(data.id).subscribe({
-          next: (shipper: ShipperResponse | any) => {
-            this.shipperStore.remove(({ id }) => id === data.id);
-            this.shipperMinimalStore.remove(({ id }) => id === data.id);
-            this.shipperStore.add(shipper);
-            this.shipperMinimalStore.add(shipper);
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              tab: 'shipper',
-              data: shipper,
-              id: shipper.id,
-            });
+        const subShipper = this.getShipperById(data.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shipper: ShipperResponse | any) => {
+              this.shipperStore.remove(({ id }) => id === data.id);
+              this.shipperMinimalStore.remove(({ id }) => id === data.id);
+              this.shipperStore.add(shipper);
+              this.shipperMinimalStore.add(shipper);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                tab: 'shipper',
+                data: shipper,
+                id: shipper.id,
+              });
 
-            subShipper.unsubscribe();
-          },
-        });
+              subShipper.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -133,8 +142,30 @@ export class ShipperTService {
   }
 
   // Get Shipper By Id
-  public getShipperById(id: number): Observable<ShipperResponse> {
-    return this.shipperService.apiShipperIdGet(id);
+  public getShipperById(
+    shipperId: number,
+    getIndex?: boolean
+  ): Observable<ShipperResponse> {
+    this.shipperMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.shipperList = item));
+    if (getIndex) {
+      this.currentIndex = this.shipperList.findIndex(
+        (shipper) => shipper.id === shipperId
+      );
+      let last = this.shipperList.at(-1);
+      if (last.id === shipperId) {
+        this.currentIndex = --this.currentIndex;
+      } else {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.shipperId = this.shipperList[this.currentIndex].id;
+    }
+    return this.shipperService.apiShipperIdGet(shipperId);
   }
 
   // Delete Shipper List
@@ -159,6 +190,42 @@ export class ShipperTService {
     return of(null);
   }
 
+  // Delete Shipper By Id
+  public deleteShipperByIdDetails(shipperId: number): Observable<any> {
+    return this.shipperService.apiShipperIdDelete(shipperId).pipe(
+      tap(() => {
+        this.shipperStore.remove(({ id }) => id === shipperId);
+        this.shipperMinimalStore.remove(({ id }) => id === shipperId);
+        const brokerShipperCount = JSON.parse(
+          localStorage.getItem('brokerShipperTableCount')
+        );
+
+        brokerShipperCount.shipper--;
+
+        localStorage.setItem(
+          'brokerShipperTableCount',
+          JSON.stringify({
+            broker: brokerShipperCount.broker,
+            shipper: brokerShipperCount.shipper,
+          })
+        );
+        const subShipper = this.getShipperById(this.shipperId, true)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (shipper: ShipperResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                tab: 'shipper',
+                data: shipper,
+                id: shipper.id,
+              });
+
+              subShipper.unsubscribe();
+            },
+          });
+      })
+    );
+  }
   // Delete Shipper By Id
   public deleteShipperById(shipperId: number): Observable<any> {
     return this.shipperService.apiShipperIdDelete(shipperId).pipe(
@@ -212,5 +279,9 @@ export class ShipperTService {
 
   public updateReview(review: UpdateReviewCommand): Observable<any> {
     return this.ratingReviewService.apiRatingReviewReviewPut(review);
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -52,7 +52,7 @@ export class SettingsParkingComponent implements OnInit, OnDestroy {
         next: (res: Confirmation) => {
           switch (res.type) {
             case 'delete': {
-              if (res.template === 'parking') {
+              if (res.template === 'Company Parking') {
                 this.deleteParkingById(res.id);
               }
               break;
