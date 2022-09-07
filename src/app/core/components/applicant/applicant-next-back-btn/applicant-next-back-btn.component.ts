@@ -26,7 +26,7 @@ export class ApplicantNextBackBtnComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onStepAction(action: string) {
+  public onStepAction(action: string): void {
     this.stepEvent.emit({ action });
   }
 }

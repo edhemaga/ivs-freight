@@ -14,22 +14,16 @@ import { DisclosureRelease } from '../../state/model/disclosure-release.model';
 export class Step10Component implements OnInit {
   public selectedMode: string = SelectedMode.REVIEW;
 
-  public applicant: Applicant | undefined;
-
   public disclosureReleaseForm: FormGroup;
 
-  public disclosureReleaseInfo: DisclosureRelease | undefined;
+  /* public applicant: Applicant | undefined; */
+
+  /* public disclosureReleaseInfo: DisclosureRelease | undefined; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public createForm(): void {
@@ -96,7 +90,15 @@ export class Step10Component implements OnInit {
     }
   }
 
-  private formFilling(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
     this.disclosureReleaseForm.patchValue({
       isFirstDisclosure: this.disclosureReleaseInfo?.isFirstDisclosure,
       isSecondDisclosure: this.disclosureReleaseInfo?.isSecondDisclosure,
@@ -105,9 +107,9 @@ export class Step10Component implements OnInit {
       isFiftyDisclosure: this.disclosureReleaseInfo?.isFifthDisclosure,
       isSixDisclosure: this.disclosureReleaseInfo?.isSixthDisclosure,
     });
-  }
+  } */
 
-  public onSubmitForm(): void {
+  /* public onSubmitForm(): void {
     const disclosureReleaseForm = this.disclosureReleaseForm.value;
     const disclosureRelease = new DisclosureRelease(this.disclosureReleaseInfo);
 
@@ -126,7 +128,7 @@ export class Step10Component implements OnInit {
     disclosureRelease.isSixthDisclosure =
       disclosureReleaseForm.isSixthDisclosure;
 
-    /* this.apppEntityServices.DisclosureReleaseService.upsert(
+    this.apppEntityServices.DisclosureReleaseService.upsert(
         disclosureRelease
       ).subscribe(
         () => {
@@ -135,12 +137,6 @@ export class Step10Component implements OnInit {
         (error: any) => {
           this.shared.handleError(error);
         }
-      ); */
-  }
-
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
+      );
+  } */
 }
