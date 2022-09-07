@@ -1,6 +1,6 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
-import { CreateDispatchCommand, DispatchService, UpdateDispatchBoardCommand, UpdateDispatchCommand } from 'appcoretruckassist';
+import { CreateDispatchCommand, DispatchService, ReorderDispatchesCommand, UpdateDispatchBoardCommand, UpdateDispatchCommand } from 'appcoretruckassist';
 import { flatMap, delay, debounce, of, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -26,6 +26,10 @@ export class DispatcherStoreService {
         return this.dispatchService.apiDispatchIdGet(id);
     }
 
+    reorderDispatchboard(reorder: ReorderDispatchesCommand){
+        return this.dispatchService.apiDispatchReorderPut(reorder);
+    }
+
     createDispatchBoard(createData: CreateDispatchCommand, dispatch_id: number){
         return this.dispatchService.apiDispatchPost(createData)
         .pipe(
@@ -34,10 +38,12 @@ export class DispatcherStoreService {
                 return this.getDispatchBoardRowById(params.id)
             })
         )
-        .subscribe(res => {
-            this.dispatchBoardItem = {id: dispatch_id, item: res};
-            return of(true);
-        });
+        .pipe(
+            map(res => {
+                console.log("IS THIS OK RES", res);
+                this.dispatchBoardItem = {id: dispatch_id, item: res};
+            })
+        )
     }
 
     updateDispatchBoard(updateData: UpdateDispatchCommand, dispatch_id: number){

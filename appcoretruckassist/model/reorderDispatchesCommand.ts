@@ -16,4 +16,3 @@ export interface ReorderDispatchesCommand {
     dispatchBoardId?: number;
     dispatches?: Array<ReorderDispatchCommand> | null;
 }
-

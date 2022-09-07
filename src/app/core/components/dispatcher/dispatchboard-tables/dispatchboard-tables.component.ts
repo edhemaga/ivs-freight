@@ -103,7 +103,7 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
 export class DispatchboardTablesComponent implements OnInit {
   dData: DispatchBoardLocalResponse = {};
 
-  checkForEmpty: boolean = false;
+  checkForEmpty: string = "";
 
   @Input() set _dData(value) {
     this.dData = value;
@@ -216,6 +216,10 @@ export class DispatchboardTablesComponent implements OnInit {
     this.driverSelectOpened = -1;
   }
 
+  saveNoteValue(item: any) {
+    this.updateOrAddDispatchBoardAndSend('note', item.note, item.dispatchIndex);
+  }
+
   addTrailer(e) {
     console.log(e);
     this.updateOrAddDispatchBoardAndSend(
@@ -245,11 +249,28 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   dropList(event) {
+    console.log(event);
     moveItemInArray(
       this.dData.dispatches,
       event.previousIndex,
       event.currentIndex
     );
+
+    this.dss
+      .reorderDispatchboard({
+        dispatchBoardId: this.dData.id,
+        dispatches: [
+          {
+            id: this.dData.dispatches[event.currentIndex].id,
+            order: this.dData.dispatches[event.previousIndex].order
+          },
+          {
+            id: this.dData.dispatches[event.previousIndex].id,
+            order: this.dData.dispatches[event.currentIndex].order
+          }
+        ],
+      })
+      .subscribe((res) => {});
   }
 
   public hoverPhoneEmailMain(indx: number) {
@@ -299,29 +320,34 @@ export class DispatchboardTablesComponent implements OnInit {
 
     let newData: any = {
       ...oldUpdateData,
-      [key]: value,
+      [key]: value
     };
 
     console.log(key);
     console.log(value);
     console.log(newData);
 
+    this.checkForEmpty = key;
+
     if (oldData.id) {
       newData = {
         id: oldData.id,
-        ...newData,
+        ...newData
       };
 
-      this.checkForEmpty = true;
       this.dss.updateDispatchBoard(newData, this.dData.id).subscribe((data) => {
         setTimeout(() => {
-          this.checkForEmpty = false;
+          this.checkForEmpty = "";
         }, 300);
       });
     } else {
       newData.dispatchBoardId = this.dData.id;
 
-      this.dss.createDispatchBoard(newData, this.dData.id);
+      this.dss.createDispatchBoard(newData, this.dData.id).subscribe((data) => {
+        setTimeout(() => {
+          this.checkForEmpty = "";
+        }, 300);
+      });
     }
     // console.log("HELOOOOO", newData);
   }
