@@ -368,10 +368,8 @@
     z-index: 1;
 
     .custom_editor{
-      min-width: auto;
 
       .editor{
-        width: auto;
 
         &::-moz-selection {
           color: $bw6-2;
