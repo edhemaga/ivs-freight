@@ -24,7 +24,7 @@ export class companySettingsResolver implements Resolve<CompanyResponse[]> {
         return of('error');
       }),
       tap((companyResponse: CompanyResponse) => {
-        this.companyStore.set({ ids: companyResponse });
+        this.companyStore.set([companyResponse]);
       })
     );
   }

@@ -267,7 +267,7 @@ p {
     padding: 0 10px;
     .card-restriction-endorsment {
       display: grid;
-      grid-template-columns: 110px 90px;
+      grid-template-columns: 110px 131px;
       column-gap: 53px;
       height: 44px;
       .item-card-wrapper {
@@ -503,6 +503,7 @@ p {
         font-size: 14px;
         font-weight: 400;
         color: #6c6c6c;
+        white-space: nowrap;
         &::-moz-selection {
           color: $color-gray-dark;
           background: rgb(108, 108, 108, 0.2);

@@ -28,7 +28,7 @@ export class TruckActiveResolver implements Resolve<TruckActiveState> {
           })
         );
 
-        this.truckStore.set(truckPagination.pagination.data);
+        this.truckStore.set(truckPagination.pagination?.data);
       })
     );
   }

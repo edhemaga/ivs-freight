@@ -15,7 +15,7 @@
       </div>
 
       <svg-icon
-        *ngIf="hasArrow"
+        *ngIf="hasArrow || companyDivision"
         class="arrow-down"
         src="assets/svg/common/calendar/arrow-right.svg"
       ></svg-icon>
@@ -267,7 +267,7 @@
         [bodyTemplate]="'card'"
         [hasCounter]="companyData?.bankCards?.length"
         [isCardOpen]="true"
-        *ngIf="companyData?.bankCards.length"
+        *ngIf="companyData?.bankCards?.length"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
       >

@@ -32,8 +32,15 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
     private sharedService: SharedService
   ) {}
   ngOnInit(): void {
+    let hasTablePageHeight = false;
+
     this.sharedService.emitUpdateScrollHeight.subscribe((res) => {
-      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+      hasTablePageHeight = res.tablePageHeight;
+
+      this.calculateBarSizeAndPosition(
+        this.elRef.nativeElement.children[0],
+        res.tablePageHeight
+      );
     });
 
     this.ngZone.runOutsideAngular(() => {
@@ -51,12 +58,16 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
           }
           document.scrollingElement.scrollTop =
             (e.clientY - this.barClickPosition) * this.scrollRatioFull;
+
+            if (hasTablePageHeight) {
+              this.sharedService.emitTableScrolling.emit((e.clientY - this.barClickPosition) * this.scrollRatioFull);
+            }
         }
       });
 
       document.addEventListener('scroll', this.setScrollEvent.bind(this));
       window.addEventListener('resize', (e: any) => {
-        if (!this.isMouseDown)
+        if (!this.isMouseDown && !hasTablePageHeight)
           this.calculateBarSizeAndPosition(e.target.document.scrollingElement);
       });
     });
@@ -81,12 +92,12 @@ export class CustomScrollbarComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit() {
     setTimeout(() => {
-      this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]);
+      /*  this.calculateBarSizeAndPosition(this.elRef.nativeElement.children[0]); */
     }, 500);
   }
 
-  calculateBarSizeAndPosition(elem) {
-    const content_height = elem.scrollHeight;
+  calculateBarSizeAndPosition(elem: any, pageHeight?: number) {
+    const content_height = pageHeight ? pageHeight : elem.scrollHeight;
     const visible_height = window.innerHeight;
 
     this.showScrollbar = true;

@@ -18,6 +18,10 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'edit-drug';
         break;
       }
+      case 'parking': {
+        dropAction = 'edit-parking';
+        break;
+      }
     }
   }
   if (any.type === 'delete-item') {
@@ -38,7 +42,17 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'delete-test';
         break;
       }
+      case 'parking': {
+        dropAction = 'delete-parking';
+        break;
+      }
     }
+  }
+  if (any.type === 'renew') {
+    dropAction = 'renew';
+  }
+  if (any.type === 'activate-item') {
+    dropAction = 'activate-item';
   }
   return dropAction;
 }

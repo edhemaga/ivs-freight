@@ -41,7 +41,7 @@ function reduceCycle(lastYear: number = 28, lastMonth: number = 12): number {
  * work for {@link TuiMobileCalendarComponent} with years 1906 to 2102
  */
 @Injectable()
-export class DashboardStrategy implements VirtualScrollStrategy {
+export class TableStrategy implements VirtualScrollStrategy {
 
   constructor(){
 

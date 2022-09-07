@@ -89,6 +89,7 @@ table {
         }
 
         .not-pined-columns {
+          width: fit-content;
           overflow: hidden;
         }
 
@@ -1667,25 +1668,21 @@ table {
   background: #e5e5e5;
 }
 
+.bg-orange-container {
+  background: #ffecd1;
+}
+
 .bg-danger-container {
   background: #ffe1e4;
 }
 
 // Progress Bar
-.bg-progress-muted {
-  background: #b7b7b7;
-}
-
 .bg-progress-sliver {
   background: #aaaaaa;
 }
 
 .bg-progress-orange {
   background: #ffb74d;
-}
-
-.bg-orange-container {
-  background: #ffecd1;
 }
 
 .bg-progress-danger {
