@@ -20,7 +20,6 @@ import {
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-
 import { LicenseModel } from '../../state/model/cdl-information';
 
 @Component({
@@ -39,11 +38,11 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
   public selectedMode = SelectedMode.FEEDBACK;
 
+  private subscription: Subscription;
+
   public licenseForm: FormGroup;
 
   public isLicenseEdited: boolean;
-
-  private subscription: Subscription;
 
   public canadaStates: any[] = [];
   public usStates: any[] = [];

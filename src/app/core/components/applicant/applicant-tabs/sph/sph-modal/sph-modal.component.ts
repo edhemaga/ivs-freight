@@ -12,7 +12,7 @@ import {
 } from '../../../state/model/applicant-question.model';
 import { ReasonForLeaving } from '../../../state/model/reason-for-leaving.model';
 import { TrailerType } from '../../../state/model/trailer-type.model';
-import { TruckType } from '../../../state/model/truck-type.model';
+import { VehicleType } from '../../../state/model/vehicle-type.model';
 import {
   phoneFaxRegex,
   addressValidation,
@@ -30,11 +30,8 @@ export class SphModalComponent implements OnInit {
   public accidentHistoryForm: FormGroup;
   public drugAndAlcoholTestingHistoryForm: FormGroup;
 
-  public truckType: TruckType[] = [];
+  public vehicleType: VehicleType[] = [];
   public trailerType: TrailerType[] = [];
-
-  public injuriesCounter: number = 0;
-  public fatalitiesCounter: number = 0;
 
   public fatalitiesControl: FormControl = new FormControl(0);
   public injuriesControl: FormControl = new FormControl(0);
@@ -301,7 +298,7 @@ export class SphModalComponent implements OnInit {
       applicantWorkForCompanyBeforeExplain: [null],
       applicantWorkForCompanyToExplain: [null],
       motorVehicleForCompany: [null],
-      truckType: [null],
+      vehicleType: [null],
       trailerType: [null],
       reasonForLeaving: [null],
       consideredForEmploymentAgain: [null],

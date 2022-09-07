@@ -51,12 +51,11 @@
             <span
               [ngClass]="{ 'card-close-title': !isCardOpen }"
               class="open-name"
-              *ngIf="!isCardOpen && expDateClose"
-              ><span *ngIf="!isDeactivated">Expired on {{ expDateClose }}</span> <span *ngIf="isDeactivated">Voided on {{ voidedDate }}</span>  
+              *ngIf="!isCardOpen && expDateClose || testDate"
+              ><span *ngIf="!isDeactivated && !testDate">Expired on {{ expDateClose }}</span> <span *ngIf="isDeactivated && !testDate">Voided on {{ voidedDate }}</span> 
+              <span *ngIf="testDate && !isCardOpen">{{testDate}}</span> 
             </span>
-            <span *ngIf="cardSecondName && isCardOpen" class="second-name">{{
-              cardSecondName
-            }}</span>
+            <span *ngIf="cardSecondName" class="second-name"> {{cardSecondName}}</span>
           </span>
           <span
             *ngIf="hasCopyIcon"

@@ -11,6 +11,7 @@ export interface WorkHistoryModel {
   employerAddress: any;
   employerAddressUnit: string;
   isDrivingPosition: boolean;
+  classesOfEquipment: AnotherClassOfEquipmentModel[];
   truckType?: string;
   trailerType?: string;
   trailerLength?: string;
@@ -19,6 +20,15 @@ export interface WorkHistoryModel {
   reasonForLeaving: string;
   accountForPeriod: string;
   isEditingWorkHistory: boolean;
+}
+
+export interface AnotherClassOfEquipmentModel {
+  vehicleIconSrc?: string;
+  vehicleType: string;
+  trailerIconSrc?: string;
+  trailerType: string;
+  trailerLength: number;
+  isEditingClassOfEquipment: boolean;
 }
 
 export class WorkHistory {

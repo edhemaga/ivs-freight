@@ -74,8 +74,7 @@ export class DropDownService {
         const mappedEvent = {
           ...any,
           data: {
-            medicalIssued: dataMedical.issueDate,
-            medicalExpDate: dataMedical.expDate,
+            ...dataMedical,
           },
         };
         this.modalService.openModal(
@@ -95,7 +94,6 @@ export class DropDownService {
           ...any,
           data: {
             ...dataMvr,
-            mvrIssueDate: dataMvr.issueDate,
           },
         };
         this.modalService.openModal(
@@ -114,9 +112,9 @@ export class DropDownService {
         const mappedEvent = {
           ...any,
           data: {
+            ...dataTest,
             testTypeName: dataTest.testType.name,
             reasonName: dataTest.testReason.name,
-            issuedDataTest: dataTest.testingDate,
           },
         };
         this.modalService.openModal(

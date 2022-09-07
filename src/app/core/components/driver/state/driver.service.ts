@@ -85,38 +85,40 @@ export class DriverTService implements OnDestroy {
   public addDriver(data: CreateDriverCommand): Observable<any> {
     return this.driverService.apiDriverPost(data).pipe(
       tap((res: any) => {
-        const subDriver = this.getDriverById(res.id).subscribe({
-          next: (driver: DriverResponse | any) => {
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
+        const subDriver = this.getDriverById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
 
-            this.driverActiveStore.add(driver);
-            this.driverMinimimalListStore.add(driver);
-            const driverCount = JSON.parse(
-              localStorage.getItem('driverTableCount')
-            );
+              this.driverActiveStore.add(driver);
+              this.driverMinimimalListStore.add(driver);
+              const driverCount = JSON.parse(
+                localStorage.getItem('driverTableCount')
+              );
 
-            driverCount.active++;
+              driverCount.active++;
 
-            localStorage.setItem(
-              'driverTableCount',
-              JSON.stringify({
-                active: driverCount.active,
-                inactive: driverCount.inactive,
-              })
-            );
+              localStorage.setItem(
+                'driverTableCount',
+                JSON.stringify({
+                  active: driverCount.active,
+                  inactive: driverCount.inactive,
+                })
+              );
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              data: driver,
-              id: driver.id,
-            });
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: driver,
+                id: driver.id,
+              });
 
-            subDriver.unsubscribe();
-          },
-        });
+              subDriver.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -152,16 +154,18 @@ export class DriverTService implements OnDestroy {
           })
         );
 
-        const driverSub = this.getDriverById(this.driverId, true).subscribe({
-          next: (driver: DriverResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'delete',
-              data: driver,
-              id: driver.id,
-            });
-            driverSub.unsubscribe();
-          },
-        });
+        const driverSub = this.getDriverById(this.driverId, true)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: driver,
+                id: driver.id,
+              });
+              driverSub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -241,27 +245,29 @@ export class DriverTService implements OnDestroy {
   public updateDriver(data: UpdateDriverCommand): Observable<object> {
     return this.driverService.apiDriverPut(data).pipe(
       tap((res: any) => {
-        const subDriver = this.getDriverById(data.id).subscribe({
-          next: (driver: DriverResponse | any) => {
-            this.driverActiveStore.remove(({ id }) => id === data.id);
-            this.driverMinimimalListStore.remove(({ id }) => id === data.id);
+        const subDriver = this.getDriverById(data.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (driver: DriverResponse | any) => {
+              this.driverActiveStore.remove(({ id }) => id === data.id);
+              this.driverMinimimalListStore.remove(({ id }) => id === data.id);
 
-            driver = {
-              ...driver,
-              fullName: driver.firstName + ' ' + driver.lastName,
-            };
+              driver = {
+                ...driver,
+                fullName: driver.firstName + ' ' + driver.lastName,
+              };
 
-            this.driverActiveStore.add(driver);
-            this.driverMinimimalListStore.add(driver);
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: driver,
-              id: driver.id,
-            });
+              this.driverActiveStore.add(driver);
+              this.driverMinimimalListStore.add(driver);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: driver,
+                id: driver.id,
+              });
 
-            subDriver.unsubscribe();
-          },
-        });
+              subDriver.unsubscribe();
+            },
+          });
       })
     );
   }

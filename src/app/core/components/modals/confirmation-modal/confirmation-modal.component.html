@@ -157,10 +157,10 @@
           }})
         </p>
         <p class="confirmation-text-1" *ngIf="editData?.template === 'medical'">
-          Issued: {{ editData?.data?.medicalIssued | formatDateP }}
+          Issued: {{ editData?.data?.issueDate | formatDateP }}
         </p>
         <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
-          CDL: 
+          CDL: {{editData?.data.cdlNumber}}
         </p>
         <p class="confirmation-text-2">
           {{
@@ -169,13 +169,13 @@
               : "Expires"
           }}:
           <span *ngIf="editData?.template === 'test'">{{
-            editData?.data.issuedDataTest | formatDateP
+            editData?.data.testingDate | formatDateP
           }}</span>
           <span *ngIf="editData?.template === 'medical'">{{
-            editData?.data.medicalExpDate | formatDateP
+            editData?.data.expDate | formatDateP
           }}</span>
           <span  *ngIf="editData?.template === 'mvr'">{{
-            editData?.data.mvrIssueDate | formatDateP
+            editData?.data.issueDate | formatDateP
           }}</span>
         </p>
       </div>

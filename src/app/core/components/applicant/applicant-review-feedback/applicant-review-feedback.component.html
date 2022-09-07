@@ -1,4 +1,5 @@
 <!-- REVIEW -->
+
 <div class="d-flex review-container" *ngIf="!isFeedback">
   <!-- ANNOTATION BUTTON -->
 
@@ -54,6 +55,9 @@
               cardIndex !== 0) ||
             (cardsLength > 1 &&
               cardsType === 'educationContacts' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'classOfEquipment' &&
               cardIndex !== 0)
               ? 'Write Annotation'
               : '',
@@ -73,6 +77,9 @@
               cardIndex !== 0) ||
             (cardsLength > 1 &&
               cardsType === 'educationContacts' &&
+              cardIndex !== 0) ||
+            (cardsLength > 1 &&
+              cardsType === 'classOfEquipment' &&
               cardIndex !== 0),
           autoFocus: true
         }"
@@ -104,9 +111,17 @@
 </div>
 
 <!-- FEEDBACK -->
+
 <div class="d-flex feedback-container" *ngIf="isFeedback && feedbackText">
   <div class="d-flex feedback-text-container">
-    <p class="m-0 ta-font-regular">
+    <p
+      class="m-0 ta-font-regular d-inline-block text-truncate"
+      style="max-width: 385px"
+      ngbTooltip
+      [mainTooltip]="feedbackText"
+      tooltipBackground="#6C6C6C"
+      position="top-left"
+    >
       {{ feedbackText }}
     </p>
   </div>

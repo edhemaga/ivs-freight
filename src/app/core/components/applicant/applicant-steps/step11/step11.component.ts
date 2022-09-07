@@ -14,24 +14,18 @@ import { Authorization } from '../../state/model/authorization.model';
 export class Step11Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public authorizationForm: FormGroup;
 
   public signature: any;
 
-  public authorizationInfo: Authorization | undefined;
+  /* public applicant: Applicant | undefined; */
+
+  /* public authorizationInfo: Authorization | undefined; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public createForm(): void {
@@ -43,7 +37,7 @@ export class Step11Component implements OnInit, OnDestroy {
     });
   }
 
-  public handleCheckboxParagraphClick(type: string) {
+  public handleCheckboxParagraphClick(type: string): void {
     if (this.selectedMode === 'FEEDBACK_MODE') {
       return;
     }
@@ -91,7 +85,15 @@ export class Step11Component implements OnInit, OnDestroy {
     this.signature = event;
   }
 
-  private formFilling(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
     this.authorizationForm.patchValue({
       isFirstAuthorization: this.authorizationInfo?.isFirstAuthorization,
       isSecondAuthorization: this.authorizationInfo?.isSecondAuthorization,
@@ -100,16 +102,16 @@ export class Step11Component implements OnInit, OnDestroy {
     });
 
     this.signature = this.authorizationInfo?.signature;
-  }
+  } */
 
-  public onSubmitForm(): void {
-    /* if (!this.signatureToSave && !this.signature) {
+  /* public onSubmitForm(): void {
+    if (!this.signatureToSave && !this.signature) {
         this.notification.warning('Please give youre signature', 'Warning:');
         return false;
       } else if (this.signatureToSave) {
         authorization.signature = this.signature;
       }
- */
+
 
     const authorizationForm = this.authorizationForm.value;
     const authorization = new Authorization(this.authorizationInfo);
@@ -123,7 +125,7 @@ export class Step11Component implements OnInit, OnDestroy {
     authorization.isFourthAuthorization =
       authorizationForm.isFourthAuthorization;
 
-    /*   this.apppEntityServices.AuthorizationService.upsert(
+      this.apppEntityServices.AuthorizationService.upsert(
         authorization
       ).subscribe(
         () => {
@@ -132,16 +134,10 @@ export class Step11Component implements OnInit, OnDestroy {
         (error: any) => {
           this.shared.handleError(error);
         }
-      ); */
-  }
+      );
+  } */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }
