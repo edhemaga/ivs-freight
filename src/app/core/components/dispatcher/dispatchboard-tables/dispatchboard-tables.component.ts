@@ -51,15 +51,9 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
           transform: 'scale(0)',
         })
       ),
-      transition('void => filled', [
-        animate('0.3s 0s ease-out')
-      ]),
-      transition('empty => filled', [
-        animate('0.3s 0s ease-out')
-      ]),
-      transition('void => filled', [
-        animate('0.3s 0s ease-out')
-      ])
+      transition('void => filled', [animate('0.3s 0s ease-out')]),
+      transition('empty => filled', [animate('0.3s 0s ease-out')]),
+      transition('void => filled', [animate('0.3s 0s ease-out')]),
     ]),
     trigger('pickupAnimation', [
       transition(':enter', [
@@ -107,7 +101,6 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
   ],
 })
 export class DispatchboardTablesComponent implements OnInit {
-
   dData: DispatchBoardLocalResponse = {};
 
   checkForEmpty: boolean = false;
@@ -193,7 +186,7 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addTruck(e) {
-    if(e){
+    if (e) {
       this.dData.dispatches[this.truckSelectOpened].truck = e;
       this.showAddAddressField = this.truckSelectOpened;
     }
@@ -320,8 +313,10 @@ export class DispatchboardTablesComponent implements OnInit {
       };
 
       this.checkForEmpty = true;
-      this.dss.updateDispatchBoard(newData, this.dData.id).subscribe(data => {
-        //this.checkForEmpty = false;
+      this.dss.updateDispatchBoard(newData, this.dData.id).subscribe((data) => {
+        setTimeout(() => {
+          this.checkForEmpty = false;
+        }, 300);
       });
     } else {
       newData.dispatchBoardId = this.dData.id;
