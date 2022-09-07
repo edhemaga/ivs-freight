@@ -114,7 +114,15 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'companycontact',
       'value' : 'CONTACT'
-    }
+    },
+    {
+      'api' : 'cdl',
+      'value' : 'CDL'
+    },
+    {
+      'api' : 'rating',
+      'value' : 'RATE'
+    },
   ]
   constructor(
     protected toastrService: ToastrService,
@@ -142,46 +150,72 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     this.actionType = item ? item.value : '';
     
     console.log('---item--', item);
+    console.log('---actionType--', this.actionType);
   
-    if (this.httpRequest.method == 'POST') {
-      this.actionTitle =  this.actionType != 'LOGIN' ? 'CREATE' : '';
-    }
-    else if (this.httpRequest.method == 'GET') {
-      this.actionTitle = 'LOAD';
+    switch (this.httpRequest.method) {
+      case 'POST':
+        this.actionTitle =  this.actionType == 'LOGIN' ? '' : this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
+      break;
+      case 'GET':
+        this.actionTitle = this.toastrType == 'toast-error' ? 'LOAD' : 'LOADED';
+      break;
+      case 'PUT':
+        this.actionTitle = this.toastrType == 'toast-error' ? 'REMOVE' : 'REMOVED';
+      break;
+      case 'DELETE':
+        this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE' : 'DELETED';
+      break;
+
     }
 
-    if ( this.actionType == 'DRIVER' ) {
-
-      let firstName = this.httpRequest.body?.firstName;
-      let lastName = this.httpRequest.body?.lastName;
-      if ( firstName &&  lastName ) {
-        this.message = lastName + ' ' + lastName; 
-      }
-
-    }
-
-    if ( this.actionType == 'SHIPPER' || this.actionType == 'BROKER' ) {
-      this.message = this.httpRequest.body?.businessName ? this.httpRequest.body.businessName : '';
-    }
-    
-    if ( this.actionType == 'LOGIN' ) {
-      this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
-    }
-
-    if ( this.actionType == 'TRAILER' ) {
-      this.message = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
-    }
-    
-    if ( this.actionType == 'COMPANY' ) {
-      this.message = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
-    }
-
-    if ( this.actionType == 'TRUCK' ) {
-      this.message = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
-    }
-
-    if ( this.actionType == 'OWNER' || this.actionType == 'CONTACT' ) {
-      this.message = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+    switch (this.actionType) {
+      case 'DRIVER':
+        this.message = this.httpRequest.body?.firstName + ' ' + this.httpRequest.body?.lastName;
+        if ( this.httpRequest.method == 'PUT' ){
+          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+        }
+      break;
+      case 'RATE':
+        this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
+        switch (this.httpRequest.body?.entityTypeRatingId) {
+          case 1:
+            this.actionType = 'BROKER';
+            console.log('message', this.message)
+          break;
+          case 2:
+            this.actionType = 'REPAIR SHOP';
+          break;
+          case 3:
+            this.actionType = 'SHIPPER';
+          break;
+        }
+      break;
+      case 'CDL':
+        this.message = this.httpRequest.body?.firstName + ' ' + this.httpRequest.body?.lastName;
+        if ( this.httpRequest.method == 'PUT' ){
+          this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
+        }
+      break;
+      case 'SHIPPER':
+      case 'BROKER':
+        this.message = this.httpRequest.body?.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
+      break;
+      case 'LOGIN':
+        this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
+      break;
+      case 'TRAILER':
+        this.message = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
+      break;
+      case 'COMPANY':
+        this.message = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
+      break;
+      case 'TRUCK':
+        this.message = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+      break;
+      case 'OWNER':
+      case 'CONTACT':
+        this.message = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+      break;
     }
 
     if (this.actionType == 'DRIVER' && !this.message ) {
