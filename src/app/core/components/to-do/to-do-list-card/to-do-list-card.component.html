@@ -308,8 +308,17 @@
                     *ngIf="item.comments.length"
                   >
                   </app-ta-user-review>
-                  <div class="add_comment_holder">
-                    <div class="add_comment_text">Add Comment</div>
+                  <div class="add_comment_holder" [class.shrink_hold]="!newComment">
+                    <app-ta-user-review
+                      (changeReviewsEvent)="changeReviewsEvent($event)"
+                      [reviewData]="comments"
+                      [isNewReview]="true"
+                      *ngIf="newComment && comments.length"
+                    >
+                    </app-ta-user-review>
+                    <div class="add_comment_text" *ngIf="!newComment" (click)="addNewComment()">
+                      Add Comment
+                    </div>
                   </div>
                 </div>
                 <div class="todo_deadline_hold">

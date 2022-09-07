@@ -2,11 +2,10 @@ import { TodoListResponse } from './../../../../../../appcoretruckassist/model/t
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
-import { TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
+import { SignInResponse, TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaskModalComponent } from '../../modals/task-modal/task-modal.component';
 import { DropResult } from 'ngx-smooth-dnd';
-
 import { TodoQuery } from '../state/todo.query';
 
 import { UntilDestroy } from '@ngneat/until-destroy';
@@ -31,8 +30,11 @@ export class ToDoListCardComponent implements OnInit {
   public inProgressTasks: any[] = [];
   public doneTasks: any[] = [];
   public dropdownOptions: any;
+  public companyUser: SignInResponse = null;
+  comments: any[] = [];
   todoTest: Observable<any>;
   addedTodo: number[] = [];
+  newComment: boolean = false;
 
   scene = {
     type: 'container',
@@ -159,6 +161,7 @@ export class ToDoListCardComponent implements OnInit {
 
   ngOnInit(): void {
     //this.getTodoList();
+    this.companyUser = JSON.parse(localStorage.getItem('user'));
     this.initTableOptions();
     this.todoTest = this.todoQuery.selectTodoList$;
     this.todoQuery.selectTodoList$.subscribe((resp) => {
@@ -429,5 +432,28 @@ export class ToDoListCardComponent implements OnInit {
           },
         });
     }
+  }
+
+  addNewComment() {
+    this.newComment = true;
+    console.log(this.companyUser, 'createcomment 111');
+    if (this.comments.some((item) => item.isNewReview)) {
+      return;
+    }
+
+    console.log('createcomment 122');
+    this.comments.unshift({
+      companyUser: {
+        fullName: this.companyUser.firstName.concat(
+          ' ',
+          this.companyUser.lastName
+        ),
+        avatar: this.companyUser.avatar,
+      },
+      commentContent: null,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      isNewReview: true,
+    });
   }
 }

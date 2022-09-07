@@ -411,7 +411,10 @@
         overflow: auto;
 
         .add_comment_holder {
-          display: flex;
+          &.shrink_hold {
+            display: flex;
+          }
+
           .add_comment_text {
             font-size: 14px;
             line-height: 18px;
