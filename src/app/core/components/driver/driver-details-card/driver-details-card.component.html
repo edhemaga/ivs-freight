@@ -13,11 +13,14 @@
     (changeEvent)="onChangeDriver($event)"
     [hasArrow]="hideArrow"
     [optionsDrop]="dropData"
+    (dropActions)="onDriverActions($event)"
   >
     <div class="driver-container">
       <div class="driver-personal">
         <div class="driver-avatar">
+          <img  *ngIf="driver?.avatar" class="driver-avatar-svg" [src]="imageBase64Service.sanitizer(driver?.avatar)" alt="driver-image">
           <app-profile-images
+            *ngIf="!driver?.avatar"
             [indx]="0"
             [size]="'large'"
             [type]="'driver'"
@@ -173,9 +176,10 @@
       <!-- Off Duty Location-->
       <app-ta-custom-card
         [hasCounter]="driver.offDutyLocations.length"
+
         [cardName]="'Off Duty Location'"
         [isCardOpen]="false"
-        *ngIf="driver.offDutyLocations"
+        *ngIf="driver.offDutyLocations.length"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         class="item-cards"
@@ -399,11 +403,11 @@
         class="item-cards"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
-        *ngIf="driver.commissionSolo && driver.solo.emptyMile"
+        *ngIf="driver?.commissionSolo || driver?.solo?.loadedMile || driver?.team?.loadedMile"
         [cardName]="driver.commissionSolo ? 'Commission Pay' : 'Mileage Pay'"
         [isCardOpen]="true"
       >
-        <div *ngIf="driver.commissionSolo" class="purchase-template" >
+        <div *ngIf="driver?.commissionSolo" class="purchase-template" >
           <div class="purchase-template-item">
             <div class="purchase-template-item-name">Solo</div>
             <div class="purchase-template-item-value commsion-solo">
@@ -411,45 +415,45 @@
             </div>
           </div>
 
-          <div class="purchase-template-item second-name" *ngIf="driver.commissionTeam">
+          <div class="purchase-template-item second-name" *ngIf="driver?.commissionTeam">
             <div class="purchase-template-item-name">Team</div>
             <div class="purchase-template-item-value commsion-solo">
               {{ driver.commissionTeam }}%
             </div>
           </div>
         </div>
-        <div *ngIf="!driver.commissionSolo" class="mileage-template">
-          <div class="mileage-template-item">
+        <div  class="mileage-template">
+          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
             <div class="mileage-template-item-name">Empty (Solo)</div>
             <div class="mileage-template-item-value">
               ${{ driver.solo.emptyMile }}
             </div>
           </div>
-          <div class="mileage-template-item">
+          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
             <div class="mileage-template-item-name">Loaded (Solo)</div>
             <div class="mileage-template-item-value">
               ${{ driver.solo.loadedMile }}
             </div>
           </div>
-          <div class="mileage-template-item">
+          <div class="mileage-template-item" *ngIf="driver?.solo?.loadedMile">
             <div class="mileage-template-item-name">Per Stop (Solo)</div>
             <div class="mileage-template-item-value">
               ${{ driver.solo.perStop }}
             </div>
           </div>
-          <div class="mileage-template-item">
+          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
             <div class="mileage-template-item-name">Empty (Team)</div>
             <div class="mileage-template-item-value">
               ${{ driver.team.emptyMile }}
             </div>
           </div>
-          <div class="mileage-template-item">
+          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
             <div class="mileage-template-item-name">Loaded (Team)</div>
             <div class="mileage-template-item-value">
               ${{ driver.team.loadedMile }}
             </div>
           </div>
-          <div class="mileage-template-item">
+          <div class="mileage-template-item" *ngIf="driver?.team?.loadedMile">
             <div class="mileage-template-item-name">Per Stop (Team)</div>
             <div class="mileage-template-item-value">
               ${{ driver.team.perStop }}

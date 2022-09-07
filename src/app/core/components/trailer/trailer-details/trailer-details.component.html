@@ -9,6 +9,8 @@
       [statusInactive]="false"
       [optionsId]="trailerId"
       [options]="dataHeaderDropDown"
+      [statusInactive]="item.status"
+      [isInactive]="item.status"
       (dropActions)="onTrailerActions($event)"
       (openModalAction)="onModalAction($event)"
     >

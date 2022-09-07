@@ -3,7 +3,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { getLoadColumnDefinition } from '../../../../../assets/utils/settings/load-columns';
+import {
+  getLoadActiveAndPendingColumnDefinition,
+  getLoadClosedColumnDefinition,
+  getLoadTemplateColumnDefinition,
+} from '../../../../../assets/utils/settings/load-columns';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Component({
@@ -298,34 +302,44 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.tableData = [
       {
-        title: 'Pending',
-        field: 'pending',
+        title: 'Template',
+        field: 'template',
         length: 2,
         data: this.getDumyData(2),
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('template', this.resetColumns),
+      },
+      {
+        title: 'Pending',
+        field: 'pending',
+        length: 3,
+        data: this.getDumyData(3),
+        extended: false,
+        gridNameTitle: 'Load',
+        stateName: 'loads',
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
       },
       {
         title: 'Active',
         field: 'active',
+        length: 5,
+        data: this.getDumyData(5),
+        extended: false,
+        gridNameTitle: 'Load',
+        stateName: 'loads',
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
+      },
+      {
+        title: 'Closed',
+        field: 'inactive',
         length: 8,
         data: this.getDumyData(8),
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
-      },
-      {
-        title: 'Closed',
-        field: 'inactive',
-        length: 10,
-        data: this.getDumyData(10),
-        extended: false,
-        gridNameTitle: 'Load',
-        stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('closed', this.resetColumns),
       },
     ];
 
@@ -335,23 +349,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    return getLoadColumnDefinition();
+    if (stateName === 'active-panding') {
+      return getLoadActiveAndPendingColumnDefinition();
+    } else if (stateName === 'closed') {
+      return getLoadClosedColumnDefinition();
+    } else {
+      return getLoadTemplateColumnDefinition();
+    }
 
     /*  const userState: any = JSON.parse(
       localStorage.getItem(stateName + '_user_columns_state')
     );
-
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      return getLoadColumnDefinition();
-    } */
+    */
   }
 
   setLoadData(td: any) {
     this.columns = td.gridColumns;
-
-    console.log(td.data)
 
     if (td.data) {
       this.viewData = td.data;
@@ -364,97 +377,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 337,
-        assignedCompanyId: 1,
-        eventId: null,
-        categoryId: null,
-        category: 'ftl',
-        dispatchBoardId: null,
-        truckId: null,
-        truckNumber: '0876',
-        trailerId: null,
-        trailerNumber: null,
-        driverId: null,
-        driverName: null,
-        driverPhone: null,
-        driverEmail: null,
-        driverAddress: null,
-        deviceId: null,
-        uniqueId: null,
-        brokerId: 63,
-        brokerName: 'GO-TO SOLUTIONS INC',
-        loadNumber: 104,
-        statusId: 0,
-        statusDateTime: '2022-01-16T23:12:06',
-        note: '',
-        additionTotal: 0,
-        deductionTotal: 0,
-        total: '$2,000',
-        companyCheck: 0,
-        brokerLoadNumber: '555',
-        dispatcherId: null,
-        dispatcherName: null,
-        teamBoard: null,
-        pickupId: 30,
-        pickupName: 'BEST FOOD',
-        pickupCity: 'Tucker',
-        pickupLocation: {
-          city: 'Tucker',
-          state: 'Georgia',
-          address: '3300 Montreal Industrial Way, Tucker, GA 30084, USA',
-          country: 'US',
-          zipCode: '30084',
-          streetName: 'Montreal Industrial Way',
-          streetNumber: '3300',
-          stateShortName: 'GA',
-        },
-        pickupDateTime: '01/19/22',
-        deliveryId: 40,
-        deliveryName: 'LACTALIS',
-        deliveryCity: 'Buffalo',
-        deliveryLocation: {
-          city: 'Buffalo',
-          state: 'New York',
-          address: '2375 South Park Ave, Buffalo, NY 14220, USA',
-          country: 'US',
-          zipCode: '14220',
-          streetName: 'South Park Avenue',
-          streetNumber: '2375',
-          stateShortName: 'NY',
-        },
-        deliveryDateTime: '01/21/22',
-        mileage: '896',
-        pickupCount: 2,
-        deliveryCount: 5,
-        used: 0,
-        po: null,
-        pu: null,
-        doc: {},
-        route: [],
-        rates: [],
-        startDateTime: null,
-        endDateTime: null,
-        startDate: null,
-        endDate: null,
-        startTime: null,
-        endTime: null,
-        createdAt: '2022-01-16T23:12:06',
-        updatedAt: '2022-01-16T23:12:06',
-        gpsFlag: 0,
-        comments: [],
-        commentsCount: 0,
-        guid: '12e6d82a-45f4-49a9-9f61-e2ce0380cf36',
-        baseRate: 0,
-        adjusted: 0,
-        advanced: 0,
-        additional: '$0',
-        revised: 0,
-        stops: 2,
-        status: 'UNASSIGNED',
-      },
-    ];
+    let data: any[] = [{}];
 
     for (let i = 0; i < numberOfCopy; i++) {
       data.push(data[0]);
