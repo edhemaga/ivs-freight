@@ -173,7 +173,7 @@ $transition: all 0.3s ease-in-out;
             margin-top: 8px;
             margin-bottom: 8px;
             .dots-vertical {
-                height: 22px !important;
+                height: 20px !important;
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -207,6 +207,16 @@ $transition: all 0.3s ease-in-out;
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);
             }
+            .inv {
+                &::-moz-selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+                &::selection {
+                    color: $color-gray-dark;
+                    background: rgb(183, 183, 183, 0.2);
+                }
+            }
         }
         .cost {
             font-size: $font-size14;
@@ -216,7 +226,7 @@ $transition: all 0.3s ease-in-out;
             line-height: 21px;
             display: flex;
             justify-content: flex-end;
-            align-items: center;
+            align-items: end;
             &::-moz-selection {
                 color: $color-gray-dark;
                 background: rgb(183, 183, 183, 0.2);

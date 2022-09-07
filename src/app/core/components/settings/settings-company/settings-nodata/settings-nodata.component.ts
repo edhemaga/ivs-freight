@@ -26,7 +26,7 @@ export class SettingsNodataComponent implements OnInit {
     this.showComponent = !this.showComponent;
     this.settingsCompanyService.onModalAction({
       modalName: 'basic',
-      type: this.companyData?.divisions.length
+      type: this.companyData?.divisions?.length
         ? 'edit-company'
         : 'edit-division',
       company: this.companyData,
