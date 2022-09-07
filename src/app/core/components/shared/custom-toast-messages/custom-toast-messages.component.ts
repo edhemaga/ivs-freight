@@ -77,6 +77,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   method: string = "";
   actionTitle: string = "";
   actionType: string = "";
+  wideMessage: any = false;
 
   apiConfObj: any[] = [
     {
@@ -180,6 +181,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         switch (this.httpRequest.body?.entityTypeRatingId) {
           case 1:
             this.actionType = 'BROKER';
+            this.message = this.httpRequest.body?.tableData.dbaName ? this.httpRequest.body.tableData.dbaName : this.httpRequest.body.tableData.businessName;
             console.log('message', this.message)
           break;
           case 2:
@@ -198,6 +200,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'SHIPPER':
       case 'BROKER':
+        if ( apiEndPoint.indexOf('dnu') > -1 )
+          {
+            this.actionType = this.toastrType == 'toast-error' ? 'BROKER FROM DNU LIST' : 'BROKER FROM DNU LIST';
+            this.wideMessage = true;
+          }
+        
         this.message = this.httpRequest.body?.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
       break;
       case 'LOGIN':

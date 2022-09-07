@@ -9,7 +9,9 @@
     margin-bottom: 10px;
     user-select: none;
 
-    
+    &.wide-toast-message{
+        width: 360px;
+    }
 
     .toast-title{
         font-size: 11px;
