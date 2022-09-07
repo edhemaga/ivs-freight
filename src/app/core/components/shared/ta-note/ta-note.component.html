@@ -1,5 +1,10 @@
-<div class="all_note_holder" [class.closed_main_holder]="!openedAll && noteOpened">
-  <div class="note_button_hold" *ngIf="!openedAll"
+<div
+  class="all_note_holder"
+  [class.closed_main_holder]="!openedAll && noteOpened"
+>
+  <div
+    class="note_button_hold"
+    *ngIf="!openedAll"
     [ngClass]="{
       'note-normal-icon': !openedAll,
       'note-note-empty': !note && !openedAll,
@@ -7,9 +12,11 @@
     }"
     [tooltipBackground]="!note ? '' : '#6C6C6C'"
     ngbTooltip
-    [mainTooltip]="note && noteOpened ? 'Edit Note' : note && !noteOpened ? 'View Note' : ''"
+    [mainTooltip]="
+      note && noteOpened ? 'Edit Note' : note && !noteOpened ? 'View Note' : ''
+    "
     position="bottom"
-    >
+  >
     <svg-icon
       #t2="ngbPopover"
       [ngbPopover]="note_popover"
@@ -20,24 +27,33 @@
       popoverClass="my-note-popover"
       triggers="manual"
       (click)="toggleNote(note, t2)"
-      src="assets/svg/truckassist-table/note/{{noteIcon}}"
+      src="assets/svg/truckassist-table/note/{{ noteIcon }}"
     >
     </svg-icon>
   </div>
 
-  <div *ngIf="openedAll && !isExpanded"
+  <div
+    *ngIf="openedAll"
+    #t2="ngbPopover"
+    [ngbPopover]="note_popover"
+    [autoClose]="false"
+    [container]="'body'"
+    [placement]="'left-top'"
+    popoverClass="my-note-popover"
     [innerHTML]="note | safeHtml"
-    (click)="expandAllNotes()"
+    triggers="manual"
+    (click)="toggleNote(note, t2)"
     class="note_inner_text"
-  >
-  </div>
+  ></div>
 </div>
 
 <ng-template #note_popover let-data="data">
-  <div class="kendo-editor-note-wrapper" 
+  <div
+    class="kendo-editor-note-wrapper"
     [class.opened_all_hold]="openedAll"
     [class.closed_note_hold]="!openedAll && noteOpened"
-    *ngIf="(!openedAll && noteOpened) || (openedAll && isExpanded)">
+    *ngIf="(!openedAll && noteOpened) || (openedAll && isExpanded)"
+  >
     <div [class.expanded]="isExpanded" class="k-widget k-editor custom_editor">
       <div
         (blur)="prepareForTextRange()"

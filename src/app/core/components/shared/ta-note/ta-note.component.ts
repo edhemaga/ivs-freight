@@ -113,7 +113,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }
       this.showCollorPattern = false;
     } else {
-      if (!data || data == '') {
+      if (!data || data == '' || this.openedAll) {
         this.buttonsExpanded = true;
         this.isExpanded = true;
       }
