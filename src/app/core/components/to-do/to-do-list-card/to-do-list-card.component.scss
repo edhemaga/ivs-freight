@@ -401,29 +401,47 @@
         }
       }
 
-      .comment-holder {
+      .comment_main_holder {
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        max-height: 1000px;
         width: 100%;
-        flex: 1;
-        justify-content: flex-start;
-        align-items: center;
-        padding: 6px 0px 12px 0px;
-        box-sizing: border-box;
-        overflow: auto;
 
-        .add_comment_holder {
-          &.shrink_hold {
-            display: flex;
-          }
+        &.closed {
+          max-height: 0px;
+          overflow: hidden;
+          opacity: 0;
+        }
+        .comment-holder {
+          width: 100%;
+          flex: 1;
+          justify-content: flex-start;
+          align-items: center;
+          padding: 6px 0px 12px 0px;
+          box-sizing: border-box;
+          overflow: auto;
 
-          .add_comment_text {
-            font-size: 14px;
-            line-height: 18px;
-            font-weight: bold;
-            color: #6c6c6c;
-            cursor: pointer;
+          .add_comment_holder {
+            &.move_comment_hold{
+                margin-top: 10px;
+            }
+            &.shrink_hold {
+              display: flex;
+            }
 
-            &:hover {
-              color: #3551b7;
+            .add_comment_text {
+              display: flex;
+              align-items: center;
+              margin-left: 4px;
+              font-size: 14px;
+              line-height: 18px;
+              font-weight: bold;
+              color: #6c6c6c;
+              cursor: pointer;
+
+              &:hover {
+                color: #3551b7;
+              }
             }
           }
         }

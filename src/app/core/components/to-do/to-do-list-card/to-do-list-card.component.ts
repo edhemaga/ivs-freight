@@ -35,6 +35,8 @@ export class ToDoListCardComponent implements OnInit {
   todoTest: Observable<any>;
   addedTodo: number[] = [];
   newComment: boolean = false;
+  currentHoldIndex: number = 0;
+  currentChildIndex: number = 0;
 
   scene = {
     type: 'container',
@@ -434,14 +436,20 @@ export class ToDoListCardComponent implements OnInit {
     }
   }
 
-  addNewComment() {
+  commentEvent(ev){
+    console.log(ev, 'evvvvvvvv');
+    if(ev['action'] == 'add'){
+      this.scene.children[this.currentHoldIndex].children[this.currentChildIndex].comments.push(this.comments[0]);
+      this.newComment = false;
+    }
+  }
+
+  addNewComment(mainIndx, indx) {
+    this.currentHoldIndex = mainIndx;
+    this.currentChildIndex = indx;
     this.newComment = true;
     console.log(this.companyUser, 'createcomment 111');
-    if (this.comments.some((item) => item.isNewReview)) {
-      return;
-    }
-
-    console.log('createcomment 122');
+    this.comments = [];
     this.comments.unshift({
       companyUser: {
         fullName: this.companyUser.firstName.concat(

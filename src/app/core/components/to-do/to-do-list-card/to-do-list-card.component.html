@@ -264,7 +264,7 @@
                           src="assets/svg/detail-cards/comment - count.svg"
                         ></svg-icon>
                         <div class="number-comments">
-                          {{ item.commentsCount }}
+                          {{ item.comments.length }}
                         </div>
                       </div>
                       <div
@@ -301,23 +301,59 @@
                   <div class="list-text">{{ item.description }}</div>
                   <div class="link" *ngIf="item.linkActive">{{ item.url }}</div>
                 </div>
-                <div class="comment-holder" *ngIf="item.commentActive">
-                  <app-ta-user-review
-                    (changeReviewsEvent)="changeReviewsEvent($event)"
-                    [reviewData]="item.comments"
-                    *ngIf="item.comments.length"
-                  >
-                  </app-ta-user-review>
-                  <div class="add_comment_holder" [class.shrink_hold]="!newComment">
+                <div
+                  class="comment_main_holder"
+                  [class.closed]="!item.commentActive"
+                >
+                  <div class="comment-holder">
                     <app-ta-user-review
                       (changeReviewsEvent)="changeReviewsEvent($event)"
-                      [reviewData]="comments"
-                      [isNewReview]="true"
-                      *ngIf="newComment && comments.length"
+                      [reviewData]="item.comments"
+                      *ngIf="item.comments.length"
                     >
                     </app-ta-user-review>
-                    <div class="add_comment_text" *ngIf="!newComment" (click)="addNewComment()">
-                      Add Comment
+                    <div
+                      class="add_comment_holder"
+                      [class.shrink_hold]="!newComment"
+                      [class.move_comment_hold]="item.comments.length"
+                    >
+                      <app-ta-user-review
+                        (changeReviewsEvent)="commentEvent($event)"
+                        [reviewData]="comments"
+                        [isNewReview]="true"
+                        *ngIf="
+                          newComment &&
+                          comments.length &&
+                          i == currentHoldIndex &&
+                          j == currentChildIndex
+                        "
+                      >
+                      </app-ta-user-review>
+                      <div
+                        class="user_avatar"
+                        *ngIf="
+                          !newComment ||
+                          (i != currentHoldIndex && j != currentChildIndex)
+                        "
+                      >
+                        <app-profile-images
+                          [indx]="0"
+                          [size]="'small'"
+                          [type]="'user'"
+                          [name]="companyUser.firstName + ' ' + companyUser.lastName"
+                        >
+                        </app-profile-images>
+                      </div>
+                      <div
+                        class="add_comment_text"
+                        *ngIf="
+                          !newComment ||
+                          (i != currentHoldIndex && j != currentChildIndex)
+                        "
+                        (click)="addNewComment(i, j)"
+                      >
+                        Add Comment
+                      </div>
                     </div>
                   </div>
                 </div>
