@@ -1,7 +1,8 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
 import { CreateDispatchCommand, DispatchService, UpdateDispatchBoardCommand, UpdateDispatchCommand } from 'appcoretruckassist';
-import { flatMap, ObservableInput, pipe } from 'rxjs';
+import { flatMap, delay, debounce, of, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: "root" })
 export class DispatcherStoreService {
@@ -35,6 +36,7 @@ export class DispatcherStoreService {
         )
         .subscribe(res => {
             this.dispatchBoardItem = {id: dispatch_id, item: res};
+            return of(true);
         });
     }
 
@@ -44,11 +46,12 @@ export class DispatcherStoreService {
             flatMap(params => {
                 return this.getDispatchBoardRowById(updateData.id)
             })
+        ).pipe(
+            map(res => {
+                console.log("IS THIS OK RES", res);
+                this.dispatchBoardItem = {id: dispatch_id, item: res};
+            })
         )
-        .subscribe( res => {
-            console.log("RESULT OF UPDATED DISPATCHBOARD", res);
-            this.dispatchBoardItem = {id: dispatch_id, item: res};
-        });
     }
 
     set dispatchBoardItem(boardData){

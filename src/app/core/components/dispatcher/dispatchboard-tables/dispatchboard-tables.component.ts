@@ -42,10 +42,22 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
       state(
         'empty',
         style({
+          transform: 'scale(1)',
+        })
+      ),
+      state(
+        'void',
+        style({
           transform: 'scale(0)',
         })
       ),
+      transition('void => filled', [
+        animate('0.3s 0s ease-out')
+      ]),
       transition('empty => filled', [
+        animate('0.3s 0s ease-out')
+      ]),
+      transition('void => filled', [
         animate('0.3s 0s ease-out')
       ])
     ]),
@@ -307,7 +319,10 @@ export class DispatchboardTablesComponent implements OnInit {
         ...newData,
       };
 
-      this.dss.updateDispatchBoard(newData, this.dData.id);
+      this.checkForEmpty = true;
+      this.dss.updateDispatchBoard(newData, this.dData.id).subscribe(data => {
+        //this.checkForEmpty = false;
+      });
     } else {
       newData.dispatchBoardId = this.dData.id;
 

@@ -45,7 +45,7 @@
               <div
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="!item.truck && truckSelectOpened != rowIndex"
-                [@boxAnimation]="checkForEmpty ? (!item.truck && truckSelectOpened != rowIndex ? 'empty' : 'filled') : 'void'"
+                [@boxAnimation]="checkForEmpty && !item.truck ? (!item.truck ? 'void' : 'filled') : 'empty'"
                 [class.empty-box-field]="__isBoardLocked && !item.truck"
               >
                 <div class="drag-span-holder">
@@ -143,9 +143,10 @@
                 [class.empty_row]="
                   !item.trailer && trailerSelectOpened != rowIndex
                 "
-                [@boxAnimation]="!item.trailer && trailerSelectOpened != rowIndex ? 'empty' : 'filled'"
+                [@boxAnimation]="checkForEmpty ? (!item.trailer ? 'void' : 'filled') : 'empty'"
                 [class.empty-box-field]="__isBoardLocked && !item.trailer"
               >
+              
                 <!-- <div
                   *cdkDragPlaceholder
                   [ngClass]="'trailer_' + item.trailerColor.toLowerCase()"
@@ -253,8 +254,7 @@
                 [class.empty_row]="
                   !item.driver && driverSelectOpened != rowIndex
                 "
-
-                [@boxAnimation]="!item.driver && driverSelectOpened != rowIndex ? 'empty' : 'filled'"
+                [@boxAnimation]="checkForEmpty && !item.driver ? (!item.driver ? 'void' : 'filled') : 'empty'"
                 [class.empty-box-field]="__isBoardLocked && !item.driver"
               >
                 <div class="driver_span_holder">
