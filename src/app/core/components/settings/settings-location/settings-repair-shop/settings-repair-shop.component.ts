@@ -83,7 +83,7 @@ export class SettingsRepairShopComponent implements OnInit, OnDestroy {
         name,
         this.repairShopDataId
       );
-    }, 100);
+    }, 150);
   }
 
   public deleteRepairShopById(id: number) {
