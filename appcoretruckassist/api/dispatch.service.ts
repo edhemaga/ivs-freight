@@ -30,7 +30,6 @@ import { EnumValue } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { ReorderDispatchesCommand } from '../model/models';
 import { SwitchDispatchesCommand } from '../model/models';
-import { UpdateDispatchBoardCommand } from '../model/models';
 import { UpdateDispatchCommand } from '../model/models';
 import { UpdateDispatchStatusCommand } from '../model/models';
 
@@ -533,14 +532,17 @@ export class DispatchService {
     }
 
     /**
-     * @param updateDispatchBoardCommand 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDispatchIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiDispatchIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiDispatchIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiDispatchIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiDispatchIdDelete.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -566,24 +568,12 @@ export class DispatchService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/dispatch/board`,
-            updateDispatchBoardCommand,
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/dispatch/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
