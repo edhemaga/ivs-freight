@@ -334,7 +334,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Template',
         field: 'template',
-        length: 2,
+        length: loadCount.templateCount,
         data: loadTemplateData,
         extended: false,
         gridNameTitle: 'Load',
@@ -344,7 +344,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Pending',
         field: 'pending',
-        length: 3,
+        length: loadCount.pendingCount,
         data: loadPendingData,
         extended: false,
         gridNameTitle: 'Load',
@@ -354,7 +354,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Active',
         field: 'active',
-        length: 5,
+        length: loadCount.activeCount,
         data: loadActiveData,
         extended: false,
         gridNameTitle: 'Load',
@@ -364,7 +364,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Closed',
         field: 'closed',
-        length: 8,
+        length: loadCount.closedCount,
         data: repairClosedData,
         extended: false,
         gridNameTitle: 'Load',
@@ -375,12 +375,14 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
-    
-
     this.setLoadData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
+    // const userState: any = JSON.parse(
+    //   localStorage.getItem(stateName + '_user_columns_state')
+    // );
+
     if (stateName === 'active-panding') {
       return getLoadActiveAndPendingColumnDefinition();
     } else if (stateName === 'closed') {
@@ -388,31 +390,22 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       return getLoadTemplateColumnDefinition();
     }
-
-    /*  const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
-    */
   }
 
   setLoadData(td: any) {
     this.columns = td.gridColumns;
 
-    if (td.data) {
+    if (td.data?.length) {
+      console.log('Imaju podaci');
+
       this.viewData = td.data;
 
-      let data = [{}];
-
-      for (let i = 0; i < 2; i++) {
-        data.push({});
-      }
-
-      this.viewData = data;
-
-      /* this.viewData = this.viewData.map((data) => {
+      this.viewData = this.viewData.map((data) => {
         data.isSelected = false;
         return data;
-      }); */
+      });
+    }else{
+      this.viewData = [];
     }
   }
 
@@ -420,29 +413,17 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (dataType === 'active') {
       this.loadActive = this.loadActiveQuery.getAll();
 
-      console.log('Load Active');
-      console.log(this.loadActive);
-
       return this.loadActive?.length ? this.loadActive : [];
     } else if (dataType === 'closed') {
       this.loadClosed = this.loadClosedQuery.getAll();
-
-      console.log('Load Closed');
-      console.log(this.loadClosed);
 
       return this.loadClosed?.length ? this.loadClosed : [];
     } else if (dataType === 'pending') {
       this.loadPanding = this.loadPandinQuery.getAll();
 
-      console.log('Load Pending');
-      console.log(this.loadPanding);
-
       return this.loadPanding?.length ? this.loadPanding : [];
     } else if (dataType === 'template') {
       this.loadTemplate = this.loadTemplateQuery.getAll();
-
-      console.log('Load Template');
-      console.log(this.loadTemplate);
 
       return this.loadTemplate?.length ? this.loadTemplate : [];
     }
@@ -454,7 +435,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setLoadData(event.tabData);
+      
+      this.sendLoadData();
     }
   }
 

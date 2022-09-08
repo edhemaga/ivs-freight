@@ -16,8 +16,6 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
   ) {}
 
   resolve(): Observable<LoadPandingState | boolean> {
-    console.log('Poziva se LoadPandingResolver')
-
     return this.loadService
       .getLoadList(
         undefined,
@@ -38,6 +36,9 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
           return of('No load panding data...');
         }),
         tap((loadPagination: LoadListResponse) => {
+          console.log('Poziva se LoadPandingResolver')
+          console.log(loadPagination);
+
           localStorage.setItem(
             'loadTableCount',
             JSON.stringify({

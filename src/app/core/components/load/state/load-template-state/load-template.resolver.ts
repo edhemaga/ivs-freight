@@ -16,8 +16,6 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
   ) {}
 
   resolve(): Observable<LoadTemplateState | boolean> {
-    console.log('Poziva se LoadTemplateResolver')
-
     return this.loadService
       .getLoadTemplateList(
         undefined,
@@ -29,6 +27,9 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
           return of('No load template data...');
         }),
         tap((loadPagination: LoadTemplateListResponse) => {
+          console.log('Poziva se LoadTemplateResolver')
+          console.log(loadPagination);
+
          /*  localStorage.setItem(
             'loadTableCount',
             JSON.stringify({
