@@ -675,7 +675,7 @@
           </td>
           <td class="note-field">
             <div
-              class="dispatcher-table-cell-container"
+              class="dispatcher-table-cell-container note-container"
               [class.empty-box-field]="!item.note"
               [@boxAnimation]="
                 checkForEmpty == 'note'
@@ -691,6 +691,7 @@
                 [openedAll]="true"
                 [dispatchIndex]="rowIndex"
                 [parking]="false"
+                [noteWidth]="258"
                 (saveNoteValue)="saveNoteValue($event)"
               >
               </app-ta-note>

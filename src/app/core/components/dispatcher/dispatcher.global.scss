@@ -2267,6 +2267,10 @@
         padding: 2px;
         line-height: 1;
 
+        &.note-container {
+          display: block;
+        }
+
         .dispatcher-table-cell-holder {
           display: flex;
           height: 28px;
