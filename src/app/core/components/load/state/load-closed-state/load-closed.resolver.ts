@@ -36,9 +36,6 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
           return of('No load closed data...');
         }),
         tap((loadPagination: LoadListResponse) => {
-          console.log('Poziva se LoadClosedResolver')
-          console.log(loadPagination);
-
           localStorage.setItem(
             'loadTableCount',
             JSON.stringify({

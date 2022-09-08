@@ -105,6 +105,101 @@
                 ></label>
               </div>
 
+              <!-- CUSTOMER NAME COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'customer-name'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <svg-icon
+                  *ngIf="row[column.field].hasBanDnu"
+                  class="customer-icon"
+                  [src]="
+                    row[column.field].isDnu
+                      ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
+                      : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+
+                <div
+                  class="customer-name"
+                  [ngStyle]="{
+                    width: row[column.field].hasBanDnu
+                      ? column.width - 22 + 'px'
+                      : column.width + 'px'
+                  }"
+                  [ngClass]="{
+                    'customer-name-ban':
+                      !row[column.field].isDnu && row[column.field].hasBanDnu
+                  }"
+                >
+                  {{ row[column.field].name }}
+                </div>
+              </div>
+
+              <!-- LOAD TOTAL COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'load-total'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="load-totla-container">
+                  <div
+                    class="main-total"
+                    [ngStyle]="{
+                      width: column.width + 'px'
+                    }"
+                  >
+                    {{ row[column.field].total }}
+                  </div>
+                  <div
+                    *ngIf="row[column.field].subTotal"
+                    [ngStyle]="{
+                      width: column.width + 'px'
+                    }"
+                    class="sub-total"
+                  >
+                    {{ row[column.field].subTotal }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- DISPECHER AVATAR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'dispatcher-avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <img
+                  [src]="
+                    row[column.field]?.avatar
+                      ? row[column.field].avatar
+                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                  "
+                  alt=""
+                  class="dispecher-img"
+                />
+
+                <div
+                  class="dispatcher-name"
+                  [ngStyle]="{
+                    width: column.width - 24 + 'px'
+                  }"
+                >
+                  {{ row[column.field].name }}
+                </div>
+              </div>
+
               <!-- AVATAR COLUMN -->
               <div
                 *ngIf="column.ngTemplate === 'avatar'"
@@ -192,6 +287,36 @@
                 }"
               >
                 <div class="user-status-container">{{ row[column.field] }}</div>
+              </div>
+
+              <!-- INVOICE COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'invoice'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="invoice-text"
+                  [ngStyle]="{
+                    width: column.width - 21 + 'px'
+                  }"
+                  (click)="goToDetails(column, row)"
+                >
+                  {{ row[column.field].invoice }}
+                </div>
+
+                <svg-icon
+                  *ngIf="row[column.field].type"
+                  [src]="
+                    row[column.field].type === 'LTL'
+                      ? '../../../../../../assets/svg/truckassist-table/load-ltl.svg'
+                      : '../../../../../../assets/svg/truckassist-table/load-flt.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
+                ></svg-icon>
               </div>
 
               <!-- NAME LINK COLUMN -->
@@ -1057,6 +1182,122 @@
                 class="td-content"
               >
                 <div class="no-template">NO TEMPLATE</div>
+              </div>
+
+              <!-- DISPECHER AVATAR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'dispatcher-avatar'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <img
+                  [src]="
+                    row[column.field]?.avatar
+                      ? row[column.field].avatar
+                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                  "
+                  alt=""
+                  class="dispecher-img"
+                />
+
+                <div
+                  class="dispatcher-name"
+                  [ngStyle]="{
+                    width: column.width - 24 + 'px'
+                  }"
+                >
+                  {{ row[column.field].name }}
+                </div>
+              </div>
+
+              <!-- TEXT COLOR COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'text-color'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div
+                  class="text-color"
+                  [ngStyle]="{
+                    color: row[column.field].color,
+                    'margin-left': column.margin + 'px',
+                    'padding-left': column.padding + 'px'
+                  }"
+                >
+                  {{ row[column.field].number }}
+                </div>
+              </div>
+
+              <!-- LOAD TOTAL COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'load-total'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="load-totla-container">
+                  <div
+                    class="main-total"
+                    [ngStyle]="{
+                      width: column.width + 'px'
+                    }"
+                  >
+                    {{ row[column.field].total }}
+                  </div>
+                  <div
+                    *ngIf="row[column.field].subTotal"
+                    [ngStyle]="{
+                      width: column.width + 'px'
+                    }"
+                    class="sub-total"
+                  >
+                    {{ row[column.field].subTotal }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- CUSTOMER NAME COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'customer-name'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <svg-icon
+                  *ngIf="row[column.field].hasBanDnu"
+                  class="customer-icon"
+                  [src]="
+                    row[column.field].isDnu
+                      ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
+                      : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
+                  "
+                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
+                ></svg-icon>
+
+                <div
+                  class="customer-name"
+                  [ngStyle]="{
+                    width: row[column.field].hasBanDnu
+                      ? column.width - 22 + 'px'
+                      : column.width + 'px'
+                  }"
+                  [ngClass]="{
+                    'customer-name-ban':
+                      !row[column.field].isDnu && row[column.field].hasBanDnu
+                  }"
+                >
+                  {{ row[column.field].name }}
+                </div>
               </div>
 
               <!-- AVATAR COLUMN -->

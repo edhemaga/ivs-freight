@@ -36,9 +36,6 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
           return of('No load active data...');
         }),
         tap((loadPagination: LoadListResponse) => {
-          console.log('Poziva se LoadActiveResolver')
-          console.log(loadPagination);
-          
           localStorage.setItem(
             'loadTableCount',
             JSON.stringify({

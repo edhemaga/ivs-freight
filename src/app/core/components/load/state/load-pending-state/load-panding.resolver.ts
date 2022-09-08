@@ -36,9 +36,6 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
           return of('No load panding data...');
         }),
         tap((loadPagination: LoadListResponse) => {
-          console.log('Poziva se LoadPandingResolver')
-          console.log(loadPagination);
-
           localStorage.setItem(
             'loadTableCount',
             JSON.stringify({

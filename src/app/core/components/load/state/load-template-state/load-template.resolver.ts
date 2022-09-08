@@ -27,9 +27,6 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
           return of('No load template data...');
         }),
         tap((loadPagination: LoadTemplateListResponse) => {
-          console.log('Poziva se LoadTemplateResolver')
-          console.log(loadPagination);
-
          /*  localStorage.setItem(
             'loadTableCount',
             JSON.stringify({

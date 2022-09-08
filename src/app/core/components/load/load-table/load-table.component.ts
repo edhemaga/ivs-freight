@@ -29,7 +29,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableData: any[] = [];
   viewData: any[] = [];
   columns: any[] = [];
-  selectedTab = 'active';
+  selectedTab = 'pending';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -396,17 +396,54 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.columns = td.gridColumns;
 
     if (td.data?.length) {
-      console.log('Imaju podaci');
-
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data) => {
-        data.isSelected = false;
-        return data;
+        return this.mapLoadData(data);
       });
-    }else{
+
+      console.log('Load Data');
+      console.log(this.viewData);
+
+    } else {
       this.viewData = [];
     }
+  }
+
+  mapLoadData(data: any) {
+    // this.thousandSeparator.transform(data.total)
+    // this.datePipe.transform(data.date, 'MM/dd/yy')
+
+    return {
+      ...data,
+      isSelected: false,
+      loadInvoice: {
+        invoice: 'Nije Povezano',
+        type: data?.type?.name ? data.type.name : '',
+      },
+      loadDispatcher: {
+        name: 'Nije Povezano',
+        avatar: null,
+      },
+      loadTotal: {
+        total: 'nije povezano',
+        subTotal: 'nije povezano',
+      },
+      loadBroker: {
+        hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
+        isDnu: data?.broker?.dnu,
+        name: data?.broker?.businessName ? data.broker.businessName : ''
+      },
+      loadTruckNumber: {
+        number: data?.dispatch?.truck?.truckNumber ? data.dispatch.truck.truckNumber : '',
+        color: ''
+      },
+      loadTrailerNumber: {
+        number: data?.dispatch?.trailer?.trailerNumber ? data.dispatch.trailer.trailerNumber : '',
+        color: ''
+      },
+      textMiles: data?.totalMiles ? data.totalMiles : ''
+    };
   }
 
   getTabData(dataType: string) {
@@ -435,7 +472,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      
+
       this.sendLoadData();
     }
   }
