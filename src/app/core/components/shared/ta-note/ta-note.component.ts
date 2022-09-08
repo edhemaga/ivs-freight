@@ -40,6 +40,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
   @Input() openAllNotesText: any;
   @Input() parking: any = false;
   @Input() dispatchIndex: number = -1;
+  @Input() noteWidth: number = 250;
   @ViewChild('main_editor', { static: false }) public main_editor: any;
   @ViewChild('note_popover', { static: false }) public note_popover: any;
 
@@ -113,7 +114,7 @@ export class TaNoteComponent implements OnInit, OnDestroy {
       }
       this.showCollorPattern = false;
     } else {
-      if (!data || data == '' || this.openedAll) {
+      if (!data || data == '') {
         this.buttonsExpanded = true;
         this.isExpanded = true;
       }
