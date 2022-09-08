@@ -35,7 +35,7 @@
         <tr
           class="item-holder example-box"
           *ngFor="let item of dData.dispatches; let rowIndex = index"
-          [cdkDragDisabled]="__isBoardLocked|| !item.truck"
+          [cdkDragDisabled]="__isBoardLocked || !item.truck"
           cdkDrag
           cdkDragLockAxis="y"
           cdkDragPreviewContainer="parent"
@@ -45,17 +45,28 @@
               <div
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="!item.truck && truckSelectOpened != rowIndex"
-                [@boxAnimation]="checkForEmpty == 'location' ? (!item.truck ? 'void' : 'filled') : 'empty'"
+                [@boxAnimation]="
+                  checkForEmpty == 'location'
+                    ? !item.truck
+                      ? 'void'
+                      : 'filled'
+                    : 'empty'
+                "
                 [class.empty-box-field]="__isBoardLocked && !item.truck"
               >
                 <div class="drag-span-holder">
                   <span
                     *ngIf="item.truck !== null"
-                    [class.hasColor]="item.truck.truckColor"
+                    [class.hasColor]="item.truck.truckType"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
+                    [mainTooltip]="item.truck.truckType.name"
+                    [tooltipBackground]="'#' + ('truck' | colorFinder: item.truck.truckType.id)"
+                    ngbTooltip
+                    position="right"
                     [ngClass]="
-                      item.truck.truckColor
-                        ? 'truck_' + item.truck.truckColor.toLowerCase()
+                      item.truck.truckType
+                        ? 'truck_' +
+                          ('truck' | colorFinder: item.truck.truckType.id)
                         : ''
                     "
                     class="drag-span"
@@ -74,9 +85,14 @@
                         item.pickup === null &&
                         item.delivery === null
                       "
+                      [mainTooltip]="'remove'"
+                      [tooltipBackground]="'#6C6C6C'"
+                      ngbTooltip
+                      position="top"
                       [ngClass]="
-                        item.truck.truckColor &&
-                        'close_' + item.truck.truckColor.toLowerCase()
+                        item.truck.truckType &&
+                        'close_' +
+                          ('truck' | colorFinder: item.truck.truckType.id)
                       "
                       class="dispatcher-close cursor-pointer"
                     >
@@ -143,10 +159,15 @@
                 [class.empty_row]="
                   !item.trailer && trailerSelectOpened != rowIndex
                 "
-                [@boxAnimation]="checkForEmpty == 'trailerId' ? (!item.trailer ? 'void' : 'filled') : 'empty'"
+                [@boxAnimation]="
+                  checkForEmpty == 'trailerId'
+                    ? !item.trailer
+                      ? 'void'
+                      : 'filled'
+                    : 'empty'
+                "
                 [class.empty-box-field]="__isBoardLocked && !item.trailer"
               >
-              
                 <!-- <div
                   *cdkDragPlaceholder
                   [ngClass]="'trailer_' + item.trailerColor.toLowerCase()"
@@ -158,9 +179,14 @@
                     *ngIf="item.trailer !== null"
                     [class.hasColor]="item.trailerColor"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
+                    [mainTooltip]="item.trailer.trailerType.name"
+                    [tooltipBackground]="'#' + ('trailer' | colorFinder: item.trailer.trailerType.id)"
+                    ngbTooltip
+                    position="right"
                     [ngClass]="
-                      item.trailer.trailerColor &&
-                      'trailer_' + item.trailer.trailerColor.toLowerCase()
+                      item.trailer.trailerType &&
+                      'trailer_' +
+                        ('trailer' | colorFinder: item.trailer.trailerType.id)
                     "
                     class="drag-span"
                   >
@@ -179,9 +205,14 @@
                     <div
                       *ngIf="!__isBoardLocked"
                       [ngClass]="
-                        item.trailer.trailerColor &&
-                        'close_' + item.trailer.trailerColor.toLowerCase()
+                        item.trailer.trailerType &&
+                        'close_' +
+                          ('trailer' | colorFinder: item.trailer.trailerType.id)
                       "
+                      [mainTooltip]="'remove'"
+                      [tooltipBackground]="'#6C6C6C'"
+                      ngbTooltip
+                      position="top"
                       class="dispatcher-close cursor-pointer"
                     >
                       <svg-icon
@@ -254,7 +285,13 @@
                 [class.empty_row]="
                   !item.driver && driverSelectOpened != rowIndex
                 "
-                [@boxAnimation]="checkForEmpty == 'driverId' ? (!item.driver ? 'void' : 'filled') : 'empty'"
+                [@boxAnimation]="
+                  checkForEmpty == 'driverId'
+                    ? !item.driver
+                      ? 'void'
+                      : 'filled'
+                    : 'empty'
+                "
                 [class.empty-box-field]="__isBoardLocked && !item.driver"
               >
                 <div class="driver_span_holder">
@@ -265,7 +302,8 @@
                   >
                     <span
                       [innerHtml]="
-                        (item.driver.firstName + ' ' + item.driver.lastName) | taHighlight: highlightingWords
+                        item.driver.firstName + ' ' + item.driver.lastName
+                          | taHighlight: highlightingWords
                       "
                       [ngStyle]="{
                         color: statusOpenedIndex > -1 ? '' : '#919191'
@@ -278,6 +316,10 @@
                     <div
                       *ngIf="!__isBoardLocked"
                       class="dispatcher-close cursor-pointer"
+                      [mainTooltip]="'remove'"
+                      [tooltipBackground]="'#6C6C6C'"
+                      ngbTooltip
+                      position="top"
                     >
                       <svg-icon
                         (click)="removeDriver(rowIndex)"
@@ -347,9 +389,16 @@
             </div>
           </td>
           <td class="phoneemail-field">
-            <div class="phone-em-hold"
-            [class.empty-box-field]="!item.email"
-            [@boxAnimation]="checkForEmpty == 'driverId' ? (!item.email ? 'void' : 'filled') : 'empty'"
+            <div
+              class="phone-em-hold"
+              [class.empty-box-field]="!item.email"
+              [@boxAnimation]="
+                checkForEmpty == 'driverId'
+                  ? !item.email
+                    ? 'void'
+                    : 'filled'
+                  : 'empty'
+              "
             >
               <div
                 *ngIf="item.driver"
@@ -426,10 +475,18 @@
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
-            <div class="full-loc-hold" 
+            <div
+              class="full-loc-hold"
               *ngIf="showAddAddressField != rowIndex"
-              [@boxAnimation]="checkForEmpty == 'location' ? (!item.location.address ? 'void' : 'filled') : 'empty'"
-              [class.empty-box-field]="!item.location.address">
+              [@boxAnimation]="
+                checkForEmpty == 'location'
+                  ? !item.location.address
+                    ? 'void'
+                    : 'filled'
+                  : 'empty'
+              "
+              [class.empty-box-field]="!item.location.address"
+            >
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="full_location_name"
@@ -438,7 +495,8 @@
                     item.location.address !== null && !item.enterNewAddress
                   "
                   [innerHtml]="
-                    (item.location.city + ', ' + item.location.stateShortName) | taHighlight: highlightingWords
+                    item.location.city + ', ' + item.location.stateShortName
+                      | taHighlight: highlightingWords
                   "
                   [ngStyle]="{ color: statusOpenedIndex > -1 ? '' : '#919191' }"
                   appSelectionColor
@@ -563,19 +621,16 @@
               class="initials_wrapper_main_hold"
               [class.empty-box-field]="!item.driver"
             >
+              <app-profile-images
+                *ngIf="item.driver"
+                [indx]="index"
+                [name]="item.driver.firstName + ' ' + item.driver.lastName"
+                [size]="'small'"
+                [type]="'user'"
+              >
+              </app-profile-images>
 
-            <app-profile-images
-              *ngIf="item.driver"
-              [indx]="index"
-              [name]="(item.driver.firstName + ' ' + item.driver.lastName)"
-              [size]="'small'"
-              [type]="'user'"
-            >
-
-            </app-profile-images>
-
-
-            <!-- (item.driver.firstName + ' ' + item.driver.lastName) -->
+              <!-- (item.driver.firstName + ' ' + item.driver.lastName) -->
               <!-- <div
                 (mouseleave)="showAvatar[rowIndex] = false"
                 (mouseover)="showAvatar[rowIndex] = true"
@@ -596,23 +651,29 @@
                   "
                 />
               </div> -->
-              
             </div>
           </td>
           <td class="note-field">
-            <div class="dispatcher-table-cell-container"
-            [class.empty-box-field]="!item.note"
-            [@boxAnimation]="checkForEmpty == 'note' ? (!item.note ? 'void' : 'filled') : 'empty'"
+            <div
+              class="dispatcher-table-cell-container"
+              [class.empty-box-field]="!item.note"
+              [@boxAnimation]="
+                checkForEmpty == 'note'
+                  ? !item.note
+                    ? 'void'
+                    : 'filled'
+                  : 'empty'
+              "
             >
               <!-- <div class="dispatcher-table-cell-holder">7532</div> -->
               <app-ta-note
-                  [note]="item.note"
-                  [openedAll]="true"
-                  [dispatchIndex]="rowIndex"
-                  [parking]="false"
-                  (saveNoteValue)="saveNoteValue($event)"
-                >
-                </app-ta-note>
+                [note]="item.note"
+                [openedAll]="true"
+                [dispatchIndex]="rowIndex"
+                [parking]="false"
+                (saveNoteValue)="saveNoteValue($event)"
+              >
+              </app-ta-note>
             </div>
           </td>
           <td class="empty-field abs-right">

@@ -84,9 +84,9 @@
                           isBoardLocked ? 'Unlock table' : 'Lock table'
                         "
                         ngbTooltip
+                        position="bottom"
                         [class.lockedBoardFromOtherUser]=""
                         class="open_load btn-transparent lock-unlock cursor-pointer history_board"
-                        position="bottom"
                       >
                         <svg-icon
                           *ngIf="isBoardLocked"
