@@ -13,25 +13,26 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+
+import {
   anyInputInLineIncorrect,
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { VehicleType } from '../../state/model/vehicle-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, TruckTypeResponse } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import {
-  addressValidation,
-  descriptionValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
@@ -39,8 +40,6 @@ import {
   styleUrls: ['./step4-form.component.scss'],
 })
 export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
-  private destroy$ = new Subject<void>();
-
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
@@ -51,7 +50,9 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.APPLICANT;
 
   private subscription: Subscription;
 
@@ -64,7 +65,7 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public editingCardAddress: any;
 
-  public vehicleType: VehicleType[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
 
   public hazmatSpillRadios: any;
 
@@ -118,16 +119,14 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private inputResetService: TaInputResetService,
+    private applicantListsService: ApplicantListsService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
 
     if (this.formValuesToPatch) {
       this.patchForm();
@@ -371,5 +370,25 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

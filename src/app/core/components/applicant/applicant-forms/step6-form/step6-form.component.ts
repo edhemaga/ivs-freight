@@ -110,11 +110,6 @@ export class Step6FormComponent implements OnInit, OnDestroy {
     private inputResetService: TaInputResetService
   ) {}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
   ngOnInit(): void {
     this.createForm();
 
@@ -272,5 +267,10 @@ export class Step6FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

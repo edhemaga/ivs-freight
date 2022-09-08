@@ -7,6 +7,10 @@ import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+
+import { Subject, takeUntil } from 'rxjs';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Address } from '../../state/model/address.model';
@@ -24,7 +28,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
-import { Subject, takeUntil } from 'rxjs';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 @Component({
@@ -37,9 +41,12 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public selectedMode: string = SelectedMode.APPLICANT;
 
+  public applicantId: number;
+
   public personalInfoForm: FormGroup;
 
   public selectedBank: any = null;
+  public selectedAddresses: any[] = [];
 
   public banksDropdownList: BankResponse[] = [];
 
@@ -279,7 +286,8 @@ export class Step1Component implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private applicantListsService: ApplicantListsService,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private applicantActionsService: ApplicantActionsService
   ) {}
 
   ngOnInit(): void {
@@ -290,6 +298,16 @@ export class Step1Component implements OnInit, OnDestroy {
     this.getBanksDropdownList();
 
     this.isBankUnselected();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.personalInfoForm.patchValue({
+          email: res.personalInfo.email,
+        });
+
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public get previousAddresses(): FormArray {
@@ -305,9 +323,7 @@ export class Step1Component implements OnInit, OnDestroy {
       lastName: [null, [Validators.required, ...lastNameValidation]],
       dateOfBirth: [null, Validators.required],
       phone: [null, [Validators.required, phoneFaxRegex]],
-      email: [null, [Validators.required]],
-      address: [null, [Validators.required, ...addressValidation]],
-      addressUnit: [null, [...addressUnitValidation]],
+      email: [null],
       previousAddresses: this.formBuilder.array([]),
       ssn: [null, [Validators.required, ssnNumberRegex]],
       bankId: [null, [...bankValidation]],
@@ -319,12 +335,12 @@ export class Step1Component implements OnInit, OnDestroy {
       felony: [null, Validators.required],
       misdemeanor: [null, Validators.required],
       drunkDriving: [null, Validators.required],
-      legalWorkExplain: [null, Validators.required],
-      anotherNameExplain: [null, Validators.required],
-      inMilitaryExplain: [null, Validators.required],
-      felonyExplain: [null, Validators.required],
-      misdemeanorExplain: [null, Validators.required],
-      drunkDrivingExplain: [null, Validators.required],
+      legalWorkExplain: [null],
+      anotherNameExplain: [null],
+      inMilitaryExplain: [null],
+      felonyExplain: [null],
+      misdemeanorExplain: [null],
+      drunkDrivingExplain: [null],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -353,6 +369,26 @@ export class Step1Component implements OnInit, OnDestroy {
           this.selectedBank = event;
 
           this.isBankSelected = true;
+
+          this.inputService.changeValidators(
+            this.personalInfoForm.get('accountNumber')
+          );
+
+          this.inputService.changeValidators(
+            this.personalInfoForm.get('routingNumber')
+          );
+        } else {
+          this.isBankSelected = false;
+
+          this.inputService.changeValidators(
+            this.personalInfoForm.get('accountNumber'),
+            false
+          );
+
+          this.inputService.changeValidators(
+            this.personalInfoForm.get('routingNumber'),
+            false
+          );
         }
 
         break;
@@ -364,13 +400,19 @@ export class Step1Component implements OnInit, OnDestroy {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
-        this.personalInfoForm
-          .get(selectedFormControlName)
-          .patchValue(selectedCheckbox.label);
+        if (selectedCheckbox.label === 'YES') {
+          this.personalInfoForm.get(selectedFormControlName).patchValue(true);
+        } else {
+          this.personalInfoForm.get(selectedFormControlName).patchValue(false);
+        }
+
+        console.log(this.personalInfoForm.get(selectedFormControlName).value);
 
         break;
       case InputSwitchActions.PREVIOUS_ADDRESS:
         const address: Address = event.address;
+
+        this.selectedAddresses = [...this.selectedAddresses, address];
 
         this.isLastAddedPreviousAddressValid = event.valid;
 
@@ -411,21 +453,12 @@ export class Step1Component implements OnInit, OnDestroy {
       });
   }
 
-  public getBanksDropdownList(): void {
-    this.applicantListsService
-      .getBanksDropdownList()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.banksDropdownList = data;
-      });
-  }
-
   private createNewAddress(): FormGroup {
     this.cardReviewIndex++;
 
     return this.formBuilder.group({
-      address: [null, Validators.required],
-      addressUnit: [null, Validators.maxLength(6)],
+      address: [null, [Validators.required, ...addressValidation]],
+      addressUnit: [null, [...addressUnitValidation]],
       [`cardReview${this.cardReviewIndex}`]: [null],
     });
   }
@@ -536,6 +569,7 @@ export class Step1Component implements OnInit, OnDestroy {
     this.isEditingMiddlePositionAddress = false;
 
     this.previousAddresses.removeAt(index);
+    this.selectedAddresses.splice(index, 1);
 
     this.isEditingArray.splice(index, 1);
 
@@ -686,107 +720,73 @@ export class Step1Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
   }
 
-  /* private formFIlling(): void {
-    // Redirect to next Step
-    // if (this.personalInfo?.isCompleted) {
-    //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
-    // }
+  public getBanksDropdownList(): void {
+    this.applicantListsService
+      .getBanksDropdownList()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.banksDropdownList = data;
+      });
+  }
 
-    const applicantInfo = this.applicant;
-    const personalInfo = this.personalInfo;
+  public onSubmit(): void {
+    if (this.personalInfoForm.invalid) {
+      this.inputService.markInvalid(this.personalInfoForm);
+      return;
+    }
 
-    this.personalInfoForm = this.formBuilder.group({
-      isAgreement: [personalInfo?.isAgreement, Validators.required],
+    const {
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      questionReview1,
+      questionReview2,
+      questionReview3,
+      questionReview4,
+      questionReview5,
+      questionReview6,
+      isAgreement,
+      dateOfBirth,
+      email,
+      previousAddresses,
+      bankId,
+      ...personalInfoForm
+    } = this.personalInfoForm.value;
 
-      firstName: [applicantInfo?.firstName, Validators.required],
-      lastName: [applicantInfo?.lastName, Validators.required],
-      dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
-      phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
-      email: [applicantInfo?.email, [Validators.required]],
-      address: [applicantInfo?.address, Validators.required],
-      addressUnit: [applicantInfo?.addressUnit],
+    this.selectedAddresses = this.selectedAddresses.filter((item) => item);
 
-      ssn: [personalInfo?.ssn, [Validators.required, ssnNumberRegex]],
-      bankId: [personalInfo?.bank],
-      accountNumber: [
-        personalInfo?.bank?.accountNumber
-          ? personalInfo?.bank.accountNumber
+    this.selectedAddresses = this.selectedAddresses.map((item, index) => {
+      return {
+        ...item,
+        addressUnit: previousAddresses[index]
+          ? previousAddresses[index].addressUnit
           : null,
-      ],
-      routingNumber: [
-        personalInfo?.bank?.routingNumber
-          ? personalInfo?.bank.routingNumber
-          : null,
-      ],
-
-      legalWork: [personalInfo?.legalWork, Validators.required],
-      anotherName: [personalInfo?.anotherName, Validators.required],
-      inMilitary: [personalInfo?.inMilitary, Validators.required],
-      felony: [personalInfo?.felony, Validators.required],
-      misdemeanor: [personalInfo?.misdemeanor, Validators.required],
-      drunkDriving: [personalInfo?.drunkDriving, Validators.required],
-      legalWorkExplain: [
-        personalInfo?.legalWorkExplain,
-        personalInfo?.legalWork
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      anotherNameExplain: [
-        personalInfo?.anotherNameExplain,
-        personalInfo?.anotherName
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      inMilitaryExplain: [
-        personalInfo?.inMilitaryExplain,
-        personalInfo?.inMilitary
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      felonyExplain: [
-        personalInfo?.felonyExplain,
-        personalInfo?.felony ? Validators.required : Validators.nullValidator,
-      ],
-      misdemeanorExplain: [
-        personalInfo?.misdemeanorExplain,
-        personalInfo?.misdemeanor
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      drunkDrivingExplain: [
-        personalInfo?.drunkDrivingExplain,
-        personalInfo?.drunkDriving
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-
-      previousAddresses: this.formBuilder.array([]),
+        county: null,
+      };
     });
 
-    // Previous Addresses
+    const saveData = {
+      ...personalInfoForm,
+      applicantId: this.applicantId,
+      doB: convertDateToBackend(dateOfBirth),
+      isAgreed: isAgreement,
+      address: this.selectedAddresses[this.selectedAddresses.length - 1],
+      bankId: this.selectedBank ? this.selectedBank.id : null,
+      previousAddresses:
+        this.selectedAddresses.length <= 1
+          ? null
+          : this.selectedAddresses.filter(
+              (item, index) => index !== this.selectedAddresses.length - 1
+            ),
+    };
 
-    if (personalInfo?.previousAddresses?.length) {
-      for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
-        this.onAddNewAddress();
-        this.previousAddresses.at(i)?.patchValue({
-          id: personalInfo?.previousAddresses[i].id,
-          address: personalInfo?.previousAddresses[i].address,
-          addressUnit: personalInfo?.previousAddresses[i].addressUnit,
-        });
-      }
-    } else {
-      this.previousAddresses.controls = [];
-    }
-
-    // Bank Info
-    //  this.requiredBankInfo(
-    //         this.personalInfo?.bank && this.bankData.length ? true : false
-    //     );
+    console.log(saveData);
   }
- */
 
   /* public onSubmitForm(): void {
     const personalInfoForm = this.personalInfoForm.value;
@@ -912,6 +912,105 @@ export class Step1Component implements OnInit, OnDestroy {
     //   );
     // }
   } */
+
+  /* private formFIlling(): void {
+    // Redirect to next Step
+    // if (this.personalInfo?.isCompleted) {
+    //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
+    // }
+
+    const applicantInfo = this.applicant;
+    const personalInfo = this.personalInfo;
+
+    this.personalInfoForm = this.formBuilder.group({
+      isAgreement: [personalInfo?.isAgreement, Validators.required],
+
+      firstName: [applicantInfo?.firstName, Validators.required],
+      lastName: [applicantInfo?.lastName, Validators.required],
+      dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
+      phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
+      email: [applicantInfo?.email, [Validators.required]],
+      address: [applicantInfo?.address, Validators.required],
+      addressUnit: [applicantInfo?.addressUnit],
+
+      ssn: [personalInfo?.ssn, [Validators.required, ssnNumberRegex]],
+      bankId: [personalInfo?.bank],
+      accountNumber: [
+        personalInfo?.bank?.accountNumber
+          ? personalInfo?.bank.accountNumber
+          : null,
+      ],
+      routingNumber: [
+        personalInfo?.bank?.routingNumber
+          ? personalInfo?.bank.routingNumber
+          : null,
+      ],
+
+      legalWork: [personalInfo?.legalWork, Validators.required],
+      anotherName: [personalInfo?.anotherName, Validators.required],
+      inMilitary: [personalInfo?.inMilitary, Validators.required],
+      felony: [personalInfo?.felony, Validators.required],
+      misdemeanor: [personalInfo?.misdemeanor, Validators.required],
+      drunkDriving: [personalInfo?.drunkDriving, Validators.required],
+      legalWorkExplain: [
+        personalInfo?.legalWorkExplain,
+        personalInfo?.legalWork
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      anotherNameExplain: [
+        personalInfo?.anotherNameExplain,
+        personalInfo?.anotherName
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      inMilitaryExplain: [
+        personalInfo?.inMilitaryExplain,
+        personalInfo?.inMilitary
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      felonyExplain: [
+        personalInfo?.felonyExplain,
+        personalInfo?.felony ? Validators.required : Validators.nullValidator,
+      ],
+      misdemeanorExplain: [
+        personalInfo?.misdemeanorExplain,
+        personalInfo?.misdemeanor
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+      drunkDrivingExplain: [
+        personalInfo?.drunkDrivingExplain,
+        personalInfo?.drunkDriving
+          ? Validators.required
+          : Validators.nullValidator,
+      ],
+
+      previousAddresses: this.formBuilder.array([]),
+    });
+
+    // Previous Addresses
+
+    if (personalInfo?.previousAddresses?.length) {
+      for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
+        this.onAddNewAddress();
+        this.previousAddresses.at(i)?.patchValue({
+          id: personalInfo?.previousAddresses[i].id,
+          address: personalInfo?.previousAddresses[i].address,
+          addressUnit: personalInfo?.previousAddresses[i].addressUnit,
+        });
+      }
+    } else {
+      this.previousAddresses.controls = [];
+    }
+
+    // Bank Info
+    //  this.requiredBankInfo(
+    //         this.personalInfo?.bank && this.bankData.length ? true : false
+    //     );
+  }
+ */
 
   /* public onSubmitReview(data: any): void {
     const numberOfPreviousAddresses =

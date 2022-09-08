@@ -876,6 +876,7 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
+    [filledCorrectly]="personalInfoForm.valid"
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

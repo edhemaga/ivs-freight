@@ -17,7 +17,7 @@ import {
   styleUrls: ['./step5.component.scss'],
 })
 export class Step5Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public violationsForm: FormGroup;
   public trafficViolationsForm: FormGroup;
@@ -25,72 +25,7 @@ export class Step5Component implements OnInit, OnDestroy {
   public onlyOneHoldLicenseForm: FormGroup;
   public certifyForm: FormGroup;
 
-  public violationsArray: ViolationModel[] = [
-    {
-      violationDate: '01/20/19',
-      truckType: 'Cargo Van',
-      violationLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
-      isEditingViolation: false,
-    },
-    {
-      violationDate: '02/20/20',
-      truckType: 'Cargo Van',
-      violationLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
-      isEditingViolation: false,
-    },
-    {
-      violationDate: '03/20/21',
-      truckType: 'Cargo Van',
-      violationLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
-      isEditingViolation: false,
-    },
-    {
-      violationDate: '04/20/21',
-      truckType: 'Cargo Van',
-      violationLocation: {
-        address: 'Chicago, IL, USA',
-        city: 'Chicago',
-        country: 'US',
-        state: 'IL',
-        stateShortName: 'IL',
-        street: '',
-        streetNumber: '',
-        zipCode: '',
-      },
-      violationDescription: 'Lorem Ipsum Dolor Sit Ametblabla',
-      isEditingViolation: false,
-    },
-  ];
+  public violationsArray: ViolationModel[] = [];
 
   public selectedViolationIndex: number;
 

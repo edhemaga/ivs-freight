@@ -16,18 +16,20 @@ import {
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
-import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { VehicleType } from '../../state/model/vehicle-type.model';
-import { Address } from '../../state/model/address.model';
-import { ViolationModel } from '../../state/model/violations.model';
 import {
   addressValidation,
   descriptionValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { Address } from '../../state/model/address.model';
+import { ViolationModel } from '../../state/model/violations.model';
+import { TruckTypeResponse } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step5-form',
@@ -35,7 +37,6 @@ import {
   styleUrls: ['./step5-form.component.scss'],
 })
 export class Step5FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -43,7 +44,9 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.APPLICANT;
 
   private subscription: Subscription;
 
@@ -56,7 +59,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   public selectedVehicleType: any = null;
   public selectedAddress: Address = null;
 
-  public vehicleType: VehicleType[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -91,16 +94,14 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private inputResetService: TaInputResetService,
+    private applicantListsService: ApplicantListsService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
 
     if (this.formValuesToPatch) {
       this.patchForm();
@@ -133,7 +134,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
   public createForm(): void {
     this.violationsForm = this.formBuilder.group({
       violationDate: [null, Validators.required],
-      truckType: [null, Validators.required],
+      vehicleType: [null, Validators.required],
       violationLocation: [null, [Validators.required, ...addressValidation]],
       violationDescription: [
         null,
@@ -297,5 +298,25 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

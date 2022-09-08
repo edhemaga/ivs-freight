@@ -24,11 +24,9 @@ import {
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { ReasonForLeaving } from '../../state/model/reason-for-leaving.model';
-import { TrailerType } from '../../state/model/trailer-type.model';
-import { VehicleType } from '../../state/model/vehicle-type.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import {
@@ -36,6 +34,12 @@ import {
   WorkHistoryModel,
 } from '../../state/model/work-history.model';
 import { AddressEntity } from './../../../../../../../appcoretruckassist/model/addressEntity';
+import {
+  EnumValue,
+  TrailerLengthResponse,
+  TrailerTypeResponse,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step2-form',
@@ -43,8 +47,6 @@ import { AddressEntity } from './../../../../../../../appcoretruckassist/model/a
   styleUrls: ['./step2-form.component.scss'],
 })
 export class Step2FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
   @ViewChildren('cmp') set content(content: QueryList<any>) {
     if (content) {
       const radioButtonsArray = content.toArray();
@@ -65,6 +67,8 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
+  private destroy$ = new Subject<void>();
+
   public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
@@ -73,53 +77,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   public workExperienceForm: FormGroup;
   public classOfEquipmentForm: FormGroup;
 
-  public classOfEquipmentArray: AnotherClassOfEquipmentModel[] = [
-    {
-      vehicleIconSrc:
-        'assets/svg/truckassist-table/truck/ic_truck_semi-truck.svg',
-      vehicleType: 'Semi Sleeper',
-      trailerIconSrc: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
-      trailerType: 'Dumper',
-      trailerLength: 1,
-      isEditingClassOfEquipment: false,
-    },
-    {
-      vehicleIconSrc:
-        'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-      vehicleType: 'Cargo Van',
-      trailerIconSrc: null,
-      trailerType: null,
-      trailerLength: 2,
-      isEditingClassOfEquipment: false,
-    },
-    {
-      vehicleIconSrc:
-        'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-      vehicleType: 'Cargo Van',
-      trailerIconSrc: null,
-      trailerType: null,
-      trailerLength: 3,
-      isEditingClassOfEquipment: false,
-    },
-    {
-      vehicleIconSrc:
-        'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-      vehicleType: 'Cargo Van',
-      trailerIconSrc: null,
-      trailerType: null,
-      trailerLength: 4,
-      isEditingClassOfEquipment: false,
-    },
-    {
-      vehicleIconSrc:
-        'assets/svg/truckassist-table/truck/ic_truck_cargo-van.svg',
-      vehicleType: 'Cargo Van',
-      trailerIconSrc: null,
-      trailerType: null,
-      trailerLength: 5,
-      isEditingClassOfEquipment: false,
-    },
-  ];
+  public classOfEquipmentArray: AnotherClassOfEquipmentModel[] = [];
   public helperClassOfEquipmentArray: AnotherClassOfEquipmentModel[] = [];
 
   public isEditingClassOfEquipment: boolean = false;
@@ -140,21 +98,14 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   public selectedClassOfEquipmentIndex: number;
   public helperIndex: number = 2;
 
-  public vehicleType: VehicleType[] = [];
-  public trailerType: TrailerType[] = [];
-  public trailerLengthType: any[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
+  public trailerType: TrailerTypeResponse[] = [];
+  public trailerLengthType: TrailerLengthResponse[] = [];
 
   private cfrPartRadios: any;
   private fmcsaRadios: any;
 
-  public reasonsForLeaving: ReasonForLeaving[] = [
-    { id: 1, name: 'Better opportunity' },
-    { id: 2, name: 'Illness' },
-    { id: 3, name: 'Company went out of business' },
-    { id: 4, name: 'Fired or terminated' },
-    { id: 5, name: 'Family obligations' },
-    { id: 6, name: 'Other' },
-  ];
+  public reasonsForLeaving: EnumValue[] = [];
 
   public questions: ApplicantQuestion[] = [
     {
@@ -326,7 +277,8 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private inputResetService: TaInputResetService,
+    private applicantListsService: ApplicantListsService
   ) {}
 
   ngOnInit(): void {
@@ -334,10 +286,10 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.isDriverPosition();
 
+    this.getDropdownLists();
+
     if (this.formValuesToPatch) {
       this.patchForm();
-
-      this.isDriverPosition();
 
       this.subscription = this.workExperienceForm.valueChanges
         .pipe(takeUntil(this.destroy$))
@@ -418,11 +370,11 @@ export class Step2FormComponent implements OnInit, OnDestroy {
       trailerLength: [null],
     });
 
-    this.inputService.customInputValidator(
+    /*   this.inputService.customInputValidator(
       this.workExperienceForm.get('email'),
       'email',
       this.destroy$
-    );
+    ); */
   }
 
   public patchForm(): void {
@@ -545,6 +497,20 @@ export class Step2FormComponent implements OnInit, OnDestroy {
         break;
       case InputSwitchActions.TRUCK_TYPE:
         this.selectedVehicleType = event;
+
+        if (event.id === 5 || event.id === 8) {
+          this.isTruckSelected = false;
+
+          this.selectedTrailerType = null;
+          this.selectedTrailerLength = null;
+
+          this.classOfEquipmentForm.patchValue({
+            trailerType: null,
+            trailerLength: null,
+          });
+        } else {
+          this.isTruckSelected = true;
+        }
 
         break;
       case InputSwitchActions.TRAILER_TYPE:
@@ -928,6 +894,33 @@ export class Step2FormComponent implements OnInit, OnDestroy {
         trailerLength: this.previousFormValuesOnEdit.trailerLength,
       });
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+
+        this.trailerType = data.trailerTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subfolder: 'trailers',
+          };
+        });
+
+        this.trailerLengthType = data.trailerLenghts;
+
+        this.reasonsForLeaving = data.reasonsForLeave;
+      });
   }
 
   ngOnDestroy(): void {

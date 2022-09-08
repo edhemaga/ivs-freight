@@ -21,56 +21,14 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
   styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
 
-  public licenseArray: LicenseModel[] = [
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 1',
-      restrictions: 'Restriction 1',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-  ];
+  public licenseArray: LicenseModel[] = [];
 
   public selectedLicenseIndex: number;
-
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;

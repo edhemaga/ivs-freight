@@ -35,7 +35,7 @@
       <div
         class="d-flex align-items-center title-container"
         *ngIf="
-          (licenseArray.length > 1 && helperIndex !== 0 && i === 0) ||
+          (licenseArray.length > 0 && helperIndex !== 0 && i === 0) ||
           (helperIndex === 0 && i === 1) ||
           (i === helperIndex + 1 && selectedLicenseIndex > -1)
         "
@@ -61,7 +61,7 @@
         <div class="d-flex align-items-center info-btn-container">
           <div class="d-flex align-items-center license-box">
             <p class="m-0 ta-font-regular">
-              {{ license.license }}
+              {{ license.licenseNumber }}
             </p>
           </div>
           <div class="d-flex align-items-center state-box">
