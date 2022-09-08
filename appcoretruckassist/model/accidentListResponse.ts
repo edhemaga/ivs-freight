@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AccidentResponsePagination } from './accidentResponsePagination';
+import { AccidentShortResponsePagination } from './accidentShortResponsePagination';
 
 
 export interface AccidentListResponse { 
-    pagination?: AccidentResponsePagination;
+    pagination?: AccidentShortResponsePagination;
     count?: number;
     active?: number;
     inactive?: number;

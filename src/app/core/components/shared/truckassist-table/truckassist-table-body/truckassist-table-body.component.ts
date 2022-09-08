@@ -165,7 +165,6 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
-      console.log('Poziva se ngOnChanges viewData');
       clearTimeout(this.viewDataTimeOut);
 
       this.viewData = changes.viewData.currentValue;
@@ -189,7 +188,6 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-      console.log('Poziva se ngOnChanges tableContainerWidth');
       this.getNotPinedMaxWidth();
     }
 
@@ -203,7 +201,6 @@ export class TruckassistTableBodyComponent
       this.getTableSections();
 
       setTimeout(() => {
-        console.log('Poziva se ngOnChanges columns');
         this.getNotPinedMaxWidth();
       }, 10);
     }
@@ -293,8 +290,6 @@ export class TruckassistTableBodyComponent
 
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
-    console.log('Poziva se getNotPinedMaxWidth');
-
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
 
@@ -316,10 +311,6 @@ export class TruckassistTableBodyComponent
     if (div) {
       this.checkForScrollTimeout = setTimeout(() => {
         this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
-
-        console.log('Da li border treba da se pokaze');
-        console.log(this.showScrollSectionBorder);
-        
 
         let notPinedWidth =
           div.clientWidth <= this.notPinedMaxWidth

@@ -9,15 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { BrokerMinimalResponse } from './brokerMinimalResponse';
 import { TrailerAccidentResponse } from './trailerAccidentResponse';
+import { StateResponse } from './stateResponse';
 import { InsuranceTypeResponse } from './insuranceTypeResponse';
 import { DriverMinimalResponse } from './driverMinimalResponse';
 import { TruckAccidentResponse } from './truckAccidentResponse';
-import { AddressEntity } from './addressEntity';
 
 
-export interface AccidentResponse { 
+export interface AccidentShortResponse { 
     id?: number;
     reported?: boolean;
     report?: string | null;
@@ -27,51 +26,22 @@ export interface AccidentResponse {
     fatality?: number | null;
     towing?: boolean;
     hazMat?: boolean;
-    vehicloNo?: number | null;
-    addressAccident?: AddressEntity;
+    vehicloNo?: number;
     date?: string | null;
     time?: string | null;
+    state?: StateResponse;
     driver?: DriverMinimalResponse;
     driver_FullName?: string | null;
-    driver_LicenceNo?: string | null;
-    driver_State?: string | null;
-    driver_DateOfBirth?: string | null;
     truck?: TruckAccidentResponse;
-    truck_Unit?: string | null;
-    truck_Type?: string | null;
-    truck_Make?: string | null;
     truck_PlateNo?: string | null;
-    truck_State?: string | null;
-    truck_VIN?: string | null;
     trailerChecked?: boolean;
     trailer?: TrailerAccidentResponse;
-    trailer_Unit?: string | null;
-    trailer_Type?: string | null;
-    trailer_Make?: string | null;
     trailer_PlateNo?: string | null;
-    trailer_State?: string | null;
-    trailer_VIN?: string | null;
     category?: string | null;
     severityWeight?: number | null;
     hmPlacards?: boolean;
     description?: string | null;
     insuranceType?: Array<InsuranceTypeResponse> | null;
-    roadwayTrafficway?: string | null;
-    weatherCondition?: string | null;
-    roadAccessControl?: string | null;
-    roadSurfaceCondition?: string | null;
-    lightCondition?: string | null;
-    reportingAgency?: string | null;
-    policeOfficer?: string | null;
-    bagdeNo?: string | null;
-    addressAuthority?: AddressEntity;
-    phoneOfficer?: string | null;
-    fax?: string | null;
-    origin?: AddressEntity;
-    destination?: AddressEntity;
-    broker?: BrokerMinimalResponse;
-    boL?: string | null;
-    cargo?: string | null;
     timeWeight?: number | null;
     totalWeight?: number | null;
 }

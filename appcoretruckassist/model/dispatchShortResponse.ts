@@ -20,5 +20,6 @@ export interface DispatchShortResponse {
     truck?: TruckMinimalResponse;
     trailer?: TrailerMinimalResponse;
     driver?: DriverMinimalResponse;
+    coDriver?: DriverMinimalResponse;
 }
 
