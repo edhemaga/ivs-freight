@@ -32,13 +32,8 @@ export class LoadTService {
       dispatcherId,
       dispatchId,
       brokerId,
-      pageIndex,
-      pageSize,
-      companyId,
       sort,
-      search,
-      search1,
-      search2
+      search
     );
   }
 

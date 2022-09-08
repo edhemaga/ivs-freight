@@ -1,6 +1,6 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
-import { CreateDispatchCommand, DispatchService, ReorderDispatchesCommand, UpdateDispatchBoardCommand, UpdateDispatchCommand } from 'appcoretruckassist';
+import { CreateDispatchCommand, DispatchService, ReorderDispatchesCommand, UpdateDispatchCommand } from 'appcoretruckassist';
 import { flatMap, delay, debounce, of, interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -28,6 +28,10 @@ export class DispatcherStoreService {
 
     reorderDispatchboard(reorder: ReorderDispatchesCommand){
         return this.dispatchService.apiDispatchReorderPut(reorder);
+    }
+
+    deleteDispatchboard(id: number){
+        return this.dispatchService.apiDispatchIdDelete(id);
     }
 
     createDispatchBoard(createData: CreateDispatchCommand, dispatch_id: number){
