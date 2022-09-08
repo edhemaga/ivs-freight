@@ -12,7 +12,8 @@
 
 
 export interface InsuranceTypeCommand { 
-    insType?: number | null;
+    id?: number | null;
+    insTypes?: number | null;
     claimNo?: number | null;
     insAdjuster?: string | null;
     phone?: string | null;

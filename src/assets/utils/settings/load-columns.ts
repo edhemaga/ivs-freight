@@ -1636,7 +1636,7 @@ export function getLoadClosedColumnDefinition() {
       isAction: true,
     },
     {
-      ngTemplate: 'note',
+      ngTemplate: 'comment',
       title: 'Comment',
       field: 'comment',
       name: '',

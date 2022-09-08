@@ -1,5 +1,4 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.module.ts
 api/accident.service.ts
@@ -59,7 +58,8 @@ model/accidentModalResponse.ts
 model/accidentRecordFeedbackResponse.ts
 model/accidentRecordItemResponse.ts
 model/accidentResponse.ts
-model/accidentResponsePagination.ts
+model/accidentShortResponse.ts
+model/accidentShortResponsePagination.ts
 model/accountColorResponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addressEntity.ts
@@ -308,6 +308,7 @@ model/loadShortResponse.ts
 model/loadStatus.ts
 model/loadStatusHistoryResponse.ts
 model/loadStopCommand.ts
+model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
 model/loadStopResponse.ts
@@ -385,6 +386,7 @@ model/removeApplicantFromFavouriteCommand.ts
 model/renewCdlCommand.ts
 model/reorderDispatchCommand.ts
 model/reorderDispatchesCommand.ts
+model/repairAutocompleteDescriptionResponse.ts
 model/repairByUnitResponse.ts
 model/repairItemCommand.ts
 model/repairItemResponse.ts
@@ -458,7 +460,6 @@ model/terminalResponsePagination.ts
 model/testResponse.ts
 model/testType.ts
 model/timeOnly.ts
-model/timeSpan.ts
 model/timeType.ts
 model/tireSizeResponse.ts
 model/titleModalResponse.ts
@@ -475,6 +476,7 @@ model/trafficViolationItemResponse.ts
 model/trafficViolationItemReviewCommand.ts
 model/trafficViolationItemReviewResponse.ts
 model/trailerAccidentResponse.ts
+model/trailerAutocompleteModelResponse.ts
 model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
@@ -486,6 +488,7 @@ model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
 model/trailerTypeResponse.ts
 model/truckAccidentResponse.ts
+model/truckAutocompleteModelResponse.ts
 model/truckEngineTypeResponse.ts
 model/truckGrossWeightResponse.ts
 model/truckListResponse.ts
@@ -517,7 +520,6 @@ model/updateCompanyPayrollCommand.ts
 model/updateCompanyUserCommand.ts
 model/updateDepartmentContactCommand.ts
 model/updateDisclosureReleaseCommand.ts
-model/updateDispatchBoardCommand.ts
 model/updateDispatchCommand.ts
 model/updateDispatchStatusCommand.ts
 model/updateDivisionCompanyCommand.ts

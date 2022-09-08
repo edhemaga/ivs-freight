@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadListResponse, LoadService } from 'appcoretruckassist';
+import { LoadListResponse, LoadService, LoadTemplateListResponse } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -9,6 +9,7 @@ export class LoadTService {
   constructor(private loadServices: LoadService) {}
 
   // Get Load List
+  // statusType -> 1 - pending, 2 - active, 3 - closed
   public getLoadList(
     loadType?: number,
     statusType?: number,
@@ -31,6 +32,29 @@ export class LoadTService {
       dispatcherId,
       dispatchId,
       brokerId,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
+  }
+
+  // Get Load Template List
+  public getLoadTemplateList(
+    loadType?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ): Observable<LoadTemplateListResponse> {
+    return this.loadServices.apiLoadTemplateListGet(
+      loadType,
       pageIndex,
       pageSize,
       companyId,
