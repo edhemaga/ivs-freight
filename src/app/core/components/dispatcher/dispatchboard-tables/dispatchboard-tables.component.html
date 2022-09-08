@@ -60,7 +60,9 @@
                     [class.hasColor]="item.truck.truckType"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
                     [mainTooltip]="item.truck.truckType.name"
-                    [tooltipBackground]="'#' + ('truck' | colorFinder: item.truck.truckType.id)"
+                    [tooltipBackground]="
+                      '#' + ('truck' | colorFinder: item.truck.truckType.id)
+                    "
                     ngbTooltip
                     position="right"
                     [ngClass]="
@@ -137,6 +139,10 @@
                   !item.enterNewAddress &&
                   truckSelectOpened != rowIndex
                 "
+                [mainTooltip]="'Add Truck'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
               >
@@ -180,7 +186,10 @@
                     [class.hasColor]="item.trailerColor"
                     [class.otherOpacityAdded]="statusOpenedIndex > -1"
                     [mainTooltip]="item.trailer.trailerType.name"
-                    [tooltipBackground]="'#' + ('trailer' | colorFinder: item.trailer.trailerType.id)"
+                    [tooltipBackground]="
+                      '#' +
+                      ('trailer' | colorFinder: item.trailer.trailerType.id)
+                    "
                     ngbTooltip
                     position="right"
                     [ngClass]="
@@ -265,6 +274,10 @@
                 [class.active]="trailerSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
+                [mainTooltip]="'Add Trailer'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
               >
                 <svg-icon
                   appTooltip="Add Trailer"
@@ -375,6 +388,10 @@
                 [class.active]="driverSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
+                [mainTooltip]="'Add Driver'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
               >
                 <svg-icon
                   appTooltip="Add Driver"
@@ -576,12 +593,12 @@
           <td class="empty-field">
             <div
               #t1="ngbPopover"
-              (click)="toggleHos(t1, item.hosJson, item.id)"
-              (hidden)="saveHosData(item.hosJson, item.driverId, item.id)"
+              (click)="toggleHos(t1, item.hoursOfService, item.id)"
+              (hidden)="saveHosData(item.hoursOfService, item.driverId, item.id)"
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
               [ngClass]="
-                (item.hosJson?.hos)[item.hosJson.hos.length - 1]?.flag === 'on'
+                (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]?.flag === 'on'
                   ? 'active-flag'
                   : 'inactive-flag'
               "
@@ -726,6 +743,10 @@
                 (click)="showNextDropdown(-2, truckDropdown)"
                 *ngIf="!__isBoardLocked && truckSelectOpened != -2"
                 class="btn-transparent dispatch-bottom-add"
+                [mainTooltip]="'Add Truck'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
               >
                 <svg-icon
                   appTooltip="Add Truck"
@@ -779,6 +800,10 @@
                 *ngIf="!__isBoardLocked && trailerSelectOpened != -2"
                 [class.active]="trailerSelectOpened == -2"
                 class="btn-transparent dispatch-bottom-add"
+                [mainTooltip]="'Add Trailer'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
               >
                 <svg-icon
                   appTooltip="Add Trailer"
@@ -835,6 +860,10 @@
                 *ngIf="!__isBoardLocked && driverSelectOpened != -2"
                 [class.active]="driverSelectOpened == -2"
                 class="btn-transparent dispatch-bottom-add"
+                [mainTooltip]="'Add Driver'"
+                [tooltipBackground]="'#6C6C6C'"
+                ngbTooltip
+                position="top"
               >
                 <svg-icon
                   appTooltip="Add Driver"
@@ -1022,3 +1051,118 @@
     </div>
   </div>
 </div>
+
+
+<!-- Popover for HOS -->
+<ng-template #hos let-data="value.data.hos" let-id="value.id">
+  <div class="slider-wrapper">
+    <div class="time-ruler">
+      <div *ngFor="let item of [].constructor(23); let i = index" class="d-flex">
+        <div [ngClass]="i === 11 ? ' noon-mark' : ''" class="hour-mark"></div>
+      </div>
+    </div>
+    <div
+      #firstList="cdkDropList"
+      (cdkDropListDropped)="dropHosList($event, data, id)"
+      [cdkDropListConnectedTo]="[secondList]"
+      [cdkDropListData]="this.returnListData(data, 'off')"
+      cdkDropList
+      class="inactive-parent-wrapper"
+    >
+      <div *ngFor="let item of data; let i = index" class="item-container inactive-parent">
+        <div *ngIf="item?.flag === 'off'" class="individual-item">
+          <div>
+            <div
+              [ngClass]="item?.flag === 'off' ? 'inactive' : 'active'"
+              cdkDrag
+              cdkDragBoundary=".slider-wrapper"
+              cdkDragLockAxis="y"
+              cdkDragRootElement=".individual-item"
+              class="value-container"
+              id="{{ returnValueId(i) }}"
+            >
+              <span cdkDragHandle style="cursor: grab;">
+                {{ formatTime(item.start, item.end) }}
+              </span>
+            </div>
+            <!-- <ng5-slider
+              (userChange)="userChangeEnd($event, i, data)"
+              [(highValue)]="item.end"
+              [(value)]="item.start"
+              [ngClass]="i + ' inactive-wrapper-slider'"
+              [options]="options"
+            ></ng5-slider> -->
+
+            <app-ta-ngx-slider
+            [sliderTemplate]="'hos-change'"
+            [sliderOptions]="options"
+            [startedValue]="item.start" 
+            [customClass]="i + ' inactive-wrapper-slider'"
+            (onUserValueChange)="userChangeEnd($event, i, data)"
+          ></app-ta-ngx-slider>
+          </div>
+          <div class="button-wrapper" id="{{ returnButtonId(i) }}">
+            <span
+              (click)="addHOS(data, 'on')"
+              *ngIf="data.length < 3 && !data[i + 1]"
+              class="add-item-button active-button"
+            ></span>
+            <span
+              (click)="removeHOS(data, i)"
+              *ngIf="data.length > 1 && data.length === i + 1"
+              class="remove-item"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      #secondList="cdkDropList"
+      (cdkDropListDropped)="dropHosList($event, data, id)"
+      [cdkDropListConnectedTo]="[firstList]"
+      [cdkDropListData]="this.returnListData(data, 'on')"
+      cdkDropList
+      class="active-parent-wrapper"
+    >
+      <div *ngFor="let item of data; let i = index" class="item-container active-parent">
+        <div *ngIf="item?.flag === 'on'" class="individual-item">
+          <div>
+            <div
+              [ngClass]="item?.flag === 'off' ? 'inactive' : 'active'"
+              cdkDrag
+              cdkDragBoundary=".slider-wrapper"
+              cdkDragHandle
+              cdkDragLockAxis="y"
+              cdkDragRootElement=".individual-item"
+              class="value-container"
+              id="{{ returnValueId(i) }}"
+            >
+              <span cdkDragHandle style="cursor: grab;">
+                {{ formatTime(item.start, item.end) }}
+              </span>
+            </div>
+            <ng5-slider
+              (userChange)="userChangeEnd($event, i, data)"
+              [(highValue)]="item.end"
+              [(value)]="item.start"
+              [ngClass]="'active-wrapper-slider'"
+              [options]="options"
+            ></ng5-slider>
+          </div>
+          <div class="button-wrapper" id="{{ returnButtonId(i) }}">
+            <span
+              (click)="addHOS(data, 'off')"
+              *ngIf="data.length < 3 && !data[i + 1]"
+              class="add-item-button inactive-button"
+            ></span>
+            <span
+              (click)="removeHOS(data, i)"
+              *ngIf="data.length > 1 && data.length === i + 1"
+              class="remove-item"
+            ></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
