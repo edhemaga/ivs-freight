@@ -58,7 +58,8 @@ model/accidentModalResponse.ts
 model/accidentRecordFeedbackResponse.ts
 model/accidentRecordItemResponse.ts
 model/accidentResponse.ts
-model/accidentResponsePagination.ts
+model/accidentShortResponse.ts
+model/accidentShortResponsePagination.ts
 model/accountColorResponse.ts
 model/addApplicantToFavouriteCommand.ts
 model/addressEntity.ts

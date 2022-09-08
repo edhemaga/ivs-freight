@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { AccidentShortResponse } from './accidentShortResponse';
 
 
-export type ApiCategory = 'EFSFUEL' | 'ACCIDENTVIOLATION';
-
-export const ApiCategory = {
-    Efsfuel: 'EFSFUEL' as ApiCategory,
-    Accidentviolation: 'ACCIDENTVIOLATION' as ApiCategory
-};
+export interface AccidentShortResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<AccidentShortResponse> | null;
+}
 
