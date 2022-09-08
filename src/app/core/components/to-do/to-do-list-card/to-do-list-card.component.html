@@ -223,7 +223,7 @@
             [getChildPayload]="getCardPayload(column.id)"
             [dragClass]="'card-ghost'"
             [dropClass]="'card-ghost-drop'"
-            (dragStart)="log('drag start', $event)"
+            (dragStart)="dragStart($event)"
             (dragEnd)="log('drag end', $event)"
             [dragBeginDelay]="0"
             [animationDuration]="100"

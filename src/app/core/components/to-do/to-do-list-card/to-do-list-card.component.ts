@@ -1,5 +1,5 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ChangeDetectorRef } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import { SignInResponse, TodoStatus, UpdateTodoStatusCommand } from 'appcoretruckassist';
@@ -158,11 +158,11 @@ export class ToDoListCardComponent implements OnInit {
     private modalService: ModalService,
     private sharedService: SharedService,
     private commentsService: CommentsService,
-    private todoQuery: TodoQuery
+    private todoQuery: TodoQuery,
+    private ref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
-    //this.getTodoList();
     this.companyUser = JSON.parse(localStorage.getItem('user'));
     this.initTableOptions();
     this.todoTest = this.todoQuery.selectTodoList$;
@@ -439,7 +439,7 @@ export class ToDoListCardComponent implements OnInit {
   commentEvent(ev){
     console.log(ev, 'evvvvvvvv');
     if(ev['action'] == 'add'){
-      this.scene.children[this.currentHoldIndex].children[this.currentChildIndex].comments.push(this.comments[0]);
+      this.addComment(this.comments[0], this.scene.children[this.currentHoldIndex].children[this.currentChildIndex].id);
       this.newComment = false;
     }
   }
@@ -448,7 +448,6 @@ export class ToDoListCardComponent implements OnInit {
     this.currentHoldIndex = mainIndx;
     this.currentChildIndex = indx;
     this.newComment = true;
-    console.log(this.companyUser, 'createcomment 111');
     this.comments = [];
     this.comments.unshift({
       companyUser: {
@@ -463,5 +462,31 @@ export class ToDoListCardComponent implements OnInit {
       updatedAt: new Date().toISOString(),
       isNewReview: true,
     });
+  }
+
+  addComment(comments, taskId) {
+    const comment = {
+      entityTypeCommentId: 1,
+      entityTypeId: taskId,
+      commentContent: comments.commentContent,
+    };
+
+    this.commentsService
+      .createComment(comment)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          console.log(res, 'ressss');
+          this.comments[0].id = res.id;
+          this.scene.children[this.currentHoldIndex].children[this.currentChildIndex].comments.unshift(this.comments[0]);
+          // this.notificationService.success(
+          //   'Comment successfully created.',
+          //   'Success:'
+          // );
+        },
+        error: () => {
+         // this.notificationService.error("Comment can't be created.", 'Error:');
+        },
+      });
   }
 }
