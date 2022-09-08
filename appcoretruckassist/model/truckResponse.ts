@@ -9,17 +9,18 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { InspectionResponse } from './inspectionResponse';
-import { TitleResponse } from './titleResponse';
-import { TruckMakeResponse } from './truckMakeResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { TruckEngineTypeResponse } from './truckEngineTypeResponse';
 import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 import { ColorResponse } from './colorResponse';
 import { OwnerDetailsResponse } from './ownerDetailsResponse';
-import { RegistrationResponse } from './registrationResponse';
 import { TireSizeResponse } from './tireSizeResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
+import { InspectionResponse } from './inspectionResponse';
+import { TitleResponse } from './titleResponse';
+import { TruckMakeResponse } from './truckMakeResponse';
+import { RegistrationResponse } from './registrationResponse';
 import { OwnerHistoryResponse } from './ownerHistoryResponse';
 
 
@@ -54,5 +55,6 @@ export interface TruckResponse {
     inspections?: Array<InspectionResponse> | null;
     titles?: Array<TitleResponse> | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
+    dispatches?: Array<DispatchShortResponse> | null;
 }
 

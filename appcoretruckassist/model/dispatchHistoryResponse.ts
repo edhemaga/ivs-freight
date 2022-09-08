@@ -9,7 +9,6 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TimeSpan } from './timeSpan';
 import { TruckMinimalResponse } from './truckMinimalResponse';
 import { TrailerMinimalResponse } from './trailerMinimalResponse';
 import { DispatchStatus } from './dispatchStatus';
@@ -29,7 +28,7 @@ export interface DispatchHistoryResponse {
     location?: AddressEntity;
     status?: DispatchStatus;
     dateFrom?: string;
-    dateTo?: string;
-    totalTime?: TimeSpan;
+    dateTo?: string | null;
+    totalTime?: { [key: string]: number; } | null;
 }
 

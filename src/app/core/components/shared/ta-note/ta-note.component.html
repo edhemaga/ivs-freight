@@ -11,13 +11,15 @@
     position="bottom"
     >
     <svg-icon
-      (click)="toggleNote(note)"
+      #t2="ngbPopover"
+      [ngbPopover]="note_popover"
       [autoClose]="false"
       class="note-btn"
       [container]="'body'"
       [placement]="'left-top'"
       popoverClass="my-note-popover"
       triggers="manual"
+      (click)="toggleNote(note, t2)"
       src="assets/svg/truckassist-table/note/{{noteIcon}}"
     >
     </svg-icon>
@@ -29,7 +31,9 @@
     class="note_inner_text"
   >
   </div>
+</div>
 
+<ng-template #note_popover let-data="data">
   <div class="kendo-editor-note-wrapper" 
     [class.opened_all_hold]="openedAll"
     [class.closed_note_hold]="!openedAll && noteOpened"
@@ -60,4 +64,4 @@
       ></app-ta-note-container>
     </div>
   </div>
-</div>
+</ng-template>

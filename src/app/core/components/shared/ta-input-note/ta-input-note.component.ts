@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
+import { card_component_animation } from '../animations/card-component.animations';
 import { input_note_animation } from './ta-input-note.animation';
 import { SharedService } from '../../../services/shared/shared.service';
 
@@ -17,7 +18,7 @@ import { SharedService } from '../../../services/shared/shared.service';
   selector: 'app-ta-input-note',
   templateUrl: './ta-input-note.component.html',
   styleUrls: ['./ta-input-note.component.scss'],
-  animations: [input_note_animation('showHideNote')],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   _isVisibleNote: any = null;
@@ -30,6 +31,7 @@ export class TaInputNoteComponent implements OnInit, ControlValueAccessor {
   saveIntervalStarted: boolean = false;
   @Input() isVisibleDivider: boolean = true;
   @Input() isVisibleSecondDivider: boolean = true;
+  @Input() public animationsDisabled = false;
 
   @Input('isVisibleNote') set isVisibleNote(value: any) {
     this._isVisibleNote = value ? true : null;

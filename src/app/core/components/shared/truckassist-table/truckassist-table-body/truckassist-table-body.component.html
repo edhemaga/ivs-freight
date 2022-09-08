@@ -1,10 +1,18 @@
 <table class="truckassist-table-body-style">
   <tbody *ngIf="viewData.length">
+    <!-- [ngStyle]="{ height: pageHeight - 84 + 'px' }" -->
     <cdk-virtual-scroll-viewport
+      #tableScrollRef
       [itemSize]="35"
-      [ngStyle]="{ height: pageHeight - 84 + 'px' }"
+      [ngStyle]="{
+        height:
+          viewData.length < 29
+            ? viewData.length * 32 + (viewData.length - 1) * 2 + 'px'
+            : 30 * 32 + 29 * 2 + 'px'
+      }"
     >
       <tr
+        class="table-tr"
         [ngStyle]="{
           'margin-top': i > 0 ? '2px' : '0px'
         }"
@@ -319,6 +327,7 @@
                   #t1="ngbPopover"
                   (click)="onShowDescriptionDropdown(t1, row)"
                   [ngbPopover]="descriptionPopover"
+                  container="body"
                   [placement]="'bottom-left'"
                   popoverClass="table-description-popover"
                   triggers="manual"
@@ -803,7 +812,7 @@
                 </div>
               </div>
 
-              <!-- PICKUP COLUMN -->
+              <!-- DELIVERY COLUMN -->
               <div
                 class="td-content"
                 *ngIf="column.ngTemplate === 'delivery'"
@@ -849,8 +858,7 @@
                   <div
                     class="table-progress-bar-container"
                     [ngClass]="{
-                      'bg-expired-container':
-                        row[column.field].percentage === 100,
+                      'bg-expired-container': !row[column.field].percentage,
                       'bg-sliver-container':
                         row[column.field].percentage >= 25 &&
                         row[column.field].percentage < 100,
@@ -860,14 +868,15 @@
                       'bg-danger-container':
                         row[column.field].percentage > 0 &&
                         row[column.field].percentage < 5,
-                      'bg-inactive-container': !row[column.field].percentage
+                      'bg-inactive-container':
+                        row[column.field].percentage === 100
                     }"
                   >
                     <div
                       [ngClass]="{
                         'bg-progress-sliver':
                           row[column.field].percentage >= 25 &&
-                          row[column.field].percentage < 50,
+                          row[column.field].percentage < 100,
                         'bg-progress-orange':
                           row[column.field].percentage >= 5 &&
                           row[column.field].percentage < 25,
@@ -904,7 +913,7 @@
                     [ngStyle]="{
                       width: column.width - 30 + 'px'
                     }"
-                    *ngIf="row[column.field].percentage === 100"
+                    *ngIf="!row[column.field].percentage"
                   >
                     {{ row[column.field].expirationDays }} days ago
                   </div>
@@ -1027,13 +1036,14 @@
           <!-- Border -->
           <div
             class="border-scroll-section"
-            [ngClass]="{ 'border-left': false }"
+            [ngClass]="{ 'border-left': showScrollSectionBorder }"
           ></div>
 
-          <!-- class="not-pined-tr" id="scroll-container" (scroll)="onScroll($event)"-->
+          <!--  (scroll)="onScroll($event)" -->
           <!-- NOT PINED -->
           <div
             class="not-pined-columns"
+            id="scroll-container"
             [ngStyle]="{ 'max-width.px': notPinedMaxWidth }"
           >
             <td class="not-pined-td" *ngFor="let column of notPinedColumns">
@@ -1260,6 +1270,7 @@
                   #t1="ngbPopover"
                   (click)="onShowDescriptionDropdown(t1, row)"
                   [ngbPopover]="descriptionPopover"
+                  container="body"
                   [placement]="'bottom-left'"
                   popoverClass="table-description-popover"
                   triggers="manual"
@@ -1801,8 +1812,7 @@
                   <div
                     class="table-progress-bar-container"
                     [ngClass]="{
-                      'bg-expired-container':
-                        row[column.field].percentage === 100,
+                      'bg-expired-container': !row[column.field].percentage,
                       'bg-sliver-container':
                         row[column.field].percentage >= 25 &&
                         row[column.field].percentage < 100,
@@ -1812,14 +1822,15 @@
                       'bg-danger-container':
                         row[column.field].percentage > 0 &&
                         row[column.field].percentage < 5,
-                      'bg-inactive-container': !row[column.field].percentage
+                      'bg-inactive-container':
+                        row[column.field].percentage === 100
                     }"
                   >
                     <div
                       [ngClass]="{
                         'bg-progress-sliver':
                           row[column.field].percentage >= 25 &&
-                          row[column.field].percentage < 50,
+                          row[column.field].percentage < 100,
                         'bg-progress-orange':
                           row[column.field].percentage >= 5 &&
                           row[column.field].percentage < 25,
@@ -1856,7 +1867,7 @@
                     [ngStyle]="{
                       width: column.width - 30 + 'px'
                     }"
-                    *ngIf="row[column.field].percentage === 100"
+                    *ngIf="!row[column.field].percentage"
                   >
                     {{ row[column.field].expirationDays }} days ago
                   </div>
@@ -1979,7 +1990,7 @@
           <!-- Border -->
           <div
             class="border-scroll-section"
-            [ngClass]="{ 'border-right': false }"
+            [ngClass]="{ 'border-right': showScrollSectionBorder }"
           ></div>
 
           <!-- ACTIONS -->
@@ -1999,6 +2010,56 @@
                   class="attachments-btn"
                 >
                   <div class="attachments-svg"></div>
+                </div>
+              </div>
+
+              <!-- COMMENT COLUMN -->
+              <div
+                class="td-content set-center"
+                *ngIf="column.ngTemplate === 'comment'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="comment-container">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 19.5 19.5"
+                  >
+                    <g transform="translate(-3706.5 -106)">
+                      <g transform="translate(3707 109)">
+                        <g transform="translate(-1639 -181)">
+                          <path
+                            d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
+                            transform="translate(690.721 -331.676)"
+                            fill="#aaa"
+                            stroke="rgba(0,0,0,0)"
+                            stroke-width="1"
+                            class="comment-notification"
+                          />
+                          <text
+                            transform="translate(1648 190)"
+                            fill="#fff"
+                            font-size="10"
+                            font-family="Montserrat-Bold, Montserrat"
+                            font-weight="700"
+                          >
+                            <tspan x="-3.445" y="0">4</tspan>
+                          </text>
+                        </g>
+                      </g>
+                      <rect
+                        width="6"
+                        height="6"
+                        rx="3"
+                        transform="translate(3720 106)"
+                        fill="#e57373"
+                      />
+                    </g>
+                  </svg>
                 </div>
               </div>
 
@@ -2167,8 +2228,10 @@
 <!-- ATTACHMENTS -->
 <!-- DROPDOWN -->
 <ng-template #attachmentsPopover let-data="data">
-  <!-- [ngStyle]="{
-    width: column.width + 'px'
-  }" -->
-  <div class="table-attachments"></div>
+  <div
+    class="table-attachments"
+    [ngStyle]="{
+      width: attachmentWidth + 'px'
+    }"
+  ></div>
 </ng-template>

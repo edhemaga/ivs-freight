@@ -15,21 +15,19 @@ import { AddressEntity } from './addressEntity';
 
 export interface CreateAccidentCommand { 
     report?: string | null;
-    federallyRecordable?: boolean;
-    stateRecordable?: boolean;
     injury?: number | null;
     fatality?: number | null;
     towing?: boolean;
     hazMat?: boolean;
     vehicloNo?: number | null;
     addressAccident?: AddressEntity;
-    date?: string | null;
+    date?: string;
     time?: string | null;
     driverId?: number;
-    truckUnit?: string | null;
+    truckId?: number;
     trailerChecked?: boolean;
-    trailerUnit?: string | null;
-    insuranceTypes?: Array<InsuranceTypeCommand> | null;
+    trailerId?: number;
+    insuranceType?: Array<InsuranceTypeCommand> | null;
     roadwayTrafficway?: string | null;
     weatherCondition?: string | null;
     roadAccessControl?: string | null;
@@ -41,8 +39,8 @@ export interface CreateAccidentCommand {
     addressAuthority?: AddressEntity;
     phoneOfficer?: string | null;
     fax?: string | null;
-    origin?: string | null;
-    destination?: string | null;
+    origin?: AddressEntity;
+    destination?: AddressEntity;
     brokerId?: number | null;
     boL?: string | null;
     cargo?: string | null;
