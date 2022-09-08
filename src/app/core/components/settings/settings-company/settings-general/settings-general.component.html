@@ -332,9 +332,7 @@
             <p class="additional-template-value-name">Pref. Load Type</p>
             <p class="additional-template-value">
               {{
-                companyData?.additionalInfo?.preferredLoadType == 0
-                  ? "FTL"
-                  : "LTL"
+                companyData?.additionalInfo?.preferredLoadType
               }}
             </p>
           </div>
@@ -346,14 +344,14 @@
             </p>
           </div>
 
-          <div class="additional-template-item">
+          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerPayTerm">
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
               {{ companyData?.additionalInfo?.customerPayTerm }} days
             </p>
           </div>
 
-          <div class="additional-template-item">
+          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerCredit">
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
               ${{ companyData?.additionalInfo?.customerCredit }}

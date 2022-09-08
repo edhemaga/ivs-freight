@@ -111,7 +111,7 @@
       <ng-content></ng-content>
     </div>
   </div>
-  <div class="card-footer-cmp" [ngClass]="{'hide-padding':resPage}" *ngIf="isCardOpen && hasFooter">
+  <div class="card-footer-cmp" [ngStyle]="{'padding':paddingFooter}" [ngClass]="{'hide-padding':resPage}" *ngIf="isCardOpen && hasFooter">
     <div class="icon-counter">
       <svg-icon
         *ngIf="!resPage"

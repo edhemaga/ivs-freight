@@ -1,28 +1,60 @@
-import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectionStrategy,
+  OnChanges,
+  SimpleChanges,
+  Input,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { OfficeStore } from '../settings-location/settings-office/state/company-office.store';
 import { ParkingStore } from '../settings-location/settings-parking/parking-state/company-parking.store';
 import { CompanyRepairShopStore } from '../settings-location/settings-repair-shop/state/company-repairshop.store';
 import { TerminalStore } from '../settings-location/settings-terminal/state/company-terminal.store';
+import { CompanyQuery } from '../state/company-state/company-settings.query';
 import { CompanyStore } from '../state/company-state/company-settings.store';
+import { OnDestroy } from '@angular/core';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { CompanyResponse } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-settings-toolbar',
   templateUrl: './settings-toolbar.component.html',
   styleUrls: ['./settings-toolbar.component.scss'],
 })
-export class SettingsToolbarComponent implements OnInit {
+export class SettingsToolbarComponent implements OnInit, OnDestroy {
   public countLocation: number;
   public settingsToolbar: any;
-
+  private destroy$ = new Subject<void>();
+  public companyCount: number;
   constructor(
-    private companyStore: CompanyStore,
     private terminalStore: TerminalStore,
     private comRShopStore: CompanyRepairShopStore,
     private parkingStore: ParkingStore,
-    private officeStore: OfficeStore
+    private officeStore: OfficeStore,
+    private tableService: TruckassistTableService,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.toolBarOptions();
+          this.cdRef.detectChanges();
+        }
+      });
+
+    this.toolBarOptions();
+  }
+  public identity(index: number, item: any): number {
+    return item.id;
+  }
+  public toolBarOptions() {
+    const companiesCount = JSON.parse(localStorage.getItem('companiesCount'));
+    this.companyCount = companiesCount.numberOfCompany;
     let countLocation;
     countLocation =
       this.terminalStore.getValue().ids.length +
@@ -41,10 +73,7 @@ export class SettingsToolbarComponent implements OnInit {
       {
         id: 2,
         name: 'Company',
-        count:
-          this.companyStore.getValue()?.entities[
-            this.companyStore.getValue()?.ids[0]
-          ]?.divisions?.length,
+        count: this.companyCount,
         svg: 'ic_company.svg',
         background: '#FFFFFF',
         route: '/settings/company',
@@ -99,7 +128,9 @@ export class SettingsToolbarComponent implements OnInit {
       },
     ];
   }
-  public identity(index: number, item: any): number {
-    return item.id;
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

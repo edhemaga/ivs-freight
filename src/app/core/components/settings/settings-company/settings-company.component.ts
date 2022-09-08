@@ -121,8 +121,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.detailsPageSer.getDataDetailId(event.id);
   }
   ngOnDestroy(): void {
-    this.tableService.sendActionAnimation({});
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

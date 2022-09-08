@@ -128,6 +128,17 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
+
+              companiesCount.numberOfCompany++;
+              localStorage.setItem(
+                'companiesCount',
+                JSON.stringify({
+                  numberOfCompany: companiesCount.numberOfCompany,
+                })
+              );
               this.companyStore.add(company);
               this.tableService.sendActionAnimation({
                 animation: 'add',
@@ -151,6 +162,7 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: company,
@@ -175,6 +187,11 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
+
+              companiesCount.numberOfCompany--;
               this.tableService.sendActionAnimation({
                 animation: 'delete',
                 data: company,
@@ -222,6 +239,7 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
               this.tableService.sendActionAnimation({
                 animation: 'add',
                 data: company,
@@ -244,6 +262,7 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: company,
@@ -271,6 +290,7 @@ export class SettingsCompanyService implements OnDestroy {
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: company,
