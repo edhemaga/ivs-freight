@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { LoadListResponse, LoadService, LoadTemplateListResponse } from 'appcoretruckassist';
+import {
+  LoadListResponse,
+  LoadService,
+  LoadTemplateListResponse,
+} from 'appcoretruckassist';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -17,6 +21,10 @@ export class LoadTService {
     dispatcherId?: number,
     dispatchId?: number,
     brokerId?: number,
+    dateFrom?: string,
+    dateTo?: string,
+    revenueFrom?: number,
+    revenueTo?: number,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -32,6 +40,13 @@ export class LoadTService {
       dispatcherId,
       dispatchId,
       brokerId,
+      dateFrom,
+      dateTo,
+      revenueFrom,
+      revenueTo,
+      pageIndex,
+      pageSize,
+      companyId,
       sort,
       search
     );
