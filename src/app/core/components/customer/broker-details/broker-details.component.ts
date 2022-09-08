@@ -84,12 +84,6 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
     this.detailsPageService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        // let query;
-        // if (this.brokerQuery.hasEntity(id)) {
-        //   query = this.brokerQuery.selectEntity(id);
-        // } else {
-        //   query = this.brokerService.getBrokerById(id);
-        // }
         this.brokerService
           .getBrokerById(id)
           .pipe(takeUntil(this.destroy$))
