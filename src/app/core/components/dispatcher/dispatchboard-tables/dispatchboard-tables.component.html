@@ -594,11 +594,14 @@
             <div
               #t1="ngbPopover"
               (click)="toggleHos(t1, item.hoursOfService, item.id)"
-              (hidden)="saveHosData(item.hoursOfService, item.driverId, item.id)"
+              (hidden)="
+                saveHosData(item.hoursOfService, item.driverId, item.id)
+              "
               [class.statusOpened]="statusOpenedIndex > -1"
               [class.empty-box-field]="true"
               [ngClass]="
-                (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]?.flag === 'on'
+                (item.hoursOfService?.hos)[item.hoursOfService.hos.length - 1]
+                  ?.flag === 'on'
                   ? 'active-flag'
                   : 'inactive-flag'
               "
@@ -1001,40 +1004,25 @@
     <div class="toolbar-container item_dispatch_head">
       <div class="board_infos">
         <div appSelectionColor class="board_infos_count" style="color: #919191">
-          0
-          <!-- <span
-            [innerHTML]="infoCount.truckNumber == 1 ? 'TRUCK' : 'TRUCKS'"
-            appSelectionColor
-            style="color: #6c6c6c;"
-          ></span> -->
+          {{ dData.truckCount }}
           <span
-            [innerHTML]="'TRUCKS'"
+            [innerHTML]="dData.truckCount == 1 ? 'TRUCK' : 'TRUCKS'"
             appSelectionColor
             style="color: #919191"
           ></span>
         </div>
         <div appSelectionColor class="board_infos_count" style="color: #919191">
-          0
-          <!-- <span
-            [innerHTML]="infoCount.trailerNumber == 1 ? 'TRAILER' : 'TRAILERS'"
-            appSelectionColor
-            style="color: #6c6c6c;"
-          ></span> -->
+          {{ dData.truckCount }}
           <span
-            [innerHTML]="'TRAILERS'"
+            [innerHTML]="dData.truckCount == 1 ? 'TRAILER' : 'TRAILERS'"
             appSelectionColor
             style="color: #919191"
           ></span>
         </div>
         <div appSelectionColor class="board_infos_count" style="color: #919191">
-          0
-          <!-- <span
-            [innerHTML]="infoCount.driverNumber == 1 ? 'DRIVER' : 'DRIVERS'"
-            appSelectionColor
-            style="color: #6c6c6c;"
-          ></span> -->
+          {{ dData.driverCount }}
           <span
-            [innerHTML]="'DRIVERS'"
+            [innerHTML]="dData.driverCount == 1 ? 'DRIVER' : 'DRIVERS'"
             appSelectionColor
             style="color: #919191"
           ></span>
@@ -1052,12 +1040,14 @@
   </div>
 </div>
 
-
 <!-- Popover for HOS -->
 <ng-template #hos let-data="value.data.hos" let-id="value.id">
   <div class="slider-wrapper">
     <div class="time-ruler">
-      <div *ngFor="let item of [].constructor(23); let i = index" class="d-flex">
+      <div
+        *ngFor="let item of [].constructor(23); let i = index"
+        class="d-flex"
+      >
         <div [ngClass]="i === 11 ? ' noon-mark' : ''" class="hour-mark"></div>
       </div>
     </div>
@@ -1069,7 +1059,10 @@
       cdkDropList
       class="inactive-parent-wrapper"
     >
-      <div *ngFor="let item of data; let i = index" class="item-container inactive-parent">
+      <div
+        *ngFor="let item of data; let i = index"
+        class="item-container inactive-parent"
+      >
         <div *ngIf="item?.flag === 'off'" class="individual-item">
           <div>
             <div
@@ -1081,7 +1074,7 @@
               class="value-container"
               id="{{ returnValueId(i) }}"
             >
-              <span cdkDragHandle style="cursor: grab;">
+              <span cdkDragHandle style="cursor: grab">
                 {{ formatTime(item.start, item.end) }}
               </span>
             </div>
@@ -1094,12 +1087,12 @@
             ></ng5-slider> -->
 
             <app-ta-ngx-slider
-            [sliderTemplate]="'hos-change'"
-            [sliderOptions]="options"
-            [startedValue]="item.start" 
-            [customClass]="i + ' inactive-wrapper-slider'"
-            (onUserValueChange)="userChangeEnd($event, i, data)"
-          ></app-ta-ngx-slider>
+              [sliderTemplate]="'hos-change'"
+              [sliderOptions]="options"
+              [startedValue]="item.start"
+              [customClass]="i + ' inactive-wrapper-slider'"
+              (onUserValueChange)="userChangeEnd($event, i, data)"
+            ></app-ta-ngx-slider>
           </div>
           <div class="button-wrapper" id="{{ returnButtonId(i) }}">
             <span
@@ -1124,7 +1117,10 @@
       cdkDropList
       class="active-parent-wrapper"
     >
-      <div *ngFor="let item of data; let i = index" class="item-container active-parent">
+      <div
+        *ngFor="let item of data; let i = index"
+        class="item-container active-parent"
+      >
         <div *ngIf="item?.flag === 'on'" class="individual-item">
           <div>
             <div
@@ -1137,7 +1133,7 @@
               class="value-container"
               id="{{ returnValueId(i) }}"
             >
-              <span cdkDragHandle style="cursor: grab;">
+              <span cdkDragHandle style="cursor: grab">
                 {{ formatTime(item.start, item.end) }}
               </span>
             </div>

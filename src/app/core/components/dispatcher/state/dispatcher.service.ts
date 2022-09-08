@@ -1,7 +1,7 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
 import { CreateDispatchCommand, DispatchService, ReorderDispatchesCommand, UpdateDispatchCommand } from 'appcoretruckassist';
-import { flatMap, delay, debounce, of, interval } from 'rxjs';
+import { flatMap, delay, debounce, of, interval, filter } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: "root" })
@@ -54,13 +54,21 @@ export class DispatcherStoreService {
         return this.dispatchService.apiDispatchPut(updateData)
         .pipe(
             flatMap(params => {
-                return this.getDispatchBoardRowById(updateData.id)
+                return this.getDispatchBoardRowById(updateData.id).pipe(
+                    flatMap((response) => {
+                        if(!response.truck && !response.trailer && !response.driver){
+                             return this.deleteDispatchboard(response.id);
+                        }
+
+                        return of(response);
+                    })
+                )
             })
         ).pipe(
             delay(300),
             map(res => {
-                console.log("IS THIS OK RES", res);
-                this.dispatchBoardItem = {id: dispatch_id, item: res};
+                if( res.id ) this.dispatchBoardItem = {id: dispatch_id, item: res};
+                else this.dispatchBoardItem = {id: dispatch_id, item: {id: updateData.id}};
             })
         )
     }
@@ -81,8 +89,9 @@ export class DispatcherStoreService {
                                     findedItem = true;
                                     data = {...boardData.item};
                                 }
+
                                 return data;
-                            });
+                            }).filter(data => data.truck || data.trailer || data.driver);
 
                             if( !findedItem ) {
                                 item.dispatches.push({...boardData.item});

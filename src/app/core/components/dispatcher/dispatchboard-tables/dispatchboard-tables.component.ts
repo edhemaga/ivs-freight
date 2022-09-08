@@ -57,7 +57,7 @@ import { catchError, of } from 'rxjs';
       transition('empty => filled', [animate('0.3s 0s ease-out')]),
       transition('filled => empty', [animate('0.3s 0s ease-out')]),
       transition('empty => void', [animate('0.3s 0s ease-out')]),
-      transition('filled => void', [animate('0.3s 0s ease-out')])
+      transition('filled => void', [animate('0.3s 0s ease-out')]),
     ]),
     trigger('pickupAnimation', [
       transition(':enter', [
@@ -107,18 +107,18 @@ import { catchError, of } from 'rxjs';
 export class DispatchboardTablesComponent implements OnInit {
   dData: DispatchBoardLocalResponse = {};
 
-  checkForEmpty: string = "";
+  checkForEmpty: string = '';
 
   @Input() set _dData(value) {
-    value.dispatches = value.dispatches.map(item => {
-      if( !item.hoursOfService ){
-        item.hoursOfService = {
-          hos: []
-        }
-      }
-      
+    value.dispatches = value.dispatches.map((item) => {
+      // if( !item.hoursOfService ){
+      //   item.hoursOfService = {
+      //     hos: []
+      //   }
+      // }
+
       return item;
-    })
+    });
     this.dData = value;
   }
 
@@ -198,7 +198,10 @@ export class DispatchboardTablesComponent implements OnInit {
 
   savedTruckId: any;
 
-  constructor(private dss: DispatcherStoreService, private chd: ChangeDetectorRef) {}
+  constructor(
+    private dss: DispatcherStoreService,
+    private chd: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     console.log('WHat is date', this.dData);
@@ -206,11 +209,12 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addTruck(e) {
     if (e) {
-      if( this.truckSelectOpened == -2 ) this.savedTruckId = e;
+      if (this.truckSelectOpened == -2) this.savedTruckId = e;
       else this.dData.dispatches[this.truckSelectOpened].truck = e;
       this.showAddAddressField = this.truckSelectOpened;
     }
 
+    this.selectTruck.reset();
     this.truckSelectOpened = -1;
   }
 
@@ -222,6 +226,7 @@ export class DispatchboardTablesComponent implements OnInit {
         this.showAddAddressField
       );
 
+      this.selectTruck.reset();
       this.showAddAddressField = -1;
     }
   }
@@ -241,11 +246,16 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addTrailer(e) {
     console.log(e);
-    this.updateOrAddDispatchBoardAndSend(
-      'trailerId',
-      e.id,
-      this.trailerSelectOpened
-    );
+
+    if (e) {
+      this.updateOrAddDispatchBoardAndSend(
+        'trailerId',
+        e.id,
+        this.trailerSelectOpened
+      );
+    }
+
+    this.selectTruck.reset();
     this.trailerSelectOpened = -1;
   }
 
@@ -281,12 +291,12 @@ export class DispatchboardTablesComponent implements OnInit {
         dispatches: [
           {
             id: this.dData.dispatches[event.currentIndex].id,
-            order: this.dData.dispatches[event.previousIndex].order
+            order: this.dData.dispatches[event.previousIndex].order,
           },
           {
             id: this.dData.dispatches[event.previousIndex].id,
-            order: this.dData.dispatches[event.currentIndex].order
-          }
+            order: this.dData.dispatches[event.currentIndex].order,
+          },
         ],
       })
       .subscribe((res) => {});
@@ -320,24 +330,16 @@ export class DispatchboardTablesComponent implements OnInit {
     document.body.removeChild(el);
   }
 
-  removeTruck(){
-    
+  removeTruck(indx) {
+    this.updateOrAddDispatchBoardAndSend('truckId', null, indx);
+  }
+  
+  removeTrailer(indx) {
+    this.updateOrAddDispatchBoardAndSend('trailerId', null, indx);
   }
 
-  removeTrailer(indx){
-    this.updateOrAddDispatchBoardAndSend(
-      'trailerId',
-      null,
-      indx
-    );
-  }
-
-  removeDriver(indx){
-    this.updateOrAddDispatchBoardAndSend(
-      'driverId',
-      null,
-      indx
-    );
+  removeDriver(indx) {
+    this.updateOrAddDispatchBoardAndSend('driverId', null, indx);
   }
 
   updateOrAddDispatchBoardAndSend(key, value, index) {
@@ -359,8 +361,10 @@ export class DispatchboardTablesComponent implements OnInit {
 
     let newData: any = {
       ...oldUpdateData,
-      [key]: value
+      [key]: value,
     };
+
+    this.selectTruck.reset();
 
     console.log(key);
     console.log(value);
@@ -371,44 +375,50 @@ export class DispatchboardTablesComponent implements OnInit {
     if (oldData.id) {
       newData = {
         id: oldData.id,
-        ...newData
+        ...newData,
       };
 
-      this.dss.updateDispatchBoard(newData, this.dData.id)
-      .pipe(catchError((error) => {
-        this.checkEmptySet = "";
-        return of([])
-      }))
-      .subscribe((data) => {
-        this.checkEmptySet = "";
-      });
+      if( !value && key == "truckId" ) newData.location = null;
+
+      this.dss
+        .updateDispatchBoard(newData, this.dData.id)
+        .pipe(
+          catchError((error) => {
+            this.checkEmptySet = '';
+            return of([]);
+          })
+        )
+        .subscribe((data) => {
+          this.checkEmptySet = '';
+        });
     } else {
       newData.dispatchBoardId = this.dData.id;
-      
-      if( key == "location" ) newData.truckId = this.savedTruckId.id;
 
-      this.dss.createDispatchBoard(newData, this.dData.id)
-      .pipe(catchError((error) => {
-        this.checkEmptySet = "";
-        return of([])
-      }))
-      .subscribe((data) => {
-        this.checkEmptySet = "";
-      });
+      if (key == 'location') newData.truckId = this.savedTruckId.id;
+
+      this.dss
+        .createDispatchBoard(newData, this.dData.id)
+        .pipe(
+          catchError((error) => {
+            this.checkEmptySet = '';
+            return of([]);
+          })
+        )
+        .subscribe((data) => {
+          this.checkEmptySet = '';
+        });
     }
     // console.log("HELOOOOO", newData);
   }
 
-  set checkEmptySet(value){
+  set checkEmptySet(value) {
     setTimeout(() => {
       this.checkForEmpty = value;
       this.chd.detectChanges();
     }, 300);
   }
 
-
   toggleHos(tooltip: any, data: any, id: number) {
-  
     this.hosHelper.hos = [];
     if (data === null || data.hos.length === 0) {
       data = {
@@ -453,7 +463,6 @@ export class DispatchboardTablesComponent implements OnInit {
     });
     return tempArr;
   }
-
 
   dropHosList(event: any, data: any, id: number) {
     const dragEl: any = event.previousContainer.data[event.previousIndex];
@@ -603,12 +612,12 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   returnValueId(i) {
-    console.log("HOS RETURN VALUE ID");
+    console.log('HOS RETURN VALUE ID');
     return 'valueSpan_' + i;
   }
 
   formatTime(minValue, maxValue) {
-    console.log("HOS RETURN VALUE formatTime");
+    console.log('HOS RETURN VALUE formatTime');
     const minutes = maxValue - minValue;
     const m = minutes % 60;
     const h = (minutes - m) / 60;
