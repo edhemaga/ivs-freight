@@ -9,6 +9,14 @@ import {
   getLoadTemplateColumnDefinition,
 } from '../../../../../assets/utils/settings/load-columns';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
+import { LoadClosedQuery } from '../state/load-closed-state/load-closed.query';
+import { LoadPandinQuery } from '../state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '../state/load-template-state/load-template.query';
+import { LoadActiveState } from '../state/load-active-state/load-active.store';
+import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
+import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
+import { LoadTemplateState } from '../state/load-template-state/load-template.store';
 
 @Component({
   selector: 'app-load-table',
@@ -17,18 +25,26 @@ import { TruckassistTableService } from '../../../services/truckassist-table/tru
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'active';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  loadActive: LoadActiveState[] = [];
+  loadClosed: LoadClosedState[] = [];
+  loadPanding: LoadPandingState[] = [];
+  loadTemplate: LoadTemplateState[] = [];
 
   constructor(
     private tableService: TruckassistTableService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private loadActiveQuery: LoadActiveQuery,
+    private loadClosedQuery: LoadClosedQuery,
+    private loadPandinQuery: LoadPandinQuery,
+    private loadTemplateQuery: LoadTemplateQuery
   ) {}
 
   // ---------------------------- ngOnInit ------------------------------
@@ -300,12 +316,26 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendLoadData() {
     this.initTableOptions();
 
+    const loadCount = JSON.parse(localStorage.getItem('loadTableCount'));
+
+    const loadTemplateData =
+      this.selectedTab === 'template' ? this.getTabData('template') : [];
+
+    const loadPendingData =
+      this.selectedTab === 'pending' ? this.getTabData('pending') : [];
+
+    const loadActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const repairClosedData =
+      this.selectedTab === 'closed' ? this.getTabData('closed') : [];
+
     this.tableData = [
       {
         title: 'Template',
         field: 'template',
         length: 2,
-        data: this.getDumyData(2),
+        data: loadTemplateData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
@@ -315,7 +345,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         title: 'Pending',
         field: 'pending',
         length: 3,
-        data: this.getDumyData(3),
+        data: loadPendingData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
@@ -325,7 +355,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         title: 'Active',
         field: 'active',
         length: 5,
-        data: this.getDumyData(5),
+        data: loadActiveData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
@@ -333,9 +363,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       },
       {
         title: 'Closed',
-        field: 'inactive',
+        field: 'closed',
         length: 8,
-        data: this.getDumyData(8),
+        data: repairClosedData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
@@ -344,6 +374,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ];
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
+
+    
 
     this.setLoadData(td);
   }
@@ -369,21 +401,51 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     if (td.data) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data) => {
+      let data = [{}];
+
+      for (let i = 0; i < 2; i++) {
+        data.push({});
+      }
+
+      this.viewData = data;
+
+      /* this.viewData = this.viewData.map((data) => {
         data.isSelected = false;
         return data;
-      });
+      }); */
     }
   }
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [{}];
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.loadActive = this.loadActiveQuery.getAll();
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[0]);
+      console.log('Load Active');
+      console.log(this.loadActive);
+
+      return this.loadActive?.length ? this.loadActive : [];
+    } else if (dataType === 'closed') {
+      this.loadClosed = this.loadClosedQuery.getAll();
+
+      console.log('Load Closed');
+      console.log(this.loadClosed);
+
+      return this.loadClosed?.length ? this.loadClosed : [];
+    } else if (dataType === 'pending') {
+      this.loadPanding = this.loadPandinQuery.getAll();
+
+      console.log('Load Pending');
+      console.log(this.loadPanding);
+
+      return this.loadPanding?.length ? this.loadPanding : [];
+    } else if (dataType === 'template') {
+      this.loadTemplate = this.loadTemplateQuery.getAll();
+
+      console.log('Load Template');
+      console.log(this.loadTemplate);
+
+      return this.loadTemplate?.length ? this.loadTemplate : [];
     }
-
-    return data;
   }
 
   // ---------------------------- Table Actions ------------------------------
