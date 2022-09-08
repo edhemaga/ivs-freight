@@ -24,6 +24,8 @@ import {
   UpdateDispatchCommand,
 } from 'appcoretruckassist';
 import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
+import { ChangeDetectorRef } from '@angular/core';
+import { catchError, of } from 'rxjs';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -53,7 +55,9 @@ import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispa
       ),
       transition('void => filled', [animate('0.3s 0s ease-out')]),
       transition('empty => filled', [animate('0.3s 0s ease-out')]),
-      transition('void => filled', [animate('0.3s 0s ease-out')]),
+      transition('filled => empty', [animate('0.3s 0s ease-out')]),
+      transition('empty => void', [animate('0.3s 0s ease-out')]),
+      transition('filled => void', [animate('0.3s 0s ease-out')])
     ]),
     trigger('pickupAnimation', [
       transition(':enter', [
@@ -179,7 +183,9 @@ export class DispatchboardTablesComponent implements OnInit {
 
   showAddAddressField: number = -1;
 
-  constructor(private dss: DispatcherStoreService) {}
+  savedTruckId: any;
+
+  constructor(private dss: DispatcherStoreService, private chd: ChangeDetectorRef) {}
 
   ngOnInit(): void {
     console.log('WHat is date', this.dData);
@@ -187,7 +193,8 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addTruck(e) {
     if (e) {
-      this.dData.dispatches[this.truckSelectOpened].truck = e;
+      if( this.truckSelectOpened == -2 ) this.savedTruckId = e;
+      else this.dData.dispatches[this.truckSelectOpened].truck = e;
       this.showAddAddressField = this.truckSelectOpened;
     }
 
@@ -207,7 +214,6 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addDriver(e) {
-    console.log(e);
     this.updateOrAddDispatchBoardAndSend(
       'driverId',
       e.id,
@@ -301,9 +307,29 @@ export class DispatchboardTablesComponent implements OnInit {
     document.body.removeChild(el);
   }
 
+  removeTruck(){
+    
+  }
+
+  removeTrailer(indx){
+    this.updateOrAddDispatchBoardAndSend(
+      'trailerId',
+      null,
+      indx
+    );
+  }
+
+  removeDriver(indx){
+    this.updateOrAddDispatchBoardAndSend(
+      'driverId',
+      null,
+      indx
+    );
+  }
+
   updateOrAddDispatchBoardAndSend(key, value, index) {
     const oldData = this.dData.dispatches[index]
-      ? this.dData.dispatches[index]
+      ? JSON.parse(JSON.stringify(this.dData.dispatches[index]))
       : {};
 
     const dataId = oldData.id;
@@ -335,20 +361,35 @@ export class DispatchboardTablesComponent implements OnInit {
         ...newData
       };
 
-      this.dss.updateDispatchBoard(newData, this.dData.id).subscribe((data) => {
-        setTimeout(() => {
-          this.checkForEmpty = "";
-        }, 300);
+      this.dss.updateDispatchBoard(newData, this.dData.id)
+      .pipe(catchError((error) => {
+        this.checkEmptySet = "";
+        return of([])
+      }))
+      .subscribe((data) => {
+        this.checkEmptySet = "";
       });
     } else {
       newData.dispatchBoardId = this.dData.id;
+      
+      if( key == "location" ) newData.truckId = this.savedTruckId.id;
 
-      this.dss.createDispatchBoard(newData, this.dData.id).subscribe((data) => {
-        setTimeout(() => {
-          this.checkForEmpty = "";
-        }, 300);
+      this.dss.createDispatchBoard(newData, this.dData.id)
+      .pipe(catchError((error) => {
+        this.checkEmptySet = "";
+        return of([])
+      }))
+      .subscribe((data) => {
+        this.checkEmptySet = "";
       });
     }
     // console.log("HELOOOOO", newData);
+  }
+
+  set checkEmptySet(value){
+    setTimeout(() => {
+      this.checkForEmpty = value;
+      this.chd.detectChanges();
+    }, 300);
   }
 }

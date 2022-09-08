@@ -1,8 +1,9 @@
 .profile-image-holder {
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
+  height: 100%;
 
   .small-medium-holder {
     display: flex;

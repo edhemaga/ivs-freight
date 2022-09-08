@@ -81,7 +81,7 @@
                       class="dispatcher-close cursor-pointer"
                     >
                       <svg-icon
-                        (click)="updateTruck(undefined, item.truck)"
+                        (click)="removeTruck(rowIndex)"
                         src="assets/svg/dispatchboard/close.svg"
                       >
                       </svg-icon>
@@ -185,7 +185,7 @@
                       class="dispatcher-close cursor-pointer"
                     >
                       <svg-icon
-                        (click)="updateTrailer(undefined, item.trailer)"
+                        (click)="removeTrailer(rowIndex)"
                         src="assets/svg/dispatchboard/close.svg"
                       >
                       </svg-icon>
@@ -280,7 +280,7 @@
                       class="dispatcher-close cursor-pointer"
                     >
                       <svg-icon
-                        (click)="updateDriver(undefined, item)"
+                        (click)="removeDriver(rowIndex)"
                         src="assets/svg/dispatchboard/close.svg"
                       >
                       </svg-icon>
@@ -405,30 +405,6 @@
             </div>
           </td>
           <td class="location-field">
-            <!-- <div
-              #t2="ngbPopover"
-              *ngIf="item.enterNewAddress"
-              [ngbPopover]="pacContainer"
-              [placement]="['bottom', 'top']"
-              autoClose="outside"
-              class="form-label-group input-icon table-address-field address-field-wrapper"
-              triggers="manual"
-            >
-              <input
-                #newLocationField
-                #placesRef="ngx-places"
-                (blur)="locationChangeBlur(rowIndex)"
-                (focus)="showPacContainer($event)"
-                (onAddressChange)="handleAddressChange($event)"
-                [(ngModel)]="stopLocationAddress"
-                [options]="addressOption"
-                appInputFocus
-                class="form-control input-control required"
-                ngx-google-places-autocomplete
-                placeholder="Address, City, State Zip"
-                required
-              />
-            </div> -->
             <app-ta-input-address
               *ngIf="showAddAddressField == rowIndex"
               [formControl]="truckAddress"
@@ -450,7 +426,10 @@
               [activeAddress]="selectedAddress"
               (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
             ></app-ta-input-address>
-            <div class="full-loc-hold" [class.empty-box-field]="!item.location.address">
+            <div class="full-loc-hold" 
+              *ngIf="showAddAddressField != rowIndex"
+              [@boxAnimation]="checkForEmpty == 'location' ? (!item.location.address ? 'void' : 'filled') : 'empty'"
+              [class.empty-box-field]="!item.location.address">
               <span
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="full_location_name"
@@ -582,16 +561,24 @@
           <td class="empty-field">
             <div
               class="initials_wrapper_main_hold"
-              [class.empty-box-field]="true"
+              [class.empty-box-field]="!item.driver"
             >
-              <div
+
+            <app-profile-images
+              *ngIf="item.driver"
+              [indx]="index"
+              [name]="(item.driver.firstName + ' ' + item.driver.lastName)"
+              [size]="'small'"
+              [type]="'user'"
+            >
+
+            </app-profile-images>
+
+
+            <!-- (item.driver.firstName + ' ' + item.driver.lastName) -->
+              <!-- <div
                 (mouseleave)="showAvatar[rowIndex] = false"
                 (mouseover)="showAvatar[rowIndex] = true"
-                *ngIf="
-                  item.pickupJson &&
-                  item.dispatcherId !== undefined &&
-                  item.dispatcherId !== null
-                "
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="dispatcher-initials-wrapper innactive_wrapper"
               >
@@ -608,11 +595,15 @@
                       : 'assets/img/svgs/main-avatar.svg'
                   "
                 />
-              </div>
+              </div> -->
+              
             </div>
           </td>
           <td class="note-field">
-            <div class="dispatcher-table-cell-container empty-box-field">
+            <div class="dispatcher-table-cell-container"
+            [class.empty-box-field]="!item.note"
+            [@boxAnimation]="checkForEmpty == 'note' ? (!item.note ? 'void' : 'filled') : 'empty'"
+            >
               <!-- <div class="dispatcher-table-cell-holder">7532</div> -->
               <app-ta-note
                   [note]="item.note"
@@ -861,7 +852,29 @@
             <div class="phone-em-hold empty-box-field"></div>
           </td>
           <td class="location-field">
-            <div class="full-loc-hold empty-box-field"></div>
+            <div class="full-loc-hold empty-box-field">
+              <app-ta-input-address
+                *ngIf="showAddAddressField == -2"
+                [formControl]="truckAddress"
+                [inputConfig]="{
+                  name: 'Address',
+                  type: 'text',
+                  label: 'Truck Address',
+                  isRequired: true,
+                  placeholderIcon: 'address',
+                  textTransform: 'capitalize',
+                  incorrectInput: selectedMode === 'REVIEW_MODE',
+                  minLength: 12,
+                  maxLength: 256,
+                  autoFocus: true,
+                  placeholderInsteadOfLabel: true
+                }"
+                [incorrectValue]="false"
+                (incorrectEvent)="incorrectInput($event, 0, 18)"
+                [activeAddress]="selectedAddress"
+                (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
+              ></app-ta-input-address>
+            </div>
           </td>
           <td class="status-field">
             <div class="dispatcher-table-cell-container empty-box-field"></div>

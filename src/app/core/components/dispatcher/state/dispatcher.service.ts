@@ -53,6 +53,7 @@ export class DispatcherStoreService {
                 return this.getDispatchBoardRowById(updateData.id)
             })
         ).pipe(
+            delay(300),
             map(res => {
                 console.log("IS THIS OK RES", res);
                 this.dispatchBoardItem = {id: dispatch_id, item: res};
