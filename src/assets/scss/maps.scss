@@ -120,10 +120,12 @@
         }
         
         .marker-expanded-view {
+            overflow: hidden;
+            opacity: 1;
+
             transition: height 0.15s ease-in-out;
 
             &.unopened{
-                height: 0px;
                 transition: height 0.15s ease-in-out;
             }
         }

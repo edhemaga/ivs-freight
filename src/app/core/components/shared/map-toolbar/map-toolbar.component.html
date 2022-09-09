@@ -440,12 +440,23 @@
           type: 'text',
           label: 'Truck Unit',
           isDropdown: true,
-          dropdownWidthClass: 'w-col-280 truck-trailer-dropdown'
+          dropdownWidthClass: 'w-col-280 truck-trailer-dropdown',
+          dropdownImageInput: {
+            withText: true,
+            url: selectedTruckType?.logoName,
+            template: 'truck',
+            class: selectedTruckType?.class
+              ?.trim()
+              .replace(' ', '')
+              .toLowerCase()
+          },
+          customClass: 'truck-trailer-dropdown'
         }"
         [options]="truckType"
         [activeItem]="selectedTruckType"
         (selectedItem)="onSelectDropdown($event, 'truck')"
       ></app-ta-input-dropdown>
+
     </div>
 
     <div class="map-settings-divider"></div>
@@ -469,7 +480,12 @@
         ></svg-icon>
       </div>
 
-      <div class="duration-time-input" *ngIf="routeForm.get('duration').value && !hideDuration">
+      <!-- <div class="duration-time-input" *ngIf="routeForm.get('duration').value && !hideDuration">
+        [@showHideCardBody]="routeForm.get('duration').value && !hideDuration ? true : false" -->
+      <div 
+        class="duration-time-input"
+        [ngClass]="{ 'hidden-input': !routeForm.get('duration').value || hideDuration }"
+      >
         <app-ta-input
           formControlName="durationTime"
           [inputConfig]="{
@@ -505,7 +521,10 @@
         ></svg-icon>
       </div>
 
-      <div class="duration-time-input" *ngIf="routeForm.get('fuelCost').value && !hideFuelCost">
+      <div 
+        class="duration-time-input" 
+        [ngClass]="{ 'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost }"
+      >
         <app-ta-input
           formControlName="fuelMpg"
           [inputConfig]="{
@@ -520,7 +539,7 @@
       </div>
       <div
         class="duration-time-input mg-top-32"
-        *ngIf="routeForm.get('fuelCost').value && !hideFuelCost"
+        [ngClass]="{ 'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost }"
       >
         <app-ta-input
           formControlName="fuelPrice"

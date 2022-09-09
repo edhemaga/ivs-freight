@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { input_dropdown_animation } from '../ta-input-dropdown/ta-input-dropdown.animation';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-map-marker-dropdown',
   templateUrl: './map-marker-dropdown.component.html',
   styleUrls: ['./map-marker-dropdown.component.scss'],
-  animations: [input_dropdown_animation('showHideDrop')]
+  animations: [card_component_animation('showHideCardBody')]
 })
 export class MapMarkerDropdownComponent implements OnInit {
   

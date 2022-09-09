@@ -10,6 +10,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MapsAPILoader } from '@agm/core';
 import * as AppConst from 'src/app/const';
 import { MapsService } from '../../../services/shared/maps.service';
+import { UpdatedData } from '../model/shared/enums';
 
 @Component({
   selector: 'app-maps',
@@ -17,7 +18,26 @@ import { MapsService } from '../../../services/shared/maps.service';
   styleUrls: ['./maps.component.scss', '../../../../../assets/scss/maps.scss'],
 })
 export class MapsComponent implements OnInit {
-  @Input() viewData: any[] = [];
+  viewData = [];
+  @Input() set _viewData(value) {
+    var updatedData = false;
+
+    this.viewData = value;
+
+    this.viewData.map((data) => {
+      if ( data.actionAnimation == 'update' || data.actionAnimation == 'add' ) {
+        this.markerAnimations[data.id] = false;
+        this.showMarkerWindow[data.id] = false;
+        updatedData = true;
+      }
+    });
+
+    if ( updatedData ) {
+      setTimeout(() => {
+        this.markersDropAnimation();
+      }, 1000);
+    }
+  }
   @Input() mapType: string = 'shipper';
   @Input() dropdownActions: any[] = [];
   @Output() callDropDownAction: EventEmitter<any> = new EventEmitter();
@@ -99,8 +119,14 @@ export class MapsComponent implements OnInit {
 
         if (data.isSelected) {
           this.markerSelected = true;
-          this.mapLatitude = data.latitude;
-          this.mapLongitude = data.longitude;
+
+          if ( this.mapLatitude == data.latitude && this.mapLongitude == data.longitude ) {
+            this.mapLatitude = data.latitude+0.000001;
+            this.mapLongitude = data.longitude+0.000001;
+          } else {
+            this.mapLatitude = data.latitude;
+            this.mapLongitude = data.longitude;
+          }
         } else {
           this.markerSelected = false;
         }
@@ -172,6 +198,7 @@ export class MapsComponent implements OnInit {
     this.viewData.map((data: any, index) => {
       if (data.isSelected) {
         data.isSelected = false;
+        data.isExpanded = false;
       }
     });
 

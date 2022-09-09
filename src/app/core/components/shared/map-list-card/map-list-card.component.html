@@ -24,9 +24,10 @@
             [ngClass]="item?.isSelected ? 'table-dropdown-container active-drop' : 'table-dropdown-container'">
             <app-details-page-dropdown
               [options]="dropdownActions"
-              [placement]="'bottom-right'"
+              [placement]="'right-top'"
               [hasVericalDots]="true"
               [id]="item?.id"
+              [customClassDropDown]="'map-list-card-dropdown'"
               (dropDownActions)="callBodyAction($event)"
             ></app-details-page-dropdown>
           </div>

@@ -275,9 +275,7 @@
           </span>
       </div>
     </div>
-    <div class="marker-expanded-view unopened" 
-    [class.unopened]="item?.isExpanded === undefined"
-    [@showHideDrop]="item?.isExpanded">
+    <div [@showHideCardBody]="item?.isExpanded ? true : false">
       <div class="marker-divider"></div>
       <div *ngIf="type == 'shipper' && (item?.shippingFrom && item?.shippingTo) || (item?.receivingFrom && item?.receivingTo)">
         <div class="marker-info-container-all">
@@ -298,7 +296,14 @@
       <div *ngIf="type == 'repairShop' && item?.openHours">
         <div class="marker-info-container-all">
           <div class="marker-title">Working Hours</div>
-          <div class="marker-expanded-info-container">
+          <div 
+            class="marker-expanded-info-container" 
+            [ngStyle]="{ 
+              'height': showAllDays ? '88px' : '44px',
+              'transition': 'all 0.2s ease-in-out',
+              'overflow': 'hidden'
+            }"
+          >
             <div class="marker-dual-info-container mg-bottom-8" *ngIf="!showAllDays">
               <div class="marker-like-text marker-bold-text mg-bottom-4">{{ item?.openHoursToday == 'Closed' ? 'Today' : 'Open Now' }}</div>
               <div class="marker-info-text">{{ item?.openHoursToday }}</div>
@@ -308,12 +313,16 @@
               <div class="marker-info-text" *ngIf="item.openHours[1].startTime">{{ item.openHours[1].startTime }} - {{ item.openHours[1].endTime }}</div>
               <div class="marker-info-text" *ngIf="!item.openHours[1].startTime">Closed</div>
             </div>
-            <div class="marker-dual-info-container mg-bottom-8" *ngIf="showAllDays">
+            <div class="marker-dual-info-container mg-bottom-8" [ngStyle]="{ 
+              'display': showAllDays ? 'inline-block' : 'none'
+            }">
               <div class="marker-like-text marker-bold-text mg-bottom-4">Saturday</div>
               <div class="marker-info-text" *ngIf="item.openHours[6].startTime">{{ item.openHours[6].startTime }} - {{ item.openHours[6].endTime }}</div>
               <div class="marker-info-text" *ngIf="!item.openHours[6].startTime">Closed</div>
             </div>
-            <div class="marker-dual-info-container mg-bottom-8" *ngIf="showAllDays">
+            <div class="marker-dual-info-container mg-bottom-8" [ngStyle]="{ 
+              'display': showAllDays ? 'inline-block' : 'none'
+            }">
               <div class="marker-like-text marker-bold-text mg-bottom-4">Sunday</div>
               <div class="marker-info-text" *ngIf="item.openHours[0].startTime">{{ item.openHours[0].startTime }} - {{ item.openHours[0].endTime }}</div>
               <div class="marker-info-text" *ngIf="!item.openHours[0].startTime">Closed</div>
@@ -323,7 +332,7 @@
               <div class="marker-date-holder pointer" (click)="toggleWorkingHours()">
                 <svg-icon
                   src="assets/svg/common/ic_date.svg"
-                  class="date-svg"
+                  class="date-svg d-flex"
                   [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
                 ></svg-icon>
                 <div class="marker-info-text">{{ showAllDays ? 'Show today' : 'Show all days' }}</div>

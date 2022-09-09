@@ -13,6 +13,9 @@ import {
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { TaInputService } from '../../shared/ta-input/ta-input.service';
+import { TruckTService } from '../../truck/state/truck.service';
+import { TruckListResponse } from 'appcoretruckassist';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
 
 @Component({
   selector: 'app-map-toolbar',
@@ -20,6 +23,7 @@ import { TaInputService } from '../../shared/ta-input/ta-input.service';
   styleUrls: [
     './map-toolbar.component.scss',
   ],
+  animations: [card_component_animation('showHideCardBody')]
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -197,11 +201,13 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   hideFuelCost: boolean = false;
   hideDuration: boolean = false;
+  truckList: any[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private truckService: TruckTService,
   ) {}
 
   ngOnInit(): void {
@@ -210,6 +216,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     this.onIncludeDuration();
     this.onIncludeFuelCost();
+    this.getTrucks();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -455,7 +462,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   onShowKeyboardShortcutsPopover(keyboardPopup: any) {
     this.keyboardPopup = keyboardPopup;
-    console.log('keyboardPopup', keyboardPopup);
 
     if (keyboardPopup.isOpen()) {
       keyboardPopup.close();
@@ -469,7 +475,6 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.keyboardPopupOpen = keyboardPopup.isOpen();
-    console.log('keyboardPopupOpen', this.keyboardPopupOpen);
   }
 
   public onTabChange(event: any, type: string): void {
@@ -491,7 +496,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   public onSelectDropdown(event: any, action: string, index?: number) {
-    console.log('onSelectDropdown', event, action);
+    this.selectedTruckType = event;
   }
 
   onIncludeDuration() {
@@ -684,5 +689,26 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
   toggleStopPicker() {
     this.stopPickerActive = !this.stopPickerActive;
+  }
+
+  getTrucks() {
+    this.truckService.getTruckList(1, 1, 25)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((trucks: TruckListResponse) => {
+        this.truckList = trucks.pagination.data;
+        this.truckType = [];
+
+        this.truckList.map((truck) => {
+          this.truckType.push({
+              id: truck.id,
+              name: truck.truckNumber,
+              class: truck.truckType.name,
+              folder: 'common',
+              logoName: 'assets/svg/common/trucks/'+truck.truckType.logoName,
+              subFolder: 'trucks',
+              color: truck.color.code
+          });
+        });
+      });
   }
 }

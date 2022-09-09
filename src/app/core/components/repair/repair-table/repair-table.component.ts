@@ -892,4 +892,9 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     this.resizeObserver.unobserve(document.querySelector('.table-container'));
     this.resizeObserver.disconnect();
   }
+
+  // MAP
+  selectItem(id: any) {
+    this.mapsComponent.clickedMarker(id);
+  }
 }

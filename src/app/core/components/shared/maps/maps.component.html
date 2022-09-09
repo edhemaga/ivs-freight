@@ -43,7 +43,7 @@
             [longitude]="latlong.longitude"
             [agmFitBounds]="true" 
             [animation]="'DROP'" 
-            [visible]="!showMarkerWindow[latlong.id]"
+            [visible]="!showMarkerWindow[latlong.id] && !latlong.actionAnimation"
             [iconUrl]="{
             url: 
                 latlong?.isSelected && latlong?.status == 2 ? 'assets/svg/common/ic_marker_closed_big.svg' :
