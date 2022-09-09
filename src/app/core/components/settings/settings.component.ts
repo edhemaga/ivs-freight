@@ -1,4 +1,5 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings-factoring',
@@ -6,4 +7,6 @@ import { Component, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./settings.global.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class SettingsComponent {}
+export class SettingsComponent {
+  constructor(public router: Router) {}
+}

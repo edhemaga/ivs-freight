@@ -28,7 +28,11 @@
       (click)="onSelectTab(data)"
     >
       <div class="tab">
-        <div class="data-count">{{ data.length }}</div>
+        <div class="data-count" *ngIf="!data.hideDataCount">{{ data.length }}</div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+          [src]="data.iconLink"
+        ></svg-icon>
         <div class="tab-title">{{ data.title }}</div>
       </div>
     </div>
@@ -36,9 +40,11 @@
 
   <!-- TABLE FILTERS AND OTHER -->
   <div class="table-filter-and-other-container">
-
     <!-- TOTAL MONEY COUNT -->
-    <div class="money-count-container" *ngIf="options.toolbarActions.showMoneyCount">
+    <div
+      class="money-count-container"
+      *ngIf="options.toolbarActions.showMoneyCount"
+    >
       Nije Povezano
     </div>
 

@@ -1,5 +1,5 @@
 <div class="settings">
-  <div class="settings-col-1">
+  <div class="settings-col-1" *ngIf="router.url !== '/settings/user'">
     <app-settings-toolbar></app-settings-toolbar>
   </div>
   <div class="settings-col-2">

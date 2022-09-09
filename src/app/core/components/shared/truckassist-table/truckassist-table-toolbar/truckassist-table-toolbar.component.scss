@@ -71,12 +71,20 @@
         border-radius: 3px;
         padding: 2px;
         display: flex;
+        align-items: center;
+
+        svg-icon{
+          display: flex;
+          align-items: center;
+          margin: 0px 6px 0px 2px;
+        }
 
         .data-count,
         .tab-title {
           font-size: 14px;
           font-weight: 800;
           color: #919191;
+          justify-content: center;
         }
 
         .data-count {
@@ -288,6 +296,14 @@
 .tab-active {
   background: #919191 !important;
   transition: 0.25s;
+
+  svg-icon{
+    svg{
+      path{
+        fill: #EEEEEE;
+      }
+    }
+  }
 
   .data-count,
   .tab-title {
