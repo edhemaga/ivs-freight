@@ -330,21 +330,6 @@
                       >
                       </app-ta-user-review>
                       <div
-                        class="user_avatar"
-                        *ngIf="
-                          !newComment ||
-                          (i != currentHoldIndex && j != currentChildIndex)
-                        "
-                      >
-                        <app-profile-images
-                          [indx]="0"
-                          [size]="'small'"
-                          [type]="'user'"
-                          [name]="companyUser.firstName + ' ' + companyUser.lastName"
-                        >
-                        </app-profile-images>
-                      </div>
-                      <div
                         class="add_comment_text"
                         *ngIf="
                           !newComment ||
