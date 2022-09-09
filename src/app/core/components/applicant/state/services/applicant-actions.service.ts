@@ -9,6 +9,12 @@ import {
   AcceptApplicationCommand,
   ApplicantResponse,
   UpdatePersonalInfoCommand,
+  CreateSevenDaysHosCommand,
+  CreateDrugAndAlcoholCommand,
+  UpdateDriverRightsCommand,
+  CreateDisclosureReleaseCommand,
+  CreateAuthorizationCommand,
+  CreateResponse,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -47,5 +53,35 @@ export class ApplicantActionsService {
     data: UpdatePersonalInfoCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantPersonalPut(data);
+  }
+
+  public updateSevenDaysHos(
+    data: CreateSevenDaysHosCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantSevendayshosPost(data);
+  }
+
+  public updateDrugAndAlcohol(
+    data: CreateDrugAndAlcoholCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDrugandalcoholPost(data);
+  }
+
+  public updateDriverRights(
+    data: UpdateDriverRightsCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDriverrightsPut(data);
+  }
+
+  public updateDisclosureAndRelease(
+    data: CreateDisclosureReleaseCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantDisclosurereleasePost(data);
+  }
+
+  public updateAuthorization(
+    data: CreateAuthorizationCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantAuthorizationPost(data);
   }
 }

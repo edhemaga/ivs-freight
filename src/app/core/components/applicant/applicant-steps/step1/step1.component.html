@@ -791,32 +791,16 @@
             </div>
           </div>
 
-          <span
-            class="required-note ta-font-semi-bold"
-            *ngIf="
-              personalInfoForm.controls[question.formControlNameExplain]
-                .status !== 'DISABLED' &&
-              !personalInfoForm.controls[question.formControlNameExplain]
-                ?.valid &&
-              personalInfoForm.controls[question.formControlNameExplain]
-                ?.touched &&
-              !personalInfoForm.controls[question.formControlNameExplain]
-            "
-            >Required</span
-          >
-
           <!-- EXPLAIN -->
 
           <div
             class="d-flex explain-container line-container"
-            *ngIf="
-              personalInfoForm.get(question.formControlName)?.value === 'YES'
-            "
+            *ngIf="personalInfoForm.get(question.formControlName)?.value"
             [ngStyle]="{
-              'margin-bottom':
-                personalInfoForm.get(question.formControlName)?.value === 'YES'
-                  ? '20px'
-                  : '0'
+              'margin-bottom': personalInfoForm.get(question.formControlName)
+                ?.value
+                ? '20px'
+                : '0'
             }"
           >
             <div class="w-100">

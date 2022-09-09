@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -11,6 +14,10 @@ import {
   Education,
   ContactModel,
 } from '../../state/model/education.model';
+import { CreateEducationCommand } from 'appcoretruckassist/model/models';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 @Component({
   selector: 'app-step6',
@@ -18,10 +25,14 @@ import {
   styleUrls: ['./step6.component.scss'],
 })
 export class Step6Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public educationForm: FormGroup;
   public contactForm: FormGroup;
+
+  public applicantId: number;
 
   public contactsArray: ContactModel[] = [];
 
@@ -234,10 +245,21 @@ export class Step6Component implements OnInit, OnDestroy {
 
   /* public editContact: number = -1; */
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -247,14 +269,14 @@ export class Step6Component implements OnInit, OnDestroy {
       specialTraining: [null, Validators.required],
       otherTraining: [null, Validators.required],
       knowledgeOfSafetyRegulations: [null, Validators.required],
-      specialTrainingExplain: [null, Validators.required],
-      otherTrainingExplain: [null, Validators.required],
-      knowledgeOfSafetyRegulationsExplain: [null, Validators.required],
+      specialTrainingExplain: [null],
+      otherTrainingExplain: [null],
+      knowledgeOfSafetyRegulationsExplain: [null],
       driverForCompany: [null, Validators.required],
-      driverForCompanyBeforeExplain: [null, Validators.required],
-      driverForCompanyToExplain: [null, Validators.required],
+      driverForCompanyBeforeExplain: [null],
+      driverForCompanyToExplain: [null],
       unableForJob: [null, Validators.required],
-      unableForJobExplain: [null, Validators.required],
+      unableForJobExplain: [null],
 
       questionReview1: [null],
       questionReview2: [null],
@@ -285,9 +307,45 @@ export class Step6Component implements OnInit, OnDestroy {
     const selectedFormControlName =
       this.questions[selectedCheckbox.index].formControlName;
 
-    this.educationForm
-      .get(selectedFormControlName)
-      .patchValue(selectedCheckbox.label);
+    const selectedExplainFormControlName =
+      this.questions[selectedCheckbox.index].formControlNameExplain;
+
+    if (selectedCheckbox.label === 'YES') {
+      this.educationForm.get(selectedFormControlName).patchValue(true);
+
+      if (selectedCheckbox.index === 3) {
+        this.inputService.changeValidators(
+          this.educationForm.get('driverForCompanyBeforeExplain')
+        );
+
+        this.inputService.changeValidators(
+          this.educationForm.get('driverForCompanyToExplain')
+        );
+      }
+
+      this.inputService.changeValidators(
+        this.educationForm.get(selectedExplainFormControlName)
+      );
+    } else {
+      this.educationForm.get(selectedFormControlName).patchValue(false);
+
+      if (selectedCheckbox.index === 3) {
+        this.inputService.changeValidators(
+          this.educationForm.get('driverForCompanyBeforeExplain'),
+          false
+        );
+
+        this.inputService.changeValidators(
+          this.educationForm.get('driverForCompanyToExplain'),
+          false
+        );
+      }
+
+      this.inputService.changeValidators(
+        this.educationForm.get(selectedExplainFormControlName),
+        false
+      );
+    }
   }
 
   public onSchoolGradeClick(gradeIndex: number): void {
@@ -305,6 +363,10 @@ export class Step6Component implements OnInit, OnDestroy {
     }
 
     this.selectedCollegeGrade = gradeIndex;
+
+    if (this.selectedCollegeGrade) {
+      this.selectedGrade = 11;
+    }
   }
 
   public onDeleteContact(index: number): void {
@@ -430,10 +492,29 @@ export class Step6Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/5`]);
     }
+  }
+
+  public onSubmit(): void {
+    if (this.educationForm.invalid) {
+      this.inputService.markInvalid(this.educationForm);
+      return;
+    }
+
+    const educationForm = this.educationForm.value;
+
+    const saveData: CreateEducationCommand = {
+      highestGrade: this.selectedGrade > -1 ? this.selectedGrade + 1 : -1,
+      collegeGrade:
+        this.selectedCollegeGrade > -1 ? this.selectedCollegeGrade + 1 : -1,
+    };
+
+    console.log(saveData);
   }
 
   /* private formFIlling(): void {
@@ -509,83 +590,6 @@ export class Step6Component implements OnInit, OnDestroy {
               )
             : undefined,
     });
-  } */
-
-  /* public onSubmitForm(): void {
-     this.shared.clearNotifications();
-
-        let isValid = true;
-
-        if (this.knowledgeOfSafetyRegulations === undefined) {
-            this.notification.warning(
-                'Please answer safety regulations.',
-                'Warning:'
-            );
-            isValid = false;
-        }
-
-        if (!this.contactData?.length) {
-            if (!this.shared.markInvalid(this.contactForm)) {
-                isValid = false;
-            }
-
-            if (this.contactData && this.contactData.length < 1) {
-                if (this.shared.markInvalid(this.contactForm)) {
-                    this.onAddContact();
-                } else {
-                    isValid = false;
-                }
-            }
-        }
-
-        if (this.unableForJob === undefined) {
-            this.notification.warning(
-                'Please answer general second question.',
-                'Warning:'
-            );
-            isValid = false;
-        }
-
-        if (this.editContact !== -1) {
-            this.notification.warning('Please save contact.', 'Warning:');
-            isValid = false;
-        }
-
-        if (!isValid) {
-            return false;
-        }
-       const educationForm = this.educationForm.value;
-    const education = new Education(this.educationInfo);
-
-    education.applicantId = this.applicant?.id;
-    education.contacts = this.contactsFormArray;
-
-    education.grade = this.selectedGrade + 1;
-    education.collegeGrade = this.selectedCollegeGrade + 1;
-
-    education.specialTraining = educationForm.specialTraining;
-    education.specialTrainingExplain = educationForm.specialTrainingExplain;
-    education.otherTraining = educationForm.otherTraining;
-    education.otherTrainingExplain = educationForm.otherTrainingExplain;
-    education.knowledgeOfSafetyRegulations =
-      educationForm.knowledgeOfSafetyRegulations;
-    education.knowledgeOfSafetyRegulationsExplain =
-      educationForm.knowledgeOfSafetyRegulationsExplain;
-    education.driverForCompanyBefore = educationForm.driverForCompanyBefore;
-    education.driverForCompanyBeforeExplain =
-      educationForm.driverForCompanyBeforeExplain;
-    education.unableForJob = educationForm.unableForJob;
-
-    education.isCompleted = true;
-
-       this.apppEntityServices.EducationService.upsert(education).subscribe(
-            () => {
-                this.notification.success('Education is updated');
-            },
-            (error: any) => {
-                this.shared.handleError(error);
-            }
-        );
   } */
 
   /* public onSubmitReview(data: any): void {} */

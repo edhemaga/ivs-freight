@@ -4,6 +4,8 @@ import {
 } from './../../../shared/ta-input/ta-input.regex-validations';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
+import { HttpResponseBase } from '@angular/common/http';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
@@ -16,6 +18,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
+import { UpdatePersonalInfoCommand } from 'appcoretruckassist/model/models';
 
 import {
   phoneFaxRegex,
@@ -285,8 +288,9 @@ export class Step1Component implements OnInit, OnDestroy {
 
   constructor(
     private formBuilder: FormBuilder,
-    private applicantListsService: ApplicantListsService,
     private inputService: TaInputService,
+    private router: Router,
+    private applicantListsService: ApplicantListsService,
     private applicantActionsService: ApplicantActionsService
   ) {}
 
@@ -400,13 +404,23 @@ export class Step1Component implements OnInit, OnDestroy {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
+        const selectedExplainFormControlName =
+          this.questions[selectedCheckbox.index].formControlNameExplain;
+
         if (selectedCheckbox.label === 'YES') {
           this.personalInfoForm.get(selectedFormControlName).patchValue(true);
+
+          this.inputService.changeValidators(
+            this.personalInfoForm.get(selectedExplainFormControlName)
+          );
         } else {
           this.personalInfoForm.get(selectedFormControlName).patchValue(false);
-        }
 
-        console.log(this.personalInfoForm.get(selectedFormControlName).value);
+          this.inputService.changeValidators(
+            this.personalInfoForm.get(selectedExplainFormControlName),
+            false
+          );
+        }
 
         break;
       case InputSwitchActions.PREVIOUS_ADDRESS:
@@ -718,12 +732,6 @@ export class Step1Component implements OnInit, OnDestroy {
     }
   }
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmit();
-    }
-  }
-
   public getBanksDropdownList(): void {
     this.applicantListsService
       .getBanksDropdownList()
@@ -731,6 +739,12 @@ export class Step1Component implements OnInit, OnDestroy {
       .subscribe((data) => {
         this.banksDropdownList = data;
       });
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      this.onSubmit();
+    }
   }
 
   public onSubmit(): void {
@@ -770,7 +784,7 @@ export class Step1Component implements OnInit, OnDestroy {
       };
     });
 
-    const saveData = {
+    const saveData: UpdatePersonalInfoCommand = {
       ...personalInfoForm,
       applicantId: this.applicantId,
       doB: convertDateToBackend(dateOfBirth),
@@ -786,132 +800,24 @@ export class Step1Component implements OnInit, OnDestroy {
     };
 
     console.log(saveData);
-  }
 
-  /* public onSubmitForm(): void {
-    const personalInfoForm = this.personalInfoForm.value;
+    /*   this.applicantActionsService
+      .updatePersonalInfo(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: HttpResponseBase) => {
+          if (res.status === 200 || res.status === 204) {
+            this.notification.success('Registration is successful', 'Success');
 
-    // Applicant Data
 
-    const applicant: Applicant = new Applicant(this.applicant);
-
-    applicant.firstName = personalInfoForm.firstName;
-    applicant.lastName = personalInfoForm.lastName;
-    applicant.dateOfBirth = personalInfoForm.dateOfBirth;
-    applicant.phone = personalInfoForm.phone;
-    applicant.email = personalInfoForm.email;
-    applicant.address = personalInfoForm.address;
-    applicant.addressUnit = personalInfoForm.addressUnit;
-
-    // Personal Info Data
-
-    const personalInfo: PersonalInfo = new PersonalInfo(this.personalInfo);
-
-    personalInfo.ssn = personalInfoForm.ssn;
-    personalInfo.legalWork = personalInfoForm.legalWork;
-    personalInfo.anotherName = personalInfoForm.anotherName;
-    personalInfo.inMilitary = personalInfoForm.inMilitary;
-    personalInfo.felony = personalInfoForm.felony;
-    personalInfo.misdemeanor = personalInfoForm.misdemeanor;
-    personalInfo.drunkDriving = personalInfoForm.drunkDriving;
-    personalInfo.legalWorkExplain = personalInfoForm.legalWorkExplain;
-    personalInfo.anotherNameExplain = personalInfoForm.anotherNameExplain;
-    personalInfo.inMilitaryExplain = personalInfoForm.inMilitaryExplain;
-    personalInfo.felonyExplain = personalInfoForm.felonyExplain;
-    personalInfo.misdemeanorExplain = personalInfoForm.misdemeanorExplain;
-    personalInfo.drunkDrivingExplain = personalInfoForm.drunkDrivingExplain;
-
-    personalInfo.isAgreement = personalInfoForm.isAgreement;
-    personalInfo.isCompleted = true;
-
-    // Bank Data
-
-    if (personalInfoForm.bankId) {
-      const bank = new Bank(this.personalInfo?.bank);
-
-      bank.id = personalInfoForm.bankId;
-      bank.name = this.selectedBank.name;
-      bank.accountNumber = personalInfoForm.accountNumber;
-      bank.routingNumber = personalInfoForm.routingNumber;
-
-      personalInfo.bank = bank;
-    } else {
-      personalInfo.bank = undefined;
-    }
-
-    // Previous Addresses Data
-
-    if (personalInfoForm.previousAddresses?.length) {
-      const previousAddresses: IApplicantAddress[] =
-        personalInfoForm.previousAddresses;
-
-      // items for delete
-      personalInfo.previousAddresses = personalInfo?.previousAddresses?.map(
-        (d: IApplicantAddress) => {
-          let temp: IApplicantAddress | undefined = previousAddresses.find(
-            (ad) => ad.id === d.id
-          );
-
-          if (temp) {
-            d = temp;
-            d.IsDeleted = false;
-          } else {
-            d.IsDeleted = true;
+            this.router.navigate([`/application/${this.applicantId}/2`]);
           }
-
-          return d;
-        }
-      );
-
-      // new items
-      for (const address of previousAddresses) {
-        let temp: IApplicantAddress | undefined =
-          personalInfo.previousAddresses?.find(
-            (ad) =>
-              ad.address === address.address &&
-              ad.addressUnit === address.addressUnit
-          );
-
-        if (!temp) {
-          address.id = undefined;
-          address.IsDeleted = false;
-          personalInfo.previousAddresses?.push(address);
-        }
-      }
-    } else {
-      personalInfo.previousAddresses = personalInfo.previousAddresses?.map(
-        (d: IApplicantAddress) => {
-          d.IsDeleted = true;
-          return d;
-        }
-      );
-    }
-
-    // Update Applicant
-    //  if (applicant) {
-    //   this.apppEntityServices.ApplicantService.upsert(applicant).subscribe(
-    //     () => {
-    //       if (personalInfo) {
-    //         personalInfo.applicantId = applicant.id;
-    //         this.apppEntityServices.PersonalInfoService.upsert(
-    //           personalInfo
-    //         ).subscribe(
-    //           () => {
-    //             this.notification.success('Personal Info is updated');
-    //             this.router.navigateByUrl(`/application/${this.applicant?.id}/2`)
-    //           },
-    //           (error) => {
-    //             this.shared.handleError(error);
-    //           }
-    //         );
-    //       }
-    //     },
-    //     (error) => {
-    //       this.shared.handleError(error);
-    //     }
-    //   );
-    // }
-  } */
+        },
+        error: (err) => {
+          this.notification.error(err, 'Error');
+        },
+      }); */
+  }
 
   /* private formFIlling(): void {
     // Redirect to next Step

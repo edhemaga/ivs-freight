@@ -132,12 +132,12 @@
 
           <div
             class="d-flex explain-container line-container"
-            *ngIf="educationForm.get(question.formControlName)?.value === 'YES'"
+            *ngIf="educationForm.get(question.formControlName)?.value"
             [ngStyle]="{
-              'margin-bottom':
-                educationForm.get(question.formControlName)?.value === 'YES'
-                  ? '20px'
-                  : '0'
+              'margin-bottom': educationForm.get(question.formControlName)
+                ?.value
+                ? '20px'
+                : '0'
             }"
           >
             <div class="w-100">
@@ -204,10 +204,9 @@
             trackBy: trackByIdentity
           "
           [ngStyle]="{
-            margin:
-              educationForm.get('driverForCompany').value === 'YES'
-                ? '0 auto'
-                : '0 auto 12px auto'
+            margin: educationForm.get('driverForCompany').value
+              ? '0 auto'
+              : '0 auto 12px auto'
           }"
         >
           <div class="d-flex flex-column align-items-center w-100">
@@ -242,15 +241,14 @@
               class="d-flex"
               *ngIf="i === 0"
               [ngStyle]="{
-                margin:
-                  educationForm.get('driverForCompany').value === 'YES'
-                    ? '22px auto 32px auto'
-                    : '0 auto'
+                margin: educationForm.get('driverForCompany').value
+                  ? '22px auto 32px auto'
+                  : '0 auto'
               }"
             >
               <div
                 class="d-flex line-container"
-                *ngIf="educationForm.get('driverForCompany').value === 'YES'"
+                *ngIf="educationForm.get('driverForCompany').value"
               >
                 <div class="date-group">
                   <app-ta-input
@@ -320,18 +318,15 @@
             <div class="d-flex" *ngIf="i === 1">
               <div
                 class="d-flex"
-                *ngIf="
-                  educationForm.get(question.formControlName).value === 'YES'
-                "
+                *ngIf="educationForm.get(question.formControlName).value"
               >
                 <div
                   class="explain-container line-container"
                   [ngStyle]="{
-                    'margin-bottom':
-                      educationForm.get(question.formControlName)?.value ===
-                      'YES'
-                        ? '20px'
-                        : '0'
+                    'margin-bottom': educationForm.get(question.formControlName)
+                      ?.value
+                      ? '20px'
+                      : '0'
                   }"
                 >
                   <app-ta-input
@@ -597,12 +592,17 @@
   </div>
 </div>
 
+
 <!-- NEXT BTN -->
 
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [filledCorrectly]="educationForm.valid && selectedGrade > -1"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
@@ -610,5 +610,8 @@
 <div
   class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [backStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

@@ -370,7 +370,11 @@
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [filledCorrectly]="sevenDaysHosForm.valid"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
@@ -378,5 +382,8 @@
 <div
   class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn [backStep]="true"></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [backStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

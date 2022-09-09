@@ -29,7 +29,6 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   styleUrls: ['./step6-form.component.scss'],
 })
 export class Step6FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
 
@@ -37,7 +36,9 @@ export class Step6FormComponent implements OnInit, OnDestroy {
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
 
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public subscription: Subscription;
 
