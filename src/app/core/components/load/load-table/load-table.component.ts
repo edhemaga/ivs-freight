@@ -17,11 +17,13 @@ import { LoadActiveState } from '../state/load-active-state/load-active.store';
 import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
 import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
 import { LoadTemplateState } from '../state/load-template-state/load-template.store';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-load-table',
   templateUrl: './load-table.component.html',
   styleUrls: ['./load-table.component.scss'],
+  providers: [TaThousandSeparatorPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -44,7 +46,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private loadActiveQuery: LoadActiveQuery,
     private loadClosedQuery: LoadClosedQuery,
     private loadPandinQuery: LoadPandinQuery,
-    private loadTemplateQuery: LoadTemplateQuery
+    private loadTemplateQuery: LoadTemplateQuery,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   // ---------------------------- ngOnInit ------------------------------
@@ -284,7 +287,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        showMoneyCount: true,
+        hideViewMode: false,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -404,7 +409,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
       console.log('Load Data');
       console.log(this.viewData);
-
     } else {
       this.viewData = [];
     }
@@ -432,17 +436,63 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       loadBroker: {
         hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
         isDnu: data?.broker?.dnu,
-        name: data?.broker?.businessName ? data.broker.businessName : ''
+        name: data?.broker?.businessName ? data.broker.businessName : '',
       },
       loadTruckNumber: {
-        number: data?.dispatch?.truck?.truckNumber ? data.dispatch.truck.truckNumber : '',
-        color: ''
+        number: data?.dispatch?.truck?.truckNumber
+          ? data.dispatch.truck.truckNumber
+          : '',
+        color: '',
       },
       loadTrailerNumber: {
-        number: data?.dispatch?.trailer?.trailerNumber ? data.dispatch.trailer.trailerNumber : '',
-        color: ''
+        number: data?.dispatch?.trailer?.trailerNumber
+          ? data.dispatch.trailer.trailerNumber
+          : '',
+        color: '',
       },
-      textMiles: data?.totalMiles ? data.totalMiles : ''
+      loadPickup: {
+        count: 2,
+        location: 'Morton, MS',
+        date: '05/09/21',
+        time: '5:10PM',
+      },
+      loadDelivery: {
+        count: 'S',
+        location: 'Forest Parl, GA',
+        date: '05/12/21',
+        time: '3:15AM',
+      },
+      loadStatus: {
+        status: 'Active',
+        color: '',
+        time: '5h. 18m. ago'
+      },
+      textMiles: data?.totalMiles ? data.totalMiles : '',
+      textCommodity: data?.generalCommodity?.name
+        ? data.generalCommodity.name
+        : '',
+      textWeight: data?.weight ? data.weight + ' lbs' : '',
+      textBase: data?.baseRate
+        ? '$' + this.thousandSeparator.transform(data.baseRate)
+        : '',
+      textAdditional: 'Nije Povezano',
+      textAdvance: data?.advancePay
+        ? '$' + this.thousandSeparator.transform(data.advancePay)
+        : '',
+      textOutstanding: 'Nije Povezano',
+      textPayTerms: 'Nije Povezano',
+      textDriver:
+        data?.dispatch?.driver?.firstName && data?.dispatch?.driver?.lastName
+          ? data?.dispatch?.driver?.firstName.charAt(0) +
+            '. ' +
+            data?.dispatch?.driver?.lastName
+          : '',
+      textReceiver: 'Nije Povezano',
+      textShipper: 'Nije Povezano',
+      loadComment: {
+        count: data.commentsCount,
+        comments: data.comments
+      }
     };
   }
 

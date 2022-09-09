@@ -73,6 +73,14 @@ table {
               }
             }
           }
+
+          .pickup-delivery-location-container {
+            .date-time-container{
+              .time{
+                visibility: visible !important;
+              }
+            }
+          }
         }
       }
 
@@ -1103,17 +1111,17 @@ table {
               }
             }
 
-            .customer-name-ban{
-              color: #AAAAAA !important;
+            .customer-name-ban {
+              color: #aaaaaa !important;
 
               &::selection {
-                color: #AAAAAA !important;
-                background: #AAAAAA20 !important;
+                color: #aaaaaa !important;
+                background: #aaaaaa20 !important;
               }
             }
 
             // TEXT COLOR COLUMN
-            .text-color{
+            .text-color {
               cursor: pointer;
               font-size: 14px;
               font-weight: 400;
@@ -1127,10 +1135,121 @@ table {
               align-items: center;
               border-radius: 2px;
 
-              &:hover{
+              &:hover {
                 color: white;
                 background: red;
                 transition: 0.25s;
+              }
+            }
+
+            // PICKUP AND DELIVERY COLUMN
+            .pickup-delivery-counter {
+              user-select: none;
+              width: 22px;
+              height: 22px;
+              line-height: 22px;
+              border-radius: 2px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-right: 6px;
+              color: white;
+              font-size: 14px;
+              font-weight: bold;
+            }
+
+            .special-count{
+              font-size: 17px !important;
+              font-weight: bold !important;
+              background: #EFC725;
+            }
+
+            .pickup-count {
+              background: #4db6a2;
+            }
+
+            .delivery-count {
+              background: #e57373;
+            }
+
+            .pickup-delivery-location-container {
+              .location {
+                font-size: 14px;
+                font-weight: 400;
+                color: #6c6c6c;
+                height: 15px;
+                line-height: 15px;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                &::selection {
+                  color: #6c6c6c;
+                  background: #6c6c6c20;
+                }
+              }
+
+              .date-time-container{
+                display: flex;
+                align-items: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                .date, .time{
+                  font-size: 10px;
+                  font-weight: bold;
+                  color: #919191;
+                  height: 11px;
+                  line-height: 11px;
+
+                  &::selection {
+                    color: #919191;
+                    background: #91919120;
+                  }
+                }
+
+                .time{
+                  visibility: hidden;
+                  margin-left: auto;
+                }
+              }
+            }
+
+            // STATUS COLUMN
+            .status-container{
+              cursor: pointer;
+
+              .status, .status-time{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                width: 100%;
+              }
+
+              .status{
+                user-select: none;
+                height: 14px;
+                line-height: 14px;
+                font-size: 11px;
+                font-weight: 900;
+                color: #508F91;
+              }
+
+              .status-time{
+                font-size: 10px;
+                font-weight: bold;
+                color: #919191;
+                height: 12px;
+                line-height: 12px;
+                
+                &::selection {
+                  color: #919191;
+                  background: #91919120;
+                }
               }
             }
 
