@@ -9,16 +9,9 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateUserCommand { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    address?: AddressEntity;
-    password?: string | null;
-    phone?: string | null;
-    avatar?: string | null;
+export interface TrailerAutocompleteModelResponse { 
+    models?: Array<string> | null;
 }
 

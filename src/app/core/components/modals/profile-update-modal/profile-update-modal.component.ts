@@ -265,7 +265,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.profileUserForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
-            mobile: res.mobile,
+            mobile: res.phone,
             email: res.email,
             address: res.address.address,
             addressUnit: res.address.addressUnit,

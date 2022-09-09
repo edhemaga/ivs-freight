@@ -4,24 +4,23 @@ import { LoadListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoadTService } from '../load.service';
-import { LoadActiveState, LoadActiveStore } from './load-active.store';
+import { LoadClosedState, LoadClosedStore } from './load-closed.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoadActiveResolver implements Resolve<LoadActiveState> {
+export class LoadClosedResolver implements Resolve<LoadClosedState> {
   constructor(
     private loadService: LoadTService,
-    private loadActiveStore: LoadActiveStore
+    private loadClosedStore: LoadClosedStore
   ) {}
 
-  resolve(): Observable<LoadActiveState | boolean> {
-    console.log('Poziva se LoadActiveResolver')
-
+  resolve(): Observable<LoadClosedState | boolean> {
+    console.log('Poziva se LoadClosedResolver')
     return this.loadService
       .getLoadList(
         undefined,
-        2,
+        3,
         undefined,
         undefined,
         undefined,
@@ -35,7 +34,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
       )
       .pipe(
         catchError(() => {
-          return of('No load active data...');
+          return of('No load closed data...');
         }),
         tap((loadPagination: LoadListResponse) => {
           localStorage.setItem(
@@ -48,7 +47,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
             })
           );
 
-          this.loadActiveStore.set(loadPagination.pagination.data);
+          this.loadClosedStore.set(loadPagination.pagination.data);
         })
       );
   }

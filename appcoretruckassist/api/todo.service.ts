@@ -23,6 +23,7 @@ import { ProblemDetails } from '../model/models';
 import { TodoListResponse } from '../model/models';
 import { TodoModalResponse } from '../model/models';
 import { TodoResponse } from '../model/models';
+import { TodoStatus } from '../model/models';
 import { UpdateTodoCommand } from '../model/models';
 import { UpdateTodoStatusCommand } from '../model/models';
 
@@ -198,8 +199,11 @@ export class TodoService {
     }
 
     /**
-     * @param title 
      * @param status 
+     * @param companyUserId 
+     * @param departmentId 
+     * @param dateFrom 
+     * @param dateTo 
      * @param pageIndex 
      * @param pageSize 
      * @param companyId 
@@ -210,19 +214,31 @@ export class TodoService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTodoListGet(title?: string, status?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TodoListResponse>;
-    public apiTodoListGet(title?: string, status?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TodoListResponse>>;
-    public apiTodoListGet(title?: string, status?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TodoListResponse>>;
-    public apiTodoListGet(title?: string, status?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<TodoListResponse>;
+    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<TodoListResponse>>;
+    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<TodoListResponse>>;
+    public apiTodoListGet(status?: TodoStatus, companyUserId?: number, departmentId?: number, dateFrom?: string, dateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
-        if (title !== undefined && title !== null) {
-          queryParameters = this.addToHttpParams(queryParameters,
-            <any>title, 'Title');
-        }
         if (status !== undefined && status !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>status, 'Status');
+        }
+        if (companyUserId !== undefined && companyUserId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>companyUserId, 'CompanyUserId');
+        }
+        if (departmentId !== undefined && departmentId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>departmentId, 'DepartmentId');
+        }
+        if (dateFrom !== undefined && dateFrom !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dateFrom, 'DateFrom');
+        }
+        if (dateTo !== undefined && dateTo !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>dateTo, 'DateTo');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           queryParameters = this.addToHttpParams(queryParameters,

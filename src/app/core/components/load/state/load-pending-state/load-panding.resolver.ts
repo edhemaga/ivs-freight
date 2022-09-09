@@ -4,24 +4,24 @@ import { LoadListResponse } from 'appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { LoadTService } from '../load.service';
-import { LoadActiveState, LoadActiveStore } from './load-active.store';
+import { LoadPandingState, LoadPandinStore } from './load-panding.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LoadActiveResolver implements Resolve<LoadActiveState> {
+export class LoadPandingResolver implements Resolve<LoadPandingState> {
   constructor(
     private loadService: LoadTService,
-    private loadActiveStore: LoadActiveStore
+    private loadPandingStore: LoadPandinStore
   ) {}
 
-  resolve(): Observable<LoadActiveState | boolean> {
-    console.log('Poziva se LoadActiveResolver')
+  resolve(): Observable<LoadPandingState | boolean> {
+    console.log('Poziva se LoadPandingResolver')
 
     return this.loadService
       .getLoadList(
         undefined,
-        2,
+        1,
         undefined,
         undefined,
         undefined,
@@ -35,7 +35,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
       )
       .pipe(
         catchError(() => {
-          return of('No load active data...');
+          return of('No load panding data...');
         }),
         tap((loadPagination: LoadListResponse) => {
           localStorage.setItem(
@@ -48,7 +48,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
             })
           );
 
-          this.loadActiveStore.set(loadPagination.pagination.data);
+          this.loadPandingStore.set(loadPagination.pagination.data);
         })
       );
   }

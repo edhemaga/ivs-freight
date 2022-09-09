@@ -9,16 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { AccidentShortResponse } from './accidentShortResponse';
 
 
-export interface UpdateUserCommand { 
-    id?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    address?: AddressEntity;
-    password?: string | null;
-    phone?: string | null;
-    avatar?: string | null;
+export interface AccidentShortResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<AccidentShortResponse> | null;
 }
 
