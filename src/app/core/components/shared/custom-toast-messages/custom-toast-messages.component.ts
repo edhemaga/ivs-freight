@@ -205,6 +205,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.actionType = this.toastrType == 'toast-error' ? 'BROKER FROM DNU LIST' : 'BROKER FROM DNU LIST';
             this.wideMessage = true;
           }
+
+        if ( apiEndPoint.indexOf('ban') > -1 )
+          {
+            this.actionType = this.toastrType == 'toast-error' ? 'BROKER FROM BAN LIST' : 'BROKER FROM BAN LIST';
+            this.wideMessage = true;
+          }  
         
         this.message = this.httpRequest.body?.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
       break;
