@@ -418,18 +418,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (stateName === 'repair_shops') {
       return getRepairsShopColumnDefinition();
     }
-
-    /* if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      if (stateName === 'repair_trucks') {
-        return getRepairTruckColumnDefinition();
-      } else if (stateName === 'repair_trailers') {
-        return getRepairTrailerColumnDefinition();
-      } else if (stateName === 'repair_shops') {
-        return getRepairsShopColumnDefinition();
-      }
-    } */
   }
 
   // Set Repair Data
