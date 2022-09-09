@@ -74,4 +74,9 @@ export class PspAuthorizationComponent implements OnInit {
   public onSignatureAction(event: any): void {
     this.signature = event;
   }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+  }
 }

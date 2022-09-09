@@ -689,6 +689,7 @@ export class CustomerTableComponent
         entityTypeRatingId: this.selectedTab === 'active' ? 1 : 3,
         entityTypeId: event.data.id,
         thumb: event.subType === 'like' ? 1 : -1,
+        tableData: event.data
       };
 
       this.reviewRatingService

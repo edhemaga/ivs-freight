@@ -1,4 +1,4 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .note-container {
   display: block;
@@ -23,11 +23,11 @@
       flex: 1;
     }
 
-    .note_upper_hold{
+    .note_upper_hold {
       display: flex;
       align-items: center;
 
-      .note_tools_container{
+      .note_tools_container {
         margin-right: 7px;
       }
     }
@@ -83,30 +83,20 @@
   .note-body {
     overflow: hidden;
     padding: 0 6px;
-    transition: height 0.3s ease-in-out;
     cursor: text;
 
-    &.unopened {
-      height: 0px;
-      transition: height 0.3s ease-in-out;
-    }
-
-    &.active {
-      max-height: 600px;
-    }
     .note-textarea {
       overflow: auto;
       line-height: 15px;
       min-height: 15px;
-      margin-bottom: 9px;
-      margin-top: 9px;
+      padding-bottom: 12px;
+      padding-top: 9px;
       max-height: 75px;
       font-size: 12px;
 
       width: 100%;
-      padding: 0;
       resize: none;
-      color: #6C6C6C;
+      color: #6c6c6c;
       border: none;
       box-shadow: none;
       outline: none;
@@ -159,21 +149,21 @@
         background: rgb(108, 108, 108, 0.2);
       }
 
-      span{
+      span {
         &::-moz-selection {
           color: $bw6-2 !important;
           background: rgb(108, 108, 108, 0.2) !important;
         }
-  
+
         &::selection {
-          color: $bw6-2  !important;
+          color: $bw6-2 !important;
           background: rgb(108, 108, 108, 0.2) !important;
         }
       }
 
       &:empty:before {
         content: attr(placeholder);
-        color: #AAAAAA;
+        color: #aaaaaa;
       }
     }
   }

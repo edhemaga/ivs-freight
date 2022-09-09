@@ -7,6 +7,7 @@ import {
   CreateTodoCommand,
   TodoModalResponse,
   TodoResponse,
+  TodoStatus,
   UpdateTodoCommand,
   UpdateTodoStatusCommand,
 } from 'appcoretruckassist';
@@ -18,8 +19,11 @@ export class TodoTService {
   constructor(private todoService: TodoService) {}
 
   public getTodoList(
-    title?: string,
-    status?: string,
+    status?: TodoStatus,
+    companyUserId?: number,
+    departmentId?: number,
+    dateFrom?: string,
+    dateTo?: string,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -28,7 +32,8 @@ export class TodoTService {
     search1?: string,
     search2?: string
   ): Observable<TodoListResponse> {
-    return this.todoService.apiTodoListGet(title, status, pageIndex, pageSize);
+   /*  return this.todoService.apiTodoListGet(title, status, pageIndex, pageSize); */
+   return;
   }
 
   public updateTodoItem(

@@ -19,8 +19,6 @@ import {
 export class Step5Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public violationsForm: FormGroup;
   public trafficViolationsForm: FormGroup;
   public notBeenConvictedForm: FormGroup;
@@ -94,11 +92,11 @@ export class Step5Component implements OnInit, OnDestroy {
     },
   ];
 
-  public isEditing: boolean = false;
-
   public selectedViolationIndex: number;
 
   public helperIndex: number = 2;
+
+  public isEditing: boolean = false;
 
   public formValuesToPatch: any;
 
@@ -140,24 +138,18 @@ export class Step5Component implements OnInit, OnDestroy {
     {},
   ];
 
-  //
+  /* public applicant: Applicant | undefined; */
 
   /* public violationFormArray: Violation[] = []; */
 
-  public violationInfo: ViolationInfo | undefined;
+  /* public violationInfo: ViolationInfo | undefined; */
 
-  public editViolation: number = -1;
+  /* public editViolation: number = -1; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -193,7 +185,7 @@ export class Step5Component implements OnInit, OnDestroy {
     });
   }
 
-  public handleCheckboxParagraphClick(type: string) {
+  public handleCheckboxParagraphClick(type: string): void {
     if (this.selectedMode === 'FEEDBACK_MODE') {
       return;
     }
@@ -226,11 +218,10 @@ export class Step5Component implements OnInit, OnDestroy {
     }
 
     this.helperIndex = index;
+    this.selectedViolationIndex = index;
 
     this.isEditing = true;
     this.violationsArray[index].isEditingViolation = true;
-
-    this.selectedViolationIndex = index;
 
     const selectedViolation = this.violationsArray[index];
 
@@ -336,8 +327,16 @@ export class Step5Component implements OnInit, OnDestroy {
     }
   }
 
-  private formFilling(): void {
-    /*  this.violationFormArray = this.violationInfo?.violations
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
+     this.violationFormArray = this.violationInfo?.violations
       ? this.violationInfo?.violations
       : [];
 
@@ -359,11 +358,12 @@ export class Step5Component implements OnInit, OnDestroy {
       violationLocation: [null, Validators.required],
       violationDescription: [null, Validators.required],
       certify: [this.violationInfo?.certify, Validators.required],
-    }); */
+    });
   }
+ */
 
-  public onSubmitForm(): void {
-    /* this.shared.clearNotifications();
+  /* public onSubmitForm(): void {
+    this.shared.clearNotifications();
 
         if (!this.noViolationsForm.value.noViolationsForPastTwelveMonth) {
             let isValid = true;
@@ -400,8 +400,8 @@ export class Step5Component implements OnInit, OnDestroy {
             if (!isValid) {
                 return false;
             }
-        } */
-    /*    const violationsForm = this.violationsForm.value;
+        }
+       const violationsForm = this.violationsForm.value;
     const violationInfo = new ViolationInfo(this.violationInfo);
 
     violationInfo.violations = this.violationFormArray;
@@ -423,8 +423,8 @@ export class Step5Component implements OnInit, OnDestroy {
     violationInfo.certify = violationsForm.noViolationsForPastTwelveMonths
       ? false
       : violationsForm.certify;
- */
-    /*  this.apppEntityServices.ViolationService.upsert(
+
+     this.apppEntityServices.ViolationService.upsert(
             violationInfo
         ).subscribe(
             response => {
@@ -433,16 +433,10 @@ export class Step5Component implements OnInit, OnDestroy {
             error => {
                 this.shared.handleError(error);
             }
-        ); */
-  }
+        );
+  } */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

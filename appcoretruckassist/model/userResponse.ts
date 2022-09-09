@@ -18,7 +18,7 @@ export interface UserResponse {
     lastName?: string | null;
     address?: AddressEntity;
     email?: string | null;
-    mobile?: string | null;
+    phone?: string | null;
     avatar?: string | null;
 }
 

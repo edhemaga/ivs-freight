@@ -13,21 +13,16 @@ import { DriverRights } from '../../state/model/driver-rights.model';
 export class Step9Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public driverRightsForm: FormGroup;
-  public driverRightsInfo: DriverRights | undefined;
+
+  /* public applicant: Applicant | undefined; */
+
+  /* public driverRightsInfo: DriverRights | undefined; */
 
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public createForm(): void {
@@ -36,28 +31,30 @@ export class Step9Component implements OnInit, OnDestroy {
     });
   }
 
-  public onSubmitForm(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* public onSubmitForm(): void {
     const driverRightsForm = this.driverRightsForm.value;
     const driverRights = new DriverRights(this.driverRightsInfo);
 
     driverRights.applicantId = this.applicant?.id;
     driverRights.understandYourRights = driverRightsForm.understandYourRights;
 
-    /*  this.apppEntityServices.DriverRightService.upsert(driverRight).subscribe(
+     this.apppEntityServices.DriverRightService.upsert(driverRight).subscribe(
         () => {
           this.notification.success('Driver Right is updated');
         },
         (error: any) => {
           this.shared.handleError(error);
         }
-      ); */
-  }
-
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
+      );
+  } */
 
   ngOnDestroy(): void {}
 }

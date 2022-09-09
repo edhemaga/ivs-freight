@@ -29,6 +29,10 @@ import { RepairTrailerResolver } from './core/components/repair/state/repair-tra
 import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
 import { pmTrailerResolver } from './core/components/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './core/components/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
+import { LoadPandingResolver } from './core/components/load/state/load-pending-state/load-panding.resolver';
+import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
+import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
+import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -81,6 +85,18 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'load',
+    loadChildren: () =>
+      import('./core/components/load/load.module').then((m) => m.LoadModule),
+    canActivate: [AuthGuard],
+    resolve: {
+      loadTemplate: LoadTemplateResolver,
+      loadPanding: LoadPandingResolver,
+      loadActive: LoadActiveResolver,
+      loadClosed: LoadClosedResolver,
+    },
+  },
+  {
     path: 'driver',
     loadChildren: () =>
       import('./core/components/driver/driver.module').then(
@@ -122,12 +138,6 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
     resolve: { broker: BrokerResolver, shipper: ShipperResolver },
-  },
-  {
-    path: 'load',
-    loadChildren: () =>
-      import('./core/components/load/load.module').then((m) => m.LoadModule),
-    canActivate: [AuthGuard],
   },
   {
     path: 'repair',

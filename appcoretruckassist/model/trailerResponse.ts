@@ -13,6 +13,7 @@ import { InspectionResponse } from './inspectionResponse';
 import { TrailerLengthResponse } from './trailerLengthResponse';
 import { TitleResponse } from './titleResponse';
 import { TrailerTypeResponse } from './trailerTypeResponse';
+import { DispatchShortResponse } from './dispatchShortResponse';
 import { EnumValue } from './enumValue';
 import { TrailerMakeResponse } from './trailerMakeResponse';
 import { ColorResponse } from './colorResponse';
@@ -53,5 +54,6 @@ export interface TrailerResponse {
     inspections?: Array<InspectionResponse> | null;
     titles?: Array<TitleResponse> | null;
     ownerHistories?: Array<OwnerHistoryResponse> | null;
+    dispatches?: Array<DispatchShortResponse> | null;
 }
 

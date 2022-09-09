@@ -30,7 +30,6 @@ export interface UpdateCompanyUserCommand {
     bankId?: number | null;
     routingNumber?: string | null;
     accountNumber?: string | null;
-    avatar?: string | null;
     base?: number | null;
     commission?: number | null;
     note?: string | null;

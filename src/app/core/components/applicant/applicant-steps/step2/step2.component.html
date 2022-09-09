@@ -98,11 +98,9 @@
               <div
                 class="d-flex align-items-center history-to-date"
                 [ngStyle]="{
-                  width:
-                    selectedMode === 'REVIEW_MODE' ||
-                    selectedMode === 'FEEDBACK_MODE'
-                      ? '90px'
-                      : '108px'
+                  'margin-right':
+                    selectedMode === 'FEEDBACK_MODE' ? '18px' : '20px',
+                  width: selectedMode !== 'APPLICANT_MODE' ? '90px' : '108px'
                 }"
               >
                 <p class="m-0 ta-font-regular">{{ workHistory.toDate }}</p>
@@ -168,6 +166,25 @@
                         'height.px': 18
                       }"
                       (click)="incorrectInput($event, 0, i, 'card')"
+                    ></svg-icon>
+                  </div>
+                </div>
+
+                <div *ngIf="selectedMode === 'FEEDBACK_MODE'">
+                  <div
+                    class="feedback-icon-box"
+                    ngbTooltip
+                    mainTooltip="Marked Incorrect"
+                    tooltipBackground="#F44336"
+                    position="top"
+                  >
+                    <svg-icon
+                      class="feedback-icon"
+                      src="assets/svg/common/ic_danger.svg"
+                      [svgStyle]="{
+                        'width.px': 18,
+                        'height.px': 18
+                      }"
                     ></svg-icon>
                   </div>
                 </div>
