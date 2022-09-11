@@ -64,6 +64,7 @@
         (focus)="checkFocus($event)"
         (input)="valueChange($event.target.innerHTML)"
         @noteLongAnimation
+        [@.disabled]="openedAll || parking"
         [class.not_expanded]="!isExpanded"
         [class.parking_text_hold]="parking"
         [class.opened_all_editor]="openedAll"
