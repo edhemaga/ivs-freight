@@ -1,3 +1,6 @@
+$truck_hover_colors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415FC1';
+$trailer_hover_colors: 'FF5454', '6D82C7', '56AB62', '3C3C3C', '6FDFE4', 'F89A3D', '1E9DF3', '59A5A5', 'A468FF', 'A34CB8', '4A9A4F', 'F3D542';
+
 .user-icon{
     position: relative;
     width: 28px;
@@ -14,6 +17,17 @@
             height: 16.2px;        
             display: flex;
 
+        }
+    }
+
+    &.customSvg{
+        svg-icon{
+            svg{
+                width: 18px;
+                height: 18px;        
+                display: flex;
+    
+            }
         }
     }
 
@@ -150,15 +164,24 @@
             box-sizing: border-box;
         }
 
-        .close{
-            position: absolute;
-            width: 18px;
-            height: 18px;
+        .legend-view-title{
             display: flex;
             justify-content: center;
             align-items: center;
-            top: 3px;
-            right: 3px;
+
+            font-size: 18px;
+            line-height: 22px;
+        }
+
+        .close{
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 0px;
+            right: 4px;
             cursor: pointer;
 
             svg-icon{
@@ -507,7 +530,6 @@
             .user-frame{
                 position: relative;
                 width: 100%;
-                min-height: 26px;
                 border-radius: 2px;
                 display: flex;
                 align-items: center;
@@ -516,7 +538,7 @@
                 font-size: 14px;
                 font-weight: 400;
                 color: #6C6C6C;
-                line-height: 18px;
+                line-height: 26px;
                 margin-bottom: 2px;
                 
                 &::-moz-selection {
@@ -700,12 +722,67 @@
         padding-left: 6px !important;
     }
 
+
+    .legend-type-holder{
+        user-select: none;
+        $ii: 1;
+        @each $col1 in $truck_hover_colors {
+            $ii: $ii + 1;
+            .truck-type-#{$col1}{
+                &:hover{
+                    svg{
+                        path{
+                            fill: #fff;
+                        }
+                    }
+
+                    .user-main-holder{
+                        background-color: unquote('#' + $col1) !important;
+                    }
+
+                    .user-frame{
+                        color: #fff;
+                    }
+                    
+                }
+            }
+        }
+
+        $tt: 1;
+        @each $col2 in $trailer_hover_colors {
+            $tt: $tt + 1;
+            .trailer-type-#{$col2}{
+                &:hover{
+                    svg{
+                        path{
+                            fill: #fff;
+                        }
+                    }
+
+                    .user-main-holder{
+                        background-color: unquote('#' + $col2) !important;
+                    }
+
+                    .user-frame{
+                        color: #fff;
+                    }
+                    
+                }
+            }
+        }
+
+    }
+
+    
+
+
     .type-icon{
         display: flex;
+        align-items: center;
         position: absolute;
         left: -46px;
-        top: 5px;
-        height: 16px;
+        top: 0px;
+        height: 26px;
         width: 44px;
 
         svg-icon{
@@ -722,17 +799,20 @@
     }
 
     .user-main-holder{
+
         &:hover{
+            
             .user-frame{
                 padding-left: 56px !important;
                 transition: 0.3s;
             }
-
+        
             .type-icon{
                 left: 6px;
                 transition: 0.3s;
             }
         }
+       
     }
 
     .user-holder{
@@ -1815,6 +1895,21 @@
     }
 
 }
+
+.legend-view{
+    &.filter-holder{
+        padding: 12px 8px 8px 8px;
+
+        .border-filter{
+            margin: 8px 0px 6px 0px;
+        }
+    }
+
+    .user-holder{
+        max-height: 225px !important;
+    }
+}
+
 
 .pac-container{
     z-index: 1070;

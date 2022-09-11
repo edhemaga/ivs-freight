@@ -100,6 +100,7 @@
     [formControl]="getSuperControl"
     [inputConfig]="inputConfig"
     [ngbPopover]="taInputDropdownPopover"
+    (shown)="dropdownIsOpened()"
     [placement]="['bottom-left']"
     [container]="'body'"
     [incorrectValue]="incorrectValue"

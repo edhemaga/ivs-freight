@@ -17,13 +17,11 @@ import { LoadActiveState } from '../state/load-active-state/load-active.store';
 import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
 import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
 import { LoadTemplateState } from '../state/load-template-state/load-template.store';
-import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-load-table',
   templateUrl: './load-table.component.html',
   styleUrls: ['./load-table.component.scss'],
-  providers: [TaThousandSeparatorPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -31,7 +29,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   tableData: any[] = [];
   viewData: any[] = [];
   columns: any[] = [];
-  selectedTab = 'pending';
+  selectedTab = 'active';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
@@ -46,8 +44,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     private loadActiveQuery: LoadActiveQuery,
     private loadClosedQuery: LoadClosedQuery,
     private loadPandinQuery: LoadPandinQuery,
-    private loadTemplateQuery: LoadTemplateQuery,
-    private thousandSeparator: TaThousandSeparatorPipe
+    private loadTemplateQuery: LoadTemplateQuery
   ) {}
 
   // ---------------------------- ngOnInit ------------------------------
@@ -287,9 +284,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        showMoneyCount: true,
-        hideViewMode: false,
-        viewModeActive: 'List',
+        hideViewMode: true,
       },
       config: {
         showSort: true,
@@ -339,7 +334,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Template',
         field: 'template',
-        length: loadCount.templateCount,
+        length: 2,
         data: loadTemplateData,
         extended: false,
         gridNameTitle: 'Load',
@@ -349,7 +344,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Pending',
         field: 'pending',
-        length: loadCount.pendingCount,
+        length: 3,
         data: loadPendingData,
         extended: false,
         gridNameTitle: 'Load',
@@ -359,7 +354,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Active',
         field: 'active',
-        length: loadCount.activeCount,
+        length: 5,
         data: loadActiveData,
         extended: false,
         gridNameTitle: 'Load',
@@ -369,7 +364,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Closed',
         field: 'closed',
-        length: loadCount.closedCount,
+        length: 8,
         data: repairClosedData,
         extended: false,
         gridNameTitle: 'Load',
@@ -380,14 +375,12 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const td = this.tableData.find((t) => t.field === this.selectedTab);
 
+    
+
     this.setLoadData(td);
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    // const userState: any = JSON.parse(
-    //   localStorage.getItem(stateName + '_user_columns_state')
-    // );
-
     if (stateName === 'active-panding') {
       return getLoadActiveAndPendingColumnDefinition();
     } else if (stateName === 'closed') {
@@ -395,122 +388,61 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       return getLoadTemplateColumnDefinition();
     }
+
+    /*  const userState: any = JSON.parse(
+      localStorage.getItem(stateName + '_user_columns_state')
+    );
+    */
   }
 
   setLoadData(td: any) {
     this.columns = td.gridColumns;
 
-    if (td.data?.length) {
+    if (td.data) {
       this.viewData = td.data;
 
-      this.viewData = this.viewData.map((data) => {
-        return this.mapLoadData(data);
-      });
+      let data = [{}];
 
-      console.log('Load Data');
-      console.log(this.viewData);
-    } else {
-      this.viewData = [];
-    }
-  }
-
-  mapLoadData(data: any) {
-    // this.thousandSeparator.transform(data.total)
-    // this.datePipe.transform(data.date, 'MM/dd/yy')
-
-    return {
-      ...data,
-      isSelected: false,
-      loadInvoice: {
-        invoice: 'Nije Povezano',
-        type: data?.type?.name ? data.type.name : '',
-      },
-      loadDispatcher: {
-        name: 'Nije Povezano',
-        avatar: null,
-      },
-      loadTotal: {
-        total: 'nije povezano',
-        subTotal: 'nije povezano',
-      },
-      loadBroker: {
-        hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
-        isDnu: data?.broker?.dnu,
-        name: data?.broker?.businessName ? data.broker.businessName : '',
-      },
-      loadTruckNumber: {
-        number: data?.dispatch?.truck?.truckNumber
-          ? data.dispatch.truck.truckNumber
-          : '',
-        color: '',
-      },
-      loadTrailerNumber: {
-        number: data?.dispatch?.trailer?.trailerNumber
-          ? data.dispatch.trailer.trailerNumber
-          : '',
-        color: '',
-      },
-      loadPickup: {
-        count: 2,
-        location: 'Morton, MS',
-        date: '05/09/21',
-        time: '5:10PM',
-      },
-      loadDelivery: {
-        count: 'S',
-        location: 'Forest Parl, GA',
-        date: '05/12/21',
-        time: '3:15AM',
-      },
-      loadStatus: {
-        status: 'Active',
-        color: '',
-        time: '5h. 18m. ago'
-      },
-      textMiles: data?.totalMiles ? data.totalMiles : '',
-      textCommodity: data?.generalCommodity?.name
-        ? data.generalCommodity.name
-        : '',
-      textWeight: data?.weight ? data.weight + ' lbs' : '',
-      textBase: data?.baseRate
-        ? '$' + this.thousandSeparator.transform(data.baseRate)
-        : '',
-      textAdditional: 'Nije Povezano',
-      textAdvance: data?.advancePay
-        ? '$' + this.thousandSeparator.transform(data.advancePay)
-        : '',
-      textOutstanding: 'Nije Povezano',
-      textPayTerms: 'Nije Povezano',
-      textDriver:
-        data?.dispatch?.driver?.firstName && data?.dispatch?.driver?.lastName
-          ? data?.dispatch?.driver?.firstName.charAt(0) +
-            '. ' +
-            data?.dispatch?.driver?.lastName
-          : '',
-      textReceiver: 'Nije Povezano',
-      textShipper: 'Nije Povezano',
-      loadComment: {
-        count: data.commentsCount,
-        comments: data.comments
+      for (let i = 0; i < 2; i++) {
+        data.push({});
       }
-    };
+
+      this.viewData = data;
+
+      /* this.viewData = this.viewData.map((data) => {
+        data.isSelected = false;
+        return data;
+      }); */
+    }
   }
 
   getTabData(dataType: string) {
     if (dataType === 'active') {
       this.loadActive = this.loadActiveQuery.getAll();
 
+      console.log('Load Active');
+      console.log(this.loadActive);
+
       return this.loadActive?.length ? this.loadActive : [];
     } else if (dataType === 'closed') {
       this.loadClosed = this.loadClosedQuery.getAll();
+
+      console.log('Load Closed');
+      console.log(this.loadClosed);
 
       return this.loadClosed?.length ? this.loadClosed : [];
     } else if (dataType === 'pending') {
       this.loadPanding = this.loadPandinQuery.getAll();
 
+      console.log('Load Pending');
+      console.log(this.loadPanding);
+
       return this.loadPanding?.length ? this.loadPanding : [];
     } else if (dataType === 'template') {
       this.loadTemplate = this.loadTemplateQuery.getAll();
+
+      console.log('Load Template');
+      console.log(this.loadTemplate);
 
       return this.loadTemplate?.length ? this.loadTemplate : [];
     }
@@ -522,8 +454,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-
-      this.sendLoadData();
+      this.setLoadData(event.tabData);
     }
   }
 

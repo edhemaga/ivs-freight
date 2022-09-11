@@ -73,104 +73,6 @@
                 ></label>
               </div>
 
-              <!-- STATUS COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'status'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-                #ngbStatus="ngbPopover"
-                [autoClose]="true"
-                [ngbPopover]="statusPopover"
-                [placement]="'bottom'"
-                container="body"
-                popoverClass="table-status-popover"
-                triggers="manual"
-              >
-                <div
-                  class="status-container"
-                  [ngStyle]="{
-                    width: column.width - 20 + 'px'
-                  }"
-                  (click)="toggleStatusDropdown(ngbStatus, row)"
-                >
-                  <div class="status">
-                    {{ row[column.field].status }}
-                  </div>
-                  <div class="status-time">
-                    {{ row[column.field].time }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- PICKUP AND DELIVERY COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'pickup-delivery'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div
-                  class="pickup-delivery-counter"
-                  [ngClass]="{
-                    'pickup-count':
-                      column.pickupDeliveryType === 'pickup' &&
-                      row[column.field].count !== 'S',
-                    'delivery-count':
-                      column.pickupDeliveryType === 'delivery' &&
-                      row[column.field].count !== 'S',
-                    'special-count': row[column.field].count === 'S'
-                  }"
-                >
-                  {{ row[column.field].count }}
-                </div>
-
-                <div class="pickup-delivery-location-container">
-                  <div
-                    class="location"
-                    [ngStyle]="{
-                      width: column.width - 28 + 'px'
-                    }"
-                  >
-                    {{ row[column.field].location }}
-                  </div>
-                  <div
-                    class="date-time-container"
-                    [ngStyle]="{
-                      width: column.width - 30 + 'px'
-                    }"
-                  >
-                    <div class="date">{{ row[column.field].date }}</div>
-                    <div class="time">{{ row[column.field].time }}</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- TEXT COLOR COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'text-color'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div
-                  class="text-color"
-                  [ngStyle]="{
-                    color: row[column.field].color,
-                    'margin-left': column.margin + 'px',
-                    'padding-left': column.padding + 'px'
-                  }"
-                >
-                  {{ row[column.field].number }}
-                </div>
-              </div>
-
               <!-- USER CHECKBOX TEMPLATE -->
               <div
                 *ngIf="column.ngTemplate === 'user-checkbox'"
@@ -201,101 +103,6 @@
                   class="table-checkbox-label"
                   for="checkbox{{ i }}"
                 ></label>
-              </div>
-
-              <!-- CUSTOMER NAME COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'customer-name'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <svg-icon
-                  *ngIf="row[column.field].hasBanDnu"
-                  class="customer-icon"
-                  [src]="
-                    row[column.field].isDnu
-                      ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
-                      : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-
-                <div
-                  class="customer-name"
-                  [ngStyle]="{
-                    width: row[column.field].hasBanDnu
-                      ? column.width - 22 + 'px'
-                      : column.width + 'px'
-                  }"
-                  [ngClass]="{
-                    'customer-name-ban':
-                      !row[column.field].isDnu && row[column.field].hasBanDnu
-                  }"
-                >
-                  {{ row[column.field].name }}
-                </div>
-              </div>
-
-              <!-- LOAD TOTAL COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'load-total'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div class="load-totla-container">
-                  <div
-                    class="main-total"
-                    [ngStyle]="{
-                      width: column.width + 'px'
-                    }"
-                  >
-                    {{ row[column.field].total }}
-                  </div>
-                  <div
-                    *ngIf="row[column.field].subTotal"
-                    [ngStyle]="{
-                      width: column.width + 'px'
-                    }"
-                    class="sub-total"
-                  >
-                    {{ row[column.field].subTotal }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- DISPECHER AVATAR COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'dispatcher-avatar'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <img
-                  [src]="
-                    row[column.field]?.avatar
-                      ? row[column.field].avatar
-                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                  "
-                  alt=""
-                  class="dispecher-img"
-                />
-
-                <div
-                  class="dispatcher-name"
-                  [ngStyle]="{
-                    width: column.width - 24 + 'px'
-                  }"
-                >
-                  {{ row[column.field].name }}
-                </div>
               </div>
 
               <!-- AVATAR COLUMN -->
@@ -385,36 +192,6 @@
                 }"
               >
                 <div class="user-status-container">{{ row[column.field] }}</div>
-              </div>
-
-              <!-- INVOICE COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'invoice'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div
-                  class="invoice-text"
-                  [ngStyle]="{
-                    width: column.width - 21 + 'px'
-                  }"
-                  (click)="goToDetails(column, row)"
-                >
-                  {{ row[column.field].invoice }}
-                </div>
-
-                <svg-icon
-                  *ngIf="row[column.field].type"
-                  [src]="
-                    row[column.field].type === 'LTL'
-                      ? '../../../../../../assets/svg/truckassist-table/load-ltl.svg'
-                      : '../../../../../../assets/svg/truckassist-table/load-flt.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
-                ></svg-icon>
               </div>
 
               <!-- NAME LINK COLUMN -->
@@ -1020,6 +797,36 @@
                 </div>
               </div>
 
+              <!-- PICKUP COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'pickup'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="picup-count">{{ row.pickupCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- DELIVERY COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'delivery'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="delivery-count">{{ row.deliveryCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
               <!-- STATE TEXT COLUMN -->
               <div
                 *ngIf="column.ngTemplate === 'textState'"
@@ -1250,199 +1057,6 @@
                 class="td-content"
               >
                 <div class="no-template">NO TEMPLATE</div>
-              </div>
-
-              <!-- DISPECHER AVATAR COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'dispatcher-avatar'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <img
-                  [src]="
-                    row[column.field]?.avatar
-                      ? row[column.field].avatar
-                      : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                  "
-                  alt=""
-                  class="dispecher-img"
-                />
-
-                <div
-                  class="dispatcher-name"
-                  [ngStyle]="{
-                    width: column.width - 24 + 'px'
-                  }"
-                >
-                  {{ row[column.field].name }}
-                </div>
-              </div>
-
-              <!-- STATUS COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'status'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-                #ngbStatus="ngbPopover"
-                [autoClose]="true"
-                [ngbPopover]="statusPopover"
-                [placement]="'bottom'"
-                container="body"
-                popoverClass="table-status-popover"
-                triggers="manual"
-              >
-                <div
-                  class="status-container"
-                  [ngStyle]="{
-                    width: column.width - 20 + 'px'
-                  }"
-                  (click)="toggleStatusDropdown(ngbStatus, row)"
-                >
-                  <div class="status">
-                    {{ row[column.field].status }}
-                  </div>
-                  <div class="status-time">
-                    {{ row[column.field].time }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- TEXT COLOR COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'text-color'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div
-                  class="text-color"
-                  [ngStyle]="{
-                    color: row[column.field].color,
-                    'margin-left': column.margin + 'px',
-                    'padding-left': column.padding + 'px'
-                  }"
-                >
-                  {{ row[column.field].number }}
-                </div>
-              </div>
-
-              <!-- PICKUP AND DELIVERY COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'pickup-delivery'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div
-                  class="pickup-delivery-counter"
-                  [ngClass]="{
-                    'pickup-count':
-                      column.pickupDeliveryType === 'pickup' &&
-                      row[column.field].count !== 'S',
-                    'delivery-count':
-                      column.pickupDeliveryType === 'delivery' &&
-                      row[column.field].count !== 'S',
-                    'special-count': row[column.field].count === 'S'
-                  }"
-                >
-                  {{ row[column.field].count }}
-                </div>
-
-                <div class="pickup-delivery-location-container">
-                  <div
-                    class="location"
-                    [ngStyle]="{
-                      width: column.width - 28 + 'px'
-                    }"
-                  >
-                    {{ row[column.field].location }}
-                  </div>
-                  <div
-                    class="date-time-container"
-                    [ngStyle]="{
-                      width: column.width - 30 + 'px'
-                    }"
-                  >
-                    <div class="date">{{ row[column.field].date }}</div>
-                    <div class="time">{{ row[column.field].time }}</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- LOAD TOTAL COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'load-total'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <div class="load-totla-container">
-                  <div
-                    class="main-total"
-                    [ngStyle]="{
-                      width: column.width + 'px'
-                    }"
-                  >
-                    {{ row[column.field].total }}
-                  </div>
-                  <div
-                    *ngIf="row[column.field].subTotal"
-                    [ngStyle]="{
-                      width: column.width + 'px'
-                    }"
-                    class="sub-total"
-                  >
-                    {{ row[column.field].subTotal }}
-                  </div>
-                </div>
-              </div>
-
-              <!-- CUSTOMER NAME COLUMN -->
-              <div
-                class="td-content"
-                *ngIf="column.ngTemplate === 'customer-name'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-              >
-                <svg-icon
-                  *ngIf="row[column.field].hasBanDnu"
-                  class="customer-icon"
-                  [src]="
-                    row[column.field].isDnu
-                      ? '../../../../../../assets/svg/truckassist-table/dnu-icon.svg'
-                      : '../../../../../../assets/svg/truckassist-table/ban-icon.svg'
-                  "
-                  [svgStyle]="{ 'width.px': '18', 'height.px': '18' }"
-                ></svg-icon>
-
-                <div
-                  class="customer-name"
-                  [ngStyle]="{
-                    width: row[column.field].hasBanDnu
-                      ? column.width - 22 + 'px'
-                      : column.width + 'px'
-                  }"
-                  [ngClass]="{
-                    'customer-name-ban':
-                      !row[column.field].isDnu && row[column.field].hasBanDnu
-                  }"
-                >
-                  {{ row[column.field].name }}
-                </div>
               </div>
 
               <!-- AVATAR COLUMN -->
@@ -2137,6 +1751,36 @@
                 </div>
               </div>
 
+              <!-- PICKUP COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'pickup'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="picup-count">{{ row.pickupCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
+              <!-- DELIVERY COLUMN -->
+              <div
+                class="td-content"
+                *ngIf="column.ngTemplate === 'delivery'"
+                [ngStyle]="{
+                  width: column.width + 'px',
+                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
+                }"
+              >
+                <div class="pickup-and-delivery-container">
+                  <div class="delivery-count">{{ row.deliveryCount }}</div>
+                  <div class="loaction">{{ row[column.field] }}</div>
+                </div>
+              </div>
+
               <!-- STATE TEXT COLUMN -->
               <div
                 *ngIf="column.ngTemplate === 'textState'"
@@ -2403,14 +2047,11 @@
                             font-family="Montserrat-Bold, Montserrat"
                             font-weight="700"
                           >
-                            <tspan x="-3.445" y="0">
-                              {{ row[column.field].count }}
-                            </tspan>
+                            <tspan x="-3.445" y="0">4</tspan>
                           </text>
                         </g>
                       </g>
                       <rect
-                        *ngIf="row[column.field].comments"
                         width="6"
                         height="6"
                         rx="3"
@@ -2585,6 +2226,7 @@
 </ng-template>
 
 <!-- ATTACHMENTS -->
+<!-- DROPDOWN -->
 <ng-template #attachmentsPopover let-data="data">
   <div
     class="table-attachments"
@@ -2592,17 +2234,4 @@
       width: attachmentWidth + 'px'
     }"
   ></div>
-</ng-template>
-
-<!-- STATUS -->
-<ng-template #statusPopover let-data="data">
-  <div class="status-dropdown">
-    <div
-      class="status-title"
-      [ngClass]="{ 'status-active': i === 1 }"
-      *ngFor="let item of [{}, {}, {}, {}]; let i = index"
-    >
-      Active
-    </div>
-  </div>
 </ng-template>

@@ -180,9 +180,7 @@ export class DriverTService implements OnDestroy {
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
-
         this.driverMinimimalListStore.remove(({ id }) => id === driverId);
-
         if (tableSelectedTab === 'active') {
           this.driverActiveStore.remove(({ id }) => id === driverId);
 

@@ -26,6 +26,7 @@ import { NavigationUserCompanyComponent } from './core/components/navigation/nav
 import { NavigationHeaderComponent } from './core/components/navigation/navigation-header/navigation-header.component';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
+import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';
 @NgModule({

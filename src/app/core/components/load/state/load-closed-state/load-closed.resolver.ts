@@ -16,6 +16,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
   ) {}
 
   resolve(): Observable<LoadClosedState | boolean> {
+    console.log('Poziva se LoadClosedResolver')
     return this.loadService
       .getLoadList(
         undefined,
