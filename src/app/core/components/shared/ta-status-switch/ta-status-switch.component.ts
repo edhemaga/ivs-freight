@@ -11,8 +11,6 @@ import {
 import { animate, style, transition, trigger } from '@angular/animations';
 import moment from 'moment-timezone';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
-import * as AppConst from 'src/app/const';
-import { SharedService } from '../../../services/shared/shared.service';
 import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
 import { ChangeDetectorRef } from '@angular/core';
 
@@ -42,6 +40,7 @@ export class TaStatusSwitchComponent implements OnInit {
   @Input() openedStatus: number;
   @Input() statusHeight: number;
   @Input() withStatusAgo: boolean;
+  @Input() possibleNextStatuses: any;
 
   statusAgo: string = '';
   changeIndex: any;
@@ -192,10 +191,8 @@ export class TaStatusSwitchComponent implements OnInit {
 
 
   public openPopover(t2){
-    this.dss.getNextStatusAvalable(this.dispatchboardId).subscribe(res => {
-      t2.open({data: res});
-    })
-    
+    t2.open({data: this.possibleNextStatuses});
+    this.openMainIndex();
   }
 
   public ngOnDestroy(): void {

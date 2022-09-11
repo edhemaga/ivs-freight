@@ -235,8 +235,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addDriver(e) {
     if (e) {
-      const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened].driver ? "driverId" : "coDriver";
-
+      const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened]?.driver ? "driverId" : "coDriverId";
       this.updateOrAddDispatchBoardAndSend(
         driverOrCoDriver,
         e.id,
@@ -245,6 +244,23 @@ export class DispatchboardTablesComponent implements OnInit {
     }
 
     this.driverSelectOpened = -1;
+  }
+
+  addStatus(e){
+    if (e) {
+      this.updateOrAddDispatchBoardAndSend(
+        'status',
+        e.name,
+        this.statusOpenedIndex
+      );
+    }
+
+    this.statusOpenedIndex = -1;
+  }
+
+  openIndex(indx: number) { 
+    console.log("INDEX ON OPEN", indx);
+    this.statusOpenedIndex = indx;
   }
 
   saveNoteValue(item: any) {
@@ -358,12 +374,14 @@ export class DispatchboardTablesComponent implements OnInit {
     let oldUpdateData: CreateDispatchCommand | UpdateDispatchCommand = {
       status: oldData.status ? (oldData.status?.name as DispatchStatus) : 'Off',
       order: oldData.order,
-      truckId: oldData.truck?.id,
-      trailerId: oldData.trailer?.id,
-      driverId: oldData.driver?.id,
+      truckId: oldData.truck ? oldData.truck?.id : null,
+      trailerId: oldData.trailer ? oldData.trailer?.id : null,
+      driverId: oldData.driver ? oldData.driver?.id : null,
+      coDriverId: oldData.coDriver ? oldData.coDriver?.id : null,
       location: oldData.location?.address ? oldData.location : null,
-      hourOfService: oldData.hoursOfService,
+      hourOfService: 0,
       note: oldData.note,
+      loadIds: []
     };
 
     let newData: any = {
@@ -637,15 +655,5 @@ export class DispatchboardTablesComponent implements OnInit {
 
   returnButtonId(i) {
     return 'buttonId_' + i;
-  }
-
-
-
-  addStatus(e){
-    console.log("STATUS CHANGING", e);
-  }
-
-  openIndex(indx: number) { 
-    this.statusOpenedIndex = indx;
   }
 }

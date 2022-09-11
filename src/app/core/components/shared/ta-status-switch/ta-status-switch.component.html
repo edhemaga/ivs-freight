@@ -19,7 +19,7 @@
         [ngStyle]="{ color: (status.id | statusPipe) }"
         class="switch_statuses"
       >
-        off
+        {{status.name}}
         <span *ngIf="withStatusAgo" class="time_ago">{{ statusAgo }}</span>
       </div>
     </div>

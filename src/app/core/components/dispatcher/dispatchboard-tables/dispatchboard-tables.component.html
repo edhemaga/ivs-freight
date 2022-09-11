@@ -537,10 +537,11 @@
                 <div class="phone-email-copy-text">COPIED</div>
                 <button
                   (click)="hoverPhoneEmailMain(rowIndex)"
-                  appTooltip="Switch to {{ item.isPhone ? 'phone' : 'email' }}"
                   class="button-switch-email-phone"
-                  position="bottom-right"
-                  tooltipBackground="#919191"
+                  [mainTooltip]="'Switch to '+ (item.isPhone ? 'phone' : 'email' ) +''"
+                  [tooltipBackground]="'#919191'"
+                  ngbTooltip
+                  position="bottom"
                 >
                   <svg-icon
                     src="assets/svg/dispatchboard/switch.svg"
@@ -606,12 +607,14 @@
                 class="dispatcher-table-cell-holder main_status_switch_holder"
               >
                 <app-ta-status-switch
-                  (changeStatus)="addStatus($event, item, rowIndex)"
+                  *ngIf="item.assignedLoads.length"
+                  (changeStatus)="addStatus($event)"
                   (openIndex)="openIndex($event)"
                   [openedStatus]="statusOpenedIndex"
                   [dispatchboardId]="item.id"
                   [statusHeight]="32"
                   [status]="item.status"
+                  [possibleNextStatuses]="item.possibleNextStatuses"
                   [statusMainIndex]="rowIndex"
                   [statusTypes]="'dispatch'"
                   [withStatusAgo]="true"
