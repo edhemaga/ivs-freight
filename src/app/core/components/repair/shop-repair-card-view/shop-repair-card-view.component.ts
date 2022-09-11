@@ -126,7 +126,7 @@ export class ShopRepairCardViewComponent
 
   public getActiveServices(data: RepairShopResponse) {
     let res = data.serviceTypes.filter((item) => item.active);
-    this.count = res.length;
+    this.count = res.length > 0 ? res.length : 0;
     return this.count;
   }
   public tabsSwitcher() {

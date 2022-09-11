@@ -235,7 +235,8 @@
     border-radius: 2px;
     top: -7px;
     left: 2px;
-    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
+    box-shadow: 0 0 4px rgb(0 0 0 / 15%);
+    // filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.1));
     .emp-tooltip {
       display: flex;
       flex-direction: column;

@@ -95,7 +95,7 @@ export class DriverTService implements OnDestroy {
               };
 
               this.driverActiveStore.add(driver);
-
+              this.driverMinimimalListStore.add(driver);
               const driverCount = JSON.parse(
                 localStorage.getItem('driverTableCount')
               );
@@ -252,6 +252,7 @@ export class DriverTService implements OnDestroy {
           .subscribe({
             next: (driver: DriverResponse | any) => {
               this.driverActiveStore.remove(({ id }) => id === data.id);
+              this.driverMinimimalListStore.remove(({ id }) => id === data.id);
 
               driver = {
                 ...driver,
@@ -259,7 +260,7 @@ export class DriverTService implements OnDestroy {
               };
 
               this.driverActiveStore.add(driver);
-
+              this.driverMinimimalListStore.add(driver);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,

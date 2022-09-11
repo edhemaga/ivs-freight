@@ -79,7 +79,7 @@ export class TruckTService implements OnDestroy {
           .subscribe({
             next: (truck: TruckResponse | any) => {
               this.truckActiveStore.add(truck);
-
+              this.truckMinimalStore.add(truck);
               const truckCount = JSON.parse(
                 localStorage.getItem('truckTableCount')
               );
@@ -115,9 +115,9 @@ export class TruckTService implements OnDestroy {
           .subscribe({
             next: (truck: TruckResponse | any) => {
               this.truckActiveStore.remove(({ id }) => id === data.id);
-
+              this.truckMinimalStore.remove(({ id }) => id === data.id);
               this.truckActiveStore.add(truck);
-
+              this.truckMinimalStore.add(truck);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: truck,
@@ -303,17 +303,19 @@ export class TruckTService implements OnDestroy {
             inactive: truckCount.inactive,
           })
         );
-        const subTruck = this.getTruckById(truckId).subscribe({
-          next: (truck: TruckResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              data: truck,
-              id: truck.id,
-            });
+        const subTruck = this.getTruckById(truckId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                data: truck,
+                id: truck.id,
+              });
 
-            subTruck.unsubscribe();
-          },
-        });
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }

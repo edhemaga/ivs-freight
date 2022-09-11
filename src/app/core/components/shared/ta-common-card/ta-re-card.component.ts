@@ -48,6 +48,7 @@ export class TaReCardComponent implements OnInit {
   @Input() cardNameCurrent: string;
   @Input() statusActive: number;
   @Input() paddingDots: string = '11px 8px 0 12px';
+  @Input() paddingFooter: string = '11px 10px 11px 16px';
   @Output() clickedCard = new EventEmitter<any>();
   @Output() dataDropDopwn = new EventEmitter<any>();
   @Input() hasToggler: boolean;
