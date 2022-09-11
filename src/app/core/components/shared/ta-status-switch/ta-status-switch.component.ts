@@ -13,6 +13,8 @@ import moment from 'moment-timezone';
 import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
 import * as AppConst from 'src/app/const';
 import { SharedService } from '../../../services/shared/shared.service';
+import { DispatcherStoreService } from '../../dispatcher/state/dispatcher.service';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-ta-status-switch',
@@ -30,37 +32,57 @@ import { SharedService } from '../../../services/shared/shared.service';
     ]),
   ],
 })
-export class TaStatusSwitchComponent implements OnInit, OnChanges {
-  @Input() statusId: number;
-  @Input() statusLoadCount: number;
+export class TaStatusSwitchComponent implements OnInit {
+  @Input() status: { id: number, name: string };
+  @Input() dispatchboardId: number;
+  @Input() statusDate: Date = new Date();
+  private destroy$ = new Subject<void>();
+  @Input() statusLoadCount: number = 0;
   @Input() statusMainIndex: number;
-  @Input() newStatusId: number;
-  @Input() itemId: number;
   @Input() openedStatus: number;
   @Input() statusHeight: number;
-  @Input() dataItems: any;
-  @Input() statusTypes: string;
-  @Input() statusDate: string;
   @Input() withStatusAgo: boolean;
-  @Output() changeVal: EventEmitter<any> = new EventEmitter();
-  @Output() openIndex: EventEmitter<any> = new EventEmitter();
-  dispatchStatuses = JSON.parse(JSON.stringify(AppConst.DISPATCH_BOARD_STATUS));
-  loadStatuses = JSON.parse(JSON.stringify(AppConst.LOAD_STATUS));
-  items: any = [];
-  tooltip: any;
+
+  statusAgo: string = '';
   changeIndex: any;
   changedStatusLoadCount: any;
+  items: any = [];
   statusMainSignal = 0;
-  hoverItem = -1;
-  statusAgo: string = '';
-  private destroy$ = new Subject<void>();
+
+  @Output() openIndex: EventEmitter<any> = new EventEmitter();
+  @Output() changeStatus: EventEmitter<any> = new EventEmitter();
+
+  // @Input() statusLoadCount: number;
+  // @Input() statusMainIndex: number;
+  // @Input() newStatusId: number;
+  // @Input() itemId: number;
+  // @Input() openedStatus: number;
+  // @Input() statusHeight: number;
+  // @Input() dataItems: any;
+  // @Input() statusTypes: string;
+  // @Input() statusDate: string;
+  // @Input() withStatusAgo: boolean;
+  // @Output() changeVal: EventEmitter<any> = new EventEmitter();
+  // @Output() openIndex: EventEmitter<any> = new EventEmitter();
+  // dispatchStatuses = JSON.parse(JSON.stringify(AppConst.DISPATCH_BOARD_STATUS));
+  // loadStatuses = JSON.parse(JSON.stringify(AppConst.LOAD_STATUS));
+  // items: any = [];
+  // tooltip: any;
+  // changeIndex: any;
+  // changedStatusLoadCount: any;
+  // statusMainSignal = 0;
+  // hoverItem = -1;
+  // statusAgo: string = '';
+  // private destroy$ = new Subject<void>();
 
   constructor(
     private statusPipe: StatusPipePipe,
-    private sharedService: SharedService
+    private cdr: ChangeDetectorRef,
+    private dss: DispatcherStoreService,
   ) {}
 
   ngOnInit(): void {
+
     let mytimezoneOffset = moment(new Date()).utcOffset();
     let status_time = moment(new Date(this.statusDate).getTime()).format(
       'YYYY-MM-DD HH:mm'
@@ -68,64 +90,69 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
     //.add(mytimezoneOffset, "minutes") -- ADDING TIMEZONE
 
     this.statusAgo = this.timeSince(new Date(status_time));
-    this.changeIndex = this.statusId;
+
+
+    this.changeIndex = this.status.id;
     this.changedStatusLoadCount = this.statusLoadCount;
-    this.updateStatusFilter();
+   // this.updateStatusFilter();
 
-    this.sharedService.emitStatusUpdate
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        if (res.id == this.dataItems.id) {
-          setTimeout(() => {
-            this.updateStatusFilter();
-          });
-        }
-      });
+    // this.sharedService.emitStatusUpdate
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     if (res.id == this.dataItems.id) {
+    //       setTimeout(() => {
+    //         this.updateStatusFilter();
+    //       });
+    //     }
+    //   });
 
-    this.sharedService.emitSortStatusUpdate
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((res) => {
-        setTimeout(() => {
-          this.updateStatusFilter();
-        });
-      });
+    // this.sharedService.emitSortStatusUpdate
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((res) => {
+    //     setTimeout(() => {
+    //       this.updateStatusFilter();
+    //     });
+    //   });
   }
 
   public openMainIndex(): void {
-    this.openIndex.emit(this.statusMainIndex);
+   this.openIndex.emit(this.statusMainIndex);
   }
 
-  ngOnChanges() {
-    if (this.changeIndex != this.statusId) {
-      this.changeIndex = this.statusId;
-      this.updateStatusFilter();
-    }
-  }
+  // ngOnChanges() {
+  //   if (this.changeIndex != this.statusId) {
+  //     this.changeIndex = this.statusId;
+  //     this.updateStatusFilter();
+  //   }
+  // }
 
-  public changeStatus(status_id, indx): void {
-    if (status_id != this.statusId) {
-      this.statusMainSignal = indx;
-      this.changeIndex = status_id;
-      setTimeout(() => {
-        this.changeVal.emit(this.items[indx]);
-      }, 400);
-    } else {
-      this.changeVal.emit('error');
-    }
+  public setStatus(status, indx): void {
+
+    console.log("STATUS", status, indx);
+    this.changeStatus.emit(status);
+    // if (status_id != this.statusId) {
+    //   this.statusMainSignal = indx;
+    //   this.changeIndex = status_id;
+    //   setTimeout(() => {
+    //     this.changeVal.emit(this.items[indx]);
+    //   }, 400);
+    // } else {
+    //   this.changeVal.emit('error');
+    // }
   }
 
   public updateStatusFilter() {
-    this.items = this.statusPipe.transform(
-      this.statusTypes == 'dispatch'
-        ? this.dispatchStatuses
-        : this.loadStatuses,
-      this.statusId,
-      this.statusTypes,
-      this.dataItems
-    );
-    this.statusMainSignal = this.items.findIndex(
-      (item) => item.id == this.statusId
-    );
+    // this.items = this.statusPipe.transform(
+    //   this.statusTypes == 'dispatch'
+    //     ? this.dispatchStatuses
+    //     : this.loadStatuses,
+    //   this.statusId,
+    //   this.statusTypes,
+    //   this.dataItems
+    // );
+    // this.statusMainSignal = this.items.findIndex(
+    //   (item) => item.id == this.statusId
+    // );
   }
 
   // @HostListener('document:keypress', ['$event'])
@@ -162,6 +189,14 @@ export class TaStatusSwitchComponent implements OnInit, OnChanges {
   // @HostListener('mousewheel', ['$event']) onMousewheel(event) {
   //   console.log(event.wheelDelta);
   // }
+
+
+  public openPopover(t2){
+    this.dss.getNextStatusAvalable(this.dispatchboardId).subscribe(res => {
+      t2.open({data: res});
+    })
+    
+  }
 
   public ngOnDestroy(): void {
     this.destroy$.next();

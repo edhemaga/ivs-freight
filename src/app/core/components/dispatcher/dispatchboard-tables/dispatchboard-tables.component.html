@@ -309,7 +309,9 @@
               >
                 <div class="driver_span_holder">
                   <span
-                    *ngIf="item.driver !== null"
+                    *ngIf="
+                      item.driver !== null && driverSelectOpened != rowIndex
+                    "
                     [class.statusOpened]="statusOpenedIndex > -1"
                     class="drag-span no-color"
                   >
@@ -326,6 +328,20 @@
                     >
                     </span>
 
+                    <div
+                      *ngIf="!__isBoardLocked && item.driver && !item.coDriver"
+                      class="dispatcher-close cursor-pointer dispatcher_new_codriver"
+                      [mainTooltip]="'Add Co-Driver'"
+                      [tooltipBackground]="'#6C6C6C'"
+                      ngbTooltip
+                      position="top"
+                    >
+                      <svg-icon
+                        (click)="showNextDriverDropdown(rowIndex)"
+                        src="assets/svg/dispatchboard/add.svg"
+                      >
+                      </svg-icon>
+                    </div>
                     <div
                       *ngIf="!__isBoardLocked"
                       class="dispatcher-close cursor-pointer"
@@ -378,6 +394,69 @@
                   class="example-custom-placeholder"
                 ></div>
               </div>
+
+              <!-- Co Driver Field -->
+
+              <div
+                *ngIf="item.coDriver"
+                class="dispacher-card dispatch-box"
+                [class.empty_row]="
+                  !item.coDriver && driverSelectOpened != rowIndex
+                "
+                [@boxAnimation]="
+                  checkForEmpty == 'coDriver'
+                    ? !item.coDriver
+                      ? 'void'
+                      : 'filled'
+                    : 'empty'
+                "
+                [class.empty-box-field]="__isBoardLocked && !item.coDriver"
+              >
+                <div class="driver_span_holder">
+                  <span
+                    *ngIf="
+                      item.driver !== null && driverSelectOpened != rowIndex
+                    "
+                    [class.statusOpened]="statusOpenedIndex > -1"
+                    class="drag-span no-color"
+                  >
+                    <span
+                      [innerHtml]="
+                        item.coDriver.firstName + ' ' + item.coDriver.lastName
+                          | taHighlight: highlightingWords
+                      "
+                      [ngStyle]="{
+                        color: statusOpenedIndex > -1 ? '' : '#919191'
+                      }"
+                      appSelectionColor
+                      class="select_span"
+                    >
+                    </span>
+
+                    <div
+                      *ngIf="!__isBoardLocked"
+                      class="dispatcher-close cursor-pointer"
+                      [mainTooltip]="'remove'"
+                      [tooltipBackground]="'#6C6C6C'"
+                      ngbTooltip
+                      position="top"
+                    >
+                      <svg-icon
+                        (click)="removeDriver(rowIndex)"
+                        src="assets/svg/dispatchboard/close.svg"
+                      >
+                      </svg-icon>
+                    </div>
+                  </span>
+                </div>
+                <div
+                  *cdkDragPlaceholder
+                  class="example-custom-placeholder"
+                ></div>
+              </div>
+
+              <!-- Co Driver Field End -->
+
               <button
                 (click)="showNextDriverDropdown(rowIndex)"
                 *ngIf="
@@ -523,7 +602,21 @@
           </td>
           <td class="status-field">
             <div class="dispatcher-table-cell-container empty-box-field">
-              <!-- <div class="dispatcher-table-cell-holder"></div> -->
+              <div
+                class="dispatcher-table-cell-holder main_status_switch_holder"
+              >
+                <app-ta-status-switch
+                  (changeStatus)="addStatus($event, item, rowIndex)"
+                  (openIndex)="openIndex($event)"
+                  [openedStatus]="statusOpenedIndex"
+                  [dispatchboardId]="item.id"
+                  [statusHeight]="32"
+                  [status]="item.status"
+                  [statusMainIndex]="rowIndex"
+                  [statusTypes]="'dispatch'"
+                  [withStatusAgo]="true"
+                ></app-ta-status-switch>
+              </div>
             </div>
           </td>
           <td class="pick-del-field">
@@ -1013,9 +1106,9 @@
           ></span>
         </div>
         <div appSelectionColor class="board_infos_count" style="color: #919191">
-          {{ dData.truckCount }}
+          {{ dData.trailerCount }}
           <span
-            [innerHTML]="dData.truckCount == 1 ? 'TRAILER' : 'TRAILERS'"
+            [innerHTML]="dData.trailerCount == 1 ? 'TRAILER' : 'TRAILERS'"
             appSelectionColor
             style="color: #919191"
           ></span>

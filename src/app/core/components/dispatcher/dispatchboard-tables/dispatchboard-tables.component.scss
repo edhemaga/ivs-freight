@@ -1,22 +1,23 @@
-$trailer_collors: 'e94c4c', 'eec860', '47b5ff', '253f6a', 'af88ea', '822c97', 'ffaf47', '48b857',
-'44bec2', '508181', '4c83e2', '5ba160', 'e94949', '243e6a', 'ef6e6e', '5673aa', '76a77d', '484848',
-'8fdee1', 'ffbe7d', '81ccff', '668888', '955fa2', '547556', 'f2dd75';
-$truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668888', '90659b', '78c7fc', 'ef6e6e', 'ffc061', '90bc6f';
+@import "src/theme/variables";
 
-
+$trailer_collors: "e94c4c", "eec860", "47b5ff", "253f6a", "af88ea", "822c97",
+  "ffaf47", "48b857", "44bec2", "508181", "4c83e2", "5ba160", "e94949", "243e6a",
+  "ef6e6e", "5673aa", "76a77d", "484848", "8fdee1", "ffbe7d", "81ccff", "668888",
+  "955fa2", "547556", "f2dd75";
+$truck_collors: "5ba160", "ffaf47", "e94949", "4c83e2", "eec860", "508181",
+  "668888", "90659b", "78c7fc", "ef6e6e", "ffc061", "90bc6f";
 
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 
-.example-box{
-  .app-ta-input-dropdown-holder{
-    .input-custom-group .input-control{
+.example-box {
+  .app-ta-input-dropdown-holder {
+    .input-custom-group .input-control {
       height: 28px !important;
     }
   }
@@ -32,7 +33,7 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
     width: 100%;
     overflow: auto;
 
-    thead.hideVisibility{
+    thead.hideVisibility {
       visibility: hidden;
     }
 
@@ -50,7 +51,7 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       background-color: rgb(238, 238, 238);
       z-index: 10;
 
-      &.theads  {
+      &.theads {
         display: flex;
         align-items: center;
       }
@@ -82,8 +83,7 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       }
     }
 
-
-    .empty-box-field{
+    .empty-box-field {
       background-color: #ffffff33 !important;
     }
   }
@@ -117,7 +117,6 @@ td.driver-field {
     }
   }
 }
-
 
 .dispatch-dropdown.ng-select.ng-select-opened {
   position: relative;
@@ -236,12 +235,10 @@ td.driver-field {
   }
 }
 
-
 .unlocked {
-
   .dispatcher-close:hover {
     #main_circle {
-      fill: #B7B7B7;
+      fill: #b7b7b7;
     }
   }
 
@@ -251,21 +248,21 @@ td.driver-field {
     @each $truck_col in $truck_collors {
       &.truck_#{$truck_col} {
         background: linear-gradient(
-            to right,
-            unquote('#' + $truck_col + '80') 50%,
-            transparent 50%
+          to right,
+          unquote("#" + $truck_col + "80") 50%,
+          transparent 50%
         );
 
         .dispatcher-close {
           svg {
             #main_circle {
-              fill: unquote('#' + $truck_col + '80')
+              fill: unquote("#" + $truck_col + "80");
             }
           }
 
           &:hover {
             #main_circle {
-              fill: unquote('#' + $truck_col)
+              fill: unquote("#" + $truck_col);
             }
           }
         }
@@ -275,21 +272,21 @@ td.driver-field {
     @each $trailer_col in $trailer_collors {
       &.trailer_#{$trailer_col} {
         background: linear-gradient(
-            to right,
-            unquote('#' + $trailer_col + '80') 50%,
-            transparent 50%
+          to right,
+          unquote("#" + $trailer_col + "80") 50%,
+          transparent 50%
         );
 
         .dispatcher-close {
           svg {
             #main_circle {
-              fill: unquote('#' + $trailer_col + '80')
+              fill: unquote("#" + $trailer_col + "80");
             }
           }
 
           &:hover {
             #main_circle {
-              fill: unquote('#' + $trailer_col)
+              fill: unquote("#" + $trailer_col);
             }
           }
         }
@@ -301,28 +298,24 @@ td.driver-field {
         color: #fff !important;
       }
     }
-
   }
 
   .no-color {
     &:hover {
-      background: linear-gradient(to right, #DADADA 50%, transparent 50%);
+      background: linear-gradient(to right, #dadada 50%, transparent 50%);
       //background-position: right bottom !important;
       transition: all 0.2s ease-out;
       background-size: 200% 100% !important;
-
     }
   }
 }
 
-
 .locked {
-
   .drag-span {
     @each $truck_col in $truck_collors {
       &.truck_#{$truck_col} {
         .select_span {
-          color: unquote('#' + $truck_col) !important;
+          color: unquote("#" + $truck_col) !important;
         }
       }
     }
@@ -330,7 +323,7 @@ td.driver-field {
     @each $trailer_col in $trailer_collors {
       &.trailer_#{$trailer_col} {
         .select_span {
-          color: unquote('#' + $trailer_col) !important;
+          color: unquote("#" + $trailer_col) !important;
         }
       }
     }
@@ -344,7 +337,7 @@ td.driver-field {
       // background-size: 200% 100% !important;
 
       .select_span {
-        color: #B7B7B7 !important;
+        color: #b7b7b7 !important;
       }
     }
   }
@@ -386,7 +379,7 @@ td.driver-field {
       svg-icon {
         svg {
           rect {
-            fill: #B7B7B7;
+            fill: #b7b7b7;
           }
         }
       }

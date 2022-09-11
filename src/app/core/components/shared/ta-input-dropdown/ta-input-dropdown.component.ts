@@ -829,7 +829,7 @@ export class TaInputDropdownComponent
     this.destroy$.complete();
   }
 
-  dropdownIsOpened(){
-    console.log("DROPDOWN IS OPENED");
+  dropdownIsOpened() {
+    console.log('DROPDOWN IS OPENED');
   }
 }

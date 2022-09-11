@@ -151,7 +151,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
 
     .no-color {
       &:hover {
-        background: linear-gradient(to right, #DADADA 50%, transparent 50%);
+        background: linear-gradient(to right, #6C6C6C 50%, transparent 50%);
         //background-position: right bottom !important;
         transition: all 0.2s ease-out;
         background-size: 200% 100% !important;

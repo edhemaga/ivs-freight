@@ -194,6 +194,8 @@ export class DispatchboardTablesComponent implements OnInit {
   trailerSelectOpened: number = -1;
   driverSelectOpened: number = -1;
 
+  statusOpenedIndex: number = -1;
+
   showAddAddressField: number = -1;
 
   savedTruckId: any;
@@ -232,11 +234,16 @@ export class DispatchboardTablesComponent implements OnInit {
   }
 
   addDriver(e) {
-    this.updateOrAddDispatchBoardAndSend(
-      'driverId',
-      e.id,
-      this.driverSelectOpened
-    );
+    if (e) {
+      const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened].driver ? "driverId" : "coDriver";
+
+      this.updateOrAddDispatchBoardAndSend(
+        driverOrCoDriver,
+        e.id,
+        this.driverSelectOpened
+      );
+    }
+
     this.driverSelectOpened = -1;
   }
 
@@ -333,7 +340,7 @@ export class DispatchboardTablesComponent implements OnInit {
   removeTruck(indx) {
     this.updateOrAddDispatchBoardAndSend('truckId', null, indx);
   }
-  
+
   removeTrailer(indx) {
     this.updateOrAddDispatchBoardAndSend('trailerId', null, indx);
   }
@@ -378,7 +385,7 @@ export class DispatchboardTablesComponent implements OnInit {
         ...newData,
       };
 
-      if( !value && key == "truckId" ) newData.location = null;
+      if (!value && key == 'truckId') newData.location = null;
 
       this.dss
         .updateDispatchBoard(newData, this.dData.id)
@@ -389,6 +396,7 @@ export class DispatchboardTablesComponent implements OnInit {
           })
         )
         .subscribe((data) => {
+          this.dss.updateCountList(this.dData.id, key, value);
           this.checkEmptySet = '';
         });
     } else {
@@ -406,6 +414,7 @@ export class DispatchboardTablesComponent implements OnInit {
         )
         .subscribe((data) => {
           this.checkEmptySet = '';
+          this.dss.updateCountList(this.dData.id, key, value);
         });
     }
     // console.log("HELOOOOO", newData);
@@ -628,5 +637,15 @@ export class DispatchboardTablesComponent implements OnInit {
 
   returnButtonId(i) {
     return 'buttonId_' + i;
+  }
+
+
+
+  addStatus(e){
+    console.log("STATUS CHANGING", e);
+  }
+
+  openIndex(indx: number) { 
+    this.statusOpenedIndex = indx;
   }
 }
