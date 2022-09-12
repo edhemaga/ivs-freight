@@ -43,8 +43,8 @@ export function getLoadTemplateColumnDefinition() {
       export: true,
       resizable: true,
       linkField: {
-        routerLinkStart: '/loads/edit/',
-        routerLinkEnd: '/detail',
+        routerLinkStart: '/load/',
+        routerLinkEnd: '/details',
       },
     },
     {
@@ -466,8 +466,8 @@ export function getLoadActiveAndPendingColumnDefinition() {
       export: true,
       resizable: true,
       linkField: {
-        routerLinkStart: '/loads/edit/',
-        routerLinkEnd: '/detail',
+        routerLinkStart: '/load/',
+        routerLinkEnd: '/details',
       },
     },
     {
@@ -1072,8 +1072,8 @@ export function getLoadClosedColumnDefinition() {
       export: true,
       resizable: true,
       linkField: {
-        routerLinkStart: '/loads/edit/',
-        routerLinkEnd: '/detail',
+        routerLinkStart: '/load',
+        routerLinkEnd: '/details',
       },
     },
     {

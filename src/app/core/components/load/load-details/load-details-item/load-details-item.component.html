@@ -1,0 +1,268 @@
+<div class="details-component">
+  <div
+    *ngFor="let loadItem of loadData; trackBy: identity"
+    [ngSwitch]="loadItem.template"
+  >
+    <div *ngSwitchCase="'general'">
+      <app-load-card-view [load]="loadItem?.data"></app-load-card-view>
+    </div>
+    <div *ngSwitchCase="'finance'">
+      <div class="finance-container">
+        <div class="finance-wrapper">
+          <div class="balance-wrapper">
+            <span class="header">Balance</span>
+            <span class="value">{{
+              loadItem?.data.broker.availableCredit | formatCurrency
+            }}</span>
+          </div>
+          <div class="divider"></div>
+          <app-ta-custom-card
+            [animationsDisabled]="false"
+            [bodyTemplate]="'card'"
+            [cardName]="'Billing'"
+            [hasDivider]="false"
+            [isCardOpen]="true"
+          >
+            <div class="billing-container">
+              <div class="biling-header">
+                <span class="type">TYPE</span>
+                <span class="type">VALUE</span>
+              </div>
+              <div class="divider"></div>
+              <div class="billing-item">
+                <div class="icon-name">
+                  <svg-icon
+                    class="icon-additional"
+                    src="assets/svg/common/load/ic_circle-default-load.svg"
+                  ></svg-icon>
+                  <div class="billing-name">Base Rate</div>
+                </div>
+                <div class="billing-value">
+                  {{ loadItem?.data?.baseRate | formatCurrency }}
+                </div>
+              </div>
+              <div class="divider"></div>
+
+              <div class="billing-item">
+                <div class="icon-name">
+                  <svg-icon
+                    class="icon-additional"
+                    src="assets/svg/common/load/ic_circle-adjusted-load.svg"
+                  ></svg-icon>
+                  <div class="billing-name">Adjusted</div>
+                </div>
+                <div class="billing-value">
+                  {{ loadItem?.data?.adjustedRate | formatCurrency }}
+                </div>
+              </div>
+              <div class="divider"></div>
+
+              <div
+                class="additonal-wrapper-biling"
+                *ngFor="
+                  let addBilling of loadItem?.data?.additionalBillingRates;
+                  trackBy: identity
+                "
+              >
+                <div class="billing-item">
+                  <div class="icon-name">
+                    <svg-icon
+                      class="icon-additional"
+                      src="assets/svg/common/load/ic_circle-plus-load.svg"
+                    ></svg-icon>
+                    <div class="billing-name">
+                      {{ addBilling.additionalBillingType.name }}
+                    </div>
+                  </div>
+                  <div class="billing-value">
+                    {{ addBilling.rate | formatCurrency }}
+                  </div>
+                </div>
+                <div class="divider"></div>
+              </div>
+              <div class="total-bill-wrapper first-wrapper">
+                <div class="total-bill">
+                  <span class="total">Total Bill</span>
+                  <span class="total-value">{{
+                    loadItem?.data?.totalRate | formatCurrency
+                  }}</span>
+                </div>
+              </div>
+              <div class="total-bill-wrapper">
+                <div class="total-bill total-adjusted">
+                  <span class="total">Total Adjusted</span>
+                  <span class="total">{{
+                    loadItem?.data?.totalAdjustedRate | formatCurrency
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </app-ta-custom-card>
+
+          <div class="divider"></div>
+          <app-ta-custom-card
+            [animationsDisabled]="false"
+            [bodyTemplate]="'card'"
+            [cardName]="'Payment'"
+            [hasDivider]="false"
+            [isCardOpen]="true"
+          >
+            <div class="billing-container">
+              <div class="biling-header">
+                <span class="type">TYPE</span>
+                <span class="type">VALUE</span>
+              </div>
+              <div class="divider"></div>
+              <div class="billing-item">
+                <div class="icon-name">
+                  <svg-icon
+                    class="icon-additional"
+                    src="assets/svg/common/load/ic_circle-disable-load.svg"
+                  ></svg-icon>
+                  <div class="billing-name">Advance</div>
+                </div>
+                <div class="billing-value">
+                  {{ loadItem?.data?.advancePay | formatCurrency }}
+                </div>
+              </div>
+              <div class="total-bill-wrapper total-wrapper">
+                <div class="total-bill">
+                  <span class="total">Total Paid</span>
+                  <span class="total-value">{{
+                    loadItem?.data?.totalPaid | formatCurrency
+                  }}</span>
+                </div>
+              </div>
+            </div>
+          </app-ta-custom-card>
+        </div>
+      </div>
+    </div>
+    <div *ngSwitchCase="'stop'">
+      <div class="stop-container">
+        <div class="stop-header-container">
+          <div class="stop-location-wrapper stop-cont">
+            <div class="location-item-wrapper">
+              <span class="current-location-header">Current Location</span>
+              <span class="current-location-value">Kennesaw, GA 30144</span>
+            </div>
+            <div class="location-item-wrapper">
+              <span class="next-location-header">Next Stop - Pickup</span>
+              <span class="current-location-value">Mason, OH 45040</span>
+            </div>
+          </div>
+          <div class="load-progress-container">
+            <div class="start-after-icons">
+              <svg-icon
+                class="icon-start"
+                src="assets/svg/common/load/ic_load-start-position.svg"
+              ></svg-icon>
+              <svg-icon
+                class="icon-start icon-after-start"
+                src="assets/svg/common/load/ic_load-start-position.svg"
+              ></svg-icon>
+              <svg-icon
+                class="icon-start icon-after-green"
+                src="assets/svg/common/load/ic_load-start-position.svg"
+              ></svg-icon>
+              <svg-icon
+                class="icon-start icon-after-red four-icon"
+                src="assets/svg/common/load/ic_load-start-position.svg"
+              ></svg-icon>
+              <svg-icon
+                class="icon-start icon-after-red"
+                src="assets/svg/common/load/ic_load-start-position.svg"
+              ></svg-icon>
+            </div>
+            <div class="current-loaction">
+              <svg-icon
+                class="icon-start"
+                src="assets/svg/common/load/load-moving-right.svg"
+              ></svg-icon>
+            </div>
+          </div>
+          <div class="stop-location-wrapper moving-cont">
+            <div class="location-item-wrapper">
+              <span class="moving-header">MOVING - NORTH / WEST</span>
+              <span class="moving-value">57 minutes</span>
+            </div>
+            <div class="location-item-wrapper">
+              <span class="total-header"
+                >Total <span class="total-load-perctange">868.3 mi</span></span
+              >
+              <span class="moving-value completed-value"
+                ><span class="total-load-perctange font-14">47%</span>Completed</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="stop-items-container">
+        <app-ta-custom-card
+          [animationsDisabled]="false"
+          [bodyTemplate]="'card'"
+          [cardName]="'Item'"
+          [hasCounter]="getStopItems(loadItem.data)"
+          [hasDivider]="false"
+          [isCardOpen]="true"
+        >
+          <div class="stops-wrapper-load">
+            <div class="stop-items-header-load">
+              <span class="item">#</span>
+              <span class="item">DESCRIPTION</span>
+              <span class="item">QTY</span>
+              <span class="item">TEMP</span>
+              <span class="item">WEIGHT</span>
+              <svg-icon
+                class="flex-icon"
+                src="assets/svg/common/load/ic_length.svg"
+              ></svg-icon>
+              <svg-icon
+                class="flex-icon"
+                src="assets/svg/common/load/ic_height.svg"
+              ></svg-icon>
+              <svg-icon
+                class="flex-icon"
+                src="assets/svg/common/load/ic_load-.svg"
+              ></svg-icon>
+              <span class="item">TARP</span>
+              <span class="item">SEAL NUM.</span>
+            </div>
+            <div class="divider-load"></div>
+            <div
+              class="stop-items-header-load"
+              *ngFor="let item of loadItem?.data?.stops"
+            >
+              <div class="wrap-load-items" *ngFor="let items of item.items; let i = index; trackBy:identity">
+                <span class="item-body">{{i}}</span>
+                <span class="item-body item-body-bold">{{ items.description }}</span>
+                <span class="item-body">{{ items?.quantity + ' ' + items?.units?.name }}</span>
+                <span class="item-body">{{items?.temperature}} °F</span>
+                <span class="item-body">{{ items?.weight }} Ibs</span>
+                <span class="item-body">{{ items?.length }} ft</span>
+                <span class="item-body">{{ items?.height }} ft</span>
+                <span class="item-body">{{ items?.stackable?'Yes':'No' }}</span>
+                <span class="item-body">{{items?.tarp.name}}</span>
+                <span class="item-body">{{items?.sealNumber}}</span>
+                <div class="divider-load"></div>
+              </div>
+            </div>
+          </div>
+        </app-ta-custom-card>
+      </div>
+      <div class="map-load-container">
+        <span class="default-text">Here map</span>
+      </div>
+    </div>
+    <div *ngSwitchCase="'comment'">
+      <div *ngIf="loadItem?.data?.comments.length" class="comment-container">
+        <app-ta-user-review
+          (changeReviewsEvent)="changeReviewsEvent($event)"
+          [reviewData]="loadItem?.data?.comments"
+          *ngIf="loadItem?.data?.comments.length"
+        >
+        </app-ta-user-review>
+      </div>
+    </div>
+  </div>
+</div>

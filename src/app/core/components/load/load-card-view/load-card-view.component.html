@@ -1,0 +1,247 @@
+<div *ngIf="load" class="cards-item-wrapper-1">
+  <app-ta-details-header-card
+    [tooltipNext]="'Next Load'"
+    [tooltipPrevious]="'Previous Load'"
+    [cardDetailsDate]="load.dateCreated | formatDateP"
+    [searchInputName]="'Search Load'"
+  >
+    <!-- (selectValue)="onSelectedDriver($event)"
+    (changeEvent)="onChangeDriver($event)"
+    [hasArrow]="hideArrow"
+    [optionsDrop]="dropData"
+    (dropActions)="onDriverActions($event)" -->
+    <div class="load-status-driver-container">
+      <div class="load-status-time">
+        <div class="load-status-item-status">
+          {{ load?.status?.name.toUpperCase() }}
+        </div>
+        <div class="load-status-item-days">
+          <span class="days" *ngIf="load?.lastStatusPassed?.days > 0"
+            >{{ load?.lastStatusPassed?.days}} <span class="days">{{load?.lastStatusPassed?.days== 1?'day':'days'}}</span></span
+          >
+          <span class="days" *ngIf="load?.lastStatusPassed?.hours > 0">
+            {{ load?.lastStatusPassed?.hours }} hour</span
+          >
+          <span class="days" *ngIf="load?.lastStatusPassed?.days <= 0">
+            {{ load?.lastStatusPassed?.minutes }} minutes
+          </span>
+        </div>
+      </div>
+      <div class="driver-reg">
+        <div class="driver-avatar">
+          <img
+            [src]="
+              load?.dispatch?.driver?.avatar
+                ? imageBase64Service.sanitizer(load?.dispatch?.driver?.avatar)
+                : 'assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg'
+            "
+            alt="Avatar Driver"
+            class="avatar"
+          />
+          <div class="load-item-driver-name">
+            {{
+              load?.dispatch?.driver?.firstName +
+                " " +
+                load?.dispatch?.driver?.lastName
+            }}
+          </div>
+        </div>
+        <div class="load-item-driver-ref">Ref: {{ load?.referenceNumber }}</div>
+      </div>
+    </div>
+  </app-ta-details-header-card>
+  <div
+    class="wrapper-additional-cards"
+    [ngClass]="{ 'bind-heigth': !templateCard }"
+  >
+    <div class="details-cards">
+      <!-- Broker Details -->
+      <app-ta-custom-card
+        [cardName]="'Broker Details'"
+        [hasDivider]="false"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+        class="first-custom-card"
+      >
+        <div class="load-broker-container">
+          <div class="company-name">{{ load?.company?.companyName }}</div>
+          <div class="broker-name">Milos Cirkovic</div>
+          <div class="phone-ext-wrapper">
+            <div class="phone-ext-item-wrapper">
+              <svg-icon src="assets/svg/common/ic_phone.svg"></svg-icon>
+              <span class="item-value"> (343) 4242-232</span>
+            </div>
+            <div class="phone-ext-item-wrapper">
+              <svg-icon
+                src="assets/svg/common/ic_phone-extension.svg"
+              ></svg-icon>
+              <span class="item-value"> 43381</span>
+            </div>
+          </div>
+          <div class="phone-ext-item-wrapper phone-ext-item-wrapper-last">
+            <svg-icon src="assets/svg/common/ic_email.svg"></svg-icon>
+            <span class="item-value email-broker-load">milos@gma.com</span>
+          </div>
+        </div>
+      </app-ta-custom-card>
+
+      <!-- AssignedTo -->
+      <app-ta-custom-card
+        [cardName]="'Assigned To'"
+        [hasDivider]="true"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+      >
+        <div class="load-assigned-container">
+          <div class="assigned-driver">
+            <div class="driver-info">
+              <img
+                src="assets/svg/common/user-image.svg"
+                class="driver-avatar"
+                alt=""
+              />
+              <span class="driver-name">{{
+                load?.dispatch?.driver?.firstName +
+                  " " +
+                  load?.dispatch?.driver?.lastName
+              }}</span>
+            </div>
+          </div>
+          <div class="flex-load">
+            <div class="assigned-driver truck">
+              <div class="driver-info">
+                <svg-icon
+                  class="flex-load"
+                  src="assets/svg/common/trucks/ic_truck_semi-wSleeper.svg"
+                ></svg-icon>
+                <span class="driver-name">{{
+                  load?.dispatch?.truck?.truckNumber
+                }}</span>
+              </div>
+            </div>
+            <div class="assigned-driver trailer">
+              <div class="driver-info">
+                <svg-icon
+                  class="flex-load"
+                  src="assets/svg/common/trailers/ic_trailer_conestoga.svg"
+                ></svg-icon>
+                <span class="driver-name">{{
+                  load?.dispatch?.trailer?.trailerNumber
+                }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="assigned-driver phone-ext-item-wrapper-last">
+            <div class="driver-info">
+              <span class="driver-name">{{ load?.company?.companyName }}</span>
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+
+      <!-- Status -->
+      <app-ta-custom-card
+        [cardName]="'Status History'"
+        [hasDivider]="true"
+        [isCardOpen]="false"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+      >
+      </app-ta-custom-card>
+
+      <!-- Load Details -->
+      <app-ta-custom-card
+        [cardName]="'Load Details & Requirements'"
+        [hasDivider]="true"
+        [isCardOpen]="true"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+      >
+        <div class="load-details-container">
+          <div class="load-details-wrapper">
+            <div class="load-details-item">
+              <div class="load-details-header">General Commodity</div>
+              <div class="load-details-value">
+                {{ load?.generalCommodity?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Weight</div>
+              <div class="load-details-value">{{ load?.weight }} ibs</div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Truck req.</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.truckType?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Trailer req.</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.trailerType?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Door type</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.doorType?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Suspension</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.suspension?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Length</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.trailerLength?.name }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Year</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.year }}
+              </div>
+            </div>
+            <div class="load-details-item">
+              <div class="load-details-header">Liftgate</div>
+              <div class="load-details-value">
+                {{ load?.loadRequirements?.liftgate ? "Yes" : "No" }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </app-ta-custom-card>
+      <!-- Load Details -->
+      <app-ta-custom-card
+        [cardName]="'Documents'"
+        [hasDivider]="true"
+        [isCardOpen]="false"
+        [hasCounter]="10"
+        [bodyTemplate]="'card'"
+        [animationsDisabled]="false"
+      >
+      </app-ta-custom-card>
+      <div class="divider"></div>
+      <div class="details-page-row-5">
+        <div class="note-item">
+          <app-ta-input-note
+            [formControl]="loadNote"
+            [isVisibleDivider]="false"
+            [isVisibleNote]="true"
+            [isVisibleArrow]="true"
+            [minRows]="1"
+            [isVisibleSecondDivider]="false"
+            [placeholder]="'Write something.'"
+            [customClass]="'note-small'"
+          >
+          </app-ta-input-note>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

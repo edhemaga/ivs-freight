@@ -1,3 +1,4 @@
+import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
 import { LoadListResponse, LoadService } from 'appcoretruckassist';
 import { Observable } from 'rxjs';
@@ -39,5 +40,8 @@ export class LoadTService {
       search1,
       search2
     );
+  }
+  public getLoadById(loadId: number): Observable<LoadResponse> {
+    return this.loadServices.apiLoadIdGet(loadId);
   }
 }

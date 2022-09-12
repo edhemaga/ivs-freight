@@ -10,37 +10,35 @@
         'Fuel Stop Details',
         'Shipper Details',
         'Broker Details',
-        'Roadside Insp. Details'
+        'Roadside Insp. Details',
+        'Active Load Details',
+        'Pending Load Details',
+        'Closed Load Details'
       ].includes(headerText)
     "
   >
-    <div
-    
-     class="icon-text-wrapper">
-     <span
-     ngbTooltip
-     [mainTooltip]="tooltipHeaderName"
-     position="bottom"
-     tooltipBackground="#6C6C6C"
-     >
-      <svg-icon
-        
-        routerLink="{{ route }}"
-        class="header-arrow"
-        src="assets/svg/common/ic_arrow-left.svg"
+    <div class="icon-text-wrapper">
+      <span
+        ngbTooltip
+        [mainTooltip]="tooltipHeaderName"
+        position="bottom"
+        tooltipBackground="#6C6C6C"
       >
-      </svg-icon>
-    </span>
+        <svg-icon
+          routerLink="{{ route }}"
+          class="header-arrow"
+          src="assets/svg/common/ic_arrow-left.svg"
+        >
+        </svg-icon>
+      </span>
       <p class="disable-selection">{{ headerText }}</p>
     </div>
-    
+
     <div class="icon-right">
-      <div *ngIf="isInactive" class="inactive-status">
-        INACTIVE
-       </div>
+      <div *ngIf="isInactive" class="inactive-status">INACTIVE</div>
       <app-details-page-dropdown
         [customClassDropDown]="'drop-down-header'"
-        [options]="options.actions"
+        [options]="options?.actions"
         [id]="optionsId"
         [hasVericalDots]="true"
         (dropDownActions)="dropAct($event)"
@@ -61,7 +59,10 @@
           'Fuel Stop Details',
           'Shipper Details',
           'Broker Details',
-          'Roadside Insp. Details'
+          'Roadside Insp. Details',
+          'Active Load Details',
+          'Pending Load Details',
+          'Closed Load Details'
         ].includes(headerText)
       "
     >
@@ -70,7 +71,7 @@
         [ngClass]="{ 'has-counter-header': counterData }"
       >
         <app-ta-counter
-          *ngIf="!danger && counterData || counterData==0"
+          *ngIf="(!danger && counterData) || counterData == 0"
           [countBackgroud]="'#F3F3F3'"
           [countColor]="'#919191'"
           [countHeight]="'24px'"
@@ -78,23 +79,36 @@
           [count]="counterData"
         >
         </app-ta-counter>
-        <svg-icon *ngIf="danger && counterData>0" class="danger-svg" src="assets/svg/common/ic_danger.svg"></svg-icon>
+        <svg-icon
+          *ngIf="danger && counterData > 0"
+          class="danger-svg"
+          src="assets/svg/common/ic_danger.svg"
+        ></svg-icon>
         <div class="header-text-arrow-down">
-        <p class="header-name disable-selection">{{ headerText }}</p>
-        <svg-icon *ngIf="hasArrowDown" class="arrow-down-header" src="assets/svg/common/calendar/arrow-right.svg"></svg-icon>
-      </div>
+          <p class="header-name disable-selection">{{ headerText }}</p>
+          <svg-icon
+            *ngIf="hasArrowDown"
+            class="arrow-down-header"
+            src="assets/svg/common/calendar/arrow-right.svg"
+          ></svg-icon>
+        </div>
         <div *ngIf="hasIcon" class="repair-header-icons">
-          <span class="ic-hed" *ngFor="let ic of arrayIcons; trackBy: trackByIndex">
+          <span
+            class="ic-hed"
+            *ngFor="let ic of arrayIcons; trackBy: trackByIndex"
+          >
             <div class="border-line-left"></div>
             <svg-icon class="single-repair-icon" src="{{ ic.icon }}"></svg-icon>
           </span>
           <div class="border-line-left"></div>
 
-          <div *ngIf="totalCost" class="total-cost">{{totalCost | formatCurrency }}</div>
+          <div *ngIf="totalCost" class="total-cost">
+            {{ totalCost | formatCurrency }}
+          </div>
         </div>
       </div>
       <div class="header-plus-button">
-        <div  class="date-arrow-repair">
+        <div class="date-arrow-repair">
           <p *ngIf="customText" class="date-repair">{{ customText }}</p>
           <div class="icons-repair" *ngIf="hasDateArrow">
             <svg-icon
@@ -110,15 +124,22 @@
               src="assets/svg/common/fill_arrow_down.svg"
             ></svg-icon>
           </div>
-          <div class="violation-counter" *ngIf="counterViolation">{{counterViolation}}</div>
+          <div class="violation-counter" *ngIf="counterViolation">
+            {{ counterViolation }}
+          </div>
         </div>
         <div class="hide-buttons" *ngIf="!statusInactive">
-          <div (click)="makeRequestFun(headerText)" *ngIf="hasRequest " class="request-header-container">Request</div>
-          <div  *ngIf="!hasRequest" class="border-line-left"></div>
+          <div
+            (click)="makeRequestFun(headerText)"
+            *ngIf="hasRequest"
+            class="request-header-container"
+          >
+            Request
+          </div>
+          <div *ngIf="!hasRequest" class="border-line-left"></div>
           <svg-icon
             class="icon-plus-header"
             (click)="openModal(headerText)"
-
             src="assets/svg/common/ic_plus.svg"
           >
           </svg-icon>
