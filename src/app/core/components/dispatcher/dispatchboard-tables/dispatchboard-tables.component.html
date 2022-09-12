@@ -142,6 +142,7 @@
                 [mainTooltip]="'Add Truck'"
                 [tooltipBackground]="'#6C6C6C'"
                 ngbTooltip
+                [disabled]="!truckList.length"
                 position="top"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
@@ -274,6 +275,7 @@
                 [class.active]="trailerSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
+                [disabled]="!trailerList.length"
                 [mainTooltip]="'Add Trailer'"
                 [tooltipBackground]="'#6C6C6C'"
                 ngbTooltip
@@ -329,7 +331,7 @@
                     </span>
 
                     <div
-                      *ngIf="!__isBoardLocked && item.driver && !item.coDriver"
+                      *ngIf="!__isBoardLocked && item.driver && !item.coDriver && driverList.length"
                       class="dispatcher-close cursor-pointer dispatcher_new_codriver"
                       [mainTooltip]="'Add Co-Driver'"
                       [tooltipBackground]="'#6C6C6C'"
@@ -467,6 +469,7 @@
                 [class.active]="driverSelectOpened == rowIndex"
                 [ngClass]="item.id === null ? 'add-row' : ''"
                 class="btn-transparent dispatch-bottom-add"
+                [disabled]="!driverList.length"
                 [mainTooltip]="'Add Driver'"
                 [tooltipBackground]="'#6C6C6C'"
                 ngbTooltip
@@ -607,7 +610,7 @@
                 class="dispatcher-table-cell-holder main_status_switch_holder"
               >
                 <app-ta-status-switch
-                  *ngIf="item.assignedLoads.length"
+                  *ngIf="item.driver && item.trailer && item.truck"
                   (changeStatus)="addStatus($event)"
                   (openIndex)="openIndex($event)"
                   [openedStatus]="statusOpenedIndex"
@@ -630,7 +633,7 @@
               <div
                 (mouseleave)="pickDeliveryHovered[rowIndex] = false"
                 (mouseover)="pickDeliveryHovered[rowIndex] = true"
-                *ngIf="item.truckId && item.driverId"
+                *ngIf="item.activeLoad"
                 [class.active]="loadOpenedIndx == rowIndex"
                 [class.hovered]="
                   pickDeliveryHovered[rowIndex] && statusOpenedIndex == -1
@@ -638,13 +641,13 @@
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="customTabsDispatch left pickup-data"
               >
-                <div *ngIf="item.pickupNumber" class="load-count no-back">
+                <div *ngIf="item.activeLoad.pickupCount" class="load-count no-back">
                   <svg-icon
-                    *ngIf="item.pickupNumber < 10"
-                    name="svg_num_box_{{ item.pickupNumber }}"
+                    *ngIf="item.activeLoad.pickupCount < 10"
+                    src="assets/svg/svg_numbers/olddash/svg_num_box_{{ item.activeLoad.pickupCount }}.svg"
                   ></svg-icon>
                   <svg-icon
-                    *ngIf="item.pickupNumber > 9"
+                    *ngIf="item.activeLoad.pickupCount > 9"
                     name="svg_num_over"
                   ></svg-icon>
                 </div>
@@ -652,7 +655,7 @@
                   *ngIf="item.pickup !== null"
                   class="text-ellipsis dispatch-pickup-delivery"
                 >
-                  <app-load-routes
+                  <!-- <app-load-routes
                     (openedRoutes)="openedRoutes($event)"
                     [dataId]="item.id"
                     [itemIndx]="rowIndex"
@@ -665,12 +668,7 @@
                       class="select_span"
                     >
                       <div class="pick-del-location">
-                        {{
-                          item.pickupJson?.address?.city +
-                            ", " +
-                            item.pickupJson?.address?.stateShortName
-                            | taHighlight: highlightingWords
-                        }}
+                        {{ item.activeLoad.pickup.shipper.address.city + ', ' + item.activeLoad.pickup.shipper.address.state}}
                       </div>
 
                       <div class="time_info">
@@ -678,7 +676,7 @@
                         <div>7:10PM</div>
                       </div>
                     </span>
-                  </app-load-routes>
+                  </app-load-routes> -->
                 </div>
               </div>
             </div>
@@ -843,6 +841,7 @@
                 (click)="showNextDropdown(-2, truckDropdown)"
                 *ngIf="!__isBoardLocked && truckSelectOpened != -2"
                 class="btn-transparent dispatch-bottom-add"
+                [disabled]="!truckList.length"
                 [mainTooltip]="'Add Truck'"
                 [tooltipBackground]="'#6C6C6C'"
                 ngbTooltip
@@ -902,6 +901,7 @@
                 class="btn-transparent dispatch-bottom-add"
                 [mainTooltip]="'Add Trailer'"
                 [tooltipBackground]="'#6C6C6C'"
+                [disabled]="!trailerList.length"
                 ngbTooltip
                 position="top"
               >
@@ -961,6 +961,7 @@
                 [class.active]="driverSelectOpened == -2"
                 class="btn-transparent dispatch-bottom-add"
                 [mainTooltip]="'Add Driver'"
+                [disabled]="!driverList.length"
                 [tooltipBackground]="'#6C6C6C'"
                 ngbTooltip
                 position="top"
@@ -976,67 +977,6 @@
                 </svg-icon>
               </button>
             </div>
-
-            <!-- 
-            <div class="dispatch-list empty_row">
-              <button
-                (click)="showNextDriverDropdown(-2)"
-                [class.active]="driverSelectOpened == -2"
-                class="btn-transparent dispatch-bottom-add"
-              >
-                <svg-icon
-                  appTooltip="Add Driver"
-                  class="driverItem icon-hover-blue-22 cursor-pointer d-flex"
-                  main_id="addDriver"
-                  position="bottom-right"
-                  src="assets/svg/dispatchboard/add.svg"
-                  tooltipBackground="#919191"
-                >
-                </svg-icon>
-              </button>
-              <ng-select
-                #driverDropdown
-                (blur)="blurDriver($event)"
-                (change)="
-                  addDriver(
-                    $event,
-                    item.id,
-                    null,
-                    null,
-                    driverDropdown,
-                    rowIndex
-                  )
-                "
-                *ngIf="driverSelectOpened == -2"
-                [clearable]="false"
-                [isOpen]="true"
-                [items]="loadDrivers"
-                [searchFn]="customSearchFn"
-                bindLabel="name"
-                bindValue="id"
-                class="dispatch-dropdown"
-              >
-                <ng-template let-item="item" ng-label-tmp>
-                  <div class="dropdown-item-wrapper">
-                    <span class="ta-dropdown-item">{{ item.driverName }} </span>
-                  </div>
-                </ng-template>
-
-                <ng-template
-                  let-item="item"
-                  let-search="searchTerm"
-                  ng-option-tmp
-                >
-                  <div class="dropdown-item-wrapper ta-list-items">
-                    <span
-                      [ngOptionHighlight]="search"
-                      class="ta-dropdown-item"
-                      >{{ item.driverName }}</span
-                    >
-                  </div>
-                </ng-template>
-              </ng-select>
-            </div> -->
           </td>
           <td class="phoneemail-field">
             <div class="phone-em-hold empty-box-field"></div>
