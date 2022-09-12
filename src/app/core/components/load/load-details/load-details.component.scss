@@ -1,5 +1,7 @@
 @import "../../../../../assets/scss/details_page_ske.scss";
-.details-container-items {
-    display: grid;
-    grid-template-columns: 440px 280px 792px 280px !important;
+app-load-details {
+    .details-container-items {
+        display: grid;
+        grid-template-columns: 440px 280px 792px 280px !important;
+    }
 }

@@ -198,20 +198,55 @@
         </div>
       </div>
       <div class="stop-items-container">
+        <app-ta-custom-card *ngFor="let item of loadItem?.data?.stops;let j = index;"
+        [animationsDisabled]="false"
+        [bodyTemplate]="'card'"
+        [cardName]="item?.shipper?.address?.street+', ' +item?.shipper?.address?.stateShortName + ' ' + item?.shipper?.address?.zipCode"
+        [hasCounter]="item?.items?.length"
+        [hasDivider]="j>0?true:false"
+        [counterBackgroundColor]="item?.stopType.name==='Pickup'?'#E57373':'#4DB6A2'"
+        [counterColor]="'#ffffff'"
+        [isCardOpen]="true">
+        <div class="stop-information-container">
+          <div class="svg-value-wrapper">
+          <div class="driver-name"> {{
+            loadItem?.data?.dispatch?.driver?.firstName +
+              " " +
+              loadItem?.data?.dispatch?.driver?.lastName
+          }}</div>
+          <svg-icon class="flex-icon" src="assets/svg/truckassist-table/customer/contact-column-avatar-select-row.svg"></svg-icon>
+        </div>
+        <div class="svg-value-wrapper">
+          <svg-icon class="flex-icon" src="assets/svg/applicant/location.svg"></svg-icon>
+          <div class="regular-text">{{item?.shipper?.address?.address}}</div>
+        </div>
+        <div class="svg-value-wrapper">
+          <svg-icon class="flex-icon" src="assets/svg/common/ic_clock.svg"></svg-icon>
+          <div class="regular-text">Today, {{item?.timeFrom}} - {{item?.timeTo}} PM </div>
+          <div *ngIf="item.timeType.name==='Appointment'" class="appoitment-wrapper">APPOINTMENT</div>
+        </div>
+         </div>
+         <div class="divider"></div>
         <app-ta-custom-card
           [animationsDisabled]="false"
           [bodyTemplate]="'card'"
           [cardName]="'Item'"
-          [hasCounter]="getStopItems(loadItem.data)"
+          [hasCounter]="item?.items?.length"
           [hasDivider]="false"
           [isCardOpen]="true"
         >
+         
           <div class="stops-wrapper-load">
             <div class="stop-items-header-load">
+              <div class="cg-32">
               <span class="item">#</span>
               <span class="item">DESCRIPTION</span>
+            </div>
+            <div class="cg-82">
               <span class="item">QTY</span>
               <span class="item">TEMP</span>
+            </div>
+            <div class="cg-37">
               <span class="item">WEIGHT</span>
               <svg-icon
                 class="flex-icon"
@@ -221,37 +256,61 @@
                 class="flex-icon"
                 src="assets/svg/common/load/ic_height.svg"
               ></svg-icon>
+            
               <svg-icon
                 class="flex-icon"
                 src="assets/svg/common/load/ic_load-.svg"
               ></svg-icon>
+            </div>
+            <div class="cg-23">
               <span class="item">TARP</span>
-              <span class="item">SEAL NUM.</span>
+              <span class="item">SECURE</span>
+              <span class="item">BOL</span>
+            </div>
+            <div class="cg-51">
+              <span class="item">APPOINT.</span>
+              <span class="item">PICKUP NO.</span>
+            </div>
+            <div class="cg-69">
+              <span class="item">PO NO.</span>
+              <span class="item">SEAL NO.</span>
+            </div>
+              <span class="item">CODE</span>
+
             </div>
             <div class="divider-load"></div>
             <div
               class="stop-items-header-load"
-              *ngFor="let item of loadItem?.data?.stops"
+              
             >
-              <div class="wrap-load-items" *ngFor="let items of item.items; let i = index; trackBy:identity">
-                <span class="item-body">{{i}}</span>
-                <span class="item-body item-body-bold">{{ items.description }}</span>
+             <div class="wrapper-item-divider" *ngFor="let items of item.items; let i = index; trackBy:identity">
+              <div class="wrap-load-items">
+                <span class="item-body">{{i+1}}</span>
+                <span class="item-body item-body-bold">{{ items?.description }}</span>
                 <span class="item-body">{{ items?.quantity + ' ' + items?.units?.name }}</span>
                 <span class="item-body">{{items?.temperature}} °F</span>
-                <span class="item-body">{{ items?.weight }} Ibs</span>
-                <span class="item-body">{{ items?.length }} ft</span>
-                <span class="item-body">{{ items?.height }} ft</span>
-                <span class="item-body">{{ items?.stackable?'Yes':'No' }}</span>
-                <span class="item-body">{{items?.tarp.name}}</span>
+                <span  class="item-body">{{ items?.weight }} Ibs</span>
+                <span class="item-body"><span *ngIf="items?.length">{{ items?.length }} ft</span></span>
+                <span class="item-body"><span *ngIf="items?.height">{{ items?.height }} ft</span></span>
+                <span class="item-body" >{{ items?.stackable?'Yes':'No' }}</span>
+                <span class="item-body" >{{items?.tarp?.name}}</span>
+                <span class="item-body">{{items?.boxingType?.name}}</span>
+                <span class="item-body">{{items?.bolNumber}}</span>
+                <span class="item-body">{{items?.appointmentNumber}}</span>
+                <span class="item-body">{{items?.pickupNumber}}</span>
+                <span class="item-body">{{items?.poNumber}}</span>
                 <span class="item-body">{{items?.sealNumber}}</span>
-                <div class="divider-load"></div>
+                <span class="item-body">{{items?.code}}</span>
+              </div>
+              <div class="divider-load"></div>
               </div>
             </div>
           </div>
         </app-ta-custom-card>
-      </div>
-      <div class="map-load-container">
-        <span class="default-text">Here map</span>
+      </app-ta-custom-card>
+        <div class="map-load-container">
+          <span class="default-text">Here map</span>
+        </div>
       </div>
     </div>
     <div *ngSwitchCase="'comment'">

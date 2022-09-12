@@ -14,6 +14,7 @@ import {
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-load-details-item',
@@ -21,7 +22,7 @@ import { NotificationService } from 'src/app/core/services/notification/notifica
   styleUrls: ['./load-details-item.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class LoadDetailsItemComponent implements OnInit, OnChanges {
+export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
   @Input() loadData: any;
   public comments: any[] = [];
   private destroy$ = new Subject<void>();
@@ -49,26 +50,30 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges {
   }
   changeReviewsEvent(event) {
     if (event.action == 'delete') {
-      this.commentsService.deleteCommentById(event.data).subscribe({
-        next: () => {
-          this.notificationService.success(
-            'Comment successfully deleted',
-            'Success:'
-          );
-        },
-        error: () => {
-          this.notificationService.error(
-            `Comment with id: ${event.data} couldn't be deleted`,
-            'Error:'
-          );
-        },
-      });
+      this.commentsService
+        .deleteCommentById(event.data)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'Comment successfully deleted',
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error(
+              `Comment with id: ${event.data} couldn't be deleted`,
+              'Error:'
+            );
+          },
+        });
     } else if (event.action == 'update') {
       this.commentsService
         .updateComment({
           id: event.data.id,
           commentContent: event.data.commentContent,
         })
+        .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: () => {
             this.notificationService.success(
@@ -84,5 +89,9 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges {
           },
         });
     }
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -48,7 +48,8 @@ export class TaCustomCardComponent {
   @Input() disabledCard: boolean = false;
 
   @Input() disableMultipleReviews: boolean = false;
-
+  @Input() counterBackgroundColor: string = '#F3F3F3';
+  @Input() counterColor: string = '#6c6c6c';
   @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
     new EventEmitter<{ check: boolean; action: string }>(null);
 
