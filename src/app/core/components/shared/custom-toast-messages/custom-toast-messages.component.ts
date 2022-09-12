@@ -11,6 +11,7 @@ import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import moment from 'moment';
+import { data } from 'jquery';
 
 
 const routeSpecify = {
@@ -140,6 +141,18 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'medical',
       'value' : 'MEDICAL',
+    },
+    {
+      'api' : 'repair',
+      'value' : 'REPAIR BILL'
+    },
+    {
+      'api' : 'registration',
+      'value' : 'REGISTRATION'
+    },
+    {
+      'api' : 'inspection',
+      'value' : 'INSPECTION',
     }
     
   ]
@@ -214,67 +227,182 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.message = this.httpRequest.body?.tableData.dbaName ? this.httpRequest.body.tableData.dbaName : this.httpRequest.body.tableData.businessName;
           break;
           case 2:
+            this.message = this.httpRequest.body?.tableData.name ? this.httpRequest.body.tableData.name : '';
             this.actionType = 'REPAIR SHOP';
           break;
           case 3:
             this.actionType = 'SHIPPER';
+            this.message = this.httpRequest.body?.tableData.businessName ? this.httpRequest.body.tableData.businessName : '';
           break;
         }
       break;
       case 'CDL':
+        let dId = this.httpRequest.body?.driverId;
+        let driverFullName = '';
+        
+        if (dId){
+          driverFullName = this.storesArray.driverActive.entities[dId].fullName;
+        }
+        
         this.message = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : '';
-        if ( this.httpRequest.method == 'POST' ){
+        if ( this.httpRequest.method == 'POST' || this.httpRequest.method == 'PUT' ){
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
-          this.actionType = 'CDL - ' +  this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+          this.actionType = !dId ? 'CDL' : 'CDL - ' + driverFullName;
         }
       break;
       case 'MVR':
-      case 'MEDICAL': 
+      case 'MEDICAL':   
+        let driverId = this.httpRequest.body?.driverId;
+        let driverName = this.storesArray.driverActive.entities[driverId].fullName;
+        if ( !driverName ){
+          driverName = this.storesArray.driverInactive.entities[driverId].fullName;
+        }
+        
         let issuedDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
-          this.actionType = this.actionType == 'MVR' ? 'MVR - ' : 'MEDICAL - ' +  this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+          this.actionType = this.actionType == 'MVR' ? 'MVR - ' : 'MEDICAL - ' + driverName;
           this.message = 'Issued: ' + issuedDate;
         }
       break;
       case 'SHIPPER':
       case 'BROKER':
-       
+       let messageValue = '';
+       let dataValue;
+       if ( this.httpRequest.body ){
+        messageValue = this.httpRequest.body.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
+       }
+      
         if ( !isNaN(lastVal) ){ 
-          if ( this.storesArray.broker.entities[lastVal] ){
-            console.log('---ent val---', this.storesArray.broker.entities[lastVal]);
+          if ( this.storesArray.broker.entities[lastVal] || this.storesArray.shipper.entities[lastVal] ){
+            dataValue = this.actionType == 'BROKER' ? this.storesArray.broker.entities[lastVal] : this.storesArray.broker.entities[lastVal];
+            if ( !messageValue ){
+              messageValue = dataValue.dbaName ? dataValue.dbaName : dataValue.businessName;
+            }
           }
         }
 
         if ( apiEndPoint.indexOf('dnu') > -1 )
           {
-            this.actionType = this.toastrType == 'toast-error' ? 'BROKER FROM DNU LIST' : 'BROKER FROM DNU LIST';
+            let moveAction = '';
+            if ( dataValue.dnu ){
+              moveAction = 'FROM';
+              
+            } else {
+              moveAction = 'TO';
+              this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
+            }
+
+            this.actionType = this.toastrType == 'toast-error' ? 'BROKER ' + moveAction + ' DNU LIST' : 'BROKER ' + moveAction + ' DNU LIST';
             this.wideMessage = true;
           }
 
         if ( apiEndPoint.indexOf('ban') > -1 )
           {
-            this.actionType = this.toastrType == 'toast-error' ? 'BROKER FROM BAN LIST' : 'BROKER FROM BAN LIST';
+            let moveAction = '';
+            if ( dataValue.ban ){
+              moveAction = 'FROM';
+              
+            } else {
+              moveAction = 'TO';
+              this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
+            }
+
+            this.actionType = this.toastrType == 'toast-error' ? 'BROKER ' + moveAction + ' BAN LIST' : 'BROKER ' + moveAction + ' BAN LIST';
             this.wideMessage = true;
           }  
         
-        this.message = this.httpRequest.body?.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
+        this.message = messageValue;
       break;
       case 'LOGIN':
         this.message = this.httpRequest.body?.email ? this.httpRequest.body.email : '';
       break;
       case 'TRAILER':
-        this.message = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
+        let trailerNum = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
+        if (!trailerNum){
+          if ( !isNaN(lastVal) ){
+            let trailerNum = this.storesArray.trailerActive.entities[lastVal] ? this.storesArray.trailerActive.entities[lastVal].trailerNumber : '';
+            if ( !trailerNum ) {
+              trailerNum = this.storesArray.truckInactive.entities[lastVal].trailerNumber;
+            }
+          }
+        }
+        this.message = trailerNum;
       break;
       case 'COMPANY':
         this.message = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
       break;
       case 'TRUCK':
-        this.message = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+        let truckNum = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+        if (!truckNum){
+          if ( !isNaN(lastVal) ){
+            truckNum = this.storesArray.truckActive.entities[lastVal] ? this.storesArray.truckActive.entities[lastVal].truckNumber : '';
+            if ( !truckNum ){
+              truckNum = this.storesArray.truckInactive.entities[lastVal].truckNumber;
+            } 
+          }
+        }
+        this.message = truckNum;
       break;
       case 'OWNER':
+        let name = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+        if ( !name ) { 
+          if ( !isNaN(lastVal) ){
+            name = this.storesArray.ownerActive.entities[lastVal].name ? this.storesArray.ownerActive.entities[lastVal].name : '';
+            if ( !name ) {
+              name = this.storesArray.ownerInactive.entities[lastVal].name;
+            }
+          }
+         }
+        this.message = name;
+      break;
       case 'CONTACT':
-        this.message = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+        let contactName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+        if ( !contactName ) { 
+          if ( !isNaN(lastVal) ) {
+            contactName = this.storesArray.contact.entities[lastVal].name ? this.storesArray.contact.entities[lastVal].name : '';
+          }
+         }
+        this.message = contactName;
+      break;
+      case 'REPAIR SHOP':
+         let shopName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+         if ( !shopName ){
+          if ( !isNaN(lastVal) ) {
+            shopName = this.storesArray.repairShop.entities[lastVal].name ? this.storesArray.contact.entities[lastVal].name : ''; 
+          }
+         }
+         this.message = shopName;
+      break;
+      case 'REPAIR BILL':
+      case 'REGISTRATION':
+         let messageText = '';
+
+         if ( this.httpRequest.body?.truckId ){
+            let repairTruckId = this.httpRequest.body?.truckId;
+            let repairTruckNum = this.storesArray.truckActive.entities[repairTruckId] ? this.storesArray.truckActive.entities[repairTruckId].truckNumber : '';
+            if ( !repairTruckNum ) {
+              repairTruckNum = this.storesArray.truckInactive.entities[repairTruckId].truckNumber;
+            }
+
+            messageText = 'Truck - ' + repairTruckNum;
+         }
+         else if ( this.httpRequest.body?.trailerId ) {
+            let repairTrailerId = this.httpRequest.body?.truckId;
+            let repairTrailerNum = this.storesArray.trailerActive.entities[repairTrailerId] ? this.storesArray.trailerActive.entities[repairTrailerId].trailerNumber : '';
+            if ( !repairTrailerNum ) {
+              repairTrailerNum = this.storesArray.truckInactive.entities[repairTrailerId].trailerNumber;
+            }
+
+            messageText = 'Trailer - ' + repairTrailerNum;
+         }
+
+         this.wideMessage = true;
+         this.message = messageText;
+      break;
+      case 'INSPECTION': 
+         let inspectionDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
+         this.message = 'Issued: ' + inspectionDate;
       break;
     }
 
