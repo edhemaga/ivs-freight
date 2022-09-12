@@ -122,25 +122,25 @@ export class FuelDetailsItemComponent implements OnInit {
     this.dummyDataVehicle = [
       {
         unit: 'R53202',
-        icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
+        icon: 'assets/svg/truckassist-table/trailer/container.svg',
         key: '24',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/common/trailers/ic_trailer_step-deck.svg',
+        icon: 'assets/svg/truckassist-table/trailer/container.svg',
         key: '54',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/common/trailers/ic_trailer_dumper.svg',
+        icon: 'assets/svg/truckassist-table/trailer/dumper.svg',
         key: '234',
         cost: '132,567,25',
       },
       {
         unit: 'R53202',
-        icon: 'assets/svg/common/trailers/ic_trailer_chassis.svg',
+        icon: 'assets/svg/truckassist-table/trailer/dumper.svg',
         key: '42',
         cost: '132,567,25',
       },

@@ -2,7 +2,7 @@
   <div class="settings-header">
     <div class="settings-name d-flex align-items-center">
       <app-ta-counter
-        [count]="parkingData?.count"
+        [count]="'4'"
         [countColor]="'#919191'"
         [countBackground]="'#F3F3F3'"
         [countHeight]="'24px'"
@@ -21,21 +21,20 @@
   </div>
   <span class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of parkingData?.data; trackBy: identity"
-      [settingsIcon]="item.isOwner?'ic_company.svg':''"
+      *ngFor="let item of parkingData; trackBy: identity"
+      [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
-      [optionsId]="item.id"
-      [options]="parkingActions"
-      (dropActions)="optionsEvent($event,'parking')"
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
         <div
           *ngIf="item.phone"
           class="single-item"
-
+          (click)="
+            onAction({ modalName: 'parking', type: { type: 'edit', id: 1 } })
+          "
         >
           <svg-icon
             class="company-icons"
@@ -55,7 +54,7 @@
             class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
-          <span>{{ item.address.address }}</span>
+          <span>{{ item.address }}</span>
         </div>
       </div>
       <app-ta-custom-card
@@ -70,22 +69,22 @@
           [ngClass]="{ 'no-divider': !item.rent }"
         >
           <div class="parking-template-item">
-            <p class="parking-template-number">{{ item.parkingSlot }}</p>
+            <p class="parking-template-number">{{ item.parking_slot }}</p>
             <p class="parking-template-text">Parking Slot</p>
           </div>
           <div class="parking-template-item">
-            <p class="parking-template-number">{{ item.fullParkingSlot }}</p>
+            <p class="parking-template-number">{{ item.parking_slot_full }}</p>
             <p class="parking-template-text">Full Parking Slot</p>
           </div>
           <div class="parking-template-item">
             <svg-icon
               class="parking-template-svg"
-              [ngClass]="{ disabled: !item.securityCamera }"
+              [ngClass]="{ disabled: !item.security_camera }"
               src="assets/svg/common/ic_security-camera.svg"
             ></svg-icon>
             <p
               class="parking-template-text"
-              [ngClass]="{ 'cross-out': !item.securityCamera }"
+              [ngClass]="{ 'cross-out': !item.security_camera }"
             >
               Security Camera
             </p>

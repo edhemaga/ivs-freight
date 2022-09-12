@@ -20,7 +20,7 @@
           {{ shopResponse?.phone | formatPhoneP }}
         </p>
       </div>
-      <div *ngIf="shopResponse?.email" class="repair-information-item">
+      <div class="repair-information-item">
         <svg-icon
           class="repair-icon"
           src="assets/svg/common/ic_email.svg"
@@ -40,7 +40,6 @@
     <div class="repair-cards">
       <app-ta-custom-card
         [bodyTemplate]="'card'"
-        *ngIf="shopResponse?.openHours.length"
         [animationsDisabled]="false"
         [hasDivider]="false"
         [cardName]="'Working Hours'"
@@ -63,15 +62,15 @@
             <div class="working-days">
               <div class="open-header">Monday - Friday</div>
               <div class="open-working-days-value">
-                {{ shopResponse?.openHours[1]?.startTime }} AM -
-                {{ shopResponse?.openHours[1]?.endTime }} PM
+                {{ shopResponse.openHours[1].startTime }} AM -
+                {{ shopResponse.openHours[1].endTime }} PM
               </div>
             </div>
             <div class="working-days">
               <div class="open-header">Saturday</div>
               <div class="open-working-days-value">
-                {{ shopResponse?.openHours[5]?.startTime }} AM -
-                {{ shopResponse?.openHours[5]?.endTime }} PM
+                {{ shopResponse?.openHours[5].startTime }} AM -
+                {{ shopResponse.openHours[5].endTime }} PM
               </div>
             </div>
           </div>
@@ -79,8 +78,8 @@
             <div class="open-header">Sunday</div>
             <div class="open-working-days-value">
               {{
-                shopResponse?.openHours[0]?.startTime
-                  ? shopResponse?.openHours[0]?.startTime
+                shopResponse.openHours[0].startTime
+                  ? shopResponse.openHours[0].startTime
                   : "Closed"
               }}
             </div>
@@ -92,14 +91,13 @@
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
         [cardName]="'Service'"
-        [hasDivider]="shopResponse?.openHours.length?true:false"
         [hasCounter]="count"
         [isCardOpen]="true"
       >
         <div class="service-container">
           <div
             *ngFor="
-              let service of shopResponse?.serviceTypes;
+              let service of shopResponse.serviceTypes;
               let i = index;
               trackBy: identity
             "
@@ -107,13 +105,13 @@
             <div class="service-item">
               <svg-icon
                 [ngClass]="{ disabled: !service.active }"
-                src="assets/svg/common/repair-services/{{ service?.logoName }}"
+                src="assets/svg/common/repair-services/{{ service.logoName }}"
               ></svg-icon>
 
               <span
-                [ngClass]="{ 'cross-out': !service?.active }"
+                [ngClass]="{ 'cross-out': !service.active }"
                 class="service-type"
-                >{{ service?.serviceType?.name }}</span
+                >{{ service.serviceType.name }}</span
               >
             </div>
           </div>

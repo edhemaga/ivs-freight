@@ -86,7 +86,7 @@
         <div *ngIf="hasIcon" class="repair-header-icons">
           <span class="ic-hed" *ngFor="let ic of arrayIcons; trackBy: trackByIndex">
             <div class="border-line-left"></div>
-            <svg-icon class="single-repair-icon" (click)="filterActions(ic.name)" src="{{ ic.icon }}"></svg-icon>
+            <svg-icon class="single-repair-icon" src="{{ ic.icon }}"></svg-icon>
           </span>
           <div class="border-line-left"></div>
 

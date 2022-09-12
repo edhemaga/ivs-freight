@@ -24,7 +24,6 @@ import { RepairTruckQuery } from './repair-truck-state/repair-truck.query';
 import { RepairTrailerQuery } from './repair-trailer-state/repair-trailer.query';
 import { ShopQuery } from './shop-state/shop.query';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { CompanyRepairShopStore } from '../../settings/settings-location/settings-repair-shop/state/company-repairshop.store';
 
 @Injectable({
   providedIn: 'root',
@@ -39,8 +38,7 @@ export class RepairTService {
     private repairTrailerQuery: RepairTrailerQuery,
     private shopStore: ShopStore,
     private shopQuery: ShopQuery,
-    private tableService: TruckassistTableService,
-    private companyRepairShopStore: CompanyRepairShopStore
+    private tableService: TruckassistTableService
   ) {}
 
   // <----------------------- Repair Truck And Trailer -------------------->
@@ -214,7 +212,7 @@ export class RepairTService {
             );
 
             this.shopStore.add(shop);
-            this.companyRepairShopStore.add(shop);
+
             repairShopCount.repairShops++;
 
             localStorage.setItem(
@@ -313,7 +311,7 @@ export class RepairTService {
         );
 
         this.shopStore.remove(({ id }) => id === shopId);
-        this.companyRepairShopStore.remove(({ id }) => id === shopId);
+
         shopCount.repairShops--;
 
         localStorage.setItem(

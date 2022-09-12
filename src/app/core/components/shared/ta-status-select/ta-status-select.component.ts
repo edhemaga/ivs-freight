@@ -41,12 +41,12 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
   constructor(private statusPipe: StatusPipePipe) {}
 
   ngOnInit(): void {
-    // this.items = this.statusPipe.transform(
-    //   this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
-    //   this.value,
-    //   this.dataType,
-    //   this.dataItems
-    // );
+    this.items = this.statusPipe.transform(
+      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+      this.value,
+      this.dataType,
+      this.dataItems
+    );
   }
 
   toggleClass(e: any, type: boolean) {
@@ -62,38 +62,38 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // this.items = this.statusPipe.transform(
-    //   this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
-    //   this.value,
-    //   this.dataType,
-    //   this.dataItems
-    // );
-    // this.value = this.dataItems.statusId;
+    this.items = this.statusPipe.transform(
+      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+      this.value,
+      this.dataType,
+      this.dataItems
+    );
+    this.value = this.dataItems.statusId;
   }
 
   public change(event) {
-    // if (this.dataType == 'load' && event.id == 5) {
-    //   this.savedTonuStatus = event;
-    //   this.addTonyStatusActive = true;
-    //   this.items = this.statusPipe.transform(
-    //     this.loadStatuses,
-    //     this.dataItems.statusId,
-    //     this.dataType,
-    //     this.dataItems
-    //   );
-    // } else {
-    //   if (this.dataType == 'load') {
-    //     this.dataItems.statusId = event.id;
-    //     this.items = this.statusPipe.transform(
-    //       this.loadStatuses,
-    //       this.dataItems.statusId,
-    //       this.dataType,
-    //       this.dataItems
-    //     );
-    //   }
+    if (this.dataType == 'load' && event.id == 5) {
+      this.savedTonuStatus = event;
+      this.addTonyStatusActive = true;
+      this.items = this.statusPipe.transform(
+        this.loadStatuses,
+        this.dataItems.statusId,
+        this.dataType,
+        this.dataItems
+      );
+    } else {
+      if (this.dataType == 'load') {
+        this.dataItems.statusId = event.id;
+        this.items = this.statusPipe.transform(
+          this.loadStatuses,
+          this.dataItems.statusId,
+          this.dataType,
+          this.dataItems
+        );
+      }
 
-    //   this.changeVal.emit(event);
-    // }
+      this.changeVal.emit(event);
+    }
   }
 
   public saveTonuStatus(): void {

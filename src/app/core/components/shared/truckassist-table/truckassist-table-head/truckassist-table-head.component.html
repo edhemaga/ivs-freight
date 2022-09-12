@@ -60,7 +60,8 @@
           }"
           [ngClass]="{
             'sort-active': column.sortDirection !== '' && column.sortDirection,
-            'th-title-locked-cursor': locked
+            'th-title-locked-cursor': locked,
+            'set-center-th-title': column.setCenter
           }"
         >
           {{ column.name }}
@@ -222,7 +223,8 @@
             [ngClass]="{
               'sort-active':
                 column.sortDirection !== '' && column.sortDirection,
-              'th-title-locked-cursor': locked
+              'th-title-locked-cursor': locked,
+              'set-center-th-title': column.setCenter
             }"
           >
             {{ column.name }}

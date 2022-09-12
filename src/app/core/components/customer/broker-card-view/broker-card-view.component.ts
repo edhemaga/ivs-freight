@@ -27,7 +27,6 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   public note: FormControl = new FormControl();
   public tabsBroker: any;
   public invoiceAgeingCounter: number = 0;
-  public getPercntageOfPaid: number = 0;
   constructor(
     private brokerQuery: BrokerQuery,
     private brokerMinimalQuery: BrokerMinimalListQuery,
@@ -78,8 +77,6 @@ export class BrokerCardViewComponent implements OnInit, OnChanges {
   }
 
   public getInvoiceAgeingCount(data: BrokerResponse) {
-    this.getPercntageOfPaid = (data?.availableCredit / data?.creditLimit) * 100;
-
     let firstGroup = data?.invoiceAgeingGroupOne?.totalSum;
     let secondGroup = data?.invoiceAgeingGroupTwo?.totalSum;
     let threeGroup = data?.invoiceAgeingGroupThree?.totalSum;
