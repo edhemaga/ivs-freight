@@ -77,6 +77,9 @@ export class TruckassistTableBodyComponent
   attachmentsTooltip: any;
   isAttachmentClosing: boolean;
   attachmentWidth: number = 0;
+  statusTooltip: any;
+  statusDropdownActive: number = -1;
+  statusDropdownData: any;
 
   constructor(
     private router: Router,
@@ -329,6 +332,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+
     this.router.navigate([link]);
   }
 
@@ -425,6 +429,19 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+  }
+
+  // Toggle Status Dropdown
+  toggleStatusDropdown(tooltip: any, row: any) {
+    this.statusTooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open();
+    }
+
+    this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
+    this.statusDropdownData = row;
   }
 
   // Show Description Dropdown

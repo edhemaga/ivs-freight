@@ -1,9 +1,8 @@
 .profile-image-holder {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: column;
-  height: 100%;
 
   .small-medium-holder {
     display: flex;
@@ -24,7 +23,7 @@
       line-height: 20px;
       user-select: none;
 
-      &.small.show_hover_animation {
+      &.small {
         &:hover {
           cursor: pointer;
           transform: scale(1.5);

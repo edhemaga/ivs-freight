@@ -19,7 +19,6 @@ export class ProfileImagesComponent implements OnInit {
   @Input() size: string;
   @Input() name: any;
   @Input() type: string = 'driver';
-  @Input() showHoverAnimation: boolean = true;
 
   constructor() { }
 

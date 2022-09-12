@@ -69,10 +69,7 @@
                 height: 22px;
                 background-size: contain;
                 border-radius: 100%;
-            }
-
-            .dispatcher_full_name{
-                margin-left: 6px;
+                margin-right: 6px;
             }
 
             .dispatch_count{
@@ -116,7 +113,7 @@
                 align-items: center;
 
                 .drop_item{
-                    height: 28px !important;
+                    height: 32px !important;
                 }
             }
         }

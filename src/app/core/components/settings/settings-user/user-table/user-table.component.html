@@ -5,12 +5,15 @@
     [tableData]="tableData"
     [selectedTab]="selectedTab"
     [columns]="columns"
+    [tableContainerWidth]="tableContainerWidth"
   ></app-truckassist-table-toolbar>
 
   <app-truckassist-table-head
     [options]="tableOptions"
     [viewData]="viewData"
     [columns]="columns"
+    (headActions)="onTableHeadActions($event)"
+    [tableContainerWidth]="tableContainerWidth"
   ></app-truckassist-table-head>
 
   <app-truckassist-table-body
@@ -19,5 +22,7 @@
     [options]="tableOptions"
     [selectedTab]="selectedTab"
     (bodyActions)="onTableBodyActions($event)"
+    [tableData]="tableData"
+    [tableContainerWidth]="tableContainerWidth"
   ></app-truckassist-table-body>
 </div>
