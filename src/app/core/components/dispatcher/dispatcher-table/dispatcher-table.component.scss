@@ -1,8 +1,8 @@
 @import "../../../../../theme/variables.scss";
-$trailer_collors: 'e94c4c', 'eec860', '47b5ff', '253f6a', 'af88ea', '822c97', 'ffaf47', '48b857',
-'44bec2', '508181', '4c83e2', '5ba160', 'e94949', '243e6a', 'ef6e6e', '5673aa', '76a77d', '484848',
-'8fdee1', 'ffbe7d', '81ccff', '668888', '955fa2', '547556', 'f2dd75';
-$truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668888', '90659b', '78c7fc', 'ef6e6e', 'ffc061', '90bc6f';
+$trailer_collors: 'FF5454', '6D82C7', '56AB62', '3C3C3C', '6FDFE4', 'F89A3D', '1E9DF3', '59A5A5',
+'A468FF', 'A34CB8', '4A9A4F', 'F3D542';
+
+$truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415FC1';
 
 
 .parking-table{
@@ -137,6 +137,11 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       }
 
       &:hover {
+
+        .dispatcher-close{
+          display: block;
+        }
+
         .select_span {
           color: #fff !important;
         }
@@ -146,7 +151,7 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
 
     .no-color {
       &:hover {
-        background: linear-gradient(to right, #DADADA 50%, transparent 50%);
+        background: linear-gradient(to right, #6C6C6C 50%, transparent 50%);
         //background-position: right bottom !important;
         transition: all 0.2s ease-out;
         background-size: 200% 100% !important;
@@ -287,6 +292,15 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
         border-radius: 3px;
         height: 32px;
         background-color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+
+        .dispatch-board-buttons-holder{
+          display: flex;
+          align-items: center;
+        }
       }
     }
 
@@ -294,6 +308,14 @@ $truck_collors: '5ba160', 'ffaf47', 'e94949', '4c83e2', 'eec860', '508181', '668
       width: 100%;
       margin: 0;
     }
+  }
+
+  .border-spacer{
+    height: 20px;
+    width: 2px;
+    margin: 0 2px;
+    border-radius: 1px;
+    background-color: #F3F3F3;
   }
 
   .k-grid-header {
