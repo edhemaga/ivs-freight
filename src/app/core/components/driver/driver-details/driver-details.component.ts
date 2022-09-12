@@ -68,6 +68,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    this.currentIndex = this.driversList.findIndex(
+      (driver) => driver.id === this.activated_route.snapshot.data.driver.id
+    );
+    this.getDriverById(this.activated_route.snapshot.data.driver.id);
+    this.initTableOptions(this.activated_route.snapshot.data.driver);
     this.detailCongif(this.activated_route.snapshot.data.driver);
     if (this.cdlActiveId > 0) {
       this.getCdlById(this.cdlActiveId);
@@ -152,10 +157,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   /**Function template and names for header and other options in header */
   public detailCongif(data: DriverResponse | any) {
-    this.currentIndex = this.driversList.findIndex(
-      (driver) => driver.id === data.id
-    );
-    this.initTableOptions(data);
     this.checkExpiration(data);
     if (data?.status == 0) {
       this.statusDriver = true;

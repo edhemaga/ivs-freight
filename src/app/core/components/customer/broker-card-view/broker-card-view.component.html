@@ -211,12 +211,9 @@
         >
           <div class="invoice-ageing-template-item">
             <span class="header-name">Available Credit</span>
-            <div class="credit-perctange">
-            <span *ngIf="broker?.availableCredit" class="value-ageing">{{
+            <span *ngIf="broker.availableCredit" class="value-ageing">{{
               broker?.availableCredit | formatCurrency
             }}</span>
-            <div class="percntage-broker">{{getPercntageOfPaid}}%</div>
-          </div>
           </div>
         </div>
         <div

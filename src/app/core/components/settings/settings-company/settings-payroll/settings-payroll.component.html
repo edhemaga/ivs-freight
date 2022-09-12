@@ -33,7 +33,7 @@
         "
         [cardName]="payroll?.department?.name"
         [bodyTemplate]="'card'"
-        [isCardOpen]="false"
+        [isCardOpen]="true"
         [hasDivider]="i > 0 ? true : false"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-2px'"
@@ -42,59 +42,59 @@
         <!-- Driver & Owner -->
         <div
           class="payroll-template-data"
-          *ngIf="payroll?.department?.name === 'Driver&Owner'"
+          *ngIf="payroll?.department?.name === 'Owner'"
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Empty Mile</span>
-            <span *ngIf="payroll?.solo.emptyMile" class="payroll-value"
-              >${{ payroll?.solo.emptyMile | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.soloEmptyMile | taThousandSeparator }}</span
             >
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Loaded Mile</span>
-            <span *ngIf="payroll?.solo.loadedMile" class="payroll-value"
-              >${{ payroll?.solo.loadedMile | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.soloLoadedMile | taThousandSeparator }}</span
             >
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Solo Per Stop</span>
-            <span *ngIf="payroll?.solo.perStop" class="payroll-value"
-              >${{ payroll?.solo.perStop | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.soloPerStop | taThousandSeparator }}</span
             >
           </div>
-          <div class="payroll-template-item" *ngIf="payroll?.team.emptyMile">
+          <div class="payroll-template-item">
             <span class="payroll-name">Team Empty Mile</span>
-            <span  class="payroll-value"
-              >${{ payroll?.team.emptyMile | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.teamEmptyMile | taThousandSeparator }}</span
             >
           </div>
-          <div class="payroll-template-item" *ngIf="payroll?.team.loadedMile">
+          <div class="payroll-template-item">
             <span class="payroll-name">Team Loaded Mile</span>
-            <span  class="payroll-value"
-              >${{ payroll?.team.loadedMile | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.teamLoadedMile | taThousandSeparator }}</span
             >
           </div>
-          <div class="payroll-template-item" *ngIf="payroll?.team.teamPerStop">
+          <div class="payroll-template-item">
             <span class="payroll-name">Team Per Stop</span>
-            <span  class="payroll-value"
-              >${{ payroll?.team.perStop | taThousandSeparator }}</span
+            <span class="payroll-value"
+              >${{ payroll?.teamPerStop | taThousandSeparator }}</span
             >
           </div>
-          <div class="payroll-template-item" *ngIf="payroll.defaultSoloDriverCommission">
+          <div class="payroll-template-item">
             <span class="payroll-name">Solo Commision</span>
-            <span  class="payroll-value"
+            <span class="payroll-value"
               >{{ payroll?.defaultSoloDriverCommission }}%</span
             >
           </div>
-          <div class="payroll-template-item" *ngIf="payroll?.defaultTeamDriverCommission">
+          <div class="payroll-template-item">
             <span class="payroll-name">Team Commision</span>
-            <span  class="payroll-value"
+            <span class="payroll-value"
               >{{ payroll?.defaultTeamDriverCommission }}%</span
             >
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Owner Commision</span>
-            <span *ngIf="payroll?.defaultOwnerCommission"  class="payroll-value"
+            <span class="payroll-value"
               >{{ payroll?.defaultOwnerCommission }}%</span
             >
           </div>
@@ -106,7 +106,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -118,7 +118,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -130,7 +130,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -142,7 +142,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -154,7 +154,7 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -162,11 +162,11 @@
 
         <div
           class="payroll-template-data"
-          *ngIf="payroll?.department?.name === 'CompanyOwner'"
+          *ngIf="payroll?.department?.name === 'CoOwner'"
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Salary</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
@@ -177,13 +177,13 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Base</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Load Commison</span>
-            <span *ngIf="payroll?.defaultCommission" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultCommission | taThousandSeparator }}</span
             >
           </div>
@@ -194,13 +194,13 @@
         >
           <div class="payroll-template-item">
             <span class="payroll-name">Base</span>
-            <span *ngIf="payroll?.defaultBase" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultBase | taThousandSeparator }}</span
             >
           </div>
           <div class="payroll-template-item">
             <span class="payroll-name">Revenue Commison</span>
-            <span *ngIf="payroll?.defaultCommission" class="payroll-value"
+            <span class="payroll-value"
               >${{ payroll?.defaultCommission | taThousandSeparator }}</span
             >
           </div>

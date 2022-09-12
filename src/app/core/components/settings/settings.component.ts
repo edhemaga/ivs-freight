@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
-  selector: 'app-settings-company',
+  selector: 'app-settings-factoring',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.global.scss'],
   encapsulation: ViewEncapsulation.None,

@@ -40,35 +40,33 @@ export class TrailerTService implements OnDestroy {
   public addTrailer(data: CreateTrailerCommand): Observable<any> {
     return this.trailerService.apiTrailerPost(data).pipe(
       tap((res: any) => {
-        const subTrailer = this.getTrailerById(res.id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (trailer: TrailerResponse | any) => {
-              this.trailerActiveStore.add(trailer);
-              this.trailerMinimalStore.add(trailer);
-              const trailerCount = JSON.parse(
-                localStorage.getItem('trailerTableCount')
-              );
+        const subTrailer = this.getTrailerById(res.id).subscribe({
+          next: (trailer: TrailerResponse | any) => {
+            this.trailerActiveStore.add(trailer);
 
-              trailerCount.active++;
+            const trailerCount = JSON.parse(
+              localStorage.getItem('trailerTableCount')
+            );
 
-              localStorage.setItem(
-                'trailerTableCount',
-                JSON.stringify({
-                  active: trailerCount.active,
-                  inactive: trailerCount.inactive,
-                })
-              );
+            trailerCount.active++;
 
-              this.tableService.sendActionAnimation({
-                animation: 'add',
-                data: trailer,
-                id: trailer.id,
-              });
+            localStorage.setItem(
+              'trailerTableCount',
+              JSON.stringify({
+                active: trailerCount.active,
+                inactive: trailerCount.inactive,
+              })
+            );
 
-              subTrailer.unsubscribe();
-            },
-          });
+            this.tableService.sendActionAnimation({
+              animation: 'add',
+              data: trailer,
+              id: trailer.id,
+            });
+
+            subTrailer.unsubscribe();
+          },
+        });
       })
     );
   }
@@ -116,9 +114,9 @@ export class TrailerTService implements OnDestroy {
           .subscribe({
             next: (trailer: TrailerResponse | any) => {
               this.trailerActiveStore.remove(({ id }) => id === data.id);
-              this.trailerMinimalStore.remove(({ id }) => id === data.id);
+
               this.trailerActiveStore.add(trailer);
-              this.trailerMinimalStore.add(trailer);
+
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: trailer,

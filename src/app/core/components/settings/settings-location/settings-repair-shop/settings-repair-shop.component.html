@@ -2,7 +2,7 @@
   <div class="settings-header">
     <div class="settings-name d-flex align-items-center">
       <app-ta-counter
-        [count]="repairShopData?.count"
+        [count]="'4'"
         [countColor]="'#919191'"
         [countBackground]="'#F3F3F3'"
         [countHeight]="'24px'"
@@ -22,20 +22,20 @@
   </div>
   <div class="settings-body">
     <app-ta-re-card
-      *ngFor="let item of repairShopData?.data; let i = index; trackBy: identity"
+      *ngFor="let item of repairShopData; let i = index; trackBy: identity"
+      [settingsIcon]="item.companyOwned"
       [cardNameCommon]="item.name"
-      [settingsIcon]="item.companyOwned?'ic_company.svg':''"
       [hasFooter]="false"
       [haveHeaderText]="true"
-      [options]="repairsActions"
-      [optionsId]="item.id"
-      (dropActions)="repairDropActions($event,'repair-shop')"
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
         <div
           *ngIf="item.phone"
           class="single-item"
+          (click)="
+            onAction({ modalName: 'repairshop', type: { type: 'edit', id: 1 } })
+          "
         >
           <svg-icon
             class="company-icons"
@@ -50,16 +50,16 @@
           ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
         </div>
-        <div *ngIf="item.address.address" class="single-item">
+        <div *ngIf="item.address" class="single-item">
           <svg-icon
             class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
-          <span>{{ item.address.address }}</span>
+          <span>{{ item.address }}</span>
         </div>
       </div>
       <app-ta-custom-card
-        [hasCounter]="getActiveServices(item).length"
+        [hasCounter]="getActiveServices(item.services).length"
         [cardName]="'Services'"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
@@ -71,18 +71,18 @@
         >
           <div
             class="repair-shop-template-item"
-            *ngFor="let ser of item.serviceTypes; trackBy: identity"
+            *ngFor="let ser of item.services; trackBy: identity"
           >
             <svg-icon
               class="repair-shop-template-svg"
-              [ngClass]="{ disabled: !ser.active }"
-              src="assets/svg/common/repair-services/{{ ser.logoName }}"
+              [ngClass]="{ disabled: !ser.isUsefulService }"
+              src="{{ ser.svg }}"
             ></svg-icon>
             <p
               class="repair-shop-template-text"
-              [ngClass]="{ 'cross-out': !ser.active }"
+              [ngClass]="{ 'cross-out': !ser.isUsefulService }"
             >
-              {{ ser.serviceType.name }}
+              {{ ser.name }}
             </p>
           </div>
         </div>

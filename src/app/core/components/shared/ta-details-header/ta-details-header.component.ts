@@ -40,8 +40,7 @@ export class TaCommonHeaderComponent implements OnInit {
   @Input() totalCost: any;
   public up: boolean = false;
   public down: boolean = false;
-  @Output() filertActions = new EventEmitter<any>();
-  constructor() {}
+  constructor(private routes: ActivatedRoute) {}
 
   ngOnInit(): void {}
 
@@ -50,9 +49,6 @@ export class TaCommonHeaderComponent implements OnInit {
   }
   public makeRequestFun(req: any) {
     this.makeRequest.emit(req);
-  }
-  public filterActions(actions: string) {
-    this.filertActions.emit(actions);
   }
   /**Function for drop acitons */
   public dropAct(action: any) {
