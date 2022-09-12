@@ -1,6 +1,6 @@
 .settings-toolbar {
   display: grid;
-  grid-template-columns: 125px 134px 127px 141px 110px 96px 145px 921px;
+  grid-template-columns: 125px 134px 127px 141px 110px 146px 921px;
   column-gap: 4px;
   user-select: none;
 
@@ -29,10 +29,6 @@
   }
 
   .settings-col-7 {
-    grid-column: 7 / 8;
-  }
-
-  .settings-col-8 {
-    grid-column: 8 / -1;
+    grid-column: 7 / -1;
   }
 }

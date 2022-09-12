@@ -104,14 +104,6 @@ export class SettingsToolbarComponent implements OnInit, OnDestroy {
       },
       {
         id: 6,
-        name: 'User',
-        count: 15,
-        svg: 'assets/svg/common/ic_user.svg',
-        background: '#FFFFFF',
-        route: '/settings/user',
-      },
-      {
-        id: 7,
         name: 'Integration',
         count: 4,
         svg: 'assets/svg/common/ic_integration.svg',
@@ -119,7 +111,7 @@ export class SettingsToolbarComponent implements OnInit, OnDestroy {
         route: '/settings/integration',
       },
       {
-        id: 8,
+        id: 7,
         name: null,
         count: null,
         svg: null,
