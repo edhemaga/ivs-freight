@@ -1393,16 +1393,16 @@
         }
       }
 
-      &.dispatcher_new_codriver{
+      &.dispatcher_new_codriver {
         right: 28px;
 
         svg-icon {
-          svg{
-            rect{
+          svg {
+            rect {
               fill: rgba(255, 255, 255, 0.4);
             }
             path {
-              fill: #6C6C6C;
+              fill: #6c6c6c;
             }
           }
         }
@@ -1411,17 +1411,18 @@
       &:hover {
         svg-icon {
           svg {
-            path, rect {
+            path,
+            rect {
               fill: rgba(255, 255, 255, 1);
             }
           }
         }
 
-        &.dispatcher_new_codriver{
+        &.dispatcher_new_codriver {
           svg-icon {
             svg {
               path {
-                fill: #6C6C6C;
+                fill: #6c6c6c;
               }
             }
           }
@@ -2096,6 +2097,10 @@
 
         &.note-container {
           display: block;
+
+          background-color: #fff;
+          border-radius: 3px;
+          padding-left: 6px;
         }
 
         .dispatcher-table-cell-holder {
@@ -2106,7 +2111,7 @@
           padding-left: 6px;
 
           &:hover {
-           // background-color: #f7f7f7;
+            // background-color: #f7f7f7;
           }
         }
       }
