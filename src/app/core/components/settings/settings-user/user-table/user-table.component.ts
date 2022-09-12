@@ -449,8 +449,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
         size: 'small',
       });
     } else if (event.action === 'tab-selected' && event.tabData.routeNavigate) {
-      console.log('Radi se tab switch');
-      console.log(event);
 
       this.router.navigate([event.tabData.routeNavigate]);
     }
