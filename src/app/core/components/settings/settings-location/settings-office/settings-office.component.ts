@@ -1,94 +1,102 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { formatCurrency } from 'src/app/core/pipes/formatCurrency.pipe';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
+import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { SettingsLocationService } from '../../state/location-state/settings-location.service';
+import { CompanyTOfficeService } from './state/company-office.service';
 @Component({
   selector: 'app-settings-office',
   templateUrl: './settings-office.component.html',
   styleUrls: ['./settings-office.component.scss'],
+  providers: [formatCurrency],
 })
-export class SettingsOfficeComponent implements OnInit {
-  public officeData = [
-    {
-      id: 1,
-      name: 'CMA ALTARE GROUP',
-      phone: '(123) 456-7890',
-      email: 'contact@windsor-brokers.com',
-      address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned: 'ic_company.svg',
-      departments: [
-        {
-          name: 'Accounting Department',
-          check: true,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          name: 'Dispatch Department',
-          check: true,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          name: 'Safety Department',
-          check: true,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-      ],
-      rent: '',
-      pay_period: '',
-      day: '',
-    },
-    {
-      id: 2,
-      name: 'ALEXANDRO CASTOR OFFICE',
-      phone: '(123) 456-7890',
-      email: '',
-      address: '5462 N East River Rd apt 611 Chicago, IL 60656',
-      companyOwned: '',
-      departments: [
-        {
-          id: 26,
-          name: 'Accounting Department',
-          check: true,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 18,
-          name: 'Dispatch Department',
-          check: false,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-        {
-          id: 4,
-          name: 'Safety Department',
-          check: true,
-          phone: '(987) 654-3210',
-          phone_ext: '530',
-          email: 'contact@windsor-brokers.com',
-        },
-      ],
-      rent: '$350',
-      pay_period: 'Monthly',
-      day: '5th',
-    },
-  ];
-  public officePhone: boolean[] = [];
-  public officeEmail: boolean[] = [];
-  public departmentEmail: boolean[] = [];
-  public departmentPhone: boolean[] = [];
-  constructor(private settingsLocationService: SettingsLocationService) {}
+export class SettingsOfficeComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
+  public officeActions: any;
+  public officeData: any;
+  public officeDataById: any;
+  constructor(
+    private settingsLocationService: SettingsLocationService,
+    private companyOfficeService: CompanyTOfficeService,
+    private tableService: TruckassistTableService,
+    private cdRef: ChangeDetectorRef,
+    private dropDownService: DropDownService,
+    private confirmationService: ConfirmationService,
+    private notificationService: NotificationService,
+    private formatCurrency: formatCurrency,
+    private activatedRoute: ActivatedRoute
+  ) {}
 
-  ngOnInit() {}
-
+  ngOnInit() {
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.getOfficeList();
+          this.cdRef.detectChanges();
+        }
+      });
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'Company Office') {
+                this.deleteOfficeById(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
+    this.officeData = this.activatedRoute.snapshot.data.office.pagination;
+    this.initOptions();
+  }
+  public getOfficeById(id: number) {
+    this.settingsLocationService
+      .getCompanyOfficeById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.officeDataById = item));
+  }
+  public deleteOfficeById(id: number) {
+    this.settingsLocationService
+      .deleteCompanyOfficeById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Office successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Office with id: ${id} couldn't be deleted`,
+            'Error:'
+          );
+        },
+      });
+  }
   public onAction(modal: { modalName: string; type: any }) {
     this.settingsLocationService.onModalAction(modal);
+  }
+
+  public getOfficeList() {
+    this.companyOfficeService
+      .getOfficeList()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.officeData = item.pagination));
   }
 
   public identityOfficeData(index: number, item: any): number {
@@ -99,7 +107,62 @@ export class SettingsOfficeComponent implements OnInit {
     return item.id;
   }
 
+  public officeDropActions(any: any, actions: string) {
+    this.getOfficeById(any.id);
+    setTimeout(() => {
+      const name = dropActionNameDriver(any, actions);
+      this.dropDownService.dropActionCompanyLocation(
+        any,
+        name,
+        this.officeDataById
+      );
+    }, 100);
+  }
+  /**Function for dots in cards */
+  public initOptions(): void {
+    this.officeActions = {
+      disabledMutedStyle: null,
+      toolbarActions: {
+        hideViewMode: false,
+      },
+      config: {
+        showSort: true,
+        sortBy: '',
+        sortDirection: '',
+        disabledColumns: [0],
+        minWidth: 60,
+      },
+      actions: [
+        {
+          title: 'Edit',
+          name: 'edit',
+          svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
+          show: true,
+        },
+        {
+          title: 'Delete',
+          name: 'delete-item',
+          type: 'driver',
+          text: 'Are you sure you want to delete driver(s)?',
+          svg: 'assets/svg/common/ic_trash_updated.svg',
+          danger: true,
+          show: true,
+        },
+      ],
+      export: true,
+    };
+  }
+
   public generateTextForProgressBar(data: any): string {
-    return data.pay_period + ' Rent ' + `- ${data.rent}`;
+    return (
+      data.payPeriod.name +
+      ' Rent ' +
+      `- ${this.formatCurrency.transform(data.rent)}`
+    );
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

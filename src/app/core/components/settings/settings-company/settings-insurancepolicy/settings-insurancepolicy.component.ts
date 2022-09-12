@@ -4,24 +4,42 @@ import {
   OnInit,
   OnChanges,
   SimpleChanges,
+  ViewEncapsulation,
 } from '@angular/core';
 import { SettingsCompanyService } from '../../state/company-state/settings-company.service';
 import { Clipboard } from '@angular/cdk/clipboard';
-import { NotificationService } from '../../../../services/notification/notification.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
+import { Subject, takeUntil } from 'rxjs';
+import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { FormControl } from '@angular/forms';
+import { OnDestroy } from '@angular/core';
 @Component({
   selector: 'app-settings-insurancepolicy',
   templateUrl: './settings-insurancepolicy.component.html',
   styleUrls: ['./settings-insurancepolicy.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  animations: [card_component_animation('showHideCardBody')],
 })
-export class SettingsInsurancepolicyComponent implements OnChanges {
+export class SettingsInsurancepolicyComponent implements OnChanges, OnDestroy {
   @Input() public insurancePolicyData: any;
+  public insuranceNote: FormControl = new FormControl();
+
   public copyPolicyName: boolean[] = [];
   public dropOptions: any;
-
+  private destroy$ = new Subject<void>();
+  public toggler: boolean[] = [];
   constructor(
     private settingsCompanyService: SettingsCompanyService,
     private notificationService: NotificationService,
-    private clipboar: Clipboard
+    private clipboar: Clipboard,
+    private confirmationService: ConfirmationService,
+    private modalService: ModalService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
     if (
@@ -34,21 +52,49 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
 
   ngOnInit(): void {
     this.initDropOptions();
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'insurance') {
+                this.deleteInsurancePolicy(res.id);
+              }
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      });
   }
-
+  /**Function for toggle page in cards */
+  public toggleResizePage(value: number) {
+    this.toggler[value] = !this.toggler[value];
+  }
   public onAction(modal: { modalName: string; type: string; company?: any }) {
     this.settingsCompanyService.onModalAction(modal);
   }
 
   public deleteInsurancePolicy(insurance: any) {
     this.settingsCompanyService
-      .deleteInsurancePolicyById(insurance.id)
+      .deleteInsurancePolicyById(insurance)
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.notificationService.success('SUCCESS DELETE', 'Success');
+          this.notificationService.success(
+            'Success deleted insurance',
+            'Success'
+          );
         },
         error: () => {
-          this.notificationService.error('Error  DELETE', 'Error');
+          this.notificationService.error(
+            `Insurance with id: ${insurance.id}, couldn't be deleted'`,
+            'Error'
+          );
         },
       });
   }
@@ -110,12 +156,49 @@ export class SettingsInsurancepolicyComponent implements OnChanges {
         break;
       }
       case 'delete-item': {
-        this.deleteInsurancePolicy(insurance);
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            id: insurance.id,
+            template: 'insurance',
+            type: 'delete',
+            image: false,
+          }
+        );
         break;
       }
       default: {
         break;
       }
     }
+  }
+  public onFileAction(action: string) {
+    switch (action) {
+      case 'download': {
+        this.downloadFile(
+          'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
+          'truckassist0'
+        );
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+  public downloadFile(url: string, filename: string) {
+    fetch(url).then((t) => {
+      return t.blob().then((b) => {
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(b);
+        a.setAttribute('download', filename);
+        a.click();
+      });
+    });
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
