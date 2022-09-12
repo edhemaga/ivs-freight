@@ -414,3 +414,177 @@ body:not(.modal-open) {
     overflow: visible !important;
   }
 }
+
+.main_status_switch_holder {
+  position: relative;
+  height: 32px !important;
+  padding-left: 0 !important;
+
+  &.go_over_all {
+    z-index: 999999;
+  }
+
+  app-ta-status-switch {
+    width: 100%;
+    height: 100%;
+
+    .ta_status_main_holder {
+      position: relative;
+
+      &:hover {
+        .shadow_item {
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+        }
+      }
+
+      .shadow_item {
+        position: absolute;
+        width: 100%;
+        height: 32px;
+        top: 0;
+        left: 0;
+        border-radius: 2px;
+
+        z-index: 101;
+        pointer-events: none;
+        transition: all 0.3s;
+
+        &.active {
+          left: 4px;
+          width: calc(100% - 8px);
+          -webkit-animation: shadowFadeIn 0.5s;
+          box-shadow: 0 0 5px rgba(0, 0, 0, 0.15) inset;
+        }
+      }
+
+      .ta_status_switch_holder {
+        position: relative;
+        z-index: 100;
+
+        &.closedItem {
+          height: 32px;
+          overflow: hidden;
+          border-radius: 2px;
+        }
+
+        &.otherStatusOpened {
+          .switch_statuses {
+            opacity: 0.3;
+          }
+        }
+      }
+    }
+  }
+}
+
+.ta_status_main_holder {
+  .status_change_wrapper {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    box-shadow: $box-shadow !important;
+    padding: 2px;
+
+    &.active {
+      padding: 4px;
+      transition: top 0.3s;
+
+      .switch_statuses {
+        height: 32px !important;
+        padding-bottom: 0;
+      }
+
+      .time_ago {
+        display: none !important;
+      }
+    }
+
+    .switch_statuses {
+      position: relative;
+      display: flex;
+      height: 28px;
+      justify-content: center;
+      align-items: center;
+
+      padding-top: 2px;
+
+      font-family: "Montserrat", sans-serif !important;
+      font-weight: 900;
+      font-size: 12px;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+      transition: padding 0.3s;
+
+      &:hover:not(.active) {
+        background-color: #f7f7f7;
+        border-radius: 2px;
+      }
+
+      .time_ago {
+        display: none;
+        position: absolute;
+        bottom: -3px;
+        width: 100%;
+
+        font-size: 10px;
+        font-weight: 700;
+        color: #b7b7b7b3;
+        text-align: center;
+        text-transform: lowercase;
+      }
+
+      &.active {
+        padding-bottom: 0;
+
+        .time_ago {
+          display: none;
+        }
+
+        // margin: 0px 1px;
+        // box-shadow: 0px 0px 5px rgba(0, 0, 0, .15) inset;
+        // border-radius: 3px;
+      }
+
+      .load-count-number {
+        margin-left: 10px;
+
+        font-size: 12px;
+        font-weight: 900;
+        color: #60d5bd;
+
+        &.deport_item {
+          color: #ff5d5d80;
+        }
+      }
+
+      .load-repear-item {
+        margin-right: 6px;
+
+        font-size: 12px;
+        font-weight: 900;
+        color: #24c1a170;
+        font-family: "Montserrat", sans-serif !important;
+      }
+    }
+
+    .switch_statuses.withAgo {
+      &:hover {
+        padding-bottom: 10px;
+
+        .time_ago {
+          display: block;
+          bottom: 2px;
+        }
+      }
+    }
+  }
+}
+
+.status_change_popover{
+  .ta_status_main_holder {
+    width: 110px;
+  }
+}

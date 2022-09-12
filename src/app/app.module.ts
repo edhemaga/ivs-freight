@@ -28,6 +28,7 @@ import { ApiModule, Configuration } from 'appcoretruckassist';
 import { UserLoggedService } from './core/components/authentication/state/user-logged.service';
 import { CustomToastMessagesComponent } from './core/components/shared/custom-toast-messages/custom-toast-messages.component';
 import { AppInterceptor } from './app.inteceptor';
+
 import { EncryptionDecryptionService } from './core/services/encryption-decryption/EncryptionDecryption.service';
 import { RefreshTokenInterceptor } from './core/interceptors/refresh-token.interceptor';
 import { configFactory } from './app.config';

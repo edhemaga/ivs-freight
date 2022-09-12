@@ -48,9 +48,7 @@ export class LoadTService {
       pageSize,
       companyId,
       sort,
-      search,
-      search1,
-      search2
+      search
     );
   }
 

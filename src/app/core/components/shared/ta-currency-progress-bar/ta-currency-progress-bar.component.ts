@@ -12,17 +12,17 @@ export class TaCurrencyProgressBarComponent implements OnInit {
   @Input() template: string;
 
   public activePercentageOfPaid: number = 0;
+  public getPercentage: number = 0;
   public status = null;
 
   ngOnInit() {
     this.calculateCurrencyPercentage();
-
   }
-  
+
   public calculateCurrencyPercentage() {
     this.activePercentageOfPaid =
       (this.paidSoFarAmount / this.totalAmount) * 100;
-
+    this.getPercentage = (this.paidSoFarAmount / this.totalAmount) * 100;
     if (this.activePercentageOfPaid > 0 && this.activePercentageOfPaid < 30) {
       this.status = {
         status: 'short',
@@ -31,8 +31,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#E57373',
         colorEmpty: '#FFEBEE',
       };
-    } 
-    else if (
+    } else if (
       this.activePercentageOfPaid > 30 &&
       this.activePercentageOfPaid < 60
     ) {
@@ -43,8 +42,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#FFB74D',
         colorEmpty: '#FFECD1',
       };
-    } 
-    else if (
+    } else if (
       this.activePercentageOfPaid > 60 &&
       this.activePercentageOfPaid <= 100
     ) {
@@ -55,8 +53,7 @@ export class TaCurrencyProgressBarComponent implements OnInit {
         colorFilled: '#AAAAAA',
         colorEmpty: '#DADADA',
       };
-    } 
-    else {
+    } else {
       this.status = null;
     }
   }
