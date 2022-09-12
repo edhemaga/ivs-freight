@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
-import { UserModalComponent } from '../../../modals/user-modal/user-modal.component';
-import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
+import { ModalService } from '../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-user-table',
@@ -262,59 +262,13 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.tableData = [
       {
-        title: 'Company',
-        field: 'route',
-        length: 0,
-        hideDataCount: true,
-        iconLink: '../../../../../../assets/svg/common/ic_company.svg',
-        routeNavigate: '/settings/company',
-        data: [],
-        gridNameTitle: 'Settings',
-        stateName: 'company',
-        gridColumns: [],
-      },
-      {
-        title: 'Location',
-        field: 'route',
-        length: 0,
-        iconLink: '../../../../../../assets/svg/common/ic_location.svg',
-        data: [],
-        routeNavigate: '/settings/location',
-        gridNameTitle: 'Settings',
-        stateName: 'location',
-        gridColumns: [],
-      },
-      {
-        title: 'Document',
-        field: 'route',
-        length: 0,
-        iconLink: '../../../../../../assets/svg/common/ic_document.svg',
-        data: [],
-        gridNameTitle: 'Settings',
-        routeNavigate: '/settings/document',
-        stateName: 'document',
-        gridColumns: [],
-      },
-      {
         title: 'User',
         field: 'active',
         length: 10,
-        iconLink: '../../../../../../assets/svg/common/ic_user.svg',
         data: this.getDumyData(10),
-        gridNameTitle: 'Settings',
+        gridNameTitle: 'User',
         stateName: 'users',
         gridColumns: this.getGridColumns('users', this.resetColumns),
-      },
-      {
-        title: 'Biling',
-        field: 'route',
-        length: 0,
-        iconLink: '../../../../../../assets/svg/common/ic_billing.svg',
-        data: [],
-        routeNavigate: '/settings/billing',
-        gridNameTitle: 'Settings',
-        stateName: 'biling',
-        gridColumns: [],
       },
     ];
 
