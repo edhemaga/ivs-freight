@@ -5,4 +5,4 @@ const routes: Routes = [
   { path: '', component: UserTableComponent },
 ];
 
-export const SettingsUserRoutes = RouterModule.forChild(routes);
+export const UserRoutes = RouterModule.forChild(routes);
