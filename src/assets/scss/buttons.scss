@@ -779,6 +779,18 @@
         }
       }
     }
+
+    &[disabled]{
+      cursor: auto;
+      svg-icon {
+        rect{
+          fill: rgb(210 210 210);
+        }
+        path{
+          fill: #fff;
+        }
+      }
+    }
   }
 }
 
