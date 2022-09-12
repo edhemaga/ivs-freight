@@ -310,7 +310,6 @@ p {
     .parking-template-text {
       color: $settings-gray-dark;
       margin-left: 7px;
-      white-space: nowrap;
       &::-moz-selection {
         color: $settings-gray-dark;
         background: rgb(108, 108, 108, 0.2);

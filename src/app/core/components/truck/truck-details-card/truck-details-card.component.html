@@ -13,11 +13,8 @@
         <div class="details-header-avatar">
           <div class="svg-truck-wrapper">
             <svg-icon
-              class="truck truck-color-code"
-              src="{{
-                'assets/svg/common/trucks/trucks-details/' +
-                  truck?.truckType?.logoName
-              }}"
+              class="truck"
+              src="{{ 'assets/svg/common/trucks/' + truck?.truckType?.logoName }}"
             >
             </svg-icon>
           </div>
@@ -26,18 +23,27 @@
             <div class="svg-wrapper">
               <svg-icon
                 class="details-header-model"
-               
                 src="{{
                   'assets/svg/common/trucksmake/' + truck?.truckMake?.logoName
                 }}"
               >
               </svg-icon>
             </div>
-            <p>{{ truck.model }}</p>
+            <p>MODEL NAME {{ truck.model }}</p>
           </div>
         </div>
         <div class="details-header-data">
           <div class="details-header-data-item">
+            <svg-icon
+              class="icons-details"
+              src="assets/svg/common/vin.svg"
+            ></svg-icon>
+            <app-ta-copy [textFontSize]="'18px'" [copyValue]="truck.vin">
+            </app-ta-copy>
+          </div>
+          <div class="details-header-data-item second">
+            <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
+            <p class="vin-text date">{{ truck.year }}</p>
             <div *ngIf="truck.color" class="light-green">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -61,19 +67,6 @@
               </svg>
             </div>
             <p *ngIf="truck.color" class="vin-text">{{ truck?.color.name }}</p>
-            <svg-icon
-              [ngClass]="{ 'date-details-svg': truck?.color?.code}"
-              src="assets/svg/common/year-truck.svg"
-            ></svg-icon>
-            <p class="vin-text date">{{ truck.year }}</p>
-          </div>
-          <div class="details-header-data-item second">
-            <svg-icon
-              class="icons-details"
-              src="assets/svg/common/vin.svg"
-            ></svg-icon>
-            <app-ta-copy [textFontSize]="'18px'" [copyValue]="truck.vin">
-            </app-ta-copy>
           </div>
         </div>
       </div>

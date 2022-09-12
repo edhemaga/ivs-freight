@@ -14,7 +14,7 @@
           <svg-icon
             class="truck"
             src="{{
-              'assets/svg/common/trailers/trailer-details/' + trailer?.trailerType?.logoName
+              'assets/svg/common/trailers/' + trailer?.trailerType?.logoName
             }}"
           >
           </svg-icon>
@@ -35,8 +35,17 @@
         </div>
       </div>
       <div class="details-header-data">
-      
+        <div class="details-header-data-item">
+          <svg-icon
+            class="icons-details"
+            src="assets/svg/common/vin.svg"
+          ></svg-icon>
+          <app-ta-copy [textFontSize]="'18px'" [copyValue]="trailer?.vin">
+          </app-ta-copy>
+        </div>
         <div class="details-header-data-item second">
+          <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
+          <p class="vin-text date">{{ trailer.year }}</p>
           <div *ngIf="trailer.color" class="light-green">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,12 +68,9 @@
               </g>
             </svg>
           </div>
-          <span *ngIf="trailer.color" class="vin-text">
+          <p *ngIf="trailer.color" class="vin-text">
             {{ trailer?.color.name }}
-          </span>
-          <svg-icon src="assets/svg/common/year-truck.svg"></svg-icon>
-          <p class="vin-text date">{{ trailer.year }}</p>
-         
+          </p>
           <div class="light-green">
             <svg-icon
               class="resize"
@@ -72,14 +78,6 @@
             ></svg-icon>
           </div>
           <p class="vin-text">{{ trailer?.trailerLength?.name }}</p>
-        </div>
-        <div class="details-header-data-item second">
-          <svg-icon
-            class="icons-details"
-            src="assets/svg/common/vin.svg"
-          ></svg-icon>
-          <app-ta-copy [textFontSize]="'18px'" [copyValue]="trailer?.vin">
-          </app-ta-copy>
         </div>
       </div>
     </div>

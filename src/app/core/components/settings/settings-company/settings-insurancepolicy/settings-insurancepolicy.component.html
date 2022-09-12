@@ -24,7 +24,6 @@
       class="settings-insuarnce"
       *ngFor="
         let insurance of insurancePolicyData?.insurancePolicies;
-        let i=index;
         trackBy: identity
       "
     >
@@ -34,10 +33,8 @@
         [cardDocumentCounter]="1"
         [options]="dropOptions"
         [optionsId]="insurance.id"
-        (resizePage)="toggleResizePage(i)"
         (dropActions)="optionsEvent($event, insurance)"
         [paddingDots]="'11px 0px 0px 12px'"
-        [paddingFooter]="'11px 4px 11px 13px'"
         [noteIcons]="
           insurance?.note
             ? 'assets/svg/truckassist-table/note/Note.svg'
@@ -59,7 +56,7 @@
             ></svg-icon>
             <app-ta-copy [copyValue]="insurance?.email"> </app-ta-copy>
           </div>
-          <div *ngIf="insurance.address.address" class="single-item">
+          <div *ngIf="insurance.address" class="single-item">
             <svg-icon
               class="company-icons"
               src="assets/svg/truckassist-table/location-icon.svg"
@@ -79,7 +76,7 @@
           <app-ta-custom-card
             [cardName]="insuranceAdditional.insurancePolicyAddonType.name"
             [bodyTemplate]="'card'"
-            [isCardOpen]="false"
+            [isCardOpen]="true"
             [hasDivider]="true"
             [animationsDisabled]="false"
           >
@@ -88,8 +85,8 @@
                 <span class="insurer-name">{{
                   insuranceAdditional?.insurerName
                 }}</span>
-                <div *ngIf="insuranceAdditional?.rating?.name" class="rating">
-                  <div  class="rating-value">
+                <div class="rating">
+                  <div *ngIf="insuranceAdditional.rating" class="rating-value">
                     {{ insuranceAdditional?.rating?.name }}
                   </div>
                 </div>
@@ -128,7 +125,7 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Each Occurrence</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.eachOccurrence">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.eachOccurrence | taThousandSeparator
                   }}
@@ -137,7 +134,7 @@
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Dmg. to Rented Pr.</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.damageToRentedPremises">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.damageToRentedPremises
                       | taThousandSeparator
@@ -147,7 +144,7 @@
 
               <div class="payroll-template-item">
                 <p class="payroll-name">Medical Expanses</p>
-                <p class="payroll-value"  *ngIf="insuranceAdditional?.medicalExpanses">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.medicalExpanses | taThousandSeparator
                   }}
@@ -155,7 +152,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Pers. and Adv. Injury</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.personalAndAdvertisingInjury">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.personalAndAdvertisingInjury
                       | taThousandSeparator
@@ -164,7 +161,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">General Aggregate</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.generalAggregate">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.generalAggregate | taThousandSeparator
                   }}
@@ -172,7 +169,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Products - Comp / OP</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.productsCompOperAggregate">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.productsCompOperAggregate
                       | taThousandSeparator
@@ -190,7 +187,7 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Combined Single</p>
-                <p class="payroll-value"  *ngIf="insuranceAdditional?.combinedSingleLimit">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.combinedSingleLimit
                       | taThousandSeparator
@@ -199,7 +196,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Property Damage</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.propertyDamage">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.propertyDamage | taThousandSeparator
                   }}
@@ -207,7 +204,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Boldly Injury(Person)</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.bodilyInjuryPerson">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.bodilyInjuryPerson
                       | taThousandSeparator
@@ -216,7 +213,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Boldly Injury(Accident)</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.bodilyInjuryAccident">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.bodilyInjuryAccident
                       | taThousandSeparator
@@ -228,19 +225,19 @@
             <div
               *ngIf="
                 insuranceAdditional.insurancePolicyAddonType.name ===
-                'Motor Truck Cargo Breakdown'
+                'Motor Truck Cargo / Reefer Breakdown'
               "
               class="payroll-template-data"
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Single Conveyance</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.singleConveyance">
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.singleConveyance }}
                 </p>
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Deductable</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.deductable">
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -255,7 +252,7 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Comprehen. & Collision</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.comprehensiveAndCollision">
+                <p class="payroll-value">
                   ${{
                     insuranceAdditional?.comprehensiveAndCollision
                       | taThousandSeparator
@@ -264,7 +261,7 @@
               </div>
               <div class="payroll-template-item">
                 <p class="payroll-name">Deductable</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.deductable">
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.deductable | taThousandSeparator }}
                 </p>
               </div>
@@ -279,7 +276,7 @@
             >
               <div class="payroll-template-item">
                 <p class="payroll-name">Value</p>
-                <p class="payroll-value" *ngIf="insuranceAdditional?.value">
+                <p class="payroll-value">
                   ${{ insuranceAdditional?.value | taThousandSeparator }}
                 </p>
               </div>
@@ -289,64 +286,10 @@
         <div class="divider"></div>
         <div class="settings-progress-container">
           <app-truckassist-progress-expiration
-            [expireDate]="insurance.expires | formatDateP"
-            [startDate]="insurance.issued | formatDateP"
-            [expiresSettings]="'settings-insurance-policy'"
+            [expireDate]="insurance.issued | formatDateP"
+            [startDate]="insurance.expires | formatDateP"
+            [expiresSettings]="'settings-parking'"
           ></app-truckassist-progress-expiration>
-        </div>
-        <div [ngClass]="{'body-show':toggler[i]}" [@showHideCardBody]="toggler[i] ? 'true' : 'false'">
-          <div class="divider"></div>
-          <div class="details-document-container">
-            <div class="icon-counter-wrapper">
-              <div class="counter-text-wrapper">
-                <app-ta-counter
-                  [countBackgroud]="'#F3F3F3'"
-                  [countHeight]="'24px'"
-                  [countWidth]="'24px'"
-                  [count]="6"
-                >
-                </app-ta-counter>
-                <p class="details-document-name">Document</p>
-              </div>
-              <svg-icon
-                (click)="onFileAction('download')"
-                src="assets/svg/common/ic_download.svg"
-              >
-              </svg-icon>
-            </div>
-          </div>
-          <div class="card-pdf">
-            <app-ta-upload-files
-              [files]="[
-                {
-                  name: 'truckassist - 0',
-                  url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                  extension: 'pdf'
-                },
-                {
-                  name: 'truckassist - 1',
-                  url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                  extension: 'pdf'
-                }
-              ]"
-              [customClassName]="'driver-details-pdf'"
-              [hasCarouselBottomTabs]="true"
-            ></app-ta-upload-files>
-          </div>
-          <div class="divider"></div>
-          <div class="card-note">
-            <app-ta-input-note
-              [formControl]="insuranceNote"
-              [isVisibleDivider]="false"
-              [isVisibleNote]="true"
-              [isVisibleSecondDivider]="false"
-              [isVisibleArrow]="false"
-              [minRows]="1"
-              [placeholder]="'Write something.'"
-              [customClass]="'note-small'"
-            >
-            </app-ta-input-note>
-          </div>
         </div>
       </app-ta-re-card>
     </div>
