@@ -130,58 +130,60 @@
 
           <!-- EXPLAIN -->
 
-          <div
-            class="d-flex explain-container line-container"
-            *ngIf="educationForm.get(question.formControlName)?.value"
-            [ngStyle]="{
-              'margin-bottom': educationForm.get(question.formControlName)
-                ?.value
-                ? '20px'
-                : '0'
-            }"
-          >
-            <div class="w-100">
-              <app-ta-input
-                [formControlName]="question.formControlNameExplain"
-                [inputConfig]="{
-                  name: 'Explain',
-                  type: 'text',
-                  label: 'Please explain',
-                  isRequired: true,
-                  textTransform: 'capitalize',
-                  placeholder: 'Please explain',
-                  placeholderInsteadOfLabel: true,
-                  incorrectInput: selectedMode === 'REVIEW_MODE'
-                }"
-                [incorrectValue]="false"
-                (incorrectEvent)="incorrectInput($event, 0, i)"
-              ></app-ta-input>
-            </div>
-
-            <!-- REVIEW AND FEEDBACK -->
-
+          <div *ngIf="i === 0 || i === 1">
             <div
-              class="review-feedback-container"
-              *ngIf="
-                selectedMode === 'REVIEW_MODE' ||
-                selectedMode === 'FEEDBACK_MODE'
-              "
+              class="d-flex explain-container line-container"
+              *ngIf="educationForm.get(question.formControlName)?.value"
+              [ngStyle]="{
+                'margin-bottom': educationForm.get(question.formControlName)
+                  ?.value
+                  ? '20px'
+                  : '0'
+              }"
             >
-              <app-applicant-review-feedback
-                [formControlName]="'questionReview' + (i + 1)"
-                [displayAnnotationButton]="
-                  openAnnotationArray[i].displayAnnotationButton
+              <div class="w-100">
+                <app-ta-input
+                  [formControlName]="question.formControlNameExplain"
+                  [inputConfig]="{
+                    name: 'Explain',
+                    type: 'text',
+                    label: 'Please explain',
+                    isRequired: true,
+                    textTransform: 'capitalize',
+                    placeholder: 'Please explain',
+                    placeholderInsteadOfLabel: true,
+                    incorrectInput: selectedMode === 'REVIEW_MODE'
+                  }"
+                  [incorrectValue]="false"
+                  (incorrectEvent)="incorrectInput($event, 0, i)"
+                ></app-ta-input>
+              </div>
+
+              <!-- REVIEW AND FEEDBACK -->
+
+              <div
+                class="review-feedback-container"
+                *ngIf="
+                  selectedMode === 'REVIEW_MODE' ||
+                  selectedMode === 'FEEDBACK_MODE'
                 "
-                [displayAnnotationTextArea]="
-                  openAnnotationArray[i].displayAnnotationTextArea
-                "
-                [lineIndex]="i"
-                [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
-                [feedbackText]="
-                  'Check the routing number one more time (one number missing)!!!'
-                "
-                (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
-              ></app-applicant-review-feedback>
+              >
+                <app-applicant-review-feedback
+                  [formControlName]="'questionReview' + (i + 1)"
+                  [displayAnnotationButton]="
+                    openAnnotationArray[i].displayAnnotationButton
+                  "
+                  [displayAnnotationTextArea]="
+                    openAnnotationArray[i].displayAnnotationTextArea
+                  "
+                  [lineIndex]="i"
+                  [isFeedback]="selectedMode === 'FEEDBACK_MODE'"
+                  [feedbackText]="
+                    'Check the routing number one more time (one number missing)!!!'
+                  "
+                  (annotationBtnClickEvent)="getAnnotationBtnClickValue($event)"
+                ></app-applicant-review-feedback>
+              </div>
             </div>
           </div>
         </div>
@@ -434,12 +436,12 @@
             <div class="d-flex align-items-center info-btn-container">
               <div class="d-flex align-items-center name-box">
                 <p class="m-0 ta-font-regular">
-                  {{ contact.contactName }}
+                  {{ contact.name }}
                 </p>
               </div>
               <div class="d-flex align-items-center phone-box">
                 <p class="m-0 ta-font-regular">
-                  {{ contact.contactPhone }}
+                  {{ contact.phone }}
                 </p>
               </div>
               <div
@@ -449,7 +451,7 @@
                 }"
               >
                 <p class="m-0 ta-font-regular">
-                  {{ contact.contactRelationship }}
+                  {{ contact.relationship }}
                 </p>
               </div>
 
@@ -585,13 +587,16 @@
       <div class="d-flex" *ngIf="!isEditing">
         <app-step6-form
           [isEditing]="isEditing"
+          [markFormInvalid]="markFormInvalid"
           (formValuesEmitter)="getContactFormValues($event)"
+          (formStatusEmitter)="onGetFormStatus($event)"
+          (markInvalidEmitter)="onMarkInvalidEmit($event)"
+          (lastFormValuesEmitter)="onGetLastFormValues($event)"
         ></app-step6-form>
       </div>
     </form>
   </div>
 </div>
-
 
 <!-- NEXT BTN -->
 
@@ -600,7 +605,9 @@
 >
   <app-applicant-next-back-btn
     [nextStep]="true"
-    [filledCorrectly]="educationForm.valid && selectedGrade > -1"
+    [filledCorrectly]="
+      educationForm.valid && selectedGrade > -1 && formStatus === 'VALID'
+    "
     (stepEvent)="onStepAction($event)"
   ></app-applicant-next-back-btn>
 </div>

@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -36,13 +39,19 @@ import { TruckTypeResponse } from 'appcoretruckassist/model/models';
   templateUrl: './step5-form.component.html',
   styleUrls: ['./step5-form.component.scss'],
 })
-export class Step5FormComponent implements OnInit, OnDestroy {
+export class Step5FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
@@ -109,15 +118,12 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       this.subscription = this.violationsForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const {
-            violationLocation,
-            isEditingViolation,
-            ...previousFormValues
-          } = this.formValuesToPatch;
+          const { id, location, isEditingViolation, ...previousFormValues } =
+            this.formValuesToPatch;
 
-          previousFormValues.violationLocation = violationLocation.address;
+          previousFormValues.location = location.address;
 
-          this.editingCardAddress = violationLocation;
+          this.editingCardAddress = location;
 
           const { firstRowReview, secondRowReview, ...newFormValues } =
             updatedFormValues;
@@ -131,15 +137,30 @@ export class Step5FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.violationsForm.statusChanges.subscribe((res) => {
+      this.formStatusEmitter.emit(res);
+    });
+
+    this.violationsForm.valueChanges.subscribe((res) => {
+      this.lastFormValuesEmitter.emit(res);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.violationsForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   public createForm(): void {
     this.violationsForm = this.formBuilder.group({
-      violationDate: [null, Validators.required],
+      date: [null, Validators.required],
       vehicleType: [null, Validators.required],
-      violationLocation: [null, [Validators.required, ...addressValidation]],
-      violationDescription: [
-        null,
-        [Validators.required, ...descriptionValidation],
-      ],
+      location: [null, [Validators.required, ...addressValidation]],
+      description: [null, [Validators.required, ...descriptionValidation]],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -148,10 +169,10 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
   public patchForm(): void {
     this.violationsForm.patchValue({
-      violationDate: this.formValuesToPatch.violationDate,
+      date: this.formValuesToPatch.date,
       vehicleType: this.formValuesToPatch.vehicleType,
-      violationLocation: this.formValuesToPatch.violationLocation.address,
-      violationDescription: this.formValuesToPatch.violationDescription,
+      location: this.formValuesToPatch.location.address,
+      description: this.formValuesToPatch.description,
     });
   }
 
@@ -165,9 +186,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
         this.selectedAddress = event.address;
 
         if (!event.valid) {
-          this.violationsForm
-            .get('violationLocation')
-            .setErrors({ invalid: true });
+          this.violationsForm.get('location').setErrors({ invalid: true });
         }
 
         break;
@@ -182,16 +201,18 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    /*  const {violationLocation, firstRowReview,
-      secondRowReview,...violationsForm} = this.violationsForm.value;
+    const { location, firstRowReview, secondRowReview, ...violationsForm } =
+      this.violationsForm.value;
 
-   const saveData: ViolationModel = {
+    const saveData: ViolationModel = {
       ...violationsForm,
-      violationLocation: this.selectedAddress,
       isEditingViolation: false,
+      location: this.selectedAddress,
     };
 
-    this.formValuesEmitter.emit(saveData); */
+    this.formValuesEmitter.emit(saveData);
+
+    this.selectedVehicleType = null;
 
     this.violationsForm.reset();
 
@@ -213,7 +234,7 @@ export class Step5FormComponent implements OnInit, OnDestroy {
 
     const saveData: ViolationModel = {
       ...violationsForm,
-      violationLocation: this.selectedAddress
+      location: this.selectedAddress
         ? this.selectedAddress
         : this.editingCardAddress,
       isEditingViolation: false,
@@ -306,6 +327,33 @@ export class Step5FormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((data) => {
         this.vehicleType = data.truckTypes.map((item) => {
+          if (item.id === 3) {
+            return {
+              ...item,
+              name: 'Tow Truck',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
+          if (item.id === 4) {
+            return {
+              ...item,
+              name: 'Car Hauler',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
+          if (item.id === 6) {
+            return {
+              ...item,
+              name: 'Semi w/Sleeper',
+              folder: 'common',
+              subFolder: 'trucks',
+            };
+          }
+
           return {
             ...item,
             folder: 'common',

@@ -132,7 +132,7 @@ export class Step10Component implements OnInit, OnDestroy {
     };
 
     this.applicantActionsService
-      .updateDisclosureAndRelease(saveData)
+      .createDisclosureAndRelease(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

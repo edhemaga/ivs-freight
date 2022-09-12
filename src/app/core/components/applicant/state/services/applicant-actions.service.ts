@@ -15,6 +15,8 @@ import {
   CreateDisclosureReleaseCommand,
   CreateAuthorizationCommand,
   CreateResponse,
+  CreateEducationCommand,
+  CreateTrafficViolationCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -35,7 +37,7 @@ export class ApplicantActionsService {
     return this.applicantInfoSubject.asObservable();
   }
 
-  /* BACKEND ACTION FUNCTIONS */
+  /* BACKEND POST ACTION FUNCTIONS */
 
   public verifyApplicant(
     data: VerifyApplicantCommand
@@ -49,39 +51,51 @@ export class ApplicantActionsService {
     return this.applicantService.apiApplicantAcceptPost(data);
   }
 
+  public createTrafficViolations(
+    data: CreateTrafficViolationCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantTrafficviolationPost(data);
+  }
+
+  public createEducation(data: CreateEducationCommand): Observable<object> {
+    return this.applicantService.apiApplicantEducationPost(data);
+  }
+
+  public createSevenDaysHos(
+    data: CreateSevenDaysHosCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantSevendayshosPost(data);
+  }
+
+  public createDrugAndAlcohol(
+    data: CreateDrugAndAlcoholCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantDrugandalcoholPost(data);
+  }
+
+  public createDisclosureAndRelease(
+    data: CreateDisclosureReleaseCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantDisclosurereleasePost(data);
+  }
+
+  public createAuthorization(
+    data: CreateAuthorizationCommand
+  ): Observable<CreateResponse> {
+    return this.applicantService.apiApplicantAuthorizationPost(data);
+  }
+
+  /* BACKEND PUT ACTION FUNCTIONS */
+
   public updatePersonalInfo(
     data: UpdatePersonalInfoCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantPersonalPut(data);
   }
 
-  public updateSevenDaysHos(
-    data: CreateSevenDaysHosCommand
-  ): Observable<object> {
-    return this.applicantService.apiApplicantSevendayshosPost(data);
-  }
-
-  public updateDrugAndAlcohol(
-    data: CreateDrugAndAlcoholCommand
-  ): Observable<object> {
-    return this.applicantService.apiApplicantDrugandalcoholPost(data);
-  }
-
   public updateDriverRights(
     data: UpdateDriverRightsCommand
   ): Observable<object> {
     return this.applicantService.apiApplicantDriverrightsPut(data);
-  }
-
-  public updateDisclosureAndRelease(
-    data: CreateDisclosureReleaseCommand
-  ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantDisclosurereleasePost(data);
-  }
-
-  public updateAuthorization(
-    data: CreateAuthorizationCommand
-  ): Observable<CreateResponse> {
-    return this.applicantService.apiApplicantAuthorizationPost(data);
   }
 }

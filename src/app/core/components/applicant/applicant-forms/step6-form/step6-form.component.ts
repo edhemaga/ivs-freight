@@ -1,10 +1,13 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -28,13 +31,19 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
   templateUrl: './step6-form.component.html',
   styleUrls: ['./step6-form.component.scss'],
 })
-export class Step6FormComponent implements OnInit, OnDestroy {
+export class Step6FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
@@ -120,10 +129,23 @@ export class Step6FormComponent implements OnInit, OnDestroy {
       this.subscription = this.contactForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const { isEditingContact, ...previousFormValues } =
+          const { id, isEditingContact, ...previousFormValues } =
             this.formValuesToPatch;
 
           const { firstRowReview, ...newFormValues } = updatedFormValues;
+
+          previousFormValues.name = previousFormValues.name.toUpperCase();
+          previousFormValues.relationship =
+            previousFormValues.relationship.toUpperCase();
+
+          if (newFormValues.name) {
+            newFormValues.name = newFormValues.name.toUpperCase();
+          }
+
+          if (newFormValues.relationship) {
+            newFormValues.relationship =
+              newFormValues.relationship.toUpperCase();
+          }
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isContactEdited = false;
@@ -134,11 +156,29 @@ export class Step6FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.contactForm.statusChanges.subscribe((res) => {
+      this.formStatusEmitter.emit(res);
+    });
+
+    this.contactForm.valueChanges.subscribe((res) => {
+      this.lastFormValuesEmitter.emit(res);
+    });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.contactForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   private createForm(): void {
     this.contactForm = this.formBuilder.group({
-      contactName: [null, Validators.required],
-      contactPhone: [null, [Validators.required, phoneFaxRegex]],
-      contactRelationship: [null, Validators.required],
+      name: [null, Validators.required],
+      phone: [null, [Validators.required, phoneFaxRegex]],
+      relationship: [null, Validators.required],
 
       firstRowReview: [null],
     });
@@ -146,9 +186,9 @@ export class Step6FormComponent implements OnInit, OnDestroy {
 
   public patchForm(): void {
     this.contactForm.patchValue({
-      contactName: this.formValuesToPatch.contactName,
-      contactPhone: this.formValuesToPatch.contactPhone,
-      contactRelationship: this.formValuesToPatch.contactRelationship,
+      name: this.formValuesToPatch.name,
+      phone: this.formValuesToPatch.phone,
+      relationship: this.formValuesToPatch.relationship,
     });
   }
 

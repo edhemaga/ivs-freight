@@ -355,7 +355,7 @@ export class Step7Component implements OnInit, OnDestroy {
     console.log(saveData);
     /* 
     this.applicantActionsService
-      .updateSevenDaysHos(saveData)
+      .createSevenDaysHos(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

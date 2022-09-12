@@ -6,18 +6,15 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { Applicant } from '../../state/model/applicant.model';
-import {
-  Contact,
-  Education,
-  ContactModel,
-} from '../../state/model/education.model';
-import { CreateEducationCommand } from 'appcoretruckassist/model/models';
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { ApplicantQuestion } from '../../state/model/applicant-question.model';
+import { ContactModel } from '../../state/model/education.model';
+import { CreateEducationCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step6',
@@ -32,9 +29,14 @@ export class Step6Component implements OnInit, OnDestroy {
   public educationForm: FormGroup;
   public contactForm: FormGroup;
 
+  public formStatus: string = 'INVALID';
+  public markFormInvalid: boolean;
+
   public applicantId: number;
 
   public contactsArray: ContactModel[] = [];
+
+  public lastContactCard: any;
 
   public schoolGrades: string[] = [
     '1',
@@ -237,14 +239,6 @@ export class Step6Component implements OnInit, OnDestroy {
     {},
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public contactsFormArray: Contact[] | undefined = []; */
-
-  /* public educationInfo: Education | undefined; */
-
-  /* public editContact: number = -1; */
-
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
@@ -432,6 +426,20 @@ export class Step6Component implements OnInit, OnDestroy {
     this.selectedContactIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastContactCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -506,91 +514,69 @@ export class Step6Component implements OnInit, OnDestroy {
       return;
     }
 
-    const educationForm = this.educationForm.value;
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+
+    const {
+      specialTrainingExplain,
+      otherTrainingExplain,
+      knowledgeOfSafetyRegulationsExplain,
+      driverForCompany,
+      driverForCompanyBeforeExplain,
+      driverForCompanyToExplain,
+      unableForJobExplain,
+      questionReview1,
+      questionReview2,
+      questionReview3,
+      questionReview4,
+      questionReview5,
+      ...educationForm
+    } = this.educationForm.value;
+
+    const filteredContactsArray = this.contactsArray.map((item) => {
+      return {
+        name: item.name,
+        phone: item.phone,
+        relationship: item.relationship,
+      };
+    });
+
+    const filteredLastContactCard = {
+      name: this.lastContactCard.name,
+      phone: this.lastContactCard.phone,
+      relationship: this.lastContactCard.relationship,
+    };
 
     const saveData: CreateEducationCommand = {
+      ...educationForm,
+      applicantId: this.applicantId,
       highestGrade: this.selectedGrade > -1 ? this.selectedGrade + 1 : -1,
       collegeGrade:
         this.selectedCollegeGrade > -1 ? this.selectedCollegeGrade + 1 : -1,
+      specialTrainingDescription: specialTrainingExplain,
+      otherTrainingDescription: otherTrainingExplain,
+      driverBefore: driverForCompany,
+      from: convertDateToBackend(driverForCompanyBeforeExplain),
+      to: convertDateToBackend(driverForCompanyToExplain),
+      emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
 
     console.log(saveData);
+
+    /*   this.applicantActionsService
+      .createEducation(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/7`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      }); */
   }
-
-  /* private formFIlling(): void {
-    this.selectedGrade = this.educationInfo?.grade
-      ? this.educationInfo?.grade
-      : 0;
-
-    this.selectedCollegeGrade = this.educationInfo?.collegeGrade
-      ? this.educationInfo?.collegeGrade
-      : 0;
-
-    this.educationForm.patchValue({
-      specialTraining: this.educationInfo?.specialTraining,
-      specialTrainingExplain: this.educationInfo?.specialTrainingExplain,
-      otherTraining: this.educationInfo?.otherTraining,
-      otherTrainingExplain: this.educationInfo?.otherTrainingExplain,
-      knowledgeOfSafetyRegulations:
-        this.educationInfo?.knowledgeOfSafetyRegulations,
-      knowledgeOfSafetyRegulationsExplain:
-        this.educationInfo?.knowledgeOfSafetyRegulationsExplain,
-    });
-
-    if (this.specialTraining) {
-        this.educationForm.controls['specialTrainingExplain'].setValidators(
-            Validators.required
-        );
-    } else {
-        this.educationForm.controls['specialTrainingExplain'].setValidators(
-            []
-        );
-    }
-
-    if (this.otherTraining) {
-        this.educationForm.controls['otherTrainingExplain'].setValidators(
-            Validators.required
-        );
-    } else {
-        this.educationForm.controls['otherTrainingExplain'].setValidators(
-            []
-        );
-    }
-
-    if (this.knowledgeOfSafetyRegulations) {
-        this.educationForm.controls[
-            'knowledgeOfSafetyRegulationsExplain'
-        ].setValidators(Validators.required);
-    } else {
-        this.educationForm.controls[
-            'knowledgeOfSafetyRegulationsExplain'
-        ].setValidators([]);
-    }
-
-    this.educationForm.controls[
-        'specialTrainingExplain'
-    ].updateValueAndValidity();
-
-    this.educationForm.controls[
-        'otherTrainingExplain'
-    ].updateValueAndValidity();
-
-    this.educationForm.controls[
-        'knowledgeOfSafetyRegulationsExplain'
-    ].updateValueAndValidity();
-
-      this.contactsFormArray = this.educationInfo?.contacts;
-
-    this.generalForm = this.fb.group({
-        when: since
-            ? new NgbDate(
-                  since.getFullYear(),
-                  since.getMonth() + 1,
-                  since.getDate()
-              )
-            : undefined,
-    });
-  } */
 
   /* public onSubmitReview(data: any): void {} */
 

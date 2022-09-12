@@ -2,7 +2,7 @@
   <div class="d-flex line-container">
     <div class="group date-group">
       <app-ta-input
-        formControlName="violationDate"
+        formControlName="date"
         [inputConfig]="{
           name: 'datepicker',
           type: 'text',
@@ -29,15 +29,16 @@
           dropdownWidthClass: 'w-col-192',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [activeItem]="selectedVehicleType"
+        [options]="vehicleType"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 1, 10)"
-        [options]="vehicleType"
         (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
       ></app-ta-input-dropdown>
     </div>
     <div class="group location-group">
       <app-ta-input-address
-        formControlName="violationLocation"
+        formControlName="location"
         [inputConfig]="{
           name: 'Address',
           type: 'text',
@@ -84,7 +85,7 @@
   <div class="d-flex line-container">
     <div class="description-group">
       <app-ta-input
-        formControlName="violationDescription"
+        formControlName="description"
         [inputConfig]="{
           name: 'Description',
           type: 'text',

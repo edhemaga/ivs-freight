@@ -124,7 +124,7 @@ export class Step8Component implements OnInit, OnDestroy {
       sapPhone: [null, Validators.required],
       sapAddress: [null, [Validators.required, ...addressValidation]],
       sapAddressUnit: [null, [...addressUnitValidation]],
-      isAgreement: [null, Validators.required],
+      isAgreement: [null, Validators.requiredTrue],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -209,10 +209,9 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('sapAddress'),
             false
           );
-          this.inputService.changeValidators(
-            this.drugAlcoholStatementForm.get('isAgreement'),
-            false
-          );
+
+          this.drugAlcoholStatementForm.get('isAgreement').clearValidators();
+          this.drugAlcoholStatementForm.patchValue({ isAgreement: null });
 
           this.drugAlcoholStatementForm.patchValue({
             motorCarrier: null,
@@ -244,10 +243,15 @@ export class Step8Component implements OnInit, OnDestroy {
           this.inputService.changeValidators(
             this.drugAlcoholStatementForm.get('sapAddress')
           );
-          this.inputService.changeValidators(
-            this.drugAlcoholStatementForm.get('isAgreement')
-          );
+
+          this.drugAlcoholStatementForm
+            .get('isAgreement')
+            .setValidators(Validators.requiredTrue);
         }
+
+        this.drugAlcoholStatementForm.controls[
+          'isAgreement'
+        ].updateValueAndValidity();
       });
   }
 
@@ -373,7 +377,7 @@ export class Step8Component implements OnInit, OnDestroy {
     };
 
     this.applicantActionsService
-      .updateDrugAndAlcohol(saveData)
+      .createDrugAndAlcohol(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {

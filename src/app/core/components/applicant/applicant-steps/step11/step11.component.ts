@@ -128,7 +128,7 @@ export class Step11Component implements OnInit, OnDestroy {
     };
 
     this.applicantActionsService
-      .updateAuthorization(saveData)
+      .createAuthorization(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
