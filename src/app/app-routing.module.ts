@@ -33,6 +33,7 @@ import { LoadPandingResolver } from './core/components/load/state/load-pending-s
 import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
 import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
 import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
+import { UserResolver } from './core/components/user/state/user-state/user.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -91,6 +92,9 @@ const routes: Routes = [
         (m) => m.UserModule
       ),
     data: { title: 'User' },
+    resolve: {
+      user: UserResolver,
+    },
   },
   {
     path: 'load',

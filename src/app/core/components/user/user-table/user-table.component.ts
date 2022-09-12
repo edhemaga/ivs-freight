@@ -1,15 +1,19 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { getUsersColumnDefinition } from 'src/assets/utils/settings/users-columns';
 import { UserModalComponent } from '../../modals/user-modal/user-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import { UserQuery } from '../state/user-state/user.query';
+import { UserState } from '../state/user-state/user.store';
+import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
+import { NameInitialsPipe } from 'src/app/core/pipes/nameinitials';
 
 @Component({
   selector: 'app-user-table',
   templateUrl: './user-table.component.html',
-  styleUrls: ['./user-table.component.scss']
+  styleUrls: ['./user-table.component.scss'],
+  providers: [formatPhonePipe, NameInitialsPipe],
 })
 export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -22,12 +26,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  mapingIndex: number = 0;
+  users: UserState[] = [];
 
   constructor(
     private modalService: ModalService,
     private tableService: TruckassistTableService,
-    private router: Router,
+    private userQuery: UserQuery,
+    private phoneFormater: formatPhonePipe,
+    private nameInitialsPipe: NameInitialsPipe
   ) {}
+
+  // ---------------------------  NgOnInit ----------------------------------
   ngOnInit(): void {
     this.sendUserData();
 
@@ -76,7 +86,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.tableService.currentSearchTableData
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
-       /*  if (res) {
+        /*  if (res) {
           this.mapingIndex = 0;
 
           this.backFilterQuery.pageIndex = 1;
@@ -99,7 +109,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((res: any) => {
         // Add User
         if (res.animation === 'add') {
-         /*  this.viewData.push(this.mapContactData(res.data));
+          /*  this.viewData.push(this.mapContactData(res.data));
 
           this.viewData = this.viewData.map((contact: any) => {
             if (contact.id === res.id) {
@@ -194,6 +204,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       });
   }
 
+  // ---------------------------  NgAfterViewInit ----------------------------------
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.observTableContainer();
@@ -211,6 +222,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.resizeObserver.observe(document.querySelector('.table-container'));
   }
 
+  // Table Options
   initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
@@ -257,15 +269,29 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  // Get Columns Definition
+  getGridColumns(stateName: string, resetColumns: boolean) {
+    /*  const userState: any = JSON.parse(
+       localStorage.getItem(stateName + '_user_columns_state')
+     ); */
+
+    return getUsersColumnDefinition();
+  }
+
+  // Send User Data
   sendUserData() {
     this.initTableOptions();
+
+    const userCount = JSON.parse(localStorage.getItem('userTableCount'));
+
+    const userData = this.getTabData();
 
     this.tableData = [
       {
         title: 'User',
         field: 'active',
-        length: 10,
-        data: this.getDumyData(10),
+        length: userCount.users,
+        data: userData,
         gridNameTitle: 'User',
         stateName: 'users',
         gridColumns: this.getGridColumns('users', this.resetColumns),
@@ -277,123 +303,113 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
     this.setUserData(td);
   }
 
-  getGridColumns(stateName: string, resetColumns: boolean) {
-   /*  const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    ); */
+  // Get Tab Data
+  getTabData() {
+    this.users = this.userQuery.getAll();
 
-    return getUsersColumnDefinition();
+    return this.users?.length ? this.users : [];
   }
 
+  // Set User Data
   setUserData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
+
+      this.viewData = this.viewData.map((data: any) => {
+        return this.mapUserData(data);
+      });
+
+      console.log('User Data');
+      console.log(this.viewData);
+
+      // For Testing
+      // for (let i = 0; i < 300; i++) {
+      //   this.viewData.push(this.viewData[0]);
+      // }
+    }
   }
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 2,
-        companyUserid: null,
-        companyId: 1,
-        userId: 2,
-        baseUserTypeId: null,
-        baseUserType: 'master',
-        userTypeId: null,
-        userType: 'Owner',
-        textDept: 'Accounting',
-        userStatus: 'Owner',
-        textOffice: 'Main Office',
-        textExt: '158',
-        textComm: '6.00%',
-        textSalary: '$1,750.00',
-        userFullName: 'Ivan Stoiljkovic',
-        dateOfBirth: null,
-        email: 'ivan@ivsfreight.com',
-        status: 1,
-        dnu: null,
-        ban: null,
-        avatar: {
-          id: 'af9582b5-8999-4172-88d2-4b009ab8648b',
-          src: '',
-        },
-        doc: {
-          phone: '(630) 632-7776',
-          address: {
-            city: 'Denver',
-            state: 'Colorado',
-            address: '969 Federal Blvd, Denver, CO 80204, USA',
-            country: 'US',
-            zipCode: '80204',
-            stateShortName: 'CO',
-          },
-          userType: {
-            id: 'admin',
-            name: 'Admin',
-          },
-          addressUnit: '12',
-        },
-        dateFlag: 'registered',
-        dateValue: '07/26/20',
-        verifiedAt: null,
-        createdAt: null,
-        updatedAt: null,
-        guid: 'd21e56b2-11c0-4a4d-a2cd-a5b6353aa59a',
-        textPhone: '(630) 632-7776',
-      },
-      {
-        id: 647,
-        companyUserid: 70,
-        companyId: 1,
-        userId: 647,
-        baseUserTypeId: null,
-        baseUserType: 'company_user',
-        userTypeId: 2,
-        userType: 'Dispatcher',
-        userFullName: 'Stefan Tacic',
-        textDept: 'Dispatch',
-        userStatus: 'Admin',
-        textOffice: 'CMA Altaire Group',
-        textExt: '200',
-        textComm: '12.00%',
-        textSalary: '$650.00',
-        dateOfBirth: null,
-        email: 'stefano.tacic@gmail.com',
-        status: 1,
-        dnu: 0,
-        ban: 0,
-        avatar: {
-          id: 'af9582b5-8999-4172-88d2-4b009ab8648b',
-          src: 'https://media.istockphoto.com/photos/close-up-young-smiling-man-in-casual-clothes-posing-isolated-on-blue-picture-id1270987867?k=20&m=1270987867&s=612x612&w=0&h=lX9Y1qUxtWOa0W0Mc-SvNta00UH0-sgJQItkxfwE4uU=',
-        },
-        doc: {
-          phone: '',
-          userType: {
-            id: 'dispatcher',
-            name: 'Dispatcher',
-          },
-          addressUnit: '',
-        },
-        dateFlag: 'verified',
-        dateValue: '05/20/21',
-        verifiedAt: null,
-        createdAt: null,
-        updatedAt: null,
-        guid: 'd7ba3899-3eec-43fd-afb3-cc49ab9cdede',
-        textPhone: '(342) 643-4565',
-      },
-    ];
-
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[1]);
+  // Map User Data
+  mapUserData(data: any, dontMapIndex?: boolean) {
+    if (!data?.avatar && !dontMapIndex) {
+      this.mapingIndex++;
     }
 
-    return data;
+    return {
+      ...data,
+      isSelected: false,
+      userAvatar: {
+        name:
+          data?.firstName && data?.lastName
+            ? data.firstName + ' ' + data.lastName
+            : '',
+        avatar: data?.avatar ? data.avatar : '',
+        avatarColor: this.getAvatarColors(),
+        textShortName: this.nameInitialsPipe.transform(
+          data?.firstName && data?.lastName
+            ? data.firstName + ' ' + data.lastName
+            : ''
+        ),
+      },
+      userTableDept: data?.department?.name ? data.department.name : '',
+      userTableOffice: 'Nije spojeno',
+      userTablePhone: data?.phone
+        ? this.phoneFormater.transform(data.phone)
+        : '',
+      uesrTableExt: 'Nije povezano',
+      userTableHired: 'Nije povezano',
+      userTablePersonalPH: data?.personalPhone
+        ? this.phoneFormater.transform(data.personalPhone)
+        : '',
+      userTableStatus: {
+        status: data?.userType?.name ? data.userType.name : '',
+        isInvited: false,
+      },
+      userTableCommission: data?.commission ? data.commission : '',
+      userTableSalary: data?.salary ? data.salary : '',
+    };
+  }
+
+  // Get Avatar Color
+  getAvatarColors() {
+    let textColors: string[] = [
+      '#6D82C7',
+      '#4DB6A2',
+      '#E57373',
+      '#E3B00F',
+      '#BA68C8',
+      '#BEAB80',
+      '#81C784',
+      '#FF8A65',
+      '#64B5F6',
+      '#F26EC2',
+      '#A1887F',
+      '#919191',
+    ];
+
+    let backgroundColors: string[] = [
+      '#DAE0F1',
+      '#D2EDE8',
+      '#F9DCDC',
+      '#F8EBC2',
+      '#EED9F1',
+      '#EFEADF',
+      '#DFF1E0',
+      '#FFE2D8',
+      '#D8ECFD',
+      '#FCDAF0',
+      '#E7E1DF',
+      '#E3E3E3',
+    ];
+
+    this.mapingIndex = this.mapingIndex <= 11 ? this.mapingIndex : 0;
+
+    return {
+      background: backgroundColors[this.mapingIndex],
+      color: textColors[this.mapingIndex],
+    };
   }
 
   // On ToolBar Actions
@@ -402,9 +418,6 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(UserModalComponent, {
         size: 'small',
       });
-    } else if (event.action === 'tab-selected' && event.tabData.routeNavigate) {
-
-      this.router.navigate([event.tabData.routeNavigate]);
     }
   }
 
@@ -412,7 +425,7 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   onTableHeadActions(event: any) {
     if (event.action === 'sort') {
       if (event.direction) {
-       /*  this.mapingIndex = 0;
+        /*  this.mapingIndex = 0;
 
         this.backFilterQuery.sort = event.direction;
 
@@ -428,10 +441,18 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
   // On Body Actions
   onTableBodyActions(event: any) {
     if (event.type === 'edit') {
-      this.modalService.openModal(UserModalComponent, { size: 'small' });
+      this.modalService.openModal(
+        UserModalComponent,
+        { size: 'small' },
+        {
+          ...event,
+          type: 'edit',
+        }
+      );
     }
   }
 
+  // ---------------------------  NgOnDestroy ----------------------------------
   ngOnDestroy(): void {
     this.tableService.sendActionAnimation({});
     this.resizeObserver.unobserve(document.querySelector('.table-container'));

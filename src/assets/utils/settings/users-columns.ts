@@ -26,7 +26,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'user-avatar',
       title: 'Name',
-      field: 'userFullName',
+      field: 'userAvatar',
       name: 'Name',
       hidden: false,
       width: 160,
@@ -51,7 +51,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Department',
-      field: 'textDept',
+      field: 'userTableDept',
       name: 'Department',
       hidden: false,
       width: 120,
@@ -73,7 +73,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Office',
-      field: 'textOffice',
+      field: 'userTableOffice',
       name: 'Office',
       hidden: false,
       width: 150,
@@ -95,7 +95,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Phone',
-      field: 'textPhone',
+      field: 'userTablePhone',
       name: 'Phone',
       hidden: false,
       width: 150,
@@ -117,7 +117,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Ext.',
-      field: 'textExt',
+      field: 'uesrTableExt',
       name: 'Ext.',
       hidden: false,
       width: 80,
@@ -160,7 +160,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Hired',
-      field: 'textHired',
+      field: 'userTableHired',
       name: 'Hired',
       hidden: false,
       width: 80,
@@ -181,7 +181,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'text',
       title: 'Personal PH.',
-      field: 'textPersonalPH',
+      field: 'userTablePersonalPH',
       name: 'Personal PH.',
       hidden: false,
       width: 150,
@@ -202,9 +202,10 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'user-status',
       title: 'Status',
-      field: 'userStatus',
+      field: 'userTableStatus',
       name: 'Status',
       headAlign: 'center',
+      thSetCenter: true,
       setCenter: true,
       hidden: false,
       width: 100,
@@ -226,7 +227,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'semi-bold-text',
       title: 'Comm.',
-      field: 'textComm',
+      field: 'userTableCommission',
       name: 'Comm.',
       fontWeight: '600',
       hidden: false,
@@ -249,7 +250,7 @@ export function getUsersColumnDefinition() {
     {
       ngTemplate: 'semi-bold-text',
       title: 'Salary.',
-      field: 'textSalary',
+      field: 'userTableSalary',
       name: 'Salary.',
       hidden: false,
       width: 100,
