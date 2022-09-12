@@ -1,6 +1,8 @@
 import { DispatcherStore } from './dispatcher.store';
 import { Injectable } from "@angular/core";
-import { DispatchService } from 'appcoretruckassist';
+import { CreateDispatchCommand, DispatchService, ReorderDispatchesCommand, UpdateDispatchCommand } from 'appcoretruckassist';
+import { flatMap, delay, debounce, of, interval, filter } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: "root" })
 export class DispatcherStoreService {
@@ -124,6 +126,38 @@ export class DispatcherStoreService {
             ...store,
             modal: list[0],
             dispatchList: list[1]
+        }));
+    }
+
+    updateCountList(id: number, type: string, value: string){
+        
+        this.dispatcherStore.update((store) => ({
+            ...store,
+            dispatchList: {
+                ...store.dispatchList,
+                pagination: {
+                    ...store.dispatchList.pagination,
+                    data: store.dispatchList.pagination.data.map(item => {
+                        if(item.id == id){
+                            switch(type){
+                                case "truckId":
+                                    item.truckCount += value ? 1 : -1;
+                                break;
+                                case "location":
+                                    item.trailerCount += value ? 1 : -1;
+                                break;
+                                case "driverId":
+                                    item.driverCount += value ? 1 : -1;
+                                break;
+                                default: 
+                                
+                            }
+                        }
+
+                        return item;
+                    })
+                }
+            }
         }));
     }
 }

@@ -5,7 +5,6 @@ import { DispatchRoutingModule } from './dispatcher-routing.module';
 import { AppDispatcherTableNewComponent } from './app-dispatcher-table-new/app-dispatcher-table-new.component';
 import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
 import { LottieModule } from 'ngx-lottie';
-import player from 'lottie-web';
 import { DispatcherGpsTableComponent } from './dispatcher-gps-table/dispatcher-gps-table.component';
 import { DispatcherNoteComponent } from './dispatcher-note/dispatcher-note.component';
 import { DispatcherHistoryComponent } from './dispatcher-history/dispatcher-history.component';
@@ -14,9 +13,9 @@ import { DispatcherDropdownComponent } from './dispatcher-dropdown/dispatcher-dr
 import { PipesModule } from '../../pipes/pipes.module';
 import { DispatcherParkingComponent } from './dispatcher-parking/dispatcher-parking.component';
 import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboard-tables.component';
-import { AppTooltipeModule } from '../shared/app-tooltip/app-tooltip.module';
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 import { SharedModule } from '../shared/shared.module';
+import { ColorFinderPipe } from './pipes/color-finder.pipe';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -33,6 +32,7 @@ export function playerFactory() {
     DispatcherDropdownComponent,
     DispatcherParkingComponent,
     DispatchboardTablesComponent,
+    ColorFinderPipe,
   ],
   imports: [
     CommonModule,
