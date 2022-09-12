@@ -16,8 +16,6 @@ export class LoadPandingResolver implements Resolve<LoadPandingState> {
   ) {}
 
   resolve(): Observable<LoadPandingState | boolean> {
-    console.log('Poziva se LoadPandingResolver')
-
     return this.loadService
       .getLoadList(
         undefined,

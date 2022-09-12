@@ -153,6 +153,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'inspection',
       'value' : 'INSPECTION',
+    },
+    {
+      'api' : 'test',
+      'value' : 'TEST'
     }
     
   ]
@@ -214,10 +218,32 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.wideMessage = true;
       break;
       case 'DRIVER':
-        this.message = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+
+      let driverNameFull = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
+      let active = 1;
+      if (!driverNameFull){
+        if ( !isNaN(lastVal) ) {
+          driverNameFull = this.storesArray.driverActive.entities[lastVal] ? this.storesArray.driverActive.entities[lastVal].fullName : '';
+          if (!driverNameFull) {
+            driverNameFull = this.storesArray.driverInactive.entities[lastVal].fullName;
+            active = 0;
+          }
+        }
+
+      }
         if ( this.httpRequest.method == 'PUT' ){
           this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+
+          if ( apiEndPoint.indexOf('status') > -1 ) {
+
+            if ( active == 1 ) {
+              this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
+            } else {
+              this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
+            }
+          }
         }
+      this.message = driverNameFull;
       break;
       case 'RATE':
         this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
@@ -319,12 +345,22 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'TRAILER':
         let trailerNum = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
+        let activeTrailer = true;
         if (!trailerNum){
           if ( !isNaN(lastVal) ){
             let trailerNum = this.storesArray.trailerActive.entities[lastVal] ? this.storesArray.trailerActive.entities[lastVal].trailerNumber : '';
             if ( !trailerNum ) {
               trailerNum = this.storesArray.truckInactive.entities[lastVal].trailerNumber;
+              activeTrailer = false;
             }
+          }
+        }
+
+        if ( apiEndPoint.indexOf('status') > -1 ) {
+          if ( activeTrailer ) {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
+          } else {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
           }
         }
         this.message = trailerNum;
@@ -334,12 +370,21 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'TRUCK':
         let truckNum = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
+        let activeTruck = true;
         if (!truckNum){
           if ( !isNaN(lastVal) ){
             truckNum = this.storesArray.truckActive.entities[lastVal] ? this.storesArray.truckActive.entities[lastVal].truckNumber : '';
             if ( !truckNum ){
               truckNum = this.storesArray.truckInactive.entities[lastVal].truckNumber;
+              activeTruck = false;
             } 
+          }
+        }
+        if ( apiEndPoint.indexOf('status') > -1 ) {
+          if ( activeTruck ) {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
+          } else {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
           }
         }
         this.message = truckNum;
@@ -403,6 +448,16 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'INSPECTION': 
          let inspectionDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
          this.message = 'Issued: ' + inspectionDate;
+      break;
+      case 'TEST' :
+         let testName = '';
+         let testId = this.httpRequest.body?.driverId;
+
+         testName = this.storesArray.driverActive.entities[testId] ? this.storesArray.driverActive.entities[testId].fullName : '';
+         if (!testName) {
+          testName = this.storesArray.driverInactive.entities[testId].fullName;
+         }
+         this.message = testName;   
       break;
     }
 

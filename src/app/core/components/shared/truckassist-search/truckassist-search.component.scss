@@ -3,14 +3,12 @@
 
   .search-container {
     width: fit-content;
-    height: 32px;
-    background: #ffffff;
+    height: 26px;
     display: flex;
-    transition: background 0.25s;
 
     .icon-container {
       width: 32px;
-      height: 32px;
+      height: 26px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -40,7 +38,7 @@
     }
 
     .search-input {
-      height: 32px;
+      height: 26px;
       width: 0;
       transition: 0.25s;
       input {
@@ -69,7 +67,7 @@
 
   .chips-container {
     width: fit-content;
-    height: 32px;
+    height: 26px;
     display: flex;
     gap: 4px;
     background: #ffffff;
@@ -78,7 +76,7 @@
     .chip {
       cursor: pointer;
       min-width: 57px;
-      height: 32px;
+      height: 26px;
       border-radius: 3px;
       color: #ffffff;
       font-size: 14px;

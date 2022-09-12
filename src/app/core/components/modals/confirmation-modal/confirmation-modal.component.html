@@ -111,7 +111,7 @@
       </div>
       <!-- Shipper, Repair Shop -->
       <div
-        *ngIf="['shipper', 'repair shop','Company Parking','Company Office','Company Repair Shop','Company Terminal'].includes(editData?.template)"
+        *ngIf="['shipper', 'repair shop'].includes(editData?.template)"
         class="confirmation-info"
       >
         <p class="confirmation-text-1">{{ editData?.data?.name }}</p>
@@ -120,31 +120,19 @@
         </p>
       </div>
 
-      <!-- Broker -->
+      <!-- CDL -->
       <div
-        *ngIf="['broker'].includes(editData?.template)"
+        *ngIf="['cdl'].includes(editData?.template)"
         class="confirmation-info"
       >
-        <p class="confirmation-text-1 ">
-          {{ editData?.data?.businessName }}
+        <p class="confirmation-text-1 confirmation-flex">
+          <span class="confirmation-state">{{ editData?.data?.state }}</span>
+          {{ editData?.data?.cdlNumber }}
         </p>
         <p class="confirmation-text-2">
-          Phone: {{ editData?.data?.phone }}
+          Expires: {{ editData?.data.expDate | formatDateP }}
         </p>
       </div>
-
-      <div
-      *ngIf="['cdl'].includes(editData?.template)"
-      class="confirmation-info"
-    >
-      <p class="confirmation-text-1 confirmation-flex">
-        <span class="confirmation-state">{{ editData?.data?.state }}</span>
-        {{ editData?.data?.cdlNumber }}
-      </p>
-      <p class="confirmation-text-2">
-        Expires: {{ editData?.data.expDate | formatDateP }}
-      </p>
-    </div>
 
       <!-- Medical, Mvr, Test -->
       <div

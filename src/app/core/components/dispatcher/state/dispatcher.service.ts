@@ -14,6 +14,12 @@ export class DispatcherStoreService {
         return this.dispatchService.apiDispatchModalGet();
     }
 
+    updateModalList(){
+        this.dispatchService.apiDispatchModalGet().subscribe(modal => {
+            this.modalList = modal;
+        })
+    }
+
     getDispatchboardList(){
         return this.dispatchService.apiDispatchBoardListGet();
     }
@@ -106,6 +112,13 @@ export class DispatcherStoreService {
                 }
             }
         }));   
+    }
+
+    set modalList(modal){
+        this.dispatcherStore.update((store) => ({
+            ...store,
+            modal
+        }));
     }
 
     set dispatcherData(list){

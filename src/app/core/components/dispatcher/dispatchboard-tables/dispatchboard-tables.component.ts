@@ -197,6 +197,7 @@ export class DispatchboardTablesComponent implements OnInit {
   statusOpenedIndex: number = -1;
 
   showAddAddressField: number = -1;
+  pickDeliveryHovered: any = {};
 
   savedTruckId: any;
 
@@ -415,6 +416,7 @@ export class DispatchboardTablesComponent implements OnInit {
         )
         .subscribe((data) => {
           this.dss.updateCountList(this.dData.id, key, value);
+          this.dss.updateModalList();
           this.checkEmptySet = '';
         });
     } else {
@@ -433,6 +435,7 @@ export class DispatchboardTablesComponent implements OnInit {
         .subscribe((data) => {
           this.checkEmptySet = '';
           this.dss.updateCountList(this.dData.id, key, value);
+          this.dss.updateModalList();
         });
     }
     // console.log("HELOOOOO", newData);

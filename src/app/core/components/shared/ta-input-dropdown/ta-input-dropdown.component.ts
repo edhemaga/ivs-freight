@@ -823,13 +823,8 @@ export class TaInputDropdownComponent
     }
   }
 
-  // Must be here, because of "untilDestroyed"
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  dropdownIsOpened() {
-    console.log('DROPDOWN IS OPENED');
   }
 }

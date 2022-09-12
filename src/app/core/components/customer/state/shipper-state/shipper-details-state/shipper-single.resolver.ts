@@ -7,12 +7,11 @@ import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { ShipperTService } from '../shipper.service';
-import { ShipperState } from '../shipper.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ShipperSingleResolver implements Resolve<ShipperState> {
+export class ShipperSingleResolver implements Resolve<ShipperResponse[]> {
   constructor(
     private shipperService: ShipperTService,
     private shipperDetailsQuery: ShipperDetailsQuery,
@@ -21,7 +20,7 @@ export class ShipperSingleResolver implements Resolve<ShipperState> {
   ) {}
   resolve(
     route: ActivatedRouteSnapshot
-  ): Observable<ShipperState> | Observable<any> {
+  ): Observable<ShipperResponse[]> | Observable<any> {
     const shipper_id = route.paramMap.get('id');
     let ids = parseInt(shipper_id);
 
@@ -31,7 +30,7 @@ export class ShipperSingleResolver implements Resolve<ShipperState> {
         return of('No shipper data for...' + ids);
       }),
       tap((shipperRespon: ShipperResponse) => {
-        this.shipperDetailsStore.set([shipperRespon]);
+        this.shipperDetailsStore.set({ ids: shipperRespon });
       })
     );
   }

@@ -6,12 +6,12 @@ import { SharedModule } from '../shared/shared.module';
 import { SettingsToolbarComponent } from './settings-toolbar/settings-toolbar.component';
 import { SettingsToollbarCardComponent } from './settings-toolbar/settings-toollbar-card/settings-toollbar-card.component';
 import { SettingsComponent } from './settings.component';
+import { TruckassistTableModule } from '../shared/truckassist-table/truckassist-table.module';
 
 @NgModule({
-  imports: [CommonModule, SettingsRoutingModule, SharedModule],
+  imports: [CommonModule, SettingsRoutingModule, SharedModule, TruckassistTableModule],
   declarations: [
     SettingsComponent,
-
     SettingsToolbarComponent,
     SettingsToollbarCardComponent,
   ],
