@@ -90,25 +90,27 @@ export class TaInputService {
     return formControl.valueChanges
       .pipe(takeUntil(destroy$))
       .subscribe((value) => {
-        switch (type) {
-          case 'email': {
-            if (!validator.isEmail(value)) {
-              formControl.setErrors({ invalid: true });
-            } else {
-              formControl.setErrors(null);
+        if (value) {
+          switch (type) {
+            case 'email': {
+              if (!validator.isEmail(value)) {
+                formControl.setErrors({ invalid: true });
+              } else {
+                formControl.setErrors(null);
+              }
+              break;
             }
-            break;
-          }
-          case 'url': {
-            if (!validator.isURL(value)) {
-              formControl.setErrors({ invalid: true });
-            } else {
-              formControl.setErrors(null);
+            case 'url': {
+              if (!validator.isURL(value)) {
+                formControl.setErrors({ invalid: true });
+              } else {
+                formControl.setErrors(null);
+              }
+              break;
             }
-            break;
-          }
-          default: {
-            break;
+            default: {
+              break;
+            }
           }
         }
       });
