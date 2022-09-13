@@ -344,7 +344,7 @@ export class Step4Component implements OnInit, OnDestroy {
     }
 
     const saveData: CreateAccidentRecordCommand = {
-      applicantId: this.applicantId,
+      applicantId: 1,
       noAccidentInThreeYears: hasPastAccident,
       accidents: hasPastAccident
         ? []

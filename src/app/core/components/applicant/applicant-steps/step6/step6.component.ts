@@ -307,6 +307,17 @@ export class Step6Component implements OnInit, OnDestroy {
     if (selectedCheckbox.label === 'YES') {
       this.educationForm.get(selectedFormControlName).patchValue(true);
 
+      this.inputService.changeValidators(
+        this.educationForm.get(selectedExplainFormControlName)
+      );
+
+      if (selectedCheckbox.index === 2) {
+        this.inputService.changeValidators(
+          this.educationForm.get(selectedExplainFormControlName),
+          false
+        );
+      }
+
       if (selectedCheckbox.index === 3) {
         this.inputService.changeValidators(
           this.educationForm.get('driverForCompanyBeforeExplain')
@@ -316,12 +327,20 @@ export class Step6Component implements OnInit, OnDestroy {
           this.educationForm.get('driverForCompanyToExplain')
         );
       }
-
-      this.inputService.changeValidators(
-        this.educationForm.get(selectedExplainFormControlName)
-      );
     } else {
       this.educationForm.get(selectedFormControlName).patchValue(false);
+
+      this.inputService.changeValidators(
+        this.educationForm.get(selectedExplainFormControlName),
+        false
+      );
+
+      if (selectedCheckbox.index === 2) {
+        this.inputService.changeValidators(
+          this.educationForm.get(selectedExplainFormControlName),
+          false
+        );
+      }
 
       if (selectedCheckbox.index === 3) {
         this.inputService.changeValidators(
@@ -334,11 +353,6 @@ export class Step6Component implements OnInit, OnDestroy {
           false
         );
       }
-
-      this.inputService.changeValidators(
-        this.educationForm.get(selectedExplainFormControlName),
-        false
-      );
     }
   }
 
@@ -560,12 +574,11 @@ export class Step6Component implements OnInit, OnDestroy {
       driverBefore: driverForCompany,
       from: convertDateToBackend(driverForCompanyBeforeExplain),
       to: convertDateToBackend(driverForCompanyToExplain),
+      unableForJobDescription: unableForJobExplain,
       emergencyContacts: [...filteredContactsArray, filteredLastContactCard],
     };
 
-    console.log(saveData);
-
-    /*   this.applicantActionsService
+    this.applicantActionsService
       .createEducation(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
@@ -575,7 +588,7 @@ export class Step6Component implements OnInit, OnDestroy {
         error: (err) => {
           console.log(err);
         },
-      }); */
+      });
   }
 
   /* public onSubmitReview(data: any): void {} */

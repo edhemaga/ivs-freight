@@ -20,7 +20,7 @@ import {
 
 import { phoneFaxRegex } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 
 import { ContactModel } from '../../state/model/education.model';
@@ -117,7 +117,7 @@ export class Step6FormComponent
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService
   ) {}
 
   ngOnInit(): void {
@@ -211,9 +211,9 @@ export class Step6FormComponent
 
     this.formValuesEmitter.emit(saveData);
 
-    this.contactForm.reset();
+    this.formService.resetForm(this.contactForm);
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.contactForm.reset();
   }
 
   public onSaveEditedContact(): void {
@@ -239,8 +239,6 @@ export class Step6FormComponent
 
     this.contactForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -250,8 +248,6 @@ export class Step6FormComponent
     this.isContactEdited = false;
 
     this.contactForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

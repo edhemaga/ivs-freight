@@ -24,15 +24,17 @@ import {
   descriptionValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Address } from '../../state/model/address.model';
 import { ViolationModel } from '../../state/model/violations.model';
-import { TruckTypeResponse } from 'appcoretruckassist/model/models';
+import {
+  AddressEntity,
+  TruckTypeResponse,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step5-form',
@@ -66,7 +68,7 @@ export class Step5FormComponent
   public editingCardAddress: any;
 
   public selectedVehicleType: any = null;
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
   public vehicleType: TruckTypeResponse[] = [];
 
@@ -103,7 +105,7 @@ export class Step5FormComponent
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService,
+    private formService: FormService,
     private applicantListsService: ApplicantListsService
   ) {}
 
@@ -226,7 +228,7 @@ export class Step5FormComponent
 
     this.violationsForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.violationsForm);
   }
 
   public onSaveEditedViolation(): void {
@@ -256,8 +258,6 @@ export class Step5FormComponent
 
     this.violationsForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -267,8 +267,6 @@ export class Step5FormComponent
     this.isViolationEdited = false;
 
     this.violationsForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

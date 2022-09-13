@@ -153,15 +153,21 @@ export class Step5Component implements OnInit, OnDestroy {
       .valueChanges.pipe(takeUntil(this.destroy$))
       .subscribe((value) => {
         if (value) {
-          this.notBeenConvictedForm.get('notBeenConvicted').clearValidators();
+          this.inputService.changeValidatorsCheck(
+            this.notBeenConvictedForm.get('notBeenConvicted'),
+            false
+          );
+          this.inputService.changeValidatorsCheck(
+            this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense'),
+            false
+          );
+          this.inputService.changeValidatorsCheck(
+            this.certifyForm.get('certify'),
+            false
+          );
+
           this.notBeenConvictedForm.patchValue({ notBeenConvicted: null });
-
-          this.onlyOneHoldLicenseForm
-            .get('onlyOneHoldLicense')
-            .clearValidators();
           this.onlyOneHoldLicenseForm.patchValue({ onlyOneHoldLicense: null });
-
-          this.certifyForm.get('certify').clearValidators();
           this.certifyForm.patchValue({ certify: null });
 
           this.formStatus = 'VALID';
@@ -175,30 +181,18 @@ export class Step5Component implements OnInit, OnDestroy {
 
           this.violationsArray = [];
         } else {
-          this.notBeenConvictedForm
-            .get('notBeenConvicted')
-            .setValidators(Validators.requiredTrue);
-
-          this.onlyOneHoldLicenseForm
-            .get('onlyOneHoldLicense')
-            .setValidators(Validators.requiredTrue);
-
-          this.certifyForm
-            .get('certify')
-            .setValidators(Validators.requiredTrue);
+          this.inputService.changeValidatorsCheck(
+            this.notBeenConvictedForm.get('notBeenConvicted')
+          );
+          this.inputService.changeValidatorsCheck(
+            this.onlyOneHoldLicenseForm.get('onlyOneHoldLicense')
+          );
+          this.inputService.changeValidatorsCheck(
+            this.certifyForm.get('certify')
+          );
 
           this.formStatus = 'INVALID';
         }
-
-        this.notBeenConvictedForm.controls[
-          'notBeenConvicted'
-        ].updateValueAndValidity();
-
-        this.onlyOneHoldLicenseForm.controls[
-          'onlyOneHoldLicense'
-        ].updateValueAndValidity();
-
-        this.certifyForm.controls['certify'].updateValueAndValidity();
       });
   }
 

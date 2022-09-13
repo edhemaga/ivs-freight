@@ -12,7 +12,7 @@ import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
@@ -117,7 +117,7 @@ export class Step3FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService,
+    private formService: FormService,
     private applicantListsService: ApplicantListsService
   ) {}
 
@@ -290,7 +290,7 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     this.selectedEndorsments = null;
     this.selectedRestrictions = null;
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.licenseForm);
   }
 
   public onCancelEditLicense(): void {
@@ -299,8 +299,6 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     this.isLicenseEdited = false;
 
     this.licenseForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -333,8 +331,6 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     this.isLicenseEdited = false;
 
     this.licenseForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

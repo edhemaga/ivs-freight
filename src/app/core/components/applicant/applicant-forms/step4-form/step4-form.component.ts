@@ -31,7 +31,7 @@ import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
@@ -127,7 +127,7 @@ export class Step4FormComponent
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService,
+    private formService: FormService,
     private applicantListsService: ApplicantListsService
   ) {}
 
@@ -277,8 +277,6 @@ export class Step4FormComponent
       isEditingAccident: false,
     };
 
-    console.log(saveData);
-
     this.formValuesEmitter.emit(saveData);
 
     this.hazmatSpillRadios[0].checked = false;
@@ -288,7 +286,7 @@ export class Step4FormComponent
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.accidentForm);
 
     this.accidentForm.patchValue({
       fatalities: 0,
@@ -305,8 +303,6 @@ export class Step4FormComponent
     this.hazmatSpillRadios[1].checked = false;
 
     this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -340,8 +336,6 @@ export class Step4FormComponent
     this.isAccidentEdited = false;
 
     this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

@@ -212,7 +212,11 @@ export class Step8Component implements OnInit, OnDestroy {
             false
           );
 
-          this.drugAlcoholStatementForm.get('isAgreement').clearValidators();
+          this.inputService.changeValidatorsCheck(
+            this.drugAlcoholStatementForm.get('isAgreement'),
+            false
+          );
+
           this.drugAlcoholStatementForm.patchValue({ isAgreement: null });
 
           this.drugAlcoholStatementForm.patchValue({
@@ -246,14 +250,10 @@ export class Step8Component implements OnInit, OnDestroy {
             this.drugAlcoholStatementForm.get('sapAddress')
           );
 
-          this.drugAlcoholStatementForm
-            .get('isAgreement')
-            .setValidators(Validators.requiredTrue);
+          this.inputService.changeValidatorsCheck(
+            this.drugAlcoholStatementForm.get('isAgreement')
+          );
         }
-
-        this.drugAlcoholStatementForm.controls[
-          'isAgreement'
-        ].updateValueAndValidity();
       });
   }
 

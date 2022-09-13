@@ -15,9 +15,11 @@ import { ApplicantActionsService } from '../../state/services/applicant-actions.
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
-import { CreateSevenDaysHosCommand } from 'appcoretruckassist/model/models';
+import {
+  AddressEntity,
+  CreateSevenDaysHosCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step7',
@@ -33,7 +35,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
   public applicantId: number;
 
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
   public sevenDaysHosDaysData: string[] = [
     'Day',
@@ -205,22 +207,10 @@ export class Step7Component implements OnInit, OnDestroy {
         const selectedFormControlName =
           this.questions[selectedCheckbox.index].formControlName;
 
-        const selectedExplainFormControlName =
-          this.questions[selectedCheckbox.index].formControlNameExplain;
-
         if (selectedCheckbox.label === 'YES') {
           this.sevenDaysHosForm.get(selectedFormControlName).patchValue(true);
-
-          this.inputService.changeValidators(
-            this.sevenDaysHosForm.get(selectedExplainFormControlName)
-          );
         } else {
           this.sevenDaysHosForm.get(selectedFormControlName).patchValue(false);
-
-          this.inputService.changeValidators(
-            this.sevenDaysHosForm.get(selectedExplainFormControlName),
-            false
-          );
         }
         break;
 
@@ -333,6 +323,7 @@ export class Step7Component implements OnInit, OnDestroy {
 
     const {
       hosArray,
+      isValidHos,
       startDate,
       address,
       anotherEmployer,
@@ -342,9 +333,20 @@ export class Step7Component implements OnInit, OnDestroy {
       ...sevenDaysHosForm
     } = this.sevenDaysHosForm.value;
 
+    const filteredHosArray: { hours: number; date: string }[] = hosArray.map(
+      (item: { hos: string | number }, index: number) => {
+        return {
+          hours: +item.hos,
+          date: convertDateToBackend(this.sevenDaysHosDateData[index + 1]),
+        };
+      }
+    );
+
     const saveData: CreateSevenDaysHosCommand = {
       ...sevenDaysHosForm,
       applicantId: this.applicantId,
+      hos: [...filteredHosArray],
+      releasedFromWork: isValidHos,
       releasedDate: convertDateToBackend(startDate),
       location: address,
       workingForAnotherEmployer: anotherEmployer,
@@ -352,8 +354,6 @@ export class Step7Component implements OnInit, OnDestroy {
       certifyInfomation: isValidAnotherEmployer,
     };
 
-    console.log(saveData);
-    /* 
     this.applicantActionsService
       .createSevenDaysHos(saveData)
       .pipe(takeUntil(this.destroy$))
@@ -364,7 +364,7 @@ export class Step7Component implements OnInit, OnDestroy {
         error: (err) => {
           console.log(err);
         },
-      });  */
+      });
   }
 
   /* public onSubmitReview(data: any): void {} */

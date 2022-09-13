@@ -15,10 +15,12 @@ import { Subject, takeUntil } from 'rxjs';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Address } from '../../state/model/address.model';
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
-import { UpdatePersonalInfoCommand } from 'appcoretruckassist/model/models';
+import {
+  AddressEntity,
+  UpdatePersonalInfoCommand,
+} from 'appcoretruckassist/model/models';
 
 import {
   phoneFaxRegex,
@@ -49,7 +51,7 @@ export class Step1Component implements OnInit, OnDestroy {
   public personalInfoForm: FormGroup;
 
   public selectedBank: any = null;
-  public selectedAddresses: any[] = [];
+  public selectedAddresses: AddressEntity[] = [];
 
   public banksDropdownList: BankResponse[] = [];
 
@@ -424,7 +426,7 @@ export class Step1Component implements OnInit, OnDestroy {
 
         break;
       case InputSwitchActions.PREVIOUS_ADDRESS:
-        const address: Address = event.address;
+        const address: AddressEntity = event.address;
 
         this.selectedAddresses = [...this.selectedAddresses, address];
 

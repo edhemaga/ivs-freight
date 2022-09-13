@@ -23,7 +23,7 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { ApplicantQuestion } from '../../state/model/applicant-question.model';
@@ -277,7 +277,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService,
+    private formService: FormService,
     private applicantListsService: ApplicantListsService
   ) {}
 
@@ -585,7 +585,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.workExperienceForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.workExperienceForm);
   }
 
   public onCancelEditWorkExperience(): void {
@@ -596,8 +596,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     this.selectedReasonForLeaving = null;
 
     this.workExperienceForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -662,8 +660,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
     this.selectedReasonForLeaving = null;
 
     this.workExperienceForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -751,7 +747,7 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.classOfEquipmentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.classOfEquipmentForm);
   }
 
   public onDeleteClassOfEquipment(index: number): void {
@@ -836,8 +832,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.classOfEquipmentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.classOfEquipmentSubscription.unsubscribe();
 
     if (this.isEditing) {
@@ -887,8 +881,6 @@ export class Step2FormComponent implements OnInit, OnDestroy {
 
     this.classOfEquipmentForm.reset();
 
-    /* this.inputResetService.resetInputSubject.next(true);
-     */
     this.classOfEquipmentSubscription.unsubscribe();
 
     if (this.isEditing) {
