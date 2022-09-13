@@ -544,6 +544,7 @@ table {
               height: 20px;
               margin-right: 6px;
               display: flex;
+              align-items: center;
 
               &:hover {
                 transform: scale(1.8);
@@ -555,6 +556,17 @@ table {
                 width: 20px;
                 height: 20px;
                 border-radius: 50px;
+              }
+
+              .user-avatar-no-img{
+                width: 18px;
+                height: 18px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 7px;
+                font-weight: 800;
               }
             }
 
@@ -575,6 +587,11 @@ table {
                 color: #6c6c6c;
                 background: #6c6c6c;
               }
+            }
+
+            .user-invited{
+              background: #FFA72610 !important;
+              color: #FFA726 !important;
             }
 
             // NAME LINK
