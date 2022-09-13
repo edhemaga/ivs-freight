@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpEvent, HttpResponse, HttpRequest, HttpHandler } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, throwError, tap, finalize } from 'rxjs';
 import { NotificationService } from './core/services/notification/notification.service';
 
 
@@ -18,6 +18,14 @@ export class AppInterceptor implements HttpInterceptor {
             this.notificationService.errorToastr(httpRequest, next);
             
             return throwError(() => new Error(error.statusText));
+        }), 
+        finalize(() => {
+          //console.log('----finalize---'); 
+          //console.log('----httpRequest---', httpRequest);
+          if ( httpRequest.url.indexOf('api') > -1 && httpRequest.method != 'GET' ){
+            //this.notificationService.successToastr(httpRequest, next);
+          }
+          
         })
     );
 

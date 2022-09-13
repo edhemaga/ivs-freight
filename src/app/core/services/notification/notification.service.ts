@@ -26,6 +26,10 @@ export class NotificationService {
     this.toastr.error("", "", {...notificationOptions, payload: { httpRequest, next }});
   }
 
+  public successToastr(httpRequest: HttpRequest<any>, next: HttpHandler){
+    this.toastr.success("", "", {...notificationOptions, payload: { httpRequest, next }});
+  }
+
   public success(message: string, title?: string) {
     this.toastr.success(message, title, notificationOptions);
   }

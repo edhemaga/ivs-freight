@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   animate,
   keyframes,
@@ -10,8 +10,10 @@ import {
 import { Toast, ToastrService, ToastPackage } from 'ngx-toastr';
 import { HttpHandler, HttpRequest } from '@angular/common/http';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 import moment from 'moment';
 import { data } from 'jquery';
+import { Subject, takeUntil } from 'rxjs';
 
 
 const routeSpecify = {
@@ -67,6 +69,7 @@ const routeSpecify = {
   ],
 })
 export class CustomToastMessagesComponent extends Toast implements OnInit {
+  private destroy$ = new Subject<void>();
   toastrType: string = "";
   retryBtnHovered: boolean = false;
   retryStarted: boolean = false;
@@ -80,6 +83,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   actionType: string = "";
   wideMessage: any = false;
   storesArray: any = JSON.parse(localStorage.getItem('AkitaStores'));
+  leftSideMove: any = false;
 
   apiConfObj: any[] = [
     {
@@ -163,7 +167,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
   constructor(
     protected toastrService: ToastrService,
     public toastPackage: ToastPackage,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private DetailsDataService: DetailsDataService,
   ) {
     super(toastrService, toastPackage);
     this.httpRequest = this.toastPackage.config.payload.httpRequest;
@@ -173,6 +178,13 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
   ngOnInit(): void {
     this.createTitleBasedOnHttpRequest();
+
+
+    this.DetailsDataService.leftSideMenuChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: boolean) => {
+        this.leftSideMove = response;
+      });
   }
 
   createTitleBasedOnHttpRequest() {
@@ -218,32 +230,27 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         this.wideMessage = true;
       break;
       case 'DRIVER':
-
       let driverNameFull = this.httpRequest.body?.firstName ? this.httpRequest.body?.firstName : '' + ' ' + this.httpRequest.body?.lastName ? this.httpRequest.body?.lastName : '';
-      let active = 1;
+      let active = this.DetailsDataService.mainData?.status ? 1 : 0;
+      
       if (!driverNameFull){
-        if ( !isNaN(lastVal) ) {
-          driverNameFull = this.storesArray.driverActive.entities[lastVal] ? this.storesArray.driverActive.entities[lastVal].fullName : '';
-          if (!driverNameFull) {
-            driverNameFull = this.storesArray.driverInactive.entities[lastVal].fullName;
-            active = 0;
-          }
+          driverNameFull = this.DetailsDataService.mainData?.fullName;
         }
 
+      if ( this.httpRequest.method == 'PUT' ){
+        this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+
+        if ( apiEndPoint.indexOf('status') > -1 ) {
+
+          if ( active == 1 ) {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
+          } else {
+            this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
+          }
+        }
       }
-        if ( this.httpRequest.method == 'PUT' ){
-          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
-
-          if ( apiEndPoint.indexOf('status') > -1 ) {
-
-            if ( active == 1 ) {
-              this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
-            } else {
-              this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
-            }
-          }
-        }
       this.message = driverNameFull;
+
       break;
       case 'RATE':
         this.actionTitle = this.toastrType == 'toast-error' ? 'RATE' : 'RATED';
@@ -263,26 +270,18 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         }
       break;
       case 'CDL':
-        let dId = this.httpRequest.body?.driverId;
-        let driverFullName = '';
-        
-        if (dId){
-          driverFullName = this.storesArray.driverActive.entities[dId].fullName;
-        }
-        
+        let driverFullName = this.DetailsDataService.mainData?.fullName;
         this.message = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : '';
+
         if ( this.httpRequest.method == 'POST' || this.httpRequest.method == 'PUT' ){
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
-          this.actionType = !dId ? 'CDL' : 'CDL - ' + driverFullName;
+          this.actionType = 'CDL - ' + driverFullName;
+          this.wideMessage = true;
         }
       break;
       case 'MVR':
       case 'MEDICAL':   
-        let driverId = this.httpRequest.body?.driverId;
-        let driverName = this.storesArray.driverActive.entities[driverId].fullName;
-        if ( !driverName ){
-          driverName = this.storesArray.driverInactive.entities[driverId].fullName;
-        }
+        let driverName = this.DetailsDataService.mainData?.fullName; 
         
         let issuedDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
@@ -299,19 +298,15 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         messageValue = this.httpRequest.body.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
        }
       
-        if ( !isNaN(lastVal) ){ 
-          if ( this.storesArray.broker.entities[lastVal] || this.storesArray.shipper.entities[lastVal] ){
-            dataValue = this.actionType == 'BROKER' ? this.storesArray.broker.entities[lastVal] : this.storesArray.broker.entities[lastVal];
-            if ( !messageValue ){
-              messageValue = dataValue.dbaName ? dataValue.dbaName : dataValue.businessName;
-            }
-          }
-        }
+      if (!messageValue){
+        messageValue = this.DetailsDataService.mainData?.dbaName ? this.DetailsDataService.mainData?.dbaName : this.DetailsDataService.mainData?.businessName;
+      }
+      
 
         if ( apiEndPoint.indexOf('dnu') > -1 )
           {
             let moveAction = '';
-            if ( dataValue.dnu ){
+            if ( this.DetailsDataService.mainData?.dnu ){
               moveAction = 'FROM';
               
             } else {
@@ -326,7 +321,7 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         if ( apiEndPoint.indexOf('ban') > -1 )
           {
             let moveAction = '';
-            if ( dataValue.ban ){
+            if ( this.DetailsDataService.mainData?.ban ){
               moveAction = 'FROM';
               
             } else {
@@ -345,15 +340,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'TRAILER':
         let trailerNum = this.httpRequest.body?.trailerNumber ? this.httpRequest.body.trailerNumber : '';
-        let activeTrailer = true;
+        let activeTrailer = this.DetailsDataService.mainData?.status ? true : false;
         if (!trailerNum){
-          if ( !isNaN(lastVal) ){
-            let trailerNum = this.storesArray.trailerActive.entities[lastVal] ? this.storesArray.trailerActive.entities[lastVal].trailerNumber : '';
-            if ( !trailerNum ) {
-              trailerNum = this.storesArray.truckInactive.entities[lastVal].trailerNumber;
-              activeTrailer = false;
-            }
-          }
+          trailerNum = this.DetailsDataService.mainData?.trailerNumber;
         }
 
         if ( apiEndPoint.indexOf('status') > -1 ) {
@@ -370,15 +359,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'TRUCK':
         let truckNum = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
-        let activeTruck = true;
+        let activeTruck = this.DetailsDataService.mainData?.status ? true : false;
         if (!truckNum){
-          if ( !isNaN(lastVal) ){
-            truckNum = this.storesArray.truckActive.entities[lastVal] ? this.storesArray.truckActive.entities[lastVal].truckNumber : '';
-            if ( !truckNum ){
-              truckNum = this.storesArray.truckInactive.entities[lastVal].truckNumber;
-              activeTruck = false;
-            } 
-          }
+          truckNum = this.DetailsDataService.mainData?.truckNumber;
         }
         if ( apiEndPoint.indexOf('status') > -1 ) {
           if ( activeTruck ) {
@@ -392,30 +375,21 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'OWNER':
         let name = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
         if ( !name ) { 
-          if ( !isNaN(lastVal) ){
-            name = this.storesArray.ownerActive.entities[lastVal].name ? this.storesArray.ownerActive.entities[lastVal].name : '';
-            if ( !name ) {
-              name = this.storesArray.ownerInactive.entities[lastVal].name;
-            }
-          }
+          name = this.DetailsDataService.mainData?.name;
          }
         this.message = name;
       break;
       case 'CONTACT':
         let contactName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
         if ( !contactName ) { 
-          if ( !isNaN(lastVal) ) {
-            contactName = this.storesArray.contact.entities[lastVal].name ? this.storesArray.contact.entities[lastVal].name : '';
-          }
+          contactName = this.DetailsDataService.mainData?.name;
          }
         this.message = contactName;
       break;
       case 'REPAIR SHOP':
          let shopName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
          if ( !shopName ){
-          if ( !isNaN(lastVal) ) {
-            shopName = this.storesArray.repairShop.entities[lastVal].name ? this.storesArray.contact.entities[lastVal].name : ''; 
-          }
+            shopName = this.DetailsDataService.mainData?.name;
          }
          this.message = shopName;
       break;
@@ -450,14 +424,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
          this.message = 'Issued: ' + inspectionDate;
       break;
       case 'TEST' :
-         let testName = '';
-         let testId = this.httpRequest.body?.driverId;
-
-         testName = this.storesArray.driverActive.entities[testId] ? this.storesArray.driverActive.entities[testId].fullName : '';
-         if (!testName) {
-          testName = this.storesArray.driverInactive.entities[testId].fullName;
-         }
-         this.message = testName;   
+        let testName = this.DetailsDataService.mainData.fullName;
+        this.message = testName;   
       break;
     }
 

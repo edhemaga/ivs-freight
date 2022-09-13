@@ -7,10 +7,16 @@
     pointer-events: all;
     font-family: 'Montserrat', sans-serif !important;
     margin-bottom: 10px;
+    margin-left: 0px;
     user-select: none;
-
+    transition: all 0.3s ease-in-out;
+    
     &.wide-toast-message{
         width: 340px;
+    }
+
+    &.movedLeft{
+        margin-left: 142px;
     }
 
     .toast-title{
