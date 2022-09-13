@@ -37,6 +37,7 @@ import { RouteService } from './api/route.service';
 import { RoutingService } from './api/routing.service';
 import { ShipperService } from './api/shipper.service';
 import { StopService } from './api/stop.service';
+import { TableConfigService } from './api/tableConfig.service';
 import { TerminalService } from './api/terminal.service';
 import { TestService } from './api/test.service';
 import { TitleService } from './api/title.service';
@@ -46,6 +47,7 @@ import { TruckService } from './api/truck.service';
 import { UserService } from './api/user.service';
 import { VinDecodeService } from './api/vinDecode.service';
 import { ViolationService } from './api/violation.service';
+import { WeatherService } from './api/weather.service';
 
 @NgModule({
   imports:      [],

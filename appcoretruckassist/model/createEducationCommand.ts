@@ -24,6 +24,7 @@ export interface CreateEducationCommand {
     from?: string | null;
     to?: string | null;
     unableForJob?: boolean;
+    unableForJobDescription?: string | null;
     emergencyContacts?: Array<EmergencyContactCommand> | null;
     applicantId?: number;
 }

@@ -32,6 +32,7 @@ export interface PersonalInfoFeedbackResponse {
     accountNumber?: string | null;
     routingNumber?: string | null;
     legalWork?: boolean;
+    legalWorkDescription?: string | null;
     anotherName?: boolean | null;
     anotherNameDescription?: string | null;
     inMilitary?: boolean | null;

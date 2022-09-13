@@ -9,16 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { WeatherDaysResponse } from './weatherDaysResponse';
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: string | null;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface WeatherDataResponse { 
+    icon?: string | null;
+    city?: string | null;
+    stateShortName?: string | null;
+    conditions?: string | null;
+    temperature?: number;
+    weatherDays?: Array<WeatherDaysResponse> | null;
 }
 

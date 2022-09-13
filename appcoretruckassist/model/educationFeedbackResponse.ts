@@ -26,6 +26,7 @@ export interface EducationFeedbackResponse {
     from?: string | null;
     to?: string | null;
     unableForJob?: boolean;
+    unableForJobDescription?: string | null;
     reviewed?: boolean | null;
     approved?: boolean | null;
     educationReview?: EducationReviewResponse;
