@@ -223,7 +223,11 @@ export class Step4FormComponent
       } else {
         this.hazmatSpillRadios[1].checked = true;
       }
-    }, 1);
+
+      this.selectedVehicleType = this.vehicleType.find(
+        (item) => item.name === this.formValuesToPatch.vehicleType
+      );
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {

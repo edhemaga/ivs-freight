@@ -146,6 +146,16 @@
           isRequired: true,
           isDropdown: true,
           dropdownWidthClass: 'w-col-applicant-t-type',
+          dropdownImageInput: {
+            withText: true,
+            url: selectedVehicleType?.logoName,
+            template: 'truck',
+            class: selectedVehicleType?.name
+              ?.trim()
+              .replace(' ', '')
+              .toLowerCase()
+          },
+          customClass: 'truck-trailer-dropdown',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [activeItem]="selectedVehicleType"

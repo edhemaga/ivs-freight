@@ -16,8 +16,10 @@ import {
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Address } from '../../state/model/address.model';
-import { CreateDrugAndAlcoholCommand } from 'appcoretruckassist/model/models';
+import {
+  AddressEntity,
+  CreateDrugAndAlcoholCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step8',
@@ -34,8 +36,8 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public applicantId: number;
 
-  public selectedAddress: Address = null;
-  public selectedSapAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
+  public selectedSapAddress: AddressEntity = null;
 
   public question = {
     title:

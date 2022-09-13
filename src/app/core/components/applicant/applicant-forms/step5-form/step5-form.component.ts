@@ -178,6 +178,12 @@ export class Step5FormComponent
       location: this.formValuesToPatch.location.address,
       description: this.formValuesToPatch.description,
     });
+
+    setTimeout(() => {
+      this.selectedVehicleType = this.vehicleType.find(
+        (item) => item.name === this.formValuesToPatch.vehicleType
+      );
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {
