@@ -29,7 +29,7 @@ export class TruckMinimalResolver implements Resolve<TruckMinimalListResponse> {
           return of('No drivers data for...');
         }),
         tap((truckMinimal: TruckMinimalListResponse) => {
-          this.truckMinimalListStore.set(truckMinimal.pagination.data);
+          // this.truckMinimalListStore.set(truckMinimal.pagination.data);
         })
       );
   }
