@@ -386,6 +386,18 @@
 
       //------------------------ Custom width dependent on 'col' bootstrap ------------------------
 
+      &.w-col-70 {
+        width: 70px;
+      }
+
+      &.w-col-92{
+        width: 92px;
+      }
+
+      &.w-col-142{
+        width: 142px;
+      }
+
       &.w-col-686 {
         width: 686px;
       }

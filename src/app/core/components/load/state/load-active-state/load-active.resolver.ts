@@ -16,8 +16,6 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
   ) {}
 
   resolve(): Observable<LoadActiveState | boolean> {
-    console.log('Poziva se LoadActiveResolver')
-
     return this.loadService
       .getLoadList(
         undefined,

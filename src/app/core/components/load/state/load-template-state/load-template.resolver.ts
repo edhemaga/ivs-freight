@@ -16,8 +16,6 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
   ) {}
 
   resolve(): Observable<LoadTemplateState | boolean> {
-    console.log('Poziva se LoadTemplateResolver')
-
     return this.loadService
       .getLoadTemplateList(
         undefined,
