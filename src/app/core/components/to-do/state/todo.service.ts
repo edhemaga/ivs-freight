@@ -33,7 +33,7 @@ export class TodoTService {
     search1?: string,
     search2?: string
   ): Observable<TodoListResponse> {
-     return this.todoService.apiTodoListGet(status, pageIndex, pageSize);
+     return this.todoService.apiTodoListGet(status, companyUserId, departmentId, dateFrom, dateTo, pageIndex, pageSize, companyId, sort, search, search1, search2);
    return;
   }
 
