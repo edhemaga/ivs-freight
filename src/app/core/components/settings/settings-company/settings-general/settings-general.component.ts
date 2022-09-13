@@ -40,10 +40,12 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   constructor(private settingsCompanyService: SettingsCompanyService) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.companyData?.currentValue?.divisions.length < 1) {
+    if (changes?.companyData?.currentValue?.divisions?.length < 1) {
       this.companyDivision = true;
+      this.hasArrow = true;
     } else {
       this.companyDivision = false;
+      this.hasArrow = true;
     }
     if (
       changes?.companyData?.currentValue !== changes?.companyData?.previousValue
@@ -53,7 +55,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   }
   ngOnInit(): void {
     let divisionArray = [];
-    this.optionsCompany.map((item) => {
+    this.optionsCompany?.map((item) => {
       if (item.isDivision == true) {
         this.companyDivision = true;
       } else {
@@ -68,8 +70,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    if (this.companyData.timeZone.name) {
-      this.timeZoneName = this.companyData.timeZone.name.substring(0, 7);
+    if (this.companyData?.timeZone?.name) {
+      this.timeZoneName = this.companyData?.timeZone?.name.substring(0, 7);
     }
   }
 

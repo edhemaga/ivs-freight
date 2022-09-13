@@ -3,28 +3,51 @@ import { Subject, takeUntil } from 'rxjs';
 import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { getLoadColumnDefinition } from '../../../../../assets/utils/settings/load-columns';
+import {
+  getLoadActiveAndPendingColumnDefinition,
+  getLoadClosedColumnDefinition,
+  getLoadTemplateColumnDefinition,
+} from '../../../../../assets/utils/settings/load-columns';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
+import { LoadClosedQuery } from '../state/load-closed-state/load-closed.query';
+import { LoadPandinQuery } from '../state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '../state/load-template-state/load-template.query';
+import { LoadActiveState } from '../state/load-active-state/load-active.store';
+import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
+import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
+import { LoadTemplateState } from '../state/load-template-state/load-template.store';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-load-table',
   templateUrl: './load-table.component.html',
   styleUrls: ['./load-table.component.scss'],
+  providers: [TaThousandSeparatorPipe],
 })
 export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'active';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'pending';
   resetColumns: boolean;
   tableContainerWidth: number = 0;
   resizeObserver: ResizeObserver;
+  loadActive: LoadActiveState[] = [];
+  loadClosed: LoadClosedState[] = [];
+  loadPanding: LoadPandingState[] = [];
+  loadTemplate: LoadTemplateState[] = [];
 
   constructor(
     private tableService: TruckassistTableService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private loadActiveQuery: LoadActiveQuery,
+    private loadClosedQuery: LoadClosedQuery,
+    private loadPandinQuery: LoadPandinQuery,
+    private loadTemplateQuery: LoadTemplateQuery,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
   // ---------------------------- ngOnInit ------------------------------
@@ -264,7 +287,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        showMoneyCount: true,
+        hideViewMode: false,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -296,36 +321,60 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   sendLoadData() {
     this.initTableOptions();
 
+    const loadCount = JSON.parse(localStorage.getItem('loadTableCount'));
+
+    const loadTemplateData =
+      this.selectedTab === 'template' ? this.getTabData('template') : [];
+
+    const loadPendingData =
+      this.selectedTab === 'pending' ? this.getTabData('pending') : [];
+
+    const loadActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const repairClosedData =
+      this.selectedTab === 'closed' ? this.getTabData('closed') : [];
+
     this.tableData = [
       {
-        title: 'Pending',
-        field: 'pending',
-        length: 2,
-        data: this.getDumyData(2),
+        title: 'Template',
+        field: 'template',
+        length: loadCount.templateCount,
+        data: loadTemplateData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('template', this.resetColumns),
+      },
+      {
+        title: 'Pending',
+        field: 'pending',
+        length: loadCount.pendingCount,
+        data: loadPendingData,
+        extended: false,
+        gridNameTitle: 'Load',
+        stateName: 'loads',
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
       },
       {
         title: 'Active',
         field: 'active',
-        length: 8,
-        data: this.getDumyData(8),
+        length: loadCount.activeCount,
+        data: loadActiveData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
       },
       {
         title: 'Closed',
-        field: 'inactive',
-        length: 10,
-        data: this.getDumyData(10),
+        field: 'closed',
+        length: loadCount.closedCount,
+        data: repairClosedData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('closed', this.resetColumns),
       },
     ];
 
@@ -335,132 +384,136 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    return getLoadColumnDefinition();
+    // const userState: any = JSON.parse(
+    //   localStorage.getItem(stateName + '_user_columns_state')
+    // );
 
-    /*  const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
-
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (stateName === 'active-panding') {
+      return getLoadActiveAndPendingColumnDefinition();
+    } else if (stateName === 'closed') {
+      return getLoadClosedColumnDefinition();
     } else {
-      return getLoadColumnDefinition();
-    } */
+      return getLoadTemplateColumnDefinition();
+    }
   }
 
   setLoadData(td: any) {
     this.columns = td.gridColumns;
 
-    console.log(td.data)
-
-    if (td.data) {
+    if (td.data?.length) {
       this.viewData = td.data;
 
       this.viewData = this.viewData.map((data) => {
-        data.isSelected = false;
-        return data;
+        return this.mapLoadData(data);
       });
+
+      console.log('Load Data');
+      console.log(this.viewData);
+    } else {
+      this.viewData = [];
     }
   }
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 337,
-        assignedCompanyId: 1,
-        eventId: null,
-        categoryId: null,
-        category: 'ftl',
-        dispatchBoardId: null,
-        truckId: null,
-        truckNumber: '0876',
-        trailerId: null,
-        trailerNumber: null,
-        driverId: null,
-        driverName: null,
-        driverPhone: null,
-        driverEmail: null,
-        driverAddress: null,
-        deviceId: null,
-        uniqueId: null,
-        brokerId: 63,
-        brokerName: 'GO-TO SOLUTIONS INC',
-        loadNumber: 104,
-        statusId: 0,
-        statusDateTime: '2022-01-16T23:12:06',
-        note: '',
-        additionTotal: 0,
-        deductionTotal: 0,
-        total: '$2,000',
-        companyCheck: 0,
-        brokerLoadNumber: '555',
-        dispatcherId: null,
-        dispatcherName: null,
-        teamBoard: null,
-        pickupId: 30,
-        pickupName: 'BEST FOOD',
-        pickupCity: 'Tucker',
-        pickupLocation: {
-          city: 'Tucker',
-          state: 'Georgia',
-          address: '3300 Montreal Industrial Way, Tucker, GA 30084, USA',
-          country: 'US',
-          zipCode: '30084',
-          streetName: 'Montreal Industrial Way',
-          streetNumber: '3300',
-          stateShortName: 'GA',
-        },
-        pickupDateTime: '01/19/22',
-        deliveryId: 40,
-        deliveryName: 'LACTALIS',
-        deliveryCity: 'Buffalo',
-        deliveryLocation: {
-          city: 'Buffalo',
-          state: 'New York',
-          address: '2375 South Park Ave, Buffalo, NY 14220, USA',
-          country: 'US',
-          zipCode: '14220',
-          streetName: 'South Park Avenue',
-          streetNumber: '2375',
-          stateShortName: 'NY',
-        },
-        deliveryDateTime: '01/21/22',
-        mileage: '896',
-        pickupCount: 2,
-        deliveryCount: 5,
-        used: 0,
-        po: null,
-        pu: null,
-        doc: {},
-        route: [],
-        rates: [],
-        startDateTime: null,
-        endDateTime: null,
-        startDate: null,
-        endDate: null,
-        startTime: null,
-        endTime: null,
-        createdAt: '2022-01-16T23:12:06',
-        updatedAt: '2022-01-16T23:12:06',
-        gpsFlag: 0,
-        comments: [],
-        commentsCount: 0,
-        guid: '12e6d82a-45f4-49a9-9f61-e2ce0380cf36',
-        baseRate: 0,
-        adjusted: 0,
-        advanced: 0,
-        additional: '$0',
-        revised: 0,
-        stops: 2,
-        status: 'UNASSIGNED',
+  mapLoadData(data: any) {
+    // this.thousandSeparator.transform(data.total)
+    // this.datePipe.transform(data.date, 'MM/dd/yy')
+
+    return {
+      ...data,
+      isSelected: false,
+      loadInvoice: {
+        invoice: 'Nije Povezano',
+        type: data?.type?.name ? data.type.name : '',
       },
-    ];
+      loadDispatcher: {
+        name: 'Nije Povezano',
+        avatar: null,
+      },
+      loadTotal: {
+        total: 'nije povezano',
+        subTotal: 'nije povezano',
+      },
+      loadBroker: {
+        hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
+        isDnu: data?.broker?.dnu,
+        name: data?.broker?.businessName ? data.broker.businessName : '',
+      },
+      loadTruckNumber: {
+        number: data?.dispatch?.truck?.truckNumber
+          ? data.dispatch.truck.truckNumber
+          : '',
+        color: '',
+      },
+      loadTrailerNumber: {
+        number: data?.dispatch?.trailer?.trailerNumber
+          ? data.dispatch.trailer.trailerNumber
+          : '',
+        color: '',
+      },
+      loadPickup: {
+        count: 2,
+        location: 'Morton, MS',
+        date: '05/09/21',
+        time: '5:10PM',
+      },
+      loadDelivery: {
+        count: 'S',
+        location: 'Forest Parl, GA',
+        date: '05/12/21',
+        time: '3:15AM',
+      },
+      loadStatus: {
+        status: 'Active',
+        color: '',
+        time: '5h. 18m. ago'
+      },
+      textMiles: data?.totalMiles ? data.totalMiles : '',
+      textCommodity: data?.generalCommodity?.name
+        ? data.generalCommodity.name
+        : '',
+      textWeight: data?.weight ? data.weight + ' lbs' : '',
+      textBase: data?.baseRate
+        ? '$' + this.thousandSeparator.transform(data.baseRate)
+        : '',
+      textAdditional: 'Nije Povezano',
+      textAdvance: data?.advancePay
+        ? '$' + this.thousandSeparator.transform(data.advancePay)
+        : '',
+      textOutstanding: 'Nije Povezano',
+      textPayTerms: 'Nije Povezano',
+      textDriver:
+        data?.dispatch?.driver?.firstName && data?.dispatch?.driver?.lastName
+          ? data?.dispatch?.driver?.firstName.charAt(0) +
+            '. ' +
+            data?.dispatch?.driver?.lastName
+          : '',
+      textReceiver: 'Nije Povezano',
+      textShipper: 'Nije Povezano',
+      loadComment: {
+        count: data.commentsCount,
+        comments: data.comments
+      }
+    };
+  }
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[0]);
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.loadActive = this.loadActiveQuery.getAll();
+
+      return this.loadActive?.length ? this.loadActive : [];
+    } else if (dataType === 'closed') {
+      this.loadClosed = this.loadClosedQuery.getAll();
+
+      return this.loadClosed?.length ? this.loadClosed : [];
+    } else if (dataType === 'pending') {
+      this.loadPanding = this.loadPandinQuery.getAll();
+
+      return this.loadPanding?.length ? this.loadPanding : [];
+    } else if (dataType === 'template') {
+      this.loadTemplate = this.loadTemplateQuery.getAll();
+
+      return this.loadTemplate?.length ? this.loadTemplate : [];
     }
-
-    return data;
   }
 
   // ---------------------------- Table Actions ------------------------------
@@ -469,7 +522,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
       this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setLoadData(event.tabData);
+
+      this.sendLoadData();
     }
   }
 

@@ -46,14 +46,6 @@ const routes: Routes = [
         data: { title: 'Billing' },
       },
       {
-        path: 'user',
-        loadChildren: () =>
-          import('./settings-user/settings-user.module').then(
-            (m) => m.SettingsUserModule
-          ),
-        data: { title: 'User' },
-      },
-      {
         path: 'integration',
         loadChildren: () =>
           import('./settings-integration/settings-integration.module').then(

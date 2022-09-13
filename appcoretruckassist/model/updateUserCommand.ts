@@ -18,7 +18,7 @@ export interface UpdateUserCommand {
     lastName?: string | null;
     address?: AddressEntity;
     password?: string | null;
-    mobile?: string | null;
+    phone?: string | null;
     avatar?: string | null;
 }
 

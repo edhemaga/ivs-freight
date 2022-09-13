@@ -77,6 +77,9 @@ export class TruckassistTableBodyComponent
   attachmentsTooltip: any;
   isAttachmentClosing: boolean;
   attachmentWidth: number = 0;
+  statusTooltip: any;
+  statusDropdownActive: number = -1;
+  statusDropdownData: any;
 
   constructor(
     private router: Router,
@@ -165,7 +168,6 @@ export class TruckassistTableBodyComponent
   // --------------------------------NgOnChanges---------------------------------
   ngOnChanges(changes: SimpleChanges): void {
     if (!changes?.viewData?.firstChange && changes?.viewData) {
-      console.log('Poziva se ngOnChanges viewData');
       clearTimeout(this.viewDataTimeOut);
 
       this.viewData = changes.viewData.currentValue;
@@ -189,7 +191,6 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-      console.log('Poziva se ngOnChanges tableContainerWidth');
       this.getNotPinedMaxWidth();
     }
 
@@ -203,7 +204,6 @@ export class TruckassistTableBodyComponent
       this.getTableSections();
 
       setTimeout(() => {
-        console.log('Poziva se ngOnChanges columns');
         this.getNotPinedMaxWidth();
       }, 10);
     }
@@ -293,8 +293,6 @@ export class TruckassistTableBodyComponent
 
   // Get Not Pined Section Of Table Max Width
   getNotPinedMaxWidth() {
-    console.log('Poziva se getNotPinedMaxWidth');
-
     if (this.viewData.length) {
       const tableContainer = document.querySelector('.table-container');
 
@@ -317,10 +315,6 @@ export class TruckassistTableBodyComponent
       this.checkForScrollTimeout = setTimeout(() => {
         this.showScrollSectionBorder = div.scrollWidth > div.clientWidth;
 
-        console.log('Da li border treba da se pokaze');
-        console.log(this.showScrollSectionBorder);
-        
-
         let notPinedWidth =
           div.clientWidth <= this.notPinedMaxWidth
             ? div.clientWidth
@@ -338,6 +332,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+
     this.router.navigate([link]);
   }
 
@@ -434,6 +429,19 @@ export class TruckassistTableBodyComponent
 
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
+  }
+
+  // Toggle Status Dropdown
+  toggleStatusDropdown(tooltip: any, row: any) {
+    this.statusTooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open();
+    }
+
+    this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
+    this.statusDropdownData = row;
   }
 
   // Show Description Dropdown
