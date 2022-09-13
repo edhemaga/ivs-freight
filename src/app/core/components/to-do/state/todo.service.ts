@@ -33,8 +33,20 @@ export class TodoTService {
     search1?: string,
     search2?: string
   ): Observable<TodoListResponse> {
-     return this.todoService.apiTodoListGet(status, companyUserId, departmentId, dateFrom, dateTo, pageIndex, pageSize, companyId, sort, search, search1, search2);
-   return;
+    return this.todoService.apiTodoListGet(
+      status,
+      companyUserId,
+      departmentId,
+      dateFrom,
+      dateTo,
+      pageIndex,
+      pageSize,
+      companyId,
+      sort,
+      search,
+      search1,
+      search2
+    );
   }
 
   public updateTodoItem(
@@ -43,24 +55,30 @@ export class TodoTService {
     return this.todoService.apiTodoStatusPut(todo);
   }
 
-  public updateTodo(data: UpdateTodoCommand){
-    return this.todoService.apiTodoPut(data).pipe(
-      flatMap(param => {
-        return this.getTodoById(data.id);
-      })
-    ).subscribe((todo) => {
-      this.updateTodoList = todo;
-    });
+  public updateTodo(data: UpdateTodoCommand) {
+    return this.todoService
+      .apiTodoPut(data)
+      .pipe(
+        flatMap((param) => {
+          return this.getTodoById(data.id);
+        })
+      )
+      .subscribe((todo) => {
+        this.updateTodoList = todo;
+      });
   }
 
-  public addTodo(data: CreateTodoCommand){
-    return this.todoService.apiTodoPost(data).pipe(
-      flatMap(param => {
-        return this.getTodoById(param.id);
-      })
-    ).subscribe((todo) => {
-      this.updateTodoList = todo;
-    });
+  public addTodo(data: CreateTodoCommand) {
+    return this.todoService
+      .apiTodoPost(data)
+      .pipe(
+        flatMap((param) => {
+          return this.getTodoById(param.id);
+        })
+      )
+      .subscribe((todo) => {
+        this.updateTodoList = todo;
+      });
   }
 
   public deleteTodoById(id: number): Observable<any> {

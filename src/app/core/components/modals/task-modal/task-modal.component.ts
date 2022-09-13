@@ -45,6 +45,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
 
   public resDepartments: any[] = [];
   public resCompanyUsers: any[] = [];
+  public showCompanyUsers: any[] = [];
 
   public selectedDepartments: any[] = [];
   public selectedCompanyUsers: any[] = [];
@@ -383,12 +384,14 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (res: TodoModalResponse) => {
           this.resDepartments = res.departments;
-          this.resCompanyUsers = res.companyUsers.map((item) => {
+          this.showCompanyUsers = res.companyUsers.map((item) => {
             return {
               id: item.id,
               name: item.fullName,
+              departmentId: item.departmentId,
             };
           });
+          this.resCompanyUsers = [...this.showCompanyUsers];
         },
         error: () => {
           this.notificationService.error("Can't get task dropdowns.", 'Error:');
@@ -399,7 +402,25 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   public onSelectDropDown(event: any[], action: string) {
     switch (action) {
       case 'res-department': {
+        this.resCompanyUsers = [...this.showCompanyUsers];
         this.selectedDepartments = [...event];
+        let usersForDepartment = [];
+
+        this.selectedDepartments.map((item) => {
+          const depUsers = this.resCompanyUsers.filter(
+            (user) => user.departmentId == item.id
+          );
+
+          if (depUsers?.length) {
+            usersForDepartment.push(depUsers[0]);
+          }
+        });
+
+        if (this.selectedDepartments?.length) {
+          this.resCompanyUsers = [...usersForDepartment];
+        } else {
+          this.resCompanyUsers = [...this.showCompanyUsers];
+        }
         break;
       }
       case 'assign-task': {

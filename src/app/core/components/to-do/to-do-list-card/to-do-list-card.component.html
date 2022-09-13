@@ -260,25 +260,44 @@
                         (mousedown)="toggleComment($event, i, j)"
                         [class.blue-icons]="item.commentActive"
                       >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19">
-                        <g id="Comment_-_Count" data-name="Comment - Count" transform="translate(0.5 2.5)">
-                          <path id="Path_10563" data-name="Path 10563" d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237" transform="translate(-948.279 -512.676)" fill="#aaa" stroke="rgba(0,0,0,0)" stroke-width="1"/>
-                        </g>
-                          <text
-                          x="50%"
-                          y="48.5%"
-                          dominant-baseline="middle"
-                          text-anchor="middle"
-                          id="_1"
-                          data-name="1"
-                          fill="#fff"
-                          font-size="11"
-                          font-family="Montserrat-Bold, Montserrat"
-                          font-weight="700"
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 19 19"
                         >
-                          <tspan class="number-comments"> {{ item.comments.length }}</tspan>
-                        </text>
-                      </svg>
+                          <g
+                            id="Comment_-_Count"
+                            data-name="Comment - Count"
+                            transform="translate(0.5 2.5)"
+                          >
+                            <path
+                              id="Path_10563"
+                              data-name="Path 10563"
+                              d="M963.974,510.676H950.584a2.274,2.274,0,0,0-2.305,2.237v10.5a2.274,2.274,0,0,0,2.305,2.237h.82l1.574,2.645a.792.792,0,0,0,1.351,0l1.574-2.645h8.07a2.275,2.275,0,0,0,2.305-2.237v-10.5a2.274,2.274,0,0,0-2.305-2.237"
+                              transform="translate(-948.279 -512.676)"
+                              fill="#aaa"
+                              stroke="rgba(0,0,0,0)"
+                              stroke-width="1"
+                            />
+                          </g>
+                          <text
+                            x="50%"
+                            y="48.5%"
+                            dominant-baseline="middle"
+                            text-anchor="middle"
+                            id="_1"
+                            data-name="1"
+                            fill="#fff"
+                            font-size="11"
+                            font-family="Montserrat-Bold, Montserrat"
+                            font-weight="700"
+                          >
+                            <tspan class="number-comments">
+                              {{ item.comments.length }}
+                            </tspan>
+                          </text>
+                        </svg>
                         <!-- <svg-icon
                           src="assets/svg/detail-cards/comment - count.svg"
                         ></svg-icon> -->
@@ -307,12 +326,38 @@
                       </div>
                     </div>
                   </div>
-                  <div class="options-frame">
+                  <div
+                    class="options-frame"
+                    *ngIf="item.departments?.length && !item.todoUsers?.length"
+                  >
                     <div
                       class="dispatch-box"
                       *ngFor="let dep of item.departments"
                     >
                       {{ dep.name }}
+                    </div>
+                  </div>
+                  <div
+                    class="options-frame"
+                    *ngIf="!item.departments?.length && !item.todoUsers?.length"
+                  >
+                    <div class="dispatch-box everybody">Everybody</div>
+                  </div>
+                  <div
+                    class="assigned_user_hold"
+                    *ngIf="item.todoUsers?.length"
+                  >
+                    <div
+                      class="assigned_user_hold_inner"
+                      *ngFor="let user of item.todoUsers; let indx = index"
+                    >
+                      <app-profile-images
+                        [indx]="indx"
+                        [name]="user.firstName + ' ' + user.lastName"
+                        [size]="'medium'"
+                        [type]="'user'"
+                      >
+                      </app-profile-images>
                     </div>
                   </div>
                   <div class="list-text" *ngIf="item.description">
@@ -327,6 +372,31 @@
                   [class.closed]="!item.commentActive"
                 >
                   <div class="comment-holder">
+                    <div
+                      class="todo_list_holder"
+                      [class.expand]="newComment || item.comments?.length"
+                    >
+                      <div class="todo_list_info_holder">
+                        <div class="todo_list_info_number_hold">
+                          <div class="todo_list_info_number">
+                            {{ item.comments.length }}
+                          </div>
+                        </div>
+                        <div class="todo_list_info_text">Comment</div>
+                      </div>
+                      <div
+                        class="todo_list_add_comment_hold"
+                        *ngIf="
+                          !newComment ||
+                          (i != currentHoldIndex && j != currentChildIndex)
+                        "
+                        (click)="addNewComment(i, j)"
+                      >
+                        <div class="todo_list_add_comment_text">
+                          ADD COMMENT
+                        </div>
+                      </div>
+                    </div>
                     <app-ta-user-review
                       (changeReviewsEvent)="changeReviewsEvent($event)"
                       [reviewData]="item.comments"
@@ -350,20 +420,15 @@
                         "
                       >
                       </app-ta-user-review>
-                      <div
-                        class="add_comment_text"
-                        *ngIf="
-                          !newComment ||
-                          (i != currentHoldIndex && j != currentChildIndex)
-                        "
-                        (click)="addNewComment(i, j)"
-                      >
-                        Add Comment
-                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="todo_deadline_hold">
+                <div
+                  class="todo_deadline_hold"
+                  *ngIf="
+                    item.deadline && item.deadline != '1970-01-01T01:00:00'
+                  "
+                >
                   <app-truckassist-progress-expiration
                     [expireDate]="item.deadline | formatDateP"
                     [startDate]="item.createdAt | formatDateP"

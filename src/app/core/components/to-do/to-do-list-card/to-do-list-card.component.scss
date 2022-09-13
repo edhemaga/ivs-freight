@@ -129,15 +129,15 @@
             }
 
             &:hover {
-                background-color: #6d82c7;
-                border-radius: 2px;
-                svg-icon {
-                    svg {
-                        path {
-                            fill: #ffffff !important;
-                        }
-                    }
+              background-color: #6d82c7;
+              border-radius: 2px;
+              svg-icon {
+                svg {
+                  path {
+                    fill: #ffffff !important;
+                  }
                 }
+              }
             }
           }
         }
@@ -168,15 +168,13 @@
         .list-holder {
           transform: rotate(3deg) !important;
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
-          border-radius: 3px;
+          border-radius: 4px;
           cursor: grabbing !important;
         }
       }
       .smooth-dnd-draggable-wrapper {
         flex: 0 0 33.3%;
-        //padding: 12px 6px;
-        min-height: 95px;
-        //margin: 6px 0;
+        min-height: 44px;
 
         .smooth-dnd-container.vertical {
           flex-direction: column;
@@ -195,13 +193,12 @@
       height: 100%;
       padding: 12px;
       box-sizing: border-box;
-      border-radius: 3px;
       background-color: #fff;
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       flex-direction: column;
-      border-radius: 3px;
+      border-radius: 4px;
       transition: all 0.1s;
       margin: 4px 0;
       cursor: grab;
@@ -247,25 +244,27 @@
           align-items: center;
 
           .icon-box {
-            width: 18px;
-            height: 18px;
+            width: 26px;
+            height: 26px;
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-left: 12px;
+            margin-left: 4px;
+            border-radius: 2px;
             cursor: pointer;
 
-            &.counter_icon{
+            &.counter_icon {
               position: relative;
             }
 
             &.blue-icons {
+              background-color: #3074d333;
               svg-icon {
                 svg {
                   display: flex;
 
                   path {
-                    fill: #6d82c7;
+                    fill: #3074d3;
                   }
                 }
               }
@@ -274,7 +273,7 @@
                 display: flex;
 
                 path {
-                  fill: #6d82c7;
+                  fill: #3074d3;
                 }
               }
 
@@ -370,7 +369,7 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        padding-top: 2px;
+        padding-top: 6px;
         box-sizing: border-box;
 
         .dispatch-box {
@@ -386,6 +385,11 @@
           color: #919191;
           line-height: 14px;
           margin-right: 4px;
+
+          &.everybody {
+            color: #3074d3;
+            background-color: #3074d333;
+          }
 
           &::-moz-selection {
             color: $bw6-2;
@@ -415,6 +419,13 @@
           &:hover {
             transform: scale(1.2);
           }
+        }
+      }
+
+      .assigned_user_hold {
+        margin-top: 8px;
+        .assigned_user_hold_inner {
+          display: flex;
         }
       }
 
@@ -489,6 +500,7 @@
             }
             &.shrink_hold {
               display: flex;
+              margin-top: 0px;
             }
 
             .add_comment_text {
@@ -502,6 +514,60 @@
 
               &:hover {
                 color: #3551b7;
+              }
+            }
+          }
+
+          .todo_list_holder {
+            display: flex;
+            padding-top: 4px;
+            border-top: 1px solid #dadada;
+            &.expand {
+              margin-bottom: 8px;
+            }
+            .todo_list_info_holder {
+              display: flex;
+              align-items: center;
+              flex: 1;
+              .todo_list_info_number_hold {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                width: 26px;
+                height: 26px;
+
+                background-color: #eeeeee;
+                border-radius: 2px;
+
+                .todo_list_info_number {
+                  font-size: 14px;
+                  font-weight: 800;
+                  color: #424242;
+                }
+              }
+
+              .todo_list_info_text {
+                padding-left: 4px;
+
+                font-size: 14px;
+                line-height: 18px;
+                font-weight: 800;
+                color: #424242;
+              }
+            }
+
+            .todo_list_add_comment_hold {
+              background-color: #3074d333;
+              border-radius: 2px;
+              cursor: pointer;
+              .todo_list_add_comment_text {
+                padding: 6px 18px;
+
+                color: #3074d3;
+                font-size: 11px;
+                line-height: 14px;
+                font-weight: 700;
               }
             }
           }
@@ -586,7 +652,7 @@
         .list-holder {
           transform: rotate(5deg) !important;
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
-          border-radius: 3px;
+          border-radius: 4px;
         }
       }
     }

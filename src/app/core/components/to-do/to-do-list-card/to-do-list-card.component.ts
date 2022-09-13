@@ -1,10 +1,5 @@
 import { TodoListResponse } from './../../../../../../appcoretruckassist/model/todoListResponse';
-import {
-  Component,
-  OnInit,
-  ViewEncapsulation,
-  ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { TodoTService } from '../state/todo.service';
 import {
@@ -26,6 +21,7 @@ import {
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @UntilDestroy()
 @Component({
@@ -173,7 +169,7 @@ export class ToDoListCardComponent implements OnInit {
     private sharedService: SharedService,
     private commentsService: CommentsService,
     private todoQuery: TodoQuery,
-    private ref: ChangeDetectorRef,
+    private notificationService: NotificationService,
     private confirmationService: ConfirmationService
   ) {}
 
@@ -576,13 +572,13 @@ export class ToDoListCardComponent implements OnInit {
           this.scene.children[this.currentHoldIndex].children[
             this.currentChildIndex
           ].comments.unshift(this.comments[0]);
-          // this.notificationService.success(
-          //   'Comment successfully created.',
-          //   'Success:'
-          // );
+          this.notificationService.success(
+            'Comment successfully created.',
+            'Success:'
+          );
         },
         error: () => {
-          // this.notificationService.error("Comment can't be created.", 'Error:');
+          this.notificationService.error("Comment can't be created.", 'Error:');
         },
       });
   }
