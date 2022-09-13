@@ -11,8 +11,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DetailsActiveItemPipe } from '../../../../pipes/detailsActiveItem.pipe';
-import { DetailsPageService } from '../../../../services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
   selector: 'app-settings-general',
@@ -37,7 +38,10 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   public companyDivision: boolean = false;
   public hasArrow: boolean;
 
-  constructor(private settingsCompanyService: SettingsCompanyService) {}
+  constructor(
+    private settingsCompanyService: SettingsCompanyService,
+    public imageBase64Service: ImageBase64Service
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes?.companyData?.currentValue?.divisions?.length < 1) {
@@ -45,6 +49,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       this.hasArrow = true;
     } else {
       this.companyDivision = false;
+    }
+    if (changes?.companyData?.currentValue?.divisions?.length > 1) {
       this.hasArrow = true;
     }
     if (

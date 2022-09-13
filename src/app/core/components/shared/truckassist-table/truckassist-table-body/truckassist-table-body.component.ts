@@ -332,6 +332,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+
     this.router.navigate([link]);
   }
 
@@ -429,9 +430,9 @@ export class TruckassistTableBodyComponent
     this.dropDownActive = tooltip.isOpen() ? row.id : -1;
     this.rowData = row;
   }
-  
+
   // Toggle Status Dropdown
-  toggleStatusDropdown(tooltip: any, row: any){
+  toggleStatusDropdown(tooltip: any, row: any) {
     this.statusTooltip = tooltip;
     if (tooltip.isOpen()) {
       tooltip.close();

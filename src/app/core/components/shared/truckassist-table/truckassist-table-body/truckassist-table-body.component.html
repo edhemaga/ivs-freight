@@ -182,14 +182,14 @@
               >
                 <!-- IF USER IS OWNER -->
                 <svg-icon
-                  *ngIf="row.userType === 'Owner'"
+                  *ngIf="row.userType.name === 'Owner'"
                   [src]="'assets/svg/truckassist-table/user-owner-icon.svg'"
                   [svgStyle]="{ 'width.px': '14', 'height.px': '14' }"
                 ></svg-icon>
 
                 <!-- IF USER IS NOT OWNER -->
                 <input
-                  *ngIf="row.userType !== 'Owner'"
+                  *ngIf="row.userType.name !== 'Owner'"
                   (change)="onSelectItem(row, i)"
                   [checked]="row.isSelected"
                   class="table-checkbox"
@@ -197,7 +197,7 @@
                   type="checkbox"
                 />
                 <label
-                  *ngIf="row.userType !== 'Owner'"
+                  *ngIf="row.userType.name !== 'Owner'"
                   class="table-checkbox-label"
                   for="checkbox{{ i }}"
                 ></label>
@@ -361,18 +361,35 @@
                 }"
                 class="td-content"
               >
-                <div class="user-avatar-container">
+                <div
+                  class="user-avatar-container"
+                  *ngIf="row[column.field]?.name"
+                >
                   <img
                     alt="avatar"
-                    [src]="
-                      row?.avatar?.src
-                        ? row?.avatar?.src
-                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                    "
+                    *ngIf="row[column.field].avatar"
+                    [src]="row[column.field].avatar"
                     class="avatar"
                   />
+
+                  <div
+                    class="user-avatar-no-img"
+                    *ngIf="!row[column.field].avatar"
+                    [ngStyle]="{
+                      'background-color': row[column.field].avatarColor?.background
+                        ? row[column.field].avatarColor.background
+                        : 'unset',
+                      color: row[column.field].avatarColor?.color
+                        ? row[column.field].avatarColor.color
+                        : 'unset'
+                    }"
+                  >
+                    {{ row[column.field].textShortName }}
+                  </div>
                 </div>
-                <span class="table-avatar-name">{{ row.userFullName }}</span>
+                <span class="table-avatar-name" *ngIf="row[column.field]?.name">{{
+                  row[column.field].name
+                }}</span>
               </div>
 
               <!-- USER STATUS COLUMN -->
@@ -384,7 +401,12 @@
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
               >
-                <div class="user-status-container">{{ row[column.field] }}</div>
+                <div
+                  class="user-status-container"
+                  [ngClass]="{ 'user-invited': row[column.field].isInvited }"
+                >
+                  {{ row[column.field].status }}
+                </div>
               </div>
 
               <!-- INVOICE COLUMN -->
@@ -1488,29 +1510,6 @@
                 >
               </div>
 
-              <!-- USER AVATAR COLUMN -->
-              <div
-                *ngIf="column.ngTemplate === 'user-avatar'"
-                [ngStyle]="{
-                  width: column.width + 'px',
-                  'min-width.px': column?.minWidth ? column.minWidth : 'unset'
-                }"
-                class="td-content"
-              >
-                <div class="user-avatar-container">
-                  <img
-                    alt="avatar"
-                    [src]="
-                      row?.avatar?.src
-                        ? row?.avatar?.src
-                        : 'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                    "
-                    class="avatar"
-                  />
-                </div>
-                <span class="table-avatar-name">{{ row.userFullName }}</span>
-              </div>
-
               <!-- USER STATUS COLUMN -->
               <div
                 class="td-content set-center"
@@ -1520,7 +1519,12 @@
                   'min-width.px': column?.minWidth ? column.minWidth : 'unset'
                 }"
               >
-                <div class="user-status-container">{{ row[column.field] }}</div>
+                <div
+                  class="user-status-container"
+                  [ngClass]="{ 'user-invited': row[column.field].isInvited }"
+                >
+                  {{ row[column.field].status }}
+                </div>
               </div>
 
               <!-- NAME LINK COLUMN -->

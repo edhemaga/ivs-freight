@@ -1,0 +1,20 @@
+<svg height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.a {
+      fill: #e1f7f3;
+    }
+
+    .b {
+      fill: #60d5bd;
+      font-size: 14px;
+      font-family: Montserrat-Bold, Montserrat;
+      font-weight: 700;
+    }</style>
+  </defs>
+  <g transform="translate(-1203 -177)">
+    <rect class="a" height="24" rx="2" transform="translate(1203 177)" width="24"/>
+    <text class="b" transform="translate(1215 194)">
+      <tspan x="-4.62" y="0">8</tspan>
+    </text>
+  </g>
+</svg>
