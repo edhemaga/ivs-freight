@@ -38,8 +38,14 @@ export class TodoTService {
     return this.todoService.apiTodoStatusPut(todo);
   }
 
-  public updateTodo(data: UpdateTodoCommand): Observable<any> {
-    return this.todoService.apiTodoPut(data);
+  public updateTodo(data: UpdateTodoCommand){
+    return this.todoService.apiTodoPut(data).pipe(
+      flatMap(param => {
+        return this.getTodoById(data.id);
+      })
+    ).subscribe((todo) => {
+      this.updateTodoList = todo;
+    });
   }
 
   public addTodo(data: CreateTodoCommand){

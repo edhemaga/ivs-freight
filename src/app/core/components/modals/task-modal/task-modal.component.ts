@@ -148,7 +148,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
         break;
       }
       case 'add': {
-        console.log('addcoment')
         this.addComment(comments);
         break;
       }
@@ -163,7 +162,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   public createComment(event: { check: boolean; action: string }) {
-    console.log('createcomment 111')
     if (this.comments.some((item) => item.isNewReview)) {
       return;
     }
@@ -180,7 +178,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
     // });
 
     // -------------------------- DEVELOP MODE --------------------------------
-    console.log('createcomment 122')
     this.comments.unshift({
       companyUser: {
         fullName: this.companyUser.firstName.concat(
@@ -197,7 +194,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   private addComment(comments: ReviewCommentModal) {
-    console.log('addcomment 2')
     const comment: CreateCommentCommand = {
       entityTypeCommentId: 1,
       entityTypeId: this.editData.id,
@@ -209,7 +205,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: any) => {
-          console.log('createcomment 222')
           this.comments = comments.sortData.map((item, index) => {
             if (index === 0) {
               return {
@@ -231,7 +226,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   private updateComment(comments: ReviewCommentModal) {
-    console.log('createcomment 333')
     this.comments = comments.sortData;
 
     const comment: UpdateCommentCommand = {
@@ -259,7 +253,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
   }
 
   private deleteComment(comments: ReviewCommentModal) {
-    console.log('createcomment 444')
     this.comments = comments.sortData;
     this.commentsService
       .deleteCommentById(comments.data)
@@ -301,21 +294,7 @@ export class TaskModalComponent implements OnInit, OnDestroy {
       status: this.taskStatus.name,
     };
 
-    this.todoService
-      .updateTodo(newData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.notificationService.success(
-            'Task successfully updated.',
-            'Success:'
-          );
-          this.modalService.setModalSpinner({ action: null, status: false });
-        },
-        error: () => {
-          this.notificationService.error("Task can't be updated.", 'Error:');
-        },
-      });
+    this.todoService.updateTodo(newData);
   }
 
   private addTask() {
@@ -380,7 +359,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
               name: item.firstName.concat(' ', item.lastName),
             };
           });
-          console.log('createcomment 555')
           this.comments = res.comments.map((item: CommentResponse) => {
             return {
               ...item,

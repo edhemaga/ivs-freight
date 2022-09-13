@@ -114,6 +114,7 @@
             justify-content: center;
             align-items: center;
             margin-left: 2px;
+            cursor: pointer;
 
             svg-icon {
               svg {
@@ -125,6 +126,18 @@
                   fill: #6d82c7;
                 }
               }
+            }
+
+            &:hover {
+                background-color: #6d82c7;
+                border-radius: 2px;
+                svg-icon {
+                    svg {
+                        path {
+                            fill: #ffffff !important;
+                        }
+                    }
+                }
             }
           }
         }
@@ -156,12 +169,13 @@
           transform: rotate(3deg) !important;
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
           border-radius: 3px;
+          cursor: grabbing !important;
         }
       }
       .smooth-dnd-draggable-wrapper {
         flex: 0 0 33.3%;
         //padding: 12px 6px;
-        min-height: 107px;
+        min-height: 95px;
         //margin: 6px 0;
 
         .smooth-dnd-container.vertical {
@@ -190,9 +204,11 @@
       border-radius: 3px;
       transition: all 0.1s;
       margin: 4px 0;
+      cursor: grab;
 
       .todo_deadline_hold {
         width: 100%;
+        margin-top: 12px;
       }
 
       .list-top-holder {
@@ -231,7 +247,6 @@
           align-items: center;
 
           .icon-box {
-            position: relative;
             width: 18px;
             height: 18px;
             display: flex;
@@ -239,6 +254,10 @@
             align-items: center;
             margin-left: 12px;
             cursor: pointer;
+
+            &.counter_icon{
+              position: relative;
+            }
 
             &.blue-icons {
               svg-icon {
@@ -248,6 +267,14 @@
                   path {
                     fill: #6d82c7;
                   }
+                }
+              }
+
+              svg {
+                display: flex;
+
+                path {
+                  fill: #6d82c7;
                 }
               }
 
@@ -264,6 +291,19 @@
                     circle {
                       fill: #536bc2;
                     }
+                  }
+                }
+
+                svg {
+                  display: flex;
+                  cursor: pointer;
+
+                  path {
+                    fill: #536bc2;
+                  }
+
+                  circle {
+                    fill: #536bc2;
                   }
                 }
               }
@@ -383,8 +423,18 @@
         font-weight: 400;
         color: #6c6c6c;
         line-height: 18px;
-        padding: 8px 0px 12px 0px;
+        padding-top: 8px;
         box-sizing: border-box;
+
+        &::-moz-selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
+
+        &::selection {
+          color: $bw6-2;
+          background: rgb(108, 108, 108, 0.2);
+        }
       }
 
       .link {
@@ -392,8 +442,19 @@
         font-weight: 500;
         color: #536bc2;
         line-height: 18px;
-        padding-bottom: 12px;
+        margin-top: 12px;
         box-sizing: border-box;
+
+        transition: all 0.3s ease-in-out;
+        opacity: 1;
+        max-height: 30px;
+
+        &.closed {
+          max-height: 0px;
+          overflow: hidden;
+          opacity: 0;
+          margin: 0;
+        }
 
         &:hover {
           cursor: pointer;
@@ -406,6 +467,7 @@
         opacity: 1;
         max-height: 1000px;
         width: 100%;
+        cursor: default;
 
         &.closed {
           max-height: 0px;
@@ -417,13 +479,13 @@
           flex: 1;
           justify-content: flex-start;
           align-items: center;
-          padding: 6px 0px 12px 0px;
+          padding-top: 12px;
           box-sizing: border-box;
           overflow: auto;
 
           .add_comment_holder {
-            &.move_comment_hold{
-                margin-top: 10px;
+            &.move_comment_hold {
+              margin-top: 10px;
             }
             &.shrink_hold {
               display: flex;
@@ -523,7 +585,7 @@
 
         .list-holder {
           transform: rotate(5deg) !important;
-          box-shadow: 0 0 4px rgba(49, 6, 241, 0.5);
+          box-shadow: 0 0 4px rgb(112 112 112 / 50%);
           border-radius: 3px;
         }
       }
