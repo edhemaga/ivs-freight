@@ -9,16 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TableType } from './tableType';
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: string | null;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface TableConfigResponse { 
+    tableType?: TableType;
+    config?: string | null;
 }
 

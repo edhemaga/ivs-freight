@@ -11,14 +11,10 @@
  */
 
 
-export interface AccidentItemCommand { 
-    id?: number | null;
-    location?: string | null;
-    date?: string;
-    fatalities?: number | null;
-    injuries?: number | null;
-    hazmatSpill?: boolean;
-    vehicleTypeId?: number;
-    description?: string | null;
+export interface WeatherDaysResponse { 
+    dayShortName?: string | null;
+    icon?: string | null;
+    tempMin?: number;
+    tempMax?: number;
 }
 

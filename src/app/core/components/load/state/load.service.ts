@@ -4,7 +4,7 @@ import {
   LoadService,
   LoadTemplateListResponse,
 } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -65,15 +65,16 @@ export class LoadTService {
     search1?: string,
     search2?: string
   ): Observable<LoadTemplateListResponse> {
-    return this.loadServices.apiLoadTemplateListGet(
-      loadType,
-      pageIndex,
-      pageSize,
-      companyId,
-      sort,
-      search,
-      search1,
-      search2
-    );
+    // return this.loadServices.apiLoadTemplateListGet(
+    //   loadType,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of(null);
   }
 }
