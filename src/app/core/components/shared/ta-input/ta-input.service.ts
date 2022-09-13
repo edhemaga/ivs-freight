@@ -82,6 +82,21 @@ export class TaInputService {
     }
   }
 
+  public changeValidatorsCheck(
+    formControl: AbstractControl,
+    hasValidation: boolean = true
+  ) {
+    if (hasValidation) {
+      formControl.setValidators(Validators.requiredTrue);
+    } else {
+      formControl.clearValidators();
+    }
+
+    if (formControl) {
+      formControl.updateValueAndValidity();
+    }
+  }
+
   public customInputValidator(
     formControl: AbstractControl,
     type: string,
