@@ -469,7 +469,12 @@ export class ToDoListCardComponent implements OnInit {
   dropAct(event) {
     if (event.type == 'delete') {
       this.todoTService.deleteTodoById(event.id).subscribe();
-      this.cardData = this.cardData.filter((item) => item.id !== event.id);
+      this.cardData = this.cardData.filter((item) => {
+        if (event.id == item.id) {
+          item.status.name = 'Deleted';
+        }
+        item.id !== event.id;
+      });
       this.scene.children = this.scene.children.map((item) => {
         item.children = item.children.filter((item) => item.id !== event.id);
         return item;
