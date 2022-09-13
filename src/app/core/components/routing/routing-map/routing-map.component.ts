@@ -1,12 +1,14 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ViewEncapsulation,
   ViewChild,
   ChangeDetectorRef,
   HostListener,
+  ElementRef
 } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem, CdkDragMove } from '@angular/cdk/drag-drop';
 import * as AppConst from '../../../../const';
 import { MapsService } from '../../../services/shared/maps.service';
 import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
@@ -19,6 +21,7 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -32,7 +35,8 @@ declare const geoXML3: any;
   ],
   encapsulation: ViewEncapsulation.None,
 })
-export class RoutingMapComponent implements OnInit {
+export class RoutingMapComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   @ViewChild('mapToolbar') mapToolbar: any;
   @ViewChild('t2') t2: any;
 
@@ -76,7 +80,7 @@ export class RoutingMapComponent implements OnInit {
     } else if ( key === 46 ) {
       if ( this.focusedRouteIndex != null ) {
         /* Delete focused route */
-        this.dropDownActive = this.routes[this.focusedRouteIndex].id;
+        this.dropDownActive = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].id;
         this.callDropDownAction(event, this.dropdownActions[6]);
       }
     } else if (key === 40 || key === 38) {
@@ -90,7 +94,7 @@ export class RoutingMapComponent implements OnInit {
         var currentlyFocusedStop = this.findFocusedStop(this.focusedRouteIndex);
 
         if ( currentlyFocusedStop > -1 ) {
-          this.deleteRouteStop(event, this.routes[this.focusedRouteIndex], currentlyFocusedStop);
+          this.deleteRouteStop(event, this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex], currentlyFocusedStop);
         }
       }
     } else if (key === 107) {
@@ -447,6 +451,18 @@ export class RoutingMapComponent implements OnInit {
   actionDisabledTooltip: boolean = false;
   actionDisabledTooltipFinished: boolean = false;
 
+  freeRangeRoutesArray: any[] = [];
+  _pointerPosition;
+  off:any;
+  scaleX=100/200; //relation aspect between items.width in dropZone and items.width in List
+  scaleY=1 //relation aspect between items.height in dropZone and items.height in List
+  posInside:{source:any,x:number,y:number}={source:null,x:0,y:0};
+
+  @ViewChild('routeFreeDrag',{read:ElementRef,static:true}) dropZone:ElementRef;
+
+  filtercond1 = {freeMove: true};
+  filtercond2 = {freeMove: false};
+
   constructor(
     private mapsService: MapsService,
     private formBuilder: FormBuilder,
@@ -464,14 +480,14 @@ export class RoutingMapComponent implements OnInit {
 
     this.initAddressFields();
 
-    this.routes.map((item, index) => {
+    this.tableData[this.selectedMapIndex].routes.map((item, index) => {
       this.calculateDistanceBetweenStops(index);
       this.calculateRouteWidth(item);
     });
 
     // Confirmation Subscribe
     this.confirmationService.confirmationData$
-      //.pipe(untilDestroyed(this))
+      .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: Confirmation) => {
           console.log('confirmationData', res);
@@ -490,8 +506,13 @@ export class RoutingMapComponent implements OnInit {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   initAddressFields() {
-    new Array(this.routes.length).fill(1).map((item, index) => {
+    new Array(this.tableData[this.selectedMapIndex].routes.length).fill(1).map((item, index) => {
       this.addressInputs.push(
         this.formBuilder.group({
           address: [],
@@ -504,15 +525,85 @@ export class RoutingMapComponent implements OnInit {
     return this.addressInputs;
   }
 
-  dropRoutes(event: CdkDragDrop<string[]>, dropArray) {
-    moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
+  dropRoutes(event: CdkDragDrop<string[]>) {
+    console.log('dropRoutes', event);
+    
+    if (event.previousContainer === event.container) {
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      console.log('dropRoutes different container');
+      // transferArrayItem(
+      //   event.previousContainer.data,
+      //   event.container.data,
+      //   event.previousIndex,
+      //   event.currentIndex,
+      // );
+
+      event.item.data.freeMove = !event.item.data.freeMove;
+
+      event.item.data.y=(this._pointerPosition.y-this.off.y*this.scaleY-this.dropZone.nativeElement.getBoundingClientRect().top);
+      event.item.data.x=(this._pointerPosition.x-this.off.x*this.scaleX-this.dropZone.nativeElement.getBoundingClientRect().left);
+      this.changeZIndex(event.item.data);
+    }
+    console.log('freeRangeRoutesArray', this.freeRangeRoutesArray);
+    console.log('routes', this.tableData[this.selectedMapIndex].routes);
+
+
+
+    this.posInside = {source:null,x:0,y:0}
+  }
+
+  checkOverlap(index) {
+    // var newElement = this.freeRangeRoutesArray[index];
+    // var newElementRight = this.freeRangeRoutesArray[index];
+    // var newElementLeft = newElement.x;
+    // var newElementTop = newElement.y;
+    // var newElementBottom = this.freeRangeRoutesArray[index];
+
+    // this.freeRangeRoutesArray.map((element) => {
+
+    //   var overlap = !(newElement.right < element.left || 
+    //     newElement.left > element.right || 
+    //     newElement.bottom < element.top || 
+    //     newElement.top > element.bottom)
+    // });
+  }
+
+  moved(event: CdkDragMove) {
+    this._pointerPosition = event.pointerPosition;
+  }
+
+  changePosition(event:CdkDragDrop<any>, field) {
+    console.log('changePosition', event.previousIndex, event.currentIndex);
+
+    const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
+    const rectElement = event.item.element.nativeElement.getBoundingClientRect();
+
+    let y = +field.y+event.distance.y;
+    let x = +field.x+event.distance.x;
+    const out = y<0 || x<0 || (y>(rectZone.height-rectElement.height)) || (x>(rectZone.width-rectElement.width));
+    
+    if (!out) {
+       field.y = y;
+       field.x = x;
+       //this.freeRangeRoutesArray = this.freeRangeRoutesArray.sort((a,b)=>a['z-index']>b['z-index']?1:a['z-index']<b['z-index']?-1:0);
+    }
+    else{
+      field.freeMove = false;
+      //this.tableData[this.selectedMapIndex].routes.push(field);
+      //this.freeRangeRoutesArray=this.freeRangeRoutesArray.filter(x=>x!=field);
+    }
+  }
+
+  changeZIndex(item:any) {
+    this.freeRangeRoutesArray.forEach(x=>x['z-index']=(x==item?1:0));
   }
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
     moveItemInArray(dropArray, event.previousIndex, event.currentIndex);
 
     this.calculateDistanceBetweenStops(index);
-    this.calculateRouteWidth(this.routes[index]);
+    this.calculateRouteWidth(this.tableData[this.selectedMapIndex].routes[index]);
   }
 
   showHideRoute(event, route) {
@@ -719,36 +810,36 @@ export class RoutingMapComponent implements OnInit {
 
   calculateDistanceBetweenStops(i: number) {
     /* Set all distance and totalDistance to 0 km or miles */
-    for (let j = 0; j < this.routes[i].stops.length; j++) {
-      this.routes[i].stops[j].leg = 0;
-      this.routes[i].stops[j].total = 0;
+    for (let j = 0; j < this.tableData[this.selectedMapIndex].routes[i].stops.length; j++) {
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].leg = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].total = 0;
 
-      this.routes[i].stops[j].emptyDistance = 0;
-      this.routes[i].stops[j].loadedDistance = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance = 0;
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance = 0;
 
-      this.routes[i].hasEmptyMiles = false;
+      this.tableData[this.selectedMapIndex].routes[i].hasEmptyMiles = false;
 
-      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
-        this.routes[i].stops[j].legPrice = 0;
-        this.routes[i].stops[j].totalPrice = 0;
+      if (this.tableData[this.selectedMapIndex].routes[i].fuelPrice && this.tableData[this.selectedMapIndex].routes[i].mpg) {
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice = 0;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice = 0;
       } else {
-        this.routes[i].stops[j].legPrice = null;
-        this.routes[i].stops[j].totalPrice = null;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice = null;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice = null;
       }
     }
     /* For  Calculate Distance*/
-    for (let j = 1; j < this.routes[i].stops.length; j++) {
+    for (let j = 1; j < this.tableData[this.selectedMapIndex].routes[i].stops.length; j++) {
       if (
-        this.routes[i].stops[j].lat !== undefined &&
-        this.routes[i].stops[j].long !== undefined
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].lat !== undefined &&
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].long !== undefined
       ) {
         const firstAddress = new google.maps.LatLng(
-          this.routes[i].stops[j - 1].lat,
-          this.routes[i].stops[j - 1].long
+          this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].lat,
+          this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].long
         );
         const secondAddress = new google.maps.LatLng(
-          this.routes[i].stops[j].lat,
-          this.routes[i].stops[j].long
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].lat,
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].long
         );
 
         let distance: number;
@@ -767,58 +858,58 @@ export class RoutingMapComponent implements OnInit {
             ) / 1000.0;
         }
 
-        this.routes[i].stops[j].leg = distance;
-        this.routes[i].stops[j].total =
-          parseFloat(this.routes[i].stops[j - 1].total) +
-          parseFloat(this.routes[i].stops[j].leg);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].leg = distance;
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].total =
+          parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].total) +
+          parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].leg);
 
-        this.routes[i].stops[j].emptyDistance =
-          parseFloat(this.routes[i].stops[j - 1].emptyDistance) +
-          (this.routes[i].stops[j].empty ? distance : 0);
-        this.routes[i].stops[j].loadedDistance =
-          parseFloat(this.routes[i].stops[j - 1].loadedDistance) +
-          (!this.routes[i].stops[j].empty ? distance : 0);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance =
+          parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].emptyDistance) +
+          (this.tableData[this.selectedMapIndex].routes[i].stops[j].empty ? distance : 0);
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance =
+          parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].loadedDistance) +
+          (!this.tableData[this.selectedMapIndex].routes[i].stops[j].empty ? distance : 0);
 
-        if (this.routes[i].fuelPrice && this.routes[i].mpg) {
+        if (this.tableData[this.selectedMapIndex].routes[i].fuelPrice && this.tableData[this.selectedMapIndex].routes[i].mpg) {
           let distanceInMiles =
             this.tableData[this.selectedMapIndex].distanceUnit == 'mi'
               ? distance
               : distance / 1.609344;
 
-          let fuel = distanceInMiles / this.routes[i].mpg;
-          let tripCost = fuel * this.routes[i].fuelPrice;
+          let fuel = distanceInMiles / this.tableData[this.selectedMapIndex].routes[i].mpg;
+          let tripCost = fuel * this.tableData[this.selectedMapIndex].routes[i].fuelPrice;
 
           let fuelShort = fuel.toFixed(1);
           let tripCostShort = tripCost.toFixed(1);
 
-          this.routes[i].stops[j].legPrice = tripCostShort;
-          this.routes[i].stops[j].totalPrice =
-            parseFloat(this.routes[i].stops[j - 1].legPrice) +
-            parseFloat(this.routes[i].stops[j].legPrice);
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice = tripCostShort;
+          this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice =
+            parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j - 1].legPrice) +
+            parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice);
         }
       }
     }
-    for (let j = 1; j < this.routes[i].stops.length; j++) {
-      var stopLeg = parseFloat(this.routes[i].stops[j].leg);
-      var stopTotal = parseFloat(this.routes[i].stops[j].total);
-      this.routes[i].stops[j].leg = stopLeg.toFixed(1);
-      this.routes[i].stops[j].total = stopTotal.toFixed(1);
+    for (let j = 1; j < this.tableData[this.selectedMapIndex].routes[i].stops.length; j++) {
+      var stopLeg = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].leg);
+      var stopTotal = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].total);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].leg = stopLeg.toFixed(1);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].total = stopTotal.toFixed(1);
 
-      var emptyLeg = parseFloat(this.routes[i].stops[j].emptyDistance);
-      var loadedLeg = parseFloat(this.routes[i].stops[j].loadedDistance);
-      this.routes[i].stops[j].emptyDistance = emptyLeg.toFixed(1);
-      this.routes[i].stops[j].loadedDistance = loadedLeg.toFixed(1);
+      var emptyLeg = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance);
+      var loadedLeg = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance = emptyLeg.toFixed(1);
+      this.tableData[this.selectedMapIndex].routes[i].stops[j].loadedDistance = loadedLeg.toFixed(1);
 
-      if (this.routes[i].stops[j].emptyDistance > 0) {
-        this.routes[i].hasEmptyMiles = true;
+      if (this.tableData[this.selectedMapIndex].routes[i].stops[j].emptyDistance > 0) {
+        this.tableData[this.selectedMapIndex].routes[i].hasEmptyMiles = true;
       }
 
-      if (this.routes[i].fuelPrice && this.routes[i].mpg) {
-        var legCost = parseFloat(this.routes[i].stops[j].legPrice);
-        var totalCost = parseFloat(this.routes[i].stops[j].totalPrice);
+      if (this.tableData[this.selectedMapIndex].routes[i].fuelPrice && this.tableData[this.selectedMapIndex].routes[i].mpg) {
+        var legCost = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice);
+        var totalCost = parseFloat(this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice);
 
-        this.routes[i].stops[j].legPrice = legCost.toFixed(1);
-        this.routes[i].stops[j].totalPrice = totalCost.toFixed(1);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].legPrice = legCost.toFixed(1);
+        this.tableData[this.selectedMapIndex].routes[i].stops[j].totalPrice = totalCost.toFixed(1);
       }
     }
   }
@@ -877,7 +968,7 @@ export class RoutingMapComponent implements OnInit {
         })
       );
 
-      const lastId = Math.max(...this.routes.map((item) => item.id));
+      const lastId = Math.max(...this.tableData[this.selectedMapIndex].routes.map((item) => item.id));
 
       const newRoute = JSON.parse(JSON.stringify(route));
       newRoute.id = lastId + 1;
@@ -893,16 +984,16 @@ export class RoutingMapComponent implements OnInit {
 
       newRoute.color = this.findRouteColor();
       
-      if ( this.routes.length < 8 ) {
-        this.routes.push(newRoute);
+      if ( this.tableData[this.selectedMapIndex].routes.length < 8 ) {
+        this.tableData[this.selectedMapIndex].routes.push(newRoute);
       }
 
       this.showHideDuplicate();
       
-      this.tableData[this.selectedMapIndex].length = this.routes.length;
+      this.tableData[this.selectedMapIndex].length = this.tableData[this.selectedMapIndex].routes.length;
 
-      this.calculateDistanceBetweenStops(this.routes.length - 1);
-      this.calculateRouteWidth(this.routes[this.routes.length - 1]);
+      this.calculateDistanceBetweenStops(this.tableData[this.selectedMapIndex].routes.length - 1);
+      this.calculateRouteWidth(this.tableData[this.selectedMapIndex].routes[this.tableData[this.selectedMapIndex].routes.length - 1]);
     }
   }
 
@@ -932,21 +1023,21 @@ export class RoutingMapComponent implements OnInit {
     const routeIndex = this.getRouteIndexById(id);
 
     if (routeIndex > -1) {
-      this.routes.splice(routeIndex, 1);
+      this.tableData[this.selectedMapIndex].routes.splice(routeIndex, 1);
     }
 
-    this.tableData[this.selectedMapIndex].length = this.routes.length;
+    this.tableData[this.selectedMapIndex].length = this.tableData[this.selectedMapIndex].routes.length;
     this.showHideDuplicate();
   }
 
   getRouteById(id) {
-    let route = this.routes.filter((item) => item.id === id)[0];
+    let route = this.tableData[this.selectedMapIndex].routes.filter((item) => item.id === id)[0];
 
     return route ? route : false;
   }
 
   getRouteIndexById(id) {
-    const routeIndex = this.routes.findIndex((route) => {
+    const routeIndex = this.tableData[this.selectedMapIndex].routes.findIndex((route) => {
       return route.id === id;
     });
 
@@ -956,7 +1047,7 @@ export class RoutingMapComponent implements OnInit {
   focusRoute(i) {
     this.stopPickerLocation = {};
 
-    this.routes.map((route, index) => {
+    this.tableData[this.selectedMapIndex].routes.map((route, index) => {
       if (index == i) {
         if (!route.hidden) {
           route.isFocused = !route.isFocused;
@@ -985,10 +1076,12 @@ export class RoutingMapComponent implements OnInit {
   }
 
   onToolBarAction(event: any) {
+    console.log('onToolBarAction', event);
+
     if (event.action == 'add-route') {
       var routeForm = event.data;
 
-      let lastId = Math.max(...this.routes.map((item) => item.id));
+      let lastId = Math.max(...this.tableData[this.selectedMapIndex].routes.map((item) => item.id));
       if (!lastId || lastId < 1) {
         lastId = 1;
       }
@@ -1015,15 +1108,15 @@ export class RoutingMapComponent implements OnInit {
 
       console.log('newRoute', newRoute.color);
 
-      if ( this.routes.length < 8 ) {
-        this.routes.push(newRoute);
+      if ( this.tableData[this.selectedMapIndex].routes.length < 8 ) {
+        this.tableData[this.selectedMapIndex].routes.push(newRoute);
       }
 
       this.showHideDuplicate();
       
-      this.calculateRouteWidth(this.routes[this.routes.length-1]);
+      this.calculateRouteWidth(this.tableData[this.selectedMapIndex].routes[this.tableData[this.selectedMapIndex].routes.length-1]);
 
-      this.tableData[this.selectedMapIndex].length = this.routes.length;
+      this.tableData[this.selectedMapIndex].length = this.tableData[this.selectedMapIndex].routes.length;
     } else if (event.action == 'edit-route') {
       var routeForm = event.data.form;
       let route = this.getRouteById(event.data.editId);
@@ -1071,7 +1164,7 @@ export class RoutingMapComponent implements OnInit {
         mapForm.get('borderType').value;
 
       if (infoTypeChanged) {
-        this.routes.map((item, index) => {
+        this.tableData[this.selectedMapIndex].routes.map((item, index) => {
           this.calculateDistanceBetweenStops(index);
           this.calculateRouteWidth(item);
         });
@@ -1101,6 +1194,26 @@ export class RoutingMapComponent implements OnInit {
       this.toggleRadar();
     } else if (event.action == 'toggle-traffic') {
       this.toggleTraffic();
+    } else if (event.action === 'tab-selected') {
+      this.selectedTab = event.tabData.field;
+
+      this.tableData[this.selectedMapIndex].routes.map((route, routeIndex) => {
+        if ( route.isFocused ) {
+          this.focusRoute(routeIndex);
+        }
+
+        route.stops.map((stop) => {
+          if ( stop.isSelected ) {
+            stop.isSelected = false;
+          }
+        });
+      });
+
+      this.selectedMapIndex = event.tabData.field == 'map1' ? 0 : event.tabData.field == 'map2' ? 1 : event.tabData.field == 'map3' ? 2 : 3;
+
+      this.focusedStopIndex = null;
+      this.focusedRouteIndex = null;
+      this.stopPickerLocation = {};
     }
   }
 
@@ -1125,30 +1238,43 @@ export class RoutingMapComponent implements OnInit {
       {
         title: 'Map 1',
         field: 'map1',
-        length: this.routes.length,
+        length: 0,
         gridNameTitle: 'Routing',
         distanceUnit: 'mi', // mi or km
         borderType: 'open', // open or closed
-        addressType: 'city', // city or address
+        addressType: 'city', // city or address,
+        routes: []
       },
-      // {
-      //   title: 'Map 2',
-      //   field: 'map2',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 3',
-      //   field: 'map3',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
-      // {
-      //   title: 'Map 4',
-      //   field: 'map4',
-      //   length: 0,
-      //   gridNameTitle: 'Routing'
-      // },
+      {
+        title: 'Map 2',
+        field: 'map2',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: []
+      },
+      {
+        title: 'Map 3',
+        field: 'map3',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: []
+      },
+      {
+        title: 'Map 4',
+        field: 'map4',
+        length: 0,
+        gridNameTitle: 'Routing',
+        distanceUnit: 'mi', // mi or km
+        borderType: 'open', // open or closed
+        addressType: 'city', // city or address,
+        routes: []
+      },
     ];
   }
 
@@ -1160,16 +1286,16 @@ export class RoutingMapComponent implements OnInit {
     }
   }
 
-  addNewStop(loadType) {
+  addNewStop(event, loadType) {
     this.stopPickerLocation.empty = loadType == 'empty' ? true : false;
     this.addressFlag = loadType == 'empty' ? 'Empty' : 'Loaded';
 
     if (this.stopPickerLocation.editIndex != null) {
-      this.routes[this.focusedRouteIndex].stops[
+      this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops[
         this.stopPickerLocation.editIndex
       ].empty = this.stopPickerLocation.empty;
     } else {
-      var insertIndex = this.focusedStopIndex != null ? this.focusedStopIndex+1 : this.routes[this.focusedRouteIndex].stops.length;
+      var insertIndex = this.focusedStopIndex != null ? this.focusedStopIndex+1 : this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length;
 
       // this.routes[this.focusedRouteIndex].stops.push({
       //   'address': this.stopPickerLocation.address,
@@ -1183,7 +1309,7 @@ export class RoutingMapComponent implements OnInit {
       //   'long': this.stopPickerLocation.long
       // });
 
-      this.routes[this.focusedRouteIndex].stops.splice(insertIndex, 0, {
+      this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.splice(insertIndex, 0, {
         'address': this.stopPickerLocation.address,
         'cityAddress': this.stopPickerLocation.cityAddress,
         'leg': '0',
@@ -1195,8 +1321,10 @@ export class RoutingMapComponent implements OnInit {
         'long': this.stopPickerLocation.long
       });
 
+      this.focusStop(event, this.focusedRouteIndex, this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length-1);
+
       this.calculateDistanceBetweenStops(this.focusedRouteIndex);
-      this.calculateRouteWidth(this.routes[this.focusedRouteIndex]);
+      this.calculateRouteWidth(this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex]);
     }
 
     this.stopPickerLocation = {};
@@ -1217,7 +1345,7 @@ export class RoutingMapComponent implements OnInit {
       this.focusRoute(routeIndex);
     }
 
-    this.stopPickerLocation = this.routes[routeIndex].stops[stopIndex];
+    this.stopPickerLocation = this.tableData[this.selectedMapIndex].routes[routeIndex].stops[stopIndex];
     this.stopPickerLocation.editIndex = stopIndex;
 
     this.ref.detectChanges();
@@ -1227,7 +1355,7 @@ export class RoutingMapComponent implements OnInit {
     event.stopPropagation();
     event.preventDefault();
 
-    var route = this.routes[routeIndex];
+    var route = this.tableData[this.selectedMapIndex].routes[routeIndex];
 
     if (!route.isFocused) {
       this.focusRoute(routeIndex);
@@ -1489,7 +1617,7 @@ export class RoutingMapComponent implements OnInit {
     event.preventDefault();
 
     if (this.stopPickerLocation.editIndex != null) {
-      this.routes[this.focusedRouteIndex].stops.splice(
+      this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.splice(
         this.stopPickerLocation.editIndex,
         1
       );
@@ -1506,7 +1634,7 @@ export class RoutingMapComponent implements OnInit {
     var takenColors = [];
     var freeColors = [];
 
-    this.routes.map((route) => {
+    this.tableData[this.selectedMapIndex].routes.map((route) => {
       takenColors.push(route.color);
     });
 
@@ -1526,7 +1654,7 @@ export class RoutingMapComponent implements OnInit {
   }
 
   showHideDuplicate() {
-    if ( this.routes.length < 8 ) {
+    if ( this.tableData[this.selectedMapIndex].routes.length < 8 ) {
       this.dropdownActions[3].disabled = false;
     } else {
       this.dropdownActions[3].disabled = true;
@@ -1535,7 +1663,7 @@ export class RoutingMapComponent implements OnInit {
 
   findNextStopIndex() {
     if ( this.focusedRouteIndex != null ) {
-      this.focusedStopIndex = this.routes[this.focusedRouteIndex].stops.findIndex(
+      this.focusedStopIndex = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.findIndex(
         (stop) => stop.isSelected
       );
 
@@ -1575,17 +1703,17 @@ export class RoutingMapComponent implements OnInit {
   switchRouteFocus(previousRoute?) {
     console.log('switchRouteFocus', previousRoute);
 
-    if ( this.routes.length ) {
+    if ( this.tableData[this.selectedMapIndex].routes.length ) {
       if ( this.focusedRouteIndex != null ) {
-        var nextRoute = this.focusedRouteIndex+1 < this.routes.length ? this.focusedRouteIndex+1 : 0;
+        var nextRoute = this.focusedRouteIndex+1 < this.tableData[this.selectedMapIndex].routes.length ? this.focusedRouteIndex+1 : 0;
 
         if ( previousRoute ) {
-          nextRoute = this.focusedRouteIndex-1 >= 0 ? this.focusedRouteIndex-1 : this.routes.length-1;
+          nextRoute = this.focusedRouteIndex-1 >= 0 ? this.focusedRouteIndex-1 : this.tableData[this.selectedMapIndex].routes.length-1;
         }
 
         this.focusRoute(nextRoute);
       } else {
-        var focusIndex = previousRoute ? this.routes.length-1 : 0;
+        var focusIndex = previousRoute ? this.tableData[this.selectedMapIndex].routes.length-1 : 0;
 
         this.focusRoute(focusIndex);
       }
@@ -1603,16 +1731,16 @@ export class RoutingMapComponent implements OnInit {
     if (key === 38) {
       /* Up Arrow */
       if (currentlyFocusedStop === -1) {
-        nextFocusedStop = this.routes[this.focusedRouteIndex].stops.length - 1;
+        nextFocusedStop = this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length - 1;
       } else {
-        nextFocusedStop = currentlyFocusedStop-1 >= 0 ? currentlyFocusedStop-1 : this.routes[this.focusedRouteIndex].stops.length - 1;
+        nextFocusedStop = currentlyFocusedStop-1 >= 0 ? currentlyFocusedStop-1 : this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length - 1;
       }
     } else if (key === 40) {
       /* Down Arrow */
       if (currentlyFocusedStop === -1) {
         nextFocusedStop = 0;
       } else {
-        nextFocusedStop = currentlyFocusedStop+1 < this.routes[this.focusedRouteIndex].stops.length ? currentlyFocusedStop+1 : 0;
+        nextFocusedStop = currentlyFocusedStop+1 < this.tableData[this.selectedMapIndex].routes[this.focusedRouteIndex].stops.length ? currentlyFocusedStop+1 : 0;
       }
     }
 
@@ -1620,7 +1748,7 @@ export class RoutingMapComponent implements OnInit {
   }
 
   findFocusedStop(routeIndex) {
-    const stopIndex = this.routes[routeIndex].stops.findIndex(stop => {
+    const stopIndex = this.tableData[this.selectedMapIndex].routes[routeIndex].stops.findIndex(stop => {
       return stop.isSelected;
     });
 
@@ -1635,5 +1763,9 @@ export class RoutingMapComponent implements OnInit {
     }, 250);
 
     this.ref.detectChanges();
+  }
+
+  focusInput(event, routeIndex) {
+    console.log('focusInput', event, routeIndex);
   }
 }

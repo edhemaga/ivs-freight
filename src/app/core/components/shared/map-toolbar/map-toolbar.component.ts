@@ -231,11 +231,25 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes?.selectedTab) {
-      this.selectedTab = changes.selectedTab.currentValue;
+      this.selectedTab = changes.selectedTab.currentValue; 
 
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
       this.listName = td.gridNameTitle;
+      this.getSelectedTabTableData(); 
+
+      if ( changes.selectedTab.previousValue && changes.selectedTab.currentValue != changes.selectedTab.previousValue ) {
+        this.routeToEdit = {};
+
+        this.resetRouteForm();
+        this.resetMapForm();
+        
+        this.addRoutePopup?.close();
+        this.mapSettingsPopup?.close();
+
+        this.layersPopup?.close();
+        this.layersPopupOpen = false;
+      }    
     }
   }
 
@@ -387,12 +401,12 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
       data: dataToSend,
     });
 
+    this.routeToEdit = {};
+
     this.addRoutePopup?.close();
     this.mapSettingsPopup?.close();
     this.resetRouteForm();
     this.resetMapForm();
-
-    this.routeToEdit = {};
 
     this.layersPopup?.close();
     this.layersPopupOpen = false;

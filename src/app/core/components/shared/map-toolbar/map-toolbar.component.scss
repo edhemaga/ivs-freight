@@ -1,5 +1,5 @@
 .toolbar-container {
-  height: 32px;
+  height: 34px;
   display: flex;
   margin-top: 22px;
   user-select: none;
@@ -7,7 +7,7 @@
   // BORDER
   .border-container {
     width: 1px;
-    height: 32px;
+    height: 34px;
     background: #ffffff;
     display: flex;
     align-items: center;
@@ -26,7 +26,7 @@
     justify-content: center;
     align-items: center;
     width: fit-content;
-    height: 32px;
+    height: 34px;
     color: #424242;
     font-size: 26px;
     font-weight: 900;
@@ -53,7 +53,7 @@
   .tab-wrapper {
     width: fit-content;
     height: fit-content;
-    margin-right: 6px;
+    margin-right: 4px;
     display: flex;
 
     .tab-container {
@@ -61,12 +61,17 @@
       display: flex;
       background: #ffffff;
       padding: 2px;
-      height: 32px;
+      height: 34px;
       width: fit-content;
       border-radius: 3px;
+      margin-right: 4px;
+
+      &:last-child {
+        margin-right: 0px;
+      }
 
       .tab {
-        height: 28px;
+        height: 30px;
         width: fit-content;
         border-radius: 3px;
         padding: 2px;
@@ -74,28 +79,29 @@
 
         .data-count,
         .tab-title {
-          font-size: 14px;
-          font-weight: 800;
+          font-size: 17px;
+          font-weight: 700;
           color: #6C6C6C;
+          line-height: 20px;
         }
 
         .data-count {
-          height: 24px;
-          min-width: 24px;
+          height: 26px;
+          min-width: 26px;
           border-radius: 2px;
           background: #f3f3f3;
           display: flex;
           padding: 3px 4px;
           justify-content: center;
           align-items: center;
-          margin-right: 4px;
+          margin-right: 6px;
         }
 
         .tab-title {
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 6px;
+          margin-right: 8px;
         }
       }
     }
@@ -104,7 +110,7 @@
   // VIEW MODE SELECT
   .view-mode-container {
     width: fit-content;
-    height: 32px;
+    height: 34px;
     padding: 2px;
     background: #ffffff;
     border-radius: 3px 0px 0px 3px;
@@ -144,7 +150,7 @@
   .table-actions {
     height: 34px;
     background: white;
-    border-radius: 0px 3px 3px 0;
+    border-radius: 3px;
     flex-grow: 1;
     display: flex;
     justify-content: flex-end;
@@ -157,7 +163,7 @@
 
       .action-div {
         cursor: pointer;
-        width: 32px;
+        width: 34px;
         height: 34px;
         display: flex;
         justify-content: center;
@@ -271,8 +277,8 @@
   .location-filter-container,
   .modal-open-container,
   .general-pm-open-container {
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -687,7 +693,7 @@
 
   .legend-item {
     width: 201px;
-    height: 32px;
+    height: 34px;
   }
 
   .shortcut {
@@ -717,7 +723,7 @@
     color: #919191;
     margin: 0;
     position: relative;
-    height: 32px;
+    height: 34px;
     line-height: 33px;
     float: left;
   }
