@@ -253,13 +253,17 @@ export class MvrService {
     }
 
     /**
+     * @param driverId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiMvrModalGet(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GetMvrModalResponse>;
-    public apiMvrModalGet(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GetMvrModalResponse>>;
-    public apiMvrModalGet(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GetMvrModalResponse>>;
-    public apiMvrModalGet(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiMvrModalDriverIdGet(driverId: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<GetMvrModalResponse>;
+    public apiMvrModalDriverIdGet(driverId: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<GetMvrModalResponse>>;
+    public apiMvrModalDriverIdGet(driverId: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<GetMvrModalResponse>>;
+    public apiMvrModalDriverIdGet(driverId: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (driverId === null || driverId === undefined) {
+            throw new Error('Required parameter driverId was null or undefined when calling apiMvrModalDriverIdGet.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -290,7 +294,7 @@ export class MvrService {
             responseType = 'text';
         }
 
-        return this.httpClient.get<GetMvrModalResponse>(`${this.configuration.basePath}/api/mvr/modal`,
+        return this.httpClient.get<GetMvrModalResponse>(`${this.configuration.basePath}/api/mvr/modal/${encodeURIComponent(String(driverId))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
