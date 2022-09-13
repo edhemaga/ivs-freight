@@ -31,14 +31,14 @@ export class MedicalTService {
         const subDriver = this.driverService.getDriverById(driverId).subscribe({
           next: (driver: DriverResponse | any) => {
             this.driverStore.remove(({ id }) => id === driverId);
-
+            this.driverItemStore.remove(({ id }) => id === driverId);
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
             };
 
             this.driverStore.add(driver);
-
+            this.driverItemStore.add(driver);
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,

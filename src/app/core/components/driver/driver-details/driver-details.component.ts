@@ -21,7 +21,8 @@ import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-st
 import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
 import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 import { CdlTService } from '../state/cdl.service';
-import { Subject, takeUntil } from 'rxjs';
+import { of, Subject, take, takeUntil } from 'rxjs';
+import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 
 @Component({
   selector: 'app-driver-details',
@@ -64,6 +65,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverMinimalQuery: DriversMinimalListQuery,
     private dropDownService: DropDownService,
     private driverItemStore: DriversItemStore,
+    private driverItemQuery: DriversDetailsQuery,
     private cdlService: CdlTService
   ) {}
 
@@ -71,8 +73,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     this.currentIndex = this.driversList.findIndex(
       (driver) => driver.id === this.activated_route.snapshot.data.driver.id
     );
-    this.getDriverById(this.activated_route.snapshot.data.driver.id);
-    this.initTableOptions(this.activated_route.snapshot.data.driver);
+
     this.detailCongif(this.activated_route.snapshot.data.driver);
     if (this.cdlActiveId > 0) {
       this.getCdlById(this.cdlActiveId);
@@ -118,45 +119,41 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         },
       });
 
-    this.detailsPageDriverService.pageDetailChangeId$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((id) => {
-        this.driverService
-          .getDriverById(id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: (res: DriverResponse) => {
-              this.currentIndex = this.driversList.findIndex(
-                (driver) => driver.id === res.id
-              );
-              this.initTableOptions(res);
-              if (this.cdlActiveId > 0) {
-                this.getCdlById(this.cdlActiveId);
-              }
+    // this.detailsPageDriverService.pageDetailChangeId$
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((id) => {
+    //     this.driverService.getDriverById(id).subscribe({
+    //       next: (res: DriverResponse) => {
+    //         this.currentIndex = this.driversList.findIndex(
+    //           (driver) => driver.id === res.id
+    //         );
+    //         this.initTableOptions(res);
+    //         if (this.cdlActiveId > 0) {
+    //           this.getCdlById(this.cdlActiveId);
+    //         }
 
-              this.detailCongif(res);
+    //         this.detailCongif(res);
 
-              if (this.router.url.includes('details')) {
-                this.router.navigate([`/driver/${res.id}/details`]);
-              }
-              this.notificationService.success(
-                'Driver successfully changed',
-                'Success:'
-              );
-              this.cdRef.detectChanges();
-            },
-            error: () => {
-              this.notificationService.error(
-                "Driver can't be loaded",
-                'Error:'
-              );
-            },
-          });
-      });
+    //         if (this.router.url.includes('details')) {
+    //           this.router.navigate([`/driver/${res.id}/details`]);
+    //         }
+    //         this.notificationService.success(
+    //           'Driver successfully changed',
+    //           'Success:'
+    //         );
+    //         this.cdRef.detectChanges();
+    //       },
+    //       error: () => {
+    //         this.notificationService.error("Driver can't be loaded", 'Error:');
+    //       },
+    //     });
+    //   });
   }
 
   /**Function template and names for header and other options in header */
   public detailCongif(data: DriverResponse | any) {
+    this.getDriverById(data.id);
+    this.initTableOptions(data);
     this.checkExpiration(data);
     if (data?.status == 0) {
       this.statusDriver = true;
@@ -185,7 +182,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
       },
       {
         id: 2,
-        name: 'Drug & Alcohol',
+        name: 'Drug & Alcohol Test',
         template: 'drug-alcohol',
         req: true,
         status: this.statusDriver,
