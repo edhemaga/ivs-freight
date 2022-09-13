@@ -138,13 +138,17 @@ export class Step5FormComponent
   }
 
   ngAfterViewInit(): void {
-    this.violationsForm.statusChanges.subscribe((res) => {
-      this.formStatusEmitter.emit(res);
-    });
+    this.violationsForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
 
-    this.violationsForm.valueChanges.subscribe((res) => {
-      this.lastFormValuesEmitter.emit(res);
-    });
+    this.violationsForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

@@ -40,26 +40,34 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.copyrightYear = moment().format('YYYY');
 
-    this.route.queryParams.subscribe((params) => {
-      this.verifyData = {
-        inviteCode: params['InviteCode'].split(' ').join('+'),
-      };
-    });
+    this.route.queryParams
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params) => {
+        this.verifyData = {
+          inviteCode: params['InviteCode'].split(' ').join('+'),
+        };
+      });
 
     this.applicantActionsService
       .verifyApplicant(this.verifyData)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        this.applicantActionsService.getApplicantInfo(res);
+      .subscribe({
+        next: (res: any) => {
+          this.applicantActionsService.getApplicantInfo(res);
 
-        this.dateOfApplication = convertDateFromBackend(res.inviteDate).replace(
-          /-/g,
-          '/'
-        );
+          this.dateOfApplication = convertDateFromBackend(
+            res.inviteDate
+          ).replace(/-/g, '/');
 
-        this.companyInfo = res.companyInfo;
+          this.companyInfo = res.companyInfo;
 
-        this.applicantId = { id: res.personalInfo.applicantId };
+          this.applicantId = { id: res.personalInfo.applicantId };
+
+          console.log(this.companyInfo);
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
   }
 
@@ -67,8 +75,13 @@ export class ApplicantWelcomeScreenComponent implements OnInit, OnDestroy {
     this.applicantActionsService
       .acceptApplicant(this.applicantId)
       .pipe(takeUntil(this.destroy$))
-      .subscribe((res: any) => {
-        this.router.navigate([`/application/${this.applicantId}/1`]);
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/1`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
       });
   }
 

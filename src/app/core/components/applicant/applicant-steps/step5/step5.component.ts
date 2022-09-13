@@ -462,5 +462,8 @@ export class Step5Component implements OnInit, OnDestroy {
 
   /* public onSubmitReview(data: any): void {} */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

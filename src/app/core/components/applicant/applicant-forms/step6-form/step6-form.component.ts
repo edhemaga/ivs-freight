@@ -157,13 +157,17 @@ export class Step6FormComponent
   }
 
   ngAfterViewInit(): void {
-    this.contactForm.statusChanges.subscribe((res) => {
-      this.formStatusEmitter.emit(res);
-    });
+    this.contactForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
 
-    this.contactForm.valueChanges.subscribe((res) => {
-      this.lastFormValuesEmitter.emit(res);
-    });
+    this.contactForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
