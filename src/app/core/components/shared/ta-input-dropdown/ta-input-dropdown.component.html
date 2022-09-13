@@ -360,6 +360,33 @@
           </div>
         </div>
       </div>
+      <div *ngSwitchCase="'dispatch'">
+        <div
+          *ngFor="let option of options; let indx = index; trackBy: identity"
+          class="dropdown-option"
+          (mouseleave)="hoveredOption = -1"
+          (mouseover)="hoveredOption = indx"
+          [ngStyle]="{
+            'background-color':
+              hoveredOption == indx ? '#' + option.colorD : 'inherit',
+            color: hoveredOption != indx ? '#' + option.colorD : '#fff'
+          }"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
+            active: option.id === activeItem?.id,
+            'active-repair-truck-trailer': option?.status === 1
+          }"
+          (click)="onActiveItem(option)"
+          [innerHtml]="
+            option.name
+              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+          "
+        ></div>
+      </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>
         <div

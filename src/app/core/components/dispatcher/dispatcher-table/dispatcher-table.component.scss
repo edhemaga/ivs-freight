@@ -1126,12 +1126,15 @@ kendo-grid .toolbar-container {
 }
 
 .customTabsDispatchHold {
+  position: relative;
+  display: flex;
+  align-items: center;
   background-color: #fff;
   padding: 2px;
   height: 32px;
 
   &.left {
-    border-radius: 3px 0 0 3px;
+    border-radius: 3px;
     margin-right: 0;
     padding-right: 0;
   }
@@ -1141,6 +1144,10 @@ kendo-grid .toolbar-container {
     margin-left: 0;
     border-radius: 0 3px 3px 0;
     padding-left: 0;
+  }
+
+  .left, .right{
+    flex: 1;
   }
 }
 
@@ -1170,7 +1177,7 @@ kendo-grid .toolbar-container {
   }
 }
 
-.pickup-col {
+.pick-del-field {
   position: relative;
 
   span.cursor-pointer {
@@ -1197,10 +1204,9 @@ kendo-grid .toolbar-container {
   }
 }
 
-.destination-data {
-  span.cursor-pointer {
+.destination-data, .pickup-data {
+  span {
     color: rgba(145, 145, 145, 1);
-
     .select_span {
       line-height: 14px;
       min-width: 100px;

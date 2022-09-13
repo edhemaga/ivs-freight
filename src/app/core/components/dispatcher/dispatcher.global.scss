@@ -862,7 +862,7 @@
               width: 22px;
               height: 22px;
 
-              .a {
+              rect {
                 fill: #ffa7a7;
               }
 
@@ -931,12 +931,8 @@
           width: 22px;
           height: 22px;
 
-          .a {
-            fill: #ffe4e4;
-          }
-
-          .b {
-            fill: #ffa7a7;
+          rect {
+            fill: #E57373;
           }
         }
       }
@@ -1286,8 +1282,11 @@
   // }
 
   .dispatch-pickup-delivery {
-    width: 170px;
     line-height: 23px;
+
+    .pick-del-location{
+      font-size: 14px;
+    }
   }
 
   kendo-dropdownbutton {
@@ -1940,55 +1939,6 @@
       flex: 1;
     }
   }
-
-  .new_load_dispatch_hold {
-    width: 32px;
-    height: 32px;
-    padding: 2px;
-    border-radius: 3px;
-    background-color: #fff;
-  }
-
-  .new_load_dispatch {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    border-radius: 3px;
-    background-color: #fff;
-    margin: 0 0 0 auto;
-
-    svg {
-      path {
-        transition: none !important;
-      }
-    }
-
-    &:hover {
-      background-color: #f7f7f7;
-
-      svg {
-        path {
-          fill: #91a4c7;
-        }
-      }
-    }
-
-    &[disabled] {
-      background-color: rgba(255, 255, 255, 0.3);
-      cursor: default;
-
-      &:hover {
-        svg {
-          path {
-            fill: #cfcfcf;
-          }
-        }
-      }
-    }
-  }
 }
 
 .drag-col {
@@ -2145,13 +2095,41 @@
 
   .driver-field {
     width: 319px;
-    padding-left: 172px !important;
+    padding-left: 175px !important;
     min-width: 319px;
+    max-width: 319px;
+
+    .dispatch-list{
+      
+      &.multiple-drivers-list{
+        display: flex;
+      }
+
+      .dispacher-card{
+        &.multiple-drivers{
+          flex: 1;
+          max-width: 71px;
+          &:last-child{
+            margin-left: 2px;
+            max-width: 70px;
+          }
+
+          .drag-span{
+            margin: 0 2px;
+            width: calc(100% - 4px) !important;
+          }
+        }
+
+        // &.{
+        //   max-width: 71px;
+        // }
+      }
+    }
   }
 
   .note-field {
     width: 359px;
-    padding-right: 100px !important;
+    padding-right: 103px !important;
   }
 
   .phoneemail-field {
@@ -2160,10 +2138,14 @@
   }
   .location-field {
     width: 136px;
+    min-width: 136px;
+    max-width: 136px;
   }
 
   .status-field {
     width: 112px;
+    min-width: 112px;
+    max-width: 112px;
 
     &.theads {
       padding-left: 0 !important;
@@ -2172,7 +2154,9 @@
   }
 
   .pick-del-field {
-    width: 300px;
+    width: 324px;
+    max-width: 324px;
+    min-width: 324px;
 
     .two-table-heads {
       display: flex;
@@ -2230,4 +2214,54 @@
   //     max-width: 34px;
   //   }
   // }
+}
+
+.new_load_dispatch_hold {
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+.new_load_dispatch {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 3px;
+  background-color: #fff;
+  margin: 0 0 0 auto;
+
+  svg {
+    path {
+      transition: none !important;
+      fill: #B7B7B7;
+    }
+  }
+
+  &:hover {
+    background-color: #f7f7f7;
+
+    svg {
+      path {
+        fill: #6D82C7;
+      }
+    }
+  }
+
+  &[disabled] {
+    background-color: rgba(255, 255, 255, 0.3);
+    cursor: default;
+
+    &:hover {
+      svg {
+        path {
+          fill: #cfcfcf;
+        }
+      }
+    }
+  }
 }
