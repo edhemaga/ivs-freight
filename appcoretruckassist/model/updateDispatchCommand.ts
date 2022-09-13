@@ -20,6 +20,7 @@ export interface UpdateDispatchCommand {
     truckId?: number | null;
     trailerId?: number | null;
     driverId?: number | null;
+    coDriverId?: number | null;
     location?: AddressEntity;
     hourOfService?: number | null;
     note?: string | null;

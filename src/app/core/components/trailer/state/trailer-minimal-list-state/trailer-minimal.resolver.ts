@@ -31,7 +31,7 @@ export class TrailerMinimalResolver
           return of('No drivers data for...');
         }),
         tap((trailerMinimal: TrailerMinimalListResponse) => {
-          this.trailerMinimalListStore.set(trailerMinimal.pagination.data);
+          // this.trailerMinimalListStore.set(trailerMinimal.pagination.data);
         })
       );
   }
