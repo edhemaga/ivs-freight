@@ -1,6 +1,6 @@
 import { MvrService } from './../../../../../../appcoretruckassist/api/mvr.service';
 import { Injectable, OnDestroy } from '@angular/core';
-import { Observable, tap, takeUntil, Subject } from 'rxjs';
+import { Observable, tap, takeUntil, Subject, of } from 'rxjs';
 import {
   CreateMvrCommand,
   DriverResponse,
@@ -126,7 +126,8 @@ export class MvrTService implements OnDestroy {
   }
 
   public getMvrModal(): Observable<GetMvrModalResponse> {
-    return this.mvrService.apiMvrModalGet();
+    // return this.mvrService.apiMvrModalGet();
+    return of(null);
   }
   ngOnDestroy(): void {
     this.destroy$.next();

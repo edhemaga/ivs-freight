@@ -12,6 +12,7 @@ export class FormService {
   constructor() {}
 
   public formValueChange$: Subject<boolean> = new Subject<boolean>();
+  public formReset$: Subject<boolean> = new Subject<boolean>();
 
   public checkFormChange(form: FormGroup) {
     // When the form loads, changes are made for each control separately
@@ -43,5 +44,10 @@ export class FormService {
     //     }
     //   }
     // });
+  }
+
+  public resetForm(form: FormGroup): void {
+    form.reset();
+    this.formReset$.next(true);
   }
 }
