@@ -42,19 +42,19 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.selectCompanyFunction();
+    this.getCompanyDivision();
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.dataCompany = res.data.divisions;
-          this.getData(res.data);
+          this.data = res.data;
           this.getCompanyDivision();
           this.cdRef.detectChanges();
         }
       });
     this.getData(this.activated.snapshot.data.company);
-    this.settingCompanyQuery.getAll().map((item) => {});
-    this.getCompanyDivision();
+
     this.detailsPageSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
@@ -121,9 +121,8 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
     this.detailsPageSer.getDataDetailId(event.id);
   }
   ngOnDestroy(): void {
-    this.tableService.sendActionAnimation({});
-
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

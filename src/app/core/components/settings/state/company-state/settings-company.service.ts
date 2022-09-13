@@ -1,9 +1,5 @@
-import { Observable, tap } from 'rxjs';
-import { SettingsTerminalModalComponent } from '../../settings-location/location-modals/settings-terminal-modal/settings-terminal-modal.component';
-import { SettingsRepairshopModalComponent } from '../../settings-location/location-modals/settings-repairshop-modal/settings-repairshop-modal.component';
-import { SettingsOfficeModalComponent } from '../../settings-location/location-modals/settings-office-modal/settings-office-modal.component';
-import { SettingsParkingModalComponent } from '../../settings-location/location-modals/settings-parking-modal/settings-parking-modal.component';
-import { Injectable } from '@angular/core';
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 
 import { SettingsBasicModalComponent } from '../../settings-company/company-modals/settings-basic-modal/settings-basic-modal.component';
 import { SettingsInsurancePolicyModalComponent } from '../../settings-company/company-modals/settings-insurance-policy-modal/settings-insurance-policy-modal.component';
@@ -26,7 +22,9 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { CompanyStore } from './company-settings.store';
 
 @Injectable({ providedIn: 'root' })
-export class SettingsCompanyService {
+export class SettingsCompanyService implements OnDestroy {
+  private destroy$ = new Subject<void>();
+
   constructor(
     private modalService: ModalService,
     private settingService: CompanyService,
@@ -94,17 +92,20 @@ export class SettingsCompanyService {
   public updateCompany(data: UpdateCompanyCommand): Observable<object> {
     return this.settingService.apiCompanyPut(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -123,18 +124,31 @@ export class SettingsCompanyService {
   ): Observable<CreateResponse> {
     return this.settingService.apiCompanyDivisionPost(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.companyStore.add(company);
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
 
-            companySub.unsubscribe();
-          },
-        });
+              companiesCount.numberOfCompany++;
+              localStorage.setItem(
+                'companiesCount',
+                JSON.stringify({
+                  numberOfCompany: companiesCount.numberOfCompany,
+                })
+              );
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -144,17 +158,20 @@ export class SettingsCompanyService {
   ): Observable<object> {
     return this.settingService.apiCompanyDivisionPut(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -166,17 +183,24 @@ export class SettingsCompanyService {
   public deleteCompanyDivisionById(id: number): Observable<any> {
     return this.settingService.apiCompanyDivisionIdDelete(id).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'delete',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              const companiesCount = JSON.parse(
+                localStorage.getItem('companiesCount')
+              );
 
-            companySub.unsubscribe();
-          },
-        });
+              companiesCount.numberOfCompany--;
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
+
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -189,17 +213,19 @@ export class SettingsCompanyService {
   public deleteInsurancePolicyById(id: number): Observable<any> {
     return this.settingService.apiCompanyInsurancepolicyIdDelete(id).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'delete',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -209,17 +235,20 @@ export class SettingsCompanyService {
   ): Observable<CreateResponse> {
     return this.settingService.apiCompanyInsurancepolicyPost(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -229,17 +258,20 @@ export class SettingsCompanyService {
   ): Observable<object> {
     return this.settingService.apiCompanyInsurancepolicyPut(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -254,17 +286,20 @@ export class SettingsCompanyService {
   ): Observable<object> {
     return this.settingService.apiCompanyFactoringcompanyPut(data).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.companyStore.add(company);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -272,18 +307,24 @@ export class SettingsCompanyService {
   public deleteFactoringCompanyById(id: number): Observable<any> {
     return this.settingService.apiCompanyFactoringcompanyIdDelete(id).pipe(
       tap((res: any) => {
-        const companySub = this.getCompany().subscribe({
-          next: (company: CompanyResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'delete',
-              data: company,
-              id: company.id,
-            });
+        const companySub = this.getCompany()
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (company: CompanyResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: company,
+                id: company.id,
+              });
 
-            companySub.unsubscribe();
-          },
-        });
+              companySub.unsubscribe();
+            },
+          });
       })
     );
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
