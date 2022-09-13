@@ -411,7 +411,11 @@ export class Step2FormComponent implements OnInit, OnDestroy {
         } else {
           this.fmcsaRadios[1].checked = true;
         }
-      }, 1);
+
+        this.selectedVehicleType = this.vehicleType.find(
+          (item) => item.name === this.formValuesToPatch.vehicleType
+        );
+      }, 150);
 
       const lastItemInClassOfEquipmentArray =
         this.formValuesToPatch.classesOfEquipment[
