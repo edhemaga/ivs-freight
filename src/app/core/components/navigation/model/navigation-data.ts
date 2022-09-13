@@ -64,6 +64,11 @@ export const navigationData: Navigation[] = [
         activeRouteFlegId: 3,
       },
       {
+        name: 'User',
+        route: '/user',
+        activeRouteFlegId: 3,
+      },
+      {
         name: 'Fuel',
         route: '/fuel',
         activeRouteFlegId: 3,

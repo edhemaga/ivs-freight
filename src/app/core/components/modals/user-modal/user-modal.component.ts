@@ -120,11 +120,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
     this.onBankSelected();
 
     if (this.editData) {
-      // TODO: KAD SE POVEZE TABELA, ONDA SE MENJA
-      this.editData = {
-        ...this.editData,
-        id: 1,
-      };
       this.editUserById(this.editData.id);
     }
   }

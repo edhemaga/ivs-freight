@@ -32,6 +32,8 @@ export interface DispatchResponse {
     email?: string | null;
     location?: AddressEntity;
     status?: EnumValue;
+    lastStatusDateTime?: string;
+    possibleNextStatuses?: Array<EnumValue> | null;
     pickup?: LoadStopShortResponse;
     delivery?: LoadStopShortResponse;
     hoursOfService?: number | null;

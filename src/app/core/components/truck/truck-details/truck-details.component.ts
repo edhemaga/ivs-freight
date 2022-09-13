@@ -103,7 +103,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
                 (truck) => truck.id === res.id
               );
               this.truckConf(res);
-              this.initTableOptions(res);
+              // this.initTableOptions(res);
               if (this.router.url.includes('details')) {
                 this.router.navigate([`/truck/${res.id}/details`]);
               }
