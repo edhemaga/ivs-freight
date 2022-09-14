@@ -462,6 +462,7 @@
       .assigned_user_hold {
         display: flex;
         margin-top: 8px;
+        user-select: none;
         .assigned_user_hold_inner {
           display: flex;
           margin-right: 4px;
@@ -590,6 +591,16 @@
                   font-size: 14px;
                   font-weight: 800;
                   color: #424242;
+
+                  &::-moz-selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                  }
+
+                  &::selection {
+                    color: $bw6-2;
+                    background: rgb(108, 108, 108, 0.2);
+                  }
                 }
               }
 
@@ -600,6 +611,16 @@
                 line-height: 18px;
                 font-weight: 800;
                 color: #424242;
+
+                &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
               }
             }
 
@@ -614,6 +635,16 @@
                 font-size: 11px;
                 line-height: 14px;
                 font-weight: 700;
+
+                &::-moz-selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
+
+                &::selection {
+                  color: $bw6-2;
+                  background: rgb(108, 108, 108, 0.2);
+                }
               }
             }
           }
