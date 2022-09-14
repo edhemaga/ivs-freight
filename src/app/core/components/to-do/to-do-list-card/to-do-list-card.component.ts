@@ -22,6 +22,7 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { NotificationService } from '../../../services/notification/notification.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 @UntilDestroy()
 @Component({
@@ -170,7 +171,8 @@ export class ToDoListCardComponent implements OnInit {
     private commentsService: CommentsService,
     private todoQuery: TodoQuery,
     private notificationService: NotificationService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private imageBase64Service: ImageBase64Service
   ) {}
 
   ngOnInit(): void {

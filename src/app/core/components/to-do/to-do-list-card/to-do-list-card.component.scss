@@ -423,9 +423,18 @@
       }
 
       .assigned_user_hold {
+        display: flex;
         margin-top: 8px;
         .assigned_user_hold_inner {
           display: flex;
+          margin-right: 4px;
+
+          .user_avatar {
+            width: 28px;
+            height: 28px;
+            background-size: contain;
+            border-radius: 100%;
+          }
         }
       }
 
@@ -434,7 +443,7 @@
         font-weight: 400;
         color: #6c6c6c;
         line-height: 18px;
-        padding-top: 8px;
+        padding-top: 12px;
         box-sizing: border-box;
 
         &::-moz-selection {

@@ -254,6 +254,17 @@
                       <div
                         class="icon-box"
                         ngbTooltip
+                        mainTooltip="Documents"
+                        position="bottom"
+                        tooltipBackground="#6C6C6C"
+                      >
+                        <svg-icon
+                          src="assets/svg/common/ic_attachment.svg"
+                        ></svg-icon>
+                      </div>
+                      <div
+                        class="icon-box"
+                        ngbTooltip
                         mainTooltip="Comments"
                         position="bottom"
                         tooltipBackground="#6C6C6C"
@@ -298,20 +309,6 @@
                             </tspan>
                           </text>
                         </svg>
-                        <!-- <svg-icon
-                          src="assets/svg/detail-cards/comment - count.svg"
-                        ></svg-icon> -->
-                      </div>
-                      <div
-                        class="icon-box"
-                        ngbTooltip
-                        mainTooltip="Documents"
-                        position="bottom"
-                        tooltipBackground="#6C6C6C"
-                      >
-                        <svg-icon
-                          src="assets/svg/common/ic_attachment.svg"
-                        ></svg-icon>
                       </div>
                       <div class="icon-box dots">
                         <app-details-page-dropdown
@@ -351,13 +348,20 @@
                       class="assigned_user_hold_inner"
                       *ngFor="let user of item.todoUsers; let indx = index"
                     >
-                      <app-profile-images
-                        [indx]="indx"
-                        [name]="user.firstName + ' ' + user.lastName"
-                        [size]="'medium'"
-                        [type]="'user'"
-                      >
-                      </app-profile-images>
+                      <img
+                        *ngIf="user?.avatar"
+                        class="user_avatar"
+                        [src]="imageBase64Service.sanitizer(user?.avatar)"
+                      />
+                      <div class="user_profile_image" *ngIf="!user.avatar">
+                        <app-profile-images
+                          [indx]="indx"
+                          [name]="user.firstName + ' ' + user.lastName"
+                          [size]="'medium'"
+                          [type]="'user'"
+                        >
+                        </app-profile-images>
+                      </div>
                     </div>
                   </div>
                   <div class="list-text" *ngIf="item.description">
