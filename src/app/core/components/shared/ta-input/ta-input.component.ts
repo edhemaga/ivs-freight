@@ -967,23 +967,31 @@ export class TaInputComponent
       return false;
     }
 
-    // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
+    if (['fuel-store'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
 
-    //     if (
-    //       this.getSuperControl.value * 10 + event.charCode - 48 >
-    //       this.inputConfig.max
-    //     ) {
-    //       return false;
-    //     }
+    if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
 
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
+        if (
+          this.getSuperControl.value * 10 + event.charCode - 48 >
+          this.inputConfig.max
+        ) {
+          return false;
+        }
+
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
 
     // if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {

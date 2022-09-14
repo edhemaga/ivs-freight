@@ -117,11 +117,13 @@ export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
 //---------------- Year, month, day ---------------
 export const yearValidRegex = Validators.pattern(
-  new RegExp(
-    '^(19[0-9]d|20[0-4]d|' + moment().add(1, 'year').format('YYYY') + ')',
-    'gi'
-  )
+  /^(19[0-9]\d|20[0-4]\d|2100)$/
 );
+//  Validators.pattern(
+//   new RegExp(
+//     '^(19[0-9]d|20[0-4]d|' + moment().add(1, 'year').format('YYYY') + ')$'
+//   )
+// );
 
 export const yearValidation = [
   Validators.minLength(4),
@@ -209,6 +211,12 @@ export const repairOdometerValidation = [
 export const invoiceValidation = [
   Validators.minLength(1),
   Validators.maxLength(7),
+];
+
+//---------------- Fuel Store Odometer --------------------------------
+export const fuelStoreValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(32),
 ];
 
 //---------------- Mile, PerStop -------------------

@@ -41,6 +41,7 @@ import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { VinDecoderService } from '../../../services/VIN-DECODER/vindecoder.service';
 import { convertThousanSepInNumber } from '../../../utils/methods.calculations';
+import moment from 'moment';
 
 @Component({
   selector: 'app-truck-modal',
@@ -215,7 +216,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null],
       purchasePrice: [null],
     });
-    console.log(yearValidRegex, 'YEAR REGEX');
+
     // this.formService.checkFormChange(this.truckForm);
 
     // this.formService.formValueChange$

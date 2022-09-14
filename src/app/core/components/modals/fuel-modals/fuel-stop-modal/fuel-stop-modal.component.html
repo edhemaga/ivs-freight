@@ -29,10 +29,12 @@
         <app-ta-input
           formControlName="store"
           [inputConfig]="{
-            name: 'Full name',
+            name: 'fuel-store',
             type: 'text',
             label: 'Store #',
-            textTransform: 'capitalize'
+            textTransform: 'uppercase',
+            minLength: 2,
+            maxLength: 32
           }"
         ></app-ta-input>
       </div>
