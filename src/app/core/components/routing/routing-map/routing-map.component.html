@@ -30,11 +30,12 @@
           'padding-bottom': tooltip?.isOpen() ? '120px' : '13px'
         }"
       >
-        <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: false; let i = index;">
+        <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: filtercond2; let i = index;">
           <div
             *ngIf="!route.freeMove"
-            class="route-info-card"
             cdkDrag
+            class="route-info-card"
+            [attr.data-id]="route.id"
             (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
             (mouseenter)="hoverRoute(route)"
             (mouseleave)="leaveRouteHover(route)"
@@ -489,25 +490,28 @@
         cdkDropList
         #routeFreeDrag="cdkDropList"
         [cdkDropListData]="tableData[selectedMapIndex].routes"
+        [cdkDropListConnectedTo]="[routeList]"
         cdkDropListSortingDisabled="true"
         (cdkDropListDropped)="dropRoutes($event)"
       >
-      <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: true; let i = index">
+      <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: filtercond1; let i = index">
         <div
             *ngIf="route.freeMove"
-            class="route-info-card"
             cdkDrag
+            class="route-info-card"
+            [attr.data-id]="route.id"
             (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
             (mouseenter)="hoverRoute(route)"
             (mouseleave)="leaveRouteHover(route)"
             (cdkDragStarted)="changeZIndex(item)"
             (cdkDragDropped)="changePosition($event, route)"
+            [cdkDragData]="route"
             [ngClass]="{
               'route-hidden': route.hidden,
               'expanded-card': route.expanded
             }"
             [ngStyle]="{
-              'position': 'absolute',
+              position: 'absolute',
               width: route.width ? route.width : '312px',
               'padding-right': route.hover && !route.hidden ? '14px' : '4px',
               top: route.y + 'px',

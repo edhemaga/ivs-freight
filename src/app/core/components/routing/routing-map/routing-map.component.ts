@@ -21,7 +21,7 @@ import {
 } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, Subject, takeUntil, filter } from 'rxjs';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -460,8 +460,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   @ViewChild('routeFreeDrag',{read:ElementRef,static:true}) dropZone:ElementRef;
 
-  filtercond1 = {freeMove: true};
-  filtercond2 = {freeMove: false};
+  filtercond1 = true;
+  filtercond2 = false;
+  changedFreeMoveTime: any;
 
   constructor(
     private mapsService: MapsService,
@@ -528,10 +529,29 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   dropRoutes(event: CdkDragDrop<string[]>) {
     console.log('dropRoutes', event);
     
-    if (event.previousContainer === event.container) {
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      console.log('dropRoutes different container');
+    if (event.previousContainer === event.container && event.previousIndex !== event.currentIndex) {
+      console.log('dropRoutes same container', event.container.data);
+
+      var nextIndex = event.currentIndex;
+
+      // this.tableData[this.selectedMapIndex].routes.map((item, index) => {
+      //   if ( event.previousIndex < event.currentIndex ) {
+      //     if ( item.freeMove && index <= event.currentIndex ) {
+      //       nextIndex++;
+      //     }
+      //   } else {
+      //     if ( item.freeMove && index >= event.currentIndex ) {
+      //       nextIndex--;
+      //     }
+      //   }
+      // });
+
+      // console.log('event.currentIndex', event.currentIndex);
+      // console.log('nextIndex', nextIndex);
+
+      moveItemInArray(event.container.data, event.previousIndex, nextIndex);
+    } else if ( event.previousContainer !== event.container ) {
+      console.log('dropRoutes different container', event.item.data);
       // transferArrayItem(
       //   event.previousContainer.data,
       //   event.container.data,
@@ -539,34 +559,58 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       //   event.currentIndex,
       // );
 
-      event.item.data.freeMove = !event.item.data.freeMove;
+      var currentTime = new Date().getTime();
+
+      if ( !this.changedFreeMoveTime || (currentTime - this.changedFreeMoveTime) > 100 ) {
+        event.item.data.freeMove = !event.item.data.freeMove;
+        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      }
 
       event.item.data.y=(this._pointerPosition.y-this.off.y*this.scaleY-this.dropZone.nativeElement.getBoundingClientRect().top);
       event.item.data.x=(this._pointerPosition.x-this.off.x*this.scaleX-this.dropZone.nativeElement.getBoundingClientRect().left);
       this.changeZIndex(event.item.data);
+
+      const rectElement = event.item.element.nativeElement.getBoundingClientRect();
+      var overlap = this.checkOverlap(event.item.data, event.item.data.x, event.item.data.y, event.item.data.x + rectElement.width, event.item.data.y + rectElement.height);
+    
+      console.log('dropRoutes overlap', overlap);
+
+      if ( event.container.id == "cdk-drop-list-1" && overlap ) {
+        event.item.data.freeMove = false;
+      }
     }
-    console.log('freeRangeRoutesArray', this.freeRangeRoutesArray);
-    console.log('routes', this.tableData[this.selectedMapIndex].routes);
-
-
 
     this.posInside = {source:null,x:0,y:0}
   }
 
-  checkOverlap(index) {
-    // var newElement = this.freeRangeRoutesArray[index];
-    // var newElementRight = this.freeRangeRoutesArray[index];
-    // var newElementLeft = newElement.x;
-    // var newElementTop = newElement.y;
-    // var newElementBottom = this.freeRangeRoutesArray[index];
+  checkOverlap(movedCard, left, top, right, bottom) {
+    console.log('overlap movedElement', left, top, right, bottom);
+    var overlap = false;
 
-    // this.freeRangeRoutesArray.map((element) => {
+    document
+      .querySelectorAll('.route-info-card')
+      .forEach((cardElement: HTMLElement, i) => {
+        var cardId = parseInt(cardElement.getAttribute('data-id'));
+        var cardData = this.tableData[this.selectedMapIndex].routes.filter((item) => item.id === cardId)[0];
+        
+        var rect = cardElement.getBoundingClientRect();
 
-    //   var overlap = !(newElement.right < element.left || 
-    //     newElement.left > element.right || 
-    //     newElement.bottom < element.top || 
-    //     newElement.top > element.bottom)
-    // });
+        var cardLeft = cardElement.offsetLeft;
+        var cardTop = cardElement.offsetTop;
+        var cardRight = cardElement.offsetLeft + rect.width;
+        var cardBottom = cardElement.offsetTop + rect.height;
+
+        if ( cardId != movedCard.id && cardData.freeMove ) {
+          var overlapCurrent = !(right < cardLeft || 
+            left > cardRight || 
+            bottom < cardTop || 
+            top > cardBottom);
+
+          if ( overlapCurrent ) overlap = true;
+        }
+      });
+
+      return overlap;
   }
 
   moved(event: CdkDragMove) {
@@ -574,7 +618,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   }
 
   changePosition(event:CdkDragDrop<any>, field) {
-    console.log('changePosition', event.previousIndex, event.currentIndex);
+    console.log('changePosition', field);
 
     const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
     const rectElement = event.item.element.nativeElement.getBoundingClientRect();
@@ -582,21 +626,37 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     let y = +field.y+event.distance.y;
     let x = +field.x+event.distance.x;
     const out = y<0 || x<0 || (y>(rectZone.height-rectElement.height)) || (x>(rectZone.width-rectElement.width));
+
+    var overlap = this.checkOverlap(field, x, y, x + rectElement.width, y + rectElement.height);
+    console.log('changePosition overlap', overlap);
     
-    if (!out) {
+    if (!out && !overlap) {
        field.y = y;
        field.x = x;
+       this.changeZIndex(field);
        //this.freeRangeRoutesArray = this.freeRangeRoutesArray.sort((a,b)=>a['z-index']>b['z-index']?1:a['z-index']<b['z-index']?-1:0);
     }
-    else{
-      field.freeMove = false;
+    else if (!overlap)  {
+      if ( event.previousContainer === event.container ) {
+        field.freeMove = false;
+        this.changedFreeMoveTime = new Date().getTime();
+
+        moveItemInArray(event.container.data, event.previousIndex, event.container.data.length-1);
+      }
+
       //this.tableData[this.selectedMapIndex].routes.push(field);
       //this.freeRangeRoutesArray=this.freeRangeRoutesArray.filter(x=>x!=field);
+    }
+
+    if ( overlap ) {
+      field.y = field.y+0.000001;
+      field.x = field.x+0.000001;
+      console.log('changePosition overlap field', field);
     }
   }
 
   changeZIndex(item:any) {
-    this.freeRangeRoutesArray.forEach(x=>x['z-index']=(x==item?1:0));
+    this.freeRangeRoutesArray.forEach(x=>x['z-index']=(x==item?100:0));
   }
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {

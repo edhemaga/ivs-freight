@@ -60,8 +60,13 @@
                     display: none;
                 }
                 
-                &.cdk-drop-list-receiving {
+                &.cdk-drop-list-receiving, &.cdk-drop-list-dragging {
                     height: 100%;
+
+                    .route-info-card {
+                        top: 0px !important;
+                        left: 0px !important;
+                    }
                 }
             }
 
@@ -74,8 +79,16 @@
 
                 pointer-events: none;
 
-                &.cdk-drop-list-receiving {
+                &.cdk-drop-list-receiving, &.cdk-drop-list-dragging {
                     pointer-events: all;
+
+                    .cdk-drag-preview {
+                        position: relative !important;
+                    }
+                }
+
+                .route-info-card {
+                    position: absolute !important;
                 }
             }
         }
@@ -595,6 +608,9 @@
     box-shadow: $box-shadow;
 
     &.route-info-card {
+        top: 0px !important;
+        left: 0px !important;
+
         .route-card-svg {
             svg {
                 g {
@@ -737,9 +753,8 @@
     }
 }
 
-.cdk-drop-list-dragging {
+.cdk-drop-list-dragging, .cdk-drop-list-receiving {
     .route-info-card {
-        position: relative;
         cursor: grabbing !important;
 
         div {
