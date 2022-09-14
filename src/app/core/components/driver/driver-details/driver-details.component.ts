@@ -23,6 +23,7 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { CdlTService } from '../state/cdl.service';
 import { of, Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
+import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
 
 @Component({
   selector: 'app-driver-details',
@@ -64,8 +65,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverMinimimalListStore: DriversMinimalListStore,
     private driverMinimalQuery: DriversMinimalListQuery,
     private dropDownService: DropDownService,
-    private driverItemStore: DriversItemStore,
-    private driverItemQuery: DriversDetailsQuery,
+    private driverDQuery: DriversDetailsListQuery,
     private cdlService: CdlTService
   ) {}
 
@@ -119,35 +119,41 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         },
       });
 
-    // this.detailsPageDriverService.pageDetailChangeId$
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((id) => {
-    //     this.driverService.getDriverById(id).subscribe({
-    //       next: (res: DriverResponse) => {
-    //         this.currentIndex = this.driversList.findIndex(
-    //           (driver) => driver.id === res.id
-    //         );
-    //         this.initTableOptions(res);
-    //         if (this.cdlActiveId > 0) {
-    //           this.getCdlById(this.cdlActiveId);
-    //         }
+    this.detailsPageDriverService.pageDetailChangeId$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((id) => {
+        let query;
+        if (this.driverDQuery.hasEntity(id)) {
+          query = this.driverDQuery.selectEntity(id).pipe(take(1));
+        } else {
+          query = this.driverService.getDriverById(id);
+        }
+        query.subscribe({
+          next: (res: DriverResponse) => {
+            this.currentIndex = this.driversList.findIndex(
+              (driver) => driver.id === res.id
+            );
+            this.initTableOptions(res);
+            if (this.cdlActiveId > 0) {
+              this.getCdlById(this.cdlActiveId);
+            }
 
-    //         this.detailCongif(res);
+            this.detailCongif(res);
 
-    //         if (this.router.url.includes('details')) {
-    //           this.router.navigate([`/driver/${res.id}/details`]);
-    //         }
-    //         this.notificationService.success(
-    //           'Driver successfully changed',
-    //           'Success:'
-    //         );
-    //         this.cdRef.detectChanges();
-    //       },
-    //       error: () => {
-    //         this.notificationService.error("Driver can't be loaded", 'Error:');
-    //       },
-    //     });
-    //   });
+            if (this.router.url.includes('details')) {
+              this.router.navigate([`/driver/${res.id}/details`]);
+            }
+            this.notificationService.success(
+              'Driver successfully changed',
+              'Success:'
+            );
+            this.cdRef.detectChanges();
+          },
+          error: () => {
+            this.notificationService.error("Driver can't be loaded", 'Error:');
+          },
+        });
+      });
   }
 
   /**Function template and names for header and other options in header */

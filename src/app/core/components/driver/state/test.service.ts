@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   CreateTestCommand,
   DriverResponse,
@@ -7,22 +7,25 @@ import {
   TestResponse,
   TestService,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subject, tap } from 'rxjs';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TestTService {
+export class TestTService implements OnDestroy {
+  private destroy$ = new Subject<void>();
   constructor(
     private drugService: TestService,
     private driverService: DriverTService,
     private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService,
-    private driverItemStore: DriversItemStore
+    private driverItemStore: DriversItemStore,
+    private dlStore: DriversDetailsListStore
   ) {}
 
   /* Observable<CreateTestResponse> */
@@ -47,7 +50,7 @@ export class TestTService {
                 data: driver,
                 id: driver.id,
               }); */
-
+              this.dlStore.update(driver.id, { tests: driver.tests });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -75,7 +78,7 @@ export class TestTService {
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { tests: driver.tests });
             this.tableService.sendActionAnimation({
               animation: 'update',
               data: driver,
@@ -103,7 +106,7 @@ export class TestTService {
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { tests: driver.tests });
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
@@ -123,5 +126,9 @@ export class TestTService {
 
   public getTestDropdowns(): Observable<GetTestModalResponse> {
     return this.drugService.apiTestModalGet();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -13,6 +13,7 @@ import { Observable, Subject, takeUntil, tap } from 'rxjs';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
 
@@ -27,7 +28,8 @@ export class CdlTService implements OnDestroy {
     private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService,
     private driverItemStore: DriversItemStore,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dlStore: DriversDetailsListStore
   ) {}
 
   /* Observable<CreateCdlResponse> */
@@ -49,13 +51,15 @@ export class CdlTService implements OnDestroy {
                     );
                   },
                 });
+              console.log(driver);
+
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { cdls: driver.cdls });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -84,7 +88,7 @@ export class CdlTService implements OnDestroy {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { cdls: driver.cdls });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -105,14 +109,13 @@ export class CdlTService implements OnDestroy {
         const subDriver = this.driverService.getDriverById(driverId).subscribe({
           next: (driver: DriverResponse | any) => {
             this.driverStore.remove(({ id }) => id === driverId);
-
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
@@ -140,7 +143,7 @@ export class CdlTService implements OnDestroy {
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
