@@ -3,28 +3,24 @@ import { DriverMedicalModalComponent } from './driver-modals/driver-medical-moda
 import { DriverDrugAlcoholModalComponent } from './driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverCdlModalComponent } from './driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ModalService } from './../../shared/ta-modal/modal.service';
-import {
-  ChangeDetectorRef,
-  Component,
-  OnChanges,
-  OnDestroy,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DriverTService } from '../state/driver.service';
 import { DriverResponse } from 'appcoretruckassist';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { DriverModalComponent } from '../../modals/driver-modal/driver-modal.component';
 import moment from 'moment';
-import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import {
   Confirmation,
   ConfirmationModalComponent,
 } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { DriversMinimalListStore } from '../state/driver-details-minimal-list-state/driver-minimal-list.store';
+import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '../state/driver-details-state/driver-details.store';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { CdlTService } from '../state/cdl.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
@@ -33,8 +29,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./driver-details.component.scss'],
   providers: [DetailsPageService],
 })
-export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
-  private destroy$ = new Subject<void>();
+export class DriverDetailsComponent implements OnInit, OnDestroy {
   public driverDetailsConfig: any[] = [];
   public dataTest: any;
   public statusDriver: boolean;
@@ -48,32 +43,50 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   public hasDangerMvr: boolean;
   public driverId: number = null;
   public driverObject: any;
+  public driversList: any = this.driverMinimalQuery.getAll();
+  public currentIndex: number = 0;
+  public arrayActiveCdl: any[] = [];
+  public isActiveCdl: boolean;
+  public dataCdl: any;
+  public cdlActiveId: number;
+  private destroy$ = new Subject<void>();
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
     private driverService: DriverTService,
     private router: Router,
-    private driverDetailsQuery: DriversDetailsQuery,
     private notificationService: NotificationService,
     private detailsPageDriverService: DetailsPageService,
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private driverMinimimalListStore: DriversMinimalListStore,
+    private driverMinimalQuery: DriversMinimalListQuery,
+    private dropDownService: DropDownService,
+    private driverItemStore: DriversItemStore,
+    private cdlService: CdlTService
   ) {}
 
-  ngOnChanges(changes: SimpleChanges): void {}
-
   ngOnInit() {
+    this.currentIndex = this.driversList.findIndex(
+      (driver) => driver.id === this.activated_route.snapshot.data.driver.id
+    );
     this.getDriverById(this.activated_route.snapshot.data.driver.id);
     this.initTableOptions(this.activated_route.snapshot.data.driver);
-
     this.detailCongif(this.activated_route.snapshot.data.driver);
+    if (this.cdlActiveId > 0) {
+      this.getCdlById(this.cdlActiveId);
+    }
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.detailCongif(res.data);
+          this.initTableOptions(res.data);
           this.checkExpiration(res.data);
+          if (this.cdlActiveId > 0) {
+            this.getCdlById(this.cdlActiveId);
+          }
           this.cdRef.detectChanges();
         }
       });
@@ -108,30 +121,37 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     this.detailsPageDriverService.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        let query;
-        if (!this.driverDetailsQuery.hasEntity(id)) {
-          query = this.driverService.getDriverById(id);
-        } else {
-          query = this.driverDetailsQuery.selectEntity(id);
-        }
-        query.pipe(takeUntil(this.destroy$)).subscribe({
-          next: (res: DriverResponse) => {
-            this.initTableOptions(res);
-            this.detailCongif(res);
-            this.getDriverById(res.id);
-            if (this.router.url.includes('details')) {
-              this.router.navigate([`/driver/${res.id}/details`]);
-            }
-            this.notificationService.success(
-              'Driver successfully changed',
-              'Success:'
-            );
-            this.cdRef.detectChanges();
-          },
-          error: () => {
-            this.notificationService.error("Driver can't be loaded", 'Error:');
-          },
-        });
+        this.driverService
+          .getDriverById(id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (res: DriverResponse) => {
+              this.currentIndex = this.driversList.findIndex(
+                (driver) => driver.id === res.id
+              );
+              this.initTableOptions(res);
+              if (this.cdlActiveId > 0) {
+                this.getCdlById(this.cdlActiveId);
+              }
+
+              this.detailCongif(res);
+
+              if (this.router.url.includes('details')) {
+                this.router.navigate([`/driver/${res.id}/details`]);
+              }
+              this.notificationService.success(
+                'Driver successfully changed',
+                'Success:'
+              );
+              this.cdRef.detectChanges();
+            },
+            error: () => {
+              this.notificationService.error(
+                "Driver can't be loaded",
+                'Error:'
+              );
+            },
+          });
       });
   }
 
@@ -246,6 +266,20 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
 
   /**Function for dots in cards */
   public initTableOptions(data: DriverResponse): void {
+    this.getDriverById(data.id);
+    this.arrayActiveCdl = [];
+    this.isActiveCdl = false;
+    this.cdlActiveId = 0;
+    data?.cdls?.map((item) => {
+      if (item.status == 1) {
+        this.cdlActiveId = item.id;
+        this.arrayActiveCdl.push(true);
+        this.isActiveCdl = true;
+      } else {
+        this.arrayActiveCdl.push(false);
+        this.isActiveCdl = false;
+      }
+    });
     this.dataTest = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -299,65 +333,27 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
       export: true,
     };
   }
+
   public getDriverById(id: number) {
     this.driverService
-      .getDriverById(id)
+      .getDriverById(id, true)
       .pipe(takeUntil(this.destroy$))
       .subscribe((item) => (this.driverObject = item));
   }
+  public getCdlById(id: number) {
+    this.cdlService
+      .getCdlById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.dataCdl = item));
+  }
   public onDriverActions(event: any) {
-    const mappedEvent = {
-      ...this.driverObject,
-      data: {
-        ...this.driverObject,
-        name: this.driverObject?.firstName + ' ' + this.driverObject?.lastName,
-      },
-    };
-    if (event.type === 'edit') {
-      this.modalService.openModal(
-        DriverModalComponent,
-        { size: 'small' },
-        {
-          ...event,
-          disableButton: true,
-          id: this.driverId,
-        }
-      );
-    } else if (event.type === 'deactivate' || event.type === 'activate') {
-      this.driverService
-        .changeDriverStatus(event.id)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              `Driver successfully Change Status`,
-              'Success:'
-            );
-          },
-          error: () => {
-            this.notificationService.error(
-              `Driver with id: ${event.id}, status couldn't be changed`,
-              'Error:'
-            );
-          },
-        });
-    } else if (event.type === 'delete-item') {
-      this.modalService.openModal(
-        ConfirmationModalComponent,
-        { size: 'small' },
-        {
-          ...mappedEvent,
-          template: 'driver',
-          type: 'delete',
-          image: true,
-        }
-      );
-    }
+    this.dropDownService.dropActionsHeader(event, this.driverObject, event.id);
   }
 
   private changeDriverStatus(id: number) {
+    let status = this.driverObject.status == 0 ? 'inactive' : 'active';
     this.driverService
-      .changeDriverStatus(id)
+      .changeDriverStatus(id, status)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
@@ -376,21 +372,33 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private deleteDriverById(id: number) {
+    let status = this.driverObject.status == 0 ? 'inactive' : 'active';
+    let last = this.driversList.at(-1);
+    if (
+      last.id ===
+      this.driverMinimimalListStore.getValue().ids[this.currentIndex]
+    ) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
+    }
     this.driverService
-      .deleteDriverById(id)
+      .deleteDriverByIdDetails(id, status)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
+          if (this.driverMinimimalListStore.getValue().ids.length >= 1) {
+            this.router.navigate([
+              `/driver/${this.driversList[this.currentIndex].id}/details`,
+            ]);
+          }
           this.notificationService.success(
             'Driver successfully deleted',
             'Success:'
           );
         },
         error: () => {
-          this.notificationService.error(
-            `Driver with id: ${id} couldn't be deleted`,
-            'Error:'
-          );
+          this.router.navigate(['/driver']);
         },
       });
   }
@@ -398,13 +406,35 @@ export class DriverDetailsComponent implements OnInit, OnDestroy, OnChanges {
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }
+
     switch (action) {
       case 'CDL': {
-        this.modalService.openModal(
-          DriverCdlModalComponent,
-          { size: 'small' },
-          { id: this.driverId, type: 'new-licence' }
-        );
+        if (!this.isActiveCdl) {
+          this.modalService.openModal(
+            DriverCdlModalComponent,
+            { size: 'small' },
+            { id: this.driverId, type: 'new-licence' }
+          );
+        } else {
+          const mappedEvent = {
+            ...this.dataCdl,
+            data: {
+              state: this.dataCdl?.state?.stateShortName,
+              expDate: this.dataCdl?.expDate,
+              cdlNumber: this.dataCdl?.cdlNumber,
+            },
+          };
+          this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              ...mappedEvent,
+              template: 'cdl',
+              type: 'delete',
+              image: false,
+            }
+          );
+        }
         break;
       }
       case 'DrugAlcohol': {

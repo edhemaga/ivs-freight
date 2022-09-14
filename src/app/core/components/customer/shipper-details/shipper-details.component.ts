@@ -1,11 +1,11 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit, OnDestroy } from '@angular/core';
 import { ShipperResponse } from 'appcoretruckassist';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { ShipperTService } from '../state/shipper-state/shipper.service';
 import { ShipperDetailsQuery } from '../state/shipper-state/shipper-details-state/shipper.details.query';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-shipper-details',

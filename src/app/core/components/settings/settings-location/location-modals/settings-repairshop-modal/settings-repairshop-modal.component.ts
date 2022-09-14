@@ -1,15 +1,10 @@
 import {
-  convertThousanSepInNumber,
-  convertNumberInThousandSep,
-} from 'src/app/core/utils/methods.calculations';
-import {
   phoneFaxRegex,
   phoneExtension,
   addressValidation,
   addressUnitValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {
@@ -19,12 +14,18 @@ import {
   RepairShopResponse,
   UpdateRepairShopCommand,
 } from 'appcoretruckassist';
-import { tab_modal_animation } from 'src/app/core/components/shared/animations/tabs-modal.animation';
-import { TaInputService } from 'src/app/core/components/shared/ta-input/ta-input.service';
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { RepairTService } from 'src/app/core/components/repair/state/repair.service';
+
 import { Subject, takeUntil } from 'rxjs';
+import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.animation';
+import { FormService } from '../../../../../services/form/form.service';
+import { ModalService } from '../../../../shared/ta-modal/modal.service';
+import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
+import { NotificationService } from '../../../../../services/notification/notification.service';
+import { RepairTService } from '../../../../repair/state/repair.service';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-settings-repairshop-modal',

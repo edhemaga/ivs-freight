@@ -1,11 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import { SharedService } from 'src/app/core/services/shared/shared.service';
+import { Component, Input, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { SharedService } from '../../../services/shared/shared.service';
 
 @Component({
   selector: 'app-delete-dialog',
   templateUrl: './delete-dialog.component.html',
-  styleUrls: ['./delete-dialog.component.scss']
+  styleUrls: ['./delete-dialog.component.scss'],
 })
 export class DeleteDialogComponent implements OnInit {
   @Input() inputData: any;
@@ -13,11 +13,9 @@ export class DeleteDialogComponent implements OnInit {
   constructor(
     private activeModal: NgbActiveModal,
     private sharedService: SharedService
-  ) {
-  }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   closeDeleteModal() {
     this.activeModal.close();
@@ -27,5 +25,4 @@ export class DeleteDialogComponent implements OnInit {
     this.sharedService.emitDeleteAction.emit(this.inputData);
     this.closeDeleteModal();
   }
-
 }

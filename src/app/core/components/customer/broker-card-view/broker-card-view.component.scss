@@ -77,8 +77,10 @@
     margin-top: 6px;
 }
 .invoice-ageing-template {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 150px 150px;
+    grid-column-gap: 60px;
+    column-gap: 60px;
     padding: 0 10px;
     margin-top: -6px;
     .invoice-ageing-template-item {
@@ -126,5 +128,33 @@
         width: 30%;
         border-radius: 2px 0 0 2px;
         background-color: #ffb74d;
+    }
+}
+.invoice-agein-unlimited {
+    white-space: nowrap;
+    font-size: 18px;
+    font-weight: 500;
+    color: #6c6c6c;
+    display: flex;
+    align-items: flex-end;
+    &::-moz-selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    &::selection {
+        color: $color-gray-dark;
+        background: rgb(183, 183, 183, 0.2);
+    }
+    .avg-days-invoice {
+        margin-left: 6px;
+        font-weight: 600 !important;
+        &::-moz-selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
+        &::selection {
+            color: $color-gray-dark;
+            background: rgb(183, 183, 183, 0.2);
+        }
     }
 }

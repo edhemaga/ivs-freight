@@ -6,12 +6,11 @@ import {
   MedicalResponse,
   MedicalService,
 } from 'appcoretruckassist';
-/* import { CreateMedicalResponse } from 'appcoretruckassist/model/createMedicalResponse'; */
 import { Observable, tap } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriverTService } from './driver.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 
 @Injectable({
   providedIn: 'root',

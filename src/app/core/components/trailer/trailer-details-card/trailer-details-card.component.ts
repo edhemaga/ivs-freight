@@ -1,23 +1,20 @@
-import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
-import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import {
   Component,
-  Input,
-  OnInit,
   ViewEncapsulation,
+  OnInit,
   OnChanges,
+  OnDestroy,
+  Input,
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
-import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { ModalService } from '../../shared/ta-modal/modal.service';
+import { TrailerResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { ActivatedRoute } from '@angular/router';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
-import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
+import { card_component_animation } from '../../shared/animations/card-component.animations';
+import { TrailersMinimalListQuery } from '../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerTService } from '../state/trailer.service';
+
 @Component({
   selector: 'app-trailer-details-card',
   templateUrl: './trailer-details-card.component.html',
@@ -25,7 +22,9 @@ import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TrailerDetailsCardComponent implements OnInit, OnChanges {
+export class TrailerDetailsCardComponent
+  implements OnInit, OnChanges, OnDestroy
+{
   @Input() trailer: TrailerResponse | any;
   @Input() templateCard: boolean = false;
   public note: FormControl = new FormControl();
@@ -33,24 +32,33 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
   public dataEdit: any;
   public toggleOwner: boolean = true;
   public trailerDropDowns: any[] = [];
-
+  private destroy$ = new Subject<void>();
   public trailer_list: any[] = this.trailerMinimalQuery.getAll();
   constructor(
-    private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
-    private trailerQuery: TrailerDetailsQuery,
-    private activeted_route: ActivatedRoute,
-    private trailerMinimalQuery: TrailersMinimalListQuery
+    private trailerMinimalQuery: TrailersMinimalListQuery,
+    private trailerService: TrailerTService
   ) {}
   ngOnChanges(changes: SimpleChanges): void {
-    if (!changes?.trailer?.firstChange && changes?.trailer) {
+    if (!changes?.trailer?.firstChange) {
       this.getTrailerDropdown();
       this.note.patchValue(changes.trailer.currentValue.note);
     }
+    this.trailerMinimalQuery
+      .selectAll()
+      .subscribe((item) => (this.trailer_list = item));
   }
   ngOnInit(): void {
+    this.getTrailerById(this.trailer.id);
     this.initTableOptions();
     this.getTrailerDropdown();
+  }
+
+  public getTrailerById(id: number) {
+    this.trailerService
+      .getTrailerById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => item);
   }
   /**Function for toggle page in cards */
   public toggleResizePage(value: boolean) {
@@ -148,5 +156,9 @@ export class TrailerDetailsCardComponent implements OnInit, OnChanges {
         break;
       }
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -1,5 +1,5 @@
 // import { Color } from './shared/color';
-import {HistoryData} from 'src/app/shared/truckassist-history-data/truckassist-history-data.component';
+import { HistoryData } from '../history-data/history-data.component';
 
 // export interface TrailerColumn {
 //   name: string;
@@ -168,7 +168,6 @@ import {HistoryData} from 'src/app/shared/truckassist-history-data/truckassist-h
 //   type?: any;
 // }
 
-
 export interface TrailerTabData {
   activeTrailers: TrailerData[];
   allTrailers: TrailerData[];
@@ -222,17 +221,17 @@ export interface TrailerAdditional {
 }
 
 export interface LengthData {
-  id: number,
+  id: number;
   key: string;
   value: string;
   domain: string;
-  entityId: any,
-  parentId: any,
-  companyId: any,
+  entityId: any;
+  parentId: any;
+  companyId: any;
   createdAt: string;
-  protected: number,
+  protected: number;
   updatedAt: string;
-  entityName: any
+  entityName: any;
 }
 
 export interface MakeData {

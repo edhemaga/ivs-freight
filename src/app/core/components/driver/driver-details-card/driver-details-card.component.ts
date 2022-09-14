@@ -15,28 +15,26 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { DriverResponse } from 'appcoretruckassist';
-import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { DriverCdlModalComponent } from '../driver-details/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { DriverDrugAlcoholModalComponent } from '../driver-details/driver-modals/driver-drugAlcohol-modal/driver-drugAlcohol-modal.component';
 import { DriverMedicalModalComponent } from '../driver-details/driver-modals/driver-medical-modal/driver-medical-modal.component';
 import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-mvr-modal/driver-mvr-modal.component';
 import moment from 'moment';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
-import { Clipboard } from '@angular/cdk/clipboard';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from '../state/driver-details-minimal-list-state/driver-minimal-list.query';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import {
-  Confirmation,
-  ConfirmationModalComponent,
-} from '../../modals/confirmation-modal/confirmation-modal.component';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
 import { CdlTService } from '../state/cdl.service';
 import { MedicalTService } from '../state/medical.service';
 import { MvrTService } from '../state/mvr.service';
 import { TestTService } from '../state/test.service';
+import { DriverTService } from '../state/driver.service';
 import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { ImageBase64Service } from '../../../utils/base64.image';
+import { NotificationService } from '../../../services/notification/notification.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
 
 @Component({
   selector: 'app-driver-details-card',
@@ -49,7 +47,6 @@ import { Subject, takeUntil } from 'rxjs';
 export class DriverDetailsCardComponent
   implements OnInit, OnDestroy, OnChanges
 {
-  private destroy$ = new Subject<void>();
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @Input() driver: any;
   @Input() templateCard: boolean;
@@ -88,6 +85,8 @@ export class DriverDetailsCardComponent
   public dataMvr: any;
   public dataMedical: any;
   public dataTestCard: any;
+  public driverObject: any;
+  private destroy$ = new Subject<void>();
   barChartConfig: any = {
     dataProperties: [
       {
@@ -193,7 +192,6 @@ export class DriverDetailsCardComponent
     private modalService: ModalService,
     private detailsPageDriverSer: DetailsPageService,
     private sumArr: SumArraysPipe,
-    private clipboar: Clipboard,
     private cdRef: ChangeDetectorRef,
     private tableService: TruckassistTableService,
     private driverMinimalQuery: DriversMinimalListQuery,
@@ -202,8 +200,10 @@ export class DriverDetailsCardComponent
     private medicalService: MedicalTService,
     private mvrService: MvrTService,
     private testService: TestTService,
+    private driverService: DriverTService,
     private confirmationService: ConfirmationService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dropDownService: DropDownService
   ) {}
   ngOnChanges(changes: SimpleChanges) {
     if (!changes?.driver?.firstChange && changes?.driver) {
@@ -211,18 +211,24 @@ export class DriverDetailsCardComponent
       this.getExpireDate(changes?.driver?.currentValue);
       this.getYearsAndDays(changes?.driver?.currentValue);
       this.widthOfProgress();
+      this.getDriverById(changes.driver.currentValue.id);
       this.getDriversDropdown();
-    }
-    if (changes?.driver?.firstChange) {
-      if (this.templateCard == true) {
-        this.hideArrow = true;
-      } else {
-        this.hideArrow = false;
+      if (changes?.driver?.firstChange) {
+        if (this.templateCard == true) {
+          this.hideArrow = true;
+        } else {
+          this.hideArrow = false;
+        }
       }
     }
+    this.driverMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.driversList = item));
   }
 
   ngOnInit(): void {
+    this.getDriverById(this.driver.id);
     this.note.patchValue(this.driver.note);
     // Confirmation Subscribe
     if (this.templateCard) {
@@ -230,7 +236,6 @@ export class DriverDetailsCardComponent
         .pipe(takeUntil(this.destroy$))
         .subscribe({
           next: (res: Confirmation) => {
-            console.log(res);
             switch (res.type) {
               case 'delete': {
                 if (res.template === 'cdl') {
@@ -294,14 +299,6 @@ export class DriverDetailsCardComponent
         break;
     }
   }
-  /**Function return user image if have in DB or default image */
-  public transformImage() {
-    return this.imageBase64Service.sanitizer(
-      this.driver.avatar
-        ? this.driver.avatar
-        : 'assets/svg/common/ic_no_avatar_driver.svg'
-    );
-  }
 
   public tabsButton() {
     this.tabsDriver = [
@@ -342,185 +339,32 @@ export class DriverDetailsCardComponent
   public changeTab(ev: any) {
     this.selectedTab = ev.id;
   }
-
-  public optionsEvent(any: any, action: string) {
-    if (any.type === 'edit') {
-      switch (action) {
-        case 'cdl': {
-          this.dropActionName = 'edit-licence';
-          break;
-        }
-        case 'mvr': {
-          this.dropActionName = 'edit-mvr';
-          break;
-        }
-        case 'medical': {
-          this.dropActionName = 'edit-medical';
-          break;
-        }
-        case 'test': {
-          this.dropActionName = 'edit-drug';
-          break;
-        }
-      }
-    }
-    if (any.type === 'delete-item') {
-      switch (action) {
-        case 'cdl': {
-          this.dropActionName = 'delete-cdl';
-          break;
-        }
-        case 'mvr': {
-          this.dropActionName = 'delete-mvr';
-          break;
-        }
-        case 'medical': {
-          this.dropActionName = 'delete-medical';
-          break;
-        }
-        case 'test': {
-          this.dropActionName = 'delete-test';
-          break;
-        }
-      }
-    }
-    const name = dropActionNameDriver(any, action);
-    switch (name) {
-      case 'delete-cdl': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataCdl,
-            state: this.dataCdl.state.stateShortName,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'cdl',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-medical': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            medicalIssued: this.dataMedical.issueDate,
-            medicalExpDate: this.dataMedical.expDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'medical',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-mvr': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            ...this.dataMvr,
-            mvrIssueDate: this.dataMvr.issueDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'mvr',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'delete-test': {
-        const mappedEvent = {
-          ...any,
-          data: {
-            testTypeName: this.dataTestCard.testType.name,
-            reasonName: this.dataTestCard.testReason.name,
-            issuedDataTest: this.dataTestCard.testingDate,
-          },
-        };
-        this.modalService.openModal(
-          ConfirmationModalComponent,
-          { size: 'small' },
-          {
-            ...mappedEvent,
-            template: 'test',
-            type: 'delete',
-            image: false,
-          }
-        );
-        break;
-      }
-      case 'edit-licence': {
-        this.modalService.openModal(
-          DriverCdlModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-
-      case 'edit-drug': {
-        this.modalService.openModal(
-          DriverDrugAlcoholModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-medical': {
-        this.modalService.openModal(
-          DriverMedicalModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      case 'edit-mvr': {
-        this.modalService.openModal(
-          DriverMvrModalComponent,
-          { size: 'small' },
-          {
-            file_id: any.id,
-            id: this.driver.id,
-            type: name,
-          }
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
+  public getDriverById(id: number) {
+    this.driverService
+      .getDriverById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.driverObject = item));
   }
+  public onDriverActions(event: any) {
+    this.dropDownService.dropActionsHeader(
+      event,
+      this.driverObject,
+      this.driver.id
+    );
+  }
+  public optionsEvent(any: any, action: string) {
+    const name = dropActionNameDriver(any, action);
+    this.dropDownService.dropActions(
+      any,
+      name,
+      this.dataCDl,
+      this.dataMvr,
+      this.dataMedical,
+      this.dataTest,
+      this.driver.id
+    );
+  }
+  public optionsDropDown(any: any, actions: string) {}
   public getCdlById(id: number) {
     this.cdlService
       .getCdlById(id)
@@ -736,7 +580,7 @@ export class DriverDetailsCardComponent
   }
 
   public getExpireDate(data: DriverResponse) {
-    this.dataCDl = data.cdls.map((ele) => {
+    this.dataCDl = data?.cdls?.map((ele) => {
       if (moment(ele.expDate).isBefore(moment())) {
         this.expDateCard = false;
       } else {
@@ -750,7 +594,6 @@ export class DriverDetailsCardComponent
   }
 
   public onModalAction(action: string): void {
-    console.log(action);
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
     }
@@ -798,16 +641,16 @@ export class DriverDetailsCardComponent
     let arrMinDate = [];
     let arrMaxDate = [];
     let dateDeactivate = [];
-    if (this.driver.employmentHistories) {
+    if (this.driver?.employmentHistories) {
       const sum = this.sumArr.transform(
-        this.driver.employmentHistories.map((item) => {
+        this.driver?.employmentHistories.map((item) => {
           return {
             id: item.id,
             value: item.duration.Years * 365.25 + item.duration.Days,
           };
         })
       );
-      this.dataProggress = this.driver.employmentHistories.map((element) => {
+      this.dataProggress = this.driver?.employmentHistories.map((element) => {
         let res = element.duration.Years * 365.25 + element.duration.Days;
         this.activePercentage = (res / sum) * 100;
         let dates = moment(element.startDate)
@@ -849,7 +692,7 @@ export class DriverDetailsCardComponent
   public getYearsAndDays(data: any) {
     let sum = 0;
     let sum2 = 0;
-    if (data.employmentHistories) {
+    if (data?.employmentHistories) {
       data.employmentHistories.forEach((element) => {
         sum += element.duration.Years;
         sum2 += element.duration.Days;

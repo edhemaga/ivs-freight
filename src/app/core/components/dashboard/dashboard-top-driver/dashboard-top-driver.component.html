@@ -22,7 +22,7 @@
         <div class="dashboard-top-driver-header-toolbar-switch-left">
           <app-ta-tab-switch
             [tabs]="topTenSwitchTabstype1"
-            (switchClicked)="changeDriverSwitchTabs($event)"
+            (switchClicked)="changeDriverSwitchTabs($event, true)"
           >
           </app-ta-tab-switch>
         </div>
@@ -31,6 +31,14 @@
           <app-truckassist-search
             [selectedTabData]="searchDashboardOptions"
           ></app-truckassist-search>
+        </div>
+        <div class="dashboard-top-driver-header-toolbar-border"></div>
+        <div
+          class="dashboard-top-driver-toolbar-filter-selected"
+          (click)="clearSelected()"
+          *ngIf="selectedDrivers?.length"
+        >
+          Clear Selection
         </div>
       </div>
       <div class="dashboard-top-driver-header-toolbar-items-holder">
@@ -56,7 +64,15 @@
   </div>
   <div class="dashboard-top-driver-body-holder">
     <div class="row">
-      <div class="col-4">
+      <div
+        class="dashboard_top_driver_list"
+        [ngClass]="{
+          'medium_scale':
+            this.searchDashboardOptions.gridNameTitle == 'Driver' ||
+            this.searchDashboardOptions.gridNameTitle == 'Dispatcher',
+          'small_scale': this.searchDashboardOptions.gridNameTitle == 'Truck'
+        }"
+      >
         <div class="dashboard-top-driver-body-list-holder">
           <div
             *ngFor="let item of driverList; let indx = index"
@@ -70,7 +86,9 @@
                 compareColor[item.id]
               }}"
             >
-              <div class="dashboard-top-driver-body-list-frame">
+              <div
+                class="dashboard-top-driver-body-list-frame list-name-holder"
+              >
                 <div class="dashboard-top-driver-body-list-id">
                   {{ item.id }}
                 </div>
@@ -103,9 +121,32 @@
               [class.list_line_hidden]="!compareColor[item.id]"
             ></div>
           </div>
+          <div class="driver_empty_state_holder" *ngIf="!driverList.length">
+            <div class="main_empty_state_holder">
+              <div class="empty_state_title">
+                {{ this.searchDashboardOptions.gridNameTitle }} list is empty
+              </div>
+              <div class="empty_state_title_bottom">
+                Please add
+                {{
+                  this.searchDashboardOptions.gridNameTitle.toLowerCase() + "s"
+                }}
+              </div>
+              <div class="empty_state_image">
+                <svg-icon
+                  src="assets/svg/common/dashboard_empty_state.svg"
+                ></svg-icon>
+              </div>
+              <div class="empty_add_button">
+                <div class="add_text">
+                  Add {{ this.searchDashboardOptions.gridNameTitle }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-3">
+      <div class="doughnut_chart_main_holder">
         <div class="doughnut_chart_holder">
           <app-ta-chart
             #doughnutChart
@@ -116,7 +157,7 @@
           </app-ta-chart>
         </div>
       </div>
-      <div class="col-5">
+      <div class="bar_chart_main_holder">
         <div class="bar_chart_holder">
           <div class="chart_top_line_holder">
             <div class="chart_line_title">March, 2023 - March, 2025</div>

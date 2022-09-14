@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
-import { ModalService } from 'src/app/core/components/shared/ta-modal/modal.service';
-
 import { SphModalComponent } from './sph-modal/sph-modal.component';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 
 @Component({
   selector: 'app-sph',
@@ -66,5 +65,10 @@ export class SphComponent implements OnInit {
       null,
       'sph-applicant-backdrop'
     );
+  }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
   }
 }

@@ -1,17 +1,18 @@
-import { ActivatedRoute } from '@angular/router';
 import {
   Component,
-  OnInit,
   ViewEncapsulation,
-  ChangeDetectorRef,
+  OnInit,
   OnDestroy,
+  ChangeDetectorRef,
 } from '@angular/core';
-import { SettingsCompanyService } from '../state/company-state/settings-company.service';
+import { ActivatedRoute } from '@angular/router';
+import { CompanyResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
 import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { CompanyResponse } from 'appcoretruckassist';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { CompanyQuery } from '../state/company-state/company-settings.query';
-import { Subject, takeUntil } from 'rxjs';
+import { SettingsCompanyService } from '../state/company-state/settings-company.service';
 
 @Component({
   selector: 'app-settings-company',
@@ -30,29 +31,35 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   public dataCompany: any;
 
   constructor(
-    private SettingsCompanyService: SettingsCompanyService,
+    private settingsCompanyService: SettingsCompanyService,
     private activated: ActivatedRoute,
     private detailsPageSer: DetailsPageService,
     private notificationService: NotificationService,
     private cdRef: ChangeDetectorRef,
+    private tableService: TruckassistTableService,
     private settingCompanyQuery: CompanyQuery
   ) {}
 
   ngOnInit(): void {
-    this.getData(this.activated.snapshot.data.company);
-    this.settingCompanyQuery.getAll().map((item) => {
-      this.dataCompany = item.divisions;
-      if (item.companyPayrolls.length) {
-        this.isModalOpen$ = false;
-      } else {
-        this.isModalOpen$ = true;
-      }
-    });
+    this.selectCompanyFunction();
     this.getCompanyDivision();
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.animation) {
+          this.dataCompany = res.data.divisions;
+          this.data = res.data;
+          this.getCompanyDivision();
+          this.cdRef.detectChanges();
+        }
+      });
+    this.getData(this.activated.snapshot.data.company);
+
     this.detailsPageSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
-        this.SettingsCompanyService.getCompanyDivisionById(id)
+        this.settingsCompanyService
+          .getCompanyDivisionById(id)
           .pipe(takeUntil(this.destroy$))
           .subscribe({
             next: (res: CompanyResponse) => {
@@ -77,8 +84,23 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   public getData(data: CompanyResponse) {
     this.data = data;
   }
+  public selectCompanyFunction() {
+    return this.settingCompanyQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) =>
+        item.map((company) => {
+          this.dataCompany = company.divisions;
+          if (company?.companyPayrolls?.length) {
+            this.isModalOpen$ = false;
+          } else {
+            this.isModalOpen$ = true;
+          }
+        })
+      );
+  }
   public getCompanyDivision() {
-    this.optionsCmp = this.dataCompany.map((item) => {
+    this.optionsCmp = this.dataCompany?.map((item) => {
       return {
         ...item,
         id: item.id,
@@ -101,5 +123,6 @@ export class SettingsCompanyComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
   }
 }

@@ -33,11 +33,11 @@ import {
   ssnNumberRegex,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
 import { OwnerTService } from '../../owner/state/owner.service';
 import { TrailerModalComponent } from '../trailer-modal/trailer-modal.component';
 import { Subject, takeUntil } from 'rxjs';
+import { BankVerificationService } from '../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-owner-modal',
@@ -182,7 +182,11 @@ export class OwnerModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addOwner();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            clearTimeout: this.editData?.canOpenModal ? true : false,
+          });
         }
 
         break;

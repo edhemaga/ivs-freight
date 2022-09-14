@@ -3,18 +3,19 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CommonTruckTrailerService } from '../common-truck-trailer.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import {
   CreateTitleCommand,
   TitleModalResponse,
   TitleResponse,
   UpdateTitleCommand,
 } from 'appcoretruckassist';
-import {
-  convertDateFromBackend,
-  convertDateToBackend,
-} from 'src/app/core/utils/methods.calculations';
+
 import { Subject, takeUntil } from 'rxjs';
+import { NotificationService } from '../../../../services/notification/notification.service';
+import {
+  convertDateToBackend,
+  convertDateFromBackend,
+} from '../../../../utils/methods.calculations';
 
 @Component({
   selector: 'app-tt-title-modal',

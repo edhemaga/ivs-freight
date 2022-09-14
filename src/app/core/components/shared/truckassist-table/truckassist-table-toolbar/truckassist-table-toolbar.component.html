@@ -28,71 +28,90 @@
       (click)="onSelectTab(data)"
     >
       <div class="tab">
-        <div class="data-count">{{ data.length }}</div>
+        <div class="data-count" *ngIf="!data.hideDataCount">{{ data.length }}</div>
+        <svg-icon
+          [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
+          [src]="data.iconLink"
+        ></svg-icon>
         <div class="tab-title">{{ data.title }}</div>
       </div>
     </div>
   </div>
 
-  <!-- VIEW MODE SELECT -->
-  <div class="view-mode-container" *ngIf="!options.toolbarActions.hideViewMode">
+  <!-- TABLE FILTERS AND OTHER -->
+  <div class="table-filter-and-other-container">
+    <!-- TOTAL MONEY COUNT -->
     <div
-      class="mode"
-      [ngClass]="{
-        'mode-active': options.toolbarActions.viewModeActive == 'List'
-      }"
-      (click)="changeModeView('List')"
+      class="money-count-container"
+      *ngIf="options.toolbarActions.showMoneyCount"
     >
-      List
+      Nije Povezano
     </div>
+
+    <!-- VIEW MODE SELECT -->
     <div
-      class="mode"
-      [ngClass]="{
-        'mode-active': options.toolbarActions.viewModeActive == 'Card'
-      }"
-      (click)="changeModeView('Card')"
+      class="view-mode-container"
+      *ngIf="!options.toolbarActions.hideViewMode"
     >
-      Card
+      <div
+        class="mode"
+        [ngClass]="{
+          'mode-active': options.toolbarActions.viewModeActive == 'List'
+        }"
+        (click)="changeModeView('List')"
+      >
+        List
+      </div>
+      <div
+        class="mode"
+        [ngClass]="{
+          'mode-active': options.toolbarActions.viewModeActive == 'Card'
+        }"
+        (click)="changeModeView('Card')"
+      >
+        Card
+      </div>
+      <div
+        class="mode"
+        [ngClass]="{
+          'mode-active': options.toolbarActions.viewModeActive == 'Map'
+        }"
+        (click)="changeModeView('Map')"
+        *ngIf="options.toolbarActions.showMapView"
+      >
+        Map
+      </div>
     </div>
+
+    <!-- BORDER -->
+    <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
+      <div class="border"></div>
+    </div>
+
+    <!-- SEARCH -->
+    <app-truckassist-search
+      [searchType]="'tabel'"
+      [selectedTabData]="activeTableData"
+    ></app-truckassist-search>
+
+    <!-- BORDER -->
     <div
-      class="mode"
-      [ngClass]="{
-        'mode-active': options.toolbarActions.viewModeActive == 'Map'
-      }"
-      (click)="changeModeView('Map')"
-      *ngIf="options.toolbarActions.showMapView"
+      class="border-container"
+      *ngIf="!options.toolbarActions.hideLocationFilter"
     >
-      Map
+      <div class="border"></div>
     </div>
-  </div>
 
-  <!-- BORDER -->
-  <div class="border-container" *ngIf="!options.toolbarActions.hideViewMode">
-    <div class="border"></div>
-  </div>
-
-  <!-- SEARCH -->
-  <app-truckassist-search
-    [selectedTabData]="activeTableData"
-  ></app-truckassist-search>
-
-  <!-- BORDER -->
-  <div
-    class="border-container"
-    *ngIf="!options.toolbarActions.hideLocationFilter"
-  >
-    <div class="border"></div>
-  </div>
-
-  <!-- LOCATION FILTER -->
-  <div
-    class="location-filter-container"
-    *ngIf="!options.toolbarActions.hideLocationFilter"
-  >
-    <svg-icon
-      [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-      [src]="'assets/svg/truckassist-table/location-icon.svg'"
-    ></svg-icon>
+    <!-- LOCATION FILTER -->
+    <div
+      class="location-filter-container"
+      *ngIf="!options.toolbarActions.hideLocationFilter"
+    >
+      <svg-icon
+        [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+        [src]="'assets/svg/truckassist-table/location-icon.svg'"
+      ></svg-icon>
+    </div>
   </div>
 
   <!-- TABLE ACTIONS -->

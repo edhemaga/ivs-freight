@@ -2,14 +2,6 @@ import { ConfirmationService } from './../../modals/confirmation-modal/confirmat
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { TrailerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getTrailerColumnDefinition } from 'src/assets/utils/settings/trailer-columns';
 import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-trailer-modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
@@ -19,6 +11,14 @@ import { TrailerActiveState } from '../state/trailer-active-state/trailer-active
 import { TrailerInactiveQuery } from '../state/trailer-inactive-state/trailer-inactive.query';
 import { TrailerInactiveState } from '../state/trailer-inactive-state/trailer-inactive.store';
 import { TrailerTService } from '../state/trailer.service';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { NotificationService } from '../../../services/notification/notification.service';
+import {
+  closeAnimationAction,
+  tableSearch,
+} from '../../../utils/methods.globals';
+import { getTrailerColumnDefinition } from '../../../../../assets/utils/settings/trailer-columns';
 import {
   Confirmation,
   ConfirmationModalComponent,

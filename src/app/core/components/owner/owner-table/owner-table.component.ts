@@ -1,13 +1,6 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { GetOwnerListResponse } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
-import { formatPhonePipe } from 'src/app/core/pipes/formatPhone.pipe';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getOwnerColumnDefinition } from 'src/assets/utils/settings/owner-columns';
 import { OwnerModalComponent } from '../../modals/owner-modal/owner-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { OwnerActiveQuery } from '../state/owner-active-state/owner-active.query';
@@ -15,6 +8,13 @@ import { OwnerActiveState } from '../state/owner-active-state/owner-active.store
 import { OwnerInactiveQuery } from '../state/owner-inactive-state/owner-inactive.query';
 import { OwnerInactiveState } from '../state/owner-inactive-state/owner-inactive.store';
 import { OwnerTService } from '../state/owner.service';
+import { formatPhonePipe } from '../../../pipes/formatPhone.pipe';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
+import { getOwnerColumnDefinition } from '../../../../../assets/utils/settings/owner-columns';
 
 @Component({
   selector: 'app-owner-table',

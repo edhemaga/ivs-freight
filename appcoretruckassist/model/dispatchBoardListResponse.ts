@@ -14,5 +14,9 @@ import { DispatchBoardResponsePagination } from './dispatchBoardResponsePaginati
 
 export interface DispatchBoardListResponse { 
     pagination?: DispatchBoardResponsePagination;
+    dispatchCount?: number;
+    truckCount?: number;
+    trailerCount?: number;
+    driverCount?: number;
 }
 

@@ -1,8 +1,8 @@
 import { Subject, takeUntil } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AbstractControl, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import validator from 'validator';
+import { NotificationService } from '../../../services/notification/notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -82,6 +82,21 @@ export class TaInputService {
     }
   }
 
+  public changeValidatorsCheck(
+    formControl: AbstractControl,
+    hasValidation: boolean = true
+  ) {
+    if (hasValidation) {
+      formControl.setValidators(Validators.requiredTrue);
+    } else {
+      formControl.clearValidators();
+    }
+
+    if (formControl) {
+      formControl.updateValueAndValidity();
+    }
+  }
+
   public customInputValidator(
     formControl: AbstractControl,
     type: string,
@@ -90,25 +105,27 @@ export class TaInputService {
     return formControl.valueChanges
       .pipe(takeUntil(destroy$))
       .subscribe((value) => {
-        switch (type) {
-          case 'email': {
-            if (!validator.isEmail(value)) {
-              formControl.setErrors({ invalid: true });
-            } else {
-              formControl.setErrors(null);
+        if (value) {
+          switch (type) {
+            case 'email': {
+              if (!validator.isEmail(value)) {
+                formControl.setErrors({ invalid: true });
+              } else {
+                formControl.setErrors(null);
+              }
+              break;
             }
-            break;
-          }
-          case 'url': {
-            if (!validator.isURL(value)) {
-              formControl.setErrors({ invalid: true });
-            } else {
-              formControl.setErrors(null);
+            case 'url': {
+              if (!validator.isURL(value)) {
+                formControl.setErrors({ invalid: true });
+              } else {
+                formControl.setErrors(null);
+              }
+              break;
             }
-            break;
-          }
-          default: {
-            break;
+            default: {
+              break;
+            }
           }
         }
       });

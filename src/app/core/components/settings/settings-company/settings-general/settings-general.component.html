@@ -15,7 +15,7 @@
       </div>
 
       <svg-icon
-        *ngIf="hasArrow"
+        *ngIf="hasArrow || companyDivision"
         class="arrow-down"
         src="assets/svg/common/calendar/arrow-right.svg"
       ></svg-icon>
@@ -80,14 +80,17 @@
           <div class="basic-logo-text">This logo will be used on invoices</div>
           <svg-icon class="basic-logo-edit" src="ic_pen.svg"></svg-icon>
         </div>
-        <svg-icon
-          class="basic-logo"
-          src="assets/svg/common/ic_company_logo_dummy.svg"
-        ></svg-icon>
+        <img
+        *ngIf="companyData.logo"
+        [src]="imageBase64Service.sanitizer(companyData.logo)"
+        [alt]="companyData.logo?.name?.substring(0, 1)"
+        class="company-logo-img"
+      />
+        <div *ngIf="!companyData.logo" class="no-company-logo">{{companyData?.name}}</div>
       </div>
       <!-- Middle -->
       <div class="basic-middle">
-        <div class="basic-data">
+        <div class="basic-data first-element-company">
           <svg-icon
             class="basic-data-svg"
             src="assets/svg/common/ic_address.svg"
@@ -267,7 +270,7 @@
         [bodyTemplate]="'card'"
         [hasCounter]="companyData?.bankCards?.length"
         [isCardOpen]="true"
-        *ngIf="companyData?.bankCards.length"
+        *ngIf="companyData?.bankCards?.length"
         [animationsDisabled]="false"
         [textBottomPossiton]="'-1px'"
       >
@@ -329,9 +332,7 @@
             <p class="additional-template-value-name">Pref. Load Type</p>
             <p class="additional-template-value">
               {{
-                companyData?.additionalInfo?.preferredLoadType == 0
-                  ? "FTL"
-                  : "LTL"
+                companyData?.additionalInfo?.preferredLoadType
               }}
             </p>
           </div>
@@ -343,14 +344,14 @@
             </p>
           </div>
 
-          <div class="additional-template-item">
+          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerPayTerm">
             <p class="additional-template-value-name">Customer Pay Term</p>
             <p class="additional-template-value">
               {{ companyData?.additionalInfo?.customerPayTerm }} days
             </p>
           </div>
 
-          <div class="additional-template-item">
+          <div class="additional-template-item" *ngIf="companyData?.additionalInfo?.customerCredit">
             <p class="additional-template-value-name">Customer Credit</p>
             <p class="additional-template-value">
               ${{ companyData?.additionalInfo?.customerCredit }}

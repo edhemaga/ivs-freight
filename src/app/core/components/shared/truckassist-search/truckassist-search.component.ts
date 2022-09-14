@@ -1,3 +1,4 @@
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
 import {
   Component,
   Input,
@@ -6,7 +7,6 @@ import {
   SimpleChanges,
   OnDestroy,
 } from '@angular/core';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 
 @Component({
   selector: 'app-truckassist-search',
@@ -16,6 +16,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 export class TruckassistSearchComponent
   implements OnInit, OnChanges, OnDestroy
 {
+  @Input() searchType: string = '';
   @Input() selectedTabData: any = {};
   chips: any[] = [];
   openSearch: boolean;
@@ -27,6 +28,12 @@ export class TruckassistSearchComponent
   ngOnInit(): void {}
 
   ngOnChanges(changes: SimpleChanges): void {
+    // Search Type
+    if (!changes?.searchType?.firstChange && changes?.searchType) {
+      this.searchType = changes.searchType.currentValue;
+    }
+
+    // Selected Tab Data
     if (!changes?.selectedTabData?.firstChange && changes?.selectedTabData) {
       this.selectedTabData = changes.selectedTabData.currentValue;
     }
@@ -56,6 +63,7 @@ export class TruckassistSearchComponent
         this.tableService.sendCurrentSearchTableData({
           chip: searchNumber,
           search: this.searchText,
+          searchType: this.searchType
         });
       } else if (this.searchIsActive && this.searchText.length < 3) {
         this.searchIsActive = false;
@@ -64,6 +72,7 @@ export class TruckassistSearchComponent
           chip: searchNumber,
           doReset: true,
           all: searchNumber === 'searchOne',
+          searchType: this.searchType
         });
       }
     }
@@ -81,7 +90,8 @@ export class TruckassistSearchComponent
       this.tableService.sendCurrentSearchTableData({
         chipAdded: true,
         search: this.searchText,
-        query: this.getChipQuery(this.chips.length - 1)
+        query: this.getChipQuery(this.chips.length - 1),
+        searchType: this.searchType
       });
 
       this.searchText = '';
@@ -117,6 +127,7 @@ export class TruckassistSearchComponent
       addToQuery: this.getChipQuery(this.chips.length),
       querys: ['searchOne', 'searchTwo', 'searchThree'],
       chips: this.chips,
+      searchType: this.searchType
     });
   }
 

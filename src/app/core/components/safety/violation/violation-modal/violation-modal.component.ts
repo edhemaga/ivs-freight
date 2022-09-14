@@ -1,11 +1,9 @@
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { tab_modal_animation } from '../../../shared/animations/tabs-modal.animation';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { AddressEntity } from 'appcoretruckassist';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
-import { FormService } from 'src/app/core/services/form/form.service';
 import {
   addressValidation,
   departmentValidation,
@@ -14,6 +12,8 @@ import {
   vinNumberValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { Subject, takeUntil } from 'rxjs';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-violation-modal',

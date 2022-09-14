@@ -292,8 +292,28 @@
               color: $bw5;
               font-size: 12px;
 
+              &::-moz-selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
+              &::selection {
+                color: $bw5;
+                background: rgb(145, 145, 145, 0.2);
+              }
+
               span {
                 color: $progress-danger;
+
+                &::-moz-selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+                }
+
+                &::selection {
+                  color: $bw5;
+                  background: rgb(145, 145, 145, 0.2);
+                }
               }
             }
 
@@ -317,34 +337,33 @@
           width: 100%;
           height: 26px;
           padding: 4px 6px;
-          background-color: $ta-light-grey-4;
+          background: $ta-light-grey-4;
           border-radius: 2px;
           margin-bottom: 2px;
           color: $bw6-2;
           font-size: 14px;
           transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
 
-          .info-btn-container {
-            &:hover {
-              background: $ta-light-grey-4;
-              color: $ta-light-grey-3;
-            }
+          &:hover {
+            background: $bw2;
+            color: $ta-light-grey-3;
 
-            &:hover .btn-container {
-              opacity: 1;
-              visibility: visible !important;
-            }
-
-            &:hover .btn-container.active {
-              .edit-icon,
-              .delete-icon {
-                display: none !important;
+            .info-btn-container {
+              .btn-container {
+                .edit-icon,
+                .delete-icon {
+                  opacity: 1;
+                  visibility: visible;
+                  display: flex;
+                }
               }
 
-              .review-icon-box {
-                .review-icon {
-                  visibility: visible !important;
-                  opacity: 1 !important;
+              .btn-container.active {
+                .review-icon-box {
+                  .review-icon {
+                    visibility: visible !important;
+                    opacity: 1 !important;
+                  }
                 }
               }
             }
@@ -353,6 +372,20 @@
           .name-box,
           .phone-box,
           .relationship-box {
+            p {
+              line-height: 18px;
+
+              &::-moz-selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+
+              &::selection {
+                color: $bw6-2;
+                background: rgb(108, 108, 108, 0.2);
+              }
+            }
+
             &.name-box {
               width: 195px;
               margin-right: 24px;
@@ -365,11 +398,7 @@
             }
 
             &.relationship-box {
-              width: 143px;
-            }
-
-            p {
-              height: 18px;
+              width: 145px;
             }
           }
 
@@ -379,21 +408,13 @@
 
           .btn-container {
             width: 42px;
-            margin-left: auto !important;
-            visibility: hidden !important;
-            opacity: 0;
-            transition: opacity 0.2s ease-in-out;
 
             &.active {
-              visibility: visible !important;
-              opacity: 1 !important;
-
               .edit-icon,
               .delete-icon,
               .review-icon {
                 visibility: hidden !important;
                 opacity: 0 !important;
-                user-select: none !important;
 
                 &.edit-icon,
                 &.delete-icon {
@@ -409,8 +430,16 @@
 
             .edit-icon,
             .delete-icon,
-            .review-icon {
+            .review-icon,
+            .feedback-icon {
               cursor: pointer;
+              transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+              svg {
+                path {
+                  fill: $bw4;
+                }
+              }
 
               &:hover {
                 svg {
@@ -421,14 +450,15 @@
                 }
               }
 
-              svg {
-                path {
-                  fill: $bw4;
-                }
-              }
+              &.edit-icon,
+              &.delete-icon {
+                margin-right: 4px;
+                opacity: 0;
+                visibility: hidden;
 
-              &.edit-icon {
-                margin-right: 6px;
+                &.delete-icon {
+                  margin-right: 0;
+                }
               }
 
               &.review-icon {
@@ -440,7 +470,7 @@
 
                   rect {
                     transition: fill 0.3s ease-in-out;
-                    fill: $ta-light-grey-4 !important;
+                    fill: $bw2 !important;
                   }
                 }
 
@@ -465,6 +495,16 @@
                     rect {
                       fill: $ta-red-3 !important;
                     }
+                  }
+                }
+              }
+
+              &.feedback-icon {
+                margin-left: 4px;
+
+                svg {
+                  path {
+                    fill: $ta-red-2;
                   }
                 }
               }

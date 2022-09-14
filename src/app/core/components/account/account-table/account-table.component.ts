@@ -1,16 +1,17 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import {
-  closeAnimationAction,
-  tableSearch,
-} from 'src/app/core/utils/methods.globals';
-import { getToolsAccountsColumnDefinition } from 'src/assets/utils/settings/toolsAccounts-columns';
+
 import { AccountModalComponent } from '../../modals/account-modal/account-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { AccountQuery } from '../state/account-state/account.query';
 import { AccountState } from '../state/account-state/account.store';
 import { AccountTService } from '../state/account.service';
+import { getToolsAccountsColumnDefinition } from '../../../../../assets/utils/settings/toolsAccounts-columns';
+import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import {
+  tableSearch,
+  closeAnimationAction,
+} from '../../../utils/methods.globals';
 
 @Component({
   selector: 'app-account-table',

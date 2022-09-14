@@ -20,8 +20,6 @@ import { Options } from 'ng5-slider';
 import { forkJoin, of, catchError, Subject, takeUntil } from 'rxjs';
 import * as AppConst from 'src/app/const';
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { AppAddLoadTableComponent } from './../app-add-load-table/app-add-load-table.component';
-//import {ManageLoadComponent} from 'src/app/load/manage-load/manage-load.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 import { NgSelectComponent } from '@ng-select/ng-select';

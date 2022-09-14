@@ -11,9 +11,6 @@ import {
 } from 'appcoretruckassist';
 import moment from 'moment';
 import { distinctUntilChanged, takeUntil, Subject } from 'rxjs';
-import { BankVerificationService } from 'src/app/core/services/bank-verification/bankVerification.service';
-import { FormService } from 'src/app/core/services/form/form.service';
-import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { RepairTService } from '../../../repair/state/repair.service';
 import {
   accountBankValidation,
@@ -27,6 +24,9 @@ import {
 } from '../../../shared/ta-input/ta-input.regex-validations';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
+import { BankVerificationService } from '../../../../services/BANK-VERIFICATION/bankVerification.service';
+import { FormService } from '../../../../services/form/form.service';
+import { NotificationService } from '../../../../services/notification/notification.service';
 
 @Component({
   selector: 'app-repair-shop-modal',
@@ -136,7 +136,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
           this.modalService.setModalSpinner({ action: null, status: true });
         } else {
           this.addRepairShop();
-          this.modalService.setModalSpinner({ action: null, status: true });
+          this.modalService.setModalSpinner({
+            action: null,
+            status: true,
+            clearTimeout: this.editData?.canOpenModal ? true : false,
+          });
         }
         break;
       }

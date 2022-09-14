@@ -10,8 +10,8 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { BrokerQuery } from '../state/broker-state/broker.query';
+import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
 
 @Component({
   selector: 'app-broker-card-view',

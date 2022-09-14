@@ -1,3 +1,6 @@
+import * as AppConst from 'src/app/const';
+import { StatusPipePipe } from '../../../pipes/status-pipe.pipe';
+import { LoadStatusPipe } from '../../../pipes/load-status.pipe';
 import {
   Component,
   EventEmitter,
@@ -6,9 +9,6 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import * as AppConst from 'src/app/const';
-import { LoadStatusPipe } from 'src/app/core/pipes/load-status.pipe';
-import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
 
 @Component({
   selector: 'app-ta-status-select',
@@ -16,7 +16,7 @@ import { StatusPipePipe } from 'src/app/core/pipes/status-pipe.pipe';
   styleUrls: ['./ta-status-select.component.scss'],
   providers: [StatusPipePipe, LoadStatusPipe],
 })
-export class TaStatusSelectComponent implements OnInit, OnChanges {
+export class TaStatusSelectComponent implements OnInit {
   @Input() placeholder: string;
   @Input() clearable = true;
   @Input() width: string;
@@ -40,68 +40,68 @@ export class TaStatusSelectComponent implements OnInit, OnChanges {
 
   constructor(private statusPipe: StatusPipePipe) {}
 
-  ngOnInit(): void {
-    this.items = this.statusPipe.transform(
-      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
-      this.value,
-      this.dataType,
-      this.dataItems
-    );
-  }
+   ngOnInit(): void {
+  //   this.items = this.statusPipe.transform(
+  //     this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+  //     this.value,
+  //     this.dataType,
+  //     this.dataItems
+  //   );
+   }
 
-  toggleClass(e: any, type: boolean) {
-    this.selectOpened = type;
+  // toggleClass(e: any, type: boolean) {
+  //   this.selectOpened = type;
 
-    // const select_item = document.querySelectorAll('.ng-select-container');
-    // if( select_item ) {
-    //      select_item.forEach(element => {
-    //        if( type == 'close' ) element.classList.remove('make_it_gray');
-    //        else element.classList.add('make_it_gray');
-    //      });
-    // }
-  }
+  //   // const select_item = document.querySelectorAll('.ng-select-container');
+  //   // if( select_item ) {
+  //   //      select_item.forEach(element => {
+  //   //        if( type == 'close' ) element.classList.remove('make_it_gray');
+  //   //        else element.classList.add('make_it_gray');
+  //   //      });
+  //   // }
+  // }
 
-  ngOnChanges() {
-    this.items = this.statusPipe.transform(
-      this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
-      this.value,
-      this.dataType,
-      this.dataItems
-    );
-    this.value = this.dataItems.statusId;
-  }
+  // ngOnChanges() {
+  //   this.items = this.statusPipe.transform(
+  //     this.dataType == 'dispatch' ? this.dispatchStatuses : this.loadStatuses,
+  //     this.value,
+  //     this.dataType,
+  //     this.dataItems
+  //   );
+  //   this.value = this.dataItems.statusId;
+  // }
 
-  public change(event) {
-    if (this.dataType == 'load' && event.id == 5) {
-      this.savedTonuStatus = event;
-      this.addTonyStatusActive = true;
-      this.items = this.statusPipe.transform(
-        this.loadStatuses,
-        this.dataItems.statusId,
-        this.dataType,
-        this.dataItems
-      );
-    } else {
-      if (this.dataType == 'load') {
-        this.dataItems.statusId = event.id;
-        this.items = this.statusPipe.transform(
-          this.loadStatuses,
-          this.dataItems.statusId,
-          this.dataType,
-          this.dataItems
-        );
-      }
+  // public change(event) {
+  //   if (this.dataType == 'load' && event.id == 5) {
+  //     this.savedTonuStatus = event;
+  //     this.addTonyStatusActive = true;
+  //     this.items = this.statusPipe.transform(
+  //       this.loadStatuses,
+  //       this.dataItems.statusId,
+  //       this.dataType,
+  //       this.dataItems
+  //     );
+  //   } else {
+  //     if (this.dataType == 'load') {
+  //       this.dataItems.statusId = event.id;
+  //       this.items = this.statusPipe.transform(
+  //         this.loadStatuses,
+  //         this.dataItems.statusId,
+  //         this.dataType,
+  //         this.dataItems
+  //       );
+  //     }
 
-      this.changeVal.emit(event);
-    }
-  }
+  //     this.changeVal.emit(event);
+  //   }
+  // }
 
-  public saveTonuStatus(): void {
-    this.savedTonuStatus['tonyRate'] = this.tonyRate;
-    this.changeVal.emit(this.savedTonuStatus);
-  }
+  // public saveTonuStatus(): void {
+  //   this.savedTonuStatus['tonyRate'] = this.tonyRate;
+  //   this.changeVal.emit(this.savedTonuStatus);
+  // }
 
-  public closeStatusChane() {
-    this.addTonyStatusActive = false;
-  }
+  // public closeStatusChane() {
+  //   this.addTonyStatusActive = false;
+  // }
 }

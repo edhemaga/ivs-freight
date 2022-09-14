@@ -24,4 +24,9 @@ export class HosRulesComponent implements OnInit {
       isReadingConfirmed: [false],
     });
   }
+
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+  }
 }

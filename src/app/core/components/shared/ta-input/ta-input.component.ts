@@ -12,20 +12,22 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
-import { pasteCheck } from 'src/assets/utils/methods-global';
 import { ITaInput } from './ta-input.config';
 import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
 import { UpperCasePipe } from '@angular/common';
-import {
-  convertNumberInThousandSep,
-  convertThousanSepInNumber,
-} from 'src/app/core/utils/methods.calculations';
-import { TaThousandSeparatorPipe } from 'src/app/core/pipes/taThousandSeparator.pipe';
+
 import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
+import {
+  convertThousanSepInNumber,
+  convertNumberInThousandSep,
+} from '../../../utils/methods.calculations';
+import { pasteCheck } from '../../../../../assets/utils/methods-global';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-ta-input',
@@ -99,7 +101,8 @@ export class TaInputComponent
     private calendarService: CalendarScrollService,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
-    private refChange: ChangeDetectorRef
+    private refChange: ChangeDetectorRef,
+    private formService: FormService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -163,6 +166,17 @@ export class TaInputComponent
           this.getSuperControl.patchValue(null);
           this.inputResetService.resetInputSubject.next(false);
 
+          this.resetDateTimeInputs();
+        }
+      });
+
+    // Reset Form
+    this.formService.formReset$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.formService.formReset$.next(false);
           this.resetDateTimeInputs();
         }
       });
@@ -385,6 +399,7 @@ export class TaInputComponent
       this.input.nativeElement.value = null;
       this.getSuperControl.setValue(null);
       this.numberOfSpaces = 0;
+      this.inputConfig.dropdownImageInput = null;
       this.touchedInput = true;
 
       if (['datepicker', 'timepicker'].includes(this.inputConfig.name)) {

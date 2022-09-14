@@ -6,10 +6,10 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
-import { getAccidentColumns } from 'src/assets/utils/settings/safety-columns';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { AccidentModalComponent } from '../accident-modal/accident-modal.component';
+import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
+import { getAccidentColumns } from '../../../../../../assets/utils/settings/safety-columns';
 
 @Component({
   selector: 'app-accident-table',
