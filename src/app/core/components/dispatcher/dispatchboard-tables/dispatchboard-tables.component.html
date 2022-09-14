@@ -64,7 +64,7 @@
                       '#' + ('truck' | colorFinder: item.truck.truckType.id)
                     "
                     ngbTooltip
-                    position="right"
+                    position="top"
                     [ngClass]="
                       item.truck.truckType
                         ? 'truck_' +
@@ -80,6 +80,7 @@
                       class="select_span"
                     >
                     </span>
+                    <!-- <span class="select_span description_item_span">{{item.truck.truckType.name}}</span> -->
                     <div
                       *ngIf="
                         item.truck !== null &&
@@ -90,7 +91,7 @@
                       [mainTooltip]="'remove'"
                       [tooltipBackground]="'#6C6C6C'"
                       ngbTooltip
-                      position="top"
+                      position="right"
                       [ngClass]="
                         item.truck.truckType &&
                         'close_' +
@@ -110,6 +111,7 @@
                     *ngIf="truckSelectOpened == rowIndex"
                   >
                     <app-ta-input-dropdown
+                      [template]="'dispatch'"
                       #truckDropdown
                       [formControl]="selectTruck"
                       [inputConfig]="{
@@ -192,7 +194,7 @@
                       ('trailer' | colorFinder: item.trailer.trailerType.id)
                     "
                     ngbTooltip
-                    position="right"
+                    position="top"
                     [ngClass]="
                       item.trailer.trailerType &&
                       'trailer_' +
@@ -222,7 +224,7 @@
                       [mainTooltip]="'remove'"
                       [tooltipBackground]="'#6C6C6C'"
                       ngbTooltip
-                      position="top"
+                      position="right"
                       class="dispatcher-close cursor-pointer"
                     >
                       <svg-icon
@@ -237,6 +239,7 @@
                     *ngIf="trailerSelectOpened == rowIndex"
                   >
                     <app-ta-input-dropdown
+                      [template]="'dispatch'"
                       #truckDropdown
                       [formControl]="selectTruck"
                       [inputConfig]="{
@@ -294,12 +297,16 @@
             </div>
           </td>
           <td class="driver-field">
-            <div class="dispatch-list">
+            <div
+              class="dispatch-list"
+              [class.multiple-drivers-list]="item.driver && item.coDriver"
+            >
               <div
                 class="dispacher-card dispatch-box"
                 [class.empty_row]="
                   !item.driver && driverSelectOpened != rowIndex
                 "
+                [class.multiple-drivers]="item.driver && item.coDriver"
                 [@boxAnimation]="
                   checkForEmpty == 'driverId'
                     ? !item.driver
@@ -331,7 +338,12 @@
                     </span>
 
                     <div
-                      *ngIf="!__isBoardLocked && item.driver && !item.coDriver && driverList.length"
+                      *ngIf="
+                        !__isBoardLocked &&
+                        item.driver &&
+                        !item.coDriver &&
+                        driverList.length
+                      "
                       class="dispatcher-close cursor-pointer dispatcher_new_codriver"
                       [mainTooltip]="'Add Co-Driver'"
                       [tooltipBackground]="'#6C6C6C'"
@@ -405,6 +417,7 @@
                 [class.empty_row]="
                   !item.coDriver && driverSelectOpened != rowIndex
                 "
+                [class.multiple-drivers]="item.driver && item.coDriver"
                 [@boxAnimation]="
                   checkForEmpty == 'coDriver'
                     ? !item.coDriver
@@ -412,7 +425,6 @@
                       : 'filled'
                     : 'empty'
                 "
-                [class.empty-box-field]="__isBoardLocked && !item.coDriver"
               >
                 <div class="driver_span_holder">
                   <span
@@ -541,7 +553,9 @@
                 <button
                   (click)="hoverPhoneEmailMain(rowIndex)"
                   class="button-switch-email-phone"
-                  [mainTooltip]="'Switch to '+ (item.isPhone ? 'phone' : 'email' ) +''"
+                  [mainTooltip]="
+                    'Switch to ' + (item.isPhone ? 'phone' : 'email') + ''
+                  "
                   [tooltipBackground]="'#919191'"
                   ngbTooltip
                   position="bottom"
@@ -610,7 +624,7 @@
                 class="dispatcher-table-cell-holder main_status_switch_holder"
               >
                 <app-ta-status-switch
-                  *ngIf="item.driver && item.trailer && item.truck"
+                  *ngIf="item.driver && item.trailer && item.location.address"
                   (changeStatus)="addStatus($event)"
                   (openIndex)="openIndex($event)"
                   [openedStatus]="statusOpenedIndex"
@@ -628,12 +642,12 @@
           <td class="pick-del-field">
             <div
               class="customTabsDispatchHold left"
-              [class.empty-box-field]="true"
+              [class.empty-box-field]="!item.activeLoad"
             >
               <div
+                *ngIf="item.activeLoad"
                 (mouseleave)="pickDeliveryHovered[rowIndex] = false"
                 (mouseover)="pickDeliveryHovered[rowIndex] = true"
-                *ngIf="item.activeLoad"
                 [class.active]="loadOpenedIndx == rowIndex"
                 [class.hovered]="
                   pickDeliveryHovered[rowIndex] && statusOpenedIndex == -1
@@ -641,10 +655,15 @@
                 [class.statusOpened]="statusOpenedIndex > -1"
                 class="customTabsDispatch left pickup-data"
               >
-                <div *ngIf="item.activeLoad.pickupCount" class="load-count no-back">
+                <div
+                  *ngIf="item.activeLoad.pickupCount"
+                  class="load-count no-back"
+                >
                   <svg-icon
                     *ngIf="item.activeLoad.pickupCount < 10"
-                    src="assets/svg/svg_numbers/olddash/svg_num_box_{{ item.activeLoad.pickupCount }}.svg"
+                    src="assets/svg/svg_numbers/olddash/svg_num_box_{{
+                      item.activeLoad.pickupCount
+                    }}.svg"
                   ></svg-icon>
                   <svg-icon
                     *ngIf="item.activeLoad.pickupCount > 9"
@@ -655,7 +674,7 @@
                   *ngIf="item.pickup !== null"
                   class="text-ellipsis dispatch-pickup-delivery"
                 >
-                  <!-- <app-load-routes
+                  <app-load-routes
                     (openedRoutes)="openedRoutes($event)"
                     [dataId]="item.id"
                     [itemIndx]="rowIndex"
@@ -668,7 +687,11 @@
                       class="select_span"
                     >
                       <div class="pick-del-location">
-                        {{ item.activeLoad.pickup.shipper.address.city + ', ' + item.activeLoad.pickup.shipper.address.state}}
+                        {{
+                          item.activeLoad.pickup.shipper.address.city +
+                            ", " +
+                            item.activeLoad.pickup.shipper.address.state
+                        }}
                       </div>
 
                       <div class="time_info">
@@ -676,7 +699,62 @@
                         <div>7:10PM</div>
                       </div>
                     </span>
-                  </app-load-routes> -->
+                  </app-load-routes>
+                </div>
+              </div>
+              <div class="customTabsDispatchHold right" *ngIf="item.activeLoad">
+                <div
+                  (mouseleave)="pickDeliveryHovered[rowIndex] = false"
+                  (mouseover)="pickDeliveryHovered[rowIndex] = true"
+                  *ngIf="item.truck && item.driver"
+                  [class.active]="loadOpenedIndx == rowIndex"
+                  [class.hovered]="
+                    pickDeliveryHovered[rowIndex] && statusOpenedIndex == -1
+                  "
+                  [class.statusOpened]="statusOpenedIndex > -1"
+                  class="customTabsDispatch right destination-data"
+                >
+                  <div
+                    *ngIf="item.activeLoad.deliveryCount"
+                    class="load-count no-back"
+                  >
+                    <svg-icon
+                      *ngIf="item.activeLoad.deliveryCount < 10"
+                      src="assets/svg/svg_numbers/olddash/svg_num_box_{{
+                        item.activeLoad.deliveryCount
+                      }}.svg"
+                    ></svg-icon>
+                    <svg-icon
+                      *ngIf="item.activeLoad.deliveryCount > 9"
+                      name="svg_num_over"
+                    ></svg-icon>
+                  </div>
+                  <div
+                    *ngIf="item.delivery !== null"
+                    class="text-ellipsis dispatch-pickup-delivery with-line-heights"
+                  >
+                    <span class="cursor-pointer">
+                      <span
+                        [ngStyle]="{
+                          color: statusOpenedIndex > -1 ? '' : '#919191'
+                        }"
+                        appSelectionColor
+                        class="select_span"
+                      >
+                        <div class="pick-del-location">
+                          {{
+                            item.activeLoad.delivery.shipper.address.city +
+                              ", " +
+                              item.activeLoad.delivery.shipper.address.state
+                          }}
+                        </div>
+                        <div class="time_info">
+                          <div>05/09/21</div>
+                          <div>7:10PM</div>
+                        </div>
+                      </span>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -785,14 +863,33 @@
                 [openedAll]="true"
                 [dispatchIndex]="rowIndex"
                 [parking]="false"
-                [noteWidth]="258"
+                [noteWidth]="237"
                 (saveNoteValue)="saveNoteValue($event)"
               >
               </app-ta-note>
             </div>
           </td>
           <td class="empty-field abs-right">
-            <div class="dispatcher-table-cell-container empty-box-field"></div>
+            <div class="dispatcher-table-cell-container empty-box-field">
+              <div
+                *ngIf="item.driver && item.truck"
+                class="new_load_dispatch_hold"
+              >
+                <button
+                  [mainTooltip]="'Assign load'"
+                  [tooltipBackground]="'#6C6C6C'"
+                  ngbTooltip
+                  position="top"
+                  class="btn-transparent new_load_dispatch"
+                >
+                  <svg-icon
+                    class="icon-hover-blue-16"
+                    src="assets/svg/common/ic_plus.svg"
+                  >
+                  </svg-icon>
+                </button>
+              </div>
+            </div>
           </td>
           <td class="empty-field abs-right">
             <div class="dispatcher-table-cell-container empty-box-field"></div>
@@ -818,6 +915,7 @@
                     *ngIf="truckSelectOpened == -2"
                   >
                     <app-ta-input-dropdown
+                      [template]="'dispatch'"
                       #truckDropdown
                       [formControl]="selectTruck"
                       [inputConfig]="{
@@ -873,6 +971,7 @@
                     *ngIf="trailerSelectOpened == -2"
                   >
                     <app-ta-input-dropdown
+                      [template]="'dispatch'"
                       #truckDropdown
                       [formControl]="selectTruck"
                       [inputConfig]="{

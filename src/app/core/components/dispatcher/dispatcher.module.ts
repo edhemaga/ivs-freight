@@ -16,6 +16,9 @@ import { DispatchboardTablesComponent } from './dispatchboard-tables/dispatchboa
 import { TaNoteModule } from '../shared/ta-note/ta-note.module';
 import { SharedModule } from '../shared/shared.module';
 import { ColorFinderPipe } from './pipes/color-finder.pipe';
+import { TruckassistSearchModule } from '../shared/truckassist-search/truckassist-search.module';
+import { NestedComponent } from './dispatchboard-tables/nested.component';
+import { GridsterModule } from 'angular-gridster2';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -33,6 +36,7 @@ export function playerFactory() {
     DispatcherParkingComponent,
     DispatchboardTablesComponent,
     ColorFinderPipe,
+    NestedComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +46,8 @@ export function playerFactory() {
     LottieModule.forRoot({ player: playerFactory }),
     PipesModule,
     TaNoteModule,
+    TruckassistSearchModule,
+    GridsterModule
   ],
   entryComponents: [],
   exports: [],
