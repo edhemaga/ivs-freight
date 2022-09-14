@@ -264,7 +264,7 @@
                   display: flex;
 
                   path {
-                    fill: #3074d3;
+                    fill: #3074d3 !important;
                   }
                 }
               }
@@ -273,7 +273,7 @@
                 display: flex;
 
                 path {
-                  fill: #3074d3;
+                  fill: #3074d3 !important;
                 }
               }
 
@@ -282,28 +282,12 @@
                   svg {
                     display: flex;
                     cursor: pointer;
-
-                    path {
-                      fill: #536bc2;
-                    }
-
-                    circle {
-                      fill: #536bc2;
-                    }
                   }
                 }
 
                 svg {
                   display: flex;
                   cursor: pointer;
-
-                  path {
-                    fill: #536bc2;
-                  }
-
-                  circle {
-                    fill: #536bc2;
-                  }
                 }
               }
             }
@@ -313,11 +297,51 @@
                 display: flex;
 
                 path {
-                  fill: #aaaaaa;
+                  fill: #919191;
                 }
 
                 circle {
-                  fill: #aaaaaa;
+                  fill: #919191;
+                }
+              }
+            }
+
+            svg {
+              display: flex;
+
+              path {
+                fill: #919191;
+              }
+
+              circle {
+                fill: #919191;
+              }
+            }
+
+            &.lighter-icon {
+              svg-icon {
+                svg {
+                  display: flex;
+
+                  path {
+                    fill: #d2d2d2;
+                  }
+
+                  circle {
+                    fill: #d2d2d2;
+                  }
+                }
+              }
+
+              svg {
+                display: flex;
+
+                path {
+                  fill: #d2d2d2;
+                }
+
+                circle {
+                  fill: #d2d2d2;
                 }
               }
             }
@@ -335,6 +359,19 @@
                   circle {
                     fill: #6c6c6c;
                   }
+                }
+              }
+
+              svg {
+                display: flex;
+                cursor: pointer;
+
+                path {
+                  fill: #6c6c6c;
+                }
+
+                circle {
+                  fill: #6c6c6c;
                 }
               }
             }

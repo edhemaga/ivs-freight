@@ -246,13 +246,13 @@
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="icon-box"
+                        [class.lighter-icon]="!item.url"
                         [class.blue-icons]="item.linkActive"
-                        *ngIf="item.url"
                       >
                         <svg-icon src="assets/svg/common/ic_web.svg"></svg-icon>
                       </div>
                       <div
-                        class="icon-box"
+                        class="icon-box lighter-icon"
                         ngbTooltip
                         mainTooltip="Documents"
                         position="bottom"
