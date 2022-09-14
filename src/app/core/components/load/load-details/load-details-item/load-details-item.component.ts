@@ -10,11 +10,13 @@ import {
   LoadResponse,
   LoadStopResponse,
   SignInResponse,
+  UpdateCommentCommand,
 } from 'appcoretruckassist';
 import { Subject, takeUntil } from 'rxjs';
 import { CommentsService } from 'src/app/core/services/comments/comments.service';
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { OnDestroy } from '@angular/core';
+import { ReviewCommentModal } from '../../../shared/ta-user-review/ta-user-review.component';
 
 @Component({
   selector: 'app-load-details-item',
@@ -48,47 +50,68 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     let total = coutn.length;
     return total;
   }
-  changeReviewsEvent(event) {
-    if (event.action == 'delete') {
-      this.commentsService
-        .deleteCommentById(event.data)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              'Comment successfully deleted',
-              'Success:'
-            );
-          },
-          error: () => {
-            this.notificationService.error(
-              `Comment with id: ${event.data} couldn't be deleted`,
-              'Error:'
-            );
-          },
-        });
-    } else if (event.action == 'update') {
-      this.commentsService
-        .updateComment({
-          id: event.data.id,
-          commentContent: event.data.commentContent,
-        })
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: () => {
-            this.notificationService.success(
-              'Comment successfully updated',
-              'Success:'
-            );
-          },
-          error: () => {
-            this.notificationService.error(
-              `Comment with id: ${event.data} couldn't be updated`,
-              'Error:'
-            );
-          },
-        });
+  changeReviewsEvent(comments: ReviewCommentModal) {
+    switch (comments.action) {
+      case 'delete': {
+        this.deleteComment(comments);
+        break;
+      }
+      case 'update': {
+        this.updateComment(comments);
+        break;
+      }
+      default: {
+        break;
+      }
     }
+  }
+
+  private deleteComment(comments: ReviewCommentModal) {
+    this.comments = comments.sortData;
+    this.commentsService
+      .deleteCommentById(comments.data)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully deleted.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be deleted.",
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private updateComment(comments: ReviewCommentModal) {
+    this.comments = comments.sortData;
+
+    const comment: UpdateCommentCommand = {
+      id: comments.data.id,
+      commentContent: comments.data.commentContent,
+    };
+
+    this.commentsService
+      .updateComment(comment)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            'Comment successfully updated.',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            "Comment cant't be updated.",
+            'Error:'
+          );
+        },
+      });
   }
   ngOnDestroy() {
     this.destroy$.next();

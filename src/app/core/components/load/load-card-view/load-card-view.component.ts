@@ -16,5 +16,7 @@ export class LoadCardViewComponent implements OnInit {
 
   constructor(private imageBase64Service: ImageBase64Service) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadNote.patchValue(this.load?.note);
+  }
 }
