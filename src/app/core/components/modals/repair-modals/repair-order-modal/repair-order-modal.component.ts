@@ -36,6 +36,7 @@ import {
 } from '../../../../utils/methods.calculations';
 import {
   descriptionValidation,
+  priceValidation,
   vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -216,7 +217,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     return this.formBuilder.group({
       id: [data.id],
       description: [data.description, [...descriptionValidation]],
-      price: [data.price],
+      price: [data.price, priceValidation],
       quantity: [data.quantity],
       subtotal: [data.subtotal],
       pmTruckId: [data.pmTruckId],

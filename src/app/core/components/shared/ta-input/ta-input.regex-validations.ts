@@ -187,6 +187,12 @@ export const name2_24Validation = [
   Validators.maxLength(24),
 ];
 
+//---------------- Price --------------------------------
+export const priceValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(24),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

@@ -728,6 +728,7 @@ export class TaInputComponent
         'empty-weight',
         'credit limit',
         'po box',
+        'price',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {

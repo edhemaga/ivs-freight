@@ -150,7 +150,10 @@
                 name: 'Input Dropdown',
                 type: 'text',
                 isDropdown: true,
-                dropdownWidthClass: 'w-col-114'
+                dropdownWidthClass: 'w-col-114',
+                hideErrorMessage: true,
+                blackInput: true,
+                hideRequiredCheck: true
               }"
               [options]="fuelItemsDropdown"
               [activeItem]="selectedFuelItemsFormArray[ind]"
@@ -162,7 +165,10 @@
               [inputConfig]="{
                 name: 'QTY',
                 type: 'text',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                hideErrorMessage: true,
+                blackInput: true,
+                hideRequiredCheck: true
               }"
               (change)="onChange('qty', ind)"
             ></app-ta-input>
@@ -171,8 +177,12 @@
               [inputConfig]="{
                 name: 'Price',
                 type: 'text',
-                textTransform: 'capitalize',
-                thousandSeparator: true
+                blackInput: true,
+                hideErrorMessage: true,
+                thousandSeparator: true,
+                hideRequiredCheck: true,
+                minLength: 4,
+                maxLength: 13
               }"
               (change)="onChange('price', ind)"
             ></app-ta-input>
