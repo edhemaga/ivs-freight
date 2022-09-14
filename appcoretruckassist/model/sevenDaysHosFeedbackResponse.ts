@@ -16,6 +16,7 @@ import { SevenDaysHosReviewResponse } from './sevenDaysHosReviewResponse';
 export interface SevenDaysHosFeedbackResponse { 
     id?: number;
     hos?: Array<HosResponse> | null;
+    releasedFromWork?: boolean;
     releasedDate?: string;
     location?: string | null;
     workingForAnotherEmployer?: boolean;

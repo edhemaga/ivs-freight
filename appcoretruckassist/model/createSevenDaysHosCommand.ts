@@ -14,6 +14,7 @@ import { HosCommand } from './hosCommand';
 
 export interface CreateSevenDaysHosCommand { 
     hos?: Array<HosCommand> | null;
+    releasedFromWork?: boolean;
     releasedDate?: string;
     location?: string | null;
     workingForAnotherEmployer?: boolean;

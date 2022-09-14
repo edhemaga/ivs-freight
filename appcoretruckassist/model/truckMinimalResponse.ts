@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { ColorResponse } from './colorResponse';
 import { TruckTypeResponse } from './truckTypeResponse';
 
 
@@ -16,6 +17,8 @@ export interface TruckMinimalResponse {
     id?: number;
     truckNumber?: string | null;
     status?: number;
+    owner?: string | null;
+    color?: ColorResponse;
     truckType?: TruckTypeResponse;
 }
 
