@@ -29,6 +29,7 @@ import {
   accountBankValidation,
   routingBankValidation,
   fuelCardValidation,
+  name2_24Validation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -305,9 +306,12 @@ export class DriverModalComponent implements OnInit, OnDestroy {
       ein: [null, einNumberRegex],
       bussinesName: [null],
       offDutyLocations: this.formBuilder.array([]),
-      emergencyContactName: [null, Validators.required],
+      emergencyContactName: [
+        null,
+        [Validators.required, ...name2_24Validation],
+      ],
       emergencyContactPhone: [null, [phoneFaxRegex, Validators.required]],
-      emergencyContactRelationship: [null],
+      emergencyContactRelationship: [null, name2_24Validation],
       note: [{ value: null, disabled: true }],
       avatar: [null],
       twic: [false],

@@ -169,6 +169,24 @@ export const labelValidation = [
   Validators.maxLength(32),
 ];
 
+//---------------- dbaName --------------------------------
+export const creditLimitValidation = [
+  Validators.minLength(4),
+  Validators.maxLength(13),
+];
+
+//---------------- dbaName --------------------------------
+export const poBoxValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(6),
+];
+
+//---------------- Emergency Name, DBA Name --------------------------------
+export const name2_24Validation = [
+  Validators.minLength(2),
+  Validators.maxLength(24),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

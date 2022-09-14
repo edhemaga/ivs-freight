@@ -726,6 +726,8 @@ export class TaInputComponent
         'ssn',
         'fuel-card',
         'empty-weight',
+        'credit limit',
+        'po box',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -881,17 +883,78 @@ export class TaInputComponent
       return false;
     }
 
-    // if (['url'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (
-    //     /^[A-Za-z0-9!*'();:@&=+$,/?%#._~[-]$/.test(
-    //       String.fromCharCode(event.charCode)
-    //     )
-    //   ) {
-    //     return true;
-    //   }
-    //   event.preventDefault();
-    //   return false;
-    // }
+    if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./:;=<>?^[-]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        this.disableMultiplePoints(event);
+
+        // Check for max length
+        if (this.getSuperControl.value?.toString().includes('.')) {
+          this.inputConfig.maxLength = 4;
+        } else {
+          this.inputConfig.maxLength = 2;
+        }
+
+        // Check for range
+        if (
+          this.getSuperControl.value > this.inputConfig.max ||
+          this.getSuperControl.value < this.inputConfig.min
+        ) {
+          this.getSuperControl.setErrors({ invalid: true });
+        }
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        const timeout = setTimeout(() => {
+          if (this.getSuperControl.value) {
+            let perStopValue = this.getSuperControl.value.replace(/,/g, '');
+            if (
+              perStopValue > this.inputConfig.max ||
+              perStopValue < this.inputConfig.min
+            ) {
+              this.getSuperControl.setErrors({ invalid: true });
+              return false;
+            }
+            return true;
+          }
+          clearTimeout(timeout);
+        }, 0);
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (
+      ['emergency name', 'relationship'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[A-Za-z]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
 
     // if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
@@ -938,75 +1001,6 @@ export class TaInputComponent
     //   } else {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
-    //   }
-    // }
-
-    // if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     const timeout = setTimeout(() => {
-    //       if (this.getSuperControl.value) {
-    //         let perStopValue = this.getSuperControl.value.replace(/,/g, '');
-    //         if (
-    //           perStopValue > this.inputConfig.max ||
-    //           perStopValue < this.inputConfig.min
-    //         ) {
-    //           this.getSuperControl.setErrors({ invalid: true });
-    //           return false;
-    //         }
-    //         return true;
-    //       }
-    //       clearTimeout(timeout);
-    //     }, 0);
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     this.disableMultiplePoints(event);
-
-    //     // Check for max length
-    //     if (this.getSuperControl.value?.toString().includes('.')) {
-    //       this.inputConfig.maxLength = 4;
-    //     } else {
-    //       this.inputConfig.maxLength = 2;
-    //     }
-
-    //     // Check for range
-    //     if (
-    //       this.getSuperControl.value > this.inputConfig.max ||
-    //       this.getSuperControl.value < this.inputConfig.min
-    //     ) {
-    //       this.getSuperControl.setErrors({ invalid: true });
-    //     }
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['dba name'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 .,$@&-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
-    //   }
-    // }
-
-    // if (['po box'].includes(this.inputConfig.name.toLowerCase())) {
-    //   if (/^[A-Za-z0-9 .]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
     //   }
     // }
 

@@ -625,11 +625,13 @@
             <app-ta-input
               formControlName="emergencyContactName"
               [inputConfig]="{
-                name: 'Name',
+                name: 'Emergency Name',
                 type: 'text',
                 label: 'Name',
                 isRequired: true,
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                minLength: 2,
+                maxLength: 24
               }"
             ></app-ta-input>
             <app-ta-input
@@ -649,7 +651,9 @@
                 name: 'Relationship',
                 type: 'text',
                 label: 'Relationship',
-                textTransform: 'capitalize'
+                textTransform: 'capitalize',
+                minLength: 2,
+                maxLength: 24
               }"
             ></app-ta-input>
           </div>
