@@ -170,7 +170,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
               const timeout = setTimeout(() => {
                 this.onAction('close');
                 clearTimeout(timeout);
-              }, 1200);
+              }, 1000);
             }
           }
         }

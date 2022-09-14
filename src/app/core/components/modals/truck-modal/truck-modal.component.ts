@@ -215,7 +215,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       purchaseDate: [null],
       purchasePrice: [null],
     });
-
+    console.log(yearValidRegex, 'YEAR REGEX');
     // this.formService.checkFormChange(this.truckForm);
 
     // this.formService.formValueChange$

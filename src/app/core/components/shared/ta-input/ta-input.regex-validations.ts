@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+import moment from 'moment';
 
 //---------------- Bank Regex, Routing & Accounting Validation ----------------
 const brnv = require('bank-routing-number-validator');
@@ -46,7 +47,7 @@ export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
 //---------------- MC/FF --------------------
 export const mcFFValidation = [
-  Validators.minLength(6),
+  Validators.minLength(5),
   Validators.maxLength(6),
 ];
 
@@ -60,7 +61,7 @@ export const phoneExtension = [
 
 //---------------- Address & Address Unit -------------------
 export const addressValidation = [
-  Validators.minLength(12),
+  Validators.minLength(6),
   Validators.maxLength(256),
 ];
 
@@ -116,7 +117,10 @@ export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
 //---------------- Year, month, day ---------------
 export const yearValidRegex = Validators.pattern(
-  /^(19[0-9]\d|20[0-4]\d|2100)$/
+  new RegExp(
+    '^(19[0-9]d|20[0-4]d|' + moment().add(1, 'year').format('YYYY') + ')',
+    'gi'
+  )
 );
 
 export const yearValidation = [
@@ -155,7 +159,7 @@ export const licensePlateValidation = [
 
 //---------------- Description -------------------------
 export const descriptionValidation = [
-  Validators.minLength(20),
+  Validators.minLength(2),
   Validators.maxLength(160),
 ];
 

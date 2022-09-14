@@ -17,7 +17,6 @@ import { TaInputService } from './ta-input.service';
 import { NgbDropdownConfig, NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarScrollService } from '../custom-datetime-pickers/calendar-scroll.service';
 import moment from 'moment';
-import { UpperCasePipe } from '@angular/common';
 
 import { TaInputResetService } from './ta-input-reset.service';
 import { Subject, takeUntil } from 'rxjs';
@@ -36,7 +35,6 @@ import { FormService } from 'src/app/core/services/form/form.service';
   providers: [
     NgbDropdownConfig,
     CalendarScrollService,
-    UpperCasePipe,
     TaThousandSeparatorPipe,
   ],
 })
@@ -99,7 +97,6 @@ export class TaInputComponent
     private inputService: TaInputService,
     private inputResetService: TaInputResetService,
     private calendarService: CalendarScrollService,
-    private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
     private refChange: ChangeDetectorRef,
     private formService: FormService
@@ -514,10 +511,12 @@ export class TaInputComponent
         this.input.nativeElement.value =
           this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
           this.input.nativeElement.value?.toString()?.substring(1);
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
       case 'uppercase': {
-        this.input.nativeElement.value = this.upperCaseInput(event);
+        this.input.nativeElement.value = event.toLocaleUpperCase('en-US');
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
       default: {
@@ -688,10 +687,6 @@ export class TaInputComponent
     }
   }
 
-  public upperCaseInput(value: string) {
-    return this.uppercasePipe.transform(value);
-  }
-
   public manipulateWithInput(event: KeyboardEvent): boolean {
     // Disable first character to be space
     if (
@@ -823,7 +818,12 @@ export class TaInputComponent
     }
 
     if (['truck-trailer-model'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9-]*$/.test(String.fromCharCode(event.charCode))) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z0-9\s-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
         return true;
       }
       event.preventDefault();
