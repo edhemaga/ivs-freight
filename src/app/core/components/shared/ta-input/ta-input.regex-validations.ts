@@ -219,6 +219,17 @@ export const fuelStoreValidation = [
   Validators.maxLength(32),
 ];
 
+//---------------- CDL Validation --------------------------------
+export const cdlUSValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(19),
+];
+
+export const cdlCANADAValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(15),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

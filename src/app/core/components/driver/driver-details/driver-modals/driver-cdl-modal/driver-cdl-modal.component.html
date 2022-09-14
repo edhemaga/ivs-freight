@@ -12,12 +12,14 @@
         <app-ta-input
           formControlName="cdlNumber"
           [inputConfig]="{
-            name: 'CDL Number',
+            name: 'cdl-number',
             type: 'text',
             label: 'CDL No.',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: editData?.type !== 'edit-licence' ? true : false
+            autoFocus: editData?.type !== 'edit-licence' ? true : false,
+            minLength: selectedCountryType === 'US' ? 1 : 5,
+            maxLength: selectedCountryType === 'US' ? 19 : 15
           }"
         ></app-ta-input>
       </div>

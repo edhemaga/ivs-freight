@@ -18,6 +18,10 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from '../../../../../utils/methods.calculations';
+import {
+  cdlCANADAValidation,
+  cdlUSValidation,
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -44,6 +48,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public selectedClassType: any = null;
 
   public selectedStateType: any = null;
+  public selectedCountryType: string = 'US';
 
   public documents: any[] = [];
 
@@ -60,8 +65,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
     this.getCdlDropdowns();
+    this.createForm();
     this.getDriverById(this.editData.id);
 
     if (this.editData.type === 'edit-licence') {
@@ -70,8 +75,10 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   }
 
   private createForm() {
+    const cdlCountryTypeValidation =
+      this.selectedCountryType === 'US' ? cdlUSValidation : cdlCANADAValidation;
     this.cdlForm = this.formBuilder.group({
-      cdlNumber: [null, Validators.required],
+      cdlNumber: [null, [Validators.required, ...cdlCountryTypeValidation]],
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       classType: [null, Validators.required],
@@ -146,6 +153,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
+          this.selectedCountryType = res.country?.name;
           this.stateTypes = res.states.map((item) => {
             return {
               id: item.id,

@@ -853,7 +853,6 @@ export class TaInputComponent
       }
 
       if (/^[0-9]$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
         return true;
       }
 
@@ -870,7 +869,8 @@ export class TaInputComponent
     }
 
     if (['license plate'].includes(this.inputConfig.name.toLowerCase())) {
-      if (/^[A-Za-z0-9 -]$/.test(String.fromCharCode(event.charCode))) {
+      if (/^[A-Za-z0-9\s-]$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
         return true;
       }
       event.preventDefault();
@@ -908,7 +908,6 @@ export class TaInputComponent
 
     if (['per mile'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[0-9.]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
         this.disableMultiplePoints(event);
 
         // Check for max length
@@ -934,7 +933,6 @@ export class TaInputComponent
 
     if (['per stop'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
         const timeout = setTimeout(() => {
           if (this.getSuperControl.value) {
             let perStopValue = this.getSuperControl.value.replace(/,/g, '');
@@ -977,8 +975,6 @@ export class TaInputComponent
 
     if (['hos'].includes(this.inputConfig.name.toLowerCase())) {
       if (/^[0-9]*$/.test(String.fromCharCode(event.charCode))) {
-        this.disableConsecutivelySpaces(event);
-
         if (
           this.getSuperControl.value * 10 + event.charCode - 48 >
           this.inputConfig.max
@@ -999,6 +995,20 @@ export class TaInputComponent
       )
     ) {
       if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
+    if (['cdl-number'].includes(this.inputConfig.name.toLowerCase())) {
+      let space = this.input.nativeElement.value.split(' ').length;
+      if (/^[A-Za-z0-9\s*-]*$/.test(String.fromCharCode(event.charCode))) {
+        if (space === 3) {
+          this.input.nativeElement.value =
+            this.input.nativeElement.value.trim();
+        }
         this.disableConsecutivelySpaces(event);
         return true;
       } else {
