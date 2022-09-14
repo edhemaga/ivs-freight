@@ -173,8 +173,8 @@
         }
       }
       .smooth-dnd-draggable-wrapper {
+        margin: 4px 0px;
         flex: 0 0 33.3%;
-        min-height: 44px;
 
         .smooth-dnd-container.vertical {
           flex-direction: column;
@@ -200,7 +200,6 @@
       flex-direction: column;
       border-radius: 4px;
       transition: all 0.1s;
-      margin: 4px 0;
       cursor: grab;
 
       .todo_deadline_hold {
@@ -727,7 +726,6 @@
         z-index: 999 !important;
 
         .list-holder {
-          transform: rotate(5deg) !important;
           box-shadow: 0 0 4px rgb(112 112 112 / 50%);
           border-radius: 4px;
         }
