@@ -240,7 +240,7 @@
                     <div class="list-title">{{ item.title }}</div>
                     <div class="icons-frame">
                       <div
-                        (mousedown)="toggleLinkShow($event, i, j)"
+                        (mousedown)="item.url ? toggleLinkShow($event, i, j) : ''"
                         ngbTooltip
                         mainTooltip="Hyperlink"
                         position="bottom"
