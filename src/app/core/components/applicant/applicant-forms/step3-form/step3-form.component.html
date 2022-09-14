@@ -65,7 +65,7 @@
   <div class="d-flex line-container">
     <div class="group state-group">
       <app-ta-input-dropdown
-        formControlName="stateId"
+        formControlName="state"
         [inputConfig]="{
           name: 'Input Dropdown',
           type: 'text',
@@ -95,9 +95,10 @@
           dropdownWidthClass: 'w-col-174',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
+        [activeItem]="selectedClassType"
+        [options]="classTypes"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 1, 11)"
-        [options]="classTypes"
         (selectedItem)="handleInputSelect($event, 'CLASS-TYPE')"
       ></app-ta-input-dropdown>
     </div>
@@ -149,6 +150,7 @@
       <app-ta-input-dropdown
         formControlName="restrictions"
         [template]="'multiselect-res-endors'"
+        [multiselectTemplate]="'multiselect-3-columns'"
         [inputConfig]="{
           name: 'Input Dropdown',
           type: 'text',
@@ -159,7 +161,7 @@
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [options]="restrictionsList"
-        [activeItem]="selectedRestrictions"
+        [preloadMultiselectItems]="selectedRestrictions"
         [incorrectValue]="false"
         (incorrectEvent)="incorrectInput($event, 0, 12)"
         (selectedItems)="handleInputSelect($event, 'RESTRICTIONS')"
@@ -197,6 +199,7 @@
       <app-ta-input-dropdown
         formControlName="endorsments"
         [template]="'multiselect-res-endors'"
+        [multiselectTemplate]="'multiselect-3-columns'"
         [inputConfig]="{
           name: 'Input Dropdown',
           type: 'text',
@@ -204,12 +207,11 @@
           isDropdown: true,
           multiselectDropdown: true,
           dropdownWidthClass: 'w-col-616',
-          customClass: 'input-30',
           incorrectInput: selectedMode === 'REVIEW_MODE'
         }"
         [options]="endorsmentsList"
+        [preloadMultiselectItems]="selectedEndorsments"
         [incorrectValue]="false"
-        [activeItem]="selectedEndorsments"
         (incorrectEvent)="incorrectInput($event, 0, 13)"
         (selectedItems)="handleInputSelect($event, 'ENDORSMENTS')"
       ></app-ta-input-dropdown>

@@ -66,7 +66,7 @@
           </div>
           <div class="d-flex align-items-center state-box">
             <p class="m-0 ta-font-regular">
-              {{ license.stateId }}
+              {{ license.state }}
             </p>
           </div>
           <div class="d-flex align-items-center class-box">
@@ -218,7 +218,11 @@
     <form *ngIf="!isEditing">
       <app-step3-form
         [isEditing]="isEditing"
+        [markFormInvalid]="markFormInvalid"
         (formValuesEmitter)="getLicenseFormValues($event)"
+        (formStatusEmitter)="onGetFormStatus($event)"
+        (markInvalidEmitter)="onMarkInvalidEmit($event)"
+        (lastFormValuesEmitter)="onGetLastFormValues($event)"
       ></app-step3-form>
     </form>
 
@@ -260,7 +264,7 @@
 
       <div
         class="d-flex explain-container line-container"
-        *ngIf="permitForm.get('permit')?.value === 'YES'"
+        *ngIf="permitForm.get('permit')?.value"
       >
         <div class="w-100">
           <app-ta-input
@@ -315,7 +319,11 @@
 <div
   class="d-flex justify-content-center align-items-center next-btn-container"
 >
-  <app-applicant-next-back-btn [nextStep]="true"></app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [nextStep]="true"
+    [filledCorrectly]="permitForm.valid && formStatus === 'VALID'"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>
 
 <!-- BACK BTN -->
@@ -323,5 +331,8 @@
 <div
   class="d-flex justify-content-center align-items-center back-btn-container"
 >
-  <app-applicant-next-back-btn [backStep]="true"> </app-applicant-next-back-btn>
+  <app-applicant-next-back-btn
+    [backStep]="true"
+    (stepEvent)="onStepAction($event)"
+  ></app-applicant-next-back-btn>
 </div>

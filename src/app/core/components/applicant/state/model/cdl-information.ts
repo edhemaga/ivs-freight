@@ -2,11 +2,11 @@ export interface LicenseModel {
   id: number | null;
   licenseNumber: string | null;
   country: string;
-  stateId: string;
-  class: string;
+  state: string;
+  classType: string;
   expDate: string;
-  endorsments?: number[];
-  restrictions?: number[];
+  endorsments?: any;
+  restrictions?: any;
   isEditingLicense: boolean;
 }
 

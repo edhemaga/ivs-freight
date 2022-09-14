@@ -1,16 +1,17 @@
 import {
+  AfterViewInit,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
-
-import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
@@ -26,10 +27,8 @@ import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
 import {
   CdlEndorsementResponse,
-  CdlLicenseCommand,
   CdlRestrictionResponse,
   EnumValue,
-  StateResponse,
 } from 'appcoretruckassist/model/models';
 
 @Component({
@@ -37,13 +36,19 @@ import {
   templateUrl: './step3-form.component.html',
   styleUrls: ['./step3-form.component.scss'],
 })
-export class Step3FormComponent implements OnInit, OnDestroy {
+export class Step3FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
   private destroy$ = new Subject<void>();
 
@@ -55,22 +60,20 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
   public isLicenseEdited: boolean;
 
-  public licenseId: number = 0;
-
-  public canadaStates: StateResponse[] = [];
-  public usStates: StateResponse[] = [];
+  public canadaStates: any[] = [];
+  public usStates: any[] = [];
 
   public countryTypes: EnumValue[] = [];
-  public stateTypes: StateResponse[] = [];
+  public stateTypes: any[] = [];
   public classTypes: EnumValue[] = [];
   public restrictionsList: CdlRestrictionResponse[] = [];
   public endorsmentsList: CdlEndorsementResponse[] = [];
 
-  public selectedCountryType: any = null;
+  public selectedCountryType: EnumValue = null;
   public selectedStateType: any = null;
-  public selectedClassType: any = null;
-  public selectedEndorsments: any[] = [];
-  public selectedRestrictions: any[] = [];
+  public selectedClassType: EnumValue = null;
+  public selectedRestrictions: CdlRestrictionResponse[] = [];
+  public selectedEndorsments: CdlEndorsementResponse[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -132,10 +135,11 @@ export class Step3FormComponent implements OnInit, OnDestroy {
       this.subscription = this.licenseForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const { isEditingLicense, ...previousFormValues } =
+          const { endorsments, isEditingLicense, ...previousFormValues } =
             this.formValuesToPatch;
 
           const {
+            endorsments: asd,
             firstRowReview,
             secondRowReview,
             thirdRowReview,
@@ -145,8 +149,23 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
           previousFormValues.licenseNumber =
             previousFormValues.licenseNumber.toUpperCase();
-          newFormValues.licenseNumber =
-            newFormValues.licenseNumber.toUpperCase();
+
+          if (newFormValues.licenseNumber) {
+            newFormValues.licenseNumber =
+              newFormValues.licenseNumber.toUpperCase();
+          }
+
+          previousFormValues.restrictions = JSON.stringify(
+            previousFormValues.restrictions.map((item) => item.id)
+          );
+          newFormValues.restrictions = JSON.stringify(
+            this.selectedRestrictions.map((item) => item.id)
+          );
+
+          /* newFormValues.endorsments = this.selectedEndorsments; */
+
+          console.log('prev', previousFormValues);
+          console.log('new', newFormValues);
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isLicenseEdited = false;
@@ -157,11 +176,36 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.licenseForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.licenseForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        res.restrictions = this.selectedRestrictions;
+        res.endorsments = this.selectedEndorsments;
+
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.licenseForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   private createForm(): void {
     this.licenseForm = this.formBuilder.group({
       licenseNumber: [null, Validators.required],
       country: [null, Validators.required],
-      stateId: [null, Validators.required],
+      state: [null, Validators.required],
       classType: [null, Validators.required],
       expDate: [null, Validators.required],
       restrictions: [null],
@@ -178,40 +222,58 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     this.licenseForm.patchValue({
       licenseNumber: this.formValuesToPatch.licenseNumber,
       country: this.formValuesToPatch.country,
-      stateId: this.formValuesToPatch.stateId,
+      state: this.formValuesToPatch.state,
       classType: this.formValuesToPatch.classType,
       expDate: this.formValuesToPatch.expDate,
-      restrictions: this.formValuesToPatch.restrictions,
-      endorsments: this.formValuesToPatch.endorsments,
     });
 
     setTimeout(() => {
+      if (this.formValuesToPatch.country.toLowerCase() === 'us') {
+        this.stateTypes = this.usStates;
+      } else {
+        this.stateTypes = this.canadaStates;
+      }
+
       this.selectedCountryType = this.countryTypes.find(
         (item) => item.name === this.formValuesToPatch.country
       );
 
-      this.selectedStateType = { id: 2, name: 'AK', stateName: 'Alaska' };
+      this.selectedStateType = this.usStates.find(
+        (stateItem) => stateItem.name === this.formValuesToPatch.state
+      )
+        ? this.usStates.find(
+            (stateItem) => stateItem.name === this.formValuesToPatch.state
+          )
+        : this.canadaStates.find(
+            (stateItem) => stateItem.name === this.formValuesToPatch.state
+          );
 
-      /*     this.selectedStateType = this.usStates.find(
-        (item) => item.name === this.formValuesToPatch.stateId
-      ) ||
-        this.canadaStates.find(
-          (item) => item.name === this.formValuesToPatch.stateId
-        ); */
-    }, 1);
+      this.selectedClassType = this.classTypes.find(
+        (item) => item.name === this.formValuesToPatch.classType
+      );
+
+      this.selectedRestrictions = this.formValuesToPatch.restrictions;
+
+      this.selectedEndorsments = this.formValuesToPatch.endorsments;
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {
     switch (action) {
       case InputSwitchActions.COUNTRY_TYPE:
+        const previousSelectedCountry = this.selectedCountryType;
+
         this.selectedCountryType = event;
 
-        this.inputService.changeValidators(
-          this.licenseForm.get('stateId'),
-          false
-        );
+        if (this.selectedCountryType !== previousSelectedCountry) {
+          this.selectedStateType = null;
 
-        if (this.selectedCountryType.name.toLowerCase() === 'us') {
+          this.licenseForm.patchValue({
+            state: null,
+          });
+        }
+
+        if (this.selectedCountryType?.name.toLowerCase() === 'us') {
           this.stateTypes = this.usStates;
         } else {
           this.stateTypes = this.canadaStates;
@@ -226,12 +288,15 @@ export class Step3FormComponent implements OnInit, OnDestroy {
         this.selectedClassType = event;
 
         break;
-      case InputSwitchActions.ENDORSMENTS:
-        this.selectedEndorsments = event;
-        break;
       case InputSwitchActions.RESTRICTIONS:
         this.selectedRestrictions = event;
+
         break;
+      case InputSwitchActions.ENDORSMENTS:
+        this.selectedEndorsments = event;
+
+        break;
+
       default:
         break;
     }
@@ -244,51 +309,31 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     }
 
     const {
+      restrictions,
+      endorsments,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
       fourthRowReview,
-      restrictions,
-      endorsments,
       ...licenseForm
     } = this.licenseForm.value;
 
-    this.licenseId++;
-
     const saveData: LicenseModel = {
       ...licenseForm,
-      id: this.licenseId,
-      restrictions: this.selectedRestrictions
-        ? this.selectedRestrictions.map((item) => item.id)
-        : [],
-      endorsements: this.selectedEndorsments
-        ? this.selectedEndorsments.map((item) => item.id)
-        : [],
+      restrictions: this.selectedRestrictions,
+      endorsments: this.selectedEndorsments,
       isEditingLicense: false,
     };
 
-    /* const saveData: CdlLicenseCommand = {
-      ...licenseForm,
-      id: this.licenseId,
-      country: this.selectedCountryType ? this.selectedCountryType.name : null,
-      stateId: this.selectedStateType ? this.selectedStateType.id : null,
-      classType: this.selectedClassType ? this.selectedClassType.name : null,
-      expDate: convertDateToBackend(expDate),
-      restrictions: this.selectedRestrictions
-        ? this.selectedRestrictions.map((item) => item.id)
-        : [],
-      endorsements: this.selectedEndorsments
-        ? this.selectedEndorsments.map((item) => item.id)
-        : [],
-      isEditingLicense: false,
-    }; */
-
     this.formValuesEmitter.emit(saveData);
 
-    this.licenseForm.reset();
+    this.selectedCountryType = null;
+    this.selectedStateType = null;
+    this.selectedClassType = null;
+    this.selectedEndorsments = [];
+    this.selectedRestrictions = [];
 
-    this.selectedEndorsments = null;
-    this.selectedRestrictions = null;
+    this.licenseForm.reset();
 
     this.formService.resetForm(this.licenseForm);
   }
@@ -314,6 +359,8 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     }
 
     const {
+      restrictions,
+      endorsments,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -323,12 +370,20 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
     const saveData: LicenseModel = {
       ...licenseForm,
+      restrictions: this.selectedRestrictions,
+      endorsments: this.selectedEndorsments,
       isEditingLicense: false,
     };
 
     this.saveFormEditingEmitter.emit(saveData);
 
     this.isLicenseEdited = false;
+
+    this.selectedCountryType = null;
+    this.selectedStateType = null;
+    this.selectedClassType = null;
+    this.selectedEndorsments = [];
+    this.selectedRestrictions = [];
 
     this.licenseForm.reset();
 

@@ -19,6 +19,7 @@ import { ApplicantQuestion } from '../../state/model/applicant-question.model';
 import { BankResponse } from 'appcoretruckassist/model/bankResponse';
 import {
   AddressEntity,
+  CreateResponse,
   UpdatePersonalInfoCommand,
 } from 'appcoretruckassist/model/models';
 
@@ -35,6 +36,8 @@ import {
 import { ApplicantListsService } from './../../state/services/applicant-lists.service';
 import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { BankVerificationService } from 'src/app/core/services/BANK-VERIFICATION/bankVerification.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
 
 @Component({
   selector: 'app-step1',
@@ -293,7 +296,9 @@ export class Step1Component implements OnInit, OnDestroy {
     private inputService: TaInputService,
     private router: Router,
     private applicantListsService: ApplicantListsService,
-    private applicantActionsService: ApplicantActionsService
+    private applicantActionsService: ApplicantActionsService,
+    private bankVerificationService: BankVerificationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -371,31 +376,13 @@ export class Step1Component implements OnInit, OnDestroy {
   public handleInputSelect(event: any, action: string, index?: number): void {
     switch (action) {
       case InputSwitchActions.BANK:
-        if (event) {
-          this.selectedBank = event;
+        this.selectedBank = event;
 
-          this.isBankSelected = true;
-
-          this.inputService.changeValidators(
-            this.personalInfoForm.get('accountNumber')
-          );
-
-          this.inputService.changeValidators(
-            this.personalInfoForm.get('routingNumber')
-          );
-        } else {
-          this.isBankSelected = false;
-
-          this.inputService.changeValidators(
-            this.personalInfoForm.get('accountNumber'),
-            false
-          );
-
-          this.inputService.changeValidators(
-            this.personalInfoForm.get('routingNumber'),
-            false
-          );
+        if (!event) {
+          this.personalInfoForm.get('bankId').patchValue(null);
         }
+
+        this.onBankSelected();
 
         break;
       case InputSwitchActions.ANSWER_CHOICE:
@@ -451,6 +438,43 @@ export class Step1Component implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  private onBankSelected() {
+    this.personalInfoForm
+      .get('bankId')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        this.isBankSelected = this.bankVerificationService.onSelectBank(
+          this.selectedBank ? this.selectedBank.name : value,
+          this.personalInfoForm.get('routingNumber'),
+          this.personalInfoForm.get('accountNumber')
+        );
+      });
+  }
+
+  public onSaveNewBank(bank: { data: any; action: string }) {
+    this.selectedBank = bank.data;
+
+    this.bankVerificationService
+      .createBank({ name: this.selectedBank.name })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: CreateResponse) => {
+          this.notificationService.success(
+            'Successfuly add new bank',
+            'Success'
+          );
+
+          this.selectedBank = {
+            id: res.id,
+            name: this.selectedBank.name,
+          };
+        },
+        error: (err) => {
+          this.notificationService.error("Can't add new bank", 'Error');
+        },
+      });
   }
 
   public isBankUnselected(): void {
@@ -771,6 +795,12 @@ export class Step1Component implements OnInit, OnDestroy {
       email,
       previousAddresses,
       bankId,
+      legalWorkExplain,
+      anotherNameExplain,
+      inMilitaryExplain,
+      felonyExplain,
+      misdemeanorExplain,
+      drunkDrivingExplain,
       ...personalInfoForm
     } = this.personalInfoForm.value;
 
@@ -795,130 +825,30 @@ export class Step1Component implements OnInit, OnDestroy {
       bankId: this.selectedBank ? this.selectedBank.id : null,
       previousAddresses:
         this.selectedAddresses.length <= 1
-          ? null
+          ? []
           : this.selectedAddresses.filter(
               (item, index) => index !== this.selectedAddresses.length - 1
             ),
+      legalWorkDescription: legalWorkExplain,
+      anotherNameDescription: anotherNameExplain,
+      inMilitaryDescription: inMilitaryExplain,
+      felonyDescription: felonyExplain,
+      misdemeanorDescription: misdemeanorExplain,
+      drunkDrivingDescription: drunkDrivingExplain,
     };
 
-    console.log(saveData);
-
-    /*   this.applicantActionsService
+    this.applicantActionsService
       .updatePersonalInfo(saveData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (res: HttpResponseBase) => {
-          if (res.status === 200 || res.status === 204) {
-            this.notification.success('Registration is successful', 'Success');
-
-
-            this.router.navigate([`/application/${this.applicantId}/2`]);
-          }
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/2`]);
         },
         error: (err) => {
-          this.notification.error(err, 'Error');
+          console.log(err);
         },
-      }); */
+      });
   }
-
-  /* private formFIlling(): void {
-    // Redirect to next Step
-    // if (this.personalInfo?.isCompleted) {
-    //   // this.router.navigateByUrl(`/application/${this.applicant?.id}/2`);
-    // }
-
-    const applicantInfo = this.applicant;
-    const personalInfo = this.personalInfo;
-
-    this.personalInfoForm = this.formBuilder.group({
-      isAgreement: [personalInfo?.isAgreement, Validators.required],
-
-      firstName: [applicantInfo?.firstName, Validators.required],
-      lastName: [applicantInfo?.lastName, Validators.required],
-      dateOfBirth: [applicantInfo?.dateOfBirth, Validators.required],
-      phone: [applicantInfo?.phone, [Validators.required, phoneFaxRegex]],
-      email: [applicantInfo?.email, [Validators.required]],
-      address: [applicantInfo?.address, Validators.required],
-      addressUnit: [applicantInfo?.addressUnit],
-
-      ssn: [personalInfo?.ssn, [Validators.required, ssnNumberRegex]],
-      bankId: [personalInfo?.bank],
-      accountNumber: [
-        personalInfo?.bank?.accountNumber
-          ? personalInfo?.bank.accountNumber
-          : null,
-      ],
-      routingNumber: [
-        personalInfo?.bank?.routingNumber
-          ? personalInfo?.bank.routingNumber
-          : null,
-      ],
-
-      legalWork: [personalInfo?.legalWork, Validators.required],
-      anotherName: [personalInfo?.anotherName, Validators.required],
-      inMilitary: [personalInfo?.inMilitary, Validators.required],
-      felony: [personalInfo?.felony, Validators.required],
-      misdemeanor: [personalInfo?.misdemeanor, Validators.required],
-      drunkDriving: [personalInfo?.drunkDriving, Validators.required],
-      legalWorkExplain: [
-        personalInfo?.legalWorkExplain,
-        personalInfo?.legalWork
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      anotherNameExplain: [
-        personalInfo?.anotherNameExplain,
-        personalInfo?.anotherName
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      inMilitaryExplain: [
-        personalInfo?.inMilitaryExplain,
-        personalInfo?.inMilitary
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      felonyExplain: [
-        personalInfo?.felonyExplain,
-        personalInfo?.felony ? Validators.required : Validators.nullValidator,
-      ],
-      misdemeanorExplain: [
-        personalInfo?.misdemeanorExplain,
-        personalInfo?.misdemeanor
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-      drunkDrivingExplain: [
-        personalInfo?.drunkDrivingExplain,
-        personalInfo?.drunkDriving
-          ? Validators.required
-          : Validators.nullValidator,
-      ],
-
-      previousAddresses: this.formBuilder.array([]),
-    });
-
-    // Previous Addresses
-
-    if (personalInfo?.previousAddresses?.length) {
-      for (let i = 0; i < personalInfo?.previousAddresses.length; i++) {
-        this.onAddNewAddress();
-        this.previousAddresses.at(i)?.patchValue({
-          id: personalInfo?.previousAddresses[i].id,
-          address: personalInfo?.previousAddresses[i].address,
-          addressUnit: personalInfo?.previousAddresses[i].addressUnit,
-        });
-      }
-    } else {
-      this.previousAddresses.controls = [];
-    }
-
-    // Bank Info
-    //  this.requiredBankInfo(
-    //         this.personalInfo?.bank && this.bankData.length ? true : false
-    //     );
-  }
- */
 
   /* public onSubmitReview(data: any): void {
     const numberOfPreviousAddresses =

@@ -18,6 +18,7 @@ import {
   CreateEducationCommand,
   CreateTrafficViolationCommand,
   CreateAccidentRecordCommand,
+  CreateApplicantCdlCommand,
 } from 'appcoretruckassist/model/models';
 
 @Injectable({
@@ -50,6 +51,12 @@ export class ApplicantActionsService {
     data: AcceptApplicationCommand
   ): Observable<ApplicantResponse> {
     return this.applicantService.apiApplicantAcceptPost(data);
+  }
+
+  public createCdlInformation(
+    data: CreateApplicantCdlCommand
+  ): Observable<object> {
+    return this.applicantService.apiApplicantCdlPost(data);
   }
 
   public createAccidentRecord(
