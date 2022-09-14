@@ -25,12 +25,17 @@ export interface UpdatePersonalInfoCommand {
     accountNumber?: string | null;
     routingNumber?: string | null;
     legalWork?: boolean;
-    anotherName?: boolean;
+    legalWorkDescription?: string | null;
+    anotherName?: boolean | null;
     anotherNameDescription?: string | null;
-    inMilitary?: boolean;
-    felony?: boolean;
-    misdemeanor?: boolean;
-    drunkDriving?: boolean;
+    inMilitary?: boolean | null;
+    inMilitaryDescription?: string | null;
+    felony?: boolean | null;
+    felonyDescription?: string | null;
+    misdemeanor?: boolean | null;
+    misdemeanorDescription?: string | null;
+    drunkDriving?: boolean | null;
+    drunkDrivingDescription?: string | null;
     previousAddresses?: Array<AddressEntity> | null;
 }
 

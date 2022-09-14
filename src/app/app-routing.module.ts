@@ -29,6 +29,11 @@ import { RepairTrailerResolver } from './core/components/repair/state/repair-tra
 import { ContactResolver } from './core/components/contacts/state/contact-state/contact.resolver';
 import { pmTrailerResolver } from './core/components/pm-truck-trailer/state/pm-trailer-state/pm-trailer.resolver';
 import { pmTruckResolver } from './core/components/pm-truck-trailer/state/pm-truck-state/pm-truck.resolver';
+import { LoadPandingResolver } from './core/components/load/state/load-pending-state/load-panding.resolver';
+import { LoadClosedResolver } from './core/components/load/state/load-closed-state/load-closed.resolver';
+import { LoadActiveResolver } from './core/components/load/state/load-active-state/load-active.resolver';
+import { LoadTemplateResolver } from './core/components/load/state/load-template-state/load-template.resolver';
+import { UserResolver } from './core/components/user/state/user-state/user.resolver';
 
 const routes: Routes = [
   // Auth Routes
@@ -81,10 +86,27 @@ const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'user',
+    loadChildren: () =>
+      import('./core/components/user/user.module').then(
+        (m) => m.UserModule
+      ),
+    data: { title: 'User' },
+    resolve: {
+      user: UserResolver,
+    },
+  },
+  {
     path: 'load',
     loadChildren: () =>
       import('./core/components/load/load.module').then((m) => m.LoadModule),
     canActivate: [AuthGuard],
+    resolve: {
+      loadTemplate: LoadTemplateResolver,
+      loadPanding: LoadPandingResolver,
+      loadActive: LoadActiveResolver,
+      loadClosed: LoadClosedResolver,
+    },
   },
   {
     path: 'driver',

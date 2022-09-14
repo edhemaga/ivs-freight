@@ -20,6 +20,7 @@ import { DriversMinimalListStore } from './driver-details-minimal-list-state/dri
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversMinimalListQuery } from './driver-details-minimal-list-state/driver-minimal-list.query';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,8 @@ export class DriverTService implements OnDestroy {
     private ownerService: OwnerService,
     private driverMinimalQuery: DriversMinimalListQuery,
     private tableService: TruckassistTableService,
-    private driverItemStore: DriversItemStore
+    private driverItemStore: DriversItemStore,
+    private dlStore: DriversDetailsListStore
   ) {}
 
   // Get Driver Minimal List
@@ -95,7 +97,7 @@ export class DriverTService implements OnDestroy {
               };
 
               this.driverActiveStore.add(driver);
-
+              this.driverMinimimalListStore.add(driver);
               const driverCount = JSON.parse(
                 localStorage.getItem('driverTableCount')
               );
@@ -132,6 +134,7 @@ export class DriverTService implements OnDestroy {
       tap(() => {
         this.driverMinimimalListStore.remove(({ id }) => id === driverId);
         this.driverItemStore.remove(({ id }) => id === driverId);
+        this.dlStore.remove(({ id }) => id === driverId);
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
@@ -180,7 +183,9 @@ export class DriverTService implements OnDestroy {
         const driverCount = JSON.parse(
           localStorage.getItem('driverTableCount')
         );
+
         this.driverMinimimalListStore.remove(({ id }) => id === driverId);
+        this.dlStore.remove(({ id }) => id === driverId);
         if (tableSelectedTab === 'active') {
           this.driverActiveStore.remove(({ id }) => id === driverId);
 
@@ -250,14 +255,15 @@ export class DriverTService implements OnDestroy {
           .subscribe({
             next: (driver: DriverResponse | any) => {
               this.driverActiveStore.remove(({ id }) => id === data.id);
-
+              this.driverMinimimalListStore.remove(({ id }) => id === data.id);
               driver = {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
               };
 
               this.driverActiveStore.add(driver);
-
+              this.driverMinimimalListStore.add(driver);
+              this.dlStore.replace(driver.id, driver);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -376,7 +382,7 @@ export class DriverTService implements OnDestroy {
                 ...driver,
                 fullName: driver.firstName + ' ' + driver.lastName,
               };
-
+              this.dlStore.update(driver.id, { status: driver.status });
               this.tableService.sendActionAnimation({
                 animation: 'update-status',
                 data: driver,

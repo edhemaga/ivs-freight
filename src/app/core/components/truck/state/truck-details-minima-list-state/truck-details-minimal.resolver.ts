@@ -23,10 +23,10 @@ export class TruckMinimalResolver implements Resolve<TruckMinimalListResponse> {
     route: ActivatedRouteSnapshot
   ): Observable<TruckMinimalListResponse> | Observable<any> {
     return this.truckService
-      .getTrucksMinimalList(this.pageIndex, this.pageSize, this.count)
+      .getTrucksMinimalList(this.pageIndex, this.pageSize)
       .pipe(
         catchError((error) => {
-          return of('No drivers data for...');
+          return of('No truck data for...');
         }),
         tap((truckMinimal: TruckMinimalListResponse) => {
           this.truckMinimalListStore.set(truckMinimal.pagination.data);

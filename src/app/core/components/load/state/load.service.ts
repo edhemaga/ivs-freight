@@ -1,7 +1,11 @@
 import { LoadResponse } from './../../../../../../appcoretruckassist/model/loadResponse';
 import { Injectable } from '@angular/core';
-import { LoadListResponse, LoadService } from 'appcoretruckassist';
-import { Observable } from 'rxjs';
+import {
+  LoadListResponse,
+  LoadService,
+  LoadTemplateListResponse,
+} from 'appcoretruckassist';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +14,7 @@ export class LoadTService {
   constructor(private loadServices: LoadService) {}
 
   // Get Load List
+  // statusType -> 1 - pending, 2 - active, 3 - closed
   public getLoadList(
     loadType?: number,
     statusType?: number,
@@ -17,6 +22,10 @@ export class LoadTService {
     dispatcherId?: number,
     dispatchId?: number,
     brokerId?: number,
+    dateFrom?: string,
+    dateTo?: string,
+    revenueFrom?: number,
+    revenueTo?: number,
     pageIndex?: number,
     pageSize?: number,
     companyId?: number,
@@ -32,6 +41,10 @@ export class LoadTService {
       dispatcherId,
       dispatchId,
       brokerId,
+      dateFrom,
+      dateTo,
+      revenueFrom,
+      revenueTo,
       pageIndex,
       pageSize,
       companyId,
@@ -40,6 +53,30 @@ export class LoadTService {
       search1,
       search2
     );
+  }
+
+  // Get Load Template List
+  public getLoadTemplateList(
+    loadType?: number,
+    pageIndex?: number,
+    pageSize?: number,
+    companyId?: number,
+    sort?: string,
+    search?: string,
+    search1?: string,
+    search2?: string
+  ): Observable<LoadTemplateListResponse> {
+    // return this.loadServices.apiLoadTemplateListGet(
+    //   loadType,
+    //   pageIndex,
+    //   pageSize,
+    //   companyId,
+    //   sort,
+    //   search,
+    //   search1,
+    //   search2
+    // );
+    return of(null);
   }
   public getLoadById(loadId: number): Observable<LoadResponse> {
     return this.loadServices.apiLoadIdGet(loadId);

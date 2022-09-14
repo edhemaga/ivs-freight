@@ -154,18 +154,23 @@ export class GeolocationService {
 
     /**
      * @param address 
+     * @param layer 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiGeolocationLonglatGet(address?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<LongLat>;
-    public apiGeolocationLonglatGet(address?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<LongLat>>;
-    public apiGeolocationLonglatGet(address?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<LongLat>>;
-    public apiGeolocationLonglatGet(address?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<LongLat>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<LongLat>>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<LongLat>>;
+    public apiGeolocationLonglatGet(address?: string, layer?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (address !== undefined && address !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>address, 'Address');
+        }
+        if (layer !== undefined && layer !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>layer, 'Layer');
         }
 
         let headers = this.defaultHeaders;

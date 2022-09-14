@@ -64,6 +64,11 @@ export const navigationData: Navigation[] = [
         activeRouteFlegId: 3,
       },
       {
+        name: 'User',
+        route: '/user',
+        activeRouteFlegId: 3,
+      },
+      {
         name: 'Fuel',
         route: '/fuel',
         activeRouteFlegId: 3,
@@ -228,7 +233,7 @@ export const navigationData: Navigation[] = [
     id: 9,
     name: 'Statistic',
     image: 'ic_statistic.svg',
-    route: '/statistic/load',
+    route: '/statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
     isRouteActive: false,
   },
   {
