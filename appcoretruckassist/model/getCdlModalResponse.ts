@@ -20,5 +20,6 @@ export interface GetCdlModalResponse {
     endorsements?: Array<CdlEndorsementResponse> | null;
     restrictions?: Array<CdlRestrictionResponse> | null;
     states?: Array<StateResponse> | null;
+    country?: EnumValue;
 }
 
