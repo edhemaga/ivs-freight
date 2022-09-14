@@ -66,6 +66,38 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public engineType: any[] = [];
   public tireSize: any[] = [];
   public shifters: any[] = [];
+  public engineModels: any[] = [];
+  public engineOilTypes: any[] = [];
+  public apUnits: any[] = [];
+  public gearRatios: any[] = [];
+  public tollTransponders: any[] = [
+    {
+      groupName: 'Grupa 1',
+      items: [
+        {
+          id: 1,
+          name: 'Item 1',
+        },
+        {
+          id: 2,
+          name: 'Item 2',
+        },
+      ],
+    },
+    {
+      groupName: 'Grupa 2',
+      items: [
+        {
+          id: 1,
+          name: 'Item 2',
+        },
+        {
+          id: 2,
+          name: 'Item 2',
+        },
+      ],
+    },
+  ];
 
   public selectedShifter: any = null;
   public selectedTruckType: any = null;
@@ -75,6 +107,11 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedTruckGrossWeight: any = null;
   public selectedEngineType: any = null;
   public selectedTireSize: any = null;
+  public selectedEngineModel: any = null;
+  public selectedEngineOilType: any = null;
+  public selectedAPUnit: any = null;
+  public selectedGearRatio: any = null;
+  public selectedTollTransponders: any = null;
 
   public selectedTab: number = 1;
   public tabs: any[] = [
@@ -133,6 +170,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
   private createForm(): void {
     this.truckForm = this.formBuilder.group({
+      // Basic Tab
       truckNumber: [
         null,
         [
@@ -151,18 +189,31 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       ownerId: [null],
       commission: [14.5],
       note: [null],
-      purchaseDate: [null],
-      purchasePrice: [null],
-      shifter: [null],
-      fhwaexp: [12, Validators.required],
+      // Additional Tab
       truckGrossWeightId: [null],
+      engineModel: [null],
       emptyWeight: [null, emptyWeightValidation],
-      truckEngineTypeId: [null],
+      engineOilType: [null],
+      apUnit: [null],
       tireSizeId: [null],
       axles: [null, axlesValidation],
-      insurancePolicy: [null, insurancePolicyValidation],
+      gearRatio: [null],
+      shifter: [null],
+      doubleBank: [false],
+      refrigerator: [false],
+      dcInverter: [false],
+      blower: [false],
+      pto: [false],
+      tollTransponder: [null],
+      deviceNo: [null],
       mileage: [null, mileageValidation],
-      ipasEzpass: [null, Validators.maxLength(14)],
+      insurancePolicy: [null, insurancePolicyValidation],
+      fhwaexp: [12, Validators.required],
+
+      truckEngineTypeId: [null],
+
+      purchaseDate: [null],
+      purchasePrice: [null],
     });
 
     // this.formService.checkFormChange(this.truckForm);
@@ -310,7 +361,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             axles: res.axles,
             insurancePolicy: res.insurancePolicy,
             mileage: res.mileage,
-            ipasEzpass: res.ipasEzpass,
           });
           this.truckForm.get('vin').patchValue(res.vin, { emitEvent: false });
 
@@ -359,7 +409,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         axles: res.axles,
         insurancePolicy: res.insurancePolicy,
         mileage: res.mileage,
-        ipasEzpass: res.ipasEzpass,
       });
       if (res.id) {
         this.editData = { ...this.editData, id: res.id };
@@ -441,6 +490,26 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'shifter': {
         this.selectedShifter = event;
+        break;
+      }
+      case 'engine-model': {
+        this.selectedEngineModel = event;
+        break;
+      }
+      case 'engine-oil-type': {
+        this.selectedEngineOilType = event;
+        break;
+      }
+      case 'ap-unit': {
+        this.selectedAPUnit = event;
+        break;
+      }
+      case 'gear-ratio': {
+        this.selectedGearRatio = event;
+        break;
+      }
+      case 'toll-transponder': {
+        this.selectedTollTransponders = event;
         break;
       }
       default: {

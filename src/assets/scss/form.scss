@@ -57,6 +57,14 @@
     margin-bottom: 10px !important;
   }
 
+  .row-mb-26 {
+    margin-bottom: 26px !important;
+  }
+
+  .row-mb-12 {
+    margin-bottom: 12px !important;
+  }
+
   .row-no-m {
     margin-top: 0px !important;
     margin-bottom: 0px !important;
@@ -211,7 +219,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 5px 6px;
+      padding: 5px 4px;
       line-height: 18px;
 
       &.pointer {
@@ -296,7 +304,7 @@
 
       // Truck Modal
       .animation-checkbox-card-tabs-truckModal {
-        height: 48px;
+        height: 90px;
         transition: all 0.3s ease-in-out;
       }
     }
@@ -404,16 +412,6 @@
     margin-top: 11px;
     transition: all 0.3s ease-in-out;
   }
-
-  //---------------- TireSize & Axles ----------------
-  .tireSize-axles {
-    display: grid;
-    grid-template-columns: 138px 1fr;
-    align-items: center;
-    align-items: center;
-    -moz-column-gap: 12px;
-    column-gap: 12px;
-  }
 }
 
 //---------------- Model Color Year Length ----------------
@@ -491,6 +489,36 @@
       }
     }
   }
+}
+
+//---------------- Truck Modal Additional Page ----------------
+.truck-additional-two-columns {
+  display: grid;
+  grid-template-columns: 196px 248px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+}
+
+.truck-additional-three-columns {
+  display: grid;
+  grid-template-columns: 128px 164px 140px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
+
+  .double-bank-checkbox {
+    margin-left: 10px;
+  }
+}
+
+.truck-additional-fifth-columns {
+  display: grid;
+  grid-template-columns: 107px 101px 70px 48px;
+  column-gap: 22px;
+  align-items: center;
+  padding: 0 6px;
+  margin-bottom: 32px;
 }
 
 //---------------- Phone, Phone Extension, Email ----------------

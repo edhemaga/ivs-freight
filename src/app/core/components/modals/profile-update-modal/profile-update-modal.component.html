@@ -31,7 +31,7 @@
                 minLength: 2,
                 maxLength: 26,
                 textTransform: 'capitalize',
-                autoFocus: editData?.type !== 'edit' ? true : false
+                autoFocus: profileUserForm.get('firstName').value ? false : true
               }"
             ></app-ta-input>
           </div>
