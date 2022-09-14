@@ -729,6 +729,8 @@ export class TaInputComponent
         'credit limit',
         'po box',
         'price',
+        'trailer-volume',
+        'repair-odometer',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -744,6 +746,14 @@ export class TaInputComponent
           String.fromCharCode(event.charCode)
         )
       ) {
+        return true;
+      }
+      event.preventDefault();
+      return false;
+    }
+
+    if (['invoice'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9/-]*$/g.test(String.fromCharCode(event.charCode))) {
         return true;
       }
       event.preventDefault();

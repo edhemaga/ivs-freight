@@ -193,6 +193,24 @@ export const priceValidation = [
   Validators.maxLength(24),
 ];
 
+//---------------- Trailer Volume --------------------------------
+export const trailerVolumeValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(7),
+];
+
+//---------------- Repair Odometer --------------------------------
+export const repairOdometerValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(7),
+];
+
+//---------------- Repair Odometer --------------------------------
+export const invoiceValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(7),
+];
+
 //---------------- Mile, PerStop -------------------
 export const mileValidation = [Validators.min(0), Validators.max(10)];
 

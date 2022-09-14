@@ -36,7 +36,9 @@ import {
 } from '../../../../utils/methods.calculations';
 import {
   descriptionValidation,
+  invoiceValidation,
   priceValidation,
+  repairOdometerValidation,
   vehicleUnitValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
 
@@ -152,9 +154,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
       repairType: ['Bill'],
       unitType: ['Truck'],
       unit: [null, [Validators.required, ...vehicleUnitValidation]],
-      odometer: [null],
+      odometer: [null, repairOdometerValidation],
       date: [null, Validators.required],
-      invoice: [null],
+      invoice: [null, invoiceValidation],
       repairShopId: [null, Validators.required],
       items: this.formBuilder.array([]),
       note: [null],
