@@ -15,12 +15,21 @@ export class DetailsDataService {
   constructor() { }
 
   setNewData(newData){
-    console.log('---set data---', newData);
     this.mainData = newData;
     console.log('---mainData---', this.mainData);
   }
 
   public updateLeftMenuStatus(leftSideMenuStatus: boolean) {
     this.leftSideMenuStatus.next(leftSideMenuStatus);
+  }
+
+  changeDnuStatus(type, status){
+    if ( type == 'dnu'){
+      this.mainData.dnu = status;
+    } else if ( type == 'ban' ) {
+      this.mainData.ban = status;
+    } else if ( type == 'status' ) {
+      this.mainData.status = status;
+    }
   }
 }

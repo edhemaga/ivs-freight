@@ -615,18 +615,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .changeTruckStatus(event.id, this.selectedTab)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
-              this.notificationService.success(
-                `Status updated: Active`,
-                'Success'
-              );
-            },
-            error: () => {
-              this.notificationService.error(
-                `Failed to update status`,
-                'Error'
-              );
-            },
           });
         break;
       }
@@ -635,24 +623,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
           .deleteTruckById(event.id, this.selectedTab)
           .pipe(untilDestroyed(this))
           .subscribe({
-            next: () => {
-
-              this.notificationService.success(
-                `Truck "${truckNum}" deleted`,
-                'Success'
-              );
-              this.updateDataCount();
-              const inetval = setInterval(() => {
-                this.viewData = closeAnimationAction(true, this.viewData);
-                clearInterval(inetval);
-              }, 1000);
-            },
-            error: () => {
-              this.notificationService.error(
-                `Truck with id: ${event.id} couldn't be deleted`,
-                'Error:'
-              );
-            },
+          
           });
         this.modalService.openModal(
           ConfirmationModalComponent,
@@ -690,18 +661,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .changeTruckStatus(id, this.selectedTab)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: () => {
-          this.notificationService.success(
-            `Truck successfully Change Status`,
-            'Success:'
-          );
-        },
-        error: () => {
-          this.notificationService.error(
-            `Truck with id: ${id}, status couldn't be changed`,
-            'Error:'
-          );
-        },
       });
   }
 
@@ -711,11 +670,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.notificationService.success(
-            'Truck successfully deleted',
-            'Success:'
-          );
-
           this.viewData = this.viewData.map((truck: any) => {
             if (truck.id === id) {
               truck.actionAnimation = 'delete';
@@ -731,13 +685,7 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             clearInterval(inetval);
           }, 1000);
-        },
-        error: () => {
-          this.notificationService.error(
-            `Truck with id: ${id} couldn't be deleted`,
-            'Error:'
-          );
-        },
+        }
       });
   }
 
@@ -757,12 +705,6 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
         });
 
         this.updateDataCount();
-
-        this.notificationService.success(
-          `${response.length > 1 ? 'Trucks' : 'Truck'} successfully deleted`,
-          'Success:'
-        );
-
         const inetval = setInterval(() => {
           this.viewData = closeAnimationAction(true, this.viewData);
 

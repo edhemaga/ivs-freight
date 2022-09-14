@@ -161,6 +161,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'test',
       'value' : 'TEST'
+    },
+    {
+      'api' : 'title',
+      'value' : 'TITLE'
     }
     
   ]
@@ -226,7 +230,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         if ( this.httpRequest.method == 'PUT' ) {
           this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
         }
-        this.message = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+        let accName = this.httpRequest.body?.name ? this.httpRequest.body.name : '';
+        if (!accName){
+          accName = this.DetailsDataService.mainData?.name;
+        }
+        this.message = accName;
         this.wideMessage = true;
       break;
       case 'DRIVER':
@@ -270,18 +278,29 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
         }
       break;
       case 'CDL':
-        let driverFullName = this.DetailsDataService.mainData?.fullName;
-        this.message = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : '';
+        let driverFullName = this.DetailsDataService.mainData?.fullName.toUpperCase();
+        let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
+        
+        if ( !cdlNum ){
+          let cdlId = lastVal;
+          this.DetailsDataService.mainData?.cdls.map((item: any) => {
+            if (item.id == cdlId){
+              cdlNum = item.cdlNumber;
+            }
+          });
+        }
 
         if ( this.httpRequest.method == 'POST' || this.httpRequest.method == 'PUT' ){
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
           this.actionType = 'CDL - ' + driverFullName;
           this.wideMessage = true;
         }
+
+        this.message = cdlNum;
       break;
       case 'MVR':
       case 'MEDICAL':   
-        let driverName = this.DetailsDataService.mainData?.fullName; 
+        let driverName = this.DetailsDataService.mainData?.fullName.toUpperCase(); 
         
         let issuedDate = this.httpRequest.body?.issueDate ? moment(this.httpRequest.body?.issueDate).format('MM/DD/YY') : '';
         if ( this.httpRequest.method == 'POST' ) {
@@ -293,7 +312,6 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       case 'SHIPPER':
       case 'BROKER':
        let messageValue = '';
-       let dataValue;
        if ( this.httpRequest.body ){
         messageValue = this.httpRequest.body.dbaName ? this.httpRequest.body.dbaName : this.httpRequest.body.businessName;
        }
@@ -313,7 +331,12 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
               moveAction = 'TO';
               this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
             }
-
+            
+            if (this.toastrType != 'toast-error'){
+              let newStatus = !this.DetailsDataService.mainData?.dnu;
+              this.DetailsDataService.changeDnuStatus('dnu', newStatus);
+            }
+            
             this.actionType = this.toastrType == 'toast-error' ? 'BROKER ' + moveAction + ' DNU LIST' : 'BROKER ' + moveAction + ' DNU LIST';
             this.wideMessage = true;
           }
@@ -327,6 +350,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             } else {
               moveAction = 'TO';
               this.actionTitle = this.toastrType == 'toast-error' ? 'MOVE' : 'MOVED';
+            }
+
+            if (this.toastrType != 'toast-error'){
+              let newBanStatus = !this.DetailsDataService.mainData?.ban;
+              this.DetailsDataService.changeDnuStatus('ban', newBanStatus);
             }
 
             this.actionType = this.toastrType == 'toast-error' ? 'BROKER ' + moveAction + ' BAN LIST' : 'BROKER ' + moveAction + ' BAN LIST';
@@ -351,11 +379,26 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           } else {
             this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
           }
+
+          if (this.toastrType != 'toast-error'){
+            let newActiveStatus = 1;
+            if ( this.DetailsDataService.mainData.status == 1 ){
+              newActiveStatus = 0;
+            }
+            this.DetailsDataService.changeDnuStatus('status', newActiveStatus);
+          }
         }
         this.message = trailerNum;
       break;
       case 'COMPANY':
-        this.message = this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
+        let compName =  this.httpRequest.body?.companyName ? this.httpRequest.body.companyName : '';
+
+        if (!compName){
+          compName = this.DetailsDataService.mainData.companyName;
+        }
+
+        this.message = compName;
+        
       break;
       case 'TRUCK':
         let truckNum = this.httpRequest.body?.truckNumber ? this.httpRequest.body.truckNumber : '';
@@ -368,6 +411,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             this.actionTitle = this.toastrType == 'toast-error' ? 'DEACTIVE' : 'DEACTIVATED';
           } else {
             this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVE' : 'ACTIVATED';
+          }
+
+          if (this.toastrType != 'toast-error'){
+            let newActiveStatus = 1;
+            if ( this.DetailsDataService.mainData.status == 1 ){
+              newActiveStatus = 0;
+            }
+            this.DetailsDataService.changeDnuStatus('status', newActiveStatus);
           }
         }
         this.message = truckNum;
@@ -395,28 +446,19 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
       break;
       case 'REPAIR BILL':
       case 'REGISTRATION':
+      case 'TITLE':
          let messageText = '';
 
-         if ( this.httpRequest.body?.truckId ){
-            let repairTruckId = this.httpRequest.body?.truckId;
-            let repairTruckNum = this.storesArray.truckActive.entities[repairTruckId] ? this.storesArray.truckActive.entities[repairTruckId].truckNumber : '';
-            if ( !repairTruckNum ) {
-              repairTruckNum = this.storesArray.truckInactive.entities[repairTruckId].truckNumber;
-            }
-
+         if ( this.DetailsDataService.mainData?.truckNumber ){
+            let repairTruckNum = this.DetailsDataService.mainData?.truckNumber;
             messageText = 'Truck - ' + repairTruckNum;
          }
-         else if ( this.httpRequest.body?.trailerId ) {
-            let repairTrailerId = this.httpRequest.body?.truckId;
-            let repairTrailerNum = this.storesArray.trailerActive.entities[repairTrailerId] ? this.storesArray.trailerActive.entities[repairTrailerId].trailerNumber : '';
-            if ( !repairTrailerNum ) {
-              repairTrailerNum = this.storesArray.truckInactive.entities[repairTrailerId].trailerNumber;
-            }
-
+         else if ( this.DetailsDataService.mainData?.trailerNum ) {
+            let repairTrailerNum = this.DetailsDataService.mainData?.trailerNum;
             messageText = 'Trailer - ' + repairTrailerNum;
          }
 
-         this.wideMessage = true;
+         //this.wideMessage = true;
          this.message = messageText;
       break;
       case 'INSPECTION': 

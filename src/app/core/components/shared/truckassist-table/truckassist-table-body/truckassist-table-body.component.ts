@@ -183,6 +183,11 @@ export class TruckassistTableBodyComponent
       }
 
       this.viewDataEmpty = this.viewData.length;
+    
+      if (changes.viewData.currentValue[0]){
+        this.DetailsDataService.setNewData(changes.viewData.currentValue[0]);
+      }
+      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
@@ -335,7 +340,6 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
-
     this.DetailsDataService.setNewData(row);
     this.router.navigate([link]);
   }

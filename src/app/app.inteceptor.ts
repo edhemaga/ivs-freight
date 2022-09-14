@@ -19,14 +19,13 @@ export class AppInterceptor implements HttpInterceptor {
             
             return throwError(() => new Error(error.statusText));
         }), 
-        finalize(() => {
-          //console.log('----finalize---'); 
-          //console.log('----httpRequest---', httpRequest);
+        tap({
+          complete: () => {
           if ( httpRequest.url.indexOf('api') > -1 && httpRequest.method != 'GET' ){
-            //this.notificationService.successToastr(httpRequest, next);
+            this.notificationService.successToastr(httpRequest, next);
           }
-          
-        })
+          }
+        }),
     );
 
    
