@@ -267,8 +267,9 @@ export class DispatchboardTablesComponent implements OnInit {
     this.statusOpenedIndex = -1;
   }
 
+
+
   openIndex(indx: number) {
-    console.log('INDEX ON OPEN', indx);
     this.statusOpenedIndex = indx;
   }
 

@@ -1103,7 +1103,7 @@
     &.history_board {
       svg {
         path {
-          fill: #dadada;
+          fill: #AAAAAA;
         }
       }
     }
@@ -1121,7 +1121,7 @@
       }
     }
 
-    &:hover:not(.live_board) {
+    &:hover:not(.live_board):not(.search_board) {
       svg-icon {
         path {
           fill: #5673aa;
@@ -1146,36 +1146,6 @@
       svg-icon {
         margin: auto !important;
         display: flex;
-      }
-
-      // &.lock-unlock {
-      //   width: 30px;
-      //   display: flex;
-      //   align-items: center;
-      //   justify-content: flex-start;
-      // }
-    }
-
-    svg-icon {
-      margin-left: 15px;
-
-      svg {
-        path,
-        rect,
-        circle {
-          //transition: 0.3s;
-        }
-      }
-
-      &:hover {
-        svg {
-          path,
-          rect,
-          circle {
-            fill: $app-main-blue;
-            //transition: 0.3s;
-          }
-        }
       }
     }
   }
