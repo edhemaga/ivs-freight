@@ -993,6 +993,20 @@ export class TaInputComponent
       }
     }
 
+    if (
+      ['full parking slot', 'parking slot'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
+        this.disableConsecutivelySpaces(event);
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+
     // if (['account name'].includes(this.inputConfig.name.toLowerCase())) {
     //   if (/^[A-Za-z .,&'()-]*$/.test(String.fromCharCode(event.charCode))) {
     //     this.disableConsecutivelySpaces(event);
@@ -1020,20 +1034,6 @@ export class TaInputComponent
     //   } else {
     //     this.disableConsecutivelySpaces(event);
     //     return true;
-    //   }
-    // }
-
-    // if (
-    //   ['full parking slot', 'parking slot'].includes(
-    //     this.inputConfig.name.toLowerCase()
-    //   )
-    // ) {
-    //   if (/^[0-9,-]*$/.test(String.fromCharCode(event.charCode))) {
-    //     this.disableConsecutivelySpaces(event);
-    //     return true;
-    //   } else {
-    //     event.preventDefault();
-    //     return false;
     //   }
     // }
 
