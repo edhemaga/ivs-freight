@@ -34,11 +34,13 @@
   <!-- Input Clear -->
   <div
     *ngIf="
-      !inputConfig.hideClear &&
-      !inputConfig.isDisabled &&
-      !inputConfig.customClass?.includes('details-pages') &&
-      !inputConfig.commands?.active &&
-      !inputConfig?.loadingSpinner?.isLoading
+      (!inputConfig.hideClear &&
+        !inputConfig.isDisabled &&
+        !inputConfig.customClass?.includes('details-pages') &&
+        !inputConfig.commands?.active &&
+        !inputConfig?.loadingSpinner?.isLoading) ||
+      (inputConfig.commands?.active &&
+        inputConfig.commands.type !== 'pm-increment-decrement')
     "
     class="input-clear {{ inputConfig.customClass }}"
     [ngClass]="{

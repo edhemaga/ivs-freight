@@ -236,16 +236,6 @@
         (selectedItem)="onSelectDropdown($event, 'engine-type')"
       ></app-ta-input-dropdown> -->
 
-        <!-- <app-ta-input
-      formControlName="ipasEzpass"
-      [inputConfig]="{
-        name: 'IPAS EZPASS',
-        type: 'text',
-        label: 'IPAS/EZPASS',
-        maxLength: 14
-      }"
-    ></app-ta-input> -->
-
         <!-- First Row -->
         <div class="truck-additional-two-columns">
           <app-ta-input-dropdown
@@ -477,19 +467,28 @@
             }"
           ></app-ta-input>
 
-          <app-ta-input-arrows
+          <app-ta-input
             formControlName="fhwaexp"
             [inputConfig]="{
               name: 'months',
               type: 'text',
-              placeholderText: 'months'
+              placeholderText: 'months',
+              label: 'FHWA Exp.',
+              isRequired: true,
+              commands: {
+                active: true,
+                type: 'months',
+                firstCommand: {
+                  name: 'minus',
+                  svg: 'assets/svg/common/ic_pm_decrement.svg'
+                },
+                secondCommand: {
+                  name: 'plus',
+                  svg: 'assets/svg/common/ic_pm_increment.svg'
+                }
+              }
             }"
-            [elementOrder]="1"
-            [name]="'FHWA Exp.'"
-            [type]="'truck-modal'"
-            [required]="true"
-          >
-          </app-ta-input-arrows>
+          ></app-ta-input>
         </div>
 
         <!-- Eight Row -->

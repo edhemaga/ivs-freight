@@ -635,6 +635,42 @@ export class TaInputComponent
         this.onBlur();
         break;
       }
+      case 'months': {
+        switch (action) {
+          case 'minus': {
+            if (
+              parseInt(this.getSuperControl.value) === 1 ||
+              !this.getSuperControl.value
+            ) {
+              return;
+            }
+
+            this.getSuperControl.patchValue(
+              (this.getSuperControl.value
+                ? parseInt(this.getSuperControl.value)
+                : 0) - 1
+            );
+            break;
+          }
+          case 'plus': {
+            if (parseInt(this.getSuperControl.value) === 12) {
+              return;
+            }
+            this.getSuperControl.patchValue(
+              (this.getSuperControl.value
+                ? parseInt(this.getSuperControl.value)
+                : 0) + 1
+            );
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+        clearTimeout(this.timeout);
+        this.setInputCursorAtTheEnd(this.input.nativeElement);
+        break;
+      }
       default: {
         break;
       }
