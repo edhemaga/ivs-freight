@@ -73,11 +73,12 @@
             .route-free-drag-area {
                 position: absolute;
                 right: 0;
-                top: 0;
+                top: 62px;
                 width: calc( 100% - 390px );
-                height: 100%;
+                height: calc( 100% - 62px );
 
                 pointer-events: none;
+                overflow: hidden;
 
                 &.cdk-drop-list-receiving, &.cdk-drop-list-dragging {
                     pointer-events: all;
@@ -143,10 +144,12 @@
     max-height: 500px;
     max-width: 500px;
 
-    transition: width 0.2s, height 0.2s;
+    transition: width 0.2s, height 0.2s, padding-right 0.2s;
 
     pointer-events: all;
     cursor: pointer;
+
+    z-index: 1;
 
     .cdk-drop-list-dragging .selected-route {
         opacity: 0.2;

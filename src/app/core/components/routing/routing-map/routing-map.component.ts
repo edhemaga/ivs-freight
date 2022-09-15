@@ -66,7 +66,6 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: any) {
     const key = event.keyCode;
-    console.log('document:keydown key', key);
 
     if (key === 9) {
       /* Tab switch routes */
@@ -529,27 +528,14 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   dropRoutes(event: CdkDragDrop<string[]>) {
     console.log('dropRoutes', event);
     
-    if (event.previousContainer === event.container && event.previousIndex !== event.currentIndex) {
-      console.log('dropRoutes same container', event.container.data);
+    if (event.previousContainer === event.container && event.previousIndex !== event.currentIndex && event.container.id == "cdk-drop-list-0") {
+      var orderPosition = this.findReorderPosition(event.previousIndex, event.currentIndex);
+      const previousIndex = orderPosition[0];
+      const nextIndex = orderPosition[1];
+      
+      console.log('dropRoutes moveItemInArray same container');
 
-      var nextIndex = event.currentIndex;
-
-      // this.tableData[this.selectedMapIndex].routes.map((item, index) => {
-      //   if ( event.previousIndex < event.currentIndex ) {
-      //     if ( item.freeMove && index <= event.currentIndex ) {
-      //       nextIndex++;
-      //     }
-      //   } else {
-      //     if ( item.freeMove && index >= event.currentIndex ) {
-      //       nextIndex--;
-      //     }
-      //   }
-      // });
-
-      // console.log('event.currentIndex', event.currentIndex);
-      // console.log('nextIndex', nextIndex);
-
-      moveItemInArray(event.container.data, event.previousIndex, nextIndex);
+      moveItemInArray(event.container.data, previousIndex, nextIndex);
     } else if ( event.previousContainer !== event.container ) {
       console.log('dropRoutes different container', event.item.data);
       // transferArrayItem(
@@ -563,21 +549,38 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
       if ( !this.changedFreeMoveTime || (currentTime - this.changedFreeMoveTime) > 100 ) {
         event.item.data.freeMove = !event.item.data.freeMove;
-        moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+        if ( event.container.id == "cdk-drop-list-0" ) {
+          var orderPosition = this.findReorderPositionById(event.item.data.id, event.currentIndex);
+          const previousIndex = orderPosition[0];
+          const nextIndex = orderPosition[1];
+
+          console.log('dropRoutes moveItemInArray different container', orderPosition[0], orderPosition[1], event.previousIndex, event.currentIndex);
+          moveItemInArray(event.container.data, previousIndex, nextIndex);
+        }
       }
 
-      event.item.data.y=(this._pointerPosition.y-this.off.y*this.scaleY-this.dropZone.nativeElement.getBoundingClientRect().top);
-      event.item.data.x=(this._pointerPosition.x-this.off.x*this.scaleX-this.dropZone.nativeElement.getBoundingClientRect().left);
-      this.changeZIndex(event.item.data);
-
+      const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
       const rectElement = event.item.element.nativeElement.getBoundingClientRect();
+
+      event.item.data.y=(this._pointerPosition.y-this.off.y*this.scaleY-rectZone.top);
+      event.item.data.x=(this._pointerPosition.x-this.off.x*this.scaleX-rectZone.left);
+      //this.changeZIndex(event.item.data);
+
+      const out = event.item.data.y<0 || 
+                  event.item.data.x<0 || 
+                  (event.item.data.y>(rectZone.height-rectElement.height)) || 
+                  (event.item.data.x>(rectZone.width-rectElement.width));
+
       var overlap = this.checkOverlap(event.item.data, event.item.data.x, event.item.data.y, event.item.data.x + rectElement.width, event.item.data.y + rectElement.height);
     
       console.log('dropRoutes overlap', overlap);
 
-      if ( event.container.id == "cdk-drop-list-1" && overlap ) {
+      if ( event.container.id == "cdk-drop-list-1" && (overlap || out) ) {
         event.item.data.freeMove = false;
       }
+
+      console.log('dropRoutes data', event.item.data);
     }
 
     this.posInside = {source:null,x:0,y:0}
@@ -633,7 +636,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     if (!out && !overlap) {
        field.y = y;
        field.x = x;
-       this.changeZIndex(field);
+       //this.changeZIndex(field);
        //this.freeRangeRoutesArray = this.freeRangeRoutesArray.sort((a,b)=>a['z-index']>b['z-index']?1:a['z-index']<b['z-index']?-1:0);
     }
     else if (!overlap)  {
@@ -641,7 +644,12 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         field.freeMove = false;
         this.changedFreeMoveTime = new Date().getTime();
 
-        moveItemInArray(event.container.data, event.previousIndex, event.container.data.length-1);
+        var orderPosition = this.findReorderPositionById(event.item.data.id, event.currentIndex);
+        const previousIndex = orderPosition[0];
+        const nextIndex = orderPosition[1];
+
+        moveItemInArray(event.container.data, previousIndex, event.container.data.length-1);
+        console.log('checkPosition moveItemInArray');
       }
 
       //this.tableData[this.selectedMapIndex].routes.push(field);
@@ -649,14 +657,15 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     }
 
     if ( overlap ) {
-      field.y = field.y+0.000001;
-      field.x = field.x+0.000001;
+      field.y = field.y+0.0001;
+      field.x = field.x+0.0001;
       console.log('changePosition overlap field', field);
     }
+    console.log('changePosition data', field);
   }
 
   changeZIndex(item:any) {
-    this.freeRangeRoutesArray.forEach(x=>x['z-index']=(x==item?100:0));
+    this.tableData[this.selectedMapIndex].routes.forEach(x=>x['z-index']=(x==item?100:0));
   }
 
   dropStops(event: CdkDragDrop<string[]>, dropArray, index) {
@@ -682,6 +691,37 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     route.expanded = !route.expanded;
     this.calculateRouteWidth(route);
     setTimeout(() => {
+      if ( route.freeMove && route.expanded ) {
+        const rectZone = this.dropZone.nativeElement.getBoundingClientRect();
+        const routeElement: HTMLElement = document.querySelector('[data-id="'+route.id+'"]');
+        const rectElement = routeElement.getBoundingClientRect();
+  
+        const out = route.y<0 || 
+                    route.x<0 || 
+                    (route.y>(rectZone.height-rectElement.height)) || 
+                    (route.x>(rectZone.width-rectElement.width));
+  
+        if ( rectElement.right > rectZone.right - 20 ) {
+          route.x -= rectElement.right - rectZone.right + 20;
+
+          routeElement.style.transition = 'all 0.2s';
+          setTimeout(() => {
+            routeElement.style.transition = '';
+          }, 100);
+        }
+        if ( rectElement.bottom > rectZone.bottom - 10 ) {
+          route.y -= rectElement.bottom - rectZone.bottom + 10;
+
+          routeElement.style.transition = 'all 0.2s';
+          setTimeout(() => {
+            routeElement.style.transition = '';
+          }, 100);
+        }
+  
+        console.log('expand route rectZone', rectZone);
+        console.log('expand route rectElement', rectElement);
+      }
+
       route.expandFinished = !route.expandFinished;
       this.ref.detectChanges();
     }, 150);
@@ -1827,5 +1867,48 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
 
   focusInput(event, routeIndex) {
     console.log('focusInput', event, routeIndex);
+  }
+
+  findReorderPosition(previousElementIndex, nextElementIndex) {
+    var cardElements = document.querySelectorAll('.route-card-scroll .route-info-card');
+
+    var previousId = parseInt(cardElements[previousElementIndex].getAttribute('data-id'));
+    var nextId = parseInt(cardElements[nextElementIndex].getAttribute('data-id'));
+
+    const previousIndex = this.tableData[this.selectedMapIndex].routes.findIndex((route) => {
+      return route.id === previousId;
+    });
+
+    const nextIndex = this.tableData[this.selectedMapIndex].routes.findIndex((route) => {
+      return route.id === nextId;
+    });
+
+    return [previousIndex, nextIndex];
+  }
+
+  findReorderPositionById(cardId, elementIndex) {
+    var cardElements = document.querySelectorAll('.route-card-scroll .route-info-card');
+
+    const previousIndex = this.tableData[this.selectedMapIndex].routes.findIndex((route) => {
+      return route.id === cardId;
+    });
+
+    var nextId = 0;
+    var nextIndex = elementIndex;
+
+    if ( elementIndex > cardElements.length-1 ) {
+      nextIndex = this.tableData[this.selectedMapIndex].routes.length;
+    } else {
+      nextId = parseInt(cardElements[elementIndex].getAttribute('data-id'));
+    
+      nextIndex = this.tableData[this.selectedMapIndex].routes.findIndex((route) => {
+        return route.id === nextId;
+      });
+    }
+
+    if ( previousIndex > nextIndex ) nextIndex++;
+    if ( nextIndex < 1 ) nextIndex = 1;
+
+    return [previousIndex, nextIndex-1];
   }
 }

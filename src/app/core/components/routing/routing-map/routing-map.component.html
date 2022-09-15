@@ -503,7 +503,7 @@
             (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
             (mouseenter)="hoverRoute(route)"
             (mouseleave)="leaveRouteHover(route)"
-            (cdkDragStarted)="changeZIndex(item)"
+            (cdkDragStarted)="changeZIndex(route)"
             (cdkDragDropped)="changePosition($event, route)"
             [cdkDragData]="route"
             [ngClass]="{
@@ -511,12 +511,11 @@
               'expanded-card': route.expanded
             }"
             [ngStyle]="{
-              position: 'absolute',
               width: route.width ? route.width : '312px',
               'padding-right': route.hover && !route.hidden ? '14px' : '4px',
               top: route.y + 'px',
               left: route.x + 'px',
-              zIndex: route.z-index
+              zIndex: route.z-index ? route.z-index : '0'
             }"
           >
             <div class="route-info-header">
