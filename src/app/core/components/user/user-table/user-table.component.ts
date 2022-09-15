@@ -328,6 +328,8 @@ export class UserTableComponent implements OnInit, AfterViewInit, OnDestroy {
       // for (let i = 0; i < 300; i++) {
       //   this.viewData.push(this.viewData[0]);
       // }
+    }else {
+      this.viewData = [];
     }
   }
 
