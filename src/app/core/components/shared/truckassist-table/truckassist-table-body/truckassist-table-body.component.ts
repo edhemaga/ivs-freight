@@ -182,11 +182,11 @@ export class TruckassistTableBodyComponent
           this.getSelectedTabTableData();
         }, 10);
       }
-      this.viewDataEmpty = this.viewData.length;
-    
+      
       if (changes.viewData.currentValue[0]){
         this.DetailsDataService.setNewData(changes.viewData.currentValue[0]);
       }
+      
     }
 
     if (!changes?.tableData?.firstChange && changes?.tableData) {
