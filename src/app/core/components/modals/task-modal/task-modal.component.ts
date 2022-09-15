@@ -303,7 +303,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             'Task successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Task can't be updated.", 'Error:');
@@ -335,7 +334,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             'Task successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Task can't be added.", 'Error:');
@@ -353,10 +351,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             'Task successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Task can't be deleted.", 'Error:');

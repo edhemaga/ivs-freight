@@ -350,7 +350,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             `Trailer "${trailerUnit} added"`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -371,10 +370,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             `Trailer "${trailerUnit}" deleted`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error(

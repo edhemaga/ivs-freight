@@ -789,10 +789,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             `Broker "${businessName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -857,10 +853,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be updated.", 'Error:');
@@ -878,10 +870,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be deleted.", 'Error:');

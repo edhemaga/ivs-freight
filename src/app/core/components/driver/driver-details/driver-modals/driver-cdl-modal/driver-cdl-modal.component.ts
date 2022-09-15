@@ -243,7 +243,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("CDL can't be updated.", 'Error:');
@@ -278,7 +277,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("CDL can't be added.", 'Error:');

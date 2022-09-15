@@ -646,7 +646,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error("Truck can't be created.", 'Error:'),
@@ -716,7 +715,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error("Truck can't be updated.", 'Error:'),
@@ -733,10 +731,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             'Truck successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () =>
           this.notificationService.error("Truck can't be deleted.", 'Error:'),

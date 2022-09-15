@@ -1028,7 +1028,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully added company division',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Can't add company division", 'Error');
@@ -1245,7 +1244,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully updated company division',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -1266,10 +1264,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully delete company division',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -1549,7 +1543,6 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
             'Successfully update your main company',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Can't update main company!", 'Error');

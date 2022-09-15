@@ -227,11 +227,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
               });
 
               this.notificationService.success(successMessage, 'Success');
-
-              this.modalService.setModalSpinner({
-                action: null,
-                status: false,
-              });
             }
           },
           error: () => {
@@ -1236,10 +1231,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'CREATED DRIVER'
           );
 
-          this.modalService.setModalSpinner({
-            action: this.addNewAfterSave ? 'save and add new' : null,
-            status: false,
-          });
           // If clicked Save and Add New, reset form and fields
           if (this.addNewAfterSave) {
             this.formService.resetForm(this.driverForm);
@@ -1546,7 +1537,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             `Changes saved for "${driverFullName}" `,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () =>
           this.notificationService.error(
@@ -1732,10 +1722,6 @@ export class DriverModalComponent implements OnInit, OnDestroy {
             'Driver successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Driver can't be deleted.", 'Error:');

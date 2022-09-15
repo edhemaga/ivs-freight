@@ -661,7 +661,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully created.',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Repair can't be created.", 'Error');
@@ -744,7 +743,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully updated.',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Repair can't be updated.", 'Error');
@@ -765,10 +763,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             'Repair successfully deleted.',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Repair can't be deleted.", 'Error');

@@ -463,10 +463,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             'Successfully added PM Item in PM List',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -513,10 +509,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             'Successfully added PM Item in PM List',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -562,10 +554,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             'Successfully added PM Item in PM Unit List',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -611,10 +599,6 @@ export class RepairPmModalComponent implements OnInit, OnDestroy {
             'Successfully added PM Item in PM List',
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

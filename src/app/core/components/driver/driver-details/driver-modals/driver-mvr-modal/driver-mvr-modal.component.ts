@@ -153,7 +153,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             'MVR successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("MVR can't be updated.", 'Error:');
@@ -178,7 +177,6 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             'MVR successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("MVR can't be added.", 'Error:');
