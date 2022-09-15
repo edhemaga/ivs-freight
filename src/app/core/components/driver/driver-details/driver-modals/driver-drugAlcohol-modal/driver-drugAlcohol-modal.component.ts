@@ -208,7 +208,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             'Test successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Test can't be added.", 'Error:');
@@ -236,7 +235,6 @@ export class DriverDrugAlcoholModalComponent implements OnInit, OnDestroy {
             'Test successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Test can't be added.", 'Error:');

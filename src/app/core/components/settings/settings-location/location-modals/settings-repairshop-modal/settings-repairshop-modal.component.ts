@@ -22,6 +22,7 @@ import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
 import { RepairTService } from '../../../../repair/state/repair.service';
+import { repairShopValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   convertThousanSepInNumber,
   convertNumberInThousandSep,
@@ -95,7 +96,7 @@ export class SettingsRepairshopModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.repairShopForm = this.formBuilder.group({
       companyOwned: [false],
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...repairShopValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],

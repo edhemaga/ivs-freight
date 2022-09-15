@@ -557,7 +557,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             `Shipper "${shipperBuisnisName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -609,7 +608,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully updated.',
             'Error:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Shipper can't be updated.", 'Error:');
@@ -627,10 +625,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             'Shipper successfully deleted.',
             'Error:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Shipper can't be deleted.", 'Error:');

@@ -11,12 +11,7 @@
  */
 
 
-export interface TodoUserResponse { 
-    id?: number;
-    companyUserId?: number;
-    firstName?: string | null;
-    lastName?: string | null;
-    avatar?: string | null;
-    todoId?: number;
+export interface VerifyDriverCommand { 
+    code?: number;
 }
 

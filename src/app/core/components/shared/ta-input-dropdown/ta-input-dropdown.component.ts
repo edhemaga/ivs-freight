@@ -796,7 +796,7 @@ export class TaInputDropdownComponent
     );
   }
 
-  public delteAllMultiSelectItems(event: any) {
+  public deleteAllMultiSelectItems() {
     this.multiselectItems = [];
     this.inputConfig.multiSelectDropdownActive = null;
     this.inputConfig.label = this.multiSelectLabel;

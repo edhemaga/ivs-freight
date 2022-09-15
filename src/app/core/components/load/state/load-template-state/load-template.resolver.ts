@@ -19,6 +19,8 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
     return this.loadService
       .getLoadTemplateList(
         undefined,
+        undefined,
+        undefined,
         1,
         25
       )
@@ -27,15 +29,15 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
           return of('No load template data...');
         }),
         tap((loadPagination: LoadTemplateListResponse) => {
-         /*  localStorage.setItem(
+          localStorage.setItem(
             'loadTableCount',
             JSON.stringify({
               pendingCount: loadPagination.pendingCount,
               activeCount: loadPagination.activeCount,
               closedCount: loadPagination.closedCount,
-              templateCount: loadPagination.templateCount,
+              templateCount: loadPagination.pagination.count,
             })
-          ); */
+          );
 
           this.loadTemplateStore.set(loadPagination.pagination.data);
         })

@@ -18,6 +18,10 @@ import {
   convertDateFromBackend,
   convertDateToBackend,
 } from '../../../../../utils/methods.calculations';
+import {
+  cdlCANADAValidation,
+  cdlUSValidation,
+} from 'src/app/core/components/shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-driver-cdl-modal',
@@ -44,6 +48,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   public selectedClassType: any = null;
 
   public selectedStateType: any = null;
+  public selectedCountryType: string = 'US';
 
   public documents: any[] = [];
 
@@ -60,18 +65,24 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
     this.getCdlDropdowns();
+    this.createForm();
     this.getDriverById(this.editData.id);
 
     if (this.editData.type === 'edit-licence') {
       this.getCdlById();
     }
+
+    if (this.editData.type === 'renew-licence') {
+      this.populateCdlForm(this.editData.renewData);
+    }
   }
 
   private createForm() {
+    const cdlCountryTypeValidation =
+      this.selectedCountryType === 'US' ? cdlUSValidation : cdlCANADAValidation;
     this.cdlForm = this.formBuilder.group({
-      cdlNumber: [null, Validators.required],
+      cdlNumber: [null, [Validators.required, ...cdlCountryTypeValidation]],
       issueDate: [null, Validators.required],
       expDate: [null, Validators.required],
       classType: [null, Validators.required],
@@ -146,6 +157,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetCdlModalResponse) => {
+          this.selectedCountryType = res.country?.name;
           this.stateTypes = res.states.map((item) => {
             return {
               id: item.id,
@@ -178,6 +190,23 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
           this.notificationService.error("Driver can't be loaded.", 'Error:');
         },
       });
+  }
+
+  public populateCdlForm(res: any) {
+    this.cdlForm.patchValue({
+      cdlNumber: res.cdlNumber,
+      issueDate: convertDateFromBackend(res.issueDate),
+      expDate: convertDateFromBackend(res.expDate),
+      classType: res.classType.name,
+      stateId: res.state.stateName,
+      restrictions: null,
+      endorsements: null,
+      note: res.note,
+    });
+    this.selectedEndorsment = res.cdlEndorsements;
+    this.selectedRestrictions = res.cdlRestrictions;
+    this.selectedClassType = res.classType;
+    this.selectedStateType = res.state;
   }
 
   public getCdlById() {
@@ -235,7 +264,6 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
             'CDL successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("CDL can't be updated.", 'Error:');
@@ -261,21 +289,38 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
         : [],
     };
 
-    this.cdlService
-      .addCdl(newData)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.notificationService.success(
-            'CDL successfully added.',
-            'Success:'
-          );
-          this.modalService.setModalSpinner({ action: null, status: false });
-        },
-        error: () => {
-          this.notificationService.error("CDL can't be added.", 'Error:');
-        },
-      });
+    if (this.editData.type === 'renew-licence') {
+      const { driverId, ...renewData } = newData;
+      this.cdlService
+        .renewCdlUpdate({ ...renewData, id: this.editData.file_id })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success('Succesfully.', 'Success');
+          },
+          error: () => {
+            this.notificationService.error(
+              "Can't execute this operation.",
+              'Error'
+            );
+          },
+        });
+    } else {
+      this.cdlService
+        .addCdl(newData)
+        .pipe(takeUntil(this.destroy$))
+        .subscribe({
+          next: () => {
+            this.notificationService.success(
+              'CDL successfully added.',
+              'Success:'
+            );
+          },
+          error: () => {
+            this.notificationService.error("CDL can't be added.", 'Error:');
+          },
+        });
+    }
   }
 
   public onFilesEvent(event: any) {

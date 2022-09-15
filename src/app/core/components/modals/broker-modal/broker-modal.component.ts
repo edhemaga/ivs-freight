@@ -42,6 +42,11 @@ import { FormService } from '../../../services/form/form.service';
 import { NotificationService } from '../../../services/notification/notification.service';
 import { ReviewsRatingService } from '../../../services/reviews-rating/reviewsRating.service';
 import { convertNumberInThousandSep } from '../../../utils/methods.calculations';
+import { poBoxValidation } from '../../shared/ta-input/ta-input.regex-validations';
+import {
+  name2_24Validation,
+  creditLimitValidation,
+} from '../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-broker-modal',
@@ -186,7 +191,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.brokerForm = this.formBuilder.group({
       businessName: [null, [Validators.required, ...businessNameValidation]],
-      dbaName: [null],
+      dbaName: [null, name2_24Validation],
       mcNumber: [null, [...mcFFValidation]],
       ein: [null, [einNumberRegex]],
       email: [null],
@@ -194,17 +199,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
       // Physical Address
       physicalAddress: [null, [Validators.required, ...addressValidation]],
       physicalAddressUnit: [null, [...addressUnitValidation]],
-      physicalPoBox: [null],
+      physicalPoBox: [null, poBoxValidation],
       physicalPoBoxCity: [null, [...addressValidation]],
       // Billing Address
       isCheckedBillingAddress: [true],
       billingAddress: [null, [...addressValidation]],
       billingAddressUnit: [null, [...addressUnitValidation]],
-      billingPoBox: [null],
+      billingPoBox: [null, poBoxValidation],
       billingPoBoxCity: [null, [...addressValidation]],
       isCredit: [true],
       creditType: ['Custom'], // Custom | Unlimited
-      creditLimit: [null],
+      creditLimit: [null, creditLimitValidation],
       availableCredit: [null],
       payTerm: [null],
       note: [null],
@@ -772,10 +777,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             `Broker "${businessName}" added`,
             'Success'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -840,10 +841,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be updated.", 'Error:');
@@ -861,10 +858,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             'Broker successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Broker can't be deleted.", 'Error:');
