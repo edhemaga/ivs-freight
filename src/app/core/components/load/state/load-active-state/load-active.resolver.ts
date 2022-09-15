@@ -29,7 +29,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
         undefined,
         undefined,
         1,
-        25,
+        25
       )
       .pipe(
         catchError(() => {
@@ -42,7 +42,7 @@ export class LoadActiveResolver implements Resolve<LoadActiveState> {
               pendingCount: loadPagination.pendingCount,
               activeCount: loadPagination.activeCount,
               closedCount: loadPagination.closedCount,
-              templateCount: /* loadPagination.templateCount */ 0,
+              templateCount: loadPagination.templateCount,
             })
           );
 
