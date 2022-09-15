@@ -1234,7 +1234,10 @@ export class DriverModalComponent implements OnInit, OnDestroy {
           // If clicked Save and Add New, reset form and fields
           if (this.addNewAfterSave) {
             this.formService.resetForm(this.driverForm);
-
+            this.modalService.setModalSpinner({
+              action: 'save and add new',
+              status: false,
+            });
             this.driverForm.get('ownerType').patchValue(null);
             this.driverForm.get('payType').patchValue(null);
 

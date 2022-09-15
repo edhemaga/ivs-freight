@@ -134,7 +134,7 @@
       'address-flag': inputConfig.addressFlag && isVisibleAddressFlag
     }"
     (keyup)="onBackspace($event)"
-    (input)="onChange($event.target.value)"
+    (input)="onChange($event.target.value); transformText($event.target.value)"
     (blur)="onBlur()"
     (focus)="onFocus()"
     (keypress)="manipulateWithInput($event)"

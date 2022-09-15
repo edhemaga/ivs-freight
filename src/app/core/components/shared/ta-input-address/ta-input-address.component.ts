@@ -306,6 +306,26 @@ export class TaInputAddressComponent
     }
   }
 
+  public transformText(event: any) {
+    switch (this.inputConfig.textTransform) {
+      case 'capitalize': {
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
+        break;
+      }
+      case 'uppercase': {
+        this.input.nativeElement.value = event.toLocaleUpperCase('en-US');
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
   public changeFlagText(event: Event) {
     this.changeAddressFlag = !this.changeAddressFlag;
     this.changeFlag.emit(this.changeAddressFlag);
