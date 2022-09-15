@@ -15,7 +15,7 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
           color: #fff !important;
 
           .dispatcher-close{
-            display: block !important;
+            display: block !important; 
           }
         }
       }
@@ -168,6 +168,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         &.truck_#{$truck_col} {
           .select_span {
             color: unquote('#' + $truck_col) !important;
+            &::-moz-selection {
+              color: unquote("#" + $truck_col) !important;
+              background: unquote("#" + $truck_col + "22") !important;
+            }
+        
+            &::selection {
+              color: unquote("#" + $truck_col) !important;
+              background: unquote("#" + $truck_col + "22") !important;
+            }
           }
         }
       }
@@ -176,6 +185,15 @@ $truck_collors: '97D568', 'FFB74D', 'E57373', '68C3FF', 'BA68C8', '59A5A5', '415
         &.trailer_#{$trailer_col} {
           .select_span {
             color: unquote('#' + $trailer_col) !important;
+            &::-moz-selection {
+              color: unquote("#" + $trailer_col) !important;
+              background: unquote("#" + $trailer_col + "22") !important;
+            }
+        
+            &::selection {
+              color: unquote("#" + $trailer_col) !important;
+              background: unquote("#" + $trailer_col+ "22") !important;
+            }
           }
         }
       }
@@ -1198,7 +1216,17 @@ kendo-grid .toolbar-container {
       div {
         font-size: 10px;
         font-weight: 700;
-        color: #b7b7b7;
+        color: #919191;
+
+        &::-moz-selection {
+          color: #919191 !important;
+          background: #91919122 !important;
+        }
+    
+        &::selection {
+          color: #6c6c6c !important;
+          background: #91919122 !important;
+        }
       }
     }
   }
@@ -1219,7 +1247,17 @@ kendo-grid .toolbar-container {
         div {
           font-size: 10px;
           font-weight: 700;
-          color: #b7b7b7;
+          color: #919191;
+  
+          &::-moz-selection {
+            color: #919191 !important;
+            background: #91919122 !important;
+          }
+      
+          &::selection {
+            color: #6c6c6c !important;
+            background: #91919122 !important;
+          }
         }
       }
     }
@@ -3060,5 +3098,15 @@ kendo-grid .toolbar-container {
   color: #919191;
   font-weight: 900;
   line-height: 32px;
+
+  &::-moz-selection {
+    color: #919191 !important;
+    background: #91919122 !important;
+  }
+
+  &::selection {
+    color: #6c6c6c !important;
+    background: #91919122 !important;
+  }
 }
 
