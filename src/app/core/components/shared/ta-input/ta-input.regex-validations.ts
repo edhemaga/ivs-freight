@@ -1,4 +1,5 @@
 import { Validators } from '@angular/forms';
+import moment from 'moment';
 
 //---------------- Bank Regex, Routing & Accounting Validation ----------------
 const brnv = require('bank-routing-number-validator');
@@ -46,7 +47,7 @@ export const ssnNumberRegex = Validators.pattern(/^\d{3}\-\d{2}\-\d{4}$/);
 
 //---------------- MC/FF --------------------
 export const mcFFValidation = [
-  Validators.minLength(6),
+  Validators.minLength(5),
   Validators.maxLength(6),
 ];
 
@@ -60,7 +61,7 @@ export const phoneExtension = [
 
 //---------------- Address & Address Unit -------------------
 export const addressValidation = [
-  Validators.minLength(12),
+  Validators.minLength(6),
   Validators.maxLength(256),
 ];
 
@@ -115,8 +116,17 @@ export const truckTrailerModelValidation = [
 export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
 //---------------- Year, month, day ---------------
+const yearRange =
+  parseInt(moment().add(1, 'year').format('YY').substring(1)) - 2;
 export const yearValidRegex = Validators.pattern(
-  /^(19[0-9]\d|20[0-4]\d|2100)$/
+  new RegExp(
+    `^(19[0-9]\\d|20[0-` +
+      yearRange +
+      `]\\d` +
+      `|` +
+      moment().add(1, 'year').format('YYYY') +
+      ')$'
+  )
 );
 
 export const yearValidation = [
@@ -155,7 +165,7 @@ export const licensePlateValidation = [
 
 //---------------- Description -------------------------
 export const descriptionValidation = [
-  Validators.minLength(20),
+  Validators.minLength(2),
   Validators.maxLength(160),
 ];
 
@@ -163,6 +173,65 @@ export const descriptionValidation = [
 export const labelValidation = [
   Validators.minLength(1),
   Validators.maxLength(32),
+];
+
+//---------------- dbaName --------------------------------
+export const creditLimitValidation = [
+  Validators.minLength(4),
+  Validators.maxLength(13),
+];
+
+//---------------- dbaName --------------------------------
+export const poBoxValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(6),
+];
+
+//---------------- Emergency Name, DBA Name --------------------------------
+export const name2_24Validation = [
+  Validators.minLength(2),
+  Validators.maxLength(24),
+];
+
+//---------------- Price --------------------------------
+export const priceValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(24),
+];
+
+//---------------- Trailer Volume --------------------------------
+export const trailerVolumeValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(7),
+];
+
+//---------------- Repair Odometer --------------------------------
+export const repairOdometerValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(7),
+];
+
+//---------------- Repair Odometer --------------------------------
+export const invoiceValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(7),
+];
+
+//---------------- Fuel Store Odometer --------------------------------
+export const fuelStoreValidation = [
+  Validators.minLength(2),
+  Validators.maxLength(32),
+];
+
+//---------------- CDL Validation --------------------------------
+export const cdlUSValidation = [
+  Validators.minLength(1),
+  Validators.maxLength(19),
+];
+
+export const cdlCANADAValidation = [
+  Validators.minLength(5),
+  Validators.maxLength(15),
 ];
 
 //---------------- Mile, PerStop -------------------
