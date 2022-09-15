@@ -249,8 +249,9 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
     }
 
     if (this.editData?.type === 'payroll-tab') {
-      this.tabChange({ id: 3 });
       const timeout = setTimeout(() => {
+        this.tabChange({ id: 3 });
+
         this.editCompany();
         clearTimeout(timeout);
       }, 150);
