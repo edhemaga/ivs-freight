@@ -1,3 +1,6 @@
+import { TrailersMinimalListStore } from './../state/trailer-minimal-list-state/trailer-minimal.store';
+import { TrailersMinimalListQuery } from './../state/trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerItemStore } from './../state/trailer-details-state/trailer-details.store';
 import { TrailerResponse } from './../../../../../../appcoretruckassist/model/trailerResponse';
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -5,13 +8,16 @@ import { TtFhwaInspectionModalComponent } from '../../modals/common-truck-traile
 import { TtRegistrationModalComponent } from '../../modals/common-truck-trailer-modals/tt-registration-modal/tt-registration-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TrailerTService } from '../state/trailer.service';
-import { TrailerModalComponent } from '../../modals/trailer-modal/trailer-modal.component';
-import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+import { Subject, take, takeUntil } from 'rxjs';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DropDownService } from 'src/app/core/services/details-page/drop-down.service';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TtTitleModalComponent } from '../../modals/common-truck-trailer-modals/tt-title-modal/tt-title-modal.component';
-import { Subject, takeUntil } from 'rxjs';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
-import { NotificationService } from '../../../services/notification/notification.service';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { Confirmation } from '../../modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationService } from '../../modals/confirmation-modal/confirmation.service';
+import { TrailerDetailsQuery } from '../state/trailer-details-state/trailer-details.query';
+import { TrailersDetailsListQuery } from '../state/trailer-details-list-state/trailer-details-list.query';
 
 @Component({
   selector: 'app-trailer-details',
@@ -24,6 +30,9 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
   public trailerDetailsConfig: any[] = [];
   public trailerId: number = null;
   public dataHeaderDropDown: any;
+  public trailerObject: any;
+  public trailerList: any = this.trailerMinimalQuery.getAll();
+  public currentIndex: number = 0;
   constructor(
     private activated_route: ActivatedRoute,
     private modalService: ModalService,
@@ -33,32 +42,68 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     private notificationService: NotificationService,
     private detailsPageDriverSer: DetailsPageService,
     private tableService: TruckassistTableService,
-    private trailerDetailsQuery: TrailerDetailsQuery
+    private trailerDetailListQuery: TrailersDetailsListQuery,
+    private dropService: DropDownService,
+    private confirmationService: ConfirmationService,
+    private trailerItemStore: TrailerItemStore,
+    private trailerMinimalQuery: TrailersMinimalListQuery,
+    private trailerMinimalStore: TrailersMinimalListStore
   ) {}
 
   ngOnInit(): void {
-    this.initTableOptions();
+    this.initTableOptions(this.activated_route.snapshot.data.trailer);
     this.tableService.currentActionAnimation
       .pipe(takeUntil(this.destroy$))
       .subscribe((res: any) => {
         if (res.animation) {
           this.trailerConf(res.data);
-
+          this.initTableOptions(res.data);
           this.cdRef.detectChanges();
         }
+      });
+    // Confirmation Subscribe
+    this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'trailer') {
+                this.deleteTrailerById(res.id);
+              }
+              break;
+            }
+            case 'activate': {
+              this.changeTrailerStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeTrailerStatus(res.id);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
       });
     this.detailsPageDriverSer.pageDetailChangeId$
       .pipe(takeUntil(this.destroy$))
       .subscribe((id) => {
         let query;
-        if (this.trailerDetailsQuery.hasEntity(id)) {
-          query = this.trailerDetailsQuery.selectEntity(id);
+        if (this.trailerDetailListQuery.hasEntity(id)) {
+          query = this.trailerDetailListQuery.selectEntity(id).pipe(take(1));
         } else {
           query = this.trailerService.getTrailerById(id);
         }
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: TrailerResponse) => {
+            this.currentIndex = this.trailerList.findIndex(
+              (trailer) => trailer.id === res.id
+            );
+
             this.trailerConf(res);
+            this.initTableOptions(res);
             this.router.navigate([`/trailer/${res.id}/details`]);
             this.notificationService.success(
               'Trailer successfully changed',
@@ -81,6 +126,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         name: 'Trailer Details',
         template: 'general',
         data: data,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 1,
@@ -88,6 +134,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         template: 'registration',
         data: data,
         length: data?.registrations?.length ? data.registrations.length : 0,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 2,
@@ -95,6 +142,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         template: 'fhwa-insepction',
         data: data,
         length: data?.inspections?.length ? data.inspections.length : 0,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 3,
@@ -102,6 +150,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         template: 'title',
         data: data,
         length: data?.titles?.length ? data.titles.length : 0,
+        status: data?.status == 0 ? true : false,
       },
       {
         id: 4,
@@ -109,12 +158,17 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         template: 'lease-purchase',
         length: 1,
         data: data,
+        status: data?.status == 0 ? true : false,
       },
     ];
     this.trailerId = data?.id ? data.id : null;
   }
   /**Function for dots in cards */
-  public initTableOptions(): void {
+  public initTableOptions(data: TrailerResponse): void {
+    this.currentIndex = this.trailerList.findIndex(
+      (trailer) => trailer.id === data.id
+    );
+    this.getTrailerById(data.id);
     this.dataHeaderDropDown = {
       disabledMutedStyle: null,
       toolbarActions: {
@@ -128,36 +182,31 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         minWidth: 60,
       },
       actions: [
-        // {
-        //   title: 'Send Message',
-        //   name: 'dm',
-        //   class: 'regular-text',
-        //   contentType: 'dm',
-        // },
-        // {
-        //   title: 'Print',
-        //   name: 'print',
-        //   class: 'regular-text',
-        //   contentType: 'print',
-        // },
-        // {
-        //   title: 'Deactivate',
-        //   name: 'deactivate',
-        //   class: 'regular-text',
-        //   contentType: 'deactivate',
-        // },
+        {
+          title: 'Print',
+          name: 'print-truck',
+          svg: 'assets/svg/common/ic_fax.svg',
+          show: true,
+        },
+
         {
           title: 'Edit',
           name: 'edit',
           svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
           show: true,
         },
-
+        {
+          title: data.status == 0 ? 'Activate' : 'Deactivate',
+          name: data.status == 0 ? 'activate' : 'deactivate',
+          svg: 'assets/svg/common/ic_deactivate.svg',
+          activate: data.status == 0 ? true : false,
+          deactivate: data.status == 1 ? true : false,
+          show: data.status == 1 || data.status == 0 ? true : false,
+        },
         {
           title: 'Delete',
           name: 'delete-item',
           type: 'truck',
-          text: 'Are you sure you want to delete truck(s)?',
           svg: 'assets/svg/common/ic_trash_updated.svg',
           danger: true,
           show: true,
@@ -166,45 +215,70 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
       export: true,
     };
   }
-  public onTrailerActions(event: any) {
-    switch (event.type) {
-      case 'edit': {
-        this.modalService.openModal(
-          TrailerModalComponent,
-          { size: 'small' },
-          {
-            ...event,
-            type: 'edit',
-            disableButton: true,
-            id: this.trailerId,
-          }
-        );
-        break;
-      }
-      case 'delete': {
-        this.trailerService
-          .deleteTrailerById(event.id)
-          .pipe(takeUntil(this.destroy$))
-          .subscribe({
-            next: () => {
-              this.notificationService.success(
-                'Trailer successfully deleted',
-                'Success:'
-              );
-            },
-            error: () => {
-              this.notificationService.error(
-                `Trailer with id: ${event.id} couldn't be deleted`,
-                'Error:'
-              );
-            },
-          });
-        break;
-      }
-      default: {
-        break;
-      }
+  public getTrailerById(id: number) {
+    this.trailerService
+      .getTrailerById(id, true)
+      .subscribe((item) => (this.trailerObject = item));
+  }
+  public deleteTrailerById(id: number) {
+    let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
+    let last = this.trailerList.at(-1);
+    if (
+      last.id === this.trailerMinimalStore.getValue().ids[this.currentIndex]
+    ) {
+      this.currentIndex = --this.currentIndex;
+    } else {
+      this.currentIndex = ++this.currentIndex;
     }
+    this.trailerList = this.trailerMinimalQuery.getAll();
+
+    this.trailerService
+      .deleteTrailerByIdDetails(id, status)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          if (this.trailerMinimalStore.getValue().ids.length >= 1) {
+            this.router.navigate([
+              `/trailer/${this.trailerList[this.currentIndex].id}/details`,
+            ]);
+          }
+          this.notificationService.success(
+            'Trailer successfully deleted',
+            'Success:'
+          );
+        },
+        error: () => {
+          this.router.navigate(['/trailer']);
+        },
+      });
+  }
+  public changeTrailerStatus(id: number) {
+    let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
+    this.trailerService
+      .changeTrailerStatus(id, status)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `Trailer successfully Change Status`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `Trailer with id: ${id}, status couldn't be changed`,
+            'Error:'
+          );
+        },
+      });
+  }
+  public onTrailerActions(event: any) {
+    this.dropService.dropActionHeaderTruck(
+      event,
+      this.trailerObject,
+      null,
+      event.id
+    );
   }
   public onModalAction(action: string): void {
     const trailer = this.activated_route.snapshot.data.trailer;

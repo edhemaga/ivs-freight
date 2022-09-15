@@ -265,7 +265,7 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
           this.profileUserForm.patchValue({
             firstName: res.firstName,
             lastName: res.lastName,
-            mobile: res.mobile,
+            mobile: res.phone,
             email: res.email,
             address: res.address.address,
             addressUnit: res.address.addressUnit,
@@ -313,7 +313,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             'Successfuly update profile',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
 
           const newUser = {
             ...this.user,

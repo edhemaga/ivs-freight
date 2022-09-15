@@ -142,15 +142,173 @@
   .country_state{
     &:hover{
         stroke: #fff;
-        stroke-width: 1.5px;
+        stroke-width: 2px;
         stroke-linejoin: round;
         filter: drop-shadow(0 0 2px rgb(0 0 0 / 7%));
+        &#IL{
+          transform: translate(-3765.27px, 1059px) scale(1.2);
+        }
+        &#IA_path{
+          transform: translate(-4358.631px, -2104.658px) scale(1.2);
+        }
+        &#Shape{
+          transform: translate(-4090.631px, -2006.658px) scale(1.2);
+        }
+        &#ID{
+          transform: translate(-3694.631px, 1074.658px) scale(1.2);
+        }
+        &#MT{
+          transform: translate(-3708.631px, 1077.658px) scale(1.2);
+        }
+        &#ND{
+          transform: translate(-3733.631px, 1074.658px) scale(1.2);
+        }
+        &#MN{
+          transform: translate(-3750.631px, 1072.658px) scale(1.2);
+        }
+        &#WI{
+          transform: translate(-3762.631px, 1068.658px) scale(1.2);
+        }
+        &#MI{
+          transform: translate(646px, 3124.658px) scale(1.2);
+        }
+        &#NY{
+          transform: translate(-3801px, 1070.658px) scale(1.2);
+        }
+        &#ME{
+          transform: translate(-3817px, 1077.658px) scale(1.2);
+        }
+        &#Shape-3{
+          transform: translate(-4064.631px, -2034.658px) scale(1.2);
+        }
+        &#WY_path{
+          transform: translate(-4201.631px, -2077.658px) scale(1.2);
+        }
+        &#SD{
+          transform: translate(-3733.631px, 1068.658px) scale(1.2);
+        }
+        &#IN{
+          transform: translate(-3775.27px, 1059px) scale(1.2);
+        }
+        &#OH{
+          transform: translate(-3784.27px, 1061px) scale(1.2);
+        }
+        &#PA{
+          transform: translate(-3797.27px, 1063px) scale(1.2);
+        }
+        &#CA_path{
+          transform: translate(-4052.27px, -2087px) scale(1.2);
+        }
+        &#NV{
+          transform: translate(-3685.27px, 1064px) scale(1.2);
+        }
+        &#UT{
+          transform: translate(-3699.27px, 1061px) scale(1.2);
+        }
+        &#CO{
+          transform: translate(-3717.27px, 1058px) scale(1.2);
+        }
+        &#NE{
+          transform: translate(-3734.27px, 1062px) scale(1.2);
+        }
+        &#KS{
+          transform: translate(-3738.27px, 1055px) scale(1.2);
+        }
+        &#MO_path{
+          transform: translate(-4368.27px, -2140px) scale(1.2);
+        }
+        &#KY{
+          transform: translate(-3777.27px, 1054px) scale(1.2);
+        }
+        &#WV{
+          transform: translate(722.27px, 3186px) scale(1.2);
+        }
+        &#VA{
+          transform: translate(-3796.27px, 1056px) scale(1.2);
+        }
+        &#TN{
+          transform: translate(-3772.27px, 1049px) scale(1.2);
+        }
+        &#NC{
+          transform: translate(-3794.27px, 1050.5px) scale(1.2);
+        }
+        &#AZ{
+          transform: translate(-3695.27px, 1048.5px) scale(1.2);
+        }
+        &#NM_path{
+          transform: translate(-4203.27px, -2174.5px) scale(1.2);
+        }
+        &#TX{
+          transform: translate(-3726.27px, 1038.5px) scale(1.2);
+        }
+        &#OK_path{
+          transform: translate(-4289.27px, -2179.5px) scale(1.2);
+        }
+        &#AR_path{
+          transform: translate(-4381.27px, -2187.5px) scale(1.2);
+        }
+        &#MS_path{
+          transform: translate(-4416.27px, -2206.5px) scale(1.2);
+        }
+        &#AL{
+          transform: translate(-3775.27px, 1043.5px) scale(1.2);
+        }
+        &#GA{
+          transform: translate(-3785.27px, 1043.5px) scale(1.2);
+        }
+        &#SC{
+          transform: translate(-3793.27px, 1046px) scale(1.2);
+        }
+        &#LA{
+          transform: translate(626.27px, 3265.5px) scale(1.2);
+        }
+        &#FL_path{
+          transform: translate(-4496.27px, -2249px) scale(1.2);
+        }
+        &#AK{
+          transform: translate(-10.73px, -10px) scale(1.2);
+        }
+        &#MD{
+          transform: translate(-4568.27px, -2128px) scale(1.2);
+        }
+        &#Path_38655{
+          transform: translate(-4589.27px, -2124px) scale(1.2);
+        }
+        &#VT{
+          transform: translate(-4595.27px, -2061px) scale(1.2);
+        }
+        &#NH{
+          transform: translate(-4607.7px, -2055px) scale(1.2);
+        }
+        &#MA{
+          transform: translate(-4602.7px, -2082px) scale(1.2);
+        }
     }
   }
 
   .country_state_letters{
       stroke: #fff;
-      stroke-width: 1.5px;
+      stroke-width: 2px;
       stroke-linejoin: round;
       filter: drop-shadow(0 0 2px rgb(0 0 0 / 7%));
+
+      &#MD{
+        transform: translate(-4568.27px, -2128px) scale(1.2);
+      }
+      &#Path_38655{
+        transform: translate(-4589.27px, -2124px) scale(1.2);
+      }
+      &#VT{
+        transform: translate(-4595.27px, -2061px) scale(1.2);
+      }
+      &#NH{
+        transform: translate(-4607.7px, -2055px) scale(1.2);
+      }
+      &#MA{
+        transform: translate(-4602.7px, -2082px) scale(1.2);
+      }
+  }
+
+  .country_text{
+    pointer-events: none !important;
   }

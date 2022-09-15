@@ -1230,6 +1230,8 @@
             name: 'Address',
             type: 'text',
             label: 'Location',
+            minLength: 6,
+            maxLength: 256,
             placeholderIcon: 'address',
             textTransform: 'capitalize',
             incorrectInput: selectedMode === 'REVIEW_MODE'

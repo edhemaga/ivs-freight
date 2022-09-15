@@ -325,37 +325,39 @@
         margin-bottom: 2px;
         padding: 4px 6px;
         border-radius: 2px;
+        font-size: 14px;
         background: $ta-light-grey-4;
         color: $bw6-2;
         transition: color 0.2s ease-in-out, background 0.2s ease-in-out;
 
-        .info-btn-container {
-          &:hover {
-            background: $ta-light-grey-4;
-            color: $ta-light-grey-3;
-          }
+        &:hover {
+          background: $bw2;
+          color: $ta-light-grey-3;
 
-          &:hover .btn-container {
-            opacity: 1;
-            visibility: visible !important;
-          }
-
-          &:hover .btn-container.active {
-            .edit-icon,
-            .delete-icon {
-              display: none !important;
+          .info-btn-container {
+            .btn-container {
+              .edit-icon,
+              .delete-icon {
+                opacity: 1;
+                visibility: visible;
+                display: flex;
+              }
             }
 
-            .review-icon-box {
-              .review-icon {
-                visibility: visible !important;
-                opacity: 1 !important;
+            .btn-container.active {
+              .review-icon-box {
+                .review-icon {
+                  visibility: visible !important;
+                  opacity: 1 !important;
+                }
               }
             }
           }
         }
 
         p {
+          line-height: 18px;
+
           &::-moz-selection {
             color: $bw6-2;
             background: rgb(108, 108, 108, 0.2);
@@ -387,13 +389,7 @@
           }
 
           &.description-box {
-            width: 185px;
             margin-right: 18px;
-          }
-
-          p {
-            font-size: 14px;
-            color: $bw6-2;
           }
         }
 
@@ -403,21 +399,13 @@
 
         .btn-container {
           width: 42px;
-          margin-left: auto !important;
-          visibility: hidden !important;
-          opacity: 0;
-          transition: opacity 0.2s ease-in-out;
 
           &.active {
-            visibility: visible !important;
-            opacity: 1 !important;
-
             .edit-icon,
             .delete-icon,
             .review-icon {
               visibility: hidden !important;
               opacity: 0 !important;
-              user-select: none !important;
 
               &.edit-icon,
               &.delete-icon {
@@ -433,8 +421,16 @@
 
           .edit-icon,
           .delete-icon,
-          .review-icon {
+          .review-icon,
+          .feedback-icon {
             cursor: pointer;
+            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+
+            svg {
+              path {
+                fill: $bw4;
+              }
+            }
 
             &:hover {
               svg {
@@ -445,14 +441,15 @@
               }
             }
 
-            svg {
-              path {
-                fill: $bw4;
-              }
-            }
+            &.edit-icon,
+            &.delete-icon {
+              margin-right: 4px;
+              opacity: 0;
+              visibility: hidden;
 
-            &.edit-icon {
-              margin-right: 6px;
+              &.delete-icon {
+                margin-right: 0;
+              }
             }
 
             &.review-icon {
@@ -464,7 +461,7 @@
 
                 rect {
                   transition: fill 0.3s ease-in-out;
-                  fill: $ta-light-grey-4 !important;
+                  fill: $bw2 !important;
                 }
               }
 
@@ -489,6 +486,16 @@
                   rect {
                     fill: $ta-red-3 !important;
                   }
+                }
+              }
+            }
+
+            &.feedback-icon {
+              margin-left: 4px;
+
+              svg {
+                path {
+                  fill: $ta-red-2;
                 }
               }
             }

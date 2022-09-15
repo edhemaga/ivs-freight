@@ -19,5 +19,8 @@ export interface DispatchBoardResponse {
     dispatches?: Array<DispatchResponse> | null;
     teamBoard?: boolean;
     dispatchCount?: number;
+    truckCount?: number;
+    trailerCount?: number;
+    driverCount?: number;
 }
 

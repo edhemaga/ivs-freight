@@ -29,7 +29,7 @@
     mainTooltip="Clear All"
     tooltipBackground="#6c6c6c"
     position="bottom"
-    (click)="delteAllMultiSelectItems($event)"
+    (click)="deleteAllMultiSelectItems()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
@@ -40,7 +40,7 @@
       multiselectItems.length > 0 &&
       template === 'multiselect'
     "
-    class="multiselect-items"
+    class="multiselect-items {{ multiselectTemplate }}"
   >
     <span
       class="multiselect-item"
@@ -70,7 +70,7 @@
       multiselectItems.length > 0 &&
       template === 'multiselect-res-endors'
     "
-    class="multiselect-items"
+    class="multiselect-items {{ multiselectTemplate }}"
   >
     <span
       class="multiselect-item"
@@ -233,8 +233,9 @@
       <!--------------------------- Grouping template (can see on contact modal)  --------------------------->
       <div *ngSwitchCase="'groups'">
         <div
-          *ngFor="let option of options; trackBy: identity"
+          *ngFor="let option of options; trackBy: identity; let i = index"
           class="dropdown-groups"
+          [ngClass]="{ 'last-group': i === options.length - 1 }"
         >
           <p
             *ngIf="options.length !== 1 && options[0].name !== 'No Results'"
@@ -243,7 +244,7 @@
             {{ option.groupName }}
           </p>
           <div
-            *ngFor="let item of option?.groups; trackBy: identity"
+            *ngFor="let item of option?.items; trackBy: identity"
             class="dropdown-subgroup-options"
             [ngClass]="{
               'no-result': options.length === 1 && item.name === 'No Results'
@@ -251,8 +252,8 @@
             (click)="onActiveItem(item)"
           >
             <img
-              class="dropdown-subgroup-image"
               *ngIf="item.svg"
+              class="dropdown-subgroup-image"
               [src]="item.svg"
               [alt]="item.name"
             />
@@ -359,6 +360,33 @@
             </div>
           </div>
         </div>
+      </div>
+      <div *ngSwitchCase="'dispatch'">
+        <div
+          *ngFor="let option of options; let indx = index; trackBy: identity"
+          class="dropdown-option"
+          (mouseleave)="hoveredOption = -1"
+          (mouseover)="hoveredOption = indx"
+          [ngStyle]="{
+            'background-color':
+              hoveredOption == indx ? '#' + option.colorD : 'inherit',
+            color: hoveredOption != indx ? '#' + option.colorD : '#fff'
+          }"
+          [ngClass]="{
+            disabled: option?.disabled,
+            'no-result':
+              options.length === 1 && options[0].name === 'No Results',
+            'add-new': option.name === 'Add New',
+            'add-new-divider': option.name === 'Add New' && options.length > 1,
+            active: option.id === activeItem?.id,
+            'active-repair-truck-trailer': option?.status === 1
+          }"
+          (click)="onActiveItem(option)"
+          [innerHtml]="
+            option.name
+              | taHighlight: [{ index: 45632, text: getSuperControl.value }]
+          "
+        ></div>
       </div>
       <!--------------------------- Default Template - Render Only Text --------------------------->
       <div *ngSwitchDefault>

@@ -11,8 +11,9 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DetailsActiveItemPipe } from '../../../../pipes/detailsActiveItem.pipe';
-import { DetailsPageService } from '../../../../services/details-page/details-page-ser.service';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
+import { DetailsActiveItemPipe } from 'src/app/core/pipes/detailsActiveItem.pipe';
+import { ImageBase64Service } from 'src/app/core/utils/base64.image';
 
 @Component({
   selector: 'app-settings-general',
@@ -37,13 +38,20 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   public companyDivision: boolean = false;
   public hasArrow: boolean;
 
-  constructor(private settingsCompanyService: SettingsCompanyService) {}
+  constructor(
+    private settingsCompanyService: SettingsCompanyService,
+    public imageBase64Service: ImageBase64Service
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes?.companyData?.currentValue?.divisions.length < 1) {
+    if (changes?.companyData?.currentValue?.divisions?.length < 1) {
       this.companyDivision = true;
+      this.hasArrow = true;
     } else {
       this.companyDivision = false;
+    }
+    if (changes?.companyData?.currentValue?.divisions?.length > 1) {
+      this.hasArrow = true;
     }
     if (
       changes?.companyData?.currentValue !== changes?.companyData?.previousValue
@@ -53,7 +61,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
   }
   ngOnInit(): void {
     let divisionArray = [];
-    this.optionsCompany.map((item) => {
+    this.optionsCompany?.map((item) => {
       if (item.isDivision == true) {
         this.companyDivision = true;
       } else {
@@ -68,8 +76,8 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
       }
     });
 
-    if (this.companyData.timeZone.name) {
-      this.timeZoneName = this.companyData.timeZone.name.substring(0, 7);
+    if (this.companyData?.timeZone?.name) {
+      this.timeZoneName = this.companyData?.timeZone?.name.substring(0, 7);
     }
   }
 

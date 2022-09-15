@@ -26,11 +26,9 @@ import { DispatchHistoryListResponse } from '../model/models';
 import { DispatchHistoryModalResponse } from '../model/models';
 import { DispatchModalResponse } from '../model/models';
 import { DispatchResponse } from '../model/models';
-import { EnumValue } from '../model/models';
 import { ProblemDetails } from '../model/models';
 import { ReorderDispatchesCommand } from '../model/models';
 import { SwitchDispatchesCommand } from '../model/models';
-import { UpdateDispatchBoardCommand } from '../model/models';
 import { UpdateDispatchCommand } from '../model/models';
 import { UpdateDispatchStatusCommand } from '../model/models';
 
@@ -207,6 +205,7 @@ export class DispatchService {
      * @param truckId 
      * @param trailerId 
      * @param driverId 
+     * @param coDriverId 
      * @param customDateFrom 
      * @param customDateTo 
      * @param pageIndex 
@@ -219,10 +218,10 @@ export class DispatchService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<DispatchHistoryListResponse>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<DispatchHistoryListResponse>>;
-    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<DispatchHistoryListResponse>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<DispatchHistoryListResponse>>;
+    public apiDispatchBoardHistoryGet(dispatchBoardId?: number, dispatchHistoryTime?: number, truckId?: number, trailerId?: number, driverId?: number, coDriverId?: number, customDateFrom?: string, customDateTo?: string, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
 
         let queryParameters = new HttpParams({encoder: this.encoder});
         if (dispatchBoardId !== undefined && dispatchBoardId !== null) {
@@ -244,6 +243,10 @@ export class DispatchService {
         if (driverId !== undefined && driverId !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
             <any>driverId, 'DriverId');
+        }
+        if (coDriverId !== undefined && coDriverId !== null) {
+          queryParameters = this.addToHttpParams(queryParameters,
+            <any>coDriverId, 'CoDriverId');
         }
         if (customDateFrom !== undefined && customDateFrom !== null) {
           queryParameters = this.addToHttpParams(queryParameters,
@@ -533,14 +536,17 @@ export class DispatchService {
     }
 
     /**
-     * @param updateDispatchBoardCommand 
+     * @param id 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
-    public apiDispatchBoardPut(updateDispatchBoardCommand?: UpdateDispatchBoardCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+    public apiDispatchIdDelete(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any>;
+    public apiDispatchIdDelete(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<any>>;
+    public apiDispatchIdDelete(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<any>>;
+    public apiDispatchIdDelete(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiDispatchIdDelete.');
+        }
 
         let headers = this.defaultHeaders;
 
@@ -566,24 +572,12 @@ export class DispatchService {
         }
 
 
-        // to determine the Content-Type header
-        const consumes: string[] = [
-            'application/json',
-            'text/json',
-            'application/_*+json'
-        ];
-        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
-        if (httpContentTypeSelected !== undefined) {
-            headers = headers.set('Content-Type', httpContentTypeSelected);
-        }
-
         let responseType: 'text' | 'json' = 'json';
         if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
             responseType = 'text';
         }
 
-        return this.httpClient.put<any>(`${this.configuration.basePath}/api/dispatch/board`,
-            updateDispatchBoardCommand,
+        return this.httpClient.delete<any>(`${this.configuration.basePath}/api/dispatch/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,
@@ -872,59 +866,6 @@ export class DispatchService {
 
         return this.httpClient.put<any>(`${this.configuration.basePath}/api/dispatch/reorder`,
             reorderDispatchesCommand,
-            {
-                responseType: <any>responseType,
-                withCredentials: this.configuration.withCredentials,
-                headers: headers,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param id 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiDispatchStatusIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<Array<EnumValue>>;
-    public apiDispatchStatusIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpResponse<Array<EnumValue>>>;
-    public apiDispatchStatusIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<HttpEvent<Array<EnumValue>>>;
-    public apiDispatchStatusIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json'}): Observable<any> {
-        if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling apiDispatchStatusIdGet.');
-        }
-
-        let headers = this.defaultHeaders;
-
-        let credential: string | undefined;
-        // authentication (bearer) required
-        credential = this.configuration.lookupCredential('bearer');
-        if (credential) {
-            headers = headers.set('Authorization', 'Bearer ' + credential);
-        }
-
-        let httpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (httpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            httpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (httpHeaderAcceptSelected !== undefined) {
-            headers = headers.set('Accept', httpHeaderAcceptSelected);
-        }
-
-
-        let responseType: 'text' | 'json' = 'json';
-        if(httpHeaderAcceptSelected && httpHeaderAcceptSelected.startsWith('text')) {
-            responseType = 'text';
-        }
-
-        return this.httpClient.get<Array<EnumValue>>(`${this.configuration.basePath}/api/dispatch/status/${encodeURIComponent(String(id))}`,
             {
                 responseType: <any>responseType,
                 withCredentials: this.configuration.withCredentials,

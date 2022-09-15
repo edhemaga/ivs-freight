@@ -135,7 +135,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             'Medical successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Medical can't be updated.", 'Error:');
@@ -161,7 +160,6 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
             'Medical successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error("Medical can't be added.", 'Error:');

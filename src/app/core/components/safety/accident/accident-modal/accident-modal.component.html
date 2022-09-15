@@ -382,9 +382,12 @@
                     [inputConfig]="{
                       name: 'Description',
                       type: 'text',
-                      minLength: 20,
+                      minLength: 2,
                       maxLength: 160,
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
                 </div>
@@ -425,7 +428,10 @@
                       name: 'Input Dropdown',
                       type: 'text',
                       isDropdown: true,
-                      dropdownWidthClass: 'w-col-136'
+                      dropdownWidthClass: 'w-col-136',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                     [options]="labelsInsuranceType"
                     (selectedItem)="
@@ -438,7 +444,10 @@
                     [inputConfig]="{
                       name: 'Claim Number',
                       type: 'text',
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
 
@@ -447,7 +456,10 @@
                     [inputConfig]="{
                       name: 'Insurance Adjuster',
                       type: 'text',
-                      textTransform: 'capitalize'
+                      textTransform: 'capitalize',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
 
@@ -456,7 +468,10 @@
                     [inputConfig]="{
                       name: 'Phone',
                       type: 'text',
-                      mask: '(000) 000-0000'
+                      mask: '(000) 000-0000',
+                      hideErrorMessage: true,
+                      thousandSeparator: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
 
@@ -467,7 +482,10 @@
                       type: 'text',
                       minLength: 5,
                       maxLength: 64,
-                      textTransform: 'lowercase'
+                      textTransform: 'lowercase',
+                      hideErrorMessage: true,
+                      blackInput: true,
+                      hideRequiredCheck: true
                     }"
                   ></app-ta-input>
 
@@ -642,7 +660,6 @@
                 name: 'Phone',
                 type: 'text',
                 label: 'Phone',
-                isRequired: true,
                 placeholderIcon: 'phone',
                 mask: '(000) 000-0000'
               }"

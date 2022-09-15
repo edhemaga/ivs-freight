@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   CdlResponse,
   CdlService,
@@ -8,44 +8,51 @@ import {
   EditCdlCommand,
   GetCdlModalResponse,
 } from 'appcoretruckassist';
-import { Observable, tap } from 'rxjs';
-import { DriverTService } from './driver.service';
+/* import { CreateCdlResponse } from 'appcoretruckassist/model/createCdlResponse'; */
+import { Observable, Subject, takeUntil, tap } from 'rxjs';
+import { NotificationService } from 'src/app/core/services/notification/notification.service';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
+import { DriversDetailsListStore } from './driver-details-list-state/driver-details-list.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { NotificationService } from '../../../services/notification/notification.service';
+import { DriverTService } from './driver.service';
+import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CdlTService {
+export class CdlTService implements OnDestroy {
+  private destroy$ = new Subject<void>();
   constructor(
     private cdlService: CdlService,
     private driverService: DriverTService,
     private driverStore: DriversActiveStore,
     private tableService: TruckassistTableService,
     private driverItemStore: DriversItemStore,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private dlStore: DriversDetailsListStore
   ) {}
 
   /* Observable<CreateCdlResponse> */
   public addCdl(data: CreateCdlCommand): Observable<CreateResponse> {
     return this.cdlService.apiCdlPost(data).pipe(
       tap((res: CreateResponse) => {
-        this.activateCdlById(res.id).subscribe({
-          next: (res: any) => {},
-          error: () => {
-            this.notificationService.error(
-              'Cannot activate cdl, already have active.',
-              'Error:'
-            );
-          },
-        });
         const subDriver = this.driverService
           .getDriverById(data.driverId)
           .subscribe({
             next: (driver: DriverResponse | any) => {
-              this.driverStore.remove(({ id }) => id === data.driverId);
+              this.activateCdlById(res.id)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                  next: (res: any) => {},
+                  error: () => {
+                    this.notificationService.error(
+                      'Cannot activate cdl, already have active.',
+                      'Error:'
+                    );
+                  },
+                });
+              console.log(driver);
 
               driver = {
                 ...driver,
@@ -53,7 +60,7 @@ export class CdlTService {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { cdls: driver.cdls });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -82,7 +89,7 @@ export class CdlTService {
               };
 
               this.driverStore.add(driver);
-
+              this.dlStore.update(driver.id, { cdls: driver.cdls });
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: driver,
@@ -103,14 +110,13 @@ export class CdlTService {
         const subDriver = this.driverService.getDriverById(driverId).subscribe({
           next: (driver: DriverResponse | any) => {
             this.driverStore.remove(({ id }) => id === driverId);
-
             driver = {
               ...driver,
               fullName: driver.firstName + ' ' + driver.lastName,
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
@@ -138,7 +144,7 @@ export class CdlTService {
             };
 
             this.driverStore.add(driver);
-
+            this.dlStore.update(driver.id, { cdls: driver.cdls });
             this.tableService.sendActionAnimation({
               animation: 'delete',
               data: driver,
@@ -152,11 +158,20 @@ export class CdlTService {
     );
   }
 
+  public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
+    return this.cdlService.apiCdlRenewPut(data);
+  }
+
   public getCdlById(id: number): Observable<CdlResponse> {
     return this.cdlService.apiCdlIdGet(id);
   }
 
   public getCdlDropdowns(): Observable<GetCdlModalResponse> {
     return this.cdlService.apiCdlModalGet();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -40,6 +40,7 @@ export class TaInputDropdownComponent
   @ViewChild('t2') public popoverRef: NgbPopover;
 
   @Input() template: string; // different templates for body rendering
+  @Input() multiselectTemplate: string;
 
   @Input() inputConfig: ITaInput;
   @Input() canAddNew: boolean; // add new item in options
@@ -81,6 +82,9 @@ export class TaInputDropdownComponent
 
   // Dropdown navigation with keyboard
   private dropdownPosition: number = -1;
+
+  // For Dispatchboard hover options
+  private hoveredOption: number = -1;
 
   constructor(
     @Self() public superControl: NgControl,
@@ -792,7 +796,7 @@ export class TaInputDropdownComponent
     );
   }
 
-  public delteAllMultiSelectItems(event: any) {
+  public deleteAllMultiSelectItems() {
     this.multiselectItems = [];
     this.inputConfig.multiSelectDropdownActive = null;
     this.inputConfig.label = this.multiSelectLabel;

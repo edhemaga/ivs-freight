@@ -1,6 +1,6 @@
 .dispatchboard-custom-holder{
     background-color: #fff;
-    height: 32px;
+    height: 28px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -8,10 +8,11 @@
 
     ng-select{
         width: 100%;
+        margin-left: 2px;
 
         .ng-dropdown-panel{
             background-color: #fff;
-            top: 35px;
+            top: 30px;
             border-radius: 3px;
             padding: 2px;
         }
@@ -43,6 +44,7 @@
                 span{
                     font-weight: 600;
                     color: #91A4C7;
+                    user-select: none;
                 }
 
                 .dispatch_count{
@@ -69,7 +71,10 @@
                 height: 22px;
                 background-size: contain;
                 border-radius: 100%;
-                margin-right: 6px;
+            }
+
+            .dispatcher_full_name{
+                margin-left: 6px;
             }
 
             .dispatch_count{
@@ -77,7 +82,7 @@
                 align-items: center;
                 justify-content: center;
                 height: 22px;
-                min-width: 28px;
+                min-width: 22px;
                 margin-right: 6px;
 
                 background-color: #F3F3F3;
@@ -102,6 +107,7 @@
         .ng-value-container{
             height: 28px;
             border-radius: 2px;
+            cursor: pointer;
 
             &:hover{
                 background-color: #F7F7F7;
@@ -113,8 +119,13 @@
                 align-items: center;
 
                 .drop_item{
-                    height: 32px !important;
+                    height: 28px !important;
                 }
+            }
+
+            input{
+                height: 28px !important;
+                cursor: pointer !important;
             }
         }
 
@@ -144,7 +155,11 @@
         }
 
         .ng-select-container{
-            padding: 2px;
+            //padding: 2px;
+
+            .ng-arrow-wrapper{
+                display: none !important;
+            }
         }
     }
 }

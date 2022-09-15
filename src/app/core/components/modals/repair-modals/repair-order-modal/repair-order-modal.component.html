@@ -50,12 +50,14 @@
       <app-ta-input
         formControlName="odometer"
         [inputConfig]="{
-          name: 'Odometer',
+          name: 'repair-odometer',
           type: 'text',
           label: 'Odometer',
           isRequired: selectedPM[selectedPMIndex]?.id,
           isDisabled: selectedHeaderTab !== 1,
-          thousandSeparator: true
+          thousandSeparator: true,
+          minLength: 1,
+          maxLength: 7
         }"
       ></app-ta-input>
       <app-ta-input
@@ -78,7 +80,9 @@
           type: 'text',
           label: 'Invoice',
           isDisabled: selectedHeaderTab !== 1,
-          textTransform: 'capitalize'
+          textTransform: 'uppercase',
+          minLength: 1,
+          maxLength: 22
         }"
       ></app-ta-input>
     </div>
@@ -199,9 +203,11 @@
                     id: 'Description' + ind,
                     name: 'Description',
                     type: 'text',
-                    minLength: 20,
+                    minLength: 2,
                     maxLength: 160,
                     hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true,
                     textTransform: 'capitalize',
                     blueInputColor:
                       !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
@@ -262,11 +268,14 @@
                   id: 'Price' + ind,
                   name: 'Price',
                   type: 'text',
-                  textTransform: 'capitalize',
                   thousandSeparator: true,
                   hideRequiredCheck: true,
+                  blackInput: true,
+                  hideErrorMessage: true,
                   blueInputColor:
-                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
+                    !selectedPM[ind]?.logoName?.includes('ic_custom_pm'),
+                  minLength: 4,
+                  maxLength: 13
                 }"
                 (change)="onChange('price', ind)"
               ></app-ta-input>
@@ -279,6 +288,8 @@
                   type: 'text',
                   textTransform: 'capitalize',
                   hideRequiredCheck: true,
+                  blackInput: true,
+                  hideErrorMessage: true,
                   blueInputColor:
                     !selectedPM[ind]?.logoName?.includes('ic_custom_pm')
                 }"

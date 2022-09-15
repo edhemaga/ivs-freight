@@ -418,18 +418,6 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
     } else if (stateName === 'repair_shops') {
       return getRepairsShopColumnDefinition();
     }
-
-    /* if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
-    } else {
-      if (stateName === 'repair_trucks') {
-        return getRepairTruckColumnDefinition();
-      } else if (stateName === 'repair_trailers') {
-        return getRepairTrailerColumnDefinition();
-      } else if (stateName === 'repair_shops') {
-        return getRepairsShopColumnDefinition();
-      }
-    } */
   }
 
   // Set Repair Data
@@ -855,6 +843,7 @@ export class RepairTableComponent implements OnInit, OnDestroy, AfterViewInit {
         entityTypeRatingId: 2,
         entityTypeId: event.data.id,
         thumb: event.subType === 'like' ? 1 : -1,
+        tableData: event.data
       };
 
       this.reviewRatingService

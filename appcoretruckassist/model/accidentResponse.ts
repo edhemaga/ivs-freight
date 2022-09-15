@@ -18,7 +18,7 @@ import { AddressEntity } from './addressEntity';
 
 
 export interface AccidentResponse { 
-    id?: number | null;
+    id?: number;
     reported?: boolean;
     report?: string | null;
     federallyRecordable?: boolean;
@@ -27,7 +27,7 @@ export interface AccidentResponse {
     fatality?: number | null;
     towing?: boolean;
     hazMat?: boolean;
-    vehicloNo?: number;
+    vehicloNo?: number | null;
     addressAccident?: AddressEntity;
     date?: string | null;
     time?: string | null;
@@ -67,9 +67,8 @@ export interface AccidentResponse {
     addressAuthority?: AddressEntity;
     phoneOfficer?: string | null;
     fax?: string | null;
-    origin?: string | null;
-    destination?: string | null;
-    brokerId?: number | null;
+    origin?: AddressEntity;
+    destination?: AddressEntity;
     broker?: BrokerMinimalResponse;
     boL?: string | null;
     cargo?: string | null;

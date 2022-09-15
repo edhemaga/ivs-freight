@@ -13,7 +13,7 @@ import { DriverMvrModalComponent } from '../driver-details/driver-modals/driver-
 
 import { DriversInactiveState } from '../state/driver-inactive-state/driver-inactive.store';
 import { DriversInactiveQuery } from '../state/driver-inactive-state/driver-inactive.query';
-import { DriverListResponse } from 'appcoretruckassist';
+import { DriverListResponse, TableConfigResponse } from 'appcoretruckassist';
 
 import {
   Confirmation,
@@ -393,7 +393,7 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       {
         title: 'Applicants',
         field: 'applicants',
-        length: 0,
+        length: applicantsData.length,
         data: applicantsData,
         extended: true,
         gridNameTitle: 'Driver',
@@ -448,18 +448,19 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+    /* this.tableService
+      .getTableConfig('DRIVER')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((configResponse: TableConfigResponse) => {
+        console.log('Driver Table Config');
+        console.log(configResponse);
+      }); */
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+
+    if (stateName === 'applicants') {
+      return getApplicantColumnsDefinition();
     } else {
-      if (stateName === 'applicants') {
-        return getApplicantColumnsDefinition();
-      } else {
-        return getDriverColumnsDefinition();
-      }
+      return getDriverColumnsDefinition();
     }
   }
 
@@ -479,11 +480,11 @@ export class DriverTableComponent implements OnInit, AfterViewInit, OnDestroy {
       console.log(this.viewData);
 
       // For Testing
-      if (this.selectedTab !== 'applicants') {
-        for (let i = 0; i < 10000; i++) {
-          this.viewData.push(this.viewData[0]);
-        }
-      }
+      // if (this.selectedTab !== 'applicants') {
+      //   for (let i = 0; i < 1000; i++) {
+      //     this.viewData.push(this.viewData[0]);
+      //   }
+      // }
     } else {
       this.viewData = [];
     }

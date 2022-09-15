@@ -15,6 +15,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { TaInputResetService } from '../ta-input/ta-input-reset.service';
 import { ITaInput } from '../ta-input/ta-input.config';
 import { SharedService } from '../../../services/shared/shared.service';
+import { FormService } from '../../../services/form/form.service';
 
 @Component({
   selector: 'app-ta-input-address',
@@ -68,7 +69,8 @@ export class TaInputAddressComponent
   constructor(
     @Self() public superControl: NgControl,
     private sharedService: SharedService,
-    private inputResetService: TaInputResetService
+    private inputResetService: TaInputResetService,
+    private formService: FormService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -83,10 +85,21 @@ export class TaInputAddressComponent
           this.inputResetService.resetInputSubject.next(false);
         }
       });
+
     // Only City and Zip In Address
     if (this.inputConfig.onlyCityAndZipAddress) {
       this.options['types'] = ['(cities)'];
     }
+
+    // Reset Form
+    this.formService.formReset$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.formService.formReset$.next(false);
+        }
+      });
   }
 
   public handleAddressChange(address: AddressEntity) {
@@ -285,6 +298,26 @@ export class TaInputAddressComponent
           }
         }
 
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  }
+
+  public transformText(event: any) {
+    switch (this.inputConfig.textTransform) {
+      case 'capitalize': {
+        this.input.nativeElement.value =
+          this.input.nativeElement.value?.toString()?.charAt(0)?.toUpperCase() +
+          this.input.nativeElement.value?.toString()?.substring(1);
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
+        break;
+      }
+      case 'uppercase': {
+        this.input.nativeElement.value = event.toLocaleUpperCase('en-US');
+        this.getSuperControl.patchValue(this.input.nativeElement.value);
         break;
       }
       default: {

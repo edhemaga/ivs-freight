@@ -17,7 +17,7 @@
           'margin-left': column.moveRight ? 'auto' : 'unset'
         }"
         [ngClass]="{
-          'set-center': column.ngTemplate === 'checkbox',
+          'set-center': column.ngTemplate === 'checkbox' || column.thSetCenter,
           'column-unlocket': !locked,
           'resize-hit-limit': resizeHitLimit === i && resizeIsPined
         }"
@@ -60,7 +60,8 @@
           }"
           [ngClass]="{
             'sort-active': column.sortDirection !== '' && column.sortDirection,
-            'th-title-locked-cursor': locked
+            'th-title-locked-cursor': locked,
+            'set-center-th-title': column.setCenter
           }"
         >
           {{ column.name }}
@@ -198,7 +199,7 @@
             'min-width.px': column?.minWidth ? column.minWidth : 'unset'
           }"
           [ngClass]="{
-            'set-center': column.ngTemplate === 'checkbox',
+            'set-center': column.ngTemplate === 'checkbox' || column.thSetCenter,
             'column-unlocket': !locked,
             'column-locked': locked,
             'resize-hit-limit': resizeHitLimit === i && !resizeIsPined
@@ -222,7 +223,8 @@
             [ngClass]="{
               'sort-active':
                 column.sortDirection !== '' && column.sortDirection,
-              'th-title-locked-cursor': locked
+              'th-title-locked-cursor': locked,
+              'set-center-th-title': column.setCenter
             }"
           >
             {{ column.name }}
@@ -334,7 +336,7 @@
     </tr>
 
     <!-- Border -->
-    <div class="not-pined-border" [ngStyle]="{ width: 2 + 'px' }"></div>
+    <div class="not-pined-border" [ngStyle]="{ width: 3 + 'px' }"></div>
 
     <!-- Actions -->
     <tr class="tr actions-columns-container">

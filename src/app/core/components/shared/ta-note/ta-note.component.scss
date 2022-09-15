@@ -1,4 +1,4 @@
-@import 'src/theme/variables.scss';
+@import "src/theme/variables.scss";
 
 .my-note-popover {
   margin-right: 4px;
@@ -15,59 +15,87 @@
   }
 }
 
-.closed_main_holder{
+.closed_main_holder {
   position: relative;
   display: flex;
 }
 
-.note_button_hold {
-  .note-btn {
-    width: 16px;
-    height: 18px;
-    cursor: pointer;
+.all_note_holder {
+
+  .note_inner_text {
+    display: -webkit-box;
+    font-size: 11px;
+    color: #6c6c6c;
+  
+    overflow: hidden;
+  
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    user-select: none;
   }
 
-  svg-icon{
-    svg{
-      display: flex;
-      path{
-        fill: #AAAAAA;
-      }
+  &.opened_main_all_holder{
+    display: flex;
+    height: 100%;
+    align-items: center;
+
+    .note_inner_text{
+      flex: 1;
     }
   }
 
-  &.note-normal-icon, &.note-note-empty{
-    svg{
-      path{
-        fill: #AAAAAA;
-      }
+  .note_button_hold {
+    .note-btn {
+      width: 16px;
+      height: 18px;
+      cursor: pointer;
     }
-
-    &:hover {
-      svg{
-        path{
-          fill: #6C6C6C;
+  
+    svg-icon {
+      svg {
+        display: flex;
+        path {
+          fill: #aaaaaa;
         }
       }
     }
-  }
-
-  &.note-all-expanded{
-    svg{
-      path{
-        fill: #6D82C7;
+  
+    &.note-normal-icon,
+    &.note-note-empty {
+      svg {
+        path {
+          fill: #aaaaaa;
+        }
+      }
+  
+      &:hover {
+        svg {
+          path {
+            fill: #6c6c6c;
+          }
+        }
       }
     }
-
-    &:hover {
-      svg{
-        path{
-          fill: #536BC2;
+  
+    &.note-all-expanded {
+      svg {
+        path {
+          fill: #6d82c7;
+        }
+      }
+  
+      &:hover {
+        svg {
+          path {
+            fill: #536bc2;
+          }
         }
       }
     }
   }
 }
+
+
 
 .note-normal-icon,
 .note-note-empty,
@@ -78,21 +106,20 @@
 }
 
 .note-normal-icon {
-  background-image: url('../../../../../assets/svg/truckassist-table/note/Note.svg');
+  background-image: url("../../../../../assets/svg/truckassist-table/note/Note.svg");
 
   &:hover {
-    background-image: url('../../../../../assets/svg/truckassist-table/note/Note-hover.svg');
+    background-image: url("../../../../../assets/svg/truckassist-table/note/Note-hover.svg");
   }
 }
 
 .note-note-empty {
-  background-image: url('../../../../../assets/svg/truckassist-table/note/Note - Empty.svg');
+  background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty.svg");
 
   &:hover {
-    background-image: url('../../../../../assets/svg/truckassist-table/note/Note - Empty-hover.svg');
+    background-image: url("../../../../../assets/svg/truckassist-table/note/Note - Empty-hover.svg");
   }
 }
-
 
 .note_holder_span {
   //width: 32px;
@@ -122,7 +149,6 @@
       }
 
       &.expanded {
-        position: absolute;
         z-index: 100;
       }
     }
@@ -270,7 +296,7 @@
     display: block;
     line-height: 1.5;
     height: auto;
-    min-width: 250px;
+    min-width: 237px;
     background-color: #ffffff;
 
     &.expanded {
@@ -291,6 +317,10 @@
       margin: 0 0 0 auto;
       line-height: 15px;
       padding: 2px 5px;
+
+      &.opened_all_editor{
+        width: 100%;
+      }
 
       &.not_expanded {
         height: 32px;
@@ -331,7 +361,7 @@
         }
       }
 
-      &.parking_text_hold{
+      &.parking_text_hold {
         max-height: 124px;
       }
 
@@ -350,74 +380,53 @@
       // }
     }
 
-    .container_separate{
+    .container_separate {
       padding: 0 4px;
-      .container_separate_inner{
+      .container_separate_inner {
         height: 2px;
 
         border-radius: 1px;
-        background-color: #F3F3F3;
+        background-color: #f3f3f3;
       }
+    }
+
+    .note_container{
+      width: 100%;
     }
   }
 
-  &.opened_all_hold{
+  &.opened_all_hold {
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 0px;
+    left: -2px;
 
     width: 100%;
     z-index: 1;
 
-    .custom_editor{
-      min-width: auto;
-
-      .editor{
-        width: auto;
-
+    .custom_editor {
+      .editor {
         &::-moz-selection {
           color: $bw6-2;
           background: rgb(108, 108, 108, 0.2);
         }
-  
+
         &::selection {
           color: $bw6-2;
           background: rgb(108, 108, 108, 0.2);
         }
-  
-        span{
+
+        span {
           &::-moz-selection {
             color: $bw6-2 !important;
             background: rgb(108, 108, 108, 0.2) !important;
           }
-    
+
           &::selection {
-            color: $bw6-2  !important;
+            color: $bw6-2 !important;
             background: rgb(108, 108, 108, 0.2) !important;
           }
         }
       }
     }
-
-    .k-editor{
-      width: auto;
-    }
   }
-
-  &.closed_note_hold{
-    position: absolute;
-    left: -264px;
-    top: -8px;
-  }
-}
-
-.note_inner_text{
-  display: -webkit-box; 
-  font-size: 11px;
-  color: #6C6C6C;
-
-  overflow: hidden;
-  
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }

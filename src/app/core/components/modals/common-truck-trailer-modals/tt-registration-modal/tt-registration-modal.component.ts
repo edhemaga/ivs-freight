@@ -136,10 +136,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             'Registration successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(
@@ -170,10 +166,6 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
             'Registration successfully added.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: null,
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error(

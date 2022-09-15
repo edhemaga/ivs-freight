@@ -65,10 +65,15 @@
 
   .multiselect-items {
     display: grid;
-    grid-template-columns: repeat(2, 210px);
+    width: 95%;
+    grid-template-columns: repeat(2, 1fr);
     grid-template-rows: 22px;
     gap: 4px;
     padding: 4px;
+
+    &.multiselect-3-columns {
+      grid-template-columns: repeat(3, 1fr);
+    }
 
     .multiselect-item {
       width: 100%;
