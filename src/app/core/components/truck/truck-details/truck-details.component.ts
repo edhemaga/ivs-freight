@@ -52,6 +52,7 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
     private confirmationService: ConfirmationService,
     private truckMinimalListQuery: TrucksMinimalListQuery,
     private truckItemStore: TruckItemStore,
+    private trq: TruckDetailsQuery,
     private truckMinimalStore: TrucksMinimalListStore
   ) {}
 
@@ -103,9 +104,6 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
         }
         query.pipe(takeUntil(this.destroy$)).subscribe({
           next: (res: TruckResponse) => {
-            this.currentIndex = this.truckList.findIndex(
-              (truck) => truck.id === res.id
-            );
             this.truckConf(res);
             this.initTableOptions(res);
             if (this.router.url.includes('details')) {

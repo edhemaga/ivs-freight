@@ -198,14 +198,15 @@
         </div>
       </div>
       <div class="stop-items-container">
-        <app-ta-custom-card *ngFor="let item of loadItem?.data?.stops;let j = index;"
+        <app-ta-custom-card-v2 *ngFor="let item of loadItem?.data?.stops;let j = index;"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
+        [totalMiles]="true"
+        [headerSvgLike]="'assets/svg/applicant/check.svg'"
         [cardName]="item?.shipper?.address?.street+', ' +item?.shipper?.address?.stateShortName + ' ' + item?.shipper?.address?.zipCode"
         [hasCounter]="item?.items?.length"
         [hasDivider]="j>0?true:false"
         [counterBackgroundColor]="item?.stopType.name==='Pickup'?'#E57373':'#4DB6A2'"
-        [counterColor]="'#ffffff'"
         [isCardOpen]="true">
         <div class="stop-information-container">
           <div class="svg-value-wrapper">
@@ -227,10 +228,15 @@
         </div>
          </div>
          <div class="divider"></div>
-        <app-ta-custom-card
-          [animationsDisabled]="false"
-          [bodyTemplate]="'card'"
+        <app-ta-custom-card-v2
           [cardName]="'Item'"
+          [bodyTemplate]="'card'"
+          [animationsDisabled]="false"
+          [counterBackgroundColor]="'#F3F3F3'"
+          [counterColor]="'#6c6c6c'"
+          [fontSizeCardName]="'14px'"
+          [fontWeightName]="'800'"
+          [arrowIconSvg]="'assets/svg/common/fill_arrow_down.svg'"
           [hasCounter]="item?.items?.length"
           [hasDivider]="false"
           [isCardOpen]="true"
@@ -306,8 +312,8 @@
               </div>
             </div>
           </div>
-        </app-ta-custom-card>
-      </app-ta-custom-card>
+        </app-ta-custom-card-v2>
+      </app-ta-custom-card-v2>
         <div class="map-load-container">
           <span class="default-text">Here map</span>
         </div>

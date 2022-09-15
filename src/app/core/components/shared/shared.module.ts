@@ -283,6 +283,7 @@ export function playerFactory() {
     TaReCardComponent,
     TaDetailsHeaderCardComponent,
     TaCustomCardComponent,
+    TaCustomCardV2Component,
     TaCheckboxComponent,
     TaCommonHeaderComponent,
     TaReCardComponent,

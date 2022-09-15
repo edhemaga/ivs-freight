@@ -1,1 +1,80 @@
-<p>ta-custom-card-v2 works!</p>
+<div class="ta-custom-card-v2">
+  <div *ngIf="hasDivider" class="divider"></div>
+  <div
+    [ngClass]="{ 'has-counter': hasCounter }"
+    class="ta-card-header"
+    [class.active]="isCardOpen"
+    [class.no-data]="!hasBodyData"
+    [class.disabled]="disabledCard"
+    (mouseenter)="isHeaderHover = true"
+    (mouseleave)="isHeaderHover = false"
+    (click)="isCardOpenEvent($event)"
+  >
+    <!-- Left side of header -->
+    <div class="header-content" [class.counter]="hasCounter">
+      <!-- Counter -->
+      <app-ta-counter
+        *ngIf="hasCounter"
+        [count]="hasCounter"
+        [countBackground]="counterBackgroundColor"
+        [countColor]="counterColor"
+        [countHeight]="'24px'"
+        [countWidth]="'24px'"
+        [countTextBottomPosition]="textBottomPossiton"
+      ></app-ta-counter>
+
+      <!-- Svg near name -->
+
+      <svg-icon
+        *ngIf="headerSvgLike"
+        class="header-svg"
+        [src]="headerSvgLike"
+      ></svg-icon>
+      <!-- Name -->
+      <span
+        class="header-text"
+        [ngStyle]="{
+          color: colorCardName,
+          'font-size': fontSizeCardName,
+          'font-weight': fontWeightName
+        }"
+        [ngClass]="{ 'no-counter': !hasCounter }"
+      >
+        {{ cardName }}
+      </span>
+    </div>
+
+    <!-- Right Side (action side) of header -->
+    <div class="header-actions">
+        <div *ngIf="totalMiles" class="total-miles-time">
+            <span class="item-miles">123 mi</span>
+            <span class="item-miles">02:45</span>
+        </div>
+      <!-- Arrow -->
+      <svg-icon
+        *ngIf="hasArrow && hasBodyData"
+        class="header-arrow"
+        [ngClass]="{ rotate: isCardOpen }"
+        [src]="arrowIconSvg"
+      ></svg-icon>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div
+    class="{{ animationsDisabled ? 'ta-card-body' : 'ta-card-body-v2' }}"
+    [@.disabled]="animationsDisabled"
+    [ngClass]="{
+      active: isCardOpen,
+      scroll: hasScrollBody,
+      unopened: !isCardOpen
+    }"
+  >
+    <div
+      [@showHideCardBody]="isCardOpen ? 'true' : 'false'"
+      class="content-holder"
+    >
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

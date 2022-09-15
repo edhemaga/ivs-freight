@@ -16,18 +16,12 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
   ) {}
 
   resolve(): Observable<LoadTemplateState | boolean> {
-    return this.loadService
-      .getLoadTemplateList(
-        undefined,
-        1,
-        25
-      )
-      .pipe(
-        catchError(() => {
-          return of('No load template data...');
-        }),
-        tap((loadPagination: LoadTemplateListResponse) => {
-         /*  localStorage.setItem(
+    return this.loadService.getLoadTemplateList(undefined, 1, 25).pipe(
+      catchError(() => {
+        return of('No load template data...');
+      }),
+      tap((loadPagination: LoadTemplateListResponse) => {
+        /*  localStorage.setItem(
             'loadTableCount',
             JSON.stringify({
               pendingCount: loadPagination.pendingCount,
@@ -36,9 +30,8 @@ export class LoadTemplateResolver implements Resolve<LoadTemplateState> {
               templateCount: loadPagination.templateCount,
             })
           ); */
-
-          this.loadTemplateStore.set(loadPagination.pagination.data);
-        })
-      );
+        // this.loadTemplateStore.set(loadPagination.pagination.data);
+      })
+    );
   }
 }
