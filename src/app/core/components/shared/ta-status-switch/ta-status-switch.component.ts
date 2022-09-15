@@ -114,8 +114,14 @@ export class TaStatusSwitchComponent implements OnInit {
     //   });
   }
 
+
+
   public openMainIndex(): void {
    this.openIndex.emit(this.statusMainIndex);
+  }
+
+  onClose(){
+    this.openIndex.emit(-1);
   }
 
   // ngOnChanges() {

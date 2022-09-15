@@ -17,6 +17,7 @@ import { TrailersMinimalListStore } from './trailer-minimal-list-state/trailer-m
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { TrailerItemStore } from './trailer-details-state/trailer-details.store';
 import { TrailersMinimalListQuery } from './trailer-minimal-list-state/trailer-minimal.query';
+import { TrailerDetailsListStore } from './trailer-details-list-state/trailer-details-list.store';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerTService implements OnDestroy {
@@ -33,40 +34,43 @@ export class TrailerTService implements OnDestroy {
     private tableService: TruckassistTableService,
     private trailerItemStore: TrailerItemStore,
     private trailerMinimalQuery: TrailersMinimalListQuery,
-    private trailerMinimalStore: TrailersMinimalListStore
+    private trailerMinimalStore: TrailersMinimalListStore,
+    private tadl: TrailerDetailsListStore
   ) {}
 
   /* Observable<CreateTrailerResponse> */
   public addTrailer(data: CreateTrailerCommand): Observable<any> {
     return this.trailerService.apiTrailerPost(data).pipe(
       tap((res: any) => {
-        const subTrailer = this.getTrailerById(res.id).subscribe({
-          next: (trailer: TrailerResponse | any) => {
-            this.trailerActiveStore.add(trailer);
+        const subTrailer = this.getTrailerById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (trailer: TrailerResponse | any) => {
+              this.trailerActiveStore.add(trailer);
+              this.trailerMinimalStore.add(trailer);
+              const trailerCount = JSON.parse(
+                localStorage.getItem('trailerTableCount')
+              );
 
-            const trailerCount = JSON.parse(
-              localStorage.getItem('trailerTableCount')
-            );
+              trailerCount.active++;
 
-            trailerCount.active++;
+              localStorage.setItem(
+                'trailerTableCount',
+                JSON.stringify({
+                  active: trailerCount.active,
+                  inactive: trailerCount.inactive,
+                })
+              );
 
-            localStorage.setItem(
-              'trailerTableCount',
-              JSON.stringify({
-                active: trailerCount.active,
-                inactive: trailerCount.inactive,
-              })
-            );
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: trailer,
+                id: trailer.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              data: trailer,
-              id: trailer.id,
-            });
-
-            subTrailer.unsubscribe();
-          },
-        });
+              subTrailer.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -116,7 +120,7 @@ export class TrailerTService implements OnDestroy {
               this.trailerActiveStore.remove(({ id }) => id === data.id);
 
               this.trailerActiveStore.add(trailer);
-
+              this.tadl.replace(trailer.id, trailer);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: trailer,
@@ -138,6 +142,7 @@ export class TrailerTService implements OnDestroy {
       tap(() => {
         this.trailerMinimalStore.remove(({ id }) => id === trailerId);
         this.trailerItemStore.remove(({ id }) => id === trailerId);
+        this.tadl.remove(({ id }) => id === trailerId);
         const trailerCount = JSON.parse(
           localStorage.getItem('trailerTableCount')
         );
@@ -182,6 +187,7 @@ export class TrailerTService implements OnDestroy {
   ): Observable<any> {
     return this.trailerService.apiTrailerIdDelete(trailerId).pipe(
       tap(() => {
+        this.tadl.remove(({ id }) => id === trailerId);
         const trailerCount = JSON.parse(
           localStorage.getItem('trailerTableCount')
         );
@@ -317,7 +323,7 @@ export class TrailerTService implements OnDestroy {
                     inactive: trailerCount.inactive,
                   })
                 );
-
+                this.tadl.update(trailer.id, { status: trailer.status });
                 this.tableService.sendActionAnimation({
                   animation: 'update-status',
                   data: trailer,

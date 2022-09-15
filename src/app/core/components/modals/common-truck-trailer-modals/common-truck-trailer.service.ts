@@ -29,6 +29,8 @@ import { TrailerActiveStore } from '../../trailer/state/trailer-active-state/tra
 import { TruckItemStore } from '../../truck/state/truck-details-state/truck.details.store';
 import { TrailerItemStore } from '../../trailer/state/trailer-details-state/trailer-details.store';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { TrucksDetailsListStore } from '../../truck/state/truck-details-list-state/truck-details-list.store';
+import { TrailerDetailsListStore } from '../../trailer/state/trailer-details-list-state/trailer-details-list.store';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +49,9 @@ export class CommonTruckTrailerService {
     private trailerService: TrailerTService,
     private truckItemStore: TruckItemStore,
     private trailerItemStore: TrailerItemStore,
-    private activeRoute: ActivatedRoute
+    private activeRoute: ActivatedRoute,
+    private tdlStore: TrucksDetailsListStore,
+    private tadl: TrailerDetailsListStore
   ) {}
 
   // Registration
@@ -74,6 +78,9 @@ export class CommonTruckTrailerService {
 
                   this.truckInactiveStore.add(truck);
                 }
+                this.tdlStore.update(truck.id, {
+                  registrations: truck.registrations,
+                });
 
                 this.tableService.sendActionAnimation({
                   animation: 'update',
@@ -104,7 +111,9 @@ export class CommonTruckTrailerService {
 
                   this.trailerInactiveStore.add(trailer);
                 }
-
+                this.tadl.update(trailer.id, {
+                  registrations: trailer.registrations,
+                });
                 this.tableService.sendActionAnimation({
                   animation: 'update',
                   data: trailer,
@@ -188,7 +197,9 @@ export class CommonTruckTrailerService {
 
                   this.truckInactiveStore.add(truck);
                 }
-
+                this.tdlStore.update(truck.id, {
+                  inspections: truck.inspections,
+                });
                 this.tableService.sendActionAnimation({
                   animation: 'update',
                   data: truck,
@@ -216,7 +227,9 @@ export class CommonTruckTrailerService {
 
                   this.trailerInactiveStore.add(trailer);
                 }
-
+                this.tadl.update(trailer.id, {
+                  inspections: trailer.inspections,
+                });
                 this.tableService.sendActionAnimation({
                   animation: 'update',
                   data: trailer,
@@ -278,7 +291,7 @@ export class CommonTruckTrailerService {
 
                   this.truckInactiveStore.add(truck);
                 }
-
+                this.tdlStore.update(truck.id, { titles: truck.titles });
                 this.tableService.sendActionAnimation({
                   animation: 'update',
                   data: truck,
@@ -306,7 +319,9 @@ export class CommonTruckTrailerService {
 
                   this.trailerInactiveStore.add(trailer);
                 }
-
+                this.tadl.update(trailer.id, {
+                  titles: trailer.titles,
+                });
                 this.tableService.sendActionAnimation({
                   animation: 'update',
                   data: trailer,
@@ -358,7 +373,11 @@ export class CommonTruckTrailerService {
 
             this.truckInactiveStore.add(truck);
           }
-
+          this.tdlStore.update(truck.id, { titles: truck.titles });
+          this.tdlStore.update(truck.id, {
+            registrations: truck.registrations,
+          });
+          this.tdlStore.update(truck.id, { inspections: truck.inspections });
           this.tableService.sendActionAnimation({
             animation: 'update',
             data: truck,
@@ -383,7 +402,13 @@ export class CommonTruckTrailerService {
 
               this.trailerInactiveStore.add(trailer);
             }
-
+            this.tadl.update(trailer.id, { titles: trailer.titles });
+            this.tadl.update(trailer.id, {
+              registrations: trailer.registrations,
+            });
+            this.tadl.update(trailer.id, {
+              inspections: trailer.inspections,
+            });
             this.tableService.sendActionAnimation({
               animation: 'update',
               data: trailer,
