@@ -1,11 +1,9 @@
 <div class="todo-list-holder">
   <div class="todo-tollbar">
     <div class="toolbar">
-      <div class="toolbar-title">To-Do</div>
+      <div class="toolbar-title">To-Do ({{ scene.children[0].children?.length }})</div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ scene.children[0].children?.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -80,11 +78,9 @@
       </div>
     </div>
     <div class="toolbar">
-      <div class="toolbar-title">Ongoing</div>
+      <div class="toolbar-title">Ongoing ({{ scene.children[1].children?.length }})</div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ scene.children[1].children?.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -143,11 +139,9 @@
       </div>
     </div>
     <div class="toolbar">
-      <div class="toolbar-title">Done</div>
+      <div class="toolbar-title">Done ({{ scene.children[2].children?.length }})</div>
       <div class="toolbar-menu-holder">
         <div class="toolbar-icons-frame">
-          <div class="count-box">{{ scene.children[2].children?.length }}</div>
-          <div class="border-right"></div>
           <div
             class="box-icons search-icon"
             ngbTooltip
@@ -242,7 +236,7 @@
                       <div
                         (mousedown)="item.url ? toggleLinkShow($event, i, j) : ''"
                         ngbTooltip
-                        mainTooltip="Hyperlink"
+                        [mainTooltip]="item.url ? 'Hyperlink' : 'No Hyperlink'"
                         position="bottom"
                         tooltipBackground="#6C6C6C"
                         class="icon-box"
