@@ -255,11 +255,31 @@ export class DropDownService {
         break;
       }
       case 'renew': {
-        alert('Ubaci modal ovde u globalni servis, details page');
+        this.modalService.openModal(
+          DriverCdlModalComponent,
+          { size: 'small' },
+          {
+            id: driverId,
+            file_id: dataCdl.id,
+            type: 'renew-licence',
+            renewData: dataCdl,
+          }
+        );
         break;
       }
       case 'activate-item': {
-        alert('Ubaci modal ovde u globalni servis, details page za aktivate');
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            data: { ...dataCdl, state: dataCdl.state.stateShortName, data },
+            template: 'cdl',
+            type: 'info',
+            subType: 'cdl void',
+            cdlStatus: 'Renew',
+            modalHeader: true,
+          }
+        );
         break;
       }
       default: {

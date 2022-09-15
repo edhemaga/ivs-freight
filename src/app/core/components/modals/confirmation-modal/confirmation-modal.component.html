@@ -1,17 +1,25 @@
 <app-ta-modal
   [modalTitle]="
-    (editData?.type === 'info'
-      ? editData?.subType === 'archive'
-        ? editData?.subType?.substring(0, 1).toUpperCase() +
-          editData?.subType?.substring(1)
-        : 'Move'
-      : editData?.type === 'multiple delete'
-      ? 'Delete'
-      : editData?.type?.substring(0, 1).toUpperCase() +
-        editData?.type?.substring(1)) +
-    ' ' +
-    'Confirmation'
+    editData.cdlStatus
+      ? editData.cdlStatus.concat(' ', 'CDL')
+      : (editData?.type === 'info'
+          ? editData?.subType === 'archive'
+            ? editData?.subType?.substring(0, 1).toUpperCase() +
+              editData?.subType?.substring(1)
+            : 'Move'
+          : editData?.type === 'multiple delete'
+          ? 'Delete'
+          : editData?.type?.substring(0, 1).toUpperCase() +
+            editData?.type?.substring(1)) +
+        ' ' +
+        'Confirmation'
   "
+  [editName]="
+    editData.cdlStatus
+      ? editData.data.data?.firstName?.concat(' ', editData.data.data?.lastName)
+      : ''
+  "
+  [specificCaseModalName]="editData.modalHeader"
   [customClass]="'modal-container-XS'"
   [bottomDivider]="true"
   [headerSvg]="editData?.type === 'multiple delete' ? 'delete' : editData?.type"
@@ -46,7 +54,11 @@
 
     <!-- Normal Header -->
     <p
-      *ngIf="!editData.rating && !editData.subTypeStatus"
+      *ngIf="
+        !editData.rating &&
+        !editData.subTypeStatus &&
+        editData.subType !== 'cdl void'
+      "
       class="confirmation-header"
     >
       Are you sure you want to
@@ -63,6 +75,22 @@
           ? editData?.template + "s"
           : editData?.template
       }}?
+    </p>
+
+    <!-- Renew CDL -->
+    <p
+      *ngIf="
+        editData.subType === 'cdl void' &&
+        editData?.type === 'info' &&
+        editData.template === 'cdl'
+      "
+      class="confirmation-header"
+    >
+      <span class="renew-cdl-person-name">{{
+        editData.data.data?.firstName?.concat(" ", editData.data.data?.lastName)
+      }}</span>
+      has active CDL. <br />
+      You need to void current CDL first.
     </p>
 
     <!---------------------------------------------- Confirmation Body For Object ---------------------------------------------->
@@ -119,7 +147,6 @@
           Address: {{ editData?.data?.address?.address }}
         </p>
       </div>
-
       <!-- CDL -->
       <div
         *ngIf="['cdl'].includes(editData?.template)"
@@ -132,8 +159,14 @@
         <p class="confirmation-text-2">
           Expires: {{ editData?.data.expDate | formatDateP }}
         </p>
+        <div
+          *ngIf="editData.subType === 'cdl void'"
+          class="confirmation-text-3 cdl-void-message"
+        >
+          This action can be undone by voiding or deleting active CDL and
+          activate or renew old one.
+        </div>
       </div>
-
       <!-- Medical, Mvr, Test -->
       <div
         *ngIf="['mvr', 'test', 'medical'].includes(editData?.template)"
@@ -148,7 +181,7 @@
           Issued: {{ editData?.data?.issueDate | formatDateP }}
         </p>
         <p class="confirmation-text-1" *ngIf="editData?.template === 'mvr'">
-          CDL: {{editData?.data.cdlNumber}}
+          CDL: {{ editData?.data.cdlNumber }}
         </p>
         <p class="confirmation-text-2">
           {{
@@ -162,7 +195,7 @@
           <span *ngIf="editData?.template === 'medical'">{{
             editData?.data.expDate | formatDateP
           }}</span>
-          <span  *ngIf="editData?.template === 'mvr'">{{
+          <span *ngIf="editData?.template === 'mvr'">{{
             editData?.data.issueDate | formatDateP
           }}</span>
         </p>
@@ -219,7 +252,9 @@
         </div>
         <!-- Shipper, Repair Shop -->
         <div
-          *ngIf="['shipper', 'repair shop','parking'].includes(editData?.template)"
+          *ngIf="
+            ['shipper', 'repair shop', 'parking'].includes(editData?.template)
+          "
           class="confirmation-info"
         >
           <p class="confirmation-text-1">{{ item?.data?.name }}</p>
