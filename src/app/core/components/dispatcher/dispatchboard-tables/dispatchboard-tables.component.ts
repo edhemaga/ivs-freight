@@ -112,15 +112,17 @@ export class DispatchboardTablesComponent implements OnInit {
   checkForEmpty: string = '';
 
   @Input() set _dData(value) {
-    value.dispatches = value.dispatches.map((item) => {
-      // if( !item.hoursOfService ){
-      //   item.hoursOfService = {
-      //     hos: []
-      //   }
-      // }
+    console.log("GET DATA INSIDE LIST");
+    console.log(value);
+    // value.dispatches = value.dispatches.map((item) => {
+    //   if( !item.hoursOfService ){
+    //     item.hoursOfService = {
+    //       hos: []
+    //     }
+    //   }
 
-      return item;
-    });
+    //   return item;
+    // });
     this.dData = value;
   }
 
@@ -131,21 +133,26 @@ export class DispatchboardTablesComponent implements OnInit {
   truckList: any[];
   trailerList: any[];
   driverList: any[];
+  __change_in_proggress: boolean = false;
+
 
   @Input() set smallList(value) {
-    this.truckList = value.trucks.map((item) => {
+    const newTruckList = JSON.parse(JSON.stringify(value.trucks));
+    this.truckList = newTruckList.map((item) => {
       item.name = item.truckNumber;
       item.colorD = this.colorPipe.transform("truck", item.truckType.id);
       return item;
     });
 
-    this.trailerList = value.trailers.map((item) => {
+    const newTrailerList = JSON.parse(JSON.stringify(value.trailers));
+    this.trailerList = newTrailerList.map((item) => {
       item.name = item.trailerNumber;
       item.colorD = this.colorPipe.transform("trailer", item.trailerType.id);
       return item;
     });
 
-    this.driverList = value.drivers.map((item) => {
+    const driversList = JSON.parse(JSON.stringify(value.drivers));
+    this.driverList = driversList.map((item) => {
       item.name = `${item.firstName} ${item.lastName}`;
       return item;
     });
@@ -400,6 +407,7 @@ export class DispatchboardTablesComponent implements OnInit {
     };
 
     this.selectTruck.reset();
+    this.__change_in_proggress = true;
 
     console.log(key);
     console.log(value);
@@ -427,6 +435,7 @@ export class DispatchboardTablesComponent implements OnInit {
           this.dss.updateCountList(this.dData.id, key, value);
           this.dss.updateModalList();
           this.checkEmptySet = '';
+          this.__change_in_proggress = false;
         });
     } else {
       newData.dispatchBoardId = this.dData.id;
@@ -445,6 +454,7 @@ export class DispatchboardTablesComponent implements OnInit {
           this.checkEmptySet = '';
           this.dss.updateCountList(this.dData.id, key, value);
           this.dss.updateModalList();
+          this.__change_in_proggress = false;
         });
     }
     // console.log("HELOOOOO", newData);

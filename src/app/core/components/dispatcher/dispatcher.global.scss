@@ -1423,26 +1423,6 @@
   .multiple_with_toolbar {
     position: relative;
 
-    .loadingItem {
-      position: absolute;
-      width: 100%;
-      height: calc(100% - 32px);
-      z-index: 20;
-      background-color: rgb(255 255 255 / 50%);
-      border-radius: 3px;
-      transition: background-color 0.3s;
-
-      &.error {
-        background-color: rgb(255 93 93 / 50%);
-        transition: background-color 0.3s;
-      }
-
-      &.goTop {
-        top: 30px;
-        height: calc(100% - 63px);
-      }
-    }
-
     thead th {
       .k-i-sort-asc-sm::before {
         font-family: "Font Awesome 5 Duotone", sans-serif;
@@ -1979,6 +1959,27 @@
 .dispatchboard-main-table {
   // width: 1200px;
   overflow-x: auto;
+  position: relative;
+
+  .loadingItem {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 32px);
+    z-index: 105;
+    background-color: rgb(255 255 255 / 50%);
+    border-radius: 3px;
+    transition: background-color 0.3s;
+
+    &.error {
+      background-color: rgb(255 93 93 / 50%);
+      transition: background-color 0.3s;
+    }
+
+    &.goTop {
+      top: 30px;
+      height: calc(100% - 49px);
+    }
+  }
 
   &.dispatchboard-main-table {
     //padding-left: 308px;
@@ -2117,7 +2118,7 @@
     min-width: 112px;
     max-width: 112px;
 
-    &.theads {
+    &.theads-dispatch {
       padding-left: 0 !important;
       text-align: center;
     }
