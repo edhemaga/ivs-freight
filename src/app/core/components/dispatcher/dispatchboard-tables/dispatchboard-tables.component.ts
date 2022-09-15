@@ -26,6 +26,7 @@ import {
 import { DispatchStatus } from '../../../../../../appcoretruckassist/model/dispatchStatus';
 import { ChangeDetectorRef } from '@angular/core';
 import { catchError, of } from 'rxjs';
+import { ColorFinderPipe } from '../pipes/color-finder.pipe';
 
 @Component({
   selector: 'app-dispatchboard-tables',
@@ -33,6 +34,7 @@ import { catchError, of } from 'rxjs';
   styleUrls: ['./dispatchboard-tables.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
+  providers: [ColorFinderPipe],
   animations: [
     trigger('boxAnimation', [
       state(
@@ -133,11 +135,13 @@ export class DispatchboardTablesComponent implements OnInit {
   @Input() set smallList(value) {
     this.truckList = value.trucks.map((item) => {
       item.name = item.truckNumber;
+      item.colorD = this.colorPipe.transform("truck", item.truckType.id);
       return item;
     });
 
     this.trailerList = value.trailers.map((item) => {
       item.name = item.trailerNumber;
+      item.colorD = this.colorPipe.transform("trailer", item.trailerType.id);
       return item;
     });
 
@@ -203,7 +207,8 @@ export class DispatchboardTablesComponent implements OnInit {
 
   constructor(
     private dss: DispatcherStoreService,
-    private chd: ChangeDetectorRef
+    private chd: ChangeDetectorRef,
+    private colorPipe: ColorFinderPipe
   ) {}
 
   ngOnInit(): void {
@@ -236,7 +241,10 @@ export class DispatchboardTablesComponent implements OnInit {
 
   addDriver(e) {
     if (e) {
-      const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened]?.driver ? "driverId" : "coDriverId";
+      const driverOrCoDriver = !this.dData.dispatches[this.driverSelectOpened]
+        ?.driver
+        ? 'driverId'
+        : 'coDriverId';
       this.updateOrAddDispatchBoardAndSend(
         driverOrCoDriver,
         e.id,
@@ -247,7 +255,7 @@ export class DispatchboardTablesComponent implements OnInit {
     this.driverSelectOpened = -1;
   }
 
-  addStatus(e){
+  addStatus(e) {
     if (e) {
       this.updateOrAddDispatchBoardAndSend(
         'status',
@@ -259,8 +267,9 @@ export class DispatchboardTablesComponent implements OnInit {
     this.statusOpenedIndex = -1;
   }
 
-  openIndex(indx: number) { 
-    console.log("INDEX ON OPEN", indx);
+
+
+  openIndex(indx: number) {
     this.statusOpenedIndex = indx;
   }
 
@@ -382,7 +391,7 @@ export class DispatchboardTablesComponent implements OnInit {
       location: oldData.location?.address ? oldData.location : null,
       hourOfService: 0,
       note: oldData.note,
-      loadIds: []
+      loadIds: [],
     };
 
     let newData: any = {

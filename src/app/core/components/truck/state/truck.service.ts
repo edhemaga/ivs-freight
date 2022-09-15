@@ -17,6 +17,7 @@ import { TrucksMinimalListQuery } from './truck-details-minima-list-state/truck-
 import { TrucksMinimalListStore } from './truck-details-minima-list-state/truck-details-minimal.store';
 import { TruckItemStore } from './truck-details-state/truck.details.store';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 
 @Injectable({ providedIn: 'root' })
 export class TruckTService implements OnDestroy {
@@ -34,16 +35,16 @@ export class TruckTService implements OnDestroy {
     private tableService: TruckassistTableService,
     private truckMinimalQuery: TrucksMinimalListQuery,
     private truckMinimalStore: TrucksMinimalListStore,
-    private truckItem: TruckItemStore
+    private truckItem: TruckItemStore,
+    private tdlStore: TrucksDetailsListStore
   ) {}
 
   //Get Truck Minimal List
   public getTrucksMinimalList(
     pageIndex?: number,
-    pageSize?: number,
-    count?: number
+    pageSize?: number
   ): Observable<TruckMinimalListResponse> {
-    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize, count);
+    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize);
   }
 
   // Get Truck List
@@ -79,7 +80,7 @@ export class TruckTService implements OnDestroy {
           .subscribe({
             next: (truck: TruckResponse | any) => {
               this.truckActiveStore.add(truck);
-
+              this.truckMinimalStore.add(truck);
               const truckCount = JSON.parse(
                 localStorage.getItem('truckTableCount')
               );
@@ -117,7 +118,7 @@ export class TruckTService implements OnDestroy {
               this.truckActiveStore.remove(({ id }) => id === data.id);
 
               this.truckActiveStore.add(truck);
-
+              this.tdlStore.replace(truck.id, truck);
               this.tableService.sendActionAnimation({
                 animation: 'update',
                 data: truck,
@@ -140,6 +141,7 @@ export class TruckTService implements OnDestroy {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
         this.truckMinimalStore.remove(({ id }) => id === truckId);
         this.truckItem.remove(({ id }) => id === truckId);
+        this.tdlStore.remove(({ id }) => id === truckId);
         if (tableSelectedTab === 'active') {
           this.truckActiveStore.remove(({ id }) => id === truckId);
 
@@ -182,6 +184,7 @@ export class TruckTService implements OnDestroy {
       tap(() => {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
         this.truckMinimalStore.remove(({ id }) => id === truckId);
+        this.tdlStore.remove(({ id }) => id === truckId);
         if (tableSelectedTab === 'active') {
           this.truckActiveStore.remove(({ id }) => id === truckId);
 
@@ -234,10 +237,10 @@ export class TruckTService implements OnDestroy {
       .subscribe((item) => (this.truckList = item));
     if (getIndex) {
       this.currentIndex = this.truckList.findIndex(
-        (truck) => truck.id === truckId
+        (truck) => truck?.id === truckId
       );
-      let last = this.truckList.at(-1);
-      if (last.id === truckId) {
+      let last = this.truckList?.at(-1);
+      if (last?.id === truckId) {
         this.currentIndex = --this.currentIndex;
       } else {
         this.currentIndex = ++this.currentIndex;
@@ -245,7 +248,7 @@ export class TruckTService implements OnDestroy {
       if (this.currentIndex == -1) {
         this.currentIndex = 0;
       }
-      this.truckId = this.truckList[this.currentIndex].id;
+      this.truckId = this.truckList[this.currentIndex]?.id;
     }
 
     return this.truckService.apiTruckIdGet(truckId);
@@ -303,17 +306,20 @@ export class TruckTService implements OnDestroy {
             inactive: truckCount.inactive,
           })
         );
-        const subTruck = this.getTruckById(truckId).subscribe({
-          next: (truck: TruckResponse | any) => {
-            this.tableService.sendActionAnimation({
-              animation: 'update-status',
-              data: truck,
-              id: truck.id,
-            });
+        const subTruck = this.getTruckById(truckId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.tdlStore.update(truck.id, { status: truck.status });
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                data: truck,
+                id: truck.id,
+              });
 
-            subTruck.unsubscribe();
-          },
-        });
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }
