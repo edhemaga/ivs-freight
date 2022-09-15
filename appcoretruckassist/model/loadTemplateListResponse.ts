@@ -14,5 +14,8 @@ import { LoadTemplateResponsePagination } from './loadTemplateResponsePagination
 
 export interface LoadTemplateListResponse { 
     pagination?: LoadTemplateResponsePagination;
+    pendingCount?: number;
+    activeCount?: number;
+    closedCount?: number;
 }
 

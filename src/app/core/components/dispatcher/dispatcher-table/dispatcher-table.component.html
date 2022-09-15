@@ -35,7 +35,7 @@
                           [icon]="'truck'"
                           [leftSideIcon]="true"
                           [largeLeftIcon]="true"
-                          [svgCustom]="true" 
+                          [svgCustom]="true"
                           [legendView]="true"
                         >
                         </app-filter>
@@ -48,32 +48,29 @@
                         class="btn-transparent open_load history_board"
                         position="bottom"
                       >
-                      <app-filter
-                        [type]="'trailerTypeFilter'"
-                        [filterTitle]="'Trailer Type Legend'"
-                        [defFilterHolder]="true"
-                        [icon]="'trailer'"
-                        [leftSideIcon]="true"
-                        [largeLeftIcon]="true"
-                        [svgCustom]="true" 
-                        [legendView]="true"
-                      >
-                      </app-filter>
+                        <app-filter
+                          [type]="'trailerTypeFilter'"
+                          [filterTitle]="'Trailer Type Legend'"
+                          [defFilterHolder]="true"
+                          [icon]="'trailer'"
+                          [leftSideIcon]="true"
+                          [largeLeftIcon]="true"
+                          [svgCustom]="true"
+                          [legendView]="true"
+                        >
+                        </app-filter>
                       </button>
                       <div class="border-spacer"></div>
                       <button
                         (click)="openDispatchHistory()"
-                        mainTooltip="History"
+                        mainTooltip="Search"
                         ngbTooltip
-                        class="btn-transparent open_load history_board"
+                        class="btn-transparent open_load search_board"
                         position="bottom"
                       >
-                        <svg-icon
-                          [svgStyle]="{ 'width.px': 18, 'height.px': 16 }"
-                          class="icon-hover-blue-28 m-0 blue_icon"
-                          src="assets/svg/common/ic_search.svg"
-                        >
-                        </svg-icon>
+                        <app-truckassist-search
+                          [selectedTabData]="searchDashboardOptions"
+                        ></app-truckassist-search>
                       </button>
                     </div>
                     <div class="dispatch-board-buttons-holder">
@@ -219,25 +216,6 @@
           </div>
         </div>
         <div class="dispatcher_table_list_holder">
-          <!-- <div
-            *ngFor="let dispatcher of selectedDispatchers; let ind = index"
-            class="dipsatch_groups"
-          >
-            <app-app-dispatcher-table-new
-              (hoverPhoneEmail)="hoverPhoneEmail()"
-              (updateUsersData)="updateUsersData()"
-              [dispatcherInfo]="dispatcher"
-              [dispatcher]="dispatcher.id"
-              [gridIndex]="ind"
-              [isBoardLocked]="isBoardLocked"
-              [loadDrivers]="loadDrivers"
-              [loadTrailers]="loadTrailers"
-              [loadTrucks]="loadTrucks"
-              [phoneEmailToggle]="phoneEmailToggle"
-            >
-            </app-app-dispatcher-table-new>
-          </div> -->
-
           <div
             class="dipsatch_groups"
             *ngFor="let item of dispatchTableList | async; let indx = index"

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Self } from '@angular/core';
+import { AfterViewInit, Component, Input, Self } from '@angular/core';
 import { ControlValueAccessor, NgControl } from '@angular/forms';
 import { ITaInput } from '../ta-input/ta-input.config';
 
@@ -7,10 +7,16 @@ import { ITaInput } from '../ta-input/ta-input.config';
   templateUrl: './ta-input-arrows.component.html',
   styleUrls: ['./ta-input-arrows.component.scss'],
 })
-export class TaInputArrowsComponent implements OnInit, ControlValueAccessor {
+export class TaInputArrowsComponent
+  implements AfterViewInit, ControlValueAccessor
+{
   @Input() name: string;
   @Input() type: string; // 'applicant'
   @Input() required: boolean;
+  @Input() minimum: number = 1;
+  @Input() maximum: number = 12;
+  @Input() elementOrder: number;
+
   @Input() inputConfig: ITaInput;
   @Input() selectedMode?: string;
 
@@ -20,13 +26,13 @@ export class TaInputArrowsComponent implements OnInit, ControlValueAccessor {
     this.superControl.valueAccessor = this;
   }
 
-  ngOnInit(): void {
-    this.buttonHolding();
+  ngAfterViewInit() {
+    this.buttonHolding(this.elementOrder);
   }
 
-  private buttonHolding() {
-    const decrement = document.querySelector('.minus-icon');
-    const increment = document.querySelector('.plus-icon');
+  private buttonHolding(order: number) {
+    const decrement = document.querySelector(`.minus-icon-${order}`);
+    const increment = document.querySelector(`.plus-icon-${order}`);
 
     this.buttonAction(decrement, 'decrement');
     this.buttonAction(increment, 'increment');
@@ -48,7 +54,7 @@ export class TaInputArrowsComponent implements OnInit, ControlValueAccessor {
 
   private changeValue(action: string) {
     if (action === 'increment') {
-      if (parseInt(this.getSuperControl.value) === 12) {
+      if (parseInt(this.getSuperControl.value) === this.maximum) {
         return;
       }
       this.getSuperControl.patchValue(
@@ -60,7 +66,7 @@ export class TaInputArrowsComponent implements OnInit, ControlValueAccessor {
     // decrement
     else {
       if (
-        parseInt(this.getSuperControl.value) === 1 ||
+        parseInt(this.getSuperControl.value) === this.minimum ||
         !this.getSuperControl.value
       ) {
         return;

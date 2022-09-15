@@ -14,31 +14,31 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class DispatcherDropdownComponent implements OnInit {
-
   __items: any[];
 
   selectValue: any = {};
   @Input() set items(value: any[]) {
-    this.__items = value;
-    this.selectValue = value.find(item => item.selected);
-  };
+    this.__items = JSON.parse(JSON.stringify(value));
+    const savedDispatcher = parseInt(
+      localStorage.getItem('dispatchUserSelect')
+    );
+    this.selectValue = value.find((item) => {
+      if (isNaN(savedDispatcher)) {
+        return item.selected;
+      } else {
+        return item.id == savedDispatcher;
+      }
+    });
+  }
 
   @Output() changeVal = new EventEmitter();
   constructor() {}
 
-  ngOnInit(): void { 
-    // if (this.selectValue == null) {
-    //   this.selectValue = {
-    //     id: 0,
-    //     name: 'All',
-    //   };
-    // }
-
-    //this.selectValue
-  }
+  ngOnInit(): void {}
 
   public change(event, elem) {
-    this.changeVal.emit(event);
+    console.log(event);
+    this.changeVal.emit(event.id);
     elem.blur();
   }
 }
