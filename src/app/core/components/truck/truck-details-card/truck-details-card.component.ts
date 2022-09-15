@@ -422,6 +422,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
       this.noteControl.patchValue(changes.truck.currentValue.note);
       this.getTruckDropdown();
     }
+    this.changeColor();
     this.truckMinimalListQuery
       .selectAll()
       .pipe(takeUntil(this.destroy$))
@@ -433,6 +434,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     this.getTruckDropdown();
     this.buttonSwitcher();
     this.initTableOptions();
+  }
+  public changeColor() {
+    document.documentElement.style.setProperty(
+      '--dynamic-colour',
+      this.truck?.color?.code ? this.truck.color.code : '#aaa'
+    );
   }
   public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
