@@ -184,7 +184,10 @@
                     type: 'text',
                     isDropdown: true,
                     textTransform: 'capitalize',
-                    dropdownWidthClass: 'w-col-120'
+                    dropdownWidthClass: 'w-col-120',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                   [options]="departments"
                   [activeItem]="selectedDepartmentFormArray[ind]"
@@ -195,7 +198,10 @@
                   [inputConfig]="{
                     name: 'Phone',
                     type: 'text',
-                    mask: '(000) 000-0000'
+                    mask: '(000) 000-0000',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -205,7 +211,10 @@
                     type: 'text',
                     minLength: 1,
                     maxLength: 8,
-                    placeholderIcon: 'phone-extension'
+                    placeholderIcon: 'phone-extension',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -215,7 +224,10 @@
                     type: 'text',
                     minLength: 5,
                     maxLength: 64,
-                    textTransform: 'lowercase'
+                    textTransform: 'lowercase',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <div

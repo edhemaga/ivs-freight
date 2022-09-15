@@ -68,7 +68,9 @@
                   ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
+                hideErrorMessage: true,
                 blackInput: true,
+                hideRequiredCheck: true
                 commands: {
                   active: true,
                   type: 'pm-increment-decrement',
@@ -119,6 +121,8 @@
                   name: 'Description',
                   type: 'text',
                   blackInput: true,
+                  hideErrorMessage: true,
+                  hideRequiredCheck: true,
                   minLength: 20,
                   maxLength: 160,
                   textTransform: 'capitalize',
@@ -135,7 +139,9 @@
                   ? 'MILEAGE'
                   : 'MONTHS',
                 type: 'text',
+                hideErrorMessage: true,
                 blackInput: true,
+                hideRequiredCheck: true,
                 commands: {
                   active: true,
                   type: 'pm-increment-decrement',

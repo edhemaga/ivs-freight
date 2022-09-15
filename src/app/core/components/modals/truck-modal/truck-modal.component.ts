@@ -64,7 +64,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public colorType: any[] = [];
   public ownerType: any[] = [];
   public grossWeight: any[] = [];
-  public engineType: any[] = [];
   public tireSize: any[] = [];
   public shifters: any[] = [];
   public engineModels: any[] = [];
@@ -106,7 +105,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
   public selectedColor: any = null;
   public selectedOwner: any = null;
   public selectedTruckGrossWeight: any = null;
-  public selectedEngineType: any = null;
+
   public selectedTireSize: any = null;
   public selectedEngineModel: any = null;
   public selectedEngineOilType: any = null;
@@ -210,8 +209,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       mileage: [null, mileageValidation],
       insurancePolicy: [null, insurancePolicyValidation],
       fhwaexp: [12, Validators.required],
-
-      truckEngineTypeId: [null],
 
       purchaseDate: [null],
       purchasePrice: [null],
@@ -355,9 +352,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
               ? res.truckGrossWeight.name
               : null,
             emptyWeight: res.emptyWeight,
-            truckEngineTypeId: res.truckEngineType
-              ? res.truckEngineType.name
-              : null,
+            engineModel: res.truckEngineType ? res.truckEngineType.name : null,
             tireSizeId: res.tireSize ? res.tireSize.name : null,
             axles: res.axles,
             insurancePolicy: res.insurancePolicy,
@@ -373,7 +368,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           this.selectedTruckGrossWeight = res.truckGrossWeight
             ? res.truckGrossWeight
             : null;
-          this.selectedEngineType = res.truckEngineType
+          this.selectedEngineModel = res.truckEngineType
             ? res.truckEngineType
             : null;
           this.selectedTireSize = res.tireSize ? res.tireSize : null;
@@ -405,7 +400,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         note: res.note,
         truckGrossWeightId: res.truckGrossWeightId,
         emptyWeight: res.emptyWeight,
-        truckEngineTypeId: res.truckEngineTypeId,
+        engineModel: res.engineModel,
         tireSizeId: res.tireSizeId,
         axles: res.axles,
         insurancePolicy: res.insurancePolicy,
@@ -421,7 +416,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       this.selectedOwner = res.selectedOwner;
 
       this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
-      this.selectedEngineType = res.selectedEngineType;
+      this.selectedEngineModel = res.selectedEngineModel;
       this.selectedTireSize = res.selectedTireSize;
       this.truckStatus = res.truckStatus;
 
@@ -463,7 +458,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 selectedColor: this.selectedColor,
                 selectedOwner: this.selectedOwner,
                 selectedTruckGrossWeight: this.selectedTruckGrossWeight,
-                selectedEngineType: this.selectedEngineType,
+                selectedEngineModel: this.selectedEngineModel,
                 selectedTireSize: this.selectedTireSize,
                 truckStatus: this.truckStatus,
                 id: this.editData?.id,
@@ -479,10 +474,6 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       }
       case 'gross-weight': {
         this.selectedTruckGrossWeight = event;
-        break;
-      }
-      case 'engine-type': {
-        this.selectedEngineType = event;
         break;
       }
       case 'tire-size': {
@@ -539,13 +530,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                   model: res?.model ? res.model : null,
                   year: res?.year ? res.year : null,
                   truckMakeId: res.truckMake?.name ? ' ' : null,
-                  truckEngineTypeId: res.engineType?.name
+                  engineModel: res.engineType?.name
                     ? res.engineType.name
                     : null,
                 });
                 this.loadingVinDecoder = false;
                 this.selectedTruckMake = res.truckMake;
-                this.selectedEngineType = res.engineType;
+                this.selectedEngineModel = res.engineType;
               },
               error: (error: any) => {
                 this.notificationService.error(
@@ -582,7 +573,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           });
           this.ownerType = res.owners;
           this.grossWeight = res.truckGrossWeights;
-          this.engineType = res.truckEngineTypes;
+          this.engineModels = res.truckEngineTypes;
           this.tireSize = res.tireSizes;
           this.shifters = res.shifters;
         },
@@ -605,8 +596,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
       truckGrossWeightId: this.selectedTruckGrossWeight
         ? this.selectedTruckGrossWeight.id
         : null,
-      truckEngineTypeId: this.selectedEngineType
-        ? this.selectedEngineType.id
+      engineModel: this.selectedEngineModel
+        ? this.selectedEngineModel.id
         : null,
       tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
       mileage: this.truckForm.get('mileage').value
@@ -669,9 +660,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
           ? this.selectedTruckGrossWeight.id
           : null
         : null,
-      truckEngineTypeId: this.selectedEngineType
-        ? this.selectedEngineType.id != 0
-          ? this.selectedEngineType.id
+      engineModel: this.selectedEngineModel
+        ? this.selectedEngineModel.id != 0
+          ? this.selectedEngineModel.id
           : null
         : null,
       tireSizeId: this.selectedTireSize

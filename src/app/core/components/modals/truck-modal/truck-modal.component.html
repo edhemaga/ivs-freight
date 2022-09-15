@@ -222,20 +222,6 @@
       </div>
       <!-------------------------------- Additional Tab -------------------------------->
       <div class="m-tab" *ngIf="selectedTab === 2">
-        <!-- <app-ta-input-dropdown
-        formControlName="truckEngineTypeId"
-        [inputConfig]="{
-          name: 'Input Dropdown',
-          type: 'text',
-          label: 'Engine Type',
-          isDropdown: true,
-          dropdownWidthClass: 'w-col-176'
-        }"
-        [options]="engineType"
-        [activeItem]="selectedEngineType"
-        (selectedItem)="onSelectDropdown($event, 'engine-type')"
-      ></app-ta-input-dropdown> -->
-
         <!-- First Row -->
         <div class="truck-additional-two-columns">
           <app-ta-input-dropdown
@@ -257,7 +243,7 @@
             [inputConfig]="{
               name: 'Input Dropdown',
               type: 'text',
-              label: 'Engine Model',
+              label: 'Engine MOdel',
               isDropdown: true,
               dropdownWidthClass: 'w-col-248'
             }"

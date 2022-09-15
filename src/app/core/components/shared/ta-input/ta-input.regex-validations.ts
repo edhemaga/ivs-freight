@@ -116,14 +116,18 @@ export const truckTrailerModelValidation = [
 export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
 //---------------- Year, month, day ---------------
+const yearRange =
+  parseInt(moment().add(1, 'year').format('YY').substring(1)) - 2;
 export const yearValidRegex = Validators.pattern(
-  /^(19[0-9]\d|20[0-4]\d|2100)$/
+  new RegExp(
+    `^(19[0-9]\\d|20[0-` +
+      yearRange +
+      `]\\d` +
+      `|` +
+      moment().add(1, 'year').format('YYYY') +
+      ')$'
+  )
 );
-//  Validators.pattern(
-//   new RegExp(
-//     '^(19[0-9]d|20[0-4]d|' + moment().add(1, 'year').format('YYYY') + ')$'
-//   )
-// );
 
 export const yearValidation = [
   Validators.minLength(4),

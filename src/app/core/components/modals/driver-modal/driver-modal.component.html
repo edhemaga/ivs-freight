@@ -569,7 +569,8 @@
                     type: 'text',
                     textTransform: 'capitalize',
                     hideRequiredCheck: true,
-                    blackInput: true
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                 ></app-ta-input>
                 <app-ta-input-address
@@ -581,7 +582,9 @@
                     textTransform: 'capitalize',
                     minLength: 6,
                     maxLength: 256,
-                    blackInput: true
+                    hideRequiredCheck: true,
+                    blackInput: true,
+                    hideErrorMessage: true
                   }"
                   [activeAddress]="selectedAddress"
                   (selectedAddress)="onHandleAddressFormArray($event, ind)"
