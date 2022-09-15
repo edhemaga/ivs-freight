@@ -123,7 +123,7 @@ export class DispatchboardTablesComponent implements OnInit {
 
     //   return item;
     // });
-    this.dData = value;
+    this.dData = JSON.parse(JSON.stringify(value))
   }
 
   @Input() dDataIndx: number;
