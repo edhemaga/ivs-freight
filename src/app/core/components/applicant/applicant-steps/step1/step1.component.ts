@@ -774,11 +774,11 @@ export class Step1Component implements OnInit, OnDestroy {
   }
 
   public onSubmit(): void {
-    if (this.personalInfoForm.invalid) {
+    /* if (this.personalInfoForm.invalid) {
       this.inputService.markInvalid(this.personalInfoForm);
       return;
     }
-
+ */
     const {
       firstRowReview,
       secondRowReview,

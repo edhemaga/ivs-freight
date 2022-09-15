@@ -1,5 +1,6 @@
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -121,7 +122,8 @@ export class Step3FormComponent
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
     private formService: FormService,
-    private applicantListsService: ApplicantListsService
+    private applicantListsService: ApplicantListsService,
+    private cdref: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -166,6 +168,10 @@ export class Step3FormComponent
 
           console.log('prev', previousFormValues);
           console.log('new', newFormValues);
+          console.log(
+            'restrictions',
+            this.licenseForm.get('restrictions').value
+          );
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isLicenseEdited = false;
@@ -291,9 +297,21 @@ export class Step3FormComponent
       case InputSwitchActions.RESTRICTIONS:
         this.selectedRestrictions = event;
 
+        this.licenseForm
+          .get('restrictions')
+          .patchValue(this.selectedRestrictions);
+
+        /*    this.cdref.detectChanges(); */
+
+        console.log('inputchangerestrictions', this.selectedRestrictions);
+
         break;
       case InputSwitchActions.ENDORSMENTS:
         this.selectedEndorsments = event;
+
+        this.licenseForm
+          .get('endorsments')
+          .patchValue(this.selectedEndorsments);
 
         break;
 

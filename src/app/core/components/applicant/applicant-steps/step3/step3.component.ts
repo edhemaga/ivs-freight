@@ -39,7 +39,7 @@ export class Step3Component implements OnInit, OnDestroy {
 
   public licenseArray: LicenseModel[] = [];
 
-  public lastContactCard: any;
+  public lastLicenseCard: any;
 
   public applicantId: number;
 
@@ -262,6 +262,10 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
+  public onGetLastFormValues(event: any): void {
+    this.lastLicenseCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -318,10 +322,6 @@ export class Step3Component implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
-  }
-
-  public onGetLastFormValues(event: any): void {
-    this.lastContactCard = event;
   }
 
   public getDropdownLists(): void {
@@ -390,27 +390,27 @@ export class Step3Component implements OnInit, OnDestroy {
     });
 
     const filteredLastLicenseCardStateId = this.usStates.find(
-      (stateItem) => stateItem.name === this.lastContactCard.state
+      (stateItem) => stateItem.name === this.lastLicenseCard.state
     )
       ? this.usStates.find(
-          (stateItem) => stateItem.name === this.lastContactCard.state
+          (stateItem) => stateItem.name === this.lastLicenseCard.state
         ).id
       : this.canadaStates.find(
-          (stateItem) => stateItem.name === this.lastContactCard.state
+          (stateItem) => stateItem.name === this.lastLicenseCard.state
         ).id;
 
     const filteredLastLicenseCard = {
-      licenseNumber: this.lastContactCard.licenseNumber,
-      country: this.lastContactCard.country as CountryType,
+      licenseNumber: this.lastLicenseCard.licenseNumber,
+      country: this.lastLicenseCard.country as CountryType,
       stateId: filteredLastLicenseCardStateId,
-      class: this.lastContactCard.classType,
-      expDate: convertDateToBackend(this.lastContactCard.expDate),
-      restrictions: this.lastContactCard.restrictions.map((item) => item.id),
-      endorsements: this.lastContactCard.endorsments.map((item) => item.id),
+      class: this.lastLicenseCard.classType,
+      expDate: convertDateToBackend(this.lastLicenseCard.expDate),
+      restrictions: this.lastLicenseCard.restrictions.map((item) => item.id),
+      endorsements: this.lastLicenseCard.endorsments.map((item) => item.id),
     };
 
     const saveData: CreateApplicantCdlCommand = {
-      applicantId: 1,
+      applicantId: this.applicantId,
       cdlDenied: permit,
       cdlDeniedExplanation: permitExplain,
       licences: [...filteredLicenseArray, filteredLastLicenseCard],

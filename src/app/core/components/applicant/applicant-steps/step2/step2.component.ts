@@ -2,12 +2,17 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
+
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
 import { WorkHistoryModel } from '../../state/model/work-history.model';
-import { Subject, takeUntil } from 'rxjs';
+import { CreateWorkExperienceCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step2',
@@ -19,12 +24,20 @@ export class Step2Component implements OnInit, OnDestroy {
 
   public selectedMode: string = SelectedMode.APPLICANT;
 
+  public applicantId: number;
+
   public workExperienceForm: FormGroup;
+
+  public formStatus: string = 'INVALID';
+  public innerFormStatus: string = 'VALID';
+  public markFormInvalid: boolean;
+  public markInnerFormInvalid: boolean;
 
   public workExperienceArray: WorkHistoryModel[] = [];
 
-  public selectedWorkExperienceIndex: number;
+  public lastWorkExperienceCard: any;
 
+  public selectedWorkExperienceIndex: number;
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
@@ -69,26 +82,22 @@ export class Step2Component implements OnInit, OnDestroy {
     {},
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public selectedItemIndex: number = -1; */
-
-  /* public workExperienceArray: WorkHistory[]; */
-
-  // public get showAddNew(): boolean {
-  //   /* return this.workHistories?.length &&
-  //       this.workHistories[this.workHistories?.length - 1]?.id
-  //       ? true
-  //       : false; */
-  //   return true;
-  // }
-
-  constructor(private formBuilder: FormBuilder, private router: Router) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
 
-    /*     this.isNoExperience(); */
+    this.hasNoWorkExperience();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -108,6 +117,23 @@ export class Step2Component implements OnInit, OnDestroy {
 
       noWorkExperience: [false],
     });
+  }
+
+  private hasNoWorkExperience(): void {
+    this.workExperienceForm
+      .get('noWorkExperience')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.formValuesToPatch = null;
+
+          this.formStatus = 'VALID';
+          this.innerFormStatus = 'VALID';
+        } else {
+          this.formStatus = 'INVALID';
+          this.innerFormStatus = 'VALID';
+        }
+      });
   }
 
   public onDeleteWorkExperience(index: number): void {
@@ -177,6 +203,30 @@ export class Step2Component implements OnInit, OnDestroy {
     this.selectedWorkExperienceIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onGetInnerFormStatus(status: string): void {
+    this.innerFormStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onMarkInnerInvalidEmit(event: any): void {
+    if (!event) {
+      this.markInnerFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastWorkExperienceCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -235,160 +285,51 @@ export class Step2Component implements OnInit, OnDestroy {
     }
   }
 
-  /* private isNoExperience(): void {
-    this.workExperienceForm
-      .get('noWorkExperience')
-      .valueChanges.pipe(takeUntil(this.destroy$))
-      .subscribe((value) => {
-        if (!value) {
-          this.workExperienceArray = this.workExperienceArray?.map((wh) => {
-            wh.isDeleted = false;
-            wh.isExpanded = false;
-
-            return wh;
-          });
-
-          if (!this.workExperienceArray?.length) {
-            let workHistory = new WorkHistory(undefined);
-
-            workHistory.isExpanded = true;
-
-            this.workExperienceArray?.push(workHistory);
-          }
-
-          this.selectedItemIndex = this.workExperienceArray?.length
-            ? this.workExperienceArray.length - 1
-            : -1;
-        } else {
-          this.workExperienceArray = this.workExperienceArray?.map((wh) => {
-            wh.isDeleted = true;
-            wh.isExpanded = false;
-
-            return wh;
-          });
-        }
-      });
-  } */
-
-  /* public onStepAction(event: any): void {
-    if (event.action === 'back-step') {
-      this.router.navigateByUrl(`/applicant/${this.applicant.id}/1`);
-    }  else if (event.action === 'next-step') {
-            if (this.showAddNew) {
-                if (this.workExperienceForm.get('noWorkExperience').value) {
-                    if (this.workExperienceArray?.length) {
-                        this.workExperienceArray.forEach(element => {
-                            element.isDeleted = true;
-                            element.applicantId = this.applicant.id;
-                            this.apppEntityServices.workHistoryService
-                                .upsert(element)
-                                .subscribe(
-                                    response => {
-                                        this.notification.success(
-                                            'Work Experience has been deleted!',
-                                            'Success'
-                                        );
-                                    },
-                                    error => {
-                                        this.shared.handleError(error);
-                                    }
-                                );
-                        });
-                    }
-                } else {
-                    this.router.navigateByUrl(
-                        `/applicant/${this.applicant.id}/3`
-                    );
-                }
-            } else {
-                this.onAddWorkExperience();
-            }
-        }
-  } */
-
-  /* private formFilling(index: number): void {
-    this.selectedItemIndex = index;
-
-    if (this.workExperienceArray?.length) {
-      this.workExperienceArray?.forEach((wh, key) => {
-        wh.isExpanded = key === index ? true : false;
-      });
-
-      const workExperience: WorkHistory = new WorkHistory(
-        this.workExperienceArray[index]
-      );
-
-      this.workExperienceForm = this.formBuilder.group({
-        employer: [workExperience.employer, Validators.required],
-        jobDescription: [workExperience.jobDescription, Validators.required],
-        fromDate: [workExperience.fromDate, Validators.required],
-        toDate: [workExperience.toDate, Validators.required],
-        phone: [workExperience.employerPhone, Validators.required],
-        email: [workExperience.employerEmail, Validators.required],
-        address: [workExperience.employerAddress, Validators.required],
-        addressUnit: [
-          workExperience.employerAddressUnit,
-          Validators.maxLength(6),
-        ],
-        isDrivingPosition: [workExperience.isDrivingPosition],
-        truckType: [
-          workExperience.truckType && this.truckType.length
-            ? this.truckType.find((b) => b.name === workExperience.truckType)
-                ?.id
-            : null,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        trailerType: [
-          workExperience.trailerType && this.trailerType.length
-            ? this.trailerType.find(
-                (b) => b.name === workExperience.trailerType
-              )?.id
-            : null,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        trailerLength: [
-          this.trailerLengthType.find(
-            (a) => a.value === workExperience.trailerLength
-          ),
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        cfrPart: [
-          workExperience.cfrPart,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        fmCSA: [
-          workExperience.fmCSA,
-          workExperience.isDrivingPosition
-            ? Validators.required
-            : Validators.nullValidator,
-        ],
-        reasonForLeaving: [
-          this.reasonsForLeaving.find(
-            (a) => workExperience.reasonForLeaving === a.name
-          ),
-          Validators.required,
-        ],
-        accountForPeriod: [workExperience.accountForPeriod],
-      });
-
-      this.workExperienceForm.get('noWorkExperience').patchValue(true);
-    } else {
-      this.workExperienceForm.get('noWorkExperience').patchValue(true);
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+      this.onSubmit();
     }
-  } */
 
-  /* public onSubmitForm(): void {
-    this.onAddWorkExperience();
+    if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/1`]);
+    }
   }
- */
+
+  public onSubmit(): void {
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
+
+    if (this.innerFormStatus === 'INVALID') {
+      this.markInnerFormInvalid = true;
+      return;
+    }
+
+    const { noWorkExperience } = this.workExperienceForm.value;
+
+    let filteredLastWorkExperienceCard: any;
+
+    if (!noWorkExperience) {
+      filteredLastWorkExperienceCard = {
+        employer: this.lastWorkExperienceCard.employer,
+        jobDescription: this.lastWorkExperienceCard.jobDescription,
+        from: convertDateToBackend(this.lastWorkExperienceCard.fromDate),
+        to: convertDateToBackend(this.lastWorkExperienceCard.toDate),
+        phone: this.lastWorkExperienceCard.employerPhone,
+      };
+    }
+
+    const saveData: CreateWorkExperienceCommand = {
+      applicantId: this.applicantId,
+      haveWorkExperience: noWorkExperience,
+      workExperienceItems: noWorkExperience
+        ? []
+        : [filteredLastWorkExperienceCard],
+    };
+
+    console.log(saveData);
+  }
 
   /* public onSubmitReview(data: any): void {} */
 

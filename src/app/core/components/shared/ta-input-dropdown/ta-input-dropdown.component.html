@@ -29,7 +29,7 @@
     mainTooltip="Clear All"
     tooltipBackground="#6c6c6c"
     position="bottom"
-    (click)="delteAllMultiSelectItems($event)"
+    (click)="deleteAllMultiSelectItems()"
   >
     <svg-icon src="assets/svg/ic_x.svg" class="input-clear-x"></svg-icon>
   </div>
@@ -57,7 +57,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind)"
+        (click)="removeMultiSelectItem(ind, 'multiselect')"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
@@ -87,7 +87,7 @@
         tooltipBackground="#6c6c6c"
         position="top"
         class="multiselect-item-clear"
-        (click)="removeMultiSelectItem(ind)"
+        (click)="removeMultiSelectItem(ind, 'multiselect-res-endors')"
       >
         <svg-icon src="assets/svg/ic_x.svg"></svg-icon>
       </div>
