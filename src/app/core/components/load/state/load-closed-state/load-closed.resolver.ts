@@ -42,7 +42,7 @@ export class LoadClosedResolver implements Resolve<LoadClosedState> {
               pendingCount: loadPagination.pendingCount,
               activeCount: loadPagination.activeCount,
               closedCount: loadPagination.closedCount,
-              templateCount: /* loadPagination.templateCount */ 0,
+              templateCount: loadPagination.templateCount,
             })
           );
 
