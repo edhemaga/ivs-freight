@@ -117,7 +117,8 @@ export const axlesValidation = [Validators.min(2), Validators.max(17)];
 
 //---------------- Year, month, day ---------------
 const yearRange =
-  parseInt(moment().add(1, 'year').format('YY').substring(1)) - 2;
+  parseInt(moment().add(1, 'year').format('YY').substring(1)) - 1;
+
 export const yearValidRegex = Validators.pattern(
   new RegExp(
     `^(19[0-9]\\d|20[0-` +

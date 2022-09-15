@@ -529,6 +529,16 @@ export class TaInputComponent
         this.thousandSeparatorPipe.transform(this.getSuperControl.value)
       );
     }
+
+    // Custom Validation Year = must be in this way (double check)
+    if (['year'].includes(this.inputConfig.name.toLowerCase())) {
+      if (
+        parseInt(this.getSuperControl.value) >
+        parseInt(moment().add(1, 'year').format('YYYY'))
+      ) {
+        this.getSuperControl.setErrors({ invalid: true });
+      }
+    }
   }
 
   public onEditInput(event: Event) {
