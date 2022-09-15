@@ -1577,7 +1577,7 @@
       ngbTooltip
       [mainTooltip]="action.disabledTooltip ? action.disabledTooltip : ''"
       position="right"
-      [disableTooltip]="action.disabled == true ? false : true"
+      [disableTooltip]="(action.disabled == true && action.disabledTooltip) ? false : true"
     >
       <svg-icon
         [ngClass]="{

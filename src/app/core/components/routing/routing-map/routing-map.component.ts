@@ -269,8 +269,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
       class: 'regular-text',
       contentType: 'duplicate',
       show: true,
-      svg: 'assets/svg/common/routing/ic_route_duplicate.svg',
-      disabledTooltip: '8 Route Limit'
+      svg: 'assets/svg/common/routing/ic_route_duplicate.svg'
     },
     {
       title: 'Reverse',
@@ -1486,6 +1485,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
     event.stopPropagation();
     event.preventDefault();
 
+    this.dropdownActions.map((action, index) => {
+      if ( ['open-report', 'print-route', 'duplicate-route', 'reverse-route-stops', 'clear-route-stops'].includes(action.name) ) {
+        if ( route.stops.length ) {
+          action.disabled = false;
+        } else {
+          action.disabled = true;
+        }
+      }
+    });
+
     this.tooltip = tooltip;
     if (tooltip.isOpen()) {
       tooltip.close();
@@ -1756,8 +1765,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
   showHideDuplicate() {
     if ( this.tableData[this.selectedMapIndex].routes.length < 8 ) {
       this.dropdownActions[3].disabled = false;
+      this.dropdownActions[3].disabledTooltip = '';
     } else {
       this.dropdownActions[3].disabled = true;
+      this.dropdownActions[3].disabledTooltip = '8 Route Limit';
     }
   }
 
