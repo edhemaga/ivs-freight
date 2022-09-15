@@ -222,3 +222,29 @@
         }
     }
 }
+.time-date-load-container {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 2px;
+    margin-left: 12px;
+    padding: 2px 6px;
+    .text {
+        font-size: 14px;
+        font-weight: 400;
+        color: #6c6c6c;
+        line-height: 16px;
+        &::-moz-selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+        &::selection {
+            color: #6c6c6c;
+            background: rgb(108, 108, 108, 0.2);
+        }
+    }
+    .appointment-svg {
+        display: flex;
+        margin-left: 7px;
+    }
+}

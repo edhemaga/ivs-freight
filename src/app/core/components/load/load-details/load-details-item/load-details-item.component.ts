@@ -50,7 +50,7 @@ export class LoadDetailsItemComponent implements OnInit, OnChanges, OnDestroy {
     let total = coutn.length;
     return total;
   }
-  changeReviewsEvent(comments: ReviewCommentModal) {
+  changeCommentEvent(comments: ReviewCommentModal) {
     switch (comments.action) {
       case 'delete': {
         this.deleteComment(comments);

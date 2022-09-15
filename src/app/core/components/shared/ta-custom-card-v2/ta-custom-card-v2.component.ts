@@ -18,8 +18,8 @@ import { TaUploadFileService } from '../ta-upload-files/ta-upload-file.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class TaCustomCardV2Component {
-  @Input() animationsDisabled = false;
-  @Input() bodyTemplate: string = 'card'; //  'modal' | 'card'
+  @Input() animationsDisabled = true;
+  @Input() bodyTemplate: string = 'modal'; //  'modal' | 'card'
   @Input() cardName: string = null;
   @Input() customClassHeaderSvg: boolean = false;
   @Input() hasCounter: number;
@@ -63,28 +63,6 @@ export class TaCustomCardV2Component {
       this.zoneTriger = !this.zoneTriger;
       this.uploadFileService.visibilityDropZone(this.zoneTriger);
       this.onOpenCard.emit(this.isCardOpen);
-    }
-  }
-
-  public onAction(event: any, action: string, customTextAction?: string): void {
-    event.preventDefault();
-    event.stopPropagation();
-    switch (action) {
-      case 'add': {
-        this.onActionEvent.emit({ check: true, action: 'add' });
-        break;
-      }
-      case 'download': {
-        this.onActionEvent.emit({ check: true, action: 'download' });
-        break;
-      }
-      case 'custom': {
-        this.onActionEvent.emit({ check: true, action: customTextAction });
-        break;
-      }
-      default: {
-        break;
-      }
     }
   }
 }

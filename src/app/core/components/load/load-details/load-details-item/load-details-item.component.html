@@ -198,7 +198,8 @@
         </div>
       </div>
       <div class="stop-items-container">
-        <app-ta-custom-card-v2 *ngFor="let item of loadItem?.data?.stops;let j = index;"
+        <app-ta-custom-card-v2
+         *ngFor="let item of loadItem?.data?.stops;let j = index;"
         [animationsDisabled]="false"
         [bodyTemplate]="'card'"
         [totalMiles]="true"
@@ -207,7 +208,8 @@
         [hasCounter]="item?.items?.length"
         [hasDivider]="j>0?true:false"
         [counterBackgroundColor]="item?.stopType.name==='Pickup'?'#E57373':'#4DB6A2'"
-        [isCardOpen]="true">
+        [isCardOpen]="true"
+        >
         <div class="stop-information-container">
           <div class="svg-value-wrapper">
           <div class="driver-name"> {{
@@ -322,8 +324,8 @@
     <div *ngSwitchCase="'comment'">
       <div *ngIf="loadItem?.data?.comments.length" class="comment-container">
         <app-ta-user-review
-          (changeReviewsEvent)="changeReviewsEvent($event)"
-          [reviewData]="loadItem?.data?.comments"
+        [reviewData]="loadItem?.data?.comments"
+        (changeReviewsEvent)="changeCommentEvent($event)"
         >
         </app-ta-user-review>
       </div>
