@@ -4,7 +4,7 @@
       <p>Factoring Company</p>
     </div>
 
-    <div class="settings-header-buttons" *ngIf="factoringData.email">
+    <div [ngClass]="{'no-factoring-data':!factoringData?.factoringCompany?.name}" class="settings-header-buttons" *ngIf="factoringData.email">
       <div class="settings-header-button">
         <svg-icon
           src="ic_pen.svg"
@@ -18,7 +18,7 @@
           "
         ></svg-icon>
       </div>
-      <div class="settings-header-button">
+      <div class="settings-header-button" *ngIf="factoringData?.factoringCompany?.name ">
         <div class="border-left"></div>
         <svg-icon
           src="assets/svg/common/ic_trash.svg"
