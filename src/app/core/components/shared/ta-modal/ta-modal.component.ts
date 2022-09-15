@@ -281,6 +281,10 @@ export class TaModalComponent implements OnInit, OnDestroy {
         this.confirmationAction.emit(this.confirmationData);
         break;
       }
+      case 'cdl-void': {
+        this.confirmationAction.emit(this.confirmationData);
+        break;
+      }
       case 'hire': {
         this.confirmationAction.emit(this.confirmationData);
         break;
