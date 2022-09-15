@@ -18,6 +18,22 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'edit-drug';
         break;
       }
+      case 'parking': {
+        dropAction = 'edit-parking';
+        break;
+      }
+      case 'office': {
+        dropAction = 'edit-office';
+        break;
+      }
+      case 'terminal': {
+        dropAction = 'edit-terminal';
+        break;
+      }
+      case 'repair-shop': {
+        dropAction = 'edit-repair-shop';
+        break;
+      }
     }
   }
   if (any.type === 'delete-item') {
@@ -38,7 +54,29 @@ export function dropActionNameDriver(any: any, action: string) {
         dropAction = 'delete-test';
         break;
       }
+      case 'parking': {
+        dropAction = 'delete-parking';
+        break;
+      }
+      case 'office': {
+        dropAction = 'delete-office';
+        break;
+      }
+      case 'terminal': {
+        dropAction = 'delete-terminal';
+        break;
+      }
+      case 'repair-shop': {
+        dropAction = 'delete-repair-shop';
+        break;
+      }
     }
+  }
+  if (any.type === 'renew') {
+    dropAction = 'renew';
+  }
+  if (any.type === 'activate-item') {
+    dropAction = 'activate-item';
   }
   return dropAction;
 }

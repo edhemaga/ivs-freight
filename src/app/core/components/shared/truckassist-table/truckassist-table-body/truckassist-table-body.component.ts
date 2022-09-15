@@ -11,11 +11,15 @@ import {
   OnInit,
   Output,
   SimpleChanges,
+  ViewChild,
 } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { DashboardStrategy } from './dashboard_strategy';
+import {
+  CdkVirtualScrollViewport,
+  VIRTUAL_SCROLL_STRATEGY,
+} from '@angular/cdk/scrolling';
+import { TableStrategy } from './table_strategy';
 import { Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '../../../../services/truckassist-table/truckassist-table.service';
 import { SharedService } from '../../../../services/shared/shared.service';
@@ -28,7 +32,7 @@ import { SharedService } from '../../../../services/shared/shared.service';
   providers: [
     {
       provide: VIRTUAL_SCROLL_STRATEGY,
-      useClass: DashboardStrategy,
+      useClass: TableStrategy,
     },
   ],
 })
@@ -36,6 +40,8 @@ export class TruckassistTableBodyComponent
   implements OnInit, OnChanges, AfterViewInit, OnDestroy
 {
   private destroy$ = new Subject<void>();
+  @ViewChild('tableScrollRef', { static: false })
+  public virtualScrollViewport: CdkVirtualScrollViewport;
   @Output() bodyActions: EventEmitter<any> = new EventEmitter();
 
   @Input() viewData: any[];
@@ -70,6 +76,10 @@ export class TruckassistTableBodyComponent
   activeAttachments: number = -1;
   attachmentsTooltip: any;
   isAttachmentClosing: boolean;
+  attachmentWidth: number = 0;
+  statusTooltip: any;
+  statusDropdownActive: number = -1;
+  statusDropdownData: any;
 
   constructor(
     private router: Router,
@@ -127,7 +137,6 @@ export class TruckassistTableBodyComponent
 
           this.changeDetectorRef.detectChanges();
 
-          console.log('Poziva se iz currentColumnsOrder');
           this.getNotPinedMaxWidth();
         }
       });
@@ -138,6 +147,20 @@ export class TruckassistTableBodyComponent
       .subscribe((reset: boolean) => {
         if (reset) {
           this.mySelection = [];
+        }
+      });
+
+    // Scrolling Virtual Container
+    this.sharedService.emitTableScrolling
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((offSet: any) => {
+        if (offSet < 84) {
+          /* console.log('Postavlja se Virtual Scroll na 0'); */
+          this.virtualScrollViewport.scrollToOffset(0);
+        } else if (offSet > 84) {
+          /* console.log('Radi Virtual Skroll Gasi Se Skroll Za Page');
+          document.body.style.overflow = 'hidden'; */
+          this.virtualScrollViewport.scrollToOffset(offSet);
         }
       });
   }
@@ -151,7 +174,6 @@ export class TruckassistTableBodyComponent
 
       if (!this.viewDataEmpty && changes.viewData.currentValue) {
         this.viewDataTimeOut = setTimeout(() => {
-          console.log('Poziva se iz ngOnChanges viewData');
           this.getNotPinedMaxWidth();
           this.getSelectedTabTableData();
         }, 10);
@@ -169,7 +191,6 @@ export class TruckassistTableBodyComponent
       changes?.tableContainerWidth &&
       changes?.tableContainerWidth?.previousValue > 0
     ) {
-      console.log('Poziva se iz ngOnChanges tableContainerWidth');
       this.getNotPinedMaxWidth();
     }
 
@@ -183,7 +204,6 @@ export class TruckassistTableBodyComponent
       this.getTableSections();
 
       setTimeout(() => {
-        console.log('Poziva se iz ngOnChanges columns');
         this.getNotPinedMaxWidth();
       }, 10);
     }
@@ -199,22 +219,37 @@ export class TruckassistTableBodyComponent
       this.getSelectedTabTableData();
     }
   }
-
   // --------------------------------NgAfterViewInit---------------------------------
   ngAfterViewInit(): void {
-    this.sharedService.emitUpdateScrollHeight.emit(true);
+    setTimeout(() => {
+      if (this.viewData.length) {
+        const tableContainer = document.querySelector('.table-container');
 
-    console.log('Poziva se iz ngAfterViewInit');
+        const cdkVirtualScrollSpacer = document.querySelector(
+          '.cdk-virtual-scroll-spacer'
+        );
+
+        const pageHeight =
+          tableContainer.clientHeight -
+          1018 +
+          cdkVirtualScrollSpacer.clientHeight;
+
+        this.sharedService.emitUpdateScrollHeight.emit({
+          tablePageHeight: pageHeight,
+        });
+      }
+    }, 10);
+
     this.getNotPinedMaxWidth();
   }
 
   // Lisiner For Scrolling Of Not Pined Section Of Table
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event: any) {
-    if (event.target.className === 'not-pined-tr') {
-      this.tableService.sendScroll(event.path[0].scrollLeft);
-    }
-  }
+  // @HostListener('window:scroll', ['$event'])
+  // onScroll(event: any) {
+  //   if (event.target.className === 'not-pined-columns') {
+  //     this.tableService.sendScroll(event.path[0].scrollLeft);
+  //   }
+  // }
 
   // Get Table Sections
   getTableSections() {
@@ -264,15 +299,17 @@ export class TruckassistTableBodyComponent
       this.notPinedMaxWidth =
         tableContainer.clientWidth - (this.pinedWidth + this.actionsWidth) - 8;
 
-      /* this.checkForScroll(); */
+      this.changeDetectorRef.detectChanges();
+
+      this.checkForScroll();
     }
   }
 
   // Check If Scroll Exists On Not Pined Section Of Table
   checkForScroll() {
     const div = document.getElementById('scroll-container');
-    const pinedColumns = document.querySelector('.pined-tr');
-    const actionColumns = document.querySelector('.actions');
+    const pinedColumns = document.querySelector('.pined-columns');
+    const actionColumns = document.querySelector('.actions-columns');
 
     if (div) {
       this.checkForScrollTimeout = setTimeout(() => {
@@ -295,6 +332,7 @@ export class TruckassistTableBodyComponent
   goToDetails(route: any, row: any) {
     const link =
       route.link.routerLinkStart + row['id'] + route.link.routerLinkEnd;
+
     this.router.navigate([link]);
   }
 
@@ -393,6 +431,19 @@ export class TruckassistTableBodyComponent
     this.rowData = row;
   }
 
+  // Toggle Status Dropdown
+  toggleStatusDropdown(tooltip: any, row: any) {
+    this.statusTooltip = tooltip;
+    if (tooltip.isOpen()) {
+      tooltip.close();
+    } else {
+      tooltip.open();
+    }
+
+    this.statusDropdownActive = tooltip.isOpen() ? row.id : -1;
+    this.statusDropdownData = row;
+  }
+
   // Show Description Dropdown
   onShowDescriptionDropdown(popup: any, row: any) {
     this.descriptionTooltip = popup;
@@ -419,6 +470,8 @@ export class TruckassistTableBodyComponent
 
   // Show Attachments
   onShowAttachments(popup: any, row: any) {
+    this.attachmentWidth = document.querySelector('.table-tr').clientWidth;
+
     if (!popup.isOpen()) {
       let timeInterval = 0;
 

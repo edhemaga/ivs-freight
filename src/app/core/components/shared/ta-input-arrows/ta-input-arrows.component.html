@@ -1,4 +1,7 @@
-<div class="ta-input-arrows-container">
+<div
+  class="ta-input-arrows-container"
+  [ngClass]="{ applicant: type === 'applicant' }"
+>
   <p
     class="m-0 ta-font-regular"
     [ngStyle]="{
@@ -11,7 +14,7 @@
 
   <div class="d-flex align-items-center btn-container">
     <svg-icon
-      class="minus-icon"
+      class="minus-icon minus-icon-{{ elementOrder }}"
       src="
           assets/svg/common/ic_pm_decrement.svg"
       [svgStyle]="{
@@ -21,7 +24,7 @@
     ></svg-icon>
 
     <svg-icon
-      class="plus-icon"
+      class="plus-icon plus-icon-{{ elementOrder }}"
       src="
           assets/svg/common/ic_pm_increment.svg"
       [svgStyle]="{

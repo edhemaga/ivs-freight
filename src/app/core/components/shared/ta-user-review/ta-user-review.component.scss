@@ -1,43 +1,33 @@
 .ta-user-review {
   display: flex;
   flex-direction: column;
+  gap: 6px;
   background-color: #ffffff;
-  padding: 4px 6px;
-  margin-bottom: 4px;
+  padding: 6px;
   border-radius: 2px;
-  font-size: 12px;
-  color: #6c6c6c;
+  transition: all 0.3s ease-in-out;
 
   p {
     margin: 0;
-  }
-
-  &:hover {
-    background-color: #f7f7f7;
-    transition: all 0.3s ease-in-out;
+    padding: 0;
   }
 
   .ta-review-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 6px;
 
     .ta-user-information {
       display: flex;
+      gap: 6px;
       align-items: center;
       position: relative;
 
-      .no-profile-image{
-        margin-right: 8px;
-      }
-
       .ta-user-image {
-        width: 30px;
-        height: 30px;
+        width: 28px;
+        height: 28px;
         border-radius: 50%;
         -o-object-fit: fill;
         object-fit: fill;
-        margin-right: 6px;
         user-select: none;
       }
 
@@ -52,7 +42,9 @@
 
           .ta-user-fullname {
             font-weight: 700;
-            color: #3c3c3c;
+            font-size: 11px;
+            color: #6c6c6c;
+            line-height: 14px;
 
             &::-moz-selection {
               background-color: rgb(108, 108, 108, 0.2);
@@ -76,6 +68,8 @@
 
             &.like {
               svg {
+                width: 15px;
+                height: 15px;
                 path {
                   fill: #4db6a2;
                 }
@@ -86,58 +80,60 @@
 
         .ta-user-datetime {
           display: flex;
+          gap: 6px;
           align-items: center;
           font-size: 11px;
           font-weight: 600;
-          color: #919191 !important;
+          line-height: 14px;
+          color: #b7b7b7;
 
           .ta-user-date,
           .ta-user-time {
             &::-moz-selection {
-              background-color: rgba(108, 108, 108, 0.2);
-              color: #919191;
+              background-color: rgb(183, 183, 183, 0.2);
+              color: #b7b7b7;
             }
 
             &::selection {
-              background-color: rgba(108, 108, 108, 0.2);
-              color: #919191;
+              background-color: rgb(183, 183, 183, 0.2);
+              color: #b7b7b7;
             }
-          }
-
-          .ta-user-time {
-            margin-left: 8px;
           }
         }
       }
     }
 
     .ta-user-actions {
-      display: flex;
+      display: none;
       align-items: center;
+      gap: 6px;
       line-height: 18px;
-      width: 36px;
+      width: 42px;
       height: 18px;
       justify-content: center;
       text-align: center;
+
       .action-edit,
       .action-delete {
-        width: 22px;
-        height: 22px;
+        transition: all 0.3s ease-in-out;
+        width: 18px;
+        height: 18px;
+
         svg {
-          width: 14px;
-          height: 14px;
+          width: 100%;
+          height: 100%;
           path {
-            fill: #b7b7b7;
+            fill: #aaaaaa;
           }
         }
+
         &:hover {
           cursor: pointer;
-          transition: all 0.3s ease-in-out;
         }
       }
 
       .action-edit {
-        margin-right: 6px;
+        transition: all 0.3s ease-in-out;
         &:hover {
           svg {
             path {
@@ -148,6 +144,7 @@
       }
 
       .action-delete {
+        transition: all 0.3s ease-in-out;
         &:hover {
           svg {
             path {
@@ -169,9 +166,12 @@
     }
 
     .message {
-      position: relative;
-      left: 6px;
       color: #6c6c6c;
+      line-height: 18px;
+      font-size: 14px;
+      font-weight: 400;
+      position: relative;
+      left: 3px;
 
       &::-moz-selection {
         background-color: rgb(108, 108, 108, 0.2);
@@ -186,10 +186,13 @@
 
     .review-textarea {
       width: 100%;
+      height: 26px;
       font-size: 14px;
       font-weight: 400;
+      line-height: 18px;
       color: #ffffff;
       background-color: #6c6c6c;
+      border-radius: 2px;
       padding: 4px 6px;
       resize: none;
       border: none;
@@ -203,11 +206,13 @@
       &::-webkit-scrollbar {
         width: 3px;
       }
+
       &::-webkit-scrollbar-thumb {
         background-color: transparent;
         border: 6px solid #e5e5e5;
         border-radius: 1px;
       }
+
       &::-webkit-scrollbar-track {
         padding: 0;
         position: relative;
@@ -235,25 +240,28 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
+      gap: 4px;
       position: absolute;
       right: 4px;
-      bottom: 5px;
+      bottom: 2px;
 
       .ta-review-message-confirm {
         border-radius: 1px;
         display: block;
         transition: all 0.3s ease-in-out;
         z-index: 20;
-        margin-right: 4px;
         cursor: pointer;
+
         .ta-review-message-confirm-first {
           svg {
             width: 18px !important;
             height: 18px !important;
             overflow: visible;
+
             path {
               fill: #6c6c6c;
             }
+
             rect {
               transition: transform 0.3s;
               transform: scale(1);
@@ -314,14 +322,60 @@
     }
   }
 
+  &:hover {
+    background-color: #f7f7f7;
+    .ta-review-header {
+      .ta-user-actions {
+        display: flex !important;
+      }
+    }
+
+    .ta-user-data {
+      .ta-user-name-rating {
+        .ta-user-fullname {
+          color: #3c3c3c !important;
+
+          &::-moz-selection {
+            background-color: rgb(60, 60, 60, 0.2) !important;
+            color: #3c3c3c !important;
+          }
+
+          &::selection {
+            background-color: rgb(60, 60, 60, 0.2) !important;
+            color: #3c3c3c !important;
+          }
+        }
+      }
+
+      .ta-user-datetime {
+        color: #919191 !important;
+
+        .ta-user-date,
+        .ta-user-time {
+          &::-moz-selection {
+            background-color: rgb(145, 145, 145, 0.2) !important;
+            color: #919191 !important;
+          }
+
+          &::selection {
+            background-color: rgb(145, 145, 145, 0.2) !important;
+            color: #919191 !important;
+          }
+        }
+      }
+    }
+  }
+
   // EDIT MODE
   &.edit-review {
     background-color: #f7f7f7;
     border-radius: 2px;
     transition: all 0.3s ease-in-out;
 
-    .ta-user-datetime {
-      color: #e5e5e5 !important;
+    .ta-user-data {
+      .ta-user-datetime {
+        color: #b7b7b7 !important;
+      }
     }
   }
 }

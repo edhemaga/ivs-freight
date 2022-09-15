@@ -1,37 +1,89 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, AfterViewInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { tableSearch } from 'src/app/core/utils/methods.globals';
 import { LoadModalComponent } from '../../modals/load-modal/load-modal.component';
 import { ModalService } from '../../shared/ta-modal/modal.service';
+import {
+  getLoadActiveAndPendingColumnDefinition,
+  getLoadClosedColumnDefinition,
+  getLoadTemplateColumnDefinition,
+} from '../../../../../assets/utils/settings/load-columns';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
-import { getLoadColumnDefinition } from '../../../../../assets/utils/settings/load-columns';
+import { LoadActiveQuery } from '../state/load-active-state/load-active.query';
+import { LoadClosedQuery } from '../state/load-closed-state/load-closed.query';
+import { LoadPandinQuery } from '../state/load-pending-state/load-pending.query';
+import { LoadTemplateQuery } from '../state/load-template-state/load-template.query';
+import { LoadActiveState } from '../state/load-active-state/load-active.store';
+import { LoadClosedState } from '../state/load-closed-state/load-closed.store';
+import { LoadPandingState } from '../state/load-pending-state/load-panding.store';
+import { LoadTemplateState } from '../state/load-template-state/load-template.store';
+import { TaThousandSeparatorPipe } from '../../../pipes/taThousandSeparator.pipe';
 
 @Component({
   selector: 'app-load-table',
   templateUrl: './load-table.component.html',
   styleUrls: ['./load-table.component.scss'],
+  providers: [TaThousandSeparatorPipe],
 })
-export class LoadTableComponent implements OnInit, OnDestroy {
+export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
   private destroy$ = new Subject<void>();
-  public tableOptions: any = {};
-  public tableData: any[] = [];
-  public viewData: any[] = [];
-  public columns: any[] = [];
-  public selectedTab = 'template';
+  tableOptions: any = {};
+  tableData: any[] = [];
+  viewData: any[] = [];
+  columns: any[] = [];
+  selectedTab = 'pending';
   resetColumns: boolean;
+  tableContainerWidth: number = 0;
+  resizeObserver: ResizeObserver;
+  loadActive: LoadActiveState[] = [];
+  loadClosed: LoadClosedState[] = [];
+  loadPanding: LoadPandingState[] = [];
+  loadTemplate: LoadTemplateState[] = [];
 
   constructor(
     private tableService: TruckassistTableService,
-    private modalService: ModalService
+    private modalService: ModalService,
+    private loadActiveQuery: LoadActiveQuery,
+    private loadClosedQuery: LoadClosedQuery,
+    private loadPandinQuery: LoadPandinQuery,
+    private loadTemplateQuery: LoadTemplateQuery,
+    private thousandSeparator: TaThousandSeparatorPipe
   ) {}
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
+  // ---------------------------- ngOnInit ------------------------------
   ngOnInit(): void {
-    this.initTableOptions();
-    this.getLoadData();
+    this.sendLoadData();
+
+    // Confirmation Subscribe
+    /* this.confirmationService.confirmationData$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: Confirmation) => {
+          switch (res.type) {
+            case 'delete': {
+              if (res.template === 'driver') {
+                this.deleteDriverById(res.id);
+              }
+              break;
+            }
+            case 'activate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'deactivate': {
+              this.changeDriverStatus(res.id);
+              break;
+            }
+            case 'multiple delete': {
+              this.multipleDeleteDrivers(res.array);
+              break;
+            }
+            default: {
+              break;
+            }
+          }
+        },
+      }); */
 
     // Reset Columns
     this.tableService.currentResetColumns
@@ -43,14 +95,201 @@ export class LoadTableComponent implements OnInit, OnDestroy {
           this.sendLoadData();
         }
       });
+
+    // Resize
+    this.tableService.currentColumnWidth
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.event?.width) {
+          this.columns = this.columns.map((c) => {
+            if (c.title === response.columns[response.event.index].title) {
+              c.width = response.event.width;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Toaggle Columns
+    this.tableService.currentToaggleColumn
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any) => {
+        if (response?.column) {
+          this.columns = this.columns.map((c) => {
+            if (c.field === response.column.field) {
+              c.hidden = response.column.hidden;
+            }
+
+            return c;
+          });
+        }
+      });
+
+    // Search
+    this.tableService.currentSearchTableData
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res) {
+          /* this.mapingIndex = 0;
+
+          this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+          this.backFilterQuery.pageIndex = 1; */
+          /*  const searchEvent = tableSearch(res, this.backFilterQuery); */
+          /* if (searchEvent) {
+            if (searchEvent.action === 'api') {
+              this.driverBackFilter(searchEvent.query, true);
+            } else if (searchEvent.action === 'store') {
+              this.sendLoadData();
+            }
+          } */
+        }
+      });
+
+    // Delete Selected Rows
+    this.tableService.currentDeleteSelectedRows
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((response: any[]) => {
+        if (response.length) {
+          let mappedRes = response.map((item) => {
+            return {
+              id: item.id,
+              data: { ...item.tableData, name: item.tableData?.fullName },
+            };
+          });
+          /* this.modalService.openModal(
+            ConfirmationModalComponent,
+            { size: 'small' },
+            {
+              data: null,
+              array: mappedRes,
+              template: 'driver',
+              type: 'multiple delete',
+              image: true,
+            }
+          ); */
+        }
+      });
+
+    // Driver Actions
+    this.tableService.currentActionAnimation
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        // On Add Driver Active
+        if (res.animation === 'add' && this.selectedTab === 'active') {
+          /*  this.viewData.push(this.mapDriverData(res.data));
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'add';
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000); */
+        }
+        // On Add Driver Inactive
+        else if (res.animation === 'add' && this.selectedTab === 'inactive') {
+          /* this.updateDataCount(); */
+        }
+        // On Update Driver
+        else if (res.animation === 'update') {
+          /*  const updatedDriver = this.mapDriverData(res.data);
+
+          this.viewData = this.viewData.map((driver: any) => {
+            if (driver.id === res.id) {
+              driver = updatedDriver;
+              driver.actionAnimation = 'update';
+            }
+
+            return driver;
+          });
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            clearInterval(inetval);
+          }, 1000); */
+        }
+        // On Update Driver Status
+        else if (res.animation === 'update-status') {
+          /* let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'update';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000); */
+        }
+        // On Delete Driver
+        else if (res.animation === 'delete') {
+          /* let driverIndex: number;
+
+          this.viewData = this.viewData.map((driver: any, index: number) => {
+            if (driver.id === res.id) {
+              driver.actionAnimation = 'delete';
+              driverIndex = index;
+            }
+
+            return driver;
+          });
+
+          this.updateDataCount();
+
+          const inetval = setInterval(() => {
+            this.viewData = closeAnimationAction(false, this.viewData);
+
+            this.viewData.splice(driverIndex, 1);
+            clearInterval(inetval);
+          }, 1000); */
+        }
+      });
   }
 
-  public initTableOptions(): void {
+  // ---------------------------- ngAfterViewInit ------------------------------
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.observTableContainer();
+    }, 10);
+  }
+
+  observTableContainer() {
+    this.resizeObserver = new ResizeObserver((entries) => {
+      entries.forEach((entry) => {
+        this.tableContainerWidth = entry.contentRect.width;
+      });
+    });
+
+    this.resizeObserver.observe(document.querySelector('.table-container'));
+  }
+
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        showMoneyCount: true,
+        hideViewMode: false,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -79,41 +318,63 @@ export class LoadTableComponent implements OnInit, OnDestroy {
     };
   }
 
-  getLoadData() {
-    this.sendLoadData();
-  }
-
   sendLoadData() {
+    this.initTableOptions();
+
+    const loadCount = JSON.parse(localStorage.getItem('loadTableCount'));
+
+    const loadTemplateData =
+      this.selectedTab === 'template' ? this.getTabData('template') : [];
+
+    const loadPendingData =
+      this.selectedTab === 'pending' ? this.getTabData('pending') : [];
+
+    const loadActiveData =
+      this.selectedTab === 'active' ? this.getTabData('active') : [];
+
+    const repairClosedData =
+      this.selectedTab === 'closed' ? this.getTabData('closed') : [];
+
     this.tableData = [
       {
-        title: 'Pending',
-        field: 'pending',
-        length: 2,
-        data: this.getDumyData(2),
+        title: 'Template',
+        field: 'template',
+        length: loadCount.templateCount,
+        data: loadTemplateData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('template', this.resetColumns),
+      },
+      {
+        title: 'Pending',
+        field: 'pending',
+        length: loadCount.pendingCount,
+        data: loadPendingData,
+        extended: false,
+        gridNameTitle: 'Load',
+        stateName: 'loads',
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
       },
       {
         title: 'Active',
         field: 'active',
-        length: 8,
-        data: this.getDumyData(8),
+        length: loadCount.activeCount,
+        data: loadActiveData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('active-panding', this.resetColumns),
       },
       {
         title: 'Closed',
-        field: 'inactive',
-        length: 10,
-        data: this.getDumyData(10),
+        field: 'closed',
+        length: loadCount.closedCount,
+        data: repairClosedData,
         extended: false,
         gridNameTitle: 'Load',
         stateName: 'loads',
-        gridColumns: this.getGridColumns('loads', this.resetColumns),
+        gridColumns: this.getGridColumns('closed', this.resetColumns),
       },
     ];
 
@@ -123,133 +384,187 @@ export class LoadTableComponent implements OnInit, OnDestroy {
   }
 
   getGridColumns(stateName: string, resetColumns: boolean) {
-    const userState: any = JSON.parse(
-      localStorage.getItem(stateName + '_user_columns_state')
-    );
+    // const userState: any = JSON.parse(
+    //   localStorage.getItem(stateName + '_user_columns_state')
+    // );
 
-    if (userState && userState.columns.length && !resetColumns) {
-      return userState.columns;
+    if (stateName === 'active-panding') {
+      return getLoadActiveAndPendingColumnDefinition();
+    } else if (stateName === 'closed') {
+      return getLoadClosedColumnDefinition();
     } else {
-      return getLoadColumnDefinition();
+      return getLoadTemplateColumnDefinition();
     }
   }
 
   setLoadData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      data.isSelected = false;
-      return data;
-    });
-  }
+    if (td.data?.length) {
+      this.viewData = td.data;
 
-  getDumyData(numberOfCopy: number) {
-    let data: any[] = [
-      {
-        id: 337,
-        assignedCompanyId: 1,
-        eventId: null,
-        categoryId: null,
-        category: 'ftl',
-        dispatchBoardId: null,
-        truckId: null,
-        truckNumber: '0876',
-        trailerId: null,
-        trailerNumber: null,
-        driverId: null,
-        driverName: null,
-        driverPhone: null,
-        driverEmail: null,
-        driverAddress: null,
-        deviceId: null,
-        uniqueId: null,
-        brokerId: 63,
-        brokerName: 'GO-TO SOLUTIONS INC',
-        loadNumber: 104,
-        statusId: 0,
-        statusDateTime: '2022-01-16T23:12:06',
-        note: '',
-        additionTotal: 0,
-        deductionTotal: 0,
-        total: '$2,000',
-        companyCheck: 0,
-        brokerLoadNumber: '555',
-        dispatcherId: null,
-        dispatcherName: null,
-        teamBoard: null,
-        pickupId: 30,
-        pickupName: 'BEST FOOD',
-        pickupCity: 'Tucker',
-        pickupLocation: {
-          city: 'Tucker',
-          state: 'Georgia',
-          address: '3300 Montreal Industrial Way, Tucker, GA 30084, USA',
-          country: 'US',
-          zipCode: '30084',
-          streetName: 'Montreal Industrial Way',
-          streetNumber: '3300',
-          stateShortName: 'GA',
-        },
-        pickupDateTime: '01/19/22',
-        deliveryId: 40,
-        deliveryName: 'LACTALIS',
-        deliveryCity: 'Buffalo',
-        deliveryLocation: {
-          city: 'Buffalo',
-          state: 'New York',
-          address: '2375 South Park Ave, Buffalo, NY 14220, USA',
-          country: 'US',
-          zipCode: '14220',
-          streetName: 'South Park Avenue',
-          streetNumber: '2375',
-          stateShortName: 'NY',
-        },
-        deliveryDateTime: '01/21/22',
-        mileage: '896',
-        pickupCount: 2,
-        deliveryCount: 5,
-        used: 0,
-        po: null,
-        pu: null,
-        doc: {},
-        route: [],
-        rates: [],
-        startDateTime: null,
-        endDateTime: null,
-        startDate: null,
-        endDate: null,
-        startTime: null,
-        endTime: null,
-        createdAt: '2022-01-16T23:12:06',
-        updatedAt: '2022-01-16T23:12:06',
-        gpsFlag: 0,
-        comments: [],
-        commentsCount: 0,
-        guid: '12e6d82a-45f4-49a9-9f61-e2ce0380cf36',
-        baseRate: 0,
-        adjusted: 0,
-        advanced: 0,
-        additional: '$0',
-        revised: 0,
-        stops: 2,
-        status: 'UNASSIGNED',
-      },
-    ];
+      this.viewData = this.viewData.map((data) => {
+        return this.mapLoadData(data);
+      });
 
-    for (let i = 0; i < numberOfCopy; i++) {
-      data.push(data[i]);
+      console.log('Load Data');
+      console.log(this.viewData);
+    } else {
+      this.viewData = [];
     }
-
-    return data;
   }
 
+  mapLoadData(data: any) {
+    // this.thousandSeparator.transform(data.total)
+    // this.datePipe.transform(data.date, 'MM/dd/yy')
+
+    return {
+      ...data,
+      isSelected: false,
+      loadInvoice: {
+        invoice: 'Nije Povezano',
+        type: data?.type?.name ? data.type.name : '',
+      },
+      loadDispatcher: {
+        name: 'Nije Povezano',
+        avatar: null,
+      },
+      loadTotal: {
+        total: 'nije povezano',
+        subTotal: 'nije povezano',
+      },
+      loadBroker: {
+        hasBanDnu: data?.broker?.ban || data?.broker?.dnu,
+        isDnu: data?.broker?.dnu,
+        name: data?.broker?.businessName ? data.broker.businessName : '',
+      },
+      loadTruckNumber: {
+        number: data?.dispatch?.truck?.truckNumber
+          ? data.dispatch.truck.truckNumber
+          : '',
+        color: '',
+      },
+      loadTrailerNumber: {
+        number: data?.dispatch?.trailer?.trailerNumber
+          ? data.dispatch.trailer.trailerNumber
+          : '',
+        color: '',
+      },
+      loadPickup: {
+        count: 2,
+        location: 'Morton, MS',
+        date: '05/09/21',
+        time: '5:10PM',
+      },
+      loadDelivery: {
+        count: 'S',
+        location: 'Forest Parl, GA',
+        date: '05/12/21',
+        time: '3:15AM',
+      },
+      loadStatus: {
+        status: 'Active',
+        color: '',
+        time: '5h. 18m. ago'
+      },
+      textMiles: data?.totalMiles ? data.totalMiles : '',
+      textCommodity: data?.generalCommodity?.name
+        ? data.generalCommodity.name
+        : '',
+      textWeight: data?.weight ? data.weight + ' lbs' : '',
+      textBase: data?.baseRate
+        ? '$' + this.thousandSeparator.transform(data.baseRate)
+        : '',
+      textAdditional: 'Nije Povezano',
+      textAdvance: data?.advancePay
+        ? '$' + this.thousandSeparator.transform(data.advancePay)
+        : '',
+      textOutstanding: 'Nije Povezano',
+      textPayTerms: 'Nije Povezano',
+      textDriver:
+        data?.dispatch?.driver?.firstName && data?.dispatch?.driver?.lastName
+          ? data?.dispatch?.driver?.firstName.charAt(0) +
+            '. ' +
+            data?.dispatch?.driver?.lastName
+          : '',
+      textReceiver: 'Nije Povezano',
+      textShipper: 'Nije Povezano',
+      loadComment: {
+        count: data.commentsCount,
+        comments: data.comments
+      }
+    };
+  }
+
+  getTabData(dataType: string) {
+    if (dataType === 'active') {
+      this.loadActive = this.loadActiveQuery.getAll();
+
+      return this.loadActive?.length ? this.loadActive : [];
+    } else if (dataType === 'closed') {
+      this.loadClosed = this.loadClosedQuery.getAll();
+
+      return this.loadClosed?.length ? this.loadClosed : [];
+    } else if (dataType === 'pending') {
+      this.loadPanding = this.loadPandinQuery.getAll();
+
+      return this.loadPanding?.length ? this.loadPanding : [];
+    } else if (dataType === 'template') {
+      this.loadTemplate = this.loadTemplateQuery.getAll();
+
+      return this.loadTemplate?.length ? this.loadTemplate : [];
+    }
+  }
+
+  // ---------------------------- Table Actions ------------------------------
   onToolBarAction(event: any) {
     if (event.action === 'open-modal') {
       this.modalService.openModal(LoadModalComponent, { size: 'load' });
     } else if (event.action === 'tab-selected') {
       this.selectedTab = event.tabData.field;
-      this.setLoadData(event.tabData);
+
+      this.sendLoadData();
     }
+  }
+
+  onTableHeadActions(event: any) {
+    if (event.action === 'sort') {
+      /* this.mapingIndex = 0; */
+
+      if (event.direction) {
+        /*  this.backFilterQuery.active = this.selectedTab === 'active' ? 1 : 0;
+        this.backFilterQuery.pageIndex = 1;
+        this.backFilterQuery.sort = event.direction;
+
+        this.driverBackFilter(this.backFilterQuery); */
+      } else {
+        this.sendLoadData();
+      }
+    }
+  }
+
+  onTableBodyActions(event: any) {
+    if (event.type === 'show-more') {
+      /*  this.backFilterQuery.pageIndex++;
+      this.driverBackFilter(this.backFilterQuery, false, true); */
+    } else if (event.type === 'edit') {
+      /* this.modalService.openModal(
+        DriverModalComponent,
+        { size: 'medium' },
+        {
+          ...event,
+          disableButton: true,
+        }
+      ); */
+    }
+  }
+
+  // ---------------------------- ngOnDestroy ------------------------------
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+    this.tableService.sendActionAnimation({});
+    this.resizeObserver.unobserve(document.querySelector('.table-container'));
+    this.resizeObserver.disconnect();
   }
 }

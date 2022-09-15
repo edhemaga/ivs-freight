@@ -19,6 +19,8 @@ export interface LoadShortResponse {
     broker?: BrokerShortResponse;
     pickup?: LoadStopShortResponse;
     delivery?: LoadStopShortResponse;
+    pickupCount?: number;
+    deliveryCount?: number;
     totalMiles?: number | null;
     totalRate?: number | null;
 }

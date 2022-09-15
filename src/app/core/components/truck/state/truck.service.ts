@@ -1,6 +1,6 @@
 import { TruckMinimalListResponse } from './../../../../../../appcoretruckassist/model/truckMinimalListResponse';
-import { Observable, of, tap } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Observable, of, Subject, tap, takeUntil } from 'rxjs';
+import { Injectable, OnDestroy } from '@angular/core';
 import {
   CreateTruckCommand,
   GetTruckModalResponse,
@@ -13,26 +13,38 @@ import { TruckInactiveStore } from './truck-inactive-state/truck-inactive.store'
 import { TruckActiveStore } from './truck-active-state/truck-active.store';
 import { TruckInactiveQuery } from './truck-inactive-state/truck-inactive.query';
 import { TruckActiveQuery } from './truck-active-state/truck-active.query';
-import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
+import { TrucksMinimalListQuery } from './truck-details-minima-list-state/truck-details-minimal.query';
+import { TrucksMinimalListStore } from './truck-details-minima-list-state/truck-details-minimal.store';
+import { TruckItemStore } from './truck-details-state/truck.details.store';
+import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
+import { TrucksDetailsListStore } from './truck-details-list-state/truck-details-list.store';
 
 @Injectable({ providedIn: 'root' })
-export class TruckTService {
+export class TruckTService implements OnDestroy {
+  public truckId: number;
+  public truckList: any;
+  public currentIndex: number;
+  private destroy$ = new Subject<void>();
+
   constructor(
     private truckActiveStore: TruckActiveStore,
     private truckInactiveStore: TruckInactiveStore,
     private truckService: TruckService,
     private truckActiveQuery: TruckActiveQuery,
     private truckInactiveQuery: TruckInactiveQuery,
-    private tableService: TruckassistTableService
+    private tableService: TruckassistTableService,
+    private truckMinimalQuery: TrucksMinimalListQuery,
+    private truckMinimalStore: TrucksMinimalListStore,
+    private truckItem: TruckItemStore,
+    private tdlStore: TrucksDetailsListStore
   ) {}
 
   //Get Truck Minimal List
   public getTrucksMinimalList(
     pageIndex?: number,
-    pageSize?: number,
-    count?: number
+    pageSize?: number
   ): Observable<TruckMinimalListResponse> {
-    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize, count);
+    return this.truckService.apiTruckListMinimalGet(pageIndex, pageSize);
   }
 
   // Get Truck List
@@ -63,33 +75,35 @@ export class TruckTService {
   public addTruck(data: CreateTruckCommand): Observable<any> {
     return this.truckService.apiTruckPost(data).pipe(
       tap((res: any) => {
-        const subTruck = this.getTruckById(res.id).subscribe({
-          next: (truck: TruckResponse | any) => {
-            this.truckActiveStore.add(truck);
+        const subTruck = this.getTruckById(res.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.truckActiveStore.add(truck);
+              this.truckMinimalStore.add(truck);
+              const truckCount = JSON.parse(
+                localStorage.getItem('truckTableCount')
+              );
 
-            const truckCount = JSON.parse(
-              localStorage.getItem('truckTableCount')
-            );
+              truckCount.active++;
 
-            truckCount.active++;
+              localStorage.setItem(
+                'truckTableCount',
+                JSON.stringify({
+                  active: truckCount.active,
+                  inactive: truckCount.inactive,
+                })
+              );
 
-            localStorage.setItem(
-              'truckTableCount',
-              JSON.stringify({
-                active: truckCount.active,
-                inactive: truckCount.inactive,
-              })
-            );
+              this.tableService.sendActionAnimation({
+                animation: 'add',
+                data: truck,
+                id: truck.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'add',
-              data: truck,
-              id: truck.id,
-            });
-
-            subTruck.unsubscribe();
-          },
-        });
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -97,21 +111,67 @@ export class TruckTService {
   public updateTruck(data: UpdateTruckCommand): Observable<any> {
     return this.truckService.apiTruckPut(data).pipe(
       tap(() => {
-        const subTruck = this.getTruckById(data.id).subscribe({
-          next: (truck: TruckResponse | any) => {
-            this.truckActiveStore.remove(({ id }) => id === data.id);
+        const subTruck = this.getTruckById(data.id)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.truckActiveStore.remove(({ id }) => id === data.id);
 
-            this.truckActiveStore.add(truck);
+              this.truckActiveStore.add(truck);
+              this.tdlStore.replace(truck.id, truck);
+              this.tableService.sendActionAnimation({
+                animation: 'update',
+                data: truck,
+                id: truck.id,
+              });
 
-            this.tableService.sendActionAnimation({
-              animation: 'update',
-              data: truck,
-              id: truck.id,
-            });
+              subTruck.unsubscribe();
+            },
+          });
+      })
+    );
+  }
 
-            subTruck.unsubscribe();
-          },
-        });
+  public deleteTruckByIdDetails(
+    truckId: number,
+    tableSelectedTab?: string
+  ): Observable<any> {
+    return this.truckService.apiTruckIdDelete(truckId).pipe(
+      tap(() => {
+        const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
+        this.truckMinimalStore.remove(({ id }) => id === truckId);
+        this.truckItem.remove(({ id }) => id === truckId);
+        this.tdlStore.remove(({ id }) => id === truckId);
+        if (tableSelectedTab === 'active') {
+          this.truckActiveStore.remove(({ id }) => id === truckId);
+
+          truckCount.active--;
+        } else if (tableSelectedTab === 'inactive') {
+          this.truckInactiveStore.remove(({ id }) => id === truckId);
+
+          truckCount.inactive--;
+        }
+
+        localStorage.setItem(
+          'truckTableCount',
+          JSON.stringify({
+            active: truckCount.active,
+            inactive: truckCount.inactive,
+          })
+        );
+        const subTruck = this.getTruckById(this.truckId, true)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.tableService.sendActionAnimation({
+                animation: 'delete',
+                data: truck,
+                id: truck.id,
+              });
+
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }
@@ -123,7 +183,8 @@ export class TruckTService {
     return this.truckService.apiTruckIdDelete(truckId).pipe(
       tap(() => {
         const truckCount = JSON.parse(localStorage.getItem('truckTableCount'));
-
+        this.truckMinimalStore.remove(({ id }) => id === truckId);
+        this.tdlStore.remove(({ id }) => id === truckId);
         if (tableSelectedTab === 'active') {
           this.truckActiveStore.remove(({ id }) => id === truckId);
 
@@ -166,8 +227,31 @@ export class TruckTService {
     return of(null);
   }
 
-  public getTruckById(id: number): Observable<TruckResponse> {
-    return this.truckService.apiTruckIdGet(id);
+  public getTruckById(
+    truckId: number,
+    getIndex?: boolean
+  ): Observable<TruckResponse> {
+    this.truckMinimalQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.truckList = item));
+    if (getIndex) {
+      this.currentIndex = this.truckList.findIndex(
+        (truck) => truck?.id === truckId
+      );
+      let last = this.truckList?.at(-1);
+      if (last?.id === truckId) {
+        this.currentIndex = --this.currentIndex;
+      } else {
+        this.currentIndex = ++this.currentIndex;
+      }
+      if (this.currentIndex == -1) {
+        this.currentIndex = 0;
+      }
+      this.truckId = this.truckList[this.currentIndex]?.id;
+    }
+
+    return this.truckService.apiTruckIdGet(truckId);
   }
 
   public changeTruckStatus(
@@ -222,16 +306,29 @@ export class TruckTService {
             inactive: truckCount.inactive,
           })
         );
+        const subTruck = this.getTruckById(truckId)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (truck: TruckResponse | any) => {
+              this.tdlStore.update(truck.id, { status: truck.status });
+              this.tableService.sendActionAnimation({
+                animation: 'update-status',
+                data: truck,
+                id: truck.id,
+              });
 
-        this.tableService.sendActionAnimation({
-          animation: 'update-status',
-          id: truckId,
-        });
+              subTruck.unsubscribe();
+            },
+          });
       })
     );
   }
 
   public getTruckDropdowns(): Observable<GetTruckModalResponse> {
     return this.truckService.apiTruckModalGet();
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

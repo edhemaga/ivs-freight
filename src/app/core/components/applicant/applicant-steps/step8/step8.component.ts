@@ -21,8 +21,6 @@ import {
 export class Step8Component implements OnInit, OnDestroy {
   public selectedMode: string = SelectedMode.FEEDBACK;
 
-  public applicant: Applicant | undefined;
-
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
 
@@ -50,8 +48,6 @@ export class Step8Component implements OnInit, OnDestroy {
       },
     ],
   };
-
-  public drugAndAlcoholInfo: DrugAndAlcohol | undefined;
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -85,16 +81,14 @@ export class Step8Component implements OnInit, OnDestroy {
     },
   ];
 
+  /* public applicant: Applicant | undefined; */
+
+  /* public drugAndAlcoholInfo: DrugAndAlcohol | undefined; */
+
   constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
     this.createForm();
-
-    const applicantUser = localStorage.getItem('applicant_user');
-
-    if (applicantUser) {
-      this.applicant = JSON.parse(applicantUser) as Applicant;
-    }
   }
 
   public createForm(): void {
@@ -224,7 +218,15 @@ export class Step8Component implements OnInit, OnDestroy {
     }
   }
 
-  private formFilling(): void {
+  public onStepAction(event: any): void {
+    if (event.action === 'next-step') {
+    }
+
+    if (event.action === 'back-step') {
+    }
+  }
+
+  /* private formFilling(): void {
     this.drugAlcoholStatementForm.patchValue({
       motorCarrier: this.drugAndAlcoholInfo?.motorCarrier,
       phone: this.drugAndAlcoholInfo?.phone,
@@ -237,9 +239,10 @@ export class Step8Component implements OnInit, OnDestroy {
       isAgreement: this.drugAndAlcoholInfo?.isAgreement,
     });
   }
+ */
 
-  public onSubmitForm(): void {
-    /*  this.shared.clearNotifications();
+  /* public onSubmitForm(): void {
+     this.shared.clearNotifications();
 
         let valid = true;
 
@@ -254,7 +257,7 @@ export class Step8Component implements OnInit, OnDestroy {
 
         if (!valid) {
             return false;
-        } */
+        }
 
     const drugAlcoholStatementForm = this.drugAlcoholStatementForm.value;
     const drugAndAlcohol = new DrugAndAlcohol(this.drugAndAlcoholInfo);
@@ -272,7 +275,7 @@ export class Step8Component implements OnInit, OnDestroy {
     drugAndAlcohol.sapAddressUnit = drugAlcoholStatementForm.sapAddressUnit;
     drugAndAlcohol.isAgreement = drugAlcoholStatementForm.isAgreement;
 
-    /* this.apppEntityServices.DrugAndAlchocolService.upsert(
+    this.apppEntityServices.DrugAndAlchocolService.upsert(
             drugAndAlchocol
         ).subscribe(
             () => {
@@ -281,16 +284,11 @@ export class Step8Component implements OnInit, OnDestroy {
             (error: any) => {
                 this.shared.handleError(error);
             }
-        ); */
+        );
   }
+ */
 
-  public onStepAction(event: any): void {
-    if (event.action === 'next-step') {
-      this.onSubmitForm();
-    }
-  }
-
-  public onSubmitReview(data: any): void {}
+  /* public onSubmitReview(data: any): void {} */
 
   ngOnDestroy(): void {}
 }

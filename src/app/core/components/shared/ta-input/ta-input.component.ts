@@ -27,6 +27,7 @@ import {
   convertNumberInThousandSep,
 } from '../../../utils/methods.calculations';
 import { pasteCheck } from '../../../../../assets/utils/methods-global';
+import { FormService } from 'src/app/core/services/form/form.service';
 
 @Component({
   selector: 'app-ta-input',
@@ -100,7 +101,8 @@ export class TaInputComponent
     private calendarService: CalendarScrollService,
     private uppercasePipe: UpperCasePipe,
     private thousandSeparatorPipe: TaThousandSeparatorPipe,
-    private refChange: ChangeDetectorRef
+    private refChange: ChangeDetectorRef,
+    private formService: FormService
   ) {
     this.superControl.valueAccessor = this;
   }
@@ -164,6 +166,17 @@ export class TaInputComponent
           this.getSuperControl.patchValue(null);
           this.inputResetService.resetInputSubject.next(false);
 
+          this.resetDateTimeInputs();
+        }
+      });
+
+    // Reset Form
+    this.formService.formReset$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (value) {
+          this.touchedInput = false;
+          this.formService.formReset$.next(false);
           this.resetDateTimeInputs();
         }
       });

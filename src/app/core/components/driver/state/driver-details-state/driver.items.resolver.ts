@@ -1,45 +1,53 @@
+import { DriversMinimalListStore } from './../driver-details-minimal-list-state/driver-minimal-list.store';
 import { Injectable } from '@angular/core';
 
-import {
-  ActivatedRouteSnapshot,
-  Resolve,
-  Router,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router } from '@angular/router';
 import { DriverResponse } from '../../../../../../../appcoretruckassist';
 import { Observable, of } from 'rxjs';
 import { catchError, tap, take } from 'rxjs/operators';
 import { DriverTService } from '../driver.service';
 import { DriversItemStore } from './driver-details.store';
-import { DriversActiveQuery } from '../driver-active-state/driver-active.query';
-import { DriversDetailsQuery } from './driver-details.query';
+import {
+  DriverDetailsListState,
+  DriversDetailsListStore,
+} from '../driver-details-list-state/driver-details-list.store';
+import { DriversDetailsListQuery } from '../driver-details-list-state/driver-details-list.query';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverItemResolver implements Resolve<DriverResponse[]> {
-  pageIndex:number=1;
-  pageSize:number=25;
+  pageIndex: number = 1;
+  pageSize: number = 25;
   constructor(
     private driverService: DriverTService,
     private driverItemStore: DriversItemStore,
-    private driverItemQuery: DriversDetailsQuery,
-    private router:Router
+    private driverDetailsListQuery: DriversDetailsListQuery,
+    private driverDetailsListStore: DriversDetailsListStore,
+    private driverMiniamLS: DriversMinimalListStore,
+    private router: Router
   ) {}
-  resolve(
-    route: ActivatedRouteSnapshot,
-   
-  ): Observable<DriverResponse[]> | Observable<any> {
+  resolve(route: ActivatedRouteSnapshot): Observable<any> {
     const driver_id = route.paramMap.get('id');
-    let id = parseInt(driver_id);
-      return this.driverService.getDriverById(id).pipe(
+    let drid = parseInt(driver_id);
+    if (this.driverDetailsListQuery.hasEntity(drid)) {
+      return this.driverDetailsListQuery.selectEntity(drid).pipe(
+        tap((driverResponse: DriverResponse) => {
+          this.driverItemStore.set([driverResponse]);
+        }),
+        take(1)
+      );
+    } else {
+      return this.driverService.getDriverById(drid).pipe(
         catchError((error) => {
-          this.router.navigate(['/driver'])
-          return of('No drivers data for...' + driver_id) ;
+          this.router.navigate(['/driver']);
+          return of('No drivers data for...' + driver_id);
         }),
         tap((driverResponse: DriverResponse) => {
+          this.driverDetailsListStore.add(driverResponse);
           this.driverItemStore.set([driverResponse]);
         })
       );
     }
+  }
 }

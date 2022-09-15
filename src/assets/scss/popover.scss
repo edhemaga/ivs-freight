@@ -169,13 +169,58 @@
   }
 }
 
+// Table Status Popup
+.table-status-popover{
+  background-color: unset !important;
+  margin-left: -10px;
+
+  .status-dropdown{
+    margin-top: 4px;
+    width: 110px;
+    height: 138px;
+    background: white;
+    border-radius: 3px;
+    padding: 0px 2px 2px 2px;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    animation: statusAnimation 0.25s ease-in-out;
+
+    .status-title{
+      cursor: pointer;
+      width: 100%;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+      margin-top: 2px;
+      border-radius: 2px;
+      color: #508F91;
+    }
+
+    .status-active{
+      background: #F7F7F7;
+      box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  @keyframes statusAnimation {
+    from {
+      height: 0px;
+    }
+    to {
+      height: 138px;
+    }
+  }
+}
+
 // Table Attachments Popup
 .table-attachments-popover{
   background-color: unset !important;
 
   .table-attachments{
     margin-top: 2px;
-    width: 1575px;
     height: 198px;
     background: white;
     animation: attachmentsAnimation 0.25s ease-in-out;

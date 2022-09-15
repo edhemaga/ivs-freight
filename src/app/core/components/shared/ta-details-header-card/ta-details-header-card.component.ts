@@ -2,11 +2,15 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { DriversMinimalListQuery } from '../../driver/state/driver-details-minimal-list-state/driver-minimal-list.query';
+import { DriversItemStore } from '../../driver/state/driver-details-state/driver-details.store';
 
 @Component({
   selector: 'app-ta-details-header-card',
@@ -14,7 +18,7 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./ta-details-header-card.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class TaDetailsHeaderCardComponent implements OnInit {
+export class TaDetailsHeaderCardComponent implements OnInit, OnChanges {
   @Input() public cardDetailsName: string = '';
   @Input() public cardDetailsDate: any;
   @Input() public cardDetailsDateTerminated: string = null;
@@ -31,7 +35,6 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() public hasArrow: boolean;
   @Input() public optionsId: number;
   @Input() public sortOptions: string;
-
   @Output() public dropActions = new EventEmitter<any>();
   @Output() selectValue = new EventEmitter<string>();
   @Output() selectValueStore = new EventEmitter<string>();
@@ -39,15 +42,47 @@ export class TaDetailsHeaderCardComponent implements OnInit {
   @Input() public dateChecked: string = '';
   @Input() public lastEdit: string = '';
   public inputFormControl: FormControl = new FormControl();
-
+  public driversList: any[] = this.driverMinimalQuery.getAll();
   public selectedDropdown: boolean = false;
   public selectedDropdownSecond: boolean = false;
+  public hideLeftArrow: boolean;
+  public hideRightArrow: boolean;
+  public driverId: number = this.driverItemStore.getValue().ids[0];
+  constructor(
+    private driverItemStore: DriversItemStore,
+    private driverMinimalQuery: DriversMinimalListQuery
+  ) {}
+  ngOnChanges(changes: SimpleChanges) {}
+  ngOnInit(): void {
+    // this.hideArrowOnStart(this.driverId);
+  }
 
-  constructor() {}
+  public hideArrowOnStart(id: number) {
+    let last = this.options.at(-1);
+    let first = this.options.at(0);
 
-  ngOnInit(): void {}
-
+    if (first.id == id) {
+      this.hideLeftArrow = true;
+    } else {
+      this.hideLeftArrow = false;
+    }
+    if (last.id == id) {
+      this.hideRightArrow = true;
+    } else {
+      this.hideRightArrow = false;
+    }
+  }
   public onAction(action: string) {
+    // let currentIndex = this.driversList.findIndex(
+    //   (driver) => driver.id === this.driverItemStore.getValue().ids[0]
+    // );
+    // if (action === 'next') {
+    //   currentIndex = ++currentIndex;
+    //   this.hideArrowOnStart(this.driversList[currentIndex].id);
+    // } else {
+    //   currentIndex = --currentIndex;
+    //   this.hideArrowOnStart(this.driversList[currentIndex].id);
+    // }
     this.changeEvent.emit(action);
   }
 

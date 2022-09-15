@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface InsuranceTypeResponse { 
     id?: number;
-    accidentId?: number;
-    insType?: number | null;
+    insTypes?: EnumValue;
     claimNo?: number | null;
     insAdjuster?: string | null;
     phone?: string | null;

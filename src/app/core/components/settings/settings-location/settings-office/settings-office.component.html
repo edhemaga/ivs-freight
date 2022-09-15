@@ -2,7 +2,7 @@
   <div class="settings-header">
     <div class="settings-name d-flex align-items-center">
       <app-ta-counter
-        [count]="'2'"
+        [count]="officeData?.count"
         [countColor]="'#919191'"
         [countBackground]="'#F3F3F3'"
         [countHeight]="'24px'"
@@ -23,26 +23,24 @@
   <div class="settings-body">
     <app-ta-re-card
       *ngFor="
-        let item of officeData;
+        let item of officeData?.data;
         let i = index;
         trackBy: identityOfficeData
       "
-      [settingsIcon]="item.companyOwned"
+      [settingsIcon]="item.isOwner?'ic_company.svg':''"
       [cardNameCommon]="item.name"
       [hasFooter]="false"
       [haveHeaderText]="true"
+      [optionsId]="item.id"
+      [options]="officeActions"
+      (dropActions)="officeDropActions($event,'office')"
       [paddingDots]="'11px 0px 0px 12px'"
     >
       <div class="settings-body-items">
         <div
           *ngIf="item.phone"
           class="single-item"
-          (click)="
-            onAction({
-              modalName: 'office',
-              type: { type: 'edit', id: 1 }
-            })
-          "
+         
         >
           <svg-icon
             class="company-icons"
@@ -57,21 +55,21 @@
           ></svg-icon>
           <app-ta-copy [copyValue]="item?.email"> </app-ta-copy>
         </div>
-        <div *ngIf="item.address" class="single-item">
+        <div *ngIf="item.address.address" class="single-item">
           <svg-icon
             class="company-icons"
             src="assets/svg/truckassist-table/location-icon.svg"
           ></svg-icon>
-          <span>{{ item.address }}</span>
+          <span>{{ item.address.address }}</span>
         </div>
       </div>
       <app-ta-custom-card
         *ngFor="
-          let dep of item.departments;
+          let dep of item.departmentContacts;
           let i = index;
           trackBy: identityOfficeData
         "
-        [cardName]="dep.name"
+        [cardName]="dep.department.name"
         [isCardOpen]="true"
         [bodyTemplate]="'card'"
         [animationsDisabled]="false"
@@ -90,7 +88,7 @@
               class="office-template-svg"
               src="assets/svg/common/ic_phone-extension.svg"
             ></svg-icon>
-            <p class="office-template-value">{{ dep.phone_ext }}</p>
+            <p class="office-template-value">{{ dep.extensionPhone }}</p>
           </div>
           <div class="office-template-item office-template-email">
             <svg-icon

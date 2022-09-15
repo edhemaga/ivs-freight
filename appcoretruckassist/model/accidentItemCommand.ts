@@ -15,8 +15,8 @@ export interface AccidentItemCommand {
     id?: number | null;
     location?: string | null;
     date?: string;
-    fatalities?: number;
-    injuries?: number;
+    fatalities?: number | null;
+    injuries?: number | null;
     hazmatSpill?: boolean;
     vehicleTypeId?: number;
     description?: string | null;

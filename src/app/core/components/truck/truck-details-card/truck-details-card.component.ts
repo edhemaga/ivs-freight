@@ -1,20 +1,21 @@
-import { TrucksMinimalListQuery } from './../state/truck-details-minima-list-state/truck-details-minimal.query';
-import { TruckResponse } from './../../../../../../appcoretruckassist/model/truckResponse';
-import { ActivatedRoute } from '@angular/router';
 import {
   Component,
-  Input,
-  OnInit,
   ViewEncapsulation,
+  OnInit,
   OnChanges,
-  SimpleChanges,
+  OnDestroy,
   ViewChild,
+  Input,
+  SimpleChanges,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ModalService } from '../../shared/ta-modal/modal.service';
-
+import { TruckResponse } from 'appcoretruckassist';
+import { Subject, takeUntil } from 'rxjs';
+import { DetailsPageService } from 'src/app/core/services/details-page/details-page-ser.service';
 import { card_component_animation } from '../../shared/animations/card-component.animations';
-import { DetailsPageService } from '../../../services/details-page/details-page-ser.service';
+import { TrucksMinimalListQuery } from '../state/truck-details-minima-list-state/truck-details-minimal.query';
+import { TruckTService } from '../state/truck.service';
+
 @Component({
   selector: 'app-truck-details-card',
   templateUrl: './truck-details-card.component.html',
@@ -22,7 +23,7 @@ import { DetailsPageService } from '../../../services/details-page/details-page-
   encapsulation: ViewEncapsulation.None,
   animations: [card_component_animation('showHideCardBody')],
 })
-export class TruckDetailsCardComponent implements OnInit, OnChanges {
+export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('revenueChart', { static: false }) public revenueChart: any;
   @ViewChild('stackedBarChart', { static: false }) public stackedBarChart: any;
   @ViewChild('payrollChart', { static: false }) public payrollChart: any;
@@ -33,6 +34,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   public toggler: boolean[] = [];
   public truckDropDowns: any[] = [];
   public dataEdit: any;
+  private destroy$ = new Subject<void>();
   @Input() templateCard: boolean = false;
   @Input() truck: TruckResponse | any;
 
@@ -410,11 +412,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
   };
 
   constructor(
-    private activeted_route: ActivatedRoute,
-    private modalService: ModalService,
-    /* private trucksQuery: TruckQuery, */
     private detailsPageDriverSer: DetailsPageService,
-    private truckMinimalListQuery: TrucksMinimalListQuery
+    private truckMinimalListQuery: TrucksMinimalListQuery,
+    private truckService: TruckTService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -422,12 +422,24 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
       this.noteControl.patchValue(changes.truck.currentValue.note);
       this.getTruckDropdown();
     }
+    this.changeColor();
+    this.truckMinimalListQuery
+      .selectAll()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => (this.truck_list = item));
   }
   ngOnInit(): void {
+    this.getTruckById(this.truck.id);
     this.noteControl.patchValue(this.truck.note);
     this.getTruckDropdown();
     this.buttonSwitcher();
     this.initTableOptions();
+  }
+  public changeColor() {
+    document.documentElement.style.setProperty(
+      '--dynamic-colour',
+      this.truck?.color?.code ? this.truck.color.code : '#aaa'
+    );
   }
   public buttonSwitcher() {
     this.buttonsArrayPerfomance = [
@@ -509,6 +521,13 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         name: 'ALL',
       },
     ];
+  }
+
+  public getTruckById(id: number) {
+    this.truckService
+      .getTruckById(id, true)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((item) => item);
   }
   /**Function for dots in cards */
   public initTableOptions(): void {
@@ -608,5 +627,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges {
         break;
       }
     }
+  }
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

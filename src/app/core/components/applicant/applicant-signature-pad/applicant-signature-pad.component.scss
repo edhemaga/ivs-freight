@@ -7,17 +7,13 @@ app-applicant-signature-pad {
     border-top-right-radius: 3px;
     background: $ta-light-grey;
     transition: background 0.3s ease-in-out;
-
-    &:active {
-      background-color: red !important;
-    }
   }
 }
 
 .signature-pad-bottom-container {
   padding: 5px 0;
   height: 28px;
-  background-color: $ta-light-grey-5;
+  background: $ta-light-grey-5;
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
 
