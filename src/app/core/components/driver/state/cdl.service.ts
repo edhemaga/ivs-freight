@@ -15,6 +15,7 @@ import { TruckassistTableService } from 'src/app/core/services/truckassist-table
 import { DriversActiveStore } from './driver-active-state/driver-active.store';
 import { DriversItemStore } from './driver-details-state/driver-details.store';
 import { DriverTService } from './driver.service';
+import { RenewCdlCommand } from '../../../../../../appcoretruckassist/model/renewCdlCommand';
 
 @Injectable({
   providedIn: 'root',
@@ -154,6 +155,10 @@ export class CdlTService implements OnDestroy {
     );
   }
 
+  public renewCdlUpdate(data: RenewCdlCommand): Observable<any> {
+    return this.cdlService.apiCdlRenewPut(data);
+  }
+
   public getCdlById(id: number): Observable<CdlResponse> {
     return this.cdlService.apiCdlIdGet(id);
   }
@@ -161,6 +166,7 @@ export class CdlTService implements OnDestroy {
   public getCdlDropdowns(): Observable<GetCdlModalResponse> {
     return this.cdlService.apiCdlModalGet();
   }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

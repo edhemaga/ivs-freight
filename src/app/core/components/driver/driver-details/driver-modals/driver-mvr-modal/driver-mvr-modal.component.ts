@@ -208,7 +208,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
   public getModalDropdowns() {
     this.mvrService
-      .getMvrModal()
+      .getMvrModal(this.editData.id)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (res: GetMvrModalResponse) => {

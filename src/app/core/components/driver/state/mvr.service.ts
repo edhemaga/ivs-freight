@@ -125,9 +125,8 @@ export class MvrTService implements OnDestroy {
     );
   }
 
-  public getMvrModal(): Observable<GetMvrModalResponse> {
-    // return this.mvrService.apiMvrModalGet();
-    return of(null);
+  public getMvrModal(driverId: number): Observable<GetMvrModalResponse> {
+    return this.mvrService.apiMvrModalDriverIdGet(driverId);
   }
   ngOnDestroy(): void {
     this.destroy$.next();
