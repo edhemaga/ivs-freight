@@ -313,7 +313,6 @@ export class ProfileUpdateModalComponent implements OnInit, OnDestroy {
             'Successfuly update profile',
             'Success'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
 
           const newUser = {
             ...this.user,

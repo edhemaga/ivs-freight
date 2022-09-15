@@ -84,7 +84,7 @@
                 label: 'MC/FF #',
                 textTransform: 'capitalize',
                 maxLength: 6,
-                minLength: 6
+                minLength: 5
               }"
             ></app-ta-input>
           </div>
@@ -156,7 +156,7 @@
                 label: 'Address, City, State Zip',
                 isRequired: true,
                 placeholderIcon: 'address',
-                minLength: 12,
+                minLength: 6,
                 maxLength: 256,
                 textTransform: 'capitalize'
               }"
@@ -339,7 +339,10 @@
                     textTransform: 'capitalize',
                     type: 'text',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-120'
+                    dropdownWidthClass: 'w-col-120',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                   [options]="departments"
                   [activeItem]="selectedDepartmentFormArray[ind]"
@@ -353,7 +356,10 @@
                     id: 'Phone' + ind,
                     name: 'Phone',
                     type: 'text',
-                    mask: '(000) 000-0000'
+                    mask: '(000) 000-0000',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -364,7 +370,10 @@
                     type: 'text',
                     minLength: 1,
                     maxLength: 8,
-                    placeholderIcon: 'phone-extension'
+                    placeholderIcon: 'phone-extension',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -375,7 +384,10 @@
                     type: 'text',
                     minLength: 5,
                     maxLength: 64,
-                    textTransform: 'lowercase'
+                    textTransform: 'lowercase',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <div
@@ -428,7 +440,10 @@
                     maxLength: 64,
                     textTransform: 'uppercase',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-163'
+                    dropdownWidthClass: 'w-col-163',
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                   [canAddNew]="true"
                   [options]="banks"
@@ -446,7 +461,10 @@
                     type: 'text',
                     isDisabled: !isBankSelectedFormArray[ind],
                     minLength: 9,
-                    maxLength: 9
+                    maxLength: 9,
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -458,7 +476,10 @@
                     placeholderIcon: 'password',
                     isDisabled: !isBankSelectedFormArray[ind],
                     maxLength: 17,
-                    minLength: 5
+                    minLength: 5,
+                    hideErrorMessage: true,
+                    blackInput: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <svg-icon
@@ -514,7 +535,10 @@
                     id: 'Nickname' + ind,
                     name: 'Nickname',
                     type: 'text',
-                    textTransform: 'capitalize'
+                    textTransform: 'capitalize',
+                    hideErrorMessage: true,
+                    thousandSeparator: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -525,7 +549,10 @@
                     type: 'password',
                     placeholderIcon: 'visa',
                     maxLength: 16,
-                    minLength: 16
+                    minLength: 16,
+                    hideErrorMessage: true,
+                    thousandSeparator: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -536,7 +563,10 @@
                     type: 'password',
                     placeholderIcon: 'password',
                     maxLength: 3,
-                    minLength: 3
+                    minLength: 3,
+                    hideErrorMessage: true,
+                    thousandSeparator: true,
+                    hideRequiredCheck: true
                   }"
                 ></app-ta-input>
                 <app-ta-input
