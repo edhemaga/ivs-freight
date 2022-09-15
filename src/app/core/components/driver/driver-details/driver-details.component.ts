@@ -24,6 +24,7 @@ import { CdlTService } from '../state/cdl.service';
 import { of, Subject, take, takeUntil } from 'rxjs';
 import { DriversDetailsQuery } from '../state/driver-details-state/driver-details.query';
 import { DriversDetailsListQuery } from '../state/driver-details-list-state/driver-details-list.query';
+import { DetailsDataService } from '../../../services/details-data/details-data.service';
 
 @Component({
   selector: 'app-driver-details',
@@ -66,14 +67,15 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
     private driverMinimalQuery: DriversMinimalListQuery,
     private dropDownService: DropDownService,
     private driverDQuery: DriversDetailsListQuery,
-    private cdlService: CdlTService
+    private cdlService: CdlTService,
+    private DetailsDataService: DetailsDataService,
   ) {}
 
   ngOnInit() {
     this.currentIndex = this.driversList.findIndex(
       (driver) => driver.id === this.activated_route.snapshot.data.driver.id
     );
-
+    
     this.detailCongif(this.activated_route.snapshot.data.driver);
     if (this.cdlActiveId > 0) {
       this.getCdlById(this.cdlActiveId);
@@ -158,6 +160,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
 
   /**Function template and names for header and other options in header */
   public detailCongif(data: DriverResponse | any) {
+    this.DetailsDataService.setNewData(data);
     this.getDriverById(data.id);
     this.initTableOptions(data);
     this.checkExpiration(data);

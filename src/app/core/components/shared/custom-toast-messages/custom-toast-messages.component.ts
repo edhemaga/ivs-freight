@@ -165,6 +165,10 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     {
       'api' : 'title',
       'value' : 'TITLE'
+    },
+    {
+      'api' : 'RatingReview',
+      'value' : 'REVIEW'
     }
     
   ]
@@ -187,7 +191,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
     this.DetailsDataService.leftSideMenuChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((response: boolean) => {
-        this.leftSideMove = response;
+        if ( this.actionType != 'LOGIN' ){
+          this.leftSideMove = response;
+        }
       });
   }
 
@@ -208,6 +214,9 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
     console.log('---item--', item);
     console.log('---actionType--', this.actionType);
+    if (this.actionType == 'LOGIN') {
+      this.leftSideMove = false;
+    }
   
     switch (this.httpRequest.method) {
       case 'POST':
@@ -277,6 +286,38 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           break;
         }
       break;
+      case 'REVIEW':
+        this.actionTitle = this.toastrType == 'toast-error' ? 'REVIEW' : 'REVIEWED';
+        switch (this.httpRequest.body?.entityTypeReviewId) {
+          case 1:
+            this.actionType = 'BROKER';
+            this.message = this.DetailsDataService.mainData?.dbaName ? this.DetailsDataService.mainData?.dbaName : this.DetailsDataService.mainData?.businessName; 
+          break;
+          case 2:
+            this.message = this.DetailsDataService.mainData?.name ? this.DetailsDataService.mainData?.name : '';
+            this.actionType = 'REPAIR SHOP';
+          break;
+          case 3:
+            this.actionType = 'SHIPPER';
+            this.message = this.DetailsDataService.mainData?.businessName ? this.DetailsDataService.mainData?.businessName : '';
+          break;
+        }
+
+        if ( this.httpRequest.method == 'DELETE'){
+          this.actionTitle = this.toastrType == 'toast-error' ? 'DELETE REVIEW' : 'DELETED REVIEW';
+          this.actionType = '';
+
+          if ( this.DetailsDataService.mainData?.dbaName ) {
+            this.message = this.DetailsDataService.mainData?.dbaName;
+          } else if ( this.DetailsDataService.mainData?.businessName ) {
+            this.message = this.DetailsDataService.mainData?.businessName;
+          } else {
+            this.message = this.DetailsDataService.mainData?.name; 
+          }
+          
+        }
+
+      break;
       case 'CDL':
         let driverFullName = this.DetailsDataService.mainData?.fullName.toUpperCase();
         let cdlNum = this.httpRequest.body?.cdlNumber ? this.httpRequest.body?.cdlNumber : ''; 
@@ -290,12 +331,14 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
           });
         }
 
-        if ( this.httpRequest.method == 'POST' || this.httpRequest.method == 'PUT' ){
+        if ( this.httpRequest.method == 'POST' ){
           this.actionTitle = this.toastrType == 'toast-error' ? 'ADD NEW' : 'ADDED NEW';
-          this.actionType = 'CDL - ' + driverFullName;
-          this.wideMessage = true;
+        } else if ( this.httpRequest.method == 'PUT') {
+          this.actionTitle = this.toastrType == 'toast-error' ? 'ACTIVATE' : 'ACTIVATED';
         }
 
+        this.actionType = 'CDL - ' + driverFullName;
+        this.wideMessage = true;
         this.message = cdlNum;
       break;
       case 'MVR':
@@ -359,7 +402,11 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
 
             this.actionType = this.toastrType == 'toast-error' ? 'BROKER ' + moveAction + ' BAN LIST' : 'BROKER ' + moveAction + ' BAN LIST';
             this.wideMessage = true;
-          }  
+          } 
+          
+        if ( this.httpRequest.method == 'PUT' && apiEndPoint.indexOf('ban') == -1 && apiEndPoint.indexOf('dnu') == -1 ) {
+          this.actionTitle = this.toastrType == 'toast-error' ? 'UPDATE' : 'UPDATED';
+        }  
         
         this.message = messageValue;
       break;
@@ -453,8 +500,8 @@ export class CustomToastMessagesComponent extends Toast implements OnInit {
             let repairTruckNum = this.DetailsDataService.mainData?.truckNumber;
             messageText = 'Truck - ' + repairTruckNum;
          }
-         else if ( this.DetailsDataService.mainData?.trailerNum ) {
-            let repairTrailerNum = this.DetailsDataService.mainData?.trailerNum;
+         else if ( this.DetailsDataService.mainData?.trailerNumber ) {
+            let repairTrailerNum = this.DetailsDataService.mainData?.trailerNumber;
             messageText = 'Trailer - ' + repairTrailerNum;
          }
 
