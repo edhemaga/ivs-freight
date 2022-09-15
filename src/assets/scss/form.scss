@@ -322,6 +322,7 @@
 
     &.custom-row-paytype-driver-disabled {
       grid-template-columns: repeat(2, 167px) 119px 107px;
+      -moz-column-gap: 12px;
       column-gap: 12px;
     }
 
@@ -495,6 +496,7 @@
 .truck-additional-two-columns {
   display: grid;
   grid-template-columns: 196px 248px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
   margin-bottom: 32px;
@@ -503,6 +505,7 @@
 .truck-additional-three-columns {
   display: grid;
   grid-template-columns: 128px 164px 140px;
+  -moz-column-gap: 12px;
   column-gap: 12px;
   align-items: center;
   margin-bottom: 32px;
@@ -515,6 +518,7 @@
 .truck-additional-fifth-columns {
   display: grid;
   grid-template-columns: 107px 101px 70px 48px;
+  -moz-column-gap: 22px;
   column-gap: 22px;
   align-items: center;
   padding: 0 6px;
@@ -1102,6 +1106,16 @@
       }
     }
   }
+}
+
+//---------------- Company Insurance Policy -------------------
+.insurance-policy-rating {
+  display: grid;
+  grid-template-columns: 150px 204px 78px;
+  -moz-column-gap: 12px;
+  column-gap: 12px;
+  align-items: center;
+  margin-bottom: 32px;
 }
 
 //---------------- Profile Update Old Password ----------------
