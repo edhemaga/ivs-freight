@@ -1,12 +1,12 @@
 export interface LicenseModel {
-  id?: number;
-  license: string;
-  countryType: string;
-  stateId: string;
+  id: number | null;
+  licenseNumber: string | null;
+  country: string;
+  state: string;
   classType: string;
   expDate: string;
-  endorsments?: string;
-  restrictions?: string;
+  endorsments?: any;
+  restrictions?: any;
   isEditingLicense: boolean;
 }
 
