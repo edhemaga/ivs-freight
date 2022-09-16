@@ -251,6 +251,24 @@
         }
       }
 
+      // EDIT & DELETE ACTIONS
+      .edit-delete-actions {
+        .edit-icon,
+        .delete-icon {
+          cursor: pointer;
+
+          svg {
+            path {
+              fill: #b7b7b7;
+            }
+          }
+
+          &.delete-icon {
+            margin-left: 12px;
+          }
+        }
+      }
+
       // HEADER (DETAILS, CALENDAR...)
       .arrow-down-plus {
         display: flex;
