@@ -371,10 +371,12 @@ export class Step3Component implements OnInit, OnDestroy {
     const { permit, permitExplain } = this.permitForm.value;
 
     const filteredLicenseArray = this.licenseArray.map((item) => {
-      const stateId = this.usStates.find(
+      const filteredStateType = this.usStates.find(
         (stateItem) => stateItem.name === item.state
-      )
-        ? this.usStates.find((stateItem) => stateItem.name === item.state).id
+      );
+
+      const stateId = filteredStateType
+        ? filteredStateType.id
         : this.canadaStates.find((stateItem) => stateItem.name === item.state)
             .id;
 
@@ -389,12 +391,12 @@ export class Step3Component implements OnInit, OnDestroy {
       };
     });
 
-    const filteredLastLicenseCardStateId = this.usStates.find(
+    const filteredStateType = this.usStates.find(
       (stateItem) => stateItem.name === this.lastLicenseCard.state
-    )
-      ? this.usStates.find(
-          (stateItem) => stateItem.name === this.lastLicenseCard.state
-        ).id
+    );
+
+    const filteredLastLicenseCardStateId = filteredStateType
+      ? filteredStateType.id
       : this.canadaStates.find(
           (stateItem) => stateItem.name === this.lastLicenseCard.state
         ).id;

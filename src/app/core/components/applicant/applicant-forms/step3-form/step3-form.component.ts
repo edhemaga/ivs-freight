@@ -244,12 +244,12 @@ export class Step3FormComponent
         (item) => item.name === this.formValuesToPatch.country
       );
 
-      this.selectedStateType = this.usStates.find(
+      const filteredStateType = this.usStates.find(
         (stateItem) => stateItem.name === this.formValuesToPatch.state
-      )
-        ? this.usStates.find(
-            (stateItem) => stateItem.name === this.formValuesToPatch.state
-          )
+      );
+
+      this.selectedStateType = filteredStateType
+        ? filteredStateType
         : this.canadaStates.find(
             (stateItem) => stateItem.name === this.formValuesToPatch.state
           );
