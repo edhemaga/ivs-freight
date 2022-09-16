@@ -185,6 +185,10 @@
       color: $bw6-2;
       background: rgb(108, 108, 108, 0.2);
     }
+
+    &.welcome-company {
+      text-transform: uppercase;
+    }
   }
 
   .welcome-btn {
@@ -211,13 +215,13 @@
     text-align: center;
 
     &::-moz-selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
+      color: $bw5;
+      background: rgb(145, 145, 145, 0.2);
     }
 
     &::selection {
-      color: $bw6-2;
-      background: rgb(108, 108, 108, 0.2);
+      color: $bw5;
+      background: rgb(145, 145, 145, 0.2);
     }
   }
 

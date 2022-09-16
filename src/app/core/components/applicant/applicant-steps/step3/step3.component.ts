@@ -1,19 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import {
-  License,
-  CDLInformation,
-  LicenseModel,
-} from '../../state/model/cdl-information';
-import { AnswerChoices } from '../../state/model/applicant-question.model';
+import { convertDateToBackend } from 'src/app/core/utils/methods.calculations';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import { LicenseModel } from '../../state/model/cdl-information';
+import { AnswerChoices } from '../../state/model/applicant-question.model';
+import {
+  CountryType,
+  CreateApplicantCdlCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step3',
@@ -21,61 +27,31 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
   styleUrls: ['./step3.component.scss'],
 })
 export class Step3Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public permitForm: FormGroup;
   public licenseForm: FormGroup;
 
-  public licenseArray: LicenseModel[] = [
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 1',
-      restrictions: 'Restriction 1',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-    {
-      license: 'd263-540-92-166-0',
-      countryType: 'USA',
-      stateId: 'AL',
-      classType: '1234',
-      expDate: '01/18/20',
-      endorsments: 'Endorsment 2',
-      restrictions: 'Restriction 2',
-      isEditingLicense: false,
-    },
-  ];
+  public formStatus: string = 'INVALID';
+  public markFormInvalid: boolean;
+
+  public licenseArray: LicenseModel[] = [];
+
+  public lastLicenseCard: any;
+
+  public applicantId: number;
 
   public selectedLicenseIndex: number;
-
   public helperIndex: number = 2;
 
   public isEditing: boolean = false;
 
   public formValuesToPatch: any;
+
+  public canadaStates: any[] = [];
+  public usStates: any[] = [];
 
   public answerChoices: AnswerChoices[] = [
     {
@@ -142,19 +118,24 @@ export class Step3Component implements OnInit, OnDestroy {
     },
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public licenseArray: License[] = []; */
-
-  /* public cdlInformation: CDLInformation | undefined; */
-
   constructor(
     private formBuilder: FormBuilder,
-    private inputService: TaInputService
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService,
+    private applicantListsService: ApplicantListsService
   ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public trackByIdentity = (index: number, item: any): number => index;
@@ -188,17 +169,19 @@ export class Step3Component implements OnInit, OnDestroy {
         );
 
         if (selectedCheckbox.label === 'YES') {
+          this.permitForm.get('permit').patchValue(true);
+
           this.inputService.changeValidators(
             this.permitForm.get('permitExplain')
           );
         } else {
+          this.permitForm.get('permit').patchValue(false);
+
           this.inputService.changeValidators(
             this.permitForm.get('permitExplain'),
             false
           );
         }
-
-        this.permitForm.get('permit').patchValue(selectedCheckbox.label);
 
         break;
       default:
@@ -269,6 +252,20 @@ export class Step3Component implements OnInit, OnDestroy {
     this.selectedLicenseIndex = -1;
   }
 
+  public onGetFormStatus(status: string): void {
+    this.formStatus = status;
+  }
+
+  public onMarkInvalidEmit(event: any): void {
+    if (!event) {
+      this.markFormInvalid = false;
+    }
+  }
+
+  public onGetLastFormValues(event: any): void {
+    this.lastLicenseCard = event;
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -327,68 +324,112 @@ export class Step3Component implements OnInit, OnDestroy {
     }
   }
 
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.usStates = data.usStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.canadaStates = data.canadaStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+      });
+  }
+
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/2`]);
     }
   }
 
-  /* public onSubmitForm(): void {
-    this.shared.clearNotifications();
+  public onSubmit(): void {
+    if (this.permitForm.invalid) {
+      this.inputService.markInvalid(this.permitForm);
+      return;
+    }
 
-        let isValid = true;
+    if (this.formStatus === 'INVALID') {
+      this.markFormInvalid = true;
+      return;
+    }
 
-        if (!this.licenseArray.filter(a => !a.isDeleted).length) {
-            if (!this.shared.markInvalid(this.licenseForm)) {
-                isValid = false;
-            }
+    const { permit, permitExplain } = this.permitForm.value;
 
-            if (this.licenseArray.length < 1) {
-                if (this.shared.markInvalid(this.licenseForm)) {
-                    this.onAddLicense();
-                } else {
-                    isValid = false;
-                }
-            }
-        }
+    const filteredLicenseArray = this.licenseArray.map((item) => {
+      const filteredStateType = this.usStates.find(
+        (stateItem) => stateItem.name === item.state
+      );
 
-        if (this.isPermit === -1) {
-            this.notification.warning('Please answer permit.', 'Warning:');
-            isValid = false;
-        }
+      const stateId = filteredStateType
+        ? filteredStateType.id
+        : this.canadaStates.find((stateItem) => stateItem.name === item.state)
+            .id;
 
-        if (this.isPermit === 1) {
-            if (!this.shared.markInvalid(this.permitForm)) {
-                isValid = false;
-            }
-        }
+      return {
+        licenseNumber: item.licenseNumber,
+        country: item.country as CountryType,
+        stateId,
+        class: item.classType,
+        expDate: convertDateToBackend(item.expDate),
+        restrictions: item.restrictions.map((item) => item.id),
+        endorsements: item.endorsments.map((item) => item.id),
+      };
+    });
 
-        if (!isValid) {
-            return false;
-        }
+    const filteredStateType = this.usStates.find(
+      (stateItem) => stateItem.name === this.lastLicenseCard.state
+    );
 
-     const cdlInfo: CDLInformation = {
-      id: this.cdlInformation?.id ? this.cdlInformation?.id : undefined,
-      applicantId: this.applicant?.id,
-      licences: this.licenseArray,
-      permit: this.licenseForm.get('permit').value,
-      explain: this.licenseForm.get('permitExplain').value,
+    const filteredLastLicenseCardStateId = filteredStateType
+      ? filteredStateType.id
+      : this.canadaStates.find(
+          (stateItem) => stateItem.name === this.lastLicenseCard.state
+        ).id;
+
+    const filteredLastLicenseCard = {
+      licenseNumber: this.lastLicenseCard.licenseNumber,
+      country: this.lastLicenseCard.country as CountryType,
+      stateId: filteredLastLicenseCardStateId,
+      class: this.lastLicenseCard.classType,
+      expDate: convertDateToBackend(this.lastLicenseCard.expDate),
+      restrictions: this.lastLicenseCard.restrictions.map((item) => item.id),
+      endorsements: this.lastLicenseCard.endorsments.map((item) => item.id),
     };
 
-    //REDUX
-    this.apppEntityServices.CDLInformationService.upsert(
-      cdlInfo
-    ).subscribe(
-      (response) => {
-        this.notification.success('CDL is updated');
-      },
-      (error) => {
-        this.shared.handleError(error);
-      }
-    );
-  } */
+    const saveData: CreateApplicantCdlCommand = {
+      applicantId: this.applicantId,
+      cdlDenied: permit,
+      cdlDeniedExplanation: permitExplain,
+      licences: [...filteredLicenseArray, filteredLastLicenseCard],
+    };
+
+    this.applicantActionsService
+      .createCdlInformation(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/4`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   /* public onSubmitReview(data: any): void {} */
 

@@ -287,12 +287,24 @@
             ></app-ta-input>
           </div>
         </div>
-        <app-ta-custom-card [cardName]="'Logo'" [isCardOpen]="true">
+        <app-ta-custom-card
+          [cardName]="'Logo'"
+          [isCardOpen]="true"
+          [hasEditAndDeleteActions]="displayEditAndDeleteActions"
+          (onActionEvent)="handleEditOrDeleteClick($event)"
+        >
           <app-ta-logo-change
+            [croppieOptions]="croppieOptions"
+            [croppieShape]="'rectangle'"
             [customClass]="'modal-container-M'"
             [imageUrl]="this.companyForm.get('logo').value"
+            [displayUploadZone]="displayUploadZone"
+            [isEditingLogo]="isEditingLogo"
             (validationEvent)="onImageValidation($event)"
             (base64ImageEvent)="onUploadImage($event)"
+            (saveLogoEvent)="onSaveLogoAction($event)"
+            (deleteLogoEvent)="onDeleteLogoAction($event)"
+            (editLogoEvent)="onEditLogoAction($event)"
           ></app-ta-logo-change>
         </app-ta-custom-card>
       </div>

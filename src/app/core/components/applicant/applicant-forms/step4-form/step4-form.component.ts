@@ -3,9 +3,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -13,45 +15,52 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import {
+  addressValidation,
+  descriptionValidation,
+} from '../../../shared/ta-input/ta-input.regex-validations';
+
+import {
   anyInputInLineIncorrect,
   isFormValueEqual,
 } from '../../state/utils/utils';
 
-import { VehicleType } from '../../state/model/vehicle-type.model';
 import { AnswerChoices } from '../../state/model/applicant-question.model';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { AddressEntity } from 'appcoretruckassist';
+import { AddressEntity, TruckTypeResponse } from 'appcoretruckassist';
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { AccidentModel } from '../../state/model/accident.model';
 
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import { TaInputRadiobuttonsComponent } from '../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import {
-  addressValidation,
-  descriptionValidation,
-} from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-step4-form',
   templateUrl: './step4-form.component.html',
   styleUrls: ['./step4-form.component.scss'],
 })
-export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
-  private destroy$ = new Subject<void>();
-
+export class Step4FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @ViewChild(TaInputRadiobuttonsComponent)
   component: TaInputRadiobuttonsComponent;
 
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.APPLICANT;
 
   private subscription: Subscription;
 
@@ -64,7 +73,7 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public editingCardAddress: any;
 
-  public vehicleType: VehicleType[] = [];
+  public vehicleType: TruckTypeResponse[] = [];
 
   public hazmatSpillRadios: any;
 
@@ -118,16 +127,14 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService,
+    private applicantListsService: ApplicantListsService
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
 
     if (this.formValuesToPatch) {
       this.patchForm();
@@ -136,15 +143,15 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
           const {
-            accidentLocation,
+            location,
             accidentState,
             isEditingAccident,
             ...previousFormValues
           } = this.formValuesToPatch;
 
-          previousFormValues.accidentLocation = accidentLocation.address;
+          previousFormValues.location = location.address;
 
-          this.editingCardAddress = accidentLocation;
+          this.editingCardAddress = location;
 
           const { firstRowReview, secondRowReview, ...newFormValues } =
             updatedFormValues;
@@ -160,20 +167,37 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.hazmatSpillRadios = this.component.buttons;
+
+    this.accidentForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.accidentForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.accidentForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
   }
 
   public createForm(): void {
     this.accidentForm = this.formBuilder.group({
-      accidentLocation: [null, [Validators.required, ...addressValidation]],
-      accidentDate: [null, Validators.required],
+      location: [null, [Validators.required, ...addressValidation]],
+      date: [null, Validators.required],
       fatalities: [0],
       injuries: [0],
       hazmatSpill: [null, Validators.required],
       vehicleType: [null, Validators.required],
-      accidentDescription: [
-        null,
-        [Validators.required, ...descriptionValidation],
-      ],
+      description: [null, [Validators.required, ...descriptionValidation]],
 
       firstRowReview: [null],
       secondRowReview: [null],
@@ -182,24 +206,28 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public patchForm(): void {
     this.accidentForm.patchValue({
-      accidentLocation: this.formValuesToPatch.accidentLocation.address,
-      accidentDate: this.formValuesToPatch.accidentDate,
+      location: this.formValuesToPatch.location.address,
+      date: this.formValuesToPatch.date,
       hazmatSpill: this.formValuesToPatch.hazmatSpill,
       fatalities: this.formValuesToPatch.fatalities,
       injuries: this.formValuesToPatch.injuries,
       vehicleType: this.formValuesToPatch.vehicleType,
-      accidentDescription: this.formValuesToPatch.accidentDescription,
+      description: this.formValuesToPatch.description,
     });
 
     setTimeout(() => {
       const hazmatSpillValue = this.accidentForm.get('hazmatSpill').value;
 
-      if (hazmatSpillValue === 'YES') {
+      if (hazmatSpillValue) {
         this.hazmatSpillRadios[0].checked = true;
       } else {
         this.hazmatSpillRadios[1].checked = true;
       }
-    }, 1);
+
+      this.selectedVehicleType = this.vehicleType.find(
+        (item) => item.name === this.formValuesToPatch.vehicleType
+      );
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {
@@ -209,7 +237,11 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
           (radio: { checked: boolean }) => radio.checked
         );
 
-        this.accidentForm.get('hazmatSpill').patchValue(selectedCheckbox.label);
+        if (selectedCheckbox.label === 'YES') {
+          this.accidentForm.get('hazmatSpill').patchValue(true);
+        } else {
+          this.accidentForm.get('hazmatSpill').patchValue(false);
+        }
 
         break;
       case InputSwitchActions.TRUCK_TYPE:
@@ -220,9 +252,7 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selectedAddress = event.address;
 
         if (!event.valid) {
-          this.accidentForm
-            .get('accidentLocation')
-            .setErrors({ invalid: true });
+          this.accidentForm.get('location').setErrors({ invalid: true });
         }
 
         break;
@@ -237,28 +267,31 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const {
-      accidentLocation,
-      firstRowReview,
-      secondRowReview,
-      ...accidentForm
-    } = this.accidentForm.value;
+    const { location, firstRowReview, secondRowReview, ...accidentForm } =
+      this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,
-      accidentLocation: this.selectedAddress,
+      location: this.selectedAddress,
       accidentState: this.selectedAddress.state,
       isEditingAccident: false,
     };
 
+    this.formValuesEmitter.emit(saveData);
+
     this.hazmatSpillRadios[0].checked = false;
     this.hazmatSpillRadios[1].checked = false;
 
-    this.formValuesEmitter.emit(saveData);
+    this.selectedVehicleType = null;
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.accidentForm);
+
+    this.accidentForm.patchValue({
+      fatalities: 0,
+      injuries: 0,
+    });
   }
 
   public onCancelEditAccident(): void {
@@ -270,8 +303,6 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.hazmatSpillRadios[1].checked = false;
 
     this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -286,16 +317,12 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       return;
     }
 
-    const {
-      accidentLocation,
-      firstRowReview,
-      secondRowReview,
-      ...accidentForm
-    } = this.accidentForm.value;
+    const { location, firstRowReview, secondRowReview, ...accidentForm } =
+      this.accidentForm.value;
 
     const saveData: AccidentModel = {
       ...accidentForm,
-      accidentLocation: this.selectedAddress
+      location: this.selectedAddress
         ? this.selectedAddress
         : this.editingCardAddress,
       accidentState: this.selectedAddress
@@ -309,8 +336,6 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
     this.isAccidentEdited = false;
 
     this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -371,5 +396,25 @@ export class Step4FormComponent implements OnInit, OnDestroy, AfterViewInit {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.vehicleType = data.truckTypes.map((item) => {
+          return {
+            ...item,
+            folder: 'common',
+            subFolder: 'trucks',
+          };
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
