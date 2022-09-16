@@ -23,12 +23,14 @@ import { FormService } from '../../../../../services/form/form.service';
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
+import { rentValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   addressValidation,
   addressUnitValidation,
   phoneFaxRegex,
   phoneExtension,
   departmentValidation,
+  officeNameValidation,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   convertThousanSepInNumber,
@@ -107,14 +109,14 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.officeForm = this.formBuilder.group({
       isOwner: [false],
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...officeNameValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
       extensionPhone: [null, [...phoneExtension]],
       email: [null],
       departmentContacts: this.formBuilder.array([]),
-      rent: [null],
+      rent: [null, rentValidation],
       payPeriod: [null],
       monthlyDay: [null],
       weeklyDay: [null],

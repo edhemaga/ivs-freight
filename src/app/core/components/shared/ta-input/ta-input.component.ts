@@ -551,31 +551,6 @@ export class TaInputComponent
         this.getSuperControl.setErrors(null);
       }
     }
-
-    // Password multiple validation conditions
-    if (['password'].includes(this.inputConfig.name.toLowerCase())) {
-      if (
-        !validator.isStrongPassword(this.getSuperControl.value, {
-          minLength: 8,
-          minLowercase: 1,
-          minUppercase: 1,
-          minNumbers: 1,
-          minSymbols: 1,
-        })
-      ) {
-        if (!this.getSuperControl.value.match(/[A-Z]/g)) {
-          this.getSuperControl.setErrors({ oneuppercase: true });
-        } else if (!this.getSuperControl.value.match(/[a-z]/g)) {
-          this.getSuperControl.setErrors({ onelowercase: true });
-        } else if (!this.getSuperControl.value.match(/[0-9]/g)) {
-          this.getSuperControl.setErrors({ onedigit: true });
-        } else if (!this.getSuperControl.value.match(/[@$!%*#?&^_-]/g)) {
-          this.getSuperControl.setErrors({ onesymbol: true });
-        }
-      } else {
-        this.getSuperControl.setErrors(null);
-      }
-    }
   }
 
   public onEditInput(event: Event) {
@@ -762,6 +737,7 @@ export class TaInputComponent
       return false;
     }
 
+    // Only numbers
     if (
       [
         'ein',
@@ -782,8 +758,22 @@ export class TaInputComponent
         'irp',
         'starting',
         'customer pay term',
-        ,
         'customer credit',
+        'default base',
+        'each occurrence',
+        'damage',
+        'personal-adver-inj',
+        'medical expenses',
+        'bodily injury',
+        'general aggregate',
+        'products-comp-op-agg',
+        'combined-single-limit',
+        'single-conveyance',
+        'deductable',
+        'compreh-collision',
+        'trailer-value-insurance-policy',
+        'rent',
+        'salary',
       ].includes(this.inputConfig.name.toLowerCase())
     ) {
       if (/^[0-9]*$/g.test(String.fromCharCode(event.charCode))) {
@@ -909,6 +899,14 @@ export class TaInputComponent
         return true;
       }
 
+      event.preventDefault();
+      return false;
+    }
+
+    if (['password'].includes(this.inputConfig.name.toLowerCase())) {
+      if (/^[A-Za-z0-9]$/.test(String.fromCharCode(event.charCode))) {
+        return true;
+      }
       event.preventDefault();
       return false;
     }
@@ -1070,7 +1068,12 @@ export class TaInputComponent
       }
     }
 
-    if (['username'].includes(this.inputConfig.name.toLowerCase())) {
+    // All Simbols
+    if (
+      ['username', 'nickname', 'terminal name'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (
         /^[A-Za-z0-9.,_!#^~[?/<`@$%*+=}{|:";>&'()-]*$/.test(
           String.fromCharCode(event.charCode)
@@ -1105,7 +1108,12 @@ export class TaInputComponent
       }
     }
 
-    if (['prefix', 'suffix'].includes(this.inputConfig.name.toLowerCase())) {
+    // Just characters and numbers
+    if (
+      ['prefix', 'suffix', 'parking name'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
       if (/^[A-Za-z0-9]*$/.test(String.fromCharCode(event.charCode))) {
         return true;
       } else {
@@ -1121,6 +1129,23 @@ export class TaInputComponent
       } else {
         this.disableConsecutivelySpaces(event);
         return true;
+      }
+    }
+
+    if (
+      ['producer name', 'insurer name', 'office name'].includes(
+        this.inputConfig.name.toLowerCase()
+      )
+    ) {
+      if (
+        /^[A-Za-z0-9!#'$&%()*+,./;:=<>?[^-]*$/.test(
+          String.fromCharCode(event.charCode)
+        )
+      ) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
       }
     }
 

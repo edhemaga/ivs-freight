@@ -11,12 +11,14 @@ import {
   customerCreditValidation,
   customerPayTermValidation,
   daysValidRegex,
+  defaultBaseValidation,
   departmentValidation,
   iftaValidation,
   irpValidation,
   mcFFValidation,
   mileValidation,
   monthsValidRegex,
+  nicknameValidation,
   perStopValidation,
   phoneExtension,
   prefixValidation,
@@ -52,7 +54,10 @@ import {
   phoneFaxRegex,
 } from '../../../../shared/ta-input/ta-input.regex-validations';
 import { convertNumberInThousandSep } from '../../../../../utils/methods.calculations';
-import { startingValidation } from '../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  startingValidation,
+  cvcValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-settings-basic-modal',
@@ -349,37 +354,37 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
       // Accounting
       accountingPayPeriod: ['Weekly', Validators.required],
       accountingEndingIn: ['Monday', Validators.required],
-      accountingDefaultBase: [null],
+      accountingDefaultBase: [null, defaultBaseValidation],
       // Company Owner
       companyOwnerPayPeriod: ['Weekly', Validators.required],
       companyOwnerEndingIn: ['Monday', Validators.required],
-      companyOwnerDefaultBase: [null],
+      companyOwnerDefaultBase: [null, defaultBaseValidation],
       // Dispatch
       dispatchPayPeriod: ['Weekly', Validators.required],
       dispatchEndingIn: ['Monday', Validators.required],
-      dispatchDefaultBase: [null],
+      dispatchDefaultBase: [null, defaultBaseValidation],
       dispatchDefaultCommission: [5],
       // Manager
       managerPayPeriod: ['Weekly', Validators.required],
       managerEndingIn: ['Monday', Validators.required],
-      managerDefaultBase: [null],
+      managerDefaultBase: [null, defaultBaseValidation],
       managerDefaultCommission: [2.5],
       // Recruiting
       recruitingPayPeriod: ['Weekly', Validators.required],
       recruitingEndingIn: ['Monday', Validators.required],
-      recruitingDefaultBase: [null],
+      recruitingDefaultBase: [null, defaultBaseValidation],
       // Repair
       repairPayPeriod: ['Weekly', Validators.required],
       repairEndingIn: ['Monday', Validators.required],
-      repairDefaultBase: [null],
+      repairDefaultBase: [null, defaultBaseValidation],
       // Safety
       safetyPayPeriod: ['Weekly', Validators.required],
       safetyEndingIn: ['Monday', Validators.required],
-      safetyDefaultBase: [null],
+      safetyDefaultBase: [null, defaultBaseValidation],
       // Other
       otherPayPeriod: ['Weekly', Validators.required],
       otherEndingIn: ['Monday', Validators.required],
-      otherDefaultBase: [null],
+      otherDefaultBase: [null, defaultBaseValidation],
     });
 
     this.inputService.customInputValidator(
@@ -626,15 +631,12 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      nickname: [data?.nickname ? data.nickname : null],
+      nickname: [data?.nickname ? data.nickname : null, nicknameValidation],
       card: [
         data?.card ? data.card : null,
         [Validators.minLength(16), Validators.maxLength(16)],
       ],
-      cvc: [
-        data?.cvc ? data.cvc : null,
-        [Validators.minLength(3), Validators.maxLength(3)],
-      ],
+      cvc: [data?.cvc ? data.cvc : null, cvcValidation],
       expireDate: [data?.expireDate ? data.expireDate : null],
     });
   }

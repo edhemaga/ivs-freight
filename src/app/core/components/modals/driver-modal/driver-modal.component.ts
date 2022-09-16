@@ -30,6 +30,7 @@ import {
   routingBankValidation,
   fuelCardValidation,
   name2_24Validation,
+  nicknameValidation,
 } from '../../shared/ta-input/ta-input.regex-validations';
 import { ModalService } from '../../shared/ta-modal/modal.service';
 import { TaUploadFileService } from '../../shared/ta-upload-files/ta-upload-file.service';
@@ -353,7 +354,7 @@ export class DriverModalComponent implements OnInit, OnDestroy {
   }): FormGroup {
     return this.formBuilder.group({
       id: [data?.id ? data.id : 0],
-      nickname: [data?.nickname ? data.nickname : null],
+      nickname: [data?.nickname ? data.nickname : null, nicknameValidation],
       address: [data?.address ? data.address : null, [...addressValidation]],
       city: [data?.city ? data.city : null],
       state: [data?.state ? data.state : null],

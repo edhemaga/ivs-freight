@@ -1,7 +1,10 @@
 import {
   addressUnitValidation,
   addressValidation,
+  fullParkingSlotValidation,
+  parkingSlotValidation,
   phoneExtension,
+  terminalNameValidation,
 } from './../../../../shared/ta-input/ta-input.regex-validations';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -20,7 +23,10 @@ import { tab_modal_animation } from '../../../../shared/animations/tabs-modal.an
 import { ModalService } from '../../../../shared/ta-modal/modal.service';
 import { TaInputService } from '../../../../shared/ta-input/ta-input.service';
 import { NotificationService } from '../../../../../services/notification/notification.service';
-import { phoneFaxRegex } from '../../../../shared/ta-input/ta-input.regex-validations';
+import {
+  phoneFaxRegex,
+  rentValidation,
+} from '../../../../shared/ta-input/ta-input.regex-validations';
 import {
   calculateParkingSlot,
   convertThousanSepInNumber,
@@ -138,7 +144,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
     this.terminalForm = this.formBuilder.group({
       // Terminal
       isOwner: [false],
-      name: [null, Validators.required],
+      name: [null, [Validators.required, ...terminalNameValidation]],
       address: [null, [Validators.required, ...addressValidation]],
       addressUnit: [null, [...addressUnitValidation]],
       phone: [null, [Validators.required, phoneFaxRegex]],
@@ -155,8 +161,8 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       parkingExtPhone: [null, [...phoneExtension]],
       parkingEmail: [null],
 
-      terminalParkingSlot: [null],
-      terminalFullParkingSlot: [null],
+      terminalParkingSlot: [null, parkingSlotValidation],
+      terminalFullParkingSlot: [null, fullParkingSlotValidation],
       gate: [true],
       securityCamera: [true],
       // Warehouse
@@ -167,7 +173,7 @@ export class SettingsTerminalModalComponent implements OnInit, OnDestroy {
       // Fuel stattion
       fuelStationChecked: [false],
       // Additional tab
-      rent: [null],
+      rent: [null, rentValidation],
       payPeriod: [null],
       weeklyDay: [null],
       monthlyDay: [null],

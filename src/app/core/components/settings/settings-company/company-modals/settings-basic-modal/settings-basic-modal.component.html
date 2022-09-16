@@ -543,10 +543,11 @@
                     id: 'Nickname' + ind,
                     name: 'Nickname',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideErrorMessage: true,
-                    thousandSeparator: true,
-                    hideRequiredCheck: true
+                    blackInput: true,
+                    hideRequiredCheck: true,
+                    minLength: 2,
+                    maxLength: 128
                   }"
                 ></app-ta-input>
                 <app-ta-input
@@ -559,7 +560,7 @@
                     maxLength: 16,
                     minLength: 16,
                     hideErrorMessage: true,
-                    thousandSeparator: true,
+                    blackInput: true,
                     hideRequiredCheck: true
                   }"
                 ></app-ta-input>
@@ -570,10 +571,10 @@
                     name: 'CVC',
                     type: 'password',
                     placeholderIcon: 'password',
-                    maxLength: 3,
+                    maxLength: 4,
                     minLength: 3,
                     hideErrorMessage: true,
-                    thousandSeparator: true,
+                    blackInput: true,
                     hideRequiredCheck: true
                   }"
                 ></app-ta-input>
@@ -693,7 +694,7 @@
                     customClass: 'dollar-placeholderIcon',
                     thousandSeparator: true,
                     minLength: 4,
-                    maxLength: 13
+                    maxLength: 11
                   }"
                 ></app-ta-input>
               </div>
@@ -1122,12 +1123,14 @@
                 formControlName="accountingDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Accounting',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1178,12 +1181,14 @@
                 formControlName="companyOwnerDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Company Owner',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1232,12 +1237,14 @@
                 formControlName="dispatchDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Dispatch',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1301,12 +1308,14 @@
                 formControlName="managerDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Manager',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1372,12 +1381,14 @@
                 formControlName="recruitingDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Recruiting',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1424,12 +1435,14 @@
                 formControlName="repairDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Repair',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1476,12 +1489,14 @@
                 formControlName="safetyDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Safety',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>
@@ -1528,12 +1543,14 @@
                 formControlName="otherDefaultBase"
                 [inputConfig]="{
                   id: 'Default Base Other',
-                  name: 'Dollar',
+                  name: 'Default Base',
                   type: 'text',
                   label: 'Default Base',
                   placeholderIcon: 'dollar',
                   customClass: 'dollar-placeholderIcon',
-                  thousandSeparator: true
+                  thousandSeparator: true,
+                  minLength: 4,
+                  maxLength: 10
                 }"
               ></app-ta-input>
             </div>

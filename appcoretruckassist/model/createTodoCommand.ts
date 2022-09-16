@@ -16,7 +16,7 @@ export interface CreateTodoCommand {
     title?: string | null;
     description?: string | null;
     url?: string | null;
-    deadline?: string;
+    deadline?: string | null;
     companyUserIds?: Array<number> | null;
     note?: string | null;
 }

@@ -567,10 +567,11 @@
                     id: 'NICKNAME' + ind,
                     name: 'NICKNAME',
                     type: 'text',
-                    textTransform: 'capitalize',
                     hideRequiredCheck: true,
                     blackInput: true,
-                    hideErrorMessage: true
+                    hideErrorMessage: true,
+                    minLength: 2,
+                    maxLength: 128
                   }"
                 ></app-ta-input>
                 <app-ta-input-address
