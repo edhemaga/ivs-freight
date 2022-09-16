@@ -28,12 +28,13 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
     this.getViolationData();
   }
 
-  public initTableOptions(): void {
+  initTableOptions(): void {
     this.tableOptions = {
       disabledMutedStyle: null,
       toolbarActions: {
         hideLocationFilter: true,
-        hideViewMode: true,
+        showMapView: true,
+        viewModeActive: 'List',
       },
       config: {
         showSort: true,
@@ -71,38 +72,29 @@ export class ViolationTableComponent implements OnInit, OnDestroy {
       {
         title: 'Active',
         field: 'active',
-        type: 'violations',
         length: 10,
         data: this.getDumyData(10),
-        extended: false,
-        gridNameTitle: 'Violations',
+        gridNameTitle: 'Roadside Inspection',
         stateName: 'violations',
-        gridColumns: this.getGridColumns('violations', this.resetColumns),
+        gridColumns: this.getGridColumns('violation', this.resetColumns),
       },
       {
         title: 'Inactive',
         field: 'inactive',
-        type: 'violations',
         length: 15,
         data: this.getDumyData(15),
-        extended: false,
-        gridNameTitle: 'Violations',
-        stateName: 'violations',
-        gridColumns: this.getGridColumns('violations', this.resetColumns),
+        gridNameTitle: 'Roadside Inspection',
+        gridColumns: this.getGridColumns('violation', this.resetColumns),
       },
       {
-        title: 'Summary',
+        title: 'Violation Summary',
         field: 'summary',
-        type: 'violations_summary',
         length: 8,
         data: this.getDumyData(8),
         extended: false,
-        gridNameTitle: 'Summary',
-        stateName: 'violations_summary',
-        gridColumns: this.getGridColumns(
-          'violations_summary',
-          this.resetColumns
-        ),
+        gridNameTitle: 'Roadside Inspection',
+        stateName: 'summary',
+        gridColumns: this.getGridColumns('summary', this.resetColumns),
       },
     ];
 
