@@ -219,14 +219,16 @@
       </div>
 
       <!-- BORDER -->
-      <div class="border-container" [ngStyle]="{ width: '2px' }" *ngIf="tableData[0].length == 8">
+      <div
+        class="border-container"
+        [ngStyle]="{ width: '2px' }"
+        *ngIf="tableData[0].length == 8"
+      >
         <div class="border-line"></div>
       </div>
 
       <!-- Dummy action -->
-      <div
-        class="action-div dummy-div"
-      ></div>
+      <div class="action-div dummy-div"></div>
     </div>
   </div>
 
@@ -236,11 +238,14 @@
     #op2="ngbPopover"
     (click)="onShowRoutePopover(op2)"
     [ngbPopover]="addRoutePopover"
-    [disablePopover]="(tableData[0].length < 8 || routeToEdit?.id) ? false : true"
+    [disablePopover]="tableData[0].length < 8 || routeToEdit?.id ? false : true"
     [placement]="'bottom-right'"
     [autoClose]="false"
     popoverClass="map-settings-popover add-route-popover"
-    [ngClass]="{ 'active-options-maps': addRoutePopupOpen, 'disabled': tableData[0].length == 8 }"
+    [ngClass]="{
+      'active-options-maps': addRoutePopupOpen,
+      disabled: tableData[0].length == 8
+    }"
     triggers="manual"
     (hidden)="addRoutePopupOpen = false"
   >
@@ -332,9 +337,7 @@
 <ng-template #mapSettingsPopover let-data="data" data-toggle="popover">
   <div class="map-settings-container">
     <div class="map-settings-header">
-      <div class="map-settings-title">
-        Map Settings
-      </div>
+      <div class="map-settings-title">Map Settings</div>
       <svg-icon
         class="close-svg"
         src="assets/svg/applicant/close-x.svg"
@@ -456,7 +459,6 @@
         [activeItem]="selectedTruckType"
         (selectedItem)="onSelectDropdown($event, 'truck')"
       ></app-ta-input-dropdown>
-
     </div>
 
     <div class="map-settings-divider"></div>
@@ -474,17 +476,23 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngStyle]="{ display: routeForm.get('duration').value ? 'block' : 'none' }"
-          [ngClass]="{ 'active': routeForm.get('duration').value && !hideDuration }"
+          [ngStyle]="{
+            display: routeForm.get('duration').value ? 'block' : 'none'
+          }"
+          [ngClass]="{
+            active: routeForm.get('duration').value && !hideDuration
+          }"
           (click)="hideDuration = !hideDuration"
         ></svg-icon>
       </div>
 
       <!-- <div class="duration-time-input" *ngIf="routeForm.get('duration').value && !hideDuration">
         [@showHideCardBody]="routeForm.get('duration').value && !hideDuration ? true : false" -->
-      <div 
+      <div
         class="duration-time-input"
-        [ngClass]="{ 'hidden-input': !routeForm.get('duration').value || hideDuration }"
+        [ngClass]="{
+          'hidden-input': !routeForm.get('duration').value || hideDuration
+        }"
       >
         <app-ta-input
           formControlName="durationTime"
@@ -515,15 +523,21 @@
         <svg-icon
           class="checkbox-card-header-arrow"
           src="assets/svg/common/ic_arrow_down_updated.svg"
-          [ngStyle]="{ display: routeForm.get('fuelCost').value ? 'block' : 'none' }"
-          [ngClass]="{ 'active': routeForm.get('fuelCost').value && !hideFuelCost }"
+          [ngStyle]="{
+            display: routeForm.get('fuelCost').value ? 'block' : 'none'
+          }"
+          [ngClass]="{
+            active: routeForm.get('fuelCost').value && !hideFuelCost
+          }"
           (click)="hideFuelCost = !hideFuelCost"
         ></svg-icon>
       </div>
 
-      <div 
-        class="duration-time-input" 
-        [ngClass]="{ 'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost }"
+      <div
+        class="duration-time-input"
+        [ngClass]="{
+          'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost
+        }"
       >
         <app-ta-input
           formControlName="fuelMpg"
@@ -539,7 +553,9 @@
       </div>
       <div
         class="duration-time-input mg-top-32"
-        [ngClass]="{ 'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost }"
+        [ngClass]="{
+          'hidden-input': !routeForm.get('fuelCost').value || hideFuelCost
+        }"
       >
         <app-ta-input
           formControlName="fuelPrice"
@@ -560,7 +576,10 @@
     <div class="map-settings-content buttons-container">
       <div
         class="map-settings-button"
-        [ngStyle]="{ opacity: routeFormChanged ? '1' : '0', 'pointer-events': routeFormChanged ? 'all' : 'none' }"
+        [ngStyle]="{
+          opacity: routeFormChanged ? '1' : '0',
+          'pointer-events': routeFormChanged ? 'all' : 'none'
+        }"
         (click)="resetRouteForm()"
       >
         <div class="map-settings-button-text">Reset</div>
@@ -747,10 +766,14 @@
     </div>
     <div class="legend-item">
       <div class="legend-up-down-arrow legend-margin">
-        <svg-icon src="assets/svg/common/routing/ic_keyboard_arrow_up.svg"></svg-icon>
+        <svg-icon
+          src="assets/svg/common/routing/ic_keyboard_arrow_up.svg"
+        ></svg-icon>
       </div>
       <div class="legend-up-down-arrow">
-        <svg-icon src="assets/svg/common/routing/ic_keyboard_arrow_down.svg"></svg-icon>
+        <svg-icon
+          src="assets/svg/common/routing/ic_keyboard_arrow_down.svg"
+        ></svg-icon>
       </div>
       <p class="shortcut-explination">Move Up or Down</p>
     </div>

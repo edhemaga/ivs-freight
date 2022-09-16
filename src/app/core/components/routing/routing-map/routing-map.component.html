@@ -18,28 +18,35 @@
     <div class="route-card-container">
       <div
         class="route-card-scroll"
-
         cdkDropList
         #routeList="cdkDropList"
         [cdkDropListData]="tableData[selectedMapIndex].routes"
         [cdkDropListConnectedTo]="[routeFreeDrag]"
         (cdkDropListDropped)="dropRoutes($event)"
-        
         [ngStyle]="{
           'padding-right': tooltip?.isOpen() ? '126px' : '13px',
           'padding-bottom': tooltip?.isOpen() ? '120px' : '13px'
         }"
       >
-        <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: filtercond2; let i = index;">
+        <ng-container
+          *ngFor="
+            let route of tableData[selectedMapIndex].routes;
+            let i = index
+          "
+        >
           <div
             *ngIf="!route.freeMove"
             cdkDrag
             class="route-info-card"
             [attr.data-id]="route.id"
-            (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
+            (click)="
+              !route.hidden ? focusRoute(i) : showHideRoute($event, route)
+            "
             (mouseenter)="hoverRoute(route)"
             (mouseleave)="leaveRouteHover(route)"
-            (mousedown)="off={x:$event.offsetX||0,y:$event.offsetY||0}"
+            (mousedown)="
+              off = { x: $event.offsetX || 0, y: $event.offsetY || 0 }
+            "
             [cdkDragData]="route"
             (cdkDragMoved)="moved($event)"
             [ngClass]="{
@@ -178,7 +185,9 @@
                     "
                   >
                     Stop Time:
-                    <span class="marker-bold-text">{{ route.stopTime }} min</span>
+                    <span class="marker-bold-text"
+                      >{{ route.stopTime }} min</span
+                    >
                   </div>
                   <div
                     class="route-type-text"
@@ -189,7 +198,8 @@
                       !route.hidden
                     "
                   >
-                    MPG: <span class="marker-bold-text">{{ route.mpg }} mi</span>
+                    MPG:
+                    <span class="marker-bold-text">{{ route.mpg }} mi</span>
                   </div>
                   <div
                     class="route-type-text"
@@ -264,7 +274,9 @@
                   [ngClass]="['route-color-' + (i + 1)]"
                   [ngStyle]="{
                     display: stop.deleteHover ? 'flex' : '',
-                    backgroundColor: stop.deleteHover ? '#00000033' : '#0000001A'
+                    backgroundColor: stop.deleteHover
+                      ? '#00000033'
+                      : '#0000001A'
                   }"
                   *ngIf="route.isFocused"
                 ></div>
@@ -485,7 +497,7 @@
           </div>
         </ng-container>
       </div>
-      <div 
+      <div
         class="route-free-drag-area"
         cdkDropList
         #routeFreeDrag="cdkDropList"
@@ -494,13 +506,20 @@
         cdkDropListSortingDisabled="true"
         (cdkDropListDropped)="dropRoutes($event)"
       >
-      <ng-container *ngFor="let route of tableData[selectedMapIndex].routes | filterRoutes: filtercond1; let i = index">
-        <div
+        <ng-container
+          *ngFor="
+            let route of tableData[selectedMapIndex].routes;
+            let i = index
+          "
+        >
+          <div
             *ngIf="route.freeMove"
             cdkDrag
             class="route-info-card"
             [attr.data-id]="route.id"
-            (click)="!route.hidden ? focusRoute(i) : showHideRoute($event, route)"
+            (click)="
+              !route.hidden ? focusRoute(i) : showHideRoute($event, route)
+            "
             (mouseenter)="hoverRoute(route)"
             (mouseleave)="leaveRouteHover(route)"
             (cdkDragStarted)="changeZIndex(route)"
@@ -515,7 +534,7 @@
               'padding-right': route.hover && !route.hidden ? '14px' : '4px',
               top: route.y + 'px',
               left: route.x + 'px',
-              zIndex: route.z-index ? route.z-index : '0'
+              zIndex: route.z - index ? route.z - index : '0'
             }"
           >
             <div class="route-info-header">
@@ -645,7 +664,9 @@
                     "
                   >
                     Stop Time:
-                    <span class="marker-bold-text">{{ route.stopTime }} min</span>
+                    <span class="marker-bold-text"
+                      >{{ route.stopTime }} min</span
+                    >
                   </div>
                   <div
                     class="route-type-text"
@@ -656,7 +677,8 @@
                       !route.hidden
                     "
                   >
-                    MPG: <span class="marker-bold-text">{{ route.mpg }} mi</span>
+                    MPG:
+                    <span class="marker-bold-text">{{ route.mpg }} mi</span>
                   </div>
                   <div
                     class="route-type-text"
@@ -731,7 +753,9 @@
                   [ngClass]="['route-color-' + (i + 1)]"
                   [ngStyle]="{
                     display: stop.deleteHover ? 'flex' : '',
-                    backgroundColor: stop.deleteHover ? '#00000033' : '#0000001A'
+                    backgroundColor: stop.deleteHover
+                      ? '#00000033'
+                      : '#0000001A'
                   }"
                   *ngIf="route.isFocused"
                 ></div>
@@ -949,7 +973,7 @@
                 [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
               ></svg-icon>
             </div>
-          </div> 
+          </div>
         </ng-container>
       </div>
     </div>
@@ -987,7 +1011,9 @@
       (mouseover)="mapHover = true"
       (mouseleave)="mapHover = false"
     >
-      <div *ngFor="let route of tableData[selectedMapIndex].routes; let i = index">
+      <div
+        *ngFor="let route of tableData[selectedMapIndex].routes; let i = index"
+      >
         <div *ngIf="route.stops?.length">
           <div
             *ngFor="let e of [].constructor(route.stops.length); let j = index"
@@ -1315,7 +1341,9 @@
                         r="4"
                         transform="translate(1113 983)"
                         [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[focusedRouteIndex].color
+                          fill: tableData[selectedMapIndex].routes[
+                            focusedRouteIndex
+                          ].color
                         }"
                       />
                     </g>
@@ -1350,7 +1378,9 @@
                         r="18"
                         transform="translate(640 2294)"
                         [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[focusedRouteIndex].color
+                          fill: tableData[selectedMapIndex].routes[
+                            focusedRouteIndex
+                          ].color
                         }"
                       />
                       <text
@@ -1366,12 +1396,13 @@
                       >
                         <tspan y="-5">
                           {{
-                            focusedStopIndex != null 
-                              ? focusedStopIndex+2 
-                              :
-                            stopPickerLocation.editIndex != null
+                            focusedStopIndex != null
+                              ? focusedStopIndex + 2
+                              : stopPickerLocation.editIndex != null
                               ? stopPickerLocation.editIndex + 1
-                              : tableData[selectedMapIndex].routes[focusedRouteIndex].stops.length + 1
+                              : tableData[selectedMapIndex].routes[
+                                  focusedRouteIndex
+                                ].stops.length + 1
                           }}
                         </tspan>
                       </text>
@@ -1410,7 +1441,9 @@
                         r="18"
                         transform="translate(640 2294)"
                         [ngStyle]="{
-                          fill: tableData[selectedMapIndex].routes[focusedRouteIndex].color
+                          fill: tableData[selectedMapIndex].routes[
+                            focusedRouteIndex
+                          ].color
                         }"
                       />
                       <g
@@ -1456,8 +1489,7 @@
                   class="stop-picker-button empty-button"
                   (click)="addNewStop($event, 'empty')"
                   [ngClass]="{
-                    active:
-                      addressFlag == 'Empty'
+                    active: addressFlag == 'Empty'
                   }"
                 >
                   <div class="stop-picker-button-text">Empty</div>
@@ -1479,7 +1511,8 @@
               <div
                 class="stop-picker-address"
                 [ngStyle]="{
-                  backgroundColor: tableData[selectedMapIndex].routes[focusedRouteIndex].color
+                  backgroundColor:
+                    tableData[selectedMapIndex].routes[focusedRouteIndex].color
                 }"
               >
                 <div class="stop-picker-address-text">
@@ -1542,7 +1575,9 @@
           cy="9"
           r="9"
           transform="translate(8 8)"
-          [ngStyle]="{ fill: tableData[selectedMapIndex].routes[focusedRouteIndex].color }"
+          [ngStyle]="{
+            fill: tableData[selectedMapIndex].routes[focusedRouteIndex].color
+          }"
         />
         <text
           dominant-baseline="middle"
@@ -1555,9 +1590,13 @@
           font-family="Montserrat-Bold, Montserrat"
           font-weight="700"
         >
-          <tspan y="-3">{{ focusedStopIndex != null 
-                            ? focusedStopIndex+2 
-                            : tableData[selectedMapIndex].routes[focusedRouteIndex].stops.length + 1 }}
+          <tspan y="-3">
+            {{
+              focusedStopIndex != null
+                ? focusedStopIndex + 2
+                : tableData[selectedMapIndex].routes[focusedRouteIndex].stops
+                    .length + 1
+            }}
           </tspan>
         </text>
       </svg>
@@ -1568,7 +1607,11 @@
 <ng-template #dropdownPopover let-data="data">
   <div class="table-dropdown">
     <div
-      (click)="action.disabled ? stopDropdownClick($event) : callDropDownAction($event, action)"
+      (click)="
+        action.disabled
+          ? stopDropdownClick($event)
+          : callDropDownAction($event, action)
+      "
       *ngFor="let action of data"
       class="table-dropdown-content"
       [class]="action.class"
@@ -1577,7 +1620,9 @@
       ngbTooltip
       [mainTooltip]="action.disabledTooltip ? action.disabledTooltip : ''"
       position="right"
-      [disableTooltip]="(action.disabled == true && action.disabledTooltip) ? false : true"
+      [disableTooltip]="
+        action.disabled == true && action.disabledTooltip ? false : true
+      "
     >
       <svg-icon
         [ngClass]="{

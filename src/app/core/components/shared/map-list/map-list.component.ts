@@ -1,4 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef, OnChanges, SimpleChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectorRef,
+  OnChanges,
+  SimpleChanges,
+  OnDestroy,
+} from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { MapsService } from '../../../services/shared/maps.service';
 import { TruckassistTableService } from '../../../services/truckassist-table/truckassist-table.service';
@@ -7,7 +17,7 @@ import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-map-list',
   templateUrl: './map-list.component.html',
-  styleUrls: ['./map-list.component.scss']
+  styleUrls: ['./map-list.component.scss'],
 })
 export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -38,25 +48,22 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     private ref: ChangeDetectorRef,
     private mapsService: MapsService,
     private tableService: TruckassistTableService
-  ) { }
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if ( changes.mapListContent ) {
+    if (changes.mapListContent) {
       this.checkResizeButton();
     }
   }
 
   ngOnInit(): void {
     this.searchForm = this.formBuilder.group({
-      search: ''
+      search: '',
     });
 
-    this.searchForm
-      .valueChanges
+    this.searchForm.valueChanges
       .pipe(takeUntil(this.destroy$))
       .subscribe((changes) => {
-        //if ( this.searchData ) this.searchData.emit(changes.search);
-
         this.searchText = changes.search;
         this.onSearch();
       });
@@ -73,18 +80,19 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   resizeMapList() {
     this.mapListExpanded = !this.mapListExpanded;
 
-    var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+    var mapListElement =
+      document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
     var mapListHeight = mapListElement.clientHeight;
-    mapListElement.style.height = mapListHeight + "px";
+    mapListElement.style.height = mapListHeight + 'px';
 
-    if ( this.mapListExpanded ) {
+    if (this.mapListExpanded) {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight*2 + "px";
+        mapListElement.style.height = mapListHeight * 2 + 'px';
       }, 10);
     } else {
       setTimeout(() => {
-        mapListElement.style.height = mapListHeight/2 + "px";
+        mapListElement.style.height = mapListHeight / 2 + 'px';
       }, 10);
     }
   }
@@ -98,7 +106,6 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     this.sortDirection = this.sortDirection == 'asc' ? 'desc' : 'asc';
 
     this.sortData();
-    //if ( this.changeSortDirection ) this.changeSortDirection.emit(this.sortDirection);
   }
 
   changeSortType(item) {
@@ -112,12 +119,9 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     this.activeSortType = item;
     this.tooltip.close();
 
-    console.log('changeSortType item', item);
-
     this.mapsService.sortCategoryChange.next(this.activeSortType);
 
     this.sortData();
-    //if ( this.changeSortCategory ) this.changeSortCategory.emit(item);
   }
 
   setVisibleColumns() {
@@ -161,10 +165,13 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   checkResizeButton() {
-    var mapListContainer = document.querySelectorAll<HTMLElement>('.map-list-container')[0];
-    var mapListElement = document.querySelectorAll<HTMLElement>('.map-list-body')[0];
+    var mapListContainer = document.querySelectorAll<HTMLElement>(
+      '.map-list-container'
+    )[0];
+    var mapListElement =
+      document.querySelectorAll<HTMLElement>('.map-list-body')[0];
 
-    if ( mapListElement.clientHeight > mapListContainer.clientHeight/2 ) {
+    if (mapListElement.clientHeight > mapListContainer.clientHeight / 2) {
       this.showExpandButton = true;
       mapListElement.style.height = 'max-content';
     } else {
@@ -178,40 +185,38 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
     const directionSort = this.sortDirection
       ? sortType.sortName +
         (this.sortDirection[0]?.toUpperCase() +
-        this.sortDirection?.substr(1).toLowerCase())
+          this.sortDirection?.substr(1).toLowerCase())
       : '';
 
-    console.log('sortData', directionSort);
-    
     this.headActions.emit({ action: 'sort', direction: directionSort });
   }
 
   setSortTypes() {
-    if ( this.type == 'shipper' ) {
+    if (this.type == 'shipper') {
       this.sortTypes = [
-        {name: 'Business Name', id: 1, sortName: 'name', isActive: true},
-        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
-        {name: 'Rating', id: 3, sortName: 'rating'},
-        {name: 'Date Added', id: 4, sortName: 'createdAt'},
-        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
-        {name: 'Pickups', id: 6, sortName: 'pickups'},
-        {name: 'Deliveries', id: 7, sortName: 'deliveries'},
-        {name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime'},
-        {name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveriesTime'}
+        { name: 'Business Name', id: 1, sortName: 'name', isActive: true },
+        { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+        { name: 'Rating', id: 3, sortName: 'rating' },
+        { name: 'Date Added', id: 4, sortName: 'createdAt' },
+        { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+        { name: 'Pickups', id: 6, sortName: 'pickups' },
+        { name: 'Deliveries', id: 7, sortName: 'deliveries' },
+        { name: 'Avg. Pickup Time', id: 8, sortName: 'avgPickupTime' },
+        { name: 'Avg. Delivery Time', id: 9, sortName: 'avgDeliveriesTime' },
       ];
-    } else if ( this.type == 'repairShop' ) {
+    } else if (this.type == 'repairShop') {
       this.sortTypes = [
-        {name: 'Business Name', id: 1, sortName: 'name', isActive: true},
-        {name: 'Location', id: 2, sortName: 'location', isHidden: true},
-        {name: 'Favorites', id: 8, sortName: 'favorites'},
-        {name: 'Available', id: 9, sortName: 'available'},
-        {name: 'Rating', id: 3, sortName: 'rating'},
-        {name: 'Date Added', id: 4, sortName: 'createdAt'},
-        {name: 'Last Used Date', id: 5, sortName: 'updatedAt  '},
-        {name: 'Orders', id: 6, sortName: 'orders'},
-        {name: 'Total Cost', id: 7, sortName: 'cost'}
+        { name: 'Business Name', id: 1, sortName: 'name', isActive: true },
+        { name: 'Location', id: 2, sortName: 'location', isHidden: true },
+        { name: 'Favorites', id: 8, sortName: 'favorites' },
+        { name: 'Available', id: 9, sortName: 'available' },
+        { name: 'Rating', id: 3, sortName: 'rating' },
+        { name: 'Date Added', id: 4, sortName: 'createdAt' },
+        { name: 'Last Used Date', id: 5, sortName: 'updatedAt  ' },
+        { name: 'Orders', id: 6, sortName: 'orders' },
+        { name: 'Total Cost', id: 7, sortName: 'cost' },
       ];
-    } else if ( this.type == 'fuelShop' ) {
+    } else if (this.type == 'fuelShop') {
       this.sortTypes = [
         { name: 'Business Name', id: 1, sortName: 'name', isActive: true },
         { name: 'Location', id: 2, sortName: 'location', isHidden: true },
@@ -221,7 +226,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         { name: 'Purchase', id: 6, sortName: 'purchase' },
         { name: 'Total Cost', id: 7, sortName: 'cost' },
       ];
-    } else if ( this.type == 'accident' ) {
+    } else if (this.type == 'accident') {
       this.sortTypes = [
         { name: 'Report Number', id: 1, sortName: 'report', isActive: true },
         { name: 'Location', id: 2, sortName: 'location', isHidden: true },
@@ -230,9 +235,9 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         { name: 'Date & Time', id: 3, sortName: 'date' },
         { name: 'Drivers Name', id: 4, sortName: 'driverName' },
         { name: 'Truck Unit', id: 5, sortName: 'truck' },
-        { name: 'Trailer Unit', id: 6, sortName: 'trailer' }
+        { name: 'Trailer Unit', id: 6, sortName: 'trailer' },
       ];
-    } else if ( this.type == 'roadsideInspection' ) {
+    } else if (this.type == 'roadsideInspection') {
       this.sortTypes = [
         { name: 'Report Number', id: 1, sortName: 'report', isActive: true },
         { name: 'Location', id: 2, sortName: 'location', isHidden: true },
@@ -247,10 +252,10 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
           id: 7,
           sortName: 'inspectionLevel',
           isHidden: false,
-        }, // for Roadside Inspection only
+        },
       ];
     }
-    
+
     this.activeSortType = this.sortTypes[0];
 
     this.mapsService.sortCategoryChange.next(this.activeSortType);
@@ -265,7 +270,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
       this.tableService.sendCurrentSearchTableData({
         chip: 'searchOne',
         search: this.searchText,
-        searchType: 'tabel'
+        searchType: 'tabel',
       });
     } else if (this.searchIsActive && this.searchText.length < 3) {
       this.searchIsActive = false;
@@ -274,7 +279,7 @@ export class MapListComponent implements OnInit, OnChanges, OnDestroy {
         chip: 'searchOne',
         doReset: true,
         //all: true, - Returns to Table view
-        searchType: 'tabel'
+        searchType: 'tabel',
       });
     }
   }

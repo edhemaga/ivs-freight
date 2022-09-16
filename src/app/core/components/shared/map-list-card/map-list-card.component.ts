@@ -4,10 +4,9 @@ import { MapsService } from '../../../services/shared/maps.service';
 @Component({
   selector: 'app-map-list-card',
   templateUrl: './map-list-card.component.html',
-  styleUrls: ['./map-list-card.component.scss']
+  styleUrls: ['./map-list-card.component.scss'],
 })
 export class MapListCardComponent implements OnInit {
-
   @Input() isSelected: boolean = false;
   @Input() status: any = 1;
   @Input() title: string = '';
@@ -22,13 +21,11 @@ export class MapListCardComponent implements OnInit {
   public locationFilterOn: boolean = false;
   sortCategory: any = {};
 
-  constructor(
-    private mapsService: MapsService
-  ) {}
+  constructor(private mapsService: MapsService) {}
 
   ngOnInit(): void {
-    if ( !this.sortCategory?.name ) {
-      this.sortCategory = {name: 'Business Name', id: 1, sortName: 'name'};
+    if (!this.sortCategory?.name) {
+      this.sortCategory = { name: 'Business Name', id: 1, sortName: 'name' };
     }
 
     this.sortCategory = this.mapsService.sortCategory;

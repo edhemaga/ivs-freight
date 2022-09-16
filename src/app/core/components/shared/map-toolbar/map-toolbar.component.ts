@@ -20,10 +20,8 @@ import { card_component_animation } from '../../shared/animations/card-component
 @Component({
   selector: 'app-map-toolbar',
   templateUrl: './map-toolbar.component.html',
-  styleUrls: [
-    './map-toolbar.component.scss',
-  ],
-  animations: [card_component_animation('showHideCardBody')]
+  styleUrls: ['./map-toolbar.component.scss'],
+  animations: [card_component_animation('showHideCardBody')],
 })
 export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   private destroy$ = new Subject<void>();
@@ -207,7 +205,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     private formBuilder: FormBuilder,
     private ref: ChangeDetectorRef,
     private inputService: TaInputService,
-    private truckService: TruckTService,
+    private truckService: TruckTService
   ) {}
 
   ngOnInit(): void {
@@ -231,25 +229,28 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (changes?.selectedTab) {
-      this.selectedTab = changes.selectedTab.currentValue; 
+      this.selectedTab = changes.selectedTab.currentValue;
 
       const td = this.tableData.find((t) => t.field === this.selectedTab);
 
       this.listName = td.gridNameTitle;
-      this.getSelectedTabTableData(); 
+      this.getSelectedTabTableData();
 
-      if ( changes.selectedTab.previousValue && changes.selectedTab.currentValue != changes.selectedTab.previousValue ) {
+      if (
+        changes.selectedTab.previousValue &&
+        changes.selectedTab.currentValue != changes.selectedTab.previousValue
+      ) {
         this.routeToEdit = {};
 
         this.resetRouteForm();
         this.resetMapForm();
-        
+
         this.addRoutePopup?.close();
         this.mapSettingsPopup?.close();
 
         this.layersPopup?.close();
         this.layersPopupOpen = false;
-      }    
+      }
     }
   }
 
@@ -328,10 +329,10 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
           fuelCost: false,
           fuelMpg: null,
           fuelPrice: null,
-          routeType: 'Practical'
-        }
+          routeType: 'Practical',
+        };
 
-        if ( this.routeToEdit.id ) {
+        if (this.routeToEdit.id) {
           originalValues = {
             routeName: this.routeToEdit.name,
             truckId: this.routeToEdit.truckId ? this.routeToEdit.truckId : '',
@@ -344,18 +345,19 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             fuelPrice: this.routeToEdit.fuelPrice
               ? this.routeToEdit.fuelPrice
               : null,
-            routeType: this.routeToEdit.routeType
-          }
+            routeType: this.routeToEdit.routeType,
+          };
         }
 
-        if ( formChanges.routeName != originalValues.routeName ||
-             formChanges.truckId != originalValues.truckId ||
-             formChanges.duration != originalValues.duration ||
-             formChanges.durationTime != originalValues.durationTime ||
-             formChanges.fuelCost != originalValues.fuelCost ||
-             formChanges.fuelMpg != originalValues.fuelMpg ||
-             formChanges.fuelPrice != originalValues.fuelPrice ||
-             formChanges.routeType != originalValues.routeType
+        if (
+          formChanges.routeName != originalValues.routeName ||
+          formChanges.truckId != originalValues.truckId ||
+          formChanges.duration != originalValues.duration ||
+          formChanges.durationTime != originalValues.durationTime ||
+          formChanges.fuelCost != originalValues.fuelCost ||
+          formChanges.fuelMpg != originalValues.fuelMpg ||
+          formChanges.fuelPrice != originalValues.fuelPrice ||
+          formChanges.routeType != originalValues.routeType
         ) {
           this.routeFormChanged = true;
         } else {
@@ -650,7 +652,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
         routeType: 'Practical',
       });
     }
-    
+
     this.routeTabs = [
       {
         id: 1,
@@ -697,7 +699,7 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     });
 
     this.ref.detectChanges();
-    
+
     this.addRoutePopup.open();
   }
 
@@ -706,7 +708,8 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   getTrucks() {
-    this.truckService.getTruckList(1, 1, 25)
+    this.truckService
+      .getTruckList(1, 1, 25)
       .pipe(takeUntil(this.destroy$))
       .subscribe((trucks: TruckListResponse) => {
         this.truckList = trucks.pagination.data;
@@ -714,13 +717,13 @@ export class MapToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.truckList.map((truck) => {
           this.truckType.push({
-              id: truck.id,
-              name: truck.truckNumber,
-              class: truck.truckType.name,
-              folder: 'common',
-              logoName: 'assets/svg/common/trucks/'+truck.truckType.logoName,
-              subFolder: 'trucks',
-              color: truck.color.code
+            id: truck.id,
+            name: truck.truckNumber,
+            class: truck.truckType.name,
+            folder: 'common',
+            logoName: 'assets/svg/common/trucks/' + truck.truckType.logoName,
+            subFolder: 'trucks',
+            color: truck.color.code,
           });
         });
       });
