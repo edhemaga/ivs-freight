@@ -25,6 +25,9 @@ export interface DropZoneConfig {
   templateUrl: './ta-upload-dropzone.component.html',
   styleUrls: ['./ta-upload-dropzone.component.scss'],
   encapsulation: ViewEncapsulation.None,
+  host: {
+    '(window:paste)': 'handlePaste( $event )',
+  },
 })
 export class TaUploadDropzoneComponent {
   private files: UploadFile[] = [];
@@ -143,5 +146,34 @@ export class TaUploadDropzoneComponent {
       reader.onload = () => resolve(reader.result);
       reader.onerror = (error) => reject(error);
     });
+  }
+
+  // PASTE IMAGES
+
+  public async handlePaste(event: ClipboardEvent): Promise<void> {
+    const pastedImage = this.getPastedImage(event);
+
+    if (!pastedImage) {
+      return;
+    }
+
+    await this.onFileUpload(pastedImage);
+  }
+
+  private getPastedImage(event: ClipboardEvent): FileList {
+    if (
+      event.clipboardData &&
+      event.clipboardData.files &&
+      event.clipboardData.files.length &&
+      this.isImageFile(event.clipboardData.files[0])
+    ) {
+      return event.clipboardData.files;
+    }
+
+    return null;
+  }
+
+  private isImageFile(file: File): boolean {
+    return file.type.search(/^image\//i) === 0;
   }
 }

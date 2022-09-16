@@ -1,8 +1,9 @@
 export interface ViolationModel {
-  violationDate: string;
-  truckType: string;
-  violationLocation: any;
-  violationDescription: string;
+  id: number;
+  date: string;
+  vehicleType: string;
+  location: any;
+  description: string;
   isEditingViolation: boolean;
 }
 

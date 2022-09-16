@@ -30,6 +30,7 @@
       <div class="tab">
         <div class="data-count" *ngIf="!data.hideDataCount">{{ data.length }}</div>
         <svg-icon
+          *ngIf="data.iconLink"
           [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
           [src]="data.iconLink"
         ></svg-icon>

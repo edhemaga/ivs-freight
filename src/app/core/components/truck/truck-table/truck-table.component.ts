@@ -402,20 +402,20 @@ export class TruckTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setTruckData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      return this.mapTruckData(data);
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
 
-    console.log('Truck Data');
-    console.log(this.viewData);
+      this.viewData = this.viewData.map((data) => {
+        return this.mapTruckData(data);
+      });
 
-    /* For Testing */
-    /* for(let i = 0; i < 100; i++){
-      this.viewData.push(this.viewData[0])
-    } */
+      console.log('Truck Data');
+      console.log(this.viewData);
+    } else {
+      this.viewData = [];
+    }
   }
 
   mapTruckData(data: any) {

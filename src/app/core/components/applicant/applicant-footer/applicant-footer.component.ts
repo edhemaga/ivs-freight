@@ -9,6 +9,8 @@ import {
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 import { convertDateFromBackend } from './../../../utils/methods.calculations';
 
 import moment from 'moment';
@@ -17,9 +19,9 @@ import { SelectedMode } from '../state/enum/selected-mode.enum';
 import { InputSwitchActions } from '../state/enum/input-switch-actions.enum';
 import { CompanyInfoModel } from '../state/model/company.model';
 import { IdNameList } from '../state/model/lists.model';
+import { ApplicantCompanyInfoResponse } from 'appcoretruckassist';
 
 import { ApplicantActionsService } from './../state/services/applicant-actions.service';
-import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-applicant-footer',
@@ -27,21 +29,22 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrls: ['./applicant-footer.component.scss'],
 })
 export class ApplicantFooterComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
-
   @ViewChild('requestsBox')
   requestsBox: ElementRef;
 
   @ViewChild('documentsBox')
   documentsBox: ElementRef;
 
-  public selectedMode: string = SelectedMode.REVIEW;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public sphTabForm: FormGroup;
 
+  public dateOfApplication: string;
   public copyrightYear: string;
 
-  public companyInfo: CompanyInfoModel;
+  public companyInfo: ApplicantCompanyInfoResponse;
 
   public displayInfoBox: boolean = false;
   public displayDocumentsBox: boolean = false;
@@ -119,14 +122,14 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.selectedMode === 'REVIEW_MODE') {
       this.createForm();
+
+      this.getRequestsBoxHeight();
+      this.getDocumentsBoxHeight();
     }
 
     this.copyrightYear = moment().format('YYYY');
 
     this.getCompanyInfo();
-
-    this.getRequestsBoxHeight();
-    this.getDocumentsBoxHeight();
   }
 
   public get previousRequests(): FormArray {
@@ -297,15 +300,23 @@ export class ApplicantFooterComponent implements OnInit, OnDestroy {
   public getCompanyInfo(): void {
     this.applicantActionsService.getApplicantInfo$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((data) => {
-        this.companyInfo = data.companyInfo;
+      .subscribe((res) => {
+        this.companyInfo = res.companyInfo;
+
+        this.dateOfApplication = convertDateFromBackend(res.inviteDate).replace(
+          /-/g,
+          '/'
+        );
       });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.requestsBoxObserver.unobserve(this.requestsBox.nativeElement);
-    this.documentsBoxObserver.unobserve(this.documentsBox.nativeElement);
+
+    if (this.selectedMode === 'REVIEW_MODE') {
+      this.requestsBoxObserver.unobserve(this.requestsBox.nativeElement);
+      this.documentsBoxObserver.unobserve(this.documentsBox.nativeElement);
+    }
   }
 }
