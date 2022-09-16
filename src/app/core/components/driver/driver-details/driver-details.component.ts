@@ -112,6 +112,14 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
               this.changeDriverStatus(res.id);
               break;
             }
+            case 'info': {
+              if (res.cdlStatus === 'New') {
+                this.deactivateCdl(res.data.id);
+              } else {
+                this.activateCdl(res.data.id);
+              }
+              break;
+            }
             default: {
               break;
             }
@@ -137,7 +145,6 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             if (this.cdlActiveId > 0) {
               this.getCdlById(this.cdlActiveId);
             }
-
             this.detailCongif(res);
 
             if (this.router.url.includes('details')) {
@@ -157,11 +164,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
   }
 
   /**Function template and names for header and other options in header */
-  public detailCongif(data: DriverResponse | any) {
-    this.getDriverById(data.id);
-    this.initTableOptions(data);
-    this.checkExpiration(data);
-    if (data?.status == 0) {
+  public detailCongif(dataDriver: DriverResponse) {
+    this.getDriverById(dataDriver.id);
+    this.initTableOptions(dataDriver);
+    this.checkExpiration(dataDriver);
+
+    if (dataDriver?.status == 0) {
       this.statusDriver = true;
       this.showInc = true;
     } else {
@@ -174,7 +182,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         id: 0,
         name: 'Driver Details',
         template: 'general',
-        data: data,
+        data: dataDriver,
       },
       {
         id: 1,
@@ -183,8 +191,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         req: false,
         status: this.statusDriver,
         hasDanger: this.hasDangerCDL,
-        length: data?.cdls?.length ? data.cdls.length : 0,
-        data: data,
+        length: dataDriver?.cdls?.length ? dataDriver.cdls.length : 0,
+        data: dataDriver,
       },
       {
         id: 2,
@@ -193,8 +201,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         req: true,
         status: this.statusDriver,
         hasDanger: false,
-        length: data?.tests?.length ? data.tests.length : 0,
-        data: data,
+        length: dataDriver?.tests?.length ? dataDriver.tests.length : 0,
+        data: dataDriver,
       },
       {
         id: 3,
@@ -203,8 +211,8 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         req: false,
         status: this.statusDriver,
         hasDanger: this.hasDangerMedical,
-        length: data?.medicals?.length ? data.medicals.length : 0,
-        data: data,
+        length: dataDriver?.medicals?.length ? dataDriver.medicals.length : 0,
+        data: dataDriver,
       },
       {
         id: 4,
@@ -213,11 +221,11 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         req: true,
         status: this.statusDriver,
         hasDanger: this.hasDangerMvr,
-        length: data?.mvrs?.length ? data.mvrs.length : 0,
-        data: data,
+        length: dataDriver?.mvrs?.length ? dataDriver.mvrs.length : 0,
+        data: dataDriver,
       },
     ];
-    this.driverId = data?.id ? data.id : null;
+    this.driverId = dataDriver?.id ? dataDriver.id : null;
   }
   checkExpiration(data: DriverResponse) {
     this.hasDangerCDL = false;
@@ -405,6 +413,45 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         },
       });
   }
+  private deactivateCdl(id: number) {
+    this.cdlService
+      .deactivateCdlById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `CDL successfully voided`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `CDL with id: ${id},  couldn't be voided`,
+            'Error:'
+          );
+        },
+      });
+  }
+
+  private activateCdl(id: number) {
+    this.cdlService
+      .activateCdlById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.notificationService.success(
+            `CDL successfully activated`,
+            'Success:'
+          );
+        },
+        error: () => {
+          this.notificationService.error(
+            `CDL with id: ${id},  couldn't be activated`,
+            'Error:'
+          );
+        },
+      });
+  }
   public onModalAction(action: string): void {
     if (action.includes('Drug')) {
       action = 'DrugAlcohol';
@@ -419,6 +466,13 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             { id: this.driverId, type: 'new-licence' }
           );
         } else {
+          const data = {
+            ...this.driverObject,
+            data: {
+              firstName: this.driverObject?.firstName,
+              lastName: this.driverObject?.lastName,
+            },
+          };
           const mappedEvent = {
             ...this.dataCdl,
             data: {
@@ -431,10 +485,16 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
             ConfirmationModalComponent,
             { size: 'small' },
             {
-              ...mappedEvent,
+              data: {
+                ...this.dataCdl,
+                state: this.dataCdl?.state?.stateShortName,
+                data,
+              },
               template: 'cdl',
-              type: 'delete',
-              image: false,
+              type: 'info',
+              subType: 'cdl void',
+              cdlStatus: 'New',
+              modalHeader: true,
             }
           );
         }

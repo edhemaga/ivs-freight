@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
 import { card_component_animation } from '../../../../shared/animations/card-component.animations';
 
 @Component({
@@ -17,6 +18,9 @@ export class ViolationDetailsSingleComponent implements OnInit {
   /**Function return id */
   public identity(index: number, item: any): number {
     return item.id;
+  }
+  public onFileAction(action: string) {
+    onFileActionMethods(action);
   }
   /**Function for toggle page in cards */
   public toggleResizePage(value: number, indexName: string) {

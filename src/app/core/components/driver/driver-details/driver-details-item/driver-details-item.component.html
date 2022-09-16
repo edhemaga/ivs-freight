@@ -133,16 +133,16 @@
                 </div>
                 <div
                   *ngIf="
-                    cdl.dateDeactivated && cdl.showButton && cdl.status == 0
+                    cdl.dateDeactivated
                   "
-                  (click)="optionsEvent('activate-item', 'activate-item')"
+                  (click)="openCommand(cdl,'activate-licence')"
                   class="activate-button"
                 >
                   Activate
                 </div>
                 <div
-                  (click)="optionsEvent('renew', 'renew')"
-                  *ngIf="!cdl.showButton"
+                  (click)="openCommand(cdl,'renew-licence')"
+                  *ngIf="!cdl.showButton && !cdl.dateDeactivated"
                   class="activate-button"
                 >
                   Renew

@@ -17,14 +17,20 @@ import { DropDownService } from 'src/app/core/services/details-page/drop-down.se
 import { NotificationService } from 'src/app/core/services/notification/notification.service';
 import { TruckassistTableService } from 'src/app/core/services/truckassist-table/truckassist-table.service';
 import { dropActionNameDriver } from 'src/app/core/utils/function-drop.details-page';
-import { Confirmation } from '../../../modals/confirmation-modal/confirmation-modal.component';
+import { onFileActionMethods } from 'src/app/core/utils/methods.globals';
+import {
+  Confirmation,
+  ConfirmationModalComponent,
+} from '../../../modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationService } from '../../../modals/confirmation-modal/confirmation.service';
 import { card_component_animation } from '../../../shared/animations/card-component.animations';
+import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { CdlTService } from '../../state/cdl.service';
 import { DriverTService } from '../../state/driver.service';
 import { MedicalTService } from '../../state/medical.service';
 import { MvrTService } from '../../state/mvr.service';
 import { TestTService } from '../../state/test.service';
+import { DriverCdlModalComponent } from '../driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 
 @Component({
   selector: 'app-driver-details-item',
@@ -68,7 +74,8 @@ export class DriverDetailsItemComponent
     private confirmationService: ConfirmationService,
     private notificationService: NotificationService,
     private tableService: TruckassistTableService,
-    private dropDownService: DropDownService
+    private dropDownService: DropDownService,
+    private modalService: ModalService
   ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -203,7 +210,10 @@ export class DriverDetailsItemComponent
         {
           title:
             this.activateShow[this.currentIndex] == true ? 'Activate' : 'Void',
-          name: 'activate-item',
+          name:
+            this.activateShow[this.currentIndex] == true
+              ? 'activate-item'
+              : 'deactivate-item',
           svg:
             this.activateShow[this.currentIndex] == true
               ? 'assets/svg/common/ic_deactivate.svg'
@@ -268,6 +278,34 @@ export class DriverDetailsItemComponent
       null,
       this.drivers[0].data
     );
+  }
+  public openCommand(cdl: any, modal: string) {
+    if (modal === 'renew-licence') {
+      this.modalService.openModal(
+        DriverCdlModalComponent,
+        { size: 'small' },
+        {
+          id: this.drivers[0].data.id,
+          file_id: cdl.id,
+          type: 'renew-licence',
+          renewData: cdl,
+        }
+      );
+    } else {
+      let data = this.drivers;
+      this.modalService.openModal(
+        ConfirmationModalComponent,
+        { size: 'small' },
+        {
+          data: { ...cdl, state: cdl.state.stateShortName, data },
+          template: 'cdl',
+          type: 'info',
+          subType: 'cdl void',
+          cdlStatus: 'Activate',
+          modalHeader: true,
+        }
+      );
+    }
   }
 
   public onButtonAction(data: { template: string; action: string }) {
@@ -376,31 +414,10 @@ export class DriverDetailsItemComponent
   public toggleResizePage(value: number, indexName: string) {
     this.toggler[value + indexName] = !this.toggler[value + indexName];
   }
-  public onFileAction(action: string) {
-    switch (action) {
-      case 'download': {
-        this.downloadFile(
-          'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-          'truckassist0'
-        );
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-  }
-  public downloadFile(url: string, filename: string) {
-    fetch(url).then((t) => {
-      return t.blob().then((b) => {
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(b);
-        a.setAttribute('download', filename);
-        a.click();
-      });
-    });
-  }
 
+  public onFileAction(action: string) {
+    onFileActionMethods(action);
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

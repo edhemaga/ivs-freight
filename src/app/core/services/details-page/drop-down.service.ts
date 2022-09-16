@@ -272,6 +272,21 @@ export class DropDownService {
         );
         break;
       }
+      case 'deactivate-item': {
+        this.modalService.openModal(
+          ConfirmationModalComponent,
+          { size: 'small' },
+          {
+            data: { ...dataCdl, state: dataCdl.state.stateShortName, data },
+            template: 'cdl',
+            type: 'info',
+            subType: 'cdl void',
+            cdlStatus: 'New',
+            modalHeader: true,
+          }
+        );
+        break;
+      }
       case 'activate-item': {
         this.modalService.openModal(
           ConfirmationModalComponent,
@@ -281,7 +296,7 @@ export class DropDownService {
             template: 'cdl',
             type: 'info',
             subType: 'cdl void',
-            cdlStatus: 'Renew',
+            cdlStatus: 'Activate',
             modalHeader: true,
           }
         );
