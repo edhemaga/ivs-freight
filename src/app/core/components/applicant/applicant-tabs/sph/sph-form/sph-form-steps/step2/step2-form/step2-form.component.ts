@@ -11,18 +11,23 @@ import {
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
-import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
-import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
-import { Address } from '../../../../../../../shared/model/address';
-import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
-import { TaInputResetService } from '../../../../../../../shared/ta-input/ta-input-reset.service';
-import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
+
 import { isFormValueEqual } from '../../../../../../state/utils/utils';
+
 import {
   addressValidation,
   descriptionValidation,
 } from '../../../../../../../shared/ta-input/ta-input.regex-validations';
+
+import { TaInputService } from '../../../../../../../shared/ta-input/ta-input.service';
+import { FormService } from './../../../../../../../../services/form/form.service';
+
+import { TaInputRadiobuttonsComponent } from '../../../../../../../shared/ta-input-radiobuttons/ta-input-radiobuttons.component';
+
+import { SphFormAccidentModel } from '../../../../../../state/model/accident.model';
+import { AnswerChoices } from '../../../../../../state/model/applicant-question.model';
 import { InputSwitchActions } from '../../../../../../state/enum/input-switch-actions.enum';
+import { AddressEntity } from 'appcoretruckassist';
 
 @Component({
   selector: 'app-sph-step2-form',
@@ -51,7 +56,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public subscription: Subscription;
 
-  public selectedAddress: Address = null;
+  public selectedAddress: AddressEntity = null;
 
   public hazmatSpillRadios: any;
 
@@ -75,7 +80,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService
   ) {}
 
   ngOnDestroy(): void {
@@ -201,7 +206,7 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.accidentForm);
   }
 
   public onSaveEditedAccident(): void {
@@ -236,8 +241,6 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.accidentForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
-
     this.subscription.unsubscribe();
   }
 
@@ -250,8 +253,6 @@ export class SphStep2FormComponent implements OnInit, AfterViewInit, OnDestroy {
     this.hazmatSpillRadios[1].checked = false;
 
     this.accidentForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }

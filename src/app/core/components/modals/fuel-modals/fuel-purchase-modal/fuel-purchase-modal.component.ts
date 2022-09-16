@@ -12,6 +12,7 @@ import { TaInputService } from '../../../shared/ta-input/ta-input.service';
 import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { priceValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-fuel-purchase-modal',
@@ -101,7 +102,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
       id: [data?.id ? data?.id : null],
       itemId: [data?.itemId ? data?.itemId : null], // Validators.required
       qty: [[data?.qty ? data?.qty : null], Validators.required],
-      price: [[data?.price ? data?.price : null], Validators.required],
+      price: [
+        [data?.price ? data?.price : null],
+        [Validators.required, ...priceValidation],
+      ],
       subtotal: [[data?.subtotal ? data?.subtotal : null]],
     });
   }

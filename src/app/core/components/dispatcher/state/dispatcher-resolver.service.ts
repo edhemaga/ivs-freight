@@ -15,12 +15,12 @@ import { configFactory } from 'src/app/app.config';
 export class DispatcherResolverService implements Resolve<any> {
   constructor(
     private dispatcherStoreService: DispatcherStoreService,
-    private dashboardQuery: DispatcherQuery,
+    private dispatcherQuery: DispatcherQuery,
     private usServicer:UserLoggedService
   ) {}
   resolve(route: ActivatedRouteSnapshot): Observable<any> {
-    if (this.dashboardQuery.modalList?.dispatchers?.length) {
-      return this.dashboardQuery.modalList;
+    if (this.dispatcherQuery.modalList?.drivers?.length) {
+      return this.dispatcherQuery.modalList;
     } else {
       const dispatcherId = localStorage.getItem('dispatchUserSelect') ? parseInt(localStorage.getItem('dispatchUserSelect')) : -1;
 

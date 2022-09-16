@@ -113,7 +113,6 @@ ngb-modal-window[aria-hidden="true"] {
         }
 
         .modal-title {
-          flex: 1;
           cursor: -webkit-grab;
           cursor: grab;
           font-size: 18px;
@@ -584,7 +583,7 @@ body:not(.modal-open) {
   }
 }
 
-.status_change_popover{
+.status_change_popover {
   .ta_status_main_holder {
     width: 110px;
   }

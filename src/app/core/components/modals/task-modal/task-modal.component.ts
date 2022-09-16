@@ -326,10 +326,6 @@ export class TaskModalComponent implements OnInit, OnDestroy {
             'Task successfully deleted.',
             'Success:'
           );
-          this.modalService.setModalSpinner({
-            action: 'delete',
-            status: false,
-          });
         },
         error: () => {
           this.notificationService.error("Task can't be deleted.", 'Error:');

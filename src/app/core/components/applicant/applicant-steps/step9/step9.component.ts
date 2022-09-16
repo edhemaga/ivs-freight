@@ -1,9 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
+
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
 
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import { DriverRights } from '../../state/model/driver-rights.model';
+import { UpdateDriverRightsCommand } from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step9',
@@ -11,18 +16,29 @@ import { DriverRights } from '../../state/model/driver-rights.model';
   styleUrls: ['./step9.component.scss'],
 })
 export class Step9Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
+
+  public applicantId: number;
 
   public driverRightsForm: FormGroup;
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public driverRightsInfo: DriverRights | undefined; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public createForm(): void {
@@ -33,28 +49,42 @@ export class Step9Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/8`]);
     }
   }
 
-  /* public onSubmitForm(): void {
-    const driverRightsForm = this.driverRightsForm.value;
-    const driverRights = new DriverRights(this.driverRightsInfo);
+  public onSubmit(): void {
+    if (this.driverRightsForm.invalid) {
+      this.inputService.markInvalid(this.driverRightsForm);
+      return;
+    }
 
-    driverRights.applicantId = this.applicant?.id;
-    driverRights.understandYourRights = driverRightsForm.understandYourRights;
+    const { understandYourRights } = this.driverRightsForm.value;
 
-     this.apppEntityServices.DriverRightService.upsert(driverRight).subscribe(
-        () => {
-          this.notification.success('Driver Right is updated');
+    const saveData: UpdateDriverRightsCommand = {
+      understandDriverRights: understandYourRights,
+      applicantId: this.applicantId,
+    };
+
+    this.applicantActionsService
+      .updateDriverRights(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/10`]);
         },
-        (error: any) => {
-          this.shared.handleError(error);
-        }
-      );
-  } */
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

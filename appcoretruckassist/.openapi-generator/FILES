@@ -232,6 +232,7 @@ model/dispatchResponsePagination.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/driverAccidentResponse.ts
+model/driverForgotPasswordCommand.ts
 model/driverListResponse.ts
 model/driverMinimalListResponse.ts
 model/driverMinimalResponse.ts
@@ -576,7 +577,9 @@ model/updateWorkExperienceCommand.ts
 model/userResponse.ts
 model/validatePasswordCommand.ts
 model/verifyApplicantCommand.ts
+model/verifyDriverCommand.ts
 model/verifyForgotPasswordCommand.ts
+model/verifyForgotPasswordDriverCommand.ts
 model/verifyOwnerCommand.ts
 model/verifyPreviousEmployerCommand.ts
 model/verifyUserCommand.ts

@@ -1,17 +1,22 @@
 import {
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { Subscription, Subject, takeUntil } from 'rxjs';
 
-import { TaInputResetService } from '../../../shared/ta-input/ta-input-reset.service';
+import { FormService } from './../../../../services/form/form.service';
 import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantListsService } from '../../state/services/applicant-lists.service';
 
 import {
   anyInputInLineIncorrect,
@@ -21,22 +26,34 @@ import {
 import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
 import { SelectedMode } from '../../state/enum/selected-mode.enum';
 import { LicenseModel } from '../../state/model/cdl-information';
+import {
+  CdlEndorsementResponse,
+  CdlRestrictionResponse,
+  EnumValue,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step3-form',
   templateUrl: './step3-form.component.html',
   styleUrls: ['./step3-form.component.scss'],
 })
-export class Step3FormComponent implements OnInit, OnDestroy {
-  private destroy$ = new Subject<void>();
+export class Step3FormComponent
+  implements OnInit, OnDestroy, OnChanges, AfterViewInit
+{
   @Input() isEditing: boolean;
   @Input() formValuesToPatch?: any;
+  @Input() markFormInvalid?: boolean;
 
   @Output() formValuesEmitter = new EventEmitter<any>();
   @Output() cancelFormEditingEmitter = new EventEmitter<any>();
   @Output() saveFormEditingEmitter = new EventEmitter<any>();
+  @Output() formStatusEmitter = new EventEmitter<any>();
+  @Output() markInvalidEmitter = new EventEmitter<any>();
+  @Output() lastFormValuesEmitter = new EventEmitter<any>();
 
-  public selectedMode = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode = SelectedMode.APPLICANT;
 
   private subscription: Subscription;
 
@@ -47,17 +64,17 @@ export class Step3FormComponent implements OnInit, OnDestroy {
   public canadaStates: any[] = [];
   public usStates: any[] = [];
 
+  public countryTypes: EnumValue[] = [];
   public stateTypes: any[] = [];
-  public countryTypes: any[] = [];
-  public classTypes: any[] = [];
-  public endorsmentsList: any[] = [];
-  public restrictionsList: any[] = [];
+  public classTypes: EnumValue[] = [];
+  public restrictionsList: CdlRestrictionResponse[] = [];
+  public endorsmentsList: CdlEndorsementResponse[] = [];
 
-  public selectedCountryType: any = null;
+  public selectedCountryType: EnumValue = null;
   public selectedStateType: any = null;
-  public selectedClassType: any = null;
-  public selectedEndorsments: any = null;
-  public selectedRestrictions: any = null;
+  public selectedClassType: EnumValue = null;
+  public selectedRestrictions: CdlRestrictionResponse[] = [];
+  public selectedEndorsments: CdlEndorsementResponse[] = [];
 
   public openAnnotationArray: {
     lineIndex?: number;
@@ -104,16 +121,15 @@ export class Step3FormComponent implements OnInit, OnDestroy {
   constructor(
     private formBuilder: FormBuilder,
     private inputService: TaInputService,
-    private inputResetService: TaInputResetService
+    private formService: FormService,
+    private applicantListsService: ApplicantListsService,
+    private cdref: ChangeDetectorRef
   ) {}
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
 
   ngOnInit(): void {
     this.createForm();
+
+    this.getDropdownLists();
 
     if (this.formValuesToPatch) {
       this.patchForm();
@@ -121,10 +137,11 @@ export class Step3FormComponent implements OnInit, OnDestroy {
       this.subscription = this.licenseForm.valueChanges
         .pipe(takeUntil(this.destroy$))
         .subscribe((updatedFormValues) => {
-          const { isEditingLicense, ...previousFormValues } =
+          const { endorsments, isEditingLicense, ...previousFormValues } =
             this.formValuesToPatch;
 
           const {
+            endorsments: asd,
             firstRowReview,
             secondRowReview,
             thirdRowReview,
@@ -132,8 +149,29 @@ export class Step3FormComponent implements OnInit, OnDestroy {
             ...newFormValues
           } = updatedFormValues;
 
-          previousFormValues.license = previousFormValues.license.toUpperCase();
-          newFormValues.license = newFormValues.license.toUpperCase();
+          previousFormValues.licenseNumber =
+            previousFormValues.licenseNumber.toUpperCase();
+
+          if (newFormValues.licenseNumber) {
+            newFormValues.licenseNumber =
+              newFormValues.licenseNumber.toUpperCase();
+          }
+
+          previousFormValues.restrictions = JSON.stringify(
+            previousFormValues.restrictions.map((item) => item.id)
+          );
+          newFormValues.restrictions = JSON.stringify(
+            this.selectedRestrictions.map((item) => item.id)
+          );
+
+          /* newFormValues.endorsments = this.selectedEndorsments; */
+
+          console.log('prev', previousFormValues);
+          console.log('new', newFormValues);
+          console.log(
+            'restrictions',
+            this.licenseForm.get('restrictions').value
+          );
 
           if (isFormValueEqual(previousFormValues, newFormValues)) {
             this.isLicenseEdited = false;
@@ -144,11 +182,36 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     }
   }
 
+  ngAfterViewInit(): void {
+    this.licenseForm.statusChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.formStatusEmitter.emit(res);
+      });
+
+    this.licenseForm.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        res.restrictions = this.selectedRestrictions;
+        res.endorsments = this.selectedEndorsments;
+
+        this.lastFormValuesEmitter.emit(res);
+      });
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.markFormInvalid?.currentValue) {
+      this.inputService.markInvalid(this.licenseForm);
+
+      this.markInvalidEmitter.emit(false);
+    }
+  }
+
   private createForm(): void {
     this.licenseForm = this.formBuilder.group({
-      license: [null, Validators.required],
-      countryType: [null, Validators.required],
-      stateId: [null, Validators.required],
+      licenseNumber: [null, Validators.required],
+      country: [null, Validators.required],
+      state: [null, Validators.required],
       classType: [null, Validators.required],
       expDate: [null, Validators.required],
       restrictions: [null],
@@ -163,27 +226,60 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
   public patchForm(): void {
     this.licenseForm.patchValue({
-      license: this.formValuesToPatch.license,
-      countryType: this.formValuesToPatch.countryType,
-      stateId: this.formValuesToPatch.stateId,
+      licenseNumber: this.formValuesToPatch.licenseNumber,
+      country: this.formValuesToPatch.country,
+      state: this.formValuesToPatch.state,
       classType: this.formValuesToPatch.classType,
       expDate: this.formValuesToPatch.expDate,
-      endorsments: this.formValuesToPatch.endorsments,
-      restrictions: this.formValuesToPatch.restrictions,
     });
+
+    setTimeout(() => {
+      if (this.formValuesToPatch.country.toLowerCase() === 'us') {
+        this.stateTypes = this.usStates;
+      } else {
+        this.stateTypes = this.canadaStates;
+      }
+
+      this.selectedCountryType = this.countryTypes.find(
+        (item) => item.name === this.formValuesToPatch.country
+      );
+
+      const filteredStateType = this.usStates.find(
+        (stateItem) => stateItem.name === this.formValuesToPatch.state
+      );
+
+      this.selectedStateType = filteredStateType
+        ? filteredStateType
+        : this.canadaStates.find(
+            (stateItem) => stateItem.name === this.formValuesToPatch.state
+          );
+
+      this.selectedClassType = this.classTypes.find(
+        (item) => item.name === this.formValuesToPatch.classType
+      );
+
+      this.selectedRestrictions = this.formValuesToPatch.restrictions;
+
+      this.selectedEndorsments = this.formValuesToPatch.endorsments;
+    }, 150);
   }
 
   public handleInputSelect(event: any, action: string): void {
     switch (action) {
       case InputSwitchActions.COUNTRY_TYPE:
+        const previousSelectedCountry = this.selectedCountryType;
+
         this.selectedCountryType = event;
 
-        this.inputService.changeValidators(
-          this.licenseForm.get('stateId'),
-          false
-        );
+        if (this.selectedCountryType !== previousSelectedCountry) {
+          this.selectedStateType = null;
 
-        if (this.selectedCountryType.name.toLowerCase() === 'us') {
+          this.licenseForm.patchValue({
+            state: null,
+          });
+        }
+
+        if (this.selectedCountryType?.name.toLowerCase() === 'us') {
           this.stateTypes = this.usStates;
         } else {
           this.stateTypes = this.canadaStates;
@@ -198,14 +294,27 @@ export class Step3FormComponent implements OnInit, OnDestroy {
         this.selectedClassType = event;
 
         break;
-      case InputSwitchActions.ENDORSMENTS:
-        this.selectedEndorsments = event;
-
-        break;
       case InputSwitchActions.RESTRICTIONS:
         this.selectedRestrictions = event;
 
+        this.licenseForm
+          .get('restrictions')
+          .patchValue(this.selectedRestrictions);
+
+        /*    this.cdref.detectChanges(); */
+
+        console.log('inputchangerestrictions', this.selectedRestrictions);
+
         break;
+      case InputSwitchActions.ENDORSMENTS:
+        this.selectedEndorsments = event;
+
+        this.licenseForm
+          .get('endorsments')
+          .patchValue(this.selectedEndorsments);
+
+        break;
+
       default:
         break;
     }
@@ -216,22 +325,35 @@ export class Step3FormComponent implements OnInit, OnDestroy {
       this.inputService.markInvalid(this.licenseForm);
       return;
     }
-    /*
-      const {firstRowReview,
+
+    const {
+      restrictions,
+      endorsments,
+      firstRowReview,
       secondRowReview,
       thirdRowReview,
-      fourthRowReview,...licenseForm} = this.licenseForm.value;
+      fourthRowReview,
+      ...licenseForm
+    } = this.licenseForm.value;
 
     const saveData: LicenseModel = {
       ...licenseForm,
+      restrictions: this.selectedRestrictions,
+      endorsments: this.selectedEndorsments,
       isEditingLicense: false,
     };
 
-    this.formValuesEmitter.emit(saveData);*/
+    this.formValuesEmitter.emit(saveData);
+
+    this.selectedCountryType = null;
+    this.selectedStateType = null;
+    this.selectedClassType = null;
+    this.selectedEndorsments = [];
+    this.selectedRestrictions = [];
 
     this.licenseForm.reset();
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.formService.resetForm(this.licenseForm);
   }
 
   public onCancelEditLicense(): void {
@@ -240,8 +362,6 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     this.isLicenseEdited = false;
 
     this.licenseForm.reset();
-
-    this.inputResetService.resetInputSubject.next(true);
 
     this.subscription.unsubscribe();
   }
@@ -257,6 +377,8 @@ export class Step3FormComponent implements OnInit, OnDestroy {
     }
 
     const {
+      restrictions,
+      endorsments,
       firstRowReview,
       secondRowReview,
       thirdRowReview,
@@ -266,6 +388,8 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
     const saveData: LicenseModel = {
       ...licenseForm,
+      restrictions: this.selectedRestrictions,
+      endorsments: this.selectedEndorsments,
       isEditingLicense: false,
     };
 
@@ -273,9 +397,13 @@ export class Step3FormComponent implements OnInit, OnDestroy {
 
     this.isLicenseEdited = false;
 
-    this.licenseForm.reset();
+    this.selectedCountryType = null;
+    this.selectedStateType = null;
+    this.selectedClassType = null;
+    this.selectedEndorsments = [];
+    this.selectedRestrictions = [];
 
-    this.inputResetService.resetInputSubject.next(true);
+    this.licenseForm.reset();
 
     this.subscription.unsubscribe();
   }
@@ -336,5 +464,40 @@ export class Step3FormComponent implements OnInit, OnDestroy {
       this.openAnnotationArray[event.lineIndex].displayAnnotationTextArea =
         false;
     }
+  }
+
+  public getDropdownLists(): void {
+    this.applicantListsService
+      .getDropdownLists()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.countryTypes = data.countryTypes;
+
+        this.usStates = data.usStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.canadaStates = data.canadaStates.map((item) => {
+          return {
+            id: item.id,
+            name: item.stateShortName,
+            stateName: item.stateName,
+          };
+        });
+
+        this.classTypes = data.classTypes;
+
+        this.restrictionsList = data.restrictions;
+        this.endorsmentsList = data.endorsements;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

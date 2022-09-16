@@ -254,7 +254,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully created.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(
@@ -293,7 +292,6 @@ export class ContactModalComponent implements OnInit, OnDestroy {
             'Company Contact successfully updated.',
             'Success:'
           );
-          this.modalService.setModalSpinner({ action: null, status: false });
         },
         error: () => {
           this.notificationService.error(

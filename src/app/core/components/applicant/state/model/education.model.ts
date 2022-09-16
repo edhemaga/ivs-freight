@@ -1,7 +1,8 @@
 export interface ContactModel {
-  contactName: string;
-  contactPhone: string;
-  contactRelationship: string;
+  id: number;
+  name: string;
+  phone: string;
+  relationship: string;
   isEditingContact: boolean;
 }
 

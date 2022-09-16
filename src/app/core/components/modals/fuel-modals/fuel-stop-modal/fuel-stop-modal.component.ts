@@ -12,6 +12,7 @@ import { ModalService } from '../../../shared/ta-modal/modal.service';
 import { Subject, takeUntil } from 'rxjs';
 import { FormService } from '../../../../services/form/form.service';
 import { NotificationService } from '../../../../services/notification/notification.service';
+import { fuelStoreValidation } from '../../../shared/ta-input/ta-input.regex-validations';
 
 @Component({
   selector: 'app-fuel-stop-modal',
@@ -58,7 +59,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
   private createForm() {
     this.fuelStopForm = this.formBuilder.group({
       name: [null, [Validators.required, ...fuelStopValidation]],
-      store: [null],
+      store: [null, fuelStoreValidation],
       favourite: [null],
       phone: [null, [Validators.required, phoneFaxRegex]],
       fax: [null, phoneFaxRegex],

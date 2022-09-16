@@ -372,15 +372,20 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   setTrailerData(td: any) {
-    this.viewData = td.data;
     this.columns = td.gridColumns;
 
-    this.viewData = this.viewData.map((data) => {
-      return this.mapTrailerData(data);
-    });
+    if (td.data.length) {
+      this.viewData = td.data;
 
-    console.log('Trailer Data');
-    console.log(this.viewData);
+      this.viewData = this.viewData.map((data) => {
+        return this.mapTrailerData(data);
+      });
+  
+      console.log('Trailer Data');
+      console.log(this.viewData);
+    } else {
+      this.viewData = [];
+    }
   }
 
   mapTrailerData(data: any) {

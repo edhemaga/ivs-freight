@@ -11,14 +11,14 @@ export interface SphFormAccidentModel {
 
 export interface AccidentModel {
   id?: number;
-  accidentLocation: any;
-  accidentDate: string;
+  location: any;
+  date: string;
   accidentState: string;
   fatalities: number;
   injuries: number;
-  hazmatSpill?: string;
-  truckType: string;
-  accidentDescription: string;
+  hazmatSpill?: boolean;
+  vehicleType: string;
+  description: string;
   isEditingAccident: boolean;
 }
 

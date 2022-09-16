@@ -1,17 +1,25 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { Subject, takeUntil } from 'rxjs';
 
 import { anyInputInLineIncorrect } from '../../state/utils/utils';
 
-import { SelectedMode } from '../../state/enum/selected-mode.enum';
-import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
-import { Applicant } from '../../state/model/applicant.model';
-import { Address } from '../../state/model/address.model';
-import { DrugAndAlcohol } from '../../state/model/drug-and-alchocol.model';
+import { TaInputService } from '../../../shared/ta-input/ta-input.service';
+import { ApplicantActionsService } from '../../state/services/applicant-actions.service';
+
 import {
   addressUnitValidation,
   addressValidation,
 } from '../../../shared/ta-input/ta-input.regex-validations';
+
+import { SelectedMode } from '../../state/enum/selected-mode.enum';
+import { InputSwitchActions } from '../../state/enum/input-switch-actions.enum';
+import {
+  AddressEntity,
+  CreateDrugAndAlcoholCommand,
+} from 'appcoretruckassist/model/models';
 
 @Component({
   selector: 'app-step8',
@@ -19,13 +27,17 @@ import {
   styleUrls: ['./step8.component.scss'],
 })
 export class Step8Component implements OnInit, OnDestroy {
-  public selectedMode: string = SelectedMode.FEEDBACK;
+  private destroy$ = new Subject<void>();
+
+  public selectedMode: string = SelectedMode.APPLICANT;
 
   public drugTestForm: FormGroup;
   public drugAlcoholStatementForm: FormGroup;
 
-  public selectedAddress: Address = null;
-  public selectedSapAddress: Address = null;
+  public applicantId: number;
+
+  public selectedAddress: AddressEntity = null;
+  public selectedSapAddress: AddressEntity = null;
 
   public question = {
     title:
@@ -81,14 +93,23 @@ export class Step8Component implements OnInit, OnDestroy {
     },
   ];
 
-  /* public applicant: Applicant | undefined; */
-
-  /* public drugAndAlcoholInfo: DrugAndAlcohol | undefined; */
-
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private inputService: TaInputService,
+    private router: Router,
+    private applicantActionsService: ApplicantActionsService
+  ) {}
 
   ngOnInit(): void {
     this.createForm();
+
+    this.isTestedNegative();
+
+    this.applicantActionsService.getApplicantInfo$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res) => {
+        this.applicantId = res.personalInfo.applicantId;
+      });
   }
 
   public createForm(): void {
@@ -160,6 +181,82 @@ export class Step8Component implements OnInit, OnDestroy {
     }
   }
 
+  private isTestedNegative(): void {
+    this.drugTestForm
+      .get('drugTest')
+      .valueChanges.pipe(takeUntil(this.destroy$))
+      .subscribe((value) => {
+        if (!value) {
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('motorCarrier'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('phone'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('address'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapName'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapPhone'),
+            false
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapAddress'),
+            false
+          );
+
+          this.inputService.changeValidatorsCheck(
+            this.drugAlcoholStatementForm.get('isAgreement'),
+            false
+          );
+
+          this.drugAlcoholStatementForm.patchValue({ isAgreement: null });
+
+          this.drugAlcoholStatementForm.patchValue({
+            motorCarrier: null,
+            phone: null,
+            address: null,
+            addressUnit: null,
+            sapName: null,
+            sapPhone: null,
+            sapAddress: null,
+            sapAddressUnit: null,
+            isAgreement: null,
+          });
+        } else {
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('motorCarrier')
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('phone')
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('address')
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapName')
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapPhone')
+          );
+          this.inputService.changeValidators(
+            this.drugAlcoholStatementForm.get('sapAddress')
+          );
+
+          this.inputService.changeValidatorsCheck(
+            this.drugAlcoholStatementForm.get('isAgreement')
+          );
+        }
+      });
+  }
+
   public incorrectInput(
     event: any,
     inputIndex: number,
@@ -220,75 +317,84 @@ export class Step8Component implements OnInit, OnDestroy {
 
   public onStepAction(event: any): void {
     if (event.action === 'next-step') {
+      this.onSubmit();
     }
 
     if (event.action === 'back-step') {
+      this.router.navigate([`/application/${this.applicantId}/7`]);
     }
   }
 
-  /* private formFilling(): void {
-    this.drugAlcoholStatementForm.patchValue({
-      motorCarrier: this.drugAndAlcoholInfo?.motorCarrier,
-      phone: this.drugAndAlcoholInfo?.phone,
-      address: this.drugAndAlcoholInfo?.address,
-      addressUnit: this.drugAndAlcoholInfo?.addressUnit,
-      sapName: this.drugAndAlcoholInfo?.sapName,
-      sapPhone: this.drugAndAlcoholInfo?.sapPhone,
-      sapAddress: this.drugAndAlcoholInfo?.sapAddress,
-      sapAddressUnit: this.drugAndAlcoholInfo?.sapAddressUnit,
-      isAgreement: this.drugAndAlcoholInfo?.isAgreement,
-    });
+  public onSubmit(): void {
+    if (this.drugAlcoholStatementForm.invalid) {
+      this.inputService.markInvalid(this.drugAlcoholStatementForm);
+      return;
+    }
+
+    if (this.drugTestForm.invalid) {
+      this.inputService.markInvalid(this.drugTestForm);
+      return;
+    }
+
+    const {
+      motorCarrier,
+      phone,
+      address,
+      addressUnit,
+      sapName,
+      sapPhone,
+      sapAddress,
+      sapAddressUnit,
+      isAgreement,
+      firstRowReview,
+      secondRowReview,
+      thirdRowReview,
+      fourthRowReview,
+      ...drugAlcoholStatementForm
+    } = this.drugAlcoholStatementForm.value;
+
+    if (this.selectedAddress) {
+      this.selectedAddress.addressUnit = addressUnit;
+      this.selectedAddress.county = '';
+    }
+
+    if (this.selectedSapAddress) {
+      this.selectedSapAddress.addressUnit = sapAddressUnit;
+      this.selectedSapAddress.county = '';
+    }
+
+    const drugTestFormValue = this.drugTestForm.get('drugTest').value;
+
+    const saveData: CreateDrugAndAlcoholCommand = {
+      ...drugAlcoholStatementForm,
+      applicantId: this.applicantId,
+      positiveTest: drugTestFormValue,
+      motorCarrier: drugTestFormValue ? motorCarrier : null,
+      phone: drugTestFormValue ? phone : null,
+      address: drugTestFormValue ? this.selectedAddress : null,
+      sapName: drugTestFormValue ? sapName : null,
+      sapPhone: drugTestFormValue ? sapPhone : null,
+      sapAddress: drugTestFormValue ? this.selectedSapAddress : null,
+      certifyInformation: isAgreement,
+    };
+
+    this.applicantActionsService
+      .createDrugAndAlcohol(saveData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.router.navigate([`/application/${this.applicantId}/9`]);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
- */
-
-  /* public onSubmitForm(): void {
-     this.shared.clearNotifications();
-
-        let valid = true;
-
-        if (this.positiveTest === undefined) {
-            this.notification.warning('Answer the first question', 'Warning:');
-            valid = false;
-        }
-
-        if (!this.shared.markInvalid(this.drugAlcoholStatementForm)) {
-            valid = false;
-        }
-
-        if (!valid) {
-            return false;
-        }
-
-    const drugAlcoholStatementForm = this.drugAlcoholStatementForm.value;
-    const drugAndAlcohol = new DrugAndAlcohol(this.drugAndAlcoholInfo);
-
-    drugAndAlcohol.applicantId = this.applicant?.id;
-
-    drugAndAlcohol.drugTest = drugAlcoholStatementForm.drugTest;
-    drugAndAlcohol.motorCarrier = drugAlcoholStatementForm.motorCarrier;
-    drugAndAlcohol.phone = drugAlcoholStatementForm.phone;
-    drugAndAlcohol.address = drugAlcoholStatementForm.address;
-    drugAndAlcohol.addressUnit = drugAlcoholStatementForm.addressUnit;
-    drugAndAlcohol.sapName = drugAlcoholStatementForm.sapName;
-    drugAndAlcohol.sapPhone = drugAlcoholStatementForm.sapPhone;
-    drugAndAlcohol.sapAddress = drugAlcoholStatementForm.sapAddress;
-    drugAndAlcohol.sapAddressUnit = drugAlcoholStatementForm.sapAddressUnit;
-    drugAndAlcohol.isAgreement = drugAlcoholStatementForm.isAgreement;
-
-    this.apppEntityServices.DrugAndAlchocolService.upsert(
-            drugAndAlchocol
-        ).subscribe(
-            () => {
-                this.notification.success('Drug And Alchocol is updated');
-            },
-            (error: any) => {
-                this.shared.handleError(error);
-            }
-        );
-  }
- */
 
   /* public onSubmitReview(data: any): void {} */
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

@@ -12,6 +12,7 @@ import {
 } from '@angular/core';
 import { TitleCasePipe } from '@angular/common';
 import { SignInResponse } from 'appcoretruckassist';
+import { ImageBase64Service } from '../../../utils/base64.image';
 
 export interface ReviewCommentModal {
   sortData: any[];
@@ -42,6 +43,7 @@ export class TaUserReviewComponent implements OnChanges {
 
   constructor(
     private reviewSortPipe: ReviewsSortPipe,
+    public imageBase64Service: ImageBase64Service,
     private titlecasePipe: TitleCasePipe
   ) {}
 
@@ -151,7 +153,46 @@ export class TaUserReviewComponent implements OnChanges {
 
   public transformText(event: any, ind: number) {
     this.reviewMessageRef.toArray()[ind].nativeElement.value =
-      this.titleCaseInput(event);
+      this.titleCaseInput(event.target.value);
+  }
+
+  public keyUp(event: any, review: any, type: string, index: number) {
+    if (event.key === 'Enter' || event.keyCode === 13) {
+      switch (type) {
+        case 'add': {
+          review.commentContent =
+            this.reviewMessageRef.toArray()[index].nativeElement.value;
+          review.isEditMode = false;
+          review.isNewReview = false;
+          review.updatedAt = new Date().toISOString();
+
+          this.reviewSortPipe.transform(this.reviewData);
+          this.changeReviewsEvent.emit({
+            sortData: this.reviewData,
+            data: review,
+            action: type,
+          });
+          break;
+        }
+        case 'update': {
+          review.commentContent =
+            this.reviewMessageRef.toArray()[index].nativeElement.value;
+          review.isEditMode = false;
+          review.updatedAt = new Date().toISOString();
+
+          this.reviewSortPipe.transform(this.reviewData);
+          this.changeReviewsEvent.emit({
+            sortData: this.reviewData,
+            data: review,
+            action: type,
+          });
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    }
   }
 
   public titleCaseInput(value: string) {
